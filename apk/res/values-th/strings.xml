@@ -23,8 +23,8 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"สิทธิ์และข้อมูล"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"จัดการข้อมูลสุขภาพและการออกกำลังกายในอุปกรณ์ และควบคุมว่าแอปใดบ้างที่เข้าถึงข้อมูลได้"</string>
     <string name="data_title" msgid="4456619761533380816">"ข้อมูลและการเข้าถึง"</string>
-    <string name="browse_medical_data" msgid="6963802956096683273">"เรียกดูบันทึกข้อมูลสุขภาพ"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"ดูบันทึกข้อมูลสุขภาพและแอปที่เข้าถึงได้"</string>
+    <string name="browse_medical_data" msgid="6492659245149862639">"เรียกดูเวชระเบียน"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"ดูบันทึกเวชระเบียนและแอปที่เข้าถึงได้"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"หมวดหมู่ทั้งหมด"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"ดูหมวดหมู่ทั้งหมด"</string>
     <string name="no_data" msgid="1906986019249068659">"ไม่มีข้อมูล"</string>
@@ -110,8 +110,8 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"อ่านข้อมูลแคลอรี่ที่ใช้ไป"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"อนุญาตให้แอปอ่านข้อมูลแคลอรี่ที่ใช้ไป"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"อนุญาตให้ <xliff:g id="APP_NAME">%1$s</xliff:g> เข้าถึงข้อมูลในเบื้องหลังใช่ไหม"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"หากอนุญาต แอปนี้จะสามารถเข้าถึงข้อมูลการออกกำลังกายและสุขภาวะ รวมถึงบันทึกข้อมูลสุขภาพเมื่อคุณไม่ได้ใช้แอป"</string>
-    <string name="background_read_medical_single_request_description_medical_granted" msgid="5162456401369633859">"หากอนุญาต แอปนี้จะสามารถเข้าถึงบันทึกข้อมูลสุขภาพเมื่อคุณไม่ได้ใช้แอป"</string>
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"หากอนุญาต แอปนี้จะสามารถเข้าถึงข้อมูลการออกกำลังกายและสุขภาวะ รวมถึงเวชระเบียนเมื่อคุณไม่ได้ใช้แอป"</string>
+    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"หากอนุญาต แอปนี้จะสามารถเข้าถึงเวชระเบียนเมื่อคุณไม่ได้ใช้แอป"</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"หากอนุญาต แอปนี้จะสามารถเข้าถึงข้อมูลการออกกำลังกายและสุขภาวะเมื่อคุณไม่ได้ใช้แอป"</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"หากอนุญาต แอปนี้จะสามารถเข้าถึงข้อมูล Health Connect เมื่อคุณไม่ได้ใช้แอป"</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"อนุญาตให้ <xliff:g id="APP_NAME">%1$s</xliff:g> เข้าถึงข้อมูลที่ผ่านมาใช่ไหม"</string>
@@ -122,9 +122,9 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"อนุญาตให้ <xliff:g id="APP_NAME">%1$s</xliff:g> เข้าถึงการตั้งค่าเพิ่มเติมใช่ไหม"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g> ต้องการเข้าถึงการตั้งค่า Health Connect เหล่านี้ด้วย"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"เข้าถึงข้อมูลทั้งหมดในเบื้องหลัง"</string>
-    <string name="background_read_medical_combined_request_title_medical_granted" msgid="7245376864667067106">"เข้าถึงบันทึกข้อมูลสุขภาพในเบื้องหลัง"</string>
+    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"เข้าถึงเวชระเบียนในเบื้องหลัง"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"เข้าถึงข้อมูลการออกกำลังกายและสุขภาวะในเบื้องหลัง"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"อนุญาตให้แอปนี้เข้าถึงข้อมูลการออกกำลังกายและสุขภาวะ รวมถึงบันทึกข้อมูลสุขภาพเมื่อคุณไม่ได้ใช้แอป"</string>
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"อนุญาตให้แอปนี้เข้าถึงข้อมูลการออกกำลังกายและสุขภาวะ รวมถึงเวชระเบียนเมื่อคุณไม่ได้ใช้แอป"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"อนุญาตให้แอปนี้เข้าถึงข้อมูลนี้เมื่อคุณไม่ได้ใช้แอป"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"อนุญาตให้แอปนี้เข้าถึงข้อมูลนี้เมื่อคุณไม่ได้ใช้แอป"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"เข้าถึงข้อมูลในเบื้องหลัง"</string>
@@ -135,12 +135,12 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"เข้าถึงข้อมูลในอดีต"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"อนุญาตให้แอปนี้เข้าถึงข้อมูล Health Connect ที่เพิ่มไว้ก่อนวันที่ <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"อนุญาตให้แอปนี้เข้าถึงข้อมูล Health Connect ที่ผ่านมาทั้งหมด"</string>
-    <string name="history_read_medical_combined_request_footer" msgid="5301940225768076844">"<xliff:g id="APP_NAME">%1$s</xliff:g> สามารถเข้าถึงข้อมูลที่ผ่านมาในบันทึกข้อมูลสุขภาพของคุณได้อยู่แล้ว"</string>
+    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"<xliff:g id="APP_NAME">%1$s</xliff:g> สามารถเข้าถึงข้อมูลที่ผ่านมาในเวชระเบียนของคุณได้อยู่แล้ว"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"อ่านเพิ่มเติมเกี่ยวกับสิทธิ์"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"เข้าถึงข้อมูลทั้งหมดในเบื้องหลัง"</string>
-    <string name="background_read_medical_access_title_medical_granted" msgid="7852915238347056139">"เข้าถึงบันทึกข้อมูลสุขภาพในเบื้องหลัง"</string>
+    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"เข้าถึงเวชระเบียนในเบื้องหลัง"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"เข้าถึงข้อมูลการออกกำลังกายและสุขภาวะในเบื้องหลัง"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"อนุญาตให้แอปนี้เข้าถึงข้อมูลการออกกำลังกายและสุขภาวะ รวมถึงบันทึกข้อมูลสุขภาพเมื่อคุณไม่ได้ใช้แอป"</string>
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"อนุญาตให้แอปนี้เข้าถึงข้อมูลการออกกำลังกายและสุขภาวะ รวมถึงเวชระเบียนเมื่อคุณไม่ได้ใช้แอป"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"อนุญาตให้แอปนี้เข้าถึงข้อมูลนี้เมื่อคุณไม่ได้ใช้แอป"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"อนุญาตให้แอปนี้เข้าถึงข้อมูลนี้เมื่อคุณไม่ได้ใช้แอป"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"เข้าถึงข้อมูลในเบื้องหลัง"</string>
@@ -152,8 +152,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"อนุญาตให้แอปนี้เข้าถึงข้อมูล Health Connect ที่เพิ่มไว้ก่อนวันที่ <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"อนุญาตให้แอปนี้เข้าถึงข้อมูล Health Connect ที่ผ่านมาทั้งหมด"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"ขณะนี้ไม่มีการอ่านข้อมูลการออกกำลังกายเนื่องจาก <xliff:g id="APP_NAME">%1$s</xliff:g> ไม่มีสิทธิ์อ่าน"</string>
-    <string name="additional_access_medical_read_footer" msgid="4640796038121080343">"<xliff:g id="APP_NAME">%1$s</xliff:g> สามารถเข้าถึงข้อมูลที่ผ่านมาในบันทึกข้อมูลสุขภาพของคุณได้อยู่แล้ว หากต้องการเปลี่ยนการตั้งค่านี้ ให้ปิดสิทธิ์ด้านบันทึกข้อมูลสุขภาพสําหรับแอปนี้"</string>
-    <string name="additional_access_medical_read_footer_link" msgid="2797623091827504856">"จัดการสิทธิ์ด้านบันทึกข้อมูลสุขภาพ"</string>
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g> สามารถเข้าถึงข้อมูลที่ผ่านมาในเวชระเบียนของคุณได้อยู่แล้ว หากต้องการเปลี่ยนการตั้งค่านี้ ให้ปิดสิทธิ์ด้านเวชระเบียนสําหรับแอปนี้"</string>
+    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"จัดการสิทธิ์ของเวชระเบียน"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"เปิดใช้สิทธิ์อ่านอย่างน้อย 1 รายการเพื่อเปิดใช้การเข้าถึงข้อมูลในอดีตหรือในเบื้องหลังสำหรับแอปนี้"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"เปิดใช้สิทธิ์อ่านอย่างน้อย 1 รายการเพื่อเปิดใช้การเข้าถึงเมื่ออยู่เบื้องหลังสำหรับแอปนี้"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"เปิดใช้สิทธิ์อ่านอย่างน้อย 1 รายการเพื่อเปิดใช้การเข้าถึงข้อมูลในอดีตสำหรับแอปนี้"</string>
@@ -256,14 +256,6 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"มูกไข่ตก"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"อ่านข้อมูลมูกไข่ตก"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"เขียนข้อมูลมูกไข่ตก"</string>
-    <!-- no translation found for cycle_phases_uppercase_label (1693612101973701017) -->
-    <skip />
-    <!-- no translation found for cycle_phases_lowercase_label (6513009148778082622) -->
-    <skip />
-    <!-- no translation found for cycle_phases_read_content_description (1974818937933604194) -->
-    <skip />
-    <!-- no translation found for cycle_phases_write_content_description (8779256196190212513) -->
-    <skip />
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"ภาวะเลือดออกระหว่างรอบประจำเดือน"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"ภาวะเลือดออกระหว่างรอบประจำเดือน"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"อ่านข้อมูลภาวะเลือดออกระหว่างรอบประจำเดือน"</string>
@@ -336,10 +328,10 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"อุณหภูมิผิวหนัง"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"อ่านข้อมูลอุณหภูมิผิวหนัง"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"เขียนข้อมูลอุณหภูมิผิวหนัง"</string>
-    <string name="browse_health_records_intro" msgid="1611488691642390523">"รวมถึงบันทึกข้อมูลสุขภาพทั้งหมดที่ซิงค์และเพิ่มลงใน Health Connect ข้อมูลนี้อาจไม่ใช่เวชระเบียนทั้งหมดและไม่รวมถึงคำอธิบายทางการแพทย์เกี่ยวกับบันทึกข้อมูลสุขภาพของคุณ"</string>
-    <string name="all_medical_data_uppercase_label" msgid="2380759160541898783">"บันทึกข้อมูลสุขภาพทั้งหมด"</string>
-    <string name="all_medical_data_lowercase_label" msgid="6293814928992081842">"บันทึกข้อมูลสุขภาพทั้งหมด"</string>
-    <string name="all_medical_data_content_description" msgid="4846586780533295022">"เขียนบันทึกข้อมูลสุขภาพทั้งหมด"</string>
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"รวมถึงเวชระเบียนทั้งหมดที่ซิงค์และเพิ่มลงใน Health Connect ข้อมูลนี้อาจไม่ใช่เวชระเบียนทั้งหมดและไม่รวมถึงคำอธิบายทางการแพทย์เกี่ยวกับเวชระเบียนของคุณ"</string>
+    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"เวชระเบียนทั้งหมด"</string>
+    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"เวชระเบียนทั้งหมด"</string>
+    <string name="all_medical_data_content_description" msgid="3454355551506537094">"เขียนเวชระเบียนทั้งหมด"</string>
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"อาการแพ้"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"อาการแพ้"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"อ่านข้อมูลอาการแพ้"</string>
@@ -420,13 +412,13 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"อนุญาตให้ <xliff:g id="APP_NAME">%1$s</xliff:g> เข้าถึงข้อมูลการออกกำลังกายและสุขภาวะไหม"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"ดูวิธีที่ <xliff:g id="APP_NAME">%1$s</xliff:g> จัดการข้อมูลของคุณใน<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"นโยบายความเป็นส่วนตัว"</string>
-    <string name="medical_request_header" msgid="2300521519021510027">"อนุญาตให้ <xliff:g id="APP_NAME">%1$s</xliff:g> เข้าถึงบันทึกข้อมูลสุขภาพไหม"</string>
+    <string name="medical_request_header" msgid="5701693055388739014">"อนุญาตให้ <xliff:g id="APP_NAME">%1$s</xliff:g> เข้าถึงเวชระเบียนหรือไม่"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"หากคุณให้สิทธิ์เข้าถึง แอปนี้จะสามารถอ่านและเขียนข้อมูล เช่น อาการแพ้ ผลตรวจ วัคซีน และอื่นๆ\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"หากคุณให้สิทธิ์เข้าถึง แอปนี้จะสามารถอ่านข้อมูล เช่น อาการแพ้ ผลตรวจ วัคซีน และอื่นๆ\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_about_health_records" msgid="7204918218748362687">"เกี่ยวกับบันทึกข้อมูลสุขภาพ"</string>
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"เกี่ยวกับเวชระเบียน"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"ข้อมูลที่จะแชร์ ได้แก่"</string>
-    <string name="medical_request_summary" msgid="7281321524805015510">"หากอนุญาต <xliff:g id="APP_NAME">%1$s</xliff:g> จะแชร์บันทึกข้อมูลสุขภาพของคุณกับ Health Connect ได้"</string>
-    <string name="medical_request_footer" msgid="6533749932770903089">"ซิงค์บันทึกข้อมูลสุขภาพจากแอปและแหล่งที่มาต่างๆ เพื่อเก็บไว้ในที่เดียว"</string>
+    <string name="medical_request_summary" msgid="553735170968628758">"หากอนุญาต <xliff:g id="APP_NAME">%1$s</xliff:g> จะแชร์เวชระเบียนของคุณกับ Health Connect ได้"</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"ซิงค์เวชระเบียนจากแอปและแหล่งที่มาต่างๆ เพื่อเก็บไว้ในที่เดียว"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"นำสิทธิ์ทั้งหมดออกใช่ไหม"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"นำออกทั้งหมด"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> จะไม่สามารถอ่านหรือเขียนข้อมูลจาก Health Connect ได้อีกต่อไป\n\nการดำเนินการนี้ไม่ส่งผลต่อสิทธิ์อื่นๆ ที่แอปนี้อาจมี เช่น สิทธิ์เข้าถึงกล้อง ไมโครโฟน หรือตำแหน่ง"</string>
@@ -436,8 +428,8 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"ลบข้อมูล <xliff:g id="APP_NAME">%1$s</xliff:g> ออกจาก Health Connect ด้วย"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"นำสิทธิ์ทั้งหมดเกี่ยวกับการออกกำลังกายและสุขภาวะออกไหม"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"ลบข้อมูลการออกกำลังกายจาก <xliff:g id="APP_NAME">%1$s</xliff:g> ออกจาก Health Connect ด้วย"</string>
-    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"นำสิทธิ์ด้านบันทึกข้อมูลสุขภาพทั้งหมดออกใช่ไหม"</string>
-    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"ลบบันทึกข้อมูลสุขภาพจาก <xliff:g id="APP_NAME">%1$s</xliff:g> ออกจาก Health Connect ด้วย"</string>
+    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"นำสิทธิ์ด้านเวชระเบียนทั้งหมดออกใช่หรือไม่"</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"ลบเวชระเบียนจาก <xliff:g id="APP_NAME">%1$s</xliff:g> ออกจาก Health Connect ด้วย"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> จะไม่สามารถอ่านหรือเขียนข้อมูลนี้จาก Health Connect ได้อีกต่อไป\n\nการดำเนินการนี้ไม่ส่งผลต่อสิทธิ์อื่นๆ ที่แอปนี้อาจมี เช่น สิทธิ์เข้าถึงกล้อง ไมโครโฟน หรือตำแหน่ง"</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> จะไม่สามารถอ่านหรือเขียนข้อมูลนี้จาก Health Connect ได้อีกต่อไป รวมถึงข้อมูลในเบื้องหลัง\n\nการดำเนินการนี้ไม่ส่งผลต่อสิทธิ์อื่นๆ ที่แอปนี้อาจมี เช่น สิทธิ์เข้าถึงกล้อง ไมโครโฟน หรือตำแหน่ง"</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> จะไม่สามารถอ่านหรือเขียนข้อมูลนี้จาก Health Connect ได้อีกต่อไป รวมถึงข้อมูลในอดีต\n\nการดำเนินการนี้ไม่ส่งผลต่อสิทธิ์อื่นๆ ที่แอปนี้อาจมี เช่น สิทธิ์เข้าถึงกล้อง ไมโครโฟน หรือตำแหน่ง"</string>
@@ -447,7 +439,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> จะไม่สามารถอ่านหรือเขียนข้อมูลจาก Health Connect ได้อีกต่อไป รวมถึงข้อมูลในเบื้องหลัง\n\nการดำเนินการนี้ไม่ส่งผลต่อสิทธิ์อื่นๆ ที่แอปนี้อาจมี เช่น สิทธิ์เข้าถึงกล้อง ไมโครโฟน หรือตำแหน่ง"</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> จะไม่สามารถอ่านหรือเขียนข้อมูลจาก Health Connect ได้อีกต่อไป รวมถึงข้อมูลในอดีต\n\nการดำเนินการนี้ไม่ส่งผลต่อสิทธิ์อื่นๆ ที่แอปนี้อาจมี เช่น สิทธิ์เข้าถึงกล้อง ไมโครโฟน หรือตำแหน่ง"</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> จะไม่สามารถอ่านหรือเขียนข้อมูลจาก Health Connect ได้อีกต่อไป รวมถึงข้อมูลในเบื้องหลังและในอดีต\n\nการดำเนินการนี้ไม่ส่งผลต่อสิทธิ์อื่นๆ ที่แอปนี้อาจมี เช่น สิทธิ์เข้าถึงกล้อง ไมโครโฟน หรือตำแหน่ง"</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="762880061016391846">"ลบข้อมูลการออกกำลังกายและบันทึกข้อมูลสุขภาพจาก <xliff:g id="APP_NAME">%1$s</xliff:g> ออกจาก Health Connect ด้วย"</string>
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"ลบข้อมูลการออกกำลังกายและเวชระเบียนจาก <xliff:g id="APP_NAME">%1$s</xliff:g> ออกจาก Health Connect ด้วย"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"นำสิทธิ์สำหรับแอปนี้ออกแล้ว"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"ลบข้อมูล Health Connect ทั้งหมดด้วย"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"วันถัดไป"</string>
@@ -496,8 +488,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"สิทธิ์"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"การออกกำลังกายและสุขภาวะ"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"การออกกำลัง การนอนหลับ โภชนาการ และอื่นๆ"</string>
-    <string name="medical_permissions" msgid="1224097151249321566">"บันทึกข้อมูลสุขภาพ"</string>
-    <string name="medical_permissions_lowercase" msgid="3969792205103436491">"บันทึกข้อมูลสุขภาพ"</string>
+    <string name="medical_permissions" msgid="1066296298908103091">"เวชระเบียน"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"เวชระเบียน"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"ผลตรวจ ยา วัคซีน และอื่นๆ"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"สิทธิ์ของแอปที่ถูกนำออก"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect นำสิทธิ์สำหรับ <xliff:g id="APP_DATA">%s</xliff:g> ออกแล้ว"</string>
@@ -591,7 +583,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"ไปที่ Play Store"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"เริ่มต้นใช้งาน Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect จะจัดเก็บข้อมูลสุขภาพและการออกกำลังกาย พร้อมให้คุณซิงค์แอปต่างๆ ในอุปกรณ์ได้โดยง่าย"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect จะจัดเก็บและซิงค์ข้อมูลสุขภาพและการออกกำลังกายจากแอปต่างๆ\n\n"<b>"ข้อมูลการออกกำลังกายและสุขภาวะ"</b>" รวมถึงเซสชันการออกกำลังกาย จำนวนก้าว โภชนาการ การนอนหลับ และอื่นๆ\n\n"<b>"บันทึกข้อมูลสุขภาพ"</b>" รวมถึงวัคซีน ผลตรวจ และอื่นๆ"</string>
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect จะจัดเก็บและซิงค์ข้อมูลสุขภาพและการออกกำลังกายจากแอปต่างๆ\n\n"<b>"ข้อมูลการออกกำลังกายและสุขภาวะ"</b>" รวมถึงเซสชันการออกกำลังกาย จำนวนก้าว โภชนาการ การนอนหลับ และอื่นๆ\n\n"<b>"เวชระเบียน"</b>" รวมถึงวัคซีน ผลตรวจ และอื่นๆ"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connect ช่วยให้คุณทำสิ่งต่อไปนี้ได้"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"แชร์ข้อมูลกับแอปต่างๆ"</b>\n"เลือกข้อมูลที่แต่ละแอปจะอ่านหรือเขียนลงใน Health Connect ได้"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"จัดการการตั้งค่าและความเป็นส่วนตัว"</b>\n"เปลี่ยนสิทธิ์ของแอปและจัดการข้อมูลได้ทุกเมื่อ"</string>

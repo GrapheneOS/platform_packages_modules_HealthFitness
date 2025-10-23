@@ -23,8 +23,10 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Дозволи и податоци"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Управувајте со податоците за здравје и фитнес на вашиот уред и контролирајте кои апликации може да пристапуваат до нив"</string>
     <string name="data_title" msgid="4456619761533380816">"Податоци и пристап"</string>
-    <string name="browse_medical_data" msgid="6963802956096683273">"Прелистувајте здравствена евиденција"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"Погледнете ја вашата здравствена евиденција и кои апликации може да пристапуваат до неа"</string>
+    <!-- no translation found for browse_medical_data (6492659245149862639) -->
+    <skip />
+    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
+    <skip />
     <string name="all_categories_title" msgid="1446410643217937926">"Сите категории"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Преглед на сите категории"</string>
     <string name="no_data" msgid="1906986019249068659">"Нема податоци"</string>
@@ -110,8 +112,10 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Читање потрошени калории"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Дозволува апликацијата да чита потрошени калории"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Да се дозволи <xliff:g id="APP_NAME">%1$s</xliff:g> да пристапува до податоците во заднина?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"Ако дозволите, апликацијава ќе може да пристапува до податоците за фитнес и благосостојба, како и до здравствената евиденција кога не ја користите апликацијата."</string>
-    <string name="background_read_medical_single_request_description_medical_granted" msgid="5162456401369633859">"Ако дозволите, апликацијава ќе може да пристапува до здравствената евиденција кога не ја користите апликацијата."</string>
+    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
+    <skip />
+    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
+    <skip />
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Ако дозволите, апликацијава ќе може да пристапува до податоците за фитнес и благосостојбата кога не ја користите апликацијата."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Ако дозволите, апликацијава ќе може да пристапува до податоците од Health Connect кога не ја користите апликацијата."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"Да се дозволи <xliff:g id="APP_NAME">%1$s</xliff:g> да пристапува до минатите податоци?"</string>
@@ -122,9 +126,11 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"Да се дозволи дополнителен пристап за <xliff:g id="APP_NAME">%1$s</xliff:g>?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g> сака да пристапува и до овие поставки за Health Connect"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Пристап до сите податоци во заднина"</string>
-    <string name="background_read_medical_combined_request_title_medical_granted" msgid="7245376864667067106">"Пристап до здравствената евиденција во заднина"</string>
+    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
+    <skip />
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Пристап до податоците за фитнес и благосостојба во заднина"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"Дозволете ѝ на апликацијава да пристапува до податоците за фитнес и благосостојба, како и до здравствената евиденција кога не ја користите апликацијата"</string>
+    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
+    <skip />
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Дозволете ѝ на апликацијава да пристапува до податоциве кога не ја користите апликацијата"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Дозволете ѝ на апликацијава да пристапува до податоциве кога не ја користите апликацијата"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Пристап до податоците во заднина"</string>
@@ -135,12 +141,15 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Пристап до минатите податоци"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"Дозволете ѝ на апликацијава да пристапува до податоците од Health Connect додадени пред <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Дозволете ѝ на апликацијава да пристапува до сите минати податоци од Health Connect"</string>
-    <string name="history_read_medical_combined_request_footer" msgid="5301940225768076844">"<xliff:g id="APP_NAME">%1$s</xliff:g> веќе може да пристапува до минатите податоци за здравствената евиденција"</string>
+    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
+    <skip />
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Прочитајте повеќе за дозволите"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Пристап до сите податоци во заднина"</string>
-    <string name="background_read_medical_access_title_medical_granted" msgid="7852915238347056139">"Пристап до здравствената евиденција во заднина"</string>
+    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
+    <skip />
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Пристап до податоците за фитнес и благосостојба во заднина"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"Дозволете ѝ на апликацијава да пристапува до податоците за фитнес и благосостојба, како и до здравствената евиденција кога не ја користите апликацијата"</string>
+    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
+    <skip />
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Дозволете ѝ на апликацијава да пристапува до податоциве кога не ја користите апликацијата"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Дозволете ѝ на апликацијава да пристапува до податоциве кога не ја користите апликацијата"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Пристап до податоците во заднина"</string>
@@ -152,8 +161,10 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Дозволете ѝ на апликацијава да пристапува до податоците од Health Connect додадени пред <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Дозволете ѝ на апликацијава да пристапува до сите минати податоци од Health Connect"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Во моментов не се читаат податоци за фитнес бидејќи <xliff:g id="APP_NAME">%1$s</xliff:g> нема доделени дозволи за читање"</string>
-    <string name="additional_access_medical_read_footer" msgid="4640796038121080343">"<xliff:g id="APP_NAME">%1$s</xliff:g> веќе може да пристапува до минатите податоци за вашата здравствена евиденција. За да го промените ова, исклучете ги дозволите за здравствената евиденција за апликацијава"</string>
-    <string name="additional_access_medical_read_footer_link" msgid="2797623091827504856">"Управувајте со дозволите за здравствената евиденција"</string>
+    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
+    <skip />
+    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
+    <skip />
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Овозможете најмалку една дозвола за читање за да вклучите пристап на апликацијата до податоците во заднина или пристап до минатите податоци"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Овозможете најмалку една дозвола за читање за да вклучите пристап во заднина за апликацијава"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Овозможете најмалку една дозвола за читање за да вклучите пристап до минати податоци за апликацијава"</string>
@@ -256,14 +267,6 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"цервикален секрет"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"Читање цервикален секрет"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"Запишување цервикален секрет"</string>
-    <!-- no translation found for cycle_phases_uppercase_label (1693612101973701017) -->
-    <skip />
-    <!-- no translation found for cycle_phases_lowercase_label (6513009148778082622) -->
-    <skip />
-    <!-- no translation found for cycle_phases_read_content_description (1974818937933604194) -->
-    <skip />
-    <!-- no translation found for cycle_phases_write_content_description (8779256196190212513) -->
-    <skip />
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"интерменструално крварење"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"интерменструално крварење"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Читај податоци за интерменструално крварење"</string>
@@ -336,10 +339,14 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"температура на кожата"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Читање на температурата на кожата"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Запишување на температурата на кожата"</string>
-    <string name="browse_health_records_intro" msgid="1611488691642390523">"Ова ги опфаќа сите здравствени евиденции што се синхронизирани и додадени во Health Connect. Ова може да не е вашето целосно медицинско досие и не опфаќа медицински опис на вашите здравствени евиденции."</string>
-    <string name="all_medical_data_uppercase_label" msgid="2380759160541898783">"Сета здравствена евиденција"</string>
-    <string name="all_medical_data_lowercase_label" msgid="6293814928992081842">"сета здравствена евиденција"</string>
-    <string name="all_medical_data_content_description" msgid="4846586780533295022">"Пишување на сета здравствена евиденција"</string>
+    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
+    <skip />
+    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
+    <skip />
+    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
+    <skip />
+    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
+    <skip />
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Алергии"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"алергии"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Читање на алергиите"</string>
@@ -420,13 +427,17 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Да се дозволи „<xliff:g id="APP_NAME">%1$s</xliff:g>“ да пристапува до податоците за фитнес и благосостојба?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Може да дознаете како <xliff:g id="APP_NAME">%1$s</xliff:g> постапува со вашите податоци во <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"политика за приватност"</string>
-    <string name="medical_request_header" msgid="2300521519021510027">"Да се дозволи <xliff:g id="APP_NAME">%1$s</xliff:g> да пристапува до вашата здравствена евиденција?"</string>
+    <!-- no translation found for medical_request_header (5701693055388739014) -->
+    <skip />
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Ако доделите пристап, апликацијата ќе може да чита и запишува податоци како што се алергии, лабораториски резултати, вакцини и друго \n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Ако доделите пристап, апликацијата ќе може да чита податоци како што се алергии, лабораториски резултати, вакцини и друго\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_about_health_records" msgid="7204918218748362687">"За здравствената евиденција"</string>
+    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
+    <skip />
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Податоците за споделување опфаќаат"</string>
-    <string name="medical_request_summary" msgid="7281321524805015510">"Ако дозволите, <xliff:g id="APP_NAME">%1$s</xliff:g> ќе може да ја споделува вашата здравствена евиденција со Health Connect."</string>
-    <string name="medical_request_footer" msgid="6533749932770903089">"Синхронизирајте ја вашата здравствена евиденција од различни апликации и извори за да ја чувате на едно место"</string>
+    <!-- no translation found for medical_request_summary (553735170968628758) -->
+    <skip />
+    <!-- no translation found for medical_request_footer (157243861031258933) -->
+    <skip />
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Да се отстранат сите дозволи?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Отстрани ги сите"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> веќе нема да може да чита, ниту да запишува податоци од Health Connect.\n\nОва не влијае на другите дозволи што може да ги има апликацијава, на пр. за пристап до камерата, микрофонот или локацијата."</string>
@@ -436,8 +447,10 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Избриши ги и податоците на <xliff:g id="APP_NAME">%1$s</xliff:g> од Health Connect"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Да се отстранат сите дозволи за фитнес и благосостојба?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Избриши ги и податоците за фитнес од <xliff:g id="APP_NAME">%1$s</xliff:g> од Health Connect"</string>
-    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Да се отстранат сите дозволи за здравствената евиденција?"</string>
-    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"Избриши ги и податоците за здравствената евиденција од <xliff:g id="APP_NAME">%1$s</xliff:g> од Health Connect"</string>
+    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
+    <skip />
+    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
+    <skip />
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> веќе нема да може да ги чита или евидентира податоциве од Health Connect.\n\nОва не влијае на другите дозволи што може да ги има апликацијава, како камера, микрофон или локација."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> веќе нема да може да ги чита или евидентира податоциве од Health Connect, меѓу кои и заднински податоци.\n\nОва не влијае на другите дозволи што може да ги има апликацијава, како камера, микрофон или локација."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> веќе нема да може да ги чита или евидентира податоциве од Health Connect, меѓу кои и минати податоци.\n\nОва не влијае на другите дозволи што може да ги има апликацијава, како камера, микрофон или локација."</string>
@@ -447,7 +460,8 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> веќе нема да може да чита или евидентира податоци од Health Connect, меѓу кои и заднински податоци.\n\nОва не влијае на другите дозволи што може да ги има апликацијава, како камера, микрофон или локација."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> веќе нема да може да чита или евидентира податоци од Health Connect, меѓу кои и минати податоци.\n\nОва не влијае на другите дозволи што може да ги има апликацијава, како камера, микрофон или локација."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> веќе нема да може да чита или евидентира податоци од Health Connect, меѓу кои и заднински и минати податоци.\n\nОва не влијае на другите дозволи што може да ги има апликацијава, како камера, микрофон или локација."</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="762880061016391846">"Избриши ги и податоците за фитнес и здравствената евиденција од <xliff:g id="APP_NAME">%1$s</xliff:g> од Health Connect"</string>
+    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
+    <skip />
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Дозволите за апликацијава се отстранети"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Избриши ги и сите податоци од Health Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Следниот ден"</string>
@@ -496,8 +510,10 @@
     <string name="permissions_header" msgid="6519976063360071569">"Дозволи"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"Фитнес и благосостојба"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Вежбање, спиење, исхрана и друго"</string>
-    <string name="medical_permissions" msgid="1224097151249321566">"Здравствена евиденција"</string>
-    <string name="medical_permissions_lowercase" msgid="3969792205103436491">"здравствена евиденција"</string>
+    <!-- no translation found for medical_permissions (1066296298908103091) -->
+    <skip />
+    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
+    <skip />
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Лаборат. резулати, лекови, вакцини итн."</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Отстранети дозволи за апликации"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect ги отстрани дозволите за <xliff:g id="APP_DATA">%s</xliff:g>"</string>
@@ -591,7 +607,8 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Одете во Play Store"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Започнете со Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect ги складира вашите податоци за здравје и фитнес, што ви овозможува едноставен начин да ги синхронизирате различните апликации на вашиот уред"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect ги складира и синхронизира податоците за здравје и фитнес од различни апликации.\n\n"<b>"Податоци за фитнес и благосостојба,"</b>" заедно со сесии на вежбање, чекори, исхрана, спиење и друго\n\n"<b>"Здравствена евиденција,"</b>" заедно со вакцини, лабораториски резултати и друго"</string>
+    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
+    <skip />
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Можности на Health Connect:"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Споделувајте податоци со вашите апликации"</b>\n"Изберете ги податоците што може да ги чита или запишува секоја од апликациите во Health Connect"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Управувајте со поставките и приватноста"</b>\n"Променувајте ги дозволите за апликациите и управувајте со вашите податоци кога сакате"</string>

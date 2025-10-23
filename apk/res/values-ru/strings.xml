@@ -23,8 +23,8 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Разрешения и данные"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Управляйте данными о физической активности и здоровье с устройства и контролируйте доступ приложений к этой информации."</string>
     <string name="data_title" msgid="4456619761533380816">"Данные и доступ"</string>
-    <string name="browse_medical_data" msgid="6963802956096683273">"Информация о здоровье"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"Информация о здоровье и приложения, имеющие к ней доступ"</string>
+    <string name="browse_medical_data" msgid="6492659245149862639">"Посмотреть медицинские данные"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"Медицинские данные и приложения, имеющие к ним доступ"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Все категории"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Показать все категории"</string>
     <string name="no_data" msgid="1906986019249068659">"Нет данных"</string>
@@ -110,8 +110,8 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Чтение данных о калориях"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Приложение сможет считывать данные о количестве сожженных калорий."</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Открыть приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к данным в фоновом режиме?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"Если вы предоставите разрешение, данные о здоровье, самочувствии и физической активности будут доступны приложению, когда вы им не пользуетесь."</string>
-    <string name="background_read_medical_single_request_description_medical_granted" msgid="5162456401369633859">"Если вы предоставите разрешение, данные о здоровье будут доступны приложению, когда вы им не пользуетесь."</string>
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Если вы предоставите разрешение, медицинские данные, а также данные о самочувствии и физической активности будут доступны приложению, когда вы им не пользуетесь."</string>
+    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"Если вы предоставите разрешение, медицинские данные будут доступны приложению, когда вы им не пользуетесь."</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Если вы предоставите разрешение, данные о физической активности и самочувствии будут доступны приложению, когда вы им не пользуетесь."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Если вы предоставите разрешение, данные платформы \"Здоровье и спорт\" будут доступны приложению, когда вы им не пользуетесь."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"Открыть приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к сохраненным ранее данным?"</string>
@@ -122,9 +122,9 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"Открыть приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" расширенный доступ?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"Приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" также запрашивает доступ к настройкам платформы \"Здоровье и спорт\", указанным ниже."</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Доступ ко всем данным в фоновом режиме"</string>
-    <string name="background_read_medical_combined_request_title_medical_granted" msgid="7245376864667067106">"Доступ к данным о здоровье в фоновом режиме"</string>
+    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"Доступ к медицинским данным в фоновом режиме"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Доступ к данным о самочувствии и физической активности в фоновом режиме"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"Данные о здоровье, самочувствии и физической активности будут доступны приложению, когда вы им не пользуетесь"</string>
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"Медицинские данные, а также данные о самочувствии и физической активности будут доступны приложению, когда вы им не пользуетесь"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Эти данные будут доступны приложению, когда вы им не пользуетесь"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Эти данные будут доступны приложению, когда вы им не пользуетесь"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Доступ к данным в фоновом режиме"</string>
@@ -135,12 +135,12 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Доступ к сохраненным ранее данным"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"Приложению будут доступны данные платформы \"Здоровье и спорт\", добавленные до <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Приложению будут доступны все сохраненные ранее данные платформы \"Здоровье и спорт\""</string>
-    <string name="history_read_medical_combined_request_footer" msgid="5301940225768076844">"У приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" уже есть доступ к сохраненным ранее данным о здоровье."</string>
+    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"У приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" уже есть доступ к сохраненным ранее медицинским данным."</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Подробнее о разрешениях…"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Доступ ко всем данным в фоновом режиме"</string>
-    <string name="background_read_medical_access_title_medical_granted" msgid="7852915238347056139">"Доступ к данным о здоровье в фоновом режиме"</string>
+    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"Доступ к медицинским данным в фоновом режиме"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Доступ к данным о самочувствии и физической активности в фоновом режиме"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"Данные о здоровье, самочувствии и физической активности будут доступны приложению, когда вы им не пользуетесь"</string>
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"Медицинские данные, а также данные о самочувствии и физической активности будут доступны приложению, когда вы им не пользуетесь"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Эти данные будут доступны приложению, когда вы им не пользуетесь"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Эти данные будут доступны приложению, когда вы им не пользуетесь"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Доступ к данным в фоновом режиме"</string>
@@ -152,8 +152,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Приложению будут доступны данные платформы \"Здоровье и спорт\", добавленные до <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Приложению будут доступны все сохраненные ранее данные платформы \"Здоровье и спорт\""</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" не считывает данные о физической активности, так как у него нет необходимых разрешений."</string>
-    <string name="additional_access_medical_read_footer" msgid="4640796038121080343">"У приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" уже есть доступ к сохраненной ранее информации о здоровье. Вы можете это изменить, отозвав разрешение."</string>
-    <string name="additional_access_medical_read_footer_link" msgid="2797623091827504856">"Настроить доступ к информации о здоровье"</string>
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"У приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" уже есть доступ к сохраненным ранее медицинским данным. Вы можете это изменить, отозвав разрешение."</string>
+    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"Настроить доступ к медицинским данным"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Чтобы открыть приложению доступ в фоновом режиме или доступ к сохраненным данным, предоставьте хотя бы одно разрешение на чтение."</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Чтобы открыть приложению доступ в фоновом режиме, предоставьте хотя бы одно разрешение на чтение."</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Чтобы открыть приложению доступ к сохраненным данным, предоставьте хотя бы одно разрешение на чтение."</string>
@@ -256,14 +256,6 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"цервикальная слизь"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"Чтение данных о цервикальной слизи"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"Запись данных о цервикальной слизи"</string>
-    <!-- no translation found for cycle_phases_uppercase_label (1693612101973701017) -->
-    <skip />
-    <!-- no translation found for cycle_phases_lowercase_label (6513009148778082622) -->
-    <skip />
-    <!-- no translation found for cycle_phases_read_content_description (1974818937933604194) -->
-    <skip />
-    <!-- no translation found for cycle_phases_write_content_description (8779256196190212513) -->
-    <skip />
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"Межменструальные кровотечения"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"межменструальные кровотечения"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Чтение данных о межменструальных кровотечениях"</string>
@@ -336,10 +328,10 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"температура кожи"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Доступ к данным о температуре кожи"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Запись данных о температуре кожи"</string>
-    <string name="browse_health_records_intro" msgid="1611488691642390523">"В том числе информация о здоровье, связанная и синхронизированная с платформой \"Здоровье и спорт\". Эта информация может не включать данные вашей медицинской карты и заключения специалистов."</string>
-    <string name="all_medical_data_uppercase_label" msgid="2380759160541898783">"Все данные о здоровье"</string>
-    <string name="all_medical_data_lowercase_label" msgid="6293814928992081842">"все данные о здоровье"</string>
-    <string name="all_medical_data_content_description" msgid="4846586780533295022">"Запись всех данных о здоровье"</string>
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"Сюда также входят медицинские данные, связанные и синхронизированные с платформой \"Здоровье и спорт\". Эта информация может не включать некоторые данные вашей медицинской карты и заключения специалистов."</string>
+    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"Все медицинские данные"</string>
+    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"все медицинские данные"</string>
+    <string name="all_medical_data_content_description" msgid="3454355551506537094">"Запись всех медицинских данных"</string>
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Аллергия"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"аллергия"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Чтение данных об аллергии"</string>
@@ -420,13 +412,13 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Открыть приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к данным о самочувствии и физической активности?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"О том, как приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" обрабатывает ваши данные, можно прочитать в его <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>."</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"политике конфиденциальности"</string>
-    <string name="medical_request_header" msgid="2300521519021510027">"Разрешить приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к информации о здоровье?"</string>
+    <string name="medical_request_header" msgid="5701693055388739014">"Разрешить приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к медицинским данным?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Если вы предоставите разрешение, приложение сможет считывать и записывать данные, например о вакцинации, анализах и аллергии.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Если вы предоставите разрешение, приложение сможет считывать данные, например об аллергии, вакцинации и анализах.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_about_health_records" msgid="7204918218748362687">"Об информации, касающейся здоровья"</string>
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"О медицинских данных"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Примеры данных, которыми можно поделиться"</string>
-    <string name="medical_request_summary" msgid="7281321524805015510">"Если вы предоставите разрешение, приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" сможет делиться данными о вашем здоровье с платформой \"Здоровье и спорт\"."</string>
-    <string name="medical_request_footer" msgid="6533749932770903089">"Синхронизируйте информацию о здоровье из разных приложений и источников и храните ее централизованно"</string>
+    <string name="medical_request_summary" msgid="553735170968628758">"Если вы предоставите разрешение, приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" сможет делиться медицинскими данными с платформой \"Здоровье и спорт\"."</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"Синхронизируйте медицинские данные из разных приложений и источников и храните их централизованно."</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Удалить все разрешения?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Удалить все"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"Приложение <xliff:g id="APP_NAME">%1$s</xliff:g> больше не сможет читать и записывать данные на платформе \"Здоровье и спорт\".\n\nЭто не повлияет на другие разрешения, такие как доступ к камере, микрофону или данным о местоположении."</string>
@@ -436,8 +428,8 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Также удалить с платформы \"Здоровье и спорт\" данные <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Удалить разрешения в области физ. активности и самочувствия?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Также удалить с платформы \"Здоровье и спорт\" данные о физической активности, полученные от приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
-    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Удалить все разрешения на доступ к данным о здоровье?"</string>
-    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"Также удалить с платформы \"Здоровье и спорт\" информацию о здоровье, полученную от приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
+    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"Удалить все разрешения на доступ к медицинским данным?"</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"Также удалить с платформы \"Здоровье и спорт\" медицинские данные, полученные от приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"Приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" больше не сможет читать и записывать эти данные на платформе \"Здоровье и спорт\".\n\nДругие разрешения, например на использование камеры, микрофона или информации о местоположении, затронуты не будут."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"Приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" больше не сможет читать и записывать эти данные на платформе \"Здоровье и спорт\", в том числе в фоновом режиме.\n\nДругие разрешения, например на использование камеры, микрофона или информации о местоположении, затронуты не будут."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"Приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" больше не сможет читать и записывать эти данные на платформе \"Здоровье и спорт\", в том числе сохраненные ранее.\n\nДругие разрешения, например на использование камеры, микрофона или информации о местоположении, затронуты не будут."</string>
@@ -447,7 +439,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"У приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" больше не будет доступа к данным платформы \"Здоровье и спорт\", в том числе сохраненным в фоновом режиме.\n\nДругие разрешения, например на использование камеры, микрофона или геоданных, затронуты не будут."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"У приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" больше не будет доступа к данным платформы \"Здоровье и спорт\", в том числе сохраненным ранее.\n\nДругие разрешения, например на использование камеры, микрофона или геоданных, затронуты не будут."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"У приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" больше не будет доступа к данным платформы \"Здоровье и спорт\", в том числе сохраненным ранее или в фоновом режиме.\n\nДругие разрешения, например на использование камеры, микрофона или геоданных, затронуты не будут."</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="762880061016391846">"Также удалить с платформы \"Здоровье и спорт\" данные приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" о физической активности и здоровье"</string>
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"Также удалить с платформы \"Здоровье и спорт\" медицинские данные и данные о физической активности, полученные от приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Разрешения для этого приложения удалены."</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Также удалить все данные из сервиса \"Здоровье и спорт\""</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Следующий день"</string>
@@ -496,8 +488,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"Разрешения"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"Физическая активность и самочувствие"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Тренировки, сон, питание и не только"</string>
-    <string name="medical_permissions" msgid="1224097151249321566">"Информация о здоровье"</string>
-    <string name="medical_permissions_lowercase" msgid="3969792205103436491">"информация о здоровье"</string>
+    <string name="medical_permissions" msgid="1066296298908103091">"Медицинские данные"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"медицинские данные"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Анализы, лекарства, прививки и не только"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Разрешения отозваны"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Сервис \"Здоровье и спорт\" отозвал разрешения для приложения \"<xliff:g id="APP_DATA">%s</xliff:g>\"."</string>
@@ -591,7 +583,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Перейти в Google Play"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Представляем Здоровье и спорт"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Приложение \"Здоровье и спорт\" надежно хранит ваши данные о физической активности и здоровье, а также синхронизирует работу разных приложений на устройстве."</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Платформа \"Здоровье и спорт\" позволяет хранить и синхронизировать данные о здоровье и физической активности из разных приложений:\n\n"<b>"Информацию о самочувствии и физической активности,"</b>" в том числе о занятиях спортом, количестве пройденных шагов, питании, сне и не только.\n\n"<b>"Информацию о здоровье,"</b>" включая данные о прививках, результаты анализов и многое другое."</string>
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Платформа \"Здоровье и спорт\" позволяет хранить и синхронизировать данные о здоровье и физической активности из разных приложений:\n\n"<b>"Информацию о физической активности и самочувствии,"</b>" в том числе о занятиях спортом, количестве пройденных шагов, питании, сне и не только.\n\n"<b>"Медицинские данные,"</b>" включая данные о прививках, результаты анализов и многое другое."</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Благодаря платформе \"Здоровье и спорт\" вы можете:"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Делиться данными с приложениями"</b>\n"Выбирайте, какую информацию каждое приложение сможет считывать и сохранять в сервисе \"Здоровье и спорт\"."</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Управлять настройками и конфиденциальностью"</b>\n"Настраивайте разрешения для приложений и управляйте своими данными."</string>
