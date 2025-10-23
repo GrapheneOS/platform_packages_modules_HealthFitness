@@ -27,5 +27,5 @@
     <string name="settings_manage_permission" msgid="3585762257420446893">"ਸਿਹਤ, ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"ਸਿਹਤ, ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ"</string>
-    <string name="settings_medical_permissions" msgid="3616285795348645545">"ਸਿਹਤ ਰਿਕਾਰਡ"</string>
+    <string name="settings_medical_permissions" msgid="3458484943007427070">"ਡਾਕਟਰੀ ਰਿਕਾਰਡ"</string>
 </resources>

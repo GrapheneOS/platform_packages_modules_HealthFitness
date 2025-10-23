@@ -23,8 +23,10 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"ଅନୁମତି ଏବଂ ଡାଟା"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"ଆପଣଙ୍କ ଡିଭାଇସରେ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଫିଟନେସ ଡାଟାକୁ ପରିଚାଳନା କରନ୍ତୁ ଓ କେଉଁ ଆପ୍ସ ଏହାକୁ ଆକ୍ସେସ କରିପାରିବ ତାହା ନିୟନ୍ତ୍ରଣ କରନ୍ତୁ"</string>
     <string name="data_title" msgid="4456619761533380816">"ଡାଟା ଏବଂ ଆକ୍ସେସ"</string>
-    <string name="browse_medical_data" msgid="6963802956096683273">"ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡ ବ୍ରାଉଜ କରନ୍ତୁ"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡଗୁଡ଼ିକ ଏବଂ କେଉଁ ଆପ୍ସ ସେଗୁଡ଼ିକୁ ଆକ୍ସେସ କରିପାରିବ ତାହା ଭ୍ୟୁ କରନ୍ତୁ"</string>
+    <!-- no translation found for browse_medical_data (6492659245149862639) -->
+    <skip />
+    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
+    <skip />
     <string name="all_categories_title" msgid="1446410643217937926">"ସମସ୍ତ ବର୍ଗ"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"ସମସ୍ତ ବର୍ଗ ଦେଖନ୍ତୁ"</string>
     <string name="no_data" msgid="1906986019249068659">"କୌଣସି ଡାଟା ନାହିଁ"</string>
@@ -110,8 +112,10 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"ଖର୍ଚ୍ଚ ହୋଇଥିବା କେଲୋରୀର ଡାଟା ପଢ଼"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"ଖର୍ଚ୍ଚ ହୋଇଥିବା କେଲୋରୀର ଡାଟା ପଢ଼ିବାକୁ ଆପକୁ ଅନୁମତି ଦିଏ"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"ବେକଗ୍ରାଉଣ୍ଡରେ ଥିବା ଡାଟାକୁ ଆକ୍ସେସ କରିବା ପାଇଁ <xliff:g id="APP_NAME">%1$s</xliff:g>କୁ ଅନୁମତି ଦେବେ?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"ଯଦି ଆପଣ ଅନୁମତି ଦିଅନ୍ତି, ତେବେ ଆପଣ ଆପ ବ୍ୟବହାର କରୁନଥିବା ବେଳେ ଏହି ଆପ ଫିଟନେସ ଓ ସୁସ୍ଥତା ଡାଟା ଏବଂ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡଗୁଡ଼ିକୁ ଆକ୍ସେସ କରିପାରିବ।"</string>
-    <string name="background_read_medical_single_request_description_medical_granted" msgid="5162456401369633859">"ଯଦି ଆପଣ ଅନୁମତି ଦିଅନ୍ତି, ତେବେ ଆପଣ ଆପକୁ ବ୍ୟବହାର କରୁନଥିବା ବେଳେ ଏହି ଆପ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡ ଡାଟାକୁ ଆକ୍ସେସ କରିପାରିବ।"</string>
+    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
+    <skip />
+    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
+    <skip />
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"ଯଦି ଆପଣ ଅନୁମତି ଦିଅନ୍ତି, ତେବେ ଆପଣ ଆପ ବ୍ୟବହାର କରୁନଥିବା ବେଳେ ଏହି ଆପ ଫିଟନେସ ଓ ସୁସ୍ଥତା ଡାଟାକୁ ଆକ୍ସେସ କରିପାରିବ।"</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"ଯଦି ଆପଣ ଅନୁମତି ଦିଅନ୍ତି, ତେବେ ଆପଣ ଆପ ବ୍ୟବହାର କରୁନଥିବା ସମୟରେ ଏହି ଆପ Health Connect ଡାଟାକୁ ଆକ୍ସେସ କରିପାରିବ।"</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"ଅତୀତର ଡାଟାକୁ ଆକ୍ସେସ କରିବା ପାଇଁ <xliff:g id="APP_NAME">%1$s</xliff:g>କୁ ଅନୁମତି ଦେବେ?"</string>
@@ -122,9 +126,11 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"<xliff:g id="APP_NAME">%1$s</xliff:g> ପାଇଁ ଅତିରିକ୍ତ ଆକ୍ସେସକୁ ଅନୁମତି ଦେବେ?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g> ମଧ୍ୟ ଏହି Health Connect ସେଟିଂସକୁ ଆକ୍ସେସ କରିବାକୁ ଚାହେଁ"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"ବେକଗ୍ରାଉଣ୍ଡରେ ଥିବା ସମସ୍ତ ଡାଟାକୁ ଆକ୍ସେସ କରନ୍ତୁ"</string>
-    <string name="background_read_medical_combined_request_title_medical_granted" msgid="7245376864667067106">"ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡଗୁଡ଼ିକୁ ବେକଗ୍ରାଉଣ୍ଡରେ ଆକ୍ସେସ କରନ୍ତୁ"</string>
+    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
+    <skip />
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"ବେକଗ୍ରାଉଣ୍ଡରେ ଥିବା ଫିଟନେସ ଓ ସୁସ୍ଥତା ଡାଟାକୁ ଆକ୍ସେସ କରନ୍ତୁ"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"ଆପଣ ଆପ ବ୍ୟବହାର କରୁନଥିବା ସମୟରେ ଫିଟନେସ ଓ ସୁସ୍ଥତା ଡାଟା ଏବଂ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡଗୁଡ଼ିକୁ ଆକ୍ସେସ କରିବା ପାଇଁ ଏହି ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ"</string>
+    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
+    <skip />
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"ଆପଣ ଆପକୁ ବ୍ୟବହାର କରୁନଥିବା ବେଳେ ଏହି ଡାଟା ଆକ୍ସେସ କରିବା ପାଇଁ ଏହି ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"ଆପଣ ଆପକୁ ବ୍ୟବହାର କରୁନଥିବା ବେଳେ ଏହି ଡାଟା ଆକ୍ସେସ କରିବା ପାଇଁ ଏହି ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"ବେକଗ୍ରାଉଣ୍ଡରେ ଥିବା ଡାଟାକୁ ଆକ୍ସେସ କରନ୍ତୁ"</string>
@@ -135,12 +141,15 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"ଅତୀତର ଡାଟାକୁ ଆକ୍ସେସ କରନ୍ତୁ"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> ପୂର୍ବରୁ ଯୋଗ କରାଯାଇଥିବା Health Connect ଡାଟାକୁ ଆକ୍ସେସ କରିବା ପାଇଁ ଏହି ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"ଅତୀତର ସମସ୍ତ Health Connect ଡାଟାକୁ ଆକ୍ସେସ କରିବା ପାଇଁ ଏହି ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ"</string>
-    <string name="history_read_medical_combined_request_footer" msgid="5301940225768076844">"<xliff:g id="APP_NAME">%1$s</xliff:g> ପୂର୍ବରୁ ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡଗୁଡ଼ିକ ପାଇଁ ଅତୀତର ଡାଟାକୁ ଆକ୍ସେସ କରିପାରିବ"</string>
+    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
+    <skip />
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"ଅନୁମତିଗୁଡ଼ିକ ବିଷୟରେ ଅଧିକ ପଢ଼ନ୍ତୁ"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"ବେକଗ୍ରାଉଣ୍ଡରେ ଥିବା ସମସ୍ତ ଡାଟାକୁ ଆକ୍ସେସ କରନ୍ତୁ"</string>
-    <string name="background_read_medical_access_title_medical_granted" msgid="7852915238347056139">"ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡଗୁଡ଼ିକୁ ବେକଗ୍ରାଉଣ୍ଡରେ ଆକ୍ସେସ କରନ୍ତୁ"</string>
+    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
+    <skip />
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"ବେକଗ୍ରାଉଣ୍ଡରେ ଥିବା ଫିଟନେସ ଓ ସୁସ୍ଥତା ଡାଟାକୁ ଆକ୍ସେସ କରନ୍ତୁ"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"ଆପଣ ଆପ ବ୍ୟବହାର କରୁନଥିବା ସମୟରେ ଫିଟନେସ ଓ ସୁସ୍ଥତା ଡାଟା ଏବଂ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡଗୁଡ଼ିକୁ ଆକ୍ସେସ କରିବା ପାଇଁ ଏହି ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ"</string>
+    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
+    <skip />
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"ଆପଣ ଆପକୁ ବ୍ୟବହାର କରୁନଥିବା ବେଳେ ଏହି ଡାଟା ଆକ୍ସେସ କରିବା ପାଇଁ ଏହି ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"ଆପଣ ଆପକୁ ବ୍ୟବହାର କରୁନଥିବା ବେଳେ ଏହି ଡାଟା ଆକ୍ସେସ କରିବା ପାଇଁ ଏହି ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"ବେକଗ୍ରାଉଣ୍ଡରେ ଥିବା ଡାଟାକୁ ଆକ୍ସେସ କରନ୍ତୁ"</string>
@@ -152,8 +161,10 @@
     <string name="history_read_access_description" msgid="800722432229526128">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> ପୂର୍ବରୁ ଯୋଗ କରାଯାଇଥିବା Health Connect ଡାଟାକୁ ଆକ୍ସେସ କରିବା ପାଇଁ ଏହି ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"ଅତୀତର Health Connect ଡାଟାକୁ ଆକ୍ସେସ କରିବା ପାଇଁ ଏହି ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"<xliff:g id="APP_NAME">%1$s</xliff:g> ପାଖରେ କୌଣସି ପଢ଼ିବା ଅନୁମତି ନଥିବା ଯୋଗୁଁ ବର୍ତ୍ତମାନ କୌଣସି ଫିଟନେସ ଡାଟା ପଢ଼ାଯାଉନାହିଁ"</string>
-    <string name="additional_access_medical_read_footer" msgid="4640796038121080343">"<xliff:g id="APP_NAME">%1$s</xliff:g> ପୂର୍ବରୁ ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡ ପାଇଁ ଅତୀତର ଡାଟାକୁ ଆକ୍ସେସ କରିପାରିବ। ଏହାକୁ ପରିବର୍ତ୍ତନ କରିବା ପାଇଁ ଏହି ଆପ ନିମନ୍ତେ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡ ଅନୁମତିଗୁଡ଼ିକୁ ବନ୍ଦ କରନ୍ତୁ"</string>
-    <string name="additional_access_medical_read_footer_link" msgid="2797623091827504856">"ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡ ଅନୁମତିଗୁଡ଼ିକୁ ପରିଚାଳନା କରନ୍ତୁ"</string>
+    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
+    <skip />
+    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
+    <skip />
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"ଏହି ଆପ ପାଇଁ ବେକଗ୍ରାଉଣ୍ଡ କିମ୍ବା ପୂର୍ବର ଡାଟା ଆକ୍ସେସ ଚାଲୁ କରିବା ପାଇଁ ଅତି କମରେ ଗୋଟିଏ ପଢ଼ିବାର ଅନୁମତିକୁ ସକ୍ଷମ କରନ୍ତୁ"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"ଏହି ଆପରେ ବେକଗ୍ରାଉଣ୍ଡ ଆକ୍ସେସ ଚାଲୁ କରିବା ପାଇଁ ଅତି କମରେ ଗୋଟିଏ ପଢ଼ିବାର ଅନୁମତିକୁ ସକ୍ଷମ କରନ୍ତୁ"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"ଏହି ଆପ ପାଇଁ ପୂର୍ବର ଡାଟା ଆକ୍ସେସ ଚାଲୁ କରିବା ପାଇଁ ଅତି କମରେ ଗୋଟିଏ ପଢ଼ିବାର ଅନୁମତିକୁ ସକ୍ଷମ କରନ୍ତୁ"</string>
@@ -256,14 +267,6 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"ସର୍ଭାଇକାଲ ମ୍ୟୁକସ"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"ସର୍ଭାଇକାଲ ମ୍ୟୁକସର ଡାଟା ପଢ଼ନ୍ତୁ"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"ସର୍ଭାଇକାଲ ମ୍ୟୁକସର ଡାଟା ଲେଖନ୍ତୁ"</string>
-    <!-- no translation found for cycle_phases_uppercase_label (1693612101973701017) -->
-    <skip />
-    <!-- no translation found for cycle_phases_lowercase_label (6513009148778082622) -->
-    <skip />
-    <!-- no translation found for cycle_phases_read_content_description (1974818937933604194) -->
-    <skip />
-    <!-- no translation found for cycle_phases_write_content_description (8779256196190212513) -->
-    <skip />
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"ଋତୁସ୍ରାବର ପ୍ରବାହ ଡାଟା"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"ଋତୁସ୍ରାବର ପ୍ରବାହ ଡାଟା"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"ଋତୁସ୍ରାବର ପ୍ରବାହ ଡାଟା ପଢ଼ନ୍ତୁ"</string>
@@ -336,10 +339,14 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"ସ୍କିନ ତାପମାତ୍ରା"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"ସ୍କିନ ତାପମାତ୍ରା ପଢ଼ନ୍ତୁ"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"ସ୍କିନ ତାପମାତ୍ରା ଲେଖନ୍ତୁ"</string>
-    <string name="browse_health_records_intro" msgid="1611488691642390523">"ଏଥିରେ Health Connectରେ ସିଙ୍କ ଏବଂ ଯୋଗ କରାଯାଇଥିବା ସମସ୍ତ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡ ଅନ୍ତର୍ଭୁକ୍ତ। ଏହା ଆପଣଙ୍କର ସମ୍ପୂର୍ଣ୍ଣ ମେଡିକାଲ ରେକର୍ଡ ହୋଇନପାରେ ଏବଂ ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡଗୁଡ଼ିକର ଏକ ମେଡିକାଲ ବର୍ଣ୍ଣନା ଅନ୍ତର୍ଭୁକ୍ତ କରେ ନାହିଁ।"</string>
-    <string name="all_medical_data_uppercase_label" msgid="2380759160541898783">"ସମସ୍ତ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡ"</string>
-    <string name="all_medical_data_lowercase_label" msgid="6293814928992081842">"ସମସ୍ତ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡ"</string>
-    <string name="all_medical_data_content_description" msgid="4846586780533295022">"ସମସ୍ତ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡ ଲେଖନ୍ତୁ"</string>
+    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
+    <skip />
+    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
+    <skip />
+    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
+    <skip />
+    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
+    <skip />
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"ଆଲର୍ଜି"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"ଆଲର୍ଜି"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"ଆଲର୍ଜି ଅସହିଷ୍ଣୁତା ଡାଟା ପଢ଼ନ୍ତୁ"</string>
@@ -420,13 +427,17 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"ଫିଟନେସ ଓ ସୁସ୍ଥତା ଡାଟାକୁ ଆକ୍ସେସ କରିବା ପାଇଁ <xliff:g id="APP_NAME">%1$s</xliff:g>କୁ ଅନୁମତି ଦେବେ?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="APP_NAME">%1$s</xliff:g> ତା\'ର <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>ରେ ଆପଣଙ୍କ ଡାଟାକୁ କିପରି ପରିଚାଳନା କରେ ତାହା ଆପଣ ଜାଣିପାରିବେ"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"ଗୋପନୀୟତା ନୀତି"</string>
-    <string name="medical_request_header" msgid="2300521519021510027">"ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡଗୁଡ଼ିକୁ ଆକ୍ସେସ କରିବା ପାଇଁ <xliff:g id="APP_NAME">%1$s</xliff:g>କୁ ଅନୁମତି ଦେବେ?"</string>
+    <!-- no translation found for medical_request_header (5701693055388739014) -->
+    <skip />
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"ଯଦି ଆପଣ ଆକ୍ସେସ ଦିଅନ୍ତି, ତେବେ ଆଲର୍ଜି, ଲେବ ଫଳାଫଳ, ଟୀକା ଏବଂ ଆହୁରି ଅନେକ କିଛି ପରି ଡାଟାକୁ ଆପ ପଢ଼ି ଲେଖିପାରିବ\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"ଯଦି ଆପଣ ଆକ୍ସେସ ଦିଅନ୍ତି, ତେବେ ଆଲର୍ଜି, ଲେବ ଫଳାଫଳ, ଟୀକା ଏବଂ ଆହୁରି ଅନେକ କିଛି ପରି ଡାଟାକୁ ଆପ ପଢ଼ିପାରିବ \n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_about_health_records" msgid="7204918218748362687">"ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡ ବିଷୟରେ"</string>
+    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
+    <skip />
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"ସେୟାର କରିବାକୁ ଥିବା ଡାଟାରେ ଏସବୁ ଅନ୍ତର୍ଭୁକ୍ତ"</string>
-    <string name="medical_request_summary" msgid="7281321524805015510">"ଯଦି ଆପଣ ଅନୁମତି ଦିଅନ୍ତି, ତେବେ <xliff:g id="APP_NAME">%1$s</xliff:g> ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡକୁ Health Connect ସହ ସେୟାର କରିପାରେ।"</string>
-    <string name="medical_request_footer" msgid="6533749932770903089">"ଆପଣଙ୍କର ବିଭିନ୍ନ ଆପ୍ସ ଏବଂ ସୋର୍ସରୁ ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡଗୁଡ଼ିକୁ ଗୋଟିଏ ସ୍ଥାନରେ ରଖିବା ପାଇଁ ସିଙ୍କ କରନ୍ତୁ"</string>
+    <!-- no translation found for medical_request_summary (553735170968628758) -->
+    <skip />
+    <!-- no translation found for medical_request_footer (157243861031258933) -->
+    <skip />
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"ସବୁ ଅନୁମତିକୁ କାଢ଼ି ଦେବେ?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"ସବୁ କାଢ଼ି ଦିଅନ୍ତୁ"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g>, Health Connectରୁ କୌଣସି ଡାଟାକୁ ଆଉ ପଢ଼ିବା କିମ୍ବା ଲେଖିବା ପାଇଁ ସକ୍ଷମ ହେବ ନାହିଁ।\n\nଏହି ଆପର କେମେରା, ମାଇକ୍ରୋଫୋନ କିମ୍ବା ଲୋକେସନ ପରି ରହିଥିବା ଅନ୍ୟ ଅନୁମତିଗୁଡ଼ିକୁ ଏହା ପ୍ରଭାବିତ କରେ ନାହିଁ।"</string>
@@ -436,8 +447,10 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"ଏହା ସହିତ, Health Connectରୁ <xliff:g id="APP_NAME">%1$s</xliff:g> ଡାଟାକୁ ଡିଲିଟ କରନ୍ତୁ"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"ସମସ୍ତ ଫିଟନେସ ଏବଂ ସୁସ୍ଥତାର ଅନୁମତିକୁ କାଢ଼ି ଦେବେ?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Health Connectରୁ <xliff:g id="APP_NAME">%1$s</xliff:g>ରେ ଥିବା ଫିଟନେସ ଡାଟାକୁ ମଧ୍ୟ ଡିଲିଟ କରେ"</string>
-    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"ସମସ୍ତ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡ ଅନୁମତି କାଢ଼ି ଦେବେ?"</string>
-    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"Health Connectରୁ <xliff:g id="APP_NAME">%1$s</xliff:g>ରେ ଥିବା ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡକୁ ମଧ୍ୟ ଡିଲିଟ କରେ"</string>
+    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
+    <skip />
+    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
+    <skip />
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> Health Connectରୁ ଏହି ଡାଟାକୁ ଆଉ ପଢ଼ିବା କିମ୍ବା ଲେଖିବା ପାଇଁ ସକ୍ଷମ ହେବ ନାହିଁ।\n\nଏହା ଏହି ଆପରେ ଥିବା କେମେରା, ମାଇକ୍ରୋଫୋନ କିମ୍ବା ଲୋକେସନ ପରି ଅନ୍ୟ ଅନୁମତିଗୁଡ଼ିକୁ ପ୍ରଭାବିତ କରେ ନାହିଁ।"</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> ବେକଗ୍ରାଉଣ୍ଡ ଡାଟା ସମେତ Health Connectରୁ ଏହି ଡାଟାକୁ ଆଉ ପଢ଼ିବା କିମ୍ବା ଲେଖିବା ପାଇଁ ସକ୍ଷମ ହେବ ନାହିଁ।\n\nଏହା ଏହି ଆପରେ ଥିବା କେମେରା, ମାଇକ୍ରୋଫୋନ କିମ୍ବା ଲୋକେସନ ପରି ଅନ୍ୟ ଅନୁମତିଗୁଡ଼ିକୁ ପ୍ରଭାବିତ କରେ ନାହିଁ।"</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> ପୂର୍ବର ଡାଟା ସମେତ Health Connectରୁ ଏହି ଡାଟାକୁ ଆଉ ପଢ଼ିବା କିମ୍ବା ଲେଖିବା ପାଇଁ ସକ୍ଷମ ହେବ ନାହିଁ।\n\nଏହା ଏହି ଆପରେ ଥିବା କେମେରା, ମାଇକ୍ରୋଫୋନ କିମ୍ବା ଲୋକେସନ ପରି ଅନ୍ୟ ଅନୁମତିଗୁଡ଼ିକୁ ପ୍ରଭାବିତ କରେ ନାହିଁ।"</string>
@@ -447,7 +460,8 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> ବେକଗ୍ରାଉଣ୍ଡ ଡାଟା ସମେତ Health Connectରୁ ଡାଟାକୁ ଆଉ ପଢ଼ିବା କିମ୍ବା ଲେଖିବା ପାଇଁ ସକ୍ଷମ ହେବ ନାହିଁ।\n\nଏହା ଏହି ଆପରେ ଥିବା କେମେରା, ମାଇକ୍ରୋଫୋନ କିମ୍ବା ଲୋକେସନ ପରି ଅନ୍ୟ ଅନୁମତିଗୁଡ଼ିକୁ ପ୍ରଭାବିତ କରେ ନାହିଁ।"</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> ପୂର୍ବର ଡାଟା ସମେତ Health Connectରୁ ଡାଟାକୁ ଆଉ ପଢ଼ିବା କିମ୍ବା ଲେଖିବା ପାଇଁ ସକ୍ଷମ ହେବ ନାହିଁ।\n\nଏହା ଏହି ଆପରେ ଥିବା କେମେରା, ମାଇକ୍ରୋଫୋନ କିମ୍ବା ଲୋକେସନ ପରି ଅନ୍ୟ ଅନୁମତିଗୁଡ଼ିକୁ ପ୍ରଭାବିତ କରେ ନାହିଁ।"</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> ବେକଗ୍ରାଉଣ୍ଡ ଏବଂ ପୂର୍ବର ଡାଟା ସମେତ Health Connectରୁ ଡାଟାକୁ ଆଉ ପଢ଼ିବା କିମ୍ବା ଲେଖିବା ପାଇଁ ସକ୍ଷମ ହେବ ନାହିଁ।\n\nଏହା ଏହି ଆପରେ ଥିବା କେମେରା, ମାଇକ୍ରୋଫୋନ କିମ୍ବା ଲୋକେସନ ପରି ଅନ୍ୟ ଅନୁମତିଗୁଡ଼ିକୁ ପ୍ରଭାବିତ କରେ ନାହିଁ।"</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="762880061016391846">"Health Connectରୁ <xliff:g id="APP_NAME">%1$s</xliff:g>ରେ ଥିବା ଫିଟନେସ ଡାଟା ଏବଂ ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡ ମଧ୍ୟ ଡିଲିଟ କରେ"</string>
+    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
+    <skip />
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"ଏହି ଆପରୁ ଅନୁମତିଗୁଡ଼ିକୁ କାଢ଼ି ଦିଆଯାଇଛି"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"ସମସ୍ତ Health Connect ଡାଟା ମଧ୍ୟ ଡିଲିଟ କରନ୍ତୁ"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"ପରବର୍ତ୍ତୀ ଦିନ"</string>
@@ -496,8 +510,10 @@
     <string name="permissions_header" msgid="6519976063360071569">"ଅନୁମତି"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"ଫିଟନେସ ଏବଂ ସୁସ୍ଥତା"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"ବ୍ୟାୟାମ, ଶୋଇବା, ନ୍ୟୁଟ୍ରିସନ ଓ ଅନ୍ୟ"</string>
-    <string name="medical_permissions" msgid="1224097151249321566">"ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡ"</string>
-    <string name="medical_permissions_lowercase" msgid="3969792205103436491">"ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡ"</string>
+    <!-- no translation found for medical_permissions (1066296298908103091) -->
+    <skip />
+    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
+    <skip />
     <string name="medical_permissions_summary" msgid="5526004634109548577">"ଲେବ ଫଳାଫଳ, ଔଷଧ, ଟୀକା ଓ ଅନ୍ୟାନ୍ୟ"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"ଆପ ଅନୁମତିଗୁଡ଼ିକୁ କାଢ଼ି ଦିଆଯାଇଛି"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect <xliff:g id="APP_DATA">%s</xliff:g> ପାଇଁ ଅନୁମତିଗୁଡ଼ିକୁ କାଢ଼ି ଦେଇଛି"</string>
@@ -591,7 +607,8 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Play Storeକୁ ଯାଆନ୍ତୁ"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Health Connect ସହ ଆରମ୍ଭ କରନ୍ତୁ"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଫିଟନେସ ଡାଟାକୁ ଷ୍ଟୋର କରେ, ଯାହା ଆପଣଙ୍କ ଡିଭାଇସରେ ବିଭିନ୍ନ ଆପ୍ସ ସିଙ୍କ କରିବାକୁ ଆପଣଙ୍କୁ ଏକ ସହଜ ଉପାୟ ଦେଇଥାଏ"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect ବିଭିନ୍ନ ଆପ୍ସରୁ ଆପଣଙ୍କ ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଫିଟନେସ ଡାଟାକୁ ଷ୍ଟୋର ଓ ସିଙ୍କ କରେ।\n\n"<b>"ଫିଟନେସ ଏବଂ ସୁସ୍ଥତା ଡାଟା,"</b>" ଯେଉଁଥିରେ ବ୍ୟାୟାମ ସେସନ, ଷ୍ଟେପ, ନ୍ୟୁଟ୍ରିସନ, ଶୋଇବା ଏବଂ ଆହୁରି ଅନେକ କିଛି ଅନ୍ତର୍ଭୁକ୍ତ\n\n"<b>"ସ୍ୱାସ୍ଥ୍ୟ ରେକର୍ଡ,"</b>" ଯେଉଁଥିରେ ଟୀକା, ଲେବ ଫଳାଫଳ ଏବଂ ଆହୁରି ଅନେକ କିଛି ଅନ୍ତର୍ଭୁକ୍ତ"</string>
+    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
+    <skip />
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connect ସହିତ ଆପଣ"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"ଆପଣଙ୍କ ଆପ୍ସ ସହ ଡାଟା ସେୟାର କରନ୍ତୁ"</b>\n"ପ୍ରତ୍ୟେକ ଆପ Health Connectରୁ କେଉଁ ଡାଟା ପଢ଼ିପାରିବ କିମ୍ବା ଲେଖିପାରିବ ତାହା ବାଛନ୍ତୁ"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"ଆପଣଙ୍କ ସେଟିଂସ ଏବଂ ଗୋପନୀୟତାକୁ ପରିଚାଳନା କରନ୍ତୁ"</b>\n"ଯେ କୌଣସି ସମୟରେ ଆପ ଅନୁମତିଗୁଡ଼ିକୁ ପରିବର୍ତ୍ତନ କରି ଆପଣଙ୍କ ଡାଟାକୁ ପରିଚାଳନା କରନ୍ତୁ"</string>

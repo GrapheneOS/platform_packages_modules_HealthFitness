@@ -23,8 +23,8 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Permissions and data"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Manage the health and fitness data on your device, and control which apps can access it"</string>
     <string name="data_title" msgid="4456619761533380816">"Data and access"</string>
-    <string name="browse_medical_data" msgid="6963802956096683273">"Browse health records"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"View your health records and which apps can access them"</string>
+    <string name="browse_medical_data" msgid="6492659245149862639">"Browse medical records"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"View your medical records and which apps can access them"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"All categories"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"See all categories"</string>
     <string name="no_data" msgid="1906986019249068659">"No data"</string>
@@ -110,8 +110,8 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Read calories burned"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Allows the app to read the calories burned"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Allow <xliff:g id="APP_NAME">%1$s</xliff:g> to access data in the background?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"If you allow, this app can access fitness and wellness data and health records when you\'re not using the app."</string>
-    <string name="background_read_medical_single_request_description_medical_granted" msgid="5162456401369633859">"If you allow, this app can access health records when you\'re not using the app."</string>
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"If you allow, this app can access fitness and wellness data and medical records when you\'re not using the app."</string>
+    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"If you allow, this app can access medical records when you\'re not using the app."</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"If you allow, this app can access fitness and wellness data when you\'re not using the app."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"If you allow, this app can access Health Connect data when you\'re not using the app."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"Allow <xliff:g id="APP_NAME">%1$s</xliff:g> to access past data?"</string>
@@ -122,9 +122,9 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"Allow additional access for <xliff:g id="APP_NAME">%1$s</xliff:g>?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g> also wants to access these Health Connect settings"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Access all data in the background"</string>
-    <string name="background_read_medical_combined_request_title_medical_granted" msgid="7245376864667067106">"Access health records in the background"</string>
+    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"Access medical records in the background"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Access fitness and wellness data in the background"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"Allow this app to access fitness and wellness data and health records when you\'re not using the app"</string>
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"Allow this app to access fitness and wellness data and medical records when you\'re not using the app"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Allow this app to access this data when you\'re not using the app"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Allow this app to access this data when you\'re not using the app"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Access data in the background"</string>
@@ -135,12 +135,12 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Access past data"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"Allow this app to access Health Connect data added before <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Allow this app to access all past Health Connect data"</string>
-    <string name="history_read_medical_combined_request_footer" msgid="5301940225768076844">"<xliff:g id="APP_NAME">%1$s</xliff:g> can already access past data for your health records"</string>
+    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"<xliff:g id="APP_NAME">%1$s</xliff:g> can already access past data for your medical records"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Read more about permissions"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Access all data in the background"</string>
-    <string name="background_read_medical_access_title_medical_granted" msgid="7852915238347056139">"Access health records in the background"</string>
+    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"Access medical records in the background"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Access fitness and wellness data in the background"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"Allow this app to access fitness and wellness data and health records when you\'re not using the app"</string>
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"Allow this app to access fitness and wellness data and medical records when you\'re not using the app"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Allow this app to access this data when you\'re not using the app"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Allow this app to access this data when you\'re not using the app"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Access data in the background"</string>
@@ -152,8 +152,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Allow this app to access Health Connect data added before <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Allow this app to access all Health Connect past data"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"No fitness data is currently being read because <xliff:g id="APP_NAME">%1$s</xliff:g> has no read permissions on"</string>
-    <string name="additional_access_medical_read_footer" msgid="4640796038121080343">"<xliff:g id="APP_NAME">%1$s</xliff:g> can already access past data for your health records. To change this, turn off health record permissions for this app"</string>
-    <string name="additional_access_medical_read_footer_link" msgid="2797623091827504856">"Manage health record permissions"</string>
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g> can already access past data for your medical records. To change this, turn off medical record permissions for this app"</string>
+    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"Manage medical record permissions"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Enable at least one read permission in order to turn on background or past data access for this app"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Enable at least one read permission in order to turn on background access for this app"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Enable at least one read permission in order to turn on past data access for this app"</string>
@@ -256,10 +256,6 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"cervical mucus"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"Read cervical mucus"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"Write cervical mucus"</string>
-    <string name="cycle_phases_uppercase_label" msgid="1693612101973701017">"Cycle phases"</string>
-    <string name="cycle_phases_lowercase_label" msgid="6513009148778082622">"cycle phases"</string>
-    <string name="cycle_phases_read_content_description" msgid="1974818937933604194">"Read cycle phases"</string>
-    <string name="cycle_phases_write_content_description" msgid="8779256196190212513">"Write cycle phases"</string>
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"Intermenstrual bleeding"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"intermenstrual bleeding"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Read intermenstrual bleeding"</string>
@@ -332,10 +328,10 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"skin temperature"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Read skin temperature"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Write skin temperature"</string>
-    <string name="browse_health_records_intro" msgid="1611488691642390523">"This includes all the health records synced to and added to Health Connect. This might not be your full medical record and does not include a medical description of your health records."</string>
-    <string name="all_medical_data_uppercase_label" msgid="2380759160541898783">"All health records"</string>
-    <string name="all_medical_data_lowercase_label" msgid="6293814928992081842">"all health records"</string>
-    <string name="all_medical_data_content_description" msgid="4846586780533295022">"Write all health records"</string>
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"This includes all the medical records synced to and added to Health Connect. This might not be your full medical record and does not include a medical description of your medical records."</string>
+    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"All medical records"</string>
+    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"all medical records"</string>
+    <string name="all_medical_data_content_description" msgid="3454355551506537094">"Write all medical records"</string>
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Allergies"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"allergies"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Read allergies"</string>
@@ -416,13 +412,13 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Allow <xliff:g id="APP_NAME">%1$s</xliff:g> to access fitness and wellness data?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"You can learn how <xliff:g id="APP_NAME">%1$s</xliff:g> handles your data in their <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"privacy policy"</string>
-    <string name="medical_request_header" msgid="2300521519021510027">"Allow <xliff:g id="APP_NAME">%1$s</xliff:g> to access your health records?"</string>
+    <string name="medical_request_header" msgid="5701693055388739014">"Allow <xliff:g id="APP_NAME">%1$s</xliff:g> to access your medical records?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"If you give access, the app can read and write data such as allergies, lab results, vaccines and more\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"If you give access, the app can read data such as allergies, lab results, vaccines and more\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_about_health_records" msgid="7204918218748362687">"About health records"</string>
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"About medical records"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Data to share includes"</string>
-    <string name="medical_request_summary" msgid="7281321524805015510">"If you allow, <xliff:g id="APP_NAME">%1$s</xliff:g> can share your health records with Health Connect."</string>
-    <string name="medical_request_footer" msgid="6533749932770903089">"Sync your health records from your different apps and sources to keep them in one place"</string>
+    <string name="medical_request_summary" msgid="553735170968628758">"If you allow, <xliff:g id="APP_NAME">%1$s</xliff:g> can share your medical records with Health Connect."</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"Sync your medical records from your different apps and sources to keep them in one place"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Remove all permissions?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Remove all"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> will no longer be able to read or write any data from Health Connect.\n\nThis doesn\'t affect other permissions this app may have, like camera, microphone, or location."</string>
@@ -432,8 +428,8 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Also delete <xliff:g id="APP_NAME">%1$s</xliff:g> data from Health Connect"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Remove all fitness and wellness permissions?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Also delete fitness data from <xliff:g id="APP_NAME">%1$s</xliff:g> from Health Connect"</string>
-    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Remove all health record permissions?"</string>
-    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"Also delete health records from <xliff:g id="APP_NAME">%1$s</xliff:g> from Health Connect"</string>
+    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"Remove all medical record permissions?"</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"Also delete medical records from <xliff:g id="APP_NAME">%1$s</xliff:g> from Health Connect"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> will no longer be able to read or write this data from Health Connect.\n\nThis doesn\'t affect other permissions this app may have, like camera, microphone or location."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> will no longer be able to read or write this data from Health Connect, including background data.\n\nThis doesn\'t affect other permissions this app may have, like camera, microphone or location."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> will no longer be able to read or write this data from Health Connect, including past data.\n\nThis doesn\'t affect other permissions this app may have, like camera, microphone or location."</string>
@@ -443,7 +439,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> will no longer be able to read or write data from Health Connect, including background data.\n\nThis doesn\'t affect other permissions this app may have, like camera, microphone or location."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> will no longer be able to read or write data from Health Connect, including past data.\n\nThis doesn\'t affect other permissions this app may have, like camera, microphone or location."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> will no longer be able to read or write data from Health Connect, including background and past data.\n\nThis doesn\'t affect other permissions this app may have, like camera, microphone or location."</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="762880061016391846">"Also delete fitness data and health records from <xliff:g id="APP_NAME">%1$s</xliff:g> from Health Connect"</string>
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"Also delete fitness data and medical records from <xliff:g id="APP_NAME">%1$s</xliff:g> from Health Connect"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Removed permissions for this app"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Also delete all Health Connect data"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Next day"</string>
@@ -492,8 +488,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"Permissions"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"Fitness and wellness"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Exercise, sleep, nutrition and others"</string>
-    <string name="medical_permissions" msgid="1224097151249321566">"Health records"</string>
-    <string name="medical_permissions_lowercase" msgid="3969792205103436491">"health records"</string>
+    <string name="medical_permissions" msgid="1066296298908103091">"Medical records"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"medical records"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Lab results, medications, vaccines and others"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Removed app permissions"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect removed permissions for <xliff:g id="APP_DATA">%s</xliff:g>"</string>
@@ -587,7 +583,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Go to the Play Store"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Get started with Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect stores your health and fitness data, giving you a simple way to sync the different apps on your device"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect stores and syncs your health and fitness data from different apps.\n\n"<b>"Fitness and wellness data,"</b>" including exercise sessions, steps, nutrition, sleep and more\n\n"<b>"Health records,"</b>" including vaccines, lab results and more"</string>
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect stores and syncs your health and fitness data from different apps.\n\n"<b>"Fitness and wellness data,"</b>" including exercise sessions, steps, nutrition, sleep and more\n\n"<b>"Medical records,"</b>" including vaccines, lab results and more"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"With Health Connect you can"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Share data with your apps"</b>\n"Choose the data each app can read or write to Health Connect"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Manage your settings and privacy"</b>\n"Change app permissions and manage your data at any time"</string>
