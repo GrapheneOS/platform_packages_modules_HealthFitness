@@ -159,46 +159,48 @@ class ExportDestinationFragmentTest {
 
     @Test
     fun isDisplayedCorrectly() {
-        launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText("Choose where to save scheduled export")).check(matches(isDisplayed()))
 
-        onView(withText("Choose where to save scheduled export")).check(matches(isDisplayed()))
-
-        onView(withText("Back")).check(matches(isDisplayed()))
-        onView(withText("Next")).check(matches(isDisplayed()))
+            onView(withText("Back")).check(matches(isDisplayed()))
+            onView(withText("Next")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun impressionsLogged() {
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        verify(healthConnectLogger, atLeast(1)).logPageImpression()
-        verify(healthConnectLogger)
-            .logImpression(ExportDestinationElement.EXPORT_DESTINATION_BACK_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(ExportDestinationElement.EXPORT_DESTINATION_NEXT_BUTTON)
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            verify(healthConnectLogger, atLeast(1)).logPageImpression()
+            verify(healthConnectLogger)
+                .logImpression(ExportDestinationElement.EXPORT_DESTINATION_BACK_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(ExportDestinationElement.EXPORT_DESTINATION_NEXT_BUTTON)
+        }
     }
 
     @Test
     fun clicksBackButton_navigatesBackToFrequencyFragment() {
         launchFragment<ExportDestinationFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.export_nav_graph)
-            navHostController.setCurrentDestination(R.id.exportDestinationFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
+                navHostController.setGraph(R.navigation.export_nav_graph)
+                navHostController.setCurrentDestination(R.id.exportDestinationFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withId(R.id.secondary_button)).check(matches(isClickable()))
+                onView(withId(R.id.secondary_button)).perform(click())
 
-        onView(withId(R.id.secondary_button)).check(matches(isClickable()))
-        onView(withId(R.id.secondary_button)).perform(click())
-
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.exportFrequencyFragment)
-        verify(healthConnectLogger)
-            .logInteraction(ExportDestinationElement.EXPORT_DESTINATION_BACK_BUTTON)
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.exportFrequencyFragment)
+                verify(healthConnectLogger)
+                    .logInteraction(ExportDestinationElement.EXPORT_DESTINATION_BACK_BUTTON)
+            }
     }
 
     @Test
     fun nextButton_notEnabled() {
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(withId(R.id.primary_button_full)).check(matches(isNotEnabled()))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withId(R.id.primary_button_full)).check(matches(isNotEnabled()))
+        }
     }
 
     @Test
@@ -221,22 +223,22 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(
-                withTitleAndSummary(
-                    TEST_DOCUMENT_PROVIDER_1_TITLE,
-                    TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY,
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(
+                    withTitleAndSummary(
+                        TEST_DOCUMENT_PROVIDER_1_TITLE,
+                        TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY,
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withTitleAndSummary(
-                    TEST_DOCUMENT_PROVIDER_2_TITLE,
-                    TEST_DOCUMENT_PROVIDER_2_ROOT_SUMMARY,
+                .check(matches(isDisplayed()))
+            onView(
+                    withTitleAndSummary(
+                        TEST_DOCUMENT_PROVIDER_2_TITLE,
+                        TEST_DOCUMENT_PROVIDER_2_ROOT_SUMMARY,
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -259,10 +261,10 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isNotChecked()))
-        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_2_TITLE)).check(matches(isNotChecked()))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isNotChecked()))
+            onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_2_TITLE)).check(matches(isNotChecked()))
+        }
     }
 
     @Test
@@ -285,11 +287,11 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-
-        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isChecked()))
+            onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isChecked()))
+        }
     }
 
     @Test
@@ -312,13 +314,13 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+            onView(withText(TEST_DOCUMENT_PROVIDER_2_TITLE)).perform(click())
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withText(TEST_DOCUMENT_PROVIDER_2_TITLE)).perform(click())
-
-        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isNotChecked()))
-        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_2_TITLE)).check(matches(isChecked()))
+            onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isNotChecked()))
+            onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_2_TITLE)).check(matches(isChecked()))
+        }
     }
 
     @Test
@@ -348,30 +350,30 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        // Selects the second account for provider 1.
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
-            .inRoot(isDialog())
-            .perform(click())
-        onView(withText("Done")).inRoot(isDialog()).perform(click())
-        onView(
-                withTitleAndSummary(
-                    TEST_DOCUMENT_PROVIDER_1_TITLE,
-                    TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY,
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            // Selects the second account for provider 1.
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
+                .inRoot(isDialog())
+                .perform(click())
+            onView(withText("Done")).inRoot(isDialog()).perform(click())
+            onView(
+                    withTitleAndSummary(
+                        TEST_DOCUMENT_PROVIDER_1_TITLE,
+                        TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY,
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        // Selects the provider 2.
-        onView(withText(TEST_DOCUMENT_PROVIDER_2_TITLE)).perform(click())
-        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_2_TITLE)).check(matches(isChecked()))
-        // Switches back to provider 1.
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+                .check(matches(isDisplayed()))
+            // Selects the provider 2.
+            onView(withText(TEST_DOCUMENT_PROVIDER_2_TITLE)).perform(click())
+            onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_2_TITLE)).check(matches(isChecked()))
+            // Switches back to provider 1.
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
-            .inRoot(isDialog())
-            .check(matches(isChecked()))
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
+                .inRoot(isDialog())
+                .check(matches(isChecked()))
+        }
     }
 
     @Test
@@ -394,11 +396,11 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-
-        onView(withId(R.id.primary_button_full)).check(matches(isEnabled()))
+            onView(withId(R.id.primary_button_full)).check(matches(isEnabled()))
+        }
     }
 
     @Test
@@ -421,17 +423,19 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+            onView(withId(R.id.primary_button_full)).perform(click())
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withId(R.id.primary_button_full)).perform(click())
-
-        intended(hasAction(Intent.ACTION_CREATE_DOCUMENT))
-        intended(hasType("application/zip"))
-        intended(hasExtra(DocumentsContract.EXTRA_INITIAL_URI, TEST_DOCUMENT_PROVIDER_1_ROOT_1_URI))
-        intended(hasExtra(Intent.EXTRA_TITLE, DEFAULT_FILE_NAME))
-        verify(healthConnectLogger)
-            .logInteraction(ExportDestinationElement.EXPORT_DESTINATION_NEXT_BUTTON)
+            intended(hasAction(Intent.ACTION_CREATE_DOCUMENT))
+            intended(hasType("application/zip"))
+            intended(
+                hasExtra(DocumentsContract.EXTRA_INITIAL_URI, TEST_DOCUMENT_PROVIDER_1_ROOT_1_URI)
+            )
+            intended(hasExtra(Intent.EXTRA_TITLE, DEFAULT_FILE_NAME))
+            verify(healthConnectLogger)
+                .logInteraction(ExportDestinationElement.EXPORT_DESTINATION_NEXT_BUTTON)
+        }
     }
 
     @Test
@@ -454,21 +458,22 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
-        intending(hasAction(Intent.ACTION_CREATE_DOCUMENT))
-            .respondWith(
-                ActivityResult(
-                    RESULT_OK,
-                    Intent().setData(TEST_DOCUMENT_PROVIDER_1_ROOT_1_DOCUMENT_URI),
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            intending(hasAction(Intent.ACTION_CREATE_DOCUMENT))
+                .respondWith(
+                    ActivityResult(
+                        RESULT_OK,
+                        Intent().setData(TEST_DOCUMENT_PROVIDER_1_ROOT_1_DOCUMENT_URI),
+                    )
                 )
-            )
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withId(R.id.primary_button_full)).perform(click())
-        onIdle()
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+            onView(withId(R.id.primary_button_full)).perform(click())
+            onIdle()
 
-        assertThat(fakeHealthDataExportManager.getExportUri())
-            .isEqualTo(TEST_DOCUMENT_PROVIDER_1_ROOT_1_DOCUMENT_URI)
+            assertThat(fakeHealthDataExportManager.getExportUri())
+                .isEqualTo(TEST_DOCUMENT_PROVIDER_1_ROOT_1_DOCUMENT_URI)
+        }
     }
 
     @Test
@@ -484,14 +489,17 @@ class ExportDestinationFragmentTest {
                 )
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
-        intending(hasAction(Intent.ACTION_CREATE_DOCUMENT))
-            .respondWith(ActivityResult(RESULT_OK, Intent().setData(EXTERNAL_STORAGE_DOCUMENT_URI)))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            intending(hasAction(Intent.ACTION_CREATE_DOCUMENT))
+                .respondWith(
+                    ActivityResult(RESULT_OK, Intent().setData(EXTERNAL_STORAGE_DOCUMENT_URI))
+                )
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withId(R.id.primary_button_full)).perform(click())
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+            onView(withId(R.id.primary_button_full)).perform(click())
 
-        assertThat(fakeHealthDataExportManager.getExportUri()).isNull()
+            assertThat(fakeHealthDataExportManager.getExportUri()).isNull()
+        }
     }
 
     @Test
@@ -507,14 +515,15 @@ class ExportDestinationFragmentTest {
                 )
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
-        intending(hasAction(Intent.ACTION_CREATE_DOCUMENT))
-            .respondWith(ActivityResult(RESULT_OK, Intent().setData(DOWNLOADS_DOCUMENT_URI)))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            intending(hasAction(Intent.ACTION_CREATE_DOCUMENT))
+                .respondWith(ActivityResult(RESULT_OK, Intent().setData(DOWNLOADS_DOCUMENT_URI)))
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withId(R.id.primary_button_full)).perform(click())
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+            onView(withId(R.id.primary_button_full)).perform(click())
 
-        assertThat(fakeHealthDataExportManager.getExportUri()).isNull()
+            assertThat(fakeHealthDataExportManager.getExportUri()).isNull()
+        }
     }
 
     @Test
@@ -544,9 +553,9 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(withTitleNoSummary(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isDisplayed()))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withTitleNoSummary(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -576,19 +585,19 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-
-        onView(withText("Choose an account")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Done")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+            onView(withText("Choose an account")).inRoot(isDialog()).check(matches(isDisplayed()))
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            onView(withText("Done")).inRoot(isDialog()).check(matches(isDisplayed()))
+            onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -618,21 +627,21 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
+                .inRoot(isDialog())
+                .perform(click())
+            onView(withText("Done")).inRoot(isDialog()).perform(click())
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
-            .inRoot(isDialog())
-            .perform(click())
-        onView(withText("Done")).inRoot(isDialog()).perform(click())
-
-        onView(
-                withTitleAndSummary(
-                    TEST_DOCUMENT_PROVIDER_1_TITLE,
-                    TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY,
+            onView(
+                    withTitleAndSummary(
+                        TEST_DOCUMENT_PROVIDER_1_TITLE,
+                        TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY,
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -662,27 +671,29 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
+                .inRoot(isDialog())
+                .perform(click())
+            onView(withText("Done")).inRoot(isDialog()).perform(click())
+            onView(withText("Next")).perform(click())
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
-            .inRoot(isDialog())
-            .perform(click())
-        onView(withText("Done")).inRoot(isDialog()).perform(click())
-        onView(withText("Next")).perform(click())
-
-        intended(hasAction(Intent.ACTION_CREATE_DOCUMENT))
-        intended(hasType("application/zip"))
-        intended(hasExtra(DocumentsContract.EXTRA_INITIAL_URI, TEST_DOCUMENT_PROVIDER_1_ROOT_2_URI))
-        intended(hasExtra(Intent.EXTRA_TITLE, DEFAULT_FILE_NAME))
+            intended(hasAction(Intent.ACTION_CREATE_DOCUMENT))
+            intended(hasType("application/zip"))
+            intended(
+                hasExtra(DocumentsContract.EXTRA_INITIAL_URI, TEST_DOCUMENT_PROVIDER_1_ROOT_2_URI)
+            )
+            intended(hasExtra(Intent.EXTRA_TITLE, DEFAULT_FILE_NAME))
+        }
     }
 
     @Test
     fun noProviders_nextButtonNotEnabled() {
         fakeHealthDataExportManager.setExportImportDocumentProviders(listOf())
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(withId(R.id.primary_button_full)).check(matches(isNotEnabled()))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withId(R.id.primary_button_full)).check(matches(isNotEnabled()))
+        }
     }
 
     @Test
@@ -690,9 +701,9 @@ class ExportDestinationFragmentTest {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(false)
 
         fakeHealthDataExportManager.setExportImportDocumentProviders(listOf())
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(withText(R.string.export_import_no_apps_text)).check(matches(isDisplayed()))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(R.string.export_import_no_apps_text)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -700,10 +711,14 @@ class ExportDestinationFragmentTest {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(false)
 
         fakeHealthDataExportManager.setExportImportDocumentProviders(listOf())
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(withId(com.android.settingslib.widget.preference.footer.R.id.settingslib_learn_more))
-            .check(matches(not(isDisplayed())))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(
+                    withId(
+                        com.android.settingslib.widget.preference.footer.R.id.settingslib_learn_more
+                    )
+                )
+                .check(matches(not(isDisplayed())))
+        }
     }
 
     @Test
@@ -711,9 +726,9 @@ class ExportDestinationFragmentTest {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
 
         fakeHealthDataExportManager.setExportImportDocumentProviders(listOf())
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(withText(R.string.export_import_no_apps_text)).check(matches(isDisplayed()))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(R.string.export_import_no_apps_text)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -721,9 +736,10 @@ class ExportDestinationFragmentTest {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
 
         fakeHealthDataExportManager.setExportImportDocumentProviders(listOf())
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(withText(R.string.export_import_go_to_play_store_text)).check(matches(isDisplayed()))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(R.string.export_import_go_to_play_store_text))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -732,14 +748,16 @@ class ExportDestinationFragmentTest {
 
         fakeHealthDataExportManager.setExportImportDocumentProviders(listOf())
         launchFragment<ExportDestinationFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.export_nav_graph)
-            navHostController.setCurrentDestination(R.id.exportDestinationFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
+                navHostController.setGraph(R.navigation.export_nav_graph)
+                navHostController.setCurrentDestination(R.id.exportDestinationFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText(R.string.export_import_go_to_play_store_text)).perform(click())
 
-        onView(withText(R.string.export_import_go_to_play_store_text)).perform(click())
-
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.play_store_activity)
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.play_store_activity)
+            }
     }
 
     @Test
@@ -756,10 +774,10 @@ class ExportDestinationFragmentTest {
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
 
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isDisplayed()))
-        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isChecked()))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isDisplayed()))
+            onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isChecked()))
+        }
     }
 
     @Test
@@ -775,9 +793,9 @@ class ExportDestinationFragmentTest {
                 )
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY)).check(matches(isDisplayed()))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -793,14 +811,16 @@ class ExportDestinationFragmentTest {
                 )
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText("Next")).perform(click())
 
-        onView(withText("Next")).perform(click())
-
-        intended(hasAction(Intent.ACTION_CREATE_DOCUMENT))
-        intended(hasType("application/zip"))
-        intended(hasExtra(DocumentsContract.EXTRA_INITIAL_URI, TEST_DOCUMENT_PROVIDER_1_ROOT_1_URI))
-        intended(hasExtra(Intent.EXTRA_TITLE, DEFAULT_FILE_NAME))
+            intended(hasAction(Intent.ACTION_CREATE_DOCUMENT))
+            intended(hasType("application/zip"))
+            intended(
+                hasExtra(DocumentsContract.EXTRA_INITIAL_URI, TEST_DOCUMENT_PROVIDER_1_ROOT_1_URI)
+            )
+            intended(hasExtra(Intent.EXTRA_TITLE, DEFAULT_FILE_NAME))
+        }
     }
 
     @Test
@@ -823,9 +843,10 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(withText(R.string.export_import_tap_to_choose_account)).check(matches(isDisplayed()))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(R.string.export_import_tap_to_choose_account))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -848,19 +869,19 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-
-        onView(withText("Choose an account")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Done")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+            onView(withText("Choose an account")).inRoot(isDialog()).check(matches(isDisplayed()))
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_1_SUMMARY))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            onView(withText("Done")).inRoot(isDialog()).check(matches(isDisplayed()))
+            onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -883,21 +904,21 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
+                .inRoot(isDialog())
+                .perform(click())
+            onView(withText("Done")).inRoot(isDialog()).perform(click())
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
-            .inRoot(isDialog())
-            .perform(click())
-        onView(withText("Done")).inRoot(isDialog()).perform(click())
-
-        onView(
-                withTitleAndSummary(
-                    TEST_DOCUMENT_PROVIDER_1_TITLE,
-                    TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY,
+            onView(
+                    withTitleAndSummary(
+                        TEST_DOCUMENT_PROVIDER_1_TITLE,
+                        TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY,
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -920,19 +941,21 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
+                .inRoot(isDialog())
+                .perform(click())
+            onView(withText("Done")).inRoot(isDialog()).perform(click())
+            onView(withText("Next")).perform(click())
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
-            .inRoot(isDialog())
-            .perform(click())
-        onView(withText("Done")).inRoot(isDialog()).perform(click())
-        onView(withText("Next")).perform(click())
-
-        intended(hasAction(Intent.ACTION_CREATE_DOCUMENT))
-        intended(hasType("application/zip"))
-        intended(hasExtra(DocumentsContract.EXTRA_INITIAL_URI, TEST_DOCUMENT_PROVIDER_1_ROOT_2_URI))
-        intended(hasExtra(Intent.EXTRA_TITLE, DEFAULT_FILE_NAME))
+            intended(hasAction(Intent.ACTION_CREATE_DOCUMENT))
+            intended(hasType("application/zip"))
+            intended(
+                hasExtra(DocumentsContract.EXTRA_INITIAL_URI, TEST_DOCUMENT_PROVIDER_1_ROOT_2_URI)
+            )
+            intended(hasExtra(Intent.EXTRA_TITLE, DEFAULT_FILE_NAME))
+        }
     }
 
     @Test
@@ -950,9 +973,9 @@ class ExportDestinationFragmentTest {
                 )
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(withText(R.string.export_import_install_apps_text)).check(matches(isDisplayed()))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(R.string.export_import_install_apps_text)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -970,10 +993,14 @@ class ExportDestinationFragmentTest {
                 )
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(withId(com.android.settingslib.widget.preference.footer.R.id.settingslib_learn_more))
-            .check(matches(not(isDisplayed())))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(
+                    withId(
+                        com.android.settingslib.widget.preference.footer.R.id.settingslib_learn_more
+                    )
+                )
+                .check(matches(not(isDisplayed())))
+        }
     }
 
     @Test
@@ -991,9 +1018,9 @@ class ExportDestinationFragmentTest {
                 )
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(withText(R.string.export_import_install_apps_text)).check(matches(isDisplayed()))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(R.string.export_import_install_apps_text)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -1011,9 +1038,10 @@ class ExportDestinationFragmentTest {
                 )
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle())
-
-        onView(withText(R.string.export_import_go_to_play_store_text)).check(matches(isDisplayed()))
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(R.string.export_import_go_to_play_store_text))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -1032,14 +1060,16 @@ class ExportDestinationFragmentTest {
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
         launchFragment<ExportDestinationFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.export_nav_graph)
-            navHostController.setCurrentDestination(R.id.exportDestinationFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
+                navHostController.setGraph(R.navigation.export_nav_graph)
+                navHostController.setCurrentDestination(R.id.exportDestinationFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText(R.string.export_import_go_to_play_store_text)).perform(click())
 
-        onView(withText(R.string.export_import_go_to_play_store_text)).perform(click())
-
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.play_store_activity)
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.play_store_activity)
+            }
     }
 
     @Test
@@ -1069,25 +1099,25 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        val scenario = launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use { scenario ->
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
+                .inRoot(isDialog())
+                .perform(click())
+            onView(withText("Done")).inRoot(isDialog()).perform(click())
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
-            .inRoot(isDialog())
-            .perform(click())
-        onView(withText("Done")).inRoot(isDialog()).perform(click())
+            scenario.recreate()
+            onIdle()
 
-        scenario.recreate()
-        onIdle()
-
-        onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isChecked()))
-        onView(
-                withTitleAndSummary(
-                    TEST_DOCUMENT_PROVIDER_1_TITLE,
-                    TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY,
+            onView(checkBoxOf(TEST_DOCUMENT_PROVIDER_1_TITLE)).check(matches(isChecked()))
+            onView(
+                    withTitleAndSummary(
+                        TEST_DOCUMENT_PROVIDER_1_TITLE,
+                        TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY,
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -1117,22 +1147,24 @@ class ExportDestinationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        val scenario = launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use { scenario ->
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
+                .inRoot(isDialog())
+                .perform(click())
+            onView(withText("Done")).inRoot(isDialog()).perform(click())
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))
-            .inRoot(isDialog())
-            .perform(click())
-        onView(withText("Done")).inRoot(isDialog()).perform(click())
+            scenario.recreate()
+            onIdle()
+            onView(withText("Next")).perform(click())
 
-        scenario.recreate()
-        onIdle()
-        onView(withText("Next")).perform(click())
-
-        intended(hasAction(Intent.ACTION_CREATE_DOCUMENT))
-        intended(hasType("application/zip"))
-        intended(hasExtra(DocumentsContract.EXTRA_INITIAL_URI, TEST_DOCUMENT_PROVIDER_1_ROOT_2_URI))
-        intended(hasExtra(Intent.EXTRA_TITLE, DEFAULT_FILE_NAME))
+            intended(hasAction(Intent.ACTION_CREATE_DOCUMENT))
+            intended(hasType("application/zip"))
+            intended(
+                hasExtra(DocumentsContract.EXTRA_INITIAL_URI, TEST_DOCUMENT_PROVIDER_1_ROOT_2_URI)
+            )
+            intended(hasExtra(Intent.EXTRA_TITLE, DEFAULT_FILE_NAME))
+        }
     }
 
     @Test
@@ -1157,12 +1189,12 @@ class ExportDestinationFragmentTest {
                 .setNextExportSequentialNumber(42)
                 .build()
         )
-        launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+            onView(withId(R.id.primary_button_full)).perform(click())
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withId(R.id.primary_button_full)).perform(click())
-
-        intended(hasExtra(Intent.EXTRA_TITLE, "Health Connect (42).zip"))
+            intended(hasExtra(Intent.EXTRA_TITLE, "Health Connect (42).zip"))
+        }
     }
 
     @Test
@@ -1186,14 +1218,14 @@ class ExportDestinationFragmentTest {
                 .setNextExportSequentialNumber(42)
                 .build()
         )
-        launchFragment<ExportDestinationFragment>(Bundle())
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
+            onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
+            onView(withId(R.id.primary_button_full)).perform(click())
 
-        onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
-        onView(withId(R.id.primary_button_full)).perform(click())
+            val brand: String = Build.BRAND
+            val model: String = Build.MODEL
 
-        val brand: String = Build.BRAND
-        val model: String = Build.MODEL
-
-        intended(hasExtra(Intent.EXTRA_TITLE, "$brand $model Health Connect (42).zip"))
+            intended(hasExtra(Intent.EXTRA_TITLE, "$brand $model Health Connect (42).zip"))
+        }
     }
 }
