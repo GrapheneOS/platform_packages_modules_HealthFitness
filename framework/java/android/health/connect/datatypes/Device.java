@@ -18,12 +18,15 @@ package android.health.connect.datatypes;
 
 import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
 
+import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_NEW_DEVICE_TYPES;
 
 import android.annotation.FlaggedApi;
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.android.healthfitness.flags.Flags;
 
@@ -41,7 +44,7 @@ import java.util.stream.Stream;
  * <p>Device needs to be populated by users of the API. Metadata fields not provided by clients will
  * remain absent.
  */
-public final class Device {
+public final class Device implements Parcelable {
     /**
      * @see Device
      */
@@ -344,4 +347,43 @@ public final class Device {
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface DeviceType {}
+
+    /** @hide */
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    /** @hide */
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeString(mManufacturer);
+        dest.writeString(mModel);
+        dest.writeInt(mType);
+        dest.writeString(mDisplayName);
+    }
+
+    /** @hide */
+    @NonNull
+    public static final Creator<Device> CREATOR =
+            new Creator<Device>() {
+                @Override
+                public Device createFromParcel(Parcel in) {
+                    return new Device(in);
+                }
+
+                @Override
+                public Device[] newArray(int size) {
+                    return new Device[size];
+                }
+            };
+
+    private Device(Parcel in) {
+        mManufacturer = in.readString();
+        mModel = in.readString();
+        mType = in.readInt();
+        mDisplayName = in.readString();
+    }
 }

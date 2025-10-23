@@ -25,6 +25,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Device;
+import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.os.Build;
@@ -90,20 +91,19 @@ public class DeviceDataProviderManager {
     }
 
     /**
-     * Handles a {@link DeviceDataSourceAdvertisement}, creating device and app entries if needed,
-     * and updating device data provider information.
+     * Handles a {@link DeviceDataAdvertisement}, creating device and app entries if needed, and
+     * updating device data provider information.
      *
      * @param advertisements The device data source advertisements.
      * @param ddpPackageName The package name of the advertising DDP.
      */
     // TODO(b/440066697): Check if we want to handle advertisements that are no longer present.
     public void handleAdvertisement(
-            @NonNull Set<DeviceDataSourceAdvertisement> advertisements,
-            @NonNull String ddpPackageName) {
+            @NonNull Set<DeviceDataAdvertisement> advertisements, @NonNull String ddpPackageName) {
         Objects.requireNonNull(advertisements);
         Objects.requireNonNull(ddpPackageName);
 
-        for (DeviceDataSourceAdvertisement advertisement : advertisements) {
+        for (DeviceDataAdvertisement advertisement : advertisements) {
             handleAdvertisement(advertisement, ddpPackageName);
         }
     }
@@ -193,7 +193,7 @@ public class DeviceDataProviderManager {
     }
 
     private void handleAdvertisement(
-            @NonNull DeviceDataSourceAdvertisement advertisement, @NonNull String ddpPackageName) {
+            @NonNull DeviceDataAdvertisement advertisement, @NonNull String ddpPackageName) {
         Objects.requireNonNull(advertisement);
         Objects.requireNonNull(ddpPackageName);
 
@@ -204,7 +204,7 @@ public class DeviceDataProviderManager {
                         device.getModel(),
                         device.getType(),
                         advertisement.getDeviceId(),
-                        advertisement.getDisplayName());
+                        device.getDisplayName());
         // TODO(b/440066697): Check how we want to handle display name updates.
         long deviceInfoId = mDeviceInfoHelper.insertIfNotPresent(deviceInfo);
         String spn =

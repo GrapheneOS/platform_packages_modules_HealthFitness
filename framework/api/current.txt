@@ -905,11 +905,13 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.DataOrigin.Builder setPackageName(@NonNull String);
   }
 
-  public final class Device {
+  public final class Device implements android.os.Parcelable {
+    method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public int describeContents();
     method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @Nullable public String getDisplayName();
     method @Nullable public String getManufacturer();
     method @Nullable public String getModel();
     method public int getType();
+    method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public void writeToParcel(@NonNull android.os.Parcel, int);
     field public static final int DEVICE_TYPE_CHEST_STRAP = 7; // 0x7
     field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE = 9; // 0x9
     field public static final int DEVICE_TYPE_FITNESS_BAND = 6; // 0x6

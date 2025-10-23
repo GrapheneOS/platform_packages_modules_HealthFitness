@@ -132,4 +132,71 @@ public class DeviceTest {
                         .build();
         assertThat(device.getDisplayName()).isNull();
     }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void testParceling_allFieldsSet() {
+        Device originalDevice =
+                new Device.Builder()
+                        .setManufacturer("BrandA")
+                        .setModel("ModelX")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("My Test Phone")
+                        .build();
+
+        android.os.Parcel parcel = android.os.Parcel.obtain();
+        originalDevice.writeToParcel(parcel, 0);
+        parcel.setDataPosition(0);
+        Device restoredDevice = Device.CREATOR.createFromParcel(parcel);
+        parcel.recycle();
+
+        assertThat(restoredDevice).isEqualTo(originalDevice);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void testParceling_nullFields() {
+        Device originalDevice =
+                new Device.Builder()
+                        .setManufacturer(null)
+                        .setModel(null)
+                        .setType(Device.DEVICE_TYPE_UNKNOWN)
+                        .setDisplayName(null)
+                        .build();
+
+        android.os.Parcel parcel = android.os.Parcel.obtain();
+        originalDevice.writeToParcel(parcel, 0);
+        parcel.setDataPosition(0);
+        Device restoredDevice = Device.CREATOR.createFromParcel(parcel);
+        parcel.recycle();
+
+        assertThat(restoredDevice).isEqualTo(originalDevice);
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void testParceling_displayNameDisabled() {
+        Device originalDevice =
+                new Device.Builder()
+                        .setManufacturer("BrandA")
+                        .setModel("ModelX")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("My Test Phone")
+                        .build();
+
+        android.os.Parcel parcel = android.os.Parcel.obtain();
+        originalDevice.writeToParcel(parcel, 0);
+        parcel.setDataPosition(0);
+        Device restoredDevice = Device.CREATOR.createFromParcel(parcel);
+        parcel.recycle();
+
+        Device expectedDevice =
+                new Device.Builder()
+                        .setManufacturer("BrandA")
+                        .setModel("ModelX")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(null)
+                        .build();
+        assertThat(restoredDevice).isEqualTo(expectedDevice);
+    }
 }

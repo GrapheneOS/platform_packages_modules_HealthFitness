@@ -18,6 +18,7 @@ package android.health.connect;
 
 import static android.Manifest.permission.BACKUP;
 import static android.Manifest.permission.BACKUP_HEALTH_CONNECT_DATA_AND_SETTINGS;
+import static android.Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA;
 import static android.Manifest.permission.RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS;
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
@@ -120,6 +121,8 @@ import android.health.connect.datatypes.Identifier;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
+import android.health.connect.device.DeviceDataAdvertisement;
+import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.exportimport.ExportImportDocumentProvider;
 import android.health.connect.exportimport.IImportStatusCallback;
 import android.health.connect.exportimport.IQueryDocumentProvidersCallback;
@@ -3605,5 +3608,61 @@ public class HealthConnectManager {
     private static String getDataTypePrefKey(@NonNull Class<? extends Record> dataType) {
         return TRACKING_PREFERENCE_PREFIX
                 + dataType.getAnnotation(Identifier.class).recordIdentifier();
+    }
+
+    // TODO(b/440056683): Add information on how the data here is displayed in the controller.
+    /**
+     * Notify Health Connect of devices that can provide data and the data types each of them can
+     * provide.
+     *
+     * <p>A device data source refers to a specific device that can provide data for any data types.
+     * A device data type source refers to a specific device + data type combination.
+     *
+     * <p>A {@link DeviceDataAdvertisement} should be provided for each device data source. Each
+     * {@link DeviceDataAdvertisement} should contain a set of {@link DeviceDataTypeAdvertisement}s
+     * representing each data type supported by the device and to be used as a device data type
+     * source.
+     *
+     * <p>This method must be called before data can be written for the advertised device data type
+     * source. This should be called as frequently as needed to accurately describe the current
+     * devices and statuses of supported data types. Every advertisement must represent the latest
+     * state of <b>all</b> device data sources and device data type sources. Every subsequent
+     * advertisement will override the previous device data sources and device data type sources. If
+     * a device data source or device data type source is omitted from a subsequent advertisement,
+     * it will be deleted.
+     *
+     * @throws RuntimeException for internal errors
+     * @hide
+     */
+    @SystemApi
+    @RequiresPermission(PROVIDE_HEALTH_CONNECT_DEVICE_DATA)
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void advertiseDeviceDataSources(
+            @NonNull Set<DeviceDataAdvertisement> deviceDataAdvertisements,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(deviceDataAdvertisements);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        try {
+            mService.advertiseDeviceDataSources(
+                    mContext.getAttributionSource(),
+                    new ArrayList<>(deviceDataAdvertisements),
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
     }
 }

@@ -31,6 +31,8 @@ import android.database.Cursor;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.device.DeviceDataAdvertisement;
+import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -40,8 +42,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
-import com.android.server.healthconnect.device.DeviceDataSourceAdvertisement;
-import com.android.server.healthconnect.device.DeviceDataSourceState;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -97,6 +97,7 @@ public class DeviceDataProviderHelperTest {
                         .setManufacturer("Google")
                         .setModel("Pixel")
                         .setType(DEVICE_TYPE_PHONE)
+                        .setDisplayName(DISPLAY_NAME)
                         .build();
     }
 
@@ -180,12 +181,11 @@ public class DeviceDataProviderHelperTest {
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
-                new DeviceDataSourceAdvertisement(
+                new DeviceDataAdvertisement(
                         mDevice,
-                        DISPLAY_NAME,
                         DEVICE_ID,
                         Set.of(
-                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                         .setAvailable(true)
                                         .setUserEnabled(true)
                                         .setVisibleByDefaultInMatchmaking(true)
@@ -222,12 +222,11 @@ public class DeviceDataProviderHelperTest {
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
-                new DeviceDataSourceAdvertisement(
+                new DeviceDataAdvertisement(
                         mDevice,
-                        DISPLAY_NAME,
                         DEVICE_ID,
                         Set.of(
-                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                         .setAvailable(true)
                                         .setUserEnabled(true)
                                         .setVisibleByDefaultInMatchmaking(true)
@@ -235,12 +234,11 @@ public class DeviceDataProviderHelperTest {
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
-                new DeviceDataSourceAdvertisement(
+                new DeviceDataAdvertisement(
                         mDevice,
-                        DISPLAY_NAME,
                         DEVICE_ID,
                         Set.of(
-                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                         .setAvailable(false)
                                         .setUserEnabled(false)
                                         .setVisibleByDefaultInMatchmaking(false)
@@ -276,16 +274,15 @@ public class DeviceDataProviderHelperTest {
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
-                new DeviceDataSourceAdvertisement(
+                new DeviceDataAdvertisement(
                         mDevice,
-                        DISPLAY_NAME,
                         DEVICE_ID,
                         Set.of(
-                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                         .setAvailable(true)
                                         .setUserEnabled(true)
                                         .build(),
-                                new DeviceDataSourceState.Builder(DistanceRecord.class)
+                                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
                                         .setAvailable(true)
                                         .setUserEnabled(true)
                                         .build())));
@@ -303,12 +300,11 @@ public class DeviceDataProviderHelperTest {
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
-                new DeviceDataSourceAdvertisement(
+                new DeviceDataAdvertisement(
                         mDevice,
-                        DISPLAY_NAME,
                         DEVICE_ID,
                         Set.of(
-                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                         .setAvailable(true)
                                         .setUserEnabled(true)
                                         .build())));
@@ -328,12 +324,11 @@ public class DeviceDataProviderHelperTest {
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
-                new DeviceDataSourceAdvertisement(
+                new DeviceDataAdvertisement(
                         mDevice,
-                        DISPLAY_NAME,
                         DEVICE_ID,
                         Set.of(
-                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                         .setAvailable(true)
                                         .setUserEnabled(true)
                                         .build())));
@@ -343,12 +338,11 @@ public class DeviceDataProviderHelperTest {
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
-                new DeviceDataSourceAdvertisement(
+                new DeviceDataAdvertisement(
                         mDevice,
-                        DISPLAY_NAME,
                         DEVICE_ID,
                         Set.of(
-                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                         .setAvailable(true)
                                         .setUserEnabled(true)
                                         .build())));
@@ -377,12 +371,11 @@ public class DeviceDataProviderHelperTest {
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
-                new DeviceDataSourceAdvertisement(
+                new DeviceDataAdvertisement(
                         mDevice,
-                        DISPLAY_NAME,
                         DEVICE_ID,
                         Set.of(
-                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                         .setAvailable(true)
                                         .setUserEnabled(true)
                                         .setVisibleByDefaultInMatchmaking(true)
@@ -401,16 +394,15 @@ public class DeviceDataProviderHelperTest {
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
-                new DeviceDataSourceAdvertisement(
+                new DeviceDataAdvertisement(
                         mDevice,
-                        DISPLAY_NAME,
                         DEVICE_ID,
                         Set.of(
-                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                         .setAvailable(true)
                                         .setUserEnabled(true)
                                         .build(),
-                                new DeviceDataSourceState.Builder(DistanceRecord.class)
+                                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
                                         .setAvailable(true)
                                         .setUserEnabled(true)
                                         .build())));
@@ -419,12 +411,11 @@ public class DeviceDataProviderHelperTest {
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 TEST_APP_PACKAGE,
                 deviceInfoId,
-                new DeviceDataSourceAdvertisement(
+                new DeviceDataAdvertisement(
                         mDevice,
-                        DISPLAY_NAME,
                         DEVICE_ID,
                         Set.of(
-                                new DeviceDataSourceState.Builder(StepsRecord.class)
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                         .setAvailable(true)
                                         .setUserEnabled(true)
                                         .build())));

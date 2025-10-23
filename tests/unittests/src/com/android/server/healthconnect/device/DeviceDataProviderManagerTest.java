@@ -40,6 +40,8 @@ import android.content.res.Resources;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.device.DeviceDataAdvertisement;
+import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.os.Build;
@@ -145,14 +147,13 @@ public class DeviceDataProviderManagerTest {
                         .setType(Device.DEVICE_TYPE_PHONE)
                         .setDisplayName(DISPLAY_NAME)
                         .build();
-        Set<DeviceDataSourceState> deviceDataSourceStates =
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
                 Set.of(
-                        new DeviceDataSourceState.Builder(StepsRecord.class)
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                 .setAvailable(true)
                                 .build());
-        DeviceDataSourceAdvertisement advertisement =
-                new DeviceDataSourceAdvertisement(
-                        device, DISPLAY_NAME, DEVICE_ID, deviceDataSourceStates);
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
         long expectedDeviceInfoId = 1;
 
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
@@ -190,7 +191,7 @@ public class DeviceDataProviderManagerTest {
         assertThat(mDeviceDataProviderHelper.getDdpMap().get(key).isAvailable()).isEqualTo(true);
         assertThat(mDeviceDataProviderHelper.getDdpMap().get(key).isUserEnabled()).isEqualTo(false);
         assertThat(mDeviceDataProviderHelper.getDdpMap().get(key).isVisibleByDefaultInMatchmaking())
-                .isEqualTo(false);
+                .isEqualTo(true);
     }
 
     @Test
@@ -202,14 +203,13 @@ public class DeviceDataProviderManagerTest {
                         .setType(Device.DEVICE_TYPE_PHONE)
                         .setDisplayName(DISPLAY_NAME)
                         .build();
-        Set<DeviceDataSourceState> deviceDataSourceStates =
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
                 Set.of(
-                        new DeviceDataSourceState.Builder(StepsRecord.class)
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                 .setAvailable(true)
                                 .build());
-        DeviceDataSourceAdvertisement advertisement =
-                new DeviceDataSourceAdvertisement(
-                        device, DISPLAY_NAME, DEVICE_ID, deviceDataSourceStates);
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
 
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
@@ -238,17 +238,15 @@ public class DeviceDataProviderManagerTest {
                         .setType(Device.DEVICE_TYPE_PHONE)
                         .setDisplayName(renamedDisplayName)
                         .build();
-        Set<DeviceDataSourceState> deviceDataSourceStates =
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
                 Set.of(
-                        new DeviceDataSourceState.Builder(StepsRecord.class)
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                 .setAvailable(true)
                                 .build());
-        DeviceDataSourceAdvertisement advertisement1 =
-                new DeviceDataSourceAdvertisement(
-                        device, DISPLAY_NAME, DEVICE_ID, deviceDataSourceStates);
-        DeviceDataSourceAdvertisement advertisement2 =
-                new DeviceDataSourceAdvertisement(
-                        renamedDevice, renamedDisplayName, DEVICE_ID, deviceDataSourceStates);
+        DeviceDataAdvertisement advertisement1 =
+                new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
+        DeviceDataAdvertisement advertisement2 =
+                new DeviceDataAdvertisement(renamedDevice, DEVICE_ID, deviceDataTypeAdvertisements);
         long expectedDeviceInfoId1 = 1;
         long expectedDeviceInfoId2 = 2;
 
@@ -462,14 +460,13 @@ public class DeviceDataProviderManagerTest {
                         .setType(Device.DEVICE_TYPE_PHONE)
                         .setDisplayName(DISPLAY_NAME)
                         .build();
-        Set<DeviceDataSourceState> deviceDataSourceStates =
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
                 Set.of(
-                        new DeviceDataSourceState.Builder(StepsRecord.class)
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                 .setAvailable(true)
                                 .build());
-        DeviceDataSourceAdvertisement advertisement =
-                new DeviceDataSourceAdvertisement(
-                        device, DISPLAY_NAME, DEVICE_ID, deviceDataSourceStates);
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
         List<RecordInternal<?>> records =
                 List.of(
                         buildStepsRecord(
@@ -493,14 +490,13 @@ public class DeviceDataProviderManagerTest {
                         .setType(Device.DEVICE_TYPE_PHONE)
                         .setDisplayName(DISPLAY_NAME)
                         .build();
-        Set<DeviceDataSourceState> deviceDataSourceStates =
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
                 Set.of(
-                        new DeviceDataSourceState.Builder(StepsRecord.class)
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                 .setAvailable(true)
                                 .build());
-        DeviceDataSourceAdvertisement advertisement =
-                new DeviceDataSourceAdvertisement(
-                        device, DISPLAY_NAME, DEVICE_ID, deviceDataSourceStates);
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
         List<RecordInternal<?>> records =
                 List.of(
                         buildStepsRecord(
@@ -547,14 +543,13 @@ public class DeviceDataProviderManagerTest {
                         .setType(Device.DEVICE_TYPE_PHONE)
                         .setDisplayName(DISPLAY_NAME)
                         .build();
-        Set<DeviceDataSourceState> deviceDataSourceStates =
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
                 Set.of(
-                        new DeviceDataSourceState.Builder(StepsRecord.class)
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                 .setAvailable(true)
                                 .build());
-        DeviceDataSourceAdvertisement advertisement =
-                new DeviceDataSourceAdvertisement(
-                        device, DISPLAY_NAME, DEVICE_ID, deviceDataSourceStates);
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
         List<RecordInternal<?>> records =
                 List.of(
                         buildStepsRecord(
@@ -599,14 +594,13 @@ public class DeviceDataProviderManagerTest {
                         .setType(Device.DEVICE_TYPE_PHONE)
                         .setDisplayName(DISPLAY_NAME)
                         .build();
-        Set<DeviceDataSourceState> deviceDataSourceStates =
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
                 Set.of(
-                        new DeviceDataSourceState.Builder(StepsRecord.class)
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                 .setAvailable(true)
                                 .build());
-        DeviceDataSourceAdvertisement advertisement =
-                new DeviceDataSourceAdvertisement(
-                        device, DISPLAY_NAME, DEVICE_ID, deviceDataSourceStates);
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
         List<RecordInternal<?>> records =
                 List.of(
                         buildStepsRecord(
@@ -637,14 +631,13 @@ public class DeviceDataProviderManagerTest {
                         MANUFACTURER, MODEL, DEVICE_TYPE, /* deviceId= */ null, DISPLAY_NAME);
         mDeviceInfoHelper.insertIfNotPresent(normalDeviceInfo);
         // Simulate a DDP insertion (with a device ID)
-        Set<DeviceDataSourceState> deviceDataSourceStates =
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
                 Set.of(
-                        new DeviceDataSourceState.Builder(StepsRecord.class)
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                 .setAvailable(true)
                                 .build());
-        DeviceDataSourceAdvertisement advertisement =
-                new DeviceDataSourceAdvertisement(
-                        device, DISPLAY_NAME, DEVICE_ID, deviceDataSourceStates);
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
 
         assertThat(mDeviceInfoHelper.getIdDeviceInfoMap().size()).isEqualTo(2);
