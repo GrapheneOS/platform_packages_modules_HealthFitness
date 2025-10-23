@@ -53,7 +53,7 @@ class AllDataUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) {
 
     // A map of SymptomType IntDef to its corresponding FitnessPermissionType

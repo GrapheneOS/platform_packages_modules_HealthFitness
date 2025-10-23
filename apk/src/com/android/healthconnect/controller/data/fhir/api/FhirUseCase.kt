@@ -33,7 +33,7 @@ class FhirUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) {
     /**
      * Returns the corresponding [android.health.connect.datatypes.FhirResource] for given

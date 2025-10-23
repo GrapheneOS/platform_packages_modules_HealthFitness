@@ -29,7 +29,7 @@ class LoadAutoDeleteUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) {
 
     companion object {

@@ -26,7 +26,7 @@ class SleepSessionHelper
 @Inject
 constructor(
     private val loadPriorityEntriesUseCase: ILoadPriorityEntriesUseCase,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ISleepSessionHelper {
 
     /**

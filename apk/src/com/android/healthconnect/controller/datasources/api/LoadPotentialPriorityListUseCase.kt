@@ -47,7 +47,7 @@ constructor(
     private val healthPermissionReader: HealthPermissionReader,
     private val loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
     private val loadPriorityListUseCase: LoadPriorityListUseCase,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadPotentialPriorityListUseCase {
 
     private val TAG = "LoadAppSourcesUseCase"

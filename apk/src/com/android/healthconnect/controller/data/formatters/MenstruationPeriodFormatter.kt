@@ -43,7 +43,7 @@ class MenstruationPeriodFormatter
 @Inject
 constructor(
     private val appInfoReader: AppInfoReader,
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val timeSource: TimeSource,
 ) {
 
