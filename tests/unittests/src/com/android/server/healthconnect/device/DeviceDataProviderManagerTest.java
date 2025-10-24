@@ -22,7 +22,12 @@ import static android.healthconnect.testing.unittest.RecordInternalFactory.build
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
@@ -48,6 +53,8 @@ import androidx.test.filters.SdkSuppress;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
@@ -83,6 +90,8 @@ public class DeviceDataProviderManagerTest {
     private static final String DISPLAY_NAME = "Test Device";
     private static final String MANUFACTURER = "TestManufacturer";
     private static final String MODEL = "TestModel";
+    private static final String PREFERENCE_KEY =
+            DeviceDataProviderManager.SYNTHETIC_PACKAGE_NAME_MASKING_SALT_PREFERENCE_KEY;
     private static final int DEVICE_TYPE = DEVICE_TYPE_PHONE;
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -90,18 +99,18 @@ public class DeviceDataProviderManagerTest {
 
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
 
+    private PreferenceHelper mPreferenceHelper;
+    private Context mContext;
     private DeviceDataProviderHelper mDeviceDataProviderHelper;
 
     private DeviceInfoHelper mDeviceInfoHelper;
     private AppInfoHelper mAppInfoHelper;
-    private DeviceDataProviderManager mDeviceDataProviderManager;
     private FitnessRecordReadHelper mFitnessRecordReadHelper;
     private TransactionManager mTransactionManager;
-    private Context mContext;
+    private FakeSerialDeviceDataProviderManager mDeviceDataProviderManager;
 
     @Before
     public void setUp() throws Exception {
-
         Context applicationContext = ApplicationProvider.getApplicationContext();
         mContext = spy(applicationContext);
         doReturn(mContext).when(mContext).getApplicationContext();
@@ -114,9 +123,17 @@ public class DeviceDataProviderManagerTest {
         mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mDeviceDataProviderHelper = healthConnectInjector.getDeviceDataProviderHelper();
-        mDeviceDataProviderManager = healthConnectInjector.getDeviceDataProviderManager();
+        mPreferenceHelper = healthConnectInjector.getPreferenceHelper();
         mFitnessRecordReadHelper = healthConnectInjector.getFitnessRecordReadHelper();
         mTransactionManager = healthConnectInjector.getTransactionManager();
+        mDeviceDataProviderManager =
+                new FakeSerialDeviceDataProviderManager(
+                        mContext,
+                        mDeviceInfoHelper,
+                        mAppInfoHelper,
+                        mDeviceDataProviderHelper,
+                        healthConnectInjector.getFitnessRecordUpsertHelper(),
+                        mPreferenceHelper);
     }
 
     @Test
@@ -288,6 +305,155 @@ public class DeviceDataProviderManagerTest {
                 .isEqualTo(renamedDisplayName);
     }
 
+    @Test
+    public void withEmptyPreference_initializeOrGetMaskingSalt_addsPreference() {
+        assertNull(mPreferenceHelper.getPreference(PREFERENCE_KEY));
+
+        String salt = mDeviceDataProviderManager.initializeOrGetMaskingSalt();
+
+        assertEquals(salt, mPreferenceHelper.getPreference(PREFERENCE_KEY));
+    }
+
+    @Test
+    public void withMultipleCalls_initializeOrGetMaskingSalt_returnsSameSalt() {
+        String firstSalt = mDeviceDataProviderManager.initializeOrGetMaskingSalt();
+        String secondSalt = mDeviceDataProviderManager.initializeOrGetMaskingSalt();
+
+        assertEquals(firstSalt, secondSalt);
+    }
+
+    @Test
+    public void withMultipleCallsAndReset_initializeOrGetMaskingSalt_addsPreferenceTwice() {
+        assertNull(mPreferenceHelper.getPreference(PREFERENCE_KEY));
+
+        String firstSalt = mDeviceDataProviderManager.initializeOrGetMaskingSalt();
+        assertEquals(firstSalt, mPreferenceHelper.getPreference(PREFERENCE_KEY));
+
+        mPreferenceHelper.removeKey(PREFERENCE_KEY);
+        assertNull(mPreferenceHelper.getPreference(PREFERENCE_KEY));
+
+        String secondSalt = mDeviceDataProviderManager.initializeOrGetMaskingSalt();
+        assertEquals(secondSalt, mPreferenceHelper.getPreference(PREFERENCE_KEY));
+    }
+
+    @Test
+    public void withMultipleCallsAndReset_initializeOrGetMaskingSalt_generatesDifferentSalts() {
+        String firstSalt = mDeviceDataProviderManager.initializeOrGetMaskingSalt();
+        mPreferenceHelper.removeKey(PREFERENCE_KEY);
+        String secondSalt = mDeviceDataProviderManager.initializeOrGetMaskingSalt();
+
+        assertNotEquals(firstSalt, secondSalt);
+    }
+
+    @Test
+    public void withoutInit_getStableCurrentDeviceId_throws() {
+        assertThrows(
+                IllegalStateException.class,
+                () -> mDeviceDataProviderManager.getStableCurrentDeviceId());
+    }
+
+    @Test
+    public void withRegularCall_getStableCurrentDeviceId_doesNotContainSerial() {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        String deviceId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+        String fakeSerial = FakeSerialDeviceDataProviderManager.TEST_SERIAL_NUMBER;
+
+        assertFalse(deviceId.contains(fakeSerial));
+    }
+
+    @Test
+    public void withRegularCall_getStableCurrentDeviceId_isCanonicalSpn() {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        String deviceId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+
+        assertTrue(SyntheticPackageNameCreator.isCanonicalSpn(deviceId));
+    }
+
+    @Test
+    public void
+            withRegularCall_getStableCurrentDeviceId_isSeededWithSaltSerialAndUniqueSeparator() {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        String salt = mDeviceDataProviderManager.initializeOrGetMaskingSalt();
+        String expectedSeed =
+                FakeSerialDeviceDataProviderManager.TEST_SERIAL_NUMBER + '\u001F' + salt;
+        String expected =
+                SyntheticPackageNameCreator.createCanonical(DEVICE_TYPE_PHONE, expectedSeed);
+
+        String actual = mDeviceDataProviderManager.getStableCurrentDeviceId();
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void withMultipleCalls_getStableCurrentDeviceId_returnsSameDeviceId() {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        String firstId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+        String secondId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+
+        assertEquals(firstId, secondId);
+    }
+
+    @Test
+    public void withMultipleCallsAndSoftRefresh_getStableCurrentDeviceId_returnsSameDeviceId() {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        String firstId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        String secondId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+
+        assertEquals(firstId, secondId);
+    }
+
+    @Test
+    public void withMultipleCallsAndHardReset_getStableCurrentDeviceId_returnsDifferentDeviceId() {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        String firstId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+
+        mPreferenceHelper.removeKey(PREFERENCE_KEY);
+        assertNull(mPreferenceHelper.getPreference(PREFERENCE_KEY));
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+
+        String secondId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+
+        assertNotEquals(firstId, secondId);
+    }
+
+    @Test
+    public void withRegularCall_getCurrentDeviceId_isCanonicalSpn() {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        String deviceId = mDeviceDataProviderManager.getCurrentDeviceId();
+
+        assertTrue(SyntheticPackageNameCreator.isCanonicalSpn(deviceId));
+    }
+
+    @Test
+    public void withMultipleCalls_getCurrentDeviceId_returnsSameDeviceId() {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+
+        String firstId = mDeviceDataProviderManager.getCurrentDeviceId();
+        String secondId = mDeviceDataProviderManager.getCurrentDeviceId();
+
+        assertEquals(firstId, secondId);
+    }
+
+    @Test
+    public void withMultipleCallsAndRefresh_getCurrentDeviceId_returnsDifferentDeviceId() {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        String firstId = mDeviceDataProviderManager.getCurrentDeviceId();
+
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        String secondId = mDeviceDataProviderManager.getCurrentDeviceId();
+
+        assertNotEquals(firstId, secondId);
+    }
+
+    @Test
+    public void withoutInitialization_getCurrentDeviceId_throws() {
+        assertThrows(
+                IllegalStateException.class, () -> mDeviceDataProviderManager.getCurrentDeviceId());
+    }
+
+    @Test
     public void insertDeviceRecords_insertsRecordCorrectly() {
         Device device =
                 new Device.Builder()

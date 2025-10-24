@@ -656,4 +656,19 @@ interface IHealthConnectService {
      * @hide
      */
     Map isTrackingEnabled(in List<String> dataTypePrefKeys);
+
+    // TODO(b/455837940): Update javadoc with links to API that deviceId is being used for when
+    // available.
+    /**
+     * Retrieve a unique identifier of the device that Health Connect is currently running on. The
+     * identifier is scoped by user and will change on either switching the current user or
+     * rebooting the device. The identifier can then be used for advertising and writing data that
+     * originates from the device itself, e.g., phone pedometer, by populating the {@code deviceId}
+     * field.
+     *
+     * @param attributionSource attribution source for the data.
+     *
+     * @hide
+     */
+    String getCurrentDeviceId(in AttributionSource attributionSource);
 }
