@@ -16,10 +16,16 @@
 
 package com.android.server.healthconnect.device;
 
+import android.Manifest;
 import android.annotation.NonNull;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Device;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.os.Build;
 import android.util.ArrayMap;
 import android.util.Slog;
 
@@ -46,16 +52,19 @@ public class DeviceDataProviderManager {
     private static final ArrayMap<String, Boolean> EMPTY_EXTRA_PERMISSION_MAPPING =
             new ArrayMap<>();
 
+    private final Context mContext;
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final AppInfoHelper mAppInfoHelper;
     private final DeviceDataProviderHelper mDeviceDataProviderHelper;
     private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
 
     public DeviceDataProviderManager(
+            @NonNull Context context,
             @NonNull DeviceInfoHelper deviceInfoHelper,
             @NonNull AppInfoHelper appInfoHelper,
             @NonNull DeviceDataProviderHelper deviceDataProviderHelper,
             @NonNull FitnessRecordUpsertHelper fitnessRecordUpsertHelper) {
+        mContext = context;
         mDeviceInfoHelper = Objects.requireNonNull(deviceInfoHelper);
         mAppInfoHelper = Objects.requireNonNull(appInfoHelper);
         mDeviceDataProviderHelper = Objects.requireNonNull(deviceDataProviderHelper);
@@ -174,5 +183,46 @@ public class DeviceDataProviderManager {
                     "deviceInfoId in device_info_table does not match application_info_table");
         }
         return deviceInfoIdFromDeviceInfoDb;
+    }
+
+    /**
+     * Checks whether a package is permitted to act as a device data provider.
+     *
+     * <p>On Android versions after Baklava where {@code
+     * android.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA} is available, this will return {@code
+     * true} when that permission is held by the calling package.
+     *
+     * <p>On Android versions Baklava or earlier, which predate the device data provider permission,
+     * alternative checks will be made, returning {@code true} for either of the following:
+     *
+     * <ul>
+     *   <li>Is the package listed in config_systemActivityRecognizer
+     *   <li>Does the package hold android.permission.MANAGE_HEALTH_DATA
+     * </ul>
+     *
+     * <p>See b/315116545 for details of these fallback checks.
+     */
+    public boolean isPermittedToProvideDeviceData(
+            @NonNull String callingPackageName, int uid, int pid) {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.BAKLAVA) {
+            // For details of this fallback see b/315116545
+            final int resourceId =
+                    Resources.getSystem()
+                            .getIdentifier("config_systemActivityRecognizer", "string", "android");
+            if (resourceId != 0
+                    && callingPackageName.equals(Resources.getSystem().getString(resourceId))) {
+                return true;
+            }
+
+            // This fallback caters primarily for test environments as the shell holds this
+            // permission from Android U upwards.
+            return mContext.checkPermission(
+                            HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION, pid, uid)
+                    == PackageManager.PERMISSION_GRANTED;
+        } else {
+            return mContext.checkPermission(
+                            Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA, pid, uid)
+                    == PackageManager.PERMISSION_GRANTED;
+        }
     }
 }
