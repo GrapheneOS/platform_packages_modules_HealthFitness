@@ -27,6 +27,5 @@
     <string name="settings_manage_permission" msgid="3585762257420446893">"සෞඛ්‍යය, යෝග්‍යතාවය සහ සුවතාව"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"සෞඛ්‍යය, යෝග්‍යතාවය සහ සුවතාව"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"යෝග්‍යතාවය සහ සුවතාවය"</string>
-    <!-- no translation found for settings_medical_permissions (3458484943007427070) -->
-    <skip />
+    <string name="settings_medical_permissions" msgid="3458484943007427070">"වෛද්‍ය සටහන්"</string>
 </resources>

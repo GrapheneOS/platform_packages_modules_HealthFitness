@@ -23,10 +23,8 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Dovoljenja in podatki"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Upravljajte podatke o zdravju in telesni pripravljenosti v napravi ter nadzirajte, katere aplikacije lahko dostopajo do njih"</string>
     <string name="data_title" msgid="4456619761533380816">"Podatki in dostop"</string>
-    <!-- no translation found for browse_medical_data (6492659245149862639) -->
-    <skip />
-    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
-    <skip />
+    <string name="browse_medical_data" msgid="6492659245149862639">"Brskanje po zdravstvenih evidencah"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"Ogled zdravstvenih evidenc in seznama aplikacij, ki lahko dostopajo do njih"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Vse kategorije"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Pokaži vse kategorije"</string>
     <string name="no_data" msgid="1906986019249068659">"Ni podatkov"</string>
@@ -112,10 +110,8 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Branje porabljenih kalorij"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Aplikaciji omogoča branje porabljenih kalorij"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Želite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> dovoliti dostop do podatkov v ozadju?"</string>
-    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
-    <skip />
-    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
-    <skip />
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Če to dovolite, lahko ta aplikacija dostopa do podatkov o telesni pripravljenosti in počutju ter do zdravstvenih evidenc, ko ne uporabljate te aplikacije."</string>
+    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"Če to dovolite, lahko ta aplikacija dostopa do zdravstvenih evidenc, ko ne uporabljate te aplikacije."</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Če to dovolite, lahko ta aplikacija dostopa do podatkov o telesni pripravljenosti in počutju, ko ne uporabljate te aplikacije."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Če to dovolite, lahko ta aplikacija dostopa do podatkov storitve Health Connect, ko ne uporabljate te aplikacije."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"Želite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> dovoliti dostop do preteklih podatkov?"</string>
@@ -126,11 +122,9 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"Želite dovoliti dodaten dostop za aplikacijo <xliff:g id="APP_NAME">%1$s</xliff:g>?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> želi dostopati tudi do teh nastavitev za Health Connect"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Dostop do vseh podatkov v ozadju"</string>
-    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
-    <skip />
+    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"Dostop do zdravstvenih evidenc v ozadju"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Dostop do podatkov o telesni pripravljenosti in počutju v ozadju"</string>
-    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
-    <skip />
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"Tej aplikaciji dovolite dostop do podatkov o telesni pripravljenosti in počutju ter do zdravstvenih evidenc, ko ne uporabljate te aplikacije"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Tej aplikaciji dovolite dostop do teh podatkov, ko ne uporabljate te aplikacije"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Tej aplikaciji dovolite dostop do teh podatkov, ko ne uporabljate te aplikacije"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Dostop do podatkov v ozadju"</string>
@@ -141,15 +135,12 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Dostop do preteklih podatkov"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"Tej aplikaciji dovolite dostop do podatkov storitve Health Connect, ki so bili dodani pred dnem <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Tej aplikaciji dovolite dostop do vseh preteklih podatkov storitve Health Connect"</string>
-    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
-    <skip />
+    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> že lahko dostopa do preteklih podatkov zdravstvenih evidenc"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Preberite več o dovoljenjih"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Dostop do vseh podatkov v ozadju"</string>
-    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
-    <skip />
+    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"Dostop do zdravstvenih evidenc v ozadju"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Dostop do podatkov o telesni pripravljenosti in počutju v ozadju"</string>
-    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
-    <skip />
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"Tej aplikaciji dovolite dostop do podatkov o telesni pripravljenosti in počutju ter do zdravstvenih evidenc, ko ne uporabljate te aplikacije"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Tej aplikaciji dovolite dostop do teh podatkov, ko ne uporabljate te aplikacije"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Tej aplikaciji dovolite dostop do teh podatkov, ko ne uporabljate te aplikacije"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Dostop do podatkov v ozadju"</string>
@@ -161,10 +152,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Tej aplikaciji dovolite dostop do podatkov storitve Health Connect, ki so bili dodani pred dnem <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Tej aplikaciji dovolite dostop do vseh preteklih podatkov storitve Health Connect"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Trenutno se ne berejo nobeni podatki o telesni pripravljenosti, ker aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> nima vklopljenih dovoljenj za branje"</string>
-    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
-    <skip />
-    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
-    <skip />
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> že lahko dostopa do preteklih podatkov zdravstvenih evidenc. Če želite to spremeniti, izklopite dovoljenja za zdravstvene evidence za to aplikacijo."</string>
+    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"Upravljanje dovoljenj za zdravstvene evidence"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Omogočite vsaj eno dovoljenje za branje, če želite za to aplikacijo vklopiti dostop iz ozadja ali dostop do preteklih podatkov"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Omogočite vsaj eno dovoljenje za branje, če želite za to aplikacijo vklopiti dostop iz ozadja"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Omogočite vsaj eno dovoljenje za branje, če želite za to aplikacijo vklopiti dostop do preteklih podatkov"</string>
@@ -339,14 +328,10 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"temperatura kože"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Branje temperature kože"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Zapisovanje temperature kože"</string>
-    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
-    <skip />
-    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
-    <skip />
-    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
-    <skip />
-    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
-    <skip />
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"To vključuje vse zdravstvene evidence, sinhronizirane s storitvijo Health Connect in dodane vanjo. To morda ne obsega vaše celotne zdravstvene kartoteke in ne vključuje medicinskega opisa vaših zdravstvenih evidenc."</string>
+    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"Vse zdravstvene evidence"</string>
+    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"vse zdravstvene evidence"</string>
+    <string name="all_medical_data_content_description" msgid="3454355551506537094">"Zapisovanje vseh zdravstvenih evidenc"</string>
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Alergije"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"alergije"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Branje podatkov o alergijah"</string>
@@ -427,17 +412,13 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Želite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> dovoliti dostop do podatkov o telesni pripravljenosti in počutju?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Preberete lahko <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g>, da ugotovite, kako ravna z vašimi podatki"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"pravilnik o zasebnosti"</string>
-    <!-- no translation found for medical_request_header (5701693055388739014) -->
-    <skip />
+    <string name="medical_request_header" msgid="5701693055388739014">"Želite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> dovoliti dostop do zdravstvenih evidenc?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Če odobrite dostop, lahko aplikacija bere in zapisuje podatke, kot so alergije, laboratorijski izvidi, cepiva in drugo\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Če odobrite dostop, lahko aplikacija bere podatke, kot so alergije, laboratorijski izvidi, cepiva in drugo\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
-    <skip />
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"O zdravstvenih evidencah"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Podatki za deljenje vključujejo naslednje"</string>
-    <!-- no translation found for medical_request_summary (553735170968628758) -->
-    <skip />
-    <!-- no translation found for medical_request_footer (157243861031258933) -->
-    <skip />
+    <string name="medical_request_summary" msgid="553735170968628758">"Če to dovolite, lahko aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> deli vaše zdravstvene evidence s storitvijo Health Connect."</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"Sinhronizirajte zdravstvene evidence iz različnih aplikacij in virov, da bodo na enem mestu"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Želite odstraniti vsa dovoljenja?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Odstrani vse"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ne bo več mogla brati ali zapisovati podatkov storitve Health Connect.\n\nTo ne vpliva na druga dovoljenja, ki jih morda ima ta aplikacija, na primer za fotoaparat, mikrofon ali lokacijo."</string>
@@ -447,10 +428,8 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Iz storitve Health Connect izbriši tudi podatke aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Želite odstraniti vsa dovoljenja za telesno pripravljenost in dobro počutje?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Iz storitve Health Connect izbriši tudi podatke o telesni pripravljenosti v aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
-    <skip />
-    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
-    <skip />
+    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"Želite odstraniti vsa dovoljenja za zdravstvene evidence?"</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"Iz storitve Health Connect izbriši tudi zdravstvene evidence v aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ne bo več mogla brati ali zapisovati teh podatkov storitve Health Connect.\n\nTo ne vpliva na druga dovoljenja, ki jih morda ima ta aplikacija, na primer za fotoaparat, mikrofon ali lokacijo."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ne bo več mogla brati ali zapisovati teh podatkov storitve Health Connect, vključno s prenosom podatkov v ozadju.\n\nTo ne vpliva na druga dovoljenja, ki jih morda ima ta aplikacija, na primer za fotoaparat, mikrofon ali lokacijo."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ne bo več mogla brati ali zapisovati teh podatkov storitve Health Connect, vključno s preteklimi podatki.\n\nTo ne vpliva na druga dovoljenja, ki jih morda ima ta aplikacija, na primer za fotoaparat, mikrofon ali lokacijo."</string>
@@ -460,8 +439,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ne bo več mogla brati ali zapisovati podatkov storitve Health Connect, vključno s prenosom podatkov v ozadju.\n\nTo ne vpliva na druga dovoljenja, ki jih morda ima ta aplikacija, na primer za fotoaparat, mikrofon ali lokacijo."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ne bo več mogla brati ali zapisovati podatkov storitve Health Connect, vključno s preteklimi podatki.\n\nTo ne vpliva na druga dovoljenja, ki jih morda ima ta aplikacija, na primer za fotoaparat, mikrofon ali lokacijo."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ne bo več mogla brati ali zapisovati podatkov storitve Health Connect, vključno s prenosom podatkov v ozadju in preteklimi podatki.\n\nTo ne vpliva na druga dovoljenja, ki jih morda ima ta aplikacija, na primer za fotoaparat, mikrofon ali lokacijo."</string>
-    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
-    <skip />
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"Iz storitve Health Connect izbriši tudi podatke o telesni pripravljenosti in zdravstvene evidence v aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Dovoljenja za to aplikacijo so bila odstranjena"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Izbriši tudi vse podatke storitve Health Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Naslednji dan"</string>
@@ -510,10 +488,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"Dovoljenja"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"Telesna pripravljenost in dobro počutje"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Vadba, spanje, prehrana in drugo"</string>
-    <!-- no translation found for medical_permissions (1066296298908103091) -->
-    <skip />
-    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
-    <skip />
+    <string name="medical_permissions" msgid="1066296298908103091">"Zdravstvene evidence"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"zdravstvene evidence"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Laboratorijski Izvidi, zdravila, cepiva in drugo"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Odstranjena dovoljenja za aplikacije"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Storitev Health Connect je odstranila dovoljenja za aplikacijo <xliff:g id="APP_DATA">%s</xliff:g>."</string>
@@ -607,8 +583,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Odpri Trgovino Play"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Začetek uporabe storitve Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect shranjuje vaše podatke o zdravju in telesni pripravljenosti ter vam omogoča, da na preprost način sinhronizirate različne aplikacije v napravi."</string>
-    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
-    <skip />
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect shranjuje in sinhronizira podatke o zdravju in telesni pripravljenosti iz različnih aplikacij.\n\n"<b>"Podatke o telesni pripravljenosti in počutju,"</b>" vključno s treningi, koraki, prehrano, spanjem in drugimi podatki.\n\n"<b>"Zdravstvene evidence,"</b>" vključno s cepljenji, laboratorijskimi izvidi in drugimi podatki."</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connect vam omogoča naslednje:"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Deljenje podatkov z aplikacijami"</b>\n"Izberite, katere podatke lahko aplikacije berejo ali zapisujejo v storitvi Health Connect"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Upravljanje nastavitev in zasebnosti"</b>\n"Kadar koli spremenite dovoljenja za aplikacije in upravljajte svoje podatke"</string>

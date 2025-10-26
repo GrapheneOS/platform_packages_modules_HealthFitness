@@ -23,10 +23,8 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"অনুমতি আৰু ডেটা"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"আপোনাৰ ডিভাইচত স্বাস্থ্য আৰু ফিটনেছ সম্পৰ্কীয় ডেটা পৰিচালনা কৰক আৰু সেয়া কোনবোৰ এপে এক্সেছ কৰিব পাৰে সেয়া নিয়ন্ত্ৰণ কৰক"</string>
     <string name="data_title" msgid="4456619761533380816">"ডেটা আৰু এক্সেছ"</string>
-    <!-- no translation found for browse_medical_data (6492659245149862639) -->
-    <skip />
-    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
-    <skip />
+    <string name="browse_medical_data" msgid="6492659245149862639">"চিকিৎসা সম্বন্ধীয় নথি ব্ৰাউজ কৰক"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"আপোনাৰ স্বাস্থ্য সম্বন্ধীয় নথি আৰু কোনবোৰ এপে সেইবোৰ এক্সেছ কৰিব পাৰে চাওক"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"আটাইবোৰ শিতান"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"আটাইবোৰ শিতান চাওক"</string>
     <string name="no_data" msgid="1906986019249068659">"কোনো ডেটা নাই"</string>
@@ -112,10 +110,8 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"কেল’ৰি খৰচৰ ডেটা পঢ়ক"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"এপ্‌টোক কেল’ৰি খৰচৰ পৰিমাণ পঢ়িবলৈ দিয়ে"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"<xliff:g id="APP_NAME">%1$s</xliff:g>ক নেপথ্যত ডেটা এক্সেছ কৰিবলৈ অনুমতি দিবনে?"</string>
-    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
-    <skip />
-    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
-    <skip />
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"আপুনি অনুমতি দিলে, আপুনি এপ্‌টো ব্যৱহাৰ কৰি নাথাকোঁতে এই এপ্‌টোৱে ফিটনেছ আৰু সুস্থতাৰ ডেটা আৰু স্বাস্থ্য সম্বন্ধীয় নথিৰ ডেটা এক্সেছ কৰিব পাৰিব।"</string>
+    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"যদি আপুনি অনুমতি দিয়ে, আপুনি এপ্‌টো ব্যৱহাৰ কৰি নথকাৰ সময়তো ই স্বাস্থ্য সম্বন্ধীয় নথি এক্সেছ কৰিব পাৰে।"</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"যদি আপুনি অনুমতি দিয়ে, আপুনি এপ্‌টো ব্যৱহাৰ কৰি নথকাৰ সময়তো ই ফিটনেছ আৰু সুস্থতাৰ ডেটা এক্সেছ কৰিব পাৰে।"</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"যদি আপুনি অনুমতি দিয়ে, আপুনি এপ্‌টো ব্যৱহাৰ কৰি নথকাৰ সময়ত এই এপ্‌টোৱে Health Connectৰ ডেটা এক্সেছ কৰিব পাৰিব।"</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"<xliff:g id="APP_NAME">%1$s</xliff:g>ক পূৰ্বৰ ডেটা এক্সেছ কৰিবলৈ অনুমতি দিবনে?"</string>
@@ -126,11 +122,9 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"<xliff:g id="APP_NAME">%1$s</xliff:g>ক অতিৰিক্ত এক্সেছৰ অনুমতি দিবনে?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g>এ Health Connectৰ এই ছেটিংসমূহো এক্সেছ কৰিবলৈ বিচাৰে"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"নেপথ্যত আটাইবোৰ ডেটা এক্সেছ কৰক"</string>
-    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
-    <skip />
+    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"নেপথ্যত চিকিৎসা সম্বন্ধীয় নথি এক্সেছ কৰক"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"নেপথ্যত ফিটনেছ আৰু সুস্থতাৰ ডেটা এক্সেছ কৰক"</string>
-    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
-    <skip />
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"আপুনি এপ্‌টো ব্যৱহাৰ কৰি নাথাকোঁতে এই এপ্‌টোক ফিটনেছ আৰু সুস্থতাৰ ডেটা আৰু স্বাস্থ্য সম্বন্ধীয় নথিৰ ডেটা এক্সেছ কৰিবলৈ দিয়ক"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"আপুনি এপ্‌টো ব্যৱহাৰ কৰি নথকাৰ সময়ত এই এপ্‌টোক এই ডেটাখিনি এক্সেছ কৰিবলৈ অনুমতি দিয়ক"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"আপুনি এপ্‌টো ব্যৱহাৰ কৰি নথকাৰ সময়ত এই এপ্‌টোক এই ডেটাখিনি এক্সেছ কৰিবলৈ অনুমতি দিয়ক"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"নেপথ্যত ডেটা এক্সেছ কৰক"</string>
@@ -141,15 +135,12 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"পূৰ্বৰ ডেটা এক্সেছ কৰিব পাৰে"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"এই এপ্‌টোক <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>ৰ পূৰ্বে যোগ দিয়া Health Connectৰ ডেটা এক্সেছ কৰিবলৈ অনুমতি দিয়ক"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"এই এপ্‌টোক Health Connectৰ পূৰ্বৰ আটাইবোৰ ডেটা এক্সেছ কৰিবলৈ অনুমতি দিয়ক"</string>
-    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
-    <skip />
+    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"<xliff:g id="APP_NAME">%1$s</xliff:g>এ ইতিমধ্যে আপোনাৰ স্বাস্থ্য সম্বন্ধীয় নথিৰ বাবে পূৰ্বৰ ডেটা এক্সেছ কৰিব পাৰে"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"অনুমতিৰ বিষয়ে অধিক পঢ়ক"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"নেপথ্যত আটাইবোৰ ডেটা এক্সেছ কৰক"</string>
-    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
-    <skip />
+    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"নেপথ্যত চিকিৎসা সম্বন্ধীয় নথি এক্সেছ কৰক"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"নেপথ্যত ফিটনেছ আৰু সুস্থতাৰ ডেটা এক্সেছ কৰক"</string>
-    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
-    <skip />
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"আপুনি এপ্‌টো ব্যৱহাৰ কৰি নাথাকোঁতে এই এপ্‌টোক ফিটনেছ আৰু সুস্থতাৰ ডেটা আৰু স্বাস্থ্য সম্বন্ধীয় নথিৰ ডেটা এক্সেছ কৰিবলৈ দিয়ক"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"আপুনি এপ্‌টো ব্যৱহাৰ কৰি নথকাৰ সময়ত এই এপ্‌টোক এই ডেটাখিনি এক্সেছ কৰিবলৈ অনুমতি দিয়ক"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"আপুনি এপ্‌টো ব্যৱহাৰ কৰি নথকাৰ সময়ত এই এপ্‌টোক এই ডেটাখিনি এক্সেছ কৰিবলৈ অনুমতি দিয়ক"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"নেপথ্যত ডেটা এক্সেছ কৰক"</string>
@@ -161,10 +152,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"এই এপ্‌টোক <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>ৰ পূৰ্বে যোগ দিয়া Health Connectৰ ডেটা এক্সেছ কৰিবলৈ অনুমতি দিয়ক"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"এই এপ্‌টোক Health Connectৰ পূৰ্বৰ ডেটা এক্সেছ কৰিবলৈ অনুমতি দিয়ক"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"বৰ্তমান কোনো ফিটনেছৰ ডেটা পঢ়া হোৱা নাই কাৰণ <xliff:g id="APP_NAME">%1$s</xliff:g>ৰ কোনো পঢ়াৰ অনুমতি অন হৈ থকা নাই"</string>
-    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
-    <skip />
-    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
-    <skip />
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g>এ ইতিমধ্যে আপোনাৰ চিকিৎসা সম্বন্ধীয় নথিৰ বাবে পূৰ্বৰ ডেটা এক্সেছ কৰিব পাৰে। এইটো সলনি কৰিবলৈ, এই এপ্‌টোৰ বাবে স্বাস্থ্য সম্বন্ধীয় নথিৰ অনুমতি অফ কৰক"</string>
+    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"চিকিৎসা সম্বন্ধীয় নথিৰ অনুমতি পৰিচালনা কৰক"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"এই এপ্‌টোৰ বাবে নেপথ্য অথবা পূৰ্বৰ ডেটা এক্সেছ কৰাৰ সুবিধা অন কৰিবলৈ অতি কমেও এটা পঢ়াৰ অনুমতি সক্ষম কৰক"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"এই এপ্‌টোৰ বাবে নেপথ্য এক্সেছ কৰাৰ সুবিধা অন কৰিবলৈ অতি কমেও এটা পঢ়াৰ অনুমতি সক্ষম কৰক"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"এই এপ্‌টোৰ বাবে পূৰ্বৰ ডেটা এক্সেছ কৰাৰ সুবিধা অন কৰিবলৈ অতি কমেও এটা পঢ়াৰ অনুমতি সক্ষম কৰক"</string>
@@ -339,14 +328,10 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"ছালৰ তাপমাত্ৰা"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"ছালৰ তাপমাত্ৰা জোখক"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"ছালৰ তাপমাত্ৰা লিখক"</string>
-    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
-    <skip />
-    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
-    <skip />
-    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
-    <skip />
-    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
-    <skip />
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"এইটোত Health Connectত ছিংক আৰু যোগ কৰা আটাইবোৰ স্বাস্থ্য সম্বন্ধীয় নথি অন্তৰ্ভুক্ত হয়। এয়া আপোনাৰ সম্পূৰ্ণ চিকিৎসা সম্বন্ধীয় নথি নহ’বও পাৰে আৰু ইয়াত আপোনাৰ স্বাস্থ্য সম্বন্ধীয় নথিৰ চিকিৎসাৰ বিৱৰণ নাথাকে।"</string>
+    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"আটাইবোৰ চিকিৎসা সম্বন্ধীয় নথি"</string>
+    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"আটাইবোৰ চিকিৎসা সম্বন্ধীয় নথি"</string>
+    <string name="all_medical_data_content_description" msgid="3454355551506537094">"আটাইবোৰ চিকিৎসা সম্বন্ধীয় নথি লিখক"</string>
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"এলাৰ্জি"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"এলাৰ্জি"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"এলাৰ্জি সম্পৰ্কীয় ডেটা পঢ়ক"</string>
@@ -427,17 +412,13 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"<xliff:g id="APP_NAME">%1$s</xliff:g>ক পূৰ্বৰ ফিটনেছ আৰু সুস্থতাৰ ডেটা এক্সেছ কৰিবলৈ দিবনে?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="APP_NAME">%1$s</xliff:g>এ আপোনাৰ ডেটা কেনেকৈ পৰিচালনা কেনেকৈ কৰে সেয়া আপুনি ইয়াৰ <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>ত জানিব পাৰে"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"গোপনীয়তা নীতি"</string>
-    <!-- no translation found for medical_request_header (5701693055388739014) -->
-    <skip />
+    <string name="medical_request_header" msgid="5701693055388739014">"<xliff:g id="APP_NAME">%1$s</xliff:g>ক আপোনাৰ চিকিৎসা সম্বন্ধীয় নথি এক্সেছ কৰিবলৈ অনুমতি দিবনে?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"যদি আপুনি এক্সেছ কৰাৰ অনুমতি দিয়ে, তেন্তে এপ্‌টোৱে এলাৰ্জি, লেবৰ ফলাফল, প্ৰতিষেধকৰ দৰে ডেটা আৰু অধিক পঢ়িব আৰু লিখিব পাৰে\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"যদি আপুনি অনুমতি দিয়ে, এই এপ্‌টোৱে এলাৰ্জি, লেবৰ ফলাফল, প্ৰতিষেধক আৰু অধিকৰ দৰে ডেটা পঢ়িব পাৰিব\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
-    <skip />
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"চিকিৎসা সম্বন্ধীয় নথিৰ বিষয়ে"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"শ্বেয়াৰ কৰিব লগা ডেটাত এইসমূহ অন্তৰ্ভুক্ত"</string>
-    <!-- no translation found for medical_request_summary (553735170968628758) -->
-    <skip />
-    <!-- no translation found for medical_request_footer (157243861031258933) -->
-    <skip />
+    <string name="medical_request_summary" msgid="553735170968628758">"যদি আপুনি অনুমতি দিয়ে, তেন্তে <xliff:g id="APP_NAME">%1$s</xliff:g>এ Health Connectৰ সৈতে আপোনাৰ স্বাস্থ্য সম্বন্ধীয় নথি শ্বেয়াৰ কৰিব পাৰে।"</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"আপোনাৰ স্বাস্থ্য সম্বন্ধীয় নথি একে ঠাইত ৰাখিবলৈ সেইবোৰ বিভিন্ন এপ্‌ আৰু উৎসৰ পৰা ছিংক কৰক"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"আটাইবোৰ অনুমতি আঁতৰাবনে?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"আটাইবোৰ আঁতৰাওক"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g>এ Health Connectৰ কোনো ডেটা আৰু পঢ়িব বা লিখিব নোৱাৰিব।\n\nএইটোৱে এই এপ্‌টোৰ ওচৰত থাকিব পৰা কেমেৰা, মাইক্ৰ’ফ’ন বা অৱস্থানৰ দৰে অন্য অনুমতিসমূহত প্ৰভাৱ নেপেলায়।"</string>
@@ -447,10 +428,8 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connectৰ পৰা <xliff:g id="APP_NAME">%1$s</xliff:g>ৰ ডেটাও মচক"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"আটাইবোৰ ফিটনেছ আৰু সুস্থতাৰ অনুমতি আঁতৰাব নেকি?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"লগতে, Health Connectৰ <xliff:g id="APP_NAME">%1$s</xliff:g>ৰ পৰাও সুস্থতাৰ ডেটা মচক"</string>
-    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
-    <skip />
-    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
-    <skip />
+    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"চিকিৎসা সম্বন্ধীয় নথি সম্পৰ্কীয় আটাইবোৰ অনুমতি আঁতৰাবনে?"</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"লগতে, Health Connectৰ <xliff:g id="APP_NAME">%1$s</xliff:g>ৰ পৰা স্বাস্থ্য সম্বন্ধীয় নথি মচক"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g>এ Health Connectৰ এই ডেটাখিনি আৰু পঢ়িব বা লিখিব নোৱাৰিব।\n\nএইটোৱে এই এপ্‌টোৰ ওচৰত থাকিব পৰা কেমেৰা, মাইক্ৰ’ফ’ন বা অৱস্থানৰ দৰে অন্য অনুমতিসমূহত প্ৰভাৱ নেপেলায়।"</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g>এ নেপথ্যৰ ডেটাকে ধৰি Health Connectৰ এই ডেটাখিনি আৰু পঢ়িব বা লিখিব নোৱাৰিব।\n\nএইটোৱে এই এপ্‌টোৰ ওচৰত থাকিব পৰা কেমেৰা, মাইক্ৰ’ফ’ন বা অৱস্থানৰ দৰে অন্য অনুমতিসমূহত প্ৰভাৱ নেপেলায়।"</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g>এ আগৰ ডেটাকে ধৰি Health Connectৰ এই ডেটাখিনি আৰু পঢ়িব বা লিখিব নোৱাৰিব।\n\nএইটোৱে এই এপ্‌টোৰ ওচৰত থাকিব পৰা কেমেৰা, মাইক্ৰ’ফ’ন বা অৱস্থানৰ দৰে অন্য অনুমতিসমূহত প্ৰভাৱ নেপেলায়।"</string>
@@ -460,8 +439,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g>এ নেপথ্যৰ ডেটাকে ধৰি Health Connectৰ কোনো ডেটা আৰু পঢ়িব বা লিখিব নোৱাৰিব।\n\nএইটোৱে এই এপ্‌টোৰ ওচৰত থাকিব পৰা কেমেৰা, মাইক্ৰ’ফ’ন বা অৱস্থানৰ দৰে অন্য অনুমতিসমূহত প্ৰভাৱ নেপেলায়।"</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g>এ আগৰ ডেটাকে ধৰি Health Connectৰ কোনো ডেটা আৰু পঢ়িব বা লিখিব নোৱাৰিব।\n\nএইটোৱে এই এপ্‌টোৰ ওচৰত থাকিব পৰা কেমেৰা, মাইক্ৰ’ফ’ন বা অৱস্থানৰ দৰে অন্য অনুমতিসমূহত প্ৰভাৱ নেপেলায়।"</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g>এ নেপথ্য আৰু আগৰ ডেটাকে ধৰি Health Connectৰ কোনো ডেটা আৰু পঢ়িব বা লিখিব নোৱাৰিব।\n\nএইটোৱে এই এপ্‌টোৰ ওচৰত থাকিব পৰা কেমেৰা, মাইক্ৰ’ফ’ন বা অৱস্থানৰ দৰে অন্য অনুমতিসমূহত প্ৰভাৱ নেপেলায়।"</string>
-    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
-    <skip />
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"লগতে, <xliff:g id="APP_NAME">%1$s</xliff:g> Health Connectৰ পৰা সুস্থতাৰ ডেটা আৰু স্বাস্থ্য সম্বন্ধীয় নথি মচক"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"এই এপ্‌টোৰ বাবে অনুমতি আঁতৰোৱা হৈছে"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"লগতে Health Connectৰ আটাইবোৰ ডেটা মচক"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"পৰৱৰ্তী দিন"</string>
@@ -510,10 +488,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"অনুমতি"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"ফিটনেছ আৰু সুস্থতা"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"ব্যায়াম, টোপনি, পুষ্টি আৰু অন্যান্য"</string>
-    <!-- no translation found for medical_permissions (1066296298908103091) -->
-    <skip />
-    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
-    <skip />
+    <string name="medical_permissions" msgid="1066296298908103091">"চিকিৎসা সম্বন্ধীয় নথি"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"চিকিৎসা সম্বন্ধীয় নথি"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"লেবৰ ফলাফল, ঔষধ, প্ৰতিষেধক আৰু অন্যান্য"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"অনুমতি আঁতৰোৱা এপ্‌সমূহ"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connectএ <xliff:g id="APP_DATA">%s</xliff:g>ৰ অনুমতি আঁতৰাইছে"</string>
@@ -607,8 +583,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Play Storeলৈ যাওক"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Health Connect ব্যৱহাৰ কৰা আৰম্ভ কৰক"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connectএ আপোনাৰ স্বাস্থ্য আৰু শৰীৰচৰ্চা সম্পৰ্কীয় ডেটা ষ্ট’ৰ কৰি আপোনাক আপোনাৰ ডিভাইচত থকা বিভিন্ন এপ্‌সমূহ ছিংক কৰাৰ সহজ উপায় প্ৰদান কৰে"</string>
-    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
-    <skip />
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connectএ বিভিন্ন এপৰ পৰা আপোনাৰ স্বাস্থ্য আৰু শৰীৰচৰ্চা সম্পৰ্কীয় ডেটা ষ্ট’ৰ আৰু ছিংক কৰে।\n\n"<b>"স্বাস্থ্য আৰু কল্যাণমূলক ডেটা পাব পাৰে,"</b>" য’ত ব্যায়ামৰ ছেশ্বন, খোজকঢ়া, পৰিপুষ্টি, শোৱা আৰু অধিক অন্তৰ্ভুক্ত\n\n"<b>"স্বাস্থ্য সম্বন্ধীয় নথি,"</b>" য’ত প্ৰতিষেধক, লেবৰ ফলাফল আৰু অধিক অন্তৰ্ভুক্ত"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"আপুনি Health Connectৰ জৰিয়তে"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"আপোনাৰ এপৰ সৈতে ডেটা শ্বেয়াৰ কৰক"</b>\n"প্ৰতিটো এপে Health Connectত কি ডেটা পঢ়িব অথবা লিখিব পাৰিব সেয়া বাছনি কৰক"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"আপোনাৰ ছেটিং আৰু গোপনীয়তা পৰিচালনা কৰক"</b>\n"যিকোনো সময়তে এপৰ অনুমতি সলনি কৰক আৰু আপোনাৰ ডেটা পৰিচালনা কৰক"</string>
