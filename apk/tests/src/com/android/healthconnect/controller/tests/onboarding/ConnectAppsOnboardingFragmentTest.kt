@@ -134,45 +134,46 @@ class ConnectAppsOnboardingFragmentTest {
             )
         }
 
-        launchFragment<ConnectAppsOnboardingFragment>()
-
-        onView(withText("Connect your first app")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Health\u00A0Connect lets you store your health and fitness data in one " +
-                        "place and share it between apps on your phone, making your apps " +
-                        "work better together."
+        launchFragment<ConnectAppsOnboardingFragment>().use {
+            onView(withText("Connect your first app")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Health\u00A0Connect lets you store your health and fitness data in one " +
+                            "place and share it between apps on your phone, making your apps " +
+                            "work better together."
+                    )
                 )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
 
-        onView(withText("More about Health\u00A0Connect"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Available apps to connect"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
-        onView(withText(TEST_APP.appName)).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_2.appName)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("More about Health\u00A0Connect"))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+            onView(withText("Available apps to connect"))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
+            onView(withText(TEST_APP.appName)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_2.appName)).perform(scrollTo()).check(matches(isDisplayed()))
 
-        onView(withText("Set up later")).check(matches(isDisplayed()))
+            onView(withText("Set up later")).check(matches(isDisplayed()))
 
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.CONNECT_TWO_APPS_ONBOARDING_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger)
-            .logImpression(CommonOnboardingPageElement.APP_WITH_ONBOARDING_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(CommonOnboardingPageElement.APP_WITHOUT_ONBOARDING_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(CommonOnboardingPageElement.MORE_ABOUT_HEALTH_CONNECT_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(
-                ConnectTwoAppsOnboardingPageElement
-                    .CONNECT_FIRST_TWO_APPS_ONBOARDING_SET_UP_LATER_BUTTON
-            )
+            verify(healthConnectLogger, atLeast(1))
+                .setPageId(PageName.CONNECT_TWO_APPS_ONBOARDING_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger)
+                .logImpression(CommonOnboardingPageElement.APP_WITH_ONBOARDING_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(CommonOnboardingPageElement.APP_WITHOUT_ONBOARDING_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(CommonOnboardingPageElement.MORE_ABOUT_HEALTH_CONNECT_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(
+                    ConnectTwoAppsOnboardingPageElement
+                        .CONNECT_FIRST_TWO_APPS_ONBOARDING_SET_UP_LATER_BUTTON
+                )
+        }
     }
 
     @Test
@@ -199,43 +200,44 @@ class ConnectAppsOnboardingFragmentTest {
             )
         }
 
-        launchFragment<ConnectAppsOnboardingFragment>()
-
-        onView(withText("Connect a second app")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Health\u00A0Connect lets you store your health and fitness data in one " +
-                        "place and share it between apps on your phone, making your apps " +
-                        "work better together."
+        launchFragment<ConnectAppsOnboardingFragment>().use {
+            onView(withText("Connect a second app")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Health\u00A0Connect lets you store your health and fitness data in one " +
+                            "place and share it between apps on your phone, making your apps " +
+                            "work better together."
+                    )
                 )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
 
-        onView(withText("More about Health\u00A0Connect"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Available apps to connect"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText(TEST_APP_2.appName)).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText(TEST_APP.appName)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("More about Health\u00A0Connect"))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+            onView(withText("Available apps to connect"))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+            onView(withText(TEST_APP_2.appName)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText(TEST_APP.appName)).perform(scrollTo()).check(matches(isDisplayed()))
 
-        onView(withText("Set up later")).check(matches(isDisplayed()))
+            onView(withText("Set up later")).check(matches(isDisplayed()))
 
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.CONNECT_ONE_APP_ONBOARDING_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger)
-            .logImpression(CommonOnboardingPageElement.APP_WITH_ONBOARDING_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(ConnectSecondAddOnboardingPageElement.CONNECTED_APP_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(CommonOnboardingPageElement.MORE_ABOUT_HEALTH_CONNECT_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(
-                ConnectSecondAddOnboardingPageElement
-                    .CONNECT_SECOND_APP_ONBOARDING_SET_UP_LATER_BUTTON
-            )
+            verify(healthConnectLogger, atLeast(1))
+                .setPageId(PageName.CONNECT_ONE_APP_ONBOARDING_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger)
+                .logImpression(CommonOnboardingPageElement.APP_WITH_ONBOARDING_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(ConnectSecondAddOnboardingPageElement.CONNECTED_APP_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(CommonOnboardingPageElement.MORE_ABOUT_HEALTH_CONNECT_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(
+                    ConnectSecondAddOnboardingPageElement
+                        .CONNECT_SECOND_APP_ONBOARDING_SET_UP_LATER_BUTTON
+                )
+        }
     }
 
     @Test
@@ -251,38 +253,38 @@ class ConnectAppsOnboardingFragmentTest {
             )
         }
 
-        launchFragment<ConnectAppsOnboardingFragment>()
+        launchFragment<ConnectAppsOnboardingFragment>().use {
+            onView(withText("Almost done")).check(matches(isDisplayed()))
+            onView(withText("Open these apps now to finish setup and start data sharing"))
+                .check(matches(isDisplayed()))
+            onView(withText("Connected apps")).check(matches(isDisplayed()))
+            onView(withText(TEST_APP.appName)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_2.appName)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("Available apps to connect")).check(doesNotExist())
 
-        onView(withText("Almost done")).check(matches(isDisplayed()))
-        onView(withText("Open these apps now to finish setup and start data sharing"))
-            .check(matches(isDisplayed()))
-        onView(withText("Connected apps")).check(matches(isDisplayed()))
-        onView(withText(TEST_APP.appName)).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_2.appName)).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Available apps to connect")).check(doesNotExist())
-
-        onView(
-                withText(
-                    "Health\u00A0Connect lets you store your health and fitness data in one " +
-                        "place and share it between apps on your phone, making your apps " +
-                        "work better together."
+            onView(
+                    withText(
+                        "Health\u00A0Connect lets you store your health and fitness data in one " +
+                            "place and share it between apps on your phone, making your apps " +
+                            "work better together."
+                    )
                 )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
 
-        onView(withText("More about Health\u00A0Connect"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Done")).check(matches(isDisplayed()))
+            onView(withText("More about Health\u00A0Connect"))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+            onView(withText("Done")).check(matches(isDisplayed()))
 
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ALMOST_DONE_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger, times(2))
-            .logImpression(AlmostDonePageElement.ONBOARDING_APP_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(CommonOnboardingPageElement.MORE_ABOUT_HEALTH_CONNECT_BUTTON)
-        verify(healthConnectLogger).logImpression(AlmostDonePageElement.ONBOARDING_DONE_BUTTON)
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ALMOST_DONE_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger, times(2))
+                .logImpression(AlmostDonePageElement.ONBOARDING_APP_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(CommonOnboardingPageElement.MORE_ABOUT_HEALTH_CONNECT_BUTTON)
+            verify(healthConnectLogger).logImpression(AlmostDonePageElement.ONBOARDING_DONE_BUTTON)
+        }
     }
 
     @Test
@@ -300,48 +302,48 @@ class ConnectAppsOnboardingFragmentTest {
             )
         }
 
-        launchFragment<ConnectAppsOnboardingFragment>()
-
-        onView(withText("Almost done")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Open these apps now to finish setup and start data sharing, or keep connecting available apps"
+        launchFragment<ConnectAppsOnboardingFragment>().use {
+            onView(withText("Almost done")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Open these apps now to finish setup and start data sharing, or keep connecting available apps"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Connected apps")).check(matches(isDisplayed()))
-        onView(withText(TEST_APP.appName)).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_2.appName)).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Available apps to connect"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        scrollToBottomOfPreferenceScreen()
-        onView(withText(TEST_APP_3.appName)).perform(scrollTo()).check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+            onView(withText("Connected apps")).check(matches(isDisplayed()))
+            onView(withText(TEST_APP.appName)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_2.appName)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("Available apps to connect"))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+            scrollToBottomOfPreferenceScreen()
+            onView(withText(TEST_APP_3.appName)).perform(scrollTo()).check(matches(isDisplayed()))
 
-        onView(
-                withText(
-                    "Health\u00A0Connect lets you store your health and fitness data in one " +
-                        "place and share it between apps on your phone, making your apps " +
-                        "work better together."
+            onView(
+                    withText(
+                        "Health\u00A0Connect lets you store your health and fitness data in one " +
+                            "place and share it between apps on your phone, making your apps " +
+                            "work better together."
+                    )
                 )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
 
-        onView(withText("More about Health\u00A0Connect"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Done")).check(matches(isDisplayed()))
+            onView(withText("More about Health\u00A0Connect"))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+            onView(withText("Done")).check(matches(isDisplayed()))
 
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ALMOST_DONE_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger, times(2))
-            .logImpression(AlmostDonePageElement.ONBOARDING_APP_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(CommonOnboardingPageElement.APP_WITHOUT_ONBOARDING_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(CommonOnboardingPageElement.MORE_ABOUT_HEALTH_CONNECT_BUTTON)
-        verify(healthConnectLogger).logImpression(AlmostDonePageElement.ONBOARDING_DONE_BUTTON)
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ALMOST_DONE_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger, times(2))
+                .logImpression(AlmostDonePageElement.ONBOARDING_APP_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(CommonOnboardingPageElement.APP_WITHOUT_ONBOARDING_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(CommonOnboardingPageElement.MORE_ABOUT_HEALTH_CONNECT_BUTTON)
+            verify(healthConnectLogger).logImpression(AlmostDonePageElement.ONBOARDING_DONE_BUTTON)
+        }
     }
 
     @Test
@@ -376,15 +378,16 @@ class ConnectAppsOnboardingFragmentTest {
             )
             .thenReturn(testIntent)
 
-        launchFragment<ConnectAppsOnboardingFragment>()
-        onView(withText(TEST_APP_NAME)).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME)).perform(click())
+        launchFragment<ConnectAppsOnboardingFragment>().use {
+            onView(withText(TEST_APP_NAME)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_NAME)).perform(click())
 
-        Intents.intended(hasAction(ACTION_SHOW_ONBOARDING))
-        Intents.intended(hasPackage(TEST_APP_PACKAGE_NAME))
+            Intents.intended(hasAction(ACTION_SHOW_ONBOARDING))
+            Intents.intended(hasPackage(TEST_APP_PACKAGE_NAME))
 
-        verify(healthConnectLogger)
-            .logInteraction(CommonOnboardingPageElement.APP_WITH_ONBOARDING_BUTTON)
+            verify(healthConnectLogger)
+                .logInteraction(CommonOnboardingPageElement.APP_WITH_ONBOARDING_BUTTON)
+        }
     }
 
     @Test
@@ -409,17 +412,18 @@ class ConnectAppsOnboardingFragmentTest {
         }
 
         launchFragment<ConnectAppsOnboardingFragment> {
-            navHostController.setGraph(R.navigation.onboarding_nav_graph)
-            navHostController.setCurrentDestination(R.id.connectAppsOnboardingFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-
-        onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME_2)).perform(click())
-        assertThat(navHostController.currentDestination?.id)
-            .isEqualTo(R.id.fitnessAppOnboardingFragment)
-        verify(healthConnectLogger)
-            .logInteraction(CommonOnboardingPageElement.APP_WITHOUT_ONBOARDING_BUTTON)
+                navHostController.setGraph(R.navigation.onboarding_nav_graph)
+                navHostController.setCurrentDestination(R.id.connectAppsOnboardingFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
+                onView(withText(TEST_APP_NAME_2)).perform(click())
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.fitnessAppOnboardingFragment)
+                verify(healthConnectLogger)
+                    .logInteraction(CommonOnboardingPageElement.APP_WITHOUT_ONBOARDING_BUTTON)
+            }
     }
 
     @Test
