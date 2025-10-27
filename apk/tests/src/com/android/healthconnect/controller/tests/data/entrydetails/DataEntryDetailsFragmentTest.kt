@@ -77,9 +77,6 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.SLEEP
 import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.app.AppInfoReader
-import com.android.healthconnect.controller.shared.app.AppMetadata
-import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
-import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TestData.WARSAW_ROUTE
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.getPlannedExerciseBlock
@@ -103,7 +100,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.atMost
 import org.mockito.kotlin.mock
@@ -144,14 +140,13 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(emptyList())))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(
-                permissionType = SLEEP,
-                entryId = "1",
-                showDataOrigin = true,
+                DataEntryDetailsFragment.createBundle(
+                    permissionType = SLEEP,
+                    entryId = "1",
+                    showDataOrigin = true,
+                )
             )
-        )
-
-        onView(withId(R.id.loading)).check(matches(not(isDisplayed())))
+            .use { onView(withId(R.id.loading)).check(matches(not(isDisplayed()))) }
     }
 
     @Test
@@ -159,14 +154,13 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(LoadingFailed))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(
-                permissionType = SLEEP,
-                entryId = "1",
-                showDataOrigin = true,
+                DataEntryDetailsFragment.createBundle(
+                    permissionType = SLEEP,
+                    entryId = "1",
+                    showDataOrigin = true,
+                )
             )
-        )
-
-        onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+            .use { onView(withId(R.id.error_view)).check(matches(isDisplayed())) }
     }
 
     @Test
@@ -174,14 +168,13 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(Loading))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(
-                permissionType = SLEEP,
-                entryId = "1",
-                showDataOrigin = true,
+                DataEntryDetailsFragment.createBundle(
+                    permissionType = SLEEP,
+                    entryId = "1",
+                    showDataOrigin = true,
+                )
             )
-        )
-
-        onView(withId(R.id.loading)).check(matches(isDisplayed()))
+            .use { onView(withId(R.id.loading)).check(matches(isDisplayed())) }
     }
 
     @Test
@@ -206,19 +199,20 @@ class DataEntryDetailsFragmentTest {
             )
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(
-                permissionType = SLEEP,
-                entryId = "1",
-                showDataOrigin = true,
+                DataEntryDetailsFragment.createBundle(
+                    permissionType = SLEEP,
+                    entryId = "1",
+                    showDataOrigin = true,
+                )
             )
-        )
+            .use {
+                onView(withText("07:06 • TEST_APP_NAME")).check(matches(isDisplayed()))
+                onView(withText("12 hour sleeping")).check(matches(isDisplayed()))
+                onView(withText("notes")).check(matches(isDisplayed()))
 
-        onView(withText("07:06 • TEST_APP_NAME")).check(matches(isDisplayed()))
-        onView(withText("12 hour sleeping")).check(matches(isDisplayed()))
-        onView(withText("notes")).check(matches(isDisplayed()))
-
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ENTRY_DETAILS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
+                verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ENTRY_DETAILS_PAGE)
+                verify(healthConnectLogger).logPageImpression()
+            }
     }
 
     @Test
@@ -230,16 +224,17 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(
-                permissionType = SLEEP,
-                entryId = "1",
-                showDataOrigin = true,
+                DataEntryDetailsFragment.createBundle(
+                    permissionType = SLEEP,
+                    entryId = "1",
+                    showDataOrigin = true,
+                )
             )
-        )
-
-        onView(withText("12 hour sleeping")).check(matches(isDisplayed()))
-        onView(withText("6 hour light sleeping")).check(matches(isDisplayed()))
-        onView(withText("6 hour deep sleeping")).check(matches(isDisplayed()))
+            .use {
+                onView(withText("12 hour sleeping")).check(matches(isDisplayed()))
+                onView(withText("6 hour light sleeping")).check(matches(isDisplayed()))
+                onView(withText("6 hour deep sleeping")).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -249,15 +244,16 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(
-                permissionType = HEART_RATE,
-                entryId = "1",
-                showDataOrigin = true,
+                DataEntryDetailsFragment.createBundle(
+                    permissionType = HEART_RATE,
+                    entryId = "1",
+                    showDataOrigin = true,
+                )
             )
-        )
-
-        onView(withText("07:06 - 8:06 • TEST_APP_NAME")).check(matches(isDisplayed()))
-        onView(withText("100 bpm")).check(matches(isDisplayed()))
+            .use {
+                onView(withText("07:06 - 8:06 • TEST_APP_NAME")).check(matches(isDisplayed()))
+                onView(withText("100 bpm")).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -269,23 +265,24 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(
-                permissionType = SKIN_TEMPERATURE,
-                entryId = "1",
-                showDataOrigin = true,
+                DataEntryDetailsFragment.createBundle(
+                    permissionType = SKIN_TEMPERATURE,
+                    entryId = "1",
+                    showDataOrigin = true,
+                )
             )
-        )
-
-        onView(withText("+0.5℃ (avg variation)")).check(matches(isDisplayed()))
-        onView(withText("Measurement location")).check(matches(isDisplayed()))
-        onView(withText("Toe")).check(matches(isDisplayed()))
-        onView(withText("Baseline")).check(matches(isDisplayed()))
-        onView(withText("25℃")).check(matches(isDisplayed()))
-        onView(withText("Variation from baseline")).check(matches(isDisplayed()))
-        verify(healthConnectLogger, times(2))
-            .logImpression((EntryDetailsElement.REVERSE_SESSION_DETAIL_ENTRY_VIEW))
-        verify(healthConnectLogger)
-            .logImpression((EntryDetailsElement.FORMATTED_SECTION_TITLE_VIEW))
+            .use {
+                onView(withText("+0.5℃ (avg variation)")).check(matches(isDisplayed()))
+                onView(withText("Measurement location")).check(matches(isDisplayed()))
+                onView(withText("Toe")).check(matches(isDisplayed()))
+                onView(withText("Baseline")).check(matches(isDisplayed()))
+                onView(withText("25℃")).check(matches(isDisplayed()))
+                onView(withText("Variation from baseline")).check(matches(isDisplayed()))
+                verify(healthConnectLogger, times(2))
+                    .logImpression((EntryDetailsElement.REVERSE_SESSION_DETAIL_ENTRY_VIEW))
+                verify(healthConnectLogger)
+                    .logImpression((EntryDetailsElement.FORMATTED_SECTION_TITLE_VIEW))
+            }
     }
 
     @Test
@@ -297,23 +294,24 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(
-                permissionType = SKIN_TEMPERATURE,
-                entryId = "1",
-                showDataOrigin = true,
+                DataEntryDetailsFragment.createBundle(
+                    permissionType = SKIN_TEMPERATURE,
+                    entryId = "1",
+                    showDataOrigin = true,
+                )
             )
-        )
-
-        onView(withText("+0.5℃ (avg variation)")).check(matches(isDisplayed()))
-        onView(withText("Measurement location")).check(doesNotExist())
-        onView(withText("Toe")).check(doesNotExist())
-        onView(withText("Baseline")).check(matches(isDisplayed()))
-        onView(withText("25℃")).check(matches(isDisplayed()))
-        onView(withText("Variation from baseline")).check(matches(isDisplayed()))
-        verify(healthConnectLogger, atMost(1))
-            .logImpression((EntryDetailsElement.REVERSE_SESSION_DETAIL_ENTRY_VIEW))
-        verify(healthConnectLogger)
-            .logImpression((EntryDetailsElement.FORMATTED_SECTION_TITLE_VIEW))
+            .use {
+                onView(withText("+0.5℃ (avg variation)")).check(matches(isDisplayed()))
+                onView(withText("Measurement location")).check(doesNotExist())
+                onView(withText("Toe")).check(doesNotExist())
+                onView(withText("Baseline")).check(matches(isDisplayed()))
+                onView(withText("25℃")).check(matches(isDisplayed()))
+                onView(withText("Variation from baseline")).check(matches(isDisplayed()))
+                verify(healthConnectLogger, atMost(1))
+                    .logImpression((EntryDetailsElement.REVERSE_SESSION_DETAIL_ENTRY_VIEW))
+                verify(healthConnectLogger)
+                    .logImpression((EntryDetailsElement.FORMATTED_SECTION_TITLE_VIEW))
+            }
     }
 
     @Test
@@ -325,23 +323,24 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(
-                permissionType = SKIN_TEMPERATURE,
-                entryId = "1",
-                showDataOrigin = true,
+                DataEntryDetailsFragment.createBundle(
+                    permissionType = SKIN_TEMPERATURE,
+                    entryId = "1",
+                    showDataOrigin = true,
+                )
             )
-        )
-
-        onView(withText("+0.5℃ (avg variation)")).check(matches(isDisplayed()))
-        onView(withText("Measurement location")).check(matches(isDisplayed()))
-        onView(withText("Toe")).check(matches(isDisplayed()))
-        onView(withText("Baseline")).check(doesNotExist())
-        onView(withText("25℃")).check(doesNotExist())
-        onView(withText("Variation from baseline")).check(matches(isDisplayed()))
-        verify(healthConnectLogger, atMost(1))
-            .logImpression((EntryDetailsElement.REVERSE_SESSION_DETAIL_ENTRY_VIEW))
-        verify(healthConnectLogger)
-            .logImpression((EntryDetailsElement.FORMATTED_SECTION_TITLE_VIEW))
+            .use {
+                onView(withText("+0.5℃ (avg variation)")).check(matches(isDisplayed()))
+                onView(withText("Measurement location")).check(matches(isDisplayed()))
+                onView(withText("Toe")).check(matches(isDisplayed()))
+                onView(withText("Baseline")).check(doesNotExist())
+                onView(withText("25℃")).check(doesNotExist())
+                onView(withText("Variation from baseline")).check(matches(isDisplayed()))
+                verify(healthConnectLogger, atMost(1))
+                    .logImpression((EntryDetailsElement.REVERSE_SESSION_DETAIL_ENTRY_VIEW))
+                verify(healthConnectLogger)
+                    .logImpression((EntryDetailsElement.FORMATTED_SECTION_TITLE_VIEW))
+            }
     }
 
     @Test
@@ -353,16 +352,17 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(
-                permissionType = EXERCISE,
-                entryId = "1",
-                showDataOrigin = true,
+                DataEntryDetailsFragment.createBundle(
+                    permissionType = EXERCISE,
+                    entryId = "1",
+                    showDataOrigin = true,
+                )
             )
-        )
-
-        onView(withText("• Set 0")).check(matches(isDisplayed()))
-        onView(withText("• 5 kg")).check(matches(isDisplayed()))
-        onView(withText("• RPE: 4")).check(matches(isDisplayed()))
+            .use {
+                onView(withText("• Set 0")).check(matches(isDisplayed()))
+                onView(withText("• 5 kg")).check(matches(isDisplayed()))
+                onView(withText("• RPE: 4")).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -370,15 +370,16 @@ class DataEntryDetailsFragmentTest {
         val list = buildList { add(getFormattedExerciseSession(showSession = true)) }
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(
-                permissionType = EXERCISE,
-                entryId = "1",
-                showDataOrigin = true,
+                DataEntryDetailsFragment.createBundle(
+                    permissionType = EXERCISE,
+                    entryId = "1",
+                    showDataOrigin = true,
+                )
             )
-        )
-
-        onView(withText("12 hour running")).check(matches(isDisplayed()))
-        onView(withId(R.id.map_view)).check(matches(isDisplayed()))
+            .use {
+                onView(withText("12 hour running")).check(matches(isDisplayed()))
+                onView(withId(R.id.map_view)).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -386,15 +387,16 @@ class DataEntryDetailsFragmentTest {
         val list = buildList { add(getFormattedExerciseSession(showSession = false)) }
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(
-                permissionType = EXERCISE,
-                entryId = "1",
-                showDataOrigin = true,
+                DataEntryDetailsFragment.createBundle(
+                    permissionType = EXERCISE,
+                    entryId = "1",
+                    showDataOrigin = true,
+                )
             )
-        )
-
-        onView(withText("12 hour running")).check(matches(isDisplayed()))
-        onView(withId(R.id.map_view)).check(matches(not(isDisplayed())))
+            .use {
+                onView(withText("12 hour running")).check(matches(isDisplayed()))
+                onView(withId(R.id.map_view)).check(matches(not(isDisplayed())))
+            }
     }
 
     @Test
@@ -489,29 +491,32 @@ class DataEntryDetailsFragmentTest {
         whenever(viewModel.sessionData).thenReturn(MutableLiveData(WithData(list)))
 
         launchFragment<DataEntryDetailsFragment>(
-            DataEntryDetailsFragment.createBundle(
-                permissionType = PLANNED_EXERCISE,
-                entryId = "1",
-                showDataOrigin = true,
+                DataEntryDetailsFragment.createBundle(
+                    permissionType = PLANNED_EXERCISE,
+                    entryId = "1",
+                    showDataOrigin = true,
+                )
             )
-        )
-
-        onView(withText("07:06 - 08:06 • Health Connect test app")).check(matches(isDisplayed()))
-        onView(withText("Running • Morning Run")).check(matches(isDisplayed()))
-        onView(withText("Notes")).check(matches(isDisplayed()))
-        onView(withText("Morning quick run by the park")).check(matches(isDisplayed()))
-        onView(withText("Warm up: 1 time")).check(matches(isDisplayed()))
-        onView(withText("4 km Running")).check(matches(isDisplayed()))
-        onView(withText("• This is a test exercise step")).check(matches(isDisplayed()))
-        onView(withText("• 150 bpm - 180 bpm")).check(matches(isDisplayed()))
-        onView(withText("• 180 km/h - 90 km/h")).check(matches(isDisplayed()))
-        verify(healthConnectLogger, times(2))
-            .logImpression((EntryDetailsElement.FORMATTED_SECTION_CONTENT_VIEW))
-        verify(healthConnectLogger)
-            .logImpression((EntryDetailsElement.PLANNED_EXERCISE_BLOCK_ENTRY_VIEW))
-        verify(healthConnectLogger)
-            .logImpression((EntryDetailsElement.PLANNED_EXERCISE_STEP_ENTRY_VIEW))
-        verify(healthConnectLogger).logImpression((EntryDetailsElement.SESSION_DETAIL_HEADER_VIEW))
+            .use {
+                onView(withText("07:06 - 08:06 • Health Connect test app"))
+                    .check(matches(isDisplayed()))
+                onView(withText("Running • Morning Run")).check(matches(isDisplayed()))
+                onView(withText("Notes")).check(matches(isDisplayed()))
+                onView(withText("Morning quick run by the park")).check(matches(isDisplayed()))
+                onView(withText("Warm up: 1 time")).check(matches(isDisplayed()))
+                onView(withText("4 km Running")).check(matches(isDisplayed()))
+                onView(withText("• This is a test exercise step")).check(matches(isDisplayed()))
+                onView(withText("• 150 bpm - 180 bpm")).check(matches(isDisplayed()))
+                onView(withText("• 180 km/h - 90 km/h")).check(matches(isDisplayed()))
+                verify(healthConnectLogger, times(2))
+                    .logImpression((EntryDetailsElement.FORMATTED_SECTION_CONTENT_VIEW))
+                verify(healthConnectLogger)
+                    .logImpression((EntryDetailsElement.PLANNED_EXERCISE_BLOCK_ENTRY_VIEW))
+                verify(healthConnectLogger)
+                    .logImpression((EntryDetailsElement.PLANNED_EXERCISE_STEP_ENTRY_VIEW))
+                verify(healthConnectLogger)
+                    .logImpression((EntryDetailsElement.SESSION_DETAIL_HEADER_VIEW))
+            }
     }
 
     private fun getSleepStages(): List<FormattedEntry> {

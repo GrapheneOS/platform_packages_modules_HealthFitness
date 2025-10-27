@@ -58,18 +58,20 @@ class EntriesAndAccessFragmentTest {
     @Test
     fun entriesAndAccessInit_showsTabs() {
         launchFragment<EntriesAndAccessFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-
-        onView(withText("Entries")).check(matches(isDisplayed()))
-        onView(withText("Access")).check(matches(isDisplayed()))
+            .use {
+                onView(withText("Entries")).check(matches(isDisplayed()))
+                onView(withText("Access")).check(matches(isDisplayed()))
+            }
     }
 
     @Test
     fun entriesAndAccessInit_medicalData_showsTabs() {
         launchFragment<EntriesAndAccessFragment>(
-            bundleOf(PERMISSION_TYPE_NAME_KEY to VACCINES.name)
-        )
-
-        onView(withText("Entries")).check(matches(isDisplayed()))
-        onView(withText("Access")).check(matches(isDisplayed()))
+                bundleOf(PERMISSION_TYPE_NAME_KEY to VACCINES.name)
+            )
+            .use {
+                onView(withText("Entries")).check(matches(isDisplayed()))
+                onView(withText("Access")).check(matches(isDisplayed()))
+            }
     }
 }
