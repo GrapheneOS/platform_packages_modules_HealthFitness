@@ -23,8 +23,10 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"அனுமதிகளும் தரவும்"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"ஆரோக்கியம் மற்றும் உடற்பயிற்சி குறித்த தரவை உங்கள் சாதனத்தில் நிர்வகிக்கலாம், அதை எந்தெந்த ஆப்ஸ் அணுகலாம் என்பதைக் கட்டுப்படுத்தலாம்"</string>
     <string name="data_title" msgid="4456619761533380816">"தரவு மற்றும் அணுகல்"</string>
-    <string name="browse_medical_data" msgid="6963802956096683273">"உடல்நலம் குறித்த தகவல்களைத் தேடுதல்"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"உங்கள் உடல்நலம் குறித்த சுருக்கமான தகவல்களையும் அவற்றை எந்த ஆப்ஸ் அணுகலாம் என்பதையும் பார்க்கலாம்"</string>
+    <!-- no translation found for browse_medical_data (6492659245149862639) -->
+    <skip />
+    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
+    <skip />
     <string name="all_categories_title" msgid="1446410643217937926">"அனைத்து வகைகளும்"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"அனைத்து வகைகளையும் காட்டு"</string>
     <string name="no_data" msgid="1906986019249068659">"தரவு எதுவும் இல்லை"</string>
@@ -110,8 +112,10 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"எரித்த கலோரிகளை வாசிக்கும்"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"எரிக்கப்பட்ட கலோரிகள் குறித்த தரவை வாசிக்க ஆப்ஸை அனுமதிக்கும்"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"பின்னணியில் தரவை அணுக <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸை அனுமதிக்கவா?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"நீங்கள் அனுமதித்தால், ஆப்ஸைப் பயன்படுத்தாதபோது உடற்பயிற்சி மற்றும் ஆரோக்கியம் குறித்த தரவையும் உடல்நலம் குறித்த சுருக்கமான தகவல்களையும் இந்த ஆப்ஸ் அணுகலாம்."</string>
-    <string name="background_read_medical_single_request_description_medical_granted" msgid="5162456401369633859">"நீங்கள் அனுமதித்தால், ஆப்ஸைப் பயன்படுத்தாதபோது உடல்நலம் குறித்த சுருக்கமான தகவல்களை இந்த ஆப்ஸ் அணுகலாம்."</string>
+    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
+    <skip />
+    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
+    <skip />
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"நீங்கள் அனுமதித்தால், ஆப்ஸைப் பயன்படுத்தாதபோது உடற்பயிற்சி மற்றும் ஆரோக்கியம் குறித்த தரவை இந்த ஆப்ஸ் அணுகலாம்."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"நீங்கள் அனுமதித்தால், ஆப்ஸைப் பயன்படுத்தாதபோது Health Connect தரவை இந்த ஆப்ஸ் அணுகலாம்."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"முந்தைய தரவை அணுக <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸை அனுமதிக்கவா?"</string>
@@ -122,9 +126,11 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"<xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸுக்கான கூடுதல் அணுகலை வழங்கவா?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g> இந்த Health Connect அமைப்புகளையும் அணுகக் கேட்கிறது"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"பின்னணியில் அனைத்துத் தரவையும் அணுகுதல்"</string>
-    <string name="background_read_medical_combined_request_title_medical_granted" msgid="7245376864667067106">"பின்னணியில் உடல்நலம் குறித்த சுருக்கமான தகவல்களை அணுகுதல்"</string>
+    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
+    <skip />
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"பின்னணியில் உடற்பயிற்சி மற்றும் ஆரோக்கியம் குறித்த தரவை அணுகுதல்"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"ஆப்ஸை நீங்கள் பயன்படுத்தாதபோது, ஆரோக்கியம் மற்றும் உடற்பயிற்சி குறித்த தரவையும் உடல்நலம் குறித்த சுருக்கமான தகவல்களையும் அணுக இந்த ஆப்ஸை அனுமதிக்கும்"</string>
+    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
+    <skip />
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"ஆப்ஸை நீங்கள் பயன்படுத்தாதபோது, இந்தத் தரவை அணுக இந்த ஆப்ஸை அனுமதிக்கும்"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"ஆப்ஸை நீங்கள் பயன்படுத்தாதபோது, இந்தத் தரவை அணுக இந்த ஆப்ஸை அனுமதிக்கும்"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"பின்னணியில் தரவை அணுகுதல்"</string>
@@ -135,12 +141,15 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"முந்தைய தரவை அணுகுதல்"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>க்கு முன்பு சேர்க்கப்பட்ட Health Connect தரவை அணுக இந்த ஆப்ஸை அனுமதிக்கும்"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"முந்தைய Health Connect தரவு அனைத்தையும் அணுக இந்த ஆப்ஸை அனுமதிக்கும்"</string>
-    <string name="history_read_medical_combined_request_footer" msgid="5301940225768076844">"உங்கள் உடல்நலம் குறித்த சுருக்கமான தகவல்கள் தொடர்பான முந்தைய தரவை ஏற்கெனவே <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸால் அணுக முடியும்"</string>
+    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
+    <skip />
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"அனுமதிகள் குறித்து மேலும் அறிக"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"பின்னணியில் அனைத்துத் தரவையும் அணுகுதல்"</string>
-    <string name="background_read_medical_access_title_medical_granted" msgid="7852915238347056139">"பின்னணியில் உடல்நலம் குறித்த சுருக்கமான தகவல்களை அணுகுதல்"</string>
+    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
+    <skip />
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"பின்னணியில் உடற்பயிற்சி மற்றும் ஆரோக்கியம் குறித்த தரவை அணுகுதல்"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"ஆப்ஸை நீங்கள் பயன்படுத்தாதபோது, ஆரோக்கியம் மற்றும் உடற்பயிற்சி குறித்த தரவையும் உடல்நலம் குறித்த சுருக்கமான தகவல்களையும் அணுக இந்த ஆப்ஸை அனுமதிக்கும்"</string>
+    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
+    <skip />
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"ஆப்ஸை நீங்கள் பயன்படுத்தாதபோது, இந்தத் தரவை அணுக இந்த ஆப்ஸை அனுமதிக்கும்"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"ஆப்ஸை நீங்கள் பயன்படுத்தாதபோது, இந்தத் தரவை அணுக இந்த ஆப்ஸை அனுமதிக்கும்"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"பின்னணியில் தரவை அணுகுதல்"</string>
@@ -152,8 +161,10 @@
     <string name="history_read_access_description" msgid="800722432229526128">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>க்கு முன்பு சேர்க்கப்பட்ட Health Connect தரவை அணுக இந்த ஆப்ஸை அனுமதிக்கும்"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"முந்தைய Health Connect தரவு அனைத்தையும் அணுக இந்த ஆப்ஸை அனுமதிக்கும்"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"படிப்பதற்கான அனுமதிகள் <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸுக்கு வழங்கப்படாததால் உடற்பயிற்சித் தரவு எதுவும் தற்போது படிக்கப்படவில்லை"</string>
-    <string name="additional_access_medical_read_footer" msgid="4640796038121080343">"உங்கள் உடல்நலப் பதிவுகள் தொடர்பான முந்தைய தரவை ஏற்கெனவே <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸால் அணுக முடியும். இதை மாற்ற, இந்த ஆப்ஸுக்கான உடல்நலப் பதிவு அனுமதிகளை முடக்குங்கள்."</string>
-    <string name="additional_access_medical_read_footer_link" msgid="2797623091827504856">"உடல்நலப் பதிவு அனுமதிகளை நிர்வகியுங்கள்"</string>
+    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
+    <skip />
+    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
+    <skip />
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"இந்த ஆப்ஸுக்கான பின்புல அல்லது கடந்தகாலத் தரவு அணுகலை இயக்க, குறைந்தபட்சம் ஒரு \'படிப்பதற்கான அனுமதியை\' இயக்கவும்"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"இந்த ஆப்ஸுக்கான பின்புல அணுகலை இயக்க, குறைந்தபட்சம் \'படிப்பதற்கான அனுமதி\' ஒன்றை இயக்கவும்"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"இந்த ஆப்ஸுக்கான கடந்தகாலத் தரவு அணுகலை இயக்க, குறைந்தபட்சம் \'படிப்பதற்கான அனுமதி\' ஒன்றை இயக்கவும்"</string>
@@ -328,10 +339,14 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"தோல் வெப்பநிலை"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"தோல் வெப்பநிலையைப் படி"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"தோல் வெப்பநிலையை எழுது"</string>
-    <string name="browse_health_records_intro" msgid="1611488691642390523">"Health Connect உடன் ஒத்திசைக்கப்பட்ட மற்றும் அதில் சேர்க்கப்பட்ட உடல்நலம் குறித்த சுருக்கமான தகவல்கள் இதில் அடங்கும். இது உங்களின் முழுமையான மருத்துப் பதிவாக இல்லாமல் இருக்கலாம் மற்றும் உங்கள் உடல்நலம் குறித்த சுருக்கமான தகவல்களின் மருத்துவ விளக்கமும் இதில் இருக்காது."</string>
-    <string name="all_medical_data_uppercase_label" msgid="2380759160541898783">"உடல்நலம் குறித்த சுருக்கமான தகவல்கள் அனைத்தும்"</string>
-    <string name="all_medical_data_lowercase_label" msgid="6293814928992081842">"உடல்நலம் குறித்த சுருக்கமான தகவல்கள் அனைத்தும்"</string>
-    <string name="all_medical_data_content_description" msgid="4846586780533295022">"உடல்நலம் குறித்த சுருக்கமான தகவல்கள் அனைத்தையும் எழுதும்"</string>
+    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
+    <skip />
+    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
+    <skip />
+    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
+    <skip />
+    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
+    <skip />
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"ஒவ்வாமைகள்"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"ஒவ்வாமைகள்"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"ஒவ்வாமைகள் தொடர்பான தரவைப் படிக்கும்"</string>
@@ -412,13 +427,17 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"உடற்பயிற்சி மற்றும் ஆரோக்கியம் குறித்த தரவை அணுக <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸை அனுமதிக்கவா?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸ் உங்கள் தரவை எப்படிக் கையாளுகிறது என்பதை <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> பக்கத்தில் நீங்கள் தெரிந்துகொள்ளலாம்"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"தனியுரிமைக் கொள்கை"</string>
-    <string name="medical_request_header" msgid="2300521519021510027">"உங்கள் உடல்நலம் குறித்த சுருக்கமான தகவல்களை அணுக <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸை அனுமதிக்கவா?"</string>
+    <!-- no translation found for medical_request_header (5701693055388739014) -->
+    <skip />
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"நீங்கள் அனுமதி வழங்கினால் ஒவ்வாமைகள், ஆய்வக முடிவுகள், தடுப்பூசிகள் போன்ற தரவை ஆப்ஸ் படிக்கலாம் எழுதலாம்\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"நீங்கள் அனுமதி வழங்கினால் ஒவ்வாமைகள், ஆய்வக முடிவுகள், தடுப்பூசிகள் போன்ற தரவை ஆப்ஸ் படிக்கலாம்\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_about_health_records" msgid="7204918218748362687">"உடல்நலம் குறித்த சுருக்கமான தகவல்கள் பற்றிய அறிமுகம்"</string>
+    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
+    <skip />
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"பகிர்வதற்கான தரவில் இவையும் அடங்கும்"</string>
-    <string name="medical_request_summary" msgid="7281321524805015510">"நீங்கள் அனுமதித்தால் உங்கள் உடல்நலம் குறித்த சுருக்கமான தகவல்களை Health Connect உடன் <xliff:g id="APP_NAME">%1$s</xliff:g> பகிரலாம்."</string>
-    <string name="medical_request_footer" msgid="6533749932770903089">"வெவ்வேறு ஆப்ஸ் மற்றும் மூலங்களில் இருந்து உங்கள் உடல்நலம் குறித்த சுருக்கமான தகவல்களை ஒரே இடத்தில் வைத்திருக்க அவற்றை ஒத்திசைக்கவும்"</string>
+    <!-- no translation found for medical_request_summary (553735170968628758) -->
+    <skip />
+    <!-- no translation found for medical_request_footer (157243861031258933) -->
+    <skip />
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"எல்லா அனுமதிகளையும் அகற்றவா?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"அனைத்தையும் அகற்று"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"Health Connect ஆப்ஸிலுள்ள எந்தவொரு தரவையும் <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸால் இனி திருத்தவோ பார்க்கவோ முடியாது.\n\nஇது இந்த ஆப்ஸுக்கு வழங்கப்பட்டுள்ள பிற அனுமதிகளில் (கேமரா, மைக்ரோஃபோன், இருப்பிடம் போன்றவை) எந்த மாற்றத்தையும் ஏற்படுத்தாது."</string>
@@ -428,8 +447,10 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connectடில் இருந்து <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸின் தரவையும் நீக்கு"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"உடற்பயிற்சி &amp; ஆரோக்கியத்திற்கான எல்லா அனுமதிகளையும் அகற்றவா?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Health Connect ஆப்ஸில் இருந்து <xliff:g id="APP_NAME">%1$s</xliff:g> பெற்ற உடற்பயிற்சித் தரவையும் நீக்கு"</string>
-    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"உடல்நலப் பதிவுக்கான எல்லா அனுமதிகளையும் அகற்றவா?"</string>
-    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"Health Connect ஆப்ஸில் இருந்து <xliff:g id="APP_NAME">%1$s</xliff:g> பெற்ற உடல்நலம் குறித்த சுருக்கமான தகவல்களையும் நீக்கு"</string>
+    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
+    <skip />
+    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
+    <skip />
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"Health Connect ஆப்ஸிலுள்ள இந்தத் தரவை <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸால் இனி திருத்தவோ பார்க்கவோ முடியாது.\n\nஇது இந்த ஆப்ஸுக்கு வழங்கப்பட்டுள்ள பிற அனுமதிகளில் (கேமரா, மைக்ரோஃபோன், இருப்பிடம் போன்றவை) எந்த மாற்றத்தையும் ஏற்படுத்தாது."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"பின்புலத் தரவு உட்பட Health Connect ஆப்ஸிலுள்ள இந்தத் தரவை <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸால் இனி திருத்தவோ பார்க்கவோ முடியாது.\n\nஇது இந்த ஆப்ஸுக்கு வழங்கப்பட்டுள்ள பிற அனுமதிகளில் (கேமரா, மைக்ரோஃபோன், இருப்பிடம் போன்றவை) எந்த மாற்றத்தையும் ஏற்படுத்தாது."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"கடந்தகாலத் தரவு உட்பட Health Connect ஆப்ஸிலுள்ள இந்தத் தரவை <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸால் இனி திருத்தவோ பார்க்கவோ முடியாது.\n\nஇது இந்த ஆப்ஸுக்கு வழங்கப்பட்டுள்ள பிற அனுமதிகளில் (கேமரா, மைக்ரோஃபோன், இருப்பிடம் போன்றவை) எந்த மாற்றத்தையும் ஏற்படுத்தாது."</string>
@@ -439,7 +460,8 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"பின்புலத் தரவு உட்பட Health Connect ஆப்ஸிலுள்ள தரவை <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸால் இனி திருத்தவோ பார்க்கவோ முடியாது.\n\nஇது இந்த ஆப்ஸுக்கு வழங்கப்பட்டுள்ள பிற அனுமதிகளில் (கேமரா, மைக்ரோஃபோன், இருப்பிடம் போன்றவை) எந்த மாற்றத்தையும் ஏற்படுத்தாது."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"கடந்தகாலத் தரவு உட்பட Health Connect ஆப்ஸிலுள்ள தரவை <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸால் இனி திருத்தவோ பார்க்கவோ முடியாது.\n\nஇது இந்த ஆப்ஸுக்கு வழங்கப்பட்டுள்ள பிற அனுமதிகளில் (கேமரா, மைக்ரோஃபோன், இருப்பிடம் போன்றவை) எந்த மாற்றத்தையும் ஏற்படுத்தாது."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"பின்புலத் தரவு, கடந்தகாலத் தரவு உட்பட Health Connect ஆப்ஸிலுள்ள தரவை <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸால் இனி திருத்தவோ பார்க்கவோ முடியாது.\n\nஇது இந்த ஆப்ஸுக்கு வழங்கப்பட்டுள்ள பிற அனுமதிகளில் (கேமரா, மைக்ரோஃபோன், இருப்பிடம் போன்றவை) எந்த மாற்றத்தையும் ஏற்படுத்தாது."</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="762880061016391846">"Health Connect ஆப்ஸில் இருந்து <xliff:g id="APP_NAME">%1$s</xliff:g> பெற்ற உடற்பயிற்சித் தரவையும் உடல்நலம் குறித்த சுருக்கமான தகவல்களையும் நீக்கு"</string>
+    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
+    <skip />
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"இந்த ஆப்ஸுக்கான அனுமதிகள் அகற்றப்பட்டன"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"அனைத்து Health Connect தரவையும் நீக்கு"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"அடுத்த நாள்"</string>
@@ -488,8 +510,10 @@
     <string name="permissions_header" msgid="6519976063360071569">"அனுமதிகள்"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"உடற்பயிற்சியும் ஆரோக்கியமும்"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"உடற்பயிற்சி, உறக்கம், ஊட்டச்சத்து &amp; பிற"</string>
-    <string name="medical_permissions" msgid="1224097151249321566">"உடல்நலம் குறித்த தகவல்கள்"</string>
-    <string name="medical_permissions_lowercase" msgid="3969792205103436491">"உடல்நலம் குறித்த சுருக்கமான தகவல்கள்"</string>
+    <!-- no translation found for medical_permissions (1066296298908103091) -->
+    <skip />
+    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
+    <skip />
     <string name="medical_permissions_summary" msgid="5526004634109548577">"ஆய்வக முடிவு, மருந்து, தடுப்பூசி &amp; பிற"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"அகற்றப்பட்ட ஆப்ஸ் அனுமதிகள்"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"<xliff:g id="APP_DATA">%s</xliff:g> ஆப்ஸுக்கான அனுமதிகளை Health Connect அகற்றியுள்ளது"</string>
@@ -583,7 +607,8 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Play Storeருக்குச் செல்லுங்கள்"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Health Connect ஆப்ஸைப் பயன்படுத்தத் தொடங்குங்கள்"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect ஆப்ஸ் உங்கள் ஆரோக்கியம் மற்றும் உடற்பயிற்சி குறித்த தரவைச் சேமிக்கிறது. இந்த ஆப்ஸ் மூலம் சாதனத்திலுள்ள வெவ்வேறு ஆப்ஸை நீங்கள் எளிதாக ஒத்திசைக்கலாம்."</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect வெவ்வேறு ஆப்ஸிலிருந்து ஆரோக்கியம் மற்றும் ஃபிட்னஸ் குறித்த தரவைச் சேமித்து ஒத்திசைக்கிறது.\n\n"<b>"ஃபிட்னஸ் மற்றும் உடல்நலம் குறித்த தரவு,"</b>" இதில் உடற்பயிற்சி அமர்வுகள், காலடிகள், ஊட்டச்சத்து, உறக்கம் மற்றும் பல அடங்கும்\n\n"<b>"உடல்நலத் தகவல் பதிவுகள்,"</b>" இதில் தடுப்பூசிகள், ஆய்வக முடிவுகள் மற்றும் பல அடங்கும்"</string>
+    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
+    <skip />
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connect மூலம் இவற்றைச் செய்யலாம்:"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"உங்கள் ஆப்ஸுடன் தரவைப் பகிர்தல்"</b>\n"ஒவ்வொரு ஆப்ஸும் Health Connectடில் எந்தெந்தத் தரவைப் படிக்கலாம்/எழுதலாம் என்பதை நீங்கள் தேர்வுசெய்யலாம்"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"உங்கள் அமைப்புகளையும் தனியுரிமையையும் நிர்வகித்தல்"</b>\n"எப்போது வேண்டுமானாலும் ஆப்ஸ் அனுமதிகளை மாற்றலாம், உங்கள் தரவை நிர்வகிக்கலாம்"</string>
@@ -1348,8 +1373,8 @@
     <string name="chills_write_content_description" msgid="6478646233405107436">"குளிர் நடுக்கம் தொடர்பான தரவை எழுதும்"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"நீரிழப்பு தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
     <string name="dehydration_write_content_description" msgid="541514183036921571">"நீரிழப்பு தொடர்பான தரவை எழுதும்"</string>
-    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"வறண்ட தோல் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
-    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"வறண்ட தோல் தொடர்பான தரவை எழுதும்"</string>
+    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"சரும வறட்சி தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
+    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"சரும வறட்சி தொடர்பான தரவை எழுதும்"</string>
     <string name="fever_read_content_description" msgid="3385209639730909489">"காய்ச்சல் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
     <string name="fever_write_content_description" msgid="8440573327719878961">"காய்ச்சல் தொடர்பான தரவை எழுதும்"</string>
     <string name="joint_pain_read_content_description" msgid="2932523124488927967">"மூட்டு வலி தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
@@ -1358,8 +1383,8 @@
     <string name="joint_stiffness_write_content_description" msgid="7556318646656369856">"மூட்டு விறைப்பு தொடர்பான தரவை எழுதும்"</string>
     <string name="muscle_pain_read_content_description" msgid="3116385630330673084">"தசை வலி தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
     <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"தசை வலி தொடர்பான தரவை எழுதும்"</string>
-    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"சுயநினைவு இழத்தல் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
-    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"சுயநினைவு இழத்தல் தொடர்பான தரவை எழுதும்"</string>
+    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"சுயநினைவு இழப்பு தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
+    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"சுயநினைவு இழப்பு தொடர்பான தரவை எழுதும்"</string>
     <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"குறைந்த உடற்பயிற்சித் திறன் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
     <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"குறைந்த உடற்பயிற்சித் திறன் தொடர்பான தரவை எழுதும்"</string>
     <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"விளக்கமற்ற எடை மாற்றங்கள் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
@@ -1420,8 +1445,8 @@
     <string name="back_pain_write_content_description" msgid="6282959987099901645">"முதுகு வலி தொடர்பான தரவை எழுதும்"</string>
     <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"கீழ் முதுகு வலி தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
     <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"கீழ் முதுகு வலி தொடர்பான தரவை எழுதும்"</string>
-    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"திடீரென உடல் சூடாதல் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
-    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"திடீரென உடல் சூடாதல் தொடர்பான தரவை எழுதும்"</string>
+    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"ஹாட் ஃபிளாஷெஸ் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
+    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"ஹாட் ஃபிளாஷெஸ் தொடர்பான தரவை எழுதும்"</string>
     <string name="night_sweats_read_content_description" msgid="7644094250441074129">"இரவில் வியர்த்தல் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
     <string name="night_sweats_write_content_description" msgid="7501357533280452509">"இரவில் வியர்த்தல் தொடர்பான தரவை எழுதும்"</string>
     <string name="water_retention_read_content_description" msgid="211789030125880649">"உடலில் நீர்த் தேக்கம் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
@@ -1494,8 +1519,8 @@
     <string name="difficulty_swallowing_lowercase_label" msgid="4980631237611433200">"விழுங்குவதில் சிரமம்"</string>
     <string name="dizziness_uppercase_label" msgid="8129950094459563983">"தலைசுற்றல்"</string>
     <string name="dizziness_lowercase_label" msgid="3462347558609662379">"தலைசுற்றல்"</string>
-    <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"வறண்ட தோல்"</string>
-    <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"வறண்ட தோல்"</string>
+    <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"சரும வறட்சி"</string>
+    <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"சரும வறட்சி"</string>
     <string name="earaches_uppercase_label" msgid="107701950625572701">"காதுவலி"</string>
     <string name="earaches_lowercase_label" msgid="6240790850403958317">"காதுவலி"</string>
     <string name="fatigue_uppercase_label" msgid="7514286788083426578">"உடல் சோர்வு"</string>
@@ -1512,8 +1537,8 @@
     <string name="heartburn_lowercase_label" msgid="6235983036978705474">"நெஞ்செரிச்சல்"</string>
     <string name="heart_palpitations_uppercase_label" msgid="2026400872833911547">"சீரற்ற இதயத் துடிப்பு"</string>
     <string name="heart_palpitations_lowercase_label" msgid="1468243523322721340">"சீரற்ற இதயத் துடிப்பு"</string>
-    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"திடீரென உடல் சூடாதல்"</string>
-    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"திடீரென உடல் சூடாதல்"</string>
+    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"ஹாட் ஃபிளாஷெஸ்"</string>
+    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"ஹாட் ஃபிளாஷெஸ்"</string>
     <string name="insomnia_uppercase_label" msgid="4946197328995261738">"தூக்கமின்மை"</string>
     <string name="insomnia_lowercase_label" msgid="3742025423716451058">"தூக்கமின்மை"</string>
     <string name="joint_pain_uppercase_label" msgid="7693454621285586935">"மூட்டு வலி"</string>
@@ -1522,8 +1547,8 @@
     <string name="joint_stiffness_lowercase_label" msgid="8766445235392409480">"மூட்டு விறைப்பு"</string>
     <string name="loss_of_appetite_uppercase_label" msgid="4023141061302523950">"பசியின்மை"</string>
     <string name="loss_of_appetite_lowercase_label" msgid="7558077308061468558">"பசியின்மை"</string>
-    <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"சுயநினைவு இழத்தல்"</string>
-    <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"சுயநினைவு இழத்தல்"</string>
+    <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"சுயநினைவு இழப்பு"</string>
+    <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"சுயநினைவு இழப்பு"</string>
     <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"கீழ் முதுகு வலி"</string>
     <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"கீழ் முதுகு வலி"</string>
     <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"தற்காலிக மறதி"</string>

@@ -256,7 +256,7 @@ class MedicalAppFragmentTest {
             assertThat(readCategory?.preferenceCount).isEqualTo(0)
             assertThat(writeCategory?.preferenceCount).isEqualTo(1)
         }
-        onView(withText("All health records")).check(matches(isDisplayed()))
+        onView(withText("All medical records")).check(matches(isDisplayed()))
         onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
     }
 
@@ -275,7 +275,7 @@ class MedicalAppFragmentTest {
             bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
         )
 
-        onView(withContentDescription("All health records. Write Access. On"))
+        onView(withContentDescription("All medical records. Write Access. On"))
             .check(matches(isDisplayed()))
         onView(withContentDescription("Vaccines. Read Access. On")).check(matches(isDisplayed()))
     }
@@ -292,7 +292,7 @@ class MedicalAppFragmentTest {
             bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
         )
 
-        onView(withContentDescription("All health records. Write Access. Off"))
+        onView(withContentDescription("All medical records. Write Access. Off"))
             .check(matches(isDisplayed()))
         onView(withContentDescription("Vaccines. Read Access. Off")).check(matches(isDisplayed()))
     }
@@ -329,7 +329,7 @@ class MedicalAppFragmentTest {
             assertThat(readCategory?.preferenceCount).isEqualTo(1)
             assertThat(writeCategory?.preferenceCount).isEqualTo(1)
         }
-        onView(withText("All health records")).check(matches(isDisplayed()))
+        onView(withText("All medical records")).check(matches(isDisplayed()))
         onView(withText("Vaccines")).check(matches(isDisplayed()))
         onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
     }
@@ -412,7 +412,7 @@ class MedicalAppFragmentTest {
         )
         onView(withText("Allow all")).perform(click())
 
-        onView(withText("Remove all health record permissions?"))
+        onView(withText("Remove all medical record permissions?"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
         onView(
@@ -425,7 +425,7 @@ class MedicalAppFragmentTest {
             )
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
-        onView(withText("Also delete health records from " + "$TEST_APP_NAME from Health Connect"))
+        onView(withText("Also delete medical records from " + "$TEST_APP_NAME from Health Connect"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
         verify(healthConnectLogger)
@@ -453,7 +453,7 @@ class MedicalAppFragmentTest {
         )
         onView(withText("Allow all")).perform(click())
 
-        onView(withText("Remove all health record permissions?"))
+        onView(withText("Remove all medical record permissions?"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
         onView(
@@ -466,7 +466,7 @@ class MedicalAppFragmentTest {
             )
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
-        onView(withText("Also delete health records from " + "$TEST_APP_NAME from Health Connect"))
+        onView(withText("Also delete medical records from " + "$TEST_APP_NAME from Health Connect"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
         verify(healthConnectLogger)
@@ -494,7 +494,7 @@ class MedicalAppFragmentTest {
         )
         onView(withText("Allow all")).perform(click())
 
-        onView(withText("Remove all health record permissions?"))
+        onView(withText("Remove all medical record permissions?"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
         onView(
@@ -507,7 +507,7 @@ class MedicalAppFragmentTest {
             )
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
-        onView(withText("Also delete health records from " + "$TEST_APP_NAME from Health Connect"))
+        onView(withText("Also delete medical records from " + "$TEST_APP_NAME from Health Connect"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
         verify(healthConnectLogger)
@@ -535,7 +535,7 @@ class MedicalAppFragmentTest {
         )
         onView(withText("Allow all")).perform(click())
 
-        onView(withText("Remove all health record permissions?"))
+        onView(withText("Remove all medical record permissions?"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
         onView(
@@ -548,7 +548,7 @@ class MedicalAppFragmentTest {
             )
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
-        onView(withText("Also delete health records from " + "$TEST_APP_NAME from Health Connect"))
+        onView(withText("Also delete medical records from " + "$TEST_APP_NAME from Health Connect"))
             .inRoot(isDialog())
             .check(matches(isDisplayed()))
         verify(healthConnectLogger)
@@ -609,7 +609,7 @@ class MedicalAppFragmentTest {
         verify(healthConnectLogger)
             .logInteraction(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
 
-        onView(withText("All health records")).check(matches(not(isChecked())))
+        onView(withText("All medical records")).check(matches(not(isChecked())))
         onView(withText("Vaccines")).check(matches(not(isChecked())))
         onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
     }

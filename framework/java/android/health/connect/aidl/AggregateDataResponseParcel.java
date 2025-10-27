@@ -31,6 +31,7 @@ import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.TimeRangeFilter;
 import android.health.connect.TimeRangeFilterHelper;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.internal.PackageNameMasker;
 import android.health.connect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -47,9 +48,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 
 /** @hide */
-public class AggregateDataResponseParcel implements Parcelable {
+public class AggregateDataResponseParcel
+        implements Parcelable, PackageNameMasker<AggregateDataResponseParcel> {
     public static final Creator<AggregateDataResponseParcel> CREATOR =
             new Creator<>() {
                 @Override
@@ -69,6 +72,17 @@ public class AggregateDataResponseParcel implements Parcelable {
 
     public AggregateDataResponseParcel(List<AggregateRecordsResponse<?>> aggregateRecordsResponse) {
         mAggregateRecordsResponses = aggregateRecordsResponse;
+    }
+
+    private AggregateDataResponseParcel(
+            List<AggregateRecordsResponse<?>> aggregateRecordsResponses,
+            @Nullable Duration duration,
+            @Nullable Period period,
+            @Nullable TimeRangeFilter timeRangeFilter) {
+        mAggregateRecordsResponses = aggregateRecordsResponses;
+        mDuration = duration;
+        mPeriod = period;
+        mTimeRangeFilter = timeRangeFilter;
     }
 
     protected AggregateDataResponseParcel(Parcel in) {
@@ -399,5 +413,18 @@ public class AggregateDataResponseParcel implements Parcelable {
 
     private long getDurationDelta(Duration duration) {
         return duration.toMillis();
+    }
+
+    @NonNull
+    @Override
+    public AggregateDataResponseParcel toMasked(@NonNull Function<String, String> packageMasker) {
+        List<AggregateRecordsResponse<?>> maskedAggregateRecordsResponses =
+                mAggregateRecordsResponses.stream()
+                        .<AggregateRecordsResponse<?>>map(
+                                response -> response.toMasked(packageMasker))
+                        .toList();
+
+        return new AggregateDataResponseParcel(
+                maskedAggregateRecordsResponses, mDuration, mPeriod, mTimeRangeFilter);
     }
 }

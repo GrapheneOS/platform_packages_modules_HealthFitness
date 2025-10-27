@@ -37,6 +37,7 @@ import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.Intents.intended
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasPackage
+import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
@@ -62,6 +63,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthconnect.controller.tests.utils.scrollToBottomOfPreferenceScreen
 import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
@@ -172,8 +174,7 @@ class HomeFragmentTest {
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
         launchFragmentWithNavigation().use {
             checkTextIsDisplayed("Set a screen lock")
-            // TODO re-enable when b/447652645 is fixed
-            //        checkTextIsDisplayed("More items (1)")
+            checkTextIsDisplayed("More items")
             checkTextIsDisplayed("Your health apps")
             checkTextIsDisplayed("Health Connect test app")
             checkTextIsDisplayed("See more health apps")
@@ -587,7 +588,13 @@ class HomeFragmentTest {
 
     @Test
     fun moreAboutHealthConnect_navigatesToHelpPage() {
-        // TODO: Implement this test.
+        (deviceInfoUtils as FakeDeviceInfoUtils).setSendFeedbackAvailability(true)
+
+        setupFragmentForNavigation().use {
+            scrollToBottomOfPreferenceScreen()
+            onView(withText("More about Health\u00A0Connect")).perform(click())
+            verify(healthConnectLogger).logInteraction(NewHomePageElement.HOME_PAGE_FOOTER_LINK)
+        }
     }
 
     // endregion
@@ -1058,6 +1065,84 @@ class HomeFragmentTest {
             verify(homeViewModel).onDismissBanner(BannerData.OneAppOnboardingBanner)
             verify(healthConnectLogger)
                 .logInteraction(HomePageElement.ONE_APP_CONNECTED_BANNER_DISMISS_BUTTON)
+        }
+    }
+
+    // endregion
+
+    // region Migration dialogs
+    @Test
+    fun showsMigrationCompleteDialog() {
+        val stateFlow =
+            MutableStateFlow<HomeViewModel.HomeFragmentState>(
+                HomeViewModel.HomeFragmentState.WithData(
+                    connectedApps = listOf(),
+                    migrationDialog = HomeViewModel.MigrationDialog.MigrationCompleteDialog,
+                    bannerState =
+                        HomeViewModel.HomeBannerState.ShowBanners(
+                            listOf(BannerData.OneAppOnboardingBanner)
+                        ),
+                )
+            )
+        whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
+        launchFragmentWithNavigation().use {
+            onView(withText("What's new"))
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "You can now access Health Connect directly from your settings. Uninstall the Health Connect app any time to free up storage space."
+                    )
+                )
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()))
+            onView(withText("Got it")).inRoot(RootMatchers.isDialog()).check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_DONE_DIALOG_CONTAINER)
+            verify(healthConnectLogger).logImpression(MigrationElement.MIGRATION_DONE_DIALOG_BUTTON)
+
+            onView(withText("Got it")).inRoot(RootMatchers.isDialog()).perform(click())
+            verify(healthConnectLogger)
+                .logInteraction(MigrationElement.MIGRATION_DONE_DIALOG_BUTTON)
+
+            verify(homeViewModel)
+                .onDismissDialog(HomeViewModel.MigrationDialog.MigrationCompleteDialog)
+        }
+    }
+
+    @Test
+    fun showsMigrationNotCompleteDialog() {
+        val stateFlow =
+            MutableStateFlow<HomeViewModel.HomeFragmentState>(
+                HomeViewModel.HomeFragmentState.WithData(
+                    connectedApps = listOf(),
+                    migrationDialog = HomeViewModel.MigrationDialog.MigrationNotCompleteDialog,
+                    bannerState =
+                        HomeViewModel.HomeBannerState.ShowBanners(
+                            listOf(BannerData.OneAppOnboardingBanner)
+                        ),
+                )
+            )
+        whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
+        launchFragmentWithNavigation().use {
+            onView(withText("Health Connect integration didn't complete"))
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()))
+            onView(withText("You'll get a notification when it becomes available again."))
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()))
+            onView(withText("Got it")).inRoot(RootMatchers.isDialog()).check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_NOT_COMPLETE_DIALOG_CONTAINER)
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_NOT_COMPLETE_DIALOG_BUTTON)
+
+            onView(withText("Got it")).inRoot(RootMatchers.isDialog()).perform(click())
+            verify(healthConnectLogger)
+                .logInteraction(MigrationElement.MIGRATION_NOT_COMPLETE_DIALOG_BUTTON)
+
+            verify(homeViewModel)
+                .onDismissDialog(HomeViewModel.MigrationDialog.MigrationNotCompleteDialog)
         }
     }
 

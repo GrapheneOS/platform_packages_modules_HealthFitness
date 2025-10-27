@@ -20,8 +20,10 @@ import android.health.connect.datatypes.SymptomRecord
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.fromHealthPermissionCategory
+import com.android.healthfitness.flags.AconfigFlagHelper
 
 object HealthPermissionToDatatypeMapper {
+    private const val SYMPTOM_PERMISSION_PREFIX = "SYMPTOM_"
     private val map = createMap()
 
     fun getDataTypes(permissionType: FitnessPermissionType): List<Class<out Record>> {
@@ -53,15 +55,21 @@ object HealthPermissionToDatatypeMapper {
                     }
                 }
                 .groupBy({ it.first as FitnessPermissionType }, { it.second })
+                .filterNot { isFlagDisabled(it.key) }
                 .toMutableMap()
 
         val symptomRecordClass = listOf(SymptomRecord::class.java)
         FitnessPermissionType.values().forEach {
-            if (it.name.startsWith("SYMPTOM_")) {
+            if (it.name.startsWith(SYMPTOM_PERMISSION_PREFIX)) {
                 map[it] = symptomRecordClass
             }
         }
 
         return map
+    }
+
+    private fun isFlagDisabled(healthPermissionType: FitnessPermissionType): Boolean {
+        return healthPermissionType.name.startsWith(SYMPTOM_PERMISSION_PREFIX) &&
+            !AconfigFlagHelper.isSymptomsEnabled()
     }
 }

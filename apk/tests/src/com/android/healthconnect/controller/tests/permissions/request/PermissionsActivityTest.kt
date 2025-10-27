@@ -92,7 +92,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.UNSUPPORTED_TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionManager
-import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthfitness.flags.Flags
@@ -160,7 +159,6 @@ class PermissionsActivityTest {
             )
         }
         whenever(loadAccessDateUseCase.invoke(any())).thenReturn(NOW)
-        showOnboarding(context, false)
         (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
             TEST_APP_PACKAGE_NAME,
             listOf(),
@@ -383,7 +381,7 @@ class PermissionsActivityTest {
             // Only medical write needs granting
             onView(
                     withText(
-                        "If you allow, $TEST_APP_NAME can share your health records with Health Connect."
+                        "If you allow, $TEST_APP_NAME can share your medical records with Health Connect."
                     )
                 )
                 .check(matches(isDisplayed()))
@@ -418,7 +416,7 @@ class PermissionsActivityTest {
             // Only medical write needs granting
             onView(
                     withText(
-                        "If you allow, $TEST_APP_NAME can share your health records with Health Connect."
+                        "If you allow, $TEST_APP_NAME can share your medical records with Health Connect."
                     )
                 )
                 .inRoot(isDialog())
@@ -453,7 +451,7 @@ class PermissionsActivityTest {
             // Only medical write needs granting
             onView(
                     withText(
-                        "If you allow, $TEST_APP_NAME can share your health records with Health Connect."
+                        "If you allow, $TEST_APP_NAME can share your medical records with Health Connect."
                     )
                 )
                 .check(matches(isDisplayed()))
@@ -488,7 +486,7 @@ class PermissionsActivityTest {
             // Only medical write needs granting
             onView(
                     withText(
-                        "If you allow, $TEST_APP_NAME can share your health records with Health Connect."
+                        "If you allow, $TEST_APP_NAME can share your medical records with Health Connect."
                     )
                 )
                 .inRoot(isDialog())
@@ -956,79 +954,6 @@ class PermissionsActivityTest {
 
             assertThat(permissionManager.getGrantedHealthPermissions(TEST_APP_PACKAGE_NAME))
                 .isEmpty()
-        }
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_REMOVE_OLD_ONBOARDING)
-    fun requestFitnessPermissions_onboardingNotDone_redirectsToOnboarding() {
-        val permissions =
-            arrayOf(READ_EXERCISE, READ_SLEEP, WRITE_ACTIVE_CALORIES_BURNED, WRITE_SLEEP)
-        val startActivityIntent = getPermissionScreenIntent(permissions)
-        showOnboarding(context, true)
-
-        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
-            onIdle()
-            onView(withId(R.id.onboarding)).check(matches(isDisplayed()))
-        }
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_REMOVE_OLD_ONBOARDING)
-    fun requestFitnessPermissions_onboardingNotDone_onboardingFlagOn_hidesOnboarding() {
-        val permissions =
-            arrayOf(READ_EXERCISE, READ_SLEEP, WRITE_ACTIVE_CALORIES_BURNED, WRITE_SLEEP)
-        val startActivityIntent = getPermissionScreenIntent(permissions)
-        showOnboarding(context, true)
-
-        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
-            onIdle()
-            onView(withId(R.id.onboarding)).check(doesNotExist())
-            onView(withText("Allow")).check(matches(isDisplayed()))
-        }
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_REMOVE_OLD_ONBOARDING)
-    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
-    fun requestFitnessPermissions_notSplitPermissionRequest_redirectsToOnboarding() {
-        val permissions = arrayOf(READ_HEART_RATE)
-        val startActivityIntent =
-            getPermissionScreenIntent(permissions, BODY_SENSORS_TEST_APP_PACKAGE_NAME)
-        (permissionManager as FakeHealthPermissionManager).setHealthPermissionFlags(
-            BODY_SENSORS_TEST_APP_PACKAGE_NAME,
-            mapOf(READ_HEART_RATE to FLAG_PERMISSION_USER_FIXED),
-        )
-        // Ensure this app has never shown onboarding before.
-        showOnboarding(context, true)
-
-        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
-            onIdle()
-            onView(withId(R.id.onboarding)).check(matches(isDisplayed()))
-        }
-    }
-
-    @Test
-    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
-    fun requestFitnessPermissions_legacyBodySensorsApp_onboardingSkipped() {
-        val permissions = arrayOf(READ_HEART_RATE)
-        val startActivityIntent =
-            getPermissionScreenIntent(permissions, BODY_SENSORS_TEST_APP_PACKAGE_NAME)
-        (permissionManager as FakeHealthPermissionManager).setHealthPermissionFlags(
-            BODY_SENSORS_TEST_APP_PACKAGE_NAME,
-            mapOf(
-                READ_HEART_RATE to FLAG_PERMISSION_REVOKE_WHEN_REQUESTED,
-                READ_HEALTH_DATA_IN_BACKGROUND to FLAG_PERMISSION_REVOKE_WHEN_REQUESTED,
-            ),
-        )
-        // Ensure this app has never shown onboarding before.
-        showOnboarding(context, true)
-
-        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
-            registerBottomSheetIdlingResource(scenario)
-            onIdle()
-            onView(withId(R.id.onboarding)).check(doesNotExist())
-            onView(withText("Allow")).check(matches(isDisplayed()))
         }
     }
 

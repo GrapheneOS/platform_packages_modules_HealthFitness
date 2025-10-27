@@ -28,7 +28,7 @@ import org.json.JSONObject
 
 /** Formatter for printing raw FHIR data. */
 @Singleton
-class RawFhirFormatter @Inject constructor(@ApplicationContext private val context: Context) {
+class RawFhirFormatter @Inject constructor(@param:ApplicationContext private val context: Context) {
     /**
      * Formats the whole FHIR resource string into a more readable format with proper indentation
      * and line breaks.

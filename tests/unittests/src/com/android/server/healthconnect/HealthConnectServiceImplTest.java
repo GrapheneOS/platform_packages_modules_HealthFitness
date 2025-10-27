@@ -130,18 +130,18 @@ import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteException;
 import android.health.HealthFitnessStatsLog;
 import android.health.connect.DeleteMedicalResourcesRequest;
-import android.health.connect.GetMatchingAppsRequest;
 import android.health.connect.GetMatchingAppsResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectOnboardingState;
 import android.health.connect.HealthPermissions;
+import android.health.connect.MatchmakingRequest;
+import android.health.connect.MatchmakingResponse;
 import android.health.connect.MedicalResourceId;
 import android.health.connect.ReadMedicalResourcesInitialRequest;
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
-import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
@@ -152,6 +152,7 @@ import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
 import android.health.connect.aidl.IGetMatchingAppsCallback;
 import android.health.connect.aidl.IHealthConnectService;
+import android.health.connect.aidl.IIsMatchmakingPossibleCallback;
 import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.aidl.IMedicalResourceListParcelResponseCallback;
@@ -318,7 +319,7 @@ public class HealthConnectServiceImplTest {
                     "restoreLatestMetadata",
                     "canRestore",
                     "restoreChanges",
-                    "canConnectMatchingApps",
+                    "isMatchmakingPossible",
                     "getMatchingApps",
                     "recordMatchmakingDenial");
 
@@ -394,7 +395,7 @@ public class HealthConnectServiceImplTest {
     @Mock IEmptyResponseCallback mEmptyResponseCallback;
     @Mock IMedicalResourceListParcelResponseCallback mMedicalResourceListParcelResponseCallback;
     @Mock IGetMatchingAppsCallback mGetMatchingAppsCallback;
-    @Mock ICanConnectMatchingAppsCallback mCanConnectMatchingAppsCallback;
+    @Mock IIsMatchmakingPossibleCallback mIsMatchmakingPossibleCallback;
 
     @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
     @Mock private ChangeLogsHelper mChangeLogsHelper;
@@ -3074,7 +3075,7 @@ public class HealthConnectServiceImplTest {
     @Test
     @DisableFlags(FLAG_MATCHMAKING)
     public void getMatchingApps_flagOff_exception() throws Exception {
-        GetMatchingAppsRequest request = new GetMatchingAppsRequest.Builder().build();
+        MatchmakingRequest request = new MatchmakingRequest.Builder().build();
 
         mHealthConnectService.getMatchingApps(
                 mAttributionSource, request, mGetMatchingAppsCallback);
@@ -3090,8 +3091,8 @@ public class HealthConnectServiceImplTest {
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of();
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(Map.of());
 
@@ -3112,8 +3113,8 @@ public class HealthConnectServiceImplTest {
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(Map.of());
 
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
         mHealthConnectService.getMatchingApps(
                 mAttributionSource, request, mGetMatchingAppsCallback);
 
@@ -3132,8 +3133,8 @@ public class HealthConnectServiceImplTest {
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
         mHealthConnectService.getMatchingApps(
                 mAttributionSource, request, mGetMatchingAppsCallback);
 
@@ -3148,8 +3149,8 @@ public class HealthConnectServiceImplTest {
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
@@ -3168,9 +3169,9 @@ public class HealthConnectServiceImplTest {
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder()
-                        .setPackageName("invalid.package.name")
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder()
+                        .setCallingPackageName("invalid.package.name")
                         .addRecordTypes(recordTypes)
                         .build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
@@ -3192,10 +3193,10 @@ public class HealthConnectServiceImplTest {
     public void getMatchingApps_noDMPermission_packageNameSameAsCalling_success() throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder()
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder()
                         .addRecordTypes(recordTypes)
-                        .setPackageName(mTestPackageName)
+                        .setCallingPackageName(mTestPackageName)
                         .build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
@@ -3214,8 +3215,8 @@ public class HealthConnectServiceImplTest {
     public void getMatchingApps_hasDMPermission_noPackageNameInRequest_throws() throws Exception {
         setDataManagementPermission(PERMISSION_GRANTED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, THIS_TEST_PACKAGE_NAME))
                 .thenReturn(matchingApps);
@@ -3237,9 +3238,9 @@ public class HealthConnectServiceImplTest {
         setDataManagementPermission(PERMISSION_GRANTED);
 
         Set<Class<? extends Record>> recordTypes = Set.of();
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder()
-                        .setPackageName(THIS_TEST_PACKAGE_NAME)
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder()
+                        .setCallingPackageName(THIS_TEST_PACKAGE_NAME)
                         .addRecordTypes(recordTypes)
                         .build();
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, THIS_TEST_PACKAGE_NAME))
@@ -3257,9 +3258,9 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({FLAG_MATCHMAKING})
     public void getMatchingApps_packageProvided_noRecordsProvided_success() throws Exception {
         Set<Class<? extends Record>> recordTypes = Set.of();
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder()
-                        .setPackageName(mTestPackageName)
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder()
+                        .setCallingPackageName(mTestPackageName)
                         .addRecordTypes(recordTypes)
                         .build();
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
@@ -3283,9 +3284,9 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({FLAG_MATCHMAKING})
     public void getMatchingApps_packageProvided_areAvailableApps_success() throws Exception {
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder()
-                        .setPackageName(mTestPackageName)
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder()
+                        .setCallingPackageName(mTestPackageName)
                         .addRecordTypes(recordTypes)
                         .build();
         Map<String, Set<String>> matchingApps =
@@ -3311,13 +3312,13 @@ public class HealthConnectServiceImplTest {
 
     @Test
     @DisableFlags(FLAG_MATCHMAKING)
-    public void canConnectMatchingApps_flagOff_exception() throws Exception {
-        GetMatchingAppsRequest request = new GetMatchingAppsRequest.Builder().build();
+    public void isMatchmakingPossible_flagOff_exception() throws Exception {
+        MatchmakingRequest request = new MatchmakingRequest.Builder().build();
 
-        mHealthConnectService.canConnectMatchingApps(
-                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+        mHealthConnectService.isMatchmakingPossible(
+                mAttributionSource, request, mIsMatchmakingPossibleCallback);
 
-        verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1))
+        verify(mIsMatchmakingPossibleCallback, timeout(5000).times(1))
                 .onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
@@ -3325,97 +3326,101 @@ public class HealthConnectServiceImplTest {
 
     @Test
     @EnableFlags(FLAG_MATCHMAKING)
-    public void canConnectMatchingApps_noDMPermission_emptySetRequest_emptyMapReturned_false()
+    public void isMatchmakingPossible_noDMPermission_emptySetRequest_emptyMapReturned_false()
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of();
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(Map.of());
 
-        mHealthConnectService.canConnectMatchingApps(
-                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+        mHealthConnectService.isMatchmakingPossible(
+                mAttributionSource, request, mIsMatchmakingPossibleCallback);
 
-        verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1)).onResult(false);
-        verifyNoMoreInteractions(mCanConnectMatchingAppsCallback);
+        verify(mIsMatchmakingPossibleCallback, timeout(5000).times(1))
+                .onResult(new MatchmakingResponse.Builder(false).build());
+        verifyNoMoreInteractions(mIsMatchmakingPossibleCallback);
     }
 
     @Test
     @EnableFlags(FLAG_MATCHMAKING)
-    public void canConnectMatchingApps_noDMPermission_nonEmptySetRequest_emptyMapReturned_false()
+    public void isMatchmakingPossible_noDMPermission_nonEmptySetRequest_emptyMapReturned_false()
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(Map.of());
 
-        mHealthConnectService.canConnectMatchingApps(
-                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+        mHealthConnectService.isMatchmakingPossible(
+                mAttributionSource, request, mIsMatchmakingPossibleCallback);
 
-        verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1)).onResult(false);
-        verifyNoMoreInteractions(mCanConnectMatchingAppsCallback);
+        verify(mIsMatchmakingPossibleCallback, timeout(5000).times(1))
+                .onResult(new MatchmakingResponse.Builder(false).build());
+        verifyNoMoreInteractions(mIsMatchmakingPossibleCallback);
     }
 
     @Test
     @EnableFlags(FLAG_MATCHMAKING)
-    public void canConnectMatchingApps_noDMPermission_emptySetRequest_nonEmptyMapReturned_true()
+    public void isMatchmakingPossible_noDMPermission_emptySetRequest_nonEmptyMapReturned_true()
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of();
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
-        mHealthConnectService.canConnectMatchingApps(
-                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+        mHealthConnectService.isMatchmakingPossible(
+                mAttributionSource, request, mIsMatchmakingPossibleCallback);
 
-        verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1)).onResult(true);
-        verifyNoMoreInteractions(mCanConnectMatchingAppsCallback);
+        verify(mIsMatchmakingPossibleCallback, timeout(5000).times(1))
+                .onResult(new MatchmakingResponse.Builder(true).build());
+        verifyNoMoreInteractions(mIsMatchmakingPossibleCallback);
     }
 
     @Test
     @EnableFlags(FLAG_MATCHMAKING)
-    public void canConnectMatchingApps_noDMPermission_nonEmptySetRequest_nonEmptyMapReturned_true()
+    public void isMatchmakingPossible_noDMPermission_nonEmptySetRequest_nonEmptyMapReturned_true()
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
-        mHealthConnectService.canConnectMatchingApps(
-                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+        mHealthConnectService.isMatchmakingPossible(
+                mAttributionSource, request, mIsMatchmakingPossibleCallback);
 
-        verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1)).onResult(true);
-        verifyNoMoreInteractions(mCanConnectMatchingAppsCallback);
+        verify(mIsMatchmakingPossibleCallback, timeout(5000).times(1))
+                .onResult(new MatchmakingResponse.Builder(true).build());
+        verifyNoMoreInteractions(mIsMatchmakingPossibleCallback);
     }
 
     @Test
     @EnableFlags(FLAG_MATCHMAKING)
-    public void canConnectMatchingApps_noDMPermission_invalidPackageNameInRequest_throws()
+    public void isMatchmakingPossible_noDMPermission_invalidPackageNameInRequest_throws()
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder()
-                        .setPackageName("invalid.package.name")
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder()
+                        .setCallingPackageName("invalid.package.name")
                         .addRecordTypes(recordTypes)
                         .build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
-        mHealthConnectService.canConnectMatchingApps(
-                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+        mHealthConnectService.isMatchmakingPossible(
+                mAttributionSource, request, mIsMatchmakingPossibleCallback);
 
-        verify(mCanConnectMatchingAppsCallback, timeout(TIMEOUT_MILLIS))
+        verify(mIsMatchmakingPossibleCallback, timeout(TIMEOUT_MILLIS))
                 .onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_INVALID_ARGUMENT);
@@ -3425,42 +3430,43 @@ public class HealthConnectServiceImplTest {
 
     @Test
     @EnableFlags(FLAG_MATCHMAKING)
-    public void canConnectMatchingApps_noDMPermission_packageNameSameAsCalling_true()
+    public void isMatchmakingPossible_noDMPermission_packageNameSameAsCalling_true()
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder()
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder()
                         .addRecordTypes(recordTypes)
-                        .setPackageName(mTestPackageName)
+                        .setCallingPackageName(mTestPackageName)
                         .build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
-        mHealthConnectService.canConnectMatchingApps(
-                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+        mHealthConnectService.isMatchmakingPossible(
+                mAttributionSource, request, mIsMatchmakingPossibleCallback);
 
-        verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1)).onResult(true);
-        verifyNoMoreInteractions(mCanConnectMatchingAppsCallback);
+        verify(mIsMatchmakingPossibleCallback, timeout(5000).times(1))
+                .onResult(new MatchmakingResponse.Builder(true).build());
+        verifyNoMoreInteractions(mIsMatchmakingPossibleCallback);
     }
 
     @Test
     @EnableFlags(FLAG_MATCHMAKING)
-    public void canConnectMatchingApps_hasDMPermission_noPackageNameInRequest_throws()
+    public void isMatchmakingPossible_hasDMPermission_noPackageNameInRequest_throws()
             throws Exception {
         setDataManagementPermission(PERMISSION_GRANTED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder().addRecordTypes(recordTypes).build();
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
         Map<String, Set<String>> matchingApps = Map.of(THIS_TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, THIS_TEST_PACKAGE_NAME))
                 .thenReturn(matchingApps);
 
-        mHealthConnectService.canConnectMatchingApps(
-                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+        mHealthConnectService.isMatchmakingPossible(
+                mAttributionSource, request, mIsMatchmakingPossibleCallback);
 
-        verify(mCanConnectMatchingAppsCallback, timeout(TIMEOUT_MILLIS))
+        verify(mIsMatchmakingPossibleCallback, timeout(TIMEOUT_MILLIS))
                 .onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_INVALID_ARGUMENT);
@@ -3470,53 +3476,55 @@ public class HealthConnectServiceImplTest {
 
     @EnableFlags({FLAG_MATCHMAKING})
     @Test
-    public void canConnectMatchingApps_hasDMPermission_packageProvided_recordsProvided_false()
+    public void isMatchmakingPossible_hasDMPermission_packageProvided_recordsProvided_false()
             throws Exception {
         setDataManagementPermission(PERMISSION_GRANTED);
 
         Set<Class<? extends Record>> recordTypes = Set.of();
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder()
-                        .setPackageName(THIS_TEST_PACKAGE_NAME)
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder()
+                        .setCallingPackageName(THIS_TEST_PACKAGE_NAME)
                         .addRecordTypes(recordTypes)
                         .build();
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, THIS_TEST_PACKAGE_NAME))
                 .thenReturn(Map.of());
 
-        mHealthConnectService.canConnectMatchingApps(
-                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+        mHealthConnectService.isMatchmakingPossible(
+                mAttributionSource, request, mIsMatchmakingPossibleCallback);
 
-        verify(mCanConnectMatchingAppsCallback, timeout(5000).times(1)).onResult(false);
-        verifyNoMoreInteractions(mCanConnectMatchingAppsCallback);
+        verify(mIsMatchmakingPossibleCallback, timeout(5000).times(1))
+                .onResult(new MatchmakingResponse.Builder(false).build());
+        verifyNoMoreInteractions(mIsMatchmakingPossibleCallback);
     }
 
     @Test
     @EnableFlags({FLAG_MATCHMAKING})
-    public void canConnectMatchingApps_packageProvided_noRecordsProvided_false() throws Exception {
+    public void isMatchmakingPossible_packageProvided_noRecordsProvided_false() throws Exception {
         Set<Class<? extends Record>> recordTypes = Set.of();
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder()
-                        .setPackageName(mTestPackageName)
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder()
+                        .setCallingPackageName(mTestPackageName)
                         .addRecordTypes(recordTypes)
                         .build();
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(Map.of());
 
-        mHealthConnectService.canConnectMatchingApps(
-                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+        mHealthConnectService.isMatchmakingPossible(
+                mAttributionSource, request, mIsMatchmakingPossibleCallback);
 
-        verify(mCanConnectMatchingAppsCallback, timeout(TIMEOUT_MILLIS)).onResult(false);
-        verify(mCanConnectMatchingAppsCallback, never()).onError(any());
-        verifyNoMoreInteractions(mCanConnectMatchingAppsCallback);
+        verify(mIsMatchmakingPossibleCallback, timeout(TIMEOUT_MILLIS))
+                .onResult(new MatchmakingResponse.Builder(false).build());
+        verify(mIsMatchmakingPossibleCallback, never()).onError(any());
+        verifyNoMoreInteractions(mIsMatchmakingPossibleCallback);
     }
 
     @Test
     @EnableFlags({FLAG_MATCHMAKING})
-    public void canConnectMatchingApps_packageProvided_areAvailableApps_true() throws Exception {
+    public void isMatchmakingPossible_packageProvided_areAvailableApps_true() throws Exception {
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
-        GetMatchingAppsRequest request =
-                new GetMatchingAppsRequest.Builder()
-                        .setPackageName(mTestPackageName)
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder()
+                        .setCallingPackageName(mTestPackageName)
                         .addRecordTypes(recordTypes)
                         .build();
         Map<String, Set<String>> matchingApps =
@@ -3528,10 +3536,11 @@ public class HealthConnectServiceImplTest {
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
-        mHealthConnectService.canConnectMatchingApps(
-                mAttributionSource, request, mCanConnectMatchingAppsCallback);
+        mHealthConnectService.isMatchmakingPossible(
+                mAttributionSource, request, mIsMatchmakingPossibleCallback);
 
-        verify(mCanConnectMatchingAppsCallback, timeout(TIMEOUT_MILLIS)).onResult(true);
+        verify(mIsMatchmakingPossibleCallback, timeout(TIMEOUT_MILLIS))
+                .onResult(new MatchmakingResponse.Builder(true).build());
     }
 
     @Test

@@ -24,8 +24,9 @@ import javax.inject.Singleton
 
 /** Formatter for printing raw FHIR data. */
 @Singleton
-class PrettyFhirFormatter @Inject constructor(@ApplicationContext private val context: Context) {
-
+class PrettyFhirFormatter
+@Inject
+constructor(@param:ApplicationContext private val context: Context) {
     /**
      * Formats a PrettyJsonGroup.
      *

@@ -63,7 +63,7 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 open class LoadEntriesHelper
 @Inject
 constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val healthDataEntryFormatter: HealthDataEntryFormatter,
     private val menstruationPeriodFormatter: MenstruationPeriodFormatter,
     private val healthConnectManager: HealthConnectManager,

@@ -56,6 +56,7 @@ import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.SpeedRecord
 import android.health.connect.datatypes.StepsCadenceRecord
 import android.health.connect.datatypes.StepsRecord
+import android.health.connect.datatypes.SymptomRecord
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord
 import android.health.connect.datatypes.Vo2MaxRecord
 import android.health.connect.datatypes.WeightRecord
@@ -117,6 +118,7 @@ class DataEntryFormatter(
     private val mindfulnessSessionFormatter: MindfulnessSessionFormatter =
         MindfulnessSessionFormatter(),
     private val nicotineIntakeFormatter: NicotineIntakeFormatter = NicotineIntakeFormatter(),
+    private val symptomFormatter: SymptomFormatter = SymptomFormatter(),
 ) {
 
     fun format(record: Record, context: Context): FormattedEntry {
@@ -182,6 +184,7 @@ class DataEntryFormatter(
             // WELLNESS
             is MindfulnessSessionRecord -> mindfulnessSessionFormatter.format(record, context)
             is NicotineIntakeRecord -> nicotineIntakeFormatter.format(record, context)
+            is SymptomRecord -> symptomFormatter.format(record, context)
 
             else -> throw IllegalArgumentException("Unsupported data type")
         }

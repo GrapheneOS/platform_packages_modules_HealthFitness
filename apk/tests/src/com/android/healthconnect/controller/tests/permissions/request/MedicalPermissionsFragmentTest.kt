@@ -155,13 +155,13 @@ class MedicalPermissionsFragmentTest {
 
         launchFragment<MedicalPermissionsFragment>(bundleOf())
 
-        onView(withText("Allow $TEST_APP_NAME to access your health records?"))
+        onView(withText("Allow $TEST_APP_NAME to access your medical records?"))
             .check(matches(isDisplayed()))
         onView(withText("Choose data you want this app to read or write to Health Connect"))
             .check(matches(isDisplayed()))
         onView(
                 withText(
-                    "If you give access, the app can read and write data such as allergies, lab results, vaccines and more\nAbout health records"
+                    "If you give access, the app can read and write data such as allergies, lab results, vaccines and more\nAbout medical records"
                 )
             )
             .check(matches(isDisplayed()))
@@ -222,13 +222,13 @@ class MedicalPermissionsFragmentTest {
 
         launchFragment<MedicalPermissionsFragment>(bundleOf())
 
-        onView(withText("Allow $TEST_APP_NAME to access your health records?"))
+        onView(withText("Allow $TEST_APP_NAME to access your medical records?"))
             .check(matches(isDisplayed()))
         onView(withText("Choose data you want this app to read from Health Connect"))
             .check(matches(isDisplayed()))
         onView(
                 withText(
-                    "If you give access, the app can read data such as allergies, lab results, vaccines and more\nAbout health records"
+                    "If you give access, the app can read data such as allergies, lab results, vaccines and more\nAbout medical records"
                 )
             )
             .check(matches(isDisplayed()))
@@ -251,7 +251,7 @@ class MedicalPermissionsFragmentTest {
             .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
         Espresso.onIdle()
         onView(withText("Allow \u201C$TEST_APP_NAME\u201D to write")).check(doesNotExist())
-        onView(withText("All health records")).check(doesNotExist())
+        onView(withText("All medical records")).check(doesNotExist())
     }
 
     @Test
@@ -271,13 +271,13 @@ class MedicalPermissionsFragmentTest {
         onView(withId(androidx.preference.R.id.recycler_view))
             .perform(
                 RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("All health records"))
+                    hasDescendant(withText("All medical records"))
                 )
             )
         Espresso.onIdle()
-        onView(withText("All health records")).perform(click())
+        onView(withText("All medical records")).perform(click())
         Espresso.onIdle()
-        onView(withContentDescription("All health records. Write Access. On"))
+        onView(withContentDescription("All medical records. Write Access. On"))
             .check(matches(isDisplayed()))
 
         onView(withId(androidx.preference.R.id.recycler_view))
@@ -309,11 +309,11 @@ class MedicalPermissionsFragmentTest {
         onView(withId(androidx.preference.R.id.recycler_view))
             .perform(
                 RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("All health records"))
+                    hasDescendant(withText("All medical records"))
                 )
             )
         Espresso.onIdle()
-        onView(withContentDescription("All health records. Write Access. Off"))
+        onView(withContentDescription("All medical records. Write Access. Off"))
             .check(matches(isDisplayed()))
 
         onView(withId(androidx.preference.R.id.recycler_view))

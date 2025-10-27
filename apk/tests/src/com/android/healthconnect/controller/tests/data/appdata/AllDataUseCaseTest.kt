@@ -27,6 +27,7 @@ import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.MedicalResource
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsRecord
+import android.health.connect.datatypes.SymptomRecord
 import android.health.connect.datatypes.WeightRecord
 import android.os.OutcomeReceiver
 import android.platform.test.annotations.RequiresFlagsDisabled
@@ -60,6 +61,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -650,5 +652,46 @@ class AllDataUseCaseTest {
     @RequiresFlagsDisabled(Flags.FLAG_SYMPTOMS)
     fun symptomTypeToPermissionMap_symptomsFlagDisabled_isEmpty() {
         assertThat(allDataUseCase.symptomTypeToPermissionMap).isEmpty()
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun loadFitnessAppData_symptomsFlagEnabled_requestsFilteredSymptomData() = runTest {
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> = emptyMap()
+        Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
+            .`when`(healthConnectManager)
+            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+
+        allDataUseCase.loadFitnessAppData(TEST_APP_PACKAGE_NAME)
+
+        val captor: ArgumentCaptor<ReadRecordsRequestUsingFilters<*>> =
+            ArgumentCaptor.forClass(ReadRecordsRequestUsingFilters::class.java)
+        Mockito.verify(healthConnectManager)
+            .readRecords(captor.capture(), org.mockito.kotlin.any(), ArgumentMatchers.any())
+
+        val request = captor.value
+        assertThat(request.recordType).isEqualTo(SymptomRecord::class.java)
+        assertThat(request.dataOrigins).hasSize(1)
+        assertThat(request.dataOrigins.first().packageName).isEqualTo(TEST_APP_PACKAGE_NAME)
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun loadAllFitnessData_symptomsFlagEnabled_requestsAllSymptomData() = runTest {
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> = emptyMap()
+        Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
+            .`when`(healthConnectManager)
+            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+
+        allDataUseCase.loadAllFitnessData()
+
+        val captor: ArgumentCaptor<ReadRecordsRequestUsingFilters<*>> =
+            ArgumentCaptor.forClass(ReadRecordsRequestUsingFilters::class.java)
+        Mockito.verify(healthConnectManager)
+            .readRecords(captor.capture(), org.mockito.kotlin.any(), ArgumentMatchers.any())
+
+        val request = captor.value
+        assertThat(request.recordType).isEqualTo(SymptomRecord::class.java)
+        assertThat(request.dataOrigins).isEmpty()
     }
 }

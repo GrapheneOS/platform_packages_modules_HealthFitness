@@ -77,35 +77,35 @@ class ConnectedDevicesFragmentTest {
             )
         )
 
-        launchFragment<ConnectedDevicesFragment>(Bundle())
+        launchFragment<ConnectedDevicesFragment>(Bundle()).use {}
     }
 
     @Test
     fun loadingState_showsLoading() {
         connectedDevicesState.postValue(ConnectedDevicesState.Loading)
 
-        launchFragment<ConnectedDevicesFragment>(Bundle())
-
-        onView(withId(R.id.progress_indicator)).check(matches(isDisplayed()))
+        launchFragment<ConnectedDevicesFragment>(Bundle()).use {
+            onView(withId(R.id.progress_indicator)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun errorState_showsError() {
         connectedDevicesState.postValue(ConnectedDevicesState.Error)
 
-        launchFragment<ConnectedDevicesFragment>(Bundle())
-
-        onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+        launchFragment<ConnectedDevicesFragment>(Bundle()).use {
+            onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun emptyState_displaysNothingWhenDataSourcesIsEmpty() {
         connectedDevicesState.postValue(ConnectedDevicesState.Success(emptyList()))
 
-        launchFragment<ConnectedDevicesFragment>(Bundle())
-
-        onView(withText("Pixel 8")).check(doesNotExist())
-        onView(withText("Pixel 7 Pro")).check(doesNotExist())
+        launchFragment<ConnectedDevicesFragment>(Bundle()).use {
+            onView(withText("Pixel 8")).check(doesNotExist())
+            onView(withText("Pixel 7 Pro")).check(doesNotExist())
+        }
     }
 
     @Test
@@ -116,9 +116,9 @@ class ConnectedDevicesFragmentTest {
             )
         )
 
-        launchFragment<ConnectedDevicesFragment>(Bundle())
-
-        onView(withText("Pixel 8")).check(matches(isDisplayed()))
+        launchFragment<ConnectedDevicesFragment>(Bundle()).use {
+            onView(withText("Pixel 8")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -136,10 +136,10 @@ class ConnectedDevicesFragmentTest {
             )
         )
 
-        launchFragment<ConnectedDevicesFragment>(Bundle())
-
-        onView(withText("Pixel 8")).check(matches(isDisplayed()))
-        onView(withText("Pixel 7 Pro")).check(matches(isDisplayed()))
+        launchFragment<ConnectedDevicesFragment>(Bundle()).use {
+            onView(withText("Pixel 8")).check(matches(isDisplayed()))
+            onView(withText("Pixel 7 Pro")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -152,9 +152,9 @@ class ConnectedDevicesFragmentTest {
             )
         )
 
-        launchFragment<ConnectedDevicesFragment>(Bundle())
-
-        onView(withText("Current device")).check(matches(isDisplayed()))
+        launchFragment<ConnectedDevicesFragment>(Bundle()).use {
+            onView(withText("Current device")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -171,9 +171,9 @@ class ConnectedDevicesFragmentTest {
             )
         )
 
-        launchFragment<ConnectedDevicesFragment>(Bundle())
-
-        onView(withText("Current device")).check(doesNotExist())
+        launchFragment<ConnectedDevicesFragment>(Bundle()).use {
+            onView(withText("Current device")).check(doesNotExist())
+        }
     }
 
     @Test
@@ -183,18 +183,18 @@ class ConnectedDevicesFragmentTest {
                 listOf(DeviceDataSource("Pixel 8", isCurrentDevice = true, trackerStatus = mapOf()))
             )
         )
-        val scenario =
-            launchFragment<ConnectedDevicesFragment>(Bundle()) {
+        launchFragment<ConnectedDevicesFragment>(Bundle()) {
                 navHostController.setGraph(R.navigation.nav_graph)
                 navHostController.setCurrentDestination(R.id.connectedDevicesFragment)
                 Navigation.setViewNavController(requireView(), navHostController)
             }
+            .use { scenario ->
+                onView(withText("Pixel 8")).perform(click())
 
-        onView(withText("Pixel 8")).perform(click())
-
-        scenario.onActivity {
-            assertThat(navHostController.currentDestination?.id)
-                .isEqualTo(R.id.deviceManagementFragment)
-        }
+                scenario.onActivity {
+                    assertThat(navHostController.currentDestination?.id)
+                        .isEqualTo(R.id.deviceManagementFragment)
+                }
+            }
     }
 }

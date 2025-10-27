@@ -55,14 +55,17 @@ class DataRestoreInProgressFragmentTest {
 
     @Test
     fun dataRestoreInProgressFragment_displaysCorrectly() {
-        launchFragment<DataRestoreInProgressFragment>()
-
-        onView(withText("Restore in progress")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Health Connect is restoring data and permissions. This may take some time to complete."))
-            .check(matches(isDisplayed()))
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.DATA_RESTORE_IN_PROGRESS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
+        launchFragment<DataRestoreInProgressFragment>().use {
+            onView(withText("Restore in progress")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Health Connect is restoring data and permissions. This may take some time to complete."
+                    )
+                )
+                .check(matches(isDisplayed()))
+            verify(healthConnectLogger, atLeast(1))
+                .setPageId(PageName.DATA_RESTORE_IN_PROGRESS_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+        }
     }
 }

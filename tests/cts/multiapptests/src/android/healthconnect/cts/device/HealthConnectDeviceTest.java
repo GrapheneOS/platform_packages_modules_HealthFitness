@@ -31,7 +31,7 @@ import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermi
 import static android.healthconnect.testing.cts.PermissionUtils.revokeAllHealthPermissions;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeHealthPermission;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeHealthPermissions;
-import static android.healthconnect.testing.cts.TestUtils.createConnectMatchingAppsIntent;
+import static android.healthconnect.testing.cts.TestUtils.createMatchmakingIntent;
 import static android.healthconnect.testing.cts.TestUtils.createReadRecordsRequestUsingFilters;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.fetchDataOriginsPriorityOrder;
@@ -76,6 +76,8 @@ import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
+import android.health.connect.MatchmakingRequest;
+import android.health.connect.MatchmakingResponse;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordIdFilter;
@@ -1033,10 +1035,10 @@ public final class HealthConnectDeviceTest {
         revokeAllHealthPermissions(
                 APP_B_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
 
-        boolean canConnect = APP_A_WITH_READ_WRITE_PERMS.canConnectMatchingApps(Set.of());
+        MatchmakingResponse response = getMatchmakingResponse();
 
-        assertWithMessage("%s.canConnectMatchingApps(empty_set)", APP_A_WITH_READ_WRITE_PERMS)
-                .that(canConnect)
+        assertWithMessage("%s.isMatchmakingPossible(empty_set)", APP_A_WITH_READ_WRITE_PERMS)
+                .that(response.isMatchmakingPossible())
                 .isTrue();
     }
 
@@ -1048,10 +1050,10 @@ public final class HealthConnectDeviceTest {
         revokeAllHealthPermissions(
                 APP_B_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
 
-        boolean canConnect = APP_A_WITH_READ_WRITE_PERMS.canConnectMatchingApps(Set.of());
+        MatchmakingResponse response = getMatchmakingResponse();
 
-        assertWithMessage("%s.canConnectMatchingApps(empty_set)", APP_A_WITH_READ_WRITE_PERMS)
-                .that(canConnect)
+        assertWithMessage("%s.isMatchmakingPossible(empty_set)", APP_A_WITH_READ_WRITE_PERMS)
+                .that(response.isMatchmakingPossible())
                 .isFalse();
     }
 
@@ -1065,14 +1067,12 @@ public final class HealthConnectDeviceTest {
         revokeAllHealthPermissions(
                 APP_B_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
 
-        boolean canConnect =
-                APP_A_WITH_READ_WRITE_PERMS.canConnectMatchingApps(
-                        Set.of(SleepSessionRecord.class));
+        MatchmakingResponse response = getMatchmakingResponse(SleepSessionRecord.class);
 
         assertWithMessage(
-                        "%s.canConnectMatchingApps([SleepSessionRecord])",
+                        "%s.isMatchmakingPossible([SleepSessionRecord])",
                         APP_A_WITH_READ_WRITE_PERMS)
-                .that(canConnect)
+                .that(response.isMatchmakingPossible())
                 .isFalse();
     }
 
@@ -1086,14 +1086,12 @@ public final class HealthConnectDeviceTest {
         revokeAllHealthPermissions(
                 APP_B_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
 
-        boolean canConnect =
-                APP_A_WITH_READ_WRITE_PERMS.canConnectMatchingApps(
-                        Set.of(SleepSessionRecord.class));
+        MatchmakingResponse response = getMatchmakingResponse();
 
         assertWithMessage(
-                        "%s.canConnectMatchingApps([SleepSessionRecord])",
+                        "%s.isMatchmakingPossible([SleepSessionRecord])",
                         APP_A_WITH_READ_WRITE_PERMS)
-                .that(canConnect)
+                .that(response.isMatchmakingPossible())
                 .isTrue();
     }
 
@@ -1108,14 +1106,13 @@ public final class HealthConnectDeviceTest {
         revokeAllHealthPermissions(
                 APP_B_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
 
-        boolean canConnect =
-                APP_A_WITH_READ_WRITE_PERMS.canConnectMatchingApps(
-                        Set.of(DistanceRecord.class, SleepSessionRecord.class));
+        MatchmakingResponse response =
+                getMatchmakingResponse(Set.of(DistanceRecord.class, SleepSessionRecord.class));
 
         assertWithMessage(
-                        "%s.canConnectMatchingApps([DistanceRecord, SleepSessionRecord])",
+                        "%s.isMatchmakingPossible([DistanceRecord, SleepSessionRecord])",
                         APP_A_WITH_READ_WRITE_PERMS)
-                .that(canConnect)
+                .that(response.isMatchmakingPossible())
                 .isFalse();
     }
 
@@ -1131,15 +1128,15 @@ public final class HealthConnectDeviceTest {
         revokeAllHealthPermissions(
                 APP_B_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
 
-        boolean canConnect =
-                APP_A_WITH_READ_WRITE_PERMS.canConnectMatchingApps(
+        MatchmakingResponse response =
+                getMatchmakingResponse(
                         Set.of(SleepSessionRecord.class, StepsRecord.class, HeartRateRecord.class));
 
         assertWithMessage(
-                        "%s.canConnectMatchingApps([SleepSessionRecord, StepsRecord,"
+                        "%s.isMatchmakingPossible([SleepSessionRecord, StepsRecord,"
                                 + " HeartRateRecord])",
                         APP_A_WITH_READ_WRITE_PERMS)
-                .that(canConnect)
+                .that(response.isMatchmakingPossible())
                 .isTrue();
     }
 
@@ -1161,15 +1158,15 @@ public final class HealthConnectDeviceTest {
         revokeAllHealthPermissions(
                 APP_B_WITH_READ_WRITE_PERMS.getPackageName(), "HealthConnectDeviceTest");
 
-        boolean canConnect =
-                APP_A_WITH_READ_WRITE_PERMS.canConnectMatchingApps(
+        MatchmakingResponse response =
+                getMatchmakingResponse(
                         Set.of(SleepSessionRecord.class, StepsRecord.class, HeartRateRecord.class));
 
         assertWithMessage(
-                        "%s.canConnectMatchingApps([SleepSessionRecord, StepsRecord,"
+                        "%s.isMatchmakingPossible([SleepSessionRecord, StepsRecord,"
                                 + " HeartRateRecord])",
                         APP_A_WITH_READ_WRITE_PERMS)
-                .that(canConnect)
+                .that(response.isMatchmakingPossible())
                 .isTrue();
     }
 
@@ -1178,7 +1175,7 @@ public final class HealthConnectDeviceTest {
     @Test
     public void testCreateMatchingAppsIntent_success() {
 
-        Intent matchingAppsIntent = createConnectMatchingAppsIntent(Set.of());
+        Intent matchingAppsIntent = createMatchmakingIntent(Set.of());
         assertThat(matchingAppsIntent.getAction()).isNotNull();
     }
 
@@ -1188,8 +1185,7 @@ public final class HealthConnectDeviceTest {
     public void testCreateMatchingAppsIntent_multipleRecordsPassed_success() {
 
         Intent matchingAppsIntent =
-                createConnectMatchingAppsIntent(
-                        Set.of(StepsRecord.class, SleepSessionRecord.class));
+                createMatchmakingIntent(Set.of(StepsRecord.class, SleepSessionRecord.class));
         assertThat(matchingAppsIntent.getAction()).isNotNull();
     }
 
@@ -1238,5 +1234,24 @@ public final class HealthConnectDeviceTest {
         return new ExerciseSessionRecord.Builder(
                         metadata, startTime, endTime, EXERCISE_SESSION_TYPE_RUNNING)
                 .build();
+    }
+
+    private static MatchmakingResponse getMatchmakingResponse() throws Exception {
+        MatchmakingRequest request = new MatchmakingRequest.Builder().build();
+        return APP_A_WITH_READ_WRITE_PERMS.isMatchmakingPossible(request);
+    }
+
+    private static MatchmakingResponse getMatchmakingResponse(Class<? extends Record> recordType)
+            throws Exception {
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().addRecordType(recordType).build();
+        return APP_A_WITH_READ_WRITE_PERMS.isMatchmakingPossible(request);
+    }
+
+    private static MatchmakingResponse getMatchmakingResponse(
+            Set<Class<? extends Record>> recordTypes) throws Exception {
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
+        return APP_A_WITH_READ_WRITE_PERMS.isMatchmakingPossible(request);
     }
 }

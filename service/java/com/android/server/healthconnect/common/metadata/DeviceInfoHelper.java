@@ -90,11 +90,20 @@ public class DeviceInfoHelper extends DatabaseHelper {
 
     /** Populates record with deviceInfoId */
     public void populateDeviceInfoId(RecordInternal<?> recordInternal) {
+        if (recordInternal.getPackageName() != null
+                && SyntheticPackageNameCreator.isSpn(recordInternal.getPackageName())
+                && recordInternal.getDeviceInfoId() != DEFAULT_LONG) {
+            // DDP APIs will have already set the deviceInfoId and packageName. Return early as the
+            // DeviceInfo from the DDP advertisement includes a deviceId but the record doesn't so
+            // this method would create another DeviceInfo entry.
+            return;
+        }
+
         String manufacturer = recordInternal.getManufacturer();
         String model = recordInternal.getModel();
         int deviceType = recordInternal.getDeviceType();
 
-        String deviceId = null; // TODO(b/441949008): Set synthetic package name.
+        String deviceId = null;
         String displayName = null;
         if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
             displayName = recordInternal.getDisplayName();
@@ -143,6 +152,24 @@ public class DeviceInfoHelper extends DatabaseHelper {
      */
     public static AlterTableRequest getAlterTableRequest() {
         return new AlterTableRequest(TABLE_NAME, getEnhancedDeviceInfoColumnInfo());
+    }
+
+    /** Returns the rowId for the given DeviceInfo. */
+    @Nullable
+    public Long getDeviceInfoId(DeviceInfo deviceInfo) {
+        return getDeviceInfoMap().get(deviceInfo);
+    }
+
+    /** Returns DeviceInfo for the given deviceId. */
+    @Nullable
+    // TODO(b/445114536): Check if we want to store a map of deviceId <> deviceInfoId
+    public DeviceInfo getDeviceInfo(String deviceId) {
+        for (DeviceInfo deviceInfo : getIdDeviceInfoMap().values()) {
+            if (Objects.equals(deviceInfo.getDeviceId(), deviceId)) {
+                return deviceInfo;
+            }
+        }
+        return null;
     }
 
     /**

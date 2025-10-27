@@ -36,7 +36,7 @@ constructor(
     private val loadDeviceDataSourcesUseCase: ILoadDeviceDataSources,
     private val loadSensorListUseCase: ILoadSensorListUseCase,
     private val setTrackingEnabled: ISetTrackingEnabled,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
     private val _connectedDevicesState = MutableLiveData<ConnectedDevicesState>()

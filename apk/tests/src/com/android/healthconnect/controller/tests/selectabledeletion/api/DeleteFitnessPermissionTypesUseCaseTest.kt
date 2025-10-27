@@ -32,11 +32,14 @@ import android.health.connect.datatypes.StepsCadenceRecord
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.SymptomRecord
 import android.os.OutcomeReceiver
+import android.platform.test.annotations.RequiresFlagsEnabled
+import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteHealthPermissionTypes
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteFitnessPermissionTypesUseCase
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -60,6 +63,7 @@ import org.mockito.invocation.InvocationOnMock
 class DeleteFitnessPermissionTypesUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     private lateinit var useCase: DeleteFitnessPermissionTypesUseCase
     var manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
@@ -113,6 +117,7 @@ class DeleteFitnessPermissionTypesUseCaseTest {
     }
 
     @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun invoke_deleteSymptomPermissionType_deletesOnlyThatSymptom() = runTest {
         val coughRecord =
             SymptomRecord.Builder(

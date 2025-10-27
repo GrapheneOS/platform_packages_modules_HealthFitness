@@ -23,8 +23,10 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Rechten en gegevens"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Beheer de gezondheids- en fitnessgegevens op je apparaat en bepaal welke apps er toegang toe krijgen"</string>
     <string name="data_title" msgid="4456619761533380816">"Gegevens en toegang"</string>
-    <string name="browse_medical_data" msgid="6963802956096683273">"Browsen door medische dossiers"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"Bekijk je medische dossiers en welke apps er toegang toe hebben"</string>
+    <!-- no translation found for browse_medical_data (6492659245149862639) -->
+    <skip />
+    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
+    <skip />
     <string name="all_categories_title" msgid="1446410643217937926">"Alle categorieën"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Alle categorieën bekijken"</string>
     <string name="no_data" msgid="1906986019249068659">"Geen gegevens"</string>
@@ -110,8 +112,10 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Verbrande calorieën lezen"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Hiermee kan een app de verbrande calorieën lezen"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"<xliff:g id="APP_NAME">%1$s</xliff:g> toegang geven tot gegevens op de achtergrond?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"Als je dit toestaat, heeft deze app toegang tot fitness- en welzijnsgegevens en medische dossiers wanneer je de app niet gebruikt."</string>
-    <string name="background_read_medical_single_request_description_medical_granted" msgid="5162456401369633859">"Als je dit toestaat, heeft deze app toegang tot medische dossiers wanneer je de app niet gebruikt."</string>
+    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
+    <skip />
+    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
+    <skip />
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Als je dit toestaat, heeft deze app toegang tot fitness- en welzijnsgegevens wanneer je de app niet gebruikt."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Als je dit toestaat, heeft deze app toegang tot Health Connect-gegevens wanneer je de app niet gebruikt."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"<xliff:g id="APP_NAME">%1$s</xliff:g> toegang geven tot eerdere gegevens?"</string>
@@ -122,9 +126,11 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"Aanvullende toegang geven voor <xliff:g id="APP_NAME">%1$s</xliff:g>?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g> wil ook toegang tot deze Health Connect-instellingen"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Toegang tot alle gegevens op de achtergrond"</string>
-    <string name="background_read_medical_combined_request_title_medical_granted" msgid="7245376864667067106">"Toegang tot medische dossiers op de achtergrond"</string>
+    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
+    <skip />
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Toegang tot fitness- en welzijnsgegevens op de achtergrond"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"Geef deze app toegang tot fitness- en welzijnsgegevens en medische dossiers wanneer je de app niet gebruikt"</string>
+    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
+    <skip />
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Geef deze app toegang tot deze gegevens wanneer je de app niet gebruikt"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Geef deze app toegang tot deze gegevens wanneer je de app niet gebruikt"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Toegang tot gegevens op de achtergrond"</string>
@@ -135,12 +141,15 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Toegang tot eerdere gegevens"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"Geef deze app toegang tot Health Connect-gegevens die vóór <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> zijn toegevoegd"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Geef deze app toegang tot alle eerdere Health Connect-gegevens"</string>
-    <string name="history_read_medical_combined_request_footer" msgid="5301940225768076844">"<xliff:g id="APP_NAME">%1$s</xliff:g> heeft al toegang tot eerdere gegevens van je medische dossiers"</string>
+    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
+    <skip />
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Meer informatie over rechten"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Toegang tot alle gegevens op de achtergrond"</string>
-    <string name="background_read_medical_access_title_medical_granted" msgid="7852915238347056139">"Toegang tot medische dossiers op de achtergrond"</string>
+    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
+    <skip />
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Toegang tot fitness- en welzijnsgegevens op de achtergrond"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"Geef deze app toegang tot fitness- en welzijnsgegevens en medische dossiers wanneer je de app niet gebruikt"</string>
+    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
+    <skip />
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Geef deze app toegang tot deze gegevens wanneer je de app niet gebruikt"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Geef deze app toegang tot deze gegevens wanneer je de app niet gebruikt"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Toegang tot gegevens op de achtergrond"</string>
@@ -152,8 +161,10 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Geef deze app toegang tot Health Connect-gegevens die vóór <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> zijn toegevoegd"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Geef deze app toegang tot alle eerdere Health Connect-gegevens"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Er worden op dit moment geen fitnessgegevens gelezen omdat <xliff:g id="APP_NAME">%1$s</xliff:g> geen leesrechten heeft"</string>
-    <string name="additional_access_medical_read_footer" msgid="4640796038121080343">"<xliff:g id="APP_NAME">%1$s</xliff:g> heeft al toegang tot eerdere gegevens voor je medische dossiers. Zet de rechten voor medische dossiers voor deze app uit om dit te wijzigen"</string>
-    <string name="additional_access_medical_read_footer_link" msgid="2797623091827504856">"Rechten voor medische dossiers beheren"</string>
+    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
+    <skip />
+    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
+    <skip />
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Zet ten minste één toestemming voor lezen aan om toegang tot achtergrondgegevens of eerdere gegevens voor deze app aan te zetten"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Zet ten minste één toestemming voor lezen aan om achtergrondtoegang voor deze app aan te zetten"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Zet ten minste één toestemming voor lezen aan om toegang tot eerdere gegevens voor deze app aan te zetten"</string>
@@ -328,10 +339,14 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"huidtemperatuur"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Huidtemperatuur lezen"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Huidtemperatuur schrijven"</string>
-    <string name="browse_health_records_intro" msgid="1611488691642390523">"Dit omvat alle medische gegevens die zijn gesynchroniseerd met en toegevoegd aan Health Connect. Dit is misschien niet je volledige medische dossier en dit bevat geen medische beschrijving van je medische gegevens."</string>
-    <string name="all_medical_data_uppercase_label" msgid="2380759160541898783">"Alle medische gegevens"</string>
-    <string name="all_medical_data_lowercase_label" msgid="6293814928992081842">"alle medische gegevens"</string>
-    <string name="all_medical_data_content_description" msgid="4846586780533295022">"Alle medische gegevens schrijven"</string>
+    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
+    <skip />
+    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
+    <skip />
+    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
+    <skip />
+    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
+    <skip />
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Allergieën"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"allergieën"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Allergieën lezen"</string>
@@ -412,13 +427,17 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"<xliff:g id="APP_NAME">%1$s</xliff:g> toegang geven tot eerdere fitness- en welzijnsgegevens?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"In het <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> van <xliff:g id="APP_NAME">%1$s</xliff:g> staat hoe de app omgaat met je gegevens"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"privacybeleid"</string>
-    <string name="medical_request_header" msgid="2300521519021510027">"<xliff:g id="APP_NAME">%1$s</xliff:g> toegang geven tot je medische dossiers?"</string>
+    <!-- no translation found for medical_request_header (5701693055388739014) -->
+    <skip />
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Als je toegang geeft, kan de app gegevens lezen en schrijven, zoals allergieën, labresultaten en vaccinaties\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Als je toegang geeft, kan de app gegevens lezen, zoals allergieën, labresultaten en vaccinaties\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_about_health_records" msgid="7204918218748362687">"Over medische dossiers"</string>
+    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
+    <skip />
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Gegevens om te delen zijn onder andere"</string>
-    <string name="medical_request_summary" msgid="7281321524805015510">"Als je dit toestaat, kan <xliff:g id="APP_NAME">%1$s</xliff:g> je medische dossiers delen met Health Connect."</string>
-    <string name="medical_request_footer" msgid="6533749932770903089">"Synchroniseer je medische dossiers uit verschillende apps en bronnen om deze op één plek te bewaren"</string>
+    <!-- no translation found for medical_request_summary (553735170968628758) -->
+    <skip />
+    <!-- no translation found for medical_request_footer (157243861031258933) -->
+    <skip />
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Alle rechten verwijderen?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Alles verwijderen"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan geen gegevens van Health Connect meer lezen of schrijven.\n\nDit heeft geen effect op andere rechten die deze app misschien heeft, zoals voor de camera, microfoon of locatie."</string>
@@ -428,8 +447,10 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Gegevens van <xliff:g id="APP_NAME">%1$s</xliff:g> ook verwijderen uit Health Connect"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Alle rechten voor fitness en welzijn verwijderen?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Fitnessgegevens van <xliff:g id="APP_NAME">%1$s</xliff:g> ook verwijderen uit Health Connect"</string>
-    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Alle rechten voor medische dossiers verwijderen?"</string>
-    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"Medische dossiers van <xliff:g id="APP_NAME">%1$s</xliff:g> ook verwijderen uit Health Connect"</string>
+    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
+    <skip />
+    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
+    <skip />
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan deze gegevens van Health Connect niet meer lezen of schrijven.\n\nDit heeft geen effect op andere rechten die deze app misschien heeft, zoals voor de camera, microfoon of locatie."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan deze gegevens van Health Connect niet meer lezen of schrijven, waaronder achtergrondgegevens.\n\nDit heeft geen effect op andere rechten die deze app misschien heeft, zoals voor de camera, microfoon of locatie."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan deze gegevens van Health Connect niet meer lezen of schrijven, waaronder eerdere gegevens.\n\nDit heeft geen effect op andere rechten die deze app misschien heeft, zoals voor de camera, microfoon of locatie."</string>
@@ -439,7 +460,8 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan geen gegevens van Health Connect meer lezen of schrijven, waaronder achtergrondgegevens.\n\nDit heeft geen effect op andere rechten die deze app misschien heeft, zoals voor de camera, microfoon of locatie."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan geen gegevens van Health Connect meer lezen of schrijven, waaronder eerdere gegevens.\n\nDit heeft geen effect op andere rechten die deze app misschien heeft, zoals voor de camera, microfoon of locatie."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> kan geen gegevens van Health Connect meer lezen of schrijven, waaronder achtergrondgegevens en eerdere gegevens.\n\nDit heeft geen effect op andere rechten die deze app misschien heeft, zoals voor de camera, microfoon of locatie."</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="762880061016391846">"Fitnessgegevens en medische dossiers van <xliff:g id="APP_NAME">%1$s</xliff:g> ook verwijderen uit Health Connect"</string>
+    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
+    <skip />
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Rechten voor deze app verwijderd"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Alle Health Connect-gegevens ook verwijderen"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Volgende dag"</string>
@@ -488,8 +510,10 @@
     <string name="permissions_header" msgid="6519976063360071569">"Rechten"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"Fitness en wellness"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Training, slaap, voeding en andere"</string>
-    <string name="medical_permissions" msgid="1224097151249321566">"Medische dossiers"</string>
-    <string name="medical_permissions_lowercase" msgid="3969792205103436491">"medische dossiers"</string>
+    <!-- no translation found for medical_permissions (1066296298908103091) -->
+    <skip />
+    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
+    <skip />
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Labuitslagen, medicatie, vaccinaties en andere"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"App-rechten verwijderd"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect heeft rechten verwijderd voor <xliff:g id="APP_DATA">%s</xliff:g>"</string>
@@ -583,7 +607,8 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Naar de Play Store"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Aan de slag met Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect slaat je gezondheids- en fitnessgegevens op zodat je de verschillende apps op je apparaat makkelijk kunt synchroniseren"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect slaat je gezondheids- en fitnessgegevens uit verschillende apps op en synchroniseert deze.\n\n"<b>"Fitness- en welzijnsgegevens,"</b>" waaronder trainingssessies, stappen, voeding en slaap\n\n"<b>"Medische dossiers,"</b>" waaronder vaccinaties, labresultaten en meer"</string>
+    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
+    <skip />
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Met Health Connect kun je het volgende doen"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Gegevens delen met je apps"</b>\n"Kies de gegevens die elke app mag lezen in of sturen naar Health Connect"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Je instellingen en privacy beheren"</b>\n"Wijzig app-rechten en beheer je gegevens wanneer je maar wilt"</string>

@@ -23,8 +23,8 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"అనుమతులు, డేటా"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"మీ పరికరంలో ఆరోగ్యం, ఫిట్‌నెస్ డేటాను మేనేజ్ చేయండి, అలాగే ఏ యాప్‌లు దీన్ని యాక్సెస్ చేయవచ్చో కంట్రోల్ చేయండి"</string>
     <string name="data_title" msgid="4456619761533380816">"డేటా, యాక్సెస్"</string>
-    <string name="browse_medical_data" msgid="6963802956096683273">"హెల్త్ రికార్డ్స్‌ను బ్రౌజ్ చేయండి"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"మీ హెల్త్ రికార్డ్‌లను చూడండి, అలాగే వాటిని ఏ యాప్‌లు యాక్సెస్ చేయగలవో చూడండి"</string>
+    <string name="browse_medical_data" msgid="6492659245149862639">"వైద్యపరమైన రికార్డ్‌లను బ్రౌజ్ చేయండి"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"మీ వైద్యపరమైన రికార్డ్‌లను చూడండి, అలాగే వాటిని ఏ యాప్‌లు యాక్సెస్ చేయగలవో చూడండి"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"అన్ని కేటగిరీలు"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"అన్ని కేటగిరీలను చూడండి"</string>
     <string name="no_data" msgid="1906986019249068659">"డేటా లేదు"</string>
@@ -110,8 +110,8 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"ఖర్చు అయిన కేలరీలను చదువుతుంది"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"ఖర్చు అయిన కేలరీలను చదవడానికి యాప్‌ను అనుమతిస్తుంది"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"బ్యాక్‌గ్రౌండ్‌లో డేటాను యాక్సెస్ చేయడానికి <xliff:g id="APP_NAME">%1$s</xliff:g>‌ను అనుమతించాలా?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"మీరు అనుమతిస్తే, మీరు యాప్‌ను ఉపయోగించనప్పుడు ఈ యాప్ ఫిట్‌నెస్, వెల్‌నెస్ డేటాను, ఆరోగ్య సమాచారాన్ని యాక్సెస్ చేయగలదు."</string>
-    <string name="background_read_medical_single_request_description_medical_granted" msgid="5162456401369633859">"మీరు అనుమతిస్తే, మీరు యాప్‌ను ఉపయోగించనప్పుడు ఈ యాప్ ఆరోగ్య సమాచారాన్ని యాక్సెస్ చేయగలదు."</string>
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"మీరు అనుమతిస్తే, మీరు యాప్‌ను ఉపయోగించనప్పుడు ఈ యాప్ ఫిట్‌నెస్, వెల్‌నెస్ డేటాను, వైద్యపరమైన రికార్డ్‌లను యాక్సెస్ చేయగలదు."</string>
+    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"మీరు అనుమతిస్తే, మీరు యాప్‌ను ఉపయోగించనప్పుడు ఈ యాప్ వైద్యపరమైన రికార్డ్‌లను యాక్సెస్ చేయగలదు."</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"మీరు అనుమతిస్తే, మీరు యాప్‌ను ఉపయోగించనప్పుడు ఈ యాప్ ఫిట్‌నెస్, వెల్‌నెస్ డేటాను యాక్సెస్ చేయగలదు."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"మీరు అనుమతిస్తే, మీరు యాప్‌ను ఉపయోగించనప్పుడు ఈ యాప్ Health Connect డేటాను యాక్సెస్ చేయగలదు."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"మునుపటి డేటాను యాక్సెస్ చేయడానికి <xliff:g id="APP_NAME">%1$s</xliff:g>‌ను అనుమతించాలా?"</string>
@@ -122,9 +122,9 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"<xliff:g id="APP_NAME">%1$s</xliff:g> కోసం అదనపు యాక్సెస్‌ను అనుమతించాలా?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g> కూడా ఈ Health Connect సెట్టింగ్‌లను యాక్సెస్ చేయాలనుకుంటోంది"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"బ్యాక్‌గ్రౌండ్‌లో మొత్తం డేటాను యాక్సెస్ చేయండి"</string>
-    <string name="background_read_medical_combined_request_title_medical_granted" msgid="7245376864667067106">"ఆరోగ్య సమాచారాన్ని బ్యాక్‌గ్రౌండ్‌లో యాక్సెస్ చేయండి"</string>
+    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"బ్యాక్‌గ్రౌండ్‌లో వైద్యపరమైన రికార్డ్‌లను యాక్సెస్ చేయండి"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"ఫిట్‌నెస్, వెల్‌నెస్ డేటాను బ్యాక్‌గ్రౌండ్‌లో యాక్సెస్ చేయండి"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"మీరు యాప్‌ను ఉపయోగించనప్పుడు ఫిట్‌నెస్, వెల్‌నెస్ డేటాను, అలాగే హెల్త్ రికార్డ్స్‌ను యాక్సెస్ చేయడానికి ఈ యాప్‌ను అనుమతించండి"</string>
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"మీరు యాప్‌ను ఉపయోగించనప్పుడు ఫిట్‌నెస్, వెల్‌నెస్ డేటాను, వైద్యపరమైన రికార్డ్‌లను యాక్సెస్ చేయడానికి ఈ యాప్‌ను అనుమతించండి"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"మీరు యాప్‌ను ఉపయోగించనప్పుడు ఈ డేటాను యాక్సెస్ చేయడానికి ఈ యాప్‌ను అనుమతించండి"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"మీరు యాప్‌ను ఉపయోగించనప్పుడు ఈ డేటాను యాక్సెస్ చేయడానికి ఈ యాప్‌ను అనుమతించండి"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"బ్యాక్‌గ్రౌండ్‌లో డేటాను యాక్సెస్ చేయండి"</string>
@@ -135,12 +135,12 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"మునుపటి డేటాను యాక్సెస్ చేయడానికి అనుమతి"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> తేదీలోపు జోడించిన Health Connect డేటాను యాక్సెస్ చేయడానికి ఈ యాప్‌ను అనుమతించండి"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"గతంలోని Health Connect డేటా మొత్తాన్ని యాక్సెస్ చేయడానికి ఈ యాప్‌నకు అనుమతినివ్వండి"</string>
-    <string name="history_read_medical_combined_request_footer" msgid="5301940225768076844">"మీ ఆరోగ్య సమాచారానికి సంబంధించి మునుపటి డేటాను <xliff:g id="APP_NAME">%1$s</xliff:g> ఇప్పటికే యాక్సెస్ చేసింది"</string>
+    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"మీ వైద్యపరమైన రికార్డ్‌లకు సంబంధించి మునుపటి డేటాను <xliff:g id="APP_NAME">%1$s</xliff:g> ఇప్పటికే యాక్సెస్ చేసింది"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"అనుమతుల గురించి మరింత చదవండి"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"బ్యాక్‌గ్రౌండ్‌లో మొత్తం డేటాను యాక్సెస్ చేయడానికి అనుమతి"</string>
-    <string name="background_read_medical_access_title_medical_granted" msgid="7852915238347056139">"ఆరోగ్య సమాచారాన్ని బ్యాక్‌గ్రౌండ్‌లో యాక్సెస్ చేయండి"</string>
+    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"బ్యాక్‌గ్రౌండ్‌లో వైద్యపరమైన రికార్డ్‌లను యాక్సెస్ చేయండి"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"ఫిట్‌నెస్, వెల్‌నెస్ డేటాను బ్యాక్‌గ్రౌండ్‌లో యాక్సెస్ చేయండి"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"మీరు యాప్‌ను ఉపయోగించనప్పుడు ఫిట్‌నెస్, వెల్‌నెస్ డేటాను, ఆరోగ్య సమాచారాన్ని యాక్సెస్ చేయడానికి ఈ యాప్‌ను అనుమతించండి"</string>
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"మీరు యాప్‌ను ఉపయోగించనప్పుడు ఫిట్‌నెస్, వెల్‌నెస్ డేటాను, వైద్యపరమైన రికార్డ్‌లను యాక్సెస్ చేయడానికి ఈ యాప్‌ను అనుమతించండి"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"మీరు యాప్‌ను ఉపయోగించనప్పుడు ఈ డేటాను యాక్సెస్ చేయడానికి ఈ యాప్‌ను అనుమతించండి"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"మీరు యాప్‌ను ఉపయోగించనప్పుడు ఈ డేటాను యాక్సెస్ చేయడానికి ఈ యాప్‌ను అనుమతించండి"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"బ్యాక్‌గ్రౌండ్‌లో డేటాను యాక్సెస్ చేయడానికి అనుమతి"</string>
@@ -152,8 +152,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> తేదీలోపు జోడించిన Health Connect డేటాను యాక్సెస్ చేయడానికి ఈ యాప్‌ను అనుమతించండి"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"మొత్తం Health Connect మునుపటి డేటాను యాక్సెస్ చేయడానికి ఈ యాప్‌ను అనుమతించండి"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"<xliff:g id="APP_NAME">%1$s</xliff:g>‌కు రీడ్ అనుమతులు ఆన్ చేసి లేనందున ప్రస్తుతం ఎటువంటి ఫిట్‌నెస్ డేటాను రీడ్ చేయడం లేదు"</string>
-    <string name="additional_access_medical_read_footer" msgid="4640796038121080343">"<xliff:g id="APP_NAME">%1$s</xliff:g> మీ హెల్త్ రికార్డ్స్‌కు సంబంధించి మునుపటి డేటాను ఇప్పటికే యాక్సెస్ చేసింది. దీన్ని మార్చడానికి, ఈ యాప్‌నకు సంబంధించి ఆరోగ్య సమాచార అనుమతులను ఆఫ్ చేయండి"</string>
-    <string name="additional_access_medical_read_footer_link" msgid="2797623091827504856">"ఆరోగ్య సమాచారం అనుమతులను మేనేజ్ చేయండి"</string>
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g> మీ వైద్యపరమైన రికార్డ్‌లకు సంబంధించి మునుపటి డేటాను ఇప్పటికే యాక్సెస్ చేసింది. దీన్ని మార్చడానికి, ఈ యాప్‌నకు సంబంధించి వైద్యపరమైన రికార్డ్ అనుమతులను ఆఫ్ చేయండి"</string>
+    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"వైద్యపరమైన రికార్డ్ అనుమతులను మేనేజ్ చేయండి"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"ఈ యాప్‌నకు సంబంధించిన బ్యాక్‌గ్రౌండ్ లేదా గతంలోని డేటాకు యాక్సెస్‌ను ఆన్ చేయడానికి కనీసం ఒక రీడ్ అనుమతిని ఎనేబుల్ చేయండి"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"ఈ యాప్‌నకు సంబంధించిన బ్యాక్‌గ్రౌండ్ యాక్సెస్‌ను ఆన్ చేయడానికి కనీసం ఒక రీడ్ అనుమతిని ఎనేబుల్ చేయండి"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"ఈ యాప్‌నకు సంబంధించిన గతంలోని డేటాకు యాక్సెస్‌ను ఆన్ చేయడానికి కనీసం ఒక రీడ్ అనుమతిని ఎనేబుల్ చేయండి"</string>
@@ -328,10 +328,10 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"చర్మం ఉష్ణోగ్రత"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"చర్మం ఉష్ణోగ్రతను చదవండి"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"చర్మం ఉష్ణోగ్రత గురించి రాయండి"</string>
-    <string name="browse_health_records_intro" msgid="1611488691642390523">"Health Connectకు సింక్ చేసిన, జోడించిన హెల్త్ రికార్డ్స్ అన్నీ ఇందులో ఉంటాయి. ఇది మీ పూర్తి వైద్యపరమైన రికార్డ్ కాకపోవచ్చు, అలాగే మీ హెల్త్ రికార్డ్స్‌కు సంబంధించిన వైద్యపరమైన వివరణ ఇందులో ఉండదు."</string>
-    <string name="all_medical_data_uppercase_label" msgid="2380759160541898783">"హెల్త్ రికార్డ్‌లన్నీ"</string>
-    <string name="all_medical_data_lowercase_label" msgid="6293814928992081842">"హెల్త్ రికార్డ్‌లన్నీ"</string>
-    <string name="all_medical_data_content_description" msgid="4846586780533295022">"హెల్త్ రికార్డ్‌లన్నింటినీ రాయండి"</string>
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"Health Connectకు సింక్ చేసిన, జోడించిన మొత్తం వైద్యపరమైన రికార్డ్‌లు ఇందులో ఉంటాయి. ఇది మీ పూర్తి వైద్యపరమైన రికార్డ్ కాకపోవచ్చు, అలాగే మీ వైద్యపరమైన రికార్డ్‌లకు సంబంధించిన వైద్యపరమైన వివరణ ఇందులో ఉండదు."</string>
+    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"మొత్తం వైద్యపరమైన రికార్డ్‌లు"</string>
+    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"మొత్తం వైద్యపరమైన రికార్డ్‌లు"</string>
+    <string name="all_medical_data_content_description" msgid="3454355551506537094">"వైద్యపరమైన రికార్డ్‌లన్నింటినీ రాయండి"</string>
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"అలర్జీలు"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"అలర్జీలు"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"అలర్జీల డేటాను చదువుతుంది"</string>
@@ -412,13 +412,13 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"ఫిట్‌నెస్, వెల్‌నెస్ డేటాను యాక్సెస్ చేయడానికి <xliff:g id="APP_NAME">%1$s</xliff:g>‌ను అనుమతించాలా?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>‌లో మీ డేటాను <xliff:g id="APP_NAME">%1$s</xliff:g> ఎలా హ్యాండిల్ చేస్తుందో మీరు తెలుసుకోవచ్చు"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"గోప్యతా పాలసీ"</string>
-    <string name="medical_request_header" msgid="2300521519021510027">"మీ ఆరోగ్య సమాచారాలను యాక్సెస్ చేయడానికి <xliff:g id="APP_NAME">%1$s</xliff:g>‌ను అనుమతించాలా?"</string>
+    <string name="medical_request_header" msgid="5701693055388739014">"మీ వైద్యపరమైన రికార్డ్‌లను యాక్సెస్ చేయడానికి <xliff:g id="APP_NAME">%1$s</xliff:g>‌ను అనుమతించాలా?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"మీరు యాక్సెస్ ఇస్తే, అలర్జీలు, ల్యాబ్ ఫలితాలు, వ్యాక్సిన్‌లు వంటి \n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g> డేటాను ఈ యాప్ చదవగలదు, రాయగలదు"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"మీరు యాక్సెస్ ఇస్తే, అలర్జీలు, ల్యాబ్ ఫలితాలు, వ్యాక్సిన్‌లు, మరిన్ని \n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g> వంటి డేటాను ఈ యాప్ చదవగలదు"</string>
-    <string name="medical_request_about_health_records" msgid="7204918218748362687">"ఆరోగ్య సమాచారాల గురించి"</string>
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"వైద్యపరమైన రికార్డ్‌ల గురించిన సమాచారం"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"షేర్ చేసే డేటాలో ఇవి ఉంటాయి"</string>
-    <string name="medical_request_summary" msgid="7281321524805015510">"మీరు అనుమతిస్తే, <xliff:g id="APP_NAME">%1$s</xliff:g> Health Connectతో మీ ఆరోగ్య సమాచారాన్ని షేర్ చేయగలదు."</string>
-    <string name="medical_request_footer" msgid="6533749932770903089">"మీ ఆరోగ్య సమాచారాలన్నింటిని ఒకేచోట ఉంచడానికి, మీ విభిన్న యాప్‌లు, సోర్స్‌ల నుండి మీ ఆరోగ్య సమాచారాలను సింక్ చేయండి"</string>
+    <string name="medical_request_summary" msgid="553735170968628758">"మీరు అనుమతిస్తే, <xliff:g id="APP_NAME">%1$s</xliff:g> Health Connectతో మీ వైద్యపరమైన రికార్డ్‌లను షేర్ చేయగలదు."</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"మీ వైద్యపరమైన రికార్డ్‌లను ఒకేచోట ఉంచడానికి, మీ విభిన్న యాప్‌లు, సోర్స్‌ల నుండి మీ వైద్యపరమైన రికార్డ్‌లను సింక్ చేయండి"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"అన్ని అనుమతులను తీసివేయాలా?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"అన్నీ తీసివేయండి"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై Health Connectలో ఎలాంటి డేటానూ రీడ్ గానీ, రైట్ గానీ చేయలేదు.\n\nదీని వల్ల ఈ యాప్‌నకు ఉండే ఇతర అనుమతులపై ప్రభావం పడదు. ఉదా - కెమెరా, మైక్రోఫోన్, లొకేషన్ వంటివి."</string>
@@ -428,8 +428,8 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connectలో <xliff:g id="APP_NAME">%1$s</xliff:g> డేటాను కూడా తొలగించండి"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"ఫిట్‌నెస్, వెల్‌నెస్ అనుమతులు అన్నిటినీ తీసివేయాలా?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"<xliff:g id="APP_NAME">%1$s</xliff:g>‌లోని Health Connect నుండి ఫిట్‌నెస్ డేటాను కూడా తొలగించండి"</string>
-    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"ఆరోగ్య సమాచారం అనుమతులన్నింటినీ తీసివేయాలా?"</string>
-    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"<xliff:g id="APP_NAME">%1$s</xliff:g>‌లోని Health Connect నుండి ఆరోగ్య సమాచారాలను కూడా తొలగించండి"</string>
+    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"మొత్తం వైద్యపరమైన రికార్డ్‌ల అనుమతులను తీసివేయాలా?"</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"<xliff:g id="APP_NAME">%1$s</xliff:g>‌లోని Health Connect నుండి వైద్యపరమైన రికార్డ్‌లను కూడా తొలగించండి"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై Health Connect నుండి ఈ డేటాను చదవలేదు లేదా రాయలేదు.\n\nఈ యాప్‌నకు ఉన్న లొకేషన్, కెమెరా, లేదా మైక్రోఫోన్ వంటి ఇతర అనుమతులను ఇది ప్రభావితం చేయదు."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై బ్యాక్‌గ్రౌండ్ డేటతో సహా Health Connect నుండి ఈ డేటాను చదవలేదు లేదా రాయలేదు.\n\nఈ యాప్‌నకు ఉన్న లొకేషన్, కెమెరా, లేదా మైక్రోఫోన్ వంటి ఇతర అనుమతులను ఇది ప్రభావితం చేయదు."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై, గతంలోని డేటతో సహా Health Connect నుండి ఈ డేటాను చదవలేదు లేదా రాయలేదు.\n\nఈ యాప్‌నకు ఉన్న కెమెరా, మైక్రోఫోన్ లేదా లొకేషన్ వంటి ఇతర అనుమతులను ఇది ప్రభావితం చేయదు."</string>
@@ -439,7 +439,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై బ్యాక్‌గ్రౌండ్ డేటతో సహా Health Connect నుండి డేటాను చదవలేదు లేదా రాయలేదు.\n\nఈ యాప్‌నకు ఉన్న లొకేషన్, కెమెరా, లేదా మైక్రోఫోన్ వంటి ఇతర అనుమతులను ఇది ప్రభావితం చేయదు."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై, గతంలోని డేటతో సహా Health Connect నుండి ఏ డేటాను చదవలేదు లేదా రాయలేదు.\n\nయాప్‌నకు ఉన్న కెమెరా, మైక్రోఫోన్ లేదా లొకేషన్, వంటి ఇతర అనుమతులను ఇది ప్రభావితం చేయదు."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> ఇకపై బ్యాక్‌గ్రౌండ్, గతంలోని డేటాతో సహా Health Connect నుండి ఏ డేటాను చదవలేదు లేదా రాయలేదు.\n\nయాప్‌నకు ఉన్న కెమెరా, మైక్రోఫోన్ లేదా లొకేషన్, వంటి ఇతర అనుమతులను ఇది ప్రభావితం చేయదు."</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="762880061016391846">"<xliff:g id="APP_NAME">%1$s</xliff:g>లోని Health Connect నుండి ఫిట్‌నెస్ డేటాను, హెల్త్ రికార్డ్‌లను కూడా తొలగించండి"</string>
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"<xliff:g id="APP_NAME">%1$s</xliff:g>‌లోని Health Connect నుండి ఫిట్‌నెస్ డేటాను, వైద్యపరమైన రికార్డ్‌లను కూడా తొలగించండి"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"ఈ యాప్‌కి అనుమతులు తీసివేయబడ్డాయి"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Health Connect డేటా మొత్తాన్ని కూడా తొలగించండి"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"తర్వాతి రోజు"</string>
@@ -488,8 +488,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"అనుమతులు"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"ఫిట్‌నెస్, వెల్‌నెస్"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"వ్యాయామం, నిద్ర, న్యూట్రిషన్, ఇంకా ఇతరం"</string>
-    <string name="medical_permissions" msgid="1224097151249321566">"హెల్త్ రికార్డ్స్‌"</string>
-    <string name="medical_permissions_lowercase" msgid="3969792205103436491">"హెల్త్ రికార్డ్స్"</string>
+    <string name="medical_permissions" msgid="1066296298908103091">"వైద్యపరమైన రికార్డ్‌లు"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"వైద్యపరమైన రికార్డ్‌లు"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"ల్యాబ్ ఫలితాలు,మందులు, వ్యాక్సిన్స్,ఇతరం"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"యాప్ అనుమతులు తీసివేయబడ్డాయి"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect <xliff:g id="APP_DATA">%s</xliff:g>‌కు అనుమతులను తీసివేసింది"</string>
@@ -583,7 +583,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Play Storeకు వెళ్లండి"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Health Connectను ప్రారంభించండి"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect మీ ఆరోగ్యం, ఫిట్‌నెస్ డేటాను స్టోర్ చేస్తుంది, మీ ఫోన్‌లోని విభిన్న యాప్‌లను సింక్ చేయడానికి మీకు సులభమైన మార్గాన్ని ఇది అందిస్తుంది"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect వేర్వేరు యాప్‌ల నుండి మీ ఆరోగ్యం, ఫిట్‌నెస్ డేటాను స్టోర్ చేస్తుంది, సింక్ చేస్తుంది.\n\nవ్యాయామ సెషన్‌లు, అడుగులు, నిద్ర, ఇంకా మరిన్నింటితో కూడిన"<b>" ఫిట్‌నెస్, సంరక్షణకు సంబంధించిన డేటా"</b>\n\n"వ్యాక్సిన్‌లు, ల్యాబ్ ఫలితాలు, ఇంకా మరిన్నింటితో కూడిన"<b>" ఆరోగ్య సమాచారాలు"</b></string>
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect వేర్వేరు యాప్‌ల నుండి మీ ఆరోగ్యం, ఫిట్‌నెస్ డేటాను స్టోర్ చేస్తుంది, సింక్ చేస్తుంది.\n\nవ్యాయామ సెషన్‌లు, అడుగులు, న్యూట్రిషన్, నిద్ర, ఇంకా మరిన్నింటితో కూడిన"<b>" ఫిట్‌నెస్, సంరక్షణకు సంబంధించిన డేటా"</b>\n\n"వ్యాక్సిన్‌లు, ల్యాబ్ ఫలితాలు, ఇంకా మరిన్నింటితో కూడిన"<b>" వైద్యపరమైన రికార్డ్‌లు"</b></string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connectతో మీరు వీటిని చేయవచ్చు"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"మీ యాప్స్‌కు డేటాను షేర్ చేయండి"</b>\n"Health Connectలో ఒక్కో యాప్ రీడ్ లేదా రైట్ చేయ‌గలిగే డేటాను ఎంచుకోండి"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"మీ సెట్టింగ్‌లను, గోప్యతను మేనేజ్ చేయండి"</b>\n"యాప్ అనుమతులను మార్చి, మీ డేటాను ఎప్పుడైనా మేనేజ్ చేయవచ్చు"</string>
@@ -1207,7 +1207,7 @@
     <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"Health Connect ద్వారా <xliff:g id="APP_NAME">%s</xliff:g>‌తో సింక్ చేయడానికి మరిన్ని యాప్స్‌ను కనుగొనండి"</string>
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"యాప్ స్టోర్‌లో చూడండి"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"స్క్రీన్ లాక్‌ను సెట్ చేయండి"</string>
-    <string name="lock_screen_banner_content" msgid="3392527073622152481">"మీ ఆరోగ్య డేటాకు అదనపు సెక్యూరిటీని అందించడానికి, ఈ డివైజ్‌కు PINను, ఆకృతిని, లేదా పాస్‌వర్డ్‌ను సెట్ చేయండి"</string>
+    <string name="lock_screen_banner_content" msgid="3392527073622152481">"మీ హెల్త్ డేటాకు అదనపు సెక్యూరిటీని అందించడానికి, ఈ డివైజ్‌కు PINను, ఆకృతిని, లేదా పాస్‌వర్డ్‌ను సెట్ చేయండి"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"స్క్రీన్ లాక్‌ను సెట్ చేయండి"</string>
     <string name="select_all" msgid="837499881590001166">"అన్నింటినీ ఎంచుకోండి"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"కనెక్ట్ అయి ఉన్న యాప్‌లు ఇకపై Health Connectలో ఈ డేటాను రీడ్ చేయలేవు"</string>
@@ -1338,476 +1338,240 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"కనెక్ట్ అయి లేదు"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"ఈ యాప్‌ను Health Connectకు కనెక్ట్ చేయడానికి క్లిక్ చేయండి"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"ఇప్పుడు కాదు"</string>
-    <!-- no translation found for acne_read_content_description (1176708404029936065) -->
-    <skip />
-    <!-- no translation found for acne_write_content_description (9221785868351412493) -->
-    <skip />
-    <!-- no translation found for brittle_nails_read_content_description (423745726647038216) -->
-    <skip />
-    <!-- no translation found for brittle_nails_write_content_description (1804481735143147688) -->
-    <skip />
-    <!-- no translation found for burning_mouth_read_content_description (71088318928262260) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2778289937475041118) -->
-    <skip />
-    <!-- no translation found for chills_read_content_description (7244946135559432433) -->
-    <skip />
-    <!-- no translation found for chills_write_content_description (6478646233405107436) -->
-    <skip />
-    <!-- no translation found for dehydration_read_content_description (7633935838518756206) -->
-    <skip />
-    <!-- no translation found for dehydration_write_content_description (541514183036921571) -->
-    <skip />
-    <!-- no translation found for dry_skin_read_content_description (6798683159412202977) -->
-    <skip />
-    <!-- no translation found for dry_skin_write_content_description (1312998001092991619) -->
-    <skip />
-    <!-- no translation found for fever_read_content_description (3385209639730909489) -->
-    <skip />
-    <!-- no translation found for fever_write_content_description (8440573327719878961) -->
-    <skip />
-    <!-- no translation found for joint_pain_read_content_description (2932523124488927967) -->
-    <skip />
-    <!-- no translation found for joint_pain_write_content_description (7405551860978844535) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_read_content_description (2132696730582070534) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_write_content_description (7556318646656369856) -->
-    <skip />
-    <!-- no translation found for muscle_pain_read_content_description (3116385630330673084) -->
-    <skip />
-    <!-- no translation found for muscle_pain_write_content_description (2544204740665773272) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_read_content_description (8346630124770268372) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_write_content_description (1959348657257573252) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_read_content_description (2246901110448734533) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_write_content_description (8119106053737965766) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_read_content_description (7644187172731376645) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_write_content_description (8744350844236958279) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_read_content_description (3132494584303814009) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_write_content_description (4282920161878530009) -->
-    <skip />
-    <!-- no translation found for fatigue_read_content_description (8447413794808220408) -->
-    <skip />
-    <!-- no translation found for fatigue_write_content_description (3000326883358951973) -->
-    <skip />
-    <!-- no translation found for constipation_read_content_description (4024154136010015370) -->
-    <skip />
-    <!-- no translation found for constipation_write_content_description (9059835998017996999) -->
-    <skip />
-    <!-- no translation found for diarrhea_read_content_description (6643311788778713543) -->
-    <skip />
-    <!-- no translation found for diarrhea_write_content_description (2525160401458506448) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_read_content_description (5825568361431664706) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_write_content_description (7370817778828856877) -->
-    <skip />
-    <!-- no translation found for nausea_read_content_description (7696809485706809234) -->
-    <skip />
-    <!-- no translation found for nausea_write_content_description (7956853318058549079) -->
-    <skip />
-    <!-- no translation found for stomach_ache_read_content_description (6960461949095524373) -->
-    <skip />
-    <!-- no translation found for stomach_ache_write_content_description (4822349196740130790) -->
-    <skip />
-    <!-- no translation found for vomiting_read_content_description (6425637340168306118) -->
-    <skip />
-    <!-- no translation found for vomiting_write_content_description (2768436321239967229) -->
-    <skip />
-    <!-- no translation found for chest_pain_read_content_description (5388099127082653993) -->
-    <skip />
-    <!-- no translation found for chest_pain_write_content_description (7570421665813979598) -->
-    <skip />
-    <!-- no translation found for chest_tightness_read_content_description (3234587929340517638) -->
-    <skip />
-    <!-- no translation found for chest_tightness_write_content_description (3365518444505217882) -->
-    <skip />
-    <!-- no translation found for cough_read_content_description (4834360757270578547) -->
-    <skip />
-    <!-- no translation found for cough_write_content_description (2927943192149715422) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_read_content_description (5830132363981902576) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_write_content_description (6195434828951874561) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_read_content_description (5285037217314042125) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_write_content_description (1812050225998794712) -->
-    <skip />
-    <!-- no translation found for wheezing_read_content_description (3698103133045395859) -->
-    <skip />
-    <!-- no translation found for wheezing_write_content_description (3555234332119025686) -->
-    <skip />
-    <!-- no translation found for heartburn_read_content_description (4650825508743336439) -->
-    <skip />
-    <!-- no translation found for heartburn_write_content_description (1857706822547818187) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_read_content_description (4732209374634649857) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_write_content_description (834686289232563614) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_read_content_description (7616019217735602113) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_write_content_description (271585170557004393) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_read_content_description (3506995529886706872) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_write_content_description (4087127686579577768) -->
-    <skip />
-    <!-- no translation found for dizziness_read_content_description (2525565486057144416) -->
-    <skip />
-    <!-- no translation found for dizziness_write_content_description (1875365619054873732) -->
-    <skip />
-    <!-- no translation found for earaches_read_content_description (4643142391473401154) -->
-    <skip />
-    <!-- no translation found for earaches_write_content_description (3551386029980258801) -->
-    <skip />
-    <!-- no translation found for hair_loss_read_content_description (4057044821025872986) -->
-    <skip />
-    <!-- no translation found for hair_loss_write_content_description (7387442867237711823) -->
-    <skip />
-    <!-- no translation found for headache_read_content_description (7485283472508878298) -->
-    <skip />
-    <!-- no translation found for headache_write_content_description (720183844750746485) -->
-    <skip />
-    <!-- no translation found for runny_nose_read_content_description (443700998701222852) -->
-    <skip />
-    <!-- no translation found for runny_nose_write_content_description (6210009950948827090) -->
-    <skip />
-    <!-- no translation found for sneezing_read_content_description (1825781985598094799) -->
-    <skip />
-    <!-- no translation found for sneezing_write_content_description (8125072216406958337) -->
-    <skip />
-    <!-- no translation found for sore_throat_read_content_description (7798247670004858562) -->
-    <skip />
-    <!-- no translation found for sore_throat_write_content_description (6058043292544091397) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_read_content_description (6604212451531546331) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_write_content_description (6950875986047625521) -->
-    <skip />
-    <!-- no translation found for back_pain_read_content_description (1176155927269014089) -->
-    <skip />
-    <!-- no translation found for back_pain_write_content_description (6282959987099901645) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_read_content_description (1437405008757136462) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_write_content_description (3519700764000282215) -->
-    <skip />
-    <!-- no translation found for hot_flashes_read_content_description (2229463748079331513) -->
-    <skip />
-    <!-- no translation found for hot_flashes_write_content_description (441093768815039294) -->
-    <skip />
-    <!-- no translation found for night_sweats_read_content_description (7644094250441074129) -->
-    <skip />
-    <!-- no translation found for night_sweats_write_content_description (7501357533280452509) -->
-    <skip />
-    <!-- no translation found for water_retention_read_content_description (211789030125880649) -->
-    <skip />
-    <!-- no translation found for water_retention_write_content_description (7109328727506593781) -->
-    <skip />
-    <!-- no translation found for cravings_read_content_description (9098905292448612603) -->
-    <skip />
-    <!-- no translation found for cravings_write_content_description (7932335159387976333) -->
-    <skip />
-    <!-- no translation found for bloating_read_content_description (8942780558464500997) -->
-    <skip />
-    <!-- no translation found for bloating_write_content_description (5014366726518564943) -->
-    <skip />
-    <!-- no translation found for cramps_read_content_description (5853663240074256855) -->
-    <skip />
-    <!-- no translation found for cramps_write_content_description (6777230560926849939) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_read_content_description (6331928351160142817) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_write_content_description (9213133328064016367) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_read_content_description (1556133668276886256) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_write_content_description (5405234499024881940) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_read_content_description (8872893212311881743) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_write_content_description (8482016412474126674) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_read_content_description (21587787265978758) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_write_content_description (7639415261021656468) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_read_content_description (6027886706003079912) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_write_content_description (6833099607694941406) -->
-    <skip />
-    <!-- no translation found for brain_fog_read_content_description (4240133221789017568) -->
-    <skip />
-    <!-- no translation found for brain_fog_write_content_description (354508934978268288) -->
-    <skip />
-    <!-- no translation found for mood_change_read_content_description (5114563193264125173) -->
-    <skip />
-    <!-- no translation found for mood_change_write_content_description (7613564641235985120) -->
-    <skip />
-    <!-- no translation found for memory_lapse_read_content_description (3639865098888366357) -->
-    <skip />
-    <!-- no translation found for memory_lapse_write_content_description (211569063190179476) -->
-    <skip />
-    <!-- no translation found for sleepiness_read_content_description (797381777988304669) -->
-    <skip />
-    <!-- no translation found for sleepiness_write_content_description (888236364245216476) -->
-    <skip />
-    <!-- no translation found for sleep_changes_read_content_description (277237231470749744) -->
-    <skip />
-    <!-- no translation found for sleep_changes_write_content_description (9078270254664653838) -->
-    <skip />
-    <!-- no translation found for insomnia_read_content_description (5225449618972721129) -->
-    <skip />
-    <!-- no translation found for insomnia_write_content_description (4237153589826489083) -->
-    <skip />
-    <!-- no translation found for snore_read_content_description (3447953925696237628) -->
-    <skip />
-    <!-- no translation found for snore_write_content_description (959354771204900433) -->
-    <skip />
-    <!-- no translation found for acne_uppercase_label (60568062993817483) -->
-    <skip />
-    <!-- no translation found for acne_lowercase_label (5301949536428255159) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_uppercase_label (442393846492385702) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_lowercase_label (4136643670361233063) -->
-    <skip />
-    <!-- no translation found for back_pain_uppercase_label (6034795846635350255) -->
-    <skip />
-    <!-- no translation found for back_pain_lowercase_label (7487168354843582888) -->
-    <skip />
-    <!-- no translation found for bloating_uppercase_label (2827024204358491650) -->
-    <skip />
-    <!-- no translation found for bloating_lowercase_label (4108236897678347488) -->
-    <skip />
-    <!-- no translation found for brain_fog_uppercase_label (3782508630097437711) -->
-    <skip />
-    <!-- no translation found for brain_fog_lowercase_label (8018499987092429724) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_uppercase_label (3633574517042452397) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_lowercase_label (3745105353936751222) -->
-    <skip />
-    <!-- no translation found for brittle_nails_uppercase_label (7290899807816681152) -->
-    <skip />
-    <!-- no translation found for brittle_nails_lowercase_label (43861645923597496) -->
-    <skip />
-    <!-- no translation found for burning_mouth_uppercase_label (8975226712238467359) -->
-    <skip />
-    <!-- no translation found for burning_mouth_lowercase_label (3378970972990933484) -->
-    <skip />
-    <!-- no translation found for chest_pain_uppercase_label (8091501402224214622) -->
-    <skip />
-    <!-- no translation found for chest_pain_lowercase_label (8817807562310689177) -->
-    <skip />
-    <!-- no translation found for chest_tightness_uppercase_label (8988021502622503503) -->
-    <skip />
-    <!-- no translation found for chest_tightness_lowercase_label (1770063390635610292) -->
-    <skip />
-    <!-- no translation found for chills_uppercase_label (4320786490882838834) -->
-    <skip />
-    <!-- no translation found for chills_lowercase_label (1306612496314055832) -->
-    <skip />
-    <!-- no translation found for constipation_uppercase_label (7245001778443725742) -->
-    <skip />
-    <!-- no translation found for constipation_lowercase_label (6217542866033766747) -->
-    <skip />
-    <!-- no translation found for cough_uppercase_label (5570609736970603012) -->
-    <skip />
-    <!-- no translation found for cough_lowercase_label (459638956679172779) -->
-    <skip />
-    <!-- no translation found for cramps_uppercase_label (5162905309136173937) -->
-    <skip />
-    <!-- no translation found for cramps_lowercase_label (4644485808002493449) -->
-    <skip />
-    <!-- no translation found for cravings_uppercase_label (4754194354806284307) -->
-    <skip />
-    <!-- no translation found for cravings_lowercase_label (5836041614136287213) -->
-    <skip />
-    <!-- no translation found for dehydration_uppercase_label (10278239942824711) -->
-    <skip />
-    <!-- no translation found for dehydration_lowercase_label (8692632632276643276) -->
-    <skip />
-    <!-- no translation found for diarrhea_uppercase_label (6310170127529968752) -->
-    <skip />
-    <!-- no translation found for diarrhea_lowercase_label (5938774694742839016) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_uppercase_label (3546617155300878657) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_lowercase_label (4980631237611433200) -->
-    <skip />
-    <!-- no translation found for dizziness_uppercase_label (8129950094459563983) -->
-    <skip />
-    <!-- no translation found for dizziness_lowercase_label (3462347558609662379) -->
-    <skip />
-    <!-- no translation found for dry_skin_uppercase_label (4542430684082075550) -->
-    <skip />
-    <!-- no translation found for dry_skin_lowercase_label (6892264917735291961) -->
-    <skip />
-    <!-- no translation found for earaches_uppercase_label (107701950625572701) -->
-    <skip />
-    <!-- no translation found for earaches_lowercase_label (6240790850403958317) -->
-    <skip />
-    <!-- no translation found for fatigue_uppercase_label (7514286788083426578) -->
-    <skip />
-    <!-- no translation found for fatigue_lowercase_label (2669560685808367387) -->
-    <skip />
-    <!-- no translation found for fever_uppercase_label (6889273008212535253) -->
-    <skip />
-    <!-- no translation found for fever_lowercase_label (3634400562894397159) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_uppercase_label (2171378172300618053) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_lowercase_label (1725534000111875030) -->
-    <skip />
-    <!-- no translation found for hair_loss_uppercase_label (6359351347019795813) -->
-    <skip />
-    <!-- no translation found for hair_loss_lowercase_label (2764498189966225461) -->
-    <skip />
-    <!-- no translation found for headache_uppercase_label (863800537735413054) -->
-    <skip />
-    <!-- no translation found for headache_lowercase_label (6564231905087583135) -->
-    <skip />
-    <!-- no translation found for heartburn_uppercase_label (1170571383460859644) -->
-    <skip />
-    <!-- no translation found for heartburn_lowercase_label (6235983036978705474) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_uppercase_label (2026400872833911547) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_lowercase_label (1468243523322721340) -->
-    <skip />
-    <!-- no translation found for hot_flashes_uppercase_label (2410116266729711836) -->
-    <skip />
-    <!-- no translation found for hot_flashes_lowercase_label (6485269554856410007) -->
-    <skip />
-    <!-- no translation found for insomnia_uppercase_label (4946197328995261738) -->
-    <skip />
-    <!-- no translation found for insomnia_lowercase_label (3742025423716451058) -->
-    <skip />
-    <!-- no translation found for joint_pain_uppercase_label (7693454621285586935) -->
-    <skip />
-    <!-- no translation found for joint_pain_lowercase_label (1877680075365305488) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_uppercase_label (5230114867081881444) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_lowercase_label (8766445235392409480) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_uppercase_label (4023141061302523950) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_lowercase_label (7558077308061468558) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_uppercase_label (4195502722277905266) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_lowercase_label (4822860811117141611) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_uppercase_label (2307572603791750654) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_lowercase_label (940765534682997044) -->
-    <skip />
-    <!-- no translation found for memory_lapse_uppercase_label (241393771674969441) -->
-    <skip />
-    <!-- no translation found for memory_lapse_lowercase_label (5590619293782264318) -->
-    <skip />
-    <!-- no translation found for mood_change_uppercase_label (6591596468077187132) -->
-    <skip />
-    <!-- no translation found for mood_change_lowercase_label (5154765930188874067) -->
-    <skip />
-    <!-- no translation found for muscle_pain_uppercase_label (2470771124188001900) -->
-    <skip />
-    <!-- no translation found for muscle_pain_lowercase_label (7842677871351347822) -->
-    <skip />
-    <!-- no translation found for nausea_uppercase_label (8384006696113532259) -->
-    <skip />
-    <!-- no translation found for nausea_lowercase_label (8182471893071968504) -->
-    <skip />
-    <!-- no translation found for night_sweats_uppercase_label (6177687233700001658) -->
-    <skip />
-    <!-- no translation found for night_sweats_lowercase_label (5041101323453286082) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_uppercase_label (9057761232218571640) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_lowercase_label (8993103170034473121) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_uppercase_label (2029088854167004239) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_lowercase_label (5744229600679518473) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_uppercase_label (7471254320615756463) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_lowercase_label (3820574649548616546) -->
-    <skip />
-    <!-- no translation found for runny_nose_uppercase_label (6561156187042071551) -->
-    <skip />
-    <!-- no translation found for runny_nose_lowercase_label (2214697492382685914) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_uppercase_label (3747502224212110471) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_lowercase_label (3970444639088619346) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_uppercase_label (1004040920818222022) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_lowercase_label (2446049805930852514) -->
-    <skip />
-    <!-- no translation found for sleep_changes_uppercase_label (817870703301327111) -->
-    <skip />
-    <!-- no translation found for sleep_changes_lowercase_label (8606593835222848643) -->
-    <skip />
-    <!-- no translation found for sleepiness_uppercase_label (8292543897598171825) -->
-    <skip />
-    <!-- no translation found for sleepiness_lowercase_label (7563434619994665081) -->
-    <skip />
-    <!-- no translation found for sneezing_uppercase_label (3559089195823390830) -->
-    <skip />
-    <!-- no translation found for sneezing_lowercase_label (4614496100578986753) -->
-    <skip />
-    <!-- no translation found for snore_uppercase_label (5408933698329003980) -->
-    <skip />
-    <!-- no translation found for snore_lowercase_label (4813706716393000341) -->
-    <skip />
-    <!-- no translation found for sore_throat_uppercase_label (7652461264264564339) -->
-    <skip />
-    <!-- no translation found for sore_throat_lowercase_label (2671417552726018944) -->
-    <skip />
-    <!-- no translation found for stomach_ache_uppercase_label (8450868632465837793) -->
-    <skip />
-    <!-- no translation found for stomach_ache_lowercase_label (3263518334946627327) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_uppercase_label (4216439398397550673) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_lowercase_label (346310767340271161) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_uppercase_label (1882204558194305221) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_lowercase_label (8433998024876395101) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_uppercase_label (4256721076420375400) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_lowercase_label (1329282833647595593) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_uppercase_label (2843508264503404145) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_lowercase_label (4569019157289060524) -->
-    <skip />
-    <!-- no translation found for vomiting_uppercase_label (258794137964470267) -->
-    <skip />
-    <!-- no translation found for vomiting_lowercase_label (2520559377010270583) -->
-    <skip />
-    <!-- no translation found for water_retention_uppercase_label (4748866467103152119) -->
-    <skip />
-    <!-- no translation found for water_retention_lowercase_label (3738721149186742861) -->
-    <skip />
-    <!-- no translation found for wheezing_uppercase_label (2837114949197811787) -->
-    <skip />
-    <!-- no translation found for wheezing_lowercase_label (1278548371813007771) -->
-    <skip />
+    <string name="acne_read_content_description" msgid="1176708404029936065">"మొటిమల డేటాను చదువుతుంది"</string>
+    <string name="acne_write_content_description" msgid="9221785868351412493">"మొటిమల డేటాను రాస్తుంది"</string>
+    <string name="brittle_nails_read_content_description" msgid="423745726647038216">"పెళుసుగా ఉండే గోళ్ల డేటాను చదువుతుంది"</string>
+    <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"పెళుసుగా ఉండే గోళ్ల డేటాను రాస్తుంది"</string>
+    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"నోటిలో మంటగా అనిపించడానికి సంబంధించిన డేటాను చదువుతుంది "</string>
+    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"నోటిలో మంటగా అనిపించడానికి సంబంధించిన డేటాను రాస్తుంది "</string>
+    <string name="chills_read_content_description" msgid="7244946135559432433">"వణకడం డేటాను చదువుతుంది"</string>
+    <string name="chills_write_content_description" msgid="6478646233405107436">"వణకడం డేటాను రాస్తుంది"</string>
+    <string name="dehydration_read_content_description" msgid="7633935838518756206">"డీహైడ్రేషన్ డేటాను చదువుతుంది"</string>
+    <string name="dehydration_write_content_description" msgid="541514183036921571">"డీహైడ్రేషన్ డేటాను రాస్తుంది"</string>
+    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"పొడి చర్మం డేటాను చదువుతుంది"</string>
+    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"పొడి చర్మం డేటాను రాస్తుంది"</string>
+    <string name="fever_read_content_description" msgid="3385209639730909489">"జ్వరం డేటాను చదువుతుంది"</string>
+    <string name="fever_write_content_description" msgid="8440573327719878961">"జ్వరం డేటాను రాస్తుంది"</string>
+    <string name="joint_pain_read_content_description" msgid="2932523124488927967">"కీళ్ల నొప్పుల డేటాను చదువుతుంది"</string>
+    <string name="joint_pain_write_content_description" msgid="7405551860978844535">"కీళ్ల నొప్పుల డేటాను రాస్తుంది"</string>
+    <string name="joint_stiffness_read_content_description" msgid="2132696730582070534">"కీళ్ళ దృఢత్వం డేటాను చదువుతుంది"</string>
+    <string name="joint_stiffness_write_content_description" msgid="7556318646656369856">"కీళ్ళ దృఢత్వం డేటాను రాస్తుంది"</string>
+    <string name="muscle_pain_read_content_description" msgid="3116385630330673084">"కండరాల నొప్పి డేటాను చదువుతుంది"</string>
+    <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"కండరాల నొప్పి డేటాను రాస్తుంది"</string>
+    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"స్పృహ కోల్పోవడానికి సంబంధించిన డేటాను చదువుతుంది"</string>
+    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"స్పృహ కోల్పోవడానికి సంబంధించిన డేటాను రాస్తుంది"</string>
+    <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"వ్యాయామం కోసం తగ్గిన సామర్థ్యం డేటాను చదువుతుంది"</string>
+    <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"వ్యాయామం కోసం తగ్గిన సామర్థ్యం డేటాను రాస్తుంది"</string>
+    <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"బరువులో ఉహించని మార్పుల డేటాను చదువుతుంది"</string>
+    <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"బరువులో ఉహించని మార్పుల డేటాను రాస్తుంది"</string>
+    <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"సాధారణ శరీర నొప్పి డేటాను చదువుతుంది"</string>
+    <string name="generalized_body_ache_write_content_description" msgid="4282920161878530009">"సాధారణ శరీర నొప్పి డేటాను రాస్తుంది"</string>
+    <string name="fatigue_read_content_description" msgid="8447413794808220408">"అలసట డేటాను చదువుతుంది"</string>
+    <string name="fatigue_write_content_description" msgid="3000326883358951973">"అలసట డేటాను రాస్తుంది"</string>
+    <string name="constipation_read_content_description" msgid="4024154136010015370">"మలబద్ధకం డేటాను చదువుతుంది"</string>
+    <string name="constipation_write_content_description" msgid="9059835998017996999">"మలబద్ధకం డేటాను రాస్తుంది"</string>
+    <string name="diarrhea_read_content_description" msgid="6643311788778713543">"డయేరియా డేటాను చదువుతుంది"</string>
+    <string name="diarrhea_write_content_description" msgid="2525160401458506448">"డయేరియా డేటాను రాస్తుంది"</string>
+    <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"ఆకలి లేకపోవడం డేటాను చదువుతుంది"</string>
+    <string name="loss_of_appetite_write_content_description" msgid="7370817778828856877">"ఆకలి లేకపోవడం డేటాను రాస్తుంది"</string>
+    <string name="nausea_read_content_description" msgid="7696809485706809234">"వికారం డేటాను చదువుతుంది"</string>
+    <string name="nausea_write_content_description" msgid="7956853318058549079">"వికారం డేటాను రాస్తుంది"</string>
+    <string name="stomach_ache_read_content_description" msgid="6960461949095524373">"కడుపు నొప్పి డేటాను చదువుతుంది"</string>
+    <string name="stomach_ache_write_content_description" msgid="4822349196740130790">"కడుపు నొప్పి డేటాను రాస్తుంది"</string>
+    <string name="vomiting_read_content_description" msgid="6425637340168306118">"వాంతుల డేటాను చదువుతుంది"</string>
+    <string name="vomiting_write_content_description" msgid="2768436321239967229">"వాంతుల డేటాను రాస్తుంది"</string>
+    <string name="chest_pain_read_content_description" msgid="5388099127082653993">"ఛాతీ నొప్పి డేటాను చదువుతుంది"</string>
+    <string name="chest_pain_write_content_description" msgid="7570421665813979598">"ఛాతీ నొప్పి డేటాను రాస్తుంది"</string>
+    <string name="chest_tightness_read_content_description" msgid="3234587929340517638">"ఛాతీ బిగుతు డేటాను చదువుతుంది"</string>
+    <string name="chest_tightness_write_content_description" msgid="3365518444505217882">"ఛాతీ బిగుతు డేటాను రాస్తుంది"</string>
+    <string name="cough_read_content_description" msgid="4834360757270578547">"దగ్గు డేటాను చదువుతుంది"</string>
+    <string name="cough_write_content_description" msgid="2927943192149715422">"దగ్గు డేటాను రాస్తుంది"</string>
+    <string name="heart_palpitations_read_content_description" msgid="5830132363981902576">"గుండె దడ డేటాను చదువుతుంది"</string>
+    <string name="heart_palpitations_write_content_description" msgid="6195434828951874561">"గుండె దడ డేటాను రాస్తుంది"</string>
+    <string name="shortness_of_breath_read_content_description" msgid="5285037217314042125">"శ్వాస ఆడకపోవడానికి సంబంధించిన డేటాను చదువుతుంది"</string>
+    <string name="shortness_of_breath_write_content_description" msgid="1812050225998794712">"శ్వాస ఆడకపోవడానికి సంబంధించిన డేటాను రాస్తుంది"</string>
+    <string name="wheezing_read_content_description" msgid="3698103133045395859">"ఊపిరి పీల్చుకుంటున్నప్పుడు వచ్చే ఈల శబ్దం డేటాను చదువుతుంది"</string>
+    <string name="wheezing_write_content_description" msgid="3555234332119025686">"ఊపిరి పీల్చుకుంటున్నప్పుడు వచ్చే ఈల శబ్దం డేటాను రాస్తుంది"</string>
+    <string name="heartburn_read_content_description" msgid="4650825508743336439">"గుండెల్లో మంట డేటాను చదువుతుంది"</string>
+    <string name="heartburn_write_content_description" msgid="1857706822547818187">"గుండెల్లో మంట డేటాను రాస్తుంది"</string>
+    <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"అసమాన హృదయస్పందన డేటాను చదువుతుంది"</string>
+    <string name="skipped_heartbeat_write_content_description" msgid="834686289232563614">"అసమాన హృదయస్పందన డేటాను రాస్తుంది"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"వేగమైన, అధిక లేదా క్రమరహిత హృదయస్పందన డేటాను చదువుతుంది"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"వేగమైన, అధిక లేదా క్రమరహిత హృదయస్పందన డేటాను రాస్తుంది"</string>
+    <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"మింగడంలో ఇబ్బంది డేటాను చదువుతుంది"</string>
+    <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"మింగడంలో ఇబ్బంది డేటాను రాస్తుంది"</string>
+    <string name="dizziness_read_content_description" msgid="2525565486057144416">"తలతిరుగుడు డేటాను చదువుతుంది"</string>
+    <string name="dizziness_write_content_description" msgid="1875365619054873732">"తలతిరుగుడు డేటాను రాస్తుంది"</string>
+    <string name="earaches_read_content_description" msgid="4643142391473401154">"చెవినొప్పుల డేటాను చదువుతుంది"</string>
+    <string name="earaches_write_content_description" msgid="3551386029980258801">"చెవినొప్పుల డేటాను రాస్తుంది"</string>
+    <string name="hair_loss_read_content_description" msgid="4057044821025872986">"జుట్టు రాలడం డేటాను చదువుతుంది"</string>
+    <string name="hair_loss_write_content_description" msgid="7387442867237711823">"జుట్టు రాలడం డేటాను రాస్తుంది"</string>
+    <string name="headache_read_content_description" msgid="7485283472508878298">"తలనొప్పి డేటాను చదువుతుంది"</string>
+    <string name="headache_write_content_description" msgid="720183844750746485">"తలనొప్పి డేటాను రాస్తుంది"</string>
+    <string name="runny_nose_read_content_description" msgid="443700998701222852">"ముక్కు కారటానికి సంబంధించిన డేటాను చదువుతుంది"</string>
+    <string name="runny_nose_write_content_description" msgid="6210009950948827090">"ముక్కు కారటానికి సంబంధించిన డేటాను రాస్తుంది"</string>
+    <string name="sneezing_read_content_description" msgid="1825781985598094799">"తుమ్ముల డేటాను చదువుతుంది"</string>
+    <string name="sneezing_write_content_description" msgid="8125072216406958337">"తుమ్ముల డేటాను రాస్తుంది"</string>
+    <string name="sore_throat_read_content_description" msgid="7798247670004858562">"గొంతు నొప్పి డేటాను చదువుతుంది"</string>
+    <string name="sore_throat_write_content_description" msgid="6058043292544091397">"గొంతు నొప్పి డేటాను రాస్తుంది"</string>
+    <string name="stuffy_nose_read_content_description" msgid="6604212451531546331">"ముక్కు మూసుకుపోవడానికి సంబంధించిన డేటాను చదువుతుంది"</string>
+    <string name="stuffy_nose_write_content_description" msgid="6950875986047625521">"ముక్కు మూసుకుపోవడానికి సంబంధించిన డేటాను రాస్తుంది"</string>
+    <string name="back_pain_read_content_description" msgid="1176155927269014089">"వెన్ను నొప్పి డేటాను చదువుతుంది"</string>
+    <string name="back_pain_write_content_description" msgid="6282959987099901645">"వెన్ను నొప్పి డేటాను రాస్తుంది"</string>
+    <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"నడుము నొప్పి డేటాను చదువుతుంది"</string>
+    <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"నడుము నొప్పి డేటాను రాస్తుంది"</string>
+    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"వేడి ఆవిర్ల డేటాను చదువుతుంది"</string>
+    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"వేడి ఆవిర్ల డేటాను రాస్తుంది"</string>
+    <string name="night_sweats_read_content_description" msgid="7644094250441074129">"రాత్రిపూట చెమటల డేటాను చదువుతుంది"</string>
+    <string name="night_sweats_write_content_description" msgid="7501357533280452509">"రాత్రిపూట చెమటల డేటాను రాస్తుంది"</string>
+    <string name="water_retention_read_content_description" msgid="211789030125880649">"శరీరంలో ద్రవం పేరుకుపోవడానికి సంబంధించిన డేటాను చదువుతుంది"</string>
+    <string name="water_retention_write_content_description" msgid="7109328727506593781">"శరీరంలో ద్రవం పేరుకుపోవడానికి సంబంధించిన డేటాను రాస్తుంది"</string>
+    <string name="cravings_read_content_description" msgid="9098905292448612603">"ఆకలి డేటాను చదువుతుంది"</string>
+    <string name="cravings_write_content_description" msgid="7932335159387976333">"ఆకలి డేటాను రాస్తుంది"</string>
+    <string name="bloating_read_content_description" msgid="8942780558464500997">"ఉబ్బరం డేటాను చదువుతుంది"</string>
+    <string name="bloating_write_content_description" msgid="5014366726518564943">"ఉబ్బరం డేటాను రాస్తుంది"</string>
+    <string name="cramps_read_content_description" msgid="5853663240074256855">"తిమ్మిర్ల డేటాను చదువుతుంది"</string>
+    <string name="cramps_write_content_description" msgid="6777230560926849939">"తిమ్మిర్ల డేటాను రాస్తుంది"</string>
+    <string name="abdominal_pain_read_content_description" msgid="6331928351160142817">"పొత్తి కడుపు నొప్పి డేటాను చదువుతుంది"</string>
+    <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"పొత్తి కడుపు నొప్పి డేటాను రాస్తుంది"</string>
+    <string name="breast_tenderness_read_content_description" msgid="1556133668276886256">"వక్షోజాల కోమలత్వానికి సంబంధించిన డేటాను చదువుతుంది"</string>
+    <string name="breast_tenderness_write_content_description" msgid="5405234499024881940">"వక్షోజాల కోమలత్వానికి సంబంధించిన డేటాను రాస్తుంది"</string>
+    <string name="pelvic_pain_read_content_description" msgid="8872893212311881743">"కటి నొప్పి డేటాను చదువుతుంది"</string>
+    <string name="pelvic_pain_write_content_description" msgid="8482016412474126674">"కటి నొప్పి డేటాను రాస్తుంది"</string>
+    <string name="vaginal_dryness_read_content_description" msgid="21587787265978758">"యోని పొడిబారడానికి సంబంధించిన డేటాను చదువుతుంది"</string>
+    <string name="vaginal_dryness_write_content_description" msgid="7639415261021656468">"యోని పొడిబారడానికి సంబంధించిన డేటాను రాస్తుంది"</string>
+    <string name="vaginal_itchiness_read_content_description" msgid="6027886706003079912">"యోని దురద డేటాను చదువుతుంది"</string>
+    <string name="vaginal_itchiness_write_content_description" msgid="6833099607694941406">"యోని దురద డేటాను రాస్తుంది"</string>
+    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"మానసిక అలసట డేటాను చదువుతుంది"</string>
+    <string name="brain_fog_write_content_description" msgid="354508934978268288">"మానసిక అలసట డేటాను రాస్తుంది"</string>
+    <string name="mood_change_read_content_description" msgid="5114563193264125173">"మానసిక స్థితి మార్పు డేటాను చదువుతుంది"</string>
+    <string name="mood_change_write_content_description" msgid="7613564641235985120">"మానసిక స్థితి మార్పు డేటాను రాస్తుంది"</string>
+    <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"జ్ఞాపకశక్తి లోపం డేటాను చదువుతుంది"</string>
+    <string name="memory_lapse_write_content_description" msgid="211569063190179476">"జ్ఞాపకశక్తి లోపం డేటాను రాస్తుంది"</string>
+    <string name="sleepiness_read_content_description" msgid="797381777988304669">"నిద్రమత్తు డేటాను చదువుతుంది"</string>
+    <string name="sleepiness_write_content_description" msgid="888236364245216476">"నిద్రమత్తు డేటాను రాస్తుంది"</string>
+    <string name="sleep_changes_read_content_description" msgid="277237231470749744">"స్లీప్ మార్పుల డేటాను చదువుతుంది"</string>
+    <string name="sleep_changes_write_content_description" msgid="9078270254664653838">"స్లీప్ మార్పుల డేటాను రాస్తుంది"</string>
+    <string name="insomnia_read_content_description" msgid="5225449618972721129">"నిద్రలేమి డేటాను చదువుతుంది"</string>
+    <string name="insomnia_write_content_description" msgid="4237153589826489083">"నిద్రలేమి డేటాను రాస్తుంది"</string>
+    <string name="snore_read_content_description" msgid="3447953925696237628">"గురక డేటాను చదువుతుంది"</string>
+    <string name="snore_write_content_description" msgid="959354771204900433">"గురక డేటాను రాస్తుంది"</string>
+    <string name="acne_uppercase_label" msgid="60568062993817483">"మొటిమలు"</string>
+    <string name="acne_lowercase_label" msgid="5301949536428255159">"మొటిమలు"</string>
+    <string name="abdominal_pain_uppercase_label" msgid="442393846492385702">"పొత్తి కడుపు నొప్పి"</string>
+    <string name="abdominal_pain_lowercase_label" msgid="4136643670361233063">"పొత్తి కడుపు నొప్పి"</string>
+    <string name="back_pain_uppercase_label" msgid="6034795846635350255">"వెన్ను నొప్పి"</string>
+    <string name="back_pain_lowercase_label" msgid="7487168354843582888">"వెన్ను నొప్పి"</string>
+    <string name="bloating_uppercase_label" msgid="2827024204358491650">"ఉబ్బరం"</string>
+    <string name="bloating_lowercase_label" msgid="4108236897678347488">"ఉబ్బరం"</string>
+    <string name="brain_fog_uppercase_label" msgid="3782508630097437711">"మానసిక అలసట"</string>
+    <string name="brain_fog_lowercase_label" msgid="8018499987092429724">"మానసిక అలసట"</string>
+    <string name="breast_tenderness_uppercase_label" msgid="3633574517042452397">"వక్షోజాల కోమలత్వం"</string>
+    <string name="breast_tenderness_lowercase_label" msgid="3745105353936751222">"వక్షోజాల కోమలత్వం"</string>
+    <string name="brittle_nails_uppercase_label" msgid="7290899807816681152">"పెళుసుగా ఉండే గోళ్లు"</string>
+    <string name="brittle_nails_lowercase_label" msgid="43861645923597496">"పెళుసుగా ఉండే గోళ్లు"</string>
+    <string name="burning_mouth_uppercase_label" msgid="8975226712238467359">"నోటిలో మంటగా అనిపించడం"</string>
+    <string name="burning_mouth_lowercase_label" msgid="3378970972990933484">"నోటిలో మంటగా అనిపించడం"</string>
+    <string name="chest_pain_uppercase_label" msgid="8091501402224214622">"ఛాతీ నొప్పి"</string>
+    <string name="chest_pain_lowercase_label" msgid="8817807562310689177">"ఛాతీ నొప్పి"</string>
+    <string name="chest_tightness_uppercase_label" msgid="8988021502622503503">"ఛాతీ బిగుతు"</string>
+    <string name="chest_tightness_lowercase_label" msgid="1770063390635610292">"ఛాతీ బిగుతు"</string>
+    <string name="chills_uppercase_label" msgid="4320786490882838834">"వణకడం"</string>
+    <string name="chills_lowercase_label" msgid="1306612496314055832">"వణకడం"</string>
+    <string name="constipation_uppercase_label" msgid="7245001778443725742">"మలబద్ధకం"</string>
+    <string name="constipation_lowercase_label" msgid="6217542866033766747">"మలబద్ధకం"</string>
+    <string name="cough_uppercase_label" msgid="5570609736970603012">"దగ్గు"</string>
+    <string name="cough_lowercase_label" msgid="459638956679172779">"దగ్గు"</string>
+    <string name="cramps_uppercase_label" msgid="5162905309136173937">"తిమ్మిర్లు"</string>
+    <string name="cramps_lowercase_label" msgid="4644485808002493449">"తిమ్మిర్లు"</string>
+    <string name="cravings_uppercase_label" msgid="4754194354806284307">"ఆకలి"</string>
+    <string name="cravings_lowercase_label" msgid="5836041614136287213">"ఆకలి"</string>
+    <string name="dehydration_uppercase_label" msgid="10278239942824711">"డీహైడ్రేషన్"</string>
+    <string name="dehydration_lowercase_label" msgid="8692632632276643276">"డీహైడ్రేషన్"</string>
+    <string name="diarrhea_uppercase_label" msgid="6310170127529968752">"డయేరియా"</string>
+    <string name="diarrhea_lowercase_label" msgid="5938774694742839016">"డయేరియా"</string>
+    <string name="difficulty_swallowing_uppercase_label" msgid="3546617155300878657">"మింగడంలో ఇబ్బంది"</string>
+    <string name="difficulty_swallowing_lowercase_label" msgid="4980631237611433200">"మింగడంలో ఇబ్బంది"</string>
+    <string name="dizziness_uppercase_label" msgid="8129950094459563983">"తలతిరుగుడు"</string>
+    <string name="dizziness_lowercase_label" msgid="3462347558609662379">"తలతిరుగుడు"</string>
+    <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"పొడి చర్మం"</string>
+    <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"పొడి చర్మం"</string>
+    <string name="earaches_uppercase_label" msgid="107701950625572701">"చెవినొప్పులు"</string>
+    <string name="earaches_lowercase_label" msgid="6240790850403958317">"చెవినొప్పులు"</string>
+    <string name="fatigue_uppercase_label" msgid="7514286788083426578">"అలసట"</string>
+    <string name="fatigue_lowercase_label" msgid="2669560685808367387">"అలసట"</string>
+    <string name="fever_uppercase_label" msgid="6889273008212535253">"జ్వరం"</string>
+    <string name="fever_lowercase_label" msgid="3634400562894397159">"జ్వరం"</string>
+    <string name="generalized_body_ache_uppercase_label" msgid="2171378172300618053">"సాధారణ శరీర నొప్పి"</string>
+    <string name="generalized_body_ache_lowercase_label" msgid="1725534000111875030">"సాధారణ శరీర నొప్పి"</string>
+    <string name="hair_loss_uppercase_label" msgid="6359351347019795813">"జుట్టు రాలడం"</string>
+    <string name="hair_loss_lowercase_label" msgid="2764498189966225461">"జుట్టు రాలడం"</string>
+    <string name="headache_uppercase_label" msgid="863800537735413054">"తలనొప్పి"</string>
+    <string name="headache_lowercase_label" msgid="6564231905087583135">"తలనొప్పి"</string>
+    <string name="heartburn_uppercase_label" msgid="1170571383460859644">"గుండెల్లో మంట"</string>
+    <string name="heartburn_lowercase_label" msgid="6235983036978705474">"గుండెల్లో మంట"</string>
+    <string name="heart_palpitations_uppercase_label" msgid="2026400872833911547">"గుండె దడ"</string>
+    <string name="heart_palpitations_lowercase_label" msgid="1468243523322721340">"గుండె దడ"</string>
+    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"వేడి ఆవిర్లు"</string>
+    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"వేడి ఆవిర్లు"</string>
+    <string name="insomnia_uppercase_label" msgid="4946197328995261738">"నిద్రలేమి"</string>
+    <string name="insomnia_lowercase_label" msgid="3742025423716451058">"నిద్రలేమి"</string>
+    <string name="joint_pain_uppercase_label" msgid="7693454621285586935">"కీళ్ల నొప్పులు"</string>
+    <string name="joint_pain_lowercase_label" msgid="1877680075365305488">"కీళ్ల నొప్పులు"</string>
+    <string name="joint_stiffness_uppercase_label" msgid="5230114867081881444">"కీళ్ళ దృఢత్వం"</string>
+    <string name="joint_stiffness_lowercase_label" msgid="8766445235392409480">"కీళ్ళ దృఢత్వం"</string>
+    <string name="loss_of_appetite_uppercase_label" msgid="4023141061302523950">"ఆకలి లేకపోవడం"</string>
+    <string name="loss_of_appetite_lowercase_label" msgid="7558077308061468558">"ఆకలి లేకపోవడం"</string>
+    <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"స్పృహ కోల్పోవడం"</string>
+    <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"స్పృహ కోల్పోవడం"</string>
+    <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"నడుము నొప్పి"</string>
+    <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"నడుము నొప్పి"</string>
+    <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"జ్ఞాపకశక్తి లోపం"</string>
+    <string name="memory_lapse_lowercase_label" msgid="5590619293782264318">"జ్ఞాపకశక్తి లోపం"</string>
+    <string name="mood_change_uppercase_label" msgid="6591596468077187132">"మానసిక స్థితి మార్పు"</string>
+    <string name="mood_change_lowercase_label" msgid="5154765930188874067">"మానసిక స్థితి మార్పు"</string>
+    <string name="muscle_pain_uppercase_label" msgid="2470771124188001900">"కండరాల నొప్పి"</string>
+    <string name="muscle_pain_lowercase_label" msgid="7842677871351347822">"కండరాల నొప్పి"</string>
+    <string name="nausea_uppercase_label" msgid="8384006696113532259">"వికారం"</string>
+    <string name="nausea_lowercase_label" msgid="8182471893071968504">"వికారం"</string>
+    <string name="night_sweats_uppercase_label" msgid="6177687233700001658">"రాత్రిపూట చెమటలు"</string>
+    <string name="night_sweats_lowercase_label" msgid="5041101323453286082">"రాత్రిపూట చెమటలు"</string>
+    <string name="pelvic_pain_uppercase_label" msgid="9057761232218571640">"కటి నొప్పి"</string>
+    <string name="pelvic_pain_lowercase_label" msgid="8993103170034473121">"కటి నొప్పి"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"వేగమైన, అధిక లేదా క్రమరహిత హృదయస్పందన"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"వేగమైన, అధిక లేదా క్రమరహిత హృదయస్పందన"</string>
+    <string name="reduced_capacity_for_exercise_uppercase_label" msgid="7471254320615756463">"వ్యాయామం కోసం తగ్గిన సామర్థ్యం"</string>
+    <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"వ్యాయామం కోసం తగ్గిన సామర్థ్యం"</string>
+    <string name="runny_nose_uppercase_label" msgid="6561156187042071551">"ముక్కు కారటం"</string>
+    <string name="runny_nose_lowercase_label" msgid="2214697492382685914">"ముక్కు కారటం"</string>
+    <string name="shortness_of_breath_uppercase_label" msgid="3747502224212110471">"శ్వాస ఆడకపోవడం"</string>
+    <string name="shortness_of_breath_lowercase_label" msgid="3970444639088619346">"శ్వాస ఆడకపోవడం"</string>
+    <string name="skipped_heartbeat_uppercase_label" msgid="1004040920818222022">"అసమాన హృదయస్పందన"</string>
+    <string name="skipped_heartbeat_lowercase_label" msgid="2446049805930852514">"అసమాన హృదయస్పందన"</string>
+    <string name="sleep_changes_uppercase_label" msgid="817870703301327111">"స్లీప్ మార్పులు"</string>
+    <string name="sleep_changes_lowercase_label" msgid="8606593835222848643">"స్లీప్ మార్పులు"</string>
+    <string name="sleepiness_uppercase_label" msgid="8292543897598171825">"నిద్రమత్తు"</string>
+    <string name="sleepiness_lowercase_label" msgid="7563434619994665081">"నిద్రమత్తు"</string>
+    <string name="sneezing_uppercase_label" msgid="3559089195823390830">"తుమ్ములు"</string>
+    <string name="sneezing_lowercase_label" msgid="4614496100578986753">"తుమ్ములు"</string>
+    <string name="snore_uppercase_label" msgid="5408933698329003980">"గురక"</string>
+    <string name="snore_lowercase_label" msgid="4813706716393000341">"గురక"</string>
+    <string name="sore_throat_uppercase_label" msgid="7652461264264564339">"గొంతు నొప్పి"</string>
+    <string name="sore_throat_lowercase_label" msgid="2671417552726018944">"గొంతు నొప్పి"</string>
+    <string name="stomach_ache_uppercase_label" msgid="8450868632465837793">"కడుపు నొప్పి"</string>
+    <string name="stomach_ache_lowercase_label" msgid="3263518334946627327">"కడుపు నొప్పి"</string>
+    <string name="stuffy_nose_uppercase_label" msgid="4216439398397550673">"ముక్కు మూసుకుపోవడం"</string>
+    <string name="stuffy_nose_lowercase_label" msgid="346310767340271161">"ముక్కు మూసుకుపోవడం"</string>
+    <string name="unexplained_weight_changes_uppercase_label" msgid="1882204558194305221">"బరువులో ఉహించని మార్పులు"</string>
+    <string name="unexplained_weight_changes_lowercase_label" msgid="8433998024876395101">"బరువులో ఉహించని మార్పులు"</string>
+    <string name="vaginal_dryness_uppercase_label" msgid="4256721076420375400">"యోని పొడిబారడం"</string>
+    <string name="vaginal_dryness_lowercase_label" msgid="1329282833647595593">"యోని పొడిబారడం"</string>
+    <string name="vaginal_itchiness_uppercase_label" msgid="2843508264503404145">"యోని దురద"</string>
+    <string name="vaginal_itchiness_lowercase_label" msgid="4569019157289060524">"యోని దురద"</string>
+    <string name="vomiting_uppercase_label" msgid="258794137964470267">"వాంతులు"</string>
+    <string name="vomiting_lowercase_label" msgid="2520559377010270583">"వాంతులు"</string>
+    <string name="water_retention_uppercase_label" msgid="4748866467103152119">"శరీరంలో ద్రవం పేరుకుపోవడం"</string>
+    <string name="water_retention_lowercase_label" msgid="3738721149186742861">"శరీరంలో ద్రవం పేరుకుపోవడం"</string>
+    <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ఊపిరి పీల్చుకుంటున్నప్పుడు వచ్చే ఈల శబ్దం"</string>
+    <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ఊపిరి పీల్చుకుంటున్నప్పుడు వచ్చే ఈల శబ్దం"</string>
 </resources>

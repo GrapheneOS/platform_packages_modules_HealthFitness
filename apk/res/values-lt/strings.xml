@@ -23,8 +23,10 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Leidimai ir duomenys"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Tvarkykite įrenginyje esančius sveikatos ir kūno rengybos duomenis ir valdykite, kurios programos gali juos pasiekti"</string>
     <string name="data_title" msgid="4456619761533380816">"Duomenys ir prieiga"</string>
-    <string name="browse_medical_data" msgid="6963802956096683273">"Naršyti įrašus apie sveikatą"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"Peržiūrėkite sveikatos įrašus ir kurios programos gali juos pasiekti"</string>
+    <!-- no translation found for browse_medical_data (6492659245149862639) -->
+    <skip />
+    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
+    <skip />
     <string name="all_categories_title" msgid="1446410643217937926">"Visos kategorijos"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Žr. visas kategorijas"</string>
     <string name="no_data" msgid="1906986019249068659">"Nėra jokių duomenų"</string>
@@ -110,8 +112,10 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Skaityti sudegintų kalorijų duomenis"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Leidžiama programa skaityti sudegintų kalorijų duomenis"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Leisti programai „<xliff:g id="APP_NAME">%1$s</xliff:g>“ pasiekti duomenis fone?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"Jei leisite, ši programa galės pasiekti mankštos ir sveikatingumo duomenis bei sveikatos įrašus, kai nenaudosite programos."</string>
-    <string name="background_read_medical_single_request_description_medical_granted" msgid="5162456401369633859">"Jei leisite, ši programa galės pasiekti sveikatos įrašus, kai nenaudosite programos."</string>
+    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
+    <skip />
+    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
+    <skip />
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Jei leisite, ši programa galės pasiekti mankštos ir sveikatingumo duomenis, kai nenaudosite programos."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Jei leisite, ši programa galės pasiekti „Health Connect“ duomenis, kai nenaudosite programos."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"Leisti programai „<xliff:g id="APP_NAME">%1$s</xliff:g>“ pasiekti ankstesnius duomenis?"</string>
@@ -122,9 +126,11 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"Leisti papildomą programos „<xliff:g id="APP_NAME">%1$s</xliff:g>“ prieigą?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"Programa „<xliff:g id="APP_NAME">%1$s</xliff:g>“ taip pat nori pasiekti šiuos „Health Connect“ nustatymus"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Pasiekti visus duomenis fone"</string>
-    <string name="background_read_medical_combined_request_title_medical_granted" msgid="7245376864667067106">"Pasiekti sveikatos įrašus fone"</string>
+    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
+    <skip />
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Pasiekti mankštos ir sveikatingumo duomenis fone"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"Leisti šiai programai pasiekti mankštos ir sveikatingumo duomenis bei sveikatos įrašus, kai nenaudojate programos"</string>
+    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
+    <skip />
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Leisti šiai programai pasiekti šiuos duomenis, kai nenaudojate programos"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Leisti šiai programai pasiekti šiuos duomenis, kai nenaudojate programos"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Pasiekti duomenis fone"</string>
@@ -135,12 +141,15 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Pasiekti ankstesnius duomenis"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"Leisti šiai programai pasiekti „Health Connect“ duomenis, pridėtus iki <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Leisti šiai programai pasiekti visus ankstesnius „Health Connect“ duomenis"</string>
-    <string name="history_read_medical_combined_request_footer" msgid="5301940225768076844">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ jau gali pasiekti ankstesnius jūsų sveikatos įrašų duomenis"</string>
+    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
+    <skip />
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Sužinokite daugiau apie leidimus"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Pasiekti visus duomenis fone"</string>
-    <string name="background_read_medical_access_title_medical_granted" msgid="7852915238347056139">"Pasiekti sveikatos įrašus fone"</string>
+    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
+    <skip />
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Pasiekti mankštos ir sveikatingumo duomenis fone"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"Leisti šiai programai pasiekti mankštos ir sveikatingumo duomenis bei sveikatos įrašus, kai nenaudojate programos"</string>
+    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
+    <skip />
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Leisti šiai programai pasiekti šiuos duomenis, kai nenaudojate programos"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Leisti šiai programai pasiekti šiuos duomenis, kai nenaudojate programos"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Pasiekti duomenis fone"</string>
@@ -152,8 +161,10 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Leisti šiai programai pasiekti „Health Connect“ duomenis, pridėtus iki <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Leisti šiai programai pasiekti visus ankstesnius „Health Connect“ duomenis"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Šiuo metu neskaitomi jokie mankštos duomenys, nes „<xliff:g id="APP_NAME">%1$s</xliff:g>“ neturi skaitymo leidimų"</string>
-    <string name="additional_access_medical_read_footer" msgid="4640796038121080343">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ jau gali pasiekti ankstesnius jūsų sveikatos įrašų duomenis. Jei norite tai pakeisti, išjunkite šios programos sveikatos įrašų leidimus"</string>
-    <string name="additional_access_medical_read_footer_link" msgid="2797623091827504856">"Tvarkyti sveikatos įrašų leidimus"</string>
+    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
+    <skip />
+    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
+    <skip />
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Įgalinkite bent vieną skaitymo leidimą, kad įjungtumėte šios programos prieigą fone ar prie ankstesnių duomenų"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Įgalinkite bent vieną skaitymo leidimą, kad įjungtumėte šios programos prieigą fone"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Įgalinkite bent vieną skaitymo leidimą, kad įjungtumėte šios programos prieigą prie ankstesnių duomenų"</string>
@@ -328,10 +339,14 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"odos temperatūra"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Nuskaityti odos temperatūrą"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Įrašyti odos temperatūrą"</string>
-    <string name="browse_health_records_intro" msgid="1611488691642390523">"Tai apima visus sveikatos įrašus, sinchronizuotus su „Health Connect“ ir pridėtus prie jos. Tai gali būti ne visa sveikatos istorija ir čia nėra medicininio jūsų sveikatos įrašų aprašymo."</string>
-    <string name="all_medical_data_uppercase_label" msgid="2380759160541898783">"Visi sveikatos įrašai"</string>
-    <string name="all_medical_data_lowercase_label" msgid="6293814928992081842">"visi sveikatos įrašai"</string>
-    <string name="all_medical_data_content_description" msgid="4846586780533295022">"Rašyti visus sveikatos įrašus"</string>
+    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
+    <skip />
+    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
+    <skip />
+    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
+    <skip />
+    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
+    <skip />
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Alergijos"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"alergijos"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Skaityti alergijų duomenis"</string>
@@ -412,13 +427,17 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Leisti programai „<xliff:g id="APP_NAME">%1$s</xliff:g>“ pasiekti mankštos ir sveikatingumo duomenis?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Kaip „<xliff:g id="APP_NAME">%1$s</xliff:g>“ tvarko jūsų duomenis, sužinosite <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"privatumo politika"</string>
-    <string name="medical_request_header" msgid="2300521519021510027">"Leisti <xliff:g id="APP_NAME">%1$s</xliff:g> pasiekti sveikatos įrašus?"</string>
+    <!-- no translation found for medical_request_header (5701693055388739014) -->
+    <skip />
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Jei suteiksite prieigą, programa galės skaityti ir rašyti tokius duomenis kaip alergijos, laboratorinių tyrimų rezultatai, vakcinos ir kt.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Jei suteiksite prieigą, programa galės skaityti tokius duomenis kaip alergijos, laboratorinių tyrimų rezultatai, vakcinos ir kt.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_about_health_records" msgid="7204918218748362687">"Apie sveikatos įrašus"</string>
+    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
+    <skip />
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Bendrinami duomenys apima"</string>
-    <string name="medical_request_summary" msgid="7281321524805015510">"Jei leisite, „<xliff:g id="APP_NAME">%1$s</xliff:g>“ galės bendrinti jūsų sveikatos įrašus su „Health Connect“."</string>
-    <string name="medical_request_footer" msgid="6533749932770903089">"Sinchronizuokite sveikatos įrašus iš skirtingų programų ir šaltinių, kad jie būtų saugomi vienoje vietoje"</string>
+    <!-- no translation found for medical_request_summary (553735170968628758) -->
+    <skip />
+    <!-- no translation found for medical_request_footer (157243861031258933) -->
+    <skip />
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Pašalinti visus leidimus?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Pašalinti viską"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"Programa „<xliff:g id="APP_NAME">%1$s</xliff:g>” nebegalės skaityti ar rašyti jokių „Health Connect“ duomenų.\n\nTai nepaveiks kitų leidimų, kuriuos ši programa gali turėti, pvz., vaizdo kameros, mikrofono ar vietovės."</string>
@@ -428,8 +447,10 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Taip pat ištrinti „<xliff:g id="APP_NAME">%1$s</xliff:g>“ duomenis iš „Health Connect“"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Pašalinti visus mankštos ir sveikatingumo leidimus?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Taip pat ištrinti programos „<xliff:g id="APP_NAME">%1$s</xliff:g>“ mankštos duomenis iš „Health Connect“"</string>
-    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Pašalinti visus sveikatos įrašų leidimus?"</string>
-    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"Taip pat ištrinti programos „<xliff:g id="APP_NAME">%1$s</xliff:g>“ sveikatos įrašus iš „Health Connect“"</string>
+    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
+    <skip />
+    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
+    <skip />
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"Programa „<xliff:g id="APP_NAME">%1$s</xliff:g>” nebegalės skaityti ar rašyti šių „Health Connect“ duomenų.\n\nTai nepaveiks kitų leidimų, kuriuos ši programa gali turėti, pvz., vaizdo kameros, mikrofono ar vietovės."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"Programa „<xliff:g id="APP_NAME">%1$s</xliff:g>” nebegalės skaityti ar rašyti šių „Health Connect“ duomenų, įskaitant foninius duomenis.\n\nTai nepaveiks kitų leidimų, kuriuos ši programa gali turėti, pvz., vaizdo kameros, mikrofono ar vietovės."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"Programa „<xliff:g id="APP_NAME">%1$s</xliff:g>” nebegalės skaityti ar rašyti šių „Health Connect“ duomenų, įskaitant ankstesnius duomenis.\n\nTai nepaveiks kitų leidimų, kuriuos ši programa gali turėti, pvz., vaizdo kameros, mikrofono ar vietovės."</string>
@@ -439,7 +460,8 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"Programa „<xliff:g id="APP_NAME">%1$s</xliff:g>” nebegalės skaityti ar rašyti jokių „Health Connect“ duomenų, įskaitant foninius duomenis.\n\nTai nepaveiks kitų leidimų, kuriuos ši programa gali turėti, pvz., vaizdo kameros, mikrofono ar vietovės."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"Programa „<xliff:g id="APP_NAME">%1$s</xliff:g>” nebegalės skaityti ar rašyti jokių „Health Connect“ duomenų, įskaitant ankstesnius duomenis.\n\nTai nepaveiks kitų leidimų, kuriuos ši programa gali turėti, pvz., vaizdo kameros, mikrofono ar vietovės."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"Programa „<xliff:g id="APP_NAME">%1$s</xliff:g>” nebegalės skaityti ar rašyti jokių „Health Connect“ duomenų, įskaitant foninius ir ankstesnius duomenis.\n\nTai nepaveiks kitų leidimų, kuriuos ši programa gali turėti, pvz., vaizdo kameros, mikrofono ar vietovės."</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="762880061016391846">"Taip pat ištrinti „<xliff:g id="APP_NAME">%1$s</xliff:g>“ mankštos duomenis ir sveikatos įrašus iš „Health Connect“"</string>
+    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
+    <skip />
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Pašalinti šios programos leidimai"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Taip pat ištrinti visus „Health Connect“ duomenis"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Kita diena"</string>
@@ -488,8 +510,10 @@
     <string name="permissions_header" msgid="6519976063360071569">"Leidimai"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"Kūno rengyba ir sveikata"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Mankšta, miegas, mityba ir kt."</string>
-    <string name="medical_permissions" msgid="1224097151249321566">"Sveikatos įrašai"</string>
-    <string name="medical_permissions_lowercase" msgid="3969792205103436491">"sveikatos įrašai"</string>
+    <!-- no translation found for medical_permissions (1066296298908103091) -->
+    <skip />
+    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
+    <skip />
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Labor. tyr. rez., vaistai, vakc. ir kt."</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Pašalinti programų leidimai"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"„Health Connect“ pašalino „<xliff:g id="APP_DATA">%s</xliff:g>“ leidimus"</string>
@@ -583,7 +607,8 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Eiti į „Play“ parduotuvę"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Darbo su „Health Connect“ pradžia"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Sistemoje „Health Connect“ saugomi jūsų sveikatos ir kūno rengybos duomenys ir galite lengvai sinchronizuoti skirtingas programas įrenginyje"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"„Health Connect“ saugo ir sinchronizuoja jūsų sveikatos ir kūno rengybos duomenis iš skirtingų programų.\n\n"<b>"Kūno rengybos ir sveikatingumo duomenys,"</b>" įskaitant mankštos sesijas, žingsnius, mitybą, miegą ir kt.\n\n"<b>"Sveikatos įrašai,"</b>" įskaitant vakcinas, laboratorinių tyrimų rezultatus ir kt."</string>
+    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
+    <skip />
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Naudodami „Health Connect“ galite atlikti toliau nurodytus veiksmus."</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Duomenų bendrinimas su programomis"</b>\n"Pasirinkite, kokius duomenis kiekviena programa gali skaityti ar rašyti sistemoje „Health Connect“"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Nustatymų ir privatumo tvarkymas"</b>\n"Bet kada keiskite programų leidimus ir tvarkykite duomenis"</string>

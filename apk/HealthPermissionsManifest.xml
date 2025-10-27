@@ -192,12 +192,6 @@
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 
-    <permission
-        android:name="android.permission.health.READ_CYCLE_PHASES"
-        android:label="@string/cycle_phases_read_content_description"
-        android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
-
     <!-- Read permissions for nutrition -->
     <permission
         android:name="android.permission.health.READ_HYDRATION"
@@ -291,7 +285,7 @@
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 
-    <!-- Read permissions for personal health records -->
+    <!-- Read permissions for personal medical records -->
     <permission
         android:name="android.permission.health.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES"
         android:label="@string/allergies_intolerances_content_description"
@@ -825,12 +819,6 @@
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 
-    <permission
-        android:name="android.permission.health.WRITE_CYCLE_PHASES"
-        android:label="@string/cycle_phases_write_content_description"
-        android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
-
     <!-- Write permissions for nutrition -->
     <permission
         android:name="android.permission.health.WRITE_HYDRATION"
@@ -918,7 +906,7 @@
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 
-    <!-- Write permissions for personal health records -->
+    <!-- Write permissions for personal medical records -->
     <permission
         android:name="android.permission.health.WRITE_MEDICAL_DATA"
         android:label="@string/all_medical_data_content_description"

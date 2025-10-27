@@ -23,8 +23,10 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"اجازه‌ها و داده‌ها"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"داده‌های سلامتی و تناسب اندام را در دستگاهتان مدیریت کنید و کنترل کنید کدام برنامه‌ها می‌توانند به این داده‌ها دسترسی داشته باشند"</string>
     <string name="data_title" msgid="4456619761533380816">"داده‌ها و دسترسی"</string>
-    <string name="browse_medical_data" msgid="6963802956096683273">"مرور سوابق سلامتی"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"سوابق سلامتی خود و برنامه‌هایی را که می‌توانند به آن‌ها دسترسی داشته باشند مشاهده کنید"</string>
+    <!-- no translation found for browse_medical_data (6492659245149862639) -->
+    <skip />
+    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
+    <skip />
     <string name="all_categories_title" msgid="1446410643217937926">"همه دسته‌ها"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"دیدن همه دسته‌ها"</string>
     <string name="no_data" msgid="1906986019249068659">"داده‌ای وجود ندارد"</string>
@@ -110,8 +112,10 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"خواندن داده کالری سوزانده‌شده"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"به برنامه اجازه می‌دهد کالری سوزانده‌شده را بخواند"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"به <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه می‌دهید به داده‌ها در پس‌زمینه دسترسی داشته باشد؟"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"اگر اجازه دهید، این برنامه می‌تواند وقتی از آن استفاده نمی‌کنید به داده‌های تناسب اندام و تندرستی و سوابق سلامتی دسترسی داشته باشد."</string>
-    <string name="background_read_medical_single_request_description_medical_granted" msgid="5162456401369633859">"اگر اجازه دهید، این برنامه می‌تواند وقتی از آن استفاده نمی‌کنید به سوابق سلامتی دسترسی داشته باشد."</string>
+    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
+    <skip />
+    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
+    <skip />
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"اگر اجازه دهید، این برنامه می‌تواند وقتی از آن استفاده نمی‌کنید به داده‌های تناسب اندام و تندرستی داشته باشد."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"اگر اجازه دهید، این برنامه می‌تواند وقتی از آن استفاده نمی‌کنید به داده‌های Health Connect دسترسی داشته باشد."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"به <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه می‌دهید به داده‌های قبلی دسترسی داشته باشد؟"</string>
@@ -122,9 +126,11 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"به <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه دسترسی اضافی داده شود؟"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> می‌خواهد به این تنظیمات Health Connect نیز دسترسی داشته باشد"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"دسترسی به همه داده‌ها در پس‌زمینه"</string>
-    <string name="background_read_medical_combined_request_title_medical_granted" msgid="7245376864667067106">"دسترسی به سوابق سلامتی در پس‌زمینه"</string>
+    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
+    <skip />
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"دسترسی به داده‌های تناسب اندام و تندرستی در پس‌زمینه"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"به این برنامه اجازه داده می‌شود وقتی از آن استفاده نمی‌کنید به داده‌های تناسب اندام و تندرستی و سوابق سلامتی دسترسی داشته باشد"</string>
+    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
+    <skip />
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"به این برنامه اجازه داده می‌شود وقتی از آن استفاده نمی‌کنید به این داده‌ها دسترسی داشته باشد"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"به این برنامه اجازه داده می‌شود وقتی از آن استفاده نمی‌کنید به این داده‌ها دسترسی داشته باشد"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"دسترسی به داده‌ها در پس‌زمینه"</string>
@@ -135,12 +141,15 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"دسترسی به داده‌های قبلی"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"به این برنامه اجازه داده می‌شود به داده‌های Health Connect اضافه‌شده قبل‌از <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> دسترسی داشته باشد"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"به این برنامه اجازه داده می‌شود به همه داده‌های قبلی Health Connect دسترسی داشته باشد"</string>
-    <string name="history_read_medical_combined_request_footer" msgid="5301940225768076844">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> درحال‌حاضر می‌تواند به داده‌های قبلی سوابق سلامتی‌تان دسترسی داشته باشد"</string>
+    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
+    <skip />
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"درباره اجازه‌ها بیشتر بدانید"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"دسترسی به همه داده‌ها در پس‌زمینه"</string>
-    <string name="background_read_medical_access_title_medical_granted" msgid="7852915238347056139">"دسترسی به سوابق سلامتی در پس‌زمینه"</string>
+    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
+    <skip />
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"دسترسی به داده‌های تناسب اندام و تندرستی در پس‌زمینه"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"به این برنامه اجازه داده می‌شود وقتی از آن استفاده نمی‌کنید به داده‌های تناسب اندام و تندرستی و سوابق سلامتی دسترسی داشته باشد"</string>
+    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
+    <skip />
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"به این برنامه اجازه داده می‌شود وقتی از آن استفاده نمی‌کنید به این داده‌ها دسترسی داشته باشد"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"به این برنامه اجازه داده می‌شود وقتی از آن استفاده نمی‌کنید به این داده‌ها دسترسی داشته باشد"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"دسترسی به داده‌ها در پس‌زمینه"</string>
@@ -152,8 +161,10 @@
     <string name="history_read_access_description" msgid="800722432229526128">"به این برنامه اجازه داده می‌شود به داده‌های Health Connect اضافه‌شده قبل‌از <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> دسترسی داشته باشد"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"به این برنامه اجازه داده می‌شود به همه داده‌های قبلی Health Connect دسترسی داشته باشد"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"درحال‌حاضر هیچ داده تناسب اندامی خوانده نمی‌شود چون <xliff:g id="APP_NAME">%1$s</xliff:g> هیچ اجازه خواندن روشنی ندارد"</string>
-    <string name="additional_access_medical_read_footer" msgid="4640796038121080343">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> درحال‌حاضر می‌تواند به داده‌های گذشته سوابق سلامتی شما دسترسی پیدا کند. برای تغییر این مورد، اجازه‌های سابقه سلامتی را برای این برنامه خاموش کنید"</string>
-    <string name="additional_access_medical_read_footer_link" msgid="2797623091827504856">"مدیریت کردن اجازه‌های سابقه سلامتی"</string>
+    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
+    <skip />
+    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
+    <skip />
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"برای روشن کردن دسترسی پس‌زمینه‌ای یا دسترسی به داده‌های قبلی برای این برنامه، حداقل یک اجازه خواندن را فعال کنید"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"برای روشن کردن دسترسی پس‌زمینه‌ای برای این برنامه، حداقل یک اجازه خواندن را فعال کنید"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"برای روشن کردن دسترسی به داده‌های قبلی برای این برنامه، حداقل یک اجازه خواندن را فعال کنید"</string>
@@ -328,10 +339,14 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"دمای پوست"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"خواندن دمای پوست"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"نوشتن دمای پوست"</string>
-    <string name="browse_health_records_intro" msgid="1611488691642390523">"این شامل همه سوابق سلامتی همگام‌سازی‌شده با Health Connect و اضافه‌شده به آن می‌شود. این داده‌ها ممکن است سابقه پزشکی کامل شما را دربر نگیرد و شامل شرح پزشکی از سوابق سلامتی شما نیست."</string>
-    <string name="all_medical_data_uppercase_label" msgid="2380759160541898783">"همه سوابق سلامتی"</string>
-    <string name="all_medical_data_lowercase_label" msgid="6293814928992081842">"همه سوابق سلامتی"</string>
-    <string name="all_medical_data_content_description" msgid="4846586780533295022">"نوشتن همه سوابق سلامتی"</string>
+    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
+    <skip />
+    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
+    <skip />
+    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
+    <skip />
+    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
+    <skip />
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"حساسیت‌ها"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"حساسیت‌ها"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"خواندن حساسیت‌ها"</string>
@@ -412,13 +427,17 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"به <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه می‌دهید به داده‌های تناسب اندام و تندرستی دسترسی داشته باشد؟"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"در <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> می‌توانید ببینید <xliff:g id="APP_NAME">%1$s</xliff:g> چگونه داده‌های شما را مدیریت می‌کند"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"خط‌مشی رازداری"</string>
-    <string name="medical_request_header" msgid="2300521519021510027">"به <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه می‌دهید به سوابق سلامتی شما دسترسی داشته باشد؟"</string>
+    <!-- no translation found for medical_request_header (5701693055388739014) -->
+    <skip />
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"اگر اجازه دسترسی بدهید، این برنامه می‌تواند داده‌هایی مثل حساسیت‌ها، نتایج آزمایشگاه، واکسن‌ها، و موارد دیگر را بخواند و بنویسد\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"اگر اجازه دسترسی بدهید، این برنامه می‌تواند داده‌هایی مثل حساسیت‌ها، نتایج آزمایشگاه، واکسن‌ها، و موارد دیگر را بخواند\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_about_health_records" msgid="7204918218748362687">"درباره سوابق سلامتی"</string>
+    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
+    <skip />
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"داده‌هایی که هم‌رسانی می‌شود عبارت‌اند از"</string>
-    <string name="medical_request_summary" msgid="7281321524805015510">"اگر اجازه دهید، <xliff:g id="APP_NAME">%1$s</xliff:g> می‌تواند سوابق سلامتی شما را با Health Connect هم‌رسانی کند."</string>
-    <string name="medical_request_footer" msgid="6533749932770903089">"سوابق سلامتی خود را از برنامه‌ها و منابع مختلف همگام‌سازی کنید تا آن‌ها را در یک مکان داشته باشید"</string>
+    <!-- no translation found for medical_request_summary (553735170968628758) -->
+    <skip />
+    <!-- no translation found for medical_request_footer (157243861031258933) -->
+    <skip />
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"همه اجازه‌ها برداشته شود؟"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"برداشتن همه موارد"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> دیگر نمی‌تواند هیچ‌کدام از داده‌های Health Connect را بخواند یا بنویسد.\n\nاین تنظیم بر دیگر اجازه‌هایی که این برنامه ممکن است داشته باشد (مثلاً دوربین، میکروفون، یا مکان) اثر نمی‌گذارد."</string>
@@ -428,8 +447,10 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"داده‌های <xliff:g id="APP_NAME">%1$s</xliff:g> نیز از Health Connect حذف شود"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"همه اجازه‌های تناسب اندام و سلامتی برداشته شود؟"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"داده‌های تناسب اندام <xliff:g id="APP_NAME">%1$s</xliff:g> نیز از Health Connect حذف شود"</string>
-    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"همه اجازه‌های سابقه سلامتی برداشته شود؟"</string>
-    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"سابقه‌های سلامتی <xliff:g id="APP_NAME">%1$s</xliff:g> نیز از Health Connect حذف شود"</string>
+    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
+    <skip />
+    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
+    <skip />
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> دیگر نمی‌تواند این داده‌های Health Connect را بخواند یا بنویسد.\n\nاین تنظیم بر دیگر اجازه‌هایی که این برنامه ممکن است داشته باشد (مثلاً دوربین، میکروفون، یا مکان) اثر نمی‌گذارد."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> دیگر نمی‌تواند این داده‌های Health Connect شامل داده‌های پس‌زمینه را بخواند یا بنویسد.\n\nاین تنظیم بر دیگر اجازه‌هایی که این برنامه ممکن است داشته باشد (مثلاً دوربین، میکروفون، یا مکان) اثر نمی‌گذارد."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> دیگر نمی‌تواند این داده‌های Health Connect شامل داده‌های قبلی را بخواند یا بنویسد.\n\nاین تنظیم بر دیگر اجازه‌هایی که این برنامه ممکن است داشته باشد (مثلاً دوربین، میکروفون، یا مکان) اثر نمی‌گذارد."</string>
@@ -439,7 +460,8 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> دیگر نمی‌تواند داده‌های Health Connect شامل داده‌های پس‌زمینه را بخواند یا بنویسد.\n\nاین تنظیم بر دیگر اجازه‌هایی که این برنامه ممکن است داشته باشد (مثلاً دوربین، میکروفون، یا مکان) اثر نمی‌گذارد."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> دیگر نمی‌تواند داده‌های Health Connect شامل داده‌های قبلی را بخواند یا بنویسد.\n\nاین تنظیم بر دیگر اجازه‌هایی که این برنامه ممکن است داشته باشد (مثلاً دوربین، میکروفون، یا مکان) اثر نمی‌گذارد."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> دیگر نمی‌تواند داده‌های Health Connect شامل داده‌های پس‌زمینه و داده‌های قبلی را بخواند یا بنویسد.\n\nاین تنظیم بر دیگر اجازه‌هایی که این برنامه ممکن است داشته باشد (مثلاً دوربین، میکروفون، یا مکان) اثر نمی‌گذارد."</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="762880061016391846">"داده‌های تناسب اندام و سابقه‌های سلامتی <xliff:g id="APP_NAME">%1$s</xliff:g> نیز از Health Connect حذف شود"</string>
+    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
+    <skip />
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"اجازه‌های این برنامه برداشته شد"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"همه داده‌های Health Connect نیز حذف شود"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"روز بعد"</string>
@@ -488,8 +510,10 @@
     <string name="permissions_header" msgid="6519976063360071569">"اجازه‌ها"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"تناسب اندام و تندرستی"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"تمرین، خواب، تغذیه، و غیره"</string>
-    <string name="medical_permissions" msgid="1224097151249321566">"سوابق سلامتی"</string>
-    <string name="medical_permissions_lowercase" msgid="3969792205103436491">"سوابق سلامتی"</string>
+    <!-- no translation found for medical_permissions (1066296298908103091) -->
+    <skip />
+    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
+    <skip />
     <string name="medical_permissions_summary" msgid="5526004634109548577">"نتایج آزمایشگاه، داروها، واکسن‌ها و غیره"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"اجازه‌های برنامه‌هایی که برداشته شده‌اند"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect اجازه‌های مربوط به <xliff:g id="APP_DATA">%s</xliff:g> را برداشته است"</string>
@@ -583,7 +607,8 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"رفتن به فروشگاه Play"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"شروع کار با Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"‏Health Connect داده‌های سلامتی و تناسب اندام شما را ذخیره می‌کند و روشی ساده برای همگام‌سازی برنامه‌های مختلف دستگاه دراختیارتان می‌گذارد"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"‫‫‫Health Connect داده‌های سلامتی و تناسب اندام شما را از برنامه‌های مختلف ذخیره و همگام‌سازی می‌کند.\n\n"<b>"داده‌های تناسب اندام و تندرستی،"</b>" ازجمله جلسه‌های تمرین، تعداد قدم‌ها، تغذیه، خواب، و غیره\n\n"<b>"سابقه سلامتی،"</b>" ازجمله واکسن‌ها، نتایج آزمایش، و غیره"</string>
+    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
+    <skip />
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"با Health Connect می‌توانید کارهای زیر را انجام دهید"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"هم‌رسانی داده با برنامه‌ها"</b>\n"می‌توانید داده‌هایی را که هر برنامه اجازه دارد در Health Connect بخواند یا بنویسد انتخاب کنید"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"مدیریت تنظیمات و حریم خصوصی"</b>\n"می‌توانید در هر زمانی اجازه‌های برنامه را تغییر دهید و داده‌هایتان را مدیریت کنید"</string>
@@ -1192,9 +1217,9 @@
     <string name="date_picker_week" msgid="1038805538316142229">"هفته"</string>
     <string name="date_picker_month" msgid="3560692391260778560">"ماه"</string>
     <string name="this_week_header" msgid="1280121922548216973">"این هفته"</string>
-    <string name="last_week_header" msgid="5194448963146719382">"هفته گذشته"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"هفته پیش"</string>
     <string name="this_month_header" msgid="2452395268894677189">"این ماه"</string>
-    <string name="last_month_header" msgid="1359164797239191253">"ماه گذشته"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"ماه پیش"</string>
     <string name="tab_entries" msgid="3402700951602029493">"ورودی‌ها"</string>
     <string name="tab_access" msgid="7818197975407243701">"دسترسی"</string>
     <string name="start_using_hc_banner_title" msgid="2030178284749796384">"استفاده از Health Connect را شروع کنید"</string>
@@ -1338,476 +1363,240 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"متصل نیست"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"برای متصل کردن این برنامه به Health Connect، کلیک کنید"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"اکنون نه"</string>
-    <!-- no translation found for acne_read_content_description (1176708404029936065) -->
-    <skip />
-    <!-- no translation found for acne_write_content_description (9221785868351412493) -->
-    <skip />
-    <!-- no translation found for brittle_nails_read_content_description (423745726647038216) -->
-    <skip />
-    <!-- no translation found for brittle_nails_write_content_description (1804481735143147688) -->
-    <skip />
-    <!-- no translation found for burning_mouth_read_content_description (71088318928262260) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2778289937475041118) -->
-    <skip />
-    <!-- no translation found for chills_read_content_description (7244946135559432433) -->
-    <skip />
-    <!-- no translation found for chills_write_content_description (6478646233405107436) -->
-    <skip />
-    <!-- no translation found for dehydration_read_content_description (7633935838518756206) -->
-    <skip />
-    <!-- no translation found for dehydration_write_content_description (541514183036921571) -->
-    <skip />
-    <!-- no translation found for dry_skin_read_content_description (6798683159412202977) -->
-    <skip />
-    <!-- no translation found for dry_skin_write_content_description (1312998001092991619) -->
-    <skip />
-    <!-- no translation found for fever_read_content_description (3385209639730909489) -->
-    <skip />
-    <!-- no translation found for fever_write_content_description (8440573327719878961) -->
-    <skip />
-    <!-- no translation found for joint_pain_read_content_description (2932523124488927967) -->
-    <skip />
-    <!-- no translation found for joint_pain_write_content_description (7405551860978844535) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_read_content_description (2132696730582070534) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_write_content_description (7556318646656369856) -->
-    <skip />
-    <!-- no translation found for muscle_pain_read_content_description (3116385630330673084) -->
-    <skip />
-    <!-- no translation found for muscle_pain_write_content_description (2544204740665773272) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_read_content_description (8346630124770268372) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_write_content_description (1959348657257573252) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_read_content_description (2246901110448734533) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_write_content_description (8119106053737965766) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_read_content_description (7644187172731376645) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_write_content_description (8744350844236958279) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_read_content_description (3132494584303814009) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_write_content_description (4282920161878530009) -->
-    <skip />
-    <!-- no translation found for fatigue_read_content_description (8447413794808220408) -->
-    <skip />
-    <!-- no translation found for fatigue_write_content_description (3000326883358951973) -->
-    <skip />
-    <!-- no translation found for constipation_read_content_description (4024154136010015370) -->
-    <skip />
-    <!-- no translation found for constipation_write_content_description (9059835998017996999) -->
-    <skip />
-    <!-- no translation found for diarrhea_read_content_description (6643311788778713543) -->
-    <skip />
-    <!-- no translation found for diarrhea_write_content_description (2525160401458506448) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_read_content_description (5825568361431664706) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_write_content_description (7370817778828856877) -->
-    <skip />
-    <!-- no translation found for nausea_read_content_description (7696809485706809234) -->
-    <skip />
-    <!-- no translation found for nausea_write_content_description (7956853318058549079) -->
-    <skip />
-    <!-- no translation found for stomach_ache_read_content_description (6960461949095524373) -->
-    <skip />
-    <!-- no translation found for stomach_ache_write_content_description (4822349196740130790) -->
-    <skip />
-    <!-- no translation found for vomiting_read_content_description (6425637340168306118) -->
-    <skip />
-    <!-- no translation found for vomiting_write_content_description (2768436321239967229) -->
-    <skip />
-    <!-- no translation found for chest_pain_read_content_description (5388099127082653993) -->
-    <skip />
-    <!-- no translation found for chest_pain_write_content_description (7570421665813979598) -->
-    <skip />
-    <!-- no translation found for chest_tightness_read_content_description (3234587929340517638) -->
-    <skip />
-    <!-- no translation found for chest_tightness_write_content_description (3365518444505217882) -->
-    <skip />
-    <!-- no translation found for cough_read_content_description (4834360757270578547) -->
-    <skip />
-    <!-- no translation found for cough_write_content_description (2927943192149715422) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_read_content_description (5830132363981902576) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_write_content_description (6195434828951874561) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_read_content_description (5285037217314042125) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_write_content_description (1812050225998794712) -->
-    <skip />
-    <!-- no translation found for wheezing_read_content_description (3698103133045395859) -->
-    <skip />
-    <!-- no translation found for wheezing_write_content_description (3555234332119025686) -->
-    <skip />
-    <!-- no translation found for heartburn_read_content_description (4650825508743336439) -->
-    <skip />
-    <!-- no translation found for heartburn_write_content_description (1857706822547818187) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_read_content_description (4732209374634649857) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_write_content_description (834686289232563614) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_read_content_description (7616019217735602113) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_write_content_description (271585170557004393) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_read_content_description (3506995529886706872) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_write_content_description (4087127686579577768) -->
-    <skip />
-    <!-- no translation found for dizziness_read_content_description (2525565486057144416) -->
-    <skip />
-    <!-- no translation found for dizziness_write_content_description (1875365619054873732) -->
-    <skip />
-    <!-- no translation found for earaches_read_content_description (4643142391473401154) -->
-    <skip />
-    <!-- no translation found for earaches_write_content_description (3551386029980258801) -->
-    <skip />
-    <!-- no translation found for hair_loss_read_content_description (4057044821025872986) -->
-    <skip />
-    <!-- no translation found for hair_loss_write_content_description (7387442867237711823) -->
-    <skip />
-    <!-- no translation found for headache_read_content_description (7485283472508878298) -->
-    <skip />
-    <!-- no translation found for headache_write_content_description (720183844750746485) -->
-    <skip />
-    <!-- no translation found for runny_nose_read_content_description (443700998701222852) -->
-    <skip />
-    <!-- no translation found for runny_nose_write_content_description (6210009950948827090) -->
-    <skip />
-    <!-- no translation found for sneezing_read_content_description (1825781985598094799) -->
-    <skip />
-    <!-- no translation found for sneezing_write_content_description (8125072216406958337) -->
-    <skip />
-    <!-- no translation found for sore_throat_read_content_description (7798247670004858562) -->
-    <skip />
-    <!-- no translation found for sore_throat_write_content_description (6058043292544091397) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_read_content_description (6604212451531546331) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_write_content_description (6950875986047625521) -->
-    <skip />
-    <!-- no translation found for back_pain_read_content_description (1176155927269014089) -->
-    <skip />
-    <!-- no translation found for back_pain_write_content_description (6282959987099901645) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_read_content_description (1437405008757136462) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_write_content_description (3519700764000282215) -->
-    <skip />
-    <!-- no translation found for hot_flashes_read_content_description (2229463748079331513) -->
-    <skip />
-    <!-- no translation found for hot_flashes_write_content_description (441093768815039294) -->
-    <skip />
-    <!-- no translation found for night_sweats_read_content_description (7644094250441074129) -->
-    <skip />
-    <!-- no translation found for night_sweats_write_content_description (7501357533280452509) -->
-    <skip />
-    <!-- no translation found for water_retention_read_content_description (211789030125880649) -->
-    <skip />
-    <!-- no translation found for water_retention_write_content_description (7109328727506593781) -->
-    <skip />
-    <!-- no translation found for cravings_read_content_description (9098905292448612603) -->
-    <skip />
-    <!-- no translation found for cravings_write_content_description (7932335159387976333) -->
-    <skip />
-    <!-- no translation found for bloating_read_content_description (8942780558464500997) -->
-    <skip />
-    <!-- no translation found for bloating_write_content_description (5014366726518564943) -->
-    <skip />
-    <!-- no translation found for cramps_read_content_description (5853663240074256855) -->
-    <skip />
-    <!-- no translation found for cramps_write_content_description (6777230560926849939) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_read_content_description (6331928351160142817) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_write_content_description (9213133328064016367) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_read_content_description (1556133668276886256) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_write_content_description (5405234499024881940) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_read_content_description (8872893212311881743) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_write_content_description (8482016412474126674) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_read_content_description (21587787265978758) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_write_content_description (7639415261021656468) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_read_content_description (6027886706003079912) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_write_content_description (6833099607694941406) -->
-    <skip />
-    <!-- no translation found for brain_fog_read_content_description (4240133221789017568) -->
-    <skip />
-    <!-- no translation found for brain_fog_write_content_description (354508934978268288) -->
-    <skip />
-    <!-- no translation found for mood_change_read_content_description (5114563193264125173) -->
-    <skip />
-    <!-- no translation found for mood_change_write_content_description (7613564641235985120) -->
-    <skip />
-    <!-- no translation found for memory_lapse_read_content_description (3639865098888366357) -->
-    <skip />
-    <!-- no translation found for memory_lapse_write_content_description (211569063190179476) -->
-    <skip />
-    <!-- no translation found for sleepiness_read_content_description (797381777988304669) -->
-    <skip />
-    <!-- no translation found for sleepiness_write_content_description (888236364245216476) -->
-    <skip />
-    <!-- no translation found for sleep_changes_read_content_description (277237231470749744) -->
-    <skip />
-    <!-- no translation found for sleep_changes_write_content_description (9078270254664653838) -->
-    <skip />
-    <!-- no translation found for insomnia_read_content_description (5225449618972721129) -->
-    <skip />
-    <!-- no translation found for insomnia_write_content_description (4237153589826489083) -->
-    <skip />
-    <!-- no translation found for snore_read_content_description (3447953925696237628) -->
-    <skip />
-    <!-- no translation found for snore_write_content_description (959354771204900433) -->
-    <skip />
-    <!-- no translation found for acne_uppercase_label (60568062993817483) -->
-    <skip />
-    <!-- no translation found for acne_lowercase_label (5301949536428255159) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_uppercase_label (442393846492385702) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_lowercase_label (4136643670361233063) -->
-    <skip />
-    <!-- no translation found for back_pain_uppercase_label (6034795846635350255) -->
-    <skip />
-    <!-- no translation found for back_pain_lowercase_label (7487168354843582888) -->
-    <skip />
-    <!-- no translation found for bloating_uppercase_label (2827024204358491650) -->
-    <skip />
-    <!-- no translation found for bloating_lowercase_label (4108236897678347488) -->
-    <skip />
-    <!-- no translation found for brain_fog_uppercase_label (3782508630097437711) -->
-    <skip />
-    <!-- no translation found for brain_fog_lowercase_label (8018499987092429724) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_uppercase_label (3633574517042452397) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_lowercase_label (3745105353936751222) -->
-    <skip />
-    <!-- no translation found for brittle_nails_uppercase_label (7290899807816681152) -->
-    <skip />
-    <!-- no translation found for brittle_nails_lowercase_label (43861645923597496) -->
-    <skip />
-    <!-- no translation found for burning_mouth_uppercase_label (8975226712238467359) -->
-    <skip />
-    <!-- no translation found for burning_mouth_lowercase_label (3378970972990933484) -->
-    <skip />
-    <!-- no translation found for chest_pain_uppercase_label (8091501402224214622) -->
-    <skip />
-    <!-- no translation found for chest_pain_lowercase_label (8817807562310689177) -->
-    <skip />
-    <!-- no translation found for chest_tightness_uppercase_label (8988021502622503503) -->
-    <skip />
-    <!-- no translation found for chest_tightness_lowercase_label (1770063390635610292) -->
-    <skip />
-    <!-- no translation found for chills_uppercase_label (4320786490882838834) -->
-    <skip />
-    <!-- no translation found for chills_lowercase_label (1306612496314055832) -->
-    <skip />
-    <!-- no translation found for constipation_uppercase_label (7245001778443725742) -->
-    <skip />
-    <!-- no translation found for constipation_lowercase_label (6217542866033766747) -->
-    <skip />
-    <!-- no translation found for cough_uppercase_label (5570609736970603012) -->
-    <skip />
-    <!-- no translation found for cough_lowercase_label (459638956679172779) -->
-    <skip />
-    <!-- no translation found for cramps_uppercase_label (5162905309136173937) -->
-    <skip />
-    <!-- no translation found for cramps_lowercase_label (4644485808002493449) -->
-    <skip />
-    <!-- no translation found for cravings_uppercase_label (4754194354806284307) -->
-    <skip />
-    <!-- no translation found for cravings_lowercase_label (5836041614136287213) -->
-    <skip />
-    <!-- no translation found for dehydration_uppercase_label (10278239942824711) -->
-    <skip />
-    <!-- no translation found for dehydration_lowercase_label (8692632632276643276) -->
-    <skip />
-    <!-- no translation found for diarrhea_uppercase_label (6310170127529968752) -->
-    <skip />
-    <!-- no translation found for diarrhea_lowercase_label (5938774694742839016) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_uppercase_label (3546617155300878657) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_lowercase_label (4980631237611433200) -->
-    <skip />
-    <!-- no translation found for dizziness_uppercase_label (8129950094459563983) -->
-    <skip />
-    <!-- no translation found for dizziness_lowercase_label (3462347558609662379) -->
-    <skip />
-    <!-- no translation found for dry_skin_uppercase_label (4542430684082075550) -->
-    <skip />
-    <!-- no translation found for dry_skin_lowercase_label (6892264917735291961) -->
-    <skip />
-    <!-- no translation found for earaches_uppercase_label (107701950625572701) -->
-    <skip />
-    <!-- no translation found for earaches_lowercase_label (6240790850403958317) -->
-    <skip />
-    <!-- no translation found for fatigue_uppercase_label (7514286788083426578) -->
-    <skip />
-    <!-- no translation found for fatigue_lowercase_label (2669560685808367387) -->
-    <skip />
-    <!-- no translation found for fever_uppercase_label (6889273008212535253) -->
-    <skip />
-    <!-- no translation found for fever_lowercase_label (3634400562894397159) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_uppercase_label (2171378172300618053) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_lowercase_label (1725534000111875030) -->
-    <skip />
-    <!-- no translation found for hair_loss_uppercase_label (6359351347019795813) -->
-    <skip />
-    <!-- no translation found for hair_loss_lowercase_label (2764498189966225461) -->
-    <skip />
-    <!-- no translation found for headache_uppercase_label (863800537735413054) -->
-    <skip />
-    <!-- no translation found for headache_lowercase_label (6564231905087583135) -->
-    <skip />
-    <!-- no translation found for heartburn_uppercase_label (1170571383460859644) -->
-    <skip />
-    <!-- no translation found for heartburn_lowercase_label (6235983036978705474) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_uppercase_label (2026400872833911547) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_lowercase_label (1468243523322721340) -->
-    <skip />
-    <!-- no translation found for hot_flashes_uppercase_label (2410116266729711836) -->
-    <skip />
-    <!-- no translation found for hot_flashes_lowercase_label (6485269554856410007) -->
-    <skip />
-    <!-- no translation found for insomnia_uppercase_label (4946197328995261738) -->
-    <skip />
-    <!-- no translation found for insomnia_lowercase_label (3742025423716451058) -->
-    <skip />
-    <!-- no translation found for joint_pain_uppercase_label (7693454621285586935) -->
-    <skip />
-    <!-- no translation found for joint_pain_lowercase_label (1877680075365305488) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_uppercase_label (5230114867081881444) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_lowercase_label (8766445235392409480) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_uppercase_label (4023141061302523950) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_lowercase_label (7558077308061468558) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_uppercase_label (4195502722277905266) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_lowercase_label (4822860811117141611) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_uppercase_label (2307572603791750654) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_lowercase_label (940765534682997044) -->
-    <skip />
-    <!-- no translation found for memory_lapse_uppercase_label (241393771674969441) -->
-    <skip />
-    <!-- no translation found for memory_lapse_lowercase_label (5590619293782264318) -->
-    <skip />
-    <!-- no translation found for mood_change_uppercase_label (6591596468077187132) -->
-    <skip />
-    <!-- no translation found for mood_change_lowercase_label (5154765930188874067) -->
-    <skip />
-    <!-- no translation found for muscle_pain_uppercase_label (2470771124188001900) -->
-    <skip />
-    <!-- no translation found for muscle_pain_lowercase_label (7842677871351347822) -->
-    <skip />
-    <!-- no translation found for nausea_uppercase_label (8384006696113532259) -->
-    <skip />
-    <!-- no translation found for nausea_lowercase_label (8182471893071968504) -->
-    <skip />
-    <!-- no translation found for night_sweats_uppercase_label (6177687233700001658) -->
-    <skip />
-    <!-- no translation found for night_sweats_lowercase_label (5041101323453286082) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_uppercase_label (9057761232218571640) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_lowercase_label (8993103170034473121) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_uppercase_label (2029088854167004239) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_lowercase_label (5744229600679518473) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_uppercase_label (7471254320615756463) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_lowercase_label (3820574649548616546) -->
-    <skip />
-    <!-- no translation found for runny_nose_uppercase_label (6561156187042071551) -->
-    <skip />
-    <!-- no translation found for runny_nose_lowercase_label (2214697492382685914) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_uppercase_label (3747502224212110471) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_lowercase_label (3970444639088619346) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_uppercase_label (1004040920818222022) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_lowercase_label (2446049805930852514) -->
-    <skip />
-    <!-- no translation found for sleep_changes_uppercase_label (817870703301327111) -->
-    <skip />
-    <!-- no translation found for sleep_changes_lowercase_label (8606593835222848643) -->
-    <skip />
-    <!-- no translation found for sleepiness_uppercase_label (8292543897598171825) -->
-    <skip />
-    <!-- no translation found for sleepiness_lowercase_label (7563434619994665081) -->
-    <skip />
-    <!-- no translation found for sneezing_uppercase_label (3559089195823390830) -->
-    <skip />
-    <!-- no translation found for sneezing_lowercase_label (4614496100578986753) -->
-    <skip />
-    <!-- no translation found for snore_uppercase_label (5408933698329003980) -->
-    <skip />
-    <!-- no translation found for snore_lowercase_label (4813706716393000341) -->
-    <skip />
-    <!-- no translation found for sore_throat_uppercase_label (7652461264264564339) -->
-    <skip />
-    <!-- no translation found for sore_throat_lowercase_label (2671417552726018944) -->
-    <skip />
-    <!-- no translation found for stomach_ache_uppercase_label (8450868632465837793) -->
-    <skip />
-    <!-- no translation found for stomach_ache_lowercase_label (3263518334946627327) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_uppercase_label (4216439398397550673) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_lowercase_label (346310767340271161) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_uppercase_label (1882204558194305221) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_lowercase_label (8433998024876395101) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_uppercase_label (4256721076420375400) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_lowercase_label (1329282833647595593) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_uppercase_label (2843508264503404145) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_lowercase_label (4569019157289060524) -->
-    <skip />
-    <!-- no translation found for vomiting_uppercase_label (258794137964470267) -->
-    <skip />
-    <!-- no translation found for vomiting_lowercase_label (2520559377010270583) -->
-    <skip />
-    <!-- no translation found for water_retention_uppercase_label (4748866467103152119) -->
-    <skip />
-    <!-- no translation found for water_retention_lowercase_label (3738721149186742861) -->
-    <skip />
-    <!-- no translation found for wheezing_uppercase_label (2837114949197811787) -->
-    <skip />
-    <!-- no translation found for wheezing_lowercase_label (1278548371813007771) -->
-    <skip />
+    <string name="acne_read_content_description" msgid="1176708404029936065">"خواندن داده‌های آکنه"</string>
+    <string name="acne_write_content_description" msgid="9221785868351412493">"نوشتن داده‌های آکنه"</string>
+    <string name="brittle_nails_read_content_description" msgid="423745726647038216">"خواندن داده‌های ناخن شکننده"</string>
+    <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"نوشتن داده‌های ناخن شکننده"</string>
+    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"خواندن داده‌های سوزش دهان "</string>
+    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"نوشتن داده‌های سوزش دهان "</string>
+    <string name="chills_read_content_description" msgid="7244946135559432433">"خواندن داده‌های لرز"</string>
+    <string name="chills_write_content_description" msgid="6478646233405107436">"نوشتن داده‌های لرز"</string>
+    <string name="dehydration_read_content_description" msgid="7633935838518756206">"خواندن داده‌های کم‌آبی بدن"</string>
+    <string name="dehydration_write_content_description" msgid="541514183036921571">"نوشتن داده‌های کم‌آبی بدن"</string>
+    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"خواندن داده‌های خشکی پوست"</string>
+    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"نوشتن داده‌های خشکی پوست"</string>
+    <string name="fever_read_content_description" msgid="3385209639730909489">"خواندن داده‌های تب"</string>
+    <string name="fever_write_content_description" msgid="8440573327719878961">"نوشتن داده‌های تب"</string>
+    <string name="joint_pain_read_content_description" msgid="2932523124488927967">"خواندن داده‌های درد مفاصل"</string>
+    <string name="joint_pain_write_content_description" msgid="7405551860978844535">"نوشتن داده‌های درد مفاصل"</string>
+    <string name="joint_stiffness_read_content_description" msgid="2132696730582070534">"خواندن داده‌های خشکی مفاصل"</string>
+    <string name="joint_stiffness_write_content_description" msgid="7556318646656369856">"نوشتن داده‌های خشکی مفاصل"</string>
+    <string name="muscle_pain_read_content_description" msgid="3116385630330673084">"خواندن داده‌های درد عضلانی"</string>
+    <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"نوشتن داده‌های درد عضلانی"</string>
+    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"خواندن داده‌های ازدست دادن هوشیاری"</string>
+    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"نوشتن داده‌های ازدست دادن هوشیاری"</string>
+    <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"خواندن داده‌های کاهش توان ورزش"</string>
+    <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"نوشتن داده‌های کاهش توان ورزش"</string>
+    <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"خواندن داده‌های تغییرات وزن بدون دلیل مشخص"</string>
+    <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"نوشتن داده‌های تغییرات وزن بدون دلیل مشخص"</string>
+    <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"خواندن داده‌های بدن‌درد عمومی"</string>
+    <string name="generalized_body_ache_write_content_description" msgid="4282920161878530009">"نوشتن داده‌های بدن‌درد عمومی"</string>
+    <string name="fatigue_read_content_description" msgid="8447413794808220408">"خواندن داده‌های خستگی"</string>
+    <string name="fatigue_write_content_description" msgid="3000326883358951973">"نوشتن داده‌های خستگی"</string>
+    <string name="constipation_read_content_description" msgid="4024154136010015370">"خواندن داده‌های یبوست"</string>
+    <string name="constipation_write_content_description" msgid="9059835998017996999">"نوشتن داده‌های یبوست"</string>
+    <string name="diarrhea_read_content_description" msgid="6643311788778713543">"خواندن داده‌های اسهال"</string>
+    <string name="diarrhea_write_content_description" msgid="2525160401458506448">"نوشتن داده‌های اسهال"</string>
+    <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"خواندن داده‌های ازدست دادن اشتها"</string>
+    <string name="loss_of_appetite_write_content_description" msgid="7370817778828856877">"نوشتن داده‌های ازدست دادن اشتها"</string>
+    <string name="nausea_read_content_description" msgid="7696809485706809234">"خواندن داده‌های حالت تهوع"</string>
+    <string name="nausea_write_content_description" msgid="7956853318058549079">"نوشتن داده‌های حالت تهوع"</string>
+    <string name="stomach_ache_read_content_description" msgid="6960461949095524373">"خواندن داده‌های معده‌درد"</string>
+    <string name="stomach_ache_write_content_description" msgid="4822349196740130790">"نوشتن داده‌های معده‌درد"</string>
+    <string name="vomiting_read_content_description" msgid="6425637340168306118">"خواندن داده‌های استفراغ"</string>
+    <string name="vomiting_write_content_description" msgid="2768436321239967229">"نوشتن داده‌های استفراغ"</string>
+    <string name="chest_pain_read_content_description" msgid="5388099127082653993">"خواندن داده‌های درد قفسه سینه"</string>
+    <string name="chest_pain_write_content_description" msgid="7570421665813979598">"نوشتن داده‌های درد قفسه سینه"</string>
+    <string name="chest_tightness_read_content_description" msgid="3234587929340517638">"خواندن داده‌های گرفتگی قفسه سینه"</string>
+    <string name="chest_tightness_write_content_description" msgid="3365518444505217882">"نوشتن داده‌های گرفتگی قفسه سینه"</string>
+    <string name="cough_read_content_description" msgid="4834360757270578547">"خواندن داده‌های سرفه"</string>
+    <string name="cough_write_content_description" msgid="2927943192149715422">"نوشتن داده‌های سرفه"</string>
+    <string name="heart_palpitations_read_content_description" msgid="5830132363981902576">"خواندن داده‌های تپش قلب"</string>
+    <string name="heart_palpitations_write_content_description" msgid="6195434828951874561">"نوشتن داده‌های تپش قلب"</string>
+    <string name="shortness_of_breath_read_content_description" msgid="5285037217314042125">"خواندن داده‌های تنگی نفس"</string>
+    <string name="shortness_of_breath_write_content_description" msgid="1812050225998794712">"نوشتن داده‌های تنگی نفس"</string>
+    <string name="wheezing_read_content_description" msgid="3698103133045395859">"خواندن داده‌های خس‌خس سینه"</string>
+    <string name="wheezing_write_content_description" msgid="3555234332119025686">"نوشتن داده‌های خس‌خس سینه"</string>
+    <string name="heartburn_read_content_description" msgid="4650825508743336439">"خواندن داده‌های سوزش سردل"</string>
+    <string name="heartburn_write_content_description" msgid="1857706822547818187">"نوشتن داده‌های سوزش سردل"</string>
+    <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"خواندن داده‌های پرش ضربان قلب"</string>
+    <string name="skipped_heartbeat_write_content_description" msgid="834686289232563614">"نوشتن داده‌های پرش ضربان قلب"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"خواندن داده‌های ضربان قلب تند، شدید، یا نامنظم"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"نوشتن داده‌های ضربان قلب تند، شدید، یا نامنظم"</string>
+    <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"خواندن داده‌های مشکل در بلع"</string>
+    <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"نوشتن داده‌های مشکل در بلع"</string>
+    <string name="dizziness_read_content_description" msgid="2525565486057144416">"خواندن داده‌های سرگیجه"</string>
+    <string name="dizziness_write_content_description" msgid="1875365619054873732">"نوشتن داده‌های سرگیجه"</string>
+    <string name="earaches_read_content_description" msgid="4643142391473401154">"خواندن داده‌های کوش‌درد"</string>
+    <string name="earaches_write_content_description" msgid="3551386029980258801">"نوشتن داده‌های گوش‌درد"</string>
+    <string name="hair_loss_read_content_description" msgid="4057044821025872986">"خواندن داده‌های ریزش مو"</string>
+    <string name="hair_loss_write_content_description" msgid="7387442867237711823">"نوشتن داده‌های ریزش مو"</string>
+    <string name="headache_read_content_description" msgid="7485283472508878298">"خواندن داده‌های سردرد"</string>
+    <string name="headache_write_content_description" msgid="720183844750746485">"نوشتن داده‌های سردرد"</string>
+    <string name="runny_nose_read_content_description" msgid="443700998701222852">"خواندن داده‌های آبریزش بینی"</string>
+    <string name="runny_nose_write_content_description" msgid="6210009950948827090">"نوشتن داده‌های آبریزش بینی"</string>
+    <string name="sneezing_read_content_description" msgid="1825781985598094799">"خواندن داده‌های عطسه"</string>
+    <string name="sneezing_write_content_description" msgid="8125072216406958337">"نوشتن داده‌های عطسه"</string>
+    <string name="sore_throat_read_content_description" msgid="7798247670004858562">"خواندن داده‌های گلودرد"</string>
+    <string name="sore_throat_write_content_description" msgid="6058043292544091397">"نوشتن داده‌های گلودرد"</string>
+    <string name="stuffy_nose_read_content_description" msgid="6604212451531546331">"خواندن داده‌های گرفتگی بینی"</string>
+    <string name="stuffy_nose_write_content_description" msgid="6950875986047625521">"نوشتن داده‌های گرفتگی بینی"</string>
+    <string name="back_pain_read_content_description" msgid="1176155927269014089">"خواندن داده‌های کمردرد"</string>
+    <string name="back_pain_write_content_description" msgid="6282959987099901645">"نوشتن داده‌های کمردرد"</string>
+    <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"خواندن داده‌های درد پایین کمر"</string>
+    <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"نوشتن داده‌های درد پایین کمر"</string>
+    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"خواندن داده‌های گرگرفتگی"</string>
+    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"نوشتن داده‌های گرگرفتگی"</string>
+    <string name="night_sweats_read_content_description" msgid="7644094250441074129">"خواندن داده‌های تعریق شبانه"</string>
+    <string name="night_sweats_write_content_description" msgid="7501357533280452509">"نوشتن داده‌های تعریق شبانه"</string>
+    <string name="water_retention_read_content_description" msgid="211789030125880649">"خواندن داده‌های احتباس آب"</string>
+    <string name="water_retention_write_content_description" msgid="7109328727506593781">"نوشتن داده‌های احتباس آب"</string>
+    <string name="cravings_read_content_description" msgid="9098905292448612603">"خواندن داده‌های ولع غذایی"</string>
+    <string name="cravings_write_content_description" msgid="7932335159387976333">"نوشتن داده‌های ولع غذایی"</string>
+    <string name="bloating_read_content_description" msgid="8942780558464500997">"خواندن داده‌های نفخ"</string>
+    <string name="bloating_write_content_description" msgid="5014366726518564943">"نوشتن داده‌های نفخ"</string>
+    <string name="cramps_read_content_description" msgid="5853663240074256855">"خواندن داده‌های گرفتگی"</string>
+    <string name="cramps_write_content_description" msgid="6777230560926849939">"نوشتن داده‌های گرفتگی"</string>
+    <string name="abdominal_pain_read_content_description" msgid="6331928351160142817">"خواندن داده‌های درد شکمی"</string>
+    <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"نوشتن داده‌های درد شکمی"</string>
+    <string name="breast_tenderness_read_content_description" msgid="1556133668276886256">"خواندن داده‌های حساسیت سینه‌ها به لمس"</string>
+    <string name="breast_tenderness_write_content_description" msgid="5405234499024881940">"نوشتن داده‌های حساسیت سینه‌ها به لمس"</string>
+    <string name="pelvic_pain_read_content_description" msgid="8872893212311881743">"خواندن داده‌های درد لگن"</string>
+    <string name="pelvic_pain_write_content_description" msgid="8482016412474126674">"نوشتن داده‌های درد لگن"</string>
+    <string name="vaginal_dryness_read_content_description" msgid="21587787265978758">"خواندن داده‌های خشکی واژن"</string>
+    <string name="vaginal_dryness_write_content_description" msgid="7639415261021656468">"نوشتن داده‌های خشکی واژن"</string>
+    <string name="vaginal_itchiness_read_content_description" msgid="6027886706003079912">"خواندن داده‌های خارش واژن"</string>
+    <string name="vaginal_itchiness_write_content_description" msgid="6833099607694941406">"نوشتن داده‌های خارش واژن"</string>
+    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"خواندن داده‌های مه مغزی"</string>
+    <string name="brain_fog_write_content_description" msgid="354508934978268288">"نوشتن داده‌های مه مغزی"</string>
+    <string name="mood_change_read_content_description" msgid="5114563193264125173">"خواندن داده‌های تغییر خلق‌وخو"</string>
+    <string name="mood_change_write_content_description" msgid="7613564641235985120">"نوشتن داده‌های تغییر خلق‌وخو"</string>
+    <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"خواندن داده‌های ضعف حافظه"</string>
+    <string name="memory_lapse_write_content_description" msgid="211569063190179476">"نوشتن داده‌های ضعف حافظه"</string>
+    <string name="sleepiness_read_content_description" msgid="797381777988304669">"خواندن داده‌های خواب‌آلودگی"</string>
+    <string name="sleepiness_write_content_description" msgid="888236364245216476">"نوشتن داده‌های خواب‌آلودگی"</string>
+    <string name="sleep_changes_read_content_description" msgid="277237231470749744">"خواندن داده‌های تغییرات خواب"</string>
+    <string name="sleep_changes_write_content_description" msgid="9078270254664653838">"نوشتن داده‌های تغییرات خواب"</string>
+    <string name="insomnia_read_content_description" msgid="5225449618972721129">"خواندن داده‌های بی‌خوابی"</string>
+    <string name="insomnia_write_content_description" msgid="4237153589826489083">"نوشتن داده‌های بی‌خوابی"</string>
+    <string name="snore_read_content_description" msgid="3447953925696237628">"خواندن داده‌های خروپف"</string>
+    <string name="snore_write_content_description" msgid="959354771204900433">"نوشتن داده‌های خروپف"</string>
+    <string name="acne_uppercase_label" msgid="60568062993817483">"آکنه"</string>
+    <string name="acne_lowercase_label" msgid="5301949536428255159">"آکنه"</string>
+    <string name="abdominal_pain_uppercase_label" msgid="442393846492385702">"درد شکمی"</string>
+    <string name="abdominal_pain_lowercase_label" msgid="4136643670361233063">"درد شکمی"</string>
+    <string name="back_pain_uppercase_label" msgid="6034795846635350255">"کمردرد"</string>
+    <string name="back_pain_lowercase_label" msgid="7487168354843582888">"کمردرد"</string>
+    <string name="bloating_uppercase_label" msgid="2827024204358491650">"نفخ"</string>
+    <string name="bloating_lowercase_label" msgid="4108236897678347488">"نفخ"</string>
+    <string name="brain_fog_uppercase_label" msgid="3782508630097437711">"مه مغزی"</string>
+    <string name="brain_fog_lowercase_label" msgid="8018499987092429724">"مه مغزی"</string>
+    <string name="breast_tenderness_uppercase_label" msgid="3633574517042452397">"حساسیت سینه‌ها به لمس"</string>
+    <string name="breast_tenderness_lowercase_label" msgid="3745105353936751222">"حساسیت سینه‌ها به لمس"</string>
+    <string name="brittle_nails_uppercase_label" msgid="7290899807816681152">"ناخن شکننده"</string>
+    <string name="brittle_nails_lowercase_label" msgid="43861645923597496">"ناخن شکننده"</string>
+    <string name="burning_mouth_uppercase_label" msgid="8975226712238467359">"سوزش دهان"</string>
+    <string name="burning_mouth_lowercase_label" msgid="3378970972990933484">"سوزش دهان"</string>
+    <string name="chest_pain_uppercase_label" msgid="8091501402224214622">"درد قفسه سینه"</string>
+    <string name="chest_pain_lowercase_label" msgid="8817807562310689177">"درد قفسه سینه"</string>
+    <string name="chest_tightness_uppercase_label" msgid="8988021502622503503">"گرفتگی قفسه سینه"</string>
+    <string name="chest_tightness_lowercase_label" msgid="1770063390635610292">"گرفتگی قفسه سینه"</string>
+    <string name="chills_uppercase_label" msgid="4320786490882838834">"لرز"</string>
+    <string name="chills_lowercase_label" msgid="1306612496314055832">"لرز"</string>
+    <string name="constipation_uppercase_label" msgid="7245001778443725742">"یبوست"</string>
+    <string name="constipation_lowercase_label" msgid="6217542866033766747">"یبوست"</string>
+    <string name="cough_uppercase_label" msgid="5570609736970603012">"سرفه"</string>
+    <string name="cough_lowercase_label" msgid="459638956679172779">"سرفه"</string>
+    <string name="cramps_uppercase_label" msgid="5162905309136173937">"گرفتگی"</string>
+    <string name="cramps_lowercase_label" msgid="4644485808002493449">"گرفتگی"</string>
+    <string name="cravings_uppercase_label" msgid="4754194354806284307">"ولع غذایی"</string>
+    <string name="cravings_lowercase_label" msgid="5836041614136287213">"ولع غذایی"</string>
+    <string name="dehydration_uppercase_label" msgid="10278239942824711">"کم‌آبی بدن"</string>
+    <string name="dehydration_lowercase_label" msgid="8692632632276643276">"کم‌آبی بدن"</string>
+    <string name="diarrhea_uppercase_label" msgid="6310170127529968752">"اسهال"</string>
+    <string name="diarrhea_lowercase_label" msgid="5938774694742839016">"اسهال"</string>
+    <string name="difficulty_swallowing_uppercase_label" msgid="3546617155300878657">"مشکل در بلع"</string>
+    <string name="difficulty_swallowing_lowercase_label" msgid="4980631237611433200">"مشکل در بلع"</string>
+    <string name="dizziness_uppercase_label" msgid="8129950094459563983">"سرگیجه"</string>
+    <string name="dizziness_lowercase_label" msgid="3462347558609662379">"سرگیجه"</string>
+    <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"خشکی پوست"</string>
+    <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"خشکی پوست"</string>
+    <string name="earaches_uppercase_label" msgid="107701950625572701">"گوش‌درد"</string>
+    <string name="earaches_lowercase_label" msgid="6240790850403958317">"گوش‌درد"</string>
+    <string name="fatigue_uppercase_label" msgid="7514286788083426578">"خستگی"</string>
+    <string name="fatigue_lowercase_label" msgid="2669560685808367387">"خستگی"</string>
+    <string name="fever_uppercase_label" msgid="6889273008212535253">"تب"</string>
+    <string name="fever_lowercase_label" msgid="3634400562894397159">"تب"</string>
+    <string name="generalized_body_ache_uppercase_label" msgid="2171378172300618053">"بدن‌درد عمومی"</string>
+    <string name="generalized_body_ache_lowercase_label" msgid="1725534000111875030">"بدن‌درد عمومی"</string>
+    <string name="hair_loss_uppercase_label" msgid="6359351347019795813">"ریزش مو"</string>
+    <string name="hair_loss_lowercase_label" msgid="2764498189966225461">"ریزش مو"</string>
+    <string name="headache_uppercase_label" msgid="863800537735413054">"سردرد"</string>
+    <string name="headache_lowercase_label" msgid="6564231905087583135">"سردرد"</string>
+    <string name="heartburn_uppercase_label" msgid="1170571383460859644">"سوزش سردل"</string>
+    <string name="heartburn_lowercase_label" msgid="6235983036978705474">"سوزش سردل"</string>
+    <string name="heart_palpitations_uppercase_label" msgid="2026400872833911547">"تپش قلب"</string>
+    <string name="heart_palpitations_lowercase_label" msgid="1468243523322721340">"تپش قلب"</string>
+    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"گرگرفتگی"</string>
+    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"گرگرفتگی"</string>
+    <string name="insomnia_uppercase_label" msgid="4946197328995261738">"بی‌خوابی"</string>
+    <string name="insomnia_lowercase_label" msgid="3742025423716451058">"بی‌خوابی"</string>
+    <string name="joint_pain_uppercase_label" msgid="7693454621285586935">"درد مفاصل"</string>
+    <string name="joint_pain_lowercase_label" msgid="1877680075365305488">"درد مفاصل"</string>
+    <string name="joint_stiffness_uppercase_label" msgid="5230114867081881444">"خشکی مفاصل"</string>
+    <string name="joint_stiffness_lowercase_label" msgid="8766445235392409480">"خشکی مفاصل"</string>
+    <string name="loss_of_appetite_uppercase_label" msgid="4023141061302523950">"ازدست دادن اشتها"</string>
+    <string name="loss_of_appetite_lowercase_label" msgid="7558077308061468558">"ازدست دادن اشتها"</string>
+    <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"ازدست دادن هوشیاری"</string>
+    <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"ازدست دادن هوشیاری"</string>
+    <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"درد پایین کمر"</string>
+    <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"درد پایین کمر"</string>
+    <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"ضعف حافظه"</string>
+    <string name="memory_lapse_lowercase_label" msgid="5590619293782264318">"ضعف حافظه"</string>
+    <string name="mood_change_uppercase_label" msgid="6591596468077187132">"تغییر خلق‌وخو"</string>
+    <string name="mood_change_lowercase_label" msgid="5154765930188874067">"تغییر خلق‌وخو"</string>
+    <string name="muscle_pain_uppercase_label" msgid="2470771124188001900">"درد عضلانی"</string>
+    <string name="muscle_pain_lowercase_label" msgid="7842677871351347822">"درد عضلانی"</string>
+    <string name="nausea_uppercase_label" msgid="8384006696113532259">"حالت تهوع"</string>
+    <string name="nausea_lowercase_label" msgid="8182471893071968504">"حالت تهوع"</string>
+    <string name="night_sweats_uppercase_label" msgid="6177687233700001658">"تعریق شبانه"</string>
+    <string name="night_sweats_lowercase_label" msgid="5041101323453286082">"تعریق شبانه"</string>
+    <string name="pelvic_pain_uppercase_label" msgid="9057761232218571640">"درد لگن"</string>
+    <string name="pelvic_pain_lowercase_label" msgid="8993103170034473121">"درد لگن"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"ضربان قلب تند، شدید، یا نامنظم"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"ضربان قلب تند، شدید، یا نامنظم"</string>
+    <string name="reduced_capacity_for_exercise_uppercase_label" msgid="7471254320615756463">"کاهش توان ورزش"</string>
+    <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"کاهش توان ورزش"</string>
+    <string name="runny_nose_uppercase_label" msgid="6561156187042071551">"آبریزش بینی"</string>
+    <string name="runny_nose_lowercase_label" msgid="2214697492382685914">"آبریزش بینی"</string>
+    <string name="shortness_of_breath_uppercase_label" msgid="3747502224212110471">"تنگی نفس"</string>
+    <string name="shortness_of_breath_lowercase_label" msgid="3970444639088619346">"تنگی نفس"</string>
+    <string name="skipped_heartbeat_uppercase_label" msgid="1004040920818222022">"پرش ضربان قلب"</string>
+    <string name="skipped_heartbeat_lowercase_label" msgid="2446049805930852514">"پرش ضربان قلب"</string>
+    <string name="sleep_changes_uppercase_label" msgid="817870703301327111">"تغییرات خواب"</string>
+    <string name="sleep_changes_lowercase_label" msgid="8606593835222848643">"تغییرات خواب"</string>
+    <string name="sleepiness_uppercase_label" msgid="8292543897598171825">"خواب‌آلودگی"</string>
+    <string name="sleepiness_lowercase_label" msgid="7563434619994665081">"خواب‌آلودگی"</string>
+    <string name="sneezing_uppercase_label" msgid="3559089195823390830">"عطسه"</string>
+    <string name="sneezing_lowercase_label" msgid="4614496100578986753">"عطسه"</string>
+    <string name="snore_uppercase_label" msgid="5408933698329003980">"خروپف"</string>
+    <string name="snore_lowercase_label" msgid="4813706716393000341">"خروپف"</string>
+    <string name="sore_throat_uppercase_label" msgid="7652461264264564339">"گلودرد"</string>
+    <string name="sore_throat_lowercase_label" msgid="2671417552726018944">"گلودرد"</string>
+    <string name="stomach_ache_uppercase_label" msgid="8450868632465837793">"معده‌درد"</string>
+    <string name="stomach_ache_lowercase_label" msgid="3263518334946627327">"معده‌درد"</string>
+    <string name="stuffy_nose_uppercase_label" msgid="4216439398397550673">"گرفتگی بینی"</string>
+    <string name="stuffy_nose_lowercase_label" msgid="346310767340271161">"گرفتگی بینی"</string>
+    <string name="unexplained_weight_changes_uppercase_label" msgid="1882204558194305221">"تغییرات وزن بدون دلیل مشخص"</string>
+    <string name="unexplained_weight_changes_lowercase_label" msgid="8433998024876395101">"تغییرات وزن بدون دلیل مشخص"</string>
+    <string name="vaginal_dryness_uppercase_label" msgid="4256721076420375400">"خشکی واژن"</string>
+    <string name="vaginal_dryness_lowercase_label" msgid="1329282833647595593">"خشکی واژن"</string>
+    <string name="vaginal_itchiness_uppercase_label" msgid="2843508264503404145">"خارش واژن"</string>
+    <string name="vaginal_itchiness_lowercase_label" msgid="4569019157289060524">"خارش واژن"</string>
+    <string name="vomiting_uppercase_label" msgid="258794137964470267">"استفراغ"</string>
+    <string name="vomiting_lowercase_label" msgid="2520559377010270583">"استفراغ"</string>
+    <string name="water_retention_uppercase_label" msgid="4748866467103152119">"احتباس آب"</string>
+    <string name="water_retention_lowercase_label" msgid="3738721149186742861">"احتباس آب"</string>
+    <string name="wheezing_uppercase_label" msgid="2837114949197811787">"خس‌خس سینه"</string>
+    <string name="wheezing_lowercase_label" msgid="1278548371813007771">"خس‌خس سینه"</string>
 </resources>

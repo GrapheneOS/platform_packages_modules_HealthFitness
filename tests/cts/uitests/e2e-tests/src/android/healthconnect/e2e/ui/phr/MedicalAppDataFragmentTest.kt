@@ -111,7 +111,7 @@ class MedicalAppDataFragmentTest : HealthConnectBaseTest() {
             scrollDownToAndFindText("Sleep")
             scrollDownToAndFindText("Vitals")
             scrollDownToAndFindText("Heart rate")
-            scrollDownToAndFindText("Health records")
+            scrollDownToAndFindText("Medical records")
             scrollDownToAndFindText("Allergies")
             scrollDownToAndFindText("Vaccines")
         }

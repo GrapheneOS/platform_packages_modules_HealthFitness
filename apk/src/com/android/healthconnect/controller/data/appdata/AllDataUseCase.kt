@@ -22,6 +22,7 @@ import android.health.connect.ReadRecordsRequestUsingFilters
 import android.health.connect.ReadRecordsResponse
 import android.health.connect.RecordTypeInfoResponse
 import android.health.connect.TimeInstantRangeFilter
+import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SymptomRecord
 import android.util.Log
@@ -52,7 +53,7 @@ class AllDataUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) {
 
     // A map of SymptomType IntDef to its corresponding FitnessPermissionType
@@ -224,7 +225,7 @@ constructor(
         packageName: String?,
     ): List<HealthPermissionType> {
         if (Flags.symptoms() && category == HealthDataCategory.SYMPTOMS) {
-            return getSymptomPermissionTypesWithData()
+            return getSymptomPermissionTypesWithData(packageName)
         }
         val types = category.healthPermissionTypes()
         if (packageName == null) {
@@ -233,8 +234,10 @@ constructor(
         return types.filter { hasDataByApp(it, recordTypeInfoMap, packageName) }
     }
 
-    private suspend fun getSymptomPermissionTypesWithData(): List<HealthPermissionType> {
-        val request =
+    private suspend fun getSymptomPermissionTypesWithData(
+        packageName: String? = null
+    ): List<HealthPermissionType> {
+        val requestBuilder =
             ReadRecordsRequestUsingFilters.Builder(SymptomRecord::class.java)
                 .setTimeRangeFilter(
                     TimeInstantRangeFilter.Builder()
@@ -242,7 +245,10 @@ constructor(
                         .setEndTime(Instant.now())
                         .build()
                 )
-                .build()
+        if (packageName != null) {
+            requestBuilder.addDataOrigins(DataOrigin.Builder().setPackageName(packageName).build())
+        }
+        val request = requestBuilder.build()
         try {
             val records =
                 suspendCancellableCoroutine<ReadRecordsResponse<SymptomRecord>> { continuation ->

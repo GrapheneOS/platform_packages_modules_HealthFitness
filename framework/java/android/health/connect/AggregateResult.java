@@ -19,19 +19,23 @@ package android.health.connect;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.internal.PackageNameMasker;
 import android.os.Parcel;
 import android.util.ArraySet;
 
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * A class to represent the results of {@link HealthConnectManager} aggregate APIs
  *
+ * @param <T> The type of the aggregated result (e.g., Long, Duration)
  * @hide
  */
-public final class AggregateResult<T> {
+public final class AggregateResult<T> implements PackageNameMasker<AggregateResult<T>> {
 
     private final T mResult;
     @Nullable private final ZoneOffset mZoneOffset;
@@ -82,5 +86,22 @@ public final class AggregateResult<T> {
             result.add(new DataOrigin.Builder().setPackageName(packageName).build());
         }
         return result;
+    }
+
+    @NonNull
+    @Override
+    public AggregateResult<T> toMasked(@NonNull Function<String, String> packageMasker) {
+        Set<DataOrigin> maskedOrigins =
+                mDataOrigins.stream()
+                        .map(
+                                origin ->
+                                        new DataOrigin.Builder()
+                                                .setPackageName(
+                                                        packageMasker.apply(
+                                                                origin.getPackageName()))
+                                                .build())
+                        .collect(Collectors.toSet());
+
+        return new AggregateResult<>(mResult, mZoneOffset, maskedOrigins);
     }
 }

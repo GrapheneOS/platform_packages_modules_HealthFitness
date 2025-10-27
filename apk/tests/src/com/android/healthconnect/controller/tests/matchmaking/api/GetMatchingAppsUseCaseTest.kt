@@ -83,13 +83,13 @@ class GetMatchingAppsUseCaseTest {
 
         doAnswer {
                 val receiver =
-                    it.arguments[3]
+                    it.arguments[2]
                         as OutcomeReceiver<Map<String, Set<String>>, HealthConnectException>
                 receiver.onResult(matchingAppsResponse)
                 null
             }
             .whenever(healthConnectManager)
-            .getMatchingApps(any(), any(), any(), any())
+            .getMatchingApps(any(), any(), any())
         whenever(appInfoReader.getAppMetadata(any())).thenReturn(appMetadata)
 
         val result = useCase.invoke(GetMatchMakingAppsInput(packageName, recordTypes))
@@ -106,13 +106,13 @@ class GetMatchingAppsUseCaseTest {
 
         doAnswer {
                 val receiver =
-                    it.arguments[3]
+                    it.arguments[2]
                         as OutcomeReceiver<Map<String, Set<String>>, HealthConnectException>
                 receiver.onError(exception)
                 null
             }
             .whenever(healthConnectManager)
-            .getMatchingApps(any(), any(), any(), any())
+            .getMatchingApps(any(), any(), any())
 
         val result = useCase.invoke(GetMatchMakingAppsInput(packageName, recordTypes))
 

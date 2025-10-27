@@ -23,8 +23,10 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Dovoljenja in podatki"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Upravljajte podatke o zdravju in telesni pripravljenosti v napravi ter nadzirajte, katere aplikacije lahko dostopajo do njih"</string>
     <string name="data_title" msgid="4456619761533380816">"Podatki in dostop"</string>
-    <string name="browse_medical_data" msgid="6963802956096683273">"Brskanje po zdravstvenih evidencah"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"Ogled zdravstvenih evidenc in seznama aplikacij, ki lahko dostopajo do njih"</string>
+    <!-- no translation found for browse_medical_data (6492659245149862639) -->
+    <skip />
+    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
+    <skip />
     <string name="all_categories_title" msgid="1446410643217937926">"Vse kategorije"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Pokaži vse kategorije"</string>
     <string name="no_data" msgid="1906986019249068659">"Ni podatkov"</string>
@@ -110,8 +112,10 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Branje porabljenih kalorij"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Aplikaciji omogoča branje porabljenih kalorij"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Želite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> dovoliti dostop do podatkov v ozadju?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"Če to dovolite, lahko ta aplikacija dostopa do podatkov o telesni pripravljenosti in počutju ter do zdravstvenih evidenc, ko ne uporabljate te aplikacije."</string>
-    <string name="background_read_medical_single_request_description_medical_granted" msgid="5162456401369633859">"Če to dovolite, lahko ta aplikacija dostopa do zdravstvenih evidenc, ko ne uporabljate te aplikacije."</string>
+    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
+    <skip />
+    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
+    <skip />
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Če to dovolite, lahko ta aplikacija dostopa do podatkov o telesni pripravljenosti in počutju, ko ne uporabljate te aplikacije."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Če to dovolite, lahko ta aplikacija dostopa do podatkov storitve Health Connect, ko ne uporabljate te aplikacije."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"Želite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> dovoliti dostop do preteklih podatkov?"</string>
@@ -122,9 +126,11 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"Želite dovoliti dodaten dostop za aplikacijo <xliff:g id="APP_NAME">%1$s</xliff:g>?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> želi dostopati tudi do teh nastavitev za Health Connect"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Dostop do vseh podatkov v ozadju"</string>
-    <string name="background_read_medical_combined_request_title_medical_granted" msgid="7245376864667067106">"Dostop do zdravstvenih evidenc v ozadju"</string>
+    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
+    <skip />
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Dostop do podatkov o telesni pripravljenosti in počutju v ozadju"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"Tej aplikaciji dovolite dostop do podatkov o telesni pripravljenosti in počutju ter do zdravstvenih evidenc, ko ne uporabljate te aplikacije"</string>
+    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
+    <skip />
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Tej aplikaciji dovolite dostop do teh podatkov, ko ne uporabljate te aplikacije"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Tej aplikaciji dovolite dostop do teh podatkov, ko ne uporabljate te aplikacije"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Dostop do podatkov v ozadju"</string>
@@ -135,12 +141,15 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Dostop do preteklih podatkov"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"Tej aplikaciji dovolite dostop do podatkov storitve Health Connect, ki so bili dodani pred dnem <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Tej aplikaciji dovolite dostop do vseh preteklih podatkov storitve Health Connect"</string>
-    <string name="history_read_medical_combined_request_footer" msgid="5301940225768076844">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> že lahko dostopa do preteklih podatkov zdravstvenih evidenc"</string>
+    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
+    <skip />
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Preberite več o dovoljenjih"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Dostop do vseh podatkov v ozadju"</string>
-    <string name="background_read_medical_access_title_medical_granted" msgid="7852915238347056139">"Dostop do zdravstvenih evidenc v ozadju"</string>
+    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
+    <skip />
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Dostop do podatkov o telesni pripravljenosti in počutju v ozadju"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"Tej aplikaciji dovolite dostop do podatkov o telesni pripravljenosti in počutju ter do zdravstvenih evidenc, ko ne uporabljate te aplikacije"</string>
+    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
+    <skip />
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Tej aplikaciji dovolite dostop do teh podatkov, ko ne uporabljate te aplikacije"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Tej aplikaciji dovolite dostop do teh podatkov, ko ne uporabljate te aplikacije"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Dostop do podatkov v ozadju"</string>
@@ -152,8 +161,10 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Tej aplikaciji dovolite dostop do podatkov storitve Health Connect, ki so bili dodani pred dnem <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Tej aplikaciji dovolite dostop do vseh preteklih podatkov storitve Health Connect"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Trenutno se ne berejo nobeni podatki o telesni pripravljenosti, ker aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> nima vklopljenih dovoljenj za branje"</string>
-    <string name="additional_access_medical_read_footer" msgid="4640796038121080343">"<xliff:g id="APP_NAME">%1$s</xliff:g> že lahko dostopa do preteklih podatkov zdravstvenih evidenc. Če želite to spremeniti, izklopite dovoljenja za zdravstveno evidenco za to aplikacijo."</string>
-    <string name="additional_access_medical_read_footer_link" msgid="2797623091827504856">"Upravljanje dovoljenj za zdravstveno evidenco"</string>
+    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
+    <skip />
+    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
+    <skip />
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Omogočite vsaj eno dovoljenje za branje, če želite za to aplikacijo vklopiti dostop iz ozadja ali dostop do preteklih podatkov"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Omogočite vsaj eno dovoljenje za branje, če želite za to aplikacijo vklopiti dostop iz ozadja"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Omogočite vsaj eno dovoljenje za branje, če želite za to aplikacijo vklopiti dostop do preteklih podatkov"</string>
@@ -328,10 +339,14 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"temperatura kože"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Branje temperature kože"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Zapisovanje temperature kože"</string>
-    <string name="browse_health_records_intro" msgid="1611488691642390523">"To vključuje vse zdravstvene evidence, sinhronizirane s storitvijo Health Connect in dodane vanjo. To morda ne obsega vaše celotne zdravstvene kartoteke in ne vključuje medicinskega opisa vaših zdravstvenih evidenc."</string>
-    <string name="all_medical_data_uppercase_label" msgid="2380759160541898783">"Vse zdravstvene evidence"</string>
-    <string name="all_medical_data_lowercase_label" msgid="6293814928992081842">"vse zdravstvene evidence"</string>
-    <string name="all_medical_data_content_description" msgid="4846586780533295022">"Zapisovanje vseh zdravstvenih evidenc"</string>
+    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
+    <skip />
+    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
+    <skip />
+    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
+    <skip />
+    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
+    <skip />
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Alergije"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"alergije"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Branje podatkov o alergijah"</string>
@@ -412,13 +427,17 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Želite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> dovoliti dostop do podatkov o telesni pripravljenosti in počutju?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Preberete lahko <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g>, da ugotovite, kako ravna z vašimi podatki"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"pravilnik o zasebnosti"</string>
-    <string name="medical_request_header" msgid="2300521519021510027">"Želite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> dovoliti dostop do zdravstvenih evidenc?"</string>
+    <!-- no translation found for medical_request_header (5701693055388739014) -->
+    <skip />
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Če odobrite dostop, lahko aplikacija bere in zapisuje podatke, kot so alergije, laboratorijski izvidi, cepiva in drugo\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Če odobrite dostop, lahko aplikacija bere podatke, kot so alergije, laboratorijski izvidi, cepiva in drugo\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_about_health_records" msgid="7204918218748362687">"O zdravstvenih evidencah"</string>
+    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
+    <skip />
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Podatki za deljenje vključujejo naslednje"</string>
-    <string name="medical_request_summary" msgid="7281321524805015510">"Če to dovolite, lahko aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> deli vaše zdravstvene evidence s storitvijo Health Connect."</string>
-    <string name="medical_request_footer" msgid="6533749932770903089">"Sinhronizirajte zdravstvene podatke iz različnih aplikacij in virov, da bodo na enem mestu"</string>
+    <!-- no translation found for medical_request_summary (553735170968628758) -->
+    <skip />
+    <!-- no translation found for medical_request_footer (157243861031258933) -->
+    <skip />
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Želite odstraniti vsa dovoljenja?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Odstrani vse"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ne bo več mogla brati ali zapisovati podatkov storitve Health Connect.\n\nTo ne vpliva na druga dovoljenja, ki jih morda ima ta aplikacija, na primer za fotoaparat, mikrofon ali lokacijo."</string>
@@ -428,8 +447,10 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Iz storitve Health Connect izbriši tudi podatke aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Želite odstraniti vsa dovoljenja za telesno pripravljenost in dobro počutje?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Iz storitve Health Connect izbriši tudi podatke o telesni pripravljenosti v aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Želite odstraniti vsa dovoljenja za zdravstveno evidenco?"</string>
-    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"Iz storitve Health Connect izbriši tudi zdravstvene evidence v aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
+    <skip />
+    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
+    <skip />
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ne bo več mogla brati ali zapisovati teh podatkov storitve Health Connect.\n\nTo ne vpliva na druga dovoljenja, ki jih morda ima ta aplikacija, na primer za fotoaparat, mikrofon ali lokacijo."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ne bo več mogla brati ali zapisovati teh podatkov storitve Health Connect, vključno s prenosom podatkov v ozadju.\n\nTo ne vpliva na druga dovoljenja, ki jih morda ima ta aplikacija, na primer za fotoaparat, mikrofon ali lokacijo."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ne bo več mogla brati ali zapisovati teh podatkov storitve Health Connect, vključno s preteklimi podatki.\n\nTo ne vpliva na druga dovoljenja, ki jih morda ima ta aplikacija, na primer za fotoaparat, mikrofon ali lokacijo."</string>
@@ -439,7 +460,8 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ne bo več mogla brati ali zapisovati podatkov storitve Health Connect, vključno s prenosom podatkov v ozadju.\n\nTo ne vpliva na druga dovoljenja, ki jih morda ima ta aplikacija, na primer za fotoaparat, mikrofon ali lokacijo."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ne bo več mogla brati ali zapisovati podatkov storitve Health Connect, vključno s preteklimi podatki.\n\nTo ne vpliva na druga dovoljenja, ki jih morda ima ta aplikacija, na primer za fotoaparat, mikrofon ali lokacijo."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> ne bo več mogla brati ali zapisovati podatkov storitve Health Connect, vključno s prenosom podatkov v ozadju in preteklimi podatki.\n\nTo ne vpliva na druga dovoljenja, ki jih morda ima ta aplikacija, na primer za fotoaparat, mikrofon ali lokacijo."</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="762880061016391846">"Iz storitve Health Connect izbriši tudi podatke o telesni pripravljenosti in zdravstvene evidence v aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
+    <skip />
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Dovoljenja za to aplikacijo so bila odstranjena"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Izbriši tudi vse podatke storitve Health Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Naslednji dan"</string>
@@ -488,8 +510,10 @@
     <string name="permissions_header" msgid="6519976063360071569">"Dovoljenja"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"Telesna pripravljenost in dobro počutje"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Vadba, spanje, prehrana in drugo"</string>
-    <string name="medical_permissions" msgid="1224097151249321566">"Zdravstvene evidence"</string>
-    <string name="medical_permissions_lowercase" msgid="3969792205103436491">"zdravstvene evidence"</string>
+    <!-- no translation found for medical_permissions (1066296298908103091) -->
+    <skip />
+    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
+    <skip />
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Laboratorijski Izvidi, zdravila, cepiva in drugo"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Odstranjena dovoljenja za aplikacije"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Storitev Health Connect je odstranila dovoljenja za aplikacijo <xliff:g id="APP_DATA">%s</xliff:g>."</string>
@@ -583,7 +607,8 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Odpri Trgovino Play"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Začetek uporabe storitve Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect shranjuje vaše podatke o zdravju in telesni pripravljenosti ter vam omogoča, da na preprost način sinhronizirate različne aplikacije v napravi."</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect shranjuje in sinhronizira podatke o zdravju in telesni pripravljenosti iz različnih aplikacij.\n\n"<b>"Podatke o telesni pripravljenosti in počutju,"</b>" vključno s treningi, koraki, prehrano, spanjem in drugimi podatki.\n\n"<b>"Zdravstvene evidence,"</b>" vključno s cepivi, laboratorijskimi izvidi in drugimi podatki."</string>
+    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
+    <skip />
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connect vam omogoča naslednje:"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Deljenje podatkov z aplikacijami"</b>\n"Izberite, katere podatke lahko aplikacije berejo ali zapisujejo v storitvi Health Connect"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Upravljanje nastavitev in zasebnosti"</b>\n"Kadar koli spremenite dovoljenja za aplikacije in upravljajte svoje podatke"</string>
@@ -1338,476 +1363,240 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Ni povezana"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Kliknite, če želite to aplikacijo povezati s storitvijo Health Connect"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Ne zdaj"</string>
-    <!-- no translation found for acne_read_content_description (1176708404029936065) -->
-    <skip />
-    <!-- no translation found for acne_write_content_description (9221785868351412493) -->
-    <skip />
-    <!-- no translation found for brittle_nails_read_content_description (423745726647038216) -->
-    <skip />
-    <!-- no translation found for brittle_nails_write_content_description (1804481735143147688) -->
-    <skip />
-    <!-- no translation found for burning_mouth_read_content_description (71088318928262260) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2778289937475041118) -->
-    <skip />
-    <!-- no translation found for chills_read_content_description (7244946135559432433) -->
-    <skip />
-    <!-- no translation found for chills_write_content_description (6478646233405107436) -->
-    <skip />
-    <!-- no translation found for dehydration_read_content_description (7633935838518756206) -->
-    <skip />
-    <!-- no translation found for dehydration_write_content_description (541514183036921571) -->
-    <skip />
-    <!-- no translation found for dry_skin_read_content_description (6798683159412202977) -->
-    <skip />
-    <!-- no translation found for dry_skin_write_content_description (1312998001092991619) -->
-    <skip />
-    <!-- no translation found for fever_read_content_description (3385209639730909489) -->
-    <skip />
-    <!-- no translation found for fever_write_content_description (8440573327719878961) -->
-    <skip />
-    <!-- no translation found for joint_pain_read_content_description (2932523124488927967) -->
-    <skip />
-    <!-- no translation found for joint_pain_write_content_description (7405551860978844535) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_read_content_description (2132696730582070534) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_write_content_description (7556318646656369856) -->
-    <skip />
-    <!-- no translation found for muscle_pain_read_content_description (3116385630330673084) -->
-    <skip />
-    <!-- no translation found for muscle_pain_write_content_description (2544204740665773272) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_read_content_description (8346630124770268372) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_write_content_description (1959348657257573252) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_read_content_description (2246901110448734533) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_write_content_description (8119106053737965766) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_read_content_description (7644187172731376645) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_write_content_description (8744350844236958279) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_read_content_description (3132494584303814009) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_write_content_description (4282920161878530009) -->
-    <skip />
-    <!-- no translation found for fatigue_read_content_description (8447413794808220408) -->
-    <skip />
-    <!-- no translation found for fatigue_write_content_description (3000326883358951973) -->
-    <skip />
-    <!-- no translation found for constipation_read_content_description (4024154136010015370) -->
-    <skip />
-    <!-- no translation found for constipation_write_content_description (9059835998017996999) -->
-    <skip />
-    <!-- no translation found for diarrhea_read_content_description (6643311788778713543) -->
-    <skip />
-    <!-- no translation found for diarrhea_write_content_description (2525160401458506448) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_read_content_description (5825568361431664706) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_write_content_description (7370817778828856877) -->
-    <skip />
-    <!-- no translation found for nausea_read_content_description (7696809485706809234) -->
-    <skip />
-    <!-- no translation found for nausea_write_content_description (7956853318058549079) -->
-    <skip />
-    <!-- no translation found for stomach_ache_read_content_description (6960461949095524373) -->
-    <skip />
-    <!-- no translation found for stomach_ache_write_content_description (4822349196740130790) -->
-    <skip />
-    <!-- no translation found for vomiting_read_content_description (6425637340168306118) -->
-    <skip />
-    <!-- no translation found for vomiting_write_content_description (2768436321239967229) -->
-    <skip />
-    <!-- no translation found for chest_pain_read_content_description (5388099127082653993) -->
-    <skip />
-    <!-- no translation found for chest_pain_write_content_description (7570421665813979598) -->
-    <skip />
-    <!-- no translation found for chest_tightness_read_content_description (3234587929340517638) -->
-    <skip />
-    <!-- no translation found for chest_tightness_write_content_description (3365518444505217882) -->
-    <skip />
-    <!-- no translation found for cough_read_content_description (4834360757270578547) -->
-    <skip />
-    <!-- no translation found for cough_write_content_description (2927943192149715422) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_read_content_description (5830132363981902576) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_write_content_description (6195434828951874561) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_read_content_description (5285037217314042125) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_write_content_description (1812050225998794712) -->
-    <skip />
-    <!-- no translation found for wheezing_read_content_description (3698103133045395859) -->
-    <skip />
-    <!-- no translation found for wheezing_write_content_description (3555234332119025686) -->
-    <skip />
-    <!-- no translation found for heartburn_read_content_description (4650825508743336439) -->
-    <skip />
-    <!-- no translation found for heartburn_write_content_description (1857706822547818187) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_read_content_description (4732209374634649857) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_write_content_description (834686289232563614) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_read_content_description (7616019217735602113) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_write_content_description (271585170557004393) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_read_content_description (3506995529886706872) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_write_content_description (4087127686579577768) -->
-    <skip />
-    <!-- no translation found for dizziness_read_content_description (2525565486057144416) -->
-    <skip />
-    <!-- no translation found for dizziness_write_content_description (1875365619054873732) -->
-    <skip />
-    <!-- no translation found for earaches_read_content_description (4643142391473401154) -->
-    <skip />
-    <!-- no translation found for earaches_write_content_description (3551386029980258801) -->
-    <skip />
-    <!-- no translation found for hair_loss_read_content_description (4057044821025872986) -->
-    <skip />
-    <!-- no translation found for hair_loss_write_content_description (7387442867237711823) -->
-    <skip />
-    <!-- no translation found for headache_read_content_description (7485283472508878298) -->
-    <skip />
-    <!-- no translation found for headache_write_content_description (720183844750746485) -->
-    <skip />
-    <!-- no translation found for runny_nose_read_content_description (443700998701222852) -->
-    <skip />
-    <!-- no translation found for runny_nose_write_content_description (6210009950948827090) -->
-    <skip />
-    <!-- no translation found for sneezing_read_content_description (1825781985598094799) -->
-    <skip />
-    <!-- no translation found for sneezing_write_content_description (8125072216406958337) -->
-    <skip />
-    <!-- no translation found for sore_throat_read_content_description (7798247670004858562) -->
-    <skip />
-    <!-- no translation found for sore_throat_write_content_description (6058043292544091397) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_read_content_description (6604212451531546331) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_write_content_description (6950875986047625521) -->
-    <skip />
-    <!-- no translation found for back_pain_read_content_description (1176155927269014089) -->
-    <skip />
-    <!-- no translation found for back_pain_write_content_description (6282959987099901645) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_read_content_description (1437405008757136462) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_write_content_description (3519700764000282215) -->
-    <skip />
-    <!-- no translation found for hot_flashes_read_content_description (2229463748079331513) -->
-    <skip />
-    <!-- no translation found for hot_flashes_write_content_description (441093768815039294) -->
-    <skip />
-    <!-- no translation found for night_sweats_read_content_description (7644094250441074129) -->
-    <skip />
-    <!-- no translation found for night_sweats_write_content_description (7501357533280452509) -->
-    <skip />
-    <!-- no translation found for water_retention_read_content_description (211789030125880649) -->
-    <skip />
-    <!-- no translation found for water_retention_write_content_description (7109328727506593781) -->
-    <skip />
-    <!-- no translation found for cravings_read_content_description (9098905292448612603) -->
-    <skip />
-    <!-- no translation found for cravings_write_content_description (7932335159387976333) -->
-    <skip />
-    <!-- no translation found for bloating_read_content_description (8942780558464500997) -->
-    <skip />
-    <!-- no translation found for bloating_write_content_description (5014366726518564943) -->
-    <skip />
-    <!-- no translation found for cramps_read_content_description (5853663240074256855) -->
-    <skip />
-    <!-- no translation found for cramps_write_content_description (6777230560926849939) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_read_content_description (6331928351160142817) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_write_content_description (9213133328064016367) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_read_content_description (1556133668276886256) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_write_content_description (5405234499024881940) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_read_content_description (8872893212311881743) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_write_content_description (8482016412474126674) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_read_content_description (21587787265978758) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_write_content_description (7639415261021656468) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_read_content_description (6027886706003079912) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_write_content_description (6833099607694941406) -->
-    <skip />
-    <!-- no translation found for brain_fog_read_content_description (4240133221789017568) -->
-    <skip />
-    <!-- no translation found for brain_fog_write_content_description (354508934978268288) -->
-    <skip />
-    <!-- no translation found for mood_change_read_content_description (5114563193264125173) -->
-    <skip />
-    <!-- no translation found for mood_change_write_content_description (7613564641235985120) -->
-    <skip />
-    <!-- no translation found for memory_lapse_read_content_description (3639865098888366357) -->
-    <skip />
-    <!-- no translation found for memory_lapse_write_content_description (211569063190179476) -->
-    <skip />
-    <!-- no translation found for sleepiness_read_content_description (797381777988304669) -->
-    <skip />
-    <!-- no translation found for sleepiness_write_content_description (888236364245216476) -->
-    <skip />
-    <!-- no translation found for sleep_changes_read_content_description (277237231470749744) -->
-    <skip />
-    <!-- no translation found for sleep_changes_write_content_description (9078270254664653838) -->
-    <skip />
-    <!-- no translation found for insomnia_read_content_description (5225449618972721129) -->
-    <skip />
-    <!-- no translation found for insomnia_write_content_description (4237153589826489083) -->
-    <skip />
-    <!-- no translation found for snore_read_content_description (3447953925696237628) -->
-    <skip />
-    <!-- no translation found for snore_write_content_description (959354771204900433) -->
-    <skip />
-    <!-- no translation found for acne_uppercase_label (60568062993817483) -->
-    <skip />
-    <!-- no translation found for acne_lowercase_label (5301949536428255159) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_uppercase_label (442393846492385702) -->
-    <skip />
-    <!-- no translation found for abdominal_pain_lowercase_label (4136643670361233063) -->
-    <skip />
-    <!-- no translation found for back_pain_uppercase_label (6034795846635350255) -->
-    <skip />
-    <!-- no translation found for back_pain_lowercase_label (7487168354843582888) -->
-    <skip />
-    <!-- no translation found for bloating_uppercase_label (2827024204358491650) -->
-    <skip />
-    <!-- no translation found for bloating_lowercase_label (4108236897678347488) -->
-    <skip />
-    <!-- no translation found for brain_fog_uppercase_label (3782508630097437711) -->
-    <skip />
-    <!-- no translation found for brain_fog_lowercase_label (8018499987092429724) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_uppercase_label (3633574517042452397) -->
-    <skip />
-    <!-- no translation found for breast_tenderness_lowercase_label (3745105353936751222) -->
-    <skip />
-    <!-- no translation found for brittle_nails_uppercase_label (7290899807816681152) -->
-    <skip />
-    <!-- no translation found for brittle_nails_lowercase_label (43861645923597496) -->
-    <skip />
-    <!-- no translation found for burning_mouth_uppercase_label (8975226712238467359) -->
-    <skip />
-    <!-- no translation found for burning_mouth_lowercase_label (3378970972990933484) -->
-    <skip />
-    <!-- no translation found for chest_pain_uppercase_label (8091501402224214622) -->
-    <skip />
-    <!-- no translation found for chest_pain_lowercase_label (8817807562310689177) -->
-    <skip />
-    <!-- no translation found for chest_tightness_uppercase_label (8988021502622503503) -->
-    <skip />
-    <!-- no translation found for chest_tightness_lowercase_label (1770063390635610292) -->
-    <skip />
-    <!-- no translation found for chills_uppercase_label (4320786490882838834) -->
-    <skip />
-    <!-- no translation found for chills_lowercase_label (1306612496314055832) -->
-    <skip />
-    <!-- no translation found for constipation_uppercase_label (7245001778443725742) -->
-    <skip />
-    <!-- no translation found for constipation_lowercase_label (6217542866033766747) -->
-    <skip />
-    <!-- no translation found for cough_uppercase_label (5570609736970603012) -->
-    <skip />
-    <!-- no translation found for cough_lowercase_label (459638956679172779) -->
-    <skip />
-    <!-- no translation found for cramps_uppercase_label (5162905309136173937) -->
-    <skip />
-    <!-- no translation found for cramps_lowercase_label (4644485808002493449) -->
-    <skip />
-    <!-- no translation found for cravings_uppercase_label (4754194354806284307) -->
-    <skip />
-    <!-- no translation found for cravings_lowercase_label (5836041614136287213) -->
-    <skip />
-    <!-- no translation found for dehydration_uppercase_label (10278239942824711) -->
-    <skip />
-    <!-- no translation found for dehydration_lowercase_label (8692632632276643276) -->
-    <skip />
-    <!-- no translation found for diarrhea_uppercase_label (6310170127529968752) -->
-    <skip />
-    <!-- no translation found for diarrhea_lowercase_label (5938774694742839016) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_uppercase_label (3546617155300878657) -->
-    <skip />
-    <!-- no translation found for difficulty_swallowing_lowercase_label (4980631237611433200) -->
-    <skip />
-    <!-- no translation found for dizziness_uppercase_label (8129950094459563983) -->
-    <skip />
-    <!-- no translation found for dizziness_lowercase_label (3462347558609662379) -->
-    <skip />
-    <!-- no translation found for dry_skin_uppercase_label (4542430684082075550) -->
-    <skip />
-    <!-- no translation found for dry_skin_lowercase_label (6892264917735291961) -->
-    <skip />
-    <!-- no translation found for earaches_uppercase_label (107701950625572701) -->
-    <skip />
-    <!-- no translation found for earaches_lowercase_label (6240790850403958317) -->
-    <skip />
-    <!-- no translation found for fatigue_uppercase_label (7514286788083426578) -->
-    <skip />
-    <!-- no translation found for fatigue_lowercase_label (2669560685808367387) -->
-    <skip />
-    <!-- no translation found for fever_uppercase_label (6889273008212535253) -->
-    <skip />
-    <!-- no translation found for fever_lowercase_label (3634400562894397159) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_uppercase_label (2171378172300618053) -->
-    <skip />
-    <!-- no translation found for generalized_body_ache_lowercase_label (1725534000111875030) -->
-    <skip />
-    <!-- no translation found for hair_loss_uppercase_label (6359351347019795813) -->
-    <skip />
-    <!-- no translation found for hair_loss_lowercase_label (2764498189966225461) -->
-    <skip />
-    <!-- no translation found for headache_uppercase_label (863800537735413054) -->
-    <skip />
-    <!-- no translation found for headache_lowercase_label (6564231905087583135) -->
-    <skip />
-    <!-- no translation found for heartburn_uppercase_label (1170571383460859644) -->
-    <skip />
-    <!-- no translation found for heartburn_lowercase_label (6235983036978705474) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_uppercase_label (2026400872833911547) -->
-    <skip />
-    <!-- no translation found for heart_palpitations_lowercase_label (1468243523322721340) -->
-    <skip />
-    <!-- no translation found for hot_flashes_uppercase_label (2410116266729711836) -->
-    <skip />
-    <!-- no translation found for hot_flashes_lowercase_label (6485269554856410007) -->
-    <skip />
-    <!-- no translation found for insomnia_uppercase_label (4946197328995261738) -->
-    <skip />
-    <!-- no translation found for insomnia_lowercase_label (3742025423716451058) -->
-    <skip />
-    <!-- no translation found for joint_pain_uppercase_label (7693454621285586935) -->
-    <skip />
-    <!-- no translation found for joint_pain_lowercase_label (1877680075365305488) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_uppercase_label (5230114867081881444) -->
-    <skip />
-    <!-- no translation found for joint_stiffness_lowercase_label (8766445235392409480) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_uppercase_label (4023141061302523950) -->
-    <skip />
-    <!-- no translation found for loss_of_appetite_lowercase_label (7558077308061468558) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_uppercase_label (4195502722277905266) -->
-    <skip />
-    <!-- no translation found for loss_of_consciousness_lowercase_label (4822860811117141611) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_uppercase_label (2307572603791750654) -->
-    <skip />
-    <!-- no translation found for lower_back_pain_lowercase_label (940765534682997044) -->
-    <skip />
-    <!-- no translation found for memory_lapse_uppercase_label (241393771674969441) -->
-    <skip />
-    <!-- no translation found for memory_lapse_lowercase_label (5590619293782264318) -->
-    <skip />
-    <!-- no translation found for mood_change_uppercase_label (6591596468077187132) -->
-    <skip />
-    <!-- no translation found for mood_change_lowercase_label (5154765930188874067) -->
-    <skip />
-    <!-- no translation found for muscle_pain_uppercase_label (2470771124188001900) -->
-    <skip />
-    <!-- no translation found for muscle_pain_lowercase_label (7842677871351347822) -->
-    <skip />
-    <!-- no translation found for nausea_uppercase_label (8384006696113532259) -->
-    <skip />
-    <!-- no translation found for nausea_lowercase_label (8182471893071968504) -->
-    <skip />
-    <!-- no translation found for night_sweats_uppercase_label (6177687233700001658) -->
-    <skip />
-    <!-- no translation found for night_sweats_lowercase_label (5041101323453286082) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_uppercase_label (9057761232218571640) -->
-    <skip />
-    <!-- no translation found for pelvic_pain_lowercase_label (8993103170034473121) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_uppercase_label (2029088854167004239) -->
-    <skip />
-    <!-- no translation found for rapid_pounding_or_fluttering_heartbeat_lowercase_label (5744229600679518473) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_uppercase_label (7471254320615756463) -->
-    <skip />
-    <!-- no translation found for reduced_capacity_for_exercise_lowercase_label (3820574649548616546) -->
-    <skip />
-    <!-- no translation found for runny_nose_uppercase_label (6561156187042071551) -->
-    <skip />
-    <!-- no translation found for runny_nose_lowercase_label (2214697492382685914) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_uppercase_label (3747502224212110471) -->
-    <skip />
-    <!-- no translation found for shortness_of_breath_lowercase_label (3970444639088619346) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_uppercase_label (1004040920818222022) -->
-    <skip />
-    <!-- no translation found for skipped_heartbeat_lowercase_label (2446049805930852514) -->
-    <skip />
-    <!-- no translation found for sleep_changes_uppercase_label (817870703301327111) -->
-    <skip />
-    <!-- no translation found for sleep_changes_lowercase_label (8606593835222848643) -->
-    <skip />
-    <!-- no translation found for sleepiness_uppercase_label (8292543897598171825) -->
-    <skip />
-    <!-- no translation found for sleepiness_lowercase_label (7563434619994665081) -->
-    <skip />
-    <!-- no translation found for sneezing_uppercase_label (3559089195823390830) -->
-    <skip />
-    <!-- no translation found for sneezing_lowercase_label (4614496100578986753) -->
-    <skip />
-    <!-- no translation found for snore_uppercase_label (5408933698329003980) -->
-    <skip />
-    <!-- no translation found for snore_lowercase_label (4813706716393000341) -->
-    <skip />
-    <!-- no translation found for sore_throat_uppercase_label (7652461264264564339) -->
-    <skip />
-    <!-- no translation found for sore_throat_lowercase_label (2671417552726018944) -->
-    <skip />
-    <!-- no translation found for stomach_ache_uppercase_label (8450868632465837793) -->
-    <skip />
-    <!-- no translation found for stomach_ache_lowercase_label (3263518334946627327) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_uppercase_label (4216439398397550673) -->
-    <skip />
-    <!-- no translation found for stuffy_nose_lowercase_label (346310767340271161) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_uppercase_label (1882204558194305221) -->
-    <skip />
-    <!-- no translation found for unexplained_weight_changes_lowercase_label (8433998024876395101) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_uppercase_label (4256721076420375400) -->
-    <skip />
-    <!-- no translation found for vaginal_dryness_lowercase_label (1329282833647595593) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_uppercase_label (2843508264503404145) -->
-    <skip />
-    <!-- no translation found for vaginal_itchiness_lowercase_label (4569019157289060524) -->
-    <skip />
-    <!-- no translation found for vomiting_uppercase_label (258794137964470267) -->
-    <skip />
-    <!-- no translation found for vomiting_lowercase_label (2520559377010270583) -->
-    <skip />
-    <!-- no translation found for water_retention_uppercase_label (4748866467103152119) -->
-    <skip />
-    <!-- no translation found for water_retention_lowercase_label (3738721149186742861) -->
-    <skip />
-    <!-- no translation found for wheezing_uppercase_label (2837114949197811787) -->
-    <skip />
-    <!-- no translation found for wheezing_lowercase_label (1278548371813007771) -->
-    <skip />
+    <string name="acne_read_content_description" msgid="1176708404029936065">"Branje podatkov o aknah"</string>
+    <string name="acne_write_content_description" msgid="9221785868351412493">"Zapisovanje podatkov o aknah"</string>
+    <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Branje podatkov o krhkih nohtih"</string>
+    <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Zapisovanje podatkov o krhkih nohtih"</string>
+    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Branje podatkov o pekoči bolečini v ustih"</string>
+    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Zapisovanje podatkov o pekoči bolečini v ustih"</string>
+    <string name="chills_read_content_description" msgid="7244946135559432433">"Branje podatkov o mrzlici"</string>
+    <string name="chills_write_content_description" msgid="6478646233405107436">"Zapisovanje podatkov o mrzlici"</string>
+    <string name="dehydration_read_content_description" msgid="7633935838518756206">"Branje podatkov o dehidraciji"</string>
+    <string name="dehydration_write_content_description" msgid="541514183036921571">"Zapisovanje podatkov o dehidraciji"</string>
+    <string name="dry_skin_read_content_description" msgid="6798683159412202977">"Branje podatkov o suhi koži"</string>
+    <string name="dry_skin_write_content_description" msgid="1312998001092991619">"Zapisovanje podatkov o suhi koži"</string>
+    <string name="fever_read_content_description" msgid="3385209639730909489">"Branje podatkov o vročini"</string>
+    <string name="fever_write_content_description" msgid="8440573327719878961">"Zapisovanje podatkov o vročini"</string>
+    <string name="joint_pain_read_content_description" msgid="2932523124488927967">"Branje podatkov o bolečini v sklepih"</string>
+    <string name="joint_pain_write_content_description" msgid="7405551860978844535">"Zapisovanje podatkov o bolečini v sklepih"</string>
+    <string name="joint_stiffness_read_content_description" msgid="2132696730582070534">"Branje podatkov o okorelosti sklepov"</string>
+    <string name="joint_stiffness_write_content_description" msgid="7556318646656369856">"Zapisovanje podatkov o okorelosti sklepov"</string>
+    <string name="muscle_pain_read_content_description" msgid="3116385630330673084">"Branje podatkov o bolečini v mišicah"</string>
+    <string name="muscle_pain_write_content_description" msgid="2544204740665773272">"Zapisovanje podatkov o bolečini v mišicah"</string>
+    <string name="loss_of_consciousness_read_content_description" msgid="8346630124770268372">"Branje podatkov o izgubi zavesti"</string>
+    <string name="loss_of_consciousness_write_content_description" msgid="1959348657257573252">"Zapisovanje podatkov o izgubi zavesti"</string>
+    <string name="reduced_capacity_for_exercise_read_content_description" msgid="2246901110448734533">"Branje podatkov o zmanjšani zmogljivosti za vadbo"</string>
+    <string name="reduced_capacity_for_exercise_write_content_description" msgid="8119106053737965766">"Zapisovanje podatkov o zmanjšani zmogljivosti za vadbo"</string>
+    <string name="unexplained_weight_changes_read_content_description" msgid="7644187172731376645">"Branje podatkov o nepojasnjenih spremembah teže"</string>
+    <string name="unexplained_weight_changes_write_content_description" msgid="8744350844236958279">"Zapisovanje podatkov o nepojasnjenih spremembah teže"</string>
+    <string name="generalized_body_ache_read_content_description" msgid="3132494584303814009">"Branje podatkov o bolečini po vsem telesu"</string>
+    <string name="generalized_body_ache_write_content_description" msgid="4282920161878530009">"Zapisovanje podatkov o bolečini po vsem telesu"</string>
+    <string name="fatigue_read_content_description" msgid="8447413794808220408">"Branje podatkov o utrujenosti"</string>
+    <string name="fatigue_write_content_description" msgid="3000326883358951973">"Zapisovanje podatkov o utrujenosti"</string>
+    <string name="constipation_read_content_description" msgid="4024154136010015370">"Branje podatkov o zaprtju"</string>
+    <string name="constipation_write_content_description" msgid="9059835998017996999">"Zapisovanje podatkov o zaprtju"</string>
+    <string name="diarrhea_read_content_description" msgid="6643311788778713543">"Branje podatkov o diareji"</string>
+    <string name="diarrhea_write_content_description" msgid="2525160401458506448">"Zapisovanje podatkov o diareji"</string>
+    <string name="loss_of_appetite_read_content_description" msgid="5825568361431664706">"Branje podatkov o izgubi apetita"</string>
+    <string name="loss_of_appetite_write_content_description" msgid="7370817778828856877">"Zapisovanje podatkov o izgubi apetita"</string>
+    <string name="nausea_read_content_description" msgid="7696809485706809234">"Branje podatkov o slabosti"</string>
+    <string name="nausea_write_content_description" msgid="7956853318058549079">"Zapisovanje podatkov o slabosti"</string>
+    <string name="stomach_ache_read_content_description" msgid="6960461949095524373">"Branje podatkov o bolečini v želodcu"</string>
+    <string name="stomach_ache_write_content_description" msgid="4822349196740130790">"Zapisovanje podatkov o bolečini v želodcu"</string>
+    <string name="vomiting_read_content_description" msgid="6425637340168306118">"Branje podatkov o bruhanju"</string>
+    <string name="vomiting_write_content_description" msgid="2768436321239967229">"Zapisovanje podatkov o bruhanju"</string>
+    <string name="chest_pain_read_content_description" msgid="5388099127082653993">"Branje podatkov o bolečini v prsnem košu"</string>
+    <string name="chest_pain_write_content_description" msgid="7570421665813979598">"Zapisovanje podatkov o bolečini v prsnem košu"</string>
+    <string name="chest_tightness_read_content_description" msgid="3234587929340517638">"Branje podatkov o tiščanju v prsih"</string>
+    <string name="chest_tightness_write_content_description" msgid="3365518444505217882">"Zapisovanje podatkov o tiščanju v prsih"</string>
+    <string name="cough_read_content_description" msgid="4834360757270578547">"Branje podatkov o kašljanju"</string>
+    <string name="cough_write_content_description" msgid="2927943192149715422">"Zapisovanje podatkov o kašljanju"</string>
+    <string name="heart_palpitations_read_content_description" msgid="5830132363981902576">"Branje podatkov o palpitacijah srca"</string>
+    <string name="heart_palpitations_write_content_description" msgid="6195434828951874561">"Zapisovanje podatkov o palpitacijah srca"</string>
+    <string name="shortness_of_breath_read_content_description" msgid="5285037217314042125">"Branje podatkov o zadihanosti"</string>
+    <string name="shortness_of_breath_write_content_description" msgid="1812050225998794712">"Zapisovanje podatkov o zadihanosti"</string>
+    <string name="wheezing_read_content_description" msgid="3698103133045395859">"Branje podatkov o sopenju"</string>
+    <string name="wheezing_write_content_description" msgid="3555234332119025686">"Zapisovanje podatkov o sopenju"</string>
+    <string name="heartburn_read_content_description" msgid="4650825508743336439">"Branje podatkov o zgagi"</string>
+    <string name="heartburn_write_content_description" msgid="1857706822547818187">"Zapisovanje podatkov o zgagi"</string>
+    <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"Branje podatkov o preskakovanju srca"</string>
+    <string name="skipped_heartbeat_write_content_description" msgid="834686289232563614">"Zapisovanje podatkov o preskakovanju srca"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"Branje podatkov o hitrem, močnem ali nemirnem bitju srca"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"Zapisovanje podatkov o hitrem, močnem ali nemirnem bitju srca"</string>
+    <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"Branje podatkov o težavah pri požiranju"</string>
+    <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"Zapisovanje podatkov o težavah pri požiranju"</string>
+    <string name="dizziness_read_content_description" msgid="2525565486057144416">"Branje podatkov o omotičnosti"</string>
+    <string name="dizziness_write_content_description" msgid="1875365619054873732">"Zapisovanje podatkov o omotičnosti"</string>
+    <string name="earaches_read_content_description" msgid="4643142391473401154">"Branje podatkov o bolečinah v ušesih"</string>
+    <string name="earaches_write_content_description" msgid="3551386029980258801">"Zapisovanje podatkov o bolečinah v ušesih"</string>
+    <string name="hair_loss_read_content_description" msgid="4057044821025872986">"Branje podatkov o izpadanju las"</string>
+    <string name="hair_loss_write_content_description" msgid="7387442867237711823">"Zapisovanje podatkov o izpadanju las"</string>
+    <string name="headache_read_content_description" msgid="7485283472508878298">"Branje podatkov o glavobolu"</string>
+    <string name="headache_write_content_description" msgid="720183844750746485">"Zapisovanje podatkov o glavobolu"</string>
+    <string name="runny_nose_read_content_description" msgid="443700998701222852">"Branje podatkov o izcedku iz nosu"</string>
+    <string name="runny_nose_write_content_description" msgid="6210009950948827090">"Zapisovanje podatkov o izcedku iz nosu"</string>
+    <string name="sneezing_read_content_description" msgid="1825781985598094799">"Branje podatkov o kihanju"</string>
+    <string name="sneezing_write_content_description" msgid="8125072216406958337">"Zapisovanje podatkov o kihanju"</string>
+    <string name="sore_throat_read_content_description" msgid="7798247670004858562">"Branje podatkov o bolečem grlu"</string>
+    <string name="sore_throat_write_content_description" msgid="6058043292544091397">"Zapisovanje podatkov o bolečem grlu"</string>
+    <string name="stuffy_nose_read_content_description" msgid="6604212451531546331">"Branje podatkov o zamašenem nosu"</string>
+    <string name="stuffy_nose_write_content_description" msgid="6950875986047625521">"Zapisovanje podatkov o zamašenem nosu"</string>
+    <string name="back_pain_read_content_description" msgid="1176155927269014089">"Branje podatkov o bolečini v hrbtu"</string>
+    <string name="back_pain_write_content_description" msgid="6282959987099901645">"Zapisovanje podatkov o bolečini v hrbtu"</string>
+    <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"Branje podatkov o bolečini v spodnjem delu hrbta"</string>
+    <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"Zapisovanje podatkov o bolečini v spodnjem delu hrbta"</string>
+    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"Branje podatkov o vročinskih oblivih"</string>
+    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"Zapisovanje podatkov o vročinskih oblivih"</string>
+    <string name="night_sweats_read_content_description" msgid="7644094250441074129">"Branje podatkov o nočnem potenju"</string>
+    <string name="night_sweats_write_content_description" msgid="7501357533280452509">"Zapisovanje podatkov o nočnem potenju"</string>
+    <string name="water_retention_read_content_description" msgid="211789030125880649">"Branje podatkov o zadrževanju vode"</string>
+    <string name="water_retention_write_content_description" msgid="7109328727506593781">"Zapisovanje podatkov o zadrževanju vode"</string>
+    <string name="cravings_read_content_description" msgid="9098905292448612603">"Branje podatkov o hrepenenju po hrani"</string>
+    <string name="cravings_write_content_description" msgid="7932335159387976333">"Zapisovanje podatkov o hrepenenju po hrani"</string>
+    <string name="bloating_read_content_description" msgid="8942780558464500997">"Branje podatkov o napihnjenosti"</string>
+    <string name="bloating_write_content_description" msgid="5014366726518564943">"Zapisovanje podatkov o napihnjenosti"</string>
+    <string name="cramps_read_content_description" msgid="5853663240074256855">"Branje podatkov o krčih"</string>
+    <string name="cramps_write_content_description" msgid="6777230560926849939">"Zapisovanje podatkov o krčih"</string>
+    <string name="abdominal_pain_read_content_description" msgid="6331928351160142817">"Branje podatkov o bolečini v trebuhu"</string>
+    <string name="abdominal_pain_write_content_description" msgid="9213133328064016367">"Zapisovanje podatkov o bolečini v trebuhu"</string>
+    <string name="breast_tenderness_read_content_description" msgid="1556133668276886256">"Branje podatkov o občutljivosti dojk"</string>
+    <string name="breast_tenderness_write_content_description" msgid="5405234499024881940">"Zapisovanje podatkov o občutljivosti dojk"</string>
+    <string name="pelvic_pain_read_content_description" msgid="8872893212311881743">"Branje podatkov o bolečini v medenici"</string>
+    <string name="pelvic_pain_write_content_description" msgid="8482016412474126674">"Zapisovanje podatkov o bolečini v medenici"</string>
+    <string name="vaginal_dryness_read_content_description" msgid="21587787265978758">"Branje podatkov o suhosti nožnice"</string>
+    <string name="vaginal_dryness_write_content_description" msgid="7639415261021656468">"Zapisovanje podatkov o suhosti nožnice"</string>
+    <string name="vaginal_itchiness_read_content_description" msgid="6027886706003079912">"Branje podatkov o srbenju nožnice"</string>
+    <string name="vaginal_itchiness_write_content_description" msgid="6833099607694941406">"Zapisovanje podatkov o srbenju nožnice"</string>
+    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"Branje podatkov o miselni zamegljenosti"</string>
+    <string name="brain_fog_write_content_description" msgid="354508934978268288">"Zapisovanje podatkov o miselni zamegljenosti"</string>
+    <string name="mood_change_read_content_description" msgid="5114563193264125173">"Branje podatkov o spremembi razpoloženja"</string>
+    <string name="mood_change_write_content_description" msgid="7613564641235985120">"Zapisovanje podatkov o spremembi razpoloženja"</string>
+    <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"Branje podatkov o izgubi spomina"</string>
+    <string name="memory_lapse_write_content_description" msgid="211569063190179476">"Zapisovanje podatkov o izgubi spomina"</string>
+    <string name="sleepiness_read_content_description" msgid="797381777988304669">"Branje podatkov o zaspanosti"</string>
+    <string name="sleepiness_write_content_description" msgid="888236364245216476">"Zapisovanje podatkov o zaspanosti"</string>
+    <string name="sleep_changes_read_content_description" msgid="277237231470749744">"Branje podatkov o spremembah spanca"</string>
+    <string name="sleep_changes_write_content_description" msgid="9078270254664653838">"Zapisovanje podatkov o spremembah spanca"</string>
+    <string name="insomnia_read_content_description" msgid="5225449618972721129">"Branje podatkov o nespečnosti"</string>
+    <string name="insomnia_write_content_description" msgid="4237153589826489083">"Zapisovanje podatkov o nespečnosti"</string>
+    <string name="snore_read_content_description" msgid="3447953925696237628">"Branje podatkov o smrčanju"</string>
+    <string name="snore_write_content_description" msgid="959354771204900433">"Zapisovanje podatkov o smrčanju"</string>
+    <string name="acne_uppercase_label" msgid="60568062993817483">"Akne"</string>
+    <string name="acne_lowercase_label" msgid="5301949536428255159">"akne"</string>
+    <string name="abdominal_pain_uppercase_label" msgid="442393846492385702">"Bolečina v trebuhu"</string>
+    <string name="abdominal_pain_lowercase_label" msgid="4136643670361233063">"bolečina v trebuhu"</string>
+    <string name="back_pain_uppercase_label" msgid="6034795846635350255">"Bolečina v hrbtu"</string>
+    <string name="back_pain_lowercase_label" msgid="7487168354843582888">"bolečina v hrbtu"</string>
+    <string name="bloating_uppercase_label" msgid="2827024204358491650">"Napihnjenost"</string>
+    <string name="bloating_lowercase_label" msgid="4108236897678347488">"napihnjenost"</string>
+    <string name="brain_fog_uppercase_label" msgid="3782508630097437711">"Miselna zamegljenost"</string>
+    <string name="brain_fog_lowercase_label" msgid="8018499987092429724">"miselna zamegljenost"</string>
+    <string name="breast_tenderness_uppercase_label" msgid="3633574517042452397">"Občutljivost dojk"</string>
+    <string name="breast_tenderness_lowercase_label" msgid="3745105353936751222">"občutljivost dojk"</string>
+    <string name="brittle_nails_uppercase_label" msgid="7290899807816681152">"Krhki nohti"</string>
+    <string name="brittle_nails_lowercase_label" msgid="43861645923597496">"krhki nohti"</string>
+    <string name="burning_mouth_uppercase_label" msgid="8975226712238467359">"Pekoča bolečina v ustih"</string>
+    <string name="burning_mouth_lowercase_label" msgid="3378970972990933484">"pekoča bolečina v ustih"</string>
+    <string name="chest_pain_uppercase_label" msgid="8091501402224214622">"Bolečina v prsnem košu"</string>
+    <string name="chest_pain_lowercase_label" msgid="8817807562310689177">"bolečina v prsnem košu"</string>
+    <string name="chest_tightness_uppercase_label" msgid="8988021502622503503">"Tiščanje v prsih"</string>
+    <string name="chest_tightness_lowercase_label" msgid="1770063390635610292">"tiščanje v prsih"</string>
+    <string name="chills_uppercase_label" msgid="4320786490882838834">"Mrzlica"</string>
+    <string name="chills_lowercase_label" msgid="1306612496314055832">"mrzlica"</string>
+    <string name="constipation_uppercase_label" msgid="7245001778443725742">"Zaprtje"</string>
+    <string name="constipation_lowercase_label" msgid="6217542866033766747">"zaprtje"</string>
+    <string name="cough_uppercase_label" msgid="5570609736970603012">"Kašljanje"</string>
+    <string name="cough_lowercase_label" msgid="459638956679172779">"kašljanje"</string>
+    <string name="cramps_uppercase_label" msgid="5162905309136173937">"Krči"</string>
+    <string name="cramps_lowercase_label" msgid="4644485808002493449">"krči"</string>
+    <string name="cravings_uppercase_label" msgid="4754194354806284307">"Hrepenenje po hrani"</string>
+    <string name="cravings_lowercase_label" msgid="5836041614136287213">"hrepenenje po hrani"</string>
+    <string name="dehydration_uppercase_label" msgid="10278239942824711">"Dehidracija"</string>
+    <string name="dehydration_lowercase_label" msgid="8692632632276643276">"dehidracija"</string>
+    <string name="diarrhea_uppercase_label" msgid="6310170127529968752">"Diareja"</string>
+    <string name="diarrhea_lowercase_label" msgid="5938774694742839016">"diareja"</string>
+    <string name="difficulty_swallowing_uppercase_label" msgid="3546617155300878657">"Težave pri požiranju"</string>
+    <string name="difficulty_swallowing_lowercase_label" msgid="4980631237611433200">"težave pri požiranju"</string>
+    <string name="dizziness_uppercase_label" msgid="8129950094459563983">"Omotičnost"</string>
+    <string name="dizziness_lowercase_label" msgid="3462347558609662379">"omotičnost"</string>
+    <string name="dry_skin_uppercase_label" msgid="4542430684082075550">"Suha koža"</string>
+    <string name="dry_skin_lowercase_label" msgid="6892264917735291961">"suha koža"</string>
+    <string name="earaches_uppercase_label" msgid="107701950625572701">"Bolečine v ušesih"</string>
+    <string name="earaches_lowercase_label" msgid="6240790850403958317">"bolečine v ušesih"</string>
+    <string name="fatigue_uppercase_label" msgid="7514286788083426578">"Utrujenost"</string>
+    <string name="fatigue_lowercase_label" msgid="2669560685808367387">"utrujenost"</string>
+    <string name="fever_uppercase_label" msgid="6889273008212535253">"Vročina"</string>
+    <string name="fever_lowercase_label" msgid="3634400562894397159">"vročina"</string>
+    <string name="generalized_body_ache_uppercase_label" msgid="2171378172300618053">"Bolečina po vsem telesu"</string>
+    <string name="generalized_body_ache_lowercase_label" msgid="1725534000111875030">"bolečina po vsem telesu"</string>
+    <string name="hair_loss_uppercase_label" msgid="6359351347019795813">"Izpadanje las"</string>
+    <string name="hair_loss_lowercase_label" msgid="2764498189966225461">"izpadanje las"</string>
+    <string name="headache_uppercase_label" msgid="863800537735413054">"Glavobol"</string>
+    <string name="headache_lowercase_label" msgid="6564231905087583135">"glavobol"</string>
+    <string name="heartburn_uppercase_label" msgid="1170571383460859644">"Zgaga"</string>
+    <string name="heartburn_lowercase_label" msgid="6235983036978705474">"zgaga"</string>
+    <string name="heart_palpitations_uppercase_label" msgid="2026400872833911547">"Palpitacije srca"</string>
+    <string name="heart_palpitations_lowercase_label" msgid="1468243523322721340">"palpitacije srca"</string>
+    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"Vročinski oblivi"</string>
+    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"vročinski oblivi"</string>
+    <string name="insomnia_uppercase_label" msgid="4946197328995261738">"Nespečnost"</string>
+    <string name="insomnia_lowercase_label" msgid="3742025423716451058">"nespečnost"</string>
+    <string name="joint_pain_uppercase_label" msgid="7693454621285586935">"Bolečina v sklepih"</string>
+    <string name="joint_pain_lowercase_label" msgid="1877680075365305488">"bolečina v sklepih"</string>
+    <string name="joint_stiffness_uppercase_label" msgid="5230114867081881444">"Okorelost sklepov"</string>
+    <string name="joint_stiffness_lowercase_label" msgid="8766445235392409480">"okorelost sklepov"</string>
+    <string name="loss_of_appetite_uppercase_label" msgid="4023141061302523950">"Izguba apetita"</string>
+    <string name="loss_of_appetite_lowercase_label" msgid="7558077308061468558">"izguba apetita"</string>
+    <string name="loss_of_consciousness_uppercase_label" msgid="4195502722277905266">"Izguba zavesti"</string>
+    <string name="loss_of_consciousness_lowercase_label" msgid="4822860811117141611">"izguba zavesti"</string>
+    <string name="lower_back_pain_uppercase_label" msgid="2307572603791750654">"Bolečina v spodnjem delu hrbta"</string>
+    <string name="lower_back_pain_lowercase_label" msgid="940765534682997044">"bolečina v spodnjem delu hrbta"</string>
+    <string name="memory_lapse_uppercase_label" msgid="241393771674969441">"Izguba spomina"</string>
+    <string name="memory_lapse_lowercase_label" msgid="5590619293782264318">"izguba spomina"</string>
+    <string name="mood_change_uppercase_label" msgid="6591596468077187132">"Sprememba razpoloženja"</string>
+    <string name="mood_change_lowercase_label" msgid="5154765930188874067">"sprememba razpoloženja"</string>
+    <string name="muscle_pain_uppercase_label" msgid="2470771124188001900">"Bolečina v mišicah"</string>
+    <string name="muscle_pain_lowercase_label" msgid="7842677871351347822">"bolečina v mišicah"</string>
+    <string name="nausea_uppercase_label" msgid="8384006696113532259">"Slabost"</string>
+    <string name="nausea_lowercase_label" msgid="8182471893071968504">"slabost"</string>
+    <string name="night_sweats_uppercase_label" msgid="6177687233700001658">"Nočno potenje"</string>
+    <string name="night_sweats_lowercase_label" msgid="5041101323453286082">"nočno potenje"</string>
+    <string name="pelvic_pain_uppercase_label" msgid="9057761232218571640">"Bolečina v medenici"</string>
+    <string name="pelvic_pain_lowercase_label" msgid="8993103170034473121">"bolečina v medenici"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"Hitro, močno ali nemirno bitje srca"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"hitro, močno ali nemirno bitje srca"</string>
+    <string name="reduced_capacity_for_exercise_uppercase_label" msgid="7471254320615756463">"Zmanjšana zmogljivost za vadbo"</string>
+    <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"zmanjšana zmogljivost za vadbo"</string>
+    <string name="runny_nose_uppercase_label" msgid="6561156187042071551">"Izcedek iz nosu"</string>
+    <string name="runny_nose_lowercase_label" msgid="2214697492382685914">"izcedek iz nosu"</string>
+    <string name="shortness_of_breath_uppercase_label" msgid="3747502224212110471">"Zadihanost"</string>
+    <string name="shortness_of_breath_lowercase_label" msgid="3970444639088619346">"zadihanost"</string>
+    <string name="skipped_heartbeat_uppercase_label" msgid="1004040920818222022">"Preskakovanje srca"</string>
+    <string name="skipped_heartbeat_lowercase_label" msgid="2446049805930852514">"preskakovanje srca"</string>
+    <string name="sleep_changes_uppercase_label" msgid="817870703301327111">"Spremembe spanca"</string>
+    <string name="sleep_changes_lowercase_label" msgid="8606593835222848643">"spremembe spanca"</string>
+    <string name="sleepiness_uppercase_label" msgid="8292543897598171825">"Zaspanost"</string>
+    <string name="sleepiness_lowercase_label" msgid="7563434619994665081">"zaspanost"</string>
+    <string name="sneezing_uppercase_label" msgid="3559089195823390830">"Kihanje"</string>
+    <string name="sneezing_lowercase_label" msgid="4614496100578986753">"kihanje"</string>
+    <string name="snore_uppercase_label" msgid="5408933698329003980">"Smrčanje"</string>
+    <string name="snore_lowercase_label" msgid="4813706716393000341">"smrčanje"</string>
+    <string name="sore_throat_uppercase_label" msgid="7652461264264564339">"Boleče grlo"</string>
+    <string name="sore_throat_lowercase_label" msgid="2671417552726018944">"boleče grlo"</string>
+    <string name="stomach_ache_uppercase_label" msgid="8450868632465837793">"Bolečina v želodcu"</string>
+    <string name="stomach_ache_lowercase_label" msgid="3263518334946627327">"bolečina v želodcu"</string>
+    <string name="stuffy_nose_uppercase_label" msgid="4216439398397550673">"Zamašen nos"</string>
+    <string name="stuffy_nose_lowercase_label" msgid="346310767340271161">"zamašen nos"</string>
+    <string name="unexplained_weight_changes_uppercase_label" msgid="1882204558194305221">"Nepojasnjene spremembe teže"</string>
+    <string name="unexplained_weight_changes_lowercase_label" msgid="8433998024876395101">"nepojasnjene spremembe teže"</string>
+    <string name="vaginal_dryness_uppercase_label" msgid="4256721076420375400">"Suhost nožnice"</string>
+    <string name="vaginal_dryness_lowercase_label" msgid="1329282833647595593">"suhost nožnice"</string>
+    <string name="vaginal_itchiness_uppercase_label" msgid="2843508264503404145">"Srbenje nožnice"</string>
+    <string name="vaginal_itchiness_lowercase_label" msgid="4569019157289060524">"srbenje nožnice"</string>
+    <string name="vomiting_uppercase_label" msgid="258794137964470267">"Bruhanje"</string>
+    <string name="vomiting_lowercase_label" msgid="2520559377010270583">"bruhanje"</string>
+    <string name="water_retention_uppercase_label" msgid="4748866467103152119">"Zadrževanje vode"</string>
+    <string name="water_retention_lowercase_label" msgid="3738721149186742861">"zadrževanje vode"</string>
+    <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Sopenje"</string>
+    <string name="wheezing_lowercase_label" msgid="1278548371813007771">"sopenje"</string>
 </resources>

@@ -28,6 +28,7 @@ import android.health.connect.TimeRangeFilter;
 import android.health.connect.TimeRangeFilterHelper;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.internal.PackageNameUnmasker;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -35,10 +36,12 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.Period;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /** @hide */
-public class AggregateDataRequestParcel implements Parcelable {
+public class AggregateDataRequestParcel
+        implements Parcelable, PackageNameUnmasker<AggregateDataRequestParcel> {
     public static final Creator<AggregateDataRequestParcel> CREATOR =
             new Creator<>() {
                 @Override
@@ -116,6 +119,23 @@ public class AggregateDataRequestParcel implements Parcelable {
         }
     }
 
+    private AggregateDataRequestParcel(
+            long startTime,
+            long endTime,
+            int[] aggregateIds,
+            List<String> packageFilters,
+            @Nullable Duration duration,
+            @Nullable Period period,
+            boolean localTimeFilter) {
+        mStartTime = startTime;
+        mEndTime = endTime;
+        mAggregateIds = aggregateIds;
+        mPackageFilters = packageFilters;
+        mDuration = duration;
+        mPeriod = period;
+        mLocalTimeFilter = localTimeFilter;
+    }
+
     @Nullable
     public Duration getDuration() {
         return mDuration;
@@ -188,5 +208,19 @@ public class AggregateDataRequestParcel implements Parcelable {
                     .setEndTime(Instant.ofEpochMilli(mEndTime))
                     .build();
         }
+    }
+
+    @NonNull
+    @Override
+    public AggregateDataRequestParcel toUnmasked(
+            @NonNull Function<String, String> packageUnmasker) {
+        return new AggregateDataRequestParcel(
+                mStartTime,
+                mEndTime,
+                mAggregateIds,
+                mPackageFilters.stream().map(packageUnmasker).collect(Collectors.toList()),
+                mDuration,
+                mPeriod,
+                mLocalTimeFilter);
     }
 }

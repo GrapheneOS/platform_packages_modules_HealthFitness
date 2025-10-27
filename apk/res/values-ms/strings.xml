@@ -23,8 +23,8 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Kebenaran dan data"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Urus data kesihatan dan kecergasan pada peranti anda dan kawal apl yang boleh mengakses data tersebut"</string>
     <string name="data_title" msgid="4456619761533380816">"Data dan akses"</string>
-    <string name="browse_medical_data" msgid="6963802956096683273">"Semak imbas rekod kesihatan"</string>
-    <string name="browse_medical_data_subtitle" msgid="4115165261000205538">"Lihat rekod kesihatan anda dan apl yang boleh mengakses rekod tersebut"</string>
+    <string name="browse_medical_data" msgid="6492659245149862639">"Semak imbas rekod perubatan"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"Lihat rekod perubatan anda dan apl yang boleh mengakses rekod tersebut"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Semua kategori"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Lihat semua kategori"</string>
     <string name="no_data" msgid="1906986019249068659">"Tiada data"</string>
@@ -110,8 +110,8 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Baca kalori yang dibakar"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Benarkan apl membaca kalori yang dibakar"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Benarkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses data pada latar?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="7716161960428574364">"Jika anda memberikan kebenaran, apl ini boleh mengakses data kecergasan dan kesejahteraan serta rekod kesihatan apabila anda tidak menggunakan apl."</string>
-    <string name="background_read_medical_single_request_description_medical_granted" msgid="5162456401369633859">"Jika anda memberikan kebenaran, apl ini boleh mengakses rekod kesihatan apabila anda tidak menggunakan apl."</string>
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Jika anda memberikan kebenaran, apl ini boleh mengakses data kecergasan dan kesejahteraan serta rekod perubatan apabila anda tidak menggunakan apl."</string>
+    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"Jika anda memberikan kebenaran, apl ini boleh mengakses rekod perubatan apabila anda tidak menggunakan apl."</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Jika anda memberikan kebenaran, apl ini boleh mengakses data kecergasan dan kesejahteraan apabila anda tidak menggunakan apl."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Jika anda memberikan kebenaran, apl ini boleh mengakses data Health Connect apabila anda tidak menggunakan apl."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"Benarkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses data yang lalu?"</string>
@@ -122,9 +122,9 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"Benarkan akses tambahan untuk <xliff:g id="APP_NAME">%1$s</xliff:g>?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g> juga mahu mengakses tetapan Health Connect ini"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Akses semua data pada latar"</string>
-    <string name="background_read_medical_combined_request_title_medical_granted" msgid="7245376864667067106">"Akses rekod kesihatan pada latar"</string>
+    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"Akses rekod perubatan pada latar"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Akses data kecergasan dan kesejahteraan pada latar"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="8812552783934180223">"Benarkan apl ini mengakses data kecergasan dan kesejahteraan serta rekod kesihatan apabila anda tidak menggunakan apl"</string>
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"Benarkan apl ini mengakses data kecergasan dan kesejahteraan serta rekod perubatan apabila anda tidak menggunakan apl"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Benarkan apl ini mengakses data ini apabila anda tidak menggunakan apl"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Benarkan apl ini mengakses data ini apabila anda tidak menggunakan apl"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Akses data pada latar"</string>
@@ -135,12 +135,12 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Akses data yang lalu"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"Benarkan apl ini mengakses data Health Connect yang ditambahkan sebelum <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Benarkan apl ini mengakses semua data Health Connect yang lalu"</string>
-    <string name="history_read_medical_combined_request_footer" msgid="5301940225768076844">"<xliff:g id="APP_NAME">%1$s</xliff:g> sudah boleh mengakses data yang lalu untuk rekod kesihatan anda"</string>
+    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"<xliff:g id="APP_NAME">%1$s</xliff:g> sudah boleh mengakses data yang lalu untuk rekod perubatan anda"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Baca lebih lanjut tentang kebenaran"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Akses semua data pada latar"</string>
-    <string name="background_read_medical_access_title_medical_granted" msgid="7852915238347056139">"Akses rekod kesihatan pada latar"</string>
+    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"Akses rekod perubatan pada latar"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Akses data kecergasan dan kesejahteraan pada latar"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="7193350031798606366">"Benarkan apl ini mengakses data kecergasan dan kesejahteraan serta rekod kesihatan apabila anda tidak menggunakan apl"</string>
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"Benarkan apl ini mengakses data kecergasan dan kesejahteraan serta rekod perubatan apabila anda tidak menggunakan apl"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Benarkan apl ini mengakses data ini apabila anda tidak menggunakan apl"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Benarkan apl ini mengakses data ini apabila anda tidak menggunakan apl"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Akses data pada latar"</string>
@@ -152,8 +152,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Benarkan apl ini mengakses data Health Connect yang ditambahkan sebelum <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Benarkan apl ini mengakses semua data Health Connect yang lalu"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Tiada data kecergasan dibaca pada masa ini kerana tiada kebenaran baca yang dihidupkan untuk <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="additional_access_medical_read_footer" msgid="4640796038121080343">"<xliff:g id="APP_NAME">%1$s</xliff:g> sudah boleh mengakses data yang lalu untuk rekod kesihatan anda. Untuk menukar tetapan ini, matikan kebenaran rekod kesihatan untuk apl ini"</string>
-    <string name="additional_access_medical_read_footer_link" msgid="2797623091827504856">"Urus kebenaran rekod kesihatan"</string>
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g> sudah boleh mengakses data yang lalu untuk rekod perubatan anda. Untuk menukar tetapan ini, matikan kebenaran rekod perubatan bagi apl ini"</string>
+    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"Urus kebenaran rekod perubatan"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Dayakan sekurang-kurangnya satu kebenaran baca untuk menghidupkan latar atau akses data yang terdahulu bagi apl ini"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Dayakan sekurang-kurangnya satu kebenaran baca untuk menghidupkan akses latar bagi apl ini"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Dayakan sekurang-kurangnya satu kebenaran baca untuk menghidupkan akses data yang terdahulu bagi apl ini"</string>
@@ -328,10 +328,10 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"suhu kulit"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Baca suhu kulit"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Tulis suhu kulit"</string>
-    <string name="browse_health_records_intro" msgid="1611488691642390523">"Data ini termasuk semua rekod kesihatan yang disegerakkan dan ditambahkan pada Health Connect. Data ini mungkin bukan rekod perubatan penuh anda dan tidak termasuk perihalan perubatan rekod kesihatan anda."</string>
-    <string name="all_medical_data_uppercase_label" msgid="2380759160541898783">"Semua rekod kesihatan"</string>
-    <string name="all_medical_data_lowercase_label" msgid="6293814928992081842">"semua rekod kesihatan"</string>
-    <string name="all_medical_data_content_description" msgid="4846586780533295022">"Tulis semua rekod kesihatan"</string>
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"Data ini termasuk semua rekod perubatan yang disegerakkan dan ditambahkan pada Health Connect. Data ini mungkin bukan rekod perubatan penuh anda dan tidak termasuk perihalan perubatan rekod perubatan anda."</string>
+    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"Semua rekod perubatan"</string>
+    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"semua rekod perubatan"</string>
+    <string name="all_medical_data_content_description" msgid="3454355551506537094">"Tulis semua rekod perubatan"</string>
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Alahan"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"alahan"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Baca maklumat alahan"</string>
@@ -412,13 +412,13 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Benarkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses data kecergasan dan kesejahteraan?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Anda boleh mengetahui cara <xliff:g id="APP_NAME">%1$s</xliff:g> mengendalikan data anda dalam <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> mereka"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"dasar privasi"</string>
-    <string name="medical_request_header" msgid="2300521519021510027">"Benarkan <xliff:g id="APP_NAME">%1$s</xliff:g> untuk mengakses rekod kesihatan anda?"</string>
+    <string name="medical_request_header" msgid="5701693055388739014">"Benarkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses rekod perubatan anda?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Jika anda memberikan akses, apl boleh membaca dan menulis data seperti alahan, keputusan makmal, vaksin dan banyak lagi\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Jika anda memberikan akses, apl boleh membaca data seperti alahan, keputusan makmal, vaksin dan banyak lagi\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_about_health_records" msgid="7204918218748362687">"Perihal rekod kesihatan"</string>
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"Perihal rekod perubatan"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Data untuk berkongsi termasuk"</string>
-    <string name="medical_request_summary" msgid="7281321524805015510">"Jika anda memberikan kebenaran, <xliff:g id="APP_NAME">%1$s</xliff:g> boleh berkongsi rekod kesihatan anda dengan Health Connect."</string>
-    <string name="medical_request_footer" msgid="6533749932770903089">"Segerakkan rekod kesihatan anda daripada apl dan sumber anda yang lain untuk menyimpan rekod kesihatan tersebut pada satu tempat"</string>
+    <string name="medical_request_summary" msgid="553735170968628758">"Jika anda memberikan kebenaran, <xliff:g id="APP_NAME">%1$s</xliff:g> boleh berkongsi rekod perubatan anda dengan Health Connect."</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"Segerakkan rekod perubatan anda daripada apl dan sumber anda yang lain untuk menyimpan rekod perubatan tersebut pada satu tempat"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Alih keluar semua kebenaran?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Alih keluar semua"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> tidak dapat membaca atau menulis apa-apa data lagi daripada Health Connect.\n\nHal ini tidak akan mempengaruhi kebenaran lain yang mungkin dimiliki apl ini, seperti kamera, mikrofon atau lokasi."</string>
@@ -428,8 +428,8 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Padamkan juga data <xliff:g id="APP_NAME">%1$s</xliff:g> daripada Health Connect"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Alih keluar semua kebenaran kecergasan dan kesejahteraan?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Padamkan juga data kecergasan daripada <xliff:g id="APP_NAME">%1$s</xliff:g> melalui Health Connect"</string>
-    <string name="disconnect_all_medical_permissions_title" msgid="735315242997370168">"Alih keluar semua kebenaran rekod kesihatan?"</string>
-    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="7782158941871987263">"Padamkan juga rekod kesihatan daripada <xliff:g id="APP_NAME">%1$s</xliff:g> melalui Health Connect"</string>
+    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"Alih keluar semua kebenaran rekod perubatan?"</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"Padamkan juga rekod perubatan daripada <xliff:g id="APP_NAME">%1$s</xliff:g> melalui Health Connect"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> tidak akan dapat membaca atau menulis data ini daripada Health Connect lagi.\n\nKeadaan ini tidak menjejaskan kebenaran lain yang mungkin terdapat pada apl ini, seperti kamera, mikrofon atau lokasi."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> tidak akan dapat membaca atau menulis data ini daripada Health Connect lagi, termasuk data latar.\n\nKeadaan ini tidak menjejaskan kebenaran lain yang mungkin terdapat pada apl ini, seperti kamera, mikrofon atau lokasi."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> tidak akan dapat membaca atau menulis data ini daripada Health Connect lagi, termasuk data yang terdahulu.\n\nKeadaan ini tidak menjejaskan kebenaran lain yang mungkin terdapat pada apl ini, seperti kamera, mikrofon atau lokasi."</string>
@@ -439,7 +439,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> tidak dapat membaca atau menulis data daripada Health Connect lagi, termasuk data latar.\n\nKeadaan ini tidak akan menjejaskan kebenaran lain yang mungkin terdapat pada apl ini, seperti kamera, mikrofon atau lokasi."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> tidak dapat membaca atau menulis data daripada Health Connect lagi, termasuk data yang terdahulu.\n\nKeadaan ini tidak akan menjejaskan kebenaran lain yang mungkin terdapat pada apl ini, seperti kamera, mikrofon atau lokasi."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> tidak dapat membaca atau menulis data daripada Health Connect lagi, termasuk data latar dan data yang terdahulu.\n\nKeadaan ini tidak akan menjejaskan kebenaran lain yang mungkin terdapat pada apl ini, seperti kamera, mikrofon atau lokasi."</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="762880061016391846">"Padamkan juga data kecergasan dan rekod kesihatan daripada <xliff:g id="APP_NAME">%1$s</xliff:g> melalui Health Connect"</string>
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"Padamkan juga data kecergasan dan rekod perubatan daripada <xliff:g id="APP_NAME">%1$s</xliff:g> melalui Health Connect"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Kebenaran dialih keluar untuk apl ini"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Padamkan juga semua data Health Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Hari berikutnya"</string>
@@ -488,8 +488,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"Kebenaran"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"Kecergasan dan kesejahteraan"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Senaman, tidur, pemakanan dan lain-lain"</string>
-    <string name="medical_permissions" msgid="1224097151249321566">"Rekod kesihatan"</string>
-    <string name="medical_permissions_lowercase" msgid="3969792205103436491">"rekod kesihatan"</string>
+    <string name="medical_permissions" msgid="1066296298908103091">"Rekod perubatan"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"rekod perubatan"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Keputusan makmal, ubat, vaksin dll"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Kebenaran apl yang dialih keluar"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect mengalih keluar kebenaran untuk <xliff:g id="APP_DATA">%s</xliff:g>"</string>
@@ -583,7 +583,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Akses Play Store"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Bermula dengan Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect menyimpan data kesihatan dan kecergasan anda, menyediakan cara yang mudah untuk menyegerakkan pelbagai apl pada peranti anda"</string>
-    <string name="onboarding_description_health_records" msgid="6586657048844511252">"Health Connect menyimpan dan menyegerakkan data kesihatan dan kecergasan anda daripada apl yang berbeza.\n\n"<b>"Data kecergasan dan kesejahteraan,"</b>" termasuk sesi senaman, langkah, nutrisi, tidur dan banyak lagi\n\n"<b>"Rekod kesihatan,"</b>" termasuk vaksin, keputusan makmal dan banyak lagi"</string>
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect menyimpan dan menyegerakkan data kesihatan dan kecergasan anda daripada apl yang berbeza.\n\n"<b>"Data kecergasan dan kesejahteraan,"</b>" termasuk sesi senaman, langkah, nutrisi, tidur dan banyak lagi\n\n"<b>"Rekod perubatan,"</b>" termasuk vaksin, keputusan makmal dan banyak lagi"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Dengan Health Connect, anda boleh"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Kongsi data dengan apl anda"</b>\n"Pilih data yang boleh dibaca atau ditulis oleh setiap apl pada Health Connect"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Urus tetapan dan privasi anda"</b>\n"Tukar kebenaran apl dan urus data anda pada bila-bila masa"</string>
@@ -1394,10 +1394,10 @@
     <string name="wheezing_write_content_description" msgid="3555234332119025686">"Tulis berdehit"</string>
     <string name="heartburn_read_content_description" msgid="4650825508743336439">"Baca pedih ulu hati"</string>
     <string name="heartburn_write_content_description" msgid="1857706822547818187">"Tulis pedih ulu hati"</string>
-    <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"Baca nadi berdetup"</string>
-    <string name="skipped_heartbeat_write_content_description" msgid="834686289232563614">"Tulis nadi berdetup"</string>
-    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"Baca nadi laju, berdebar-debar atau bergetar"</string>
-    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"Tulis nadi laju, berdebar-debar atau bergetar"</string>
+    <string name="skipped_heartbeat_read_content_description" msgid="4732209374634649857">"Baca degupan jantung berdetup"</string>
+    <string name="skipped_heartbeat_write_content_description" msgid="834686289232563614">"Tulis degupan jantung berdetup"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_read_content_description" msgid="7616019217735602113">"Baca degupan jantung laju, berdebar atau bergetar"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_write_content_description" msgid="271585170557004393">"Tulis degupan jantung laju, berdebar atau bergetar"</string>
     <string name="difficulty_swallowing_read_content_description" msgid="3506995529886706872">"Baca kesukaran menelan"</string>
     <string name="difficulty_swallowing_write_content_description" msgid="4087127686579577768">"Tulis kesukaran menelan"</string>
     <string name="dizziness_read_content_description" msgid="2525565486057144416">"Baca pening kepala"</string>
@@ -1420,8 +1420,8 @@
     <string name="back_pain_write_content_description" msgid="6282959987099901645">"Tulis sakit belakang"</string>
     <string name="lower_back_pain_read_content_description" msgid="1437405008757136462">"Baca sakit pinggang"</string>
     <string name="lower_back_pain_write_content_description" msgid="3519700764000282215">"Tulis sakit pinggang"</string>
-    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"Baca panas badan"</string>
-    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"Tulis panas badan"</string>
+    <string name="hot_flashes_read_content_description" msgid="2229463748079331513">"Baca hangat memerah"</string>
+    <string name="hot_flashes_write_content_description" msgid="441093768815039294">"Tulis hangat memerah"</string>
     <string name="night_sweats_read_content_description" msgid="7644094250441074129">"Baca peluh malam"</string>
     <string name="night_sweats_write_content_description" msgid="7501357533280452509">"Tulis peluh malam"</string>
     <string name="water_retention_read_content_description" msgid="211789030125880649">"Baca penahanan air"</string>
@@ -1511,9 +1511,9 @@
     <string name="heartburn_uppercase_label" msgid="1170571383460859644">"Pedih ulu hati"</string>
     <string name="heartburn_lowercase_label" msgid="6235983036978705474">"pedih ulu hati"</string>
     <string name="heart_palpitations_uppercase_label" msgid="2026400872833911547">"Palpitasi jantung"</string>
-    <string name="heart_palpitations_lowercase_label" msgid="1468243523322721340">"Palpitasi jantung"</string>
-    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"Panas badan"</string>
-    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"panas badan"</string>
+    <string name="heart_palpitations_lowercase_label" msgid="1468243523322721340">"palpitasi jantung"</string>
+    <string name="hot_flashes_uppercase_label" msgid="2410116266729711836">"Hangat memerah"</string>
+    <string name="hot_flashes_lowercase_label" msgid="6485269554856410007">"hangat memerah"</string>
     <string name="insomnia_uppercase_label" msgid="4946197328995261738">"Insomnia"</string>
     <string name="insomnia_lowercase_label" msgid="3742025423716451058">"insomnia"</string>
     <string name="joint_pain_uppercase_label" msgid="7693454621285586935">"Sakit sendi"</string>
@@ -1538,16 +1538,16 @@
     <string name="night_sweats_lowercase_label" msgid="5041101323453286082">"peluh malam"</string>
     <string name="pelvic_pain_uppercase_label" msgid="9057761232218571640">"Sakit pelvis"</string>
     <string name="pelvic_pain_lowercase_label" msgid="8993103170034473121">"sakit pelvis"</string>
-    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"Nadi laju, berdebar-debar atau bergetar"</string>
-    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"nadi laju, berdebar-debar atau bergetar"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_uppercase_label" msgid="2029088854167004239">"Degupan jantung laju, berdebar atau bergetar"</string>
+    <string name="rapid_pounding_or_fluttering_heartbeat_lowercase_label" msgid="5744229600679518473">"degupan jantung laju, berdebar atau bergetar"</string>
     <string name="reduced_capacity_for_exercise_uppercase_label" msgid="7471254320615756463">"Kurang kemampuan untuk bersenam"</string>
     <string name="reduced_capacity_for_exercise_lowercase_label" msgid="3820574649548616546">"kurang kemampuan untuk bersenam"</string>
     <string name="runny_nose_uppercase_label" msgid="6561156187042071551">"Berhingus"</string>
     <string name="runny_nose_lowercase_label" msgid="2214697492382685914">"berhingus"</string>
     <string name="shortness_of_breath_uppercase_label" msgid="3747502224212110471">"Tercungap-cungap"</string>
     <string name="shortness_of_breath_lowercase_label" msgid="3970444639088619346">"tercungap-cungap"</string>
-    <string name="skipped_heartbeat_uppercase_label" msgid="1004040920818222022">"Nadi berdetup"</string>
-    <string name="skipped_heartbeat_lowercase_label" msgid="2446049805930852514">"nadi berdetup"</string>
+    <string name="skipped_heartbeat_uppercase_label" msgid="1004040920818222022">"Degupan jantung berdetup"</string>
+    <string name="skipped_heartbeat_lowercase_label" msgid="2446049805930852514">"degupan jantung berdetup"</string>
     <string name="sleep_changes_uppercase_label" msgid="817870703301327111">"Perubahan tidur"</string>
     <string name="sleep_changes_lowercase_label" msgid="8606593835222848643">"perubahan tidur"</string>
     <string name="sleepiness_uppercase_label" msgid="8292543897598171825">"Mengantuk"</string>

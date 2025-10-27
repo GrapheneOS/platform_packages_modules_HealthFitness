@@ -110,7 +110,7 @@ class SingleAdditionalPermissionFragmentTest {
                 )
             )
             .check(matches(isDisplayed()))
-        onView(withText("$TEST_APP_NAME can already access past data for your health records"))
+        onView(withText("$TEST_APP_NAME can already access past data for your medical records"))
             .check(doesNotExist())
 
         verify(healthConnectLogger, atLeast(1))
@@ -142,7 +142,7 @@ class SingleAdditionalPermissionFragmentTest {
                 )
             )
             .check(matches(isDisplayed()))
-        onView(withText("$TEST_APP_NAME can already access past data for your health records"))
+        onView(withText("$TEST_APP_NAME can already access past data for your medical records"))
             .check(doesNotExist())
     }
 
@@ -168,7 +168,7 @@ class SingleAdditionalPermissionFragmentTest {
                 )
             )
             .check(matches(isDisplayed()))
-        onView(withText("$TEST_APP_NAME can already access past data for your health records"))
+        onView(withText("$TEST_APP_NAME can already access past data for your medical records"))
             .check(matches(isDisplayed()))
     }
 
@@ -244,7 +244,7 @@ class SingleAdditionalPermissionFragmentTest {
             .check(matches(isDisplayed()))
         onView(
                 withText(
-                    "If you allow, this app can access health records when you're not using the app."
+                    "If you allow, this app can access medical records when you're not using the app."
                 )
             )
             .check(matches(isDisplayed()))
@@ -268,7 +268,7 @@ class SingleAdditionalPermissionFragmentTest {
             .check(matches(isDisplayed()))
         onView(
                 withText(
-                    "If you allow, this app can access fitness and wellness data and health records when you're not using the app."
+                    "If you allow, this app can access fitness and wellness data and medical records when you're not using the app."
                 )
             )
             .check(matches(isDisplayed()))

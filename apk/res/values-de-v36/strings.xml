@@ -27,5 +27,6 @@
     <string name="settings_manage_permission" msgid="3585762257420446893">"Gesundheit, Fitness und Wellness"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"Gesundheit, Fitness und Wellness"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"Fitness und Wellness"</string>
-    <string name="settings_medical_permissions" msgid="3616285795348645545">"Gesundheitsdaten"</string>
+    <!-- no translation found for settings_medical_permissions (3458484943007427070) -->
+    <skip />
 </resources>

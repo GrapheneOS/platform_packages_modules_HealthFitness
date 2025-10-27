@@ -49,7 +49,7 @@ class MedicalPermissionsRequestUITest : HealthConnectBaseTest() {
             permissions = listOf(HealthPermissions.WRITE_MEDICAL_DATA),
         ) {
             scrollDownToAndFindText(
-                "Allow Health Connect cts test app 2 to access your health records?"
+                "Allow Health Connect cts test app 2 to access your medical records?"
             )
             scrollDownToAndFindText("Data to share includes")
 
@@ -70,7 +70,7 @@ class MedicalPermissionsRequestUITest : HealthConnectBaseTest() {
             permissions = listOf(HealthPermissions.WRITE_MEDICAL_DATA),
         ) {
             scrollDownToAndFindText(
-                "Allow Health Connect cts test app 2 to access your health records?"
+                "Allow Health Connect cts test app 2 to access your medical records?"
             )
             scrollDownToAndFindText("Data to share includes")
 
@@ -109,11 +109,11 @@ class MedicalPermissionsRequestUITest : HealthConnectBaseTest() {
                 ),
         ) {
             scrollDownToAndFindText(
-                "Allow Health Connect cts test app 2 to access your health records?"
+                "Allow Health Connect cts test app 2 to access your medical records?"
             )
             scrollDownToAndFindText("Allergies")
             scrollDownToAndFindText("Conditions")
-            scrollDownToAndFindText("All health records")
+            scrollDownToAndFindText("All medical records")
         }
     }
 
@@ -144,13 +144,13 @@ class MedicalPermissionsRequestUITest : HealthConnectBaseTest() {
                 ),
         ) {
             scrollDownToAndFindText(
-                "Allow Health Connect cts test app 2 to access your health records?"
+                "Allow Health Connect cts test app 2 to access your medical records?"
             )
             scrollDownToAndFindText("Allergies")
 
             verifyTextNotFound("Conditions")
 
-            scrollDownToAndFindText("All health records")
+            scrollDownToAndFindText("All medical records")
         }
     }
 
@@ -181,15 +181,15 @@ class MedicalPermissionsRequestUITest : HealthConnectBaseTest() {
                 ),
         ) {
             scrollDownToAndFindText(
-                "Allow Health Connect cts test app 2 to access your health records?"
+                "Allow Health Connect cts test app 2 to access your medical records?"
             )
             scrollDownToAndFindText("Allergies")
             findTextAndClick("Allergies")
 
             scrollDownToAndFindText("Conditions")
 
-            scrollDownToAndFindText("All health records")
-            findTextAndClick("All health records")
+            scrollDownToAndFindText("All medical records")
+            findTextAndClick("All medical records")
 
             clickOnTextAndWaitForNewWindow("Allow")
 
@@ -231,7 +231,7 @@ class MedicalPermissionsRequestUITest : HealthConnectBaseTest() {
                     HealthPermissions.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES,
                 ),
         ) {
-            findText("Allow Health Connect cts test app 2 to access your health records?")
+            findText("Allow Health Connect cts test app 2 to access your medical records?")
             scrollDownToAndFindText("Allow all")
             findTextAndClick("Allow all")
 
@@ -275,7 +275,7 @@ class MedicalPermissionsRequestUITest : HealthConnectBaseTest() {
                     HealthPermissions.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES,
                 ),
         ) {
-            findText("Allow Health Connect cts test app 2 to access your health records?")
+            findText("Allow Health Connect cts test app 2 to access your medical records?")
 
             clickOnTextAndWaitForNewWindow("Don't allow")
 

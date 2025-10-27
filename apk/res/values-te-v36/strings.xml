@@ -27,5 +27,5 @@
     <string name="settings_manage_permission" msgid="3585762257420446893">"హెల్త్, ఫిట్‌నెస్ &amp; వెల్‌నెస్"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"హెల్త్, ఫిట్‌నెస్ &amp; వెల్‌నెస్"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"ఫిట్‌నెస్, వెల్‌నెస్"</string>
-    <string name="settings_medical_permissions" msgid="3616285795348645545">"ఆరోగ్య సమాచారం (హెల్త్ రికార్డులు)"</string>
+    <string name="settings_medical_permissions" msgid="3458484943007427070">"వైద్యపరమైన రికార్డ్‌లు"</string>
 </resources>

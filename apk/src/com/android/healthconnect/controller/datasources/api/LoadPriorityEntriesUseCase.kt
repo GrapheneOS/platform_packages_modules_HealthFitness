@@ -21,7 +21,7 @@ class LoadPriorityEntriesUseCase
 constructor(
     private val loadEntriesHelper: LoadEntriesHelper,
     private val loadPriorityListUseCase: ILoadPriorityListUseCase,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadPriorityEntriesUseCase {
 
     /**

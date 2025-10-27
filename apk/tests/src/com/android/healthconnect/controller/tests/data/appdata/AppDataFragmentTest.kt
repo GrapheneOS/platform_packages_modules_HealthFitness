@@ -187,7 +187,7 @@ class AppDataFragmentTest {
         onView(withText("Nutrition")).check(doesNotExist())
         onView(withText("Sleep")).check(doesNotExist())
         onView(withText("Vitals")).check(doesNotExist())
-        onView(withText("Health records")).check(doesNotExist())
+        onView(withText("Medical records")).check(doesNotExist())
         onView(withText("Vaccines")).check(doesNotExist())
         onView(withText("No data")).check(doesNotExist())
         onView(withText("Data from Health Connect test app will show here")).check(doesNotExist())
@@ -266,7 +266,7 @@ class AppDataFragmentTest {
         onView(withText("Distance")).check(matches(isDisplayed()))
         onView(withText("Exercise")).check(matches(isDisplayed()))
 
-        onView(withText("Health records")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Medical records")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("Vaccines")).perform(scrollTo()).check(matches(isDisplayed()))
 
         onView(withText("Steps")).check(doesNotExist())
@@ -289,7 +289,7 @@ class AppDataFragmentTest {
         onView(withText("Activity")).check(doesNotExist())
         onView(withText("Distance")).check(doesNotExist())
 
-        onView(withText("Health records")).perform(scrollTo()).check(matches(isDisplayed()))
+        onView(withText("Medical records")).perform(scrollTo()).check(matches(isDisplayed()))
         onView(withText("Vaccines")).perform(scrollTo()).check(matches(isDisplayed()))
 
         onView(withText("Body measurements")).check(doesNotExist())

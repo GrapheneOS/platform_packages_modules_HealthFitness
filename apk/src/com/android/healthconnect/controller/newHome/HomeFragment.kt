@@ -34,6 +34,7 @@ import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
+import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.shared.preference.HealthButtonPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
@@ -43,6 +44,7 @@ import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.NewHomePageElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.pref
@@ -197,11 +199,58 @@ class HomeFragment : Hilt_HomeFragment() {
                             setLoading(false)
                             updateBanners(state.bannerState)
                             updateScreen(state)
+                            maybeShowDialog(state.migrationDialog)
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun maybeShowDialog(dialog: HomeViewModel.MigrationDialog) {
+        when (dialog) {
+            is HomeViewModel.MigrationDialog.MigrationCompleteDialog -> {
+                showMigrationCompleteDialog()
+            }
+            is HomeViewModel.MigrationDialog.MigrationNotCompleteDialog -> {
+                showMigrationNotCompleteDialog()
+            }
+            else -> {
+                // Do nothing
+            }
+        }
+    }
+
+    private fun showMigrationCompleteDialog() {
+        AlertDialogBuilder(this, MigrationElement.MIGRATION_DONE_DIALOG_CONTAINER)
+            .setTitle(R.string.migration_whats_new_dialog_title)
+            .setMessage(R.string.migration_whats_new_dialog_content)
+            .setCancelable(false)
+            .setNegativeButton(
+                R.string.migration_whats_new_dialog_button,
+                MigrationElement.MIGRATION_DONE_DIALOG_BUTTON,
+            ) { _, _ ->
+                homeViewModel.onDismissDialog(HomeViewModel.MigrationDialog.MigrationCompleteDialog)
+            }
+            .create()
+            .show()
+    }
+
+    private fun showMigrationNotCompleteDialog() {
+        AlertDialogBuilder(this, MigrationElement.MIGRATION_NOT_COMPLETE_DIALOG_CONTAINER)
+            .setTitle(R.string.migration_not_complete_dialog_title)
+            .setMessage(R.string.migration_not_complete_dialog_content)
+            .setCancelable(false)
+            .setNegativeButton(
+                R.string.migration_whats_new_dialog_button,
+                MigrationElement.MIGRATION_NOT_COMPLETE_DIALOG_BUTTON,
+            ) { _, _ ->
+                homeViewModel.onDismissDialog(
+                    HomeViewModel.MigrationDialog.MigrationNotCompleteDialog
+                )
+            }
+            .create()
+            .show()
     }
 
     override fun onResume() {

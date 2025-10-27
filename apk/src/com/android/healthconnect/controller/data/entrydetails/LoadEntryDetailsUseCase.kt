@@ -35,7 +35,7 @@ constructor(
     private val healthConnectManager: HealthConnectManager,
     private val entryFormatter: HealthDataEntryFormatter,
     private val entryDetailsFormatter: HealthDataEntryDetailsFormatter,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : BaseUseCase<LoadDataEntryInput, List<FormattedEntry>>(dispatcher) {
 
     override suspend fun execute(input: LoadDataEntryInput): List<FormattedEntry> {

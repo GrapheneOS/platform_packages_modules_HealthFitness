@@ -16,9 +16,7 @@
 package com.android.healthconnect.controller.shared
 
 object Constants {
-    // Onboarding
     const val USER_ACTIVITY_TRACKER = "USER_ACTIVITY_TRACKER"
-    const val ONBOARDING_SHOWN_PREF_KEY = "ONBOARDING_SHOWN_PREF_KEY"
 
     // Migration
     const val APP_UPDATE_NEEDED_BANNER_SEEN = "app_update_banner_seen"
@@ -31,11 +29,6 @@ object Constants {
     // Connected apps
     const val EXTRA_APP_NAME = "app_name_extras"
     const val SHOW_MANAGE_APP_SECTION = "show_manage_app_section"
-
-    // Onboarding banners
-    const val START_USING_HC_BANNER_SEEN = "start_using_hc_seen"
-    const val CONNECT_MORE_APPS_BANNER_SEEN = "connect_more_apps_seen"
-    const val SEE_MORE_COMPATIBLE_APPS_BANNER_SEEN = "see_more_apps_seen"
 
     // New onboarding banners
     const val ONBOARDING_ZERO_APPS_BANNER_SEEN = "onboarding_zero_apps_banner_seen"

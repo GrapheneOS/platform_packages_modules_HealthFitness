@@ -51,8 +51,9 @@ class MigrationNavigationFragmentTest {
             )
         }
 
-        launchFragment<MigrationNavigationFragment>()
-        onView(withId(R.id.progress_indicator)).check(matches(isDisplayed()))
+        launchFragment<MigrationNavigationFragment>().use {
+            onView(withId(R.id.progress_indicator)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -63,8 +64,9 @@ class MigrationNavigationFragmentTest {
             )
         }
 
-        launchFragment<MigrationNavigationFragment>()
-        onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+        launchFragment<MigrationNavigationFragment>().use {
+            onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -82,9 +84,13 @@ class MigrationNavigationFragmentTest {
             )
         }
 
-        launchFragment<MigrationNavigationFragment>()
-        verify(navigationUtils, times(1))
-            .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_migrationPausedFragment))
+        launchFragment<MigrationNavigationFragment>().use {
+            verify(navigationUtils, times(1))
+                .navigate(
+                    any(),
+                    eq(R.id.action_migrationNavigationFragment_to_migrationPausedFragment),
+                )
+        }
     }
 
     @Test
@@ -102,9 +108,13 @@ class MigrationNavigationFragmentTest {
             )
         }
 
-        launchFragment<MigrationNavigationFragment>()
-        verify(navigationUtils, times(1))
-            .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_migrationPausedFragment))
+        launchFragment<MigrationNavigationFragment>().use {
+            verify(navigationUtils, times(1))
+                .navigate(
+                    any(),
+                    eq(R.id.action_migrationNavigationFragment_to_migrationPausedFragment),
+                )
+        }
     }
 
     @Test
@@ -122,12 +132,13 @@ class MigrationNavigationFragmentTest {
             )
         }
 
-        launchFragment<MigrationNavigationFragment>()
-        verify(navigationUtils, times(1))
-            .navigate(
-                any(),
-                eq(R.id.action_migrationNavigationFragment_to_migrationAppUpdateNeededFragment),
-            )
+        launchFragment<MigrationNavigationFragment>().use {
+            verify(navigationUtils, times(1))
+                .navigate(
+                    any(),
+                    eq(R.id.action_migrationNavigationFragment_to_migrationAppUpdateNeededFragment),
+                )
+        }
     }
 
     @Test
@@ -145,12 +156,16 @@ class MigrationNavigationFragmentTest {
             )
         }
 
-        launchFragment<MigrationNavigationFragment>()
-        verify(navigationUtils, times(1))
-            .navigate(
-                any(),
-                eq(R.id.action_migrationNavigationFragment_to_migrationModuleUpdateNeededFragment),
-            )
+        launchFragment<MigrationNavigationFragment>().use {
+            verify(navigationUtils, times(1))
+                .navigate(
+                    any(),
+                    eq(
+                        R.id
+                            .action_migrationNavigationFragment_to_migrationModuleUpdateNeededFragment
+                    ),
+                )
+        }
     }
 
     @Test
@@ -168,12 +183,13 @@ class MigrationNavigationFragmentTest {
             )
         }
 
-        launchFragment<MigrationNavigationFragment>()
-        verify(navigationUtils, times(1))
-            .navigate(
-                any(),
-                eq(R.id.action_migrationNavigationFragment_to_migrationInProgressFragment),
-            )
+        launchFragment<MigrationNavigationFragment>().use {
+            verify(navigationUtils, times(1))
+                .navigate(
+                    any(),
+                    eq(R.id.action_migrationNavigationFragment_to_migrationInProgressFragment),
+                )
+        }
     }
 
     @Test
@@ -191,9 +207,10 @@ class MigrationNavigationFragmentTest {
             )
         }
 
-        launchFragment<MigrationNavigationFragment>()
-        verify(navigationUtils, times(1))
-            .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_homeFragment))
+        launchFragment<MigrationNavigationFragment>().use {
+            verify(navigationUtils, times(1))
+                .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_homeFragment))
+        }
     }
 
     @Test
@@ -211,9 +228,10 @@ class MigrationNavigationFragmentTest {
             )
         }
 
-        launchFragment<MigrationNavigationFragment>()
-        verify(navigationUtils, times(1))
-            .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_homeFragment))
+        launchFragment<MigrationNavigationFragment>().use {
+            verify(navigationUtils, times(1))
+                .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_homeFragment))
+        }
     }
 
     @Test
@@ -231,9 +249,10 @@ class MigrationNavigationFragmentTest {
             )
         }
 
-        launchFragment<MigrationNavigationFragment>()
-        verify(navigationUtils, times(1))
-            .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_homeFragment))
+        launchFragment<MigrationNavigationFragment>().use {
+            verify(navigationUtils, times(1))
+                .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_homeFragment))
+        }
     }
 
     @Test
@@ -251,9 +270,10 @@ class MigrationNavigationFragmentTest {
             )
         }
 
-        launchFragment<MigrationNavigationFragment>()
-        verify(navigationUtils, times(1))
-            .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_homeFragment))
+        launchFragment<MigrationNavigationFragment>().use {
+            verify(navigationUtils, times(1))
+                .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_homeFragment))
+        }
     }
 
     @Test
@@ -271,9 +291,10 @@ class MigrationNavigationFragmentTest {
             )
         }
 
-        launchFragment<MigrationNavigationFragment>()
-        verify(navigationUtils, times(1))
-            .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_homeFragment))
+        launchFragment<MigrationNavigationFragment>().use {
+            verify(navigationUtils, times(1))
+                .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_homeFragment))
+        }
     }
 
     @Test
@@ -291,12 +312,13 @@ class MigrationNavigationFragmentTest {
             )
         }
 
-        launchFragment<MigrationNavigationFragment>()
-        verify(navigationUtils, times(1))
-            .navigate(
-                any(),
-                eq(R.id.action_migrationNavigationFragment_to_dataRestoreInProgressFragment),
-            )
+        launchFragment<MigrationNavigationFragment>().use {
+            verify(navigationUtils, times(1))
+                .navigate(
+                    any(),
+                    eq(R.id.action_migrationNavigationFragment_to_dataRestoreInProgressFragment),
+                )
+        }
     }
 
     @Test
@@ -314,9 +336,10 @@ class MigrationNavigationFragmentTest {
             )
         }
 
-        launchFragment<MigrationNavigationFragment>()
-        verify(navigationUtils, times(1))
-            .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_homeFragment))
+        launchFragment<MigrationNavigationFragment>().use {
+            verify(navigationUtils, times(1))
+                .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_homeFragment))
+        }
     }
 
     @Test
@@ -334,8 +357,9 @@ class MigrationNavigationFragmentTest {
             )
         }
 
-        launchFragment<MigrationNavigationFragment>()
-        verify(navigationUtils, times(1))
-            .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_homeFragment))
+        launchFragment<MigrationNavigationFragment>().use {
+            verify(navigationUtils, times(1))
+                .navigate(any(), eq(R.id.action_migrationNavigationFragment_to_homeFragment))
+        }
     }
 }

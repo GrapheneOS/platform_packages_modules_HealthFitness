@@ -56,7 +56,6 @@
             <intent-filter android:priority="1">
                 <action android:name="android.health.connect.action.HEALTH_HOME_SETTINGS" />
                 <action android:name="android.health.connect.action.MANAGE_HEALTH_DATA" />
-                <action android:name="android.health.connect.action.SKIP_HEALTH_CONNECT_ONBOARDING" />
                 <action android:name="android.health.connect.action.SYNC_MORE_APPS"/>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -147,7 +146,7 @@
             android:excludeFromRecents="true"
             android:theme="@style/Theme.HealthConnect.MatchMakingActivity">
             <intent-filter>
-                <action android:name="android.health.connect.action.CONNECT_MATCHING_APPS" />
+                <action android:name="android.health.connect.action.MATCHMAKING" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
@@ -181,18 +180,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".onboarding.OnboardingActivity"
-            android:exported="false"
-            android:theme="@style/Theme.HealthConnect" />
-
-        <activity
-            android:name=".onboarding.SkipOnboardingActivity"
-            android:configChanges="@integer/nodisplay_config_changes"
-            android:excludeFromRecents="true"
-            android:exported="false"
-            android:theme="@style/Theme.HealthConnect"/>
 
         <activity
             android:name=".exportimport.ExportSetupActivity"

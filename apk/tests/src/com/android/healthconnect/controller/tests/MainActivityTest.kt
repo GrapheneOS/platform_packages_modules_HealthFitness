@@ -33,8 +33,8 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
 import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
+import com.android.healthconnect.controller.tests.utils.setPreferenceSeen
 import com.android.healthconnect.controller.tests.utils.showNativeSteps
-import com.android.healthconnect.controller.tests.utils.showOnboarding
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthfitness.flags.Flags
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -121,9 +121,6 @@ class MainActivityTest {
         whenever(onboardingViewModel.onboardingBannerState).then {
             MediatorLiveData(OnboardingViewModel.OnboardingBannerState.NoOnboardingBanner)
         }
-        setPreferenceSeen(context, Constants.SEE_MORE_COMPATIBLE_APPS_BANNER_SEEN, true)
-        setPreferenceSeen(context, Constants.START_USING_HC_BANNER_SEEN, true)
-        setPreferenceSeen(context, Constants.CONNECT_MORE_APPS_BANNER_SEEN, true)
 
         whenever(newHomeViewModel.homeFragmentState).then {
             MutableStateFlow(HomeViewModel.HomeFragmentState.WithData(emptyList()))
@@ -180,7 +177,6 @@ class MainActivityTest {
 
     @Test
     fun homeSettingsIntent_migrationInProgress_redirectsToMigrationInProgress() = runTest {
-        showOnboarding(context, false)
         showNativeSteps(context, false)
         whenever(viewModel.getCurrentMigrationUiState()).then {
             MigrationRestoreState(
@@ -212,7 +208,6 @@ class MainActivityTest {
 
     @Test
     fun homeSettingsIntent_dataRestoreInProgress_redirectsToRestoreInProgress() = runTest {
-        showOnboarding(context, false)
         showNativeSteps(context, false)
         whenever(viewModel.getCurrentMigrationUiState()).then {
             MigrationRestoreState(
@@ -245,7 +240,6 @@ class MainActivityTest {
     @Test
     @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
     fun homeSettingsIntent_migrationPending_moduleUpdateSeen_launchesMainActivity() = runTest {
-        showOnboarding(context, false)
         showNativeSteps(context, false)
         setPreferenceSeen(context, Constants.MODULE_UPDATE_NEEDED_SEEN, true)
         whenever(viewModel.getCurrentMigrationUiState()).then {
@@ -286,7 +280,6 @@ class MainActivityTest {
     @Ignore("b/445923123 - enable when banners working")
     fun homeSettingsIntent_migrationPending_moduleUpdateSeen_launchesMainActivity_withNewHomeScreen() =
         runTest {
-            showOnboarding(context, false)
             showNativeSteps(context, false)
             setPreferenceSeen(context, Constants.MODULE_UPDATE_NEEDED_SEEN, true)
             whenever(viewModel.getCurrentMigrationUiState()).then {
@@ -333,7 +326,6 @@ class MainActivityTest {
     @Test
     @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
     fun homeSettingsIntent_migrationPending_appUpgradeSeen_launchesMainActivity() = runTest {
-        showOnboarding(context, false)
         showNativeSteps(context, false)
         setPreferenceSeen(context, Constants.APP_UPDATE_NEEDED_SEEN, true)
         whenever(viewModel.getCurrentMigrationUiState()).then {
@@ -374,7 +366,6 @@ class MainActivityTest {
     @Ignore("b/445923123 - enable when banners working")
     fun homeSettingsIntent_migrationPending_appUpgradeSeen_launchesMainActivity_withNewHomeScreen() =
         runTest {
-            showOnboarding(context, false)
             showNativeSteps(context, false)
             setPreferenceSeen(context, Constants.APP_UPDATE_NEEDED_SEEN, true)
             whenever(viewModel.getCurrentMigrationUiState()).then {
@@ -421,7 +412,6 @@ class MainActivityTest {
     @Test
     @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
     fun homeSettingsIntent_migrationPending_integrationPausedSeen_launchesMainActivity() = runTest {
-        showOnboarding(context, false)
         showNativeSteps(context, false)
         setPreferenceSeen(context, Constants.INTEGRATION_PAUSED_SEEN_KEY, true)
         whenever(viewModel.getCurrentMigrationUiState()).then {
@@ -463,7 +453,6 @@ class MainActivityTest {
     @Ignore("b/445923123 - enable when banners working")
     fun homeSettingsIntent_migrationPending_integrationPausedSeen_launchesMainActivity_withNewHomeScreen() =
         runTest {
-            showOnboarding(context, false)
             showNativeSteps(context, false)
             setPreferenceSeen(context, Constants.INTEGRATION_PAUSED_SEEN_KEY, true)
             whenever(viewModel.getCurrentMigrationUiState()).then {
@@ -509,22 +498,9 @@ class MainActivityTest {
 
     @After
     fun tearDown() {
-        showOnboarding(context, false)
         showNativeSteps(context, false)
         setPreferenceSeen(context, Constants.APP_UPDATE_NEEDED_SEEN, false)
         setPreferenceSeen(context, Constants.MODULE_UPDATE_NEEDED_SEEN, false)
         setPreferenceSeen(context, Constants.INTEGRATION_PAUSED_SEEN_KEY, false)
-
-        setPreferenceSeen(context, Constants.SEE_MORE_COMPATIBLE_APPS_BANNER_SEEN, false)
-        setPreferenceSeen(context, Constants.START_USING_HC_BANNER_SEEN, false)
-        setPreferenceSeen(context, Constants.CONNECT_MORE_APPS_BANNER_SEEN, false)
-    }
-
-    private fun setPreferenceSeen(context: Context, preferenceName: String, seen: Boolean) {
-        val sharedPreference =
-            context.getSharedPreferences(Constants.USER_ACTIVITY_TRACKER, Context.MODE_PRIVATE)
-        val editor = sharedPreference.edit()
-        editor.putBoolean(preferenceName, seen)
-        editor.apply()
     }
 }

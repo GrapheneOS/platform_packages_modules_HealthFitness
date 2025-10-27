@@ -324,16 +324,18 @@ class HomeViewModelTest {
 
     // endregion
 
-    // region Migration banner
+    // region Migration data
     @Test
-    fun loadMigrationBanners_error_doesNotAddMigrationBanner() = runTest {
+    fun loadMigrationData_error_doesNotAddMigrationBanner_orDialogs() = runTest {
         loadMigrationRestoreStateUseCase.setForceFail(true)
-        val state = loadBannerState()
-        assertThat(state).isInstanceOf(HomeBannerState.NoBanner::class.java)
+        val homeFragmentState = loadMigrationData()
+        assertThat(homeFragmentState.first).isInstanceOf(HomeBannerState.NoBanner::class.java)
+        assertThat(homeFragmentState.second)
+            .isInstanceOf(HomeViewModel.MigrationDialog.NoMigrationDialog::class.java)
     }
 
     @Test
-    fun loadMigrationBanners_whenDataRestorePendingAndErrorVersionDiff_addsDataRestoreBanner() =
+    fun loadMigrationData_whenDataRestorePendingAndErrorVersionDiff_addsDataRestoreBanner() =
         runTest {
             loadMigrationRestoreStateUseCase.setMigrationState(
                 MigrationRestoreState(
@@ -342,14 +344,16 @@ class HomeViewModelTest {
                     dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_VERSION_DIFF,
                 )
             )
-            val state = loadBannerState()
-            assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
-            assertThat((state as HomeBannerState.ShowBanners).banners)
+            val state = loadMigrationData()
+            assertThat(state.first).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+            assertThat((state.first as HomeBannerState.ShowBanners).banners)
                 .containsExactly(BannerData.DataRestorePendingBanner)
+            assertThat(state.second)
+                .isInstanceOf(HomeViewModel.MigrationDialog.NoMigrationDialog::class.java)
         }
 
     @Test
-    fun loadMigrationBanners_whenDataRestoreNotPendingAndErrorVersionDiff_doesNotDataRestoreBanner() =
+    fun loadMigrationData_whenDataRestoreNotPendingAndErrorVersionDiff_doesNotDataRestoreBanner() =
         runTest {
             loadMigrationRestoreStateUseCase.setMigrationState(
                 MigrationRestoreState(
@@ -358,12 +362,14 @@ class HomeViewModelTest {
                     dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_UNKNOWN,
                 )
             )
-            val state = loadBannerState()
-            assertThat(state).isInstanceOf(HomeBannerState.NoBanner::class.java)
+            val state = loadMigrationData()
+            assertThat(state.first).isInstanceOf(HomeBannerState.NoBanner::class.java)
+            assertThat(state.second)
+                .isInstanceOf(HomeViewModel.MigrationDialog.NoMigrationDialog::class.java)
         }
 
     @Test
-    fun loadMigrationBanners_whenMigrationAllowedPaused_addsMigrationBanner() = runTest {
+    fun loadMigrationData_whenMigrationAllowedPaused_addsMigrationBanner() = runTest {
         loadMigrationRestoreStateUseCase.setMigrationState(
             MigrationRestoreState(
                 migrationUiState = MigrationUiState.ALLOWED_PAUSED,
@@ -371,14 +377,16 @@ class HomeViewModelTest {
                 dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
             )
         )
-        val state = loadBannerState()
-        assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
-        assertThat((state as HomeBannerState.ShowBanners).banners)
+        val state = loadMigrationData()
+        assertThat(state.first).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+        assertThat((state.first as HomeBannerState.ShowBanners).banners)
             .containsExactly(BannerData.MigrationBanner)
+        assertThat(state.second)
+            .isInstanceOf(HomeViewModel.MigrationDialog.NoMigrationDialog::class.java)
     }
 
     @Test
-    fun loadMigrationBanners_whenMigrationAllowedNotStarted_addsMigrationBanner() = runTest {
+    fun loadMigrationData_whenMigrationAllowedNotStarted_addsMigrationBanner() = runTest {
         loadMigrationRestoreStateUseCase.setMigrationState(
             MigrationRestoreState(
                 migrationUiState = MigrationUiState.ALLOWED_NOT_STARTED,
@@ -386,14 +394,16 @@ class HomeViewModelTest {
                 dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
             )
         )
-        val state = loadBannerState()
-        assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
-        assertThat((state as HomeBannerState.ShowBanners).banners)
+        val state = loadMigrationData()
+        assertThat(state.first).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+        assertThat((state.first as HomeBannerState.ShowBanners).banners)
             .containsExactly(BannerData.MigrationBanner)
+        assertThat(state.second)
+            .isInstanceOf(HomeViewModel.MigrationDialog.NoMigrationDialog::class.java)
     }
 
     @Test
-    fun loadMigrationBanners_whenMigrationModuleUpgradeRequired_addsMigrationBanner() = runTest {
+    fun loadMigrationData_whenMigrationModuleUpgradeRequired_addsMigrationBanner() = runTest {
         loadMigrationRestoreStateUseCase.setMigrationState(
             MigrationRestoreState(
                 migrationUiState = MigrationUiState.MODULE_UPGRADE_REQUIRED,
@@ -401,14 +411,16 @@ class HomeViewModelTest {
                 dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
             )
         )
-        val state = loadBannerState()
-        assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
-        assertThat((state as HomeBannerState.ShowBanners).banners)
+        val state = loadMigrationData()
+        assertThat(state.first).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+        assertThat((state.first as HomeBannerState.ShowBanners).banners)
             .containsExactly(BannerData.MigrationBanner)
+        assertThat(state.second)
+            .isInstanceOf(HomeViewModel.MigrationDialog.NoMigrationDialog::class.java)
     }
 
     @Test
-    fun loadMigrationBanners_whenMigrationAppUpgradeRequired_addsMigrationBanner() = runTest {
+    fun loadMigrationData_whenMigrationAppUpgradeRequired_addsMigrationBanner() = runTest {
         loadMigrationRestoreStateUseCase.setMigrationState(
             MigrationRestoreState(
                 migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
@@ -416,24 +428,111 @@ class HomeViewModelTest {
                 dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
             )
         )
-        val state = loadBannerState()
-        assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
-        assertThat((state as HomeBannerState.ShowBanners).banners)
+        val state = loadMigrationData()
+        assertThat(state.first).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+        assertThat((state.first as HomeBannerState.ShowBanners).banners)
             .containsExactly(BannerData.MigrationBanner)
+        assertThat(state.second)
+            .isInstanceOf(HomeViewModel.MigrationDialog.NoMigrationDialog::class.java)
     }
 
     @Test
-    fun loadMigrationBanners_whenMigrationStateIdleOrDone_doesNotAddMigrationBanner() = runTest {
+    fun loadMigrationBanners_whenMigrationStateIdle_doesNotAddMigrationBanner() = runTest {
         loadMigrationRestoreStateUseCase.setMigrationState(
             MigrationRestoreState(
-                migrationUiState = MigrationUiState.IN_PROGRESS,
-                dataRestoreState = MigrationRestoreState.DataRestoreUiState.IN_PROGRESS,
+                migrationUiState = MigrationUiState.IDLE,
+                dataRestoreState = MigrationRestoreState.DataRestoreUiState.IDLE,
                 dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
             )
         )
-        val state = loadBannerState()
-        assertThat(state).isInstanceOf(HomeBannerState.NoBanner::class.java)
+        val state = loadMigrationData()
+        assertThat(state.first).isInstanceOf(HomeBannerState.NoBanner::class.java)
+        assertThat(state.second)
+            .isInstanceOf(HomeViewModel.MigrationDialog.NoMigrationDialog::class.java)
     }
+
+    @Test
+    fun loadMigrationBanners_whenMigrationStateCompleteIdle_doesNotAddMigrationBanner() = runTest {
+        loadMigrationRestoreStateUseCase.setMigrationState(
+            MigrationRestoreState(
+                migrationUiState = MigrationUiState.COMPLETE_IDLE,
+                dataRestoreState = MigrationRestoreState.DataRestoreUiState.IDLE,
+                dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
+            )
+        )
+        val state = loadMigrationData()
+        assertThat(state.first).isInstanceOf(HomeBannerState.NoBanner::class.java)
+        assertThat(state.second)
+            .isInstanceOf(HomeViewModel.MigrationDialog.NoMigrationDialog::class.java)
+    }
+
+    @Test
+    fun loadMigrationData_whenMigrationStateComplete_andDialogNotSeen_addsMigrationCompleteDialog() =
+        runTest {
+            setPreferenceSeen(context, Constants.WHATS_NEW_DIALOG_SEEN, false)
+            loadMigrationRestoreStateUseCase.setMigrationState(
+                MigrationRestoreState(
+                    migrationUiState = MigrationUiState.COMPLETE,
+                    dataRestoreState = MigrationRestoreState.DataRestoreUiState.IDLE,
+                    dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
+                )
+            )
+            val state = loadMigrationData()
+            assertThat(state.first).isInstanceOf(HomeBannerState.NoBanner::class.java)
+            assertThat(state.second)
+                .isInstanceOf(HomeViewModel.MigrationDialog.MigrationCompleteDialog::class.java)
+        }
+
+    @Test
+    fun loadMigrationData_whenMigrationStateComplete_andDialogSeen_doesNotAddMigrationCompleteDialog() =
+        runTest {
+            setPreferenceSeen(context, Constants.WHATS_NEW_DIALOG_SEEN, true)
+            loadMigrationRestoreStateUseCase.setMigrationState(
+                MigrationRestoreState(
+                    migrationUiState = MigrationUiState.COMPLETE,
+                    dataRestoreState = MigrationRestoreState.DataRestoreUiState.IDLE,
+                    dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
+                )
+            )
+            val state = loadMigrationData()
+            assertThat(state.first).isInstanceOf(HomeBannerState.NoBanner::class.java)
+            assertThat(state.second)
+                .isInstanceOf(HomeViewModel.MigrationDialog.NoMigrationDialog::class.java)
+        }
+
+    @Test
+    fun loadMigrationData_whenMigrationStateError_andDialogNotSeen_addsMigrationNotCompleteDialog() =
+        runTest {
+            setPreferenceSeen(context, Constants.MIGRATION_NOT_COMPLETE_DIALOG_SEEN, false)
+            loadMigrationRestoreStateUseCase.setMigrationState(
+                MigrationRestoreState(
+                    migrationUiState = MigrationUiState.ALLOWED_ERROR,
+                    dataRestoreState = MigrationRestoreState.DataRestoreUiState.IDLE,
+                    dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
+                )
+            )
+            val state = loadMigrationData()
+            assertThat(state.first).isInstanceOf(HomeBannerState.NoBanner::class.java)
+            assertThat(state.second)
+                .isInstanceOf(HomeViewModel.MigrationDialog.MigrationNotCompleteDialog::class.java)
+        }
+
+    @Test
+    fun loadMigrationData_whenMigrationStateError_andDialogSeen_addsMigrationCompleteDialog() =
+        runTest {
+            setPreferenceSeen(context, Constants.MIGRATION_NOT_COMPLETE_DIALOG_SEEN, true)
+            loadMigrationRestoreStateUseCase.setMigrationState(
+                MigrationRestoreState(
+                    migrationUiState = MigrationUiState.ALLOWED_ERROR,
+                    dataRestoreState = MigrationRestoreState.DataRestoreUiState.IDLE,
+                    dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
+                )
+            )
+            val state = loadMigrationData()
+            assertThat(state.first).isInstanceOf(HomeBannerState.NoBanner::class.java)
+            assertThat(state.second)
+                .isInstanceOf(HomeViewModel.MigrationDialog.NoMigrationDialog::class.java)
+        }
 
     // endregion
 
@@ -634,20 +733,8 @@ class HomeViewModelTest {
     // endregion
 
     // region Onboarding banner
-    @Test
-    @DisableFlags(Flags.FLAG_ONBOARDING)
-    fun loadOnboardingBanner_whenOnboardingFlagOff_doesNotAddOnboardingBanner() = runTest {
-        setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
-        setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
-        loadOnboardingStateUseCase.setOnboardingBannerState(
-            OnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED
-        )
-        val state = loadBannerState()
-        assertThat(state).isInstanceOf(HomeBannerState.NoBanner::class.java)
-    }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING)
     fun loadOnboardingBanner_whenOnboardingError_doesNotAddOnboardingBanner() = runTest {
         setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
         setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
@@ -657,7 +744,6 @@ class HomeViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING)
     fun loadOnboardingBanner_whenZeroAppsBannerSeen_doesNotAddOnboardingBanner() = runTest {
         setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, true)
         setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
@@ -669,7 +755,6 @@ class HomeViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING)
     fun loadOnboardingBanner_whenOneAppBannerSeen_doesNotAddOnboardingBanner() = runTest {
         setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
         setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, true)
@@ -681,7 +766,6 @@ class HomeViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING)
     fun loadOnboardingBanner_whenZeroAppsBannerNotSeen_addsOnboardingBanner() = runTest {
         setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
         setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
@@ -695,7 +779,6 @@ class HomeViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING)
     fun loadOnboardingBanner_whenOneAppBannerNotSeen_addsOnboardingBanner() = runTest {
         setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
         setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
@@ -709,7 +792,6 @@ class HomeViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING)
     fun loadOnboardingBanner_whenOnboardingStateHide_doesNotAddOnboardingBanner() = runTest {
         setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
         setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
@@ -765,7 +847,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
+    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     fun loadBanners_canAddAllBanners() = runTest {
         // Lock screen banner
         whenever(keyguardManagerUtil.isDeviceSecure(any())).thenReturn(false)
@@ -820,7 +902,7 @@ class HomeViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ONBOARDING, Flags.FLAG_STEP_TRACKING_ENABLED)
+    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     fun loadInitialData_doesNotDuplicateBanners() = runTest {
         // Lock screen banner
         whenever(keyguardManagerUtil.isDeviceSecure(any())).thenReturn(false)
@@ -908,6 +990,15 @@ class HomeViewModelTest {
             .isInstanceOf(HomeViewModel.HomeFragmentState.WithData::class.java)
         val state = homeFragmentState as HomeViewModel.HomeFragmentState.WithData
         return state.bannerState
+    }
+
+    private fun TestScope.loadMigrationData():
+        Pair<HomeBannerState, HomeViewModel.MigrationDialog> {
+        val homeFragmentState = loadHomeFragmentState()
+        assertThat(homeFragmentState)
+            .isInstanceOf(HomeViewModel.HomeFragmentState.WithData::class.java)
+        val state = homeFragmentState as HomeViewModel.HomeFragmentState.WithData
+        return Pair(state.bannerState, state.migrationDialog)
     }
 
     private fun mockNoBanners() {

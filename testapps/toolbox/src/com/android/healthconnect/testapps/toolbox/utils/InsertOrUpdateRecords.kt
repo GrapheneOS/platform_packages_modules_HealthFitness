@@ -69,6 +69,7 @@ import android.health.connect.datatypes.SpeedRecord.SpeedRecordSample
 import android.health.connect.datatypes.StepsCadenceRecord
 import android.health.connect.datatypes.StepsCadenceRecord.StepsCadenceRecordSample
 import android.health.connect.datatypes.StepsRecord
+import android.health.connect.datatypes.SymptomRecord
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord
 import android.health.connect.datatypes.Vo2MaxRecord
 import android.health.connect.datatypes.WeightRecord
@@ -558,6 +559,54 @@ class InsertOrUpdateRecords {
                                 as List<StepsCadenceRecordSample>,
                         )
                         .build()
+
+                SymptomRecord::class -> {
+                    val temporalType =
+                        mFieldNameToFieldInput["mTemporalType"]
+                            ?.getFieldValue()
+                            ?.toString()
+                            ?.toInt()
+                            ?: throw IllegalArgumentException("Temporal type not selected")
+                    val type =
+                        mFieldNameToFieldInput["mType"]?.getFieldValue()?.toString()?.toInt()
+                            ?: throw IllegalArgumentException("Symptom type not selected")
+                    val severity =
+                        mFieldNameToFieldInput["mSeverity"]?.getFieldValue()?.toString()?.toInt()
+                            ?: throw IllegalArgumentException("Symptom severity not selected")
+
+                    val builder =
+                        when (temporalType) {
+                            SymptomRecord.RECORD_TEMPORAL_TYPE_INTERVAL ->
+                                SymptomRecord.Builder(
+                                    type,
+                                    getStartTime(mFieldNameToFieldInput),
+                                    getEndTime(mFieldNameToFieldInput),
+                                    metaData,
+                                )
+                            SymptomRecord.RECORD_TEMPORAL_TYPE_INSTANT ->
+                                SymptomRecord.Builder(
+                                    type,
+                                    getStartTime(mFieldNameToFieldInput),
+                                    metaData,
+                                )
+                            SymptomRecord.RECORD_TEMPORAL_TYPE_LOCAL_DATE -> {
+                                val date =
+                                    LocalDate.ofInstant(
+                                        getStartTime(mFieldNameToFieldInput),
+                                        ZoneOffset.UTC,
+                                    )
+                                SymptomRecord.Builder(type, date, metaData)
+                            }
+                            else -> throw IllegalStateException("$temporalType Not supported!")
+                        }
+
+                    return builder
+                        .apply {
+                            setSeverity(severity)
+                            setNotes("test notes")
+                        }
+                        .build()
+                }
 
                 MenstruationPeriodRecord::class ->
                     MenstruationPeriodRecord.Builder(

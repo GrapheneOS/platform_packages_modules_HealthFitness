@@ -289,7 +289,7 @@ class RecentAccessPreferenceTest {
 
         assertThat(holder.findViewById(R.id.data_types_read)?.isVisible).isTrue()
         assertThat((holder.findViewById(R.id.data_types_read) as TextView).text)
-            .isEqualTo("Read: Health records, Nutrition, Sleep")
+            .isEqualTo("Read: Medical records, Nutrition, Sleep")
     }
 
     @Test
@@ -305,7 +305,7 @@ class RecentAccessPreferenceTest {
 
         assertThat(holder.findViewById(R.id.data_types_written)?.isVisible).isTrue()
         assertThat((holder.findViewById(R.id.data_types_written) as TextView).text)
-            .isEqualTo("Write: Health records, Activity, Vitals")
+            .isEqualTo("Write: Medical records, Activity, Vitals")
     }
 
     companion object {

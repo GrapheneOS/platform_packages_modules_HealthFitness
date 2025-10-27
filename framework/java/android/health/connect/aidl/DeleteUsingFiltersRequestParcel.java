@@ -194,7 +194,8 @@ public class DeleteUsingFiltersRequestParcel
 
     @NonNull
     @Override
-    public DeleteUsingFiltersRequestParcel toUnmasked(Function<String, String> packageUnmasker) {
+    public DeleteUsingFiltersRequestParcel toUnmasked(
+            @NonNull Function<String, String> packageUnmasker) {
         return new DeleteUsingFiltersRequestParcel(
                 mPackageNameFilters.stream().map(packageUnmasker).toList(),
                 mRecordTypeFilters,

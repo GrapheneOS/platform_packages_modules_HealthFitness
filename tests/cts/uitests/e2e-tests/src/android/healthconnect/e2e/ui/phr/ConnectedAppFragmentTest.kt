@@ -44,7 +44,7 @@ class ConnectedAppFragmentTest : HealthConnectBaseTest() {
             findText("Health Connect cts test app 2")
             scrollDownToAndFindText("Permissions")
             scrollDownToAndFindText("Fitness and wellness")
-            scrollDownToAndFindText("Health records")
+            scrollDownToAndFindText("Medical records")
             scrollDownToAndFindText("Additional access")
 
             scrollDownToAndFindText("Manage app")

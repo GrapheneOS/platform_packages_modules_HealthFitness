@@ -31,7 +31,7 @@ import javax.inject.Inject
 class PlannedExerciseStepFormatter
 @Inject
 constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val unitPreferences: UnitPreferences,
     private val stepsFormatter: StepsFormatter,
     private val exercisePerformanceGoalFormatter: ExercisePerformanceGoalFormatter,

@@ -56,6 +56,7 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
         private const val RECENT_ACCESS_TODAY_KEY = "recent_access_today"
         private const val RECENT_ACCESS_YESTERDAY_KEY = "recent_access_yesterday"
         private const val RECENT_ACCESS_NO_DATA_KEY = "no_data"
+        private const val RECENT_ACCESS_TOP_INTRO_KEY = "health_connect_top_intro"
     }
 
     init {
@@ -78,6 +79,7 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
         pref(RECENT_ACCESS_YESTERDAY_KEY)
 
     private val mRecentAccessNoDataPreference: Preference by pref(RECENT_ACCESS_NO_DATA_KEY)
+    private val recentAccessTopIntro: Preference by pref(RECENT_ACCESS_TOP_INTRO_KEY)
 
     private var destinationChangedListener: NavController.OnDestinationChangedListener? = null
 
@@ -193,6 +195,7 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
         mRecentAccessTodayPreferenceGroup.removeAll()
         mRecentAccessYesterdayPreferenceGroup.removeAll()
         mRecentAccessNoDataPreference.isVisible = false
+        recentAccessTopIntro.isVisible = true
 
         if (recentAppsList.isEmpty()) {
             mRecentAccessYesterdayPreferenceGroup.isVisible = false

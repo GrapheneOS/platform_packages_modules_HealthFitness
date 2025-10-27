@@ -77,7 +77,6 @@ import android.health.connect.Constants;
 import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
-import android.health.connect.GetMatchingAppsRequest;
 import android.health.connect.GetMatchingAppsResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectDataState;
@@ -86,6 +85,8 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthConnectManager.DataDownloadState;
 import android.health.connect.HealthConnectOnboardingState;
 import android.health.connect.HealthDataCategory;
+import android.health.connect.MatchmakingRequest;
+import android.health.connect.MatchmakingResponse;
 import android.health.connect.MedicalResourceId;
 import android.health.connect.MedicalResourceTypeInfo;
 import android.health.connect.PageTokenWrapper;
@@ -96,6 +97,7 @@ import android.health.connect.accesslog.AccessLogsResponseParcel;
 import android.health.connect.aidl.ActivityDatesRequestParcel;
 import android.health.connect.aidl.ActivityDatesResponseParcel;
 import android.health.connect.aidl.AggregateDataRequestParcel;
+import android.health.connect.aidl.AggregateDataResponseParcel;
 import android.health.connect.aidl.ApplicationInfoResponseParcel;
 import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.GetPriorityResponseParcel;
@@ -104,7 +106,6 @@ import android.health.connect.aidl.IAccessLogsResponseCallback;
 import android.health.connect.aidl.IActivityDatesResponseCallback;
 import android.health.connect.aidl.IAggregateRecordsResponseCallback;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
-import android.health.connect.aidl.ICanConnectMatchingAppsCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
@@ -119,6 +120,7 @@ import android.health.connect.aidl.IGetMatchingAppsCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
+import android.health.connect.aidl.IIsMatchmakingPossibleCallback;
 import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.aidl.IMedicalResourceListParcelResponseCallback;
@@ -552,7 +554,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             AttributionSource attributionSource,
             RecordsParcel recordsParcel,
             IInsertRecordsResponseCallback callback) {
-        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, recordsParcel, callback);
 
         final int uid = Binder.getCallingUid();
@@ -565,9 +566,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         ErrorCallback errorCallback = callback::onError;
 
-        final RecordsParcel unmaskedRecordsParcel =
-                recordsParcel.toUnmasked(getUnmaskingFunction(attributionSource.getPackageName()));
-
         scheduleLoggingHealthDataApiErrors(
                 () -> {
                     enforceIsForegroundUser(userHandle);
@@ -578,10 +576,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         + " not allowed to insert records");
                     }
                     enforceMemoryRateLimit(
-                            unmaskedRecordsParcel.getRecordsSize(),
-                            unmaskedRecordsParcel.getRecordsChunkSize());
-                    final List<RecordInternal<?>> recordInternals =
-                            unmaskedRecordsParcel.getRecords();
+                            recordsParcel.getRecordsSize(), recordsParcel.getRecordsChunkSize());
+                    final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
                     logger.setNumberOfRecords(recordInternals.size());
                     throwExceptionIfDataSyncInProgress();
                     boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
@@ -590,7 +586,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             QuotaCategory.QUOTA_CATEGORY_WRITE,
                             isInForeground,
                             logger,
-                            unmaskedRecordsParcel.getRecordsChunkSize());
+                            recordsParcel.getRecordsChunkSize());
                     mDataPermissionEnforcer.enforceRecordsWritePermissions(
                             recordInternals, attributionSource);
                     List<String> uuids =
@@ -622,6 +618,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             AttributionSource attributionSource,
             AggregateDataRequestParcel request,
             IAggregateRecordsResponseCallback callback) {
+        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, request, callback);
 
         final int uid = Binder.getCallingUid();
@@ -633,23 +630,25 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 holdsDataManagementPermission, READ_AGGREGATED_DATA)
                         .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionSource.getPackageName());
+        final AggregateDataRequestParcel unmaskedRequest =
+                request.toUnmasked(getUnmaskingFunction(attributionSource.getPackageName()));
 
         ErrorCallback errorCallback = callback::onError;
         scheduleLoggingHealthDataApiErrors(
                 () -> {
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
-                    logger.setNumberOfRecords(request.getAggregateIds().length);
+                    logger.setNumberOfRecords(unmaskedRequest.getAggregateIds().length);
                     throwExceptionIfDataSyncInProgress();
                     List<Integer> recordTypesToTest = new ArrayList<>();
-                    for (int aggregateId : request.getAggregateIds()) {
+                    for (int aggregateId : unmaskedRequest.getAggregateIds()) {
                         recordTypesToTest.add(
                                 mAggregationTypeIdMapper
                                         .getAggregationTypeFor(aggregateId)
                                         .getApplicableRecordTypeId());
                     }
 
-                    long startDateAccess = request.getStartTime();
+                    long startDateAccess = unmaskedRequest.getStartTime();
                     // TODO(b/309776578): Consider making background reads possible for
                     // aggregations when only using own data
                     if (!holdsDataManagementPermission) {
@@ -685,23 +684,27 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                             .toEpochMilli();
                         }
                         maybeEnforceOnlyCallingPackageDataRequested(
-                                request.getPackageFilters(),
+                                unmaskedRequest.getPackageFilters(),
                                 attributionSource.getPackageName(),
                                 enforceSelfRead,
                                 "aggregationTypes: "
-                                        + Arrays.stream(request.getAggregateIds())
+                                        + Arrays.stream(unmaskedRequest.getAggregateIds())
                                                 .mapToObj(
                                                         mAggregationTypeIdMapper
                                                                 ::getAggregationTypeFor)
                                                 .collect(Collectors.toList()));
                     }
                     boolean shouldRecordAccessLog = !holdsDataManagementPermission;
-                    callback.onResult(
-                            mFitnessRecordAggregateHelper.aggregateRecords(
-                                    attributionSource.getPackageName(),
-                                    request,
-                                    startDateAccess,
-                                    shouldRecordAccessLog));
+                    AggregateDataResponseParcel maskedResponse =
+                            mFitnessRecordAggregateHelper
+                                    .aggregateRecords(
+                                            attributionSource.getPackageName(),
+                                            unmaskedRequest,
+                                            startDateAccess,
+                                            shouldRecordAccessLog)
+                                    .toMasked(
+                                            getMaskingFunction(attributionSource.getPackageName()));
+                    callback.onResult(maskedResponse);
                     logger.setDataTypesFromRecordTypes(recordTypesToTest)
                             .setHealthDataServiceApiStatusSuccess();
                 },
@@ -927,7 +930,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             AttributionSource attributionSource,
             RecordsParcel recordsParcel,
             IEmptyResponseCallback callback) {
-        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, recordsParcel, callback);
         ErrorCallback errorCallback = callback::onError;
 
@@ -939,9 +941,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionSource.getPackageName());
 
-        final RecordsParcel unmaskedRecordsParcel =
-                recordsParcel.toUnmasked(getUnmaskingFunction(attributionSource.getPackageName()));
-
         scheduleLoggingHealthDataApiErrors(
                 () -> {
                     enforceIsForegroundUser(userHandle);
@@ -952,10 +951,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         + " not allowed to insert records");
                     }
                     enforceMemoryRateLimit(
-                            unmaskedRecordsParcel.getRecordsSize(),
-                            unmaskedRecordsParcel.getRecordsChunkSize());
-                    final List<RecordInternal<?>> recordInternals =
-                            unmaskedRecordsParcel.getRecords();
+                            recordsParcel.getRecordsSize(), recordsParcel.getRecordsChunkSize());
+                    final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
                     logger.setNumberOfRecords(recordInternals.size());
                     throwExceptionIfDataSyncInProgress();
                     boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
@@ -964,7 +961,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             QuotaCategory.QUOTA_CATEGORY_WRITE,
                             isInForeground,
                             logger,
-                            unmaskedRecordsParcel.getRecordsChunkSize());
+                            recordsParcel.getRecordsChunkSize());
                     mDataPermissionEnforcer.enforceRecordsWritePermissions(
                             recordInternals, attributionSource);
                     mFitnessRecordUpsertHelper.updateRecords(
@@ -991,6 +988,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             AttributionSource attributionSource,
             ChangeLogTokenRequest request,
             IGetChangeLogTokenCallback callback) {
+        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, request, callback);
 
         ErrorCallback errorCallback = callback::onError;
@@ -1001,6 +999,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 new HealthConnectServiceLogger.Builder(false, GET_CHANGES_TOKEN)
                         .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionSource.getPackageName());
+        final ChangeLogTokenRequest unmaskedRequest =
+                request.toUnmasked(getUnmaskingFunction(attributionSource.getPackageName()));
+
         scheduleLoggingHealthDataApiErrors(
                 () -> {
                     enforceIsForegroundUser(userHandle);
@@ -1012,9 +1013,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             logger);
                     throwExceptionIfDataSyncInProgress();
                     if (isPhrChangeLogsEnabled()) {
-                        boolean hasRecordTypes = !request.getRecordTypeIds().isEmpty();
+                        boolean hasRecordTypes = !unmaskedRequest.getRecordTypeIds().isEmpty();
                         boolean hasMedicalResourceTypes =
-                                !request.getMedicalResourceTypes().isEmpty();
+                                !unmaskedRequest.getMedicalResourceTypes().isEmpty();
                         if (!hasRecordTypes && !hasMedicalResourceTypes) {
                             throw new IllegalArgumentException(
                                     "At least one Record type or Medical Resource type must be"
@@ -1024,17 +1025,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     "Record types and Medical Resource types can't both be set");
                         }
                     } else {
-                        if (request.getRecordTypeIds().isEmpty()) {
+                        if (unmaskedRequest.getRecordTypeIds().isEmpty()) {
                             throw new IllegalArgumentException(
                                     "Requested record types must not be empty.");
                         }
                     }
 
                     mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
-                            request.getRecordTypeIds(), attributionSource);
+                            unmaskedRequest.getRecordTypeIds(), attributionSource);
                     if (isPhrChangeLogsEnabled()) {
                         mMedicalDataPermissionEnforcer.enforceMedicalResourceTypesReadPermissions(
-                                request.getMedicalResourceTypes(), attributionSource);
+                                unmaskedRequest.getMedicalResourceTypes(), attributionSource);
                     }
 
                     callback.onResult(
@@ -1042,12 +1043,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     mChangeLogsRequestHelper.getToken(
                                             mChangeLogsHelper.getLatestRowId(),
                                             attributionSource.getPackageName(),
-                                            request)));
+                                            unmaskedRequest)));
                     logger.setHealthDataServiceApiStatusSuccess()
                             .setDataTypesFromRecordTypes(
-                                    request.getRecordTypeIds().stream().toList());
+                                    unmaskedRequest.getRecordTypeIds().stream().toList());
                     if (isPhrChangeLogsEnabled()) {
-                        logger.setMedicalResourceTypes(request.getMedicalResourceTypes());
+                        logger.setMedicalResourceTypes(unmaskedRequest.getMedicalResourceTypes());
                     }
                 },
                 logger,
@@ -1065,6 +1066,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             AttributionSource attributionSource,
             ChangeLogsRequest request,
             IChangeLogsResponseCallback callback) {
+        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, request, callback);
 
         ErrorCallback errorCallback = callback::onError;
@@ -1200,12 +1202,22 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     ? changeLogsResponse.getDeletedMedicalResources()
                                     : List.of();
 
-                    // Return the result.
+                    // Masking the ChangeLogsResponse itself would necessitate two redundant
+                    // deep-copy operations(to convert to RecordInternal, mask, and convert
+                    // back), which is avoided by masking the record list preemptively,
+                    // improving efficiency.
+                    List<Record> maskedRecords =
+                            recordInternals.stream()
+                                    .map(
+                                            recordInternal ->
+                                                    recordInternal.toMasked(
+                                                            getMaskingFunction(callerPackageName)))
+                                    .map(RecordInternal::toExternalRecord)
+                                    .collect(toList());
+
                     callback.onResult(
                             new ChangeLogsResponse(
-                                    recordInternals.stream()
-                                            .map(RecordInternal::toExternalRecord)
-                                            .collect(toList()),
+                                    maskedRecords,
                                     deletedLogs,
                                     upsertedMedicalResources,
                                     deletedMedicalResources,
@@ -3085,13 +3097,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
-     * @see HealthConnectManager#canConnectMatchingApps(Set, Executor, OutcomeReceiver)
+     * @see HealthConnectManager#isMatchmakingPossible(MatchmakingRequest, Executor,
+     *     OutcomeReceiver)
      */
     @Override
-    public void canConnectMatchingApps(
+    public void isMatchmakingPossible(
             AttributionSource attributionSource,
-            GetMatchingAppsRequest request,
-            ICanConnectMatchingAppsCallback callback) {
+            MatchmakingRequest request,
+            IIsMatchmakingPossibleCallback callback) {
         checkParamsNonNull(attributionSource, request, callback);
         getMatchingApps(
                 attributionSource,
@@ -3099,7 +3112,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 new IGetMatchingAppsCallback.Stub() {
                     @Override
                     public void onResult(GetMatchingAppsResponse response) throws RemoteException {
-                        callback.onResult(response.hasMatchingApps());
+                        callback.onResult(
+                                new MatchmakingResponse.Builder(response.hasMatchingApps())
+                                        .build());
                     }
 
                     @Override
@@ -3116,7 +3131,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @Override
     public void getMatchingApps(
             AttributionSource attributionSource,
-            GetMatchingAppsRequest request,
+            MatchmakingRequest request,
             IGetMatchingAppsCallback callback) {
         checkParamsNonNull(attributionSource, request, callback);
         final int uid = Binder.getCallingUid();
@@ -3139,7 +3154,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     }
                     enforceIsForegroundUser(userHandle);
                     throwExceptionIfDataSyncInProgress();
-                    String requestPackageName = request.getPackageName();
+                    String requestPackageName = request.getCallingPackageName();
                     if (holdsDataManagementPermission) {
                         checkArgument(requestPackageName != null, "package name must be provided");
                     } else {

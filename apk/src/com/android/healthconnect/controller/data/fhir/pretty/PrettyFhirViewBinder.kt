@@ -115,8 +115,8 @@ class PrettyFhirViewBinder : SimpleViewBinder<FormattedPrettyFhir, View> {
      * [R.layout.item_pretty_fhir_entry]
      */
     sealed class ContentLevelView(
-        @LayoutRes val layout: Int,
-        @IdRes val textViewId: Int,
+        @param:LayoutRes val layout: Int,
+        @param:IdRes val textViewId: Int,
         val bulleted: Boolean = false,
     ) {
 

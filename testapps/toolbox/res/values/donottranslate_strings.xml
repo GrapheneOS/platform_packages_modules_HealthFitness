@@ -65,6 +65,7 @@
     <string name="cycle_tracking_category" description="Title for cycle tracking category, displaying user data related to cycle tracking (such as cervical mucus, menstrual flow, etc.) [CHAR LIMIT=30]">Cycle tracking</string>
     <string name="nutrition_category" description="Title for nutrition category, displaying user data related to nutrition (such as calories consumed, hydration, etc.) [CHAR LIMIT=30]">Nutrition</string>
     <string name="wellness_category" description="Title for wellness category, displaying user data related to wellness (such as mindfulness, etc.) [CHAR LIMIT=30]">Wellness</string>
+    <string name="symptoms_category" description="Title for symptoms category, displaying user data related to symptoms (such as cough, etc.) [CHAR LIMIT=30]">Symptoms</string>
 
     <!-- region Data Types -->
     <!-- region Activity data types -->
@@ -189,7 +190,7 @@
     <string name="fitness_permissions">Fitness permissions</string>
     <string name="health_permissions">Health permissions</string>
     <string name="read_permission">Read</string>
-    <string name="medical">Personal health record</string>
+    <string name="medical">Personal medical record</string>
     <string name="additional_permissions">Additional</string>
     <string name="history_read_permission">History read</string>
     <string name="background_read_permission">Background read</string>
@@ -609,5 +610,69 @@
     <string name="vo2Max_measurement_method_unknown">Unknown</string>
     <!-- endregion -->
 
+
+    <!--endregion-->
+
+    <!-- region Symptoms data types -->
+    <string name="symptom_cough_label" description="Label used to show the user's cough data [CHAR_LIMIT=50]">Cough</string>
+    <string name="symptom_snore_label" description="Label used to show the user's snore data [CHAR_LIMIT=50]">Snore</string>
+    <string name="symptom_abdominal_pain_label" description="Label used to show the user's abdominal pain data [CHAR_LIMIT=50]">Abdominal Pain</string>
+    <string name="symptom_acne_label" description="Label used to show the user's acne data [CHAR_LIMIT=50]">Acne</string>
+    <string name="symptom_back_pain_label" description="Label used to show the user's back pain data [CHAR_LIMIT=50]">Back Pain</string>
+    <string name="symptom_bloating_label" description="Label used to show the user's bloating data [CHAR_LIMIT=50]">Bloating</string>
+    <string name="symptom_brain_fog_label" description="Label used to show the user's brain fog data [CHAR_LIMIT=50]">Brain Fog</string>
+    <string name="symptom_breast_tenderness_label" description="Label used to show the user's breast tenderness data [CHAR_LIMIT=50]">Breast Tenderness</string>
+    <string name="symptom_brittle_nails_label" description="Label used to show the user's brittle nails data [CHAR_LIMIT=50]">Brittle Nails</string>
+    <string name="symptom_burning_mouth_label" description="Label used to show the user's burning mouth data [CHAR_LIMIT=50]">Burning Mouth</string>
+    <string name="symptom_chest_pain_label" description="Label used to show the user's chest pain data [CHAR_LIMIT=50]">Chest Pain</string>
+    <string name="symptom_chest_tightness_label" description="Label used to show the user's chest tightness data [CHAR_LIMIT=50]">Chest Tightness</string>
+    <string name="symptom_chills_label" description="Label used to show the user's chills data [CHAR_LIMIT=50]">Chills</string>
+    <string name="symptom_constipation_label" description="Label used to show the user's constipation data [CHAR_LIMIT=50]">Constipation</string>
+    <string name="symptom_cramps_label" description="Label used to show the user's cramps data [CHAR_LIMIT=50]">Cramps</string>
+    <string name="symptom_cravings_label" description="Label used to show the user's cravings data [CHAR_LIMIT=50]">Cravings</string>
+    <string name="symptom_dehydration_label" description="Label used to show the user's dehydration data [CHAR_LIMIT=50]">Dehydration</string>
+    <string name="symptom_diarrhea_label" description="Label used to show the user's diarrhea data [CHAR_LIMIT=50]">Diarrhea</string>
+    <string name="symptom_difficulty_swallowing_label" description="Label used to show the user's difficulty swallowing data [CHAR_LIMIT=50]">Difficulty Swallowing</string>
+    <string name="symptom_dizziness_label" description="Label used to show the user's dizziness data [CHAR_LIMIT=50]">Dizziness</string>
+    <string name="symptom_dry_skin_label" description="Label used to show the user's dry skin data [CHAR_LIMIT=50]">Dry Skin</string>
+    <string name="symptom_earaches_label" description="Label used to show the user's earaches data [CHAR_LIMIT=50]">Earaches</string>
+    <string name="symptom_fatigue_label" description="Label used to show the user's fatigue data [CHAR_LIMIT=50]">Fatigue</string>
+    <string name="symptom_fever_label" description="Label used to show the user's fever data [CHAR_LIMIT=50]">Fever</string>
+    <string name="symptom_generalized_body_ache_label" description="Label used to show the user's generalized body ache data [CHAR_LIMIT=50]">Generalized Body Ache</string>
+    <string name="symptom_hair_loss_label" description="Label used to show the user's hair loss data [CHAR_LIMIT=50]">Hair Loss</string>
+    <string name="symptom_headache_label" description="Label used to show the user's headache data [CHAR_LIMIT=50]">Headache</string>
+    <string name="symptom_heartburn_label" description="Label used to show the user's heartburn data [CHAR_LIMIT=50]">Heartburn</string>
+    <string name="symptom_heart_palpitations_label" description="Label used to show the user's heart palpitations data [CHAR_LIMIT=50]">Heart Palpitations</string>
+    <string name="symptom_hot_flashes_label" description="Label used to show the user's hot flashes data [CHAR_LIMIT=50]">Hot Flashes</string>
+    <string name="symptom_insomnia_label" description="Label used to show the user's insomnia data [CHAR_LIMIT=50]">Insomnia</string>
+    <string name="symptom_joint_pain_label" description="Label used to show the user's joint pain data [CHAR_LIMIT=50]">Joint Pain</string>
+    <string name="symptom_joint_stiffness_label" description="Label used to show the user's joint stiffness data [CHAR_LIMIT=50]">Joint Stiffness</string>
+    <string name="symptom_loss_of_appetite_label" description="Label used to show the user's loss of appetite data [CHAR_LIMIT=50]">Loss of Appetite</string>
+    <string name="symptom_loss_of_consciousness_label" description="Label used to show the user's loss of consciousness data [CHAR_LIMIT=50]">Loss of Consciousness</string>
+    <string name="symptom_lower_back_pain_label" description="Label used to show the user's lower back pain data [CHAR_LIMIT=50]">Lower Back Pain</string>
+    <string name="symptom_memory_lapse_label" description="Label used to show the user's memory lapse data [CHAR_LIMIT=50]">Memory Lapse</string>
+    <string name="symptom_mood_change_label" description="Label used to show the user's mood change data [CHAR_LIMIT=50]">Mood Change</string>
+    <string name="symptom_muscle_pain_label" description="Label used to show the user's muscle pain data [CHAR_LIMIT=50]">Muscle Pain</string>
+    <string name="symptom_nausea_label" description="Label used to show the user's nausea data [CHAR_LIMIT=50]">Nausea</string>
+    <string name="symptom_night_sweats_label" description="Label used to show the user's night sweats data [CHAR_LIMIT=50]">Night Sweats</string>
+    <string name="symptom_pelvic_pain_label" description="Label used to show the user's pelvic pain data [CHAR_LIMIT=50]">Pelvic Pain</string>
+    <string name="symptom_rapid_pounding_or_fluttering_heartbeat_label" description="Label used to show the user's rapid, pounding, or fluttering heartbeat data [CHAR_LIMIT=50]">Rapid, Pounding, or Fluttering Heartbeat</string>
+    <string name="symptom_reduced_capacity_for_exercise_label" description="Label used to show the user's reduced capacity for exercise data [CHAR_LIMIT=50]">Reduced Capacity for Exercise</string>
+    <string name="symptom_runny_nose_label" description="Label used to show the user's runny nose data [CHAR_LIMIT=50]">Runny Nose</string>
+    <string name="symptom_shortness_of_breath_label" description="Label used to show the user's shortness of breath data [CHAR_LIMIT=50]">Shortness of Breath</string>
+    <string name="symptom_skipped_heartbeat_label" description="Label used to show the user's skipped heartbeat data [CHAR_LIMIT=50]">Skipped Heartbeat</string>
+    <string name="symptom_sleepiness_label" description="Label used to show the user's sleepiness data [CHAR_LIMIT=50]">Sleepiness</string>
+    <string name="symptom_sleep_changes_label" description="Label used to show the user's sleep changes data [CHAR_LIMIT=50]">Sleep Changes</string>
+    <string name="symptom_sneezing_label" description="Label used to show the user's sneezing data [CHAR_LIMIT=50]">Sneezing</string>
+    <string name="symptom_sore_throat_label" description="Label used to show the user's sore throat data [CHAR_LIMIT=50]">Sore Throat</string>
+    <string name="symptom_stomach_ache_label" description="Label used to show the user's stomach ache data [CHAR_LIMIT=50]">Stomach Ache</string>
+    <string name="symptom_stuffy_nose_label" description="Label used to show the user's stuffy nose data [CHAR_LIMIT=50]">Stuffy Nose</string>
+    <string name="symptom_unexplained_weight_changes_label" description="Label used to show the user's unexplained weight changes data [CHAR_LIMIT=50]">Unexplained Weight Changes</string>
+    <string name="symptom_vaginal_dryness_label" description="Label used to show the user's vaginal dryness data [CHAR_LIMIT=50]">Vaginal Dryness</string>
+    <string name="symptom_vaginal_itchiness_label" description="Label used to show the user's vaginal itchiness data [CHAR_LIMIT=50]">Vaginal Itchiness</string>
+    <string name="symptom_vomiting_label" description="Label used to show the user's vomiting data [CHAR_LIMIT=50]">Vomiting</string>
+    <string name="symptom_water_retention_label" description="Label used to show the user's water retention data [CHAR_LIMIT=50]">Water Retention</string>
+    <string name="symptom_wheezing_label" description="Label used to show the user's wheezing data [CHAR_LIMIT=50]">Wheezing</string>
+    <!--endregion-->
 
 </resources>

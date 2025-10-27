@@ -24,7 +24,7 @@ import javax.inject.Inject
 /** Formatter for ExerciseSegmentType data. */
 class ExerciseSegmentTypeFormatter
 @Inject
-constructor(@ApplicationContext private val context: Context) {
+constructor(@param:ApplicationContext private val context: Context) {
     fun getSegmentType(segmentType: Int): String {
         return when (segmentType) {
             ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_BACK_EXTENSION ->

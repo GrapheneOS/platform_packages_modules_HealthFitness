@@ -939,7 +939,7 @@ class AdditionalAccessFragmentTest {
         onView(withText("Access all data in the background")).check(matches(isDisplayed()))
         onView(
                 withText(
-                    "Allow this app to access fitness and wellness data and health records " +
+                    "Allow this app to access fitness and wellness data and medical records " +
                         "when you're not using the app"
                 )
             )
@@ -1013,7 +1013,7 @@ class AdditionalAccessFragmentTest {
         onView(withText("Access all data in the background")).check(matches(isDisplayed()))
         onView(
                 withText(
-                    "Allow this app to access fitness and wellness data and health records " +
+                    "Allow this app to access fitness and wellness data and medical records " +
                         "when you're not using the app"
                 )
             )
@@ -1031,8 +1031,8 @@ class AdditionalAccessFragmentTest {
             .check(doesNotExist())
         onView(
                 withText(
-                    "$TEST_APP_NAME can already access past data for your health records. " +
-                        "To change this, turn off health record permissions for this app"
+                    "$TEST_APP_NAME can already access past data for your medical records. " +
+                        "To change this, turn off medical record permissions for this app"
                 )
             )
             .check(matches(isDisplayed()))
@@ -1073,7 +1073,7 @@ class AdditionalAccessFragmentTest {
 
         onView(withText("Access exercise routes")).check(matches(isDisplayed()))
         onView(withText("Ask every time")).check(matches(isDisplayed()))
-        onView(withText("Access health records in the background")).check(matches(isDisplayed()))
+        onView(withText("Access medical records in the background")).check(matches(isDisplayed()))
         onView(withText("Allow this app to access this data " + "when you're not using the app"))
             .check(matches(isDisplayed()))
             .check(matches(isDisplayed()))

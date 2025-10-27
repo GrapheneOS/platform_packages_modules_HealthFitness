@@ -17,10 +17,12 @@
 package com.android.server.healthconnect.common.metadata;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 import static android.healthconnect.testing.unittest.TaskUtils.TEST_USER;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -37,6 +39,7 @@ import android.content.pm.PackageManager.ApplicationInfoFlags;
 import android.graphics.drawable.Drawable;
 import android.health.connect.datatypes.AppInfo;
 import android.health.connect.internal.datatypes.AppInfoInternal;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.RecordInternalFactory;
 import android.platform.test.annotations.DisableFlags;
@@ -396,6 +399,67 @@ public class AppInfoHelperTest {
         setAppAsNotInstalled(TEST_PACKAGE_NAME);
         assertThat(mAppInfoHelper.getOrInsertAppInfoIdNoThrow(TEST_PACKAGE_NAME))
                 .isEqualTo(DEFAULT_LONG);
+    }
+
+    @Test
+    public void populateAppInfoId_spnNotAdvertised_throwsIllegalStateException() {
+        String canonicalSpn = SyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
+        RecordInternal<?> recordInternal =
+                buildStepsRecord(
+                        /* startTimeMillis= */ 1000,
+                        /* endTimeMillis= */ 2000,
+                        /* stepsCount= */ 100);
+        recordInternal.setPackageName(canonicalSpn);
+
+        assertThrows(
+                IllegalStateException.class,
+                () -> mAppInfoHelper.populateAppInfoId(recordInternal, true));
+    }
+
+    @Test
+    public void insertsDeviceDataSource() {
+        String canonicalSpn = SyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
+        long deviceInfoId = 1L;
+
+        mAppInfoHelper.insertDeviceDataSourceIfNotPresent(canonicalSpn, deviceInfoId);
+
+        assertThat(mAppInfoHelper.getAppInfoMap()).containsKey(canonicalSpn);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getDeviceInfoId())
+                .isEqualTo(deviceInfoId);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getId()).isEqualTo(1L);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getPackageName())
+                .isEqualTo(canonicalSpn);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getIcon()).isEqualTo(null);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getName()).isEqualTo(null);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getRecordTypesUsed())
+                .isEqualTo(null);
+    }
+
+    @Test
+    public void spnAlreadyPresent_populateAppInfoId_skipsPopulatingAppInfo() {
+        String canonicalSpn = SyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
+        long deviceInfoId = 1L;
+        mAppInfoHelper.insertDeviceDataSourceIfNotPresent(canonicalSpn, deviceInfoId);
+        RecordInternal<?> recordInternal =
+                buildStepsRecord(
+                        /* startTimeMillis= */ 1000,
+                        /* endTimeMillis= */ 2000,
+                        /* stepsCount= */ 100);
+        recordInternal.setPackageName(canonicalSpn);
+
+        mAppInfoHelper.populateAppInfoId(recordInternal, true);
+
+        assertThat(recordInternal.getAppInfoId()).isEqualTo(1L);
+        assertThat(mAppInfoHelper.getAppInfoMap()).containsKey(canonicalSpn);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getDeviceInfoId())
+                .isEqualTo(deviceInfoId);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getId()).isEqualTo(1L);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getPackageName())
+                .isEqualTo(canonicalSpn);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getIcon()).isEqualTo(null);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getName()).isEqualTo(null);
+        assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getRecordTypesUsed())
+                .isEqualTo(null);
     }
 
     private void setAppAsNotInstalled(String packageName)

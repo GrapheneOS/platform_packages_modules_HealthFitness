@@ -32,7 +32,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 class LoadMedicalEntriesUseCase
 @Inject
 constructor(
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
     private val medicalEntryFormatter: MedicalEntryFormatter,
     private val loadEntriesHelper: LoadEntriesHelper,
 ) :

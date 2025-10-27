@@ -62,97 +62,100 @@ class ModuleUpdateRequiredFragmentTest {
 
     @Test
     fun moduleUpdateRequiredFragment_displaysCorrectly() {
-        launchFragment<ModuleUpdateRequiredFragment>()
-
-        onView(withText("Update needed")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Health Connect is being integrated with the Android system so " +
-                        "you can access it directly from your settings.\n\n" +
-                        "Before continuing, update your phone system."
+        launchFragment<ModuleUpdateRequiredFragment>().use {
+            onView(withText("Update needed")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Health Connect is being integrated with the Android system so " +
+                            "you can access it directly from your settings.\n\n" +
+                            "Before continuing, update your phone system."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you\'ve already updated your phone system, " +
-                        "try restarting your phone to continue the integration"
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you've already updated your phone system, " +
+                            "try restarting your phone to continue the integration"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).check(matches(isDisplayed()))
-        onView(withText("Update")).check(matches(isDisplayed()))
-        verify(healthConnectLogger, atLeast(1))
-            .setPageId(PageName.MIGRATION_MODULE_UPDATE_NEEDED_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
+                .check(matches(isDisplayed()))
+            onView(withText("Cancel")).check(matches(isDisplayed()))
+            onView(withText("Update")).check(matches(isDisplayed()))
+            verify(healthConnectLogger, atLeast(1))
+                .setPageId(PageName.MIGRATION_MODULE_UPDATE_NEEDED_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
+        }
     }
 
     @Test
     fun moduleUpdateRequiredFragment_whenCancelButtonPressed_setsSharedPreferences() {
         Mockito.doNothing().whenever(navigationUtils).navigate(any(), any())
-        launchFragment<ModuleUpdateRequiredFragment>(Bundle())
-        onView(withText("Cancel")).check(matches(isDisplayed()))
-        onView(withText("Cancel")).perform(ViewActions.click())
+        launchFragment<ModuleUpdateRequiredFragment>(Bundle()).use {
+            onView(withText("Cancel")).check(matches(isDisplayed()))
+            onView(withText("Cancel")).perform(ViewActions.click())
 
-        // Can't use onActivity as it may already be destroyed
-        onIdle {
-            val preferences =
-                applicationContext.getSharedPreferences(
-                    "USER_ACTIVITY_TRACKER",
-                    Context.MODE_PRIVATE,
-                )
-            Truth.assertThat(preferences.getBoolean("Module Update Seen", false)).isTrue()
+            // Can't use onActivity as it may already be destroyed
+            onIdle {
+                val preferences =
+                    applicationContext.getSharedPreferences(
+                        "USER_ACTIVITY_TRACKER",
+                        Context.MODE_PRIVATE,
+                    )
+                Truth.assertThat(preferences.getBoolean("Module Update Seen", false)).isTrue()
+            }
+            verify(healthConnectLogger)
+                .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)
         }
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)
     }
 
     @Test
     fun moduleUpdateRequiredFragment_whenUpdateButtonPressed_navigatesToSystemUpdate() {
         Mockito.doNothing().whenever(navigationUtils).navigate(any(), any())
-        launchFragment<ModuleUpdateRequiredFragment>(Bundle())
-        onView(withText("Update")).check(matches(isDisplayed()))
-        onView(withText("Update")).perform(ViewActions.click())
+        launchFragment<ModuleUpdateRequiredFragment>(Bundle()).use {
+            onView(withText("Update")).check(matches(isDisplayed()))
+            onView(withText("Update")).perform(ViewActions.click())
 
-        verify(navigationUtils, times(1))
-            .navigate(
-                any(),
-                eq(R.id.action_migrationModuleUpdateNeededFragment_to_systemUpdateActivity),
-            )
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
+            verify(navigationUtils, times(1))
+                .navigate(
+                    any(),
+                    eq(R.id.action_migrationModuleUpdateNeededFragment_to_systemUpdateActivity),
+                )
+            verify(healthConnectLogger)
+                .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
+        }
     }
 
     @Test
     fun moduleUpdateRequiredFragment_whenNavigateToSystemUpdateFails_displaysCorrectly() {
         whenever(navigationUtils.navigate(any(), any())).thenThrow(RuntimeException("Exception"))
-        launchFragment<ModuleUpdateRequiredFragment>(Bundle())
-        onView(withText("Update")).check(matches(isDisplayed()))
-        onView(withText("Update")).perform(ViewActions.click())
+        launchFragment<ModuleUpdateRequiredFragment>(Bundle()).use {
+            onView(withText("Update")).check(matches(isDisplayed()))
+            onView(withText("Update")).perform(ViewActions.click())
 
-        onView(withText("Update needed")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Health Connect is being integrated with the Android system so " +
-                        "you can access it directly from your settings.\n\n" +
-                        "Before continuing, update your phone system."
+            onView(withText("Update needed")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Health Connect is being integrated with the Android system so " +
+                            "you can access it directly from your settings.\n\n" +
+                            "Before continuing, update your phone system."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you\'ve already updated your phone system, " +
-                        "try restarting your phone to continue the integration"
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you've already updated your phone system, " +
+                            "try restarting your phone to continue the integration"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).check(matches(isDisplayed()))
-        onView(withText("Update")).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
+                .check(matches(isDisplayed()))
+            onView(withText("Cancel")).check(matches(isDisplayed()))
+            onView(withText("Update")).check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
+        }
     }
 }

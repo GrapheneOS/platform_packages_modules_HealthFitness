@@ -201,8 +201,8 @@ class AllDataFragmentTest {
             checkTextIsDisplayed("Heart rate")
             checkTextIsDisplayed("Hydration")
             checkTextIsDisplayed(
-                "This includes all the health records synced to and added " +
-                    "to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your health records."
+                "This includes all the medical records synced to and added " +
+                    "to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your medical records."
             )
             checkTextIsDisplayed("Allergies")
             checkTextIsDisplayed("Vaccines")
@@ -232,10 +232,10 @@ class AllDataFragmentTest {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
         launchFragment<AllDataFragment>().use {
-            checkTextIsDisplayed("Health records")
+            checkTextIsDisplayed("Medical records")
             checkTextIsDisplayed(
-                "This includes all the health records synced to and added " +
-                    "to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your health records."
+                "This includes all the medical records synced to and added " +
+                    "to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your medical records."
             )
             checkTextIsDisplayed("Allergies")
             checkTextIsDisplayed("Vaccines")
@@ -273,7 +273,7 @@ class AllDataFragmentTest {
                 .check(matches(isDisplayed()))
             onView(
                     withText(
-                        "This includes all the health records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your health records."
+                        "This includes all the medical records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your medical records."
                     )
                 )
                 .check(doesNotExist())
@@ -287,7 +287,7 @@ class AllDataFragmentTest {
         launchFragment<AllDataFragment>().use {
             onView(
                     withText(
-                        "This includes all the health records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your health records."
+                        "This includes all the medical records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your medical records."
                     )
                 )
                 .check(doesNotExist())
@@ -300,11 +300,11 @@ class AllDataFragmentTest {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
         launchMedicalAllDataFragment().use {
-            onView(withText("Health records")).check(doesNotExist())
+            onView(withText("Medical records")).check(doesNotExist())
             checkTextIsDisplayed(
-                "This includes all the health records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your health records."
+                "This includes all the medical records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your medical records."
             )
-            checkTextIsDisplayed("About health records")
+            checkTextIsDisplayed("About medical records")
         }
     }
 
@@ -314,13 +314,13 @@ class AllDataFragmentTest {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
         launchFragment<AllDataFragment>().use {
-            checkTextIsDisplayed("Health records")
+            checkTextIsDisplayed("Medical records")
             checkTextIsDisplayed(
-                "This includes all the health records synced to and added to Health\u00A0Connect. " +
+                "This includes all the medical records synced to and added to Health\u00A0Connect. " +
                     "This might not be your full medical record and does not include a medical " +
-                    "description of your health records."
+                    "description of your medical records."
             )
-            checkTextIsDisplayed("About health records")
+            checkTextIsDisplayed("About medical records")
         }
     }
 
@@ -624,7 +624,7 @@ class AllDataFragmentTest {
             assertCheckboxShown("Select all")
             onView(
                     withText(
-                        "This includes all the health records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your health records."
+                        "This includes all the medical records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your medical records."
                     )
                 )
                 .check(doesNotExist())
@@ -1116,7 +1116,7 @@ class AllDataFragmentTest {
             assertCheckboxShown("Heart rate")
             onView(
                     withText(
-                        "This includes all the health records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your health records."
+                        "This includes all the medical records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your medical records."
                     )
                 )
                 .check(doesNotExist())
@@ -1163,7 +1163,7 @@ class AllDataFragmentTest {
             assertCheckboxShown("Vaccines")
             onView(
                     withText(
-                        "This includes all the health records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your health records."
+                        "This includes all the medical records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your medical records."
                     )
                 )
                 .check(doesNotExist())

@@ -324,7 +324,7 @@ class CombinedAdditionalPermissionsFragmentTest {
                 RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
                     ViewMatchers.hasDescendant(
                         withText(
-                            "Allow this app to access fitness and wellness data and health records " +
+                            "Allow this app to access fitness and wellness data and medical records " +
                                 "when you're not using the app"
                         )
                     )
@@ -332,7 +332,7 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
         onView(
                 withText(
-                    "Allow this app to access fitness and wellness data and health records " +
+                    "Allow this app to access fitness and wellness data and medical records " +
                         "when you're not using the app"
                 )
             )
@@ -340,7 +340,7 @@ class CombinedAdditionalPermissionsFragmentTest {
         onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
             .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
         Espresso.onIdle()
-        onView(withText("$TEST_APP_NAME can already access past data for your health records"))
+        onView(withText("$TEST_APP_NAME can already access past data for your medical records"))
             .check(matches(isDisplayed()))
 
         onView(withText("Don't allow")).check(matches(isDisplayed()))
@@ -378,7 +378,7 @@ class CombinedAdditionalPermissionsFragmentTest {
                 RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
                     ViewMatchers.hasDescendant(
                         withText(
-                            "Allow this app to access fitness and wellness data and health records " +
+                            "Allow this app to access fitness and wellness data and medical records " +
                                 "when you're not using the app"
                         )
                     )
@@ -386,7 +386,7 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
         onView(
                 withText(
-                    "Allow this app to access fitness and wellness data and health records " +
+                    "Allow this app to access fitness and wellness data and medical records " +
                         "when you're not using the app"
                 )
             )
