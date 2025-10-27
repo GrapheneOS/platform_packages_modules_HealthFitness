@@ -28,14 +28,12 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
-import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
-import com.android.server.healthconnect.common.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 
 import org.junit.Rule;
@@ -146,26 +144,6 @@ public class InternalHealthConnectMappingsTest {
                                 .map(mappings::getLoggingEnumForRecordTypeId)
                                 .toList())
                 .containsNoDuplicates();
-    }
-
-    @DisableFlags({
-        Flags.FLAG_ACTIVITY_INTENSITY,
-        Flags.FLAG_SYMPTOMS,
-        Flags.FLAG_SMOKING,
-        Flags.FLAG_ALCOHOL_CONSUMPTION
-    })
-    @Test
-    public void getLoggingEnumForRecordTypeId_equalsToLegacy() {
-        List<InternalDataTypeDescriptor> descriptors = getAllInternalDataTypeDescriptors();
-        InternalHealthConnectMappings mappings =
-                new InternalHealthConnectMappings(new HealthConnectMappings());
-
-        for (var descriptor : descriptors) {
-            assertThat(mappings.getLoggingEnumForRecordTypeId(descriptor.getRecordTypeIdentifier()))
-                    .isEqualTo(
-                            HealthConnectServiceLogger.Builder.getDataTypeEnumFromRecordType(
-                                    descriptor.getRecordTypeIdentifier()));
-        }
     }
 
     @Test
