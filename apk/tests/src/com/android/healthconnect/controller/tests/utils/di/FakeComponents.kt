@@ -865,3 +865,26 @@ class FakeLoadMigrationStateUseCase :
         migrationState = DEFAULT_MIGRATION_RESTORE_STATE
     }
 }
+
+class FakeLoadAutoDeleteUseCase : FakeUseCase<Unit, Int>(dispatcher = Dispatchers.Unconfined) {
+    private var autoDeleteRange = 0
+
+    fun setAutoDeleteRange(range: Int) {
+        autoDeleteRange = range
+    }
+
+    override suspend fun successValue(input: Unit): Int {
+        return autoDeleteRange
+    }
+
+    override fun reset() {
+        super.reset()
+        autoDeleteRange = 0
+    }
+}
+
+class FakeUpdateAutoDeleteUseCase : FakeUseCase<Int, Unit>(dispatcher = Dispatchers.Unconfined) {
+    override suspend fun successValue(input: Int) {
+        return
+    }
+}

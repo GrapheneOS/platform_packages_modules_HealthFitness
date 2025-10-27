@@ -18,6 +18,8 @@ package com.android.healthconnect.controller.service
 import android.content.Context
 import android.health.connect.HealthConnectManager
 import android.net.Uri
+import com.android.healthconnect.controller.autodelete.api.LoadAutoDeleteUseCase
+import com.android.healthconnect.controller.autodelete.api.UpdateAutoDeleteUseCase
 import com.android.healthconnect.controller.data.access.ILoadAccessUseCase
 import com.android.healthconnect.controller.data.access.ILoadFitnessTypeContributorAppsUseCase
 import com.android.healthconnect.controller.data.access.ILoadMedicalTypeContributorAppsUseCase
@@ -462,4 +464,16 @@ class UseCaseModule {
     ): BaseUseCase<Unit, MigrationRestoreState> {
         return useCase
     }
+
+    // region Auto-Delete
+    @Provides
+    fun provideLoadAutoDeleteUseCase(useCase: LoadAutoDeleteUseCase): BaseUseCase<Unit, Int> {
+        return useCase
+    }
+
+    @Provides
+    fun provideUpdateAutoDeleteUseCase(useCase: UpdateAutoDeleteUseCase): BaseUseCase<Int, Unit> {
+        return useCase
+    }
+    // endregion
 }

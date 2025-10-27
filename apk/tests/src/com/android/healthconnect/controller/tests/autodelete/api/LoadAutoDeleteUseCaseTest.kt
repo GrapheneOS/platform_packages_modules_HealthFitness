@@ -55,7 +55,7 @@ class LoadAutoDeleteUseCaseTest {
     fun loadAutoDeleteUseCase_whenRecordRetention90days_returns3months() = runTest {
         whenever(healthConnectManager.recordRetentionPeriodInDays).thenReturn(90)
 
-        val result = loadAutoDeleteUseCase.invoke()
+        val result = loadAutoDeleteUseCase.invoke(Unit)
         assertThat(result is UseCaseResults.Success).isTrue()
         assertThat((result as UseCaseResults.Success).data).isEqualTo(3)
     }
@@ -64,7 +64,7 @@ class LoadAutoDeleteUseCaseTest {
     fun loadAutoDeleteUseCase_whenRecordRetention540days_returns18months() = runTest {
         whenever(healthConnectManager.recordRetentionPeriodInDays).thenReturn(540)
 
-        val result = loadAutoDeleteUseCase.invoke()
+        val result = loadAutoDeleteUseCase.invoke(Unit)
         assertThat(result is UseCaseResults.Success).isTrue()
         assertThat((result as UseCaseResults.Success).data).isEqualTo(18)
     }
@@ -73,7 +73,7 @@ class LoadAutoDeleteUseCaseTest {
     fun loadAutoDeleteUseCase_whenRecordRetention0days_returns0months() = runTest {
         whenever(healthConnectManager.recordRetentionPeriodInDays).thenReturn(0)
 
-        val result = loadAutoDeleteUseCase.invoke()
+        val result = loadAutoDeleteUseCase.invoke(Unit)
         assertThat(result is UseCaseResults.Success).isTrue()
         assertThat((result as UseCaseResults.Success).data).isEqualTo(0)
     }
@@ -83,7 +83,7 @@ class LoadAutoDeleteUseCaseTest {
         whenever(healthConnectManager.recordRetentionPeriodInDays)
             .thenThrow(HealthConnectException(HealthConnectException.ERROR_UNKNOWN))
 
-        val result = loadAutoDeleteUseCase.invoke()
+        val result = loadAutoDeleteUseCase.invoke(Unit)
         assertThat(result is UseCaseResults.Failed).isTrue()
         assertThat((result as UseCaseResults.Failed).exception is HealthConnectException).isTrue()
         assertThat((result.exception as HealthConnectException).errorCode)
