@@ -23,10 +23,8 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Tilladelser og data"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Administrer sundheds- og træningsdata på din telefon, og vælg, hvilke apps der skal have adgang til dem"</string>
     <string name="data_title" msgid="4456619761533380816">"Data og adgang"</string>
-    <!-- no translation found for browse_medical_data (6492659245149862639) -->
-    <skip />
-    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
-    <skip />
+    <string name="browse_medical_data" msgid="6492659245149862639">"Gennemse patientjournaler"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"Se dine patientjournaler, og hvilke apps der kan tilgå dem"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Alle kategorier"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Se alle kategorier"</string>
     <string name="no_data" msgid="1906986019249068659">"Ingen data"</string>
@@ -112,10 +110,8 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Læs forbrændte kalorier"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Tillader, at appen læser de forbrændte kalorier"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til data i baggrunden?"</string>
-    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
-    <skip />
-    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
-    <skip />
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Hvis du tillader det, kan denne app tilgå trænings- og velværedata samt patientjournaler, når du ikke bruger appen."</string>
+    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"Hvis du tillader det, kan denne app tilgå patientjournaler, når du ikke bruger appen."</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Hvis du tillader det, kan denne app tilgå trænings- og velværedata, når du ikke bruger appen."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Hvis du tillader det, kan appen tilgå Health Connect-data, når du ikke bruger appen."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"Vil du tillade, at <xliff:g id="APP_NAME">%1$s</xliff:g> kan tilgå gamle data?"</string>
@@ -126,11 +122,9 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> yderligere adgang?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g> anmoder også om adgang til disse Health Connect-indstillinger"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Adgang til alle data i baggrunden"</string>
-    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
-    <skip />
+    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"Tilgå patientjournaler i baggrunden"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Adgang til trænings- og velværedata i baggrunden"</string>
-    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
-    <skip />
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"Giv denne app adgang til trænings- og velværedata samt patientjournaler, når du ikke bruger appen"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Giv denne app adgang til disse data, når du ikke bruger appen"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Giv denne app adgang til disse data, når du ikke bruger appen"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Adgang til data i baggrunden"</string>
@@ -141,15 +135,12 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Adgang til gamle data"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"Giv denne app tilladelse til at tilgå Health Connect-data, der er tilføjet før <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Giv denne app tilladelse til at tilgå alle tidligere Health Connect-data"</string>
-    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
-    <skip />
+    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"<xliff:g id="APP_NAME">%1$s</xliff:g> har allerede adgang til tidligere data om dine patientjournaler"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Læs mere om tilladelser"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Adgang til alle data i baggrunden"</string>
-    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
-    <skip />
+    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"Tilgå patientjournaler i baggrunden"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Adgang til trænings- og velværedata i baggrunden"</string>
-    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
-    <skip />
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"Giv denne app adgang til trænings- og velværedata samt patientjournaler, når du ikke bruger appen"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Giv denne app adgang til disse data, når du ikke bruger appen"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Giv denne app adgang til disse data, når du ikke bruger appen"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Adgang til data i baggrunden"</string>
@@ -161,10 +152,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Giv denne app tilladelse til at tilgå Health Connect-data, der er tilføjet før <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Giv denne app tilladelse til at tilgå alle tidligere Health Connect-data"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Træningsdata læses ikke i øjeblikket, fordi <xliff:g id="APP_NAME">%1$s</xliff:g> ikke har læsetilladelse"</string>
-    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
-    <skip />
-    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
-    <skip />
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g> har allerede adgang til tidligere data om dine patientjournaler. Hvis du vil ændre dette, skal du deaktivere tilladelser for patientjournaler for denne app"</string>
+    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"Administrer tilladelser for patientjournaler"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Giv mindst én tilladelse til at læse for at aktivere adgang i baggrunden eller tidligere dataadgang for denne app"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Giv mindst én tilladelse til at læse for at aktivere adgang i baggrunden for denne app"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Giv mindst én tilladelse til at læse for at aktivere tidligere dataadgang for denne app"</string>
@@ -339,14 +328,10 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"hudtemperatur"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Læs hudtemperatur"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Skriv hudtemperatur"</string>
-    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
-    <skip />
-    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
-    <skip />
-    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
-    <skip />
-    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
-    <skip />
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"Dette omfatter alle patientjournaler, der er synkroniseret med og tilføjet i Health Connect. Dette er muligvis ikke din fulde patientjournal, og den indeholder ikke en lægefaglig beskrivelse af dine patientjournaler."</string>
+    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"Alle patientjournaler"</string>
+    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"alle patientjournaler"</string>
+    <string name="all_medical_data_content_description" msgid="3454355551506537094">"Angiv alle patientjournaler"</string>
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Allergier"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"allergier"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Læs allergier"</string>
@@ -427,17 +412,13 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til trænings- og velværedata?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Du kan se, hvordan <xliff:g id="APP_NAME">%1$s</xliff:g> håndterer dine data, i appens <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"privatlivspolitik"</string>
-    <!-- no translation found for medical_request_header (5701693055388739014) -->
-    <skip />
+    <string name="medical_request_header" msgid="5701693055388739014">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til dine patientjournaler?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Hvis du giver adgang, kan appen læse og skrive data som f.eks. allergier, prøvesvar, vaccinationer m.m.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Hvis du giver adgang, kan appen læse data som f.eks. allergier, prøvesvar, vaccinationer m.m.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
-    <skip />
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"Om patientjournaler"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"De data, der deles, omfatter"</string>
-    <!-- no translation found for medical_request_summary (553735170968628758) -->
-    <skip />
-    <!-- no translation found for medical_request_footer (157243861031258933) -->
-    <skip />
+    <string name="medical_request_summary" msgid="553735170968628758">"Hvis du giver tilladelse, kan <xliff:g id="APP_NAME">%1$s</xliff:g> dele dine patientjournaler med Health Connect."</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"Synkroniser dine patientjournaler fra forskellige apps og kilder for at samle dem ét sted"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Vil du fjerne alle tilladelser?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Fjern alle"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> vil ikke længere kunne læse eller skrive data i Health Connect.\n\nDette påvirker ikke appens andre tilladelser, f.eks. adgang til kamera, mikrofon eller lokation."</string>
@@ -447,10 +428,8 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Slet også <xliff:g id="APP_NAME">%1$s</xliff:g>-data fra Health Connect"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Vil du fjerne alle tilladelser for træning og sundhed?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Slet også træningsdata fra <xliff:g id="APP_NAME">%1$s</xliff:g> i Health Connect"</string>
-    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
-    <skip />
-    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
-    <skip />
+    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"Vil du fjerne alle tilladelser for patientjournaler?"</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"Slet også patientjournaler fra <xliff:g id="APP_NAME">%1$s</xliff:g> i Health Connect"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> vil ikke længere kunne læse eller skrive disse data i Health Connect.\n\nDette påvirker ikke appens andre tilladelser, f.eks. adgang til kamera, mikrofon eller lokation."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> vil ikke længere kunne læse eller skrive disse data i Health Connect, herunder baggrundsdata.\n\nDette påvirker ikke appens andre tilladelser, f.eks. adgang til kamera, mikrofon eller lokation."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> vil ikke længere kunne læse eller skrive disse data i Health Connect, herunder tidligere data.\n\nDette påvirker ikke appens andre tilladelser, f.eks. adgang til kamera, mikrofon eller lokation."</string>
@@ -460,8 +439,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> vil ikke længere kunne læse eller skrive data i Health Connect, herunder baggrundsdata.\n\nDette påvirker ikke appens andre tilladelser, f.eks. adgang til kamera, mikrofon eller lokation."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> vil ikke længere kunne læse eller skrive data i Health Connect, herunder tidligere data.\n\nDette påvirker ikke appens andre tilladelser, f.eks. adgang til kamera, mikrofon eller lokation."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> vil ikke længere kunne læse eller skrive data i Health Connect, herunder baggrundsdata og tidligere data.\n\nDette påvirker ikke appens andre tilladelser, f.eks. adgang til kamera, mikrofon eller lokation."</string>
-    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
-    <skip />
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"Slet også træningsdata og patientjournaler fra <xliff:g id="APP_NAME">%1$s</xliff:g> i Health Connect"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Tilladelserne for denne app er fjernet"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Slet også alle Health Connect-data"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Næste dag"</string>
@@ -510,10 +488,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"Tilladelser"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"Fitness og sundhed"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Træning, søvn, ernæring m.m."</string>
-    <!-- no translation found for medical_permissions (1066296298908103091) -->
-    <skip />
-    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
-    <skip />
+    <string name="medical_permissions" msgid="1066296298908103091">"Patientjournaler"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"patientjournaler"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Prøvesvar, medicin, vaccinationer m.m."</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Apptilladelser blev fjernet"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect fjernede tilladelser for <xliff:g id="APP_DATA">%s</xliff:g>"</string>
@@ -607,8 +583,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Gå til Play Butik"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Kom godt i gang med Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect opbevarer dine sundheds- og træningsdata, så du nemt kan synkronisere forskellige apps på din enhed"</string>
-    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
-    <skip />
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect gemmer og synkroniserer dine sundheds- og træningsdata fra forskellige apps.\n\n"<b>"Trænings- og velværedata,"</b>" herunder træningspas, skridt, ernæring, søvn m.m.\n\n"<b>"Patientjournaler,"</b>" herunder vaccinationer, prøvesvar m.m."</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Med Health Connect kan du gøre følgende"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Del data med dine apps"</b>\n"Vælg, hvilke data hver app kan læse eller skrive til Health Connect"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Administrer indstillinger og privatliv"</b>\n"Du kan til enhver tid ændre apptilladelser og administrere dine data"</string>

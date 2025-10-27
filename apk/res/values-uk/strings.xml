@@ -23,10 +23,8 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Дозволи й дані"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Керуйте даними про здоров’я і фізичну активність на пристрої, а також визначайте додатки, які матимуть доступ до цих даних"</string>
     <string name="data_title" msgid="4456619761533380816">"Дані й доступ"</string>
-    <!-- no translation found for browse_medical_data (6492659245149862639) -->
-    <skip />
-    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
-    <skip />
+    <string name="browse_medical_data" msgid="6492659245149862639">"Переглянути медичні дані"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"Переглядайте свої медичні дані й додатки, які мають до них доступ"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Усі категорії"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Переглянути всі категорії"</string>
     <string name="no_data" msgid="1906986019249068659">"Немає даних"</string>
@@ -112,10 +110,8 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Зчитувати спалені калорії"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Дозволяє додатку зчитувати дані про спалені калорії"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до даних у фоновому режимі?"</string>
-    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
-    <skip />
-    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
-    <skip />
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Якщо надати цей дозвіл, додаток матиме доступ до даних про фізичну активність і здоров’я, а також до медичних даних, коли ви не користуєтеся ним."</string>
+    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"Якщо надати цей дозвіл, додаток матиме доступ до медичних даних, коли ви не користуєтеся ним."</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Якщо надати цей дозвіл, додаток матиме доступ до даних про фізичну активність і здоров’я, коли ви не користуєтеся ним."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Якщо надати дозвіл, цей додаток матиме доступ до даних Health Connect, коли ви не користуєтеся ним."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до минулих даних?"</string>
@@ -126,11 +122,9 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> розширений доступ?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"Додаток <xliff:g id="APP_NAME">%1$s</xliff:g> також запитує доступ до налаштувань Health Connect"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Доступ до всіх даних у фоновому режимі"</string>
-    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
-    <skip />
+    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"Доступ до медичних даних у фоновому режимі"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Доступ до даних про фізичну активність і здоров’я у фоновому режимі"</string>
-    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
-    <skip />
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"Дозволити цьому додатку доступ до даних про фізичну активність і здоров’я, а також до медичних даних, коли ви не користуєтеся ним"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Дозволити цьому додатку доступ до цих даних, коли ви не користуєтеся ним"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Дозволити цьому додатку доступ до цих даних, коли ви не користуєтеся ним"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Доступ до даних у фоновому режимі"</string>
@@ -141,15 +135,12 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Доступ до минулих даних"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"Дозволити цьому додатку доступ до даних Health Connect, збережених до <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Дозволити цьому додатку доступ до всіх минулих даних Health Connect"</string>
-    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
-    <skip />
+    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"Додаток <xliff:g id="APP_NAME">%1$s</xliff:g> уже має доступ до ваших минулих медичних даних"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Докладніше про дозволи"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Доступ до всіх даних у фоновому режимі"</string>
-    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
-    <skip />
+    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"Доступ до медичних даних у фоновому режимі"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Доступ до даних про фізичну активність і здоров’я у фоновому режимі"</string>
-    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
-    <skip />
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"Дозволити цьому додатку доступ до даних про фізичну активність і здоров’я, а також до медичних даних, коли ви не користуєтеся ним"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Дозволити цьому додатку доступ до цих даних, коли ви не користуєтеся ним"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Дозволити цьому додатку доступ до цих даних, коли ви не користуєтеся ним"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Доступ до даних у фоновому режимі"</string>
@@ -161,10 +152,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Дозволити цьому додатку доступ до даних Health Connect, збережених до <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Дозволити цьому додатку доступ до всіх минулих даних Health Connect"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Зараз дані про фізичну активність не переглядаються, оскільки для додатка <xliff:g id="APP_NAME">%1$s</xliff:g> не ввімкнено дозвіл на перегляд"</string>
-    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
-    <skip />
-    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
-    <skip />
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"Додаток <xliff:g id="APP_NAME">%1$s</xliff:g> уже має доступ до ваших минулих медичних даних. Щоб це змінити, вимкніть для цього додатка дозволи для медичних даних."</string>
+    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"Керувати дозволами для медичних даних"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Надайте принаймні один дозвіл на перегляд, щоб увімкнути для цього додатка доступ у фоновому режимі або до минулих даних"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Надайте принаймні один дозвіл на перегляд, щоб увімкнути для цього додатка доступ у фоновому режимі"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Надайте принаймні один дозвіл на перегляд, щоб увімкнути для цього додатка доступ до минулих даних"</string>
@@ -339,14 +328,10 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"температура шкіри"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Переглядати температуру шкіри"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Записувати температуру шкіри"</string>
-    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
-    <skip />
-    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
-    <skip />
-    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
-    <skip />
-    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
-    <skip />
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"Це стосується всіх медичних даних, синхронізованих із Health Connect і доданих у цей сервіс. Це не обов’язково має бути ваша повна медична карта й медичний опис інформації про здоров’я."</string>
+    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"Усі медичні дані"</string>
+    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"усі медичні дані"</string>
+    <string name="all_medical_data_content_description" msgid="3454355551506537094">"Записувати всі медичні дані"</string>
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Алергії"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"алергії"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Переглядати дані про алергії"</string>
@@ -427,17 +412,13 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до даних про фізичну активність і здоров’я?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Щоб дізнатися, як додаток <xliff:g id="APP_NAME">%1$s</xliff:g> обробляє ваші дані, перегляньте його <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"політиці конфіденційності"</string>
-    <!-- no translation found for medical_request_header (5701693055388739014) -->
-    <skip />
+    <string name="medical_request_header" msgid="5701693055388739014">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до ваших медичних даних?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Якщо ви надасте доступ, додаток зможе переглядати й записувати такі дані, як відомості про алергії, результати аналізів, щеплення тощо\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Якщо ви надасте доступ, додаток зможе переглядати такі дані, як відомості про алергії, результати аналізів, щеплення тощо\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
-    <skip />
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"Про медичні дані"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Приклади даних, що передаватимуться"</string>
-    <!-- no translation found for medical_request_summary (553735170968628758) -->
-    <skip />
-    <!-- no translation found for medical_request_footer (157243861031258933) -->
-    <skip />
+    <string name="medical_request_summary" msgid="553735170968628758">"Якщо ви надасте дозвіл, додаток <xliff:g id="APP_NAME">%1$s</xliff:g> зможе надсилати медичні дані в Health Connect."</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"Синхронізуйте медичні дані з різних додатків і джерел, щоб централізовано зберігати їх"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Вилучити всі дозволи?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Вилучити всі"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"Додаток <xliff:g id="APP_NAME">%1$s</xliff:g> більше не зможе переглядати або записувати будь-які дані з Health Connect.\n\nЦе не вплине на інші дозволи, надані цьому додатку (наприклад, на доступ до камери, мікрофона чи геоданих)."</string>
@@ -447,10 +428,8 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Також видалити дані додатка <xliff:g id="APP_NAME">%1$s</xliff:g> з Health Connect"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Вилучити всі дозволи для даних про активність і здоров’я?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Також видалити дані про фізичну активність із додатка <xliff:g id="APP_NAME">%1$s</xliff:g> із Health Connect"</string>
-    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
-    <skip />
-    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
-    <skip />
+    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"Вилучити всі дозволи для медичних даних?"</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"Також видалити медичні дані з додатка <xliff:g id="APP_NAME">%1$s</xliff:g> із Health Connect"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"Додаток <xliff:g id="APP_NAME">%1$s</xliff:g> більше не зможе переглядати або записувати ці дані з Health Connect.\n\nЦе не вплине на інші дозволи цього додатка (наприклад, на доступ до камери, мікрофона чи геоданих)."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"Додаток <xliff:g id="APP_NAME">%1$s</xliff:g> більше не зможе переглядати або записувати ці дані з Health Connect, зокрема у фоновому режимі.\n\nЦе не вплине на інші дозволи цього додатка (наприклад, на доступ до камери, мікрофона чи геоданих)."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"Додаток <xliff:g id="APP_NAME">%1$s</xliff:g> більше не зможе переглядати або записувати ці дані з Health Connect, зокрема минулі дані.\n\nЦе не вплине на інші дозволи цього додатка (наприклад, на доступ до камери, мікрофона чи геоданих)."</string>
@@ -460,8 +439,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"Додаток <xliff:g id="APP_NAME">%1$s</xliff:g> більше не зможе переглядати або записувати дані з Health Connect, зокрема у фоновому режимі.\n\nЦе не вплине на інші дозволи цього додатка (наприклад, на доступ до камери, мікрофона чи геоданих)."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"Додаток <xliff:g id="APP_NAME">%1$s</xliff:g> більше не зможе переглядати або записувати дані з Health Connect, зокрема минулі дані.\n\nЦе не вплине на інші дозволи цього додатка (наприклад, на доступ до камери, мікрофона чи геоданих)."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"Додаток <xliff:g id="APP_NAME">%1$s</xliff:g> більше не зможе переглядати або записувати дані з Health Connect, зокрема минулі дані чи дані у фоновому режимі.\n\nЦе не вплине на інші дозволи цього додатка (наприклад, на доступ до камери, мікрофона чи геоданих)."</string>
-    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
-    <skip />
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"Також видалити дані про фізичну активність і медичні дані з додатка <xliff:g id="APP_NAME">%1$s</xliff:g> із Health Connect"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Дозволи для цього додатка вилучено"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Також видалити всі дані Health Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Наступний день"</string>
@@ -510,10 +488,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"Дозволи"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"Фізична активність і здоров’я"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Тренування, сон, харчування тощо"</string>
-    <!-- no translation found for medical_permissions (1066296298908103091) -->
-    <skip />
-    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
-    <skip />
+    <string name="medical_permissions" msgid="1066296298908103091">"Медичні дані"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"медичні дані"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Результати аналізів, ліки, вакцини тощо"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Вилучені дозволи для додатків"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Сервіс Health Connect вилучив дозволи для додатка <xliff:g id="APP_DATA">%s</xliff:g>"</string>
@@ -607,8 +583,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Перейти в Google Play"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Початок роботи з Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Сервіс Health Connect зберігає ваші дані про здоров’я і фізичну активність, а також дає змогу легко синхронізувати їх із різними додатками на вашому пристрої"</string>
-    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
-    <skip />
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect зберігає і синхронізує дані про здоров’я та фізичну активність із різних додатків.\n\n"<b>"Дані про здоров’я і фізичну активність,"</b>" зокрема про тренування, кількість кроків, харчування, сон тощо\n\n"<b>"Медичні дані,"</b>" зокрема відомості про вакцини, результати аналізів тощо"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Сервіс Health Connect надає вам перелічені нижче можливості"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Діліться даними з додатками"</b>\n"Виберіть дані, які кожен додаток зможе переглядати або записувати в Health Connect"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Керуйте налаштуваннями й конфіденційністю"</b>\n"Змінюйте дозволи для додатків і керуйте даними будь-коли"</string>

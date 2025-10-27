@@ -27,6 +27,5 @@
     <string name="settings_manage_permission" msgid="3585762257420446893">"স্বাস্থ্য, ফিটনেস ও সুস্থতা"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"স্বাস্থ্য, ফিটনেস ও সুস্থতা"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"ফিটনেস ও সুস্থতা"</string>
-    <!-- no translation found for settings_medical_permissions (3458484943007427070) -->
-    <skip />
+    <string name="settings_medical_permissions" msgid="3458484943007427070">"মেডিকেল রেকর্ড"</string>
 </resources>

@@ -23,10 +23,8 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"ការអនុញ្ញាត និងទិន្នន័យ"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"គ្រប់គ្រងទិន្នន័យសុខភាព និងសម្បទានៅលើឧបករណ៍របស់អ្នក និងគ្រប់គ្រងថាតើកម្មវិធីណាខ្លះអាចចូលប្រើទិន្នន័យនេះបាន"</string>
     <string name="data_title" msgid="4456619761533380816">"ទិន្នន័យ និងការចូលប្រើ"</string>
-    <!-- no translation found for browse_medical_data (6492659245149862639) -->
-    <skip />
-    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
-    <skip />
+    <string name="browse_medical_data" msgid="6492659245149862639">"រុករកកំណត់ត្រាវេជ្ជសាស្ត្រ"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"មើលកំណត់ត្រាវេជ្ជសាស្ត្ររបស់អ្នក និងកម្មវិធីណាខ្លះដែលអាចចូលប្រើកំណត់ត្រាទាំងនោះបាន"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"គ្រប់ប្រភេទ"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"មើលប្រភេទទាំងអស់"</string>
     <string name="no_data" msgid="1906986019249068659">"គ្មាន​ទិន្នន័យទេ"</string>
@@ -112,10 +110,8 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"អានកាឡូរីដែលបានដុត"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"អនុញ្ញាតឱ្យកម្មវិធីអានកាឡូរីដែលបានដុត"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"អនុញ្ញាតឱ្យ <xliff:g id="APP_NAME">%1$s</xliff:g> ចូលប្រើទិន្នន័យនៅផ្ទៃខាងក្រោយឬ?"</string>
-    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
-    <skip />
-    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
-    <skip />
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"ប្រសិនបើអ្នកអនុញ្ញាត កម្មវិធីនេះអាចចូលប្រើទិន្នន័យសម្បទា និងសុខុមាលភាព ព្រមទាំងកំណត់ត្រាវេជ្ជសាស្ត្រ នៅពេលអ្នកមិនកំពុងប្រើកម្មវិធីនេះ។"</string>
+    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"ប្រសិនបើអ្នកអនុញ្ញាត កម្មវិធីនេះអាចចូលប្រើកំណត់ត្រាវេជ្ជសាស្ត្រ នៅពេលអ្នកមិនកំពុងប្រើកម្មវិធីនេះ។"</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"ប្រសិនបើអ្នកអនុញ្ញាត កម្មវិធីនេះអាចចូលប្រើទិន្នន័យសម្បទា និងសុខុមាលភាព នៅពេលអ្នកមិនកំពុងប្រើកម្មវិធីនេះ។"</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"ប្រសិនបើអ្នកអនុញ្ញាត កម្មវិធីនេះអាចចូលប្រើទិន្នន័យ Health Connect នៅពេលអ្នកមិនកំពុងប្រើកម្មវិធីនេះ។"</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"អនុញ្ញាតឱ្យ <xliff:g id="APP_NAME">%1$s</xliff:g> ចូលប្រើទិន្នន័យពីមុនឬ?"</string>
@@ -126,11 +122,9 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"អនុញ្ញាតសិទ្ធិចូលប្រើបន្ថែមសម្រាប់ <xliff:g id="APP_NAME">%1$s</xliff:g> ឬ?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g> ក៏ចង់ចូលប្រើការកំណត់ Health Connect ទាំងនេះផងដែរ"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"ចូលប្រើទិន្នន័យទាំងអស់នៅផ្ទៃខាងក្រោយ"</string>
-    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
-    <skip />
+    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"ចូលប្រើកំណត់ត្រាវេជ្ជសាស្ត្រនៅផ្ទៃខាងក្រោយ"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"ចូលប្រើទិន្នន័យសម្បទា និងសុខុមាលភាពនៅផ្ទៃខាងក្រោយ"</string>
-    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
-    <skip />
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"អនុញ្ញាតឱ្យកម្មវិធីនេះចូលប្រើទិន្នន័យសម្បទា និងសុខុមាលភាព ព្រមទាំងកំណត់ត្រាវេជ្ជសាស្ត្រ នៅពេលអ្នកមិនកំពុងប្រើកម្មវិធីនេះ"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"អនុញ្ញាតឱ្យកម្មវិធីនេះចូលប្រើទិន្នន័យនេះ នៅពេលអ្នកមិនកំពុងប្រើកម្មវិធីនេះ"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"អនុញ្ញាតឱ្យកម្មវិធីនេះចូលប្រើទិន្នន័យនេះ នៅពេលអ្នកមិនកំពុងប្រើកម្មវិធីនេះ"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"ចូលប្រើទិន្នន័យនៅផ្ទៃខាងក្រោយ"</string>
@@ -141,15 +135,12 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"ចូលប្រើទិន្នន័យពីមុន"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"អនុញ្ញាតឱ្យកម្មវិធីនេះចូលប្រើទិន្នន័យ Health Connect ដែលបានបញ្ចូលមុនថ្ងៃទី <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"អនុញ្ញាតឱ្យកម្មវិធីនេះចូលប្រើទិន្នន័យ Health Connect ពីមុនទាំងអស់"</string>
-    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
-    <skip />
+    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"<xliff:g id="APP_NAME">%1$s</xliff:g> អាចចូលប្រើទិន្នន័យពីមុនស្រាប់ហើយសម្រាប់កំណត់ត្រាវេជ្ជសាស្ត្ររបស់អ្នក"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"អានបន្ថែមទៀតអំពីការអនុញ្ញាត"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"ចូលប្រើទិន្នន័យទាំងអស់នៅផ្ទៃខាងក្រោយ"</string>
-    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
-    <skip />
+    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"ចូលប្រើកំណត់ត្រាវេជ្ជសាស្ត្រនៅផ្ទៃខាងក្រោយ"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"ចូលប្រើទិន្នន័យសម្បទា និងសុខុមាលភាពនៅផ្ទៃខាងក្រោយ"</string>
-    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
-    <skip />
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"អនុញ្ញាតឱ្យកម្មវិធីនេះចូលប្រើទិន្នន័យសម្បទា និងសុខុមាលភាព ព្រមទាំងកំណត់ត្រាវេជ្ជសាស្ត្រ នៅពេលអ្នកមិនកំពុងប្រើកម្មវិធីនេះ"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"អនុញ្ញាតឱ្យកម្មវិធីនេះចូលប្រើទិន្នន័យនេះ នៅពេលអ្នកមិនកំពុងប្រើកម្មវិធីនេះ"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"អនុញ្ញាតឱ្យកម្មវិធីនេះចូលប្រើទិន្នន័យនេះ នៅពេលអ្នកមិនកំពុងប្រើកម្មវិធីនេះ"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"ចូលប្រើទិន្នន័យនៅផ្ទៃខាងក្រោយ"</string>
@@ -161,10 +152,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"អនុញ្ញាតឱ្យកម្មវិធីនេះចូលប្រើទិន្នន័យ Health Connect ដែលបានបញ្ចូលមុនថ្ងៃទី <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"អនុញ្ញាតឱ្យកម្មវិធីនេះចូលប្រើទិន្នន័យ Health Connect ពីមុនទាំងអស់"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"បច្ចុប្បន្ន មិនមានទិន្នន័យ​សម្បទាដែលត្រូវបានអានទេ ដោយសារ <xliff:g id="APP_NAME">%1$s</xliff:g> មិនត្រូវបានបើកការអនុញ្ញាតឱ្យ​អាន"</string>
-    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
-    <skip />
-    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
-    <skip />
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g> អាចចូលប្រើទិន្នន័យពីមុនស្រាប់ហើយសម្រាប់កំណត់ត្រាវេជ្ជសាស្ត្ររបស់អ្នក។ ដើម្បីផ្លាស់ប្ដូរការចូលប្រើនេះ សូមបិទការអនុញ្ញាតឱ្យប្រើកំណត់ត្រាវេជ្ជសាស្ត្រសម្រាប់កម្មវិធីនេះ"</string>
+    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"គ្រប់គ្រងការអនុញ្ញាតឱ្យប្រើកំណត់ត្រាវេជ្ជសាស្ត្រ"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"បើកការអនុញ្ញាតឱ្យ​អានយ៉ាងតិចមួយ ដើម្បីបើកការចូលប្រើទិន្នន័យពីមុន ឬផ្ទៃខាងក្រោយសម្រាប់កម្មវិធីនេះ"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"បើកការអនុញ្ញាតឱ្យ​អានយ៉ាងតិចមួយ ដើម្បីបើកការ​ចូលប្រើ​ផ្ទៃ​ខាងក្រោយសម្រាប់កម្មវិធីនេះ"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"បើកការអនុញ្ញាតឱ្យ​អានយ៉ាងតិចមួយ ដើម្បីបើកការចូលប្រើទិន្នន័យពីមុនសម្រាប់កម្មវិធីនេះ"</string>
@@ -339,14 +328,10 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"សីតុណ្ហភាពស្បែក"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"អានសីតុណ្ហភាពស្បែក"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"សរសេរសីតុណ្ហភាពស្បែក"</string>
-    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
-    <skip />
-    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
-    <skip />
-    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
-    <skip />
-    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
-    <skip />
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"ចំណុចនេះរួមបញ្ចូលទាំងកំណត់ត្រាវេជ្ជសាស្ត្រទាំងអស់ដែលបានធ្វើសមកាលកម្ម និងបញ្ចូលទៅ Health Connect។ ករណីនេះប្រហែលជាមិនមែនជាកំណត់ត្រាវេជ្ជសាស្ត្រពេញលេញរបស់អ្នកទេ និងមិនរួមបញ្ចូលការពណ៌នាផ្នែកវេជ្ជសាស្ត្រអំពីកំណត់ត្រាវេជ្ជសាស្ត្ររបស់អ្នកទេ។"</string>
+    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"កំណត់ត្រាវេជ្ជសាស្ត្រទាំងអស់"</string>
+    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"កំណត់ត្រាវេជ្ជសាស្ត្រទាំងអស់"</string>
+    <string name="all_medical_data_content_description" msgid="3454355551506537094">"សរសេរកំណត់ត្រាវេជ្ជសាស្ត្រទាំងអស់"</string>
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"អាឡែហ្ស៊ី"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"អាឡែហ្ស៊ី"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"អាន​ទិន្នន័យ​អាឡែហ្ស៊ី"</string>
@@ -427,17 +412,13 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"អនុញ្ញាតឱ្យ <xliff:g id="APP_NAME">%1$s</xliff:g> ចូលប្រើទិន្នន័យសម្បទា និងសុខុមាលភាពឬ?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"អ្នកអាចស្វែងយល់អំពីរបៀបដែល <xliff:g id="APP_NAME">%1$s</xliff:g> ចាត់ចែងទិន្នន័យរបស់អ្នកនៅក្នុង<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>របស់កម្មវិធីនោះ"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"គោលការណ៍ឯកជនភាព"</string>
-    <!-- no translation found for medical_request_header (5701693055388739014) -->
-    <skip />
+    <string name="medical_request_header" msgid="5701693055388739014">"អនុញ្ញាតឱ្យ <xliff:g id="APP_NAME">%1$s</xliff:g> ចូលប្រើកំណត់ត្រាវេជ្ជសាស្ត្ររបស់អ្នកឬ?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"ប្រសិនបើអ្នកផ្ដល់សិទ្ធិចូលប្រើ កម្មវិធីអាចអាន និងសរសេរទិន្នន័យ ដូចជាអាឡែហ្ស៊ី លទ្ធផលមន្ទីរពិសោធន៍ វ៉ាក់សាំង និងអ្វីៗជាច្រើនទៀត\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"ប្រសិនបើអ្នកផ្ដល់សិទ្ធិចូលប្រើ កម្មវិធីអាចអានទិន្នន័យ ដូចជាអាឡែហ្ស៊ី លទ្ធផលមន្ទីរពិសោធន៍ វ៉ាក់សាំង និងអ្វីៗជាច្រើនទៀត\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
-    <skip />
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"អំពីកំណត់ត្រាវេជ្ជសាស្ត្រ"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"ទិន្នន័យដែលត្រូវចែករំលែករួមមាន"</string>
-    <!-- no translation found for medical_request_summary (553735170968628758) -->
-    <skip />
-    <!-- no translation found for medical_request_footer (157243861031258933) -->
-    <skip />
+    <string name="medical_request_summary" msgid="553735170968628758">"ប្រសិនបើអ្នកអនុញ្ញាត <xliff:g id="APP_NAME">%1$s</xliff:g> អាចចែករំលែកកំណត់ត្រាវេជ្ជសាស្ត្ររបស់អ្នកជាមួយ Health Connect។"</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"ធ្វើសមកាលកម្មកំណត់ត្រាវេជ្ជសាស្ត្ររបស់អ្នកពីប្រភព និងកម្មវិធីផ្សេងៗរបស់អ្នក ដើម្បីរក្សាទុកកំណត់ត្រាទាំងនេះក្នុងកន្លែងតែមួយ"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"ដក​ការអនុញ្ញាត​ទាំងអស់​ឬ?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"ដកចេញទាំងអស់"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> នឹងមិនអាចអាន ឬសរសេរទិន្នន័យពី Health Connect បានទៀតទេ។\n\nការធ្វើបែបនេះមិនប៉ះពាល់ដល់ការអនុញ្ញាតផ្សេងទៀត​ដែលកម្មវិធីនេះអាចមាន ដូចជាកាមេរ៉ា មីក្រូហ្វូន ឬទីតាំងទេ។"</string>
@@ -447,10 +428,8 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"លុបទិន្នន័យ <xliff:g id="APP_NAME">%1$s</xliff:g> ចេញពី Health Connect ផងដែរ"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"ដកការអនុញ្ញាតឱ្យប្រើសុខុមាលភាព និងសម្បទាទាំងអស់ចេញឬ?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"លុបទិន្នន័យ​សម្បទាពី <xliff:g id="APP_NAME">%1$s</xliff:g> ចេញពី Health Connect ផងដែរ"</string>
-    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
-    <skip />
-    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
-    <skip />
+    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"ដកការអនុញ្ញាតឱ្យប្រើកំណត់ត្រាវេជ្ជសាស្ត្រទាំងអស់ឬ?"</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"លុបកំណត់ត្រាវេជ្ជសាស្ត្រពី <xliff:g id="APP_NAME">%1$s</xliff:g> ចេញពី Health Connect ផងដែរ"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> នឹងមិនអាចអាន ឬសរសេរទិន្នន័យនេះពី Health Connect បានទៀតទេ។\n\nសកម្មភាពនេះមិនប៉ះពាល់ដល់ការអនុញ្ញាតផ្សេងទៀត​ដែលកម្មវិធីនេះអាចមាន ដូចជាកាមេរ៉ា មីក្រូហ្វូន ឬទីតាំងជាដើម។"</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> នឹងមិនអាចអាន ឬសរសេរទិន្នន័យនេះពី Health Connect រួមទាំងទិន្នន័យ​ផ្ទៃ​ខាង​ក្រោយបានទៀតទេ។\n\nសកម្មភាពនេះមិនប៉ះពាល់ដល់ការអនុញ្ញាតផ្សេងទៀត​ដែលកម្មវិធីនេះអាចមាន ដូចជាកាមេរ៉ា មីក្រូហ្វូន ឬទីតាំងជាដើម។"</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> នឹងមិនអាចអាន ឬសរសេរទិន្នន័យនេះពី Health Connect រួមទាំងទិន្នន័យពីមុនបានទៀតទេ។\n\nសកម្មភាពនេះមិនប៉ះពាល់ដល់ការអនុញ្ញាតផ្សេងទៀត​ដែលកម្មវិធីនេះអាចមាន ដូចជាកាមេរ៉ា មីក្រូហ្វូន ឬទីតាំងជាដើម។"</string>
@@ -460,8 +439,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> នឹងមិនអាចអាន ឬសរសេរទិន្នន័យពី Health Connect រួមទាំងទិន្នន័យ​ផ្ទៃ​ខាង​ក្រោយបានទៀតទេ។\n\nសកម្មភាពនេះមិនប៉ះពាល់ដល់ការអនុញ្ញាតផ្សេងទៀត​ដែលកម្មវិធីនេះអាចមាន ដូចជាកាមេរ៉ា មីក្រូហ្វូន ឬទីតាំងទេ។"</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> នឹងមិនអាចអាន ឬសរសេរទិន្នន័យពី Health Connect រួមទាំងទិន្នន័យពីមុនបានទៀតទេ។\n\nសកម្មភាពនេះមិនប៉ះពាល់ដល់ការអនុញ្ញាតផ្សេងទៀត​ដែលកម្មវិធីនេះអាចមាន ដូចជាកាមេរ៉ា មីក្រូហ្វូន ឬទីតាំងទេ។"</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> នឹងមិនអាចអាន ឬសរសេរទិន្នន័យពី Health Connect រួមទាំងទិន្នន័យពីមុន និងផ្ទៃខាងក្រោយបានទៀតទេ។\n\nសកម្មភាពនេះមិនប៉ះពាល់ដល់ការអនុញ្ញាតផ្សេងទៀត​ដែលកម្មវិធីនេះអាចមាន ដូចជាកាមេរ៉ា មីក្រូហ្វូន ឬទីតាំងទេ។"</string>
-    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
-    <skip />
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"លុបទិន្នន័យ​សម្បទា និងកំណត់ត្រាវេជ្ជសាស្ត្រពី <xliff:g id="APP_NAME">%1$s</xliff:g> ចេញពី Health Connect ផងដែរ"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"បានដកការអនុញ្ញាតចេញសម្រាប់កម្មវិធីនេះ"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"លុបទិន្នន័យ Health Connect ទាំងអស់ផងដែរ"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"ថ្ងៃ​បន្ទាប់"</string>
@@ -510,10 +488,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"ការអនុញ្ញាត"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"សម្បទា និងសុខុមាលភាព"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"លំហាត់ប្រាណ ការគេង អាហារូបត្ថម្ភ និងផ្សេងទៀត"</string>
-    <!-- no translation found for medical_permissions (1066296298908103091) -->
-    <skip />
-    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
-    <skip />
+    <string name="medical_permissions" msgid="1066296298908103091">"កំណត់ត្រាវេជ្ជសាស្ត្រ"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"កំណត់ត្រាវេជ្ជសាស្ត្រ"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"លទ្ធផលពីមន្ទីរពិសោធន៍ ថ្នាំ វ៉ាក់សាំង និងផ្សេងទៀត"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"បានដកការអនុញ្ញាតកម្មវិធី"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect បានដកការអនុញ្ញាតសម្រាប់ <xliff:g id="APP_DATA">%s</xliff:g>"</string>
@@ -607,8 +583,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"ទៅកាន់ Play Store"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"ចាប់ផ្ដើមជាមួយ Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect រក្សាទុក​ទិន្នន័យសុខភាព និងសម្បទា​របស់អ្នក ដោយផ្តល់ឱ្យ​អ្នកនូវ​វិធីសាមញ្ញ​ក្នុងការធ្វើសមកាលកម្ម​កម្មវិធីផ្សេងៗ​នៅលើឧបករណ៍​របស់អ្នក"</string>
-    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
-    <skip />
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect រក្សាទុក និងធ្វើសមកាលកម្មទិន្នន័យសុខភាព និង​សម្បទារបស់អ្នកពីកម្មវិធីផ្សេងៗ។\n\n"<b>"ទិន្នន័យសម្បទា និងសុខុមាលភាព"</b>"រួមមានវគ្គហាត់ប្រាណ ជំហាន អាហារូបត្ថម្ភ ដំណេក និងអ្វីៗជាច្រើនទៀត\n\n"<b>"កំណត់ត្រាវេជ្ជសាស្ត្រ"</b>" រួមទាំង​វ៉ាក់សាំង លទ្ធផលពី​មន្ទីរពិសោធន៍ និង​អ្វីៗជាច្រើនទៀត"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"តាមរយៈការប្រើ Health Connect អ្នកអាច"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"ចែករំលែកទិន្នន័យជាមួយកម្មវិធីរបស់អ្នក"</b>\n"ជ្រើសរើសទិន្នន័យដែលកម្មវិធីនីមួយៗអាចអាន ឬសរសេរទៅកាន់ Health Connect"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"គ្រប់គ្រងការកំណត់ និងឯកជនភាពរបស់អ្នក"</b>\n"ផ្លាស់ប្ដូរការអនុញ្ញាតកម្មវិធី និងគ្រប់គ្រងទិន្នន័យរបស់អ្នកបានគ្រប់ពេល"</string>
@@ -1200,7 +1175,7 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"ធ្វើ​បច្ចុប្បន្នភាព​ឥឡូវនេះ"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ចំនួនទិន្នន័យសរុប"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"ប្រភពទិន្នន័យ"</string>
-    <string name="data_sources_footer" msgid="2271085147058181039">"បញ្ចូល​ប្រភពទិន្នន័យ​ទៅក្នុងបញ្ជី ដើម្បីមើលឃើញរបៀបដែលចំនួនទិន្នន័យសរុប​អាចផ្លាស់ប្ដូរ។ ការដក​ប្រភពទិន្នន័យចេញពី​បញ្ជីនេះនឹង​បញ្ឈប់កម្មវិធីនេះពី​ការចូលរួមចំណែក​ដល់ចំនួនសរុប ប៉ុន្តែកម្មវិធីនេះ​នឹងនៅតែមាន​ការអនុញ្ញាតឱ្យសរសេរដដែល។"</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"បញ្ចូល​ប្រភពទិន្នន័យ​ទៅក្នុងបញ្ជី ដើម្បីមើលឃើញថាតើចំនួនទិន្នន័យសរុប​អាចផ្លាស់ប្ដូរបែបណា។ ការដក​ប្រភពទិន្នន័យណាមួយចេញពី​បញ្ជីនេះនឹង​បញ្ឈប់វាមិនឱ្យចូលរួមចំណែកក្នុងចំនួនសរុប ប៉ុន្តែវា​នឹងនៅតែមាន​ការអនុញ្ញាតឱ្យសរសេរដដែល។"</string>
     <string name="data_sources_empty_state" msgid="478270183887252279">"គ្មានប្រភពទិន្នន័យ"</string>
     <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"ពេលអ្នកផ្ដល់ការអនុញ្ញាតឱ្យសរសេរទិន្នន័យ<xliff:g id="CATEGORY_NAME">%1$s</xliff:g>សម្រាប់ប្រភពទិន្នន័យ ប្រភពនឹងបង្ហាញនៅទីនេះ។"</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"របៀបដែល​ប្រភព និងការកំណត់អាទិភាព​ដំណើរការ"</string>

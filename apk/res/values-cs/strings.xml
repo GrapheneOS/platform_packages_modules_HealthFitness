@@ -23,10 +23,8 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Oprávnění a data"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Spravujte údaje o zdraví a kondici na zařízení a určete, které aplikace k nim mají přístup"</string>
     <string name="data_title" msgid="4456619761533380816">"Data a přístup"</string>
-    <!-- no translation found for browse_medical_data (6492659245149862639) -->
-    <skip />
-    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
-    <skip />
+    <string name="browse_medical_data" msgid="6492659245149862639">"Procházet zdravotní záznamy"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"Zobrazit zdravotní záznamy a aplikace, které k nim mají přístup"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Všechny kategorie"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Zobrazit všechny kategorie"</string>
     <string name="no_data" msgid="1906986019249068659">"Žádná data"</string>
@@ -112,10 +110,8 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Číst spálené kalorie"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Umožňuje aplikaci číst spálené kalorie"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup k datům na pozadí?"</string>
-    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
-    <skip />
-    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
-    <skip />
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Pokud toto povolíte, bude mít aplikace přístup k datům o kondici a kvalitě života a ke zdravotním záznamům i v době, kdy ji nebudete používat."</string>
+    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"Pokud toto povolíte, bude mít aplikace přístup ke zdravotním záznamům i v době, kdy ji nebudete používat."</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Pokud toto povolíte, bude mít aplikace přístup k údajům o kondici a kvalitě života i v době, kdy ji nebudete používat."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Pokud toto povolíte, bude mít aplikace přístup k datům Health Connect i v době, kdy ji nebudete používat."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup k dřívějším datům?"</string>
@@ -126,11 +122,9 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> další přístup?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> chce také získat přístup k těmto nastavením Health Connect"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Přístup ke všem datům na pozadí"</string>
-    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
-    <skip />
+    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"Přístup ke zdravotním záznamům na pozadí"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Přístup k údajům o kondici a kvalitě života na pozadí"</string>
-    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
-    <skip />
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"Povolit této aplikaci přístup k datům o kondici a kvalitě života a ke zdravotním záznamům, když ji nepoužíváte"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Povolit této aplikaci přístup k těmto datům, když ji nepoužíváte"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Povolit této aplikaci přístup k těmto datům, když ji nepoužíváte"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Přístup k datům na pozadí"</string>
@@ -141,15 +135,12 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Přístup k dřívějším datům"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"Povolit této aplikaci přístup k datům Health Connect přidaným před <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Povolit této aplikaci přístup ke všem dřívějším datům Health Connect"</string>
-    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
-    <skip />
+    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> už má přístup k vašim dřívějším zdravotním záznamům"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Další informace o oprávněních"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Přístup ke všem datům na pozadí"</string>
-    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
-    <skip />
+    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"Přístup ke zdravotním záznamům na pozadí"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Přístup k údajům o kondici a kvalitě života na pozadí"</string>
-    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
-    <skip />
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"Povolit této aplikaci přístup k datům o kondici a kvalitě života a ke zdravotním záznamům, když ji nepoužíváte"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Povolit této aplikaci přístup k těmto datům, když ji nepoužíváte"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Povolit této aplikaci přístup k těmto datům, když ji nepoužíváte"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Přístup k datům na pozadí"</string>
@@ -161,10 +152,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Povolit této aplikaci přístup k datům Health Connect přidaným před <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Povolit této aplikaci přístup ke všem dřívějším datům Health Connect"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Momentálně se žádné údaje o kondici nečtou, protože aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> nemá zapnutá oprávnění ke čtení"</string>
-    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
-    <skip />
-    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
-    <skip />
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> už má přístup k vašim dřívějším zdravotním záznamům. Pokud to chcete změnit, vypněte této aplikaci oprávnění ke zdravotním záznamům"</string>
+    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"Spravovat oprávnění ke zdravotním záznamům"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Pokud pro tuto aplikaci chcete zapnout přístup k datům na pozadí nebo k dřívějším datům, povolte alespoň jedno oprávnění ke čtení."</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Pokud pro tuto aplikaci chcete zapnout přístup na pozadí, povolte alespoň jedno oprávnění ke čtení"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Pokud pro tuto aplikaci chcete zapnout přístup k dřívějším datům, povolte alespoň jedno oprávnění ke čtení"</string>
@@ -339,14 +328,10 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"teplota kůže"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Čtení teploty kůže"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Zápis teploty kůže"</string>
-    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
-    <skip />
-    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
-    <skip />
-    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
-    <skip />
-    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
-    <skip />
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"To zahrnuje všechny zdravotní záznamy synchronizované a přidané do Health Connect. Nejedná se o vaše úplné zdravotní záznamy včetně odborného popisu."</string>
+    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"Všechny zdravotní záznamy"</string>
+    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"všechny zdravotní záznamy"</string>
+    <string name="all_medical_data_content_description" msgid="3454355551506537094">"Zápis všech zdravotních záznamů"</string>
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Alergie"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"alergie"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Čtení alergií"</string>
@@ -427,17 +412,13 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup k údajům o kondici a kvalitě života?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Informace o tom, jak aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> nakládá s vašimi daty, najdete v jejích <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"zásadách ochrany soukromí"</string>
-    <!-- no translation found for medical_request_header (5701693055388739014) -->
-    <skip />
+    <string name="medical_request_header" msgid="5701693055388739014">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup k vašim zdravotním záznamům?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Pokud aplikaci udělíte přístup, bude moct číst a zapisovat data, jako jsou alergie, laboratorní výsledky, vakcíny a podobně\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Pokud aplikaci udělíte přístup, bude moct číst data, jako jsou alergie, laboratorní výsledky, vakcíny a podobně\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
-    <skip />
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"Informace o zdravotních záznamech"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Budou sdílena například následující data"</string>
-    <!-- no translation found for medical_request_summary (553735170968628758) -->
-    <skip />
-    <!-- no translation found for medical_request_footer (157243861031258933) -->
-    <skip />
+    <string name="medical_request_summary" msgid="553735170968628758">"Pokud to povolíte, může aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> sdílet vaše zdravotní záznamy se službou Health Connect."</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"Synchronizujte své zdravotní záznamy z různých aplikací a zdrojů, abyste je měli na jednom místě"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Odebrat všechna oprávnění?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Odstranit vše"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> už nebude moct číst ani zapisovat žádná data ze služby Health Connect.\n\nTato akce nemá vliv na ostatní oprávnění, která aplikace má, jako je přístup k fotoaparátu, mikrofonu nebo poloze."</string>
@@ -447,10 +428,8 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Také vymazat data aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> ze služby Health Connect"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Odebrat všechna oprávnění pro fitness a kvalitu života?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Také ze služby Health Connect vymazat údaje o kondici z aplikace <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
-    <skip />
-    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
-    <skip />
+    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"Odebrat všechna oprávnění ke zdravotním záznamům?"</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"Také z Health Connect vymazat zdravotní záznamy z aplikace <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> už nebude moct číst ani zapisovat tato data ze služby Health Connect.\n\nTato akce nemá vliv na ostatní oprávnění, která aplikace může mít, jako je přístup k fotoaparátu, mikrofonu nebo poloze."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> už nebude moct číst ani zapisovat tato data ze služby Health Connect, včetně dat na pozadí.\n\nTato akce nemá vliv na ostatní oprávnění, která aplikace může mít, jako je přístup k fotoaparátu, mikrofonu nebo poloze."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> už nebude moct číst ani zapisovat tato data ze služby Health Connect, včetně dřívějších dat.\n\nTato akce nemá vliv na ostatní oprávnění, která aplikace může mít, jako je přístup k fotoaparátu, mikrofonu nebo poloze."</string>
@@ -460,8 +439,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> už nebude moct číst ani zapisovat data ze služby Health Connect, včetně dat na pozadí.\n\nTato akce nemá vliv na ostatní oprávnění, která aplikace může mít, jako je přístup k fotoaparátu, mikrofonu nebo poloze."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> už nebude moct číst ani zapisovat data ze služby Health Connect, včetně dřívějších dat.\n\nTato akce nemá vliv na ostatní oprávnění, která aplikace může mít, jako je přístup k fotoaparátu, mikrofonu nebo poloze."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> už nebude moct číst ani zapisovat data ze služby Health Connect, včetně dat na pozadí a dřívějších dat.\n\nTato akce nemá vliv na ostatní oprávnění, která aplikace může mít, jako je přístup k fotoaparátu, mikrofonu nebo poloze."</string>
-    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
-    <skip />
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"Také z Health Connect vymazat údaje o kondici a zdravotní záznamy z aplikace <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Této aplikaci byla odebrána oprávnění"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Smazat i všechna data Health Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Další den"</string>
@@ -510,10 +488,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"Oprávnění"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"Kondice a kvalita života"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Cvičení, spánek, výživa a další"</string>
-    <!-- no translation found for medical_permissions (1066296298908103091) -->
-    <skip />
-    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
-    <skip />
+    <string name="medical_permissions" msgid="1066296298908103091">"Zdravotní záznamy"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"zdravotní záznamy"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Výsledky testů, léky, vakcíny a další"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Odebrání oprávnění aplikacím"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Aplikace Health Connect odebrala oprávnění aplikaci <xliff:g id="APP_DATA">%s</xliff:g>"</string>
@@ -607,8 +583,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Přejít do obchodu Play"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Začínáme se službou Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect bezpečně ukládá údaje o zdraví a kondici, což umožňuje jednoduše synchronizovat různé aplikace v zařízení"</string>
-    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
-    <skip />
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect ukládá a synchronizuje údaje o zdraví a kondici z různých aplikací.\n\n"<b>"Data o kondici a kvalitě života,"</b>" včetně záznamů cvičení, počtu kroků, výživy, spánku a podobně.\n\n"<b>"Zdravotní záznamy,"</b>" včetně očkování, laboratorních výsledků a podobně."</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connect umožňuje"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Sdílet data s aplikacemi"</b>\n"Zvolte si, která data mohou jednotlivé aplikace ve službě Health Connect číst nebo zapisovat"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Spravovat nastavení a ochranu soukromí"</b>\n"Kdykoliv můžete měnit oprávnění aplikací a spravovat data"</string>

@@ -23,10 +23,8 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"ፈቃዶች እና ውሂብ"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"በመሣሪያዎ ላይ ያለውን የጤና እና አካል ብቃት ውሂብ ያስተዳድሩ እና የትኛዎቹ መተግበሪያዎች ሊደርሱበት እንደሚችሉ ይቆጣጠሩ"</string>
     <string name="data_title" msgid="4456619761533380816">"ውሂብ እና መዳረሻ"</string>
-    <!-- no translation found for browse_medical_data (6492659245149862639) -->
-    <skip />
-    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
-    <skip />
+    <string name="browse_medical_data" msgid="6492659245149862639">"የሕክምና መዝገቦችን አስስ"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"የእርስዎን የሕክምና መዝገቦች እና የትኛዎቹ መተግበሪያዎች ሊደርሱባቸው እንደሚችሉ ይመልከቱ"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"ሁሉም ምድቦች"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"ሁሉንም ምድቦች አሳይ"</string>
     <string name="no_data" msgid="1906986019249068659">"ውሂብ የለም"</string>
@@ -112,10 +110,8 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"የተቃጠሉ ካሎሪዎችን ያነባል"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"መተግበሪያዎቹ የተቃጠሉትን ካሎሪዎች እንዲያነቡ ያስችላቸዋል"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"<xliff:g id="APP_NAME">%1$s</xliff:g> በዳራ ውስጥ ያለውን ውሂብ እንዲደርስ ይፈቀድ?"</string>
-    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
-    <skip />
-    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
-    <skip />
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"ከፈቀዱ፣ ይህን መተግበሪያ እየተጠቀሙ ባልሆነበት ጊዜ መተግበሪያው የአካል ብቃት እና የደኅንነት ውሂብ እና የሕክምና መዝገቦችን መድረስ ይችላል።"</string>
+    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"ከፈቀዱ፣ መተግበሪያውን እየተጠቀሙ ባልሆነበት ጊዜ ይህ መተግበሪያ የሕክምና መዝገቦችን መድረስ ይችላል።"</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"ከፈቀዱ ይህን መተግበሪያ እየተጠቀሙ ባልሆኑበት ጊዜ መተግበሪያው የአካል ብቃት እና ጤንነት ውሂብን መድረስ ይችላል።"</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"ከፈቀዱ ይህን መተግበሪያ እየተጠቀሙ ባልሆኑበት ጊዜ መተግበሪያው የጤና አገናኝ ውሂብን መድረስ ይችላል።"</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"<xliff:g id="APP_NAME">%1$s</xliff:g> ያለፈ ውሂብን እንዲደርስ ይፈቀድ?"</string>
@@ -126,11 +122,9 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"ለ<xliff:g id="APP_NAME">%1$s</xliff:g> ተጨማሪ መዳረሻ ይፈቀድ?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"እንዲሁም <xliff:g id="APP_NAME">%1$s</xliff:g> እነዚህን የጤና አገናኝ ቅንብሮች መድረስ ይፈልጋል"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"በዳራ ውስጥ ያለን ውሂብ በሙሉ መድረስ"</string>
-    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
-    <skip />
+    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"የሕክምና መዝገቦችን በዳራ ውስጥ ይድረሱ"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"በዳራ ውስጥ የአካል ብቃት እና ጤንነት ውሂብን መድረስ"</string>
-    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
-    <skip />
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"ይህን መተግበሪያ እየተጠቀሙ ባልሆነበት ጊዜ መተግበሪያው የአካል ብቃት እና የደኅንነት ውሂብን እና የሕክምና መዝገቦችን እንዲደርስ ይፍቀዱ"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"ይህን መተግበሪያ እየተጠቀሙ ባልሆኑበት ጊዜ መተግበሪያው ይህን ውሂብ እንዲደርስ ይፍቀዱ"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"ይህን መተግበሪያ እየተጠቀሙ ባልሆኑበት ጊዜ መተግበሪያው ይህን ውሂብ እንዲደርስ ይፍቀዱ"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"በዳራ ውስጥ ውሂብ ድረስ"</string>
@@ -141,15 +135,12 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"ያለፈ ውሂብን ድረስ"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"ይህ መተግበሪያ ከ<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> በፊት የታከለ የጤና አገናኝ ውሂብን እንዲደርስ ይፍቀዱ"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"ይህ መተግበሪያ ሁሉንም ያለፈ የጤና አገናኝ ውሂብ እንዲደርስ ይፍቀዱ"</string>
-    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
-    <skip />
+    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"<xliff:g id="APP_NAME">%1$s</xliff:g> ቀድሞውኑ ለእርስዎ የሕክምና መዝገቦች ያለፈ ውሂብን መድረስ ይችላል"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"ስለ ፈቃዶች የበለጠ ያንብቡ"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"በዳራ ውስጥ ያለን ውሂብ በሙሉ መድረስ"</string>
-    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
-    <skip />
+    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"የሕክምና መዝገቦችን በዳራ ውስጥ ይድረሱ"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"በዳራ ውስጥ የአካል ብቃት እና ጤንነት ውሂብን መድረስ"</string>
-    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
-    <skip />
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"ይህን መተግበሪያ እየተጠቀሙ ባልሆነበት ጊዜ መተግበሪያው የአካል ብቃት እና የደኅንነት ውሂብን እና የሕክምና መዝገቦችን እንዲደርስ ይፍቀዱ"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"ይህን መተግበሪያ እየተጠቀሙ ባልሆኑበት ጊዜ መተግበሪያው ይህን ውሂብ እንዲደርስ ይፍቀዱ"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"ይህን መተግበሪያ እየተጠቀሙ ባልሆኑበት ጊዜ መተግበሪያው ይህን ውሂብ እንዲደርስ ይፍቀዱ"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"በዳራ ውስጥ ውሂብ ድረስ"</string>
@@ -161,10 +152,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"ይህ መተግበሪያ ከ<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> በፊት የታከለ የጤና አገናኝ ውሂብን እንዲደርስ ይፍቀዱ"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"ይህ መተግበሪያ ሁሉንም የጤና አገናኝ ያለፈ ውሂብ እንዲደርስ ይፍቀዱ"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"በአሁኑ ጊዜ <xliff:g id="APP_NAME">%1$s</xliff:g> ምንም የማንበብ ፈቃዶች ስላልበሩለት ምንም የአካል ብቃት ውሂብ እየተነበበ አይደለም"</string>
-    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
-    <skip />
-    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
-    <skip />
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g> ቀድሞውኑ ለእርስዎ የሕክምና መዝገቦች ያለፈ ውሂብን መድረስ ይችላል። ይህን ለመለወጥ ለዚህ መተግበሪያ የሕክምና መዝገብ ፈቃዶችን ያጥፉ"</string>
+    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"የሕክምና መዝገብ ፈቃዶችን ያስተዳድሩ"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"ለዚህ መተግበሪያ የዳራ ወይም ያለፈ ወሂብ መዳረሻን ለማብራት ቢያንስ አንድ የአንብብ ፍቃድ ያንቁ"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"ለዚህ መተግበሪያ የዳራ መዳረሻን ለማብራት ቢያንስ አንድ የአንብብ ፍቃድ ያንቁ"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"ለዚህ መተግበሪያ ያለፈ መዳረሻን ለማብራት ቢያንስ አንድ የአንብብ ፍቃድ ያንቁ"</string>
@@ -339,14 +328,10 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"የቆዳ ሙቀት መጠን"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"የቆዳ ሙቀት መጠንን አንብብ"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"የቆዳ ሙቀት መጠንን ጻፍ"</string>
-    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
-    <skip />
-    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
-    <skip />
-    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
-    <skip />
-    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
-    <skip />
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"ይህ ሁሉንም ከጤና አገናኝ ጋር የሰመሩ እና ወደ እሱ የታከሉ የሕክምና መዝገቦችን ያካትታል። ይህ ሙሉው የሕክምና መዝገብዎ ላይሆን ይችላል እና የሕክምና መዝገቦችዎን የሕክምና መግለጫ አያካትትም።"</string>
+    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"ሁሉም የሕክምና መዝገቦች"</string>
+    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"ሁሉም የሕክምና መዝገቦች"</string>
+    <string name="all_medical_data_content_description" msgid="3454355551506537094">"ሁሉንም የሕክምና መዝገቦች ይጻፉ"</string>
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"አለርጂዎች"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"አለርጂዎች"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"አለርጂዎችን ያንብቡ"</string>
@@ -427,17 +412,13 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"<xliff:g id="APP_NAME">%1$s</xliff:g> ያለፈ የአካል ብቃት እና ጤንነት ውሂብን እንዲደርስ ይፈቀድ?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="APP_NAME">%1$s</xliff:g> እንዴት ውሂብዎን እንደሚይዝ በእነሱ <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> ውስጥ ማወቅ ይችላሉ"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"የግላዊነት መመሪያ"</string>
-    <!-- no translation found for medical_request_header (5701693055388739014) -->
-    <skip />
+    <string name="medical_request_header" msgid="5701693055388739014">"<xliff:g id="APP_NAME">%1$s</xliff:g> የሕክምና መዝገቦችዎን እንዲደርስ ይፈቀድ?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"መዳረሻ ከሰጡ መተግበሪያው እንደ አለርጂዎች፣ የቤተ ሙከራ ውጤቶች፣ ክትባቶች እና ሌሎች ያሉትን ማንበብ እና መጻፍ ይችላል\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"መዳረሻ ከሰጡ መተግበሪያው እንደ አለርጂዎች፣ የቤተ ሙከራ ውጤቶች፣ ክትባቶች እና ሌሎች ያለ ውሂብን ማንበብ ይችላል\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
-    <skip />
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"ስለ የሕክምና መዝገቦች"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"የሚጋራ ውሂብ የሚከተሉትን ያካትታል"</string>
-    <!-- no translation found for medical_request_summary (553735170968628758) -->
-    <skip />
-    <!-- no translation found for medical_request_footer (157243861031258933) -->
-    <skip />
+    <string name="medical_request_summary" msgid="553735170968628758">"ከፈቀዱ <xliff:g id="APP_NAME">%1$s</xliff:g> የእርስዎን የሕክምና መዝገቦች ከጤና አገናኝ ጋር ማጋራት ይችላል።"</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"የሕክምና መዝገቦችዎን በአንድ ቦታ ለማቆየት ከእርስዎ የተለያዩ መተግበሪያዎች እና ምንጮች ያስምሩ"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"ሁሉም ፈቃዶች ይወገዱ?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"ሁሉንም አስወግድ"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> ከእንግዲህ ከጤና አገናኝ የመጣ ማንኛውንም ውሂብ ማንበብ ወይም መጻፍ አይችልም።\n\nይህ መተግበሪያ እንደ ካሜራ፣ ማይክሮፎን ወይም አካባቢ ያሉ ሊኖሩ በሚችሉ ሌሎች ፈቃዶች ላይ ተጽዕኖ አያሳርፍም።"</string>
@@ -447,10 +428,8 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"እንዲሁም የ<xliff:g id="APP_NAME">%1$s</xliff:g> ውሂብን ከጤና አገናኝ ሰርዝ"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"ሁሉም የአካል ብቃት እና የጤናማነት ፈቃዶች ይወገዱ?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"እንዲሁም ከ<xliff:g id="APP_NAME">%1$s</xliff:g> የመጣ የአካል ብቃት ውሂብ ከጤና አገናኝ ላይ ይሰርዙ"</string>
-    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
-    <skip />
-    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
-    <skip />
+    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"ሁሉም የሕክምና መዝገብ ፈቃዶች ይወገዱ?"</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"እንዲሁም ከ<xliff:g id="APP_NAME">%1$s</xliff:g> የመጡ የሕክምና መዝገቦችን ከጤና አገናኝ ላይ ይሰርዙ"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> ከእንግዲህ ይህን ከጤና አገናኝ የመጣ ማንኛውንም ውሂብ ማንበብ ወይም መጻፍ አይችልም።\n\nይህ መተግበሪያ እንደ ካሜራ፣ ማይክሮፎን ወይም አካባቢ ያሉ ሊኖሩ በሚችሉ ሌሎች ፈቃዶች ላይ ተጽዕኖ አያሳርፍም።"</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> የዳራ ውሂብን ጨምሮ ይህን ከጤና አገናኝ የመጣ ውሂብ ከእንግዲህ ማንበብ ወይም መፃፍ አይችልም።\n\nይህ መተግበሪያው ሊኖሩት በሚችሉት እንደ ካሜራ፣ ማይክሮፎን ወይም አካባቢ ወይም ባሉ ሌሎች ፈቃዶች ላይ ተጽዕኖ አይኖረውም።"</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> የድሮ ውሂብን ጨምሮ ይህን ከጤና አገናኝ የመጣ ውሂብ ከእንግዲህ ማንበብ ወይም መፃፍ አይችልም።\n\nይህ መተግበሪያው ሊኖሩት በሚችሉት እንደ ካሜራ፣ ማይክሮፎን ወይም አካባቢ ባሉ ሌሎች ፈቃዶች ላይ ተጽዕኖ አይኖረውም።"</string>
@@ -460,8 +439,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> የዳራ ውሂብን ጨምሮ ከጤና አገናኝ የመጣ ውሂብን ከእንግዲህ ማንበብ ወይም መፃፍ አይችልም።\n\nይህ መተግበሪያው ሊኖሩት በሚችሉት እንደ ካሜራ፣ ማይክሮፎን ወይም አካባቢ ወይም ባሉ ሌሎች ፈቃዶች ላይ ተጽዕኖ አይኖረውም።"</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> የድሮ ውሂብን ጨምሮ ከጤና አገናኝ የመጣ ውሂብን ከእንግዲህ ማንበብ ወይም መፃፍ አይችልም።\n\nይህ መተግበሪያው ሊኖሩት በሚችሉት እንደ ካሜራ፣ ማይክሮፎን ወይም አካባቢ ባሉ ሌሎች ፈቃዶች ላይ ተጽዕኖ አይኖረውም።"</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> የዳራ እና የድሮ ውሂብን ጨምሮ ከጤና አገናኝ የመጣ ውሂብን ከእንግዲህ ማንበብ ወይም መፃፍ አይችልም።\n\nይህ መተግበሪያው ሊኖሩት በሚችሉት እንደ ካሜራ፣ ማይክሮፎን ወይም አካባቢ ወይም ባሉ ሌሎች ፈቃዶች ላይ ተጽዕኖ አይኖረውም።"</string>
-    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
-    <skip />
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"እንዲሁም ከ<xliff:g id="APP_NAME">%1$s</xliff:g> የመጡ የአካል ብቃት ውሂብ እና የሕክምና መዝገቦችን ከጤና አገናኝ ይሰርዙ"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"ለዚህ መተግበሪያ የተወገዱ ፈቃዶች"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"እንዲሁም ሁሉንም የጤና አገናኝ ውሂብ ሰርዝ"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"ቀጣይ ቀን"</string>
@@ -510,10 +488,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"ፈቃዶች"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"ብቃት እና ጤንነት"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"ልምምድ፣ እንቅልፍ፣ ሥነ ምግብ እና ሌሎች"</string>
-    <!-- no translation found for medical_permissions (1066296298908103091) -->
-    <skip />
-    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
-    <skip />
+    <string name="medical_permissions" msgid="1066296298908103091">"የሕክምና መዝገቦች"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"የሕክምና መዝገቦች"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"የቤተ ሙከራ ውጤቶች፣ መድኃኒቶች፣ ክትባቶች እና ሌሎችም"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"የተወገዱ የመተግበሪያ ፍቃዶች"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"የጤና አገናኝ የ<xliff:g id="APP_DATA">%s</xliff:g>ን ፈቃዶች አስወግዷል"</string>
@@ -607,8 +583,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"ወደ Play መደብር ሂድ"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"በጤና አገናኝ ይጀምሩ"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"የጤና አገናኝ የእርስዎን የጤና እና አካል ብቃት ውሂብ ያከማቻል፣ ይህም በመሣሪያዎ ላይ ያሉ የተለያዩ መተግበሪያዎችን ለማስመር ቀላል መንገድ ይሰጥዎታል"</string>
-    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
-    <skip />
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"የጤና አገናኝ የጤና እና አካል ብቃት ውሂብዎን ከተለያዩ መተግበሪያዎች ያከማቻል እና ያሰምራል።\n\n"<b>"የአካል ብቃት እና የደኅንነት ውሂብ፤"</b>" የልምምድ ክፍለ-ጊዜዎች፣ እርምጃዎች፣ አመጋገብ፣ እንቅልፍ እና ሌሎችንም ጨምሮ\n\n"<b>"የሕክምና መዝገቦች፤"</b>" ክትባቶች፣ የቤተ ሙከራ ውጤቶች እና ሌሎችንም ጨምሮ"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"በጤና አገናኝ የሚከተሉትን ማድረግ ይችላሉ"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"ከመተግበሪያዎችዎ ጋር ውሂብ ያጋሩ"</b>\n"እያንዳንዱ መተግበሪያ ማንበብ ወይም ወደ የጤና አገናኝ መጻፍ የሚችለውን ውሂብ ይምረጡ"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"የእርስዎን ቅንብሮች እና ግላዊነት ያስተዳድሩ"</b>\n"በማንኛውም ጊዜ የመተግበሪያ ፈቃዶችን ይለውጡ እና ውሂብዎን ያስተዳድሩ"</string>

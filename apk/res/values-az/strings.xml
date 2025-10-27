@@ -23,10 +23,8 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"İcazələr və data"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Cihazda sağlamlıq və fitnes datasını idarə edin və hansı tətbiqlərin ona daxil ola biləcəyinə nəzarət edin"</string>
     <string name="data_title" msgid="4456619761533380816">"Data və giriş"</string>
-    <!-- no translation found for browse_medical_data (6492659245149862639) -->
-    <skip />
-    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
-    <skip />
+    <string name="browse_medical_data" msgid="6492659245149862639">"Sağlamlıq tarixçəsini nəzərdən keçirin"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"Sağlamlıq tarixçənizə və hansı tətbiqlərin onlara daxil ola biləcəyinə baxın"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Bütün kateqoriyalar"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Bütün kateqoriyalara baxın"</string>
     <string name="no_data" msgid="1906986019249068659">"Məlumat yoxdur"</string>
@@ -112,10 +110,8 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Sərf edilmiş kalorini oxumaq"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Tətbiqə sərf edilmiş kaloriləri oxumağa imkan verir"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinə arxa fonda dataya giriş icazəsi verilsin?"</string>
-    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
-    <skip />
-    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
-    <skip />
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"İcazə versəniz, tətbiqdən istifadə etmədiyiniz zaman bu tətbiq fitnes və sağlamlıq datasına, eləcə də sağlamlıq tarixçəsinə daxil ola bilər."</string>
+    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"İcazə versəniz, tətbiqdən istifadə etmədiyiniz zaman bu tətbiq sağlamlıq tarixçəsinə daxil ola bilər."</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"İcazə versəniz, tətbiqdən istifadə etmədiyiniz zaman bu tətbiq fitnes və sağlamlıq datasına daxil ola bilər."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"İcazə versəniz, tətbiqdən istifadə etmədiyiniz zaman bu tətbiq Health Connect datasına daxil ola bilər."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinə keçmiş dataya giriş icazəsi verilsin?"</string>
@@ -126,11 +122,9 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinə əlavə giriş verilsin?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g> həmçinin bu Health Connect ayarlarına giriş istəyir"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Arxa fonda bütün dataya daxil olun"</string>
-    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
-    <skip />
+    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"Arxa fonda sağlamlıq tarixçəsinə giriş"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Arxa fonda fitnes və sağlamlıq datasına daxil olun"</string>
-    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
-    <skip />
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"Tətbiqdən istifadə etmədiyiniz zaman bu tətbiqin fitnes və sağlamlıq datasına, eləcə də sağlamlıq tarixçəsinə daxil olmasına icazə verin"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Tətbiqdən istifadə etmədiyiniz zaman bu tətbiqin dataya daxil olmasına icazə verin"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Tətbiqdən istifadə etmədiyiniz zaman bu tətbiqin dataya daxil olmasına icazə verin"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Arxa fonda dataya giriş"</string>
@@ -141,15 +135,12 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Keçmiş dataya giriş"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"Bu tətbiqin <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> tarixindən əvvəl əlavə edilmiş Health Connect datasına girişinə icazə verin"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Bu tətbiqin bütün keçmiş Health Connect datasına girişinə icazə verin"</string>
-    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
-    <skip />
+    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"<xliff:g id="APP_NAME">%1$s</xliff:g> sağlamlıq tarixçəsi üçün keçmiş dataya daxil ola bilər"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"İcazələr haqqında ətraflı oxuyun"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Arxa fonda bütün dataya daxil olun"</string>
-    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
-    <skip />
+    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"Arxa fonda sağlamlıq tarixçəsinə giriş"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Arxa fonda fitnes və sağlamlıq datasına daxil olun"</string>
-    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
-    <skip />
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"Tətbiqdən istifadə etmədiyiniz zaman bu tətbiqin fitnes və sağlamlıq datasına, eləcə də sağlamlıq tarixçəsinə daxil olmasına icazə verin"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Tətbiqdən istifadə etmədiyiniz zaman bu tətbiqin dataya daxil olmasına icazə verin"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Tətbiqdən istifadə etmədiyiniz zaman bu tətbiqin dataya daxil olmasına icazə verin"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Arxa fonda dataya giriş"</string>
@@ -161,10 +152,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Bu tətbiqin <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> tarixindən əvvəl əlavə edilmiş Health Connect datasına girişinə icazə verin"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Bu tətbiqin bütün keçmiş Health Connect datasına girişinə icazə verin"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinin oxumaq icazəsi olmadığı üçün hazırda heç bir fitnes datası oxunmur"</string>
-    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
-    <skip />
-    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
-    <skip />
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g> sağlamlıq tarixçəsi üçün keçmiş dataya daxil ola bilər. Bunu dəyişmək üçün bu tətbiqin sağlamlıq tarixçəsi icazələrini deaktiv edin"</string>
+    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"Sağlamlıq tarixçəsi icazələrini idarə edin"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Bu tətbiq üçün arxa fon və ya keçmiş dataya girişi yandırmaq məqsədilə ən az bir oxumaq icazəsini aktivləşdirin"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Bu tətbiq üçün arxa fonda girişi yandırmaq məqsədilə ən az bir oxumaq icazəsini aktivləşdirin"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Bu tətbiq üçün keçmiş dataya girişi yandırmaq məqsədilə ən az bir oxumaq icazəsini aktivləşdirin"</string>
@@ -339,14 +328,10 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"dəri temperaturu"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Dəri temperaturunun oxunması"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Dəri temperaturunun yazılması"</string>
-    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
-    <skip />
-    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
-    <skip />
-    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
-    <skip />
-    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
-    <skip />
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"Buraya Health Connect ilə sinxronlaşdırılan və ona əlavə edilən bütün sağlamlıq tarixçəsi daxildir. Bu, sağlamlıq tarixçənizi tam əhatə etməyə bilər və sağlamlıq tarixçənizin tibbi təsvirini əhatə etmir."</string>
+    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"Bütün sağlamlıq tarixçəsi"</string>
+    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"bütün sağlamlıq tarixçəsi"</string>
+    <string name="all_medical_data_content_description" msgid="3454355551506537094">"Bütün sağlamlıq tarixçəsi yazılsın"</string>
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Allergiyalar"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"allergiyalar"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Allergiyalar haqqında oxuyun"</string>
@@ -427,17 +412,13 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinin fitnes və sağlamlıq datasına daxil olmasına icazə verilsin?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinin datanı necə idarə etdiyini <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> bölməsində öyrənə bilərsiniz"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"məxfilik siyasəti"</string>
-    <!-- no translation found for medical_request_header (5701693055388739014) -->
-    <skip />
+    <string name="medical_request_header" msgid="5701693055388739014">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinin sağlamlıq tarixçəsinə daxil olmasına icazə verilsin?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"İcazə versəniz, tətbiq allergiya, laboratoriya nəticələri, peyvəndlər və s. kimi datanı oxuya və yaza bilər\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"İcazə versəniz, tətbiq allergiya, laboratoriya nəticələri, peyvəndlər və s. kimi datanı oxuya bilər\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
-    <skip />
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"Sağlamlıq tarixçəsi haqqında"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Paylaşılacaq dataya daxildir"</string>
-    <!-- no translation found for medical_request_summary (553735170968628758) -->
-    <skip />
-    <!-- no translation found for medical_request_footer (157243861031258933) -->
-    <skip />
+    <string name="medical_request_summary" msgid="553735170968628758">"İcazə versəniz, <xliff:g id="APP_NAME">%1$s</xliff:g> sağlamlıq tarixçəsini Health Connect ilə paylaşa bilər."</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"Sağlamlıq tarixçəsini bir yerdə saxlamaq üçün fərqli tətbiq və mənbələrdən sinxronlaşdırın"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Bütün icazələr silinsin?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Hamısını silin"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> Health Connect-dən heç bir datanı oxuya və ya yaza bilməyəcək.\n\nBu tətbiqin kamera, mikrofon və ya məkan kimi malik ola biləcəyi digər icazələr təsirə məruz qalmır."</string>
@@ -447,10 +428,8 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Həmçinin Health Connect\'dən <xliff:g id="APP_NAME">%1$s</xliff:g> datasını silin"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Bütün fitnes və sağlamlıq icazələri silinsin?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Həmçinin Health Connect vasitəsilə <xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqindən fitnes datası silin"</string>
-    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
-    <skip />
-    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
-    <skip />
+    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"Bütün sağlamlıq tarixçəsi icazələri silinsin?"</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"Həmçinin Health Connect vasitəsilə <xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqindən sağlamlıq tarixçəsini silin"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> artıq Health Connect-dən bu datanı oxuya və ya yaza bilməyəcək.\n\nBu, bu tətbiqin kamera, mikrofon və ya məkan kimi malik ola biləcəyi digər icazələrə təsir etmir."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"Arxa fon datası daxil olmaqla <xliff:g id="APP_NAME">%1$s</xliff:g> artıq Health Connect-dən bu datanı oxuya və ya yaza bilməyəcək.\n\nBu, bu tətbiqin kamera, mikrofon və ya məkan kimi malik ola biləcəyi digər icazələrə təsir etmir."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"Keçmiş data daxil olmaqla <xliff:g id="APP_NAME">%1$s</xliff:g> artıq Health Connect-dən bu datanı oxuya və ya yaza bilməyəcək.\n\nBu, bu tətbiqin kamera, mikrofon və ya məkan kimi malik ola biləcəyi digər icazələrə təsir etmir."</string>
@@ -460,8 +439,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"Arxa fon datası daxil olmaqla <xliff:g id="APP_NAME">%1$s</xliff:g> artıq Health Connect-dən datanı oxuya və ya yaza bilməyəcək.\n\nBu, bu tətbiqin kamera, mikrofon və ya məkan kimi malik ola biləcəyi digər icazələrə təsir etmir."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"Keçmiş data daxil olmaqla <xliff:g id="APP_NAME">%1$s</xliff:g> artıq Health Connect-dən datanı oxuya və ya yaza bilməyəcək.\n\nBu, bu tətbiqin kamera, mikrofon və ya məkan kimi malik ola biləcəyi digər icazələrə təsir etmir."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"Arxa fon və keçmiş data daxil olmaqla <xliff:g id="APP_NAME">%1$s</xliff:g> artıq Health Connect-dən datanı oxuya və ya yaza bilməyəcək.\n\nBu, bu tətbiqin kamera, mikrofon və ya məkan kimi malik ola biləcəyi digər icazələrə təsir etmir."</string>
-    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
-    <skip />
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"Həmçinin Health Connect vasitəsilə <xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqindən fitnes datası və sağlamlıq tarixçəsini silin"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Bu tətbiq üçün silinən icazələr"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Həmçinin bütün Health Connect datasını silin"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Növbəti gün"</string>
@@ -510,10 +488,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"İcazələr"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"Fitnes və rifah"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"İdman, yuxu, qidalanma və s"</string>
-    <!-- no translation found for medical_permissions (1066296298908103091) -->
-    <skip />
-    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
-    <skip />
+    <string name="medical_permissions" msgid="1066296298908103091">"Sağlamlıq tarixçəsi"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"sağlamlıq tarixçəsi"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Lab. nəticəsi, dərman, peyvənd və s."</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Tətbiq icazələri silinib"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect bunlar üçün icazələri silib: <xliff:g id="APP_DATA">%s</xliff:g>"</string>
@@ -607,8 +583,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Play Marketə keçin"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Health Connect ilə başlayın"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect sağlamlıq və fitnes datanızı saxlayaraq cihazdakı müxtəlif tətbiqləri sinxronlaşdırmaq üçün sadə yol təqdim edir"</string>
-    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
-    <skip />
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect müxtəlif tətbiqlərdəki sağlamlıq və fitnes datanızı saxlayır və sinxronlaşdırır.\n\n"<b>"İdman seansları, addımlar, qidalanma, yuxu və s."</b>" daxil olmaqla fitnes və sağlamlıq datası\n\n"<b>"Peyvəndlər, laboratoriya nəticələri və s."</b>" daxil olmaqla sağlamlıq tarixçəsi"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connect ilə bunları edə bilərsiniz:"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Datanı tətbiqləriniz ilə paylaşın"</b>\n"Hər tətbiqin oxuya və Health Connect-ə yaza biləcəyi datanı seçin"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Ayarlar və məxfiliyi idarə edin"</b>\n"Tətbiq icazələrini dəyişin və datanızı idarə edin"</string>

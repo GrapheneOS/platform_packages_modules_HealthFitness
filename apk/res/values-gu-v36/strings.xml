@@ -27,6 +27,5 @@
     <string name="settings_manage_permission" msgid="3585762257420446893">"આરોગ્ય, ફિટનેસ અને સુખાકારી"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"આરોગ્ય, ફિટનેસ અને સુખાકારી"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"ફિટનેસ અને સુખાકારી"</string>
-    <!-- no translation found for settings_medical_permissions (3458484943007427070) -->
-    <skip />
+    <string name="settings_medical_permissions" msgid="3458484943007427070">"મેડિકલ રેકોર્ડ"</string>
 </resources>
