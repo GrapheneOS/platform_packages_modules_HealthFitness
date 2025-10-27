@@ -19,7 +19,6 @@ package com.android.healthconnect.controller.exportimport.api
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -31,7 +30,7 @@ class QueryDocumentProvidersUseCase
 constructor(
     private val healthDataExportManager: HealthDataExportManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : IQueryDocumentProvidersUseCase, BaseUseCase<Unit, List<DocumentProvider>>(dispatcher) {
+) : BaseUseCase<Unit, List<DocumentProvider>>(dispatcher) {
     companion object {
         private const val TAG = "QueryDocumentProvidersUseCase"
     }
@@ -65,11 +64,4 @@ constructor(
             .sorted { root1, root2 -> root1.summary.compareTo(root2.summary) }
             .toList()
     }
-}
-
-interface IQueryDocumentProvidersUseCase {
-    /** Returns the available document providers. */
-    suspend fun invoke(input: Unit): UseCaseResults<List<DocumentProvider>>
-
-    suspend fun execute(input: Unit): List<DocumentProvider>
 }

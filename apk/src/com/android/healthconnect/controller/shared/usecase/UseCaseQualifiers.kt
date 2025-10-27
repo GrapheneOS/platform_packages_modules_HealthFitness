@@ -21,3 +21,5 @@ import javax.inject.Qualifier
 @Qualifier @Retention(AnnotationRetention.BINARY) annotation class LoadOnboardingStateUseCase
 
 @Qualifier @Retention(AnnotationRetention.BINARY) annotation class LoadFitnessPermissionAppsUseCase
+
+@Qualifier @Retention(AnnotationRetention.BINARY) annotation class LoadMigrationRestoreStateUseCase

@@ -16,10 +16,12 @@
 package com.android.healthconnect.controller.tests.utils.di
 
 import android.hardware.Sensor
+import android.health.connect.HealthConnectException
 import android.health.connect.HealthDataCategory
 import android.health.connect.accesslog.AccessLog
 import android.health.connect.datatypes.Record
 import android.health.connect.exportimport.ScheduledExportSettings
+import android.net.Uri
 import com.android.healthconnect.controller.data.access.AppAccessMetadata
 import com.android.healthconnect.controller.data.access.AppAccessState
 import com.android.healthconnect.controller.data.access.ILoadAccessUseCase
@@ -52,10 +54,6 @@ import com.android.healthconnect.controller.devices.SetTrackingEnabled
 import com.android.healthconnect.controller.exportimport.api.DocumentProvider
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency.EXPORT_FREQUENCY_NEVER
-import com.android.healthconnect.controller.exportimport.api.ILoadExportSettingsUseCase
-import com.android.healthconnect.controller.exportimport.api.ILoadImportStatusUseCase
-import com.android.healthconnect.controller.exportimport.api.ILoadScheduledExportStatusUseCase
-import com.android.healthconnect.controller.exportimport.api.IQueryDocumentProvidersUseCase
 import com.android.healthconnect.controller.exportimport.api.IUpdateExportSettingsUseCase
 import com.android.healthconnect.controller.exportimport.api.ImportUiState
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
@@ -677,35 +675,33 @@ class FakeQueryRecentAccessLogsUseCase : IQueryRecentAccessLogsUseCase {
     }
 }
 
-class FakeLoadExportSettingsUseCase : ILoadExportSettingsUseCase {
+class FakeLoadExportSettingsUseCase :
+    FakeUseCase<Unit, ExportFrequency>(dispatcher = Dispatchers.Unconfined) {
     private var exportFrequency = EXPORT_FREQUENCY_NEVER
-
-    override suspend fun invoke(input: Unit): UseCaseResults<ExportFrequency> {
-        return UseCaseResults.Success(exportFrequency)
-    }
-
-    override suspend fun execute(input: Unit): ExportFrequency {
-        return exportFrequency
-    }
 
     fun updateExportFrequency(frequency: ExportFrequency) {
         this.exportFrequency = frequency
     }
 
-    fun reset() {
-        this.exportFrequency = EXPORT_FREQUENCY_NEVER
+    override suspend fun successValue(input: Unit): ExportFrequency {
+        return this.exportFrequency
     }
 }
 
 class FakeUpdateExportSettingsUseCase : IUpdateExportSettingsUseCase {
+    private var forceFail = false
     var mostRecentSettings: ScheduledExportSettings =
         ScheduledExportSettings.Builder()
             .setPeriodInDays(EXPORT_FREQUENCY_NEVER.periodInDays)
             .build()
 
     override suspend fun invoke(settings: ScheduledExportSettings): UseCaseResults<Unit> {
-        mostRecentSettings = settings
-        return UseCaseResults.Success(Unit)
+        return if (forceFail) {
+            UseCaseResults.Failed(HealthConnectException(HealthConnectException.ERROR_UNKNOWN))
+        } else {
+            mostRecentSettings = settings
+            UseCaseResults.Success(Unit)
+        }
     }
 
     override suspend fun execute(settings: ScheduledExportSettings) {
@@ -717,11 +713,16 @@ class FakeUpdateExportSettingsUseCase : IUpdateExportSettingsUseCase {
             ScheduledExportSettings.Builder()
                 .setPeriodInDays(EXPORT_FREQUENCY_NEVER.periodInDays)
                 .build()
+        forceFail = false
+    }
+
+    fun setForceFail(forceFail: Boolean) {
+        this.forceFail = forceFail
     }
 }
 
-class FakeLoadScheduledExportStatusUseCase : ILoadScheduledExportStatusUseCase {
-    private var forceFail = false
+class FakeLoadScheduledExportStatusUseCase :
+    FakeUseCase<Unit, ScheduledExportUiState>(dispatcher = Dispatchers.Unconfined) {
     private var exportState: ScheduledExportUiState =
         ScheduledExportUiState(
             null,
@@ -730,11 +731,8 @@ class FakeLoadScheduledExportStatusUseCase : ILoadScheduledExportStatusUseCase {
             "0",
         )
 
-    fun setForceFail(forceFail: Boolean) {
-        this.forceFail = forceFail
-    }
-
-    fun reset() {
+    override fun reset() {
+        super.reset()
         exportState =
             ScheduledExportUiState(
                 null,
@@ -742,29 +740,23 @@ class FakeLoadScheduledExportStatusUseCase : ILoadScheduledExportStatusUseCase {
                 0,
                 "0",
             )
-        forceFail = false
     }
 
     fun updateExportStatus(exportState: ScheduledExportUiState) {
         this.exportState = exportState
     }
 
-    override suspend fun invoke(input: Unit): UseCaseResults<ScheduledExportUiState> {
-        if (forceFail) {
-            return UseCaseResults.Failed(IllegalStateException("Failed to load export status"))
-        }
-        return UseCaseResults.Success(exportState)
-    }
-
-    override suspend fun execute(input: Unit): ScheduledExportUiState {
-        return exportState
+    override suspend fun successValue(input: Unit): ScheduledExportUiState {
+        return this.exportState
     }
 }
 
-class FakeQueryDocumentProvidersUseCase : IQueryDocumentProvidersUseCase {
+class FakeQueryDocumentProvidersUseCase :
+    FakeUseCase<Unit, List<DocumentProvider>>(dispatcher = Dispatchers.Unconfined) {
     private var documentProviders: List<DocumentProvider> = listOf()
 
-    fun reset() {
+    override fun reset() {
+        super.reset()
         documentProviders = listOf()
     }
 
@@ -772,12 +764,8 @@ class FakeQueryDocumentProvidersUseCase : IQueryDocumentProvidersUseCase {
         this.documentProviders = documentProviders
     }
 
-    override suspend fun invoke(input: Unit): UseCaseResults<List<DocumentProvider>> {
-        return UseCaseResults.Success(documentProviders)
-    }
-
-    override suspend fun execute(input: Unit): List<DocumentProvider> {
-        return documentProviders
+    override suspend fun successValue(input: Unit): List<DocumentProvider> {
+        return this.documentProviders
     }
 }
 
@@ -802,11 +790,12 @@ class FakeLoadExerciseRoute : ILoadExerciseRoutePermissionUseCase {
     }
 }
 
-class FakeLoadImportStatusUseCase : ILoadImportStatusUseCase {
+class FakeLoadImportStatusUseCase :
+    FakeUseCase<Unit, ImportUiState>(dispatcher = Dispatchers.Unconfined) {
     private var importState: ImportUiState =
         ImportUiState(ImportUiState.DataImportState.DATA_IMPORT_ERROR_NONE)
 
-    fun reset() {
+    override fun reset() {
         importState = ImportUiState(ImportUiState.DataImportState.DATA_IMPORT_ERROR_NONE)
     }
 
@@ -814,12 +803,8 @@ class FakeLoadImportStatusUseCase : ILoadImportStatusUseCase {
         this.importState = importState
     }
 
-    override suspend fun invoke(input: Unit): UseCaseResults<ImportUiState> {
-        return UseCaseResults.Success(importState)
-    }
-
-    override suspend fun execute(input: Unit): ImportUiState {
-        return importState
+    override suspend fun successValue(input: Unit): ImportUiState {
+        return this.importState
     }
 }
 
@@ -846,6 +831,20 @@ class FakeLoadOnboardingStateUseCase :
 
     override suspend fun successValue(input: Unit): OnboardingState {
         return this.onboardingState
+    }
+}
+
+class FakeTriggerImportUseCase : FakeUseCase<Uri, Unit>(dispatcher = Dispatchers.Unconfined) {
+    var lastUri: Uri? = null
+
+    override fun reset() {
+        super.reset()
+        lastUri = null
+    }
+
+    override suspend fun successValue(input: Uri) {
+        this.lastUri = input
+        return
     }
 }
 

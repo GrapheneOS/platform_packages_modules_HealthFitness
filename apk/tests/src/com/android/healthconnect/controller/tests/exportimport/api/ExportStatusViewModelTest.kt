@@ -23,7 +23,7 @@ import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiSt
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadScheduledExportStatusUseCase
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
@@ -80,13 +80,24 @@ class ExportStatusViewModelTest {
                 "hc.zip",
                 "Drive",
                 "test.zip",
-                "Dropbox")
+                "Dropbox",
+            )
         loadScheduledExportStatusUseCase.updateExportStatus(scheduledExportUiState)
 
         viewModel.loadScheduledExportStatus()
         advanceUntilIdle()
 
-        Truth.assertThat(testObserver.getLastValue())
+        assertThat(testObserver.getLastValue())
             .isEqualTo(ScheduledExportUiStatus.WithData(scheduledExportUiState))
+    }
+
+    @Test
+    fun loadScheduledExportStatus_whenError_returnsLoadingFailed() = runTest {
+        val testObserver = TestObserver<ScheduledExportUiStatus>()
+        viewModel.storedScheduledExportStatus.observeForever(testObserver)
+        loadScheduledExportStatusUseCase.setForceFail(true)
+        viewModel.loadScheduledExportStatus()
+        advanceUntilIdle()
+        assertThat(testObserver.getLastValue()).isEqualTo(ScheduledExportUiStatus.LoadingFailed)
     }
 }

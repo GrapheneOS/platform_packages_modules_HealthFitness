@@ -23,6 +23,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -33,9 +34,9 @@ import kotlinx.coroutines.launch
 class ExportSettingsViewModel
 @Inject
 constructor(
-    private val loadExportSettingsUseCase: ILoadExportSettingsUseCase,
+    private val loadExportSettingsUseCase: BaseUseCase<Unit, ExportFrequency>,
     private val updateExportSettingsUseCase: IUpdateExportSettingsUseCase,
-    private val queryDocumentProvidersUseCase: IQueryDocumentProvidersUseCase,
+    private val queryDocumentProvidersUseCase: BaseUseCase<Unit, List<DocumentProvider>>,
 ) : ViewModel() {
     private val _storedExportSettings = MutableLiveData<ExportSettings>()
     private val _selectedExportFrequency = MutableLiveData<ExportFrequency>()
