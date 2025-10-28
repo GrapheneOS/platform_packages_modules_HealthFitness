@@ -94,23 +94,24 @@ class SearchAppsFragmentTest {
             )
         }
 
-        launchFragment<SearchAppsFragment>(Bundle())
+        launchFragment<SearchAppsFragment>(Bundle()).use {
+            onView(withText("Allowed access")).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+            onView(withText("Not allowed access")).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
+            onView(withText("Inactive apps")).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_NAME_3)).check(matches(isDisplayed()))
+            onView(withContentDescription("Delete data for Health Connect test app 3 button"))
+                .check(matches(isDisplayed()))
+            onView(withText(R.string.connected_apps_text)).check(matches(isDisplayed()))
 
-        onView(withText("Allowed access")).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText("Not allowed access")).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
-        onView(withText("Inactive apps")).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME_3)).check(matches(isDisplayed()))
-        onView(withContentDescription("Delete data for Health Connect test app 3 button"))
-            .check(matches(isDisplayed()))
-        onView(withText(R.string.connected_apps_text)).check(matches(isDisplayed()))
-
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.SEARCH_APPS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(AppPermissionsElement.CONNECTED_APP_BUTTON)
-        verify(healthConnectLogger).logImpression(AppPermissionsElement.NOT_CONNECTED_APP_BUTTON)
-        verify(healthConnectLogger).logImpression(AppPermissionsElement.INACTIVE_APP_BUTTON)
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.SEARCH_APPS_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger).logImpression(AppPermissionsElement.CONNECTED_APP_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(AppPermissionsElement.NOT_CONNECTED_APP_BUTTON)
+            verify(healthConnectLogger).logImpression(AppPermissionsElement.INACTIVE_APP_BUTTON)
+        }
     }
 
     @Test
@@ -125,13 +126,15 @@ class SearchAppsFragmentTest {
             )
         }
 
-        launchFragment<SearchAppsFragment>(Bundle())
-        onView(withTagValue(`is`("Delete button inactive app"))).perform(click())
+        launchFragment<SearchAppsFragment>(Bundle()).use {
+            onView(withTagValue(`is`("Delete button inactive app"))).perform(click())
 
-        onView(withText("Permanently delete all $TEST_APP_NAME_3 data?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        verify(healthConnectLogger).logInteraction(AppPermissionsElement.INACTIVE_APP_DELETE_BUTTON)
+            onView(withText("Permanently delete all $TEST_APP_NAME_3 data?"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logInteraction(AppPermissionsElement.INACTIVE_APP_DELETE_BUTTON)
+        }
     }
 
     @Test
@@ -146,15 +149,15 @@ class SearchAppsFragmentTest {
             )
         }
 
-        launchFragment<SearchAppsFragment>(Bundle())
-
-        onView(withText("Allowed access")).check(doesNotExist())
-        onView(withText("Not allowed access")).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
-        onView(withText("Inactive apps")).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME_3)).check(matches(isDisplayed()))
-        onView(withText(R.string.connected_apps_text)).check(matches(isDisplayed()))
+        launchFragment<SearchAppsFragment>(Bundle()).use {
+            onView(withText("Allowed access")).check(doesNotExist())
+            onView(withText("Not allowed access")).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
+            onView(withText("Inactive apps")).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_NAME_3)).check(matches(isDisplayed()))
+            onView(withText(R.string.connected_apps_text)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -169,15 +172,15 @@ class SearchAppsFragmentTest {
             )
         }
 
-        launchFragment<SearchAppsFragment>(Bundle())
-
-        onView(withText("Allowed access")).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME_3)).check(matches(isDisplayed()))
-        onView(withText("Not allowed access")).check(doesNotExist())
-        onView(withText("Inactive apps")).check(doesNotExist())
-        onView(withText(R.string.connected_apps_text)).check(matches(isDisplayed()))
+        launchFragment<SearchAppsFragment>(Bundle()).use {
+            onView(withText("Allowed access")).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_NAME_3)).check(matches(isDisplayed()))
+            onView(withText("Not allowed access")).check(doesNotExist())
+            onView(withText("Inactive apps")).check(doesNotExist())
+            onView(withText(R.string.connected_apps_text)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -186,9 +189,9 @@ class SearchAppsFragmentTest {
             MutableLiveData(emptyList<ConnectedAppMetadata>())
         }
 
-        launchFragment<SearchAppsFragment>(Bundle())
-
-        onView(withText("No Results")).check(matches(isDisplayed()))
+        launchFragment<SearchAppsFragment>(Bundle()).use {
+            onView(withText("No Results")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -204,15 +207,16 @@ class SearchAppsFragmentTest {
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<SearchAppsFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.searchConnectedApps)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME)).perform(ViewActions.click())
-        Truth.assertThat(navHostController.currentDestination?.id)
-            .isEqualTo(R.id.fitnessAppFragment)
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.searchConnectedApps)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+                onView(withText(TEST_APP_NAME)).perform(ViewActions.click())
+                Truth.assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.fitnessAppFragment)
+            }
     }
 
     @Test
@@ -228,15 +232,16 @@ class SearchAppsFragmentTest {
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<SearchAppsFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.searchConnectedApps)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME)).perform(ViewActions.click())
-        Truth.assertThat(navHostController.currentDestination?.id)
-            .isEqualTo(R.id.medicalAppFragment)
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.searchConnectedApps)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+                onView(withText(TEST_APP_NAME)).perform(ViewActions.click())
+                Truth.assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.medicalAppFragment)
+            }
     }
 
     @Test
@@ -252,15 +257,16 @@ class SearchAppsFragmentTest {
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
         launchFragment<SearchAppsFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.searchConnectedApps)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME)).perform(ViewActions.click())
-        Truth.assertThat(navHostController.currentDestination?.id)
-            .isEqualTo(R.id.combinedPermissionsFragment)
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.searchConnectedApps)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+                onView(withText(TEST_APP_NAME)).perform(ViewActions.click())
+                Truth.assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.combinedPermissionsFragment)
+            }
     }
 
     @Test
@@ -282,12 +288,13 @@ class SearchAppsFragmentTest {
             )
         whenever(viewModel.connectedApps).then { MutableLiveData(connectedApps) }
 
-        launchFragment<SearchAppsFragment>(Bundle())
-        onView(withText("firstApp")).check(matches(isDisplayed()))
-        onView(withText("secondApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("firstApp")).check(matches(isAbove(withText("secondApp"))))
-        onView(withText("thirdApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("secondApp")).check(matches(isAbove(withText("thirdApp"))))
+        launchFragment<SearchAppsFragment>(Bundle()).use {
+            onView(withText("firstApp")).check(matches(isDisplayed()))
+            onView(withText("secondApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("firstApp")).check(matches(isAbove(withText("secondApp"))))
+            onView(withText("thirdApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("secondApp")).check(matches(isAbove(withText("thirdApp"))))
+        }
     }
 
     @Test
@@ -309,12 +316,13 @@ class SearchAppsFragmentTest {
             )
         whenever(viewModel.connectedApps).then { MutableLiveData(connectedApps) }
 
-        launchFragment<SearchAppsFragment>(Bundle())
-        onView(withText("firstApp")).check(matches(isDisplayed()))
-        onView(withText("secondApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("firstApp")).check(matches(isAbove(withText("secondApp"))))
-        onView(withText("thirdApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("secondApp")).check(matches(isAbove(withText("thirdApp"))))
+        launchFragment<SearchAppsFragment>(Bundle()).use {
+            onView(withText("firstApp")).check(matches(isDisplayed()))
+            onView(withText("secondApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("firstApp")).check(matches(isAbove(withText("secondApp"))))
+            onView(withText("thirdApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("secondApp")).check(matches(isAbove(withText("thirdApp"))))
+        }
     }
 
     @Test
@@ -336,11 +344,12 @@ class SearchAppsFragmentTest {
             )
         whenever(viewModel.connectedApps).then { MutableLiveData(connectedApps) }
 
-        launchFragment<SearchAppsFragment>(Bundle())
-        onView(withText("firstApp")).check(matches(isDisplayed()))
-        onView(withText("secondApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("firstApp")).check(matches(isAbove(withText("secondApp"))))
-        onView(withText("thirdApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("secondApp")).check(matches(isAbove(withText("thirdApp"))))
+        launchFragment<SearchAppsFragment>(Bundle()).use {
+            onView(withText("firstApp")).check(matches(isDisplayed()))
+            onView(withText("secondApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("firstApp")).check(matches(isAbove(withText("secondApp"))))
+            onView(withText("thirdApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("secondApp")).check(matches(isAbove(withText("thirdApp"))))
+        }
     }
 }

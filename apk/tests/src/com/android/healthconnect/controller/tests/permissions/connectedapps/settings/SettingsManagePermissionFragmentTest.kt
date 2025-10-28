@@ -115,12 +115,12 @@ class SettingsManagePermissionFragmentTest {
     fun test_displaysSections() {
         whenever(viewModel.connectedApps).then { MutableLiveData(listOf<AppMetadata>()) }
 
-        launchFragment<SettingsManagePermissionFragment>(Bundle())
-
-        onView(withText("Allowed access")).check(matches(isDisplayed()))
-        onView(withText("No apps allowed")).check(matches(isDisplayed()))
-        onView(withText("Not allowed access")).check(matches(isDisplayed()))
-        onView(withText("No apps denied")).check(matches(isDisplayed()))
+        launchFragment<SettingsManagePermissionFragment>(Bundle()).use {
+            onView(withText("Allowed access")).check(matches(isDisplayed()))
+            onView(withText("No apps allowed")).check(matches(isDisplayed()))
+            onView(withText("Not allowed access")).check(matches(isDisplayed()))
+            onView(withText("No apps denied")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -128,10 +128,10 @@ class SettingsManagePermissionFragmentTest {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = ALLOWED))
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<SettingsManagePermissionFragment>(Bundle())
-
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText("No apps allowed")).check(doesNotExist())
+        launchFragment<SettingsManagePermissionFragment>(Bundle()).use {
+            onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+            onView(withText("No apps allowed")).check(doesNotExist())
+        }
     }
 
     @Test
@@ -139,10 +139,10 @@ class SettingsManagePermissionFragmentTest {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = DENIED))
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<SettingsManagePermissionFragment>(Bundle())
-
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText("No apps denied")).check(doesNotExist())
+        launchFragment<SettingsManagePermissionFragment>(Bundle()).use {
+            onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+            onView(withText("No apps denied")).check(doesNotExist())
+        }
     }
 
     @Test
@@ -151,9 +151,9 @@ class SettingsManagePermissionFragmentTest {
             listOf(ConnectedAppMetadata(TEST_APP, status = ALLOWED, healthUsageLastAccess = NOW))
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<SettingsManagePermissionFragment>(Bundle())
-
-        onView(withText("Accessed in past 24 hours")).check(matches(isDisplayed()))
+        launchFragment<SettingsManagePermissionFragment>(Bundle()).use {
+            onView(withText("Accessed in past 24 hours")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -161,10 +161,10 @@ class SettingsManagePermissionFragmentTest {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = INACTIVE))
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<SettingsManagePermissionFragment>(Bundle())
-
-        onView(withText(TEST_APP_NAME)).check(doesNotExist())
-        onView(withText(R.string.inactive_apps)).check(doesNotExist())
+        launchFragment<SettingsManagePermissionFragment>(Bundle()).use {
+            onView(withText(TEST_APP_NAME)).check(doesNotExist())
+            onView(withText(R.string.inactive_apps)).check(doesNotExist())
+        }
     }
 
     @Test
@@ -176,16 +176,18 @@ class SettingsManagePermissionFragmentTest {
             )
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<SettingsManagePermissionFragment>(Bundle())
-
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
-        onView(withText("No apps allowed")).check(doesNotExist())
-        onView(withText("No apps denied")).check(doesNotExist())
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.SETTINGS_MANAGE_PERMISSIONS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(AppPermissionsElement.CONNECTED_APP_BUTTON)
-        verify(healthConnectLogger).logImpression(AppPermissionsElement.NOT_CONNECTED_APP_BUTTON)
+        launchFragment<SettingsManagePermissionFragment>(Bundle()).use {
+            onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
+            onView(withText("No apps allowed")).check(doesNotExist())
+            onView(withText("No apps denied")).check(doesNotExist())
+            verify(healthConnectLogger, atLeast(1))
+                .setPageId(PageName.SETTINGS_MANAGE_PERMISSIONS_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger).logImpression(AppPermissionsElement.CONNECTED_APP_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(AppPermissionsElement.NOT_CONNECTED_APP_BUTTON)
+        }
     }
 
     @Test
@@ -215,28 +217,28 @@ class SettingsManagePermissionFragmentTest {
             )
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        val scenario = launchFragment<SettingsManagePermissionFragment>(Bundle())
-
-        onView(
-                withText(
-                    "Health Connect is being integrated with the Android system.\n\nYou'll get a notification when the process is complete and you can use Health Connect."
+        launchFragment<SettingsManagePermissionFragment>(Bundle()).use { scenario ->
+            onView(
+                    withText(
+                        "Health Connect is being integrated with the Android system.\n\nYou'll get a notification when the process is complete and you can use Health Connect."
+                    )
                 )
-            )
-            .inRoot(RootMatchers.isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Got it")).inRoot(RootMatchers.isDialog()).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()))
+            onView(withText("Got it")).inRoot(RootMatchers.isDialog()).check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_CONTAINER)
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(withText("Got it")).inRoot(RootMatchers.isDialog()).perform(ViewActions.click())
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
+            onView(withText("Got it")).inRoot(RootMatchers.isDialog()).perform(ViewActions.click())
+            verify(healthConnectLogger)
+                .logInteraction(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
 
-        // Needed to makes sure activity has finished
-        scenario.result
-        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+            // Needed to makes sure activity has finished
+            scenario.result
+            assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+        }
     }
 
     @Test
@@ -266,30 +268,30 @@ class SettingsManagePermissionFragmentTest {
             )
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        val scenario = launchFragment<SettingsManagePermissionFragment>(Bundle())
-
-        onView(withText("Health Connect restore in progress"))
-            .inRoot(RootMatchers.isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Health Connect is restoring data and permissions. This may take some time to complete."
+        launchFragment<SettingsManagePermissionFragment>(Bundle()).use { scenario ->
+            onView(withText("Health Connect restore in progress"))
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Health Connect is restoring data and permissions. This may take some time to complete."
+                    )
                 )
-            )
-            .inRoot(RootMatchers.isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Got it")).inRoot(RootMatchers.isDialog()).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()))
+            onView(withText("Got it")).inRoot(RootMatchers.isDialog()).check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_CONTAINER)
+            verify(healthConnectLogger)
+                .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(withText("Got it")).inRoot(RootMatchers.isDialog()).perform(ViewActions.click())
-        verify(healthConnectLogger)
-            .logInteraction(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
+            onView(withText("Got it")).inRoot(RootMatchers.isDialog()).perform(ViewActions.click())
+            verify(healthConnectLogger)
+                .logInteraction(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
 
-        // Needed to makes sure activity has finished
-        scenario.result
-        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+            // Needed to makes sure activity has finished
+            scenario.result
+            assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+        }
     }
 }

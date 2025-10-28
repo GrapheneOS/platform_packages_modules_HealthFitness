@@ -166,17 +166,18 @@ class SettingsMedicalAppFragmentTest {
             MutableLiveData(setOf(writePermission))
         }
 
-        val scenario =
-            launchFragment<SettingsMedicalAppFragment>(
+        launchFragment<SettingsMedicalAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        onView(withText("Allow all")).check(matches(isDisplayed()))
-        onView(withText("Allowed to read")).check(matches(isDisplayed()))
-        onView(withText("Allowed to write")).check(matches(isDisplayed()))
+                onView(withText("Allow all")).check(matches(isDisplayed()))
+                onView(withText("Allowed to read")).check(matches(isDisplayed()))
+                onView(withText("Allowed to write")).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -190,19 +191,21 @@ class SettingsMedicalAppFragmentTest {
             MutableLiveData(setOf(writePermission))
         }
 
-        val scenario =
-            launchFragment<SettingsMedicalAppFragment>(
+        launchFragment<SettingsMedicalAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        verify(healthConnectLogger, atLeast(1))
-            .setPageId(PageName.SETTINGS_MANAGE_MEDICAL_APP_PERMISSIONS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(PermissionsElement.ALLOW_ALL_SWITCH)
-        verify(healthConnectLogger, times(2)).logImpression(PermissionsElement.PERMISSION_SWITCH)
+                verify(healthConnectLogger, atLeast(1))
+                    .setPageId(PageName.SETTINGS_MANAGE_MEDICAL_APP_PERMISSIONS_PAGE)
+                verify(healthConnectLogger).logPageImpression()
+                verify(healthConnectLogger).logImpression(PermissionsElement.ALLOW_ALL_SWITCH)
+                verify(healthConnectLogger, times(2))
+                    .logImpression(PermissionsElement.PERMISSION_SWITCH)
+            }
     }
 
     @Test
@@ -213,17 +216,18 @@ class SettingsMedicalAppFragmentTest {
             MutableLiveData(setOf(readPermission))
         }
 
-        val scenario =
-            launchFragment<SettingsMedicalAppFragment>(
+        launchFragment<SettingsMedicalAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        onView(withText("Allow all")).check(matches(isDisplayed()))
-        onView(withText("Allowed to read")).check(matches(isDisplayed()))
-        onView(withText("Allowed to write")).check(doesNotExist())
+                onView(withText("Allow all")).check(matches(isDisplayed()))
+                onView(withText("Allowed to read")).check(matches(isDisplayed()))
+                onView(withText("Allowed to write")).check(doesNotExist())
+            }
     }
 
     @Test
@@ -234,17 +238,18 @@ class SettingsMedicalAppFragmentTest {
             MutableLiveData(setOf(writePermission))
         }
 
-        val scenario =
-            launchFragment<SettingsMedicalAppFragment>(
+        launchFragment<SettingsMedicalAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        onView(withText("Allow all")).check(matches(isDisplayed()))
-        onView(withText("Allowed to read")).check(doesNotExist())
-        onView(withText("Allowed to write")).check(matches(isDisplayed()))
+                onView(withText("Allow all")).check(matches(isDisplayed()))
+                onView(withText("Allowed to read")).check(doesNotExist())
+                onView(withText("Allowed to write")).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -259,12 +264,14 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withContentDescription("All medical records. Write Access. On"))
-            .check(matches(isDisplayed()))
-        onView(withContentDescription("Vaccines. Read Access. On")).check(matches(isDisplayed()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withContentDescription("All medical records. Write Access. On"))
+                    .check(matches(isDisplayed()))
+                onView(withContentDescription("Vaccines. Read Access. On"))
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -276,12 +283,14 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withContentDescription("All medical records. Write Access. Off"))
-            .check(matches(isDisplayed()))
-        onView(withContentDescription("Vaccines. Read Access. Off")).check(matches(isDisplayed()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withContentDescription("All medical records. Write Access. Off"))
+                    .check(matches(isDisplayed()))
+                onView(withContentDescription("Vaccines. Read Access. Off"))
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -297,28 +306,29 @@ class SettingsMedicalAppFragmentTest {
         }
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { false }
 
-        val scenario =
-            launchFragment<SettingsMedicalAppFragment>(
+        launchFragment<SettingsMedicalAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        onView(withText("Allow all")).check(matches(isDisplayed()))
-        onView(withText("Vaccines")).check(matches(isDisplayed()))
-        onView(withText("All medical records")).check(matches(isDisplayed()))
-        onView(withText("Vaccines")).perform(click())
-        onView(withText("Vaccines")).check(matches(not(isChecked())))
+                onView(withText("Allow all")).check(matches(isDisplayed()))
+                onView(withText("Vaccines")).check(matches(isDisplayed()))
+                onView(withText("All medical records")).check(matches(isDisplayed()))
+                onView(withText("Vaccines")).perform(click())
+                onView(withText("Vaccines")).check(matches(not(isChecked())))
 
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        }
-        onIdle()
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
-        onIdle()
-        onView(withText("Vaccines")).perform(scrollTo()).check(matches(not(isChecked())))
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                }
+                onIdle()
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
+                onIdle()
+                onView(withText("Vaccines")).perform(scrollTo()).check(matches(not(isChecked())))
+            }
     }
 
     @Test
@@ -334,23 +344,24 @@ class SettingsMedicalAppFragmentTest {
         }
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { false }
 
-        val scenario =
-            launchFragment<SettingsMedicalAppFragment>(
+        launchFragment<SettingsMedicalAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
-        onView(
-                withText(
-                    "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
-                )
-            )
-            .check(doesNotExist())
-        onView(withText("Read privacy policy")).check(doesNotExist())
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
+                onView(
+                        withText(
+                            "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
+                        )
+                    )
+                    .check(doesNotExist())
+                onView(withText("Read privacy policy")).check(doesNotExist())
+            }
     }
 
     @Test
@@ -365,22 +376,25 @@ class SettingsMedicalAppFragmentTest {
         }
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
-        val scenario =
-            launchFragment<SettingsMedicalAppFragment>(
+        launchFragment<SettingsMedicalAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        onView(
-                withText(
-                    "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
-                )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Read privacy policy")).perform(scrollTo()).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
+                        )
+                    )
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withText("Read privacy policy"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -395,22 +409,25 @@ class SettingsMedicalAppFragmentTest {
         }
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
-        val scenario =
-            launchFragment<SettingsMedicalAppFragment>(
+        launchFragment<SettingsMedicalAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        onView(
-                withText(
-                    "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
-                )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Read privacy policy")).perform(scrollTo()).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
+                        )
+                    )
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withText("Read privacy policy"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -423,12 +440,17 @@ class SettingsMedicalAppFragmentTest {
         whenever(viewModel.allMedicalPermissionsGranted).then { MediatorLiveData(false) }
 
         launchFragment<SettingsMedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-        onView(withText("Allow all")).perform(click())
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            )
+            .use {
+                onView(withText("Allow all")).perform(click())
 
-        verify(healthConnectLogger)
-            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_ON)
+                verify(healthConnectLogger)
+                    .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_ON)
+            }
     }
 
     @Test
@@ -444,12 +466,17 @@ class SettingsMedicalAppFragmentTest {
         whenever(viewModel.allMedicalPermissionsGranted).then { MediatorLiveData(true) }
 
         launchFragment<SettingsMedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-        onView(withText("Allow all")).perform(click())
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            )
+            .use {
+                onView(withText("Allow all")).perform(click())
 
-        verify(healthConnectLogger)
-            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_OFF)
+                verify(healthConnectLogger)
+                    .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_OFF)
+            }
     }
 
     @Test
@@ -459,10 +486,9 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withText(R.string.additional_access_label)).check(doesNotExist())
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use { onView(withText(R.string.additional_access_label)).check(doesNotExist()) }
     }
 
     @Test
@@ -477,10 +503,11 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -499,10 +526,11 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -517,16 +545,18 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-        onView(withText(R.string.additional_access_label)).perform(click())
-
-        verify(navigationUtils)
-            .navigate(
-                fragment = any(),
-                action = eq(R.id.action_settingsMedicalApp_to_additionalAccessFragment),
-                bundle = any(),
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use {
+                onView(withText(R.string.additional_access_label)).perform(click())
+
+                verify(navigationUtils)
+                    .navigate(
+                        fragment = any(),
+                        action = eq(R.id.action_settingsMedicalApp_to_additionalAccessFragment),
+                        bundle = any(),
+                    )
+            }
     }
 
     @Test
@@ -560,29 +590,32 @@ class SettingsMedicalAppFragmentTest {
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
         launchFragment<SettingsMedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(
-                withText(
-                    "Health Connect is ready to be integrated with your Android system. If you give $TEST_APP_NAME access now, some features may not work until integration is complete."
-                )
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Start integration")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Continue")).inRoot(isDialog()).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CANCEL_BUTTON)
+            .use {
+                onView(
+                        withText(
+                            "Health Connect is ready to be integrated with your Android system. If you give $TEST_APP_NAME access now, some features may not work until integration is complete."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Start integration"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Continue")).inRoot(isDialog()).check(matches(isDisplayed()))
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTAINER)
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CANCEL_BUTTON)
 
-        onView(withText("Continue")).inRoot(isDialog()).perform(click())
-        onView(withText("Continue")).check(doesNotExist())
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
+                onView(withText("Continue")).inRoot(isDialog()).perform(click())
+                onView(withText("Continue")).check(doesNotExist())
+                verify(healthConnectLogger)
+                    .logInteraction(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
+            }
     }
 
     @Test
@@ -615,31 +648,31 @@ class SettingsMedicalAppFragmentTest {
         }
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
-        val scenario =
-            launchFragment<SettingsMedicalAppFragment>(
+        launchFragment<SettingsMedicalAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(
+                        withText(
+                            "Health Connect is being integrated with the Android system.\n\nYou'll get a notification when the process is complete and you can use $TEST_APP_NAME with Health Connect."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_CONTAINER)
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(
-                withText(
-                    "Health Connect is being integrated with the Android system.\n\nYou'll get a notification when the process is complete and you can use $TEST_APP_NAME with Health Connect."
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
+                onView(withText("Got it")).inRoot(isDialog()).perform(click())
+                verify(healthConnectLogger)
+                    .logInteraction(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(withText("Got it")).inRoot(isDialog()).perform(click())
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
-
-        // Needed to makes sure activity has finished
-        scenario.result
-        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+                // Needed to makes sure activity has finished
+                scenario.result
+                assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+            }
     }
 
     @Test
@@ -672,33 +705,33 @@ class SettingsMedicalAppFragmentTest {
         }
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
-        val scenario =
-            launchFragment<SettingsMedicalAppFragment>(
+        launchFragment<SettingsMedicalAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Health Connect restore in progress"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Health Connect is restoring data and permissions. This may take some time to complete."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
+                verify(healthConnectLogger)
+                    .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_CONTAINER)
+                verify(healthConnectLogger)
+                    .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(withText("Health Connect restore in progress"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Health Connect is restoring data and permissions. This may take some time to complete."
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
+                onView(withText("Got it")).inRoot(isDialog()).perform(click())
+                verify(healthConnectLogger)
+                    .logInteraction(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(withText("Got it")).inRoot(isDialog()).perform(click())
-        verify(healthConnectLogger)
-            .logInteraction(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
-
-        // Needed to makes sure activity has finished
-        scenario.result
-        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+                // Needed to makes sure activity has finished
+                scenario.result
+                assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+            }
     }
 }
