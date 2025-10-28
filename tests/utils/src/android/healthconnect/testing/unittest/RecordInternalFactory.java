@@ -319,9 +319,7 @@ public class RecordInternalFactory {
                 startTimeMillis,
                 endTimeMillis,
                 RECORD_TEMPORAL_TYPE_INTERVAL,
-                2,
                 ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER,
-                1,
                 0.5,
                 5.0,
                 "note");
@@ -332,20 +330,16 @@ public class RecordInternalFactory {
             long startTimeMillis,
             long endTimeMillis,
             int temporalType,
-            int servingCount,
             int beverageType,
-            int servingSize,
             double servingVolume,
             double alcoholByVolume,
-            String note) {
+            String notes) {
         return (AlcoholConsumptionRecordInternal)
                 new AlcoholConsumptionRecordInternal()
-                        .setServingCount(servingCount)
                         .setBeverageType(beverageType)
-                        .setServingSize(servingSize)
                         .setServingVolumeLiters(servingVolume)
                         .setAlcoholByVolume(alcoholByVolume)
-                        .setNote(note)
+                        .setNotes(notes)
                         .setTemporalType(temporalType)
                         .setStartTime(startTimeMillis)
                         .setEndTime(endTimeMillis);

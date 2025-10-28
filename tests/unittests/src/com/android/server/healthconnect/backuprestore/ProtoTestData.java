@@ -18,7 +18,6 @@ package com.android.server.healthconnect.backuprestore;
 
 import static android.health.connect.datatypes.ActivityIntensityRecord.ACTIVITY_INTENSITY_TYPE_VIGOROUS;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
-import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_INSTANT;
 import static android.health.connect.datatypes.BloodGlucoseRecord.RelationToMealType.RELATION_TO_MEAL_AFTER_MEAL;
 import static android.health.connect.datatypes.BloodGlucoseRecord.SpecimenSource.SPECIMEN_SOURCE_TEARS;
@@ -384,12 +383,10 @@ final class ProtoTestData {
     static AlcoholConsumption generateAlcoholConsumption() {
         return AlcoholConsumption.newBuilder()
                 .setTemporalType(RECORD_TEMPORAL_TYPE_INSTANT)
-                .setServingCount(2)
                 .setBeverageType(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
-                .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT)
                 .setServingVolume(0.568)
                 .setAlcoholByVolume(4.5)
-                .setNote("A pint of beer")
+                .setNotes("A pint of beer")
                 .build();
     }
 

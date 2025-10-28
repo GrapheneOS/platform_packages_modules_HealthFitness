@@ -315,7 +315,7 @@ class AllEntriesFragmentTest {
             )
             .use {
                 onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
-                onView(withText("2 • Beer")).check(matches(isDisplayed()))
+                onView(withText("Beer")).check(matches(isDisplayed()))
                 verify(healthConnectLogger).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
             }
     }
@@ -767,8 +767,8 @@ private val FORMATTED_ALCOHOL_CONSUMPTION_LIST =
             uuid = "test_id",
             header = "7:06 - 7:06",
             headerA11y = "from 7:06 to 7:06",
-            title = "2 • Beer",
-            titleA11y = "2 • Beer",
+            title = "Beer",
+            titleA11y = "Beer",
             dataType = AlcoholConsumptionRecord::class,
         )
     )

@@ -901,7 +901,6 @@ class InsertOrUpdateRecords {
                                     metaData,
                                     getStartTime(mFieldNameToFieldInput),
                                     getEndTime(mFieldNameToFieldInput),
-                                    getIntegerValue(mFieldNameToFieldInput, "mServingCount"),
                                     mFieldNameToFieldInput["mBeverageType"]
                                         ?.getFieldValue()
                                         .toString()
@@ -911,7 +910,6 @@ class InsertOrUpdateRecords {
                                 AlcoholConsumptionRecord.Builder(
                                     metaData,
                                     getStartTime(mFieldNameToFieldInput),
-                                    getIntegerValue(mFieldNameToFieldInput, "mServingCount"),
                                     mFieldNameToFieldInput["mBeverageType"]
                                         ?.getFieldValue()
                                         .toString()
@@ -926,7 +924,6 @@ class InsertOrUpdateRecords {
                                 AlcoholConsumptionRecord.Builder(
                                     metaData,
                                     date,
-                                    getIntegerValue(mFieldNameToFieldInput, "mServingCount"),
                                     mFieldNameToFieldInput["mBeverageType"]
                                         ?.getFieldValue()
                                         .toString()
@@ -938,9 +935,6 @@ class InsertOrUpdateRecords {
 
                     return builder
                         .apply {
-                            mFieldNameToFieldInput["mServingSize"]
-                                ?.takeIf { !it.isEmpty() }
-                                ?.let { setServingSize(it.getFieldValue().toString().toInt()) }
                             mFieldNameToFieldInput["mServingVolume"]
                                 ?.takeIf { !it.isEmpty() }
                                 ?.let {
@@ -957,9 +951,9 @@ class InsertOrUpdateRecords {
                                         )
                                     )
                                 }
-                            mFieldNameToFieldInput["mNote"]
+                            mFieldNameToFieldInput["mNotes"]
                                 ?.takeIf { !it.isEmpty() }
-                                ?.let { setNote(it.getFieldValue().toString()) }
+                                ?.let { setNotes(it.getFieldValue().toString()) }
                         }
                         .build()
                 }

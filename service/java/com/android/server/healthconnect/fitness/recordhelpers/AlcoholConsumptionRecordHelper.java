@@ -49,9 +49,12 @@ public class AlcoholConsumptionRecordHelper
 
     @VisibleForTesting public static final String TEMPORAL_TYPE_COLUMN_NAME = "temporal_type";
 
+    // TODO(b/454257439): Column to be dropped.
     @VisibleForTesting public static final String SERVING_COUNT_COLUMN_NAME = "serving_count";
 
     @VisibleForTesting public static final String BEVERAGE_TYPE_COLUMN_NAME = "beverage_type";
+
+    // TODO(b/454257439): Column to be dropped.
     @VisibleForTesting public static final String SERVING_SIZE_COLUMN_NAME = "serving_size";
 
     @VisibleForTesting
@@ -69,12 +72,10 @@ public class AlcoholConsumptionRecordHelper
     @Override
     AlcoholConsumptionRecordInternal populateSpecificRecordValue(Cursor cursor) {
         return new AlcoholConsumptionRecordInternal()
-                .setServingCount(getCursorInt(cursor, SERVING_COUNT_COLUMN_NAME))
                 .setBeverageType(getCursorInt(cursor, BEVERAGE_TYPE_COLUMN_NAME))
-                .setServingSize(getCursorInt(cursor, SERVING_SIZE_COLUMN_NAME))
                 .setServingVolumeLiters(getCursorDouble(cursor, SERVING_VOLUME_LITERS_COLUMN_NAME))
                 .setAlcoholByVolume(getCursorDouble(cursor, ALCOHOL_BY_VOLUME_COLUMN_NAME))
-                .setNote(getCursorString(cursor, NOTE_COLUMN_NAME))
+                .setNotes(getCursorString(cursor, NOTE_COLUMN_NAME))
                 .setTemporalType(getCursorInt(cursor, TEMPORAL_TYPE_COLUMN_NAME));
     }
 
@@ -82,21 +83,26 @@ public class AlcoholConsumptionRecordHelper
     void populateSpecificContentValues(
             ContentValues contentValues, AlcoholConsumptionRecordInternal recordInternal) {
         contentValues.put(TEMPORAL_TYPE_COLUMN_NAME, recordInternal.getTemporalType());
-        contentValues.put(SERVING_COUNT_COLUMN_NAME, recordInternal.getServingCount());
+        contentValues.put(SERVING_COUNT_COLUMN_NAME, 0); // TODO(b/454257439): Column to be dropped.
         contentValues.put(BEVERAGE_TYPE_COLUMN_NAME, recordInternal.getBeverageType());
-        contentValues.put(SERVING_SIZE_COLUMN_NAME, recordInternal.getServingSize());
+        contentValues.put(SERVING_SIZE_COLUMN_NAME, 0); // TODO(b/454257439): Column to be dropped.
+        contentValues.put(BEVERAGE_TYPE_COLUMN_NAME, recordInternal.getBeverageType());
         contentValues.put(
                 SERVING_VOLUME_LITERS_COLUMN_NAME, recordInternal.getServingVolumeLiters());
         contentValues.put(ALCOHOL_BY_VOLUME_COLUMN_NAME, recordInternal.getAlcoholByVolume());
-        contentValues.put(NOTE_COLUMN_NAME, (String) recordInternal.getNote());
+        contentValues.put(NOTE_COLUMN_NAME, (String) recordInternal.getNotes());
     }
 
     @Override
     List<Pair<String, String>> getIntervalRecordColumnInfo() {
         return Arrays.asList(
-                new Pair<>(SERVING_COUNT_COLUMN_NAME, INTEGER),
+                new Pair<>(
+                        SERVING_COUNT_COLUMN_NAME,
+                        INTEGER), // TODO(b/454257439): Column to be dropped.
                 new Pair<>(BEVERAGE_TYPE_COLUMN_NAME, INTEGER),
-                new Pair<>(SERVING_SIZE_COLUMN_NAME, INTEGER),
+                new Pair<>(
+                        SERVING_SIZE_COLUMN_NAME,
+                        INTEGER), // TODO(b/454257439): Column to be dropped.
                 new Pair<>(SERVING_VOLUME_LITERS_COLUMN_NAME, REAL),
                 new Pair<>(ALCOHOL_BY_VOLUME_COLUMN_NAME, REAL),
                 new Pair<>(NOTE_COLUMN_NAME, TEXT_NULL),

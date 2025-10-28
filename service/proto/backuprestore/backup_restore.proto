@@ -155,12 +155,10 @@ message ActivityIntensity {
 
 message AlcoholConsumption {
   optional int32 temporal_type = 1;
-  int32 serving_count = 2;
-  int32 beverage_type = 3;
-  optional int32 serving_size = 4;
-  optional double serving_volume = 5;
-  optional double alcohol_by_volume = 6;
-  optional string note = 7;
+  int32 beverage_type = 2;
+  optional double serving_volume = 3;
+  optional double alcohol_by_volume = 4;
+  optional string notes = 5;
 }
 
 message BasalBodyTemperature {

@@ -18,8 +18,6 @@ package android.healthconnect.testing.shared.recordfactory;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_OTHER;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE;
-import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS;
-import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
 
 import android.health.connect.datatypes.AlcoholConsumptionRecord;
 import android.health.connect.datatypes.Metadata;
@@ -45,15 +43,10 @@ public final class AlcoholConsumptionRecordFactory extends RecordFactory<Alcohol
             Metadata metadata, Instant time, Instant endTime) {
 
         return new AlcoholConsumptionRecord.Builder(
-                        metadata,
-                        time,
-                        endTime, /* servingCount */
-                        3,
-                        ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
-                .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT)
+                        metadata, time, endTime, ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
                 .setServingVolume(Volume.fromLiters(330.0 / 1000))
                 .setAlcoholByVolume(Percentage.fromValue(6.7))
-                .setNote("Pub crawl")
+                .setNotes("Pub crawl")
                 .setStartZoneOffset(ZoneOffset.ofHours(-1))
                 .setEndZoneOffset(ZoneOffset.ofHours(-1))
                 .build();
@@ -64,15 +57,10 @@ public final class AlcoholConsumptionRecordFactory extends RecordFactory<Alcohol
             Metadata metadata, Instant time, Instant endTime) {
 
         return new AlcoholConsumptionRecord.Builder(
-                        metadata,
-                        time,
-                        endTime, /* servingCount */
-                        2,
-                        ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE)
-                .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS)
+                        metadata, time, endTime, ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE)
                 .setServingVolume(Volume.fromLiters(250.0 / 1000))
                 .setAlcoholByVolume(Percentage.fromValue(15.2))
-                .setNote("Celebration")
+                .setNotes("Celebration")
                 .setStartZoneOffset(ZoneOffset.ofHours(1))
                 .setEndZoneOffset(ZoneOffset.ofHours(1))
                 .build();
@@ -82,11 +70,7 @@ public final class AlcoholConsumptionRecordFactory extends RecordFactory<Alcohol
     public AlcoholConsumptionRecord newEmptyRecord(
             Metadata metadata, Instant time, Instant endTime) {
         return new AlcoholConsumptionRecord.Builder(
-                        metadata,
-                        time,
-                        endTime, /* servingCount */
-                        1,
-                        ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_OTHER)
+                        metadata, time, endTime, ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_OTHER)
                 .build();
     }
 
@@ -97,23 +81,19 @@ public final class AlcoholConsumptionRecordFactory extends RecordFactory<Alcohol
                         metadata,
                         record.getStartTime(),
                         record.getEndTime(),
-                        record.getServingCount(),
                         record.getBeverageType())
-                .setServingSize(record.getServingSize())
                 .setServingVolume(record.getServingVolume())
                 .setAlcoholByVolume(record.getAlcoholByVolume())
                 .setStartZoneOffset(record.getStartZoneOffset())
                 .setEndZoneOffset(record.getEndZoneOffset())
-                .setNote(record.getNote())
+                .setNotes(record.getNotes())
                 .build();
     }
 
     @Override
     protected Bundle getValuesBundleForRecord(AlcoholConsumptionRecord record) {
         Bundle values = new Bundle();
-        values.putInt(KEY_SERVING_COUNT, record.getServingCount());
         values.putInt(KEY_TYPE, record.getBeverageType());
-        values.putInt(KEY_SERVING_SIZE, record.getServingSize());
         values.putInt(KEY_TEMPORAL_TYPE, record.getTemporalType());
         if (record.getServingVolume() != null) {
             values.putDouble(KEY_SERVING_VOLUME, record.getServingVolume().getInLiters());
@@ -121,8 +101,8 @@ public final class AlcoholConsumptionRecordFactory extends RecordFactory<Alcohol
         if (record.getAlcoholByVolume() != null) {
             values.putDouble(KEY_ALCOHOL_BY_VOLUME, record.getAlcoholByVolume().getValue());
         }
-        if (record.getNote() != null) {
-            values.putString(KEY_NOTE, record.getNote().toString());
+        if (record.getNotes() != null) {
+            values.putString(KEY_NOTE, record.getNotes().toString());
         }
         return values;
     }
@@ -137,12 +117,7 @@ public final class AlcoholConsumptionRecordFactory extends RecordFactory<Alcohol
             Bundle bundle) {
         AlcoholConsumptionRecord.Builder record =
                 new AlcoholConsumptionRecord.Builder(
-                                metadata,
-                                time,
-                                endTime,
-                                bundle.getInt(KEY_SERVING_COUNT),
-                                bundle.getInt(KEY_TYPE))
-                        .setServingSize(bundle.getInt(KEY_SERVING_SIZE))
+                                metadata, time, endTime, bundle.getInt(KEY_TYPE))
                         .setStartZoneOffset(zoneOffset)
                         .setEndZoneOffset(endZoneOffset);
 
@@ -154,7 +129,7 @@ public final class AlcoholConsumptionRecordFactory extends RecordFactory<Alcohol
                     Percentage.fromValue(bundle.getDouble(KEY_ALCOHOL_BY_VOLUME)));
         }
         if (bundle.containsKey(KEY_NOTE)) {
-            record.setNote(bundle.getString(KEY_NOTE));
+            record.setNotes(bundle.getString(KEY_NOTE));
         }
 
         return record.build();
@@ -173,18 +148,14 @@ public final class AlcoholConsumptionRecordFactory extends RecordFactory<Alcohol
                 + record.getEndZoneOffset()
                 + ",\n\tmetadata = "
                 + metadataToString(record.getMetadata())
-                + ",\n\tservingCount = "
-                + record.getServingCount()
                 + ",\n\tbeverageType = "
                 + record.getBeverageType()
-                + ",\n\tservingSize = "
-                + record.getServingSize()
                 + ",\n\tservingVolume = "
                 + record.getServingVolume()
                 + ",\n\talcoholByVolume = "
                 + record.getAlcoholByVolume()
                 + ",\n\tnote = "
-                + record.getNote()
+                + record.getNotes()
                 + "\n}";
     }
 }

@@ -78,11 +78,7 @@ constructor(
     }
 
     override suspend fun formatValue(record: AlcoholConsumptionRecord): String {
-        return context.getString(
-            R.string.alcohol_consumption_title,
-            record.servingCount.toString(),
-            formatType(record.beverageType),
-        )
+        return formatType(record.beverageType)
     }
 
     private fun formatServingVolume(volume: Volume): String {
@@ -151,14 +147,14 @@ constructor(
             )
         }
 
-        if (record.note != null) {
+        if (record.notes != null) {
             entries.add(
                 FormattedEntry.ReverseSessionDetail(
                     uuid = record.metadata.id,
-                    title = context.getString(R.string.note_title),
-                    titleA11y = context.getString(R.string.note_title),
-                    header = record.note.toString(),
-                    headerA11y = record.note.toString(),
+                    title = context.getString(R.string.notes_title),
+                    titleA11y = context.getString(R.string.notes_title),
+                    header = record.notes.toString(),
+                    headerA11y = record.notes.toString(),
                 )
             )
         }

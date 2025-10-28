@@ -18,8 +18,6 @@ import android.health.connect.HealthPermissions.WRITE_ALCOHOL_CONSUMPTION
 import android.health.connect.datatypes.AlcoholConsumptionRecord
 import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER
 import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE
-import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS
-import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT
 import android.health.connect.datatypes.MindfulnessSessionRecord
 import android.health.connect.datatypes.MindfulnessSessionRecord.MINDFULNESS_SESSION_TYPE_BREATHING
 import android.health.connect.datatypes.RespiratoryRateRecord
@@ -52,10 +50,8 @@ class AlcoholConsumptionTest : BaseDataTypeTest<AlcoholConsumptionRecord>() {
                 newEmptyMetadata(),
                 YESTERDAY_11AM.toInstant(),
                 YESTERDAY_11AM.plusMinutes(15).toInstant(),
-                7,
                 ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER,
             )
-            .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT)
             .setStartZoneOffset(ZoneOffset.ofHours(2))
             .setEndZoneOffset(ZoneOffset.ofHours(2))
             .setServingVolume(Volume.fromLiters(0.568))
@@ -66,7 +62,7 @@ class AlcoholConsumptionTest : BaseDataTypeTest<AlcoholConsumptionRecord>() {
         if (is24HourFormat(context)) "11:00 - 11:15 • ${context.packageName}"
         else "11:00 AM - 11:15 AM • ${context.packageName}"
 
-    override val expectedRecordTitle = "7 • Beer"
+    override val expectedRecordTitle = "Beer"
     override val expectedRecordSubtitle = null
 
     override fun createRecordToBeDeleted() =
@@ -74,10 +70,8 @@ class AlcoholConsumptionTest : BaseDataTypeTest<AlcoholConsumptionRecord>() {
                 newEmptyMetadata(),
                 YESTERDAY_11AM.plusHours(3).toInstant(),
                 YESTERDAY_11AM.plusHours(4).plusMinutes(29).toInstant(),
-                5,
                 ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE,
             )
-            .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS)
             .setStartZoneOffset(ZoneOffset.ofHours(2))
             .setEndZoneOffset(ZoneOffset.ofHours(2))
             .setServingVolume(Volume.fromLiters(0.765))
@@ -88,7 +82,7 @@ class AlcoholConsumptionTest : BaseDataTypeTest<AlcoholConsumptionRecord>() {
         if (is24HourFormat(context)) "14:00 - 15:29 • ${context.packageName}"
         else "2:00 PM - 3:29 PM • ${context.packageName}"
 
-    override val expectedRecordToBeDeletedTitle = "5 • Wine"
+    override val expectedRecordToBeDeletedTitle = "Wine"
 
     override fun createSameCategoryRecord() =
         MindfulnessSessionRecord.Builder(

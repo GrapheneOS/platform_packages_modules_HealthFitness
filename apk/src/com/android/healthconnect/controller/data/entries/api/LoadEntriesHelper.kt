@@ -354,7 +354,7 @@ constructor(
         return try {
             healthDataEntryFormatter.format(record, showDataOrigin)
         } catch (ex: Exception) {
-            Log.i(TAG, "Failed to format record!")
+            Log.i(TAG, "Failed to format record!", ex)
             null
         }
     }

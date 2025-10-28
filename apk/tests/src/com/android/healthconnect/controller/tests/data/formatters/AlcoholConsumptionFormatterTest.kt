@@ -16,6 +16,8 @@
 package com.android.healthconnect.controller.tests.data.formatters
 
 import android.health.connect.datatypes.AlcoholConsumptionRecord
+import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER
+import android.health.connect.datatypes.AlcoholConsumptionRecord.AlcoholConsumptionBeverageType
 import android.health.connect.datatypes.units.Percentage
 import android.health.connect.datatypes.units.Volume
 import android.platform.test.annotations.RequiresFlagsEnabled
@@ -60,19 +62,56 @@ class AlcoholConsumptionFormatterTest {
 
     @Test
     fun formatValue_returnsFormattedString() = runBlocking {
-        val record = getAlcoholConsumptionRecord(servingCount = 2)
-        assertThat(formatter.formatValue(record)).isEqualTo("2 • Beer")
+        val record =
+            getAlcoholConsumptionRecord(beverageType = ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
+        assertThat(formatter.formatValue(record)).isEqualTo("Beer")
     }
 
     @Test
     fun formatA11yValue_returnsFormattedString() = runBlocking {
-        val record = getAlcoholConsumptionRecord(servingCount = 2)
-        assertThat(formatter.formatA11yValue(record)).isEqualTo("2 • Beer")
+        val record =
+            getAlcoholConsumptionRecord(beverageType = ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
+        assertThat(formatter.formatA11yValue(record)).isEqualTo("Beer")
+    }
+
+    @Test
+    fun formatRecordDetails_withAllFieldsSet_returnsFormattedString() = runBlocking {
+        val record =
+            getAlcoholConsumptionRecord(
+                volume = Volume.fromLiters(0.123),
+                percentage = Percentage.fromValue(12.0),
+                notes = "This is a note.",
+            )
+        val details = formatter.formatRecordDetails(record)
+        assertThat(details.size).isEqualTo(4)
+        assertThat(details[0]).isInstanceOf(FormattedEntry.FormattedSectionTitle::class.java)
+        val sectionTitle = details[0] as FormattedEntry.FormattedSectionTitle
+        assertThat(sectionTitle.title).isEqualTo("Details")
+
+        assertThat(details[1]).isInstanceOf(FormattedEntry.ReverseSessionDetail::class.java)
+        val servingVolumeEntry = details[1] as FormattedEntry.ReverseSessionDetail
+        assertThat(details[2]).isInstanceOf(FormattedEntry.ReverseSessionDetail::class.java)
+        val alcoholByVolumeEntry = details[2] as FormattedEntry.ReverseSessionDetail
+        assertThat(details[3]).isInstanceOf(FormattedEntry.ReverseSessionDetail::class.java)
+        val notesEntry = details[3] as FormattedEntry.ReverseSessionDetail
+
+        assertThat(servingVolumeEntry.title).isEqualTo("Serving Volume")
+        assertThat(servingVolumeEntry.titleA11y).isEqualTo("Serving Volume")
+        assertThat(servingVolumeEntry.header).isEqualTo("123 ml")
+        assertThat(servingVolumeEntry.headerA11y).isEqualTo("123 milliliters")
+        assertThat(alcoholByVolumeEntry.title).isEqualTo("Alcohol by Volume")
+        assertThat(alcoholByVolumeEntry.titleA11y).isEqualTo("Alcohol by Volume")
+        assertThat(alcoholByVolumeEntry.header).isEqualTo("12%")
+        assertThat(alcoholByVolumeEntry.headerA11y).isEqualTo("12 percent")
+        assertThat(notesEntry.title).isEqualTo("Notes")
+        assertThat(notesEntry.titleA11y).isEqualTo("Notes")
+        assertThat(notesEntry.header).isEqualTo("This is a note.")
+        assertThat(notesEntry.headerA11y).isEqualTo("This is a note.")
     }
 
     @Test
     fun formatRecordDetails_withVolume_returnsFormattedString() = runBlocking {
-        val record = getAlcoholConsumptionRecord(servingCount = 2, volume = Volume.fromLiters(0.5))
+        val record = getAlcoholConsumptionRecord(volume = Volume.fromLiters(0.5))
         val details = formatter.formatRecordDetails(record)
         assertThat(details.size).isEqualTo(2)
         assertThat(details[0]).isInstanceOf(FormattedEntry.FormattedSectionTitle::class.java)
@@ -80,15 +119,16 @@ class AlcoholConsumptionFormatterTest {
         assertThat(sectionTitle.title).isEqualTo("Details")
 
         assertThat(details[1]).isInstanceOf(FormattedEntry.ReverseSessionDetail::class.java)
-        val sessionDetail = details[1] as FormattedEntry.ReverseSessionDetail
-        assertThat(sessionDetail.header).isEqualTo("500 ml")
-        assertThat(sessionDetail.headerA11y).isEqualTo("500 milliliters")
+        val recordDetail = details[1] as FormattedEntry.ReverseSessionDetail
+        assertThat(recordDetail.title).isEqualTo("Serving Volume")
+        assertThat(recordDetail.titleA11y).isEqualTo("Serving Volume")
+        assertThat(recordDetail.header).isEqualTo("500 ml")
+        assertThat(recordDetail.headerA11y).isEqualTo("500 milliliters")
     }
 
     @Test
     fun formatRecordDetails_withPercentage_returnsFormattedString() = runBlocking {
-        val record =
-            getAlcoholConsumptionRecord(servingCount = 2, percentage = Percentage.fromValue(5.0))
+        val record = getAlcoholConsumptionRecord(percentage = Percentage.fromValue(12.0))
         val details = formatter.formatRecordDetails(record)
         assertThat(details.size).isEqualTo(2)
         assertThat(details[0]).isInstanceOf(FormattedEntry.FormattedSectionTitle::class.java)
@@ -96,13 +136,16 @@ class AlcoholConsumptionFormatterTest {
         assertThat(sectionTitle.title).isEqualTo("Details")
 
         assertThat(details[1]).isInstanceOf(FormattedEntry.ReverseSessionDetail::class.java)
-        val sessionDetail = details[1] as FormattedEntry.ReverseSessionDetail
-        assertThat(sessionDetail.header).isEqualTo("5%")
+        val recordDetail = details[1] as FormattedEntry.ReverseSessionDetail
+        assertThat(recordDetail.title).isEqualTo("Alcohol by Volume")
+        assertThat(recordDetail.titleA11y).isEqualTo("Alcohol by Volume")
+        assertThat(recordDetail.header).isEqualTo("12%")
+        assertThat(recordDetail.headerA11y).isEqualTo("12 percent")
     }
 
     @Test
     fun formatRecordDetails_withNote_returnsFormattedString() = runBlocking {
-        val record = getAlcoholConsumptionRecord(servingCount = 2, note = "note")
+        val record = getAlcoholConsumptionRecord(notes = "This is a note.")
         val details = formatter.formatRecordDetails(record)
         assertThat(details.size).isEqualTo(2)
         assertThat(details[0]).isInstanceOf(FormattedEntry.FormattedSectionTitle::class.java)
@@ -110,26 +153,28 @@ class AlcoholConsumptionFormatterTest {
         assertThat(sectionTitle.title).isEqualTo("Details")
 
         assertThat(details[1]).isInstanceOf(FormattedEntry.ReverseSessionDetail::class.java)
-        val sessionDetail = details[1] as FormattedEntry.ReverseSessionDetail
-        assertThat(sessionDetail.header).isEqualTo("note")
+        val recordDetail = details[1] as FormattedEntry.ReverseSessionDetail
+        assertThat(recordDetail.title).isEqualTo("Notes")
+        assertThat(recordDetail.titleA11y).isEqualTo("Notes")
+        assertThat(recordDetail.header).isEqualTo("This is a note.")
+        assertThat(recordDetail.headerA11y).isEqualTo("This is a note.")
     }
 
     private fun getAlcoholConsumptionRecord(
-        servingCount: Int,
+        @AlcoholConsumptionBeverageType beverageType: Int = ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER,
         volume: Volume? = null,
         percentage: Percentage? = null,
-        note: String? = null,
+        notes: String? = null,
     ): AlcoholConsumptionRecord {
         return AlcoholConsumptionRecord.Builder(
                 getMetaData(),
                 NOW,
                 NOW.plusSeconds(1),
-                servingCount,
-                AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER,
+                beverageType,
             )
             .setServingVolume(volume)
             .setAlcoholByVolume(percentage)
-            .setNote(note)
+            .setNotes(notes)
             .build()
     }
 }

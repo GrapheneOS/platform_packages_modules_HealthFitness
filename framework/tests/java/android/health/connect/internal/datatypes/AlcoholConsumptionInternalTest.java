@@ -20,10 +20,8 @@ import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_GIN;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_OTHER;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE;
-import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS;
-import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER;
-import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_INTERVAL;
+import static android.health.connect.datatypes.AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_LOCAL_DATE;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_UNKNOWN;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_MANUAL_ENTRY;
@@ -55,6 +53,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.time.Instant;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.TimeZone;
@@ -79,13 +78,11 @@ public class AlcoholConsumptionInternalTest {
         AlcoholConsumptionRecordInternal internalRecord =
                 (AlcoholConsumptionRecordInternal)
                         new AlcoholConsumptionRecordInternal()
-                                .setServingCount(3)
                                 .setTemporalType(RECORD_TEMPORAL_TYPE_INTERVAL)
                                 .setBeverageType(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
-                                .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT)
                                 .setServingVolumeLiters(0.568)
                                 .setAlcoholByVolume(6)
-                                .setNote("note")
+                                .setNotes("note")
                                 .setStartTime(1357924680)
                                 .setEndTime(1357924681)
                                 .setStartZoneOffset(-2 * 3600)
@@ -108,14 +105,11 @@ public class AlcoholConsumptionInternalTest {
 
         Metadata metadata = externalRecord.getMetadata();
         assertThat(externalRecord.getRecordType()).isEqualTo(RECORD_TYPE_ALCOHOL_CONSUMPTION);
-        assertThat(externalRecord.getServingCount()).isEqualTo(3);
         assertThat(externalRecord.getBeverageType())
                 .isEqualTo(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER);
-        assertThat(externalRecord.getServingSize())
-                .isEqualTo(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT);
         assertThat(externalRecord.getServingVolume()).isEqualTo(Volume.fromLiters(0.568));
         assertThat(externalRecord.getAlcoholByVolume()).isEqualTo(Percentage.fromValue(6));
-        assertThat(externalRecord.getNote()).isEqualTo("note");
+        assertThat(externalRecord.getNotes()).isEqualTo("note");
         assertThat(externalRecord.getStartTime()).isEqualTo(Instant.ofEpochMilli(1357924680));
         assertThat(externalRecord.getEndTime()).isEqualTo(Instant.ofEpochMilli(1357924681));
         assertThat(externalRecord.getStartZoneOffset()).isEqualTo(ZoneOffset.ofHours(-2));
@@ -137,7 +131,6 @@ public class AlcoholConsumptionInternalTest {
         AlcoholConsumptionRecordInternal internalRecord =
                 (AlcoholConsumptionRecordInternal)
                         new AlcoholConsumptionRecordInternal()
-                                .setServingCount(3)
                                 .setPackageName("package.name")
                                 .setUuid(uuid);
 
@@ -145,16 +138,61 @@ public class AlcoholConsumptionInternalTest {
 
         Metadata metadata = externalRecord.getMetadata();
         assertThat(externalRecord.getRecordType()).isEqualTo(RECORD_TYPE_ALCOHOL_CONSUMPTION);
-        assertThat(externalRecord.getServingCount()).isEqualTo(3);
         assertThat(externalRecord.getBeverageType())
                 .isEqualTo(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_OTHER);
-        assertThat(externalRecord.getServingSize())
-                .isEqualTo(ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER);
         assertThat(externalRecord.getServingVolume()).isEqualTo(null);
         assertThat(externalRecord.getAlcoholByVolume()).isEqualTo(null);
-        assertThat(externalRecord.getNote()).isEqualTo(null);
+        assertThat(externalRecord.getNotes()).isEqualTo(null);
         assertThat(externalRecord.getStartTime()).isEqualTo(Instant.EPOCH);
         assertThat(externalRecord.getEndTime()).isEqualTo(Instant.EPOCH);
+        assertThat(externalRecord.getStartZoneOffset()).isEqualTo(ZoneOffset.UTC);
+        assertThat(externalRecord.getEndZoneOffset()).isEqualTo(ZoneOffset.UTC);
+        assertThat(metadata.getClientRecordId()).isNull();
+        assertThat(metadata.getClientRecordVersion()).isEqualTo(-1);
+        assertThat(metadata.getDataOrigin().getPackageName()).isEqualTo("package.name");
+        assertThat(metadata.getDevice().getType()).isEqualTo(DEVICE_TYPE_UNKNOWN);
+        assertThat(metadata.getDevice().getModel()).isNull();
+        assertThat(metadata.getDevice().getManufacturer()).isNull();
+        assertThat(metadata.getId()).isEqualTo(uuid.toString());
+        assertThat(metadata.getLastModifiedTime()).isEqualTo(Instant.EPOCH.minusMillis(1));
+        assertThat(metadata.getRecordingMethod()).isEqualTo(RECORDING_METHOD_UNKNOWN);
+    }
+
+    @Test
+    public void toExternalRecord_localDate_optionalFieldsNotSet() {
+        UUID uuid = UUID.randomUUID();
+        AlcoholConsumptionRecordInternal internalRecord =
+                (AlcoholConsumptionRecordInternal)
+                        new AlcoholConsumptionRecordInternal()
+                                .setTemporalType(RECORD_TEMPORAL_TYPE_LOCAL_DATE)
+                                .setPackageName("package.name")
+                                .setUuid(uuid);
+        Instant startOfDayEpoch =
+                Instant.EPOCH
+                        .atZone(ZoneOffset.UTC)
+                        .toLocalDate()
+                        .atStartOfDay(ZoneOffset.UTC)
+                        .toInstant();
+        Instant endOfDayEpoch =
+                Instant.EPOCH
+                        .atZone(ZoneOffset.UTC)
+                        .toLocalDate()
+                        .atTime(LocalTime.MAX)
+                        .atZone(ZoneOffset.UTC)
+                        .toInstant();
+
+        AlcoholConsumptionRecord externalRecord = internalRecord.toExternalRecord();
+
+        Metadata metadata = externalRecord.getMetadata();
+        assertThat(externalRecord.getRecordType()).isEqualTo(RECORD_TYPE_ALCOHOL_CONSUMPTION);
+        assertThat(externalRecord.getBeverageType())
+                .isEqualTo(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_OTHER);
+        assertThat(externalRecord.getTemporalType()).isEqualTo(RECORD_TEMPORAL_TYPE_LOCAL_DATE);
+        assertThat(externalRecord.getServingVolume()).isEqualTo(null);
+        assertThat(externalRecord.getAlcoholByVolume()).isEqualTo(null);
+        assertThat(externalRecord.getNotes()).isEqualTo(null);
+        assertThat(externalRecord.getStartTime()).isEqualTo(startOfDayEpoch);
+        assertThat(externalRecord.getEndTime()).isEqualTo(endOfDayEpoch);
         assertThat(externalRecord.getStartZoneOffset()).isEqualTo(ZoneOffset.UTC);
         assertThat(externalRecord.getEndZoneOffset()).isEqualTo(ZoneOffset.UTC);
         assertThat(metadata.getClientRecordId()).isNull();
@@ -174,12 +212,10 @@ public class AlcoholConsumptionInternalTest {
         AlcoholConsumptionRecordInternal internalRecord =
                 (AlcoholConsumptionRecordInternal)
                         new AlcoholConsumptionRecordInternal()
-                                .setServingCount(3)
                                 .setBeverageType(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE)
-                                .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS)
                                 .setServingVolumeLiters(0.250)
                                 .setAlcoholByVolume(12)
-                                .setNote("note")
+                                .setNotes("note")
                                 .setStartTime(1357924680)
                                 .setEndTime(1357924681)
                                 .setStartZoneOffset(-2 * 3600)
@@ -206,14 +242,11 @@ public class AlcoholConsumptionInternalTest {
         parcel.recycle();
 
         assertThat(decodedRecord.getRecordType()).isEqualTo(RECORD_TYPE_ALCOHOL_CONSUMPTION);
-        assertThat(decodedRecord.getServingCount()).isEqualTo(3);
         assertThat(decodedRecord.getBeverageType())
                 .isEqualTo(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE);
-        assertThat(decodedRecord.getServingSize())
-                .isEqualTo(ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS);
         assertThat(decodedRecord.getServingVolumeLiters()).isEqualTo(0.250);
         assertThat(decodedRecord.getAlcoholByVolume()).isEqualTo(12);
-        assertThat(decodedRecord.getNote()).isEqualTo("note");
+        assertThat(decodedRecord.getNotes()).isEqualTo("note");
         assertThat(decodedRecord.getStartTimeInMillis()).isEqualTo(1357924680);
         assertThat(decodedRecord.getEndTimeInMillis()).isEqualTo(1357924681);
         assertThat(decodedRecord.getStartZoneOffsetInSeconds()).isEqualTo(-2 * 3600);
@@ -239,7 +272,6 @@ public class AlcoholConsumptionInternalTest {
         AlcoholConsumptionRecordInternal internalRecord =
                 (AlcoholConsumptionRecordInternal)
                         new AlcoholConsumptionRecordInternal()
-                                .setServingCount(3)
                                 .setPackageName("package.name")
                                 .setUuid(uuid);
 
@@ -251,14 +283,11 @@ public class AlcoholConsumptionInternalTest {
         parcel.recycle();
 
         assertThat(decodedRecord.getRecordType()).isEqualTo(RECORD_TYPE_ALCOHOL_CONSUMPTION);
-        assertThat(decodedRecord.getServingCount()).isEqualTo(3);
         assertThat(decodedRecord.getBeverageType())
                 .isEqualTo(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_OTHER);
-        assertThat(decodedRecord.getServingSize())
-                .isEqualTo(ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER);
         assertThat(decodedRecord.getServingVolumeLiters()).isEqualTo(DEFAULT_DOUBLE);
         assertThat(decodedRecord.getAlcoholByVolume()).isEqualTo(DEFAULT_DOUBLE);
-        assertThat(decodedRecord.getNote()).isEqualTo(null);
+        assertThat(decodedRecord.getNotes()).isEqualTo(null);
         assertThat(decodedRecord.getStartTimeInMillis()).isEqualTo(0);
         assertThat(decodedRecord.getEndTimeInMillis()).isEqualTo(0);
         assertThat(decodedRecord.getStartZoneOffsetInSeconds()).isEqualTo(0);
@@ -302,23 +331,18 @@ public class AlcoholConsumptionInternalTest {
                                 metadata,
                                 /* startTime */ Instant.ofEpochMilli(1357924680),
                                 /* endTime */ Instant.ofEpochMilli(1357924681),
-                                /* servingCount */ 2,
                                 ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
-                        .setServingSize(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT)
                         .setServingVolume(Volume.fromLiters(0.568))
                         .setAlcoholByVolume(Percentage.fromValue(7))
                         .setStartZoneOffset(ZoneOffset.ofHours(-2))
                         .setEndZoneOffset(ZoneOffset.ofHours(-2))
-                        .setNote("note")
+                        .setNotes("note")
                         .build();
 
         AlcoholConsumptionRecordInternal internalRecord = externalRecord.toRecordInternal();
 
-        assertThat(internalRecord.getServingCount()).isEqualTo(2);
         assertThat(internalRecord.getBeverageType())
                 .isEqualTo(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER);
-        assertThat(internalRecord.getServingSize())
-                .isEqualTo(ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT);
         assertThat(internalRecord.getStartTimeInMillis()).isEqualTo(1357924680);
         assertThat(internalRecord.getEndTimeInMillis()).isEqualTo(1357924681);
         assertThat(internalRecord.getStartZoneOffsetInSeconds()).isEqualTo(-2 * 3600);
@@ -347,20 +371,16 @@ public class AlcoholConsumptionInternalTest {
                                 metadata,
                                 /* startTime */ Instant.ofEpochMilli(1357924680),
                                 /* endTime */ Instant.ofEpochMilli(1357924681),
-                                /* servingCount */ 1,
                                 ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_GIN)
                         .build();
 
         AlcoholConsumptionRecordInternal internalRecord = externalRecord.toRecordInternal();
 
-        assertThat(internalRecord.getServingCount()).isEqualTo(1);
         assertThat(internalRecord.getBeverageType())
                 .isEqualTo(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_GIN);
-        assertThat(internalRecord.getServingSize())
-                .isEqualTo(ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER);
         assertThat(internalRecord.getServingVolumeLiters()).isEqualTo(DEFAULT_DOUBLE);
         assertThat(internalRecord.getAlcoholByVolume()).isEqualTo(DEFAULT_DOUBLE);
-        assertThat(internalRecord.getNote()).isEqualTo(null);
+        assertThat(internalRecord.getNotes()).isEqualTo(null);
         assertThat(internalRecord.getStartTimeInMillis()).isEqualTo(1357924680);
         assertThat(internalRecord.getEndTimeInMillis()).isEqualTo(1357924681);
         assertThat(internalRecord.getStartZoneOffsetInSeconds()).isEqualTo(0);
@@ -389,20 +409,16 @@ public class AlcoholConsumptionInternalTest {
                                 metadata,
                                 /* startTime */ Instant.ofEpochMilli(1357924680),
                                 /* endTime */ Instant.ofEpochMilli(1357924681),
-                                /* servingCount */ 1,
                                 ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_GIN)
                         .build();
 
         AlcoholConsumptionRecordInternal internalRecord = externalRecord.toRecordInternal();
 
-        assertThat(internalRecord.getServingCount()).isEqualTo(1);
         assertThat(internalRecord.getBeverageType())
                 .isEqualTo(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_GIN);
-        assertThat(internalRecord.getServingSize())
-                .isEqualTo(ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER);
         assertThat(internalRecord.getServingVolumeLiters()).isEqualTo(DEFAULT_DOUBLE);
         assertThat(internalRecord.getAlcoholByVolume()).isEqualTo(DEFAULT_DOUBLE);
-        assertThat(internalRecord.getNote()).isEqualTo(null);
+        assertThat(internalRecord.getNotes()).isEqualTo(null);
         assertThat(internalRecord.getStartTimeInMillis()).isEqualTo(1357924680);
         assertThat(internalRecord.getEndTimeInMillis()).isEqualTo(1357924681);
         assertThat(internalRecord.getStartZoneOffsetInSeconds()).isEqualTo(0);
@@ -430,20 +446,16 @@ public class AlcoholConsumptionInternalTest {
                 new AlcoholConsumptionRecord.Builder(
                                 metadata,
                                 /* date */ java.time.LocalDate.of(2023, 1, 1),
-                                /* servingCount */ 1,
                                 ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_GIN)
                         .build();
 
         AlcoholConsumptionRecordInternal internalRecord = externalRecord.toRecordInternal();
 
-        assertThat(internalRecord.getServingCount()).isEqualTo(1);
         assertThat(internalRecord.getBeverageType())
                 .isEqualTo(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_GIN);
-        assertThat(internalRecord.getServingSize())
-                .isEqualTo(ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER);
         assertThat(internalRecord.getServingVolumeLiters()).isEqualTo(DEFAULT_DOUBLE);
         assertThat(internalRecord.getAlcoholByVolume()).isEqualTo(DEFAULT_DOUBLE);
-        assertThat(internalRecord.getNote()).isEqualTo(null);
+        assertThat(internalRecord.getNotes()).isEqualTo(null);
         assertThat(internalRecord.getStartTimeInMillis()).isEqualTo(1672531200000L);
         assertThat(internalRecord.getEndTimeInMillis()).isEqualTo(1672617599999L);
         assertThat(internalRecord.getStartZoneOffsetInSeconds()).isEqualTo(0);
