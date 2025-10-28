@@ -64,36 +64,36 @@ class EnableExercisePermissionDialogTest {
 
     @Test
     fun onClick_Yes_callsDisableExercisePermission() {
-        launchDialog<EnableExercisePermissionDialog>(bundle, TAG)
+        launchDialog<EnableExercisePermissionDialog>(bundle, TAG).use {
+            onView(withText(R.string.exercise_permission_dialog_positive_button))
+                .inRoot(isDialog())
+                .perform(click())
 
-        onView(withText(R.string.exercise_permission_dialog_positive_button))
-            .inRoot(isDialog())
-            .perform(click())
-
-        verify(viewModel).enableExercisePermission(eq(TEST_APP_PACKAGE_NAME))
-        verify(viewModel).hideExercisePermissionRequestDialog()
+            verify(viewModel).enableExercisePermission(eq(TEST_APP_PACKAGE_NAME))
+            verify(viewModel).hideExercisePermissionRequestDialog()
+        }
     }
 
     @Test
     fun onClick_No_callsHideExerciseRoutePermissionDialog() {
-        launchDialog<EnableExercisePermissionDialog>(bundle, TAG)
+        launchDialog<EnableExercisePermissionDialog>(bundle, TAG).use {
+            onView(withText(R.string.exercise_permission_dialog_negative_button))
+                .inRoot(isDialog())
+                .perform(click())
 
-        onView(withText(R.string.exercise_permission_dialog_negative_button))
-            .inRoot(isDialog())
-            .perform(click())
-
-        verify(viewModel).hideExercisePermissionRequestDialog()
+            verify(viewModel).hideExercisePermissionRequestDialog()
+        }
     }
 
     @Test
     fun onDismiss_callsHideExerciseRoutePermissionDialog() {
-        launchDialog<EnableExercisePermissionDialog>(bundle, TAG)
+        launchDialog<EnableExercisePermissionDialog>(bundle, TAG).use {
+            onView(withText(R.string.exercise_permission_dialog_negative_button))
+                .inRoot(isDialog())
+                .perform(click())
 
-        onView(withText(R.string.exercise_permission_dialog_negative_button))
-            .inRoot(isDialog())
-            .perform(click())
-
-        verify(viewModel).hideExercisePermissionRequestDialog()
+            verify(viewModel).hideExercisePermissionRequestDialog()
+        }
     }
 
     companion object {
