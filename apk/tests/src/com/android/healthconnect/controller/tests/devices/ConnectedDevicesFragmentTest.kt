@@ -188,13 +188,11 @@ class ConnectedDevicesFragmentTest {
                 navHostController.setCurrentDestination(R.id.connectedDevicesFragment)
                 Navigation.setViewNavController(requireView(), navHostController)
             }
-            .use { scenario ->
+            .use {
                 onView(withText("Pixel 8")).perform(click())
 
-                scenario.onActivity {
-                    assertThat(navHostController.currentDestination?.id)
-                        .isEqualTo(R.id.deviceManagementFragment)
-                }
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.deviceManagementFragment)
             }
     }
 }

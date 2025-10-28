@@ -153,8 +153,7 @@ class MatchmakingFragmentTest {
             )
         )
 
-        val scenario =
-            ActivityScenario.launch<TestActivity>(
+        ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     putExtra(
                         HealthConnectManager.EXTRA_RECORD_TYPES,
@@ -162,55 +161,58 @@ class MatchmakingFragmentTest {
                     )
                 }
             )
-        scenario.onActivity { activity ->
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, MatchmakingFragment())
-                .commitNow()
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, MatchmakingFragment())
+                        .commitNow()
+                }
 
-        onView(withText("Share data between apps"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Share data between apps"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Allow the Calling App app to read data from other apps on this device using Health\u00A0Connect"
-                )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Data from $TEST_APP_NAME"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        onView(withText("Data from $TEST_APP_NAME")).perform(scrollTo()).perform(click())
-        onView(withText("Exercise")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Steps")).perform(scrollTo()).check(matches(isDisplayed()))
-        val policyString = context.getString(R.string.request_permissions_privacy_policy)
-        val rationaleText =
-            context.resources.getString(
-                R.string.app_privacy_policy_footer,
-                TEST_APP_NAME,
-                policyString,
-            )
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        onView(withText(rationaleText)).check(matches(isDisplayed()))
-        verify(logger, atLeast(1)).setPageId(PageName.MATCHMAKING_PAGE)
-        verify(logger).logPageImpression()
-        verify(logger).logImpression(MatchmakingElement.MATCHMAKING_SCREEN_HEADER)
-        verify(logger).logImpression(MatchmakingElement.MATCHMAKING_SCREEN_HEADER_ICON_VIEW)
-        verify(logger).logImpression(PermissionsElement.ALLOW_ALL_SWITCH)
-        verify(logger, times(2)).logImpression(MatchmakingElement.MATCHMAKING_EXPANDABLE_PREFERENCE)
-        verify(logger, times(3)).logImpression(PermissionsElement.PERMISSION_SWITCH)
-        verify(logger).logImpression(MatchmakingElement.MATCHMAKING_SCREEN_FOOTER)
-        verify(logger).logImpression(MatchmakingElement.MATCHMAKING_SCREEN_FOOTER_LINK)
-        verify(logger).logImpression(PermissionsElement.ALLOW_PERMISSIONS_BUTTON)
-        verify(logger).logImpression(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
+                onView(withText("Share data between apps"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withText("Share data between apps"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Allow the Calling App app to read data from other apps on this device using Health\u00A0Connect"
+                        )
+                    )
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withText("Data from $TEST_APP_NAME"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+                onView(withText("Data from $TEST_APP_NAME")).perform(scrollTo()).perform(click())
+                onView(withText("Exercise")).perform(scrollTo()).check(matches(isDisplayed()))
+                onView(withText("Steps")).perform(scrollTo()).check(matches(isDisplayed()))
+                val policyString = context.getString(R.string.request_permissions_privacy_policy)
+                val rationaleText =
+                    context.resources.getString(
+                        R.string.app_privacy_policy_footer,
+                        TEST_APP_NAME,
+                        policyString,
+                    )
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+                onView(withText(rationaleText)).check(matches(isDisplayed()))
+                verify(logger, atLeast(1)).setPageId(PageName.MATCHMAKING_PAGE)
+                verify(logger).logPageImpression()
+                verify(logger).logImpression(MatchmakingElement.MATCHMAKING_SCREEN_HEADER)
+                verify(logger).logImpression(MatchmakingElement.MATCHMAKING_SCREEN_HEADER_ICON_VIEW)
+                verify(logger).logImpression(PermissionsElement.ALLOW_ALL_SWITCH)
+                verify(logger, times(2))
+                    .logImpression(MatchmakingElement.MATCHMAKING_EXPANDABLE_PREFERENCE)
+                verify(logger, times(3)).logImpression(PermissionsElement.PERMISSION_SWITCH)
+                verify(logger).logImpression(MatchmakingElement.MATCHMAKING_SCREEN_FOOTER)
+                verify(logger).logImpression(MatchmakingElement.MATCHMAKING_SCREEN_FOOTER_LINK)
+                verify(logger).logImpression(PermissionsElement.ALLOW_PERMISSIONS_BUTTON)
+                verify(logger).logImpression(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
+            }
     }
 
     @Test
@@ -237,8 +239,7 @@ class MatchmakingFragmentTest {
             )
         )
 
-        val scenario =
-            ActivityScenario.launch<TestActivity>(
+        ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     putExtra(
                         HealthConnectManager.EXTRA_RECORD_TYPES,
@@ -246,25 +247,27 @@ class MatchmakingFragmentTest {
                     )
                 }
             )
-        scenario.onActivity { activity ->
-            val fragment = MatchmakingFragment()
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, fragment)
-                .commitNow()
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = MatchmakingFragment()
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, fragment)
+                        .commitNow()
+                }
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Allow all"))
-                )
-            )
-        onView(withText("Allow all")).perform(click())
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(
+                        RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                            hasDescendant(withText("Allow all"))
+                        )
+                    )
+                onView(withText("Allow all")).perform(click())
 
-        verify(viewModel).addAllPermissionsToGrantedList()
-        verify(logger)
-            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_ON)
+                verify(viewModel).addAllPermissionsToGrantedList()
+                verify(logger)
+                    .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_ON)
+            }
     }
 
     @Test
@@ -292,8 +295,7 @@ class MatchmakingFragmentTest {
         )
         allPermissionsGranted.postValue(true)
 
-        val scenario =
-            ActivityScenario.launch<TestActivity>(
+        ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     putExtra(
                         HealthConnectManager.EXTRA_RECORD_TYPES,
@@ -301,25 +303,27 @@ class MatchmakingFragmentTest {
                     )
                 }
             )
-        scenario.onActivity { activity ->
-            val fragment = MatchmakingFragment()
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, fragment)
-                .commitNow()
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = MatchmakingFragment()
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, fragment)
+                        .commitNow()
+                }
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Allow all"))
-                )
-            )
-        onView(withText("Allow all")).perform(click())
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(
+                        RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                            hasDescendant(withText("Allow all"))
+                        )
+                    )
+                onView(withText("Allow all")).perform(click())
 
-        verify(viewModel).removeAllPermissionsFromGrantedList()
-        verify(logger)
-            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_OFF)
+                verify(viewModel).removeAllPermissionsFromGrantedList()
+                verify(logger)
+                    .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_OFF)
+            }
     }
 
     @Test
@@ -347,8 +351,7 @@ class MatchmakingFragmentTest {
         )
         atLeastOnePermissionGranted.postValue(true)
 
-        val scenario =
-            ActivityScenario.launch<TestActivity>(
+        ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     putExtra(
                         HealthConnectManager.EXTRA_RECORD_TYPES,
@@ -356,23 +359,25 @@ class MatchmakingFragmentTest {
                     )
                 }
             )
-        scenario.onActivity { activity ->
-            val fragment = MatchmakingFragment()
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, fragment)
-                .commitNow()
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = MatchmakingFragment()
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, fragment)
+                        .commitNow()
+                }
 
-        onView(withText("Data from $TEST_APP_NAME")).perform(scrollTo()).perform(click())
-        onView(withText("Exercise")).perform(scrollTo()).perform(click())
-        onView(withText("Allow")).perform(click())
+                onView(withText("Data from $TEST_APP_NAME")).perform(scrollTo()).perform(click())
+                onView(withText("Exercise")).perform(scrollTo()).perform(click())
+                onView(withText("Allow")).perform(click())
 
-        verify(viewModel).grantPermissions()
-        verify(logger).logInteraction(MatchmakingElement.MATCHMAKING_EXPANDABLE_PREFERENCE)
-        verify(logger)
-            .logInteraction(PermissionsElement.PERMISSION_SWITCH, UIAction.ACTION_TOGGLE_ON)
-        verify(logger).logInteraction(PermissionsElement.ALLOW_PERMISSIONS_BUTTON)
+                verify(viewModel).grantPermissions()
+                verify(logger).logInteraction(MatchmakingElement.MATCHMAKING_EXPANDABLE_PREFERENCE)
+                verify(logger)
+                    .logInteraction(PermissionsElement.PERMISSION_SWITCH, UIAction.ACTION_TOGGLE_ON)
+                verify(logger).logInteraction(PermissionsElement.ALLOW_PERMISSIONS_BUTTON)
+            }
     }
 
     @Test
@@ -399,8 +404,7 @@ class MatchmakingFragmentTest {
             )
         )
 
-        val scenario =
-            ActivityScenario.launch<TestActivity>(
+        ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     putExtra(
                         HealthConnectManager.EXTRA_RECORD_TYPES,
@@ -408,18 +412,20 @@ class MatchmakingFragmentTest {
                     )
                 }
             )
-        scenario.onActivity { activity ->
-            val fragment = MatchmakingFragment()
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, fragment)
-                .commitNow()
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = MatchmakingFragment()
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, fragment)
+                        .commitNow()
+                }
 
-        onView(withText("Don\'t allow")).perform(click())
+                onView(withText("Don\'t allow")).perform(click())
 
-        verify(viewModel).removeAllPermissionsFromGrantedList()
-        verify(logger).logInteraction(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
+                verify(viewModel).removeAllPermissionsFromGrantedList()
+                verify(logger).logInteraction(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
+            }
     }
 
     @Test
@@ -443,8 +449,7 @@ class MatchmakingFragmentTest {
         )
         expandedKeys.postValue(emptySet())
 
-        val scenario =
-            ActivityScenario.launch<TestActivity>(
+        ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     putExtra(
                         HealthConnectManager.EXTRA_RECORD_TYPES,
@@ -452,17 +457,19 @@ class MatchmakingFragmentTest {
                     )
                 }
             )
-        scenario.onActivity { activity ->
-            val fragment = MatchmakingFragment()
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, fragment)
-                .commitNow()
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = MatchmakingFragment()
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, fragment)
+                        .commitNow()
 
-            val expandablePreference =
-                fragment.findPreference<HealthExpandablePreference>(TEST_APP_PACKAGE_NAME)
-            assertThat(expandablePreference?.mIsExpanded).isTrue()
-        }
+                    val expandablePreference =
+                        fragment.findPreference<HealthExpandablePreference>(TEST_APP_PACKAGE_NAME)
+                    assertThat(expandablePreference?.mIsExpanded).isTrue()
+                }
+            }
     }
 
     @Test
@@ -490,8 +497,7 @@ class MatchmakingFragmentTest {
         )
         expandedKeys.postValue(emptySet())
 
-        val scenario =
-            ActivityScenario.launch<TestActivity>(
+        ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     putExtra(
                         HealthConnectManager.EXTRA_RECORD_TYPES,
@@ -499,21 +505,23 @@ class MatchmakingFragmentTest {
                     )
                 }
             )
-        scenario.onActivity { activity ->
-            val fragment = MatchmakingFragment()
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, fragment)
-                .commitNow()
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = MatchmakingFragment()
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, fragment)
+                        .commitNow()
 
-            val expandablePreference1 =
-                fragment.findPreference<HealthExpandablePreference>(TEST_APP_PACKAGE_NAME)
-            assertThat(expandablePreference1?.mIsExpanded).isFalse()
+                    val expandablePreference1 =
+                        fragment.findPreference<HealthExpandablePreference>(TEST_APP_PACKAGE_NAME)
+                    assertThat(expandablePreference1?.mIsExpanded).isFalse()
 
-            val expandablePreference2 =
-                fragment.findPreference<HealthExpandablePreference>(TEST_APP_PACKAGE_NAME_2)
-            assertThat(expandablePreference2?.mIsExpanded).isFalse()
-        }
+                    val expandablePreference2 =
+                        fragment.findPreference<HealthExpandablePreference>(TEST_APP_PACKAGE_NAME_2)
+                    assertThat(expandablePreference2?.mIsExpanded).isFalse()
+                }
+            }
     }
 
     @Test
@@ -535,8 +543,7 @@ class MatchmakingFragmentTest {
             )
         )
 
-        val scenario =
-            ActivityScenario.launch<TestActivity>(
+        ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     putExtra(
                         HealthConnectManager.EXTRA_RECORD_TYPES,
@@ -544,24 +551,26 @@ class MatchmakingFragmentTest {
                     )
                 }
             )
-        scenario.onActivity { activity ->
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, MatchmakingFragment())
-                .commitNow()
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, MatchmakingFragment())
+                        .commitNow()
+                }
 
-        onView(withId(R.id.matchmaking_header_icon_view)).check(matches(isDisplayed()))
-        onView(withId(R.id.requesting_app_icon)).check(matches(isDisplayed()))
-        onView(withId(R.id.health_connect_icon)).check(matches(isDisplayed()))
-        onView(withId(R.id.line_1)).check(matches(isDisplayed()))
-        onView(withId(R.id.line_2)).check(matches(isDisplayed()))
-        onView(withId(R.id.matched_icons_group)).check(matches(isDisplayed()))
-        onView(withId(R.id.matched_app_icon_1_container))
-            .check(matches(withEffectiveVisibility(VISIBLE)))
-        onView(withId(R.id.matched_app_icon_2_container))
-            .check(matches(withEffectiveVisibility(GONE)))
-        onView(withId(R.id.plus_n_container)).check(matches(isDisplayed()))
+                onView(withId(R.id.matchmaking_header_icon_view)).check(matches(isDisplayed()))
+                onView(withId(R.id.requesting_app_icon)).check(matches(isDisplayed()))
+                onView(withId(R.id.health_connect_icon)).check(matches(isDisplayed()))
+                onView(withId(R.id.line_1)).check(matches(isDisplayed()))
+                onView(withId(R.id.line_2)).check(matches(isDisplayed()))
+                onView(withId(R.id.matched_icons_group)).check(matches(isDisplayed()))
+                onView(withId(R.id.matched_app_icon_1_container))
+                    .check(matches(withEffectiveVisibility(VISIBLE)))
+                onView(withId(R.id.matched_app_icon_2_container))
+                    .check(matches(withEffectiveVisibility(GONE)))
+                onView(withId(R.id.plus_n_container)).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -574,8 +583,7 @@ class MatchmakingFragmentTest {
             )
         )
 
-        val scenario =
-            ActivityScenario.launch<TestActivity>(
+        ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     putExtra(
                         HealthConnectManager.EXTRA_RECORD_TYPES,
@@ -583,14 +591,16 @@ class MatchmakingFragmentTest {
                     )
                 }
             )
-        scenario.onActivity { activity ->
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, MatchmakingFragment())
-                .commitNow()
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, MatchmakingFragment())
+                        .commitNow()
+                }
 
-        onView(withId(R.id.matchmaking_header_icon_view)).check(matches(not(isDisplayed())))
+                onView(withId(R.id.matchmaking_header_icon_view)).check(matches(not(isDisplayed())))
+            }
     }
 
     @Test
@@ -612,8 +622,7 @@ class MatchmakingFragmentTest {
             )
         )
 
-        val scenario =
-            ActivityScenario.launch<TestActivity>(
+        ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     putExtra(
                         HealthConnectManager.EXTRA_RECORD_TYPES,
@@ -621,27 +630,29 @@ class MatchmakingFragmentTest {
                     )
                 }
             )
-        scenario.onActivity { activity ->
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, MatchmakingFragment())
-                .commitNow()
-        }
-        onView(withId(R.id.matchmaking_header_icon_view)).check(matches(isDisplayed()))
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, MatchmakingFragment())
+                        .commitNow()
+                }
+                onView(withId(R.id.matchmaking_header_icon_view)).check(matches(isDisplayed()))
 
-        scenario.recreate()
+                scenario.recreate()
 
-        onView(withId(R.id.matchmaking_header_icon_view)).check(matches(isDisplayed()))
-        onView(withId(R.id.requesting_app_icon)).check(matches(isDisplayed()))
-        onView(withId(R.id.health_connect_icon)).check(matches(isDisplayed()))
-        onView(withId(R.id.line_1)).check(matches(isDisplayed()))
-        onView(withId(R.id.line_2)).check(matches(isDisplayed()))
-        onView(withId(R.id.matched_icons_group)).check(matches(isDisplayed()))
-        onView(withId(R.id.matched_app_icon_1_container))
-            .check(matches(withEffectiveVisibility(VISIBLE)))
-        onView(withId(R.id.matched_app_icon_2_container))
-            .check(matches(withEffectiveVisibility(GONE)))
-        onView(withId(R.id.plus_n_container)).check(matches(isDisplayed()))
+                onView(withId(R.id.matchmaking_header_icon_view)).check(matches(isDisplayed()))
+                onView(withId(R.id.requesting_app_icon)).check(matches(isDisplayed()))
+                onView(withId(R.id.health_connect_icon)).check(matches(isDisplayed()))
+                onView(withId(R.id.line_1)).check(matches(isDisplayed()))
+                onView(withId(R.id.line_2)).check(matches(isDisplayed()))
+                onView(withId(R.id.matched_icons_group)).check(matches(isDisplayed()))
+                onView(withId(R.id.matched_app_icon_1_container))
+                    .check(matches(withEffectiveVisibility(VISIBLE)))
+                onView(withId(R.id.matched_app_icon_2_container))
+                    .check(matches(withEffectiveVisibility(GONE)))
+                onView(withId(R.id.plus_n_container)).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -654,19 +665,20 @@ class MatchmakingFragmentTest {
             )
         )
 
-        val scenario =
-            ActivityScenario.launch<TestActivity>(
+        ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     // No EXTRA_RECORD_TYPES
                 }
             )
-        scenario.onActivity { activity ->
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, MatchmakingFragment())
-                .commitNow()
-        }
-        verify(viewModel).loadMatchmakingApps(any(), eq(emptySet()))
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, MatchmakingFragment())
+                        .commitNow()
+                }
+                verify(viewModel).loadMatchmakingApps(any(), eq(emptySet()))
+            }
     }
 
     @Test
@@ -682,15 +694,16 @@ class MatchmakingFragmentTest {
             Intent(context, TestActivity::class.java).apply {
                 putExtra(HealthConnectManager.EXTRA_RECORD_TYPES, arrayOf("invalid.record.type"))
             }
-        val scenario = ActivityScenario.launch<TestActivity>(intent)
-        scenario.onActivity { activity ->
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, MatchmakingFragment())
-                .commitNow()
-        }
+        ActivityScenario.launch<TestActivity>(intent).use { scenario ->
+            scenario.onActivity { activity ->
+                activity.supportFragmentManager
+                    .beginTransaction()
+                    .add(android.R.id.content, MatchmakingFragment())
+                    .commitNow()
+            }
 
-        verify(viewModel).loadMatchmakingApps(any(), eq(emptySet()))
+            verify(viewModel).loadMatchmakingApps(any(), eq(emptySet()))
+        }
     }
 
     @Test
@@ -710,19 +723,20 @@ class MatchmakingFragmentTest {
                     arrayOf(HeartRateRecord::class.java.name, StepsRecord::class.java.name),
                 )
             }
-        val scenario = ActivityScenario.launch<TestActivity>(intent)
-        scenario.onActivity { activity ->
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, MatchmakingFragment())
-                .commitNow()
-        }
+        ActivityScenario.launch<TestActivity>(intent).use { scenario ->
+            scenario.onActivity { activity ->
+                activity.supportFragmentManager
+                    .beginTransaction()
+                    .add(android.R.id.content, MatchmakingFragment())
+                    .commitNow()
+            }
 
-        verify(viewModel)
-            .loadMatchmakingApps(
-                any(),
-                eq(setOf(HeartRateRecord::class.java, StepsRecord::class.java)),
-            )
+            verify(viewModel)
+                .loadMatchmakingApps(
+                    any(),
+                    eq(setOf(HeartRateRecord::class.java, StepsRecord::class.java)),
+                )
+        }
     }
 
     @Test
@@ -742,22 +756,22 @@ class MatchmakingFragmentTest {
                     arrayOf(HeartRateRecord::class.java.name, "invalid.record.type"),
                 )
             }
-        val scenario = ActivityScenario.launch<TestActivity>(intent)
-        scenario.onActivity { activity ->
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, MatchmakingFragment())
-                .commitNow()
-        }
+        ActivityScenario.launch<TestActivity>(intent).use { scenario ->
+            scenario.onActivity { activity ->
+                activity.supportFragmentManager
+                    .beginTransaction()
+                    .add(android.R.id.content, MatchmakingFragment())
+                    .commitNow()
+            }
 
-        verify(viewModel).loadMatchmakingApps(any(), eq(setOf(HeartRateRecord::class.java)))
+            verify(viewModel).loadMatchmakingApps(any(), eq(setOf(HeartRateRecord::class.java)))
+        }
     }
 
     @Test
     @EnableFlags(Flags.FLAG_MATCHMAKING)
     fun matchmakingFragment_nullCallingPackage_finishesWithCanceledResult() {
-        val scenario =
-            ActivityScenario.launchActivityForResult<TestActivity>(
+        ActivityScenario.launchActivityForResult<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     putExtra(
                         HealthConnectManager.EXTRA_RECORD_TYPES,
@@ -765,14 +779,16 @@ class MatchmakingFragmentTest {
                     )
                 }
             )
-        scenario.onActivity { activity ->
-            activity.callingPackageName = null
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, MatchmakingFragment())
-                .commitNow()
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.callingPackageName = null
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, MatchmakingFragment())
+                        .commitNow()
+                }
 
-        assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED)
+                assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED)
+            }
     }
 }

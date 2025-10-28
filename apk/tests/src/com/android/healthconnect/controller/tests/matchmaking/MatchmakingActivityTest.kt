@@ -169,13 +169,14 @@ class MatchmakingActivityTest {
     @EnableFlags(Flags.FLAG_MATCHMAKING)
     @Test
     fun matchmakingScreen_dontAllowButton_isClicked_finishesWithResultCanceled() {
-        val scenario = launchMatchmakingActivity()
-        registerBottomSheetIdlingResource(scenario)
-        atLeastOnePermissionGranted.postValue(true)
+        launchMatchmakingActivity().use { scenario ->
+            registerBottomSheetIdlingResource(scenario)
+            atLeastOnePermissionGranted.postValue(true)
 
-        onView(withText("Don't allow")).inRoot(isDialog()).perform(click())
+            onView(withText("Don't allow")).inRoot(isDialog()).perform(click())
 
-        assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED)
+            assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED)
+        }
     }
 
     private fun launchMatchmakingActivity(): ActivityScenario<MatchmakingActivity> {
