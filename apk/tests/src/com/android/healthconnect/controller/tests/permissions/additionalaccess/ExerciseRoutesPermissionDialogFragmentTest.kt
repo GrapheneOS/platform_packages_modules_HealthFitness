@@ -90,12 +90,13 @@ class ExerciseRoutesPermissionDialogFragmentTest {
         }
 
         launchDialog<ExerciseRoutesPermissionDialogFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withId(R.id.radio_button_always_allow))
-            .inRoot(isDialog())
-            .check(matches(isChecked()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withId(R.id.radio_button_always_allow))
+                    .inRoot(isDialog())
+                    .check(matches(isChecked()))
+            }
     }
 
     @Test
@@ -105,10 +106,11 @@ class ExerciseRoutesPermissionDialogFragmentTest {
         }
 
         launchDialog<ExerciseRoutesPermissionDialogFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withId(R.id.radio_button_ask)).inRoot(isDialog()).check(matches(isChecked()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withId(R.id.radio_button_ask)).inRoot(isDialog()).check(matches(isChecked()))
+            }
     }
 
     @Test
@@ -118,34 +120,39 @@ class ExerciseRoutesPermissionDialogFragmentTest {
         }
 
         launchDialog<ExerciseRoutesPermissionDialogFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withId(R.id.radio_button_revoke)).inRoot(isDialog()).check(matches(isChecked()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withId(R.id.radio_button_revoke))
+                    .inRoot(isDialog())
+                    .check(matches(isChecked()))
+            }
     }
 
     @Test
     fun onOptionSelected_withAllowAll_callsViewModelWithGranted() {
         launchDialog<ExerciseRoutesPermissionDialogFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withId(R.id.radio_button_always_allow)).inRoot(isDialog()).perform(click())
 
-        onView(withId(R.id.radio_button_always_allow)).inRoot(isDialog()).perform(click())
-
-        verify(additionalAccessViewModel)
-            .updateExerciseRouteState(eq(TEST_APP_PACKAGE_NAME), eq(ALWAYS_ALLOW))
+                verify(additionalAccessViewModel)
+                    .updateExerciseRouteState(eq(TEST_APP_PACKAGE_NAME), eq(ALWAYS_ALLOW))
+            }
     }
 
     @Test
     fun onOptionSelected_withAskEveryTime_callsViewModelWithDeclared() {
         launchDialog<ExerciseRoutesPermissionDialogFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withId(R.id.radio_button_ask)).inRoot(isDialog()).perform(click())
 
-        onView(withId(R.id.radio_button_ask)).inRoot(isDialog()).perform(click())
-
-        verify(additionalAccessViewModel)
-            .updateExerciseRouteState(eq(TEST_APP_PACKAGE_NAME), eq(ASK_EVERY_TIME))
+                verify(additionalAccessViewModel)
+                    .updateExerciseRouteState(eq(TEST_APP_PACKAGE_NAME), eq(ASK_EVERY_TIME))
+            }
     }
 
     @Test
@@ -154,12 +161,13 @@ class ExerciseRoutesPermissionDialogFragmentTest {
             MutableLiveData(State(exerciseRoutePermissionUIState = ALWAYS_ALLOW))
         }
         launchDialog<ExerciseRoutesPermissionDialogFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withId(R.id.radio_button_revoke)).inRoot(isDialog()).perform(click())
 
-        onView(withId(R.id.radio_button_revoke)).inRoot(isDialog()).perform(click())
-
-        verify(additionalAccessViewModel)
-            .updateExerciseRouteState(eq(TEST_APP_PACKAGE_NAME), eq(NEVER_ALLOW))
+                verify(additionalAccessViewModel)
+                    .updateExerciseRouteState(eq(TEST_APP_PACKAGE_NAME), eq(NEVER_ALLOW))
+            }
     }
 }
