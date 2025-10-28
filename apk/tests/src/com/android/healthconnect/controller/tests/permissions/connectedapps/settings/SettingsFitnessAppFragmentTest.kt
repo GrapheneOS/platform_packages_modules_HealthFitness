@@ -20,9 +20,9 @@ import android.content.pm.ActivityInfo
 import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissions.READ_DISTANCE
 import android.health.connect.HealthPermissions.READ_STEPS
-import android.platform.test.annotations.DisableFlags
-import android.platform.test.annotations.EnableFlags
-import android.platform.test.flag.junit.SetFlagsRule
+import android.platform.test.annotations.RequiresFlagsDisabled
+import android.platform.test.annotations.RequiresFlagsEnabled
+import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MediatorLiveData
@@ -114,7 +114,7 @@ import org.mockito.kotlin.whenever
 class SettingsFitnessAppFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @get:Rule val setFlagsRule = SetFlagsRule()
+    @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @BindValue val viewModel: AppPermissionViewModel = mock()
     @BindValue val navigationUtils: NavigationUtils = mock()
@@ -285,7 +285,7 @@ class SettingsFitnessAppFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_SETTINGS_FITNESS_APP_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_PERMISSIONS_GROUPING_SETTINGS_FITNESS_APP_SCREEN)
     fun whenPermissionSwitchIsOn_forReadWrite_correctContentDescriptionIsDisplayed() {
         val writePermission =
             FitnessPermission(FitnessPermissionType.EXERCISE, PermissionsAccessType.WRITE)
@@ -307,7 +307,7 @@ class SettingsFitnessAppFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_SETTINGS_FITNESS_APP_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_PERMISSIONS_GROUPING_SETTINGS_FITNESS_APP_SCREEN)
     fun whenPermissionSwitchIsOff_forReadWrite_correctContentDescriptionIsDisplayed() {
         val writePermission =
             FitnessPermission(FitnessPermissionType.EXERCISE, PermissionsAccessType.WRITE)
@@ -326,7 +326,7 @@ class SettingsFitnessAppFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_SETTINGS_FITNESS_APP_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_PERMISSIONS_GROUPING_SETTINGS_FITNESS_APP_SCREEN)
     fun unsupportedPackage_grantedPermissionsNotLoaded_onOrientationChange() {
         val readStepsPermission =
             FitnessPermission(FitnessPermissionType.STEPS, PermissionsAccessType.READ)
@@ -774,7 +774,7 @@ class SettingsFitnessAppFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun displaysGroupedPermissions_firstIsGroupExpanded_whenFlagEnabled() {
         val writePermission = FitnessPermission(HYDRATION, WRITE)
         val readPermission = FitnessPermission(STEPS, READ)
@@ -823,7 +823,7 @@ class SettingsFitnessAppFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun togglePermissionInCategory_updatesViewModel_whenFlagEnabled() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val writePermission = FitnessPermission(HYDRATION, WRITE)
@@ -841,7 +841,7 @@ class SettingsFitnessAppFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun toggleCategorySwitch_updatesViewModel_whenFlagEnabled() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val writePermission = FitnessPermission(HYDRATION, WRITE)
@@ -861,7 +861,7 @@ class SettingsFitnessAppFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun toggleIndividualPermission_updatesParentSwitchState() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val distancePermission = fromPermissionString(READ_DISTANCE)
