@@ -59,9 +59,11 @@ object HealthPermissionToDatatypeMapper {
                 .toMutableMap()
 
         val symptomRecordClass = listOf(SymptomRecord::class.java)
-        FitnessPermissionType.values().forEach {
-            if (it.name.startsWith(SYMPTOM_PERMISSION_PREFIX)) {
-                map[it] = symptomRecordClass
+        if (AconfigFlagHelper.isSymptomsEnabled()) {
+            FitnessPermissionType.values().forEach {
+                if (it.name.startsWith(SYMPTOM_PERMISSION_PREFIX)) {
+                    map[it] = symptomRecordClass
+                }
             }
         }
 
