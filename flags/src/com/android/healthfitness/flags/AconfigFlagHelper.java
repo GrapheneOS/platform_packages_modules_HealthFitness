@@ -108,10 +108,6 @@ public final class AconfigFlagHelper {
     @VisibleForTesting(visibility = PRIVATE)
     public static SortedMap<Integer, BooleanSupplier> getDbVersionToDbFlagMap() {
         TreeMap<Integer, BooleanSupplier> map = new TreeMap<>();
-        map.put(DB_VERSION_ACTIVITY_INTENSITY, Flags::activityIntensityDb);
-        map.put(DB_VERSION_CLOUD_BACKUP_AND_RESTORE, Flags::cloudBackupAndRestoreDb);
-        map.put(DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS, Flags::exerciseSegmentImprovementsDb);
-        map.put(DB_VERSION_PHR_CHANGE_LOGS, Flags::phrChangeLogsDb);
         map.put(DB_VERSION_NICOTINE_INTAKE, Flags::smokingDb);
         map.put(DB_VERSION_SYMPTOMS, Flags::symptomsDb);
         map.put(DB_VERSION_ALCOHOL_CONSUMPTION, Flags::alcoholConsumptionDb);
@@ -121,13 +117,12 @@ public final class AconfigFlagHelper {
 
     /** Returns a boolean indicating whether Activity Intensity data type is enabled. */
     public static boolean isActivityIntensityEnabled() {
-        return Flags.activityIntensity() && isDbFlagEnabled(DB_VERSION_ACTIVITY_INTENSITY);
+        return Flags.activityIntensity();
     }
 
     /** Returns a boolean indicating whether cloud backup & restore is enabled. */
     public static boolean isCloudBackupRestoreEnabled() {
-        return Flags.cloudBackupAndRestore()
-                && isDbFlagEnabled(DB_VERSION_CLOUD_BACKUP_AND_RESTORE);
+        return Flags.cloudBackupAndRestore();
     }
 
     /** Returns a boolean indicating whether Nicotine Intake data type is enabled. */
@@ -137,13 +132,12 @@ public final class AconfigFlagHelper {
 
     /** Returns a boolean indicating whether exercise segment improvements are enabled. */
     public static boolean isExerciseSegmentImprovementsEnabled() {
-        return Flags.exerciseSegmentImprovements()
-                && isDbFlagEnabled(DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS);
+        return Flags.exerciseSegmentImprovements();
     }
 
     /** Returns a boolean indicating whether PHR change logs feature is enabled. */
     public static boolean isPhrChangeLogsEnabled() {
-        return Flags.phrChangeLogs() && isDbFlagEnabled(DB_VERSION_PHR_CHANGE_LOGS);
+        return Flags.phrChangeLogs();
     }
 
     /** Returns a boolean indicating whether Alcohol Consumption data type is enabled. */

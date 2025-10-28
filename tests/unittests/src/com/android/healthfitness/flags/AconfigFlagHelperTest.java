@@ -92,30 +92,15 @@ public class AconfigFlagHelperTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_CLOUD_BACKUP_AND_RESTORE,
-        Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
+        Flags.FLAG_CLOUD_BACKUP_AND_RESTORE
     })
-    public void cloudBackupAndRestore_featureFlagTrueAndDbFlagTrue_expectTrue() {
+    public void cloudBackupAndRestore_featureFlagTrue_expectTrue() {
         assertThat(isCloudBackupRestoreEnabled()).isTrue();
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_CLOUD_BACKUP_AND_RESTORE, Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB})
-    public void cloudBackupAndRestore_featureFlagFalseAndDbFlagFalse_expectFalse() {
-        assertThat(isCloudBackupRestoreEnabled()).isFalse();
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
-    @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB)
-    public void cloudBackupAndRestore_featureFlagFalseAndDbTrue_expectFalse() {
-        assertThat(isCloudBackupRestoreEnabled()).isFalse();
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
-    @DisableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB)
-    public void cloudBackupAndRestore_featureFlagTrueAndDbFalse_expectFalse() {
+    @DisableFlags({Flags.FLAG_CLOUD_BACKUP_AND_RESTORE})
+    public void cloudBackupAndRestore_featureFlagFalse_expectFalse() {
         assertThat(isCloudBackupRestoreEnabled()).isFalse();
     }
 
