@@ -19,6 +19,7 @@ import static java.util.Objects.hash;
 import static java.util.Objects.requireNonNull;
 
 import android.annotation.NonNull;
+import android.health.connect.internal.PackageNameMasker;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -29,6 +30,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * Represents a response the matching applications for a given set of record types and a package
@@ -36,7 +38,8 @@ import java.util.Set;
  *
  * @hide
  */
-public final class GetMatchingAppsResponse implements Parcelable {
+public final class GetMatchingAppsResponse
+        implements Parcelable, PackageNameMasker<GetMatchingAppsResponse> {
     private final Map<String, Set<String>> mMatchingApps;
 
     /**
@@ -128,5 +131,18 @@ public final class GetMatchingAppsResponse implements Parcelable {
         sb.append(",matchingApps=").append(getMatchingApps());
         sb.append("}");
         return sb.toString();
+    }
+
+    /** @hide */
+    @NonNull
+    @Override
+    public GetMatchingAppsResponse toMasked(@NonNull Function<String, String> packageMasker) {
+        Map<String, Set<String>> maskedMap = new HashMap<>();
+        for (Map.Entry<String, Set<String>> entry : mMatchingApps.entrySet()) {
+            String newKey = entry.getKey() == null ? null : packageMasker.apply(entry.getKey());
+            maskedMap.put(newKey, entry.getValue());
+        }
+
+        return new GetMatchingAppsResponse(maskedMap);
     }
 }

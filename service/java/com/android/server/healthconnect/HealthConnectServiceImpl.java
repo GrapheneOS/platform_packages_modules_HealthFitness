@@ -3105,10 +3105,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             AttributionSource attributionSource,
             MatchmakingRequest request,
             IIsMatchmakingPossibleCallback callback) {
+        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, request, callback);
+        final MatchmakingRequest unmaskedRequest =
+                request.toUnmasked(getUnmaskingFunction(attributionSource.getPackageName()));
+
         getMatchingApps(
                 attributionSource,
-                request,
+                unmaskedRequest,
                 new IGetMatchingAppsCallback.Stub() {
                     @Override
                     public void onResult(GetMatchingAppsResponse response) throws RemoteException {
@@ -3133,6 +3137,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             AttributionSource attributionSource,
             MatchmakingRequest request,
             IGetMatchingAppsCallback callback) {
+        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, request, callback);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
@@ -3146,6 +3151,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionPackageName);
         ErrorCallback errorCallback = callback::onError;
+        final MatchmakingRequest unmaskedRequest =
+                request.toUnmasked(getUnmaskingFunction(attributionPackageName));
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
@@ -3154,7 +3161,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     }
                     enforceIsForegroundUser(userHandle);
                     throwExceptionIfDataSyncInProgress();
-                    String requestPackageName = request.getCallingPackageName();
+                    String requestPackageName = unmaskedRequest.getCallingPackageName();
                     if (holdsDataManagementPermission) {
                         checkArgument(requestPackageName != null, "package name must be provided");
                     } else {
@@ -3171,10 +3178,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             holdsDataManagementPermission
                                     ? requestPackageName
                                     : attributionPackageName;
-                    Set<Class<? extends Record>> recordTypes = request.getRecordTypes();
+                    Set<Class<? extends Record>> recordTypes = unmaskedRequest.getRecordTypes();
                     Map<String, Set<String>> matchingApps =
                             mMatchmakingManager.fetchMatchingApps(recordTypes, packageName);
-                    callback.onResult(new GetMatchingAppsResponse(matchingApps));
+                    GetMatchingAppsResponse maskedResponse =
+                            new GetMatchingAppsResponse(matchingApps)
+                                    .toMasked(getMaskingFunction(attributionPackageName));
+                    callback.onResult(maskedResponse);
                     // TODO(b/425634323): Add logging.
                 },
                 logger,
@@ -3192,11 +3202,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             String callingPackageName,
             Map<String, List<String>> matchingApps,
             IEmptyResponseCallback callback) {
+        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, callingPackageName, callback);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final ErrorCallback errorCallback = callback::onError;
+        final String unmaskedCallingPackageName =
+                getUnmaskingFunction(attributionSource.getPackageName()).apply(callingPackageName);
 
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
@@ -3207,14 +3220,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
                     mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
-                    if (callingPackageName.isEmpty()) {
+                    if (unmaskedCallingPackageName.isEmpty()) {
                         throw new HealthConnectException(
                                 ERROR_INVALID_ARGUMENT, "Calling package name can't be empty.");
                     }
                     throwExceptionIfDataSyncInProgress();
                     if (mMatchmakingManager != null) {
                         mMatchmakingManager.recordMatchmakingDenial(
-                                callingPackageName, matchingApps);
+                                unmaskedCallingPackageName, matchingApps);
                     }
                     callback.onResult();
                 },
