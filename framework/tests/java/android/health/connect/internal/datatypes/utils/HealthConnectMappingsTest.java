@@ -36,9 +36,10 @@ import android.health.connect.HealthPermissionCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Record;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.platform.test.annotations.DisableFlags;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.SetFlagsRule;
+import android.platform.test.annotations.RequiresFlagsDisabled;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -55,7 +56,8 @@ import java.util.stream.Collectors;
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectMappingsTest {
 
-    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
     @Test
     public void getAllRecordTypeIdentifiers() {
@@ -166,7 +168,7 @@ public class HealthConnectMappingsTest {
         }
     }
 
-    @EnableFlags({Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP})
+    @RequiresFlagsEnabled({Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP})
     @Test
     public void getHealthDataCategoryForWritePermission() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -217,7 +219,7 @@ public class HealthConnectMappingsTest {
                 .isEqualTo(DEFAULT_INT);
     }
 
-    @DisableFlags(Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP)
+    @RequiresFlagsDisabled(Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP)
     @Test
     public void getHealthDataCategoryForWritePermission_flagDisabled_equalsToLegacy() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -235,7 +237,7 @@ public class HealthConnectMappingsTest {
         }
     }
 
-    @EnableFlags({
+    @RequiresFlagsEnabled({
         Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP,
         Flags.FLAG_ACTIVITY_INTENSITY,
         Flags.FLAG_SMOKING,
@@ -257,8 +259,12 @@ public class HealthConnectMappingsTest {
                 .isEqualTo(HealthDataCategory.WELLNESS);
     }
 
-    @DisableFlags(Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP)
-    @EnableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_SMOKING, Flags.FLAG_SMOKING_DB})
+    @RequiresFlagsDisabled(Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP)
+    @RequiresFlagsEnabled({
+        Flags.FLAG_ACTIVITY_INTENSITY,
+        Flags.FLAG_SMOKING,
+        Flags.FLAG_SMOKING_DB
+    })
     @Test
     public void getHealthDataCategoryForWritePermission_flagDisabled_doesNotSupportNewDataTypes() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -328,7 +334,7 @@ public class HealthConnectMappingsTest {
         assertThat(healthConnectMappings.getWritePermissionForReadPermission(WRITE_STEPS)).isNull();
     }
 
-    @EnableFlags(Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP)
+    @RequiresFlagsEnabled(Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP)
     @Test
     public void getWriteHealthPermissionsFor() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -410,7 +416,7 @@ public class HealthConnectMappingsTest {
         }
     }
 
-    @DisableFlags({
+    @RequiresFlagsDisabled({
         Flags.FLAG_ACTIVITY_INTENSITY,
         Flags.FLAG_SMOKING,
         Flags.FLAG_SYMPTOMS,
@@ -447,7 +453,7 @@ public class HealthConnectMappingsTest {
                                 .collect(Collectors.toSet()));
     }
 
-    @EnableFlags({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_ACTIVITY_INTENSITY_DB})
+    @RequiresFlagsEnabled({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_ACTIVITY_INTENSITY_DB})
     @Test
     public void activityIntensityFlagsEnabled_containsActivityIntensity() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -456,8 +462,8 @@ public class HealthConnectMappingsTest {
                 .contains(RECORD_TYPE_ACTIVITY_INTENSITY);
     }
 
-    @EnableFlags(Flags.FLAG_ACTIVITY_INTENSITY_DB)
-    @DisableFlags(Flags.FLAG_ACTIVITY_INTENSITY)
+    @RequiresFlagsEnabled(Flags.FLAG_ACTIVITY_INTENSITY_DB)
+    @RequiresFlagsDisabled(Flags.FLAG_ACTIVITY_INTENSITY)
     @Test
     public void activityIntensityFlagDisabled_doesNotContainsActivityIntensity() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -466,8 +472,8 @@ public class HealthConnectMappingsTest {
                 .doesNotContain(RECORD_TYPE_ACTIVITY_INTENSITY);
     }
 
-    @EnableFlags(Flags.FLAG_ACTIVITY_INTENSITY)
-    @DisableFlags(Flags.FLAG_ACTIVITY_INTENSITY_DB)
+    @RequiresFlagsEnabled(Flags.FLAG_ACTIVITY_INTENSITY)
+    @RequiresFlagsDisabled(Flags.FLAG_ACTIVITY_INTENSITY_DB)
     @Test
     public void activityIntensityDbFlagDisabled_doesNotContainsActivityIntensity() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -476,7 +482,7 @@ public class HealthConnectMappingsTest {
                 .doesNotContain(RECORD_TYPE_ACTIVITY_INTENSITY);
     }
 
-    @EnableFlags({
+    @RequiresFlagsEnabled({
         Flags.FLAG_SMOKING,
         Flags.FLAG_SMOKING_DB,
         Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
@@ -491,8 +497,8 @@ public class HealthConnectMappingsTest {
                 .contains(RECORD_TYPE_NICOTINE_INTAKE);
     }
 
-    @EnableFlags(Flags.FLAG_SMOKING_DB)
-    @DisableFlags(Flags.FLAG_SMOKING)
+    @RequiresFlagsEnabled(Flags.FLAG_SMOKING_DB)
+    @RequiresFlagsDisabled(Flags.FLAG_SMOKING)
     @Test
     public void nicotineIntakeFlagDisabled_doesNotContainsNicotineIntake() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -501,8 +507,8 @@ public class HealthConnectMappingsTest {
                 .doesNotContain(RECORD_TYPE_NICOTINE_INTAKE);
     }
 
-    @EnableFlags(Flags.FLAG_SMOKING)
-    @DisableFlags(Flags.FLAG_SMOKING_DB)
+    @RequiresFlagsEnabled(Flags.FLAG_SMOKING)
+    @RequiresFlagsDisabled(Flags.FLAG_SMOKING_DB)
     @Test
     public void nicotineIntakeDbFlagDisabled_doesNotContainsNicotineIntake() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -550,7 +556,7 @@ public class HealthConnectMappingsTest {
         }
     }
 
-    @EnableFlags({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB})
+    @RequiresFlagsEnabled({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB})
     @Test
     public void symptomsFlagEnabled_containsSymptoms() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -559,8 +565,8 @@ public class HealthConnectMappingsTest {
                 .contains(RECORD_TYPE_SYMPTOM);
     }
 
-    @EnableFlags(Flags.FLAG_SYMPTOMS_DB)
-    @DisableFlags(Flags.FLAG_SYMPTOMS)
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsDisabled(Flags.FLAG_SYMPTOMS)
     @Test
     public void symptomsFlagDisabled_doesNotContainSymptoms() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -569,8 +575,8 @@ public class HealthConnectMappingsTest {
                 .doesNotContain(RECORD_TYPE_SYMPTOM);
     }
 
-    @EnableFlags(Flags.FLAG_SYMPTOMS)
-    @DisableFlags(Flags.FLAG_SYMPTOMS_DB)
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS)
+    @RequiresFlagsDisabled(Flags.FLAG_SYMPTOMS_DB)
     @Test
     public void symptomsDbFlagDisabled_doesNotContainSymptoms() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
