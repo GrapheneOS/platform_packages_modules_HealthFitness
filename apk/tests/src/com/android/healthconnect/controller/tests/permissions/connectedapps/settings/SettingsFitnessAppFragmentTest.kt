@@ -200,17 +200,18 @@ class SettingsFitnessAppFragmentTest {
             MutableLiveData(setOf(writePermission))
         }
 
-        val scenario =
-            launchFragment<SettingsFitnessAppFragment>(
+        launchFragment<SettingsFitnessAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        onView(withText("Allow all")).check(matches(isDisplayed()))
-        onView(withText("Allowed to read")).check(matches(isDisplayed()))
-        onView(withText("Allowed to write")).check(matches(isDisplayed()))
+                onView(withText("Allow all")).check(matches(isDisplayed()))
+                onView(withText("Allowed to read")).check(matches(isDisplayed()))
+                onView(withText("Allowed to write")).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -226,18 +227,20 @@ class SettingsFitnessAppFragmentTest {
             MutableLiveData(setOf(writePermission))
         }
 
-        val scenario =
-            launchFragment<SettingsFitnessAppFragment>(
+        launchFragment<SettingsFitnessAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.MANAGE_PERMISSIONS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(PermissionsElement.ALLOW_ALL_SWITCH)
-        verify(healthConnectLogger, times(2)).logImpression(PermissionsElement.PERMISSION_SWITCH)
+                verify(healthConnectLogger, atLeast(1)).setPageId(PageName.MANAGE_PERMISSIONS_PAGE)
+                verify(healthConnectLogger).logPageImpression()
+                verify(healthConnectLogger).logImpression(PermissionsElement.ALLOW_ALL_SWITCH)
+                verify(healthConnectLogger, times(2))
+                    .logImpression(PermissionsElement.PERMISSION_SWITCH)
+            }
     }
 
     @Test
@@ -249,17 +252,18 @@ class SettingsFitnessAppFragmentTest {
             MutableLiveData(setOf(readPermission))
         }
 
-        val scenario =
-            launchFragment<SettingsFitnessAppFragment>(
+        launchFragment<SettingsFitnessAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        onView(withText("Allow all")).check(matches(isDisplayed()))
-        onView(withText("Allowed to read")).check(matches(isDisplayed()))
-        onView(withText("Allowed to write")).check(doesNotExist())
+                onView(withText("Allow all")).check(matches(isDisplayed()))
+                onView(withText("Allowed to read")).check(matches(isDisplayed()))
+                onView(withText("Allowed to write")).check(doesNotExist())
+            }
     }
 
     @Test
@@ -271,17 +275,18 @@ class SettingsFitnessAppFragmentTest {
             MutableLiveData(setOf(writePermission))
         }
 
-        val scenario =
-            launchFragment<SettingsFitnessAppFragment>(
+        launchFragment<SettingsFitnessAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        onView(withText("Allow all")).check(matches(isDisplayed()))
-        onView(withText("Allowed to read")).check(doesNotExist())
-        onView(withText("Allowed to write")).check(matches(isDisplayed()))
+                onView(withText("Allow all")).check(matches(isDisplayed()))
+                onView(withText("Allowed to read")).check(doesNotExist())
+                onView(withText("Allowed to write")).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -299,11 +304,14 @@ class SettingsFitnessAppFragmentTest {
         }
 
         launchFragment<SettingsFitnessAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withContentDescription("Exercise. Write Access. On")).check(matches(isDisplayed()))
-        onView(withContentDescription("Distance. Read Access. On")).check(matches(isDisplayed()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withContentDescription("Exercise. Write Access. On"))
+                    .check(matches(isDisplayed()))
+                onView(withContentDescription("Distance. Read Access. On"))
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -318,11 +326,14 @@ class SettingsFitnessAppFragmentTest {
         }
 
         launchFragment<SettingsFitnessAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withContentDescription("Exercise. Write Access. Off")).check(matches(isDisplayed()))
-        onView(withContentDescription("Distance. Read Access. Off")).check(matches(isDisplayed()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withContentDescription("Exercise. Write Access. Off"))
+                    .check(matches(isDisplayed()))
+                onView(withContentDescription("Distance. Read Access. Off"))
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -341,28 +352,29 @@ class SettingsFitnessAppFragmentTest {
         }
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { false }
 
-        val scenario =
-            launchFragment<SettingsFitnessAppFragment>(
+        launchFragment<SettingsFitnessAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        onView(withText("Allow all")).check(matches(isDisplayed()))
-        onView(withText("Sleep")).check(matches(isDisplayed()))
-        onView(withText("Steps")).check(matches(isDisplayed()))
-        onView(withText("Sleep")).perform(click())
-        onView(withText("Sleep")).check(matches(not(isChecked())))
+                onView(withText("Allow all")).check(matches(isDisplayed()))
+                onView(withText("Sleep")).check(matches(isDisplayed()))
+                onView(withText("Steps")).check(matches(isDisplayed()))
+                onView(withText("Sleep")).perform(click())
+                onView(withText("Sleep")).check(matches(not(isChecked())))
 
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        }
-        onIdle()
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
-        onIdle()
-        onView(withText("Sleep")).perform(scrollTo()).check(matches(not(isChecked())))
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                }
+                onIdle()
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
+                onIdle()
+                onView(withText("Sleep")).perform(scrollTo()).check(matches(not(isChecked())))
+            }
     }
 
     @Test
@@ -377,12 +389,14 @@ class SettingsFitnessAppFragmentTest {
         whenever(viewModel.grantAllFitnessPermissions(TEST_APP_PACKAGE_NAME)).then { true }
 
         launchFragment<SettingsFitnessAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-        onView(withText("Allow all")).perform(click())
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText("Allow all")).perform(click())
 
-        verify(healthConnectLogger)
-            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_ON)
+                verify(healthConnectLogger)
+                    .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_ON)
+            }
     }
 
     @Test
@@ -403,12 +417,17 @@ class SettingsFitnessAppFragmentTest {
         whenever(viewModel.allFitnessPermissionsGranted).then { MediatorLiveData(true) }
 
         launchFragment<SettingsFitnessAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-        onView(withText("Allow all")).perform(click())
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            )
+            .use {
+                onView(withText("Allow all")).perform(click())
 
-        verify(healthConnectLogger)
-            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_OFF)
+                verify(healthConnectLogger)
+                    .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_OFF)
+            }
     }
 
     @Test
@@ -426,25 +445,26 @@ class SettingsFitnessAppFragmentTest {
         }
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { false }
 
-        val scenario =
-            launchFragment<SettingsFitnessAppFragment>(
+        launchFragment<SettingsFitnessAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
-        onView(
-                withText(
-                    "$TEST_APP_NAME can read data added after October 20, 2022" +
-                        "\n\n" +
-                        "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
-                )
-            )
-            .check(doesNotExist())
-        onView(withText("Read privacy policy")).check(doesNotExist())
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
+                onView(
+                        withText(
+                            "$TEST_APP_NAME can read data added after October 20, 2022" +
+                                "\n\n" +
+                                "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
+                        )
+                    )
+                    .check(doesNotExist())
+                onView(withText("Read privacy policy")).check(doesNotExist())
+            }
     }
 
     @Test
@@ -461,25 +481,28 @@ class SettingsFitnessAppFragmentTest {
         }
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
-        val scenario =
-            launchFragment<SettingsFitnessAppFragment>(
+        launchFragment<SettingsFitnessAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        scrollToBottomOfPreferenceScreen()
-        onView(
-                withText(
-                    "$TEST_APP_NAME can read data added after October 20, 2022" +
-                        "\n\n" +
-                        "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
-                )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Read privacy policy")).perform(scrollTo()).check(matches(isDisplayed()))
+                scrollToBottomOfPreferenceScreen()
+                onView(
+                        withText(
+                            "$TEST_APP_NAME can read data added after October 20, 2022" +
+                                "\n\n" +
+                                "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
+                        )
+                    )
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withText("Read privacy policy"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -496,25 +519,28 @@ class SettingsFitnessAppFragmentTest {
         }
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
-        val scenario =
-            launchFragment<SettingsFitnessAppFragment>(
+        launchFragment<SettingsFitnessAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                }
 
-        scrollToBottomOfPreferenceScreen()
-        onView(
-                withText(
-                    "$TEST_APP_NAME can read data added after October 20, 2022" +
-                        "\n\n" +
-                        "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
-                )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Read privacy policy")).perform(scrollTo()).check(matches(isDisplayed()))
+                scrollToBottomOfPreferenceScreen()
+                onView(
+                        withText(
+                            "$TEST_APP_NAME can read data added after October 20, 2022" +
+                                "\n\n" +
+                                "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
+                        )
+                    )
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withText("Read privacy policy"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -524,10 +550,9 @@ class SettingsFitnessAppFragmentTest {
         }
 
         launchFragment<SettingsFitnessAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withText(R.string.additional_access_label)).check(doesNotExist())
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use { onView(withText(R.string.additional_access_label)).check(doesNotExist()) }
     }
 
     @Test
@@ -542,10 +567,11 @@ class SettingsFitnessAppFragmentTest {
         }
 
         launchFragment<SettingsFitnessAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -564,10 +590,11 @@ class SettingsFitnessAppFragmentTest {
         }
 
         launchFragment<SettingsFitnessAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -582,16 +609,18 @@ class SettingsFitnessAppFragmentTest {
         }
 
         launchFragment<SettingsFitnessAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-        onView(withText(R.string.additional_access_label)).perform(click())
-
-        verify(navigationUtils)
-            .navigate(
-                fragment = any(),
-                action = eq(R.id.action_settingsFitnessApp_to_additionalAccessFragment),
-                bundle = any(),
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use {
+                onView(withText(R.string.additional_access_label)).perform(click())
+
+                verify(navigationUtils)
+                    .navigate(
+                        fragment = any(),
+                        action = eq(R.id.action_settingsFitnessApp_to_additionalAccessFragment),
+                        bundle = any(),
+                    )
+            }
     }
 
     @Test
@@ -627,29 +656,32 @@ class SettingsFitnessAppFragmentTest {
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
         launchFragment<SettingsFitnessAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(
-                withText(
-                    "Health Connect is ready to be integrated with your Android system. If you give $TEST_APP_NAME access now, some features may not work until integration is complete."
-                )
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Start integration")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Continue")).inRoot(isDialog()).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CANCEL_BUTTON)
+            .use {
+                onView(
+                        withText(
+                            "Health Connect is ready to be integrated with your Android system. If you give $TEST_APP_NAME access now, some features may not work until integration is complete."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Start integration"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Continue")).inRoot(isDialog()).check(matches(isDisplayed()))
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTAINER)
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CANCEL_BUTTON)
 
-        onView(withText("Continue")).inRoot(isDialog()).perform(click())
-        onView(withText("Continue")).check(doesNotExist())
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
+                onView(withText("Continue")).inRoot(isDialog()).perform(click())
+                onView(withText("Continue")).check(doesNotExist())
+                verify(healthConnectLogger)
+                    .logInteraction(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
+            }
     }
 
     @Test
@@ -684,31 +716,31 @@ class SettingsFitnessAppFragmentTest {
         }
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
-        val scenario =
-            launchFragment<SettingsFitnessAppFragment>(
+        launchFragment<SettingsFitnessAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(
+                        withText(
+                            "Health Connect is being integrated with the Android system.\n\nYou'll get a notification when the process is complete and you can use $TEST_APP_NAME with Health Connect."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_CONTAINER)
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(
-                withText(
-                    "Health Connect is being integrated with the Android system.\n\nYou'll get a notification when the process is complete and you can use $TEST_APP_NAME with Health Connect."
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
+                onView(withText("Got it")).inRoot(isDialog()).perform(click())
+                verify(healthConnectLogger)
+                    .logInteraction(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(withText("Got it")).inRoot(isDialog()).perform(click())
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
-
-        // Needed to makes sure activity has finished
-        scenario.result
-        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+                // Needed to makes sure activity has finished
+                scenario.result
+                assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+            }
     }
 
     @Test
@@ -743,34 +775,34 @@ class SettingsFitnessAppFragmentTest {
         }
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
-        val scenario =
-            launchFragment<SettingsFitnessAppFragment>(
+        launchFragment<SettingsFitnessAppFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Health Connect restore in progress"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Health Connect is restoring data and permissions. This may take some time to complete."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
+                verify(healthConnectLogger)
+                    .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_CONTAINER)
+                verify(healthConnectLogger)
+                    .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(withText("Health Connect restore in progress"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Health Connect is restoring data and permissions. This may take some time to complete."
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
+                onView(withText("Got it")).inRoot(isDialog()).perform(click())
+                verify(healthConnectLogger)
+                    .logInteraction(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(withText("Got it")).inRoot(isDialog()).perform(click())
-        verify(healthConnectLogger)
-            .logInteraction(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
-
-        // Needed to makes sure activity has finished
-        scenario.result
-        assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+                // Needed to makes sure activity has finished
+                scenario.result
+                assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+            }
     }
 
     @Test
@@ -781,45 +813,45 @@ class SettingsFitnessAppFragmentTest {
         whenever(viewModel.fitnessPermissions).then {
             MutableLiveData(listOf(writePermission, readPermission))
         }
-        val scenario =
-            launchFragment<SettingsFitnessAppFragment>(
+        launchFragment<SettingsFitnessAppFragment>(
                 bundleOf(
                     EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
                     EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
+            .use { scenario ->
+                // Sorted order is Activity, Sleep for read.
+                // So Activity (1) should be expanded.
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(
+                        RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                            hasDescendant(withText("Steps"))
+                        )
+                    )
+                onView(withText("Steps")).check(matches(isDisplayed()))
 
-        // Sorted order is Activity, Sleep for read.
-        // So Activity (1) should be expanded.
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Steps"))
-                )
-            )
-        onView(withText("Steps")).check(matches(isDisplayed()))
+                lateinit var expandablePreference: HealthToggleExpandablePreference
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as SettingsFitnessAppFragment
+                    expandablePreference =
+                        fragment.preferenceScreen.findPreference(
+                            PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString()
+                        )!!
+                }
+                assertThat(expandablePreference.mIsExpanded).isTrue()
 
-        lateinit var expandablePreference: HealthToggleExpandablePreference
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as SettingsFitnessAppFragment
-            expandablePreference =
-                fragment.preferenceScreen.findPreference(
-                    PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString()
-                )!!
-        }
-        assertThat(expandablePreference.mIsExpanded).isTrue()
-
-        // Now expand Nutrition category (write permissions)
-        clickOnRecyclerViewItemWithText("Nutrition (1)")
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Hydration"))
-                )
-            )
-        onView(withText("Hydration")).check(matches(isDisplayed()))
+                // Now expand Nutrition category (write permissions)
+                clickOnRecyclerViewItemWithText("Nutrition (1)")
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(
+                        RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                            hasDescendant(withText("Hydration"))
+                        )
+                    )
+                onView(withText("Hydration")).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -833,11 +865,17 @@ class SettingsFitnessAppFragmentTest {
         }
 
         launchFragment<SettingsFitnessAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-        clickOnRecyclerViewItemWithText("Steps")
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            )
+            .use {
+                clickOnRecyclerViewItemWithText("Steps")
 
-        verify(viewModel).updatePermission(TEST_APP_PACKAGE_NAME, stepsPermission, grant = true)
+                verify(viewModel)
+                    .updatePermission(TEST_APP_PACKAGE_NAME, stepsPermission, grant = true)
+            }
     }
 
     @Test
@@ -851,13 +889,17 @@ class SettingsFitnessAppFragmentTest {
         }
 
         launchFragment<SettingsFitnessAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            )
+            .use {
+                clickSwitchOnRecyclerViewItemWithText("Activity (1)")
 
-        clickSwitchOnRecyclerViewItemWithText("Activity (1)")
-
-        verify(viewModel)
-            .updatePermissions(TEST_APP_PACKAGE_NAME, listOf(stepsPermission), grant = true)
+                verify(viewModel)
+                    .updatePermissions(TEST_APP_PACKAGE_NAME, listOf(stepsPermission), grant = true)
+            }
     }
 
     @Test
@@ -868,36 +910,36 @@ class SettingsFitnessAppFragmentTest {
         val activityPermissions = listOf(stepsPermission, distancePermission)
         whenever(viewModel.fitnessPermissions).then { MutableLiveData(activityPermissions) }
 
-        val scenario =
-            launchFragment<SettingsFitnessAppFragment>(
+        launchFragment<SettingsFitnessAppFragment>(
                 bundleOf(
                     EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
                     EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
+            .use { scenario ->
+                lateinit var expandablePreference: HealthToggleExpandablePreference
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as SettingsFitnessAppFragment
+                    expandablePreference =
+                        fragment.preferenceScreen.findPreference(
+                            PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString()
+                        )!!
+                }
+                assertThat(expandablePreference.isChecked).isFalse()
 
-        lateinit var expandablePreference: HealthToggleExpandablePreference
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as SettingsFitnessAppFragment
-            expandablePreference =
-                fragment.preferenceScreen.findPreference(
-                    PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString()
-                )!!
-        }
-        assertThat(expandablePreference.isChecked).isFalse()
+                // 1. Click "Steps" to turn it on
+                clickOnRecyclerViewItemWithText("Steps")
+                assertThat(expandablePreference.isChecked).isFalse()
 
-        // 1. Click "Steps" to turn it on
-        clickOnRecyclerViewItemWithText("Steps")
-        assertThat(expandablePreference.isChecked).isFalse()
+                // 2. Click "Distance" to turn it on
+                clickOnRecyclerViewItemWithText("Distance")
+                assertThat(expandablePreference.mIsExpanded).isTrue()
 
-        // 2. Click "Distance" to turn it on
-        clickOnRecyclerViewItemWithText("Distance")
-        assertThat(expandablePreference.mIsExpanded).isTrue()
-
-        // 3. Click "Steps" to turn it off again
-        clickOnRecyclerViewItemWithText("Steps")
-        assertThat(expandablePreference.isChecked).isFalse()
+                // 3. Click "Steps" to turn it off again
+                clickOnRecyclerViewItemWithText("Steps")
+                assertThat(expandablePreference.isChecked).isFalse()
+            }
     }
 }

@@ -183,30 +183,34 @@ class SettingsCombinedPermissionsFragmentTest {
         }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withText("Permissions")).check(matches(isDisplayed()))
-        onView(withText("Fitness and wellness")).check(matches(isDisplayed()))
-        onView(withText("Exercise, sleep, nutrition and others")).check(matches(isDisplayed()))
-        onView(withText("Medical records")).check(matches(isDisplayed()))
-        onView(withText("Lab results, medications, vaccines and others"))
-            .check(matches(isDisplayed()))
-        onView(withText("Additional access")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Past data, background data"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Manage app")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Remove access for this app"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "You can learn how Health Connect test app handles your data in the developer's privacy policy"
-                )
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
+            .use {
+                onView(withText("Permissions")).check(matches(isDisplayed()))
+                onView(withText("Fitness and wellness")).check(matches(isDisplayed()))
+                onView(withText("Exercise, sleep, nutrition and others"))
+                    .check(matches(isDisplayed()))
+                onView(withText("Medical records")).check(matches(isDisplayed()))
+                onView(withText("Lab results, medications, vaccines and others"))
+                    .check(matches(isDisplayed()))
+                onView(withText("Additional access"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withText("Past data, background data"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withText("Manage app")).perform(scrollTo()).check(matches(isDisplayed()))
+                onView(withText("Remove access for this app"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "You can learn how Health Connect test app handles your data in the developer's privacy policy"
+                        )
+                    )
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -237,12 +241,13 @@ class SettingsCombinedPermissionsFragmentTest {
         }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        verify(healthConnectLogger, atLeast(1))
-            .setPageId(PageName.SETTINGS_MANAGE_COMBINED_APP_PERMISSIONS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                verify(healthConnectLogger, atLeast(1))
+                    .setPageId(PageName.SETTINGS_MANAGE_COMBINED_APP_PERMISSIONS_PAGE)
+                verify(healthConnectLogger).logPageImpression()
+            }
     }
 
     @Test
@@ -252,10 +257,9 @@ class SettingsCombinedPermissionsFragmentTest {
         }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withText(R.string.additional_access_label)).check(doesNotExist())
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use { onView(withText(R.string.additional_access_label)).check(doesNotExist()) }
     }
 
     @Test
@@ -270,10 +274,11 @@ class SettingsCombinedPermissionsFragmentTest {
         }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -292,10 +297,11 @@ class SettingsCombinedPermissionsFragmentTest {
         }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -310,16 +316,19 @@ class SettingsCombinedPermissionsFragmentTest {
         }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-        onView(withText(R.string.additional_access_label)).perform(click())
-
-        verify(navigationUtils)
-            .navigate(
-                fragment = any(),
-                action = eq(R.id.action_settingsCombinedPermissions_to_additionalAccessFragment),
-                bundle = any(),
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use {
+                onView(withText(R.string.additional_access_label)).perform(click())
+
+                verify(navigationUtils)
+                    .navigate(
+                        fragment = any(),
+                        action =
+                            eq(R.id.action_settingsCombinedPermissions_to_additionalAccessFragment),
+                        bundle = any(),
+                    )
+            }
     }
 
     @Test
@@ -355,29 +364,32 @@ class SettingsCombinedPermissionsFragmentTest {
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(
-                withText(
-                    "Health Connect is ready to be integrated with your Android system. If you give $TEST_APP_NAME access now, some features may not work until integration is complete."
-                )
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Start integration")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Continue")).inRoot(isDialog()).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CANCEL_BUTTON)
+            .use {
+                onView(
+                        withText(
+                            "Health Connect is ready to be integrated with your Android system. If you give $TEST_APP_NAME access now, some features may not work until integration is complete."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Start integration"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Continue")).inRoot(isDialog()).check(matches(isDisplayed()))
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTAINER)
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CANCEL_BUTTON)
 
-        onView(withText("Continue")).inRoot(isDialog()).perform(click())
-        onView(withText("Continue")).check(doesNotExist())
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
+                onView(withText("Continue")).inRoot(isDialog()).perform(click())
+                onView(withText("Continue")).check(doesNotExist())
+                verify(healthConnectLogger)
+                    .logInteraction(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
+            }
     }
 
     @Test
@@ -412,31 +424,31 @@ class SettingsCombinedPermissionsFragmentTest {
         }
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
-        val scenario =
-            launchFragment<SettingsCombinedPermissionsFragment>(
+        launchFragment<SettingsCombinedPermissionsFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(
+                        withText(
+                            "Health Connect is being integrated with the Android system.\n\nYou'll get a notification when the process is complete and you can use $TEST_APP_NAME with Health Connect."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_CONTAINER)
+                verify(healthConnectLogger)
+                    .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(
-                withText(
-                    "Health Connect is being integrated with the Android system.\n\nYou'll get a notification when the process is complete and you can use $TEST_APP_NAME with Health Connect."
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
+                onView(withText("Got it")).inRoot(isDialog()).perform(click())
+                verify(healthConnectLogger)
+                    .logInteraction(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(withText("Got it")).inRoot(isDialog()).perform(click())
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_IN_PROGRESS_DIALOG_BUTTON)
-
-        // Needed to makes sure activity has finished
-        scenario.result
-        assertThat(scenario.state).isEqualTo(Lifecycle.State.DESTROYED)
+                // Needed to makes sure activity has finished
+                scenario.result
+                assertThat(scenario.state).isEqualTo(Lifecycle.State.DESTROYED)
+            }
     }
 
     @Test
@@ -471,34 +483,34 @@ class SettingsCombinedPermissionsFragmentTest {
         }
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
-        val scenario =
-            launchFragment<SettingsCombinedPermissionsFragment>(
+        launchFragment<SettingsCombinedPermissionsFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Health Connect restore in progress"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Health Connect is restoring data and permissions. This may take some time to complete."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
+                verify(healthConnectLogger)
+                    .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_CONTAINER)
+                verify(healthConnectLogger)
+                    .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(withText("Health Connect restore in progress"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Health Connect is restoring data and permissions. This may take some time to complete."
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Got it")).inRoot(isDialog()).check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
+                onView(withText("Got it")).inRoot(isDialog()).perform(click())
+                verify(healthConnectLogger)
+                    .logInteraction(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
 
-        onView(withText("Got it")).inRoot(isDialog()).perform(click())
-        verify(healthConnectLogger)
-            .logInteraction(DataRestoreElement.RESTORE_IN_PROGRESS_DIALOG_BUTTON)
-
-        // Needed to makes sure activity has finished
-        scenario.result
-        assertThat(scenario.state).isEqualTo(Lifecycle.State.DESTROYED)
+                // Needed to makes sure activity has finished
+                scenario.result
+                assertThat(scenario.state).isEqualTo(Lifecycle.State.DESTROYED)
+            }
     }
 
     @Test
@@ -506,11 +518,13 @@ class SettingsCombinedPermissionsFragmentTest {
         whenever(viewModel.atLeastOneHealthPermissionGranted).then { MediatorLiveData(false) }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-        onView(withText("Remove access for this app"))
-            .perform(scrollTo())
-            .check(matches(isNotEnabled()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText("Remove access for this app"))
+                    .perform(scrollTo())
+                    .check(matches(isNotEnabled()))
+            }
     }
 
     @Test
@@ -541,32 +555,36 @@ class SettingsCombinedPermissionsFragmentTest {
             )
         }
         launchFragment<SettingsCombinedPermissionsFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-        onView(withText("Remove access for this app"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Remove access for this app")).perform(scrollTo()).perform(click())
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText("Remove access for this app"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withText("Remove access for this app")).perform(scrollTo()).perform(click())
 
-        onView(withText("Remove all permissions?")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "$TEST_APP_NAME will no longer be able to read or write" +
-                        " data from Health Connect, including background and past data." +
-                        "\n\nThis doesn't affect other permissions this app may have, like camera, " +
-                        "microphone or location."
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Also delete fitness data and medical records from " +
-                        "$TEST_APP_NAME from Health Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(not(isDisplayed())))
+                onView(withText("Remove all permissions?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "$TEST_APP_NAME will no longer be able to read or write" +
+                                " data from Health Connect, including background and past data." +
+                                "\n\nThis doesn't affect other permissions this app may have, like camera, " +
+                                "microphone or location."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Also delete fitness data and medical records from " +
+                                "$TEST_APP_NAME from Health Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(not(isDisplayed())))
+            }
     }
 
     @Test
@@ -597,32 +615,36 @@ class SettingsCombinedPermissionsFragmentTest {
             )
         }
         launchFragment<SettingsCombinedPermissionsFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-        onView(withText("Remove access for this app"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Remove access for this app")).perform(scrollTo()).perform(click())
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText("Remove access for this app"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withText("Remove access for this app")).perform(scrollTo()).perform(click())
 
-        onView(withText("Remove all permissions?")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "$TEST_APP_NAME will no longer be able to read or write" +
-                        " data from Health Connect, including background data." +
-                        "\n\nThis doesn't affect other permissions this app may have, like camera, " +
-                        "microphone or location."
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Also delete fitness data and medical records from " +
-                        "$TEST_APP_NAME from Health Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(not(isDisplayed())))
+                onView(withText("Remove all permissions?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "$TEST_APP_NAME will no longer be able to read or write" +
+                                " data from Health Connect, including background data." +
+                                "\n\nThis doesn't affect other permissions this app may have, like camera, " +
+                                "microphone or location."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Also delete fitness data and medical records from " +
+                                "$TEST_APP_NAME from Health Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(not(isDisplayed())))
+            }
     }
 
     @Test
@@ -653,32 +675,36 @@ class SettingsCombinedPermissionsFragmentTest {
             )
         }
         launchFragment<SettingsCombinedPermissionsFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-        onView(withText("Remove access for this app"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Remove access for this app")).perform(scrollTo()).perform(click())
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText("Remove access for this app"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withText("Remove access for this app")).perform(scrollTo()).perform(click())
 
-        onView(withText("Remove all permissions?")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "$TEST_APP_NAME will no longer be able to read or write" +
-                        " data from Health Connect, including past data." +
-                        "\n\nThis doesn't affect other permissions this app may have, like camera, " +
-                        "microphone or location."
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Also delete fitness data and medical records from " +
-                        "$TEST_APP_NAME from Health Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(not(isDisplayed())))
+                onView(withText("Remove all permissions?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "$TEST_APP_NAME will no longer be able to read or write" +
+                                " data from Health Connect, including past data." +
+                                "\n\nThis doesn't affect other permissions this app may have, like camera, " +
+                                "microphone or location."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Also delete fitness data and medical records from " +
+                                "$TEST_APP_NAME from Health Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(not(isDisplayed())))
+            }
     }
 
     @Test
@@ -691,32 +717,36 @@ class SettingsCombinedPermissionsFragmentTest {
             )
         }
         launchFragment<SettingsCombinedPermissionsFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-        onView(withText("Remove access for this app"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Remove access for this app")).perform(scrollTo()).perform(click())
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText("Remove access for this app"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withText("Remove access for this app")).perform(scrollTo()).perform(click())
 
-        onView(withText("Remove all permissions?")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "$TEST_APP_NAME will no longer be able to read or write" +
-                        " data from Health Connect." +
-                        "\n\nThis doesn't affect other permissions this app may have, like camera, " +
-                        "microphone or location."
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Also delete fitness data and medical records from " +
-                        "$TEST_APP_NAME from Health Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(not(isDisplayed())))
+                onView(withText("Remove all permissions?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "$TEST_APP_NAME will no longer be able to read or write" +
+                                " data from Health Connect." +
+                                "\n\nThis doesn't affect other permissions this app may have, like camera, " +
+                                "microphone or location."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Also delete fitness data and medical records from " +
+                                "$TEST_APP_NAME from Health Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(not(isDisplayed())))
+            }
     }
 
     @Test
@@ -728,54 +758,59 @@ class SettingsCombinedPermissionsFragmentTest {
                 listOf(HealthPermission.MedicalPermission(MedicalPermissionType.ALL_MEDICAL_DATA))
             )
         }
-        val scenario =
-            launchFragment<SettingsCombinedPermissionsFragment>(
+        launchFragment<SettingsCombinedPermissionsFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-        onView(withText("Remove access for this app"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Remove access for this app")).perform(scrollTo()).perform(click())
+            .use { scenario ->
+                onView(withText("Remove access for this app"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withText("Remove access for this app")).perform(scrollTo()).perform(click())
 
-        onView(withText("Remove all permissions?")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "$TEST_APP_NAME will no longer be able to read or write" +
-                        " data from Health Connect." +
-                        "\n\nThis doesn't affect other permissions this app may have, like camera, " +
-                        "microphone or location."
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Also delete fitness data and medical records from " +
-                        "$TEST_APP_NAME from Health Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(not(isDisplayed())))
+                onView(withText("Remove all permissions?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "$TEST_APP_NAME will no longer be able to read or write" +
+                                " data from Health Connect." +
+                                "\n\nThis doesn't affect other permissions this app may have, like camera, " +
+                                "microphone or location."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Also delete fitness data and medical records from " +
+                                "$TEST_APP_NAME from Health Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(not(isDisplayed())))
 
-        scenario.recreate()
-        onView(withText("Remove all permissions?")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "$TEST_APP_NAME will no longer be able to read or write" +
-                        " data from Health Connect." +
-                        "\n\nThis doesn't affect other permissions this app may have, like camera, " +
-                        "microphone or location."
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Also delete fitness data and medical records from " +
-                        "$TEST_APP_NAME from Health Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(not(isDisplayed())))
+                scenario.recreate()
+                onView(withText("Remove all permissions?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "$TEST_APP_NAME will no longer be able to read or write" +
+                                " data from Health Connect." +
+                                "\n\nThis doesn't affect other permissions this app may have, like camera, " +
+                                "microphone or location."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Also delete fitness data and medical records from " +
+                                "$TEST_APP_NAME from Health Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(not(isDisplayed())))
+            }
     }
 }
