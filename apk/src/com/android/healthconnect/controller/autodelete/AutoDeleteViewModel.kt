@@ -20,8 +20,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.autodelete.api.LoadAutoDeleteUseCase
-import com.android.healthconnect.controller.autodelete.api.UpdateAutoDeleteUseCase
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -32,8 +31,8 @@ import kotlinx.coroutines.launch
 class AutoDeleteViewModel
 @Inject
 constructor(
-    private val loadAutoDeleteUseCase: LoadAutoDeleteUseCase,
-    private val updateAutoDeleteUseCase: UpdateAutoDeleteUseCase,
+    private val loadAutoDeleteUseCase: BaseUseCase<Unit, Int>,
+    private val updateAutoDeleteUseCase: BaseUseCase<Int, Unit>,
 ) : ViewModel() {
 
     companion object {
@@ -63,7 +62,7 @@ constructor(
     private fun loadAutoDeleteRange() {
         _storedAutoDeleteRange.postValue(AutoDeleteState.Loading)
         viewModelScope.launch {
-            when (val result = loadAutoDeleteUseCase.invoke()) {
+            when (val result = loadAutoDeleteUseCase.invoke(Unit)) {
                 is UseCaseResults.Success -> {
                     val autoDeleteRange = fromNumberOfMonths(result.data)
                     postAutoDeleteRange(autoDeleteRange)
