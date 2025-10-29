@@ -312,7 +312,7 @@ public final class FitnessRecordDeleteHelper {
                             modificationChangeLogs.getUpsertTableRequests()) {
                         mTransactionManager.insertOrThrowOnConflict(db, modificationChangeLog);
                     }
-                    if (Flags.addMissingAccessLogs() && shouldRecordAccessLog) {
+                    if (shouldRecordAccessLog) {
                         mAccessLogsHelper.recordDeleteAccessLog(
                                 db,
                                 Objects.requireNonNull(callingPackageName),

@@ -857,18 +857,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             Slog.d(TAG, "pageToken: " + pageToken);
                         }
 
-                        if (!Flags.addMissingAccessLogs()) {
-                            // Calls from controller APK should not be recorded in access logs
-                            // If an app is reading only its own data then it is not recorded in
-                            // access logs.
-                            if (!holdsDataManagementPermission && !enforceSelfRead) {
-                                final List<Integer> recordTypes =
-                                        singletonList(unmaskedRequest.getRecordType());
-                                mAccessLogsHelper.addAccessLog(
-                                        callingPackageName, recordTypes, READ);
-                            }
-                        }
-
                         final ReadRecordsResponseParcel maskedResponseParcel =
                                 new ReadRecordsResponseParcel(new RecordsParcel(records), pageToken)
                                         .toMasked(getMaskingFunction(callingPackageName));

@@ -332,13 +332,10 @@ public class FitnessRecordReadHelper {
                             /* readTimeStamp= */ Instant.now().toEpochMilli(),
                             recordInternals);
                 });
-        if (Flags.addMissingAccessLogs()) {
-            transactionManager.runWithoutTransaction(
-                    db -> {
-                        mAccessLogsHelper.recordReadAccessLog(
-                                db, callingPackageName, recordTypeIds);
-                    });
-        }
+        transactionManager.runWithoutTransaction(
+                db -> {
+                    mAccessLogsHelper.recordReadAccessLog(db, callingPackageName, recordTypeIds);
+                });
     }
 
     /**

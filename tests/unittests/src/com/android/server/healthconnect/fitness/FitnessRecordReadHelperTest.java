@@ -252,7 +252,6 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ADD_MISSING_ACCESS_LOGS)
     public void readRecordsByIdRequest_accessLogged() {
         ReadRecordsRequestUsingIds<BloodPressureRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(BloodPressureRecord.class)
@@ -319,7 +318,6 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ADD_MISSING_ACCESS_LOGS)
     public void readRecordsByFilterRequest_shouldRecordAccessLogs_accessLogRecorded() {
         ReadRecordsRequestUsingFilters<StepsRecord> request =
                 new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build();
@@ -345,7 +343,6 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ADD_MISSING_ACCESS_LOGS)
     public void readRecordsByFilterRequest_filterForSelf_accessLogRecorded() {
         ReadRecordsRequestUsingFilters<StepsRecord> request =
                 new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)

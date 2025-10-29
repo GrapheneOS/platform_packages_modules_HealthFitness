@@ -202,7 +202,7 @@ public final class FitnessRecordAggregateHelper {
                                     contributingPackages);
                         }
                     }
-                    if (Flags.addMissingAccessLogs() && shouldRecordAccessLog) {
+                    if (shouldRecordAccessLog) {
                         mAccessLogsHelper.recordReadAccessLog(
                                 db, callingPackageName, recordTypeIds);
                     }

@@ -41,8 +41,6 @@ import static android.healthconnect.testing.shared.DataFactory.getUpdatedStepsRe
 
 import static com.android.compatibility.common.util.SystemUtil.getEventually;
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
-import static com.android.healthfitness.flags.Flags.FLAG_ADD_MISSING_ACCESS_LOGS;
-
 import static com.google.common.truth.Truth.assertThat;
 
 import static java.time.Instant.EPOCH;
@@ -262,7 +260,6 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_ADD_MISSING_ACCESS_LOGS})
     public void testAccessLogs_aggregate_expectReadLogs() throws Exception {
         insertRecords(getStepsRecord());
 
@@ -291,7 +288,6 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_ADD_MISSING_ACCESS_LOGS})
     public void testAccessLogs_aggregateWithManageHealthDataPermission_noAccessLog()
             throws Exception {
         insertRecords(getStepsRecord());
@@ -315,7 +311,6 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_ADD_MISSING_ACCESS_LOGS})
     public void testAccessLogs_getChangeLogs_expectReadLogs() throws Exception {
         ChangeLogTokenResponse changesToken =
                 getChangeLogToken(
@@ -356,7 +351,6 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_ADD_MISSING_ACCESS_LOGS})
     public void testAccessLogs_deleteById_expectDeleteLogs() throws Exception {
         List<Record> records = insertRecords(getHeartRateRecord(), getBasalMetabolicRateRecord());
         List<AccessLog> insertLog = queryAccessLogs();
@@ -382,7 +376,6 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_ADD_MISSING_ACCESS_LOGS})
     public void testAccessLogs_deleteByInvalidId_expectDeleteLogs() throws Exception {
         deleteRecordsByIdFilter(
                 List.of(
@@ -401,7 +394,6 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_ADD_MISSING_ACCESS_LOGS})
     public void testAccessLogs_deleteByFilter_expectDeleteLogs() throws Exception {
         TimeInstantRangeFilter timeFilter =
                 new TimeInstantRangeFilter.Builder()
@@ -420,7 +412,6 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_ADD_MISSING_ACCESS_LOGS})
     public void testAccessLogs_deleteWithManageHealthDataPermission_noLog() throws Exception {
         insertRecord(getDistanceRecord());
         List<AccessLog> insertLog = queryAccessLogs();
@@ -461,7 +452,6 @@ public class HealthConnectAccessLogsTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({FLAG_ADD_MISSING_ACCESS_LOGS})
     public void testAccessLogs_deleteRecords_deleteAccessLogCreated() throws Exception {
         TimeInstantRangeFilter timeFilter =
                 new TimeInstantRangeFilter.Builder()
