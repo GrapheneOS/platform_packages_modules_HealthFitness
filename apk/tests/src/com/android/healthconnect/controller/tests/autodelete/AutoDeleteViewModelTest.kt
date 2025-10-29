@@ -18,10 +18,10 @@ package com.android.healthconnect.controller.tests.autodelete
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.autodelete.AutoDeleteRange
 import com.android.healthconnect.controller.autodelete.AutoDeleteViewModel
+import com.android.healthconnect.controller.tests.autodelete.api.FakeLoadAutoDeleteUseCase
+import com.android.healthconnect.controller.tests.autodelete.api.FakeUpdateAutoDeleteUseCase
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TestObserver
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadAutoDeleteUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeUpdateAutoDeleteUseCase
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
