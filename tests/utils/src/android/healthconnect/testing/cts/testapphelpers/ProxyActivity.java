@@ -43,6 +43,7 @@ public class ProxyActivity extends Activity {
             "android.healthconnect.cts.ACTION_START_ACTIVITY_FOR_RESULT";
     public static final String PROXY_ACTIVITY_ERROR =
             "android.healthconnect.cts.PROXY_ACTIVITY_ERROR";
+    public static final String EXTRA_CALLING_PACKAGE = "android.healthconnect.cts.CALLING_PACKAGE";
     private static final int REQUEST_CODE = 1;
 
     @Override
@@ -50,10 +51,15 @@ public class ProxyActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         var requestIntent = getIntent().getParcelableExtra(Intent.EXTRA_INTENT, Intent.class);
+        var callingPackage = getIntent().getStringExtra(EXTRA_CALLING_PACKAGE);
 
         if (requestIntent == null) {
             finishWithException(new IllegalArgumentException("Missing EXTRA_INTENT extra"));
             return;
+        }
+
+        if (callingPackage != null) {
+            requestIntent.setPackage(callingPackage);
         }
 
         try {

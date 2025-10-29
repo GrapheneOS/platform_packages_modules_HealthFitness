@@ -19,6 +19,7 @@
 
     <uses-permission android:name="android.permission.health.READ_HEIGHT"/>
     <uses-permission android:name="android.permission.health.READ_MINDFULNESS"/>
+    <uses-permission android:name="android.permission.health.READ_STEPS"/>
     <uses-permission android:name="android.permission.health.WRITE_BODY_FAT"/>
     <uses-permission android:name="android.permission.health.WRITE_HEIGHT"/>
     <uses-permission android:name="android.permission.health.WRITE_STEPS"/>
