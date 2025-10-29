@@ -1174,7 +1174,7 @@
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"Prikaži u trgovini aplikacija"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"Postavite zaključavanje zaslona"</string>
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Da biste dodatno zaštitili svoje zdravstvene podatke, postavite PIN, uzorak ili zaporku za ovaj uređaj"</string>
-    <string name="lock_screen_banner_button" msgid="2537090011380728122">"Postavite zaključavanje zaslona"</string>
+    <string name="lock_screen_banner_button" msgid="2537090011380728122">"Postavite zaključavanje"</string>
     <string name="select_all" msgid="837499881590001166">"Odaberi sve"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Povezane aplikacije više neće moći čitati te podatke iz Health Connecta"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Potvrđeno"</string>
@@ -1288,6 +1288,6 @@
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Odbaci"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Pregledajte"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Koraci su sada u Health Connectu"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"Koraci koje prati ovaj uređaj sada se pohranjuju u Health Connect kako bi im povezane aplikacije mogle pristupiti"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"Koraci praćeni na ovom uređaju sada se pohranjuju u Health Connect kako bi im povezane aplikacije mogle pristupiti"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Ne sad"</string>
 </resources>

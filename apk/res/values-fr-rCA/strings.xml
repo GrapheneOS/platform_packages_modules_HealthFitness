@@ -1141,7 +1141,7 @@
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Mettre à jour maintenant"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Totaux de données"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Sources de données"</string>
-    <string name="data_sources_footer" msgid="2271085147058181039">"Ajouter des sources de données à la liste pour voir comment les totaux de données peuvent changer. Le retrait d\'une source de données de cette liste l\'empêchera de contribuer aux totaux, mais elle disposera toujours des autorisations d\'écriture."</string>
+    <string name="data_sources_footer" msgid="2271085147058181039">"Ajoutez des sources de données à la liste pour voir comment les totaux de données peuvent changer. Le retrait d\'une source de données de cette liste l\'empêchera de contribuer aux totaux, mais elle disposera toujours des autorisations d\'écriture."</string>
     <string name="data_sources_empty_state" msgid="478270183887252279">"Aucune source de données"</string>
     <string name="data_sources_empty_state_footer" msgid="5622400014797683992">"Une fois que vous aurez autorisé une source de données à écrire les données de catégorie « <xliff:g id="CATEGORY_NAME">%1$s</xliff:g> », les sources s\'afficheront ici."</string>
     <string name="data_sources_help_link" msgid="7740264923634947915">"Fonctionnement des sources et de la hiérarchisation"</string>

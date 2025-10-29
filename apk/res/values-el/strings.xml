@@ -71,11 +71,11 @@
     <string name="recent_access_error" msgid="2258399573560888960">"Δεν ήταν δυνατή η φόρτωση της πρόσφατης πρόσβασης"</string>
     <string name="recent_access_inactive_app" msgid="8754221676902025802">"Αυτή η εφαρμογή δεν είναι πλέον διαθέσιμη"</string>
     <string name="activity_category_uppercase" msgid="136628843341377088">"Δραστηριότητα"</string>
-    <string name="activity_category_lowercase" msgid="3007220578865400601">"δραστηριότητα"</string>
+    <string name="activity_category_lowercase" msgid="3007220578865400601">"δραστηριότητας"</string>
     <string name="body_measurements_category_uppercase" msgid="422923782603313038">"Μετρήσεις σώματος"</string>
     <string name="body_measurements_category_lowercase" msgid="2259696274629666992">"μετρήσεις σώματος"</string>
     <string name="sleep_category_uppercase" msgid="3422452674899706786">"Ύπνος"</string>
-    <string name="sleep_category_lowercase" msgid="842609634386839011">"ύπνος"</string>
+    <string name="sleep_category_lowercase" msgid="842609634386839011">"ύπνου"</string>
     <string name="vitals_category_uppercase" msgid="8982333138032938623">"Ζωτικές λειτουργίες"</string>
     <string name="vitals_category_lowercase" msgid="4664457787866407963">"ζωτικές λειτουργίες"</string>
     <string name="cycle_tracking_category_uppercase" msgid="4723200714782660489">"Παρακολ. καταμηνιαίου κύκλου"</string>

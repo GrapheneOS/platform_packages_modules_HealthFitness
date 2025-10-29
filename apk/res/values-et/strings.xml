@@ -1288,6 +1288,6 @@
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Loobu"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Ülevaatus"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Toimingud on nüüd Health Connectis"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"Selle seadme jälgitud toimingud salvestatakse nüüd Health Connecti, et ühendatud rakendused saaksid neile juurde pääseda."</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"Selle seadme jälgitud sammud salvestatakse nüüd Health Connecti, et ühendatud rakendused saaksid neile juurde pääseda."</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Mitte praegu"</string>
 </resources>
