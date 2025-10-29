@@ -142,10 +142,6 @@ public final class OnboardingNotificationSender {
             Notification notification,
             int flag,
             @HealthConnectOnboardingState.OnboardingState int onboardingState) {
-        if (!Flags.onboardingNotification()) {
-            Slog.d(TAG, "Onboarding notification flag disabled");
-            return;
-        }
         if (mHealthConnectNotificationSender.sendNotificationAsUser(notification, userHandle)) {
             mNotificationStateManager.unsetFlags(flag);
             mNotificationStatsLogger.logAction(onboardingState, ACTION_NOTIFICATION_SENT);

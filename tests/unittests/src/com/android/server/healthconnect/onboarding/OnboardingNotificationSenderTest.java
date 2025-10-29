@@ -22,7 +22,7 @@ import static android.health.connect.Constants.NOTIFICATION_CHANNEL_ID;
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED;
 import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED;
 
-import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING_NOTIFICATION;
+
 import static com.android.server.healthconnect.notifications.NotificationStatsLogger.ACTION_NOTIFICATION_CHANNEL_BLOCKED;
 import static com.android.server.healthconnect.notifications.NotificationStatsLogger.ACTION_NOTIFICATION_SENT;
 import static com.android.server.healthconnect.notifications.NotificationStatsTestUtils.verifyEventLogged;
@@ -112,7 +112,6 @@ public class OnboardingNotificationSenderTest {
     }
 
     @Test
-    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
     public void sendNoAppConnectedNotification_success() {
         mOnboardingNotificationSender.sendNoAppConnectedNotification(mUserHandle);
         verify(mNotificationSender)
@@ -138,7 +137,6 @@ public class OnboardingNotificationSenderTest {
     }
 
     @Test
-    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
     public void sendNoAppConnectedNotification_notificationStateUpdated() {
         when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
                 .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
@@ -152,7 +150,6 @@ public class OnboardingNotificationSenderTest {
     }
 
     @Test
-    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
     public void sendNoAppConnectedNotification_logged() {
         when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
                 .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
@@ -166,20 +163,6 @@ public class OnboardingNotificationSenderTest {
     }
 
     @Test
-    @DisableFlags(FLAG_ONBOARDING_NOTIFICATION)
-    public void sendNoAppConnectedNotification_flagDisabled_noOp() {
-        when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
-                .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
-
-        mOnboardingNotificationSender.sendNoAppConnectedNotification(mUserHandle);
-
-        verify(mNotificationSender, never()).sendNotificationAsUser(any(), eq(mUserHandle));
-        verify(mPreferenceHelper, never()).insertOrReplacePreference(any(), any());
-        verifyNothingLogged(mNotificationStatsLogger);
-    }
-
-    @Test
-    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
     public void sendNoAppConnectedNotification_channelBlocked_noOp() {
         when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
                 .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
@@ -191,7 +174,6 @@ public class OnboardingNotificationSenderTest {
     }
 
     @Test
-    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
     public void sendNoAppConnectedNotification_channelBlocked_logged() {
         when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
                 .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
@@ -206,7 +188,6 @@ public class OnboardingNotificationSenderTest {
     }
 
     @Test
-    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
     public void sendOneAppConnectedNotification_success() {
         mOnboardingNotificationSender.sendOneAppConnectedNotification(mUserHandle);
         verify(mNotificationSender)
@@ -232,7 +213,6 @@ public class OnboardingNotificationSenderTest {
     }
 
     @Test
-    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
     public void sendOneAppConnectedNotification_notificationStateUpdated() {
         when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
                 .thenReturn(String.valueOf(SHOULD_SHOW_ONE_APP_CONNECTED_NOTIFICATION));
@@ -245,7 +225,6 @@ public class OnboardingNotificationSenderTest {
     }
 
     @Test
-    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
     public void sendOneAppConnectedNotification_logged() {
         when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
                 .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
@@ -259,20 +238,6 @@ public class OnboardingNotificationSenderTest {
     }
 
     @Test
-    @DisableFlags(FLAG_ONBOARDING_NOTIFICATION)
-    public void sendOneAppConnectedNotification_flagDisabled_noOp() {
-        when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
-                .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
-
-        mOnboardingNotificationSender.sendOneAppConnectedNotification(mUserHandle);
-
-        verify(mNotificationSender, never()).sendNotificationAsUser(any(), eq(mUserHandle));
-        verify(mPreferenceHelper, never()).insertOrReplacePreference(any(), any());
-        verifyNothingLogged(mNotificationStatsLogger);
-    }
-
-    @Test
-    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
     public void sendOneAppConnectedNotification_channelBlocked_noOp() {
         when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
                 .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
@@ -284,7 +249,6 @@ public class OnboardingNotificationSenderTest {
     }
 
     @Test
-    @EnableFlags(FLAG_ONBOARDING_NOTIFICATION)
     public void sendOneAppConnectedNotification_channelBlocked_logged() {
         when(mPreferenceHelper.getPreference(eq(PREF_KEY)))
                 .thenReturn(String.valueOf(SHOULD_SHOW_ALL_NOTIFICATIONS));
