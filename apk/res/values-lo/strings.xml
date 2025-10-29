@@ -256,6 +256,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"ເມືອກປາກມົດລູກ"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"ອ່ານຂໍ້ມູນເມືອກປາກມົດລູກ"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"ຂຽນຂໍ້ມູນເມືອກປາກມົດລູກ"</string>
+    <string name="cycle_phases_uppercase_label" msgid="1693612101973701017">"ໄລຍະຂອງຮອບເດືອນ"</string>
+    <string name="cycle_phases_lowercase_label" msgid="6513009148778082622">"ໄລຍະຂອງຮອບເດືອນ"</string>
+    <string name="cycle_phases_read_content_description" msgid="1974818937933604194">"ອ່ານໄລຍະຂອງຮອບເດືອນ"</string>
+    <string name="cycle_phases_write_content_description" msgid="8779256196190212513">"ຂຽນໄລຍະຂອງຮອບເດືອນ"</string>
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"ເລືອດອອກລະຫວ່າງປະຈຳເດືອນ"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"ເລືອດອອກລະຫວ່າງປະຈຳເດືອນ"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"ອ່ານຂໍ້ມູນເລືອດອອກລະຫວ່າງປະຈຳເດືອນ"</string>
@@ -848,7 +852,8 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{ສູບຢາສູບໄຟຟ້າ {quantity} ເທື່ອ}other{ສູບຢາສູບໄຟຟ້າ {quantity} ເທື່ອ}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{ສູບຢາ {quantity} ເທື່ອ}other{ສູບຢາ {quantity} ເທື່ອ}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"ບໍ່ຮູ້ {quantity, number}"</string>
-    <string name="alcohol_consumption_title" msgid="2627266871623334972">"<xliff:g id="SERVING">%1$s</xliff:g> • <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
+    <skip />
     <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"ອື່ນໆ"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"ເບຍ"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"ວາຍ"</string>
@@ -870,7 +875,8 @@
     <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"ໄຮບອລ"</string>
     <string name="serving_volume_title" msgid="4727986574534974167">"ປະລິມານການເສີບ"</string>
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"ແອວກໍຮໍຕາມປະລິມາດ"</string>
-    <string name="note_title" msgid="4101166558186573016">"ບັນທຶກ"</string>
+    <!-- no translation found for notes_title (4596764711916248492) -->
+    <skip />
     <string name="details_title" msgid="8411891773854413790">"ລາຍລະອຽດ"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>ນທ"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g>ຊມ <xliff:g id="MIN">%2$s</xliff:g>ນທ"</string>
