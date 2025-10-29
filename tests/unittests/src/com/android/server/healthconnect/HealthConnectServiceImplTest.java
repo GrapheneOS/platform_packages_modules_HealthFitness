@@ -478,14 +478,17 @@ public class HealthConnectServiceImplTest {
                         .build();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
         mInternalTaskScheduler = mThreadScheduler.mInternalBackgroundExecutor;
-        mDeviceDataProviderManager =
-                new FakeSerialDeviceDataProviderManager(
-                        mServiceContext,
-                        healthConnectInjector.getDeviceInfoHelper(),
-                        healthConnectInjector.getAppInfoHelper(),
-                        healthConnectInjector.getDeviceDataProviderHelper(),
-                        healthConnectInjector.getFitnessRecordUpsertHelper(),
-                        healthConnectInjector.getPreferenceHelper());
+
+        if (Flags.deviceDataProvidersApi()) {
+            mDeviceDataProviderManager =
+                    new FakeSerialDeviceDataProviderManager(
+                            mServiceContext,
+                            healthConnectInjector.getDeviceInfoHelper(),
+                            healthConnectInjector.getAppInfoHelper(),
+                            healthConnectInjector.getDeviceDataProviderHelper(),
+                            healthConnectInjector.getFitnessRecordUpsertHelper(),
+                            healthConnectInjector.getSyntheticPackageNameCreator());
+        }
 
         mHealthConnectService =
                 new HealthConnectServiceImpl(

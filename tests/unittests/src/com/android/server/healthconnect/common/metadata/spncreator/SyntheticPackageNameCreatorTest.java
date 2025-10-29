@@ -24,17 +24,28 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import android.health.connect.datatypes.Device.DeviceType;
+import android.platform.test.flag.junit.SetFlagsRule;
 
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
+import com.android.server.healthconnect.injector.HealthConnectInjector;
+import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -51,21 +62,52 @@ public class SyntheticPackageNameCreatorTest {
     private static final String TEST_CALLER_ONE = "foo";
     private static final String TEST_CALLER_TWO = "bar";
     private static final String TEST_CALLER_THREE = "healthconnect";
+    private static final String PREFERENCE_KEY =
+            SyntheticPackageNameCreator.SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY;
 
-    private static final String TEST_CANONICAL_SPN_ONE =
-            SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, TEST_DEVICE_ID_ONE);
-    private static final String TEST_CANONICAL_SPN_TWO =
-            SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_TWO, TEST_DEVICE_ID_TWO);
-    private static final String TEST_CANONICAL_SPN_THREE =
-            SyntheticPackageNameCreator.createCanonical(
-                    TEST_DEVICE_TYPE_THREE, TEST_DEVICE_ID_THREE);
+    private PreferenceHelper mPreferenceHelper;
+    private SyntheticPackageNameCreator mSyntheticPackageNameCreator;
+
+    private String mTestCanonicalSpnOne;
+    private String mTestCanonicalSpnTwo;
+    private String mTestCanonicalSpnThree;
+
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
+
+    @Before
+    public void setUp() throws Exception {
+        HealthConnectInjector healthConnectInjector =
+                HealthConnectInjectorImpl.newBuilderForTest(
+                                ApplicationProvider.getApplicationContext())
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+
+        mPreferenceHelper = healthConnectInjector.getPreferenceHelper();
+        mSyntheticPackageNameCreator = new SyntheticPackageNameCreator(mPreferenceHelper);
+
+        mTestCanonicalSpnOne =
+                mSyntheticPackageNameCreator.createCanonical(
+                        TEST_DEVICE_TYPE_ONE, TEST_DEVICE_ID_ONE);
+
+        mTestCanonicalSpnTwo =
+                mSyntheticPackageNameCreator.createCanonical(
+                        TEST_DEVICE_TYPE_TWO, TEST_DEVICE_ID_TWO);
+
+        mTestCanonicalSpnThree =
+                mSyntheticPackageNameCreator.createCanonical(
+                        TEST_DEVICE_TYPE_THREE, TEST_DEVICE_ID_THREE);
+
+        mPreferenceHelper.removeKey(PREFERENCE_KEY);
+    }
 
     @Test
     public void withNullIdsAndSameType_createCanonical_returnsSameSpn() {
         String id = null;
 
-        String first = SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, id);
-        String second = SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, id);
+        String first = mSyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, id);
+        String second = mSyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, id);
 
         assertNotNull(first);
         assertNotNull(second);
@@ -76,8 +118,8 @@ public class SyntheticPackageNameCreatorTest {
     public void withNullIdsAndDifferentTypes_createCanonical_returnsDifferentSpns() {
         String id = null;
 
-        String first = SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, id);
-        String second = SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_TWO, id);
+        String first = mSyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, id);
+        String second = mSyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_TWO, id);
 
         assertNotEquals(first, second);
     }
@@ -86,8 +128,8 @@ public class SyntheticPackageNameCreatorTest {
     public void withEmptyIdsAndSameType_createCanonical_returnsSameSpn() {
         String id = "";
 
-        String first = SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, id);
-        String second = SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, id);
+        String first = mSyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, id);
+        String second = mSyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, id);
 
         assertNotNull(first);
         assertNotNull(second);
@@ -98,8 +140,8 @@ public class SyntheticPackageNameCreatorTest {
     public void withEmptyIdsAndDifferentTypes_createCanonical_returnsDifferentSpns() {
         String id = "";
 
-        String first = SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, id);
-        String second = SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_TWO, id);
+        String first = mSyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, id);
+        String second = mSyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_TWO, id);
 
         assertNotEquals(first, second);
     }
@@ -109,8 +151,9 @@ public class SyntheticPackageNameCreatorTest {
         String firstId = null;
         String secondId = "";
 
-        String first = SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, firstId);
-        String second = SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, secondId);
+        String first = mSyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, firstId);
+        String second =
+                mSyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, secondId);
 
         assertNotNull(first);
         assertNotNull(second);
@@ -120,10 +163,10 @@ public class SyntheticPackageNameCreatorTest {
     @Test
     public void withSameIdAndSameType_createCanonical_returnsSameSpn() {
         String first =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         TEST_DEVICE_TYPE_ONE, TEST_DEVICE_ID_ONE);
         String second =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         TEST_DEVICE_TYPE_ONE, TEST_DEVICE_ID_ONE);
 
         assertNotNull(first);
@@ -134,10 +177,10 @@ public class SyntheticPackageNameCreatorTest {
     @Test
     public void withSameIdsAndDifferentTypes_createCanonical_returnsDifferentSpns() {
         String first =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         TEST_DEVICE_TYPE_ONE, TEST_DEVICE_ID_ONE);
         String second =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         TEST_DEVICE_TYPE_TWO, TEST_DEVICE_ID_ONE);
 
         assertNotEquals(first, second);
@@ -146,10 +189,10 @@ public class SyntheticPackageNameCreatorTest {
     @Test
     public void withDifferentIdsAndSameTypes_createCanonical_returnsDifferentSpns() {
         String first =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         TEST_DEVICE_TYPE_ONE, TEST_DEVICE_ID_ONE);
         String second =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         TEST_DEVICE_TYPE_ONE, TEST_DEVICE_ID_TWO);
 
         assertNotEquals(first, second);
@@ -158,10 +201,10 @@ public class SyntheticPackageNameCreatorTest {
     @Test
     public void withDifferentIdsAndDifferentTypes_createCanonical_returnsDifferentSpns() {
         String first =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         TEST_DEVICE_TYPE_ONE, TEST_DEVICE_ID_ONE);
         String second =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         TEST_DEVICE_TYPE_TWO, TEST_DEVICE_ID_TWO);
 
         assertNotEquals(first, second);
@@ -171,9 +214,10 @@ public class SyntheticPackageNameCreatorTest {
     public void withInvalidTypeAndSameId_createCanonical_returnsSameSpn() {
         int invalidType = -1;
 
-        String first = SyntheticPackageNameCreator.createCanonical(invalidType, TEST_DEVICE_ID_ONE);
+        String first =
+                mSyntheticPackageNameCreator.createCanonical(invalidType, TEST_DEVICE_ID_ONE);
         String second =
-                SyntheticPackageNameCreator.createCanonical(invalidType, TEST_DEVICE_ID_ONE);
+                mSyntheticPackageNameCreator.createCanonical(invalidType, TEST_DEVICE_ID_ONE);
 
         assertNotNull(first);
         assertNotNull(second);
@@ -186,9 +230,9 @@ public class SyntheticPackageNameCreatorTest {
         int secondInvalidType = -2;
 
         String first =
-                SyntheticPackageNameCreator.createCanonical(firstInvalidType, TEST_DEVICE_ID_ONE);
+                mSyntheticPackageNameCreator.createCanonical(firstInvalidType, TEST_DEVICE_ID_ONE);
         String second =
-                SyntheticPackageNameCreator.createCanonical(secondInvalidType, TEST_DEVICE_ID_ONE);
+                mSyntheticPackageNameCreator.createCanonical(secondInvalidType, TEST_DEVICE_ID_ONE);
 
         assertNotNull(first);
         assertNotNull(second);
@@ -201,16 +245,16 @@ public class SyntheticPackageNameCreatorTest {
         int secondInvalidType = -2;
 
         String first =
-                SyntheticPackageNameCreator.createCanonical(firstInvalidType, TEST_DEVICE_ID_ONE);
+                mSyntheticPackageNameCreator.createCanonical(firstInvalidType, TEST_DEVICE_ID_ONE);
         String second =
-                SyntheticPackageNameCreator.createCanonical(secondInvalidType, TEST_DEVICE_ID_TWO);
+                mSyntheticPackageNameCreator.createCanonical(secondInvalidType, TEST_DEVICE_ID_TWO);
 
         assertNotEquals(first, second);
     }
 
     @Test
     public void withInvalidType_createCanonical_returnsFallbackTypeInSpn() {
-        String actual = SyntheticPackageNameCreator.createCanonical(-1, TEST_DEVICE_ID_ONE);
+        String actual = mSyntheticPackageNameCreator.createCanonical(-1, TEST_DEVICE_ID_ONE);
 
         assertTrue(actual.startsWith("com.android.healthconnect.unknown."));
     }
@@ -218,13 +262,13 @@ public class SyntheticPackageNameCreatorTest {
     @Test
     public void withDifferentOrder_createCanonical_ignoresOrdering() {
         String first =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         TEST_DEVICE_TYPE_ONE, TEST_DEVICE_ID_ONE);
         String second =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         TEST_DEVICE_TYPE_TWO, TEST_DEVICE_ID_TWO);
         String third =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         TEST_DEVICE_TYPE_THREE, TEST_DEVICE_ID_THREE);
 
         assertNotNull(first);
@@ -232,13 +276,13 @@ public class SyntheticPackageNameCreatorTest {
         assertNotNull(third);
 
         String newFirst =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         TEST_DEVICE_TYPE_TWO, TEST_DEVICE_ID_TWO);
         String newSecond =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         TEST_DEVICE_TYPE_THREE, TEST_DEVICE_ID_THREE);
         String newThird =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         TEST_DEVICE_TYPE_ONE, TEST_DEVICE_ID_ONE);
 
         assertEquals(first, newThird);
@@ -250,8 +294,8 @@ public class SyntheticPackageNameCreatorTest {
     public void withNullCallerAndSameCanonical_createMasked_returnsSameSpn() {
         String caller = null;
 
-        String first = SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_ONE, caller);
-        String second = SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_ONE, caller);
+        String first = SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnOne, caller);
+        String second = SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnOne, caller);
 
         assertNotNull(first);
         assertNotNull(second);
@@ -259,11 +303,11 @@ public class SyntheticPackageNameCreatorTest {
     }
 
     @Test
-    public void withNullCallerAndDifferentTypes_createCanonical_returnsDifferentSpns() {
+    public void withNullCallerAndDifferentTypes_createMaskedreturnsDifferentSpns() {
         String caller = null;
 
-        String first = SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_ONE, caller);
-        String second = SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_TWO, caller);
+        String first = SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnOne, caller);
+        String second = SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnTwo, caller);
 
         assertNotEquals(first, second);
     }
@@ -272,8 +316,8 @@ public class SyntheticPackageNameCreatorTest {
     public void withEmptyCallerAndSameCanonical_createMasked_returnsSameSpn() {
         String caller = "";
 
-        String first = SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, caller);
-        String second = SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, caller);
+        String first = mSyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, caller);
+        String second = mSyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, caller);
 
         assertNotNull(first);
         assertNotNull(second);
@@ -281,11 +325,11 @@ public class SyntheticPackageNameCreatorTest {
     }
 
     @Test
-    public void withEmptyCallerAndDifferentTypes_createCanonical_returnsDifferentSpns() {
+    public void withEmptyCallerAndDifferentTypes_createMasked_returnsDifferentSpns() {
         String caller = "";
 
-        String first = SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_ONE, caller);
-        String second = SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_TWO, caller);
+        String first = SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnOne, caller);
+        String second = SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnTwo, caller);
 
         assertNotEquals(first, second);
     }
@@ -296,9 +340,9 @@ public class SyntheticPackageNameCreatorTest {
         String secondCaller = "";
 
         String first =
-                SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, firstCaller);
+                mSyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, firstCaller);
         String second =
-                SyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, secondCaller);
+                mSyntheticPackageNameCreator.createCanonical(TEST_DEVICE_TYPE_ONE, secondCaller);
 
         assertNotNull(first);
         assertNotNull(second);
@@ -308,9 +352,9 @@ public class SyntheticPackageNameCreatorTest {
     @Test
     public void withSameCallerAndSameCanonical_createMasked_returnsSameSpn() {
         String first =
-                SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_ONE, TEST_CALLER_ONE);
+                SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnOne, TEST_CALLER_ONE);
         String second =
-                SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_ONE, TEST_CALLER_ONE);
+                SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnOne, TEST_CALLER_ONE);
 
         assertNotNull(first);
         assertNotNull(second);
@@ -320,9 +364,9 @@ public class SyntheticPackageNameCreatorTest {
     @Test
     public void withSameCallersAndDifferentCanonicals_createMasked_returnsDifferentSpns() {
         String first =
-                SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_ONE, TEST_CALLER_ONE);
+                SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnOne, TEST_CALLER_ONE);
         String second =
-                SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_TWO, TEST_CALLER_ONE);
+                SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnTwo, TEST_CALLER_ONE);
 
         assertNotEquals(first, second);
     }
@@ -330,9 +374,9 @@ public class SyntheticPackageNameCreatorTest {
     @Test
     public void withDifferentCallersAndSameCanonical_createMasked_returnsDifferentSpns() {
         String first =
-                SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_ONE, TEST_CALLER_ONE);
+                SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnOne, TEST_CALLER_ONE);
         String second =
-                SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_ONE, TEST_CALLER_TWO);
+                SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnOne, TEST_CALLER_TWO);
 
         assertNotEquals(first, second);
     }
@@ -340,9 +384,9 @@ public class SyntheticPackageNameCreatorTest {
     @Test
     public void withDifferentCallersAndDifferentCanonicals_createMasked_returnsDifferentSpns() {
         String first =
-                SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_ONE, TEST_CALLER_ONE);
+                SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnOne, TEST_CALLER_ONE);
         String second =
-                SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_TWO, TEST_CALLER_TWO);
+                SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnTwo, TEST_CALLER_TWO);
 
         assertNotEquals(first, second);
     }
@@ -350,24 +394,22 @@ public class SyntheticPackageNameCreatorTest {
     @Test
     public void withDifferentOrder_createMasked_ignoresOrdering() {
         String first =
-                SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_ONE, TEST_CALLER_ONE);
+                SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnOne, TEST_CALLER_ONE);
         String second =
-                SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_TWO, TEST_CALLER_TWO);
+                SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnTwo, TEST_CALLER_TWO);
         String third =
-                SyntheticPackageNameCreator.createMasked(
-                        TEST_CANONICAL_SPN_THREE, TEST_CALLER_THREE);
+                SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnThree, TEST_CALLER_THREE);
 
         assertNotNull(first);
         assertNotNull(second);
         assertNotNull(third);
 
         String newFirst =
-                SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_TWO, TEST_CALLER_TWO);
+                SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnTwo, TEST_CALLER_TWO);
         String newSecond =
-                SyntheticPackageNameCreator.createMasked(
-                        TEST_CANONICAL_SPN_THREE, TEST_CALLER_THREE);
+                SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnThree, TEST_CALLER_THREE);
         String newThird =
-                SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN_ONE, TEST_CALLER_ONE);
+                SyntheticPackageNameCreator.createMasked(mTestCanonicalSpnOne, TEST_CALLER_ONE);
 
         assertEquals(first, newThird);
         assertEquals(second, newFirst);
@@ -390,12 +432,12 @@ public class SyntheticPackageNameCreatorTest {
     public void withShorterUuid_isSpn_returnsFalse() {
         assertFalse(
                 SyntheticPackageNameCreator.isSpn(
-                        TEST_CANONICAL_SPN_ONE.substring(0, TEST_CANONICAL_SPN_ONE.length() - 1)));
+                        mTestCanonicalSpnOne.substring(0, mTestCanonicalSpnOne.length() - 1)));
     }
 
     @Test
     public void withLongerUuid_isSpn_returnsFalse() {
-        assertFalse(SyntheticPackageNameCreator.isSpn(TEST_CANONICAL_SPN_ONE + "a"));
+        assertFalse(SyntheticPackageNameCreator.isSpn(mTestCanonicalSpnOne + "a"));
     }
 
     @Test
@@ -445,7 +487,7 @@ public class SyntheticPackageNameCreatorTest {
 
     @Test
     public void withMutation_isSpn_returnsFalse() {
-        String validSpn = TEST_CANONICAL_SPN_ONE;
+        String validSpn = mTestCanonicalSpnOne;
         assertTrue(SyntheticPackageNameCreator.isSpn(validSpn));
 
         for (int i = 0; i < validSpn.length(); i++) {
@@ -454,6 +496,62 @@ public class SyntheticPackageNameCreatorTest {
             String mutatedSpn = Arrays.toString(charArray);
             assertFalse(SyntheticPackageNameCreator.isSpn(mutatedSpn));
         }
+    }
+
+    @Test
+    public void withEmptyPreference_initializeOrGetSalt_addsPreference() {
+        assertNull(mPreferenceHelper.getPreference(PREFERENCE_KEY));
+
+        String salt = mSyntheticPackageNameCreator.initializeOrGetSalt();
+
+        assertEquals(salt, mPreferenceHelper.getPreference(PREFERENCE_KEY));
+    }
+
+    @Test
+    public void withMultipleCalls_initializeOrGetSalt_returnsSameSalt() {
+        String firstSalt = mSyntheticPackageNameCreator.initializeOrGetSalt();
+        String secondSalt = mSyntheticPackageNameCreator.initializeOrGetSalt();
+
+        assertEquals(firstSalt, secondSalt);
+    }
+
+    @Test
+    public void withMultipleCallsAndSaltReset_initializeOrGetSalt_generatesDifferentSalts() {
+        String firstSalt = mSyntheticPackageNameCreator.initializeOrGetSalt();
+
+        resetSaltPreference();
+
+        String secondSalt = mSyntheticPackageNameCreator.initializeOrGetSalt();
+
+        assertNotEquals(firstSalt, secondSalt);
+    }
+
+    @Test
+    public void withMultipleCallsAndSaltReset_initializeOrGetSalt_addsPreferenceTwice() {
+        assertNull(mPreferenceHelper.getPreference(PREFERENCE_KEY));
+
+        String firstSalt = mSyntheticPackageNameCreator.initializeOrGetSalt();
+        assertEquals(firstSalt, mPreferenceHelper.getPreference(PREFERENCE_KEY));
+
+        resetSaltPreference();
+
+        String secondSalt = mSyntheticPackageNameCreator.initializeOrGetSalt();
+        assertEquals(secondSalt, mPreferenceHelper.getPreference(PREFERENCE_KEY));
+    }
+
+    @Test
+    public void withMultipleCallsAndSaltReset_createCanonical_returnsDifferentSpns() {
+        String first =
+                mSyntheticPackageNameCreator.createCanonical(
+                        TEST_DEVICE_TYPE_ONE, TEST_DEVICE_ID_ONE);
+
+        resetSaltPreference();
+
+        String second =
+                mSyntheticPackageNameCreator.createCanonical(
+                        TEST_DEVICE_TYPE_ONE, TEST_DEVICE_ID_ONE);
+
+        assertNotEquals(first, second);
     }
 
     // When this test fails, the values from Device.VALID_TYPES and
@@ -465,5 +563,10 @@ public class SyntheticPackageNameCreatorTest {
                 SyntheticPackageNameCreator.DEVICE_TYPE_TO_DISPLAY_NAME.keySet();
 
         assertEquals(VALID_TYPES, spnDeviceTypes);
+    }
+
+    private void resetSaltPreference() {
+        mPreferenceHelper.removeKey(PREFERENCE_KEY);
+        assertNull(mPreferenceHelper.getPreference(PREFERENCE_KEY));
     }
 }

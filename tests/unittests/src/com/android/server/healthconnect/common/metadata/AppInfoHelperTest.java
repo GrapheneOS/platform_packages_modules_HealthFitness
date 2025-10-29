@@ -97,6 +97,7 @@ public class AppInfoHelperTest {
     private AppInfoHelper mAppInfoHelper;
     private DeviceInfoHelper mDeviceInfoHelper;
     private FitnessTestUtils mFitnessTestUtils;
+    private SyntheticPackageNameCreator mSyntheticPackageNameCreator;
 
     @Before
     public void setup() throws PackageManager.NameNotFoundException {
@@ -127,6 +128,7 @@ public class AppInfoHelperTest {
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
         mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        mSyntheticPackageNameCreator = healthConnectInjector.getSyntheticPackageNameCreator();
     }
 
     @After
@@ -404,8 +406,9 @@ public class AppInfoHelperTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     public void populateAppInfoId_spnNotAdvertised_throwsIllegalStateException() {
-        String canonicalSpn = SyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
+        String canonicalSpn = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
         RecordInternal<?> recordInternal =
                 buildStepsRecord(
                         /* startTimeMillis= */ 1000,
@@ -425,7 +428,7 @@ public class AppInfoHelperTest {
         Flags.FLAG_DEVELOPMENT_DATABASE
     })
     public void insertsDeviceDataSource() {
-        String canonicalSpn = SyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
+        String canonicalSpn = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
         long deviceInfoId = 1L;
 
         RecordInternal<?> recordInternal =
@@ -460,7 +463,7 @@ public class AppInfoHelperTest {
         Flags.FLAG_DEVELOPMENT_DATABASE
     })
     public void spnAlreadyPresent_populateAppInfoId_skipsPopulatingAppInfo() {
-        String canonicalSpn = SyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
+        String canonicalSpn = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
         long deviceInfoId = 1L;
 
         RecordInternal<?> recordInternal =
