@@ -162,13 +162,13 @@ public class AconfigFlagHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_CYCLE_PHASES_FEATURE)
+    @EnableFlags(Flags.FLAG_CYCLE_PHASES_FLAG)
     public void isCyclePhaseEnabled_featureFlagTrue_expectTrue() {
         assertThat(isCyclePhasesEnabled()).isTrue();
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_CYCLE_PHASES_FEATURE)
+    @DisableFlags(Flags.FLAG_CYCLE_PHASES_FLAG)
     public void isCyclePhaseEnabled_featureFlagFalse_expectFalse() {
         assertThat(isCyclePhasesEnabled()).isFalse();
     }

@@ -21,7 +21,7 @@ import static android.health.connect.Constants.DEFAULT_INT;
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API;
-import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES_FEATURE;
+import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES_FLAG;
 import static com.android.healthfitness.flags.Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY;
 import static com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
@@ -325,7 +325,7 @@ public final class HealthPermissions {
     // TODO(b/452289293): Unhide this when API implementation is done
     // TODO(b/450576343): Update HealthPermissionsTest and related tests after the permission
     // added to the manifest
-    @FlaggedApi(FLAG_CYCLE_PHASES_FEATURE)
+    @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
     public static final String READ_CYCLE_PHASES = "android.permission.health.READ_CYCLE_PHASES";
 
     /**
@@ -1191,7 +1191,7 @@ public final class HealthPermissions {
     // TODO(b/452289293): Unhide this when API implementation is done
     // TODO(b/450576343): Update HealthPermissionsTest and related tests after the permission
     // added to the manifest
-    @FlaggedApi(FLAG_CYCLE_PHASES_FEATURE)
+    @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
     public static final String WRITE_CYCLE_PHASES = "android.permission.health.WRITE_CYCLE_PHASES";
 
     /**
