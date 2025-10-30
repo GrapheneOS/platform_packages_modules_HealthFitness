@@ -17,6 +17,7 @@
 package com.android.healthfitness.flags;
 
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ALCOHOL_CONSUMPTION;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CYCLE_PHASES;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_SYMPTOMS;
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
@@ -107,6 +108,7 @@ public final class AconfigFlagHelper {
         map.put(DB_VERSION_NICOTINE_INTAKE, Flags::smokingDb);
         map.put(DB_VERSION_SYMPTOMS, Flags::symptomsDb);
         map.put(DB_VERSION_ALCOHOL_CONSUMPTION, Flags::alcoholConsumptionDb);
+        map.put(DB_VERSION_CYCLE_PHASES, Flags::cyclePhasesDb);
 
         return map;
     }
@@ -154,7 +156,6 @@ public final class AconfigFlagHelper {
 
     /** Returns a boolean indicating whether Cycle Phases data type is enabled. */
     public static boolean isCyclePhasesEnabled() {
-        // TODO(b/450552432): Use isDbFlagEnabled once the database changes are finalized.
-        return Flags.cyclePhasesFlag();
+        return Flags.cyclePhasesFlag() && isDbFlagEnabled(DB_VERSION_CYCLE_PHASES);
     }
 }
