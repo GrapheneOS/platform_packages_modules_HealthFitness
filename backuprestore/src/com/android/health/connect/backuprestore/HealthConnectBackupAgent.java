@@ -18,6 +18,12 @@ package com.android.health.connect.backuprestore;
 
 import static android.os.ParcelFileDescriptor.MODE_READ_ONLY;
 
+import static com.android.health.connect.backuprestore.BackupAgentLogger.BACKUP_AGENT_ERROR_STAGING_FAILED_EXCEPTION;
+import static com.android.health.connect.backuprestore.BackupAgentLogger.BACKUP_AGENT_ERROR_TIMEOUT_EXCEPTION;
+import static com.android.health.connect.backuprestore.BackupAgentLogger.BACKUP_AGENT_OPERATION_BACKUP;
+import static com.android.health.connect.backuprestore.BackupAgentLogger.BACKUP_AGENT_OPERATION_FULL_BACKUP;
+import static com.android.health.connect.backuprestore.BackupAgentLogger.BACKUP_AGENT_OPERATION_RESTORE;
+
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.app.backup.BackupAgent;
@@ -50,8 +56,10 @@ public class HealthConnectBackupAgent extends BackupAgent {
     private static final String TAG = "HealthConnectBackupAgent";
     private static final String BACKUP_DATA_DIR_NAME = "backup_data";
     private static final boolean DEBUG = false;
+    private static final long TIMEOUT_CALLBACK_SECONDS = 10;
 
     private HealthConnectManager mHealthConnectManager;
+    private BackupAgentLogger mBackupAgentLogger;
 
     @Override
     public void onCreate() {
@@ -60,14 +68,25 @@ public class HealthConnectBackupAgent extends BackupAgent {
         }
 
         mHealthConnectManager = getHealthConnectService();
+        mBackupAgentLogger = new BackupAgentLogger();
     }
 
     @Override
     public void onFullBackup(FullBackupDataOutput data) throws IOException {
+        long startTime = System.currentTimeMillis();
+        boolean isDeviceToDevice = (data.getTransportFlags() & FLAG_DEVICE_TO_DEVICE_TRANSFER) != 0;
+        if (isDeviceToDevice) {
+            mBackupAgentLogger.logStarted(BACKUP_AGENT_OPERATION_FULL_BACKUP);
+        } else {
+            mBackupAgentLogger.logStarted(BACKUP_AGENT_OPERATION_BACKUP);
+        }
+        Set<String> backupFileNames = mHealthConnectManager.getAllBackupFileNames(isDeviceToDevice);
+
+        if (DEBUG) {
+            Slog.v(TAG, "Starting Full backup. DeviceToDevice enabled: " + isDeviceToDevice);
+        }
+
         Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
-        Set<String> backupFileNames =
-                mHealthConnectManager.getAllBackupFileNames(
-                        (data.getTransportFlags() & FLAG_DEVICE_TO_DEVICE_TRANSFER) != 0);
         File backupDataDir = getBackupDataDir();
         backupFileNames.forEach(
                 (fileName) -> {
@@ -87,12 +106,21 @@ public class HealthConnectBackupAgent extends BackupAgent {
             backupFile(file, data);
         }
 
+        if (DEBUG) {
+            Slog.v(TAG, "Backup Complete. Deleting Backup Files.");
+        }
         deleteBackupFiles();
+        mBackupAgentLogger.logSuccess(
+                BACKUP_AGENT_OPERATION_BACKUP, (int) (System.currentTimeMillis() - startTime));
     }
 
     @Override
     public void onRestoreFinished() {
-        Slog.v(TAG, "Staging all of HC data");
+        long startTime = System.currentTimeMillis();
+        mBackupAgentLogger.logStarted(BACKUP_AGENT_OPERATION_RESTORE);
+        if (DEBUG) {
+            Slog.v(TAG, "Staging all of HC data");
+        }
         Map<String, ParcelFileDescriptor> pfdsByFileName = new ArrayMap<>();
         File[] filesToTransfer = getBackupDataDir().listFiles();
 
@@ -114,7 +142,9 @@ public class HealthConnectBackupAgent extends BackupAgent {
                 new OutcomeReceiver<>() {
                     @Override
                     public void onResult(Void result) {
-                        Slog.i(TAG, "Backup data successfully staged. Deleting all files.");
+                        if (DEBUG) {
+                            Slog.i(TAG, "Backup data successfully staged. Deleting all files.");
+                        }
                         deleteBackupFiles();
                         latch.countDown();
                     }
@@ -131,16 +161,24 @@ public class HealthConnectBackupAgent extends BackupAgent {
                         }
                         deleteBackupFiles();
                         latch.countDown();
+                        mBackupAgentLogger.logFailed(
+                                BACKUP_AGENT_OPERATION_RESTORE,
+                                BACKUP_AGENT_ERROR_STAGING_FAILED_EXCEPTION,
+                                (int) (System.currentTimeMillis() - startTime));
                     }
                 });
 
         try {
-            boolean callbackCalled = latch.await(10, TimeUnit.SECONDS);
+            boolean callbackCalled = latch.await(TIMEOUT_CALLBACK_SECONDS, TimeUnit.SECONDS);
             if (!callbackCalled) {
                 throw new TimeoutException();
             }
         } catch (InterruptedException | TimeoutException e) {
             Slog.e(TAG, "Exception while waiting for callback, Files might not be deleted", e);
+            mBackupAgentLogger.logFailed(
+                    BACKUP_AGENT_OPERATION_RESTORE,
+                    BACKUP_AGENT_ERROR_TIMEOUT_EXCEPTION,
+                    (int) (System.currentTimeMillis() - startTime));
         }
 
         // close the FDs
@@ -151,6 +189,8 @@ public class HealthConnectBackupAgent extends BackupAgent {
                 Slog.e(TAG, "Unable to close restored file from disk.", e);
             }
         }
+        mBackupAgentLogger.logSuccess(
+                BACKUP_AGENT_OPERATION_RESTORE, (int) (System.currentTimeMillis() - startTime));
     }
 
     @Override
@@ -166,14 +206,14 @@ public class HealthConnectBackupAgent extends BackupAgent {
 
     @VisibleForTesting
     File getBackupDataDir() {
-        File backupDataDir = new File(this.getFilesDir(), BACKUP_DATA_DIR_NAME);
+        File backupDataDir = new File(getFilesDir(), BACKUP_DATA_DIR_NAME);
         backupDataDir.mkdirs();
         return backupDataDir;
     }
 
     @VisibleForTesting
     HealthConnectManager getHealthConnectService() {
-        return this.getSystemService(HealthConnectManager.class);
+        return getSystemService(HealthConnectManager.class);
     }
 
     @VisibleForTesting
