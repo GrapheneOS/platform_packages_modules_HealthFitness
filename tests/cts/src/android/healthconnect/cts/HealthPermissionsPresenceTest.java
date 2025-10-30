@@ -247,6 +247,7 @@ public class HealthPermissionsPresenceTest {
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
+    // TODO(b/452289293): Add cycle phases permissions after the API is not annotated with @hide
     private static final Set<String> HEALTH_PERMISSIONS =
             Set.of(
                     READ_ACTIVE_CALORIES_BURNED,
