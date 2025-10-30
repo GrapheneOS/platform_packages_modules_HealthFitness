@@ -414,7 +414,7 @@
     <string name="medical_request_footer" msgid="6533749932770903089">"Du kannst deine Gesundheitsdaten aus verschiedenen Apps und Quellen synchronisieren lassen, um sie an einem Ort zu speichern"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Alle Berechtigungen entfernen?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Alle entfernen"</string>
-    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ kann dann keine Daten mehr von Health Connect lesen oder bearbeiten.\n\nDies hat keine Auswirkungen auf andere Berechtigungen, die diese App möglicherweise hat, wie z. B. Kamera, Mikrofon oder Standort."</string>
+    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ kann dann keine Daten mehr von Health Connect lesen oder schreiben.\n\nDies hat keine Auswirkungen auf andere Berechtigungen, die diese App möglicherweise hat, wie z. B. Kamera, Mikrofon oder Standort."</string>
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ kann dann keine Daten mehr von Health Connect lesen oder schreiben, auch keine Hintergrunddaten.\n\nDies hat keine Auswirkungen auf andere Berechtigungen, die diese App möglicherweise hat, wie z. B. Standort, Kamera oder Mikrofon."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ kann dann keine Daten mehr von Health Connect lesen oder schreiben, auch keine früheren Daten.\n\nDies hat keine Auswirkungen auf andere Berechtigungen, die diese App möglicherweise hat, wie z. B. Standort, Kamera oder Mikrofon."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ kann dann keine Daten mehr von Health Connect lesen oder schreiben, auch keine Hintergrunddaten und früheren Daten.\n\nDies hat keine Auswirkungen auf andere Berechtigungen, die diese App möglicherweise hat, wie z. B. Standort, Kamera oder Mikrofon."</string>
@@ -583,7 +583,7 @@
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Zurück"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Jetzt starten"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Daten löschen"</string>
-    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Schaltfläche zum Löschen von Daten für %1$s"</string>
+    <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Button zum Löschen von Daten für %1$s"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Löschen starten"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Löschen beenden"</string>
     <string name="time_range_title" msgid="5777596779865648336">"Aus Health Connect zu löschende Daten auswählen"</string>
@@ -1055,7 +1055,7 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Ans Ende verschieben"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"Schaltfläche zum Ziehen von <xliff:g id="SELECTED_APP">%s</xliff:g> in der Prioritätenliste, um die Reihenfolge zu ändern"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Taste zum Entfernen von <xliff:g id="SELECTED_APP">%s</xliff:g> aus der Prioritätenliste"</string>
-    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Schaltfläche zum Neuanordnen der App „<xliff:g id="SELECTED_APP">%s</xliff:g>“ in der Liste der App-Quellen oder zum Entfernen der App aus der Liste der App-Quellen"</string>
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"Button zum Neuanordnen der App „<xliff:g id="SELECTED_APP">%s</xliff:g>“ in der Liste der App-Quellen oder zum Entfernen der App aus der Liste der App-Quellen"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Doppeltippen und ziehen, um Reihenfolge zu ändern"</string>
     <string name="priority_list_item_content_description" msgid="8792727829749801217">"Die App „<xliff:g id="SELECTED_APP">%2$s</xliff:g>“ ist auf <xliff:g id="POSITION">%1$s</xliff:g> Position in der Liste"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"fitness, wellness"</string>

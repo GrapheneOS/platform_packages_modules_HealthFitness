@@ -374,10 +374,10 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"příjem nikotinu"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Čtení příjmu nikotinu"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Zápis příjmu nikotinu"</string>
-    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"Spotřeba alkoholu"</string>
-    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"spotřeba alkoholu"</string>
-    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Čtení spotřeby alkoholu"</string>
-    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Zápis spotřeby alkoholu"</string>
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"Konzumace alkoholu"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"konzumace alkoholu"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Čtení konzumace alkoholu"</string>
+    <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Zápis konzumace alkoholu"</string>
     <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Kašel"</string>
     <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"kašel"</string>
     <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Číst příznaky"</string>

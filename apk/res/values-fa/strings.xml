@@ -1158,9 +1158,9 @@
     <string name="date_picker_week" msgid="1038805538316142229">"هفته"</string>
     <string name="date_picker_month" msgid="3560692391260778560">"ماه"</string>
     <string name="this_week_header" msgid="1280121922548216973">"این هفته"</string>
-    <string name="last_week_header" msgid="5194448963146719382">"هفته گذشته"</string>
+    <string name="last_week_header" msgid="5194448963146719382">"هفته پیش"</string>
     <string name="this_month_header" msgid="2452395268894677189">"این ماه"</string>
-    <string name="last_month_header" msgid="1359164797239191253">"ماه گذشته"</string>
+    <string name="last_month_header" msgid="1359164797239191253">"ماه پیش"</string>
     <string name="tab_entries" msgid="3402700951602029493">"ورودی‌ها"</string>
     <string name="tab_access" msgid="7818197975407243701">"دسترسی"</string>
     <string name="start_using_hc_banner_title" msgid="2030178284749796384">"استفاده از Health Connect را شروع کنید"</string>
@@ -1235,7 +1235,7 @@
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
     <string name="allowed_apps_count" msgid="2289260267605628310">"‫<xliff:g id="NUMBER_0">%1$d</xliff:g> برنامه از <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> برنامه مجاز است"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"برنامه‌ای درخواست نکرده است"</string>
-    <string name="allowed" msgid="4158456017482263737">"مجاز"</string>
+    <string name="allowed" msgid="4158456017482263737">"اجازه داشتن"</string>
     <string name="not_allowed" msgid="6092523505093372147">"اجازه نداشتن"</string>
     <string name="access_sensor_note" msgid="7949933977197789634">"برنامه‌های دارای این اجازه می‌توانند به داده‌های <xliff:g id="DATA_TYPE">%s</xliff:g> از حسگرهای دستگاهتان دسترسی داشته باشند."</string>
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"دسترسی به <xliff:g id="DATA_TYPE">%s</xliff:g> برای همه برنامه‌های روی ساعت برداشته شود؟"</string>

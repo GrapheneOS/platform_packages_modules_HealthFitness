@@ -1286,7 +1286,7 @@
     <string name="native_steps_banner_title" msgid="7668164332675458871">"Health Connect ၌ ဖုန်းရှိခြေရာခံထားသော အဆင့်များကိုမြင်ရမည်"</string>
     <string name="native_steps_banner_summary" msgid="7109953051996114646">"ဤစက်က ခြေရာခံထားသောအဆင့်များကို သုံးရန် ချိတ်ဆက်အက်ပ်များအတွက် Health Connect တွင် သိမ်းလိုက်ပါပြီ"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"ပယ်ရန်"</string>
-    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"သုံးသပ်ချက်"</string>
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"ကြည့်ရန်"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"အဆင့်များသည် Health Connect ၌ ရှိနေပြီ"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"ဤစက်က ခြေရာခံထားသောအဆင့်များကို သုံးရန် ချိတ်ဆက်အက်ပ်များအတွက် Health Connect တွင် သိမ်းလိုက်ပါပြီ"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"ယခုမလုပ်ပါ"</string>

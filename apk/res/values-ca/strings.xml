@@ -86,7 +86,7 @@
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"benestar"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"Navega per les dades"</string>
     <string name="manage_data_section" msgid="5859629270946511903">"Gestiona les dades"</string>
-    <string name="export_data_button" msgid="7783329820434117744">"Exporta dades"</string>
+    <string name="export_data_button" msgid="7783329820434117744">"Exporta les dades"</string>
     <string name="delete_all_data_button" msgid="7238755635416521487">"Suprimeix totes les dades"</string>
     <string name="no_categories" msgid="2636778482437506241">"No tens cap dada a Salut connectada"</string>
     <string name="permission_types_title" msgid="7698058200557389436">"Les teves dades"</string>
@@ -1288,6 +1288,6 @@
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Ignora"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Revisa"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Ara els passos són a Salut connectada"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"Els passos de què fa un seguiment aquest dispositiu ara s\'emmagatzemen a Salut connectada perquè les aplicacions connectades hi accedeixin"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"Els passos que registra aquest dispositiu ara s\'emmagatzemen a Salut connectada perquè les aplicacions connectades hi puguin accedir"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Ara no"</string>
 </resources>

@@ -1172,7 +1172,7 @@
     <string name="see_compatible_apps_banner_title" msgid="5217106184748241727">"対応アプリを表示する"</string>
     <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"ヘルスコネクトで <xliff:g id="APP_NAME">%s</xliff:g> と同期するアプリをさらに探す"</string>
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"アプリストアで表示する"</string>
-    <string name="lock_screen_banner_title" msgid="5384381892985739755">"画面ロックの設定"</string>
+    <string name="lock_screen_banner_title" msgid="5384381892985739755">"画面ロックを設定"</string>
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"健康に関するデータのセキュリティを強化するために、このデバイスの PIN、パターン、またはパスワードを設定してください"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"画面ロックを設定"</string>
     <string name="select_all" msgid="837499881590001166">"すべて選択"</string>

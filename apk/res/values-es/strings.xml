@@ -36,7 +36,7 @@
     <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> de <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> apps tienen acceso"</string>
     <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> apps tienen acceso"</string>
     <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplicación tiene acceso"</string>
-    <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{1 app tiene acceso}other{# apps tienen acceso}}"</string>
+    <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{1 aplicación tiene acceso}other{# aplicaciones tienen acceso}}"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Ninguna"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Detalles de la entrada"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Consultar datos"</string>
@@ -66,7 +66,7 @@
     <string name="manage_permissions" msgid="8394221950712608160">"Gestionar permisos"</string>
     <string name="recent_access_time_content_descritption" msgid="1137471676075811472">"Hora: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
     <string name="recent_access_empty_state_title" msgid="4767157641389217682">"No hay accesos recientes"</string>
-    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"Las apps que han accedido a tus datos recientemente se mostrarán automáticamente aquí"</string>
+    <string name="recent_access_empty_state_description" msgid="6334951450158128989">"Las aplicaciones que han accedido a tus datos recientemente se mostrarán automáticamente aquí"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"Ver todo"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"No se han podido cargar los accesos recientes"</string>
     <string name="recent_access_inactive_app" msgid="8754221676902025802">"Esta aplicación ya no está disponible"</string>

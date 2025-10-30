@@ -65,7 +65,7 @@
     <string name="separator" msgid="5521285473288943819">"、 "</string>
     <string name="manage_permissions" msgid="8394221950712608160">"管理权限"</string>
     <string name="recent_access_time_content_descritption" msgid="1137471676075811472">"时间：<xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
-    <string name="recent_access_empty_state_title" msgid="4767157641389217682">"近期未访问"</string>
+    <string name="recent_access_empty_state_title" msgid="4767157641389217682">"近期无访问记录"</string>
     <string name="recent_access_empty_state_description" msgid="6334951450158128989">"近期访问过您数据的应用会自动显示在此处"</string>
     <string name="recent_access_view_all_button" msgid="825946958049641541">"查看全部"</string>
     <string name="recent_access_error" msgid="2258399573560888960">"无法加载最近的访问记录"</string>
