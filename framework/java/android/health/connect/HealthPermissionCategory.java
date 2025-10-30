@@ -18,7 +18,7 @@ package android.health.connect;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION;
-import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES_FEATURE;
+import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES_FLAG;
 import static com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
@@ -125,7 +125,7 @@ public class HealthPermissionCategory {
      * @hide
      */
     // TODO(b/452289293): Unhide this when API implementation is done
-    @FlaggedApi(FLAG_CYCLE_PHASES_FEATURE)
+    @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
     public static final int CYCLE_PHASES = 104;
 
     /** Permission category for {IntermenstrualBleedingRecord} */
