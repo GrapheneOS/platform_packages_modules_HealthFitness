@@ -105,36 +105,40 @@ class MockedFitnessAppFragmentTest {
             )
 
         launchFragment<FitnessAppFragment>(
-            bundleOf(
-                Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-            )
-        )
-
-        onView(withText("Exercise")).perform(scrollTo()).perform(click())
-
-        // check for dialog
-        onView(withText("Disable both data types?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "$TEST_APP_NAME requires exercise access in order for exercise routes to be enabled"
+                bundleOf(
+                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Yes")).inRoot(isDialog()).perform(click())
+            .use {
+                onView(withText("Exercise")).perform(scrollTo()).perform(click())
 
-        verify(healthPermissionManager)
-            .revokeHealthPermission(TEST_APP_PACKAGE_NAME, HealthPermissions.READ_EXERCISE)
-        verify(healthPermissionManager)
-            .revokeHealthPermission(TEST_APP_PACKAGE_NAME, HealthPermissions.READ_EXERCISE_ROUTES)
-        verify(healthPermissionManager, never())
-            .revokeHealthPermission(
-                TEST_APP_PACKAGE_NAME,
-                HealthPermissions.READ_HEALTH_DATA_HISTORY,
-            )
+                // check for dialog
+                onView(withText("Disable both data types?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "$TEST_APP_NAME requires exercise access in order for exercise routes to be enabled"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Yes")).inRoot(isDialog()).perform(click())
+
+                verify(healthPermissionManager)
+                    .revokeHealthPermission(TEST_APP_PACKAGE_NAME, HealthPermissions.READ_EXERCISE)
+                verify(healthPermissionManager)
+                    .revokeHealthPermission(
+                        TEST_APP_PACKAGE_NAME,
+                        HealthPermissions.READ_EXERCISE_ROUTES,
+                    )
+                verify(healthPermissionManager, never())
+                    .revokeHealthPermission(
+                        TEST_APP_PACKAGE_NAME,
+                        HealthPermissions.READ_HEALTH_DATA_HISTORY,
+                    )
+            }
     }
 
     @Test
@@ -170,36 +174,40 @@ class MockedFitnessAppFragmentTest {
             }
 
         launchFragment<FitnessAppFragment>(
-            bundleOf(
-                Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-            )
-        )
-
-        onView(withText("Exercise")).perform(scrollTo()).perform(click())
-
-        // check for dialog
-        onView(withText("Disable both data types?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "$TEST_APP_NAME requires exercise access in order for exercise routes to be enabled"
+                bundleOf(
+                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Yes")).inRoot(isDialog()).perform(click())
+            .use {
+                onView(withText("Exercise")).perform(scrollTo()).perform(click())
 
-        verify(healthPermissionManager)
-            .revokeHealthPermission(TEST_APP_PACKAGE_NAME, HealthPermissions.READ_EXERCISE)
-        verify(healthPermissionManager)
-            .revokeHealthPermission(TEST_APP_PACKAGE_NAME, HealthPermissions.READ_EXERCISE_ROUTES)
-        verify(healthPermissionManager)
-            .revokeHealthPermission(
-                TEST_APP_PACKAGE_NAME,
-                HealthPermissions.READ_HEALTH_DATA_HISTORY,
-            )
+                // check for dialog
+                onView(withText("Disable both data types?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "$TEST_APP_NAME requires exercise access in order for exercise routes to be enabled"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Yes")).inRoot(isDialog()).perform(click())
+
+                verify(healthPermissionManager)
+                    .revokeHealthPermission(TEST_APP_PACKAGE_NAME, HealthPermissions.READ_EXERCISE)
+                verify(healthPermissionManager)
+                    .revokeHealthPermission(
+                        TEST_APP_PACKAGE_NAME,
+                        HealthPermissions.READ_EXERCISE_ROUTES,
+                    )
+                verify(healthPermissionManager)
+                    .revokeHealthPermission(
+                        TEST_APP_PACKAGE_NAME,
+                        HealthPermissions.READ_HEALTH_DATA_HISTORY,
+                    )
+            }
     }
 
     @Test
@@ -223,25 +231,29 @@ class MockedFitnessAppFragmentTest {
             )
 
         launchFragment<FitnessAppFragment>(
-            bundleOf(
-                Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                Constants.EXTRA_APP_NAME to TEST_APP_NAME,
+                bundleOf(
+                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
+                )
             )
-        )
+            .use {
+                onView(withText("Exercise")).perform(scrollTo()).perform(click())
 
-        onView(withText("Exercise")).perform(scrollTo()).perform(click())
+                // check for dialog
+                onView(withText("Disable both data types?")).check(doesNotExist())
 
-        // check for dialog
-        onView(withText("Disable both data types?")).check(doesNotExist())
-
-        verify(healthPermissionManager)
-            .revokeHealthPermission(TEST_APP_PACKAGE_NAME, HealthPermissions.READ_EXERCISE)
-        verify(healthPermissionManager, never())
-            .revokeHealthPermission(TEST_APP_PACKAGE_NAME, HealthPermissions.READ_EXERCISE_ROUTES)
-        verify(healthPermissionManager)
-            .revokeHealthPermission(
-                TEST_APP_PACKAGE_NAME,
-                HealthPermissions.READ_HEALTH_DATA_HISTORY,
-            )
+                verify(healthPermissionManager)
+                    .revokeHealthPermission(TEST_APP_PACKAGE_NAME, HealthPermissions.READ_EXERCISE)
+                verify(healthPermissionManager, never())
+                    .revokeHealthPermission(
+                        TEST_APP_PACKAGE_NAME,
+                        HealthPermissions.READ_EXERCISE_ROUTES,
+                    )
+                verify(healthPermissionManager)
+                    .revokeHealthPermission(
+                        TEST_APP_PACKAGE_NAME,
+                        HealthPermissions.READ_HEALTH_DATA_HISTORY,
+                    )
+            }
     }
 }

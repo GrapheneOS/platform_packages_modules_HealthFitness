@@ -154,14 +154,16 @@ class ConnectedAppsFragmentTest {
         deviceInfoUtils.setPlayStoreAvailability(true)
 
         launchFragment<ConnectedAppsFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.connectedAppsFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME)).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.fitnessAppFragment)
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.connectedAppsFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+                onView(withText(TEST_APP_NAME)).perform(click())
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.fitnessAppFragment)
+            }
     }
 
     @Test
@@ -179,14 +181,16 @@ class ConnectedAppsFragmentTest {
         deviceInfoUtils.setPlayStoreAvailability(true)
 
         launchFragment<ConnectedAppsFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.connectedAppsFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME)).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.medicalAppFragment)
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.connectedAppsFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+                onView(withText(TEST_APP_NAME)).perform(click())
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.medicalAppFragment)
+            }
     }
 
     @Test
@@ -205,23 +209,40 @@ class ConnectedAppsFragmentTest {
         deviceInfoUtils.setPlayStoreAvailability(true)
 
         launchFragment<ConnectedAppsFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.connectedAppsFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME)).perform(click())
-        assertThat(navHostController.currentDestination?.id)
-            .isEqualTo(R.id.combinedPermissionsFragment)
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.connectedAppsFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+                onView(withText(TEST_APP_NAME)).perform(click())
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.combinedPermissionsFragment)
+            }
     }
 
     @Test
     fun helpAndFeedback_navigatesToHelpAndFeedback() {
-        setupFragmentForNavigation()
-        onView(withText("Help & feedback")).check(matches(isDisplayed()))
-        onView(withText("Help & feedback")).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.helpAndFeedbackFragment)
+        val connectApp =
+            listOf(
+                ConnectedAppMetadata(TEST_APP, status = DENIED),
+                ConnectedAppMetadata(TEST_APP_2, status = ALLOWED),
+            )
+        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
+        (deviceInfoUtils as FakeDeviceInfoUtils).setSendFeedbackAvailability(false)
+        deviceInfoUtils.setPlayStoreAvailability(true)
+
+        launchFragment<ConnectedAppsFragment>(Bundle()) {
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.connectedAppsFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Help & feedback")).check(matches(isDisplayed()))
+                onView(withText("Help & feedback")).perform(click())
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.helpAndFeedbackFragment)
+            }
     }
 
     @Test
@@ -229,22 +250,22 @@ class ConnectedAppsFragmentTest {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = ALLOWED))
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText("No apps allowed")).check(doesNotExist())
-        onView(withText("No apps denied")).check(matches(isDisplayed()))
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+            onView(withText("No apps allowed")).check(doesNotExist())
+            onView(withText("No apps denied")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun test_deniedApps() {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = DENIED))
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText("No apps denied")).check(doesNotExist())
-        onView(withText("No apps allowed")).check(matches(isDisplayed()))
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+            onView(withText("No apps denied")).check(doesNotExist())
+            onView(withText("No apps allowed")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -252,9 +273,9 @@ class ConnectedAppsFragmentTest {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = ALLOWED))
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        onView(withText(R.string.disconnect_all_apps)).check(matches(isEnabled()))
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText(R.string.disconnect_all_apps)).check(matches(isEnabled()))
+        }
     }
 
     @Test
@@ -263,17 +284,17 @@ class ConnectedAppsFragmentTest {
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
         whenever(viewModel.alertDialogActive).then { MutableLiveData(true) }
 
-        val scenario = launchFragment<ConnectedAppsFragment>(Bundle())
+        launchFragment<ConnectedAppsFragment>(Bundle()).use { scenario ->
+            onView(withText("Remove access for all apps?"))
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()))
 
-        onView(withText("Remove access for all apps?"))
-            .inRoot(RootMatchers.isDialog())
-            .check(matches(isDisplayed()))
+            scenario.recreate()
 
-        scenario.recreate()
-
-        onView(withText("Remove access for all apps?"))
-            .inRoot(RootMatchers.isDialog())
-            .check(matches(isDisplayed()))
+            onView(withText("Remove access for all apps?"))
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -282,11 +303,11 @@ class ConnectedAppsFragmentTest {
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
         whenever(viewModel.alertDialogActive).then { MutableLiveData(true) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        onView(withText("Also delete all Health Connect data"))
-            .inRoot(RootMatchers.isDialog())
-            .check(matches(isDisplayed()))
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText("Also delete all Health Connect data"))
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -294,9 +315,9 @@ class ConnectedAppsFragmentTest {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = DENIED))
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        onView(withText(R.string.disconnect_all_apps)).check(matches(isDisplayed()))
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText(R.string.disconnect_all_apps)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -305,9 +326,9 @@ class ConnectedAppsFragmentTest {
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
         whenever(viewModel.disconnectAllState).then { MutableLiveData(Loading) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        onView(withText(R.string.loading)).inRoot(isDialog()).check(matches(isDisplayed()))
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText(R.string.loading)).inRoot(isDialog()).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -315,9 +336,9 @@ class ConnectedAppsFragmentTest {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = DENIED))
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
         whenever(viewModel.disconnectAllState).then { MutableLiveData(Updated) }
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        onView(withText(R.string.loading)).check(doesNotExist())
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText(R.string.loading)).check(doesNotExist())
+        }
     }
 
     @Test
@@ -325,12 +346,13 @@ class ConnectedAppsFragmentTest {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = INACTIVE))
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(R.string.inactive_apps)).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(AppPermissionsElement.INACTIVE_APP_BUTTON)
-        verify(healthConnectLogger).logImpression(AppPermissionsElement.INACTIVE_APP_DELETE_BUTTON)
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+            onView(withText(R.string.inactive_apps)).check(matches(isDisplayed()))
+            verify(healthConnectLogger).logImpression(AppPermissionsElement.INACTIVE_APP_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(AppPermissionsElement.INACTIVE_APP_DELETE_BUTTON)
+        }
     }
 
     @Test
@@ -352,12 +374,13 @@ class ConnectedAppsFragmentTest {
             )
         whenever(viewModel.connectedApps).then { MutableLiveData(connectedApps) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-        onView(withText("firstApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("secondApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("firstApp")).check(matches(isAbove(withText("secondApp"))))
-        onView(withText("thirdApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("secondApp")).check(matches(isAbove(withText("thirdApp"))))
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText("firstApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("secondApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("firstApp")).check(matches(isAbove(withText("secondApp"))))
+            onView(withText("thirdApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("secondApp")).check(matches(isAbove(withText("thirdApp"))))
+        }
     }
 
     @Test
@@ -379,12 +402,13 @@ class ConnectedAppsFragmentTest {
             )
         whenever(viewModel.connectedApps).then { MutableLiveData(connectedApps) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-        onView(withText("firstApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("secondApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("firstApp")).check(matches(isAbove(withText("secondApp"))))
-        onView(withText("thirdApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("secondApp")).check(matches(isAbove(withText("thirdApp"))))
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText("firstApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("secondApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("firstApp")).check(matches(isAbove(withText("secondApp"))))
+            onView(withText("thirdApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("secondApp")).check(matches(isAbove(withText("thirdApp"))))
+        }
     }
 
     @Test
@@ -406,12 +430,13 @@ class ConnectedAppsFragmentTest {
             )
         whenever(viewModel.connectedApps).then { MutableLiveData(connectedApps) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-        onView(withText("firstApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("secondApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("firstApp")).check(matches(isAbove(withText("secondApp"))))
-        onView(withText("thirdApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("secondApp")).check(matches(isAbove(withText("thirdApp"))))
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText("firstApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("secondApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("firstApp")).check(matches(isAbove(withText("secondApp"))))
+            onView(withText("thirdApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("secondApp")).check(matches(isAbove(withText("thirdApp"))))
+        }
     }
 
     @Test
@@ -433,14 +458,15 @@ class ConnectedAppsFragmentTest {
             )
         whenever(viewModel.connectedApps).then { MutableLiveData(connectedApps) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        onView(withText("firstApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("secondApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("firstApp")).check(matches(isAbove(withText("secondApp"))))
-        onView(withText("thirdApp")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("secondApp")).check(matches(isAbove(withText("thirdApp"))))
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+            onView(withText("firstApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("secondApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("firstApp")).check(matches(isAbove(withText("secondApp"))))
+            onView(withText("thirdApp")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("secondApp")).check(matches(isAbove(withText("thirdApp"))))
+        }
     }
 
     @Test
@@ -448,16 +474,17 @@ class ConnectedAppsFragmentTest {
         val connectApp = listOf(ConnectedAppMetadata(TEST_APP, status = INACTIVE))
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+            onView(withText(R.string.inactive_apps)).check(matches(isDisplayed()))
+            onView(withTagValue(`is`("Delete button inactive app"))).perform(click())
 
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(R.string.inactive_apps)).check(matches(isDisplayed()))
-        onView(withTagValue(`is`("Delete button inactive app"))).perform(click())
-
-        onView(withText("Permanently delete all $TEST_APP_NAME data?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        verify(healthConnectLogger).logInteraction(AppPermissionsElement.INACTIVE_APP_DELETE_BUTTON)
+            onView(withText("Permanently delete all $TEST_APP_NAME data?"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logInteraction(AppPermissionsElement.INACTIVE_APP_DELETE_BUTTON)
+        }
     }
 
     @Test
@@ -475,16 +502,16 @@ class ConnectedAppsFragmentTest {
             )
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        verify(healthConnectLogger, times(0))
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_HIDE_SYSTEM_MENU)
-        verify(healthConnectLogger, times(0))
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_HIDE_SYSTEM_MENU)
-        verify(healthConnectLogger, times(0))
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_SHOW_SYSTEM_MENU)
-        verify(healthConnectLogger)
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_SHOW_SYSTEM_MENU)
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            verify(healthConnectLogger, times(0))
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_HIDE_SYSTEM_MENU)
+            verify(healthConnectLogger, times(0))
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_HIDE_SYSTEM_MENU)
+            verify(healthConnectLogger, times(0))
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_SHOW_SYSTEM_MENU)
+            verify(healthConnectLogger)
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_SHOW_SYSTEM_MENU)
+        }
     }
 
     @Test
@@ -503,16 +530,16 @@ class ConnectedAppsFragmentTest {
         whenever(viewModel.showSystemApps).then { MutableLiveData(true) }
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        verify(healthConnectLogger, times(0))
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_SHOW_SYSTEM_MENU)
-        verify(healthConnectLogger, times(0))
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_HIDE_SYSTEM_MENU)
-        verify(healthConnectLogger, times(0))
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_SHOW_SYSTEM_MENU)
-        verify(healthConnectLogger)
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_HIDE_SYSTEM_MENU)
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            verify(healthConnectLogger, times(0))
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_SHOW_SYSTEM_MENU)
+            verify(healthConnectLogger, times(0))
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_HIDE_SYSTEM_MENU)
+            verify(healthConnectLogger, times(0))
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_SHOW_SYSTEM_MENU)
+            verify(healthConnectLogger)
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_HIDE_SYSTEM_MENU)
+        }
     }
 
     @Test
@@ -520,16 +547,16 @@ class ConnectedAppsFragmentTest {
         val connectApp = listOf<ConnectedAppMetadata>()
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        verify(healthConnectLogger, times(0))
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_HIDE_SYSTEM_MENU)
-        verify(healthConnectLogger, times(0))
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_SHOW_SYSTEM_MENU)
-        verify(healthConnectLogger, times(0))
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_HIDE_SYSTEM_MENU)
-        verify(healthConnectLogger)
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_SHOW_SYSTEM_MENU)
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            verify(healthConnectLogger, times(0))
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_HIDE_SYSTEM_MENU)
+            verify(healthConnectLogger, times(0))
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_SHOW_SYSTEM_MENU)
+            verify(healthConnectLogger, times(0))
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_HIDE_SYSTEM_MENU)
+            verify(healthConnectLogger)
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_SHOW_SYSTEM_MENU)
+        }
     }
 
     @Test
@@ -537,16 +564,16 @@ class ConnectedAppsFragmentTest {
         val connectApp = listOf<ConnectedAppMetadata>()
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
         whenever(viewModel.showSystemApps).then { MutableLiveData(true) }
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        verify(healthConnectLogger, times(0))
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_HIDE_SYSTEM_MENU)
-        verify(healthConnectLogger, times(0))
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_SHOW_SYSTEM_MENU)
-        verify(healthConnectLogger, times(0))
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_SHOW_SYSTEM_MENU)
-        verify(healthConnectLogger)
-            .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_HIDE_SYSTEM_MENU)
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            verify(healthConnectLogger, times(0))
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_HIDE_SYSTEM_MENU)
+            verify(healthConnectLogger, times(0))
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EXISTING_APPS_STATE_SHOW_SYSTEM_MENU)
+            verify(healthConnectLogger, times(0))
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_SHOW_SYSTEM_MENU)
+            verify(healthConnectLogger)
+                .logImpression(ToolbarElement.TOOLBAR_ENTER_EMPTY_STATE_HIDE_SYSTEM_MENU)
+        }
     }
 
     @Test
@@ -557,25 +584,26 @@ class ConnectedAppsFragmentTest {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
         deviceInfoUtils.setSendFeedbackAvailability(true)
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        onView(withText("No compatible apps installed")).check(matches(isDisplayed()))
-        onView(withText("Things to try")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Check for updates")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Make sure installed apps are up-to-date"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("See all compatible apps"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Find apps on Google\u00A0Play"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Send feedback")).perform(scrollTo()).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(AppPermissionsElement.SEND_FEEDBACK_BUTTON)
-        verify(healthConnectLogger).logImpression(AppPermissionsElement.CHECK_FOR_UPDATES_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(AppPermissionsElement.SEE_ALL_COMPATIBLE_APPS_BUTTON)
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText("No compatible apps installed")).check(matches(isDisplayed()))
+            onView(withText("Things to try")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("Check for updates")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("Make sure installed apps are up-to-date"))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+            onView(withText("See all compatible apps"))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+            onView(withText("Find apps on Google\u00A0Play"))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
+            onView(withText("Send feedback")).perform(scrollTo()).check(matches(isDisplayed()))
+            verify(healthConnectLogger).logImpression(AppPermissionsElement.SEND_FEEDBACK_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(AppPermissionsElement.CHECK_FOR_UPDATES_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(AppPermissionsElement.SEE_ALL_COMPATIBLE_APPS_BUTTON)
+        }
     }
 
     @Test
@@ -586,15 +614,15 @@ class ConnectedAppsFragmentTest {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(false)
         deviceInfoUtils.setSendFeedbackAvailability(false)
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        onView(withText("No compatible apps installed")).check(matches(isDisplayed()))
-        onView(withText("Things to try")).check(doesNotExist())
-        onView(withText("Check for updates")).check(doesNotExist())
-        onView(withText("Make sure installed apps are up-to-date")).check(doesNotExist())
-        onView(withText("See all compatible apps")).check(doesNotExist())
-        onView(withText("Find apps on Google\u00A0Play")).check(doesNotExist())
-        onView(withText("Send feedback")).check(doesNotExist())
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText("No compatible apps installed")).check(matches(isDisplayed()))
+            onView(withText("Things to try")).check(doesNotExist())
+            onView(withText("Check for updates")).check(doesNotExist())
+            onView(withText("Make sure installed apps are up-to-date")).check(doesNotExist())
+            onView(withText("See all compatible apps")).check(doesNotExist())
+            onView(withText("Find apps on Google\u00A0Play")).check(doesNotExist())
+            onView(withText("Send feedback")).check(doesNotExist())
+        }
     }
 
     @Test
@@ -606,21 +634,22 @@ class ConnectedAppsFragmentTest {
             )
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
+            onView(withText("No apps allowed")).check(doesNotExist())
+            onView(withText("No apps denied")).check(doesNotExist())
 
-        onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
-        onView(withText("No apps allowed")).check(doesNotExist())
-        onView(withText("No apps denied")).check(doesNotExist())
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+            onView(withText("Inactive apps")).check(doesNotExist())
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        onView(withText("Inactive apps")).check(doesNotExist())
-
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.APP_PERMISSIONS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(AppPermissionsElement.CONNECTED_APP_BUTTON)
-        verify(healthConnectLogger).logImpression(AppPermissionsElement.NOT_CONNECTED_APP_BUTTON)
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.APP_PERMISSIONS_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger).logImpression(AppPermissionsElement.CONNECTED_APP_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(AppPermissionsElement.NOT_CONNECTED_APP_BUTTON)
+        }
     }
 
     @Test
@@ -635,10 +664,11 @@ class ConnectedAppsFragmentTest {
         (deviceInfoUtils as FakeDeviceInfoUtils).setSendFeedbackAvailability(false)
         deviceInfoUtils.setPlayStoreAvailability(true)
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        onView(withText("Help & feedback")).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(AppPermissionsElement.HELP_AND_FEEDBACK_BUTTON)
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText("Help & feedback")).check(matches(isDisplayed()))
+            verify(healthConnectLogger)
+                .logImpression(AppPermissionsElement.HELP_AND_FEEDBACK_BUTTON)
+        }
     }
 
     @Test
@@ -653,9 +683,9 @@ class ConnectedAppsFragmentTest {
         (deviceInfoUtils as FakeDeviceInfoUtils).setSendFeedbackAvailability(false)
         deviceInfoUtils.setPlayStoreAvailability(false)
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        onView(withText("Help & feedback")).check(doesNotExist())
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText("Help & feedback")).check(doesNotExist())
+        }
     }
 
     @Test
@@ -670,27 +700,27 @@ class ConnectedAppsFragmentTest {
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-
-        onView(withText("App update needed")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Old permissions test app needs to be updated to " +
-                        "continue syncing with Health Connect. Updates may not be available for all apps."
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText("App update needed")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Old permissions test app needs to be updated to " +
+                            "continue syncing with Health Connect. Updates may not be available for all apps."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Learn more")).check(matches(isDisplayed()))
-        onView(withText("Check for updates")).check(matches(isDisplayed()))
-        onView(withText("Needs updating")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Old permissions test app"))
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+            onView(withText("Learn more")).check(matches(isDisplayed()))
+            onView(withText("Check for updates")).check(matches(isDisplayed()))
+            onView(withText("Needs updating")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("Old permissions test app"))
+                .perform(scrollTo())
+                .check(matches(isDisplayed()))
 
-        verify(healthConnectLogger).logImpression(MigrationElement.MIGRATION_APP_UPDATE_BANNER)
-        verify(healthConnectLogger)
-            .logImpression(MigrationElement.MIGRATION_APP_UPDATE_LEARN_MORE_BUTTON)
-        verify(healthConnectLogger).logImpression(MigrationElement.MIGRATION_APP_UPDATE_BUTTON)
+            verify(healthConnectLogger).logImpression(MigrationElement.MIGRATION_APP_UPDATE_BANNER)
+            verify(healthConnectLogger)
+                .logImpression(MigrationElement.MIGRATION_APP_UPDATE_LEARN_MORE_BUTTON)
+            verify(healthConnectLogger).logImpression(MigrationElement.MIGRATION_APP_UPDATE_BUTTON)
+        }
     }
 
     @Test
@@ -705,23 +735,28 @@ class ConnectedAppsFragmentTest {
         whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(false)
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-        onView(withText("App update needed")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Some apps need to be updated to continue syncing with Health Connect. Updates may not be available for all apps."
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText("App update needed")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Some apps need to be updated to continue syncing with Health Connect. Updates may not be available for all apps."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Learn more")).check(matches(isDisplayed()))
-        // Cannot check for the text here because it will throw a NoMatchingViewException
-        onView(withText(com.android.settingslib.widget.preference.banner.R.id.banner_positive_btn))
-            .check(doesNotExist())
+                .check(matches(isDisplayed()))
+            onView(withText("Learn more")).check(matches(isDisplayed()))
+            // Cannot check for the text here because it will throw a NoMatchingViewException
+            onView(
+                    withText(
+                        com.android.settingslib.widget.preference.banner.R.id.banner_positive_btn
+                    )
+                )
+                .check(doesNotExist())
 
-        onView(withText("Learn more")).perform(click())
-        assertThat(deviceInfoUtils.helpCenterInvoked).isTrue()
-        verify(healthConnectLogger)
-            .logInteraction(MigrationElement.MIGRATION_APP_UPDATE_LEARN_MORE_BUTTON)
+            onView(withText("Learn more")).perform(click())
+            assertThat(deviceInfoUtils.helpCenterInvoked).isTrue()
+            verify(healthConnectLogger)
+                .logInteraction(MigrationElement.MIGRATION_APP_UPDATE_LEARN_MORE_BUTTON)
+        }
     }
 
     @Test
@@ -739,23 +774,27 @@ class ConnectedAppsFragmentTest {
         (deviceInfoUtils as FakeDeviceInfoUtils).setPlayStoreAvailability(true)
 
         launchFragment<ConnectedAppsFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.connectedAppsFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-        onView(withText("App update needed")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Some apps need to be updated to continue syncing with Health Connect. Updates may not be available for all apps."
-                )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Learn more")).check(matches(isDisplayed()))
-        onView(withText("Check for updates")).check(matches(isDisplayed()))
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.connectedAppsFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("App update needed")).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Some apps need to be updated to continue syncing with Health Connect. Updates may not be available for all apps."
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(withText("Learn more")).check(matches(isDisplayed()))
+                onView(withText("Check for updates")).check(matches(isDisplayed()))
 
-        onView(withText("Check for updates")).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.update_apps_activity)
-        verify(healthConnectLogger).logInteraction(MigrationElement.MIGRATION_APP_UPDATE_BUTTON)
+                onView(withText("Check for updates")).perform(click())
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.update_apps_activity)
+                verify(healthConnectLogger)
+                    .logInteraction(MigrationElement.MIGRATION_APP_UPDATE_BUTTON)
+            }
     }
 
     @Test
@@ -784,28 +823,12 @@ class ConnectedAppsFragmentTest {
             )
             .thenReturn(testIntent)
 
-        launchFragment<ConnectedAppsFragment>(Bundle())
-        onView(withText(TEST_APP_NAME)).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText(TEST_APP_NAME)).perform(click())
+        launchFragment<ConnectedAppsFragment>(Bundle()).use {
+            onView(withText(TEST_APP_NAME)).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText(TEST_APP_NAME)).perform(click())
 
-        Intents.intended(hasAction(ACTION_SHOW_ONBOARDING))
-        Intents.intended(hasPackage(TEST_APP_PACKAGE_NAME))
-    }
-
-    private fun setupFragmentForNavigation() {
-        val connectApp =
-            listOf(
-                ConnectedAppMetadata(TEST_APP, status = DENIED),
-                ConnectedAppMetadata(TEST_APP_2, status = ALLOWED),
-            )
-        whenever(viewModel.connectedApps).then { MutableLiveData(connectApp) }
-        (deviceInfoUtils as FakeDeviceInfoUtils).setSendFeedbackAvailability(false)
-        deviceInfoUtils.setPlayStoreAvailability(true)
-
-        launchFragment<ConnectedAppsFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.connectedAppsFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
+            Intents.intended(hasAction(ACTION_SHOW_ONBOARDING))
+            Intents.intended(hasPackage(TEST_APP_PACKAGE_NAME))
         }
     }
 }

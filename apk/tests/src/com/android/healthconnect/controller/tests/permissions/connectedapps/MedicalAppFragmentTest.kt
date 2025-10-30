@@ -156,28 +156,28 @@ class MedicalAppFragmentTest {
             MutableLiveData(listOf<HealthPermissionStatus>())
         }
 
-        val scenario =
-            launchFragment<MedicalAppFragment>(
+        launchFragment<MedicalAppFragment>(
                 bundleOf(
                     EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
                     EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-
-        scenario.onActivity { activity: TestActivity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as MedicalAppFragment
-            val readCategory =
-                fragment.preferenceScreen.findPreference("read_permission_category")
-                    as PreferenceCategory?
-            val writeCategory =
-                fragment.preferenceScreen.findPreference("write_permission_category")
-                    as PreferenceCategory?
-            assertThat(readCategory?.preferenceCount).isEqualTo(0)
-            assertThat(writeCategory?.preferenceCount).isEqualTo(0)
-        }
-        onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
+            .use { scenario ->
+                scenario.onActivity { activity: TestActivity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as MedicalAppFragment
+                    val readCategory =
+                        fragment.preferenceScreen.findPreference("read_permission_category")
+                            as PreferenceCategory?
+                    val writeCategory =
+                        fragment.preferenceScreen.findPreference("write_permission_category")
+                            as PreferenceCategory?
+                    assertThat(readCategory?.preferenceCount).isEqualTo(0)
+                    assertThat(writeCategory?.preferenceCount).isEqualTo(0)
+                }
+                onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -186,30 +186,31 @@ class MedicalAppFragmentTest {
         whenever(viewModel.medicalPermissions).then { MutableLiveData(listOf(permission)) }
         whenever(viewModel.grantedMedicalPermissions).then { MutableLiveData(setOf(permission)) }
 
-        val scenario =
-            launchFragment<MedicalAppFragment>(
+        launchFragment<MedicalAppFragment>(
                 bundleOf(
                     EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
                     EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-
-        scenario.onActivity { activity: TestActivity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as MedicalAppFragment
-            val readCategory =
-                fragment.preferenceScreen.findPreference("read_permission_category")
-                    as PreferenceCategory?
-            val writeCategory =
-                fragment.preferenceScreen.findPreference("write_permission_category")
-                    as PreferenceCategory?
-            assertThat(readCategory?.preferenceCount).isEqualTo(1)
-            assertThat(writeCategory?.preferenceCount).isEqualTo(0)
-        }
-        onView(withText("Vaccines")).check(matches(isDisplayed()))
-        onView(withContentDescription("Vaccines. Read Access. On")).check(matches(isDisplayed()))
-        onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
+            .use { scenario ->
+                scenario.onActivity { activity: TestActivity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as MedicalAppFragment
+                    val readCategory =
+                        fragment.preferenceScreen.findPreference("read_permission_category")
+                            as PreferenceCategory?
+                    val writeCategory =
+                        fragment.preferenceScreen.findPreference("write_permission_category")
+                            as PreferenceCategory?
+                    assertThat(readCategory?.preferenceCount).isEqualTo(1)
+                    assertThat(writeCategory?.preferenceCount).isEqualTo(0)
+                }
+                onView(withText("Vaccines")).check(matches(isDisplayed()))
+                onView(withContentDescription("Vaccines. Read Access. On"))
+                    .check(matches(isDisplayed()))
+                onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -218,15 +219,19 @@ class MedicalAppFragmentTest {
         whenever(viewModel.medicalPermissions).then { MutableLiveData(listOf(permission)) }
         whenever(viewModel.grantedMedicalPermissions).then { MutableLiveData(setOf(permission)) }
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.MEDICAL_APP_ACCESS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger, times(1))
-            .logImpression(AppAccessElement.PERMISSION_SWITCH_INACTIVE)
-        verify(healthConnectLogger)
-            .logImpression(AppAccessElement.ALLOW_ALL_PERMISSIONS_SWITCH_INACTIVE)
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            )
+            .use {
+                verify(healthConnectLogger, atLeast(1)).setPageId(PageName.MEDICAL_APP_ACCESS_PAGE)
+                verify(healthConnectLogger).logPageImpression()
+                verify(healthConnectLogger, times(1))
+                    .logImpression(AppAccessElement.PERMISSION_SWITCH_INACTIVE)
+                verify(healthConnectLogger)
+                    .logImpression(AppAccessElement.ALLOW_ALL_PERMISSIONS_SWITCH_INACTIVE)
+            }
     }
 
     @Test
@@ -235,29 +240,29 @@ class MedicalAppFragmentTest {
         whenever(viewModel.medicalPermissions).then { MutableLiveData(listOf(permission)) }
         whenever(viewModel.grantedMedicalPermissions).then { MutableLiveData(setOf(permission)) }
 
-        val scenario =
-            launchFragment<MedicalAppFragment>(
+        launchFragment<MedicalAppFragment>(
                 bundleOf(
                     EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
                     EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-
-        scenario.onActivity { activity: TestActivity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as MedicalAppFragment
-            val readCategory =
-                fragment.preferenceScreen.findPreference("read_permission_category")
-                    as PreferenceCategory?
-            val writeCategory =
-                fragment.preferenceScreen.findPreference("write_permission_category")
-                    as PreferenceCategory?
-            assertThat(readCategory?.preferenceCount).isEqualTo(0)
-            assertThat(writeCategory?.preferenceCount).isEqualTo(1)
-        }
-        onView(withText("All medical records")).check(matches(isDisplayed()))
-        onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
+            .use { scenario ->
+                scenario.onActivity { activity: TestActivity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as MedicalAppFragment
+                    val readCategory =
+                        fragment.preferenceScreen.findPreference("read_permission_category")
+                            as PreferenceCategory?
+                    val writeCategory =
+                        fragment.preferenceScreen.findPreference("write_permission_category")
+                            as PreferenceCategory?
+                    assertThat(readCategory?.preferenceCount).isEqualTo(0)
+                    assertThat(writeCategory?.preferenceCount).isEqualTo(1)
+                }
+                onView(withText("All medical records")).check(matches(isDisplayed()))
+                onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -272,12 +277,17 @@ class MedicalAppFragmentTest {
         }
 
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-
-        onView(withContentDescription("All medical records. Write Access. On"))
-            .check(matches(isDisplayed()))
-        onView(withContentDescription("Vaccines. Read Access. On")).check(matches(isDisplayed()))
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            )
+            .use {
+                onView(withContentDescription("All medical records. Write Access. On"))
+                    .check(matches(isDisplayed()))
+                onView(withContentDescription("Vaccines. Read Access. On"))
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -289,12 +299,17 @@ class MedicalAppFragmentTest {
         }
 
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-
-        onView(withContentDescription("All medical records. Write Access. Off"))
-            .check(matches(isDisplayed()))
-        onView(withContentDescription("Vaccines. Read Access. Off")).check(matches(isDisplayed()))
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            )
+            .use {
+                onView(withContentDescription("All medical records. Write Access. Off"))
+                    .check(matches(isDisplayed()))
+                onView(withContentDescription("Vaccines. Read Access. Off"))
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -308,30 +323,30 @@ class MedicalAppFragmentTest {
             MutableLiveData(setOf(writePermission))
         }
 
-        val scenario =
-            launchFragment<MedicalAppFragment>(
+        launchFragment<MedicalAppFragment>(
                 bundleOf(
                     EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
                     EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-
-        scenario.onActivity { activity: TestActivity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as MedicalAppFragment
-            val readCategory =
-                fragment.preferenceScreen.findPreference("read_permission_category")
-                    as PreferenceCategory?
-            val writeCategory =
-                fragment.preferenceScreen.findPreference("write_permission_category")
-                    as PreferenceCategory?
-            assertThat(readCategory?.preferenceCount).isEqualTo(1)
-            assertThat(writeCategory?.preferenceCount).isEqualTo(1)
-        }
-        onView(withText("All medical records")).check(matches(isDisplayed()))
-        onView(withText("Vaccines")).check(matches(isDisplayed()))
-        onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
+            .use { scenario ->
+                scenario.onActivity { activity: TestActivity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as MedicalAppFragment
+                    val readCategory =
+                        fragment.preferenceScreen.findPreference("read_permission_category")
+                            as PreferenceCategory?
+                    val writeCategory =
+                        fragment.preferenceScreen.findPreference("write_permission_category")
+                            as PreferenceCategory?
+                    assertThat(readCategory?.preferenceCount).isEqualTo(1)
+                    assertThat(writeCategory?.preferenceCount).isEqualTo(1)
+                }
+                onView(withText("All medical records")).check(matches(isDisplayed()))
+                onView(withText("Vaccines")).check(matches(isDisplayed()))
+                onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -346,25 +361,25 @@ class MedicalAppFragmentTest {
         }
         whenever(viewModel.allMedicalPermissionsGranted).then { MediatorLiveData(true) }
 
-        val scenario =
-            launchFragment<MedicalAppFragment>(
+        launchFragment<MedicalAppFragment>(
                 bundleOf(
                     EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
                     EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
+            .use { scenario ->
+                scenario.onActivity { activity: TestActivity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as MedicalAppFragment
+                    val mainSwitchPreference =
+                        fragment.preferenceScreen.findPreference("allow_all_preference")
+                            as HealthMainSwitchPreference?
 
-        scenario.onActivity { activity: TestActivity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as MedicalAppFragment
-            val mainSwitchPreference =
-                fragment.preferenceScreen.findPreference("allow_all_preference")
-                    as HealthMainSwitchPreference?
-
-            assertThat(mainSwitchPreference?.isChecked).isTrue()
-        }
-        onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
+                    assertThat(mainSwitchPreference?.isChecked).isTrue()
+                }
+                onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -376,25 +391,25 @@ class MedicalAppFragmentTest {
         }
         whenever(viewModel.allMedicalPermissionsGranted).then { MediatorLiveData(false) }
 
-        val scenario =
-            launchFragment<MedicalAppFragment>(
+        launchFragment<MedicalAppFragment>(
                 bundleOf(
                     EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
                     EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
+            .use { scenario ->
+                scenario.onActivity { activity: TestActivity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as MedicalAppFragment
 
-        scenario.onActivity { activity: TestActivity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as MedicalAppFragment
+                    val mainSwitchPreference =
+                        fragment.preferenceScreen.findPreference("allow_all_preference")
+                            as HealthMainSwitchPreference?
 
-            val mainSwitchPreference =
-                fragment.preferenceScreen.findPreference("allow_all_preference")
-                    as HealthMainSwitchPreference?
-
-            assertThat(mainSwitchPreference?.isChecked).isFalse()
-        }
+                    assertThat(mainSwitchPreference?.isChecked).isFalse()
+                }
+            }
     }
 
     @Test
@@ -408,34 +423,44 @@ class MedicalAppFragmentTest {
         whenever(viewModel.revokeMedicalShouldIncludeBackground()).thenReturn(true)
         whenever(viewModel.revokeMedicalShouldIncludePastData()).thenReturn(true)
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-        onView(withText("Allow all")).perform(click())
-
-        onView(withText("Remove all medical record permissions?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "$TEST_APP_NAME will no longer be able to read or write" +
-                        " this data from Health Connect, including background and past data." +
-                        "\n\nThis doesn't affect other permissions this app may have, like camera, " +
-                        "microphone or location."
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Also delete medical records from " + "$TEST_APP_NAME from Health Connect"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CANCEL_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_DELETE_CHECKBOX)
+            .use {
+                onView(withText("Allow all")).perform(click())
+
+                onView(withText("Remove all medical record permissions?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "$TEST_APP_NAME will no longer be able to read or write" +
+                                " this data from Health Connect, including background and past data." +
+                                "\n\nThis doesn't affect other permissions this app may have, like camera, " +
+                                "microphone or location."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Also delete medical records from " +
+                                "$TEST_APP_NAME from Health Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONTAINER)
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CANCEL_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_DELETE_CHECKBOX)
+            }
     }
 
     @Test
@@ -449,34 +474,44 @@ class MedicalAppFragmentTest {
         whenever(viewModel.revokeMedicalShouldIncludeBackground()).thenReturn(true)
         whenever(viewModel.revokeMedicalShouldIncludePastData()).thenReturn(false)
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-        onView(withText("Allow all")).perform(click())
-
-        onView(withText("Remove all medical record permissions?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "$TEST_APP_NAME will no longer be able to read or write" +
-                        " this data from Health Connect, including background data." +
-                        "\n\nThis doesn't affect other permissions this app may have, like camera, " +
-                        "microphone or location."
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Also delete medical records from " + "$TEST_APP_NAME from Health Connect"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CANCEL_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_DELETE_CHECKBOX)
+            .use {
+                onView(withText("Allow all")).perform(click())
+
+                onView(withText("Remove all medical record permissions?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "$TEST_APP_NAME will no longer be able to read or write" +
+                                " this data from Health Connect, including background data." +
+                                "\n\nThis doesn't affect other permissions this app may have, like camera, " +
+                                "microphone or location."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Also delete medical records from " +
+                                "$TEST_APP_NAME from Health Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONTAINER)
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CANCEL_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_DELETE_CHECKBOX)
+            }
     }
 
     @Test
@@ -490,34 +525,44 @@ class MedicalAppFragmentTest {
         whenever(viewModel.revokeMedicalShouldIncludeBackground()).thenReturn(false)
         whenever(viewModel.revokeMedicalShouldIncludePastData()).thenReturn(true)
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-        onView(withText("Allow all")).perform(click())
-
-        onView(withText("Remove all medical record permissions?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "$TEST_APP_NAME will no longer be able to read or write" +
-                        " this data from Health Connect, including past data." +
-                        "\n\nThis doesn't affect other permissions this app may have, like camera, " +
-                        "microphone or location."
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Also delete medical records from " + "$TEST_APP_NAME from Health Connect"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CANCEL_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_DELETE_CHECKBOX)
+            .use {
+                onView(withText("Allow all")).perform(click())
+
+                onView(withText("Remove all medical record permissions?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "$TEST_APP_NAME will no longer be able to read or write" +
+                                " this data from Health Connect, including past data." +
+                                "\n\nThis doesn't affect other permissions this app may have, like camera, " +
+                                "microphone or location."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Also delete medical records from " +
+                                "$TEST_APP_NAME from Health Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONTAINER)
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CANCEL_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_DELETE_CHECKBOX)
+            }
     }
 
     @Test
@@ -531,39 +576,49 @@ class MedicalAppFragmentTest {
         whenever(viewModel.revokeMedicalShouldIncludeBackground()).thenReturn(false)
         whenever(viewModel.revokeMedicalShouldIncludePastData()).thenReturn(false)
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-        onView(withText("Allow all")).perform(click())
-
-        onView(withText("Remove all medical record permissions?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "$TEST_APP_NAME will no longer be able to read or write" +
-                        " this data from Health Connect." +
-                        "\n\nThis doesn't affect other permissions this app may have, like camera, " +
-                        "microphone or location."
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Also delete medical records from " + "$TEST_APP_NAME from Health Connect"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CANCEL_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_DELETE_CHECKBOX)
-        verify(healthConnectLogger)
-            .logInteraction(
-                AppAccessElement.ALLOW_ALL_PERMISSIONS_SWITCH_ACTIVE,
-                UIAction.ACTION_TOGGLE_OFF,
-            )
+            .use {
+                onView(withText("Allow all")).perform(click())
+
+                onView(withText("Remove all medical record permissions?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "$TEST_APP_NAME will no longer be able to read or write" +
+                                " this data from Health Connect." +
+                                "\n\nThis doesn't affect other permissions this app may have, like camera, " +
+                                "microphone or location."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Also delete medical records from " +
+                                "$TEST_APP_NAME from Health Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONTAINER)
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CANCEL_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_DELETE_CHECKBOX)
+                verify(healthConnectLogger)
+                    .logInteraction(
+                        AppAccessElement.ALLOW_ALL_PERMISSIONS_SWITCH_ACTIVE,
+                        UIAction.ACTION_TOGGLE_OFF,
+                    )
+            }
     }
 
     @Test
@@ -575,16 +630,20 @@ class MedicalAppFragmentTest {
         }
         whenever(viewModel.allMedicalPermissionsGranted).then { MediatorLiveData(false) }
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-
-        onView(withText("Allow all")).perform(click())
-
-        verify(healthConnectLogger)
-            .logInteraction(
-                AppAccessElement.ALLOW_ALL_PERMISSIONS_SWITCH_INACTIVE,
-                UIAction.ACTION_TOGGLE_ON,
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
             )
+            .use {
+                onView(withText("Allow all")).perform(click())
+
+                verify(healthConnectLogger)
+                    .logInteraction(
+                        AppAccessElement.ALLOW_ALL_PERMISSIONS_SWITCH_INACTIVE,
+                        UIAction.ACTION_TOGGLE_ON,
+                    )
+            }
     }
 
     @Test
@@ -601,17 +660,22 @@ class MedicalAppFragmentTest {
         whenever(viewModel.revokeMedicalShouldIncludeBackground()).thenReturn(true)
         whenever(viewModel.revokeMedicalShouldIncludePastData()).thenReturn(true)
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-        onView(withText("Allow all")).perform(click())
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            )
+            .use {
+                onView(withText("Allow all")).perform(click())
 
-        onView(withText("Remove all")).inRoot(isDialog()).perform(click())
-        verify(healthConnectLogger)
-            .logInteraction(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
+                onView(withText("Remove all")).inRoot(isDialog()).perform(click())
+                verify(healthConnectLogger)
+                    .logInteraction(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
 
-        onView(withText("All medical records")).check(matches(not(isChecked())))
-        onView(withText("Vaccines")).check(matches(not(isChecked())))
-        onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
+                onView(withText("All medical records")).check(matches(not(isChecked())))
+                onView(withText("Vaccines")).check(matches(not(isChecked())))
+                onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -627,18 +691,25 @@ class MedicalAppFragmentTest {
         }
         whenever(viewModel.allMedicalPermissionsGranted).then { MediatorLiveData(true) }
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-        onView(withText("Allow all")).perform(click())
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            )
+            .use {
+                onView(withText("Allow all")).perform(click())
 
-        onView(withId(R.id.dialog_checkbox)).perform(click())
-        onView(withText("Remove all")).perform(click())
-        verify(healthConnectLogger)
-            .logInteraction(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
-        verify(healthConnectLogger)
-            .logInteraction(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_DELETE_CHECKBOX)
+                onView(withId(R.id.dialog_checkbox)).perform(click())
+                onView(withText("Remove all")).perform(click())
+                verify(healthConnectLogger)
+                    .logInteraction(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
+                verify(healthConnectLogger)
+                    .logInteraction(
+                        DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_DELETE_CHECKBOX
+                    )
 
-        verify(viewModel).deleteAppData(eq(TEST_APP_PACKAGE_NAME), eq(TEST_APP_NAME))
+                verify(viewModel).deleteAppData(eq(TEST_APP_PACKAGE_NAME), eq(TEST_APP_NAME))
+            }
     }
 
     @Test
@@ -651,22 +722,28 @@ class MedicalAppFragmentTest {
         whenever(healthPermissionReader.getApplicationRationaleIntent(TEST_APP_PACKAGE_NAME))
             .thenReturn(Intent())
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-
-        onIdle()
-        onView(
-                withText(
-                    "To manage other Android permissions this app can " +
-                        "access, go to Settings > Apps" +
-                        "\n\n" +
-                        "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
-        onView(withText("Read privacy policy")).perform(scrollTo()).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(AppAccessElement.PRIVACY_POLICY_LINK)
+            .use {
+                onIdle()
+                onView(
+                        withText(
+                            "To manage other Android permissions this app can " +
+                                "access, go to Settings > Apps" +
+                                "\n\n" +
+                                "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
+                        )
+                    )
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                onView(withText("Read privacy policy"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
+                verify(healthConnectLogger).logImpression(AppAccessElement.PRIVACY_POLICY_LINK)
+            }
     }
 
     @Test
@@ -691,24 +768,28 @@ class MedicalAppFragmentTest {
             )
         }
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-
-        onIdle()
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        onIdle()
-        onView(
-                withText(
-                    "To manage other Android permissions this app can " +
-                        "access, go to Settings > Apps" +
-                        "\n\n" +
-                        "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-            .check(matches(isDisplayed()))
-        onView(withText("Read privacy policy")).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(AppAccessElement.PRIVACY_POLICY_LINK)
+            .use {
+                onIdle()
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+                onIdle()
+                onView(
+                        withText(
+                            "To manage other Android permissions this app can " +
+                                "access, go to Settings > Apps" +
+                                "\n\n" +
+                                "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(withText("Read privacy policy")).check(matches(isDisplayed()))
+                verify(healthConnectLogger).logImpression(AppAccessElement.PRIVACY_POLICY_LINK)
+            }
     }
 
     @Test
@@ -724,24 +805,28 @@ class MedicalAppFragmentTest {
         whenever(healthPermissionReader.getApplicationRationaleIntent(TEST_APP_PACKAGE_NAME))
             .thenReturn(Intent())
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-
-        onIdle()
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        onIdle()
-        onView(
-                withText(
-                    "To manage other Android permissions this app can " +
-                        "access, go to Settings > Apps" +
-                        "\n\n" +
-                        "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-            .check(matches(isDisplayed()))
-        onView(withText("Read privacy policy")).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(AppAccessElement.PRIVACY_POLICY_LINK)
+            .use {
+                onIdle()
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+                onIdle()
+                onView(
+                        withText(
+                            "To manage other Android permissions this app can " +
+                                "access, go to Settings > Apps" +
+                                "\n\n" +
+                                "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(withText("Read privacy policy")).check(matches(isDisplayed()))
+                verify(healthConnectLogger).logImpression(AppAccessElement.PRIVACY_POLICY_LINK)
+            }
     }
 
     @Test
@@ -760,27 +845,31 @@ class MedicalAppFragmentTest {
             .thenReturn(Intent(rationaleAction))
 
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-
-        onIdle()
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        onIdle()
-        onView(
-                withText(
-                    "To manage other Android permissions this app can " +
-                        "access, go to Settings > Apps" +
-                        "\n\n" +
-                        "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-            .check(matches(isDisplayed()))
-        onView(withText("Read privacy policy")).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(AppAccessElement.PRIVACY_POLICY_LINK)
+            .use {
+                onIdle()
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+                onIdle()
+                onView(
+                        withText(
+                            "To manage other Android permissions this app can " +
+                                "access, go to Settings > Apps" +
+                                "\n\n" +
+                                "You can learn how $TEST_APP_NAME handles your data in the developer's privacy policy"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(withText("Read privacy policy")).check(matches(isDisplayed()))
+                verify(healthConnectLogger).logImpression(AppAccessElement.PRIVACY_POLICY_LINK)
 
-        onView(withText("Read privacy policy")).perform(click())
-        intended(hasAction(rationaleAction))
+                onView(withText("Read privacy policy")).perform(click())
+                intended(hasAction(rationaleAction))
+            }
     }
 
     @Test
@@ -795,15 +884,17 @@ class MedicalAppFragmentTest {
         }
         whenever(viewModel.allMedicalPermissionsGranted).then { MediatorLiveData(true) }
         launchFragment<MedicalAppFragment>(
-            bundleOf(
-                EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                EXTRA_APP_NAME to TEST_APP_NAME,
-                SHOW_MANAGE_APP_SECTION to true,
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                    SHOW_MANAGE_APP_SECTION to true,
+                )
             )
-        )
-        onView(withText("Manage app")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
-        onView(withText("Delete app data")).check(doesNotExist())
+            .use {
+                onView(withText("Manage app")).perform(scrollTo()).check(matches(isDisplayed()))
+                onView(withText("See app data")).perform(scrollTo()).check(matches(isDisplayed()))
+                onView(withText("Delete app data")).check(doesNotExist())
+            }
     }
 
     @Test
@@ -818,14 +909,16 @@ class MedicalAppFragmentTest {
         }
         whenever(viewModel.allMedicalPermissionsGranted).then { MediatorLiveData(true) }
         launchFragment<MedicalAppFragment>(
-            bundleOf(
-                EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                EXTRA_APP_NAME to TEST_APP_NAME,
-                SHOW_MANAGE_APP_SECTION to false,
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                    SHOW_MANAGE_APP_SECTION to false,
+                )
             )
-        )
-        onView(withText("Manage app")).check(doesNotExist())
-        onView(withText("See app data")).check(doesNotExist())
+            .use {
+                onView(withText("Manage app")).check(doesNotExist())
+                onView(withText("See app data")).check(doesNotExist())
+            }
     }
 
     @Test
@@ -835,10 +928,12 @@ class MedicalAppFragmentTest {
         }
 
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-
-        onView(withText(R.string.additional_access_label)).check(doesNotExist())
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            )
+            .use { onView(withText(R.string.additional_access_label)).check(doesNotExist()) }
     }
 
     @Test
@@ -853,14 +948,18 @@ class MedicalAppFragmentTest {
         }
 
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-
-        onIdle()
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        onIdle()
-        onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            )
+            .use {
+                onIdle()
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+                onIdle()
+                onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -879,15 +978,19 @@ class MedicalAppFragmentTest {
         }
 
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        )
-
-        onIdle()
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        onIdle()
-        onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
-        verify(healthConnectLogger).logImpression(AppAccessElement.ADDITIONAL_ACCESS_BUTTON)
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            )
+            .use {
+                onIdle()
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+                onIdle()
+                onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
+                verify(healthConnectLogger).logImpression(AppAccessElement.ADDITIONAL_ACCESS_BUTTON)
+            }
     }
 
     @Test
@@ -902,22 +1005,27 @@ class MedicalAppFragmentTest {
         }
 
         launchFragment<MedicalAppFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME, EXTRA_APP_NAME to TEST_APP_NAME)
-        ) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.medicalAppFragment)
-            Navigation.setViewNavController(requireView(), navHostController)
-        }
+                bundleOf(
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    EXTRA_APP_NAME to TEST_APP_NAME,
+                )
+            ) {
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.medicalAppFragment)
+                Navigation.setViewNavController(requireView(), navHostController)
+            }
+            .use {
+                onIdle()
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+                onIdle()
+                onView(withText(R.string.additional_access_label)).perform(click())
 
-        onIdle()
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        onIdle()
-        onView(withText(R.string.additional_access_label)).perform(click())
-
-        onIdle()
-        assertThat(navHostController.currentDestination?.id)
-            .isEqualTo(R.id.additionalAccessFragment)
-        verify(healthConnectLogger).logInteraction(AppAccessElement.ADDITIONAL_ACCESS_BUTTON)
+                onIdle()
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.additionalAccessFragment)
+                verify(healthConnectLogger)
+                    .logInteraction(AppAccessElement.ADDITIONAL_ACCESS_BUTTON)
+            }
     }
 }
