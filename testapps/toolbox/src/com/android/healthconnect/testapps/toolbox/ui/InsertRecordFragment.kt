@@ -315,6 +315,7 @@ class InsertRecordFragment : Fragment() {
                     )
                 else -> mapOf()
             }
+
         enumFieldNameToClass.forEach { fieldName, enumClass ->
             val enumFieldsWithValues: EnumFieldsWithValues =
                 GeneralUtils.getStaticFieldNamesAndValues(enumClass)
@@ -368,11 +369,6 @@ class InsertRecordFragment : Fragment() {
 
             NicotineIntakeRecord::class -> {
                 fieldName = "mQuantity"
-                field = EditableTextView(this.requireContext(), fieldName, INPUT_TYPE_INT)
-            }
-
-            AlcoholConsumptionRecord::class -> {
-                fieldName = "mServingCount"
                 field = EditableTextView(this.requireContext(), fieldName, INPUT_TYPE_INT)
             }
 
