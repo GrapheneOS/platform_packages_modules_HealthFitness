@@ -38,10 +38,13 @@ android_library {
         "framework-annotations-lib",
         "framework-healthfitness.impl",
     ],
+    static_libs: [
+        "healthfitness-statsd",
+    ],
     apex_available: ["com.android.healthfitness"],
     errorprone: {
         extra_check_modules: [
-           "//external/nullaway:nullaway_plugin"
+            "//external/nullaway:nullaway_plugin",
         ],
         javacflags: [
             "-Xep:NullAway:ERROR",
@@ -59,10 +62,10 @@ android_app {
     updatable: true,
     certificate: ":com.android.health.connect.backuprestore.certificate",
     additional_manifests: [
-      "PermissionsManifest.xml"
+        "PermissionsManifest.xml",
     ],
 
-    static_libs: ["HealthConnectBackupRestoreLibrary",],
+    static_libs: ["HealthConnectBackupRestoreLibrary"],
 
     apex_available: ["com.android.healthfitness"],
 }
