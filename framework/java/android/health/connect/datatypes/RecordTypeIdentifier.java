@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION;
+import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES_FLAG;
 import static com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
@@ -405,6 +406,14 @@ public final class RecordTypeIdentifier {
     @FlaggedApi(FLAG_ALCOHOL_CONSUMPTION)
     public static final int RECORD_TYPE_ALCOHOL_CONSUMPTION = 45;
 
+    /**
+     * @see CyclePhasesRecord
+     * @hide
+     */
+    // TODO(b/452289293): Unhide this when API implementation is done
+    @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
+    public static final int RECORD_TYPE_CYCLE_PHASES = 46;
+
     private RecordTypeIdentifier() {}
 
     /** @hide */
@@ -455,7 +464,8 @@ public final class RecordTypeIdentifier {
         RECORD_TYPE_ACTIVITY_INTENSITY,
         RECORD_TYPE_NICOTINE_INTAKE,
         RECORD_TYPE_SYMPTOM,
-        RECORD_TYPE_ALCOHOL_CONSUMPTION
+        RECORD_TYPE_ALCOHOL_CONSUMPTION,
+        RECORD_TYPE_CYCLE_PHASES
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface RecordType {}
