@@ -24,6 +24,7 @@ import android.os.UserHandle;
 import android.os.UserManager;
 import android.util.Slog;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.SystemService;
@@ -116,7 +117,8 @@ public class HealthConnectManagerService extends SystemService {
                         mHealthConnectInjector.getCloudBackupManager(),
                         mHealthConnectInjector.getCloudRestoreManager(),
                         mHealthConnectInjector.getMatchingAppsManager(),
-                        mHealthConnectInjector.getSyntheticPackageNameResolver());
+                        mHealthConnectInjector.getSyntheticPackageNameResolver(),
+                        mHealthConnectInjector.getDeviceDataProviderManager());
         mHealthConnectPermissionsChangedListener =
                 new HealthConnectPermissionsChangedListener(
                         mContext, healthConnectInjector.getFirstGrantTimeManager());
@@ -322,6 +324,20 @@ public class HealthConnectManagerService extends SystemService {
                                     mContext, mCurrentForegroundUser);
                         } catch (Exception e) {
                             Slog.e(TAG, "Failed to schedule onboarding notification job.", e);
+                        }
+                    });
+        }
+        if (Flags.deviceDataProvidersApi() && AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            threadScheduler.scheduleInternalTask(
+                    () -> {
+                        try {
+                            if (mHealthConnectInjector.getDeviceDataProviderManager() != null) {
+                                mHealthConnectInjector
+                                        .getDeviceDataProviderManager()
+                                        .initializeOrRefreshCurrentDeviceIds();
+                            }
+                        } catch (Exception e) {
+                            Slog.e(TAG, "Failed to initialize current device id.", e);
                         }
                     });
         }

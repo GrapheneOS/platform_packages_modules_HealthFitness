@@ -39,13 +39,20 @@ import static android.healthconnect.testing.cts.TestUtils.getRecordById;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.startMigrationWithShellPermissionIdentity;
 
-import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 import static com.android.compatibility.common.util.SystemUtil.eventually;
+import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
 
 import static com.google.common.truth.Correspondence.transforming;
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 
 import static java.time.ZoneOffset.UTC;
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -91,6 +98,7 @@ import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.OutcomeReceiver;
 import android.os.ParcelFileDescriptor;
 import android.platform.test.annotations.AppModeFull;
+import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import android.util.ArrayMap;
@@ -1410,6 +1418,48 @@ public class HealthConnectManagerTest {
         }
 
         verifyRecordTypeResponse(response, expectedResponseMap);
+    }
+
+    @Test
+    @RequiresFlagsEnabled({
+        FLAG_DEVICE_DATA_PROVIDERS_API,
+        FLAG_DEVICE_DATA_PROVIDERS_DB,
+        FLAG_DEVELOPMENT_DATABASE
+    })
+    public void testGetCurrentDeviceId_calledOnce_returnsMaskedSpn() throws InterruptedException {
+        String deviceId = TestUtils.getCurrentDeviceId();
+        assertNotNull(deviceId);
+        assertTrue(TestUtils.isMaskedSyntheticPackageName(deviceId));
+    }
+
+    @Test
+    @RequiresFlagsEnabled({
+        FLAG_DEVICE_DATA_PROVIDERS_API,
+        FLAG_DEVICE_DATA_PROVIDERS_DB,
+        FLAG_DEVELOPMENT_DATABASE
+    })
+    public void testGetCurrentDeviceId_calledMultipleTimes_returnsSameId()
+            throws InterruptedException {
+        String deviceIdOne = TestUtils.getCurrentDeviceId();
+        String deviceIdTwo = TestUtils.getCurrentDeviceId();
+        assertEquals(deviceIdOne, deviceIdTwo);
+    }
+
+    @Test
+    @RequiresFlagsEnabled({
+        FLAG_DEVICE_DATA_PROVIDERS_API,
+        FLAG_DEVICE_DATA_PROVIDERS_DB,
+        FLAG_DEVELOPMENT_DATABASE
+    })
+    public void testGetCurrentDeviceId_resetBetweenCalls_returnsDifferentIds()
+            throws InterruptedException {
+        String deviceIdOne = TestUtils.getCurrentDeviceId();
+
+        TestUtils.deleteAllDataFromHealthConnect();
+
+        String deviceIdTwo = TestUtils.getCurrentDeviceId();
+
+        assertNotEquals(deviceIdOne, deviceIdTwo);
     }
 
     private boolean isEmptyContributingPackagesForAll(

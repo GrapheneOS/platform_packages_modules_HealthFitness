@@ -204,6 +204,7 @@ import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.DeviceDataProviderManager;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.exportimport.DocumentProvidersManager;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
@@ -340,8 +341,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final HealthConnectThreadScheduler mThreadScheduler;
     private final HealthFitnessStatsLog mStatsLog;
     @Nullable private final MatchmakingManager mMatchmakingManager;
-
     @Nullable private final SyntheticPackageNameResolver mSyntheticPackageNameResolver;
+    @Nullable private final DeviceDataProviderManager mDeviceDataProviderManager;
 
     private volatile UserHandle mCurrentForegroundUser;
 
@@ -390,7 +391,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @Nullable CloudBackupManager cloudBackupManager,
             @Nullable CloudRestoreManager cloudRestoreManager,
             @Nullable MatchmakingManager matchmakingManager,
-            @Nullable SyntheticPackageNameResolver syntheticPackageNameResolver) {
+            @Nullable SyntheticPackageNameResolver syntheticPackageNameResolver,
+            @Nullable DeviceDataProviderManager deviceDataProviderManager) {
         mContext = context;
         mCurrentForegroundUser = context.getUser();
         mTimeSource = timeSource;
@@ -465,6 +467,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mStatsLog = statsLog;
         mMatchmakingManager = matchmakingManager;
         mSyntheticPackageNameResolver = syntheticPackageNameResolver;
+        mDeviceDataProviderManager = deviceDataProviderManager;
     }
 
     public void setupForUser(UserHandle currentForegroundUser) {
@@ -1775,6 +1778,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             String[] packageNames = mContext.getPackageManager().getPackagesForUid(uid);
             for (String packageName : packageNames) {
                 mFirstGrantTimeManager.setFirstGrantTime(packageName, Instant.now(), userHandle);
+            }
+            if (mDeviceDataProviderManager != null) {
+                mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
             }
         } finally {
             Binder.restoreCallingIdentity(token);
@@ -3303,6 +3309,44 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         pw.printf(
                 "Data Restore State : %d, Data Restore Error : %d \n\n",
                 mBackupRestore.getDataRestoreState(), mBackupRestore.getDataRestoreError());
+    }
+
+    /**
+     * @see HealthConnectManager#getCurrentDeviceId
+     */
+    @Override
+    public String getCurrentDeviceId(AttributionSource attributionSource) {
+        checkParamsNonNull(attributionSource);
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+
+        enforceIsForegroundUser(userHandle);
+        try {
+            if (mDeviceDataProviderManager == null || !Flags.deviceDataProvidersApi()) {
+                throw new UnsupportedOperationException(
+                        "getCurrentDeviceId is not supported."
+                                + "Make sure to turn on the respective DDP flags.");
+            }
+
+            if (!mDeviceDataProviderManager.isPermittedToProvideDeviceData(
+                    attributionSource.getPackageName(), uid, pid)) {
+                throw new SecurityException(
+                        "Caller does not have permission to call getCurrentDeviceId.");
+            }
+
+            return getMaskingFunction(attributionSource.getPackageName())
+                    .apply(mDeviceDataProviderManager.getCurrentDeviceId());
+        } catch (Exception e) {
+            Slog.e(TAG, "Unable to get current device id for " + userHandle);
+            if (e instanceof SQLiteException
+                    || e instanceof UnsupportedOperationException
+                    || e instanceof SecurityException) {
+                throw e;
+            }
+        }
+
+        throw new RuntimeException();
     }
 
     // Cancel BR timeouts - this might be needed when a user is going into background.

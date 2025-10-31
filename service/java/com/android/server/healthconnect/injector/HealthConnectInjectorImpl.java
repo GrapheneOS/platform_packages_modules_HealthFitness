@@ -641,7 +641,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mDeviceInfoHelper,
                                 mAppInfoHelper,
                                 mDeviceDataProviderHelper,
-                                mFitnessRecordUpsertHelper)
+                                mFitnessRecordUpsertHelper,
+                                mPreferenceHelper)
                         : builder.mDeviceDataProviderManager;
     }
 

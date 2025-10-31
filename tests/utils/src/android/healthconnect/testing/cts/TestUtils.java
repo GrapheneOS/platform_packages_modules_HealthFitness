@@ -28,6 +28,22 @@ import static android.health.connect.HealthPermissionCategory.HEART_RATE;
 import static android.health.connect.HealthPermissionCategory.PLANNED_EXERCISE;
 import static android.health.connect.HealthPermissionCategory.STEPS;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_CHEST_STRAP;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_FITNESS_BAND;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_FITNESS_EQUIPMENT;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_FITNESS_MACHINE;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_GLASSES;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_HEAD_MOUNTED;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_HEARABLE;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_METER;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_PORTABLE_COMPUTER;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_RING;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_SCALE;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_SMART_DISPLAY;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_UNKNOWN;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH;
 import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponse;
 import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 import static android.healthconnect.testing.cts.HealthConnectReceiver.outcomeExecutor;
@@ -40,6 +56,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static java.time.Instant.EPOCH;
 import static java.util.Collections.unmodifiableList;
+import static java.util.Map.entry;
 import static java.util.Objects.requireNonNull;
 
 import android.Manifest;
@@ -149,11 +166,42 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public final class TestUtils {
     private static final String TAG = "HCTestUtils";
+
+    private static final Map<Integer, String> DEVICE_TYPE_TO_DISPLAY_NAME =
+            Map.ofEntries(
+                    entry(DEVICE_TYPE_UNKNOWN, "unknown"),
+                    entry(DEVICE_TYPE_WATCH, "watch"),
+                    entry(DEVICE_TYPE_PHONE, "phone"),
+                    entry(DEVICE_TYPE_SCALE, "scale"),
+                    entry(DEVICE_TYPE_RING, "ring"),
+                    entry(DEVICE_TYPE_HEAD_MOUNTED, "head_mounted"),
+                    entry(DEVICE_TYPE_FITNESS_BAND, "fitness_band"),
+                    entry(DEVICE_TYPE_CHEST_STRAP, "chest_strap"),
+                    entry(DEVICE_TYPE_SMART_DISPLAY, "smart_display"),
+                    entry(DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE, "consumer_medical_device"),
+                    entry(DEVICE_TYPE_GLASSES, "glasses"),
+                    entry(DEVICE_TYPE_HEARABLE, "hearable"),
+                    entry(DEVICE_TYPE_FITNESS_MACHINE, "fitness_machine"),
+                    entry(DEVICE_TYPE_FITNESS_EQUIPMENT, "fitness_equipment"),
+                    entry(DEVICE_TYPE_PORTABLE_COMPUTER, "portable_computer"),
+                    entry(DEVICE_TYPE_METER, "meter"));
+
+    private static final Pattern MASKED_SPN_PATTERN;
+
+    static {
+        String typesRegexSegment = String.join("|", DEVICE_TYPE_TO_DISPLAY_NAME.values());
+
+        String regex =
+                "^com.android.healthconnect\\.(%s)\\.j[0-9a-f]{32}$".formatted(typesRegexSegment);
+
+        MASKED_SPN_PATTERN = Pattern.compile(regex);
+    }
 
     public static ChangeLogTokenResponse getChangeLogToken(ChangeLogTokenRequest request)
             throws InterruptedException {
@@ -1114,6 +1162,28 @@ public final class TestUtils {
         Field field = findFieldUsingReflection(object.getClass(), fieldName);
         field.setAccessible(true);
         field.set(object, value);
+    }
+
+    /** Calls {@link HealthConnectManager#getCurrentDeviceId} with shell permission identity. */
+    public static String getCurrentDeviceId() throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+        String response;
+
+        try {
+            response = getHealthConnectManager().getCurrentDeviceId();
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
+        return response;
+    }
+
+    /**
+     * Returns whether the given String is a Masked Synthetic Package Name, meaning if it's a device
+     * identifier for or from an external caller.
+     */
+    public static boolean isMaskedSyntheticPackageName(String input) {
+        return MASKED_SPN_PATTERN.matcher(input).matches();
     }
 
     private static Field findFieldUsingReflection(Class<?> type, String fieldName) {

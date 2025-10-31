@@ -100,6 +100,7 @@ import static com.google.common.truth.Truth.assertWithMessage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -118,6 +119,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import android.Manifest;
 import android.app.ActivityManager;
 import android.content.AttributionSource;
 import android.content.Context;
@@ -196,15 +198,19 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.FakeSerialDeviceDataProviderManager;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -342,6 +348,7 @@ public class HealthConnectServiceImplTest {
                     "queryDocumentProviders",
                     "setTrackingEnabled",
                     "isTrackingEnabled",
+                    "getCurrentDeviceId",
                     "getHealthConnectOnboardingState",
                     "updateHealthConnectBackupAndRestoreSettings",
                     "updateHealthConnectRestoreStatus",
@@ -387,6 +394,7 @@ public class HealthConnectServiceImplTest {
     @Mock private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private TrackerManager mTrackerManager;
+    @Mock DeviceDataProviderHelper mDeviceDataProviderHelper;
     @Mock IMigrationCallback mMigrationCallback;
     @Mock IMedicalDataSourceResponseCallback mMedicalDataSourceCallback;
     @Mock IMedicalDataSourcesResponseCallback mMedicalDataSourcesResponseCallback;
@@ -415,6 +423,7 @@ public class HealthConnectServiceImplTest {
     private ThreadPoolExecutor mInternalTaskScheduler;
     private String mTestPackageName;
     private HealthConnectThreadScheduler mThreadScheduler;
+    private FakeSerialDeviceDataProviderManager mDeviceDataProviderManager;
     private final Instant mNow = DataFactory.now();
 
     @Before
@@ -464,9 +473,19 @@ public class HealthConnectServiceImplTest {
                         .setChangeLogsRequestHelper(mChangeLogsRequestHelper)
                         .setOnboardingStateManager(mOnboardingStateManager)
                         .setMatchingAppsManager(mMatchmakingManager)
+                        .setDeviceDataProviderManager(mDeviceDataProviderManager)
+                        .setDeviceDataProviderHelper(mDeviceDataProviderHelper)
                         .build();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
         mInternalTaskScheduler = mThreadScheduler.mInternalBackgroundExecutor;
+        mDeviceDataProviderManager =
+                new FakeSerialDeviceDataProviderManager(
+                        mServiceContext,
+                        healthConnectInjector.getDeviceInfoHelper(),
+                        healthConnectInjector.getAppInfoHelper(),
+                        healthConnectInjector.getDeviceDataProviderHelper(),
+                        healthConnectInjector.getFitnessRecordUpsertHelper(),
+                        healthConnectInjector.getPreferenceHelper());
 
         mHealthConnectService =
                 new HealthConnectServiceImpl(
@@ -514,7 +533,8 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getCloudBackupManager(),
                         healthConnectInjector.getCloudRestoreManager(),
                         healthConnectInjector.getMatchingAppsManager(),
-                        healthConnectInjector.getSyntheticPackageNameResolver());
+                        healthConnectInjector.getSyntheticPackageNameResolver(),
+                        mDeviceDataProviderManager);
         mBackupRestore = healthConnectInjector.getBackupRestore();
     }
 
@@ -3700,6 +3720,105 @@ public class HealthConnectServiceImplTest {
                             public void write(int i) throws IOException {}
                         }),
                 null);
+    }
+
+    @Test
+    @DisableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void getCurrentDeviceIdWithDisabledFlags_NullException_throwsUnsupportedError() {
+        assertThrows(
+                UnsupportedOperationException.class,
+                () -> mHealthConnectService.getCurrentDeviceId(mAttributionSource));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void getCurrentDeviceIdWithoutInit_NullException_throwsRuntimeError() {
+        when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mServiceContext.checkPermission(
+                        eq(Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA),
+                        anyInt(),
+                        anyInt()))
+                .thenReturn(PERMISSION_GRANTED);
+
+        assertThrows(
+                RuntimeException.class,
+                () -> mHealthConnectService.getCurrentDeviceId(mAttributionSource));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void getCurrentDeviceIdWithoutPermission_SecurityException_throwsSecurityError() {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
+                .thenReturn(PackageManager.PERMISSION_DENIED);
+        when(mServiceContext.checkPermission(
+                        eq(Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA),
+                        anyInt(),
+                        anyInt()))
+                .thenReturn(PackageManager.PERMISSION_DENIED);
+
+        assertThrows(
+                RuntimeException.class,
+                () -> mHealthConnectService.getCurrentDeviceId(mAttributionSource));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void getCurrentDeviceId_returnsMaskedSpn() throws Exception {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mServiceContext.checkPermission(
+                        eq(Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA),
+                        anyInt(),
+                        anyInt()))
+                .thenReturn(PERMISSION_GRANTED);
+
+        String currentDeviceId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        awaitAllExecutorsIdle();
+
+        assertTrue(SyntheticPackageNameCreator.isMaskedSpn(currentDeviceId));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void getCurrentDeviceId_multipleCalls_returnsSameSpn() throws Exception {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mServiceContext.checkPermission(
+                        eq(Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA),
+                        anyInt(),
+                        anyInt()))
+                .thenReturn(PERMISSION_GRANTED);
+
+        String firstId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        awaitAllExecutorsIdle();
+        String secondId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        awaitAllExecutorsIdle();
+
+        assertEquals(firstId, secondId);
     }
 
     private void setUpCreateMedicalDataSourceDefaultMocks() {

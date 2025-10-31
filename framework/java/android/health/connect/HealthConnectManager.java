@@ -28,6 +28,7 @@ import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
 import static com.android.healthfitness.flags.Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY;
 import static com.android.healthfitness.flags.Flags.FLAG_MATCHMAKING;
@@ -3572,6 +3573,30 @@ public class HealthConnectManager {
                             Collectors.toMap(
                                     entry -> keyToDataTypeMap.get(entry.getKey()),
                                     Map.Entry::getValue));
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    // TODO(b/455837940): Update javadoc with links to API that deviceId is being used for when
+    // available.
+    /**
+     * Retrieve a unique identifier of the device that Health Connect is currently running on. The
+     * identifier is scoped by user and will change on either switching the current user or
+     * rebooting the device. The identifier can then be used for advertising and writing data that
+     * originates from the device itself, e.g., phone pedometer, by populating the {@code deviceId}
+     * field.
+     *
+     * @throws RuntimeException for internal errors
+     * @hide
+     */
+    @SystemApi
+    @RequiresPermission(Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA)
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    @NonNull
+    public String getCurrentDeviceId() {
+        try {
+            return mService.getCurrentDeviceId(mContext.getAttributionSource());
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
