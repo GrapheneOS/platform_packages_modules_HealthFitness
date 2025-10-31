@@ -31,6 +31,10 @@ java_library {
     ],
     sdk_version: "test_current",
     jarjar_rules: ":health-cts-jarjar-rules",
+    visibility: [
+        "//vendor:__subpackages__",
+        "//packages/modules/HealthFitness:__subpackages__",
+    ],
 }
 
 // Library for testing helpers that can only be used in unittests.
@@ -75,4 +79,8 @@ android_library {
     ],
     min_sdk_version: "34",
     sdk_version: "test_current",
+    visibility: [
+        "//vendor:__subpackages__",
+        "//packages/modules/HealthFitness:__subpackages__",
+    ],
 }
