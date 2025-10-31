@@ -28,14 +28,14 @@ import static com.android.server.healthconnect.storage.utils.WhereClauses.Logica
 import android.annotation.Nullable;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.connect.device.DeviceDataAdvertisement;
+import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.Pair;
 
 import androidx.annotation.VisibleForTesting;
 
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
-import com.android.server.healthconnect.device.DeviceDataSourceAdvertisement;
-import com.android.server.healthconnect.device.DeviceDataSourceState;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -127,12 +127,11 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     public synchronized void insertOrUpdateAdvertisement(
             String sourcePackageName,
             long deviceInfoId,
-            DeviceDataSourceAdvertisement deviceDataSourceAdvertisement) {
-        deleteObsoleteAdvertisements(
-                sourcePackageName, deviceInfoId, deviceDataSourceAdvertisement);
+            DeviceDataAdvertisement deviceDataAdvertisement) {
+        deleteObsoleteAdvertisements(sourcePackageName, deviceInfoId, deviceDataAdvertisement);
 
-        for (DeviceDataSourceState state :
-                deviceDataSourceAdvertisement.getDeviceDataSourceState()) {
+        for (DeviceDataTypeAdvertisement state :
+                deviceDataAdvertisement.getDeviceDataTypeAdvertisements()) {
             int dataType = mHealthConnectMappings.getRecordType(state.getDataType());
             DeviceDataProviderKey key =
                     new DeviceDataProviderKey(sourcePackageName, deviceInfoId, dataType);
@@ -156,7 +155,7 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     private synchronized void deleteObsoleteAdvertisements(
             String sourcePackageName,
             long deviceInfoId,
-            DeviceDataSourceAdvertisement latestDeviceDataSourceAdvertisement) {
+            DeviceDataAdvertisement latestDeviceDataAdvertisement) {
         List<DeviceDataProviderKey> existingAdvertisements =
                 getDdpMap().keySet().stream()
                         .filter(
@@ -166,7 +165,7 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
                         .toList();
 
         Set<Integer> latestDataTypes =
-                latestDeviceDataSourceAdvertisement.getDeviceDataSourceState().stream()
+                latestDeviceDataAdvertisement.getDeviceDataTypeAdvertisements().stream()
                         .map(state -> mHealthConnectMappings.getRecordType(state.getDataType()))
                         .collect(Collectors.toSet());
         for (DeviceDataProviderKey existingAdvertisement : existingAdvertisements) {

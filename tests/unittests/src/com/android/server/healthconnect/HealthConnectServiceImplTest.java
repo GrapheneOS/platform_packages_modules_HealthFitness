@@ -170,11 +170,15 @@ import android.health.connect.changelog.ChangeLogTokenResponse;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SleepSessionRecord;
+import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.device.DeviceDataAdvertisement;
+import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
@@ -228,7 +232,6 @@ import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
-import com.android.server.healthconnect.storage.TransactionManager;
 
 import org.junit.After;
 import org.junit.Before;
@@ -349,6 +352,7 @@ public class HealthConnectServiceImplTest {
                     "setTrackingEnabled",
                     "isTrackingEnabled",
                     "getCurrentDeviceId",
+                    "advertiseDeviceDataSources",
                     "getHealthConnectOnboardingState",
                     "updateHealthConnectBackupAndRestoreSettings",
                     "updateHealthConnectRestoreStatus",
@@ -375,7 +379,6 @@ public class HealthConnectServiceImplTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
 
-    @Mock private TransactionManager mTransactionManager;
     @Mock private AppInfoHelper mAppInfoHelper;
     @Mock private HealthConnectPermissionHelper mHealthConnectPermissionHelper;
     @Mock private MigrationCleaner mMigrationCleaner;
@@ -454,7 +457,6 @@ public class HealthConnectServiceImplTest {
                 HealthConnectInjectorImpl.newBuilderForTest(mServiceContext)
                         .setPreferenceHelper(mPreferenceHelper)
                         .setPreferencesManager(mPreferencesManager)
-                        .setTransactionManager(mTransactionManager)
                         .setHealthDataCategoryPriorityHelper(mHealthDataCategoryPriorityHelper)
                         .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setHealthConnectPermissionHelper(mHealthConnectPermissionHelper)
@@ -3708,6 +3710,50 @@ public class HealthConnectServiceImplTest {
                 mHealthConnectService.isTrackingEnabled(List.of("TRACKING_PREF_1"));
 
         assertThat(result.get("TRACKING_PREF_1")).isTrue();
+    }
+
+    @Test
+    @DisableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void deviceDataProviderManagerIsNull_advertiseDeviceDataSources_throwsException()
+            throws RemoteException {
+        mHealthConnectService.advertiseDeviceDataSources(
+                mAttributionSource, Collections.emptyList(), mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void advertiseDeviceDataSources_doesNotThrow() throws RemoteException {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("Test Device")
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, "test_device_id", deviceDataTypeAdvertisements);
+
+        mHealthConnectService.advertiseDeviceDataSources(
+                mAttributionSource, List.of(advertisement), mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(5000).times(1)).onResult();
     }
 
     @Test

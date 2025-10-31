@@ -23,7 +23,6 @@ import static android.Manifest.permission.RESTORE_HEALTH_CONNECT_DATA_AND_SETTIN
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
-import static android.health.connect.Constants.READ;
 import static android.health.connect.HealthConnectException.ERROR_INTERNAL;
 import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUMENT;
 import static android.health.connect.HealthConnectException.ERROR_IO;
@@ -57,7 +56,6 @@ import static com.android.server.healthconnect.common.logging.HealthConnectServi
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.UPDATE_DATA;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.UPSERT_MEDICAL_RESOURCES;
 
-import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -154,6 +152,7 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
+import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.exportimport.ExportImportDocumentProvider;
 import android.health.connect.exportimport.IImportStatusCallback;
 import android.health.connect.exportimport.IQueryDocumentProvidersCallback;
@@ -261,6 +260,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -3276,6 +3276,51 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         }
 
         return result;
+    }
+
+    /**
+     * @see HealthConnectManager#advertiseDeviceDataSources
+     */
+    @Override
+    public void advertiseDeviceDataSources(
+            AttributionSource attributionSource,
+            List<DeviceDataAdvertisement> advertisements,
+            IEmptyResponseCallback callback) {
+        checkParamsNonNull(attributionSource, advertisements, callback);
+        ErrorCallback errorCallback = callback::onError;
+        int uid = Binder.getCallingUid();
+        int pid = Binder.getCallingPid();
+        UserHandle userHandle = Binder.getCallingUserHandle();
+        String packageName = attributionSource.getPackageName();
+        // TODO(b/455514553): Use specific API method for logging and additional telemetry.
+        HealthConnectServiceLogger.Builder logger =
+                new HealthConnectServiceLogger.Builder(
+                                /* holdsDataManagementPermission= */ false, API_METHOD_UNKNOWN)
+                        .setHealthFitnessStatsLog(mStatsLog)
+                        .setPackageName(packageName);
+
+        scheduleLoggingHealthDataApiErrors(
+                () -> {
+                    if (mDeviceDataProviderManager == null) {
+                        throw new UnsupportedOperationException(
+                                "advertiseDeviceDataSources is not supported");
+                    }
+                    enforceIsForegroundUser(userHandle);
+                    verifyPackageNameFromUid(uid, attributionSource);
+                    if (!mDeviceDataProviderManager.isPermittedToProvideDeviceData(
+                            requireNonNull(packageName), uid, pid)) {
+                        throw new SecurityException(
+                                "Caller is not permitted to provide device data");
+                    }
+                    mDeviceDataProviderManager.handleAdvertisement(
+                            new HashSet<>(advertisements), packageName);
+
+                    tryAndReturnResult(callback, logger);
+                },
+                logger,
+                errorCallback,
+                uid,
+                /* isController= */ false);
     }
 
     /**

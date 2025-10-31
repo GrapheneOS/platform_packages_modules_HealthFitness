@@ -41,6 +41,7 @@ android_test {
         "src/android/healthconnect/cts/backgroundread/*.java",
         "src/android/healthconnect/cts/backuprestore/*.java",
         "src/android/healthconnect/cts/changelogs/*.java",
+        "src/android/healthconnect/cts/device/*.java",
         "src/android/healthconnect/cts/datatypes/**/*.java",
         "src/android/healthconnect/cts/migration/*.java",
         "src/android/healthconnect/cts/readdata/*.java",
