@@ -152,7 +152,7 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Povolit této aplikaci přístup k datům Health Connect přidaným před <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Povolit této aplikaci přístup ke všem dřívějším datům Health Connect"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Momentálně se žádné údaje o kondici nečtou, protože aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> nemá zapnutá oprávnění ke čtení"</string>
-    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> už má přístup k vašim dřívějším zdravotním záznamům. Pokud to chcete změnit, vypněte této aplikaci oprávnění ke zdravotním záznamům"</string>
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> už má přístup k vašim dřívějším zdravotním záznamům. Pokud to chcete změnit, odeberte této aplikaci oprávnění ke zdravotním záznamům"</string>
     <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"Spravovat oprávnění ke zdravotním záznamům"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Pokud pro tuto aplikaci chcete zapnout přístup k datům na pozadí nebo k dřívějším datům, povolte alespoň jedno oprávnění ke čtení."</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Pokud pro tuto aplikaci chcete zapnout přístup na pozadí, povolte alespoň jedno oprávnění ke čtení"</string>
@@ -256,6 +256,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"cervikální hlen"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"Číst cervikální hlen"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"Zapisovat cervikální hlen"</string>
+    <string name="cycle_phases_uppercase_label" msgid="1693612101973701017">"Fáze cyklu"</string>
+    <string name="cycle_phases_lowercase_label" msgid="6513009148778082622">"fáze cyklu"</string>
+    <string name="cycle_phases_read_content_description" msgid="1974818937933604194">"Číst fáze cyklu"</string>
+    <string name="cycle_phases_write_content_description" msgid="8779256196190212513">"Zapisovat fáze cyklu"</string>
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"Intermenstruační krvácení"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"intermenstruační krvácení"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Číst intermenstruační krvácení"</string>
@@ -848,7 +852,8 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{{quantity} potáhnutí z e-cigarety}few{{quantity} potáhnutí z e-cigarety}many{{quantity} potáhnutí z e-cigarety}other{{quantity} potáhnutí z e-cigarety}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} cigareta}few{{quantity} cigarety}many{{quantity} cigarety}other{{quantity} cigaret}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} neznámé"</string>
-    <string name="alcohol_consumption_title" msgid="2627266871623334972">"<xliff:g id="SERVING">%1$s</xliff:g> • <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
+    <skip />
     <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"Jiné"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Pivo"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Víno"</string>
@@ -870,7 +875,8 @@
     <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Highball"</string>
     <string name="serving_volume_title" msgid="4727986574534974167">"Objem porce"</string>
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Objemový obsah alkoholu"</string>
-    <string name="note_title" msgid="4101166558186573016">"Poznámka"</string>
+    <!-- no translation found for notes_title (4596764711916248492) -->
+    <skip />
     <string name="details_title" msgid="8411891773854413790">"Podrobnosti"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> min"</string>

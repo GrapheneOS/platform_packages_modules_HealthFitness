@@ -256,6 +256,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"مخاط عنق الرحم"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"قراءة بيانات مخاط عنق الرحم"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"كتابة بيانات مخاط عنق الرحم"</string>
+    <string name="cycle_phases_uppercase_label" msgid="1693612101973701017">"مراحل الدورة الشهرية"</string>
+    <string name="cycle_phases_lowercase_label" msgid="6513009148778082622">"مراحل الدورة الشهرية"</string>
+    <string name="cycle_phases_read_content_description" msgid="1974818937933604194">"قراءة مراحل الدورة الشهرية"</string>
+    <string name="cycle_phases_write_content_description" msgid="8779256196190212513">"كتابة بيانات مراحل الدورة الشهرية"</string>
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"نزيف القُرء"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"نزيف القُرء"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"قراءة بيانات نزيف القُرء"</string>
@@ -848,7 +852,8 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{نفثة سجائر إلكترونية ({quantity})}zero{‫{quantity} نفثة سجائر إلكترونية}two{نفثتا سجائر إلكترونية ({quantity})}few{‫{quantity} نفثات سجائر إلكترونية}many{‫{quantity} نفثات سجائر إلكترونية}other{‫{quantity} نفثات سجائر إلكترونية}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{سيجارة واحدة ({quantity})}zero{‫{quantity} سيجارة}two{سيجارتان ({quantity})}few{‫{quantity} سجائر}many{‫{quantity} سيجارة}other{‫{quantity} سيجارة}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"‫{quantity, number} غير معروفة"</string>
-    <string name="alcohol_consumption_title" msgid="2627266871623334972">"<xliff:g id="SERVING">%1$s</xliff:g> • <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
+    <skip />
     <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"غير ذلك"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"بيرة"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"نبيذ"</string>
@@ -870,7 +875,8 @@
     <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"ويسكي مخلوط"</string>
     <string name="serving_volume_title" msgid="4727986574534974167">"حجم العرض"</string>
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"نسبة الكحول من حيث الحجم"</string>
-    <string name="note_title" msgid="4101166558186573016">"ملاحظة"</string>
+    <!-- no translation found for notes_title (4596764711916248492) -->
+    <skip />
     <string name="details_title" msgid="8411891773854413790">"التفاصيل"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> د"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"‫<xliff:g id="HOUR">%1$s</xliff:g> ساعة و<xliff:g id="MIN">%2$s</xliff:g> دقيقة"</string>
