@@ -309,4 +309,79 @@ public class ChangeLogTokenRequestTest {
         assertThat(request.getMedicalResourceTypes())
                 .containsExactly(MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES);
     }
+
+    @Test
+    public void toUnmasked_withRecordTypes_unmasksPackageNamesCorrectly() {
+        // Verifies that toUnmasked correctly applies the transformation to package names
+        // when the request is built with record types.
+        DataOrigin dataOrigin1 = new DataOrigin.Builder().setPackageName(TEST_PACKAGE_1).build();
+        DataOrigin dataOrigin2 = new DataOrigin.Builder().setPackageName(TEST_PACKAGE_2).build();
+        ChangeLogTokenRequest originalRequest =
+                new ChangeLogTokenRequest.Builder()
+                        .addRecordType(StepsRecord.class)
+                        .addDataOriginFilter(dataOrigin1)
+                        .addDataOriginFilter(dataOrigin2)
+                        .build();
+
+        ChangeLogTokenRequest unmaskedRequest =
+                originalRequest.toUnmasked(packageName -> packageName + "_unmasked");
+
+        // Assert that the new request has the unmasked package names.
+        assertThat(unmaskedRequest.getPackageNamesToFilter())
+                .containsExactly(TEST_PACKAGE_1 + "_unmasked", TEST_PACKAGE_2 + "_unmasked");
+        // Assert that other fields are unchanged.
+        assertThat(unmaskedRequest.getRecordTypeIds())
+                .isEqualTo(originalRequest.getRecordTypeIds());
+        assertThat(unmaskedRequest.getMedicalResourceTypes())
+                .isEqualTo(originalRequest.getMedicalResourceTypes());
+        // Assert that the original request is not modified.
+        assertThat(originalRequest.getPackageNamesToFilter())
+                .containsExactly(TEST_PACKAGE_1, TEST_PACKAGE_2);
+    }
+
+    @Test
+    @RequiresFlagsEnabled({
+        FLAG_PHR_CHANGE_LOGS,
+        FLAG_PHR_CHANGE_LOGS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+    })
+    public void toUnmasked_withMedicalResourceTypes_unmasksPackageNamesCorrectly() {
+        // Verifies that toUnmasked correctly applies the transformation to package names
+        // when the request is built with medical resource types.
+        DataOrigin dataOrigin = new DataOrigin.Builder().setPackageName(TEST_PACKAGE_1).build();
+        ChangeLogTokenRequest originalRequest =
+                new ChangeLogTokenRequest.Builder()
+                        .addMedicalResourceType(MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES)
+                        .addDataOriginFilter(dataOrigin)
+                        .build();
+
+        ChangeLogTokenRequest unmaskedRequest =
+                originalRequest.toUnmasked(packageName -> packageName + "_unmasked");
+
+        // Assert that the new request has the unmasked package names.
+        assertThat(unmaskedRequest.getPackageNamesToFilter())
+                .containsExactly(TEST_PACKAGE_1 + "_unmasked");
+        // Assert that other fields are unchanged.
+        assertThat(unmaskedRequest.getRecordTypeIds())
+                .isEqualTo(originalRequest.getRecordTypeIds());
+        assertThat(unmaskedRequest.getMedicalResourceTypes())
+                .isEqualTo(originalRequest.getMedicalResourceTypes());
+        // Assert that the original request is not modified.
+        assertThat(originalRequest.getPackageNamesToFilter()).containsExactly(TEST_PACKAGE_1);
+    }
+
+    @Test
+    public void toUnmasked_noPackageNames_returnsEquivalentRequest() {
+        // Verifies that toUnmasked returns an equivalent request when there are no package names
+        // to transform.
+        ChangeLogTokenRequest originalRequest =
+                new ChangeLogTokenRequest.Builder().addRecordType(StepsRecord.class).build();
+
+        ChangeLogTokenRequest unmaskedRequest =
+                originalRequest.toUnmasked(packageName -> packageName + "_unmasked");
+
+        // Assert that the new request is equal to the original, as there are no package names.
+        assertThat(unmaskedRequest).isEqualTo(originalRequest);
+        assertThat(unmaskedRequest.getPackageNamesToFilter()).isEmpty();
+    }
 }
