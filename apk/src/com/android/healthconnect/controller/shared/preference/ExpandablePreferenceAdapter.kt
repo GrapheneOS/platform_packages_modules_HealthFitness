@@ -56,7 +56,8 @@ class ExpandablePreferenceAdapter(
                             SettingsLibResources.drawable.settingslib_round_background_bottom
 
                         preference is BaseExpandablePreference && preference.mIsExpanded ->
-                            SettingsLibResources.drawable.settingslib_round_background_top
+                            SettingsLibResources.drawable
+                                .settingslib_round_background_top_highlighted
 
                         preference is BaseExpandablePreference && !preference.mIsExpanded ->
                             SettingsLibResources.drawable.settingslib_round_background
