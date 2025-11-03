@@ -581,7 +581,7 @@
     <string name="export_import_tap_to_choose_account" msgid="5016799636886709580">"कुनै खाता चयन गर्न ट्याप गर्नुहोस्"</string>
     <string name="export_import_choose_account_title" msgid="1047021319012735232">"कुनै खाता छनौट गर्नुहोस्"</string>
     <string name="export_import_choose_account_cancel_button" msgid="7975616126298263479">"रद्द गर्नुहोस्"</string>
-    <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"पूरा भयो"</string>
+    <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"भयो"</string>
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"कुनै पनि एप उपलब्ध छैन। क्लाउड भण्डारण प्रयोग गर्ने एपहरू यहाँ हेर्न ती एपहरू इन्स्टल गर्नुहोस्"</string>
     <string name="export_import_install_apps_text" msgid="5026922993254770904">"थप विकल्पका लागि क्लाउड भण्डारण प्रयोग गर्ने एपहरू यहाँ हेर्न ती एपहरू इन्स्टल गर्नुहोस्"</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Play स्टोरमा जानुहोस्"</string>
