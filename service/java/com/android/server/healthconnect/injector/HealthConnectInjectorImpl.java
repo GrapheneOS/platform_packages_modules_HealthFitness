@@ -49,6 +49,7 @@ import com.android.server.healthconnect.common.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.common.logging.UsageStatsCollector;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
@@ -194,6 +195,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Nullable private final SyntheticPackageNameResolver mSyntheticPackageNameResolver;
     @Nullable private final DeviceDataProviderHelper mDeviceDataProviderHelper;
     @Nullable private final DeviceDataProviderManager mDeviceDataProviderManager;
+    @Nullable private final SyntheticPackageNameCreator mSyntheticPackageNameCreator;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -631,18 +633,23 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         ? new DeviceDataProviderHelper(
                                 mDatabaseHelpers, mTransactionManager, mHealthConnectMappings)
                         : builder.mDeviceDataProviderHelper;
+        mSyntheticPackageNameCreator =
+                builder.mSyntheticPackageNameCreator == null && Flags.deviceDataProvidersApi()
+                        ? new SyntheticPackageNameCreator(mPreferenceHelper)
+                        : builder.mSyntheticPackageNameCreator;
         mDeviceDataProviderManager =
                 builder.mDeviceDataProviderManager == null
                                 && Flags.deviceDataProvidersApi()
                                 && AconfigFlagHelper.isDeviceDataProvidersEnabled()
                                 && mDeviceDataProviderHelper != null
+                                && mSyntheticPackageNameCreator != null
                         ? new DeviceDataProviderManager(
                                 hcContext,
                                 mDeviceInfoHelper,
                                 mAppInfoHelper,
                                 mDeviceDataProviderHelper,
                                 mFitnessRecordUpsertHelper,
-                                mPreferenceHelper)
+                                mSyntheticPackageNameCreator)
                         : builder.mDeviceDataProviderManager;
     }
 
@@ -1030,6 +1037,12 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         return mDeviceDataProviderManager;
     }
 
+    @Nullable
+    @Override
+    public SyntheticPackageNameCreator getSyntheticPackageNameCreator() {
+        return mSyntheticPackageNameCreator;
+    }
+
     /**
      * Returns a new Builder of Health Connect Injector
      *
@@ -1116,6 +1129,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private SyntheticPackageNameResolver mSyntheticPackageNameResolver;
         @Nullable private DeviceDataProviderHelper mDeviceDataProviderHelper;
         @Nullable private DeviceDataProviderManager mDeviceDataProviderManager;
+        @Nullable private SyntheticPackageNameCreator mSyntheticPackageNameCreator;
 
         private Builder(Context context) {
             mContext = context;
@@ -1548,6 +1562,13 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         public Builder setDeviceDataProviderManager(
                 DeviceDataProviderManager deviceDataProviderManager) {
             mDeviceDataProviderManager = deviceDataProviderManager;
+            return this;
+        }
+
+        /** Set fake or custom {@link SyntheticPackageNameCreator}. */
+        public Builder setSyntheticPackageNameCreator(
+                SyntheticPackageNameCreator syntheticPackageNameCreator) {
+            mSyntheticPackageNameCreator = syntheticPackageNameCreator;
             return this;
         }
 

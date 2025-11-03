@@ -24,6 +24,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -70,6 +71,7 @@ public class DeviceInfoHelperTest {
 
     private DeviceInfoHelper mDeviceInfoHelper;
     private TransactionManager mTransactionManager;
+    private SyntheticPackageNameCreator mSyntheticPackageNameCreator;
 
     @Before
     public void setUp() {
@@ -93,6 +95,7 @@ public class DeviceInfoHelperTest {
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
+        mSyntheticPackageNameCreator = healthConnectInjector.getSyntheticPackageNameCreator();
     }
 
     @Test
@@ -270,12 +273,17 @@ public class DeviceInfoHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVELOPMENT_DATABASE,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
+    })
     public void populateDeviceInfoId_syntheticPackageNameAndDeviceInfoIdPresent_returnsEarly() {
         RecordInternal<?> recordInternal = getStepsRecordInternal();
         recordInternal.setPackageName(
-                SyntheticPackageNameCreator.createCanonical(DEVICE_TYPE_PHONE, "test_device_id"));
+                mSyntheticPackageNameCreator.createCanonical(DEVICE_TYPE_PHONE, "test_device_id"));
         recordInternal.setDeviceInfoId(100L);
+        clearInvocations(mTransactionManager);
 
         mDeviceInfoHelper.populateDeviceInfoId(recordInternal);
 

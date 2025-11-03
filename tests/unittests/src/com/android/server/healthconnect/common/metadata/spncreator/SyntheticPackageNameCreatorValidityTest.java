@@ -18,15 +18,22 @@ package com.android.server.healthconnect.common.metadata.spncreator;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import android.content.Context;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.Device.DeviceType;
 import android.platform.test.annotations.LargeTest;
 
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
+import com.android.server.healthconnect.injector.HealthConnectInjector;
+import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 
 import java.nio.charset.Charset;
@@ -56,10 +63,11 @@ public class SyntheticPackageNameCreatorValidityTest {
     };
 
     private @DeviceType int mDeviceType;
-
     private String mDeviceId;
-
     private String mCallingPackage;
+    private SyntheticPackageNameCreator mSyntheticPackageNameCreator;
+
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
 
     private static Collection<Object[]> getParams() {
         final List<Object[]> params = new ArrayList<>();
@@ -79,11 +87,23 @@ public class SyntheticPackageNameCreatorValidityTest {
         return params;
     }
 
+    @Before
+    public void setUp() throws Exception {
+        Context applicationContext = ApplicationProvider.getApplicationContext();
+        HealthConnectInjector healthConnectInjector =
+                HealthConnectInjectorImpl.newBuilderForTest(applicationContext)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+
+        mSyntheticPackageNameCreator =
+                new SyntheticPackageNameCreator(healthConnectInjector.getPreferenceHelper());
+    }
+
     @Test
     public void withRandomDeviceId_createCanonical_isValidPackageName() {
         for (var params : getParams()) {
             initializeRun(params);
-            String spn = SyntheticPackageNameCreator.createCanonical(mDeviceType, mDeviceId);
+            String spn = mSyntheticPackageNameCreator.createCanonical(mDeviceType, mDeviceId);
 
             Matcher matcher = PACKAGE_PATTERN.matcher(spn);
             assertTrue(matcher.matches());
@@ -94,7 +114,7 @@ public class SyntheticPackageNameCreatorValidityTest {
     public void withRandomDeviceId_createCanonical_isCanonicalSpn() {
         for (var params : getParams()) {
             initializeRun(params);
-            String spn = SyntheticPackageNameCreator.createCanonical(mDeviceType, mDeviceId);
+            String spn = mSyntheticPackageNameCreator.createCanonical(mDeviceType, mDeviceId);
 
             assertTrue(SyntheticPackageNameCreator.isCanonicalSpn(spn));
             assertFalse(SyntheticPackageNameCreator.isMaskedSpn(spn));
@@ -106,7 +126,7 @@ public class SyntheticPackageNameCreatorValidityTest {
         for (var params : getParams()) {
             initializeRun(params);
             String canonicalSpn =
-                    SyntheticPackageNameCreator.createCanonical(mDeviceType, mDeviceId);
+                    mSyntheticPackageNameCreator.createCanonical(mDeviceType, mDeviceId);
             String maskedSpn =
                     SyntheticPackageNameCreator.createMasked(canonicalSpn, mCallingPackage);
 
@@ -120,7 +140,7 @@ public class SyntheticPackageNameCreatorValidityTest {
         for (var params : getParams()) {
             initializeRun(params);
             String canonicalSpn =
-                    SyntheticPackageNameCreator.createCanonical(mDeviceType, mDeviceId);
+                    mSyntheticPackageNameCreator.createCanonical(mDeviceType, mDeviceId);
             String maskedSpn =
                     SyntheticPackageNameCreator.createMasked(canonicalSpn, mCallingPackage);
 

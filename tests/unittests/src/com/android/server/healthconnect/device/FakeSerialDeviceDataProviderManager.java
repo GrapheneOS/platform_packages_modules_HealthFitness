@@ -20,7 +20,7 @@ import android.content.Context;
 
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
-import com.android.server.healthconnect.common.preferences.PreferenceHelper;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 
@@ -41,14 +41,14 @@ public class FakeSerialDeviceDataProviderManager extends DeviceDataProviderManag
             @NonNull AppInfoHelper appInfoHelper,
             @NonNull DeviceDataProviderHelper deviceDataProviderHelper,
             @NonNull FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
-            @NonNull PreferenceHelper preferenceHelper) {
+            @NonNull SyntheticPackageNameCreator syntheticPackageNameCreator) {
         super(
                 context,
                 deviceInfoHelper,
                 appInfoHelper,
                 deviceDataProviderHelper,
                 fitnessRecordUpsertHelper,
-                preferenceHelper);
+                syntheticPackageNameCreator);
     }
 
     @Override
