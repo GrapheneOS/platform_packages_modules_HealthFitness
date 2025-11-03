@@ -701,16 +701,25 @@ interface IHealthConnectService {
         in IEmptyResponseCallback callback);
 
     /**
-     * Inserts {@code recordsParcel} from a device data type source into the HealthConnect database.
+     * Inserts {@code records} from a device data source into the Health Connect database.
      *
-     * <p>Before this method is called, {@link #advertiseDeviceDataSources} must have been called.
+     * <p>Upon successful completion, {@link OutcomeReceiver#onResult} will be invoked for the
+     * {@code callback}. The records returned in {@link InsertRecordsResponse} contain the unique
+     * IDs of the input records. The values are in same order as {@code records}. In case of an
+     * error or a permission failure in the Health Connect service, {@link OutcomeReceiver#onError}
+     * will be invoked with a {@link HealthConnectException}.
      *
-     * @param attributionSource attribution source for the data.
-     * @param deviceId The identifier for the device that is the source of this data. This must
-     *                 match the {@code deviceId} used in {@link DeviceDataAdvertisement} in the
-     *                 latest call to {@link #advertiseDeviceDataSources}.
-     * @param recordsParcel Parcel for list of records to be inserted.
-     * @param callback Callback to receive result of performing this operation.
+     * <p>The {@code deviceId} must match the one used in {@link DeviceDataAdvertisement} in the
+     * latest call to {@link #advertiseDeviceDataSources}. A {@link Device} does not need to be
+     * populated in the {@link Metadata} for a {@link Record} as it will automatically be populated
+     * based on the {@link DeviceDataAdvertisement}.
+     *
+     * @param deviceId the identifier for the device that is the source of this data.
+     * @param records list of records to be inserted.
+     * @param executor executor on which to invoke the callback.
+     * @param callback callback to receive the result of performing this operation.
+     * @throws RuntimeException for internal errors
+     * @hide
      */
     void insertDeviceRecords(
         in AttributionSource attributionSource,

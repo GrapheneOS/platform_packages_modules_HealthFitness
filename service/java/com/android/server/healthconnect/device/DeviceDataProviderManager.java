@@ -208,6 +208,7 @@ public class DeviceDataProviderManager {
      * @throws IllegalStateException if the generated syntheticPackageName or deviceInfoId is not
      *     valid
      */
+    // TODO(b/458002163): Check that the device data source has advertised the provided data type.
     public List<String> insertDeviceRecords(
             @NonNull String deviceId, @NonNull List<RecordInternal<?>> records) {
         Objects.requireNonNull(deviceId);
