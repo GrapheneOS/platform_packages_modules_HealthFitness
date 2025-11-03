@@ -29,6 +29,7 @@ import org.junit.runner.RunWith;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 @RunWith(AndroidJUnit4.class)
 public class GetMatchingAppsResponseTest {
@@ -119,5 +120,65 @@ public class GetMatchingAppsResponseTest {
                 .contains("GetMatchingAppsResponse{hasMatchingApps=true,matchingApps=");
         assertThat(responseString).contains(TEST_PACKAGE_NAME);
         assertThat(responseString).contains(WRITE_STEPS);
+    }
+
+    @Test
+    public void toMasked_packageNamesAreMasked() {
+        // Verifies that the package names in the map are correctly masked.
+        Map<String, Set<String>> matchingApps =
+                Map.of(
+                        "com.test.package1", Set.of(WRITE_STEPS),
+                        "com.test.package2", Set.of(WRITE_SLEEP));
+        GetMatchingAppsResponse response = new GetMatchingAppsResponse(matchingApps);
+
+        // Define a simple masker that appends a suffix.
+        Function<String, String> masker = (packageName) -> packageName + ".masked";
+        GetMatchingAppsResponse maskedResponse = response.toMasked(masker);
+
+        // Create the expected map after masking.
+        Map<String, Set<String>> expectedMap =
+                Map.of(
+                        "com.test.package1.masked", Set.of(WRITE_STEPS),
+                        "com.test.package2.masked", Set.of(WRITE_SLEEP));
+
+        // Assert that the new response contains the masked package names and original permissions.
+        assertThat(maskedResponse.getMatchingApps()).isEqualTo(expectedMap);
+    }
+
+    @Test
+    public void toMasked_emptyMap_returnsEmptyResponse() {
+        // Verifies that masking an empty response results in another empty response.
+        GetMatchingAppsResponse response = new GetMatchingAppsResponse(Map.of());
+
+        // Define a masker (it won't be called).
+        Function<String, String> masker = (packageName) -> packageName + ".masked";
+        GetMatchingAppsResponse maskedResponse = response.toMasked(masker);
+
+        // Assert that the masked response is also empty.
+        assertThat(maskedResponse.getMatchingApps()).isEmpty();
+        assertThat(maskedResponse.hasMatchingApps()).isFalse();
+    }
+
+    @Test
+    public void toMasked_maskerReturnsSameKey_overwritesPreviousEntry() {
+        // Verifies behavior when the masker function produces key collisions.
+        Map<String, Set<String>> matchingApps =
+                Map.of(
+                        "com.test.package1", Set.of(WRITE_STEPS),
+                        "com.test.package2", Set.of(WRITE_SLEEP));
+        GetMatchingAppsResponse response = new GetMatchingAppsResponse(matchingApps);
+
+        // Define a masker that always returns the same string.
+        Function<String, String> masker = (packageName) -> "com.masked.package";
+        GetMatchingAppsResponse maskedResponse = response.toMasked(masker);
+
+        // Because Map iteration order is not guaranteed, the final value could be either set.
+        // However, the map size must be 1.
+        assertThat(maskedResponse.getMatchingApps()).hasSize(1);
+        assertThat(maskedResponse.getMatchingApps().keySet()).containsExactly("com.masked.package");
+
+        // Check that the value is one of the original permission sets.
+        Set<String> permissions = maskedResponse.getMatchingApps().get("com.masked.package");
+        assertThat(permissions).isAnyOf(Set.of(WRITE_STEPS), Set.of(WRITE_SLEEP));
     }
 }
