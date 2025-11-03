@@ -162,14 +162,38 @@ public class AconfigFlagHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_CYCLE_PHASES_FLAG)
-    public void isCyclePhaseEnabled_featureFlagTrue_expectTrue() {
+    @EnableFlags({
+        Flags.FLAG_CYCLE_PHASES_FLAG,
+        Flags.FLAG_CYCLE_PHASES_DB,
+        Flags.FLAG_SMOKING_DB,
+        Flags.FLAG_SYMPTOMS_DB,
+        Flags.FLAG_ALCOHOL_CONSUMPTION_DB
+    })
+    public void isCyclePhaseEnabled_bothFlagsTrue_expectTrue() {
         assertThat(isCyclePhasesEnabled()).isTrue();
     }
 
     @Test
+    @EnableFlags({
+        Flags.FLAG_CYCLE_PHASES_DB,
+        Flags.FLAG_SMOKING_DB,
+        Flags.FLAG_SYMPTOMS_DB,
+        Flags.FLAG_ALCOHOL_CONSUMPTION_DB
+    })
     @DisableFlags(Flags.FLAG_CYCLE_PHASES_FLAG)
-    public void isCyclePhaseEnabled_featureFlagFalse_expectFalse() {
+    public void isCyclePhaseEnabled_featureFlagFalseDbFlagTrue_expectFalse() {
+        assertThat(isCyclePhasesEnabled()).isFalse();
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_CYCLE_PHASES_FLAG,
+        Flags.FLAG_SMOKING_DB,
+        Flags.FLAG_SYMPTOMS_DB,
+        Flags.FLAG_ALCOHOL_CONSUMPTION_DB
+    })
+    @DisableFlags(Flags.FLAG_CYCLE_PHASES_DB)
+    public void isCyclePhaseEnabled_featureFlagTrueDbFlagFalse_expectFalse() {
         assertThat(isCyclePhasesEnabled()).isFalse();
     }
 }

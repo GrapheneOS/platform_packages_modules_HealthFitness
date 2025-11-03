@@ -28,6 +28,7 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__D
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BODY_WATER_MASS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__BONE_MASS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CERVICAL_MUCUS;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CYCLE_PHASES;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CYCLING_PEDALING_CADENCE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DATA_TYPE_NOT_ASSIGNED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__DISTANCE;
@@ -71,6 +72,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BODY_WATER_MASS;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BONE_MASS;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CERVICAL_MUCUS;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CYCLE_PHASES;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED;
@@ -118,6 +120,7 @@ import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForU
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BODY_WATER_MASS;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BONE_MASS;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_CERVICAL_MUCUS;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_CYCLE_PHASES;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_CYCLING_PEDALING_CADENCE;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_DISTANCE;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_ELEVATION_GAINED;
@@ -169,6 +172,7 @@ import com.android.server.healthconnect.fitness.recordhelpers.BodyTemperatureRec
 import com.android.server.healthconnect.fitness.recordhelpers.BodyWaterMassRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.BoneMassRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.CervicalMucusRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.CyclePhasesRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.CyclingPedalingCadenceRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.DistanceRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ElevationGainedRecordHelper;
@@ -312,6 +316,15 @@ public class InternalDataTypeDescriptors {
                         .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_CERVICAL_MUCUS)
                         .setLoggingEnum(HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CERVICAL_MUCUS)
                         .build(),
+                AconfigFlagHelper.isCyclePhasesEnabled()
+                        ? InternalDataTypeDescriptor.builder()
+                                .setRecordTypeIdentifier(RECORD_TYPE_CYCLE_PHASES)
+                                .setRecordHelper(new CyclePhasesRecordHelper())
+                                .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_CYCLE_PHASES)
+                                .setLoggingEnum(
+                                        HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CYCLE_PHASES)
+                                .build()
+                        : null,
                 InternalDataTypeDescriptor.builder()
                         .setRecordTypeIdentifier(RECORD_TYPE_CYCLING_PEDALING_CADENCE)
                         .setRecordHelper(new CyclingPedalingCadenceRecordHelper())
