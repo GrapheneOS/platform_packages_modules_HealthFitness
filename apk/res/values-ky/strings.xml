@@ -23,10 +23,8 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Уруксаттар жана маалыматтар"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Түзмөгүңүздөн ден соолук жана дене-бойду чыңдоо маалыматын тескеп, алар кайсы колдонмолорго жеткиликтүү болорун көзөмөлдөйсүз"</string>
     <string name="data_title" msgid="4456619761533380816">"Колдонмодогу нерселер жана жеткиликтүүлүк"</string>
-    <!-- no translation found for browse_medical_data (6492659245149862639) -->
-    <skip />
-    <!-- no translation found for browse_medical_data_subtitle (5019009186352225863) -->
-    <skip />
+    <string name="browse_medical_data" msgid="6492659245149862639">"Медициналык маалыматтарды карап чыгуу"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"Медициналык маалыматтарыңызга байланыштуу нерселерди жана алар кайсы колдонмолорго жеткиликтүү экенин көрө аласыз"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Бардык категориялар"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Бардык категорияларды көрүү"</string>
     <string name="no_data" msgid="1906986019249068659">"Эч нерсе жок"</string>
@@ -112,10 +110,8 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Күйгүзүлгөн калорияларды окуу"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Колдонмо күйгүзүлгөн калорияларды окуй алат"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосуна маалыматты фондук режимде көрүүгө уруксат бересизби?"</string>
-    <!-- no translation found for background_read_medical_single_request_description_both_types_granted (8946727351576582341) -->
-    <skip />
-    <!-- no translation found for background_read_medical_single_request_description_medical_granted (5319661973410930922) -->
-    <skip />
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Эгер уруксат берсеңиз, бул колдонмо иштебей турганда, дене-бойду чыңдоо жана медициналык маалыматтар жөнүндө маалыматты көрө алат."</string>
+    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"Эгер уруксат берсеңиз, бул колдонмо иштебей турганда, медициналык маалыматтар жөнүндө маалыматты көрө алат."</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Эгер уруксат берсеңиз, бул колдонмо иштебей турганда, дене-бойду чыңдоо маалыматын көрө алат."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Эгер уруксат берсеңиз, бул колдонмо иштебей турганда, Health Connect маалыматын көрө алат."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосуна буга чейин сакталган нерселерди көрүүгө уруксат бересизби?"</string>
@@ -126,11 +122,9 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосуна кошумча уруксат бересизби?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"<xliff:g id="APP_NAME">%1$s</xliff:g> төмөнкү Health Connect параметрлерин да көрүүгө уруксат сурап жатат"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Фондук режимдеги бардык нерселерди жеткиликтүү кылуу"</string>
-    <!-- no translation found for background_read_medical_combined_request_title_medical_granted (3988312347959547374) -->
-    <skip />
+    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"Медициналык маалыматттарды фондо көрүү"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Фондук режимде дене-бойду чыңдоо маалыматын көрүү"</string>
-    <!-- no translation found for background_read_medical_combined_request_description_both_types_granted (1552208401309746060) -->
-    <skip />
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"Колдонмо иштебей турганда, ага дене-бойду чыңдоо жана медициналык маалыматтар жөнүндө маалыматты көрүүгө уруксат берүү"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Колдонмо иштебей турганда, ага бул нерселер жеткиликтүү болот"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Колдонмо иштебей турганда, ага бул нерселер жеткиликтүү болот"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Маалыматты фондук режимде көрүү"</string>
@@ -141,15 +135,12 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Сакталган нерселерди көрүү"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"Бул колдонмого Health Connect платформасына <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> чейин кошулган нерселер жеткиликтүү болот"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Бул колдонмого Health Connect платформасында буга чейин сакталган нерселердин баары жеткиликтүү болот"</string>
-    <!-- no translation found for history_read_medical_combined_request_footer (7502989222215080491) -->
-    <skip />
+    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"<xliff:g id="APP_NAME">%1$s</xliff:g> мурунку медициналык маалыматтарды көрүүгө уруксат алган"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Уруксаттар тууралуу көбүрөөк окуу"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Фондук режимдеги бардык нерселерди жеткиликтүү кылуу"</string>
-    <!-- no translation found for background_read_medical_access_title_medical_granted (4595850721639536407) -->
-    <skip />
+    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"Медициналык маалыматттарды фондо көрүү"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Фондук режимде дене-бойду чыңдоо маалыматын көрүү"</string>
-    <!-- no translation found for background_read_medical_access_description_both_types_granted (9156377686028948011) -->
-    <skip />
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"Колдонмо иштебей турганда, ага дене-бойду чыңдоо жана медициналык маалыматтар жөнүндө маалыматты көрүүгө уруксат берүү"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Колдонмо иштебей турганда, ага бул нерселер жеткиликтүү болот"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Колдонмо иштебей турганда, ага бул нерселер жеткиликтүү болот"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Маалыматты фондук режимде көрүү"</string>
@@ -161,10 +152,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Бул колдонмого Health Connect платформасына <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> чейин кошулган нерселер жеткиликтүү болот"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Бул колдонмого Health Connect платформасында буга чейин сакталган нерселердин баары жеткиликтүү болот"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Учурда дене-бойду чыңдоо маалыматы окулбайт, анткени <xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосунун окууга уруксаты жок"</string>
-    <!-- no translation found for additional_access_medical_read_footer (9192699163914919234) -->
-    <skip />
-    <!-- no translation found for additional_access_medical_read_footer_link (9186216799532408259) -->
-    <skip />
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосуна медициналык маалыматтар жөнүндө буга чейин сакталган нерселер жеткиликтүү. Аны өзгөртүү үчүн медициналык маалыматтарды колдонууга берилген уруксатты артка алыңыз."</string>
+    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"Медициналык маалыматтын уруксаттарын тескөө"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Бул колдонмого фондогу жана буга чейин сакталган нерселерди жеткиликтүү кылгыңыз келсе, жок дегенде окуганга уруксат бериңиз"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Бул колдонмого фондогу нерселерди жеткиликтүү кылуу үчүн ага кеминде бир окуу уруксатын бериңиз"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Бул колдонмого мурунку дайындарды колдонууга уруксат берүү үчүн кеминде бир уруксатты окууну иштетиңиз"</string>
@@ -267,6 +256,10 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"цервикалдык былжыр"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"Цервикалдык былжырды окуу"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"Цервикалдык былжырды жазуу"</string>
+    <string name="cycle_phases_uppercase_label" msgid="1693612101973701017">"Циклдин фазалары"</string>
+    <string name="cycle_phases_lowercase_label" msgid="6513009148778082622">"циклдин фазалары"</string>
+    <string name="cycle_phases_read_content_description" msgid="1974818937933604194">"Циклдин фазаларын окуу"</string>
+    <string name="cycle_phases_write_content_description" msgid="8779256196190212513">"Циклдин фазаларын жазуу"</string>
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"Айыздардын ортосундагы кандын агышы"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"айыздардын ортосундагы кандын агышы"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Айыздардын ортосундагы кандын агышын окуу"</string>
@@ -339,14 +332,10 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"теринин температурасы"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Теринин температурасын окуу"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Теринин температурасын жазуу"</string>
-    <!-- no translation found for browse_health_records_intro (6883015193140441521) -->
-    <skip />
-    <!-- no translation found for all_medical_data_uppercase_label (3200909722486081065) -->
-    <skip />
-    <!-- no translation found for all_medical_data_lowercase_label (2978144821592851080) -->
-    <skip />
-    <!-- no translation found for all_medical_data_content_description (3454355551506537094) -->
-    <skip />
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"Буга Health Connect менен шайкештирилген жана ага кошулган медициналык маалыматтарга байланыштуу бардык нерселер кирет. Анда медициналык картаңыздагы маалыматтар жана доктурлардын айткандары болбошу мүмкүн."</string>
+    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"Бардык медициналык маалыматтар"</string>
+    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"бардык медициналык маалыматтар"</string>
+    <string name="all_medical_data_content_description" msgid="3454355551506537094">"Бардык медициналык маалыматтарды жазуу"</string>
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Аллергия"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"аллергия"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Аллергияны окуу"</string>
@@ -427,17 +416,13 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосуна дене-бойду чыңдоо маалыматын көрүүгө уруксат бересизби?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосу маалыматыңызды кантип иштете турганын анын <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> купуялык эрежелеринен биле аласыз"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"купуялык эрежелери"</string>
-    <!-- no translation found for medical_request_header (5701693055388739014) -->
-    <skip />
+    <string name="medical_request_header" msgid="5701693055388739014">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосуна медициналык маалыматтарыңызга кирүүгө уруксат бересизби?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Эгер уруксат берсеңиз, колдонмо аллергия, анализдериңиз, вакциналар сыяктуу маалыматтарды окуп жана жаза алат\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Эгер уруксат берсеңиз, колдонмо аллергия, анализдериңиз, вакциналар сыяктуу маалыматтарды окуй алат\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for medical_request_about_health_records (4569605370685007268) -->
-    <skip />
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"Медициналык маалыматтар тууралуу"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Бөлүшүлө турган маалыматка төмөнкүлөр кирет:"</string>
-    <!-- no translation found for medical_request_summary (553735170968628758) -->
-    <skip />
-    <!-- no translation found for medical_request_footer (157243861031258933) -->
-    <skip />
+    <string name="medical_request_summary" msgid="553735170968628758">"Эгер уруксат берсеңиз, <xliff:g id="APP_NAME">%1$s</xliff:g> медициналык маалыматтарыңызды Health Connect менен бөлүшө алат."</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"Медициналык маалыматтарды ар кандай колдонмолордон жана булактардан шайкештирип, бир жерде сактаңыз"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Бардык уруксаттар өчүрүлсүнбү?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Баарын өчүрүү"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> мындан ары Health Connect\'теги эч кандай маалыматты окуп же жаза албай калат.\n\nБул нерсе колдонмодогу башка уруксаттарга, мисалы, камера, микрофон же жайгашкан жерге кедергисин тийгизбейт."</string>
@@ -447,10 +432,8 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Health Connect\'тен алынган <xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосундагы нерселер да өчүрүлсүн"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Дене бойду чыңдоо жана саламаттыкка байланыштуу уруксаттардын баарын өчүрөсүзбү?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Ошондой эле Health Connect\'теги <xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосунан дене-бойду чыңдоо маалыматын өчүрүңүз"</string>
-    <!-- no translation found for disconnect_all_medical_permissions_title (5160539156614173855) -->
-    <skip />
-    <!-- no translation found for disconnect_all_medical_permissions_dialog_checkbox (9016154186179314983) -->
-    <skip />
+    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"Медициналык маалыматтарды көрүүгө берилген бардык уруксаттар өчүрүлсүнбү?"</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"Ошондой эле Health Connect\'теги <xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосунан медициналык маалыматтарды өчүрүңүз"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> мындан ары Health Connect\'теги маалыматты окуп же жаза албай калат.\n\nБул нерсе колдонмодогу башка уруксаттарга, мисалы, камера, микрофон же жайгашкан жерге кедергисин тийгизбейт."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> мындан ары Health Connect\'теги эч кандай, анын ичинде фондогу маалыматты окуп же жаза албай калат.\n\nБул нерсе колдонмодогу башка уруксаттарга, мисалы, жайгашкан жер, камера же микрофонго кедергисин тийгизбейт."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> мындан ары Health Connect\'теги эч кандай, анын ичинде мурдагы маалыматты окуп же жаза албай калат.\n\nБул нерсе колдонмодогу башка уруксаттарга, мисалы, жайгашкан жер, камера же микрофонго кедергисин тийгизбейт."</string>
@@ -460,8 +443,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> мындан ары Health Connect\'теги эч кандай, анын ичинде фондогу маалыматты окуп же жаза албай калат.\n\nБул нерсе колдонмодогу башка уруксаттарга, мисалы, жайгашкан жер, камера же микрофонго кедергисин тийгизбейт."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> мындан ары Health Connect\'теги эч кандай, анын ичинде мурдагы маалыматты окуп же жаза албай калат.\n\nБул нерсе колдонмодогу башка уруксаттарга, мисалы, жайгашкан жер, камера же микрофонго кедергисин тийгизбейт."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> мындан ары Health Connect\'теги эч кандай, анын ичинде фондогу маалыматты окуп же жаза албай калат.\n\nБул нерсе колдонмодогу башка уруксаттарга, мисалы, жайгашкан жер, камера же микрофонго кедергисин тийгизбейт."</string>
-    <!-- no translation found for disconnect_all_health_permissions_dialog_checkbox (2513272828668015419) -->
-    <skip />
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"Ошондой эле Health Connect\'теги <xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосунан дене-бойду чыңдоо маалыматы жана медициналык маалыматтар жөнүндө маалыматты өчүрүңүз"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Бул колдонмо үчүн уруксаттар өчүрүлдү"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Health Connect\'теги бардык маалыматтарды да өчүрүү"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Кийинки күн"</string>
@@ -510,10 +492,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"Уруксаттар"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"Дене бойду чыңдоо жана саламаттык"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Көнүгүү, уйку, тамактануу жана башкалар"</string>
-    <!-- no translation found for medical_permissions (1066296298908103091) -->
-    <skip />
-    <!-- no translation found for medical_permissions_lowercase (5825812584960807537) -->
-    <skip />
+    <string name="medical_permissions" msgid="1066296298908103091">"Медициналык маалыматтар"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"медициналык маалыматтар"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Анализдериңиз, дарылар, эмдөөлөр жана башкалар"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Колдонмолордун өчүрүлгөн уруксаттары"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect <xliff:g id="APP_DATA">%s</xliff:g> колдонмосунун уруксаттарын өчүрдү"</string>
@@ -607,8 +587,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Play Store\'го өтүү"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Health Connect\'ти колдонуп баштоо"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect кызматы ден соолук жана дене-бойду чыңдоо маалыматын сактап, аларды түзмөктөгү башка колдонмолор менен шайкештирет"</string>
-    <!-- no translation found for onboarding_description_health_records (4356538767594073978) -->
-    <skip />
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect платформасы ар кайсы колдонмодон ден соолугуңузга жана кыймылдуулугуңузга байланыштуу маалыматты сактап, шайкештирип турат.\n\n"<b>"Дене бойду чыңдоо жана саламаттык,"</b>" тактап айтканда, машыгууларыңыз, канча кадам басканыңыз, тамактанганыңыз, уйкуңуз ж.б. нерселер\n\n"<b>"Медициналык маалыматтар"</b>" - эмдөөлөр, анализдериңиз жана башкалар"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Health Connect менен төмөнкүлөрдү аткара аласыз:"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Колдонмолоруңуз менен маалымат бөлүшүңүз"</b>\n"Ар бир колдонмо Health Connect кызматында кандай маалыматты окуп, сактай ала турганын тандайсыз"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Параметрлериңизди жана купуялыгыңызды тескеңиз"</b>\n"Колдонмонун уруксаттарын каалаган убакта өзгөртүп, алардагы нерселерди тескейсиз"</string>
@@ -873,7 +852,8 @@
     <string name="nicotine_intake_type_vape" msgid="8910534364762591958">"{quantity,plural, =1{Вейпти {quantity} жолу тартуу}other{Вейпти {quantity} жолу тартуу}}"</string>
     <string name="nicotine_intake_type_cigarette" msgid="306427848597435195">"{quantity,plural, =1{{quantity} тамеки}other{{quantity} тамеки}}"</string>
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} белгисиз"</string>
-    <string name="alcohol_consumption_title" msgid="2627266871623334972">"<xliff:g id="SERVING">%1$s</xliff:g> • <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
+    <skip />
     <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"Башка"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Сыра"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Шарап"</string>
@@ -895,7 +875,8 @@
     <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Хайбол"</string>
     <string name="serving_volume_title" msgid="4727986574534974167">"Порциянын көлөмү"</string>
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Көлөм боюнча спирт"</string>
-    <string name="note_title" msgid="4101166558186573016">"Эскертме"</string>
+    <!-- no translation found for notes_title (4596764711916248492) -->
+    <skip />
     <string name="details_title" msgid="8411891773854413790">"Чоо-жайы"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> мүн."</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> c. <xliff:g id="MIN">%2$s</xliff:g> мүн."</string>

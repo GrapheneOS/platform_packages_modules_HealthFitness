@@ -118,7 +118,6 @@ public class FitnessRecordAggregateHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ADD_MISSING_ACCESS_LOGS)
     public void populateWithAggregation_accessLogRecorded() {
         TimeRangeFilter timeRangeFilter =
                 new LocalTimeRangeFilter.Builder()

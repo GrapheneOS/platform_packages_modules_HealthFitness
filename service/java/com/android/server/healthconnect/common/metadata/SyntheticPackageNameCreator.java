@@ -142,6 +142,10 @@ public class SyntheticPackageNameCreator {
      * A fixed, immutable mapping from {@code @DeviceType} to their corresponding string
      * representations used in SPNs. This mapping MUST NOT change to guarantee the stability and
      * reproducibility of SPNs across versions.
+     *
+     * <p>On new device types, add them to {@link
+     * android.healthconnect.testing.cts.TestUtils#DEVICE_TYPE_TO_DISPLAY_NAME} for cts tests as
+     * well.
      */
     @VisibleForTesting
     public static final Map<Integer, String> DEVICE_TYPE_TO_DISPLAY_NAME =

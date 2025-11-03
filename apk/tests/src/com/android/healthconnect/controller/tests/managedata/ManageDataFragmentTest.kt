@@ -77,93 +77,101 @@ class ManageDataFragmentTest {
 
     @Test
     fun manageDataFragmentLogging_impressionsLogged() {
-        launchFragment<ManageDataFragment>(Bundle())
-
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.MANAGE_DATA_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(ManageDataElement.AUTO_DELETE_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(ManageDataElement.DATA_SOURCES_AND_PRIORITY_BUTTON)
-        verify(healthConnectLogger).logImpression(ManageDataElement.SET_UNITS_BUTTON)
-        verify(healthConnectLogger).logImpression(ManageDataElement.BACKUP_AND_RESTORE_BUTTON)
+        launchFragment<ManageDataFragment>(Bundle()).use {
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.MANAGE_DATA_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger).logImpression(ManageDataElement.AUTO_DELETE_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(ManageDataElement.DATA_SOURCES_AND_PRIORITY_BUTTON)
+            verify(healthConnectLogger).logImpression(ManageDataElement.SET_UNITS_BUTTON)
+            verify(healthConnectLogger).logImpression(ManageDataElement.BACKUP_AND_RESTORE_BUTTON)
+        }
     }
 
     @Test
     fun manageDataFragment_isDisplayed_newAppPriorityFlagOn() {
-        launchFragment<ManageDataFragment>(Bundle())
-
-        onView(withText("Auto-delete")).check(matches(isDisplayed()))
-        onView(withText("Data sources and priority")).check(matches(isDisplayed()))
-        onView(withText("Set units")).check(matches(isDisplayed()))
+        launchFragment<ManageDataFragment>(Bundle()).use {
+            onView(withText("Auto-delete")).check(matches(isDisplayed()))
+            onView(withText("Data sources and priority")).check(matches(isDisplayed()))
+            onView(withText("Set units")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun manageDataFragment_displayedCorrectly() {
-        launchFragment<ManageDataFragment>(Bundle())
-
-        onView(withText("Auto-delete")).check(matches(isDisplayed()))
-        onView(withText("Set units")).check(matches(isDisplayed()))
-        onView(withText("Data sources and priority")).check(matches(isDisplayed()))
-        onView(withText("Backup and restore")).check(matches(isDisplayed()))
-        onView(withText("Preferences")).check(matches(isDisplayed()))
-        onView(withText("Manage data")).check(matches(isDisplayed()))
+        launchFragment<ManageDataFragment>(Bundle()).use {
+            onView(withText("Auto-delete")).check(matches(isDisplayed()))
+            onView(withText("Set units")).check(matches(isDisplayed()))
+            onView(withText("Data sources and priority")).check(matches(isDisplayed()))
+            onView(withText("Backup and restore")).check(matches(isDisplayed()))
+            onView(withText("Preferences")).check(matches(isDisplayed()))
+            onView(withText("Manage data")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun autoDelete_navigatesToAutoDelete() {
         launchFragment<ManageDataFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.manageDataFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-
-        onView(withText("Auto-delete")).check(matches(isDisplayed()))
-        onView(withText("Auto-delete")).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.autoDeleteFragment)
-        verify(healthConnectLogger).logInteraction(ManageDataElement.AUTO_DELETE_BUTTON)
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.manageDataFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Auto-delete")).check(matches(isDisplayed()))
+                onView(withText("Auto-delete")).perform(click())
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.autoDeleteFragment)
+                verify(healthConnectLogger).logInteraction(ManageDataElement.AUTO_DELETE_BUTTON)
+            }
     }
 
     @Test
     fun dataSources_navigatesToDataSources() {
         launchFragment<ManageDataFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.manageDataFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-
-        onView(withText("Data sources and priority")).check(matches(isDisplayed()))
-        onView(withText("Data sources and priority")).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.dataSourcesFragment)
-        verify(healthConnectLogger)
-            .logInteraction(ManageDataElement.DATA_SOURCES_AND_PRIORITY_BUTTON)
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.manageDataFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Data sources and priority")).check(matches(isDisplayed()))
+                onView(withText("Data sources and priority")).perform(click())
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.dataSourcesFragment)
+                verify(healthConnectLogger)
+                    .logInteraction(ManageDataElement.DATA_SOURCES_AND_PRIORITY_BUTTON)
+            }
     }
 
     @Test
     fun setUnits_navigatesToSetUnitsFragment() {
         launchFragment<ManageDataFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.manageDataFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-
-        onView(withText("Set units")).check(matches(isDisplayed()))
-        onView(withText("Set units")).perform(click())
-        assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.setUnitsFragment)
-        verify(healthConnectLogger).logInteraction(ManageDataElement.SET_UNITS_BUTTON)
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.manageDataFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Set units")).check(matches(isDisplayed()))
+                onView(withText("Set units")).perform(click())
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.setUnitsFragment)
+                verify(healthConnectLogger).logInteraction(ManageDataElement.SET_UNITS_BUTTON)
+            }
     }
 
     @Test
     fun manageDataFragment_navigatesToBackupAndRestoreSettingsFragment() {
         launchFragment<ManageDataFragment>(Bundle()) {
-            navHostController.setGraph(R.navigation.nav_graph)
-            navHostController.setCurrentDestination(R.id.manageDataFragment)
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
-
-        onView(withText("Backup and restore")).check(matches(isDisplayed()))
-        onView(withText("Backup and restore")).perform(click())
-        assertThat(navHostController.currentDestination?.id)
-            .isEqualTo(R.id.backupAndRestoreSettingsFragment)
-        verify(healthConnectLogger).logInteraction(ManageDataElement.BACKUP_AND_RESTORE_BUTTON)
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.manageDataFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Backup and restore")).check(matches(isDisplayed()))
+                onView(withText("Backup and restore")).perform(click())
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.backupAndRestoreSettingsFragment)
+                verify(healthConnectLogger)
+                    .logInteraction(ManageDataElement.BACKUP_AND_RESTORE_BUTTON)
+            }
     }
 }

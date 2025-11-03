@@ -19,7 +19,6 @@ package com.android.server.healthconnect.fitness.recordhelpers;
 import static android.health.connect.Constants.DEFAULT_DOUBLE;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_OTHER;
-import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.RECORD_TEMPORAL_TYPE_INTERVAL;
 import static android.healthconnect.testing.unittest.RecordInternalFactory.buildAlcoholConsumptionRecordInternal;
 
@@ -111,9 +110,7 @@ public class AlcoholConsumptionRecordHelperTest {
                         500,
                         1000,
                         RECORD_TEMPORAL_TYPE_INTERVAL,
-                        /* servingCount= */ 2,
                         ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER,
-                        ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT,
                         /* servingVolume= */ 0.5,
                         /* alcoholByVolume= */ 5.0,
                         "note");
@@ -122,16 +119,16 @@ public class AlcoholConsumptionRecordHelperTest {
         assertThat(contentValues.getAsInteger(TEMPORAL_TYPE_COLUMN_NAME))
                 .isEqualTo(RECORD_TEMPORAL_TYPE_INTERVAL);
         assertThat(contentValues.getAsInteger(SERVING_COUNT_COLUMN_NAME))
-                .isEqualTo(record.getServingCount());
+                .isEqualTo(0); // TODO(b/454257439): Column to be dropped.
         assertThat(contentValues.getAsInteger(BEVERAGE_TYPE_COLUMN_NAME))
                 .isEqualTo(record.getBeverageType());
         assertThat(contentValues.getAsInteger(SERVING_SIZE_COLUMN_NAME))
-                .isEqualTo(record.getServingSize());
+                .isEqualTo(0); // TODO(b/454257439): Column to be dropped.
         assertThat(contentValues.getAsDouble(SERVING_VOLUME_LITERS_COLUMN_NAME))
                 .isEqualTo(record.getServingVolumeLiters());
         assertThat(contentValues.getAsDouble(ALCOHOL_BY_VOLUME_COLUMN_NAME))
                 .isEqualTo(record.getAlcoholByVolume());
-        assertThat(contentValues.getAsString(NOTE_COLUMN_NAME)).isEqualTo(record.getNote());
+        assertThat(contentValues.getAsString(NOTE_COLUMN_NAME)).isEqualTo(record.getNotes());
     }
 
     @Test
@@ -141,9 +138,7 @@ public class AlcoholConsumptionRecordHelperTest {
                         500,
                         1000,
                         RECORD_TEMPORAL_TYPE_INTERVAL,
-                        /* servingCount= */ 2,
                         ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER,
-                        ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT,
                         /* servingVolume= */ 0.5,
                         /* alcoholByVolume= */ 5.0,
                         "note");
@@ -154,14 +149,12 @@ public class AlcoholConsumptionRecordHelperTest {
             AlcoholConsumptionRecordInternal readRecord =
                     mAlcoholConsumptionRecordHelper.populateSpecificRecordValue(cursor);
             assertThat(readRecord.getTemporalType()).isEqualTo(insertedRecord.getTemporalType());
-            assertThat(readRecord.getServingCount()).isEqualTo(insertedRecord.getServingCount());
             assertThat(readRecord.getBeverageType()).isEqualTo(insertedRecord.getBeverageType());
-            assertThat(readRecord.getServingSize()).isEqualTo(insertedRecord.getServingSize());
             assertThat(readRecord.getServingVolumeLiters())
                     .isEqualTo(insertedRecord.getServingVolumeLiters());
             assertThat(readRecord.getAlcoholByVolume())
                     .isEqualTo(insertedRecord.getAlcoholByVolume());
-            assertThat(readRecord.getNote()).isEqualTo(insertedRecord.getNote());
+            assertThat(readRecord.getNotes()).isEqualTo(insertedRecord.getNotes());
         }
     }
 
@@ -175,12 +168,10 @@ public class AlcoholConsumptionRecordHelperTest {
             assertThat(cursor.moveToNext()).isTrue();
             AlcoholConsumptionRecordInternal readRecord =
                     mAlcoholConsumptionRecordHelper.populateSpecificRecordValue(cursor);
-            assertThat(readRecord.getServingCount()).isEqualTo(insertedRecord.getServingCount());
             assertThat(readRecord.getBeverageType()).isEqualTo(insertedRecord.getBeverageType());
-            assertThat(readRecord.getServingSize()).isEqualTo(0);
             assertThat(readRecord.getServingVolumeLiters()).isEqualTo(DEFAULT_DOUBLE);
             assertThat(readRecord.getAlcoholByVolume()).isEqualTo(DEFAULT_DOUBLE);
-            assertThat(readRecord.getNote()).isNull();
+            assertThat(readRecord.getNotes()).isNull();
         }
     }
 
@@ -188,7 +179,6 @@ public class AlcoholConsumptionRecordHelperTest {
             long startTimeMillis, long endTimeMillis) {
         return (AlcoholConsumptionRecordInternal)
                 new AlcoholConsumptionRecordInternal()
-                        .setServingCount(1)
                         .setBeverageType(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_OTHER)
                         .setStartTime(startTimeMillis)
                         .setEndTime(endTimeMillis);

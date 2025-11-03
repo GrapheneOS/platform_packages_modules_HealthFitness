@@ -1039,8 +1039,7 @@ class ImportSourceLocationFragmentTest {
                 ),
             )
         fakeHealthDataExportManager.setExportImportDocumentProviders(documentProviders)
-        launchFragment<ExportDestinationFragment>(Bundle()).use { scenario ->
-
+        launchFragment<ExportDestinationFragment>(Bundle()).use {
             // Selects the second account for provider 1.
             onView(withText(TEST_DOCUMENT_PROVIDER_1_TITLE)).perform(click())
             onView(withText(TEST_DOCUMENT_PROVIDER_1_ROOT_2_SUMMARY))

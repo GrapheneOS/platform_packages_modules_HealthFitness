@@ -96,7 +96,7 @@ class ExportSettingsViewModelTest {
     }
 
     @Test
-    fun loadExportSettings() = runTest {
+    fun loadExportSettingsSuccess_returnsExportSettings() = runTest {
         val testObserver = TestObserver<ExportSettings>()
         viewModel.storedExportSettings.observeForever(testObserver)
         loadExportSettingsUseCase.updateExportFrequency(EXPORT_FREQUENCY_WEEKLY)
@@ -106,6 +106,18 @@ class ExportSettingsViewModelTest {
 
         assertThat(testObserver.getLastValue())
             .isEqualTo(ExportSettings.WithData(EXPORT_FREQUENCY_WEEKLY))
+    }
+
+    @Test
+    fun loadExportSettingsFailed_returnsLoadingFailed() = runTest {
+        val testObserver = TestObserver<ExportSettings>()
+        viewModel.storedExportSettings.observeForever(testObserver)
+        loadExportSettingsUseCase.setForceFail(true)
+
+        viewModel.loadExportSettings()
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue()).isEqualTo(ExportSettings.LoadingFailed)
     }
 
     @Test
@@ -138,6 +150,16 @@ class ExportSettingsViewModelTest {
     }
 
     @Test
+    fun loadDocumentProviders_whenError_returnsLoadingFailed() = runTest {
+        val testObserver = TestObserver<DocumentProviders>()
+        viewModel.documentProviders.observeForever(testObserver)
+        queryDocumentProvidersUseCase.setForceFail(true)
+        viewModel.loadDocumentProviders()
+        advanceUntilIdle()
+        assertThat(testObserver.getLastValue()).isEqualTo(DocumentProviders.LoadingFailed)
+    }
+
+    @Test
     fun updateExportUri() = runTest {
         viewModel.updateExportUri(TEST_URI)
         advanceUntilIdle()
@@ -145,6 +167,20 @@ class ExportSettingsViewModelTest {
         assertThat(updateExportSettingsUseCase.mostRecentSettings.uri).isEqualTo(TEST_URI)
         assertThat(updateExportSettingsUseCase.mostRecentSettings.periodInDays)
             .isEqualTo(DEFAULT_INT)
+    }
+
+    @Test
+    fun updateExportSettingsError_returnsLoadingFailed() = runTest {
+        val testObserver = TestObserver<ExportSettings>()
+        viewModel.storedExportSettings.observeForever(testObserver)
+        loadExportSettingsUseCase.updateExportFrequency(EXPORT_FREQUENCY_MONTHLY)
+        viewModel.loadExportSettings()
+
+        updateExportSettingsUseCase.setForceFail(true)
+        viewModel.updateExportUri(TEST_URI)
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue()).isEqualTo(ExportSettings.LoadingFailed)
     }
 
     @Test

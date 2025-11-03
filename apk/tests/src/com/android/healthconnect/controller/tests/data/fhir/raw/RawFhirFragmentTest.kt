@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.tests.data.fhir.raw
 
 import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -33,6 +34,7 @@ import com.android.healthconnect.controller.data.fhir.raw.RawFhirViewModel
 import com.android.healthconnect.controller.data.fhir.raw.RawFhirViewModel.RawFhirState.Error
 import com.android.healthconnect.controller.data.fhir.raw.RawFhirViewModel.RawFhirState.Loading
 import com.android.healthconnect.controller.data.fhir.raw.RawFhirViewModel.RawFhirState.WithData
+import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -155,12 +157,14 @@ class RawFhirFragmentTest {
         whenever(viewModel.rawFhir).then { MutableLiveData(Error) }
 
         launchFragment<RawFhirFragment>(
-            bundleOf(
-                RawFhirFragment.MEDICAL_RESOURCE_ID_KEY to TEST_MEDICAL_RESOURCE_IMMUNIZATION.id
+                bundleOf(
+                    RawFhirFragment.MEDICAL_RESOURCE_ID_KEY to TEST_MEDICAL_RESOURCE_IMMUNIZATION.id
+                )
             )
-        )
-
-        onView(withText("Something went wrong. Please try again.")).check(matches(isDisplayed()))
+            .use {
+                onView(withText("Something went wrong. Please try again."))
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -168,34 +172,35 @@ class RawFhirFragmentTest {
         whenever(viewModel.rawFhir).then { MutableLiveData(Loading) }
 
         launchFragment<RawFhirFragment>(
-            bundleOf(
-                RawFhirFragment.MEDICAL_RESOURCE_ID_KEY to TEST_MEDICAL_RESOURCE_IMMUNIZATION.id
+                bundleOf(
+                    RawFhirFragment.MEDICAL_RESOURCE_ID_KEY to TEST_MEDICAL_RESOURCE_IMMUNIZATION.id
+                )
             )
-        )
-
-        onView(ViewMatchers.withId(R.id.loading)).check(matches(isDisplayed()))
-        onView(withSubstring("resourceType")).check(doesNotExist())
+            .use {
+                onView(ViewMatchers.withId(R.id.loading)).check(matches(isDisplayed()))
+                onView(withSubstring("resourceType")).check(doesNotExist())
+            }
     }
 
     @Test
     fun fhirResourcePresent_displaysFhirResource() {
-        launchFragmentWithData()
-
-        onView(withText(fhirResource)).check(matches(isDisplayed()))
-        onView(withContentDescription(contentDescription)).check(matches(isDisplayed()))
+        launchFragmentWithData().use {
+            onView(withText(fhirResource)).check(matches(isDisplayed()))
+            onView(withContentDescription(contentDescription)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun logPageImpression() {
-        launchFragmentWithData()
-
-        onView(withText(fhirResource)).check(matches(isDisplayed()))
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.RAW_FHIR_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(RawFhirPageElement.RAW_FHIR_RESOURCE)
+        launchFragmentWithData().use {
+            onView(withText(fhirResource)).check(matches(isDisplayed()))
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.RAW_FHIR_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger).logImpression(RawFhirPageElement.RAW_FHIR_RESOURCE)
+        }
     }
 
-    private fun launchFragmentWithData() {
+    private fun launchFragmentWithData(): ActivityScenario<TestActivity> {
         whenever(viewModel.rawFhir).then {
             MutableLiveData(
                 WithData(
@@ -209,7 +214,7 @@ class RawFhirFragmentTest {
             )
         }
 
-        launchFragment<RawFhirFragment>(
+        return launchFragment<RawFhirFragment>(
             bundleOf(
                 RawFhirFragment.MEDICAL_RESOURCE_ID_KEY to TEST_MEDICAL_RESOURCE_IMMUNIZATION.id
             )

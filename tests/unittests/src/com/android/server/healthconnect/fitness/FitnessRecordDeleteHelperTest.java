@@ -166,7 +166,6 @@ public class FitnessRecordDeleteHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ADD_MISSING_ACCESS_LOGS)
     public void deleteRecords_shouldRecordAccessLog_logged() {
         DeleteUsingFiltersRequest deleteRequest =
                 new DeleteUsingFiltersRequest.Builder()
@@ -192,7 +191,6 @@ public class FitnessRecordDeleteHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ADD_MISSING_ACCESS_LOGS)
     public void deleteRecords_shouldNotRecordAccessLog_noLog() {
         DeleteUsingFiltersRequest deleteRequest =
                 new DeleteUsingFiltersRequest.Builder()
@@ -246,7 +244,6 @@ public class FitnessRecordDeleteHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_ADD_MISSING_ACCESS_LOGS)
     public void deleteRecordsUnrestricted_noAccessLogs() {
         RecordHelper<?> recordHelper =
                 mInternalHealthConnectMappings.getRecordHelper(

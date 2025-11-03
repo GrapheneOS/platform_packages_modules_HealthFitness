@@ -35,6 +35,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Executor;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -147,6 +148,16 @@ public final class MatchmakingRequest implements Parcelable {
         sb.append(",callingPackageName=").append(mCallingPackageName);
         sb.append("}");
         return sb.toString();
+    }
+
+    /** @hide */
+    @NonNull
+    public MatchmakingRequest toUnmasked(@NonNull Function<String, String> packageUnmasker) {
+        if (mCallingPackageName == null) {
+            return this;
+        }
+
+        return new MatchmakingRequest(mRecordTypes, packageUnmasker.apply(mCallingPackageName));
     }
 
     /**

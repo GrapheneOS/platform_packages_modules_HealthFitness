@@ -104,233 +104,240 @@ class MockedAppEntriesFragmentTest {
     fun fragmentDisplaysCorrectly() = runTest {
         mockData()
         launchFragment<AppEntriesFragment>(
-            bundleOf(
-                PERMISSION_TYPE_NAME_KEY to STEPS.name,
-                EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                Constants.EXTRA_APP_NAME to TEST_APP_NAME,
+                bundleOf(
+                    PERMISSION_TYPE_NAME_KEY to STEPS.name,
+                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
+                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
+                )
             )
-        )
+            .use {
+                advanceUntilIdle()
 
-        advanceUntilIdle()
+                onView(withText("10 steps")).check(matches(isDisplayed()))
+                onView(withText("15.2 steps/min")).check(matches(isDisplayed()))
+                onView(withText("60 steps")).check(matches(isDisplayed()))
+                onView(withText("Select all")).check(doesNotExist())
 
-        onView(withText("10 steps")).check(matches(isDisplayed()))
-        onView(withText("15.2 steps/min")).check(matches(isDisplayed()))
-        onView(withText("60 steps")).check(matches(isDisplayed()))
-        onView(withText("Select all")).check(doesNotExist())
-
-        assertCheckboxNotShown(recyclerViewId, "10 steps", 1)
-        assertCheckboxNotShown(recyclerViewId, "15.2 steps/min", 2)
+                assertCheckboxNotShown(recyclerViewId, "10 steps", 1)
+                assertCheckboxNotShown(recyclerViewId, "15.2 steps/min", 2)
+            }
     }
 
     @Test
     fun toggleDeletion_hidesAggregation_showsSelectAll_showsCheckboxes() = runTest {
         mockData()
-        val scenario =
-            launchFragment<AppEntriesFragment>(
+        launchFragment<AppEntriesFragment>(
                 bundleOf(
                     PERMISSION_TYPE_NAME_KEY to STEPS.name,
                     EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
                     Constants.EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-        advanceUntilIdle()
-        scenario.onActivity { activity ->
-            val fragment = activity.supportFragmentManager.findFragmentByTag("")
-            (fragment as AppEntriesFragment).triggerDeletionState(
-                EntriesViewModel.EntriesDeletionScreenState.DELETE
-            )
-        }
-        advanceUntilIdle()
+            .use { scenario ->
+                advanceUntilIdle()
+                scenario.onActivity { activity ->
+                    val fragment = activity.supportFragmentManager.findFragmentByTag("")
+                    (fragment as AppEntriesFragment).triggerDeletionState(
+                        EntriesViewModel.EntriesDeletionScreenState.DELETE
+                    )
+                }
+                advanceUntilIdle()
 
-        onView(withText("Select all")).check(matches(isDisplayed()))
-        onView(withText("60 steps")).check(doesNotExist())
+                onView(withText("Select all")).check(matches(isDisplayed()))
+                onView(withText("60 steps")).check(doesNotExist())
 
-        assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
+                assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
+                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
+            }
     }
 
     @Test
     fun inDeletion_screenStateRemainsOnOrientationChange() = runTest {
         mockData()
-        val scenario =
-            launchFragment<AppEntriesFragment>(
+        launchFragment<AppEntriesFragment>(
                 bundleOf(
                     PERMISSION_TYPE_NAME_KEY to STEPS.name,
                     EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
                     Constants.EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-        advanceUntilIdle()
-        scenario.onActivity { activity ->
-            val fragment = activity.supportFragmentManager.findFragmentByTag("")
-            (fragment as AppEntriesFragment).triggerDeletionState(
-                EntriesViewModel.EntriesDeletionScreenState.DELETE
-            )
-        }
-        advanceUntilIdle()
+            .use { scenario ->
+                advanceUntilIdle()
+                scenario.onActivity { activity ->
+                    val fragment = activity.supportFragmentManager.findFragmentByTag("")
+                    (fragment as AppEntriesFragment).triggerDeletionState(
+                        EntriesViewModel.EntriesDeletionScreenState.DELETE
+                    )
+                }
+                advanceUntilIdle()
 
-        onView(withText("Select all")).check(matches(isDisplayed()))
-        onView(withText("60 steps")).check(doesNotExist())
+                onView(withText("Select all")).check(matches(isDisplayed()))
+                onView(withText("60 steps")).check(doesNotExist())
 
-        assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
+                assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
+                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
 
-        onView(withText("10 steps")).perform(click())
+                onView(withText("10 steps")).perform(click())
 
-        assertCheckboxChecked(recyclerViewId, "10 steps", 1)
+                assertCheckboxChecked(recyclerViewId, "10 steps", 1)
 
-        scenario.recreate()
-        advanceUntilIdle()
-        onView(withText("Select all")).check(matches(isDisplayed()))
-        onView(withText("60 steps")).check(doesNotExist())
+                scenario.recreate()
+                advanceUntilIdle()
+                onView(withText("Select all")).check(matches(isDisplayed()))
+                onView(withText("60 steps")).check(doesNotExist())
 
-        assertCheckboxChecked(recyclerViewId, "10 steps", 1)
+                assertCheckboxChecked(recyclerViewId, "10 steps", 1)
 
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
+                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
+            }
     }
 
     @Test
     fun inDeletion_whenAllCheckboxesChecked_selectAllChecked() = runTest {
         mockData()
-        val scenario =
-            launchFragment<AppEntriesFragment>(
+        launchFragment<AppEntriesFragment>(
                 bundleOf(
                     PERMISSION_TYPE_NAME_KEY to STEPS.name,
                     EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
                     Constants.EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-        advanceUntilIdle()
-        scenario.onActivity { activity ->
-            val fragment = activity.supportFragmentManager.findFragmentByTag("")
-            (fragment as AppEntriesFragment).triggerDeletionState(
-                EntriesViewModel.EntriesDeletionScreenState.DELETE
-            )
-        }
-        advanceUntilIdle()
+            .use { scenario ->
+                advanceUntilIdle()
+                scenario.onActivity { activity ->
+                    val fragment = activity.supportFragmentManager.findFragmentByTag("")
+                    (fragment as AppEntriesFragment).triggerDeletionState(
+                        EntriesViewModel.EntriesDeletionScreenState.DELETE
+                    )
+                }
+                advanceUntilIdle()
 
-        onView(withText("Select all")).check(matches(isDisplayed()))
-        onView(withText("60 steps")).check(doesNotExist())
+                onView(withText("Select all")).check(matches(isDisplayed()))
+                onView(withText("60 steps")).check(doesNotExist())
 
-        assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
+                assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
 
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
+                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
 
-        onView(withText("10 steps")).perform(click())
-        onView(withText("15.2 steps/min")).perform(click())
+                onView(withText("10 steps")).perform(click())
+                onView(withText("15.2 steps/min")).perform(click())
 
-        // assert select all checked
-        assertCheckboxChecked(recyclerViewId, "Select all", 0)
+                // assert select all checked
+                assertCheckboxChecked(recyclerViewId, "Select all", 0)
+            }
     }
 
     @Test
     fun inDeletion_whenOneCheckboxUnchecked_selectAllUnchecked() = runTest {
         mockData()
-        val scenario =
-            launchFragment<AppEntriesFragment>(
+        launchFragment<AppEntriesFragment>(
                 bundleOf(
                     PERMISSION_TYPE_NAME_KEY to STEPS.name,
                     EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
                     Constants.EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-        advanceUntilIdle()
-        scenario.onActivity { activity ->
-            val fragment = activity.supportFragmentManager.findFragmentByTag("")
-            (fragment as AppEntriesFragment).triggerDeletionState(
-                EntriesViewModel.EntriesDeletionScreenState.DELETE
-            )
-        }
-        advanceUntilIdle()
+            .use { scenario ->
+                advanceUntilIdle()
+                scenario.onActivity { activity ->
+                    val fragment = activity.supportFragmentManager.findFragmentByTag("")
+                    (fragment as AppEntriesFragment).triggerDeletionState(
+                        EntriesViewModel.EntriesDeletionScreenState.DELETE
+                    )
+                }
+                advanceUntilIdle()
 
-        onView(withText("Select all")).check(matches(isDisplayed()))
-        onView(withText("60 steps")).check(doesNotExist())
+                onView(withText("Select all")).check(matches(isDisplayed()))
+                onView(withText("60 steps")).check(doesNotExist())
 
-        assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
+                assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
 
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
+                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
 
-        onView(withText("Select all")).perform(click())
+                onView(withText("Select all")).perform(click())
 
-        assertCheckboxChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 2)
+                assertCheckboxChecked(recyclerViewId, "10 steps", 1)
+                assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 2)
 
-        assertCheckboxChecked(recyclerViewId, "Select all", 0)
+                assertCheckboxChecked(recyclerViewId, "Select all", 0)
 
-        onView(withText("10 steps")).perform(click())
+                onView(withText("10 steps")).perform(click())
 
-        assertCheckboxNotChecked(recyclerViewId, "Select all", 0)
+                assertCheckboxNotChecked(recyclerViewId, "Select all", 0)
+            }
     }
 
     @Test
     fun inDeletion_whenSelectAllChecked_allCheckboxesChecked() = runTest {
         mockData()
-        val scenario =
-            launchFragment<AppEntriesFragment>(
+        launchFragment<AppEntriesFragment>(
                 bundleOf(
                     PERMISSION_TYPE_NAME_KEY to STEPS.name,
                     EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
                     Constants.EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-        advanceUntilIdle()
-        scenario.onActivity { activity ->
-            val fragment = activity.supportFragmentManager.findFragmentByTag("")
-            (fragment as AppEntriesFragment).triggerDeletionState(
-                EntriesViewModel.EntriesDeletionScreenState.DELETE
-            )
-        }
-        advanceUntilIdle()
+            .use { scenario ->
+                advanceUntilIdle()
+                scenario.onActivity { activity ->
+                    val fragment = activity.supportFragmentManager.findFragmentByTag("")
+                    (fragment as AppEntriesFragment).triggerDeletionState(
+                        EntriesViewModel.EntriesDeletionScreenState.DELETE
+                    )
+                }
+                advanceUntilIdle()
 
-        onView(withText("Select all")).check(matches(isDisplayed()))
-        onView(withText("60 steps")).check(doesNotExist())
+                onView(withText("Select all")).check(matches(isDisplayed()))
+                onView(withText("60 steps")).check(doesNotExist())
 
-        assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
+                assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
+                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
 
-        onView(withText("Select all")).perform(click())
+                onView(withText("Select all")).perform(click())
 
-        assertCheckboxChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 2)
+                assertCheckboxChecked(recyclerViewId, "10 steps", 1)
+                assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 2)
+            }
     }
 
     @Test
     fun inDeletion_whenSelectAllUnchecked_allCheckboxesUnchecked() = runTest {
         mockData()
-        val scenario =
-            launchFragment<AppEntriesFragment>(
+        launchFragment<AppEntriesFragment>(
                 bundleOf(
                     PERMISSION_TYPE_NAME_KEY to STEPS.name,
                     EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
                     Constants.EXTRA_APP_NAME to TEST_APP_NAME,
                 )
             )
-        advanceUntilIdle()
-        scenario.onActivity { activity ->
-            val fragment = activity.supportFragmentManager.findFragmentByTag("")
-            (fragment as AppEntriesFragment).triggerDeletionState(
-                EntriesViewModel.EntriesDeletionScreenState.DELETE
-            )
-        }
-        advanceUntilIdle()
+            .use { scenario ->
+                advanceUntilIdle()
+                scenario.onActivity { activity ->
+                    val fragment = activity.supportFragmentManager.findFragmentByTag("")
+                    (fragment as AppEntriesFragment).triggerDeletionState(
+                        EntriesViewModel.EntriesDeletionScreenState.DELETE
+                    )
+                }
+                advanceUntilIdle()
 
-        onView(withText("Select all")).check(matches(isDisplayed()))
-        onView(withText("60 steps")).check(doesNotExist())
+                onView(withText("Select all")).check(matches(isDisplayed()))
+                onView(withText("60 steps")).check(doesNotExist())
 
-        assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
+                assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
 
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
+                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
 
-        onView(withText("Select all")).perform(click())
+                onView(withText("Select all")).perform(click())
 
-        assertCheckboxChecked(recyclerViewId, "10 steps", 1)
-        assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 2)
+                assertCheckboxChecked(recyclerViewId, "10 steps", 1)
+                assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 2)
 
-        onView(withText("Select all")).perform(click())
+                onView(withText("Select all")).perform(click())
 
-        assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
+                assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
 
-        assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
+                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 2)
+            }
     }
 
     private fun mockData() {

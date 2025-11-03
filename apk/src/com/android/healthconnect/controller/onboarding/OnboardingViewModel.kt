@@ -28,8 +28,6 @@ import com.android.healthconnect.controller.shared.Constants.ONBOARDING_ONE_APP_
 import com.android.healthconnect.controller.shared.Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN
 import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
-import com.android.healthconnect.controller.shared.usecase.LoadFitnessPermissionAppsUseCase
-import com.android.healthconnect.controller.shared.usecase.LoadOnboardingStateUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -41,9 +39,7 @@ class OnboardingViewModel
 @Inject
 constructor(
     @ApplicationContext private val context: Context,
-    @LoadFitnessPermissionAppsUseCase
     private val loadFitnessPermissionApps: BaseUseCase<Unit, List<ConnectedFitnessAppMetadata>>,
-    @LoadOnboardingStateUseCase
     private val loadOnboardingStateUseCase: BaseUseCase<Unit, OnboardingState>,
 ) : ViewModel() {
 

@@ -1011,6 +1011,8 @@ class PermissionsActivityTest {
                 .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
             onView(withText("Heart rate")).perform(click())
             onView(withText("Allow")).perform(click())
+            onIdle()
+
             onView(withText("Allow $BODY_SENSORS_TEST_APP_NAME to access data in the background?"))
                 .check(matches(isDisplayed()))
             onView(withText("Allow")).perform(click())

@@ -645,9 +645,7 @@ package android.health.connect.datatypes {
     method @Nullable public android.health.connect.datatypes.units.Percentage getAlcoholByVolume();
     method public int getBeverageType();
     method @Nullable public java.time.LocalDate getDate();
-    method @Nullable public CharSequence getNote();
-    method public int getServingCount();
-    method public int getServingSize();
+    method @Nullable public CharSequence getNotes();
     method @Nullable public android.health.connect.datatypes.units.Volume getServingVolume();
     method public int getTemporalType();
     field public static final int ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_ABSINTHE = 14; // 0xe
@@ -669,34 +667,22 @@ package android.health.connect.datatypes {
     field public static final int ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_VODKA = 3; // 0x3
     field public static final int ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WHISKEY = 5; // 0x5
     field public static final int ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE = 2; // 0x2
-    field public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_BOTTLE = 7; // 0x7
-    field public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_CAN = 8; // 0x8
-    field public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_GLASS = 5; // 0x5
-    field public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_HALF_PINT = 4; // 0x4
-    field public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_HANDLE = 9; // 0x9
-    field public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_OTHER = 0; // 0x0
-    field public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_PINT = 3; // 0x3
-    field public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_SHOT = 6; // 0x6
-    field public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_STANDARD_DRINK = 1; // 0x1
-    field public static final int ALCOHOL_CONSUMPTION_SERVING_SIZE_UNIT = 2; // 0x2
     field public static final int RECORD_TEMPORAL_TYPE_INSTANT = 0; // 0x0
     field public static final int RECORD_TEMPORAL_TYPE_INTERVAL = 1; // 0x1
     field public static final int RECORD_TEMPORAL_TYPE_LOCAL_DATE = 2; // 0x2
   }
 
   public static final class AlcoholConsumptionRecord.Builder {
-    ctor public AlcoholConsumptionRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, int, int);
-    ctor public AlcoholConsumptionRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int, int);
-    ctor public AlcoholConsumptionRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.LocalDate, int, int);
+    ctor public AlcoholConsumptionRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, int);
+    ctor public AlcoholConsumptionRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
+    ctor public AlcoholConsumptionRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.LocalDate, int);
     method @NonNull public android.health.connect.datatypes.AlcoholConsumptionRecord build();
     method @NonNull public android.health.connect.datatypes.AlcoholConsumptionRecord.Builder clearEndZoneOffset();
     method @NonNull public android.health.connect.datatypes.AlcoholConsumptionRecord.Builder clearStartZoneOffset();
     method @NonNull public android.health.connect.datatypes.AlcoholConsumptionRecord.Builder setAlcoholByVolume(@Nullable android.health.connect.datatypes.units.Percentage);
     method @NonNull public android.health.connect.datatypes.AlcoholConsumptionRecord.Builder setBeverageType(int);
     method @NonNull public android.health.connect.datatypes.AlcoholConsumptionRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
-    method @NonNull public android.health.connect.datatypes.AlcoholConsumptionRecord.Builder setNote(@Nullable CharSequence);
-    method @NonNull public android.health.connect.datatypes.AlcoholConsumptionRecord.Builder setServingCount(int);
-    method @NonNull public android.health.connect.datatypes.AlcoholConsumptionRecord.Builder setServingSize(int);
+    method @NonNull public android.health.connect.datatypes.AlcoholConsumptionRecord.Builder setNotes(@Nullable CharSequence);
     method @NonNull public android.health.connect.datatypes.AlcoholConsumptionRecord.Builder setServingVolume(@Nullable android.health.connect.datatypes.units.Volume);
     method @NonNull public android.health.connect.datatypes.AlcoholConsumptionRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
@@ -919,11 +905,13 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.DataOrigin.Builder setPackageName(@NonNull String);
   }
 
-  public final class Device {
+  public final class Device implements android.os.Parcelable {
+    method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public int describeContents();
     method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @Nullable public String getDisplayName();
     method @Nullable public String getManufacturer();
     method @Nullable public String getModel();
     method public int getType();
+    method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public void writeToParcel(@NonNull android.os.Parcel, int);
     field public static final int DEVICE_TYPE_CHEST_STRAP = 7; // 0x7
     field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE = 9; // 0x9
     field public static final int DEVICE_TYPE_FITNESS_BAND = 6; // 0x6

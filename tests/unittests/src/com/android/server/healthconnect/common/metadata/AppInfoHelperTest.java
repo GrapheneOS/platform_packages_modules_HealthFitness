@@ -95,6 +95,7 @@ public class AppInfoHelperTest {
     private static final String EXPECTED_DEVICE_APP_NAME = "My Pixel Watch";
 
     private AppInfoHelper mAppInfoHelper;
+    private DeviceInfoHelper mDeviceInfoHelper;
     private FitnessTestUtils mFitnessTestUtils;
 
     @Before
@@ -124,6 +125,7 @@ public class AppInfoHelperTest {
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
+        mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
         mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
     }
 
@@ -417,9 +419,25 @@ public class AppInfoHelperTest {
     }
 
     @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
     public void insertsDeviceDataSource() {
         String canonicalSpn = SyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
         long deviceInfoId = 1L;
+
+        RecordInternal<?> recordInternal =
+                buildStepsRecord(
+                        /* startTimeMillis= */ 1000,
+                        /* endTimeMillis= */ 2000,
+                        /* stepsCount= */ 100);
+        recordInternal.setManufacturer("Google");
+        recordInternal.setModel("Pixel");
+        recordInternal.setDeviceType(1);
+        mDeviceInfoHelper.populateDeviceInfoId(recordInternal);
+        assertThat(recordInternal.getDeviceInfoId()).isEqualTo(deviceInfoId);
 
         mAppInfoHelper.insertDeviceDataSourceIfNotPresent(canonicalSpn, deviceInfoId);
 
@@ -436,15 +454,27 @@ public class AppInfoHelperTest {
     }
 
     @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
     public void spnAlreadyPresent_populateAppInfoId_skipsPopulatingAppInfo() {
         String canonicalSpn = SyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
         long deviceInfoId = 1L;
-        mAppInfoHelper.insertDeviceDataSourceIfNotPresent(canonicalSpn, deviceInfoId);
+
         RecordInternal<?> recordInternal =
                 buildStepsRecord(
                         /* startTimeMillis= */ 1000,
                         /* endTimeMillis= */ 2000,
                         /* stepsCount= */ 100);
+        recordInternal.setManufacturer("Google");
+        recordInternal.setModel("Pixel");
+        recordInternal.setDeviceType(1);
+        mDeviceInfoHelper.populateDeviceInfoId(recordInternal);
+        assertThat(recordInternal.getDeviceInfoId()).isEqualTo(deviceInfoId);
+
+        mAppInfoHelper.insertDeviceDataSourceIfNotPresent(canonicalSpn, deviceInfoId);
         recordInternal.setPackageName(canonicalSpn);
 
         mAppInfoHelper.populateAppInfoId(recordInternal, true);

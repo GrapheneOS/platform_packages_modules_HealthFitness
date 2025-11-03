@@ -23,7 +23,6 @@ import static android.Manifest.permission.RESTORE_HEALTH_CONNECT_DATA_AND_SETTIN
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
-import static android.health.connect.Constants.READ;
 import static android.health.connect.HealthConnectException.ERROR_INTERNAL;
 import static android.health.connect.HealthConnectException.ERROR_INVALID_ARGUMENT;
 import static android.health.connect.HealthConnectException.ERROR_IO;
@@ -57,7 +56,6 @@ import static com.android.server.healthconnect.common.logging.HealthConnectServi
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.UPDATE_DATA;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.UPSERT_MEDICAL_RESOURCES;
 
-import static java.util.Collections.singletonList;
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
@@ -154,6 +152,7 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
+import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.exportimport.ExportImportDocumentProvider;
 import android.health.connect.exportimport.IImportStatusCallback;
 import android.health.connect.exportimport.IQueryDocumentProvidersCallback;
@@ -204,6 +203,7 @@ import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.DeviceDataProviderManager;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.exportimport.DocumentProvidersManager;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
@@ -260,6 +260,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -340,8 +341,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final HealthConnectThreadScheduler mThreadScheduler;
     private final HealthFitnessStatsLog mStatsLog;
     @Nullable private final MatchmakingManager mMatchmakingManager;
-
     @Nullable private final SyntheticPackageNameResolver mSyntheticPackageNameResolver;
+    @Nullable private final DeviceDataProviderManager mDeviceDataProviderManager;
 
     private volatile UserHandle mCurrentForegroundUser;
 
@@ -390,7 +391,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             @Nullable CloudBackupManager cloudBackupManager,
             @Nullable CloudRestoreManager cloudRestoreManager,
             @Nullable MatchmakingManager matchmakingManager,
-            @Nullable SyntheticPackageNameResolver syntheticPackageNameResolver) {
+            @Nullable SyntheticPackageNameResolver syntheticPackageNameResolver,
+            @Nullable DeviceDataProviderManager deviceDataProviderManager) {
         mContext = context;
         mCurrentForegroundUser = context.getUser();
         mTimeSource = timeSource;
@@ -465,6 +467,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mStatsLog = statsLog;
         mMatchmakingManager = matchmakingManager;
         mSyntheticPackageNameResolver = syntheticPackageNameResolver;
+        mDeviceDataProviderManager = deviceDataProviderManager;
     }
 
     public void setupForUser(UserHandle currentForegroundUser) {
@@ -855,18 +858,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
                         if (Constants.DEBUG) {
                             Slog.d(TAG, "pageToken: " + pageToken);
-                        }
-
-                        if (!Flags.addMissingAccessLogs()) {
-                            // Calls from controller APK should not be recorded in access logs
-                            // If an app is reading only its own data then it is not recorded in
-                            // access logs.
-                            if (!holdsDataManagementPermission && !enforceSelfRead) {
-                                final List<Integer> recordTypes =
-                                        singletonList(unmaskedRequest.getRecordType());
-                                mAccessLogsHelper.addAccessLog(
-                                        callingPackageName, recordTypes, READ);
-                            }
                         }
 
                         final ReadRecordsResponseParcel maskedResponseParcel =
@@ -1787,6 +1778,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             String[] packageNames = mContext.getPackageManager().getPackagesForUid(uid);
             for (String packageName : packageNames) {
                 mFirstGrantTimeManager.setFirstGrantTime(packageName, Instant.now(), userHandle);
+            }
+            if (mDeviceDataProviderManager != null) {
+                mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
             }
         } finally {
             Binder.restoreCallingIdentity(token);
@@ -3105,10 +3099,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             AttributionSource attributionSource,
             MatchmakingRequest request,
             IIsMatchmakingPossibleCallback callback) {
+        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, request, callback);
+        final MatchmakingRequest unmaskedRequest =
+                request.toUnmasked(getUnmaskingFunction(attributionSource.getPackageName()));
+
         getMatchingApps(
                 attributionSource,
-                request,
+                unmaskedRequest,
                 new IGetMatchingAppsCallback.Stub() {
                     @Override
                     public void onResult(GetMatchingAppsResponse response) throws RemoteException {
@@ -3133,6 +3131,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             AttributionSource attributionSource,
             MatchmakingRequest request,
             IGetMatchingAppsCallback callback) {
+        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, request, callback);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
@@ -3146,6 +3145,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionPackageName);
         ErrorCallback errorCallback = callback::onError;
+        final MatchmakingRequest unmaskedRequest =
+                request.toUnmasked(getUnmaskingFunction(attributionPackageName));
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
@@ -3154,7 +3155,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     }
                     enforceIsForegroundUser(userHandle);
                     throwExceptionIfDataSyncInProgress();
-                    String requestPackageName = request.getCallingPackageName();
+                    String requestPackageName = unmaskedRequest.getCallingPackageName();
                     if (holdsDataManagementPermission) {
                         checkArgument(requestPackageName != null, "package name must be provided");
                     } else {
@@ -3171,10 +3172,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             holdsDataManagementPermission
                                     ? requestPackageName
                                     : attributionPackageName;
-                    Set<Class<? extends Record>> recordTypes = request.getRecordTypes();
+                    Set<Class<? extends Record>> recordTypes = unmaskedRequest.getRecordTypes();
                     Map<String, Set<String>> matchingApps =
                             mMatchmakingManager.fetchMatchingApps(recordTypes, packageName);
-                    callback.onResult(new GetMatchingAppsResponse(matchingApps));
+                    GetMatchingAppsResponse maskedResponse =
+                            new GetMatchingAppsResponse(matchingApps)
+                                    .toMasked(getMaskingFunction(attributionPackageName));
+                    callback.onResult(maskedResponse);
                     // TODO(b/425634323): Add logging.
                 },
                 logger,
@@ -3192,11 +3196,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             String callingPackageName,
             Map<String, List<String>> matchingApps,
             IEmptyResponseCallback callback) {
+        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, callingPackageName, callback);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final ErrorCallback errorCallback = callback::onError;
+        final String unmaskedCallingPackageName =
+                getUnmaskingFunction(attributionSource.getPackageName()).apply(callingPackageName);
 
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
@@ -3207,14 +3214,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
                     mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
-                    if (callingPackageName.isEmpty()) {
+                    if (unmaskedCallingPackageName.isEmpty()) {
                         throw new HealthConnectException(
                                 ERROR_INVALID_ARGUMENT, "Calling package name can't be empty.");
                     }
                     throwExceptionIfDataSyncInProgress();
                     if (mMatchmakingManager != null) {
                         mMatchmakingManager.recordMatchmakingDenial(
-                                callingPackageName, matchingApps);
+                                unmaskedCallingPackageName, matchingApps);
                     }
                     callback.onResult();
                 },
@@ -3272,6 +3279,51 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
+     * @see HealthConnectManager#advertiseDeviceDataSources
+     */
+    @Override
+    public void advertiseDeviceDataSources(
+            AttributionSource attributionSource,
+            List<DeviceDataAdvertisement> advertisements,
+            IEmptyResponseCallback callback) {
+        checkParamsNonNull(attributionSource, advertisements, callback);
+        ErrorCallback errorCallback = callback::onError;
+        int uid = Binder.getCallingUid();
+        int pid = Binder.getCallingPid();
+        UserHandle userHandle = Binder.getCallingUserHandle();
+        String packageName = attributionSource.getPackageName();
+        // TODO(b/455514553): Use specific API method for logging and additional telemetry.
+        HealthConnectServiceLogger.Builder logger =
+                new HealthConnectServiceLogger.Builder(
+                                /* holdsDataManagementPermission= */ false, API_METHOD_UNKNOWN)
+                        .setHealthFitnessStatsLog(mStatsLog)
+                        .setPackageName(packageName);
+
+        scheduleLoggingHealthDataApiErrors(
+                () -> {
+                    if (mDeviceDataProviderManager == null) {
+                        throw new UnsupportedOperationException(
+                                "advertiseDeviceDataSources is not supported");
+                    }
+                    enforceIsForegroundUser(userHandle);
+                    verifyPackageNameFromUid(uid, attributionSource);
+                    if (!mDeviceDataProviderManager.isPermittedToProvideDeviceData(
+                            requireNonNull(packageName), uid, pid)) {
+                        throw new SecurityException(
+                                "Caller is not permitted to provide device data");
+                    }
+                    mDeviceDataProviderManager.handleAdvertisement(
+                            new HashSet<>(advertisements), packageName);
+
+                    tryAndReturnResult(callback, logger);
+                },
+                logger,
+                errorCallback,
+                uid,
+                /* isController= */ false);
+    }
+
+    /**
      * "dumpsys" infrastructure. This should get included in bug reports.
      *
      * <p>Note: To print, run "adb shell dumpsys healthconnect".
@@ -3302,6 +3354,44 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         pw.printf(
                 "Data Restore State : %d, Data Restore Error : %d \n\n",
                 mBackupRestore.getDataRestoreState(), mBackupRestore.getDataRestoreError());
+    }
+
+    /**
+     * @see HealthConnectManager#getCurrentDeviceId
+     */
+    @Override
+    public String getCurrentDeviceId(AttributionSource attributionSource) {
+        checkParamsNonNull(attributionSource);
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+
+        enforceIsForegroundUser(userHandle);
+        try {
+            if (mDeviceDataProviderManager == null || !Flags.deviceDataProvidersApi()) {
+                throw new UnsupportedOperationException(
+                        "getCurrentDeviceId is not supported."
+                                + "Make sure to turn on the respective DDP flags.");
+            }
+
+            if (!mDeviceDataProviderManager.isPermittedToProvideDeviceData(
+                    attributionSource.getPackageName(), uid, pid)) {
+                throw new SecurityException(
+                        "Caller does not have permission to call getCurrentDeviceId.");
+            }
+
+            return getMaskingFunction(attributionSource.getPackageName())
+                    .apply(mDeviceDataProviderManager.getCurrentDeviceId());
+        } catch (Exception e) {
+            Slog.e(TAG, "Unable to get current device id for " + userHandle);
+            if (e instanceof SQLiteException
+                    || e instanceof UnsupportedOperationException
+                    || e instanceof SecurityException) {
+                throw e;
+            }
+        }
+
+        throw new RuntimeException();
     }
 
     // Cancel BR timeouts - this might be needed when a user is going into background.

@@ -20,7 +20,6 @@ import android.health.connect.exportimport.ScheduledExportStatus
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -32,7 +31,7 @@ class LoadScheduledExportStatusUseCase
 constructor(
     private val healthDataExportManager: HealthDataExportManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : ILoadScheduledExportStatusUseCase, BaseUseCase<Unit, ScheduledExportUiState>(dispatcher) {
+) : BaseUseCase<Unit, ScheduledExportUiState>(dispatcher) {
 
     companion object {
         private const val TAG = "LoadScheduledExportStatusUseCase"
@@ -70,11 +69,4 @@ constructor(
             scheduledExportStatus.nextExportSequentialNumber,
         )
     }
-}
-
-interface ILoadScheduledExportStatusUseCase {
-    /** Returns the stored scheduled export status. */
-    suspend fun invoke(input: Unit): UseCaseResults<ScheduledExportUiState>
-
-    suspend fun execute(input: Unit): ScheduledExportUiState
 }

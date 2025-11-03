@@ -175,6 +175,15 @@ flag {
 }
 
 flag {
+    name: "cycle_phases_flag"
+    namespace: "health_fitness_aconfig"
+    description: "A new flag for cycle phases, enables menstrual cycle phases data type."
+    bug: "296855479"
+    is_fixed_read_only: false
+    is_exported: false
+}
+
+flag {
     name: "cycle_phases_db"
     namespace: "health_fitness_aconfig"
     description: "Enables DB changes to support the menstrual cycle phases data type."
@@ -488,15 +497,6 @@ flag {
 }
 
 flag {
-    name: "onboarding_notification"
-    namespace: "health_fitness_aconfig"
-    description: "Enable notification for onboarding flow."
-    bug: "418778638"
-    is_fixed_read_only: true
-    is_exported: false
-}
-
-flag {
     name: "remove_old_onboarding"
     namespace: "health_fitness_aconfig"
     description: "Removes old onboarding flow."
@@ -719,4 +719,13 @@ flag {
     metadata {
         purpose: PURPOSE_BUGFIX
     }
+}
+
+flag {
+    name: "alcohol_consumption_db_changes"
+    namespace: "health_fitness_aconfig"
+    description: "Flag to update alcohol consumption db to new schema changes."
+    bug: "454020026"
+    is_fixed_read_only: false
+    is_exported: false
 }

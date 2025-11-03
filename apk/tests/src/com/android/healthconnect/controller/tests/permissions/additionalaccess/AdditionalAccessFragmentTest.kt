@@ -113,21 +113,21 @@ class AdditionalAccessFragmentTest {
 
     @Test
     fun validArgument_startsFragment() {
-        val scenario =
-            launchFragment<AdditionalAccessFragment>(
+        launchFragment<AdditionalAccessFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
-
-        assertThat(scenario.getState()).isEqualTo(Lifecycle.State.RESUMED)
+            .use { scenario -> assertThat(scenario.getState()).isEqualTo(Lifecycle.State.RESUMED) }
     }
 
     @Test
     fun loadsAdditionalAccessPreferences() {
         launchFragment<AdditionalAccessFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        verify(additionalAccessViewModel).loadAdditionalAccessPreferences(eq(TEST_APP_PACKAGE_NAME))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                verify(additionalAccessViewModel)
+                    .loadAdditionalAccessPreferences(eq(TEST_APP_PACKAGE_NAME))
+            }
     }
 
     @Test
@@ -140,15 +140,17 @@ class AdditionalAccessFragmentTest {
         }
 
         launchFragment<AdditionalAccessFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText(R.string.route_permissions_label)).check(matches(isDisplayed()))
+                onView(withText(R.string.route_permissions_ask)).check(matches(isDisplayed()))
 
-        onView(withText(R.string.route_permissions_label)).check(matches(isDisplayed()))
-        onView(withText(R.string.route_permissions_ask)).check(matches(isDisplayed()))
-
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ADDITIONAL_ACCESS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
+                verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ADDITIONAL_ACCESS_PAGE)
+                verify(healthConnectLogger).logPageImpression()
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
+            }
     }
 
     @Test
@@ -161,11 +163,13 @@ class AdditionalAccessFragmentTest {
         }
 
         launchFragment<AdditionalAccessFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withText(R.string.route_permissions_label)).check(matches(isDisplayed()))
-        onView(withText(R.string.route_permissions_always_allow)).check(matches(isDisplayed()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText(R.string.route_permissions_label)).check(matches(isDisplayed()))
+                onView(withText(R.string.route_permissions_always_allow))
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -178,11 +182,12 @@ class AdditionalAccessFragmentTest {
         }
 
         launchFragment<AdditionalAccessFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-
-        onView(withText(R.string.route_permissions_label)).check(matches(isDisplayed()))
-        onView(withText(R.string.route_permissions_deny)).check(matches(isDisplayed()))
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText(R.string.route_permissions_label)).check(matches(isDisplayed()))
+                onView(withText(R.string.route_permissions_deny)).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -213,25 +218,25 @@ class AdditionalAccessFragmentTest {
                 )
             )
         }
-        val scenario =
-            launchFragment<AdditionalAccessFragment>(
+        launchFragment<AdditionalAccessFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as AdditionalAccessFragment
+                    val historyPreference =
+                        fragment.preferenceScreen.findPreference("key_history_read")
+                            as HealthSwitchPreference?
+                    val backgroundPreference =
+                        fragment.preferenceScreen.findPreference("key_background_read")
+                            as HealthSwitchPreference?
 
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as AdditionalAccessFragment
-            val historyPreference =
-                fragment.preferenceScreen.findPreference("key_history_read")
-                    as HealthSwitchPreference?
-            val backgroundPreference =
-                fragment.preferenceScreen.findPreference("key_background_read")
-                    as HealthSwitchPreference?
-
-            assertThat(historyPreference?.permission).isNull()
-            assertThat(backgroundPreference?.permission).isNull()
-        }
+                    assertThat(historyPreference?.permission).isNull()
+                    assertThat(backgroundPreference?.permission).isNull()
+                }
+            }
     }
 
     @Test
@@ -256,40 +261,42 @@ class AdditionalAccessFragmentTest {
                 )
             )
         }
-        val scenario =
-            launchFragment<AdditionalAccessFragment>(
+        launchFragment<AdditionalAccessFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Access exercise routes")).check(matches(isDisplayed()))
+                onView(withText("Always allow")).check(matches(isDisplayed()))
+                onView(withText("Access past data")).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Allow this app to access Health Connect data added before October 20, 2022"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Enable at least one read permission in order to turn on past data access for this app"
+                        )
+                    )
+                    .check(doesNotExist())
 
-        onView(withText("Access exercise routes")).check(matches(isDisplayed()))
-        onView(withText("Always allow")).check(matches(isDisplayed()))
-        onView(withText("Access past data")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Allow this app to access Health Connect data added before October 20, 2022"
-                )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Enable at least one read permission in order to turn on past data access for this app"
-                )
-            )
-            .check(doesNotExist())
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as AdditionalAccessFragment
+                    val historyPreference =
+                        fragment.preferenceScreen.findPreference("key_history_read")
+                            as HealthSwitchPreference?
+                    assertThat(historyPreference?.isChecked).isTrue()
+                    assertThat(historyPreference?.isEnabled).isTrue()
+                }
 
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as AdditionalAccessFragment
-            val historyPreference =
-                fragment.preferenceScreen.findPreference("key_history_read")
-                    as HealthSwitchPreference?
-            assertThat(historyPreference?.isChecked).isTrue()
-            assertThat(historyPreference?.isEnabled).isTrue()
-        }
-
-        verify(healthConnectLogger).logImpression(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
-        verify(healthConnectLogger).logImpression(AdditionalAccessElement.HISTORY_READ_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.HISTORY_READ_BUTTON)
+            }
     }
 
     @Test
@@ -314,37 +321,37 @@ class AdditionalAccessFragmentTest {
                 )
             )
         }
-        val scenario =
-            launchFragment<AdditionalAccessFragment>(
+        launchFragment<AdditionalAccessFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Access exercise routes")).check(matches(isDisplayed()))
+                onView(withText("Always allow")).check(matches(isDisplayed()))
+                onView(withText("Access past data")).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Allow this app to access Health Connect data added before October 20, 2022"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Enable at least one read permission in order to turn on past data access for this app"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
 
-        onView(withText("Access exercise routes")).check(matches(isDisplayed()))
-        onView(withText("Always allow")).check(matches(isDisplayed()))
-        onView(withText("Access past data")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Allow this app to access Health Connect data added before October 20, 2022"
-                )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Enable at least one read permission in order to turn on past data access for this app"
-                )
-            )
-            .check(matches(isDisplayed()))
-
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as AdditionalAccessFragment
-            val historyPreference =
-                fragment.preferenceScreen.findPreference("key_history_read")
-                    as HealthSwitchPreference?
-            assertThat(historyPreference?.isChecked).isFalse()
-            assertThat(historyPreference?.isEnabled).isFalse()
-        }
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as AdditionalAccessFragment
+                    val historyPreference =
+                        fragment.preferenceScreen.findPreference("key_history_read")
+                            as HealthSwitchPreference?
+                    assertThat(historyPreference?.isChecked).isFalse()
+                    assertThat(historyPreference?.isEnabled).isFalse()
+                }
+            }
     }
 
     @Test
@@ -369,40 +376,42 @@ class AdditionalAccessFragmentTest {
                 )
             )
         }
-        val scenario =
-            launchFragment<AdditionalAccessFragment>(
+        launchFragment<AdditionalAccessFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Access exercise routes")).check(matches(isDisplayed()))
+                onView(withText("Don't allow")).check(matches(isDisplayed()))
+                onView(withText("Access data in the background")).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Allow this app to access Health Connect data when you're not using the app"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Enable at least one read permission in order to turn on background access for this app"
+                        )
+                    )
+                    .check(doesNotExist())
 
-        onView(withText("Access exercise routes")).check(matches(isDisplayed()))
-        onView(withText("Don't allow")).check(matches(isDisplayed()))
-        onView(withText("Access data in the background")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Allow this app to access Health Connect data when you're not using the app"
-                )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Enable at least one read permission in order to turn on background access for this app"
-                )
-            )
-            .check(doesNotExist())
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as AdditionalAccessFragment
+                    val backgroundPreference =
+                        fragment.preferenceScreen.findPreference("key_background_read")
+                            as HealthSwitchPreference?
+                    assertThat(backgroundPreference?.isChecked).isTrue()
+                    assertThat(backgroundPreference?.isEnabled).isTrue()
+                }
 
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as AdditionalAccessFragment
-            val backgroundPreference =
-                fragment.preferenceScreen.findPreference("key_background_read")
-                    as HealthSwitchPreference?
-            assertThat(backgroundPreference?.isChecked).isTrue()
-            assertThat(backgroundPreference?.isEnabled).isTrue()
-        }
-
-        verify(healthConnectLogger).logImpression(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
-        verify(healthConnectLogger).logImpression(AdditionalAccessElement.BACKGROUND_READ_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.BACKGROUND_READ_BUTTON)
+            }
     }
 
     @Test
@@ -427,37 +436,37 @@ class AdditionalAccessFragmentTest {
                 )
             )
         }
-        val scenario =
-            launchFragment<AdditionalAccessFragment>(
+        launchFragment<AdditionalAccessFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Access exercise routes")).check(matches(isDisplayed()))
+                onView(withText("Don't allow")).check(matches(isDisplayed()))
+                onView(withText("Access data in the background")).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Allow this app to access Health Connect data when you're not using the app"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Enable at least one read permission in order to turn on background access for this app"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
 
-        onView(withText("Access exercise routes")).check(matches(isDisplayed()))
-        onView(withText("Don't allow")).check(matches(isDisplayed()))
-        onView(withText("Access data in the background")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Allow this app to access Health Connect data when you're not using the app"
-                )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Enable at least one read permission in order to turn on background access for this app"
-                )
-            )
-            .check(matches(isDisplayed()))
-
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as AdditionalAccessFragment
-            val backgroundPreference =
-                fragment.preferenceScreen.findPreference("key_background_read")
-                    as HealthSwitchPreference?
-            assertThat(backgroundPreference?.isChecked).isFalse()
-            assertThat(backgroundPreference?.isEnabled).isFalse()
-        }
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as AdditionalAccessFragment
+                    val backgroundPreference =
+                        fragment.preferenceScreen.findPreference("key_background_read")
+                            as HealthSwitchPreference?
+                    assertThat(backgroundPreference?.isChecked).isFalse()
+                    assertThat(backgroundPreference?.isEnabled).isFalse()
+                }
+            }
     }
 
     @Test
@@ -488,54 +497,57 @@ class AdditionalAccessFragmentTest {
                 )
             )
         }
-        val scenario =
-            launchFragment<AdditionalAccessFragment>(
+        launchFragment<AdditionalAccessFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Access exercise routes")).check(matches(isDisplayed()))
+                onView(withText("Ask every time")).check(matches(isDisplayed()))
+                onView(withText("Access data in the background")).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Allow this app to access Health Connect data when you're not using the app"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(withText("Access past data")).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Allow this app to access Health Connect data added before October 20, 2022"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Enable at least one read permission in order to turn on background or past data access for this app"
+                        )
+                    )
+                    .check(doesNotExist())
 
-        onView(withText("Access exercise routes")).check(matches(isDisplayed()))
-        onView(withText("Ask every time")).check(matches(isDisplayed()))
-        onView(withText("Access data in the background")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Allow this app to access Health Connect data when you're not using the app"
-                )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Access past data")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Allow this app to access Health Connect data added before October 20, 2022"
-                )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Enable at least one read permission in order to turn on background or past data access for this app"
-                )
-            )
-            .check(doesNotExist())
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as AdditionalAccessFragment
+                    val historyPreference =
+                        fragment.preferenceScreen.findPreference("key_history_read")
+                            as HealthSwitchPreference?
+                    assertThat(historyPreference?.isChecked).isTrue()
+                    assertThat(historyPreference?.isEnabled).isTrue()
 
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as AdditionalAccessFragment
-            val historyPreference =
-                fragment.preferenceScreen.findPreference("key_history_read")
-                    as HealthSwitchPreference?
-            assertThat(historyPreference?.isChecked).isTrue()
-            assertThat(historyPreference?.isEnabled).isTrue()
+                    val backgroundPreference =
+                        fragment.preferenceScreen.findPreference("key_background_read")
+                            as HealthSwitchPreference?
+                    assertThat(backgroundPreference?.isChecked).isTrue()
+                    assertThat(backgroundPreference?.isEnabled).isTrue()
+                }
 
-            val backgroundPreference =
-                fragment.preferenceScreen.findPreference("key_background_read")
-                    as HealthSwitchPreference?
-            assertThat(backgroundPreference?.isChecked).isTrue()
-            assertThat(backgroundPreference?.isEnabled).isTrue()
-        }
-
-        verify(healthConnectLogger).logImpression(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
-        verify(healthConnectLogger).logImpression(AdditionalAccessElement.HISTORY_READ_BUTTON)
-        verify(healthConnectLogger).logImpression(AdditionalAccessElement.BACKGROUND_READ_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.HISTORY_READ_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.BACKGROUND_READ_BUTTON)
+            }
     }
 
     @Test
@@ -566,54 +578,54 @@ class AdditionalAccessFragmentTest {
                 )
             )
         }
-        val scenario =
-            launchFragment<AdditionalAccessFragment>(
+        launchFragment<AdditionalAccessFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Access exercise routes")).check(matches(isDisplayed()))
+                onView(withText("Ask every time")).check(matches(isDisplayed()))
+                onView(withText("Access data in the background")).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Allow this app to access Health Connect data when you're not using the app"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(withText("Access past data")).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Allow this app to access Health Connect data added before October 20, 2022"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
 
-        onView(withText("Access exercise routes")).check(matches(isDisplayed()))
-        onView(withText("Ask every time")).check(matches(isDisplayed()))
-        onView(withText("Access data in the background")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Allow this app to access Health Connect data when you're not using the app"
-                )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Access past data")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Allow this app to access Health Connect data added before October 20, 2022"
-                )
-            )
-            .check(matches(isDisplayed()))
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
+                onView(
+                        withText(
+                            "Enable at least one read permission in order to turn on background or past data access for this app"
+                        )
+                    )
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
-        onView(
-                withText(
-                    "Enable at least one read permission in order to turn on background or past data access for this app"
-                )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as AdditionalAccessFragment
+                    val historyPreference =
+                        fragment.preferenceScreen.findPreference("key_history_read")
+                            as HealthSwitchPreference?
+                    assertThat(historyPreference?.isChecked).isFalse()
+                    assertThat(historyPreference?.isEnabled).isFalse()
 
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as AdditionalAccessFragment
-            val historyPreference =
-                fragment.preferenceScreen.findPreference("key_history_read")
-                    as HealthSwitchPreference?
-            assertThat(historyPreference?.isChecked).isFalse()
-            assertThat(historyPreference?.isEnabled).isFalse()
-
-            val backgroundPreference =
-                fragment.preferenceScreen.findPreference("key_background_read")
-                    as HealthSwitchPreference?
-            assertThat(backgroundPreference?.isChecked).isFalse()
-            assertThat(backgroundPreference?.isEnabled).isFalse()
-        }
+                    val backgroundPreference =
+                        fragment.preferenceScreen.findPreference("key_background_read")
+                            as HealthSwitchPreference?
+                    assertThat(backgroundPreference?.isChecked).isFalse()
+                    assertThat(backgroundPreference?.isEnabled).isFalse()
+                }
+            }
     }
 
     @Test
@@ -638,36 +650,39 @@ class AdditionalAccessFragmentTest {
                 )
             )
         }
-        val scenario =
-            launchFragment<AdditionalAccessFragment>(
+        launchFragment<AdditionalAccessFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Access exercise routes")).check(matches(isDisplayed()))
+                onView(withText("Always allow")).check(matches(isDisplayed()))
+                onView(withText("Access past fitness and wellness data"))
+                    .check(matches(isDisplayed()))
+                onView(withText("Allow this app to access data added before October 20, 2022"))
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Enable at least one read permission in order to turn on past data access for this app"
+                        )
+                    )
+                    .check(doesNotExist())
 
-        onView(withText("Access exercise routes")).check(matches(isDisplayed()))
-        onView(withText("Always allow")).check(matches(isDisplayed()))
-        onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
-        onView(withText("Allow this app to access data added before October 20, 2022"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Enable at least one read permission in order to turn on past data access for this app"
-                )
-            )
-            .check(doesNotExist())
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as AdditionalAccessFragment
+                    val historyPreference =
+                        fragment.preferenceScreen.findPreference("key_history_read")
+                            as HealthSwitchPreference?
+                    assertThat(historyPreference?.isChecked).isTrue()
+                    assertThat(historyPreference?.isEnabled).isTrue()
+                }
 
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as AdditionalAccessFragment
-            val historyPreference =
-                fragment.preferenceScreen.findPreference("key_history_read")
-                    as HealthSwitchPreference?
-            assertThat(historyPreference?.isChecked).isTrue()
-            assertThat(historyPreference?.isEnabled).isTrue()
-        }
-
-        verify(healthConnectLogger).logImpression(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
-        verify(healthConnectLogger).logImpression(AdditionalAccessElement.HISTORY_READ_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.HISTORY_READ_BUTTON)
+            }
     }
 
     @Test
@@ -692,33 +707,34 @@ class AdditionalAccessFragmentTest {
                 )
             )
         }
-        val scenario =
-            launchFragment<AdditionalAccessFragment>(
+        launchFragment<AdditionalAccessFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Access exercise routes")).check(matches(isDisplayed()))
+                onView(withText("Always allow")).check(matches(isDisplayed()))
+                onView(withText("Access past fitness and wellness data"))
+                    .check(matches(isDisplayed()))
+                onView(withText("Allow this app to access data added before October 20, 2022"))
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Enable at least one read permission in order to turn on past data access for this app"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
 
-        onView(withText("Access exercise routes")).check(matches(isDisplayed()))
-        onView(withText("Always allow")).check(matches(isDisplayed()))
-        onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
-        onView(withText("Allow this app to access data added before October 20, 2022"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Enable at least one read permission in order to turn on past data access for this app"
-                )
-            )
-            .check(matches(isDisplayed()))
-
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as AdditionalAccessFragment
-            val historyPreference =
-                fragment.preferenceScreen.findPreference("key_history_read")
-                    as HealthSwitchPreference?
-            assertThat(historyPreference?.isChecked).isFalse()
-            assertThat(historyPreference?.isEnabled).isFalse()
-        }
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as AdditionalAccessFragment
+                    val historyPreference =
+                        fragment.preferenceScreen.findPreference("key_history_read")
+                            as HealthSwitchPreference?
+                    assertThat(historyPreference?.isChecked).isFalse()
+                    assertThat(historyPreference?.isEnabled).isFalse()
+                }
+            }
     }
 
     @Test
@@ -743,37 +759,43 @@ class AdditionalAccessFragmentTest {
                 )
             )
         }
-        val scenario =
-            launchFragment<AdditionalAccessFragment>(
+        launchFragment<AdditionalAccessFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Access exercise routes")).check(matches(isDisplayed()))
+                onView(withText("Don't allow")).check(matches(isDisplayed()))
+                onView(withText("Access fitness and wellness data in the background"))
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Allow this app to access this data " + "when you're not using the app"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Enable at least one read permission in order to turn on background access for this app"
+                        )
+                    )
+                    .check(doesNotExist())
 
-        onView(withText("Access exercise routes")).check(matches(isDisplayed()))
-        onView(withText("Don't allow")).check(matches(isDisplayed()))
-        onView(withText("Access fitness and wellness data in the background"))
-            .check(matches(isDisplayed()))
-        onView(withText("Allow this app to access this data " + "when you're not using the app"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Enable at least one read permission in order to turn on background access for this app"
-                )
-            )
-            .check(doesNotExist())
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as AdditionalAccessFragment
+                    val backgroundPreference =
+                        fragment.preferenceScreen.findPreference("key_background_read")
+                            as HealthSwitchPreference?
+                    assertThat(backgroundPreference?.isChecked).isTrue()
+                    assertThat(backgroundPreference?.isEnabled).isTrue()
+                }
 
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as AdditionalAccessFragment
-            val backgroundPreference =
-                fragment.preferenceScreen.findPreference("key_background_read")
-                    as HealthSwitchPreference?
-            assertThat(backgroundPreference?.isChecked).isTrue()
-            assertThat(backgroundPreference?.isEnabled).isTrue()
-        }
-
-        verify(healthConnectLogger).logImpression(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
-        verify(healthConnectLogger).logImpression(AdditionalAccessElement.BACKGROUND_READ_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.BACKGROUND_READ_BUTTON)
+            }
     }
 
     @Test
@@ -798,34 +820,38 @@ class AdditionalAccessFragmentTest {
                 )
             )
         }
-        val scenario =
-            launchFragment<AdditionalAccessFragment>(
+        launchFragment<AdditionalAccessFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Access exercise routes")).check(matches(isDisplayed()))
+                onView(withText("Don't allow")).check(matches(isDisplayed()))
+                onView(withText("Access fitness and wellness data in the background"))
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Allow this app to access this data " + "when you're not using the app"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Enable at least one read permission in order to turn on background access for this app"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
 
-        onView(withText("Access exercise routes")).check(matches(isDisplayed()))
-        onView(withText("Don't allow")).check(matches(isDisplayed()))
-        onView(withText("Access fitness and wellness data in the background"))
-            .check(matches(isDisplayed()))
-        onView(withText("Allow this app to access this data " + "when you're not using the app"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Enable at least one read permission in order to turn on background access for this app"
-                )
-            )
-            .check(matches(isDisplayed()))
-
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as AdditionalAccessFragment
-            val backgroundPreference =
-                fragment.preferenceScreen.findPreference("key_background_read")
-                    as HealthSwitchPreference?
-            assertThat(backgroundPreference?.isChecked).isFalse()
-            assertThat(backgroundPreference?.isEnabled).isFalse()
-        }
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as AdditionalAccessFragment
+                    val backgroundPreference =
+                        fragment.preferenceScreen.findPreference("key_background_read")
+                            as HealthSwitchPreference?
+                    assertThat(backgroundPreference?.isChecked).isFalse()
+                    assertThat(backgroundPreference?.isEnabled).isFalse()
+                }
+            }
     }
 
     @Test
@@ -856,49 +882,57 @@ class AdditionalAccessFragmentTest {
                 )
             )
         }
-        val scenario =
-            launchFragment<AdditionalAccessFragment>(
+        launchFragment<AdditionalAccessFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Access exercise routes")).check(matches(isDisplayed()))
+                onView(withText("Ask every time")).check(matches(isDisplayed()))
+                onView(withText("Access fitness and wellness data in the background"))
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Allow this app to access this data " + "when you're not using the app"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                    .check(matches(isDisplayed()))
+                onView(withText("Access past fitness and wellness data"))
+                    .check(matches(isDisplayed()))
+                onView(withText("Allow this app to access data added before October 20, 2022"))
+                    .check(matches(isDisplayed()))
 
-        onView(withText("Access exercise routes")).check(matches(isDisplayed()))
-        onView(withText("Ask every time")).check(matches(isDisplayed()))
-        onView(withText("Access fitness and wellness data in the background"))
-            .check(matches(isDisplayed()))
-        onView(withText("Allow this app to access this data " + "when you're not using the app"))
-            .check(matches(isDisplayed()))
-            .check(matches(isDisplayed()))
-        onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
-        onView(withText("Allow this app to access data added before October 20, 2022"))
-            .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Enable at least one read permission in order to turn on background or past data access for this app"
+                        )
+                    )
+                    .check(doesNotExist())
 
-        onView(
-                withText(
-                    "Enable at least one read permission in order to turn on background or past data access for this app"
-                )
-            )
-            .check(doesNotExist())
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as AdditionalAccessFragment
+                    val historyPreference =
+                        fragment.preferenceScreen.findPreference("key_history_read")
+                            as HealthSwitchPreference?
+                    assertThat(historyPreference?.isChecked).isTrue()
+                    assertThat(historyPreference?.isEnabled).isTrue()
 
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as AdditionalAccessFragment
-            val historyPreference =
-                fragment.preferenceScreen.findPreference("key_history_read")
-                    as HealthSwitchPreference?
-            assertThat(historyPreference?.isChecked).isTrue()
-            assertThat(historyPreference?.isEnabled).isTrue()
+                    val backgroundPreference =
+                        fragment.preferenceScreen.findPreference("key_background_read")
+                            as HealthSwitchPreference?
+                    assertThat(backgroundPreference?.isChecked).isTrue()
+                    assertThat(backgroundPreference?.isEnabled).isTrue()
+                }
 
-            val backgroundPreference =
-                fragment.preferenceScreen.findPreference("key_background_read")
-                    as HealthSwitchPreference?
-            assertThat(backgroundPreference?.isChecked).isTrue()
-            assertThat(backgroundPreference?.isEnabled).isTrue()
-        }
-
-        verify(healthConnectLogger).logImpression(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
-        verify(healthConnectLogger).logImpression(AdditionalAccessElement.HISTORY_READ_BUTTON)
-        verify(healthConnectLogger).logImpression(AdditionalAccessElement.BACKGROUND_READ_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.HISTORY_READ_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.BACKGROUND_READ_BUTTON)
+            }
     }
 
     @Test
@@ -929,51 +963,52 @@ class AdditionalAccessFragmentTest {
                 )
             )
         }
-        val scenario =
-            launchFragment<AdditionalAccessFragment>(
+        launchFragment<AdditionalAccessFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Access exercise routes")).check(matches(isDisplayed()))
+                onView(withText("Ask every time")).check(matches(isDisplayed()))
+                onView(withText("Access all data in the background")).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Allow this app to access fitness and wellness data and medical records " +
+                                "when you're not using the app"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                onView(withText("Access past fitness and wellness data"))
+                    .check(matches(isDisplayed()))
+                onView(withText("Allow this app to access data added before October 20, 2022"))
+                    .check(matches(isDisplayed()))
 
-        onView(withText("Access exercise routes")).check(matches(isDisplayed()))
-        onView(withText("Ask every time")).check(matches(isDisplayed()))
-        onView(withText("Access all data in the background")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Allow this app to access fitness and wellness data and medical records " +
-                        "when you're not using the app"
-                )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
-        onView(withText("Allow this app to access data added before October 20, 2022"))
-            .check(matches(isDisplayed()))
+                onView(withId(androidx.preference.R.id.recycler_view))
+                    .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
+                onView(
+                        withText(
+                            "Enable at least one read permission in order to turn on background or past data access for this app"
+                        )
+                    )
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
-        onView(
-                withText(
-                    "Enable at least one read permission in order to turn on background or past data access for this app"
-                )
-            )
-            .perform(scrollTo())
-            .check(matches(isDisplayed()))
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as AdditionalAccessFragment
+                    val historyPreference =
+                        fragment.preferenceScreen.findPreference("key_history_read")
+                            as HealthSwitchPreference?
+                    assertThat(historyPreference?.isChecked).isFalse()
+                    assertThat(historyPreference?.isEnabled).isFalse()
 
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as AdditionalAccessFragment
-            val historyPreference =
-                fragment.preferenceScreen.findPreference("key_history_read")
-                    as HealthSwitchPreference?
-            assertThat(historyPreference?.isChecked).isFalse()
-            assertThat(historyPreference?.isEnabled).isFalse()
-
-            val backgroundPreference =
-                fragment.preferenceScreen.findPreference("key_background_read")
-                    as HealthSwitchPreference?
-            assertThat(backgroundPreference?.isChecked).isFalse()
-            assertThat(backgroundPreference?.isEnabled).isFalse()
-        }
+                    val backgroundPreference =
+                        fragment.preferenceScreen.findPreference("key_background_read")
+                            as HealthSwitchPreference?
+                    assertThat(backgroundPreference?.isChecked).isFalse()
+                    assertThat(backgroundPreference?.isEnabled).isFalse()
+                }
+            }
     }
 
     @Test
@@ -1005,37 +1040,39 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText("Access exercise routes")).check(matches(isDisplayed()))
+                onView(withText("Ask every time")).check(matches(isDisplayed()))
+                onView(withText("Access all data in the background")).check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Allow this app to access fitness and wellness data and medical records " +
+                                "when you're not using the app"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                    .check(matches(isDisplayed()))
+                onView(withText("Access past fitness and wellness data"))
+                    .check(matches(isDisplayed()))
+                onView(withText("Allow this app to access data added before October 20, 2022"))
+                    .check(matches(isDisplayed()))
 
-        onView(withText("Access exercise routes")).check(matches(isDisplayed()))
-        onView(withText("Ask every time")).check(matches(isDisplayed()))
-        onView(withText("Access all data in the background")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Allow this app to access fitness and wellness data and medical records " +
-                        "when you're not using the app"
-                )
-            )
-            .check(matches(isDisplayed()))
-            .check(matches(isDisplayed()))
-        onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
-        onView(withText("Allow this app to access data added before October 20, 2022"))
-            .check(matches(isDisplayed()))
-
-        onView(
-                withText(
-                    "Enable at least one read permission in order to turn on background or past data access for this app"
-                )
-            )
-            .check(doesNotExist())
-        onView(
-                withText(
-                    "$TEST_APP_NAME can already access past data for your medical records. " +
-                        "To change this, turn off medical record permissions for this app"
-                )
-            )
-            .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Enable at least one read permission in order to turn on background or past data access for this app"
+                        )
+                    )
+                    .check(doesNotExist())
+                onView(
+                        withText(
+                            "$TEST_APP_NAME can already access past data for your medical records. " +
+                                "To change this, turn off medical record permissions for this app"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1066,50 +1103,56 @@ class AdditionalAccessFragmentTest {
                 )
             )
         }
-        val scenario =
-            launchFragment<AdditionalAccessFragment>(
+        launchFragment<AdditionalAccessFragment>(
                 bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
             )
+            .use { scenario ->
+                onView(withText("Access exercise routes")).check(matches(isDisplayed()))
+                onView(withText("Ask every time")).check(matches(isDisplayed()))
+                onView(withText("Access medical records in the background"))
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Allow this app to access this data " + "when you're not using the app"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
+                    .check(matches(isDisplayed()))
+                onView(withText("Access past fitness and wellness data"))
+                    .check(matches(isDisplayed()))
+                onView(withText("Allow this app to access data added before October 20, 2022"))
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "No fitness data is currently being read because $TEST_APP_NAME has no read permissions on"
+                        )
+                    )
+                    .check(matches(isDisplayed()))
 
-        onView(withText("Access exercise routes")).check(matches(isDisplayed()))
-        onView(withText("Ask every time")).check(matches(isDisplayed()))
-        onView(withText("Access medical records in the background")).check(matches(isDisplayed()))
-        onView(withText("Allow this app to access this data " + "when you're not using the app"))
-            .check(matches(isDisplayed()))
-            .check(matches(isDisplayed()))
-        onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
-        onView(withText("Allow this app to access data added before October 20, 2022"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "No fitness data is currently being read because $TEST_APP_NAME has no read permissions on"
-                )
-            )
-            .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Enable at least one read permission in order to turn on background or past data access for this app"
+                        )
+                    )
+                    .check(doesNotExist())
 
-        onView(
-                withText(
-                    "Enable at least one read permission in order to turn on background or past data access for this app"
-                )
-            )
-            .check(doesNotExist())
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                            as AdditionalAccessFragment
+                    val historyPreference =
+                        fragment.preferenceScreen.findPreference("key_history_read")
+                            as HealthSwitchPreference?
+                    assertThat(historyPreference?.isChecked).isTrue()
+                    assertThat(historyPreference?.isEnabled).isTrue()
 
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as AdditionalAccessFragment
-            val historyPreference =
-                fragment.preferenceScreen.findPreference("key_history_read")
-                    as HealthSwitchPreference?
-            assertThat(historyPreference?.isChecked).isTrue()
-            assertThat(historyPreference?.isEnabled).isTrue()
-
-            val backgroundPreference =
-                fragment.preferenceScreen.findPreference("key_background_read")
-                    as HealthSwitchPreference?
-            assertThat(backgroundPreference?.isChecked).isTrue()
-            assertThat(backgroundPreference?.isEnabled).isTrue()
-        }
+                    val backgroundPreference =
+                        fragment.preferenceScreen.findPreference("key_background_read")
+                            as HealthSwitchPreference?
+                    assertThat(backgroundPreference?.isChecked).isTrue()
+                    assertThat(backgroundPreference?.isEnabled).isTrue()
+                }
+            }
     }
 
     @Test
@@ -1125,23 +1168,26 @@ class AdditionalAccessFragmentTest {
         }
 
         launchFragment<AdditionalAccessFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-        onView(withText(R.string.route_permissions_label)).perform(click())
-        onIdle()
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onView(withText(R.string.route_permissions_label)).perform(click())
+                onIdle()
 
-        onView(withId(R.id.exercise_routes_permission_dialog))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        verify(healthConnectLogger).logInteraction(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_DIALOG_CONTAINER)
-        verify(healthConnectLogger)
-            .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_DIALOG_DENY_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_ASK_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_ALLOW_ALL_BUTTON)
+                onView(withId(R.id.exercise_routes_permission_dialog))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                verify(healthConnectLogger)
+                    .logInteraction(AdditionalAccessElement.EXERCISE_ROUTES_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_DIALOG_CONTAINER)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_DIALOG_DENY_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_ASK_BUTTON)
+                verify(healthConnectLogger)
+                    .logImpression(AdditionalAccessElement.EXERCISE_ROUTES_ALLOW_ALL_BUTTON)
+            }
     }
 
     @Test
@@ -1151,13 +1197,15 @@ class AdditionalAccessFragmentTest {
             .thenReturn(MediatorLiveData(event))
 
         launchFragment<AdditionalAccessFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-        onIdle()
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onIdle()
 
-        onView(withText(R.string.exercise_permission_dialog_enable_title))
-            .inRoot(RootMatchers.isDialog())
-            .check(matches(isDisplayed()))
+                onView(withText(R.string.exercise_permission_dialog_enable_title))
+                    .inRoot(RootMatchers.isDialog())
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1167,10 +1215,13 @@ class AdditionalAccessFragmentTest {
             .thenReturn(MediatorLiveData(event))
 
         launchFragment<AdditionalAccessFragment>(
-            bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
-        )
-        onIdle()
+                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+            )
+            .use {
+                onIdle()
 
-        onView(withText(R.string.exercise_permission_dialog_enable_title)).check(doesNotExist())
+                onView(withText(R.string.exercise_permission_dialog_enable_title))
+                    .check(doesNotExist())
+            }
     }
 }

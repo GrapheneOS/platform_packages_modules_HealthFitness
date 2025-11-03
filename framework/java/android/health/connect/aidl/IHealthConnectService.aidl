@@ -64,6 +64,7 @@ import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsReques
 import android.health.connect.backuprestore.RestoreChange;
 import android.net.Uri;
 import android.os.UserHandle;
+import android.health.connect.device.DeviceDataAdvertisement;
 
 import java.util.List;
 import java.util.Map;
@@ -656,4 +657,46 @@ interface IHealthConnectService {
      * @hide
      */
     Map isTrackingEnabled(in List<String> dataTypePrefKeys);
+
+    // TODO(b/455837940): Update javadoc with links to API that deviceId is being used for when
+    // available.
+    /**
+     * Retrieve a unique identifier of the device that Health Connect is currently running on. The
+     * identifier is scoped by user and will change on either switching the current user or
+     * rebooting the device. The identifier can then be used for advertising and writing data that
+     * originates from the device itself, e.g., phone pedometer, by populating the {@code deviceId}
+     * field.
+     *
+     * @param attributionSource attribution source for the data.
+     *
+     * @hide
+     */
+    String getCurrentDeviceId(in AttributionSource attributionSource);
+
+    /**
+     * Notify Health Connect of devices that can provide data and the data types each of them can
+     * provide.
+     *
+     * <p>A device data source refers to a specific device that can provide data for any data types.
+     * A device data type source refers to a specific device + data type combination.
+     *
+     * <p>A {@link DeviceDataAdvertisement} should be provided for each device data source. Each
+     * {@link DeviceDataAdvertisement} should contain a set of {@link DeviceDataTypeAdvertisement}s
+     * representing each data type supported by the device and to be used as a device data type
+     * source.
+     *
+     * <p>This method must be called before data can be written for the advertised device data type
+     * source. This should be called as frequently as needed to accurately describe the current
+     * devices and statuses of supported data types. Every advertisement must represent the latest
+     * state of <b>all</b> device data sources and device data type sources. Every subsequent
+     * advertisement will override the previous device data sources and device data type sources. If
+     * a device data source or device data type source is omitted from a subsequent advertisement,
+     * it will be deleted.
+     *
+     * @hide
+     */
+    void advertiseDeviceDataSources(
+        in AttributionSource attributionSource,
+        in List<DeviceDataAdvertisement> deviceDataAdvertisements,
+        in IEmptyResponseCallback callback);
 }

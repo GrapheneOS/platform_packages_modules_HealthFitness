@@ -18,27 +18,34 @@ package com.android.server.healthconnect.device;
 
 import android.Manifest;
 import android.annotation.NonNull;
+import android.annotation.Nullable;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Device;
+import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.os.Build;
 import android.util.ArrayMap;
 import android.util.Slog;
 
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper.DeviceInfo;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Manages device data providers, handling advertisements and updating device, app, and DDP info in
@@ -57,41 +64,136 @@ public class DeviceDataProviderManager {
     private final AppInfoHelper mAppInfoHelper;
     private final DeviceDataProviderHelper mDeviceDataProviderHelper;
     private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
+    private final PreferenceHelper mPreferenceHelper;
+
+    @Nullable private String mStableCurrentDeviceId;
+
+    // see {@link #getCurrentDeviceId}
+    @Nullable private String mRuntimeCurrentDeviceId;
+
+    @VisibleForTesting
+    public static final String SYNTHETIC_PACKAGE_NAME_MASKING_SALT_PREFERENCE_KEY =
+            "synthetic_package_name_masking_salt";
 
     public DeviceDataProviderManager(
             @NonNull Context context,
             @NonNull DeviceInfoHelper deviceInfoHelper,
             @NonNull AppInfoHelper appInfoHelper,
             @NonNull DeviceDataProviderHelper deviceDataProviderHelper,
-            @NonNull FitnessRecordUpsertHelper fitnessRecordUpsertHelper) {
+            @NonNull FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
+            @NonNull PreferenceHelper preferenceHelper) {
         mContext = context;
         mDeviceInfoHelper = Objects.requireNonNull(deviceInfoHelper);
         mAppInfoHelper = Objects.requireNonNull(appInfoHelper);
         mDeviceDataProviderHelper = Objects.requireNonNull(deviceDataProviderHelper);
         mFitnessRecordUpsertHelper = Objects.requireNonNull(fitnessRecordUpsertHelper);
+        mPreferenceHelper = preferenceHelper;
     }
 
     /**
-     * Handles a {@link DeviceDataSourceAdvertisement}, creating device and app entries if needed,
-     * and updating device data provider information.
+     * Handles a {@link DeviceDataAdvertisement}, creating device and app entries if needed, and
+     * updating device data provider information.
      *
      * @param advertisements The device data source advertisements.
      * @param ddpPackageName The package name of the advertising DDP.
      */
     // TODO(b/440066697): Check if we want to handle advertisements that are no longer present.
     public void handleAdvertisement(
-            @NonNull Set<DeviceDataSourceAdvertisement> advertisements,
-            @NonNull String ddpPackageName) {
+            @NonNull Set<DeviceDataAdvertisement> advertisements, @NonNull String ddpPackageName) {
         Objects.requireNonNull(advertisements);
         Objects.requireNonNull(ddpPackageName);
 
-        for (DeviceDataSourceAdvertisement advertisement : advertisements) {
+        for (DeviceDataAdvertisement advertisement : advertisements) {
             handleAdvertisement(advertisement, ddpPackageName);
         }
     }
 
+    /**
+     * Creates two unique identifiers if non-existent: One persisted, internal ID stored in the
+     * database, and a temporary ID that resets when the device is restarted. The internal ID is
+     * constructed using the device serial number and a persisted masking salt.
+     *
+     * <p>Note: the serial number for the current device is a sensitive value and requires {@code
+     * android.permission.READ_PRIVILEGED_PHONE_STATE} to read.
+     *
+     * <p>This method is called at device startup, as the generated ID is required by {@link
+     * #getCurrentDeviceId}.
+     */
+    public void initializeOrRefreshCurrentDeviceIds() {
+        String deviceId = getSerial() + '\u001F' + initializeOrGetMaskingSalt();
+        mStableCurrentDeviceId =
+                SyntheticPackageNameCreator.createCanonical(Device.DEVICE_TYPE_PHONE, deviceId);
+        mAppInfoHelper.addAppInfoIfNoAppInfoEntryExists(mStableCurrentDeviceId, null);
+
+        String runtimeIdentifierSeed = String.valueOf(new SecureRandom().nextInt());
+        mRuntimeCurrentDeviceId =
+                SyntheticPackageNameCreator.createCanonical(
+                        Device.DEVICE_TYPE_PHONE, runtimeIdentifierSeed);
+    }
+
+    /**
+     * Initializes or retrieves the persisted masking salt for the current user. This ensures that a
+     * stable, masked identifier can be generated for the current device and reset when the device
+     * is factory reset.
+     */
+    public String initializeOrGetMaskingSalt() {
+        String salt =
+                mPreferenceHelper.getPreference(SYNTHETIC_PACKAGE_NAME_MASKING_SALT_PREFERENCE_KEY);
+        if (salt == null) {
+            salt = UUID.randomUUID().toString();
+            mPreferenceHelper.insertOrReplacePreference(
+                    SYNTHETIC_PACKAGE_NAME_MASKING_SALT_PREFERENCE_KEY, salt);
+        }
+        return salt;
+    }
+
+    /**
+     * Retrieves the randomly generated identifier for the current device. This ID is reset upon
+     * each device boot.
+     */
+    @NonNull
+    public String getCurrentDeviceId() throws IllegalStateException {
+        if (mRuntimeCurrentDeviceId == null) {
+            throw new IllegalStateException(
+                    "Current device id has not been initialized yet.Ensure to call"
+                            + " initializeCurrentDeviceIds before calling this method.");
+        }
+        return mRuntimeCurrentDeviceId;
+    }
+
+    /**
+     * Retrieves the internal, unique identifier for the current device. This ID is persisted across
+     * restarts and only resets when the device is factory reset.
+     */
+    @NonNull
+    @VisibleForTesting
+    public String getStableCurrentDeviceId() {
+        if (mStableCurrentDeviceId == null) {
+            throw new IllegalStateException(
+                    "Current device id has not been initialized yet.Ensure to call"
+                            + " initializeCurrentDeviceIds before calling this method.");
+        }
+        return mStableCurrentDeviceId;
+    }
+
+    /**
+     * Returns the device serial number.
+     *
+     * <p>Note: the device ID for the current device is a sensitive value and should not be shared
+     * outside of this module. Normally, reading this identifier requires {@code
+     * android.permission.READ_PRIVILEGED_PHONE_STATE}.
+     *
+     * <p>This is extracted to a separate method to allow it to be easily overridden in test cases,
+     * and should not be used directly.
+     */
+    @SuppressLint("MissingPermission")
+    @VisibleForTesting
+    String getSerial() {
+        return Build.getSerial();
+    }
+
     private void handleAdvertisement(
-            @NonNull DeviceDataSourceAdvertisement advertisement, @NonNull String ddpPackageName) {
+            @NonNull DeviceDataAdvertisement advertisement, @NonNull String ddpPackageName) {
         Objects.requireNonNull(advertisement);
         Objects.requireNonNull(ddpPackageName);
 
@@ -102,7 +204,7 @@ public class DeviceDataProviderManager {
                         device.getModel(),
                         device.getType(),
                         advertisement.getDeviceId(),
-                        advertisement.getDisplayName());
+                        device.getDisplayName());
         // TODO(b/440066697): Check how we want to handle display name updates.
         long deviceInfoId = mDeviceInfoHelper.insertIfNotPresent(deviceInfo);
         String spn =

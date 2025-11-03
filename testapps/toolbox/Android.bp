@@ -61,6 +61,9 @@ android_library {
     kotlin_plugins: [
         "kotlin-serialize-compiler-plugin",
     ],
+    lint: {
+        baseline_filename: "lint-baseline.xml",
+    },
 }
 
 android_app {

@@ -20,8 +20,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.migration.api.DEFAULT_MIGRATION_RESTORE_STATE
-import com.android.healthconnect.controller.migration.api.LoadMigrationRestoreStateUseCase
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -31,8 +31,9 @@ import kotlinx.coroutines.runBlocking
 @HiltViewModel
 class MigrationViewModel
 @Inject
-constructor(private val loadMigrationRestoreStateUseCase: LoadMigrationRestoreStateUseCase) :
-    ViewModel() {
+constructor(
+    private val loadMigrationRestoreStateUseCase: BaseUseCase<Unit, MigrationRestoreState>
+) : ViewModel() {
 
     private val _migrationState = MutableLiveData<MigrationFragmentState>()
     val migrationState: LiveData<MigrationFragmentState>

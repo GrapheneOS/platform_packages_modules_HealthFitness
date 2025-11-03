@@ -77,18 +77,20 @@ class PrettyFhirFragmentTest {
         }
 
         launchFragment<PrettyFhirFragment>(
-            PrettyFhirFragment.Companion.createBundle(
-                header = "header",
-                headerA11y = "header a11y",
-                title = "title",
-                titleA11y = "title a11y",
-                medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
+                PrettyFhirFragment.Companion.createBundle(
+                    header = "header",
+                    headerA11y = "header a11y",
+                    title = "title",
+                    titleA11y = "title a11y",
+                    medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
+                )
             )
-        )
-
-        onView(withId(R.id.loading)).check(matches(not(isDisplayed())))
-        onView(withId(R.id.item_pretty_fhir_entry_header)).check(doesNotExist())
-        onView(withText("Something went wrong. Please try again.")).check(matches(isDisplayed()))
+            .use {
+                onView(withId(R.id.loading)).check(matches(not(isDisplayed())))
+                onView(withId(R.id.item_pretty_fhir_entry_header)).check(doesNotExist())
+                onView(withText("Something went wrong. Please try again."))
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -98,19 +100,20 @@ class PrettyFhirFragmentTest {
         }
 
         launchFragment<PrettyFhirFragment>(
-            PrettyFhirFragment.Companion.createBundle(
-                header = "header",
-                headerA11y = "header a11y",
-                title = "title",
-                titleA11y = "title a11y",
-                medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
+                PrettyFhirFragment.Companion.createBundle(
+                    header = "header",
+                    headerA11y = "header a11y",
+                    title = "title",
+                    titleA11y = "title a11y",
+                    medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
+                )
             )
-        )
-
-        onView(withId(R.id.loading)).check(matches(isDisplayed()))
-        onView(withId(R.id.item_pretty_fhir_entry_header)).check(doesNotExist())
-        onView(withText("Something went wrong. Please try again."))
-            .check(matches(CoreMatchers.not(isDisplayed())))
+            .use {
+                onView(withId(R.id.loading)).check(matches(isDisplayed()))
+                onView(withId(R.id.item_pretty_fhir_entry_header)).check(doesNotExist())
+                onView(withText("Something went wrong. Please try again."))
+                    .check(matches(CoreMatchers.not(isDisplayed())))
+            }
     }
 
     @Test
@@ -138,18 +141,19 @@ class PrettyFhirFragmentTest {
         }
 
         launchFragment<PrettyFhirFragment>(
-            PrettyFhirFragment.Companion.createBundle(
-                header = "header",
-                headerA11y = "header a11y",
-                title = "title",
-                titleA11y = "title a11y",
-                medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
+                PrettyFhirFragment.Companion.createBundle(
+                    header = "header",
+                    headerA11y = "header a11y",
+                    title = "title",
+                    titleA11y = "title a11y",
+                    medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
+                )
             )
-        )
-
-        onView(withId(R.id.item_pretty_fhir_entry_header)).check(matches(isDisplayed()))
-        onView(withText("Something went wrong. Please try again."))
-            .check(matches(CoreMatchers.not(isDisplayed())))
+            .use {
+                onView(withId(R.id.item_pretty_fhir_entry_header)).check(matches(isDisplayed()))
+                onView(withText("Something went wrong. Please try again."))
+                    .check(matches(CoreMatchers.not(isDisplayed())))
+            }
     }
 
     @Test
@@ -210,42 +214,43 @@ class PrettyFhirFragmentTest {
         }
 
         launchFragment<PrettyFhirFragment>(
-            PrettyFhirFragment.Companion.createBundle(
-                header = "header",
-                headerA11y = "header a11y",
-                title = "title",
-                titleA11y = "title a11y",
-                medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
+                PrettyFhirFragment.Companion.createBundle(
+                    header = "header",
+                    headerA11y = "header a11y",
+                    title = "title",
+                    titleA11y = "title a11y",
+                    medicalResourceId = TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
+                )
             )
-        )
-
-        onView(withText("Resource Type: Immunization"))
-            .check(matches(isDisplayed()))
-            .check(matches(withId(itemPrettyFhirHeaderId)))
-        onView(withText("Status: completed"))
-            .check(matches(isDisplayed()))
-            .check(matches(withId(itemPrettyFhirHeaderId)))
-        onView(withText("Id: immunization_1"))
-            .check(matches(isDisplayed()))
-            .check(matches(withId(itemPrettyFhirHeaderId)))
-        onView(withText("Status: completed"))
-            .check(matches(isDisplayed()))
-            .check(matches(withId(itemPrettyFhirHeaderId)))
-        onView(withText("Vaccine Code:"))
-            .check(matches(isDisplayed()))
-            .check(matches(withId(itemPrettyFhirHeaderId)))
-        onView(withText("• System: http://hl7.org/fhir/sid/cvx"))
-            .check(matches(isDisplayed()))
-            .check(matches(withId(itemPrettyFhirContentLevel2Id)))
-        onView(withText("• Code: 58160-842-11"))
-            .check(matches(isDisplayed()))
-            .check(matches(withId(itemPrettyFhirContentLevel3Id)))
-        onView(withText("Text: Tdap"))
-            .check(matches(isDisplayed()))
-            .check(matches(withId(itemPrettyFhirContentLevel1Id)))
-        onView(withId(R.id.loading)).check(matches(CoreMatchers.not(isDisplayed())))
-        onView(withText("Something went wrong. Please try again."))
-            .check(matches(CoreMatchers.not(isDisplayed())))
+            .use {
+                onView(withText("Resource Type: Immunization"))
+                    .check(matches(isDisplayed()))
+                    .check(matches(withId(itemPrettyFhirHeaderId)))
+                onView(withText("Status: completed"))
+                    .check(matches(isDisplayed()))
+                    .check(matches(withId(itemPrettyFhirHeaderId)))
+                onView(withText("Id: immunization_1"))
+                    .check(matches(isDisplayed()))
+                    .check(matches(withId(itemPrettyFhirHeaderId)))
+                onView(withText("Status: completed"))
+                    .check(matches(isDisplayed()))
+                    .check(matches(withId(itemPrettyFhirHeaderId)))
+                onView(withText("Vaccine Code:"))
+                    .check(matches(isDisplayed()))
+                    .check(matches(withId(itemPrettyFhirHeaderId)))
+                onView(withText("• System: http://hl7.org/fhir/sid/cvx"))
+                    .check(matches(isDisplayed()))
+                    .check(matches(withId(itemPrettyFhirContentLevel2Id)))
+                onView(withText("• Code: 58160-842-11"))
+                    .check(matches(isDisplayed()))
+                    .check(matches(withId(itemPrettyFhirContentLevel3Id)))
+                onView(withText("Text: Tdap"))
+                    .check(matches(isDisplayed()))
+                    .check(matches(withId(itemPrettyFhirContentLevel1Id)))
+                onView(withId(R.id.loading)).check(matches(CoreMatchers.not(isDisplayed())))
+                onView(withText("Something went wrong. Please try again."))
+                    .check(matches(CoreMatchers.not(isDisplayed())))
+            }
     }
 
     @Test
@@ -270,15 +275,17 @@ class PrettyFhirFragmentTest {
             )
 
         launchFragment<PrettyFhirFragment>(bundle) {
-            navHostController.setGraph(R.navigation.entries_and_access_nav_graph)
-            navHostController.setCurrentDestination(R.id.prettyFhirFragment)
+                navHostController.setGraph(R.navigation.entries_and_access_nav_graph)
+                navHostController.setCurrentDestination(R.id.prettyFhirFragment)
 
-            Navigation.setViewNavController(this.requireView(), navHostController)
-        }
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("View source data")).perform(click())
 
-        onView(withText("View source data")).perform(click())
-
-        Truth.assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.rawFhirFragment)
+                Truth.assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.rawFhirFragment)
+            }
     }
 
     private val fhirResource =

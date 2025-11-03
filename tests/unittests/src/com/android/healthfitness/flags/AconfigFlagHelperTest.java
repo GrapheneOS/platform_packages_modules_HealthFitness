@@ -19,6 +19,7 @@ package com.android.healthfitness.flags;
 import static com.android.healthfitness.flags.AconfigFlagHelper.getDbVersionToDbFlagMap;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isAlcoholConsumptionEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
+import static com.android.healthfitness.flags.AconfigFlagHelper.isCyclePhasesEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isDeviceDataProvidersEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isSymptomsEnabled;
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
@@ -91,30 +92,15 @@ public class AconfigFlagHelperTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_CLOUD_BACKUP_AND_RESTORE,
-        Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
+        Flags.FLAG_CLOUD_BACKUP_AND_RESTORE
     })
-    public void cloudBackupAndRestore_featureFlagTrueAndDbFlagTrue_expectTrue() {
+    public void cloudBackupAndRestore_featureFlagTrue_expectTrue() {
         assertThat(isCloudBackupRestoreEnabled()).isTrue();
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_CLOUD_BACKUP_AND_RESTORE, Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB})
-    public void cloudBackupAndRestore_featureFlagFalseAndDbFlagFalse_expectFalse() {
-        assertThat(isCloudBackupRestoreEnabled()).isFalse();
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
-    @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB)
-    public void cloudBackupAndRestore_featureFlagFalseAndDbTrue_expectFalse() {
-        assertThat(isCloudBackupRestoreEnabled()).isFalse();
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE)
-    @DisableFlags(Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB)
-    public void cloudBackupAndRestore_featureFlagTrueAndDbFalse_expectFalse() {
+    @DisableFlags({Flags.FLAG_CLOUD_BACKUP_AND_RESTORE})
+    public void cloudBackupAndRestore_featureFlagFalse_expectFalse() {
         assertThat(isCloudBackupRestoreEnabled()).isFalse();
     }
 
@@ -173,5 +159,17 @@ public class AconfigFlagHelperTest {
     })
     public void alcohol_consumption_featureFlagTrueAndDbTrue_expectTrue() {
         assertThat(isAlcoholConsumptionEnabled()).isTrue();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_CYCLE_PHASES_FLAG)
+    public void isCyclePhaseEnabled_featureFlagTrue_expectTrue() {
+        assertThat(isCyclePhasesEnabled()).isTrue();
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_CYCLE_PHASES_FLAG)
+    public void isCyclePhaseEnabled_featureFlagFalse_expectFalse() {
+        assertThat(isCyclePhasesEnabled()).isFalse();
     }
 }
