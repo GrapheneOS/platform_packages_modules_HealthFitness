@@ -86,128 +86,136 @@ class UnitsFragmentTest {
 
     @Test
     fun unitsScreen_starts() {
-        launchFragment<UnitsFragment>(bundleOf())
+        launchFragment<UnitsFragment>(bundleOf()).use {
+            onView(withText("Height")).check(matches(isDisplayed()))
+            onView(withText("Weight")).check(matches(isDisplayed()))
+            onView(withText("Distance")).check(matches(isDisplayed()))
+            onView(withText("Energy")).check(matches(isDisplayed()))
+            onView(withText("Temperature")).check(matches(isDisplayed()))
 
-        onView(withText("Height")).check(matches(isDisplayed()))
-        onView(withText("Weight")).check(matches(isDisplayed()))
-        onView(withText("Distance")).check(matches(isDisplayed()))
-        onView(withText("Energy")).check(matches(isDisplayed()))
-        onView(withText("Temperature")).check(matches(isDisplayed()))
-
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.UNITS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger).logImpression(UnitsElement.CHANGE_UNITS_HEIGHT_BUTTON)
-        verify(healthConnectLogger).logImpression(UnitsElement.CHANGE_UNITS_WEIGHT_BUTTON)
-        verify(healthConnectLogger).logImpression(UnitsElement.CHANGE_UNITS_DISTANCE_BUTTON)
-        verify(healthConnectLogger).logImpression(UnitsElement.CHANGE_UNITS_ENERGY_BUTTON)
-        verify(healthConnectLogger).logImpression(UnitsElement.CHANGE_UNITS_TEMPERATURE_BUTTON)
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.UNITS_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger).logImpression(UnitsElement.CHANGE_UNITS_HEIGHT_BUTTON)
+            verify(healthConnectLogger).logImpression(UnitsElement.CHANGE_UNITS_WEIGHT_BUTTON)
+            verify(healthConnectLogger).logImpression(UnitsElement.CHANGE_UNITS_DISTANCE_BUTTON)
+            verify(healthConnectLogger).logImpression(UnitsElement.CHANGE_UNITS_ENERGY_BUTTON)
+            verify(healthConnectLogger).logImpression(UnitsElement.CHANGE_UNITS_TEMPERATURE_BUTTON)
+        }
     }
 
     @Test
     fun unitsScreen_showsDefaultSettings() {
-        launchFragment<UnitsFragment>(bundleOf())
-
-        onView(withText(getUnitLabel(HeightUnit.FEET))).check(matches(isDisplayed()))
-        onView(withText(getUnitLabel(DistanceUnit.MILES))).check(matches(isDisplayed()))
-        onView(withText(getUnitLabel(EnergyUnit.CALORIE))).check(matches(isDisplayed()))
-        onView(withText(getUnitLabel(TemperatureUnit.FAHRENHEIT))).check(matches(isDisplayed()))
-        onView(withText(getUnitLabel(WeightUnit.POUND))).check(matches(isDisplayed()))
+        launchFragment<UnitsFragment>(bundleOf()).use {
+            onView(withText(getUnitLabel(HeightUnit.FEET))).check(matches(isDisplayed()))
+            onView(withText(getUnitLabel(DistanceUnit.MILES))).check(matches(isDisplayed()))
+            onView(withText(getUnitLabel(EnergyUnit.CALORIE))).check(matches(isDisplayed()))
+            onView(withText(getUnitLabel(TemperatureUnit.FAHRENHEIT))).check(matches(isDisplayed()))
+            onView(withText(getUnitLabel(WeightUnit.POUND))).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun unitsScreen_setHeightUnit_updatesValue() {
         unitPreferences.heightUnit = HeightUnit.CENTIMETERS
 
-        launchFragment<UnitsFragment>(bundleOf())
-
-        onView(withText(getUnitLabel(HeightUnit.CENTIMETERS))).check(matches(isDisplayed()))
+        launchFragment<UnitsFragment>(bundleOf()).use {
+            onView(withText(getUnitLabel(HeightUnit.CENTIMETERS))).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun unitsScreen_setWeightUnit_updatesValue() {
         unitPreferences.weightUnit = WeightUnit.STONE
 
-        launchFragment<UnitsFragment>(bundleOf())
-
-        onView(withText(getUnitLabel(WeightUnit.STONE))).check(matches(isDisplayed()))
+        launchFragment<UnitsFragment>(bundleOf()).use {
+            onView(withText(getUnitLabel(WeightUnit.STONE))).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun unitsScreen_setTemperatureUnit_updatesValue() {
         unitPreferences.temperatureUnit = TemperatureUnit.KELVIN
 
-        launchFragment<UnitsFragment>(bundleOf())
-
-        onView(withText(getUnitLabel(TemperatureUnit.KELVIN))).check(matches(isDisplayed()))
+        launchFragment<UnitsFragment>(bundleOf()).use {
+            onView(withText(getUnitLabel(TemperatureUnit.KELVIN))).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun unitsScreen_setDistanceUnit_updatesValue() {
         unitPreferences.distanceUnit = DistanceUnit.KILOMETERS
 
-        launchFragment<UnitsFragment>(bundleOf())
-
-        onView(withText(getUnitLabel(DistanceUnit.KILOMETERS))).check(matches(isDisplayed()))
+        launchFragment<UnitsFragment>(bundleOf()).use {
+            onView(withText(getUnitLabel(DistanceUnit.KILOMETERS))).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun unitsScreen_setEnergyUnit_updatesValue() {
         unitPreferences.energyUnit = EnergyUnit.KILOJOULE
 
-        launchFragment<UnitsFragment>(bundleOf())
-
-        onView(withText(getUnitLabel(EnergyUnit.KILOJOULE))).check(matches(isDisplayed()))
+        launchFragment<UnitsFragment>(bundleOf()).use {
+            onView(withText(getUnitLabel(EnergyUnit.KILOJOULE))).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun unitsScreen_modifiesHeight_updatesValue() {
-        launchFragment<UnitsFragment>(bundleOf())
+        launchFragment<UnitsFragment>(bundleOf()).use {
+            onView(withText(R.string.height_uppercase_label)).perform(click())
+            onView(withText(R.string.height_unit_centimeters_label))
+                .inRoot(isDialog())
+                .perform(click())
 
-        onView(withText(R.string.height_uppercase_label)).perform(click())
-        onView(withText(R.string.height_unit_centimeters_label)).inRoot(isDialog()).perform(click())
-
-        assertThat(unitPreferences.heightUnit).isEqualTo(HeightUnit.CENTIMETERS)
+            assertThat(unitPreferences.heightUnit).isEqualTo(HeightUnit.CENTIMETERS)
+        }
     }
 
     @Test
     fun unitsScreen_modifiesDistance_updatesValue() {
-        launchFragment<UnitsFragment>(bundleOf())
+        launchFragment<UnitsFragment>(bundleOf()).use {
+            onView(withText(R.string.distance_uppercase_label)).perform(click())
+            onView(withText(R.string.distance_unit_kilometers_label))
+                .inRoot(isDialog())
+                .perform(click())
 
-        onView(withText(R.string.distance_uppercase_label)).perform(click())
-        onView(withText(R.string.distance_unit_kilometers_label))
-            .inRoot(isDialog())
-            .perform(click())
-
-        assertThat(unitPreferences.distanceUnit).isEqualTo(DistanceUnit.KILOMETERS)
+            assertThat(unitPreferences.distanceUnit).isEqualTo(DistanceUnit.KILOMETERS)
+        }
     }
 
     @Test
     fun unitsScreen_modifiesWeight_updatesValue() {
-        launchFragment<UnitsFragment>(bundleOf())
+        launchFragment<UnitsFragment>(bundleOf()).use {
+            onView(withText(R.string.weight_uppercase_label)).perform(click())
+            onView(withText(R.string.weight_unit_kilogram_label))
+                .inRoot(isDialog())
+                .perform(click())
 
-        onView(withText(R.string.weight_uppercase_label)).perform(click())
-        onView(withText(R.string.weight_unit_kilogram_label)).inRoot(isDialog()).perform(click())
-
-        assertThat(unitPreferences.weightUnit).isEqualTo(WeightUnit.KILOGRAM)
+            assertThat(unitPreferences.weightUnit).isEqualTo(WeightUnit.KILOGRAM)
+        }
     }
 
     @Test
     fun unitsScreen_modifiesEnergy_updatesValue() {
-        launchFragment<UnitsFragment>(bundleOf())
+        launchFragment<UnitsFragment>(bundleOf()).use {
+            onView(withText(R.string.energy_unit_title)).perform(click())
+            onView(withText(R.string.energy_unit_kilojoule_label))
+                .inRoot(isDialog())
+                .perform(click())
 
-        onView(withText(R.string.energy_unit_title)).perform(click())
-        onView(withText(R.string.energy_unit_kilojoule_label)).inRoot(isDialog()).perform(click())
-
-        assertThat(unitPreferences.energyUnit).isEqualTo(EnergyUnit.KILOJOULE)
+            assertThat(unitPreferences.energyUnit).isEqualTo(EnergyUnit.KILOJOULE)
+        }
     }
 
     @Test
     fun unitsScreen_modifiesTemperature_updatesValue() {
-        launchFragment<UnitsFragment>(bundleOf())
+        launchFragment<UnitsFragment>(bundleOf()).use {
+            onView(withText(R.string.temperature_unit_title)).perform(click())
+            onView(withText(R.string.temperature_unit_kelvin_label))
+                .inRoot(isDialog())
+                .perform(click())
 
-        onView(withText(R.string.temperature_unit_title)).perform(click())
-        onView(withText(R.string.temperature_unit_kelvin_label)).inRoot(isDialog()).perform(click())
-
-        assertThat(unitPreferences.temperatureUnit).isEqualTo(TemperatureUnit.KELVIN)
+            assertThat(unitPreferences.temperatureUnit).isEqualTo(TemperatureUnit.KELVIN)
+        }
     }
 }
