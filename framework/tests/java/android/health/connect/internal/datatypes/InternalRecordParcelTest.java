@@ -18,10 +18,12 @@ package android.health.connect.internal.datatypes;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.annotation.SuppressLint;
 import android.health.connect.datatypes.Record;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.healthconnect.testing.shared.recordfactory.RecordFactory;
 import android.os.Parcel;
+import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -32,6 +34,7 @@ import com.android.healthfitness.flags.Flags;
 import com.google.common.base.Preconditions;
 import com.google.common.truth.Expect;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,6 +48,12 @@ import java.util.Map;
 public class InternalRecordParcelTest {
     @Rule public final Expect expect = Expect.create();
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+
+    @Before
+    @SuppressLint("VisibleForTests") // this is indeed a test file
+    public void setup() {
+        HealthConnectMappings.resetInstanceForTesting();
+    }
 
     /** Test that all internal records have a constructor for the parcel path. */
     @Test
@@ -80,6 +89,9 @@ public class InternalRecordParcelTest {
      */
     @Test
     @EnableFlags(Flags.FLAG_SAMPLE_TIME_ORDERING)
+    // TODO(b/452289293): Remove this disable flag constraint once we remove the hide annotation
+    // Update RecordFactory and implement CyclePhasesRecordFactory when removing this.
+    @DisableFlags(Flags.FLAG_CYCLE_PHASES_FLAG)
     public void testAllInternalRecords_serializeToAndFromParcels() throws Exception {
         HealthConnectMappings mappings = HealthConnectMappings.getInstance();
         Map<Integer, Class<? extends RecordInternal<?>>> recordIdToInternalRecord =
