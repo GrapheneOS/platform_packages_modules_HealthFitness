@@ -94,6 +94,7 @@ import static com.android.server.healthconnect.common.logging.HealthConnectServi
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.READ_MEDICAL_RESOURCES_BY_REQUESTS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.UPSERT_MEDICAL_RESOURCES;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.MEDICAL_RESOURCE_TYPE_NOT_ASSIGNED_DEFAULT_VALUE;
+import static com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator.SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY;
 
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
@@ -113,6 +114,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -130,6 +132,7 @@ import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.content.pm.ResolveInfo;
 import android.database.sqlite.SQLiteException;
+import android.graphics.drawable.Drawable;
 import android.health.HealthFitnessStatsLog;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.GetMatchingAppsResponse;
@@ -154,12 +157,14 @@ import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
 import android.health.connect.aidl.IGetMatchingAppsCallback;
 import android.health.connect.aidl.IHealthConnectService;
+import android.health.connect.aidl.IInsertRecordsResponseCallback;
 import android.health.connect.aidl.IIsMatchmakingPossibleCallback;
 import android.health.connect.aidl.IMedicalDataSourceResponseCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.aidl.IMedicalResourceListParcelResponseCallback;
 import android.health.connect.aidl.IMigrationCallback;
 import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
+import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
 import android.health.connect.backuprestore.BackupMetadata;
 import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsRequest;
@@ -174,6 +179,7 @@ import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
+import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
@@ -214,7 +220,6 @@ import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.device.FakeSerialDeviceDataProviderManager;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
-import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -291,6 +296,7 @@ public class HealthConnectServiceImplTest {
                     "setHealthPermissionsUserFixedFlagValue",
                     "getHistoricalAccessStartDateInMilliseconds",
                     "insertRecords",
+                    "insertDeviceRecords",
                     "aggregateRecords",
                     "readRecords",
                     "updateRecords",
@@ -379,7 +385,6 @@ public class HealthConnectServiceImplTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
 
-    @Mock private AppInfoHelper mAppInfoHelper;
     @Mock private HealthConnectPermissionHelper mHealthConnectPermissionHelper;
     @Mock private MigrationCleaner mMigrationCleaner;
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
@@ -397,7 +402,6 @@ public class HealthConnectServiceImplTest {
     @Mock private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     @Mock private HealthPermissionIntentAppsTracker mPermissionIntentAppsTracker;
     @Mock private TrackerManager mTrackerManager;
-    @Mock DeviceDataProviderHelper mDeviceDataProviderHelper;
     @Mock IMigrationCallback mMigrationCallback;
     @Mock IMedicalDataSourceResponseCallback mMedicalDataSourceCallback;
     @Mock IMedicalDataSourcesResponseCallback mMedicalDataSourcesResponseCallback;
@@ -407,7 +411,7 @@ public class HealthConnectServiceImplTest {
     @Mock IMedicalResourceListParcelResponseCallback mMedicalResourceListParcelResponseCallback;
     @Mock IGetMatchingAppsCallback mGetMatchingAppsCallback;
     @Mock IIsMatchmakingPossibleCallback mIsMatchmakingPossibleCallback;
-
+    @Mock private Drawable mDrawable;
     @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
     @Mock private ChangeLogsHelper mChangeLogsHelper;
     @Mock private ChangeLogsRequestHelper mChangeLogsRequestHelper;
@@ -428,6 +432,7 @@ public class HealthConnectServiceImplTest {
     private HealthConnectThreadScheduler mThreadScheduler;
     private FakeSerialDeviceDataProviderManager mDeviceDataProviderManager;
     private final Instant mNow = DataFactory.now();
+    private AppInfoHelper mAppInfoHelper;
 
     @Before
     public void setUp() throws Exception {
@@ -452,6 +457,11 @@ public class HealthConnectServiceImplTest {
         when(mPackageManager.getPackageInfo(eq(mAttributionSource.getPackageName()), any()))
                 .thenReturn(
                         buildPackageInfo(mAttributionSource.getPackageName(), /* targetSdk= */ 34));
+        when(mDrawable.getIntrinsicHeight()).thenReturn(200);
+        when(mDrawable.getIntrinsicWidth()).thenReturn(200);
+        when(mPackageManager.getApplicationIcon(anyString()))
+                .thenThrow(new PackageManager.NameNotFoundException());
+        when(mPackageManager.getDefaultActivityIcon()).thenReturn(mDrawable);
 
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mServiceContext)
@@ -466,7 +476,6 @@ public class HealthConnectServiceImplTest {
                         .setMedicalResourceHelper(mMedicalResourceHelper)
                         .setMigrationStateManager(mMigrationStateManager)
                         .setMigrationUiStateManager(mMigrationUiStateManager)
-                        .setAppInfoHelper(mAppInfoHelper)
                         .setTimeSource(mFakeTimeSource)
                         .setAppOpsManagerLocal(mAppOpsManagerLocal)
                         .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
@@ -476,7 +485,6 @@ public class HealthConnectServiceImplTest {
                         .setOnboardingStateManager(mOnboardingStateManager)
                         .setMatchingAppsManager(mMatchmakingManager)
                         .setDeviceDataProviderManager(mDeviceDataProviderManager)
-                        .setDeviceDataProviderHelper(mDeviceDataProviderHelper)
                         .build();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
         mInternalTaskScheduler = mThreadScheduler.mInternalBackgroundExecutor;
@@ -541,6 +549,7 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getSyntheticPackageNameResolver(),
                         mDeviceDataProviderManager);
         mBackupRestore = healthConnectInjector.getBackupRestore();
+        mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
     }
 
     @After
@@ -2261,7 +2270,8 @@ public class HealthConnectServiceImplTest {
     @Test
     public void testDeleteMedicalResourcesByRequest_nonExistentRequest_success()
             throws RemoteException {
-        when(mAppInfoHelper.getAppInfoId(any())).thenReturn(DEFAULT_PACKAGE_APP_INFO);
+        AppInfoHelper appInfoHelper = spy(mAppInfoHelper);
+        when(appInfoHelper.getAppInfoId(any())).thenReturn(DEFAULT_PACKAGE_APP_INFO);
         when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
                 .thenReturn(PERMISSION_DENIED);
         when(mPermissionManager.checkPermissionForDataDelivery(
@@ -3760,6 +3770,125 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void insertDeviceRecords_withoutAdvertisement_throws() throws RemoteException {
+        Instant now = mFakeTimeSource.getInstantNow();
+        String recordId = UUID.randomUUID().toString();
+        String deviceId = "TestDeviceId";
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("Test Device")
+                        .build();
+        StepsRecord stepsRecord =
+                new StepsRecord.Builder(
+                                new Metadata.Builder().setId(recordId).setDevice(device).build(),
+                                now,
+                                now.plusSeconds(1),
+                                100)
+                        .build();
+        RecordsParcel recordsParcel = getRestoredStepsRecordsParcel(stepsRecord);
+        when(mPreferenceHelper.getPreference(eq(SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY)))
+                .thenReturn(UUID.randomUUID().toString());
+        IInsertRecordsResponseCallback.Stub callback =
+                mock(IInsertRecordsResponseCallback.Stub.class);
+
+        mHealthConnectService.insertDeviceRecords(
+                mAttributionSource, deviceId, recordsParcel, callback);
+
+        verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_INVALID_ARGUMENT);
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
+                .isEqualTo(
+                        "java.lang.IllegalArgumentException: Device with ID TestDeviceId not found,"
+                                + " ensure the device data source has been advertised");
+    }
+
+    @Test
+    @DisableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void deviceDataProviderManagerIsNull_insertDeviceRecords_throwsException()
+            throws RemoteException {
+        Instant now = mFakeTimeSource.getInstantNow();
+        String recordId = UUID.randomUUID().toString();
+        String deviceId = "TestDeviceId";
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("Test Device")
+                        .build();
+        StepsRecord stepsRecord =
+                new StepsRecord.Builder(
+                                new Metadata.Builder().setId(recordId).setDevice(device).build(),
+                                now,
+                                now.plusSeconds(1),
+                                100)
+                        .build();
+        RecordsParcel recordsParcel = getRestoredStepsRecordsParcel(stepsRecord);
+        IInsertRecordsResponseCallback.Stub callback =
+                mock(IInsertRecordsResponseCallback.Stub.class);
+        when(mPreferenceHelper.getPreference(eq(SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY)))
+                .thenReturn(UUID.randomUUID().toString());
+        advertiseStepsDeviceDataSource(deviceId, device);
+
+        mHealthConnectService.insertDeviceRecords(
+                mAttributionSource, deviceId, recordsParcel, callback);
+
+        verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void insertDeviceRecords_afterAdvertisement_doesNotThrow() throws RemoteException {
+        Instant now = mFakeTimeSource.getInstantNow();
+        String recordId = UUID.randomUUID().toString();
+        String deviceId = "TestDeviceId";
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("Test Device")
+                        .build();
+        StepsRecord stepsRecord =
+                new StepsRecord.Builder(
+                                new Metadata.Builder().setId(recordId).setDevice(device).build(),
+                                now,
+                                now.plusSeconds(1),
+                                100)
+                        .build();
+        RecordsParcel recordsParcel = getRestoredStepsRecordsParcel(stepsRecord);
+        IInsertRecordsResponseCallback.Stub callback =
+                mock(IInsertRecordsResponseCallback.Stub.class);
+        when(mPreferenceHelper.getPreference(eq(SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY)))
+                .thenReturn(UUID.randomUUID().toString());
+        advertiseStepsDeviceDataSource(deviceId, device);
+
+        mHealthConnectService.insertDeviceRecords(
+                mAttributionSource, deviceId, recordsParcel, callback);
+
+        verify(callback, timeout(5000).times(1)).onResult(any());
+    }
+
+    @Test
     public void testDump_doesNotCrash() throws Exception {
         mHealthConnectService.dump(
                 new FileDescriptor(),
@@ -4094,5 +4223,33 @@ public class HealthConnectServiceImplTest {
         info.applicationInfo = aInfo;
         info.packageName = info.applicationInfo.packageName = packageName;
         return info;
+    }
+
+    private void advertiseStepsDeviceDataSource(String deviceId, Device device)
+            throws RemoteException {
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);
+
+        mHealthConnectService.advertiseDeviceDataSources(
+                mAttributionSource, List.of(advertisement), mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(5000).times(1)).onResult();
+    }
+
+    private RecordsParcel getRestoredStepsRecordsParcel(StepsRecord stepsRecord) {
+        RecordsParcel recordsParcel =
+                new RecordsParcel(Collections.singletonList(stepsRecord.toRecordInternal()));
+        android.os.Parcel parcel = android.os.Parcel.obtain();
+        recordsParcel.writeToParcel(parcel, 0);
+        parcel.setDataPosition(0);
+        // The mRecordsSize field in RecordsParcel is only populated when a parcel is restored
+        RecordsParcel restoredRecordsParcel = RecordsParcel.CREATOR.createFromParcel(parcel);
+        parcel.recycle();
+        return restoredRecordsParcel;
     }
 }
