@@ -12,6 +12,8 @@ import android.health.connect.HealthPermissions.WRITE_PLANNED_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_SKIN_TEMPERATURE
 import android.os.Build
 import android.os.Process
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
 import android.platform.test.annotations.RequiresFlagsDisabled
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
@@ -34,6 +36,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.UNSUPPORTED_TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.WEAR_TEST_APP_PACKAGE_NAME
+import com.android.healthfitness.flags.AconfigFlagHelper
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -195,6 +198,46 @@ class HealthPermissionReaderTest {
             .containsNoneOf(
                 HealthPermissions.READ_ALCOHOL_CONSUMPTION,
                 HealthPermissions.WRITE_ALCOHOL_CONSUMPTION,
+            )
+    }
+
+    @EnableFlags(
+        Flags.FLAG_CYCLE_PHASES_FLAG,
+        Flags.FLAG_CYCLE_PHASES_DB,
+        Flags.FLAG_SMOKING_DB,
+        Flags.FLAG_SYMPTOMS_DB,
+        Flags.FLAG_ALCOHOL_CONSUMPTION_DB,
+    )
+    @Test
+    fun getHealthPermissions_cyclePhasesEnabled_returnsPermissions() {
+        assumeTrue(
+            "Skipping tests because cycle phases is disabled",
+            AconfigFlagHelper.isCyclePhasesEnabled(),
+        )
+        assertThat(permissionReader.getHealthPermissions())
+            .containsAtLeast(
+                HealthPermissions.READ_CYCLE_PHASES,
+                HealthPermissions.WRITE_CYCLE_PHASES,
+            )
+    }
+
+    @DisableFlags(Flags.FLAG_CYCLE_PHASES_FLAG)
+    @EnableFlags(
+        Flags.FLAG_CYCLE_PHASES_DB,
+        Flags.FLAG_SMOKING_DB,
+        Flags.FLAG_SYMPTOMS_DB,
+        Flags.FLAG_ALCOHOL_CONSUMPTION_DB,
+    )
+    @Test
+    fun getHealthPermissions_cyclePhasesDisabled_doesNotReturnPermissions() {
+        assumeFalse(
+            "Skipping tests because cycle phases is enabled",
+            AconfigFlagHelper.isCyclePhasesEnabled(),
+        )
+        assertThat(permissionReader.getHealthPermissions())
+            .containsNoneOf(
+                HealthPermissions.READ_CYCLE_PHASES,
+                HealthPermissions.WRITE_CYCLE_PHASES,
             )
     }
 
