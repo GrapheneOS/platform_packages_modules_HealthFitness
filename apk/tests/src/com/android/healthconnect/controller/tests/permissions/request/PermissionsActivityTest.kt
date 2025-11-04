@@ -972,7 +972,6 @@ class PermissionsActivityTest {
         )
 
         val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
-        registerBottomSheetIdlingResource(scenario)
         onView(withId(androidx.preference.R.id.recycler_view))
             .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
         onView(withText("Heart rate")).perform(click())
