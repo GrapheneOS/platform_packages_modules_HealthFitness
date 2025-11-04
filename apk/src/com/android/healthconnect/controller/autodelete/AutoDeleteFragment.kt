@@ -86,8 +86,8 @@ class AutoDeleteFragment : Hilt_AutoDeleteFragment() {
         }
 
         childFragmentManager.setFragmentResultListener(AUTO_DELETE_SAVED_EVENT, this) { _, bundle ->
-            bundle.getSerializable(AUTO_DELETE_SAVED_EVENT)?.let {
-                viewModel.updateAutoDeleteRange(it as AutoDeleteRange)
+            bundle.getSerializable(AUTO_DELETE_SAVED_EVENT, AutoDeleteRange::class.java)?.let {
+                viewModel.updateAutoDeleteRange(it)
             }
             viewModel.newAutoDeleteRange.value?.let {
                 Toast.makeText(requireContext(), buildMessage(it), Toast.LENGTH_LONG).show()
@@ -97,8 +97,8 @@ class AutoDeleteFragment : Hilt_AutoDeleteFragment() {
         childFragmentManager.setFragmentResultListener(AUTO_DELETE_CANCELLED_EVENT, this) {
             _,
             bundle ->
-            bundle.getSerializable(AUTO_DELETE_CANCELLED_EVENT)?.let {
-                viewModel.updateAutoDeleteRange(it as AutoDeleteRange)
+            bundle.getSerializable(AUTO_DELETE_CANCELLED_EVENT, AutoDeleteRange::class.java)?.let {
+                viewModel.updateAutoDeleteRange(it)
             }
         }
     }

@@ -22,7 +22,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.annotation.StringRes
 import androidx.annotation.VisibleForTesting
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
@@ -324,7 +323,7 @@ open class AppDataFragment : Hilt_AppDataFragment() {
                 appName,
             )
         )
-        childFragmentManager.setFragmentResult(DeletionConstants.START_DELETION_KEY, bundleOf())
+        childFragmentManager.setFragmentResult(DeletionConstants.START_DELETION_KEY, Bundle())
     }
 
     private fun getPermissionTypePreference(
@@ -336,11 +335,11 @@ open class AppDataFragment : Hilt_AppDataFragment() {
                 findNavController()
                     .navigate(
                         R.id.action_appData_to_appEntries,
-                        bundleOf(
-                            EXTRA_PACKAGE_NAME to packageName,
-                            Constants.EXTRA_APP_NAME to appName,
-                            PERMISSION_TYPE_NAME_KEY to permissionType.name,
-                        ),
+                        Bundle().apply {
+                            putString(EXTRA_PACKAGE_NAME, packageName)
+                            putString(Constants.EXTRA_APP_NAME, appName)
+                            putString(PERMISSION_TYPE_NAME_KEY, permissionType.name)
+                        },
                     )
                 true
             }

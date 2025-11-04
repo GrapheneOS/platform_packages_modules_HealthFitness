@@ -25,13 +25,13 @@ import android.health.connect.RecordTypeInfoResponse
 import android.health.connect.datatypes.MedicalDataSource
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SymptomRecord
+import android.os.Bundle
 import android.os.OutcomeReceiver
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import android.platform.test.flag.junit.SetFlagsRule
-import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.preference.PreferenceCategory
@@ -347,7 +347,9 @@ class AllDataFragmentTest {
     fun whenMedicalShown_navigatesToMedicalAllEntries() {
         mockData(listOf(VACCINES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
-        launchFragment<AllDataFragment>(bundleOf(IS_BROWSE_MEDICAL_DATA_SCREEN to true)) {
+        launchFragment<AllDataFragment>(
+                Bundle().apply { putBoolean(IS_BROWSE_MEDICAL_DATA_SCREEN, true) }
+            ) {
                 navHostController.setGraph(R.navigation.medical_data_nav_graph)
                 Navigation.setViewNavController(this.requireView(), navHostController)
             }
@@ -1336,7 +1338,9 @@ class AllDataFragmentTest {
     }
 
     private fun launchMedicalAllDataFragment(): ActivityScenario<TestActivity> =
-        launchFragment<AllDataFragment>(bundleOf(IS_BROWSE_MEDICAL_DATA_SCREEN to true))
+        launchFragment<AllDataFragment>(
+            Bundle().apply { putBoolean(IS_BROWSE_MEDICAL_DATA_SCREEN, true) }
+        )
 
     @Test
     @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)

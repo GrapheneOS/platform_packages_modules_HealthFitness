@@ -28,7 +28,7 @@ import java.time.LocalDateTime
 enum class AutoDeleteRange(val numberOfMonths: Int) {
     AUTO_DELETE_RANGE_NEVER(0),
     AUTO_DELETE_RANGE_THREE_MONTHS(3),
-    AUTO_DELETE_RANGE_EIGHTEEN_MONTHS(18)
+    AUTO_DELETE_RANGE_EIGHTEEN_MONTHS(18),
 }
 
 /**
@@ -36,7 +36,7 @@ enum class AutoDeleteRange(val numberOfMonths: Int) {
  * unsupported number of months.
  */
 fun fromNumberOfMonths(numberOfMonths: Int): AutoDeleteRange {
-    AutoDeleteRange.values().forEach { range ->
+    AutoDeleteRange.entries.forEach { range ->
         if (range.numberOfMonths == numberOfMonths) {
             return range
         }
