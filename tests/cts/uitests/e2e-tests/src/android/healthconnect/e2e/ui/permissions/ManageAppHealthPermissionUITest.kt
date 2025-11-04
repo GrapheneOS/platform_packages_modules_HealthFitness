@@ -56,7 +56,7 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
         context.launchMainActivity {
             navigateToManagePermissionsForApp("Health Connect cts test app")
 
-            scrollDownToAndFindText("Height")
+            scrollDownToAndFindText("Steps")
         }
     }
 

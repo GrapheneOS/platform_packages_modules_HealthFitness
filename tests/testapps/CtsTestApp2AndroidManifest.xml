@@ -17,33 +17,35 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="android.healthconnect.cts.app2">
 
-  <uses-permission android:name="android.permission.health.READ_HEIGHT"/>
-  <uses-permission android:name="android.permission.health.WRITE_HEIGHT"/>
+    <uses-permission android:name="android.permission.health.READ_HEIGHT"/>
+    <uses-permission android:name="android.permission.health.WRITE_HEIGHT"/>
+    <uses-permission android:name="android.permission.health.READ_STEPS"/>
+    <uses-permission android:name="android.permission.health.WRITE_STEPS"/>
 
-  <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"/>
-  <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_HISTORY"/>
+    <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"/>
+    <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_HISTORY"/>
 
-  <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES"/>
-  <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_CONDITIONS"/>
-  <uses-permission android:name="android.permission.health.WRITE_MEDICAL_DATA"/>
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES"/>
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_CONDITIONS"/>
+    <uses-permission android:name="android.permission.health.WRITE_MEDICAL_DATA"/>
 
-  <application android:label="Health Connect cts test app 2">
-    <uses-library android:name="android.test.runner"/>
+    <application android:label="Health Connect cts test app 2">
+        <uses-library android:name="android.test.runner"/>
 
-    <activity android:name="android.healthconnect.testing.testapp.MainActivity"
-        android:label="MainActivity2"
-        android:exported="true">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
-        <category android:name="android.intent.category.FRAMEWORK_INSTRUMENTATION_TEST"/>
-      </intent-filter>
-      <intent-filter>
-        <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
-        <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
-      </intent-filter>
-      <intent-filter>
-        <action android:name="any.action"/>
-      </intent-filter>
-    </activity>
-  </application>
+        <activity android:name="android.healthconnect.testing.testapp.MainActivity"
+            android:label="MainActivity2"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.FRAMEWORK_INSTRUMENTATION_TEST"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE"/>
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="any.action"/>
+            </intent-filter>
+        </activity>
+    </application>
 </manifest>
