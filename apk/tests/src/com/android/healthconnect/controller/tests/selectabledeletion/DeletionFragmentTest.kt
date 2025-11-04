@@ -100,23 +100,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected data?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected data?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -132,23 +133,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected data?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected data?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -164,23 +166,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete all data?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete all data?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     // endregion
@@ -201,25 +204,26 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected $TEST_APP_NAME data?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Also remove all $TEST_APP_NAME permissions from Health Connect"))
-            .check(matches(not(isDisplayed())))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected $TEST_APP_NAME data?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Also remove all $TEST_APP_NAME permissions from Health Connect"))
+                    .check(matches(not(isDisplayed())))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -237,25 +241,26 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected $TEST_APP_NAME data?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Also remove all $TEST_APP_NAME permissions from Health Connect"))
-            .check(matches(not(isDisplayed())))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected $TEST_APP_NAME data?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Also remove all $TEST_APP_NAME permissions from Health Connect"))
+                    .check(matches(not(isDisplayed())))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -273,25 +278,26 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete all $TEST_APP_NAME data?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Also remove all $TEST_APP_NAME permissions from Health Connect"))
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete all $TEST_APP_NAME data?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Also remove all $TEST_APP_NAME permissions from Health Connect"))
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -309,24 +315,27 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete all $DEVICE_DATA_PROVIDER_APP_NAME data?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withId(R.id.dialog_checkbox)).inRoot(isDialog()).check(matches(not(isDisplayed())))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete all $DEVICE_DATA_PROVIDER_APP_NAME data?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withId(R.id.dialog_checkbox))
+                    .inRoot(isDialog())
+                    .check(matches(not(isDisplayed())))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     // endregion
@@ -351,23 +360,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete this entry?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete this entry?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -388,23 +398,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected entries for Sep 19?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected entries for Sep 19?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -425,23 +436,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected entries for Sep 19?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected entries for Sep 19?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -462,23 +474,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected entries for Sep 19, 2021?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected entries for Sep 19, 2021?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -499,23 +512,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected entries for Sep 19, 2021?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected entries for Sep 19, 2021?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -536,23 +550,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete all entries for Sep 19?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete all entries for Sep 19?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -573,23 +588,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete all entries for Sep 19, 2021?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete all entries for Sep 19, 2021?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     // endregion
@@ -613,23 +629,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete this entry?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete this entry?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -652,23 +669,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected entries for the week of Sep 18 – 24?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected entries for the week of Sep 18 – 24?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -691,23 +709,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected entries for the week of Sep 18 – 24?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected entries for the week of Sep 18 – 24?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -730,23 +749,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected entries for the week of Sep 12 – 18, 2021?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete selected entries for the week of Sep 12 – 18, 2021?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -769,23 +793,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected entries for the week of Sep 12 – 18, 2021?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete selected entries for the week of Sep 12 – 18, 2021?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -808,23 +837,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete all entries for the week of Sep 18 – 24?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete all entries for the week of Sep 18 – 24?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -847,23 +877,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete all entries for the week of Sep 12 – 18, 2021?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete all entries for the week of Sep 12 – 18, 2021?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     // endregion
@@ -887,23 +922,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete this entry?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete this entry?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -924,23 +960,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected entries for September?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected entries for September?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -961,23 +998,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected entries for September?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected entries for September?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -998,23 +1036,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected entries for September 2021?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected entries for September 2021?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1035,23 +1074,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected entries for September 2021?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected entries for September 2021?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1072,23 +1112,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete all entries for September?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete all entries for September?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1109,23 +1150,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete all entries for September 2021?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete all entries for September 2021?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     // endregion
@@ -1155,23 +1197,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete this $TEST_APP_NAME entry?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete this $TEST_APP_NAME entry?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1194,23 +1237,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected $TEST_APP_NAME entries for Sep 19?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected $TEST_APP_NAME entries for Sep 19?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1233,23 +1277,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected $TEST_APP_NAME entries for Sep 19?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected $TEST_APP_NAME entries for Sep 19?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1272,23 +1317,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected $TEST_APP_NAME entries for Sep 19, 2021?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete selected $TEST_APP_NAME entries for Sep 19, 2021?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1311,23 +1361,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected $TEST_APP_NAME entries for Sep 19, 2021?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete selected $TEST_APP_NAME entries for Sep 19, 2021?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1350,23 +1405,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete all $TEST_APP_NAME entries for Sep 19?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete all $TEST_APP_NAME entries for Sep 19?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1389,23 +1445,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete all $TEST_APP_NAME entries for Sep 19, 2021?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete all $TEST_APP_NAME entries for Sep 19, 2021?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     // endregion
@@ -1431,23 +1488,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete this $TEST_APP_NAME entry?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete this $TEST_APP_NAME entry?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1472,27 +1530,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(
-                withText(
-                    "Permanently delete selected $TEST_APP_NAME entries for the week of Sep 18 – 24?"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete selected $TEST_APP_NAME entries for the week of Sep 18 – 24?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1517,27 +1576,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(
-                withText(
-                    "Permanently delete selected $TEST_APP_NAME entries for the week of Sep 18 – 24?"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete selected $TEST_APP_NAME entries for the week of Sep 18 – 24?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1563,27 +1623,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(
-                withText(
-                    "Permanently delete selected $TEST_APP_NAME entries for the week of Sep 12 – 18, 2021?"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete selected $TEST_APP_NAME entries for the week of Sep 12 – 18, 2021?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1609,27 +1670,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(
-                withText(
-                    "Permanently delete selected $TEST_APP_NAME entries for the week of Sep 12 – 18, 2021?"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete selected $TEST_APP_NAME entries for the week of Sep 12 – 18, 2021?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1654,27 +1716,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(
-                withText(
-                    "Permanently delete all $TEST_APP_NAME entries for the week of Sep 18 – 24?"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete all $TEST_APP_NAME entries for the week of Sep 18 – 24?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1699,27 +1762,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(
-                withText(
-                    "Permanently delete all $TEST_APP_NAME entries for the week of Sep 12 – 18, 2021?"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete all $TEST_APP_NAME entries for the week of Sep 12 – 18, 2021?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     // endregion
@@ -1745,23 +1809,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete this $TEST_APP_NAME entry?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete this $TEST_APP_NAME entry?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1784,23 +1849,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected $TEST_APP_NAME entries for September?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete selected $TEST_APP_NAME entries for September?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1823,23 +1893,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected $TEST_APP_NAME entries for September?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete selected $TEST_APP_NAME entries for September?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1862,23 +1937,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected $TEST_APP_NAME entries for September 2021?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete selected $TEST_APP_NAME entries for September 2021?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1901,23 +1981,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected $TEST_APP_NAME entries for September 2021?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete selected $TEST_APP_NAME entries for September 2021?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1940,23 +2025,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete all $TEST_APP_NAME entries for September?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete all $TEST_APP_NAME entries for September?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -1979,23 +2065,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete all $TEST_APP_NAME entries for September 2021?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(
+                        withText(
+                            "Permanently delete all $TEST_APP_NAME entries for September 2021?"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     // endregion
@@ -2017,23 +2108,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete steps data for $TEST_APP_NAME?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete steps data for $TEST_APP_NAME?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).check(matches(isDisplayed()))
+            }
     }
 
     // endregion
@@ -2046,24 +2138,25 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected data?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Cancel")).inRoot(isDialog()).perform(click())
 
-        onView(withText("Permanently delete selected data?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Cancel")).inRoot(isDialog()).perform(click())
-
-        onView(withText("Permanently delete selected data?")).check(doesNotExist())
+                onView(withText("Permanently delete selected data?")).check(doesNotExist())
+            }
     }
 
     // endregion
@@ -2076,25 +2169,28 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected data?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
 
-        onView(withText("Permanently delete selected data?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).perform(click())
 
-        onView(withText("Delete")).inRoot(isDialog()).perform(click())
-
-        onView(withText("Deleting your data")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("Deleting your data"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -2104,23 +2200,24 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected data?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).perform(click())
-        onView(withText("Deleting your data")).inRoot(isDialog()).check(doesNotExist())
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected data?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).perform(click())
+                onView(withText("Deleting your data")).inRoot(isDialog()).check(doesNotExist())
+            }
     }
 
     @Test
@@ -2130,34 +2227,37 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected data?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).perform(click())
-        onView(withText("Data deleted from Health Connect"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you want to completely delete the data from your connected apps, check each app where your data may be saved."
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Done")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("See connected apps")).inRoot(isDialog()).check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected data?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).perform(click())
+                onView(withText("Data deleted from Health Connect"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "If you want to completely delete the data from your connected apps, check each app where your data may be saved."
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Done")).inRoot(isDialog()).check(matches(isDisplayed()))
+                onView(withText("See connected apps"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -2167,27 +2267,34 @@ class DeletionFragmentTest {
         }
 
         launchFragment<DeletionFragment>(Bundle()) {
-            (this as DeletionFragment)
-                .parentFragmentManager
-                .setFragmentResult(START_DELETION_KEY, bundleOf())
-        }
-
-        onView(withText("Permanently delete selected data?"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Connected apps will no longer be able to read this data from Health\u00A0Connect"
-                )
-            )
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Delete")).inRoot(isDialog()).perform(click())
-        onView(withText("Deleting your data")).inRoot(isDialog()).check(doesNotExist())
-        onView(withText("Couldn't delete data")).inRoot(isDialog()).check(matches(isDisplayed()))
-        onView(withText("Something went wrong and Health\u00A0Connect couldn't delete your data"))
-            .inRoot(isDialog())
-            .check(matches(isDisplayed()))
+                (this as DeletionFragment)
+                    .parentFragmentManager
+                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+            }
+            .use {
+                onView(withText("Permanently delete selected data?"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Connected apps will no longer be able to read this data from Health\u00A0Connect"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(withText("Delete")).inRoot(isDialog()).perform(click())
+                onView(withText("Deleting your data")).inRoot(isDialog()).check(doesNotExist())
+                onView(withText("Couldn't delete data"))
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+                onView(
+                        withText(
+                            "Something went wrong and Health\u00A0Connect couldn't delete your data"
+                        )
+                    )
+                    .inRoot(isDialog())
+                    .check(matches(isDisplayed()))
+            }
     }
 
     // endregion
