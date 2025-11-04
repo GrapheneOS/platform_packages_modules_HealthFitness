@@ -16,8 +16,11 @@
 package com.android.server.healthconnect.common.metadata;
 
 import android.annotation.NonNull;
+import android.annotation.Nullable;
+import android.health.connect.HealthConnectManager;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.device.DeviceDataProviderManager;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -26,7 +29,8 @@ import java.util.Optional;
 
 /**
  * A wrapper class for masking and unmasking Synthetic Package Names (SPNs) that are used for
- * identifying data from physical devices.
+ * identifying data from physical devices. This includes the current device id returned by {@link
+ * HealthConnectManager#getCurrentDeviceId()}.
  *
  * <p>This class handles the translation between canonical package names (used internally by the
  * system) and masked package names (exposed to external callers). The masking is caller-specific,
@@ -40,9 +44,13 @@ import java.util.Optional;
  */
 public class SyntheticPackageNameResolver {
     private final AppInfoHelper mAppInfoHelper;
+    @Nullable private final DeviceDataProviderManager mDeviceDataProviderManager;
 
-    public SyntheticPackageNameResolver(AppInfoHelper appInfoHelper) {
+    public SyntheticPackageNameResolver(
+            @NonNull AppInfoHelper appInfoHelper,
+            @Nullable DeviceDataProviderManager deviceDataProviderManager) {
         mAppInfoHelper = appInfoHelper;
+        mDeviceDataProviderManager = deviceDataProviderManager;
     }
 
     /**
@@ -97,6 +105,18 @@ public class SyntheticPackageNameResolver {
                                                         canonicalSpn, callingPackageName),
                                                 packageName))
                         .findFirst();
+
+        // The given SPN might be the current device id - try to match the masked name with the
+        // runtime id which is not in persisted storage but in cache
+        if (canonicalName.isEmpty()
+                && mDeviceDataProviderManager != null
+                && Objects.equals(
+                        SyntheticPackageNameCreator.createMasked(
+                                mDeviceDataProviderManager.getCurrentDeviceId(),
+                                callingPackageName),
+                        packageName)) {
+            canonicalName = Optional.of(mDeviceDataProviderManager.getStableCurrentDeviceId());
+        }
 
         if (canonicalName.isEmpty()) {
             throw new NoSuchElementException(

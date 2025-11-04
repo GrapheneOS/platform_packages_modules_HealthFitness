@@ -28,6 +28,7 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.device.DeviceDataProviderManager;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -48,6 +49,13 @@ public class SyntheticPackageNameResolverTest {
     private static final String TEST_APP_PACKAGE_NAME = "foobar";
     private static final String TEST_CANONICAL_SPN =
             "com.android.healthconnect.watch.de78f5438b48b39bcbdea61b73679449d";
+    private static final String TEST_CURRENT_DEVICE_ID_STABLE_SPN =
+            "com.android.healthconnect.phone.d59341472a9253c16b986840a324ec594";
+    private static final String TEST_CURRENT_DEVICE_ID_RUNTIME_CANONICAL_SPN =
+            "com.android.healthconnect.scale.da92e471d92de356aa26b27a6fa8fccbe";
+    private static final String TEST_CURRENT_DEVICE_ID_RUNTIME_MASKED_SPN =
+            SyntheticPackageNameCreator.createMasked(
+                    TEST_CURRENT_DEVICE_ID_RUNTIME_CANONICAL_SPN, TEST_CALLER_ONE);
     private static final String TEST_MASKED_ONE_SPN =
             SyntheticPackageNameCreator.createMasked(TEST_CANONICAL_SPN, TEST_CALLER_ONE);
     private static final String TEST_MASKED_TWO_SPN =
@@ -58,6 +66,7 @@ public class SyntheticPackageNameResolverTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private AppInfoHelper mAppInfoHelper;
+    @Mock private DeviceDataProviderManager mDeviceDataProviderManager;
     private SyntheticPackageNameResolver mResolver;
 
     @Before
@@ -69,7 +78,12 @@ public class SyntheticPackageNameResolverTest {
                                         new AppInfoInternal(1, null, null, null, null, null),
                                 TEST_CANONICAL_SPN,
                                         new AppInfoInternal(2, null, null, null, null, null)));
-        mResolver = new SyntheticPackageNameResolver(mAppInfoHelper);
+        when(mDeviceDataProviderManager.getCurrentDeviceId())
+                .thenReturn(TEST_CURRENT_DEVICE_ID_RUNTIME_CANONICAL_SPN);
+        when(mDeviceDataProviderManager.getStableCurrentDeviceId())
+                .thenReturn(TEST_CURRENT_DEVICE_ID_STABLE_SPN);
+
+        mResolver = new SyntheticPackageNameResolver(mAppInfoHelper, mDeviceDataProviderManager);
     }
 
     @Test
@@ -185,5 +199,55 @@ public class SyntheticPackageNameResolverTest {
         assertThat(exception.getMessage()).contains(unknownMasked);
         assertThat(exception.getMessage()).contains(" called by ");
         assertThat(exception.getMessage()).contains(TEST_CALLER_ONE);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void withCurrentDeviceId_unmask_returnsStableCurrentDeviceId() {
+        String result =
+                mResolver.unmask(TEST_CURRENT_DEVICE_ID_RUNTIME_MASKED_SPN, TEST_CALLER_ONE);
+        assertThat(result).isEqualTo(TEST_CURRENT_DEVICE_ID_STABLE_SPN);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void withCurrentDeviceId_maskAndUnmask_completeCallingChainSuccess() {
+        String maskedRuntimeId =
+                mResolver.mask(TEST_CURRENT_DEVICE_ID_RUNTIME_CANONICAL_SPN, TEST_CALLER_ONE);
+        assertThat(maskedRuntimeId).isEqualTo(TEST_CURRENT_DEVICE_ID_RUNTIME_MASKED_SPN);
+
+        String unmaskedStableId = mResolver.unmask(maskedRuntimeId, TEST_CALLER_ONE);
+        assertThat(unmaskedStableId).isEqualTo(TEST_CURRENT_DEVICE_ID_STABLE_SPN);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void withDeviceDataProviderManagerNullAndDeviceId_unmask_throwsResolutionError() {
+        SyntheticPackageNameResolver nullResolver =
+                new SyntheticPackageNameResolver(mAppInfoHelper, null);
+
+        NoSuchElementException exception =
+                assertThrows(
+                        NoSuchElementException.class,
+                        () ->
+                                nullResolver.unmask(
+                                        TEST_CURRENT_DEVICE_ID_RUNTIME_MASKED_SPN,
+                                        TEST_CALLER_ONE));
+
+        assertThat(exception.getMessage())
+                .contains("Could not resolve masked, synthetic package name");
+        assertThat(exception.getMessage()).contains(TEST_CURRENT_DEVICE_ID_RUNTIME_MASKED_SPN);
+        assertThat(exception.getMessage()).contains(" called by ");
+        assertThat(exception.getMessage()).contains(TEST_CALLER_ONE);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void withDeviceDataProviderManagerAndMaskedSpn_unmask_success() {
+        SyntheticPackageNameResolver nullResolver =
+                new SyntheticPackageNameResolver(mAppInfoHelper, null);
+        String result = nullResolver.unmask(TEST_MASKED_ONE_SPN, TEST_CALLER_ONE);
+
+        assertThat(result).isEqualTo(TEST_CANONICAL_SPN);
     }
 }
