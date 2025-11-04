@@ -36,6 +36,6 @@ import org.junit.runner.RunWith;
 public class AlcoholConsumptionNoPermissionsDeclaredTest
         extends BaseNoPermissionsDeclaredTest<AlcoholConsumptionRecord> {
     public AlcoholConsumptionNoPermissionsDeclaredTest() {
-        super(AlcoholConsumptionRecord.class, new AlcoholConsumptionRecordFactory());
+        super(() -> AlcoholConsumptionRecord.class, new AlcoholConsumptionRecordFactory());
     }
 }
