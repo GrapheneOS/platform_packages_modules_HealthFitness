@@ -90,7 +90,7 @@ public final class DeviceDataAdvertisement implements Parcelable {
     /** @hide */
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeParcelable(mDevice, flags);
+        dest.writeParcelable(new DeviceParcel(mDevice), flags);
         dest.writeString(mDeviceId);
         dest.writeParcelableList(mDeviceDataTypeAdvertisements.stream().toList(), flags);
     }
@@ -110,7 +110,9 @@ public final class DeviceDataAdvertisement implements Parcelable {
             };
 
     private DeviceDataAdvertisement(Parcel in) {
-        mDevice = in.readParcelable(Device.class.getClassLoader(), Device.class);
+        mDevice =
+                in.readParcelable(DeviceParcel.class.getClassLoader(), DeviceParcel.class)
+                        .getDevice();
         mDeviceId = in.readString();
         mDeviceDataTypeAdvertisements =
                 new HashSet<>(
