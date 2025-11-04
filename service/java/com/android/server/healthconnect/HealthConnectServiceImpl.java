@@ -3542,23 +3542,27 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
+        final String callingPackageName = requireNonNull(attributionSource.getPackageName());
 
         enforceIsForegroundUser(userHandle);
         try {
-            if (mDeviceDataProviderManager == null || !Flags.deviceDataProvidersApi()) {
+            DeviceDataProviderManager deviceDataProviderManager =
+                    requireNonNull(mDeviceDataProviderManager);
+
+            if (!Flags.deviceDataProvidersApi()) {
                 throw new UnsupportedOperationException(
                         "getCurrentDeviceId is not supported."
                                 + "Make sure to turn on the respective DDP flags.");
             }
 
-            if (!mDeviceDataProviderManager.isPermittedToProvideDeviceData(
-                    attributionSource.getPackageName(), uid, pid)) {
+            if (!deviceDataProviderManager.isPermittedToProvideDeviceData(
+                    callingPackageName, uid, pid)) {
                 throw new SecurityException(
                         "Caller does not have permission to call getCurrentDeviceId.");
             }
 
-            return getMaskingFunction(attributionSource.getPackageName())
-                    .apply(mDeviceDataProviderManager.getCurrentDeviceId());
+            return getMaskingFunction(callingPackageName)
+                    .apply(deviceDataProviderManager.getCurrentDeviceId());
         } catch (Exception e) {
             Slog.e(TAG, "Unable to get current device id for " + userHandle);
             if (e instanceof SQLiteException
@@ -3569,6 +3573,80 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         }
 
         throw new RuntimeException();
+    }
+
+    /**
+     * @see HealthConnectManager#readDeviceRecords
+     */
+    @Override
+    public void readDeviceRecords(
+            AttributionSource attributionSource,
+            ReadRecordsRequestParcel request,
+            IReadRecordsResponseCallback callback) {
+        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
+        checkParamsNonNull(attributionSource, request, callback);
+
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
+        final String callingPackageName = requireNonNull(attributionSource.getPackageName());
+        // TODO(b/455514553): Use specific API method for logging.
+        final HealthConnectServiceLogger.Builder logger =
+                new HealthConnectServiceLogger.Builder(
+                                /* holdsDataManagementPermission= */ false, API_METHOD_UNKNOWN)
+                        .setHealthFitnessStatsLog(mStatsLog)
+                        .setPackageName(callingPackageName);
+        final ReadRecordsRequestParcel unmaskedRequest =
+                request.toUnmasked(getUnmaskingFunction(callingPackageName));
+
+        scheduleLoggingHealthDataApiErrors(
+                () -> {
+                    enforceIsForegroundUser(userHandle);
+                    verifyPackageNameFromUid(uid, attributionSource);
+                    throwExceptionIfDataSyncInProgress();
+
+                    DeviceDataProviderManager deviceDataProviderManager =
+                            requireNonNull(mDeviceDataProviderManager);
+
+                    if (!Flags.deviceDataProvidersApi()) {
+                        throw new UnsupportedOperationException(
+                                "readDeviceRecords is not supported."
+                                        + "Make sure to turn on the respective DDP flags.");
+                    }
+
+                    if (!deviceDataProviderManager.isPermittedToProvideDeviceData(
+                            callingPackageName, uid, pid)) {
+                        throw new SecurityException(
+                                "Caller does not have permission to call readDeviceRecords.");
+                    }
+
+                    Pair<List<RecordInternal<?>>, PageTokenWrapper> readRecordsResponse =
+                            deviceDataProviderManager.readDeviceRecords(
+                                    mTransactionManager,
+                                    attributionSource.getPackageName(),
+                                    unmaskedRequest);
+                    List<RecordInternal<?>> records = readRecordsResponse.first;
+                    long pageToken = readRecordsResponse.second.encode();
+
+                    logger.setNumberOfRecords(records.size());
+
+                    if (Constants.DEBUG) {
+                        Slog.d(TAG, "pageToken: " + pageToken);
+                    }
+
+                    final ReadRecordsResponseParcel maskedResponseParcel =
+                            new ReadRecordsResponseParcel(new RecordsParcel(records), pageToken)
+                                    .toMasked(getMaskingFunction(callingPackageName));
+                    callback.onResult(maskedResponseParcel);
+
+                    logger.setDataTypesFromRecordInternals(records)
+                            .setHealthDataServiceApiStatusSuccess();
+                },
+                logger,
+                callback::onError,
+                uid,
+                /* isController= */ holdsDataManagementPermission);
     }
 
     // Cancel BR timeouts - this might be needed when a user is going into background.

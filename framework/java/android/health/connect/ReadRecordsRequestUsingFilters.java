@@ -21,9 +21,13 @@ import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 import static android.health.connect.Constants.MAXIMUM_PAGE_SIZE;
 import static android.health.connect.Constants.MINIMUM_PAGE_SIZE;
 
+import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
+
+import android.annotation.FlaggedApi;
 import android.annotation.IntRange;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.annotation.SystemApi;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
@@ -46,6 +50,7 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
     private final int mPageSize;
     private final long mPageToken;
     private final boolean mAscending;
+    @Nullable private final String mDeviceId;
 
     /**
      * @see Builder
@@ -56,7 +61,8 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
             @NonNull Set<DataOrigin> dataOrigins,
             int pageSize,
             long pageToken,
-            boolean ascending) {
+            boolean ascending,
+            @Nullable String deviceId) {
         super(recordType);
         Objects.requireNonNull(dataOrigins);
         mTimeRangeFilter = timeRangeFilter;
@@ -64,6 +70,7 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
         mPageSize = pageSize;
         mAscending = PageTokenWrapper.from(pageToken, ascending).isAscending();
         mPageToken = pageToken;
+        mDeviceId = deviceId;
     }
 
     /** Returns time range b/w which the read operation is to be performed */
@@ -97,6 +104,18 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
     }
 
     /**
+     * Returns the device id to filter the request with, or {@code null} for no filter.
+     *
+     * @hide
+     */
+    @Nullable
+    @SystemApi
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public String getDeviceId() {
+        return mDeviceId;
+    }
+
+    /**
      * Returns an object of ReadRecordsRequestParcel to carry read request
      *
      * @hide
@@ -115,6 +134,7 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
         private long mPageToken = DEFAULT_LONG;
         private boolean mAscending = true;
         private boolean mIsOrderingSet = false;
+        @Nullable private String mDeviceId;
 
         /**
          * @param recordType Class object of {@link Record} type that needs to be read
@@ -126,7 +146,7 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
         }
 
         /**
-         * Sets the data origin filter based on which the read operation is to be performed
+         * Sets the data origin filter based on which the read operation is to be performed.
          *
          * @param dataOrigin Adds {@link DataOrigin} for which to read records.
          *     <p>If no {@link DataOrigin} is added then records by all {@link DataOrigin}s will be
@@ -202,6 +222,23 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
         }
 
         /**
+         * Sets the device id filter based on which the read operation is to be performed.
+         *
+         * <p>A device id cannot be set along with data origins.
+         *
+         * @param deviceId the id of the device for which to read records.
+         * @throws IllegalStateException if a device id is set along with data origins.
+         * @hide
+         */
+        @NonNull
+        @SystemApi
+        @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+        public Builder<T> setDeviceId(@NonNull String deviceId) {
+            mDeviceId = deviceId;
+            return this;
+        }
+
+        /**
          * Returns an Object of {@link ReadRecordsRequestUsingFilters}
          *
          * <p>For subsequent read requests, {@link ReadRecordsRequestUsingFilters} does not allow
@@ -219,8 +256,18 @@ public final class ReadRecordsRequestUsingFilters<T extends Record> extends Read
             if (mPageToken != DEFAULT_LONG && mIsOrderingSet) {
                 throw new IllegalStateException("Cannot set both pageToken and sort order");
             }
+            if (mDeviceId != null && !mDataOrigins.isEmpty()) {
+                throw new IllegalStateException("Cannot set both device id and data origins");
+            }
+
             return new ReadRecordsRequestUsingFilters<>(
-                    mTimeRangeFilter, mRecordType, mDataOrigins, mPageSize, mPageToken, mAscending);
+                    mTimeRangeFilter,
+                    mRecordType,
+                    mDataOrigins,
+                    mPageSize,
+                    mPageToken,
+                    mAscending,
+                    mDeviceId);
         }
     }
 }

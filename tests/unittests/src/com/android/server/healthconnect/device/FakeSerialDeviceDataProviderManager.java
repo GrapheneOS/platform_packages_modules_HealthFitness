@@ -21,6 +21,7 @@ import android.content.Context;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
+import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
@@ -43,6 +44,7 @@ public class FakeSerialDeviceDataProviderManager extends DeviceDataProviderManag
             @NonNull DeviceDataSourcesHelper deviceDataSourcesHelper,
             @NonNull DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
             @NonNull FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
+            @NonNull FitnessRecordReadHelper fitnessRecordReadHelper,
             @NonNull SyntheticPackageNameCreator syntheticPackageNameCreator) {
         super(
                 context,
@@ -51,6 +53,7 @@ public class FakeSerialDeviceDataProviderManager extends DeviceDataProviderManag
                 deviceDataSourcesHelper,
                 deviceDataProviderMetadataHelper,
                 fitnessRecordUpsertHelper,
+                fitnessRecordReadHelper,
                 syntheticPackageNameCreator);
     }
 

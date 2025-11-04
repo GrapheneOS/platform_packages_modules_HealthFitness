@@ -656,6 +656,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mDeviceDataSourcesHelper,
                                 mDeviceDataProviderMetadataHelper,
                                 mFitnessRecordUpsertHelper,
+                                mFitnessRecordReadHelper,
                                 mSyntheticPackageNameCreator)
                         : builder.mDeviceDataProviderManager;
         mSyntheticPackageNameResolver =

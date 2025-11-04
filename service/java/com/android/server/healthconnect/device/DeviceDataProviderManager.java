@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.device;
 
+import static android.health.connect.Constants.DEFAULT_LONG;
+
 import android.Manifest;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
@@ -24,12 +26,15 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.health.connect.HealthPermissions;
+import android.health.connect.PageTokenWrapper;
+import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.datatypes.Device;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.os.Build;
 import android.util.ArrayMap;
+import android.util.Pair;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
@@ -37,11 +42,15 @@ import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper.DeviceInfo;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
+import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
+import com.android.server.healthconnect.storage.TransactionManager;
 
 import java.security.SecureRandom;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -64,6 +73,7 @@ public class DeviceDataProviderManager {
     private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
     private final DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
     private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
+    private final FitnessRecordReadHelper mFitnessRecordReadHelper;
     private final SyntheticPackageNameCreator mSyntheticPackageNameCreator;
 
     @Nullable private String mStableCurrentDeviceId;
@@ -78,6 +88,7 @@ public class DeviceDataProviderManager {
             @NonNull DeviceDataSourcesHelper deviceDataSourcesHelper,
             @NonNull DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
             @NonNull FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
+            @NonNull FitnessRecordReadHelper fitnessRecordReadHelper,
             @NonNull SyntheticPackageNameCreator syntheticPackageNameCreator) {
         mContext = Objects.requireNonNull(context);
         mDeviceInfoHelper = Objects.requireNonNull(deviceInfoHelper);
@@ -86,6 +97,7 @@ public class DeviceDataProviderManager {
         mDeviceDataProviderMetadataHelper =
                 Objects.requireNonNull(deviceDataProviderMetadataHelper);
         mFitnessRecordUpsertHelper = Objects.requireNonNull(fitnessRecordUpsertHelper);
+        mFitnessRecordReadHelper = fitnessRecordReadHelper;
         mSyntheticPackageNameCreator = Objects.requireNonNull(syntheticPackageNameCreator);
     }
 
@@ -171,9 +183,6 @@ public class DeviceDataProviderManager {
      *
      * <p>This is extracted to a separate method to allow it to be easily overridden in test cases,
      * and should not be used directly.
-     *
-     * @throws IllegalArgumentException if the given deviceId has already been used for a different
-     *     device type.
      */
     @SuppressLint("MissingPermission")
     @VisibleForTesting
@@ -243,6 +252,66 @@ public class DeviceDataProviderManager {
                 records,
                 EMPTY_EXTRA_PERMISSION_MAPPING,
                 /* shouldGenerateAccessLogs= */ false);
+    }
+
+    /**
+     * Reads and returns a list of records for the given request and previously advertised device,
+     * along with the next page token.
+     *
+     * <p>Make sure to verify permissions with {@link #isPermittedToProvideDeviceData} beforehand.
+     *
+     * @param transactionManager The TransactionManager to be used to perform this request.
+     * @param callingDdpPackageName The name of the device data provider requesting the read.
+     * @param request The read request describing what to read.
+     * @throws IllegalArgumentException if the parcel is filtering by package names and contains
+     *     more than one package filter, or the device with the provided device Id can not be found.
+     * @throws IllegalStateException if the generated syntheticPackageName or appInfoId is not valid
+     */
+    public Pair<List<RecordInternal<?>>, PageTokenWrapper> readDeviceRecords(
+            TransactionManager transactionManager,
+            String callingDdpPackageName,
+            ReadRecordsRequestParcel request) {
+        Objects.requireNonNull(transactionManager);
+        Objects.requireNonNull(callingDdpPackageName);
+        Objects.requireNonNull(request);
+
+        String callingPackageNameForRequest =
+                getOrThrowReadDeviceRecordsCaller(callingDdpPackageName, request);
+        ReadRecordsRequestParcel requestToUse =
+                request.toDdpRequestParcel(callingPackageNameForRequest);
+
+        Pair<Set<String>, Set<String>> allReadPermissions =
+                getAllReadPermissionsForRequest(requestToUse);
+
+        Pair<List<RecordInternal<?>>, PageTokenWrapper> result =
+                mFitnessRecordReadHelper.readRecords(
+                        transactionManager,
+                        callingPackageNameForRequest,
+                        requestToUse,
+                        allReadPermissions.first,
+                        allReadPermissions.second,
+                        DEFAULT_LONG,
+                        /* isForeground= */ true,
+                        /* shouldRecordAccessLog= */ false,
+                        /* enforceSelfRead= */ !request.getPackageFilters().isEmpty(),
+                        /* packageNamesByAppIds= */ null);
+
+        // As multiple DDPs can contribute to the same device, i.e., the same SPN, filter for
+        // the records that were actually contributed by the calling DDP
+        long callingDdpPackageId =
+                mDeviceDataProviderMetadataHelper.getDeviceDataProviderMetadataId(
+                        callingDdpPackageName);
+
+        List<RecordInternal<?>> ddpFilteredRecords =
+                result.first.stream()
+                        .filter(
+                                record ->
+                                        Objects.equals(
+                                                callingDdpPackageId,
+                                                record.getDeviceDataProviderId()))
+                        .toList();
+
+        return Pair.create(ddpFilteredRecords, result.second);
     }
 
     /**
@@ -350,7 +419,9 @@ public class DeviceDataProviderManager {
         }
     }
 
-    private long getOrThrowAppInfoId(String callingDdpPackageName, String deviceId) {
+    /** Get the app info id for the caller and device, or throw if not found */
+    @VisibleForTesting
+    public long getOrThrowAppInfoId(String callingDdpPackageName, String deviceId) {
         List<Long> appInfoIds = mDeviceDataSourcesHelper.getAppInfoIds(callingDdpPackageName);
         if (appInfoIds.isEmpty()) {
             // TODO(b/459388902): Use the data type string in the exception.
@@ -385,6 +456,24 @@ public class DeviceDataProviderManager {
         }
     }
 
+    private String getOrThrowReadDeviceRecordsCaller(
+            String callingDdpPackageName, ReadRecordsRequestParcel request) {
+        // For read requests using IDs we want to read all data, thus we set the caller
+        // as empty to mimic an internal call, see {@link FitnessRecordReadHelper#readRecords}
+        if (request.getRecordIdFiltersParcel() != null || request.getPackageFilters().isEmpty()) {
+            return "";
+        }
+
+        // Otherwise, we retrieve the deviceId from the parcel
+        if (request.getPackageFilters().size() != 1) {
+            throw new IllegalArgumentException(
+                    "Read records request must contain exactly one package filter");
+        }
+        String deviceId = request.getPackageFilters().get(0);
+        long appInfoId = getOrThrowAppInfoId(callingDdpPackageName, deviceId);
+        return getOrThrowSyntheticPackageName(appInfoId);
+    }
+
     private AppInfoInternal getOrThrowAppInfo(String syntheticPackageName) {
         AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(syntheticPackageName);
         if (appInfo != null) {
@@ -412,5 +501,21 @@ public class DeviceDataProviderManager {
         } else {
             return "The device with id " + deviceId;
         }
+    }
+
+    private Pair<Set<String>, Set<String>> getAllReadPermissionsForRequest(
+            ReadRecordsRequestParcel request) {
+        Set<String> grantedExtraReadPermissions =
+                new HashSet<>(
+                        InternalHealthConnectMappings.getInstance()
+                                .getRecordHelper(request.getRecordType())
+                                .getExtraReadPermissions());
+
+        Set<String> grantedGranularReadPermissions =
+                InternalHealthConnectMappings.getInstance()
+                        .getRecordHelper(request.getRecordType())
+                        .getGranularReadPermissions();
+
+        return new Pair<>(grantedExtraReadPermissions, grantedGranularReadPermissions);
     }
 }
