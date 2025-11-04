@@ -153,42 +153,44 @@ class MedicalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<MedicalPermissionsFragment>(bundleOf())
+        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access your medical records?"))
+                .check(matches(isDisplayed()))
+            onView(withText("Choose data you want this app to read or write to Health Connect"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you give access, the app can read and write data such as allergies, lab results, vaccines and more\nAbout medical records"
+                    )
+                )
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                    )
+                )
+                .check(matches(isDisplayed()))
 
-        onView(withText("Allow $TEST_APP_NAME to access your medical records?"))
-            .check(matches(isDisplayed()))
-        onView(withText("Choose data you want this app to read or write to Health Connect"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you give access, the app can read and write data such as allergies, lab results, vaccines and more\nAbout medical records"
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
-                )
-            )
-            .check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))
+                .check(matches(isDisplayed()))
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to write"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to read")).check(matches(isDisplayed()))
-
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to write"))
-                )
-            )
-        Espresso.onIdle()
-        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to write")).check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withText("Allow \u201C$TEST_APP_NAME\u201D to write"))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -201,12 +203,14 @@ class MedicalPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<MedicalPermissionsFragment>(bundleOf())
-
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.REQUEST_MEDICAL_PERMISSIONS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger, times(13)).logImpression(PermissionsElement.PERMISSION_SWITCH)
-        verify(healthConnectLogger).logImpression(PermissionsElement.ALLOW_ALL_SWITCH)
+        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+            verify(healthConnectLogger, atLeast(1))
+                .setPageId(PageName.REQUEST_MEDICAL_PERMISSIONS_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger, times(13))
+                .logImpression(PermissionsElement.PERMISSION_SWITCH)
+            verify(healthConnectLogger).logImpression(PermissionsElement.ALLOW_ALL_SWITCH)
+        }
     }
 
     @Test
@@ -220,38 +224,39 @@ class MedicalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<MedicalPermissionsFragment>(bundleOf())
+        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access your medical records?"))
+                .check(matches(isDisplayed()))
+            onView(withText("Choose data you want this app to read from Health Connect"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you give access, the app can read data such as allergies, lab results, vaccines and more\nAbout medical records"
+                    )
+                )
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                    )
+                )
+                .check(matches(isDisplayed()))
 
-        onView(withText("Allow $TEST_APP_NAME to access your medical records?"))
-            .check(matches(isDisplayed()))
-        onView(withText("Choose data you want this app to read from Health Connect"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you give access, the app can read data such as allergies, lab results, vaccines and more\nAbout medical records"
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
-                )
-            )
-            .check(matches(isDisplayed()))
-
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))
-                )
-            )
-        Espresso.onIdle()
-        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to read")).check(matches(isDisplayed()))
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
-        Espresso.onIdle()
-        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to write")).check(doesNotExist())
-        onView(withText("All medical records")).check(doesNotExist())
+            Espresso.onIdle()
+            onView(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))
+                .check(matches(isDisplayed()))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
+            Espresso.onIdle()
+            onView(withText("Allow \u201C$TEST_APP_NAME\u201D to write")).check(doesNotExist())
+            onView(withText("All medical records")).check(doesNotExist())
+        }
     }
 
     @Test
@@ -266,30 +271,31 @@ class MedicalPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<MedicalPermissionsFragment>(bundleOf())
-
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("All medical records"))
+        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("All medical records"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withText("All medical records")).perform(click())
-        Espresso.onIdle()
-        onView(withContentDescription("All medical records. Write Access. On"))
-            .check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withText("All medical records")).perform(click())
+            Espresso.onIdle()
+            onView(withContentDescription("All medical records. Write Access. On"))
+                .check(matches(isDisplayed()))
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Vaccines"))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Vaccines"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withText("Vaccines")).perform(click())
-        Espresso.onIdle()
-        onView(withContentDescription("Vaccines. Read Access. On")).check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withText("Vaccines")).perform(click())
+            Espresso.onIdle()
+            onView(withContentDescription("Vaccines. Read Access. On"))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -304,26 +310,27 @@ class MedicalPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<MedicalPermissionsFragment>(bundleOf())
-
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("All medical records"))
+        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("All medical records"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withContentDescription("All medical records. Write Access. Off"))
-            .check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withContentDescription("All medical records. Write Access. Off"))
+                .check(matches(isDisplayed()))
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Vaccines"))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Vaccines"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withContentDescription("Vaccines. Read Access. Off")).check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withContentDescription("Vaccines. Read Access. Off"))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -341,19 +348,20 @@ class MedicalPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<MedicalPermissionsFragment>(bundleOf())
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Vaccines"))
+        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Vaccines"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withText("Vaccines")).perform(click())
+            Espresso.onIdle()
+            onView(withText("Vaccines")).perform(click())
 
-        verify(viewModel).updateHealthPermission(any(MedicalPermission::class.java), eq(true))
-        verify(healthConnectLogger)
-            .logInteraction(PermissionsElement.PERMISSION_SWITCH, UIAction.ACTION_TOGGLE_ON)
+            verify(viewModel).updateHealthPermission(any(MedicalPermission::class.java), eq(true))
+            verify(healthConnectLogger)
+                .logInteraction(PermissionsElement.PERMISSION_SWITCH, UIAction.ACTION_TOGGLE_ON)
+        }
     }
 
     @Test
@@ -372,21 +380,25 @@ class MedicalPermissionsFragmentTest {
             )
         }
 
-        val activityScenario = launchFragment<MedicalPermissionsFragment>(bundleOf())
-        var allowAllPreference: HealthMainSwitchPreference? = null
-        activityScenario.onActivity { activity: TestActivity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as PermissionsFragment
-            allowAllPreference = fragment.preferenceScreen.findPreference("allow_all_preference")
-            allowAllPreference?.isChecked =
-                false // makes sure the preference is on so OnPreferenceChecked is triggered
-        }
-        onView(withText(allowAllPreference?.title?.toString())).perform(scrollTo()).perform(click())
+        launchFragment<MedicalPermissionsFragment>(bundleOf()).use { activityScenario ->
+            var allowAllPreference: HealthMainSwitchPreference? = null
+            activityScenario.onActivity { activity: TestActivity ->
+                val fragment =
+                    activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                        as PermissionsFragment
+                allowAllPreference =
+                    fragment.preferenceScreen.findPreference("allow_all_preference")
+                allowAllPreference?.isChecked =
+                    false // makes sure the preference is on so OnPreferenceChecked is triggered
+            }
+            onView(withText(allowAllPreference?.title?.toString()))
+                .perform(scrollTo())
+                .perform(click())
 
-        verify(viewModel).updateMedicalPermissions(eq(true))
-        verify(healthConnectLogger)
-            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_ON)
+            verify(viewModel).updateMedicalPermissions(eq(true))
+            verify(healthConnectLogger)
+                .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_ON)
+        }
     }
 
     @Test
@@ -405,21 +417,25 @@ class MedicalPermissionsFragmentTest {
             )
         }
 
-        val activityScenario = launchFragment<MedicalPermissionsFragment>(bundleOf())
-        var allowAllPreference: HealthMainSwitchPreference? = null
-        activityScenario.onActivity { activity: TestActivity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as PermissionsFragment
-            allowAllPreference = fragment.preferenceScreen.findPreference("allow_all_preference")
-            allowAllPreference?.isChecked =
-                true // makes sure the preference is on so OnPreferenceChecked is triggered
-        }
-        onView(withText(allowAllPreference?.title?.toString())).perform(scrollTo()).perform(click())
+        launchFragment<MedicalPermissionsFragment>(bundleOf()).use { activityScenario ->
+            var allowAllPreference: HealthMainSwitchPreference? = null
+            activityScenario.onActivity { activity: TestActivity ->
+                val fragment =
+                    activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                        as PermissionsFragment
+                allowAllPreference =
+                    fragment.preferenceScreen.findPreference("allow_all_preference")
+                allowAllPreference?.isChecked =
+                    true // makes sure the preference is on so OnPreferenceChecked is triggered
+            }
+            onView(withText(allowAllPreference?.title?.toString()))
+                .perform(scrollTo())
+                .perform(click())
 
-        assertThat(viewModel.grantedMedicalPermissions.value).isEmpty()
-        verify(healthConnectLogger)
-            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_OFF)
+            assertThat(viewModel.grantedMedicalPermissions.value).isEmpty()
+            verify(healthConnectLogger)
+                .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_OFF)
+        }
     }
 
     @Test
@@ -441,8 +457,9 @@ class MedicalPermissionsFragmentTest {
             MutableLiveData(emptySet<MedicalPermission>())
         }
 
-        launchFragment<MedicalPermissionsFragment>(bundleOf())
-        onView(withText("Allow")).check(matches(ViewMatchers.isNotEnabled()))
+        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow")).check(matches(ViewMatchers.isNotEnabled()))
+        }
     }
 
     @Test
@@ -464,8 +481,8 @@ class MedicalPermissionsFragmentTest {
             MutableLiveData(setOf(fromPermissionString(READ_MEDICAL_DATA_VACCINES)))
         }
 
-        launchFragment<MedicalPermissionsFragment>(bundleOf())
-
-        onView(withText("Allow")).check(matches(ViewMatchers.isEnabled()))
+        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow")).check(matches(ViewMatchers.isEnabled()))
+        }
     }
 }

@@ -108,59 +108,59 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf())
+        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow additional access for $TEST_APP_NAME?"))
+                .check(matches(isDisplayed()))
+            onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Allow additional access for $TEST_APP_NAME?"))
-            .check(matches(isDisplayed()))
-        onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
-            .check(matches(isDisplayed()))
-
-        onView(withText("Access past data")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Allow this app to access Health Connect data added before October 20, 2022"
+            onView(withText("Access past data")).check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Allow this app to access Health Connect data added before October 20, 2022"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Access data in the background")).check(matches(isDisplayed()))
-        onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    ViewMatchers.hasDescendant(
-                        withText(
-                            "Allow this app to access Health Connect data when you're not using the app"
+            onView(withText("Access data in the background")).check(matches(isDisplayed()))
+            onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        ViewMatchers.hasDescendant(
+                            withText(
+                                "Allow this app to access Health Connect data when you're not using the app"
+                            )
                         )
                     )
                 )
-            )
-        onView(
-                withText(
-                    "Allow this app to access Health Connect data when you're not using the app"
+            onView(
+                    withText(
+                        "Allow this app to access Health Connect data when you're not using the app"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Don't allow")).check(matches(isDisplayed()))
-        onView(withText("Allow")).check(matches(isDisplayed()))
+            onView(withText("Don't allow")).check(matches(isDisplayed()))
+            onView(withText("Allow")).check(matches(isDisplayed()))
 
-        verify(healthConnectLogger, atLeast(1))
-            .setPageId(PageName.REQUEST_COMBINED_ADDITIONAL_PERMISSIONS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger)
-            .logImpression(
-                RequestCombinedAdditionalPermissionsElement
-                    .ALLOW_COMBINED_ADDITIONAL_PERMISSIONS_BUTTON
-            )
-        verify(healthConnectLogger)
-            .logImpression(
-                RequestCombinedAdditionalPermissionsElement
-                    .CANCEL_COMBINED_ADDITIONAL_PERMISSIONS_BUTTON
-            )
-        verify(healthConnectLogger)
-            .logImpression(RequestCombinedAdditionalPermissionsElement.BACKGROUND_READ_BUTTON)
-        verify(healthConnectLogger)
-            .logImpression(RequestCombinedAdditionalPermissionsElement.HISTORY_READ_BUTTON)
+            verify(healthConnectLogger, atLeast(1))
+                .setPageId(PageName.REQUEST_COMBINED_ADDITIONAL_PERMISSIONS_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger)
+                .logImpression(
+                    RequestCombinedAdditionalPermissionsElement
+                        .ALLOW_COMBINED_ADDITIONAL_PERMISSIONS_BUTTON
+                )
+            verify(healthConnectLogger)
+                .logImpression(
+                    RequestCombinedAdditionalPermissionsElement
+                        .CANCEL_COMBINED_ADDITIONAL_PERMISSIONS_BUTTON
+                )
+            verify(healthConnectLogger)
+                .logImpression(RequestCombinedAdditionalPermissionsElement.BACKGROUND_READ_BUTTON)
+            verify(healthConnectLogger)
+                .logImpression(RequestCombinedAdditionalPermissionsElement.HISTORY_READ_BUTTON)
+        }
     }
 
     @Test
@@ -177,37 +177,37 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf())
+        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow additional access for $TEST_APP_NAME?"))
+                .check(matches(isDisplayed()))
+            onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Allow additional access for $TEST_APP_NAME?"))
-            .check(matches(isDisplayed()))
-        onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
-            .check(matches(isDisplayed()))
+            onView(withText("Access past data")).check(matches(isDisplayed()))
+            onView(withText("Allow this app to access all past Health Connect data"))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Access past data")).check(matches(isDisplayed()))
-        onView(withText("Allow this app to access all past Health Connect data"))
-            .check(matches(isDisplayed()))
-
-        onView(withText("Access data in the background")).check(matches(isDisplayed()))
-        onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    ViewMatchers.hasDescendant(
-                        withText(
-                            "Allow this app to access Health Connect data when you're not using the app"
+            onView(withText("Access data in the background")).check(matches(isDisplayed()))
+            onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        ViewMatchers.hasDescendant(
+                            withText(
+                                "Allow this app to access Health Connect data when you're not using the app"
+                            )
                         )
                     )
                 )
-            )
-        onView(
-                withText(
-                    "Allow this app to access Health Connect data when you're not using the app"
+            onView(
+                    withText(
+                        "Allow this app to access Health Connect data when you're not using the app"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Don't allow")).check(matches(isDisplayed()))
-        onView(withText("Allow")).check(matches(isDisplayed()))
+            onView(withText("Don't allow")).check(matches(isDisplayed()))
+            onView(withText("Allow")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -224,32 +224,34 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf())
+        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow additional access for $TEST_APP_NAME?"))
+                .check(matches(isDisplayed()))
+            onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Allow additional access for $TEST_APP_NAME?"))
-            .check(matches(isDisplayed()))
-        onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
-            .check(matches(isDisplayed()))
+            onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
+            onView(withText("Allow this app to access data added before October 20, 2022"))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
-        onView(withText("Allow this app to access data added before October 20, 2022"))
-            .check(matches(isDisplayed()))
-
-        onView(withText("Access fitness and wellness data in the background"))
-            .check(matches(isDisplayed()))
-        onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    ViewMatchers.hasDescendant(
-                        withText("Allow this app to access this data when you're not using the app")
+            onView(withText("Access fitness and wellness data in the background"))
+                .check(matches(isDisplayed()))
+            onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        ViewMatchers.hasDescendant(
+                            withText(
+                                "Allow this app to access this data when you're not using the app"
+                            )
+                        )
                     )
                 )
-            )
-        onView(withText("Allow this app to access this data when you're not using the app"))
-            .check(matches(isDisplayed()))
+            onView(withText("Allow this app to access this data when you're not using the app"))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Don't allow")).check(matches(isDisplayed()))
-        onView(withText("Allow")).check(matches(isDisplayed()))
+            onView(withText("Don't allow")).check(matches(isDisplayed()))
+            onView(withText("Allow")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -266,31 +268,33 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf())
+        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow additional access for $TEST_APP_NAME?"))
+                .check(matches(isDisplayed()))
+            onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Allow additional access for $TEST_APP_NAME?"))
-            .check(matches(isDisplayed()))
-        onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
-            .check(matches(isDisplayed()))
+            onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
+            onView(withText("Allow this app to access all past data")).check(matches(isDisplayed()))
 
-        onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
-        onView(withText("Allow this app to access all past data")).check(matches(isDisplayed()))
-
-        onView(withText("Access fitness and wellness data in the background"))
-            .check(matches(isDisplayed()))
-        onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    ViewMatchers.hasDescendant(
-                        withText("Allow this app to access this data when you're not using the app")
+            onView(withText("Access fitness and wellness data in the background"))
+                .check(matches(isDisplayed()))
+            onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        ViewMatchers.hasDescendant(
+                            withText(
+                                "Allow this app to access this data when you're not using the app"
+                            )
+                        )
                     )
                 )
-            )
-        onView(withText("Allow this app to access this data when you're not using the app"))
-            .check(matches(isDisplayed()))
+            onView(withText("Allow this app to access this data when you're not using the app"))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Don't allow")).check(matches(isDisplayed()))
-        onView(withText("Allow")).check(matches(isDisplayed()))
+            onView(withText("Don't allow")).check(matches(isDisplayed()))
+            onView(withText("Allow")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -307,44 +311,44 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf())
+        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow additional access for $TEST_APP_NAME?"))
+                .check(matches(isDisplayed()))
+            onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Allow additional access for $TEST_APP_NAME?"))
-            .check(matches(isDisplayed()))
-        onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
-            .check(matches(isDisplayed()))
+            onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
+            onView(withText("Allow this app to access data added before October 20, 2022"))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
-        onView(withText("Allow this app to access data added before October 20, 2022"))
-            .check(matches(isDisplayed()))
-
-        onView(withText("Access all data in the background")).check(matches(isDisplayed()))
-        onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    ViewMatchers.hasDescendant(
-                        withText(
-                            "Allow this app to access fitness and wellness data and medical records " +
-                                "when you're not using the app"
+            onView(withText("Access all data in the background")).check(matches(isDisplayed()))
+            onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        ViewMatchers.hasDescendant(
+                            withText(
+                                "Allow this app to access fitness and wellness data and medical records " +
+                                    "when you're not using the app"
+                            )
                         )
                     )
                 )
-            )
-        onView(
-                withText(
-                    "Allow this app to access fitness and wellness data and medical records " +
-                        "when you're not using the app"
+            onView(
+                    withText(
+                        "Allow this app to access fitness and wellness data and medical records " +
+                            "when you're not using the app"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
-            .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
-        Espresso.onIdle()
-        onView(withText("$TEST_APP_NAME can already access past data for your medical records"))
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+            onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
+                .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
+            Espresso.onIdle()
+            onView(withText("$TEST_APP_NAME can already access past data for your medical records"))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Don't allow")).check(matches(isDisplayed()))
-        onView(withText("Allow")).check(matches(isDisplayed()))
+            onView(withText("Don't allow")).check(matches(isDisplayed()))
+            onView(withText("Allow")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -361,39 +365,39 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf())
+        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow additional access for $TEST_APP_NAME?"))
+                .check(matches(isDisplayed()))
+            onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Allow additional access for $TEST_APP_NAME?"))
-            .check(matches(isDisplayed()))
-        onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
-            .check(matches(isDisplayed()))
+            onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
+            onView(withText("Allow this app to access all past data")).check(matches(isDisplayed()))
 
-        onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
-        onView(withText("Allow this app to access all past data")).check(matches(isDisplayed()))
+            onView(withText("Access all data in the background")).check(matches(isDisplayed()))
 
-        onView(withText("Access all data in the background")).check(matches(isDisplayed()))
-
-        onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    ViewMatchers.hasDescendant(
-                        withText(
-                            "Allow this app to access fitness and wellness data and medical records " +
-                                "when you're not using the app"
+            onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        ViewMatchers.hasDescendant(
+                            withText(
+                                "Allow this app to access fitness and wellness data and medical records " +
+                                    "when you're not using the app"
+                            )
                         )
                     )
                 )
-            )
-        onView(
-                withText(
-                    "Allow this app to access fitness and wellness data and medical records " +
-                        "when you're not using the app"
+            onView(
+                    withText(
+                        "Allow this app to access fitness and wellness data and medical records " +
+                            "when you're not using the app"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
 
-        onView(withText("Don't allow")).check(matches(isDisplayed()))
-        onView(withText("Allow")).check(matches(isDisplayed()))
+            onView(withText("Don't allow")).check(matches(isDisplayed()))
+            onView(withText("Allow")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -409,24 +413,25 @@ class CombinedAdditionalPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf())
-        onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    ViewMatchers.hasDescendant(withText("Access all data in the background"))
+        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+            onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        ViewMatchers.hasDescendant(withText("Access all data in the background"))
+                    )
                 )
-            )
-        onView(withText("Access all data in the background")).check(matches(isDisplayed()))
-        onView(withText("Access all data in the background")).perform(click())
+            onView(withText("Access all data in the background")).check(matches(isDisplayed()))
+            onView(withText("Access all data in the background")).perform(click())
 
-        Mockito.verify(viewModel)
-            .updateHealthPermission(any(AdditionalPermission::class.java), eq(true))
+            Mockito.verify(viewModel)
+                .updateHealthPermission(any(AdditionalPermission::class.java), eq(true))
 
-        verify(healthConnectLogger)
-            .logInteraction(
-                RequestCombinedAdditionalPermissionsElement.BACKGROUND_READ_BUTTON,
-                UIAction.ACTION_TOGGLE_ON,
-            )
+            verify(healthConnectLogger)
+                .logInteraction(
+                    RequestCombinedAdditionalPermissionsElement.BACKGROUND_READ_BUTTON,
+                    UIAction.ACTION_TOGGLE_ON,
+                )
+        }
     }
 
     @Test
@@ -453,18 +458,19 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
             .thenReturn(true)
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf())
-        onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
-        onView(withText("Access past fitness and wellness data")).perform(click())
+        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+            onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
+            onView(withText("Access past fitness and wellness data")).perform(click())
 
-        Mockito.verify(viewModel)
-            .updateHealthPermission(any(AdditionalPermission::class.java), eq(false))
+            Mockito.verify(viewModel)
+                .updateHealthPermission(any(AdditionalPermission::class.java), eq(false))
 
-        verify(healthConnectLogger)
-            .logInteraction(
-                RequestCombinedAdditionalPermissionsElement.HISTORY_READ_BUTTON,
-                UIAction.ACTION_TOGGLE_OFF,
-            )
+            verify(healthConnectLogger)
+                .logInteraction(
+                    RequestCombinedAdditionalPermissionsElement.HISTORY_READ_BUTTON,
+                    UIAction.ACTION_TOGGLE_OFF,
+                )
+        }
     }
 
     @Test
@@ -485,9 +491,9 @@ class CombinedAdditionalPermissionsFragmentTest {
             MutableLiveData(emptySet<AdditionalPermission>())
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf())
-
-        onView(withText("Allow")).check(matches(ViewMatchers.isNotEnabled()))
+        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow")).check(matches(ViewMatchers.isNotEnabled()))
+        }
     }
 
     @Test
@@ -507,8 +513,8 @@ class CombinedAdditionalPermissionsFragmentTest {
             MutableLiveData(setOf(AdditionalPermission.READ_HEALTH_DATA_HISTORY))
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf())
-
-        onView(withText("Allow")).check(matches(ViewMatchers.isEnabled()))
+        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow")).check(matches(ViewMatchers.isEnabled()))
+        }
     }
 }
