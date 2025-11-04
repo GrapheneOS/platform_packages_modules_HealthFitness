@@ -21,7 +21,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.accessibility.AccessibilityNodeInfo
 import androidx.annotation.VisibleForTesting
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
@@ -476,7 +475,7 @@ open class AllDataFragment : Hilt_AllDataFragment() {
                 viewModel.getTheNumOfPermissionTypes(),
             )
         )
-        childFragmentManager.setFragmentResult(START_DELETION_KEY, bundleOf())
+        childFragmentManager.setFragmentResult(START_DELETION_KEY, Bundle())
     }
 
     private fun getPermissionTypePreference(
@@ -489,7 +488,7 @@ open class AllDataFragment : Hilt_AllDataFragment() {
                 findNavController()
                     .navigate(
                         navigationDestination(permissionType),
-                        bundleOf(PERMISSION_TYPE_NAME_KEY to permissionType.name),
+                        Bundle().apply { putString(PERMISSION_TYPE_NAME_KEY, permissionType.name) },
                     )
                 true
             }

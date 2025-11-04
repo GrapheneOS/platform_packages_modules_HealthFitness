@@ -23,8 +23,8 @@ import android.health.connect.ReadRecordsRequestUsingFilters
 import android.health.connect.ReadRecordsResponse
 import android.health.connect.RecordTypeInfoResponse
 import android.health.connect.datatypes.Record
+import android.os.Bundle
 import android.os.OutcomeReceiver
-import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.preference.PreferenceCategory
@@ -144,10 +144,10 @@ class AppDataFragmentTest {
         mockData(emptyList())
 
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("No data")).perform(scrollTo()).check(matches(isDisplayed()))
@@ -169,10 +169,10 @@ class AppDataFragmentTest {
             )
         )
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("Activity")).check(matches(isDisplayed()))
@@ -215,10 +215,10 @@ class AppDataFragmentTest {
             )
         )
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             ) {
                 navHostController.setGraph(R.navigation.app_data_nav_graph)
                 Navigation.setViewNavController(this.requireView(), navHostController)
@@ -237,10 +237,10 @@ class AppDataFragmentTest {
     fun navigatesToMedicalAppEntries() = runTest {
         mockData(listOf(MedicalPermissionType.VACCINES))
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             ) {
                 navHostController.setGraph(R.navigation.app_data_nav_graph)
                 Navigation.setViewNavController(this.requireView(), navHostController)
@@ -266,10 +266,10 @@ class AppDataFragmentTest {
         )
 
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("Activity")).check(matches(isDisplayed()))
@@ -294,10 +294,10 @@ class AppDataFragmentTest {
     fun medicalDataOnly_populatedDataTypesDisplayed() = runTest {
         mockData(listOf(MedicalPermissionType.VACCINES))
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("Activity")).check(doesNotExist())
@@ -317,10 +317,10 @@ class AppDataFragmentTest {
         mockData(listOf(FitnessPermissionType.DISTANCE, FitnessPermissionType.STEPS))
 
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 assertCheckboxNotShown("Distance")
@@ -353,10 +353,10 @@ class AppDataFragmentTest {
         )
 
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 assertCheckboxNotShown("Distance")
@@ -385,10 +385,10 @@ class AppDataFragmentTest {
         mockData(listOf(FitnessPermissionType.DISTANCE, FitnessPermissionType.STEPS))
 
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -421,10 +421,10 @@ class AppDataFragmentTest {
         )
 
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -450,10 +450,10 @@ class AppDataFragmentTest {
         mockData(listOf(FitnessPermissionType.DISTANCE, FitnessPermissionType.STEPS))
 
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -512,10 +512,10 @@ class AppDataFragmentTest {
         )
 
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -575,10 +575,10 @@ class AppDataFragmentTest {
     fun inDeletionState_displaysSelectAllButton() = runTest {
         mockData(listOf(FitnessPermissionType.DISTANCE, FitnessPermissionType.STEPS))
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -603,10 +603,10 @@ class AppDataFragmentTest {
         )
 
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -623,10 +623,10 @@ class AppDataFragmentTest {
     fun inDeletionState_onSelectAllChecked_allPermissionTypesChecked() = runTest {
         mockData(listOf(FitnessPermissionType.DISTANCE, FitnessPermissionType.STEPS))
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -707,10 +707,10 @@ class AppDataFragmentTest {
             )
         )
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -793,10 +793,10 @@ class AppDataFragmentTest {
     fun inDeletionState_onSelectAllUnchecked_allPermissionTypesUnchecked() = runTest {
         mockData(listOf(FitnessPermissionType.DISTANCE, FitnessPermissionType.STEPS))
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -857,10 +857,10 @@ class AppDataFragmentTest {
                 )
             )
             launchFragment<AppDataFragment>(
-                    bundleOf(
-                        Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                        Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                    )
+                    Bundle().apply {
+                        putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                        putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                    }
                 )
                 .use { scenario ->
                     scenario.onActivity { activity ->
@@ -924,10 +924,10 @@ class AppDataFragmentTest {
         mockData(listOf(FitnessPermissionType.DISTANCE, FitnessPermissionType.STEPS))
 
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -979,10 +979,10 @@ class AppDataFragmentTest {
             )
 
             launchFragment<AppDataFragment>(
-                    bundleOf(
-                        Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                        Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                    )
+                    Bundle().apply {
+                        putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                        putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                    }
                 )
                 .use { scenario ->
                     scenario.onActivity { activity ->
@@ -1031,10 +1031,10 @@ class AppDataFragmentTest {
         mockData(listOf(FitnessPermissionType.DISTANCE, FitnessPermissionType.MENSTRUATION))
 
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -1071,10 +1071,10 @@ class AppDataFragmentTest {
             )
 
             launchFragment<AppDataFragment>(
-                    bundleOf(
-                        Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                        Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                    )
+                    Bundle().apply {
+                        putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                        putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                    }
                 )
                 .use { scenario ->
                     scenario.onActivity { activity ->
@@ -1104,10 +1104,10 @@ class AppDataFragmentTest {
         mockData(listOf(FitnessPermissionType.DISTANCE, FitnessPermissionType.MENSTRUATION))
 
         launchFragment<AppDataFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -1146,10 +1146,10 @@ class AppDataFragmentTest {
             )
 
             launchFragment<AppDataFragment>(
-                    bundleOf(
-                        Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                        Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                    )
+                    Bundle().apply {
+                        putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                        putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                    }
                 )
                 .use { scenario ->
                     scenario.onActivity { activity ->
