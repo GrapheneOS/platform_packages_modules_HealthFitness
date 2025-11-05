@@ -699,4 +699,22 @@ interface IHealthConnectService {
         in AttributionSource attributionSource,
         in List<DeviceDataAdvertisement> deviceDataAdvertisements,
         in IEmptyResponseCallback callback);
+
+    /**
+     * Inserts {@code recordsParcel} from a device data type source into the HealthConnect database.
+     *
+     * <p>Before this method is called, {@link #advertiseDeviceDataSources} must have been called.
+     *
+     * @param attributionSource attribution source for the data.
+     * @param deviceId The identifier for the device that is the source of this data. This must
+     *                 match the {@code deviceId} used in {@link DeviceDataAdvertisement} in the
+     *                 latest call to {@link #advertiseDeviceDataSources}.
+     * @param recordsParcel Parcel for list of records to be inserted.
+     * @param callback Callback to receive result of performing this operation.
+     */
+    void insertDeviceRecords(
+        in AttributionSource attributionSource,
+        in String deviceId,
+        in RecordsParcel recordsParcel,
+        in IInsertRecordsResponseCallback callback);
 }
