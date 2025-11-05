@@ -32,10 +32,8 @@
     <string name="devices_title" msgid="7548105261104504301">"Naprave"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"Dovoljenja za aplikacije"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Upravljanje aplikacij in dovoljenj"</string>
-    <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"Dostop ima <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> od <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> aplikacij"</string>
-    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"Dostop ima toliko aplikacij: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> od <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g>."</string>
-    <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"Dostop ima toliko aplikacij: <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g>."</string>
-    <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"Dostop ima <xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplikacija."</string>
+    <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"Dostop ima <xliff:g id="NUM_APPS_CONNECTED">%1$d</xliff:g> od <xliff:g id="NUM_POSSIBLE_APPS">%2$d</xliff:g> aplikacij"</string>
+    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"Dostop ima toliko aplikacij: <xliff:g id="NUM_APPS_CONNECTED">%1$d</xliff:g> od <xliff:g id="NUM_POSSIBLE_APPS">%2$d</xliff:g>."</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{Dostop ima 1 aplikacija}one{Dostop ima # aplikacija}two{Dostop imata # aplikaciji}few{Dostop imajo # aplikacije}other{Dostop ima # aplikacij}}"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Brez"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Podrobnosti vnosa"</string>
@@ -875,8 +873,7 @@
     <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Žganje s sodo"</string>
     <string name="serving_volume_title" msgid="4727986574534974167">"Enota pijače"</string>
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Volumenski odstotek alkohola"</string>
-    <!-- no translation found for notes_title (4596764711916248492) -->
-    <skip />
+    <string name="notes_title" msgid="4596764711916248492">"Opombe"</string>
     <string name="details_title" msgid="8411891773854413790">"Podrobnosti"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> m"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> min"</string>
