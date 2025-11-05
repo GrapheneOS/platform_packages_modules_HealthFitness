@@ -33,6 +33,6 @@ import org.junit.runner.RunWith;
 public class ActivityIntensityNoPermissionsDeclaredTest
         extends BaseNoPermissionsDeclaredTest<ActivityIntensityRecord> {
     public ActivityIntensityNoPermissionsDeclaredTest() {
-        super(ActivityIntensityRecord.class, new ActivityIntensityRecordFactory());
+        super(() -> ActivityIntensityRecord.class, new ActivityIntensityRecordFactory());
     }
 }

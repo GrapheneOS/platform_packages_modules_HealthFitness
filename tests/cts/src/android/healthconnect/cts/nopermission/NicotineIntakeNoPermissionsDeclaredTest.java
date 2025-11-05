@@ -40,6 +40,6 @@ import org.junit.runner.RunWith;
 public class NicotineIntakeNoPermissionsDeclaredTest
         extends BaseNoPermissionsDeclaredTest<NicotineIntakeRecord> {
     public NicotineIntakeNoPermissionsDeclaredTest() {
-        super(NicotineIntakeRecord.class, new NicotineIntakeRecordFactory());
+        super(() -> NicotineIntakeRecord.class, new NicotineIntakeRecordFactory());
     }
 }

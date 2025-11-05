@@ -47,6 +47,7 @@ import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,6 +69,13 @@ public class AlcoholConsumptionRecordTest {
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
+    private AlcoholConsumptionRecordTestHelper mAlcoholConsumptionRecordTestHelper;
+
+    @Before
+    public void setUp() {
+        mAlcoholConsumptionRecordTestHelper = new AlcoholConsumptionRecordTestHelper();
+    }
+
     @Test
     public void builder_allFieldsSet() {
         Metadata metadata =
@@ -86,7 +94,8 @@ public class AlcoholConsumptionRecordTest {
                                         .build())
                         .setLastModifiedTime(Instant.now())
                         .build();
-        AlcoholConsumptionRecord record = getFullRecordBuilder(metadata).build();
+        AlcoholConsumptionRecord record =
+                mAlcoholConsumptionRecordTestHelper.getFullRecordBuilder(metadata).build();
 
         assertThat(record.getRecordType()).isEqualTo(RECORD_TYPE_ALCOHOL_CONSUMPTION);
         assertThat(record.getMetadata()).isEqualTo(metadata);
@@ -136,22 +145,26 @@ public class AlcoholConsumptionRecordTest {
         assertThat(record.getTemporalType()).isEqualTo(RECORD_TEMPORAL_TYPE_INTERVAL);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void builder_invalidType() {
         Metadata metadata = new Metadata.Builder().build();
         Instant time = Instant.now();
 
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> new AlcoholConsumptionRecord.Builder(metadata, time, 505).build());
+        new AlcoholConsumptionRecord.Builder(metadata, time, 505).build();
     }
 
     @Test
     public void equals_hashCode_allFieldsEqual_recordsEqual() {
         Instant startTime = Instant.now().minusSeconds(60);
         Instant endTime = Instant.now();
-        AlcoholConsumptionRecord recordA = getFullRecordBuilder(startTime, endTime).build();
-        AlcoholConsumptionRecord recordB = getFullRecordBuilder(startTime, endTime).build();
+        AlcoholConsumptionRecord recordA =
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .build();
+        AlcoholConsumptionRecord recordB =
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .build();
 
         assertThat(recordA).isEqualTo(recordB);
         assertThat(recordA.hashCode()).isEqualTo(recordB.hashCode());
@@ -161,7 +174,10 @@ public class AlcoholConsumptionRecordTest {
     public void equals_hashCode_recordsEqual() {
         Instant startTime = Instant.now().minusSeconds(120);
         Instant endTime = Instant.now().minusSeconds(60);
-        AlcoholConsumptionRecord baseRecord = getFullRecordBuilder(startTime, endTime).build();
+        AlcoholConsumptionRecord baseRecord =
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .build();
 
         assertThat(baseRecord).isEqualTo(baseRecord);
         assertThat(baseRecord.hashCode()).isEqualTo(baseRecord.hashCode());
@@ -171,8 +187,14 @@ public class AlcoholConsumptionRecordTest {
     public void equals_hashCode_identicalRecordsEqual() {
         Instant startTime = Instant.now().minusSeconds(120);
         Instant endTime = Instant.now().minusSeconds(60);
-        AlcoholConsumptionRecord baseRecord = getFullRecordBuilder(startTime, endTime).build();
-        AlcoholConsumptionRecord identicalRecord = getFullRecordBuilder(startTime, endTime).build();
+        AlcoholConsumptionRecord baseRecord =
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .build();
+        AlcoholConsumptionRecord identicalRecord =
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .build();
 
         assertThat(baseRecord).isEqualTo(identicalRecord);
         assertThat(baseRecord.hashCode()).isEqualTo(identicalRecord.hashCode());
@@ -182,7 +204,10 @@ public class AlcoholConsumptionRecordTest {
     public void equals_hashCode_nullInequality() {
         Instant startTime = Instant.now().minusSeconds(120);
         Instant endTime = Instant.now().minusSeconds(60);
-        AlcoholConsumptionRecord baseRecord = getFullRecordBuilder(startTime, endTime).build();
+        AlcoholConsumptionRecord baseRecord =
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .build();
 
         assertThat(baseRecord).isNotEqualTo(null);
     }
@@ -191,7 +216,10 @@ public class AlcoholConsumptionRecordTest {
     public void equals_hashCode_differentClass_notEqual() {
         Instant startTime = Instant.now().minusSeconds(120);
         Instant endTime = Instant.now().minusSeconds(60);
-        AlcoholConsumptionRecord baseRecord = getFullRecordBuilder(startTime, endTime).build();
+        AlcoholConsumptionRecord baseRecord =
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .build();
 
         assertThat(baseRecord).isNotEqualTo(new Object());
     }
@@ -200,7 +228,10 @@ public class AlcoholConsumptionRecordTest {
     public void equals_hashCode_differentTemporalType_notEqual() {
         Instant startTime = Instant.now().minusSeconds(120);
         Instant endTime = Instant.now().minusSeconds(60);
-        AlcoholConsumptionRecord baseRecord = getFullRecordBuilder(startTime, endTime).build();
+        AlcoholConsumptionRecord baseRecord =
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .build();
 
         AlcoholConsumptionRecord differentTemporalTypeRecord =
                 new AlcoholConsumptionRecord.Builder(
@@ -221,12 +252,21 @@ public class AlcoholConsumptionRecordTest {
     public void equals_hashCode_servingVolumeNullability() {
         Instant startTime = Instant.now().minusSeconds(120);
         Instant endTime = Instant.now().minusSeconds(60);
-        AlcoholConsumptionRecord baseRecord = getFullRecordBuilder(startTime, endTime).build();
+        AlcoholConsumptionRecord baseRecord =
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .build();
 
         AlcoholConsumptionRecord servingVolumeNullRecord =
-                getFullRecordBuilder(startTime, endTime).setServingVolume(null).build();
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .setServingVolume(null)
+                        .build();
         AlcoholConsumptionRecord servingVolumeNullRecord2 =
-                getFullRecordBuilder(startTime, endTime).setServingVolume(null).build();
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .setServingVolume(null)
+                        .build();
 
         assertThat(servingVolumeNullRecord).isEqualTo(servingVolumeNullRecord2);
         assertThat(baseRecord).isNotEqualTo(servingVolumeNullRecord);
@@ -239,12 +279,21 @@ public class AlcoholConsumptionRecordTest {
     public void equals_hashCode_alcoholByVolumeNullability() {
         Instant startTime = Instant.now().minusSeconds(120);
         Instant endTime = Instant.now().minusSeconds(60);
-        AlcoholConsumptionRecord baseRecord = getFullRecordBuilder(startTime, endTime).build();
+        AlcoholConsumptionRecord baseRecord =
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .build();
 
         AlcoholConsumptionRecord alcoholByVolumeNullRecord =
-                getFullRecordBuilder(startTime, endTime).setAlcoholByVolume(null).build();
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .setAlcoholByVolume(null)
+                        .build();
         AlcoholConsumptionRecord alcoholByVolumeNullRecord2 =
-                getFullRecordBuilder(startTime, endTime).setAlcoholByVolume(null).build();
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .setAlcoholByVolume(null)
+                        .build();
 
         assertThat(baseRecord).isNotEqualTo(alcoholByVolumeNullRecord);
         assertThat(baseRecord.hashCode()).isNotEqualTo(alcoholByVolumeNullRecord.hashCode());
@@ -257,12 +306,21 @@ public class AlcoholConsumptionRecordTest {
     public void equals_hashCode_notesNullability() {
         Instant startTime = Instant.now().minusSeconds(120);
         Instant endTime = Instant.now().minusSeconds(60);
-        AlcoholConsumptionRecord baseRecord = getFullRecordBuilder(startTime, endTime).build();
+        AlcoholConsumptionRecord baseRecord =
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .build();
 
         AlcoholConsumptionRecord notesNullRecord =
-                getFullRecordBuilder(startTime, endTime).setNotes(null).build();
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .setNotes(null)
+                        .build();
         AlcoholConsumptionRecord notesNullRecord2 =
-                getFullRecordBuilder(startTime, endTime).setNotes(null).build();
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .setNotes(null)
+                        .build();
 
         assertThat(baseRecord).isNotEqualTo(notesNullRecord);
         assertThat(baseRecord.hashCode()).isNotEqualTo(notesNullRecord.hashCode());
@@ -274,16 +332,21 @@ public class AlcoholConsumptionRecordTest {
     public void equals_hashCode_allOptionalFieldsNull() {
         Instant startTime = Instant.now().minusSeconds(120);
         Instant endTime = Instant.now().minusSeconds(60);
-        AlcoholConsumptionRecord baseRecord = getFullRecordBuilder(startTime, endTime).build();
+        AlcoholConsumptionRecord baseRecord =
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .build();
 
         AlcoholConsumptionRecord allOptionalNullRecord =
-                getFullRecordBuilder(startTime, endTime)
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
                         .setServingVolume(null)
                         .setAlcoholByVolume(null)
                         .setNotes(null)
                         .build();
         AlcoholConsumptionRecord allOptionalNullRecord2 =
-                getFullRecordBuilder(startTime, endTime)
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
                         .setServingVolume(null)
                         .setAlcoholByVolume(null)
                         .setNotes(null)
@@ -299,10 +362,14 @@ public class AlcoholConsumptionRecordTest {
     public void equals_hashCode_multipleFieldsDifferent() {
         Instant startTime = Instant.now().minusSeconds(120);
         Instant endTime = Instant.now().minusSeconds(60);
-        AlcoholConsumptionRecord baseRecord = getFullRecordBuilder(startTime, endTime).build();
+        AlcoholConsumptionRecord baseRecord =
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .build();
 
         AlcoholConsumptionRecord multipleFieldsDifferentRecord =
-                getFullRecordBuilder(startTime, endTime)
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
                         .setBeverageType(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_OTHER)
                         .setServingVolume(Volume.fromLiters(0.1))
                         .setNotes("Another note")
@@ -320,9 +387,13 @@ public class AlcoholConsumptionRecordTest {
         Metadata metadataB = new Metadata.Builder().setId("id-b").build();
 
         AlcoholConsumptionRecord recordA =
-                getFullRecordBuilder(metadataA, startTime, endTime).build();
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(metadataA, startTime, endTime)
+                        .build();
         AlcoholConsumptionRecord recordB =
-                getFullRecordBuilder(metadataB, startTime, endTime).build();
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(metadataB, startTime, endTime)
+                        .build();
 
         assertThat(recordA).isNotEqualTo(recordB);
         assertThat(recordA.hashCode()).isNotEqualTo(recordB.hashCode());
@@ -333,11 +404,13 @@ public class AlcoholConsumptionRecordTest {
         Instant startTime = Instant.now().minusSeconds(120);
         Instant endTime = Instant.now().minusSeconds(60);
         AlcoholConsumptionRecord recordA =
-                getFullRecordBuilder(startTime, endTime)
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
                         .setBeverageType(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
                         .build();
         AlcoholConsumptionRecord recordB =
-                getFullRecordBuilder(startTime, endTime)
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
                         .setBeverageType(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE)
                         .build();
 
@@ -350,11 +423,13 @@ public class AlcoholConsumptionRecordTest {
         Instant startTime = Instant.now().minusSeconds(120);
         Instant endTime = Instant.now().minusSeconds(60);
         AlcoholConsumptionRecord recordA =
-                getFullRecordBuilder(startTime, endTime)
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
                         .setServingVolume(Volume.fromLiters(0.568))
                         .build();
         AlcoholConsumptionRecord recordB =
-                getFullRecordBuilder(startTime, endTime)
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
                         .setServingVolume(Volume.fromLiters(0.252))
                         .build();
 
@@ -367,11 +442,13 @@ public class AlcoholConsumptionRecordTest {
         Instant startTime = Instant.now().minusSeconds(120);
         Instant endTime = Instant.now().minusSeconds(60);
         AlcoholConsumptionRecord recordA =
-                getFullRecordBuilder(startTime, endTime)
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
                         .setAlcoholByVolume(Percentage.fromValue(7))
                         .build();
         AlcoholConsumptionRecord recordB =
-                getFullRecordBuilder(startTime, endTime)
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
                         .setAlcoholByVolume(Percentage.fromValue(12))
                         .build();
 
@@ -384,9 +461,15 @@ public class AlcoholConsumptionRecordTest {
         Instant startTime = Instant.now().minusSeconds(120);
         Instant endTime = Instant.now().minusSeconds(60);
         AlcoholConsumptionRecord recordA =
-                getFullRecordBuilder(startTime, endTime).setNotes("Pub Crawl").build();
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .setNotes("Pub Crawl")
+                        .build();
         AlcoholConsumptionRecord recordB =
-                getFullRecordBuilder(startTime, endTime).setNotes("Otley Run").build();
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder(startTime, endTime)
+                        .setNotes("Otley Run")
+                        .build();
 
         assertThat(recordA).isNotEqualTo(recordB);
         assertThat(recordA.hashCode()).isNotEqualTo(recordB.hashCode());
@@ -396,8 +479,10 @@ public class AlcoholConsumptionRecordTest {
     public void equals_hashCode_metadataNotEqual_recordsNotEqual() {
         Metadata metadataA = new Metadata.Builder().setId("id-a").build();
         Metadata metadataB = new Metadata.Builder().setId("id-b").build();
-        AlcoholConsumptionRecord recordA = getFullRecordBuilder(metadataA).build();
-        AlcoholConsumptionRecord recordB = getFullRecordBuilder(metadataB).build();
+        AlcoholConsumptionRecord recordA =
+                mAlcoholConsumptionRecordTestHelper.getFullRecordBuilder(metadataA).build();
+        AlcoholConsumptionRecord recordB =
+                mAlcoholConsumptionRecordTestHelper.getFullRecordBuilder(metadataB).build();
 
         assertThat(recordA).isNotEqualTo(recordB);
         assertThat(recordA.hashCode()).isNotEqualTo(recordB.hashCode());
@@ -406,11 +491,13 @@ public class AlcoholConsumptionRecordTest {
     @Test
     public void equals_hashCode_alcoholTypeNotEqual_recordsNotEqual() {
         AlcoholConsumptionRecord recordA =
-                getFullRecordBuilder()
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder()
                         .setBeverageType(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
                         .build();
         AlcoholConsumptionRecord recordB =
-                getFullRecordBuilder()
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder()
                         .setBeverageType(ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE)
                         .build();
 
@@ -421,9 +508,15 @@ public class AlcoholConsumptionRecordTest {
     @Test
     public void equals_hashCode_servingVolumeNotEqual_recordsNotEqual() {
         AlcoholConsumptionRecord recordA =
-                getFullRecordBuilder().setServingVolume(Volume.fromLiters(0.568)).build();
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder()
+                        .setServingVolume(Volume.fromLiters(0.568))
+                        .build();
         AlcoholConsumptionRecord recordB =
-                getFullRecordBuilder().setServingVolume(Volume.fromLiters(0.252)).build();
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder()
+                        .setServingVolume(Volume.fromLiters(0.252))
+                        .build();
 
         assertThat(recordA).isNotEqualTo(recordB);
         assertThat(recordA.hashCode()).isNotEqualTo(recordB.hashCode());
@@ -432,9 +525,15 @@ public class AlcoholConsumptionRecordTest {
     @Test
     public void equals_hashCode_alcoholByVolumeNotEqual_recordsNotEqual() {
         AlcoholConsumptionRecord recordA =
-                getFullRecordBuilder().setAlcoholByVolume(Percentage.fromValue(7)).build();
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder()
+                        .setAlcoholByVolume(Percentage.fromValue(7))
+                        .build();
         AlcoholConsumptionRecord recordB =
-                getFullRecordBuilder().setAlcoholByVolume(Percentage.fromValue(12)).build();
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder()
+                        .setAlcoholByVolume(Percentage.fromValue(12))
+                        .build();
 
         assertThat(recordA).isNotEqualTo(recordB);
         assertThat(recordA.hashCode()).isNotEqualTo(recordB.hashCode());
@@ -442,8 +541,16 @@ public class AlcoholConsumptionRecordTest {
 
     @Test
     public void equals_hashCode_noteNotEqual_recordsNotEqual() {
-        AlcoholConsumptionRecord recordA = getFullRecordBuilder().setNotes("Pub Crawl").build();
-        AlcoholConsumptionRecord recordB = getFullRecordBuilder().setNotes("Otley Run").build();
+        AlcoholConsumptionRecord recordA =
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder()
+                        .setNotes("Pub Crawl")
+                        .build();
+        AlcoholConsumptionRecord recordB =
+                mAlcoholConsumptionRecordTestHelper
+                        .getFullRecordBuilder()
+                        .setNotes("Otley Run")
+                        .build();
 
         assertThat(recordA).isNotEqualTo(recordB);
         assertThat(recordA.hashCode()).isNotEqualTo(recordB.hashCode());
@@ -525,36 +632,47 @@ public class AlcoholConsumptionRecordTest {
         return ZoneOffset.systemDefault().getRules().getOffset(instant);
     }
 
-    private AlcoholConsumptionRecord.Builder getFullRecordBuilder(
-            Instant startTime, Instant endTime) {
-        return getFullRecordBuilder(new Metadata.Builder().build(), startTime, endTime);
+    private static class AlcoholConsumptionRecordTestHelper {
+
+        public AlcoholConsumptionRecord.Builder getFullRecordBuilder(
+                Metadata metadata, Instant startTime, Instant endTime) {
+            return getFullRecordBuilderInterval(metadata, startTime, endTime);
+        }
+
+        public AlcoholConsumptionRecord.Builder getFullRecordBuilder(
+                Instant startTime, Instant endTime) {
+            return getFullRecordBuilderInterval(new Metadata.Builder().build(), startTime, endTime);
+        }
+
+        public AlcoholConsumptionRecord.Builder getFullRecordBuilder() {
+            return getFullRecordBuilder(new Metadata.Builder().build());
+        }
+
+        public AlcoholConsumptionRecord.Builder getFullRecordBuilder(Metadata metadata) {
+            Instant startTime = Instant.now().minusSeconds(60);
+            Instant endTime = Instant.now();
+
+            return getFullRecordBuilderInterval(metadata, startTime, endTime);
+        }
+
+        private AlcoholConsumptionRecord.Builder getFullRecordBuilderInterval(
+                Metadata metadata, Instant startTime, Instant endTime) {
+
+            AlcoholConsumptionRecord.Builder builder =
+                    new AlcoholConsumptionRecord.Builder(
+                            metadata, startTime, endTime, ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER);
+
+            return populateRecord(builder);
+        }
+
+        private AlcoholConsumptionRecord.Builder populateRecord(
+                AlcoholConsumptionRecord.Builder builder) {
+            return builder.setStartZoneOffset(ZoneOffset.ofHours(2))
+                    .setEndZoneOffset(ZoneOffset.ofHours(2))
+                    .setServingVolume(Volume.fromLiters(0.568))
+                    .setAlcoholByVolume(Percentage.fromValue(7.0))
+                    .setNotes("Pub Crawl");
+        }
     }
 
-    private AlcoholConsumptionRecord.Builder getFullRecordBuilder() {
-        return getFullRecordBuilder(new Metadata.Builder().build());
-    }
-
-    private AlcoholConsumptionRecord.Builder getFullRecordBuilder(Metadata metadata) {
-        Instant startTime = Instant.now().minusSeconds(60);
-        Instant endTime = Instant.now();
-        return new AlcoholConsumptionRecord.Builder(
-                        metadata, startTime, endTime, ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
-                .setStartZoneOffset(ZoneOffset.ofHours(2))
-                .setEndZoneOffset(ZoneOffset.ofHours(2))
-                .setServingVolume(Volume.fromLiters(0.568))
-                .setAlcoholByVolume(Percentage.fromValue(7.0))
-                .setNotes("Pub Crawl");
-    }
-
-    private AlcoholConsumptionRecord.Builder getFullRecordBuilder(
-            Metadata metadata, Instant startTime, Instant endTime) {
-
-        return new AlcoholConsumptionRecord.Builder(
-                        metadata, startTime, endTime, ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
-                .setStartZoneOffset(ZoneOffset.ofHours(2))
-                .setEndZoneOffset(ZoneOffset.ofHours(2))
-                .setServingVolume(Volume.fromLiters(0.568))
-                .setAlcoholByVolume(Percentage.fromValue(7.0))
-                .setNotes("Pub Crawl");
-    }
 }
