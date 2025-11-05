@@ -166,15 +166,6 @@ flag {
 }
 
 flag {
-    name: "cycle_phases_feature"
-    namespace: "health_fitness_aconfig"
-    description: "Enables menstrual cycle phases data type."
-    bug: "296855479"
-    is_fixed_read_only: false
-    is_exported: false
-}
-
-flag {
     name: "cycle_phases_flag"
     namespace: "health_fitness_aconfig"
     description: "A new flag for cycle phases, enables menstrual cycle phases data type."
