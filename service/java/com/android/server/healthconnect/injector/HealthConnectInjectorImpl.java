@@ -622,10 +622,6 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthConnectMappings,
                                 Objects.requireNonNull(mMatchmakingDenialStateManager))
                         : builder.mMatchmakingManager;
-        mSyntheticPackageNameResolver =
-                builder.mSyntheticPackageNameResolver == null && Flags.deviceDataProvidersApi()
-                        ? new SyntheticPackageNameResolver(mAppInfoHelper)
-                        : builder.mSyntheticPackageNameResolver;
         mDeviceDataProviderHelper =
                 builder.mDeviceDataProviderHelper == null
                                 && Flags.deviceDataProvidersApi()
@@ -651,6 +647,13 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mFitnessRecordUpsertHelper,
                                 mSyntheticPackageNameCreator)
                         : builder.mDeviceDataProviderManager;
+        mSyntheticPackageNameResolver =
+                builder.mSyntheticPackageNameResolver == null
+                                && mDeviceDataProviderManager != null
+                                && Flags.deviceDataProvidersApi()
+                        ? new SyntheticPackageNameResolver(
+                                mAppInfoHelper, mDeviceDataProviderManager)
+                        : builder.mSyntheticPackageNameResolver;
     }
 
     @Override

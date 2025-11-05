@@ -143,7 +143,6 @@ public class DeviceDataProviderManager {
      * restarts and only resets when the device is factory reset.
      */
     @NonNull
-    @VisibleForTesting
     public String getStableCurrentDeviceId() {
         if (mStableCurrentDeviceId == null) {
             throw new IllegalStateException(
