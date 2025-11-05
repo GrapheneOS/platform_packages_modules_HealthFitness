@@ -2122,4 +2122,5 @@
     <!--endregion-->
 
     <!-- endregion -->
+    <string name="app_permissions_granted_summary"><xliff:g example="1" id="granted_permissions">%1$d</xliff:g> of <xliff:g example="4" id="total_permissions">%2$d</xliff:g></string>
 </resources>

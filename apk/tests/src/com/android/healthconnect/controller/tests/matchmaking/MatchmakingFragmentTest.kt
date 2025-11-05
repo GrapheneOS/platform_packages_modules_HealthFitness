@@ -152,6 +152,12 @@ class MatchmakingFragmentTest {
                 apps,
             )
         )
+        grantedPermissions.postValue(
+            mapOf(
+                TEST_APP_PACKAGE_NAME to
+                    listOf(FitnessPermission(FitnessPermissionType.EXERCISE, READ))
+            )
+        )
 
         ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
@@ -185,6 +191,7 @@ class MatchmakingFragmentTest {
                 onView(withText("Data from $TEST_APP_NAME"))
                     .perform(scrollTo())
                     .check(matches(isDisplayed()))
+                onView(withText("1 of 2")).perform(scrollTo()).check(matches(isDisplayed()))
                 onView(withId(androidx.preference.R.id.recycler_view))
                     .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
                 onView(withText("Data from $TEST_APP_NAME")).perform(scrollTo()).perform(click())
