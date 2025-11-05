@@ -130,6 +130,7 @@ message InstantRecord {
     BodyWaterMass body_water_mass = 106;
     BoneMass bone_mass = 107;
     CervicalMucus cervical_mucus = 108;
+    CyclePhases cycle_phases = 121;
     HeartRateVariabilityRmssd heart_rate_variability_rmssd = 109;
     Height height = 110;
     IntermenstrualBleeding intermenstrual_bleeding = 111;
@@ -204,6 +205,11 @@ message BoneMass {
 message CervicalMucus {
   int32 sensation = 1;
   int32 appearance = 2;
+}
+
+message CyclePhases {
+  int32 phase = 1;
+  optional int32 day_of_cycle = 2;
 }
 
 message CyclingPedalingCadence {

@@ -21,20 +21,33 @@ import static android.health.connect.datatypes.BloodPressureRecord.BodyPosition.
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_AUTOMATICALLY_RECORDED;
 
+import static com.android.server.healthconnect.backuprestore.ProtoTestData.generateRecord;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
+import static org.junit.Assume.assumeTrue;
 
+import android.annotation.SuppressLint;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BloodPressure;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.InstantRecord;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.IntervalRecord;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Record;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Steps;
 
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -42,17 +55,33 @@ import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 public final class RecordProtoConverterTest {
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
-    private final RecordProtoConverter mConverter = new RecordProtoConverter();
-    private final HealthConnectMappings mHealthConnectMappings =
-            HealthConnectMappings.getInstance();
+    @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
+
+    private RecordProtoConverter mConverter;
+    private HealthConnectMappings mHealthConnectMappings;
+
+    @Before
+    @SuppressLint("VisibleForTests") // this is indeed a test file
+    public void setup() {
+        HealthConnectMappings.resetInstanceForTesting();
+        mConverter = new RecordProtoConverter();
+        mHealthConnectMappings = HealthConnectMappings.getInstance();
+    }
 
     @Test
+    @RequiresFlagsEnabled({
+        Flags.FLAG_SMOKING_DB,
+        Flags.FLAG_SYMPTOMS_DB,
+        Flags.FLAG_ALCOHOL_CONSUMPTION_DB
+    })
+    @EnableFlags({Flags.FLAG_CYCLE_PHASES_FLAG, Flags.FLAG_CYCLE_PHASES_DB})
     public void canConvertEveryRecordType() throws Exception {
+        assumeTrue(AconfigFlagHelper.isCyclePhasesEnabled());
         for (int recordTypeId : mHealthConnectMappings.getAllRecordTypeIdentifiers()) {
-            var recordProto =
-                    com.android.server.healthconnect.backuprestore.ProtoTestData.generateRecord(
-                            recordTypeId);
+            var recordProto = generateRecord(recordTypeId);
             var recordInternal = mConverter.toRecordInternal(recordProto);
             assertThat(mConverter.toRecordProto(recordInternal)).isEqualTo(recordProto);
         }

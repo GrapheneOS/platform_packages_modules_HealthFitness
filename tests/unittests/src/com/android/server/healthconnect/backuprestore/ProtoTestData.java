@@ -27,6 +27,7 @@ import static android.health.connect.datatypes.BodyTemperatureMeasurementLocatio
 import static android.health.connect.datatypes.BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_TOE;
 import static android.health.connect.datatypes.CervicalMucusRecord.CervicalMucusAppearance.APPEARANCE_UNUSUAL;
 import static android.health.connect.datatypes.CervicalMucusRecord.CervicalMucusSensation.SENSATION_HEAVY;
+import static android.health.connect.datatypes.CyclePhasesRecord.PHASE_FOLLICULAR;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
 import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_DEADLIFT;
 import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SQUAT;
@@ -57,6 +58,7 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.B
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BodyWaterMass;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BoneMass;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CervicalMucus;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CyclePhases;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CyclingPedalingCadence;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CyclingPedalingCadence.CyclingPedalingCadenceSample;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Distance;
@@ -187,6 +189,11 @@ final class ProtoTestData {
                             .setInstantRecord(
                                     generateInstantRecord()
                                             .setCervicalMucus(generateCervicalMucus()))
+                            .build();
+            case RecordTypeIdentifier.RECORD_TYPE_CYCLE_PHASES ->
+                    generateCoreRecord()
+                            .setInstantRecord(
+                                    generateInstantRecord().setCyclePhases(generateCyclePhases()))
                             .build();
             case RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE ->
                     generateCoreRecord()
@@ -372,6 +379,8 @@ final class ProtoTestData {
                                     generateIntervalRecord()
                                             .setWheelchairPushes(generateWheelchairPushes()))
                             .build();
+            case RecordTypeIdentifier.RECORD_TYPE_UNKNOWN ->
+                    throw new IllegalArgumentException("Unknown record type");
             default -> throw new IllegalArgumentException("Unexpected value: " + recordType);
         };
     }
@@ -449,6 +458,10 @@ final class ProtoTestData {
                 .setSensation(SENSATION_HEAVY)
                 .setAppearance(APPEARANCE_UNUSUAL)
                 .build();
+    }
+
+    static CyclePhases generateCyclePhases() {
+        return CyclePhases.newBuilder().setPhase(PHASE_FOLLICULAR).setDayOfCycle(2).build();
     }
 
     static CyclingPedalingCadence generateCyclingPedalingCadence() {
