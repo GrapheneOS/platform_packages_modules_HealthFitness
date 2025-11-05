@@ -579,7 +579,7 @@
     <string name="import_source_location_title" msgid="4444467438013749461">"インポート元を選択"</string>
     <string name="import_invalid_storage" msgid="341798262315495399">"データをインポートするためのクラウド ストレージ アプリを選択してください"</string>
     <string name="export_import_tap_to_choose_account" msgid="5016799636886709580">"アカウントを選択するにはタップしてください"</string>
-    <string name="export_import_choose_account_title" msgid="1047021319012735232">"アカウントの選択"</string>
+    <string name="export_import_choose_account_title" msgid="1047021319012735232">"アカウントを選択"</string>
     <string name="export_import_choose_account_cancel_button" msgid="7975616126298263479">"キャンセル"</string>
     <string name="export_import_choose_account_done_button" msgid="8450305343787469429">"完了"</string>
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"利用できるアプリはありません。クラウド ストレージ アプリをインストールすると、ここに表示されます"</string>
@@ -875,8 +875,7 @@
     <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"ハイボール"</string>
     <string name="serving_volume_title" msgid="4727986574534974167">"提供量"</string>
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"アルコール度数"</string>
-    <!-- no translation found for notes_title (4596764711916248492) -->
-    <skip />
+    <string name="notes_title" msgid="4596764711916248492">"メモ"</string>
     <string name="details_title" msgid="8411891773854413790">"詳細"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> 分"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> 時間 <xliff:g id="MIN">%2$s</xliff:g> 分"</string>

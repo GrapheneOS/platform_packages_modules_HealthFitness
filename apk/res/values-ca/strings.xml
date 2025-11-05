@@ -1214,7 +1214,7 @@
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"Mostra a la botiga d\'aplicacions"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"Defineix un bloqueig de pantalla"</string>
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Per augmentar la seguretat de les teves dades de salut, configura un PIN, un patró o una contrasenya per a aquest dispositiu"</string>
-    <string name="lock_screen_banner_button" msgid="2537090011380728122">"Defineix un bloqueig de pantalla"</string>
+    <string name="lock_screen_banner_button" msgid="2537090011380728122">"Defineix bloqueig"</string>
     <string name="select_all" msgid="837499881590001166">"Selecciona-ho tot"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Les aplicacions connectades ja no podran llegir aquestes dades de Salut connectada"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Marcat"</string>

@@ -718,7 +718,7 @@
     <string name="back_extension" msgid="426518933137440577">"Extensão lombar"</string>
     <string name="badminton" msgid="8839727076522086870">"Badmínton"</string>
     <string name="barbell_shoulder_press" msgid="3800236222803424251">"Desenvolvimento de ombros com barra"</string>
-    <string name="baseball" msgid="2520520093470304570">"Basebol"</string>
+    <string name="baseball" msgid="2520520093470304570">"Beisebol"</string>
     <string name="basketball" msgid="1453863811744469210">"Basquetebol"</string>
     <string name="bench_press" msgid="640506654204391301">"Supino"</string>
     <string name="bench_sit_up" msgid="6601081870476287683">"Abdominais no banco"</string>
@@ -875,8 +875,7 @@
     <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Highball"</string>
     <string name="serving_volume_title" msgid="4727986574534974167">"Volume da porção"</string>
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Álcool por volume"</string>
-    <!-- no translation found for notes_title (4596764711916248492) -->
-    <skip />
+    <string name="notes_title" msgid="4596764711916248492">"Notas"</string>
     <string name="details_title" msgid="8411891773854413790">"Detalhes"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> min"</string>
