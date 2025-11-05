@@ -15,9 +15,7 @@
  */
 package android.health.connect.device;
 
-import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 
-import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
 import android.health.connect.datatypes.Device;
 import android.os.Parcel;
@@ -28,7 +26,6 @@ import android.os.Parcelable;
  *
  * @hide
  */
-@FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
 public final class DeviceParcel implements Parcelable {
 
     @NonNull private final Device mDevice;
