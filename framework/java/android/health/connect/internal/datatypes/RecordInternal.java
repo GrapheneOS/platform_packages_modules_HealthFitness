@@ -61,6 +61,7 @@ public abstract class RecordInternal<T extends Record>
     private long mAppInfoId = DEFAULT_LONG;
     private int mRowId = DEFAULT_INT;
     @Nullable private String mDisplayName;
+    private long mDeviceDataProviderId = DEFAULT_LONG;
 
     @Metadata.RecordingMethod private int mRecordingMethod;
 
@@ -309,6 +310,24 @@ public abstract class RecordInternal<T extends Record>
     @NonNull
     public RecordInternal<T> setRecordingMethod(@Metadata.RecordingMethod int recordingMethod) {
         this.mRecordingMethod = recordingMethod;
+        return this;
+    }
+
+    /**
+     * Returns the device data provider package name which indicates which provider inserted the
+     * {@link Record}
+     */
+    public long getDeviceDataProviderId() {
+        return mDeviceDataProviderId;
+    }
+
+    /**
+     * Sets the device data provider package name which indicates which provider inserted the {@link
+     * Record}
+     */
+    @NonNull
+    public RecordInternal<T> setDeviceDataProviderId(long deviceDataProviderId) {
+        this.mDeviceDataProviderId = deviceDataProviderId;
         return this;
     }
 

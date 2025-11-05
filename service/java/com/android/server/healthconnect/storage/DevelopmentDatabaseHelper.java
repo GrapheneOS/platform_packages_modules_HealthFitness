@@ -32,6 +32,8 @@ import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 
 /**
@@ -51,7 +53,7 @@ public final class DevelopmentDatabaseHelper {
      * The current version number for the development database features. Increment this whenever you
      * make a breaking schema change to a development feature.
      */
-    @VisibleForTesting static final int CURRENT_VERSION = 24;
+    @VisibleForTesting static final int CURRENT_VERSION = 25;
 
     /** The name of the table to store development specific key value pairs. */
     private static final String SETTINGS_TABLE_NAME = "development_database_settings";
@@ -103,6 +105,7 @@ public final class DevelopmentDatabaseHelper {
         applyDeviceInfoEnhancementsDatabaseUpgrade(db);
         applyDdpDatabaseUpgrade(db, oldVersion);
         applyDdpMetadataDatabaseUpgrade(db);
+        applyDdpIdRecordDatabaseUpgrade(db);
     }
 
     private static void applyDdpAppInfoDatabaseUpgrade(SQLiteDatabase db) {
@@ -144,6 +147,28 @@ public final class DevelopmentDatabaseHelper {
         }
 
         createTable(db, DeviceDataProviderMetadataHelper.getCreateTableRequest());
+    }
+
+    private static void applyDdpIdRecordDatabaseUpgrade(SQLiteDatabase db) {
+        final InternalHealthConnectMappings mInternalHealthConnectMappings =
+                InternalHealthConnectMappings.getInstance();
+
+        for (RecordHelper<?> recordHelper : mInternalHealthConnectMappings.getRecordHelpers()) {
+            if (!checkTableExists(db, recordHelper.getMainTableName())) {
+                // newer record types might have their own flags set which causes them to not
+                // exist yet and throwing an exception if not caught early here
+                continue;
+            }
+
+            if (checkColumnExists(
+                    db, recordHelper.getMainTableName(), RecordHelper.DDP_ID_COLUMN_NAME)) {
+                continue;
+            }
+
+            AlterTableRequest alterRecordHelperRequest =
+                    recordHelper.getAlterTableRequestForDdpName();
+            executeSqlStatements(db, alterRecordHelperRequest.getAddColumnsCommands());
+        }
     }
 
     @VisibleForTesting

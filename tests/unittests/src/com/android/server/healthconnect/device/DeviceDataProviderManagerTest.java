@@ -569,6 +569,7 @@ public class DeviceDataProviderManagerTest {
         assertThat(readRecord.getModel()).isEqualTo(MODEL);
         assertThat(readRecord.getDeviceType()).isEqualTo(DEVICE_TYPE);
         assertThat(readRecord.getDisplayName()).isEqualTo(DISPLAY_NAME);
+        assertThat(readRecord.getDeviceDataProviderId()).isEqualTo(1L);
     }
 
     @Test

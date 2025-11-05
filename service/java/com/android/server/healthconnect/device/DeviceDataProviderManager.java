@@ -336,12 +336,17 @@ public class DeviceDataProviderManager {
         List<Integer> advertisedDataTypes =
                 mDeviceDataSourcesHelper.getAdvertisedDataTypes(callingDdpPackageName, appInfoId);
 
+        long deviceDataProviderId =
+                mDeviceDataProviderMetadataHelper.getDeviceDataProviderMetadataId(
+                        callingDdpPackageName);
+
         for (RecordInternal<?> record : records) {
             throwIfDataTypeNotAdvertised(advertisedDataTypes, deviceId, record.getRecordType());
 
             mDeviceInfoHelper.populateRecordWithValue(deviceInfoId, record);
             record.setDeviceInfoId(deviceInfoId);
             record.setPackageName(syntheticPackageName);
+            record.setDeviceDataProviderId(deviceDataProviderId);
         }
     }
 
