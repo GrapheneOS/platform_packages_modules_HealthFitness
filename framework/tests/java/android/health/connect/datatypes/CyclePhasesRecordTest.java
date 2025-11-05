@@ -19,11 +19,13 @@ package android.health.connect.datatypes;
 import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.datatypes.CyclePhasesRecord.PHASE_FOLLICULAR;
 import static android.health.connect.datatypes.CyclePhasesRecord.PHASE_LUTEAL;
+import static android.health.connect.datatypes.CyclePhasesRecord.PHASE_UNKNOWN;
 import static android.health.connect.datatypes.RecordUtils.getDefaultZoneOffset;
 import static android.healthconnect.testing.shared.DataFactory.generateMetadata;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assume.assumeTrue;
 
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
@@ -97,6 +99,16 @@ public class CyclePhasesRecordTest {
         assertThat(record.getZoneOffset()).isEqualTo(getDefaultZoneOffset());
         assertThat(record.getPhase()).isEqualTo(PHASE_LUTEAL);
         assertThat(record.getDayOfCycle()).isEqualTo(DEFAULT_INT);
+    }
+
+    @Test
+    public void builder_clearZoneOffset_returnsDefault() {
+        CyclePhasesRecord record =
+                new CyclePhasesRecord.Builder(TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
+                        .setZoneOffset(TEST_OFFSET)
+                        .clearZoneOffset()
+                        .build();
+        assertThat(record.getZoneOffset()).isEqualTo(getDefaultZoneOffset());
     }
 
     @Test
@@ -186,5 +198,43 @@ public class CyclePhasesRecordTest {
                         .buildWithoutValidation();
         assertThat(record).isNotEqualTo(record2);
         assertThat(record.hashCode()).isNotEqualTo(record2.hashCode());
+    }
+
+    @Test
+    public void build_unknownPhase_throwsException() {
+        Throwable thrown =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                new CyclePhasesRecord.Builder(
+                                                TEST_METADATA, TIME_MILLIS, PHASE_UNKNOWN)
+                                        .build());
+        assertThat(thrown).hasMessageThat().contains("Unknown Intdef value");
+    }
+
+    @Test
+    public void build_dayOfCycleBelowLowerBound_throwsException() {
+        Throwable thrown =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                new CyclePhasesRecord.Builder(
+                                                TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
+                                        .setDayOfCycle(0)
+                                        .build());
+        assertThat(thrown).hasMessageThat().contains("dayOfCycle must not be less than");
+    }
+
+    @Test
+    public void build_dayOfCycleAboveUpperBound_throwsException() {
+        Throwable thrown =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                new CyclePhasesRecord.Builder(
+                                                TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
+                                        .setDayOfCycle(366)
+                                        .build());
+        assertThat(thrown).hasMessageThat().contains("dayOfCycle must not be more than");
     }
 }

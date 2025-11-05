@@ -17,6 +17,8 @@
 package android.health.connect.datatypes;
 
 import static android.health.connect.Constants.DEFAULT_INT;
+import static android.health.connect.datatypes.validation.ValidationUtils.requireInRange;
+import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES_FLAG;
 
@@ -34,6 +36,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Represents a user's menstrual cycle phase for a specific day.
@@ -65,6 +68,9 @@ public final class CyclePhasesRecord extends InstantRecord {
      */
     public static final int PHASE_LUTEAL = 2;
 
+    private static final int DAY_OF_CYCLE_LOWER_BOUND = 1;
+    private static final int DAY_OF_CYCLE_UPPER_BOUND = 365;
+
     /**
      * The phase of the menstrual cycle.
      *
@@ -85,7 +91,7 @@ public final class CyclePhasesRecord extends InstantRecord {
     @Retention(RetentionPolicy.SOURCE)
     public @interface CyclePhase {}
 
-    // TODO(b/452288913): Add VALID_CYCLE_PHASES, without unknown phase.
+    private static final Set<Integer> VALID_CYCLE_PHASES = Set.of(PHASE_FOLLICULAR, PHASE_LUTEAL);
 
     /** Returns the phase of the menstrual cycle. */
     @CyclePhase
@@ -189,7 +195,17 @@ public final class CyclePhasesRecord extends InstantRecord {
             int dayOfCycle,
             boolean skipValidation) {
         super(metadata, time, zoneOffset, skipValidation);
-        // TODO(b/452288913): Add validation
+
+        if (!skipValidation) {
+            validateIntDefValue(phase, VALID_CYCLE_PHASES, CyclePhase.class.getSimpleName());
+            if (dayOfCycle != DEFAULT_INT) {
+                requireInRange(
+                        dayOfCycle,
+                        DAY_OF_CYCLE_LOWER_BOUND,
+                        DAY_OF_CYCLE_UPPER_BOUND,
+                        "dayOfCycle");
+            }
+        }
 
         mPhase = phase;
         mDayOfCycle = dayOfCycle;
