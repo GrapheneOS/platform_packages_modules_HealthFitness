@@ -166,6 +166,7 @@ import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.aidl.IMedicalResourceListParcelResponseCallback;
 import android.health.connect.aidl.IMigrationCallback;
 import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
+import android.health.connect.aidl.InsertRecordsResponseParcel;
 import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
 import android.health.connect.backuprestore.BackupMetadata;
@@ -303,6 +304,7 @@ public class HealthConnectServiceImplTest {
                     "aggregateRecords",
                     "readRecords",
                     "updateRecords",
+                    "updateDeviceRecords",
                     "getChangeLogToken",
                     "getChangeLogs",
                     "deleteUsingFilters",
@@ -423,6 +425,7 @@ public class HealthConnectServiceImplTest {
     @Mock private OnboardingStateManager mOnboardingStateManager;
     @Mock private MatchmakingManager mMatchmakingManager;
     @Captor ArgumentCaptor<HealthConnectExceptionParcel> mErrorCaptor;
+    @Captor ArgumentCaptor<InsertRecordsResponseParcel> mInsertResultCaptor;
     @Captor private ArgumentCaptor<HealthConnectOnboardingState> mOnboardingStateCaptor;
     private FakeTimeSource mFakeTimeSource;
     private Context mContext;
@@ -3931,7 +3934,199 @@ public class HealthConnectServiceImplTest {
         mHealthConnectService.insertDeviceRecords(
                 mAttributionSource, deviceId, recordsParcel, callback);
 
-        verify(callback, timeout(5000).times(1)).onResult(any());
+        verify(callback, timeout(TIMEOUT_MILLIS)).onResult(mInsertResultCaptor.capture());
+        assertThat(mInsertResultCaptor.getValue().getUids()).hasSize(1);
+        assertThat(mInsertResultCaptor.getValue().getUids().get(0)).isNotNull();
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void updateDeviceRecords_afterAdvertisementAndInsert_doesNotThrow() throws Exception {
+        Instant now = mFakeTimeSource.getInstantNow();
+        String recordId = UUID.randomUUID().toString();
+        String deviceId = "TestDeviceId";
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("Test Device")
+                        .build();
+        StepsRecord stepsRecord =
+                new StepsRecord.Builder(
+                                new Metadata.Builder().setId(recordId).setDevice(device).build(),
+                                now,
+                                now.plusSeconds(1),
+                                100)
+                        .build();
+        RecordsParcel recordsParcel = getRestoredStepsRecordsParcel(stepsRecord);
+        IInsertRecordsResponseCallback.Stub callback =
+                mock(IInsertRecordsResponseCallback.Stub.class);
+        when(mPreferenceHelper.getPreference(eq(SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY)))
+                .thenReturn(UUID.randomUUID().toString());
+        advertiseStepsDeviceDataSource(deviceId, device);
+        mHealthConnectService.insertDeviceRecords(
+                mAttributionSource, deviceId, recordsParcel, callback);
+        verify(callback, timeout(TIMEOUT_MILLIS)).onResult(mInsertResultCaptor.capture());
+        String uuid = mInsertResultCaptor.getValue().getUids().get(0);
+
+        StepsRecord updatedStepsRecord =
+                new StepsRecord.Builder(
+                                new Metadata.Builder().setId(uuid).setDevice(device).build(),
+                                now,
+                                now.plusSeconds(1),
+                                200)
+                        .build();
+        RecordsParcel updateRecordsParcel = getRestoredStepsRecordsParcel(updatedStepsRecord);
+        IEmptyResponseCallback.Stub updateCallback = mock(IEmptyResponseCallback.Stub.class);
+        mHealthConnectService.updateDeviceRecords(
+                mAttributionSource, deviceId, updateRecordsParcel, updateCallback);
+
+        verify(updateCallback, timeout(TIMEOUT_MILLIS)).onResult();
+        verify(updateCallback, never()).onError(any());
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void updateDeviceRecords_wrongUuidInUpdatedRecord_throws() throws Exception {
+        Instant now = mFakeTimeSource.getInstantNow();
+        String recordId = UUID.randomUUID().toString();
+        String deviceId = "TestDeviceId";
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("Test Device")
+                        .build();
+        StepsRecord stepsRecord =
+                new StepsRecord.Builder(
+                                new Metadata.Builder().setId(recordId).setDevice(device).build(),
+                                now,
+                                now.plusSeconds(1),
+                                100)
+                        .build();
+        RecordsParcel recordsParcel = getRestoredStepsRecordsParcel(stepsRecord);
+        IInsertRecordsResponseCallback.Stub callback =
+                mock(IInsertRecordsResponseCallback.Stub.class);
+        when(mPreferenceHelper.getPreference(eq(SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY)))
+                .thenReturn(UUID.randomUUID().toString());
+        advertiseStepsDeviceDataSource(deviceId, device);
+        mHealthConnectService.insertDeviceRecords(
+                mAttributionSource, deviceId, recordsParcel, callback);
+        verify(callback, timeout(TIMEOUT_MILLIS)).onResult(any());
+
+        String wrongRecordId = UUID.randomUUID().toString();
+        StepsRecord updatedStepsRecord =
+                new StepsRecord.Builder(
+                                new Metadata.Builder()
+                                        .setId(wrongRecordId)
+                                        .setDevice(device)
+                                        .build(),
+                                now,
+                                now.plusSeconds(1),
+                                200)
+                        .build();
+        RecordsParcel updateRecordsParcel = getRestoredStepsRecordsParcel(updatedStepsRecord);
+        IEmptyResponseCallback.Stub updateCallback = mock(IEmptyResponseCallback.Stub.class);
+        mHealthConnectService.updateDeviceRecords(
+                mAttributionSource, deviceId, updateRecordsParcel, updateCallback);
+
+        verify(updateCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_INVALID_ARGUMENT);
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
+                .startsWith(
+                        "java.lang.IllegalArgumentException: No record found for the following"
+                                + " input : uuid : ");
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void updateDeviceRecords_withoutInsert_throws() throws RemoteException {
+        Instant now = mFakeTimeSource.getInstantNow();
+        String recordId = UUID.randomUUID().toString();
+        String deviceId = "TestDeviceId";
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("Test Device")
+                        .build();
+        StepsRecord stepsRecord =
+                new StepsRecord.Builder(
+                                new Metadata.Builder().setId(recordId).setDevice(device).build(),
+                                now,
+                                now.plusSeconds(1),
+                                100)
+                        .build();
+        RecordsParcel recordsParcel = getRestoredStepsRecordsParcel(stepsRecord);
+        when(mPreferenceHelper.getPreference(eq(SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY)))
+                .thenReturn(UUID.randomUUID().toString());
+        advertiseStepsDeviceDataSource(deviceId, device);
+
+        IEmptyResponseCallback.Stub updateCallback = mock(IEmptyResponseCallback.Stub.class);
+        mHealthConnectService.updateDeviceRecords(
+                mAttributionSource, deviceId, recordsParcel, updateCallback);
+
+        verify(updateCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_INVALID_ARGUMENT);
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
+                .startsWith(
+                        "java.lang.IllegalArgumentException: No record found for the following"
+                                + " input : uuid : ");
+    }
+
+    @Test
+    @DisableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void deviceDataProviderManagerIsNull_updateDeviceRecords_throwsException()
+            throws RemoteException {
+        Instant now = mFakeTimeSource.getInstantNow();
+        String recordId = UUID.randomUUID().toString();
+        String deviceId = "TestDeviceId";
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("Test Device")
+                        .build();
+        StepsRecord stepsRecord =
+                new StepsRecord.Builder(
+                                new Metadata.Builder().setId(recordId).setDevice(device).build(),
+                                now,
+                                now.plusSeconds(1),
+                                100)
+                        .build();
+        RecordsParcel recordsParcel = getRestoredStepsRecordsParcel(stepsRecord);
+        IEmptyResponseCallback.Stub callback = mock(IEmptyResponseCallback.Stub.class);
+        when(mPreferenceHelper.getPreference(eq(SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY)))
+                .thenReturn(UUID.randomUUID().toString());
+
+        mHealthConnectService.updateDeviceRecords(
+                mAttributionSource, deviceId, recordsParcel, callback);
+
+        verify(callback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
     }
 
     @Test

@@ -714,9 +714,9 @@ interface IHealthConnectService {
      * populated in the {@link Metadata} for a {@link Record} as it will automatically be populated
      * based on the {@link DeviceDataAdvertisement}.
      *
+     * @param attributionSource attribution source for the data.
      * @param deviceId the identifier for the device that is the source of this data.
      * @param records list of records to be inserted.
-     * @param executor executor on which to invoke the callback.
      * @param callback callback to receive the result of performing this operation.
      * @throws RuntimeException for internal errors
      * @hide
@@ -726,4 +726,24 @@ interface IHealthConnectService {
         in String deviceId,
         in RecordsParcel recordsParcel,
         in IInsertRecordsResponseCallback callback);
+
+    /**
+     * Updates {@code recordsParcel} from a device data source in the Health Connect database.
+     *
+     * <p>Before this method is called, {@link #advertiseDeviceDataSources} must have been called.
+     *
+     * <p>In case of an error or a permission failure the HealthConnect service, {@link
+     * IEmptyResponseCallback#onError} will be invoked with a {@link HealthConnectException}.
+     *
+     * @param attributionSource attribution source for the data.
+     * @param deviceId the identifier for the device that is the source of this data.
+     * @param recordsParcel parcel for list of records to be updated.
+     * @param callback callback to receive result of performing this operation.
+     * @hide
+     */
+    void updateDeviceRecords(
+        in AttributionSource attributionSource,
+        in String deviceId,
+        in RecordsParcel recordsParcel,
+        in IEmptyResponseCallback callback);
 }

@@ -225,31 +225,43 @@ public class DeviceDataProviderManager {
         Objects.requireNonNull(deviceId);
         Objects.requireNonNull(records);
 
-        if (records.isEmpty()) {
-            return List.of();
-        }
-
         long appInfoId = getOrThrowAppInfoId(callingDdpPackageName, deviceId);
         String syntheticPackageName = getOrThrowSyntheticPackageName(appInfoId);
-        AppInfoInternal appInfo = getOrThrowAppInfo(syntheticPackageName);
-        long deviceInfoId = Objects.requireNonNull(appInfo.getDeviceInfoId());
-
-        List<Integer> advertisedDataTypes =
-                mDeviceDataSourcesHelper.getAdvertisedDataTypes(callingDdpPackageName, appInfoId);
-
-        for (RecordInternal<?> record : records) {
-            throwIfDataTypeNotAdvertised(advertisedDataTypes, deviceId, record.getRecordType());
-
-            mDeviceInfoHelper.populateRecordWithValue(deviceInfoId, record);
-            record.setDeviceInfoId(deviceInfoId);
-            record.setPackageName(syntheticPackageName);
-        }
+        populateOrThrowRecords(
+                callingDdpPackageName, deviceId, records, syntheticPackageName, appInfoId);
 
         return mFitnessRecordUpsertHelper.insertRecords(
                 syntheticPackageName,
                 records,
                 EMPTY_EXTRA_PERMISSION_MAPPING,
                 /* shouldGenerateAccessLogs= */ false);
+    }
+
+    /**
+     * Updates {@code records} from a device data source in the Health Connect database.
+     *
+     * @param deviceId The ID of the device.
+     * @param records The list of records to update.
+     * @return A list of UUIDs of the inserted records.
+     * @throws IllegalArgumentException if the device with the given ID is not found
+     * @throws IllegalStateException if the generated syntheticPackageName or deviceInfoId is not
+     *     valid
+     */
+    public List<String> updateDeviceRecords(
+            @NonNull String callingDdpPackageName,
+            @NonNull String deviceId,
+            @NonNull List<RecordInternal<?>> records) {
+        Objects.requireNonNull(callingDdpPackageName);
+        Objects.requireNonNull(deviceId);
+        Objects.requireNonNull(records);
+
+        long appInfoId = getOrThrowAppInfoId(callingDdpPackageName, deviceId);
+        String syntheticPackageName = getOrThrowSyntheticPackageName(appInfoId);
+        populateOrThrowRecords(
+                callingDdpPackageName, deviceId, records, syntheticPackageName, appInfoId);
+
+        return mFitnessRecordUpsertHelper.updateRecords(
+                syntheticPackageName, records, EMPTY_EXTRA_PERMISSION_MAPPING);
     }
 
     /**
@@ -293,13 +305,24 @@ public class DeviceDataProviderManager {
         }
     }
 
-    @NonNull
-    private String censoredDeviceMessage(@NonNull String deviceId) {
-        // TODO(b/459541943): Handle censoring of canonical SPN on a higher level
-        if (SyntheticPackageNameCreator.isCanonicalSpn(deviceId)) {
-            return "The current device";
-        } else {
-            return "The device with id " + deviceId;
+    private void populateOrThrowRecords(
+            String callingDdpPackageName,
+            String deviceId,
+            List<RecordInternal<?>> records,
+            String syntheticPackageName,
+            long appInfoId) {
+        AppInfoInternal appInfo = getOrThrowAppInfo(syntheticPackageName);
+        long deviceInfoId = Objects.requireNonNull(appInfo.getDeviceInfoId());
+
+        List<Integer> advertisedDataTypes =
+                mDeviceDataSourcesHelper.getAdvertisedDataTypes(callingDdpPackageName, appInfoId);
+
+        for (RecordInternal<?> record : records) {
+            throwIfDataTypeNotAdvertised(advertisedDataTypes, deviceId, record.getRecordType());
+
+            mDeviceInfoHelper.populateRecordWithValue(deviceInfoId, record);
+            record.setDeviceInfoId(deviceInfoId);
+            record.setPackageName(syntheticPackageName);
         }
     }
 
@@ -355,6 +378,15 @@ public class DeviceDataProviderManager {
                     censoredDeviceMessage(deviceId)
                             + " was not advertised for data type "
                             + recordType);
+        }
+    }
+
+    private String censoredDeviceMessage(String deviceId) {
+        // TODO(b/459541943): Handle censoring of canonical SPN on a higher level
+        if (SyntheticPackageNameCreator.isCanonicalSpn(deviceId)) {
+            return "The current device";
+        } else {
+            return "The device with id " + deviceId;
         }
     }
 }

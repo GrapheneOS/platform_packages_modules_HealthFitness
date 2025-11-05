@@ -3410,6 +3410,84 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
+     * Updates {@code recordsParcel} from a device data source in the Health Connect database.
+     *
+     * <p>Before this method is called, {@link #advertiseDeviceDataSources} must have been called.
+     *
+     * <p>In case of an error or a permission failure the HealthConnect service, {@link
+     * IEmptyResponseCallback#onError} will be invoked with a {@link HealthConnectException}.
+     *
+     * @param attributionSource attribution source for the data.
+     * @param deviceId the identifier for the device that is the source of this data.
+     * @param recordsParcel parcel for list of records to be updated.
+     * @param callback callback to receive result of performing this operation.
+     */
+    @Override
+    public void updateDeviceRecords(
+            AttributionSource attributionSource,
+            String deviceId,
+            RecordsParcel recordsParcel,
+            IEmptyResponseCallback callback) {
+        checkParamsNonNull(attributionSource, deviceId, recordsParcel, callback);
+
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        String packageName = attributionSource.getPackageName();
+        // TODO(b/455514553): Use specific API method for logging.
+        final HealthConnectServiceLogger.Builder logger =
+                new HealthConnectServiceLogger.Builder(
+                                /* holdsDataManagementPermission= */ false, API_METHOD_UNKNOWN)
+                        .setHealthFitnessStatsLog(mStatsLog)
+                        .setPackageName(attributionSource.getPackageName());
+        ErrorCallback errorCallback = callback::onError;
+        String unmaskedDeviceId = getUnmaskingFunction(packageName).apply(deviceId);
+
+        scheduleLoggingHealthDataApiErrors(
+                () -> {
+                    enforceIsForegroundUser(userHandle);
+                    verifyPackageNameFromUid(uid, attributionSource);
+                    enforceMemoryRateLimit(
+                            recordsParcel.getRecordsSize(), recordsParcel.getRecordsChunkSize());
+                    final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
+                    logger.setNumberOfRecords(recordInternals.size());
+                    throwExceptionIfDataSyncInProgress();
+                    boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
+                    tryAcquireApiCallQuota(
+                            uid,
+                            QuotaCategory.QUOTA_CATEGORY_WRITE,
+                            isInForeground,
+                            logger,
+                            recordsParcel.getRecordsChunkSize());
+
+                    if (!Flags.deviceDataProvidersApi()
+                            || !AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                        throw new UnsupportedOperationException(
+                                "updateDeviceRecords is not supported");
+                    }
+
+                    DeviceDataProviderManager deviceDataProviderManager =
+                            requireNonNull(mDeviceDataProviderManager);
+                    if (!deviceDataProviderManager.isPermittedToProvideDeviceData(
+                            requireNonNull(packageName), uid, pid)) {
+                        throw new SecurityException(
+                                "Caller is not permitted to provide or update device data");
+                    }
+
+                    deviceDataProviderManager.updateDeviceRecords(
+                            packageName, unmaskedDeviceId, recordInternals);
+
+                    tryAndReturnResult(callback, logger);
+                    // TODO(b/455514553): Add RecordType specific upsert metrics
+
+                },
+                logger,
+                errorCallback,
+                uid,
+                /* isController= */ false);
+    }
+
+    /**
      * "dumpsys" infrastructure. This should get included in bug reports.
      *
      * <p>Note: To print, run "adb shell dumpsys healthconnect".
