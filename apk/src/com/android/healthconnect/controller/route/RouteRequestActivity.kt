@@ -303,7 +303,10 @@ class RouteRequestActivity : Hilt_RouteRequestActivity() {
                     R.string.migration_pending_permissions_dialog_content,
                     requester,
                 ),
-                positiveButtonAction = { _, _ -> dialog?.show() },
+                positiveButtonAction = { migrationDialog, _ ->
+                    migrationDialog.dismiss()
+                    dialog?.show()
+                },
                 negativeButtonAction = { _, _ -> finishCancelled() },
             )
         } else if (migrationUiState == MigrationUiState.COMPLETE) {
