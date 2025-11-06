@@ -155,17 +155,6 @@ flag {
 }
 
 flag {
-   name: "clear_caches_after_switching_user"
-   namespace: "health_fitness_aconfig"
-   description: "Enables clearing database caches after switching users."
-   bug: "355426144"
-   is_fixed_read_only: true
-   metadata {
-       purpose: PURPOSE_BUGFIX
-   }
-}
-
-flag {
     name: "cycle_phases_flag"
     namespace: "health_fitness_aconfig"
     description: "A new flag for cycle phases, enables menstrual cycle phases data type."
