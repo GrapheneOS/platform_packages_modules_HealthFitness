@@ -46,6 +46,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -62,13 +63,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 @RunWith(AndroidJUnit4.class)
-@EnableFlags({
-    Flags.FLAG_CYCLE_PHASES_FLAG,
-    Flags.FLAG_CYCLE_PHASES_DB,
-    Flags.FLAG_SMOKING_DB,
-    Flags.FLAG_SYMPTOMS_DB,
-    Flags.FLAG_ALCOHOL_CONSUMPTION_DB
-})
 public class CyclePhasesRecordHelperTest {
     @Rule public final SetFlagsRule mSetFlagRule = new SetFlagsRule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
@@ -88,10 +82,8 @@ public class CyclePhasesRecordHelperTest {
 
     @Before
     public void setup() throws Exception {
-        assumeTrue(
-                "Skipping tests because cycle phases is disabled",
-                AconfigFlagHelper.isCyclePhasesEnabled());
         Context context = ApplicationProvider.getApplicationContext();
+        InternalHealthConnectMappings.resetInstanceForTesting();
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
@@ -142,8 +134,17 @@ public class CyclePhasesRecordHelperTest {
     }
 
     @Test
+    @EnableFlags({
+        Flags.FLAG_CYCLE_PHASES_FLAG,
+        Flags.FLAG_CYCLE_PHASES_DB,
+        Flags.FLAG_SMOKING_DB,
+        Flags.FLAG_SYMPTOMS_DB,
+        Flags.FLAG_ALCOHOL_CONSUMPTION_DB
+    })
     public void populateSpecificRecordValue_returnsRecordInternal() {
-        assertThat(AconfigFlagHelper.isCyclePhasesEnabled()).isTrue();
+        assumeTrue(
+                "Skipping tests because cycle phases is disabled",
+                AconfigFlagHelper.isCyclePhasesEnabled());
         CyclePhasesRecordInternal insertedRecord =
                 new CyclePhasesRecordInternal().setPhase(PHASE_FOLLICULAR).setDayOfCycle(5);
         mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, insertedRecord);
@@ -160,8 +161,17 @@ public class CyclePhasesRecordHelperTest {
     }
 
     @Test
+    @EnableFlags({
+        Flags.FLAG_CYCLE_PHASES_FLAG,
+        Flags.FLAG_CYCLE_PHASES_DB,
+        Flags.FLAG_SMOKING_DB,
+        Flags.FLAG_SYMPTOMS_DB,
+        Flags.FLAG_ALCOHOL_CONSUMPTION_DB
+    })
     public void populateSpecificRecordValue_optionalValueNotSet_containsDefaultValue() {
-        assertThat(AconfigFlagHelper.isCyclePhasesEnabled()).isTrue();
+        assumeTrue(
+                "Skipping tests because cycle phases is disabled",
+                AconfigFlagHelper.isCyclePhasesEnabled());
         CyclePhasesRecordInternal insertedRecord =
                 new CyclePhasesRecordInternal().setPhase(PHASE_LUTEAL);
         mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, insertedRecord);

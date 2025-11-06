@@ -57,6 +57,16 @@ public class InternalHealthConnectMappings {
     }
 
     /**
+     * Resets the singleton instance.
+     *
+     * <p>Useful for unit tests where flag values might change between test cases.
+     */
+    @VisibleForTesting
+    public static void resetInstanceForTesting() {
+        sInternalHealthConnectMappings = null;
+    }
+
+    /**
      * Use {@link #getInstance()} to avoid creating multiple instances until it gets migrated off.
      */
     @VisibleForTesting

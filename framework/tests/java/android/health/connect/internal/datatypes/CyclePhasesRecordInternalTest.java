@@ -25,6 +25,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assume.assumeTrue;
 
+import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.platform.test.annotations.EnableFlags;
@@ -62,6 +63,7 @@ public class CyclePhasesRecordInternalTest {
         assumeTrue(
                 "Skipping tests because cycle phases is disabled",
                 AconfigFlagHelper.isCyclePhasesEnabled());
+        HealthConnectMappings.resetInstanceForTesting();
     }
 
     @Test
