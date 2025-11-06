@@ -94,16 +94,17 @@ public class DeviceDataProviderManager {
      * updating device data provider information.
      *
      * @param advertisements The device data source advertisements.
-     * @param ddpPackageName The package name of the advertising DDP.
+     * @param callingDdpPackageName The package name of the advertising DDP.
      */
     // TODO(b/440066697): Check if we want to handle advertisements that are no longer present.
     public void handleAdvertisement(
-            @NonNull Set<DeviceDataAdvertisement> advertisements, @NonNull String ddpPackageName) {
+            @NonNull Set<DeviceDataAdvertisement> advertisements,
+            @NonNull String callingDdpPackageName) {
         Objects.requireNonNull(advertisements);
-        Objects.requireNonNull(ddpPackageName);
+        Objects.requireNonNull(callingDdpPackageName);
 
         for (DeviceDataAdvertisement advertisement : advertisements) {
-            handleAdvertisement(advertisement, ddpPackageName);
+            handleAdvertisement(advertisement, callingDdpPackageName);
         }
     }
 
@@ -174,9 +175,9 @@ public class DeviceDataProviderManager {
     }
 
     private void handleAdvertisement(
-            @NonNull DeviceDataAdvertisement advertisement, @NonNull String ddpPackageName) {
+            @NonNull DeviceDataAdvertisement advertisement, @NonNull String callingDdpPackageName) {
         Objects.requireNonNull(advertisement);
-        Objects.requireNonNull(ddpPackageName);
+        Objects.requireNonNull(callingDdpPackageName);
 
         Device device = advertisement.getDevice();
         DeviceInfo deviceInfo =
@@ -196,9 +197,9 @@ public class DeviceDataProviderManager {
 
         // DDP package name + device info + data type + status
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
-                ddpPackageName, deviceInfoId, advertisement);
+                callingDdpPackageName, deviceInfoId, advertisement);
 
-        mDeviceDataProviderMetadataHelper.insertIfNotPresent(ddpPackageName);
+        mDeviceDataProviderMetadataHelper.insertIfNotPresent(callingDdpPackageName);
     }
 
     /**
@@ -207,16 +208,20 @@ public class DeviceDataProviderManager {
      * <p>Note: The device data source must be advertised first through {@link
      * #handleAdvertisement}.
      *
+     * @param callingDdpPackageName The package name of the device data provider.
      * @param deviceId The ID of the device.
      * @param records The list of records to insert.
      * @return A list of UUIDs of the inserted records.
-     * @throws IllegalArgumentException if the device with the given ID is not found
+     * @throws IllegalArgumentException if the device with the given ID is not found or if any
+     *     record type is not advertised.
      * @throws IllegalStateException if the generated syntheticPackageName or deviceInfoId is not
      *     valid
      */
-    // TODO(b/458002163): Check that the device data source has advertised the provided data type.
     public List<String> insertDeviceRecords(
-            @NonNull String deviceId, @NonNull List<RecordInternal<?>> records) {
+            @NonNull String callingDdpPackageName,
+            @NonNull String deviceId,
+            @NonNull List<RecordInternal<?>> records) {
+        Objects.requireNonNull(callingDdpPackageName);
         Objects.requireNonNull(deviceId);
         Objects.requireNonNull(records);
         DeviceInfoHelper.DeviceInfo deviceInfo = mDeviceInfoHelper.getDeviceInfo(deviceId);
@@ -236,7 +241,18 @@ public class DeviceDataProviderManager {
                 mSyntheticPackageNameCreator.createCanonical(deviceInfo.getDeviceType(), deviceId);
         long deviceInfoId = getOrThrowDeviceInfoId(deviceInfo, syntheticPackageName);
 
+        List<Integer> advertisedDataTypes =
+                mDeviceDataProviderHelper.getAdvertisedDataTypes(
+                        callingDdpPackageName, deviceInfoId);
         for (RecordInternal<?> record : records) {
+            if (!advertisedDataTypes.contains(record.getRecordType())) {
+                // TODO(b/459388902): Use the data type string in the exception.
+                throw new IllegalArgumentException(
+                        "Data type "
+                                + record.getRecordType()
+                                + " not advertised for device ID "
+                                + deviceId);
+            }
             mDeviceInfoHelper.populateRecordWithValue(deviceInfoId, record);
             record.setDeviceInfoId(deviceInfoId);
             record.setPackageName(syntheticPackageName);

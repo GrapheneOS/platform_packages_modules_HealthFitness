@@ -20,6 +20,7 @@ import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecu
 import static android.healthconnect.testing.cts.TestUtils.advertiseDevice;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.shared.DataFactory.buildDevice;
+import static android.healthconnect.testing.shared.DataFactory.getDistanceRecord;
 import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecordWithEmptyMetaData;
@@ -37,6 +38,7 @@ import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
@@ -68,7 +70,6 @@ import java.util.Set;
     FLAG_DEVICE_DATA_PROVIDERS_DB,
     FLAG_DEVELOPMENT_DATABASE
 })
-// TODO(b/458002163): Add tests to check we can only insert advertised data types.
 // TODO(b/440343237): Add test to verify package name is not equal to writing app once we have
 // getDeviceDataSources
 public class InsertDeviceRecordsTest {
@@ -293,6 +294,44 @@ public class InsertDeviceRecordsTest {
                         TestUtils.isMaskedSyntheticPackageName(
                                 insertedRecord.getMetadata().getDataOrigin().getPackageName()))
                 .isTrue();
+    }
+
+    @Test
+    public void insertsDeviceRecords_differentDataTypeAdvertised_throws()
+            throws InterruptedException {
+        String deviceId = "TestDeviceId";
+        HealthConnectReceiver<InsertRecordsResponse> receiver = new HealthConnectReceiver<>();
+
+        advertiseDevice(deviceId, DistanceRecord.class);
+        StepsRecord stepsRecord = getStepsRecord();
+        TestUtils.insertDeviceRecords(deviceId, List.of(stepsRecord), outcomeExecutor(), receiver);
+
+        assertThat(receiver.assertAndGetException().getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
+        assertThat(receiver.assertAndGetException().getMessage())
+                .isEqualTo(
+                        "java.lang.IllegalArgumentException: Data type 1 not advertised for device"
+                                + " ID TestDeviceId");
+    }
+
+    @Test
+    public void insertsDeviceRecords_extraDataTypeNotAdvertised_throws()
+            throws InterruptedException {
+        String deviceId = "TestDeviceId";
+        HealthConnectReceiver<InsertRecordsResponse> receiver = new HealthConnectReceiver<>();
+
+        advertiseDevice(deviceId, StepsRecord.class);
+        StepsRecord stepsRecord = getStepsRecord();
+        DistanceRecord distanceRecord = getDistanceRecord();
+        TestUtils.insertDeviceRecords(
+                deviceId, List.of(stepsRecord, distanceRecord), outcomeExecutor(), receiver);
+
+        assertThat(receiver.assertAndGetException().getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
+        assertThat(receiver.assertAndGetException().getMessage())
+                .isEqualTo(
+                        "java.lang.IllegalArgumentException: Data type 7 not advertised for device"
+                                + " ID TestDeviceId");
     }
 
     @Test

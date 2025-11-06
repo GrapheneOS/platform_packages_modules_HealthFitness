@@ -3391,7 +3391,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
                     List<String> uuids =
                             deviceDataProviderManager.insertDeviceRecords(
-                                    deviceId, recordInternals);
+                                    packageName, deviceId, recordInternals);
                     tryAndReturnResult(callback, uuids, logger);
                     // TODO(b/455514553): Add RecordType specific upsert metrics
                 },

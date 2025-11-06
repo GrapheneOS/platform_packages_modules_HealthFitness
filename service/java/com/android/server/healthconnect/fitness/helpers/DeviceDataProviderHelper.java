@@ -149,6 +149,21 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     }
 
     /**
+     * Returns a list of data types that have been advertised for the given {@code
+     * sourcePackageName} and {@code deviceInfoId}.
+     */
+    public synchronized List<Integer> getAdvertisedDataTypes(
+            String sourcePackageName, long deviceInfoId) {
+        return getDdpMap().keySet().stream()
+                .filter(
+                        key ->
+                                key.sourcePackageName.equals(sourcePackageName)
+                                        && key.deviceInfoId == deviceInfoId)
+                .map(key -> key.dataType)
+                .collect(Collectors.toList());
+    }
+
+    /**
      * Delete advertisements from the database for data types no longer present for the {@code
      * sourcePackageName} and {@code deviceInfoId}.
      */

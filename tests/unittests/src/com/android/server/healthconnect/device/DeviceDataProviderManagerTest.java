@@ -39,6 +39,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
@@ -436,10 +437,46 @@ public class DeviceDataProviderManagerTest {
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
 
         List<String> insertedUuids =
-                mDeviceDataProviderManager.insertDeviceRecords(DEVICE_ID, records);
+                mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
 
         assertThat(insertedUuids).isNotNull();
         assertThat(insertedUuids).hasSize(1);
+    }
+
+    @Test
+    public void insertDeviceRecords_dataTypeNotAdvertised_throwsException() {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
+
+        List<RecordInternal<?>> records =
+                List.of(
+                        buildStepsRecord(
+                                /* startTimeMillis= */ 1000,
+                                /* endTimeMillis= */ 2000,
+                                /* stepsCount= */ 100));
+        Throwable thrown =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                mDeviceDataProviderManager.insertDeviceRecords(
+                                        PACKAGE_NAME, DEVICE_ID, records));
+
+        assertThat(thrown)
+                .hasMessageThat()
+                .contains("Data type 1 not advertised for device ID test_device_id");
     }
 
     @Test
@@ -467,7 +504,7 @@ public class DeviceDataProviderManagerTest {
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
 
         List<String> insertedUuids =
-                mDeviceDataProviderManager.insertDeviceRecords(DEVICE_ID, records);
+                mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
         assertThat(insertedUuids).isNotNull();
         assertThat(insertedUuids).hasSize(1);
         List<RecordInternal<?>> readRecords =
@@ -524,7 +561,7 @@ public class DeviceDataProviderManagerTest {
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
 
         List<String> insertedUuids =
-                mDeviceDataProviderManager.insertDeviceRecords(DEVICE_ID, records);
+                mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
 
         assertThat(insertedUuids).isNotNull();
         assertThat(insertedUuids).hasSize(2);
@@ -539,7 +576,9 @@ public class DeviceDataProviderManagerTest {
                         IllegalArgumentException.class,
                         () ->
                                 mDeviceDataProviderManager.insertDeviceRecords(
-                                        /* deviceId= */ "non_existent_device", records));
+                                        PACKAGE_NAME,
+                                        /* deviceId= */ "non_existent_device",
+                                        records));
 
         assertThat(thrown)
                 .hasMessageThat()
@@ -576,7 +615,7 @@ public class DeviceDataProviderManagerTest {
         int initialMetadataCount =
                 mDeviceDataProviderMetadataHelper.getIdDeviceDataProviderMetadataMap().size();
 
-        mDeviceDataProviderManager.insertDeviceRecords(DEVICE_ID, records);
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
 
         assertThat(mDeviceInfoHelper.getIdDeviceInfoMap().size()).isEqualTo(initialDeviceInfoCount);
         assertThat(mAppInfoHelper.getAppInfoMap().size()).isEqualTo(initialAppInfoCount);

@@ -59,6 +59,7 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.util.List;
 import java.util.Set;
 
 @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
@@ -428,6 +429,83 @@ public class DeviceDataProviderHelperTest {
             assertThat(getCursorInt(cursor, DeviceDataProviderHelper.DATA_TYPE))
                     .isEqualTo(mHealthConnectMappings.getRecordType(StepsRecord.class));
         }
+    }
+
+    @Test
+    public void getAdvertisedDataTypes_returnsCorrectDataTypes() {
+        long deviceInfoId = insertDeviceInfo();
+        mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                deviceInfoId,
+                new DeviceDataAdvertisement(
+                        mDevice,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .build(),
+                                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                                        .setAvailable(true)
+                                        .build())));
+
+        List<Integer> advertisedDataTypes =
+                mDeviceDataProviderHelper.getAdvertisedDataTypes(TEST_APP_PACKAGE, deviceInfoId);
+
+        assertThat(advertisedDataTypes)
+                .containsExactly(
+                        mHealthConnectMappings.getRecordType(StepsRecord.class),
+                        mHealthConnectMappings.getRecordType(DistanceRecord.class));
+    }
+
+    @Test
+    public void getAdvertisedDataTypes_noAdvertisements_returnsEmptyList() {
+        long deviceInfoId = insertDeviceInfo();
+        List<Integer> advertisedDataTypes =
+                mDeviceDataProviderHelper.getAdvertisedDataTypes(TEST_APP_PACKAGE, deviceInfoId);
+
+        assertThat(advertisedDataTypes).isEmpty();
+    }
+
+    @Test
+    public void getAdvertisedDataTypes_differentPackage_returnsEmptyList() {
+        long deviceInfoId = insertDeviceInfo();
+        mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                deviceInfoId,
+                new DeviceDataAdvertisement(
+                        mDevice,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .build())));
+
+        List<Integer> advertisedDataTypes =
+                mDeviceDataProviderHelper.getAdvertisedDataTypes("different.package", deviceInfoId);
+
+        assertThat(advertisedDataTypes).isEmpty();
+    }
+
+    @Test
+    public void getAdvertisedDataTypes_differentDevice_returnsEmptyList() {
+        long deviceInfoId = insertDeviceInfo();
+        mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                deviceInfoId,
+                new DeviceDataAdvertisement(
+                        mDevice,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .build())));
+        long otherDeviceInfoId = insertDeviceInfo();
+
+        List<Integer> advertisedDataTypes =
+                mDeviceDataProviderHelper.getAdvertisedDataTypes(
+                        TEST_APP_PACKAGE, otherDeviceInfoId);
+
+        assertThat(advertisedDataTypes).isEmpty();
     }
 
     private long insertDeviceInfo() {
