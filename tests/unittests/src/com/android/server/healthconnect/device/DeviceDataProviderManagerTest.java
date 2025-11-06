@@ -59,6 +59,7 @@ import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCrea
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -103,7 +104,7 @@ public class DeviceDataProviderManagerTest {
     private PreferenceHelper mPreferenceHelper;
     private Context mContext;
     private DeviceDataProviderHelper mDeviceDataProviderHelper;
-
+    private DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
     private DeviceInfoHelper mDeviceInfoHelper;
     private AppInfoHelper mAppInfoHelper;
     private FitnessRecordReadHelper mFitnessRecordReadHelper;
@@ -124,6 +125,8 @@ public class DeviceDataProviderManagerTest {
         mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mDeviceDataProviderHelper = healthConnectInjector.getDeviceDataProviderHelper();
+        mDeviceDataProviderMetadataHelper =
+                healthConnectInjector.getDeviceDataProviderMetadataHelper();
         mPreferenceHelper = healthConnectInjector.getPreferenceHelper();
         mFitnessRecordReadHelper = healthConnectInjector.getFitnessRecordReadHelper();
         mTransactionManager = healthConnectInjector.getTransactionManager();
@@ -133,13 +136,14 @@ public class DeviceDataProviderManagerTest {
                         mDeviceInfoHelper,
                         mAppInfoHelper,
                         mDeviceDataProviderHelper,
+                        mDeviceDataProviderMetadataHelper,
                         healthConnectInjector.getFitnessRecordUpsertHelper(),
                         healthConnectInjector.getSyntheticPackageNameCreator());
         mPreferenceHelper.insertOrReplacePreference(PREFERENCE_KEY, "Some Salt");
     }
 
     @Test
-    public void handleAdvertisements_insertsNewDeviceAndAppInfo() {
+    public void handleAdvertisements_insertsNewDeviceAndAppInfoAndMetadata() {
         Device device =
                 new Device.Builder()
                         .setManufacturer(MANUFACTURER)
@@ -158,6 +162,8 @@ public class DeviceDataProviderManagerTest {
 
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
         Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
+        Map<Long, DeviceDataProviderMetadataHelper.DeviceDataProviderMetadata> metadataInternalMap =
+                mDeviceDataProviderMetadataHelper.getIdDeviceDataProviderMetadataMap();
 
         assertThat(mDeviceInfoHelper.getIdDeviceInfoMap().size()).isEqualTo(1);
         assertThat(
@@ -183,6 +189,9 @@ public class DeviceDataProviderManagerTest {
         assertThat(appInfoInternalMap).containsKey(appInfoKey);
         assertThat(appInfoInternalMap.get(appInfoKey).getDeviceInfoId())
                 .isEqualTo(expectedDeviceInfoId);
+        assertThat(metadataInternalMap.size()).isEqualTo(1);
+        assertThat(metadataInternalMap).containsKey(1L);
+        assertThat(metadataInternalMap.get(1L).sourcePackageName()).isEqualTo(PACKAGE_NAME);
         DeviceDataProviderHelper.DeviceDataProviderKey key =
                 new DeviceDataProviderHelper.DeviceDataProviderKey(
                         PACKAGE_NAME, expectedDeviceInfoId, RECORD_TYPE_STEPS);
@@ -214,10 +223,13 @@ public class DeviceDataProviderManagerTest {
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
         Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
+        Map<Long, DeviceDataProviderMetadataHelper.DeviceDataProviderMetadata> metadataInternalMap =
+                mDeviceDataProviderMetadataHelper.getIdDeviceDataProviderMetadataMap();
 
         assertThat(mDeviceInfoHelper.getIdDeviceInfoMap().size()).isEqualTo(1);
         assertThat(appInfoInternalMap.size()).isEqualTo(1);
         assertThat(mDeviceDataProviderHelper.getDdpMap().size()).isEqualTo(1);
+        assertThat(metadataInternalMap.size()).isEqualTo(1);
     }
 
     @Test
@@ -253,8 +265,11 @@ public class DeviceDataProviderManagerTest {
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement1), PACKAGE_NAME);
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement2), PACKAGE_NAME);
         Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
+        Map<Long, DeviceDataProviderMetadataHelper.DeviceDataProviderMetadata> metadataInternalMap =
+                mDeviceDataProviderMetadataHelper.getIdDeviceDataProviderMetadataMap();
 
         assertThat(appInfoInternalMap.size()).isEqualTo(1);
+        assertThat(metadataInternalMap.size()).isEqualTo(1);
         assertThat(mDeviceDataProviderHelper.getDdpMap().size()).isEqualTo(2);
         assertThat(mDeviceInfoHelper.getIdDeviceInfoMap().size()).isEqualTo(2);
         assertThat(
@@ -427,6 +442,7 @@ public class DeviceDataProviderManagerTest {
         assertThat(insertedUuids).hasSize(1);
     }
 
+    @Test
     public void insertDeviceRecords_verifiesRecordMetadata() {
         Device device =
                 new Device.Builder()
@@ -470,8 +486,7 @@ public class DeviceDataProviderManagerTest {
         assertThat(readRecords).hasSize(1);
         RecordInternal<?> readRecord = readRecords.get(0);
         assertThat(readRecord.getRecordType()).isEqualTo(RECORD_TYPE_STEPS);
-        assertThat(readRecord.getPackageName())
-                .isEqualTo("com.android.healthconnect.phone.d7cb79fe443e33713aab89814ac9a945e");
+        assertTrue(SyntheticPackageNameCreator.isCanonicalSpn(readRecord.getPackageName()));
         // RecordHelper#getRecord doesn't repopulate the deviceInfoId
         assertThat(readRecord.getDeviceInfoId()).isEqualTo(-1L);
         assertThat(readRecord.getManufacturer()).isEqualTo(MANUFACTURER);
@@ -480,6 +495,7 @@ public class DeviceDataProviderManagerTest {
         assertThat(readRecord.getDisplayName()).isEqualTo(DISPLAY_NAME);
     }
 
+    @Test
     public void insertDeviceRecords_insertsRecordsCorrectly() {
         Device device =
                 new Device.Builder()
@@ -514,6 +530,7 @@ public class DeviceDataProviderManagerTest {
         assertThat(insertedUuids).hasSize(2);
     }
 
+    @Test
     public void insertDeviceRecords_deviceNotFound_throwsException() {
         List<RecordInternal<?>> records = Collections.emptyList();
 
@@ -531,7 +548,8 @@ public class DeviceDataProviderManagerTest {
                                 + " source has been advertised");
     }
 
-    public void insertDeviceRecords_doesNotCreateNewDeviceOrAppInfo() {
+    @Test
+    public void insertDeviceRecords_doesNotCreateNewDeviceOrAppInfoOrMetadata() {
         Device device =
                 new Device.Builder()
                         .setManufacturer(MANUFACTURER)
@@ -555,13 +573,18 @@ public class DeviceDataProviderManagerTest {
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
         int initialDeviceInfoCount = mDeviceInfoHelper.getIdDeviceInfoMap().size();
         int initialAppInfoCount = mAppInfoHelper.getAppInfoMap().size();
+        int initialMetadataCount =
+                mDeviceDataProviderMetadataHelper.getIdDeviceDataProviderMetadataMap().size();
 
         mDeviceDataProviderManager.insertDeviceRecords(DEVICE_ID, records);
 
         assertThat(mDeviceInfoHelper.getIdDeviceInfoMap().size()).isEqualTo(initialDeviceInfoCount);
         assertThat(mAppInfoHelper.getAppInfoMap().size()).isEqualTo(initialAppInfoCount);
+        assertThat(mDeviceDataProviderMetadataHelper.getIdDeviceDataProviderMetadataMap().size())
+                .isEqualTo(initialMetadataCount);
     }
 
+    @Test
     public void advertisementAndNormalInsertion_createsTwoDistinctDeviceInfoEntries() {
         Device device =
                 new Device.Builder()

@@ -39,6 +39,7 @@ import com.android.server.healthconnect.common.metadata.DeviceInfoHelper.DeviceI
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 
 import java.security.SecureRandom;
 import java.util.List;
@@ -61,6 +62,7 @@ public class DeviceDataProviderManager {
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final AppInfoHelper mAppInfoHelper;
     private final DeviceDataProviderHelper mDeviceDataProviderHelper;
+    private final DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
     private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
     private final SyntheticPackageNameCreator mSyntheticPackageNameCreator;
 
@@ -74,12 +76,15 @@ public class DeviceDataProviderManager {
             @NonNull DeviceInfoHelper deviceInfoHelper,
             @NonNull AppInfoHelper appInfoHelper,
             @NonNull DeviceDataProviderHelper deviceDataProviderHelper,
+            @NonNull DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
             @NonNull FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             @NonNull SyntheticPackageNameCreator syntheticPackageNameCreator) {
         mContext = Objects.requireNonNull(context);
         mDeviceInfoHelper = Objects.requireNonNull(deviceInfoHelper);
         mAppInfoHelper = Objects.requireNonNull(appInfoHelper);
         mDeviceDataProviderHelper = Objects.requireNonNull(deviceDataProviderHelper);
+        mDeviceDataProviderMetadataHelper =
+                Objects.requireNonNull(deviceDataProviderMetadataHelper);
         mFitnessRecordUpsertHelper = Objects.requireNonNull(fitnessRecordUpsertHelper);
         mSyntheticPackageNameCreator = Objects.requireNonNull(syntheticPackageNameCreator);
     }
@@ -192,6 +197,8 @@ public class DeviceDataProviderManager {
         // DDP package name + device info + data type + status
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 ddpPackageName, deviceInfoId, advertisement);
+
+        mDeviceDataProviderMetadataHelper.insertIfNotPresent(ddpPackageName);
     }
 
     /**

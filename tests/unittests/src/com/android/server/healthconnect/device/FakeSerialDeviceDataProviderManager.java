@@ -23,6 +23,7 @@ import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 
 /**
  * A {@link DeviceDataProviderManager} that overrides the serial number of the device to a fake
@@ -40,6 +41,7 @@ public class FakeSerialDeviceDataProviderManager extends DeviceDataProviderManag
             @NonNull DeviceInfoHelper deviceInfoHelper,
             @NonNull AppInfoHelper appInfoHelper,
             @NonNull DeviceDataProviderHelper deviceDataProviderHelper,
+            @NonNull DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
             @NonNull FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             @NonNull SyntheticPackageNameCreator syntheticPackageNameCreator) {
         super(
@@ -47,6 +49,7 @@ public class FakeSerialDeviceDataProviderManager extends DeviceDataProviderManag
                 deviceInfoHelper,
                 appInfoHelper,
                 deviceDataProviderHelper,
+                deviceDataProviderMetadataHelper,
                 fitnessRecordUpsertHelper,
                 syntheticPackageNameCreator);
     }

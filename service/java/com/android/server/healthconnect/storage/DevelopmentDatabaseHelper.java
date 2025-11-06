@@ -31,6 +31,7 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 
 /**
@@ -50,9 +51,7 @@ public final class DevelopmentDatabaseHelper {
      * The current version number for the development database features. Increment this whenever you
      * make a breaking schema change to a development feature.
      */
-    @VisibleForTesting static final int CURRENT_VERSION = 22;
-
-    public static final int DB_VERSION_ALCOHOL_CONSUMPTION = 22;
+    @VisibleForTesting static final int CURRENT_VERSION = 23;
 
     /** The name of the table to store development specific key value pairs. */
     private static final String SETTINGS_TABLE_NAME = "development_database_settings";
@@ -103,6 +102,7 @@ public final class DevelopmentDatabaseHelper {
         applyDdpAppInfoDatabaseUpgrade(db);
         applyDeviceInfoEnhancementsDatabaseUpgrade(db);
         applyDdpDatabaseUpgrade(db, oldVersion);
+        applyDdpMetadataDatabaseUpgrade(db);
     }
 
     private static void applyDdpAppInfoDatabaseUpgrade(SQLiteDatabase db) {
@@ -136,6 +136,14 @@ public final class DevelopmentDatabaseHelper {
             return;
         }
         createTable(db, DeviceDataProviderHelper.getCreateTableRequest());
+    }
+
+    private static void applyDdpMetadataDatabaseUpgrade(SQLiteDatabase db) {
+        if (checkTableExists(db, DeviceDataProviderMetadataHelper.TABLE_NAME)) {
+            return;
+        }
+
+        createTable(db, DeviceDataProviderMetadataHelper.getCreateTableRequest());
     }
 
     @VisibleForTesting

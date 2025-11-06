@@ -500,6 +500,7 @@ public class HealthConnectServiceImplTest {
                             healthConnectInjector.getDeviceInfoHelper(),
                             healthConnectInjector.getAppInfoHelper(),
                             healthConnectInjector.getDeviceDataProviderHelper(),
+                            healthConnectInjector.getDeviceDataProviderMetadataHelper(),
                             healthConnectInjector.getFitnessRecordUpsertHelper(),
                             healthConnectInjector.getSyntheticPackageNameCreator());
         }

@@ -70,6 +70,7 @@ import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
@@ -196,6 +197,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Nullable private final DeviceDataProviderHelper mDeviceDataProviderHelper;
     @Nullable private final DeviceDataProviderManager mDeviceDataProviderManager;
     @Nullable private final SyntheticPackageNameCreator mSyntheticPackageNameCreator;
+    @Nullable private final DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -633,17 +635,26 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mSyntheticPackageNameCreator == null && Flags.deviceDataProvidersApi()
                         ? new SyntheticPackageNameCreator(mPreferenceHelper)
                         : builder.mSyntheticPackageNameCreator;
+        mDeviceDataProviderMetadataHelper =
+                builder.mDeviceDataProviderMetadataHelper == null
+                                && Flags.deviceDataProvidersApi()
+                                && AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                        ? new DeviceDataProviderMetadataHelper(
+                                mDatabaseHelpers, mTransactionManager)
+                        : builder.mDeviceDataProviderMetadataHelper;
         mDeviceDataProviderManager =
                 builder.mDeviceDataProviderManager == null
                                 && Flags.deviceDataProvidersApi()
                                 && AconfigFlagHelper.isDeviceDataProvidersEnabled()
                                 && mDeviceDataProviderHelper != null
+                                && mDeviceDataProviderMetadataHelper != null
                                 && mSyntheticPackageNameCreator != null
                         ? new DeviceDataProviderManager(
                                 hcContext,
                                 mDeviceInfoHelper,
                                 mAppInfoHelper,
                                 mDeviceDataProviderHelper,
+                                mDeviceDataProviderMetadataHelper,
                                 mFitnessRecordUpsertHelper,
                                 mSyntheticPackageNameCreator)
                         : builder.mDeviceDataProviderManager;
@@ -1046,6 +1057,12 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         return mSyntheticPackageNameCreator;
     }
 
+    @Nullable
+    @Override
+    public DeviceDataProviderMetadataHelper getDeviceDataProviderMetadataHelper() {
+        return mDeviceDataProviderMetadataHelper;
+    }
+
     /**
      * Returns a new Builder of Health Connect Injector
      *
@@ -1133,6 +1150,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private DeviceDataProviderHelper mDeviceDataProviderHelper;
         @Nullable private DeviceDataProviderManager mDeviceDataProviderManager;
         @Nullable private SyntheticPackageNameCreator mSyntheticPackageNameCreator;
+        @Nullable private DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
 
         private Builder(Context context) {
             mContext = context;
@@ -1572,6 +1590,13 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         public Builder setSyntheticPackageNameCreator(
                 SyntheticPackageNameCreator syntheticPackageNameCreator) {
             mSyntheticPackageNameCreator = syntheticPackageNameCreator;
+            return this;
+        }
+
+        /** Set fake or custom {@link DeviceDataProviderMetadataHelper}. */
+        public Builder setDeviceDataProviderMetadataHelper(
+                DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper) {
+            mDeviceDataProviderMetadataHelper = deviceDataProviderMetadataHelper;
             return this;
         }
 

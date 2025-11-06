@@ -56,6 +56,7 @@ import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
@@ -483,6 +484,13 @@ public abstract class HealthConnectInjector {
      */
     @Nullable
     public abstract SyntheticPackageNameCreator getSyntheticPackageNameCreator();
+
+    /**
+     * Getter for {@link DeviceDataProviderMetadataHelper} instance initialised by the Health
+     * Connect Injector.
+     */
+    @Nullable
+    public abstract DeviceDataProviderMetadataHelper getDeviceDataProviderMetadataHelper();
 
     /** Used to initialize the Injector. */
     public static void setInstance(HealthConnectInjector healthConnectInjector) {
