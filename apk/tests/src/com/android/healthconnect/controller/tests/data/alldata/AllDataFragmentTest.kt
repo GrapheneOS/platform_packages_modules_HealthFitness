@@ -16,8 +16,9 @@
 package com.android.healthconnect.controller.tests.data.alldata
 
 import android.content.Context
-import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
+import android.health.connect.HealthDataCategory
+import android.health.connect.HealthPermissionCategory
 import android.health.connect.MedicalResourceTypeInfo
 import android.health.connect.ReadRecordsRequestUsingFilters
 import android.health.connect.ReadRecordsResponse
@@ -74,7 +75,6 @@ import com.android.healthconnect.controller.shared.children
 import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
-import com.android.healthconnect.controller.tests.utils.TestData.getSymptomRecord
 import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.android.healthconnect.controller.tests.utils.launchFragment
@@ -110,6 +110,7 @@ import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -268,6 +269,7 @@ class AllDataFragmentTest {
         mockData(emptyList())
 
         launchFragment<AllDataFragment>().use {
+            onIdle()
             onView(withText("No data")).check(matches(isDisplayed()))
             onView(withText("Data from apps with access to Health\u00A0Connect will show here"))
                 .check(matches(isDisplayed()))
@@ -379,6 +381,39 @@ class AllDataFragmentTest {
                     .logInteraction(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
                 assertThat(navHostController.currentDestination?.id)
                     .isEqualTo(R.id.entriesAndAccessFragment)
+            }
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun whenSymptomsShown_navigatesToAllSymptoms() {
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+            mapOf(
+                SymptomRecord::class.java to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.SYMPTOM_SNORE, // Placeholder
+                        HealthDataCategory.SYMPTOMS,
+                        listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
+                    )
+            )
+        doAnswer(prepareAnswer(recordTypeInfoMap))
+            .`when`(manager)
+            .queryAllRecordTypesInfo(any(), any())
+
+        launchFragment<AllDataFragment> {
+                navHostController.setGraph(R.navigation.data_nav_graph_new_ia)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                checkTextIsDisplayed("All symptoms")
+                scrollToTextAndClick("All symptoms")
+                verify(healthConnectLogger)
+                    .logInteraction(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.entriesAndAccessFragment)
+                val args = navHostController.backStack.last().arguments
+                assertThat(args?.getString("permission_type_name_key"))
+                    .isEqualTo(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN.name)
             }
     }
 
@@ -562,6 +597,45 @@ class AllDataFragmentTest {
             scrollToTextAndClick("Distance")
             scrollToTextAndClick("Vaccines")
             assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value).isEmpty()
+        }
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun inDeletionState_clickAllSymptoms_togglesRepresentativeTypeInSet() = runTest {
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+            mapOf(
+                SymptomRecord::class.java to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.SYMPTOM_SNORE, // Placeholder
+                        HealthDataCategory.SYMPTOMS,
+                        listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
+                    )
+            )
+        doAnswer(prepareAnswer(recordTypeInfoMap))
+            .whenever(manager)
+            .queryAllRecordTypesInfo(any(), any())
+
+        launchFragment<AllDataFragment>().use { scenario ->
+            scenario.onActivity { activity ->
+                val fragment =
+                    activity.supportFragmentManager.fragments.first { it is AllDataFragment }
+                        as AllDataFragment
+                fragment.triggerDeletionState(DELETE)
+            }
+            onIdle()
+
+            // Select "All symptoms"
+            scrollToTextAndClick("All symptoms")
+            onIdle()
+            assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value)
+                .contains(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)
+
+            // Deselect "All symptoms"
+            scrollToTextAndClick("All symptoms")
+            onIdle()
+            assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value)
+                .doesNotContain(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)
         }
     }
 
@@ -1258,6 +1332,62 @@ class AllDataFragmentTest {
         }
     }
 
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun givenSymptomData_displaysAllSymptomsEntry() {
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+            mapOf(
+                SymptomRecord::class.java to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.SYMPTOM_SNORE, // Placeholder
+                        HealthDataCategory.SYMPTOMS,
+                        listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
+                    )
+            )
+        doAnswer(prepareAnswer(recordTypeInfoMap))
+            .`when`(manager)
+            .queryAllRecordTypesInfo(any(), any())
+
+        launchFragment<AllDataFragment>().use {
+            checkTextIsDisplayed("Symptoms") // Category title
+            checkTextIsDisplayed("All symptoms") // The single entry
+
+            // Individual symptoms should not be shown
+            onView(withText("Cough")).check(doesNotExist())
+            onView(withText("Fever")).check(doesNotExist())
+        }
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun givenMultipleSymptomData_displaysOnlyOneAllSymptomsEntry() {
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+            mapOf(
+                SymptomRecord::class.java to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.SYMPTOM_SNORE, // Placeholder
+                        HealthDataCategory.SYMPTOMS,
+                        listOf(
+                            getDataOrigin(TEST_APP_PACKAGE_NAME),
+                            getDataOrigin("test.app.package.2"),
+                        ),
+                    )
+            )
+        doAnswer(prepareAnswer(recordTypeInfoMap))
+            .`when`(manager)
+            .queryAllRecordTypesInfo(any(), any())
+
+        launchFragment<AllDataFragment>().use {
+            checkTextIsDisplayed("Symptoms") // Category title
+            checkTextIsDisplayed("All symptoms") // The single entry
+
+            // Individual symptoms should not be shown
+            onView(withText("Cough")).check(doesNotExist())
+            onView(withText("Fever")).check(doesNotExist())
+            onView(withText("Snore")).check(doesNotExist())
+        }
+    }
+
     private fun assertCheckboxShown(title: String, tag: String = "checkbox") {
         scrollToText(title)
         onView(withId(androidx.preference.R.id.recycler_view))
@@ -1341,31 +1471,4 @@ class AllDataFragmentTest {
         launchFragment<AllDataFragment>(
             Bundle().apply { putBoolean(IS_BROWSE_MEDICAL_DATA_SCREEN, true) }
         )
-
-    @Test
-    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
-    fun givenSymptomData_onlyDisplaysSymptomsWithData() {
-        val coughRecord = getSymptomRecord(symptomType = SymptomRecord.SYMPTOM_TYPE_COUGH)
-        val vomitingRecord = getSymptomRecord(symptomType = SymptomRecord.SYMPTOM_TYPE_VOMITING)
-        val feverRecord = getSymptomRecord(symptomType = SymptomRecord.SYMPTOM_TYPE_FEVER)
-        val records = listOf(coughRecord, vomitingRecord, feverRecord)
-        doAnswer {
-                val receiver =
-                    it.arguments[2]
-                        as
-                        OutcomeReceiver<ReadRecordsResponse<SymptomRecord>, HealthConnectException>
-                receiver.onResult(ReadRecordsResponse(records, -1))
-                null
-            }
-            .`when`(manager)
-            .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
-
-        launchFragment<AllDataFragment>().use {
-            checkTextIsDisplayed("Cough")
-            checkTextIsDisplayed("Vomiting")
-            checkTextIsDisplayed("Fever")
-            onView(withText("Headache")).check(doesNotExist())
-            onView(withText("Abdominal pain")).check(doesNotExist())
-        }
-    }
 }

@@ -275,13 +275,14 @@ class AppEntriesFragmentTest {
         whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_SYMPTOMS_LIST)))
         whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_SYMPTOMS_LIST.toMutableList())
 
-        launchAppEntriesFragment(FitnessPermissionType.SYMPTOM_COUGH.name).use {
-            onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
-            onView(withText("Mild cough")).check(matches(isDisplayed()))
-            onView(withId(R.id.item_data_entry_notes)).check(matches(isDisplayed()))
-            onView(withId(R.id.item_data_entry_notes)).check(matches(withText("Test notes")))
-            onView(withId(R.id.item_data_entry_divider)).check(matches(not(isDisplayed())))
-        }
+        launchAppEntriesFragment(permissionName = FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN.name)
+            .use {
+                onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
+                onView(withText("Mild cough")).check(matches(isDisplayed()))
+                onView(withId(R.id.item_data_entry_notes)).check(matches(isDisplayed()))
+                onView(withId(R.id.item_data_entry_notes)).check(matches(withText("Test notes")))
+                onView(withId(R.id.item_data_entry_divider)).check(matches(not(isDisplayed())))
+            }
     }
 
     @Test
@@ -322,13 +323,13 @@ class AppEntriesFragmentTest {
             onIdle()
             verify(viewModel, atLeastOnce())
                 .loadEntries(
-                    eq(STEPS),
                     eq(TEST_APP_PACKAGE_NAME),
                     any(),
                     eq(DateNavigationPeriod.PERIOD_DAY),
+                    eq(STEPS),
                 )
             verify(viewModel, never())
-                .loadEntries(eq(STEPS), any(), eq(DateNavigationPeriod.PERIOD_DAY))
+                .loadEntries(any(), eq(DateNavigationPeriod.PERIOD_DAY), eq(STEPS))
         }
     }
 
@@ -396,6 +397,29 @@ class AppEntriesFragmentTest {
             verify(viewModel).addToDeleteMap("test_id", StepsRecord::class)
             verify(healthConnectLogger).logInteraction(EntriesElement.ENTRY_BUTTON_WITH_CHECKBOX)
         }
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS)
+    fun inDeletion_checkedSymptomsAddedToDeleteSet() {
+        whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_SYMPTOMS_LIST)))
+        whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_SYMPTOMS_LIST.toMutableList())
+
+        launchAppEntriesFragment(permissionName = FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN.name)
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = activity.supportFragmentManager.findFragmentByTag("")
+                    (fragment as AppEntriesFragment).triggerDeletionState(
+                        EntriesViewModel.EntriesDeletionScreenState.DELETE
+                    )
+                }
+
+                onView(withText("Mild cough")).perform(click())
+                onIdle()
+                verify(viewModel).addToDeleteMap("test_id", SymptomRecord::class)
+                verify(healthConnectLogger)
+                    .logInteraction(EntriesElement.ENTRY_BUTTON_WITH_CHECKBOX)
+            }
     }
 
     @Test
@@ -510,7 +534,9 @@ class AppEntriesFragmentTest {
         }
     }
 
-    private fun launchAppEntriesFragment(permissionName: String): ActivityScenario<TestActivity> {
+    private fun launchAppEntriesFragment(
+        permissionName: String? = null
+    ): ActivityScenario<TestActivity> {
         return launchFragment<AppEntriesFragment>(
             Bundle().apply {
                 putString(PERMISSION_TYPE_NAME_KEY, permissionName)

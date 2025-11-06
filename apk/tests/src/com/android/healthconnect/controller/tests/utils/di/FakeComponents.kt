@@ -36,8 +36,10 @@ import com.android.healthconnect.controller.data.entries.api.ILoadMenstruationDa
 import com.android.healthconnect.controller.data.entries.api.LoadAggregationInput
 import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadLatestEntryDateInput
+import com.android.healthconnect.controller.data.entries.api.LoadLatestSymptomEntryDateInput
 import com.android.healthconnect.controller.data.entries.api.LoadMedicalEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataInput
+import com.android.healthconnect.controller.data.entries.api.LoadSymptomDataEntriesInput
 import com.android.healthconnect.controller.datasources.AggregationCardInfo
 import com.android.healthconnect.controller.datasources.api.ILoadLastDateWithPriorityDataUseCase
 import com.android.healthconnect.controller.datasources.api.ILoadMostRecentAggregationsUseCase
@@ -266,6 +268,40 @@ class FakeLoadDataEntriesUseCase : ILoadDataEntriesUseCase {
     fun reset() {
         formattedList = emptyList()
         wasInvoked = false
+    }
+}
+
+class FakeLoadSymptomDataEntriesUseCase :
+    FakeUseCase<LoadSymptomDataEntriesInput, List<FormattedEntry>>(
+        dispatcher = Dispatchers.Unconfined
+    ) {
+    private var formattedList = listOf<FormattedEntry>()
+
+    fun updateList(list: List<FormattedEntry>) {
+        formattedList = list
+    }
+
+    override suspend fun successValue(input: LoadSymptomDataEntriesInput): List<FormattedEntry> {
+        return formattedList
+    }
+
+    override fun reset() {
+        super.reset()
+        formattedList = emptyList()
+    }
+}
+
+class FakeLoadLatestSymptomEntryDateUseCase :
+    FakeUseCase<LoadLatestSymptomEntryDateInput, Instant>(dispatcher = Dispatchers.Unconfined) {
+
+    private var instant = System.currentTimeMillis().toInstant()
+
+    fun updateInstant(instant: Instant) {
+        this.instant = instant
+    }
+
+    override suspend fun successValue(input: LoadLatestSymptomEntryDateInput): Instant {
+        return instant
     }
 }
 
@@ -554,6 +590,27 @@ class FakeLoadAccessUseCase : ILoadAccessUseCase {
 
     fun reset() {
         this.appDataMap = mutableMapOf()
+    }
+}
+
+class FakeLoadSymptomAccessUseCase :
+    FakeUseCase<Unit, Map<AppAccessState, List<AppAccessMetadata>>>(
+        dispatcher = Dispatchers.Unconfined
+    ) {
+
+    private var appDataMap: Map<AppAccessState, List<AppAccessMetadata>> = emptyMap()
+
+    override suspend fun successValue(input: Unit): Map<AppAccessState, List<AppAccessMetadata>> {
+        return appDataMap
+    }
+
+    fun updateMap(map: Map<AppAccessState, List<AppAccessMetadata>>) {
+        appDataMap = map
+    }
+
+    override fun reset() {
+        super.reset()
+        this.appDataMap = emptyMap()
     }
 }
 

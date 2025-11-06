@@ -59,5 +59,8 @@ sealed class DeletionType {
         val healthPermissionType: HealthPermissionType,
     ) : DeletionType()
 
+    data class DeleteAllSymptomsDataFromInactiveApp(val packageName: String, val appName: String) :
+        DeletionType()
+
     data class DeleteAppData(val packageName: String, val appName: String) : DeletionType()
 }

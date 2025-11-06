@@ -22,7 +22,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.data.appdata.AllDataUseCase
 import com.android.healthconnect.controller.data.appdata.PermissionTypesPerCategory
+import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
+import com.android.healthconnect.controller.permissions.data.getAllSymptomPermissionTypes
 import com.android.healthconnect.controller.selectabledeletion.DeletionDataViewModel
+import com.android.healthconnect.controller.selectabledeletion.DeletionType
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -42,6 +45,18 @@ class AllDataViewModel @Inject constructor(private val loadAllDataUseCase: AllDa
     /** Provides a list of [PermissionTypesPerCategory]s to be displayed in [AllDataFragment]. */
     val allData: LiveData<AllDataState>
         get() = _allData
+
+    fun prepareDeletionType(): DeletionType.DeleteHealthPermissionTypes {
+        val typesToDelete = setOfPermissionTypesToBeDeleted.value.orEmpty().toMutableSet()
+        // We use SYMPTOM_ABDOMINAL_PAIN as the "representative" symptom type for all symptoms,
+        // which unlike other permission types are grouped together in the UI. That means that if we
+        // see this in the list we should delete all symptom records regardless of type.
+        if (typesToDelete.contains(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)) {
+            typesToDelete.remove(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)
+            typesToDelete.addAll(getAllSymptomPermissionTypes())
+        }
+        return DeletionType.DeleteHealthPermissionTypes(typesToDelete, typesToDelete.size)
+    }
 
     fun loadAllFitnessData() {
         _allData.postValue(AllDataState.Loading)

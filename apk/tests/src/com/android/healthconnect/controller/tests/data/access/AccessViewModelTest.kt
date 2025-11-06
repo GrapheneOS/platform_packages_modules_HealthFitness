@@ -32,6 +32,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_3
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadAccessUseCase
+import com.android.healthconnect.controller.tests.utils.di.FakeLoadSymptomAccessUseCase
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -63,8 +64,11 @@ class AccessViewModelTest {
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @BindValue val healthConnectManager: HealthConnectManager = mock()
-    private lateinit var viewModel: AccessViewModel
+
     private val fakeLoadAccessUseCase = FakeLoadAccessUseCase()
+    private val fakeLoadSymptomAccessUseCase = FakeLoadSymptomAccessUseCase()
+
+    private lateinit var viewModel: AccessViewModel
     private val testDispatcher = UnconfinedTestDispatcher()
 
     @Inject lateinit var appInfoReader: AppInfoReader
@@ -74,7 +78,7 @@ class AccessViewModelTest {
         MockitoAnnotations.initMocks(this)
         Dispatchers.setMain(testDispatcher)
         hiltRule.inject()
-        viewModel = AccessViewModel(fakeLoadAccessUseCase)
+        viewModel = AccessViewModel(fakeLoadAccessUseCase, fakeLoadSymptomAccessUseCase)
     }
 
     @After
@@ -87,7 +91,7 @@ class AccessViewModelTest {
         val expected =
             mapOf(
                 AppAccessState.Read to
-                    listOf(AppAccessMetadata(TEST_APP), AppAccessMetadata((TEST_APP_2))),
+                    listOf(AppAccessMetadata(TEST_APP), AppAccessMetadata(TEST_APP_2)),
                 AppAccessState.Write to listOf(AppAccessMetadata(TEST_APP_2, COMBINED_PERMISSIONS)),
                 AppAccessState.Inactive to
                     listOf(AppAccessMetadata(TEST_APP_3, MEDICAL_PERMISSIONS_ONLY)),
@@ -108,7 +112,7 @@ class AccessViewModelTest {
         val expected =
             mapOf(
                 AppAccessState.Read to
-                    listOf(AppAccessMetadata(TEST_APP), AppAccessMetadata((TEST_APP_2))),
+                    listOf(AppAccessMetadata(TEST_APP), AppAccessMetadata(TEST_APP_2)),
                 AppAccessState.Write to listOf(AppAccessMetadata(TEST_APP_2, COMBINED_PERMISSIONS)),
                 AppAccessState.Inactive to
                     listOf(AppAccessMetadata(TEST_APP_3, MEDICAL_PERMISSIONS_ONLY)),
@@ -122,5 +126,76 @@ class AccessViewModelTest {
 
         assertThat(testObserver.getLastValue())
             .isEqualTo(AccessViewModel.AccessScreenState.WithData(expected))
+    }
+
+    @Test
+    fun loadAppMetadataMap_showAllSymptoms_returnsCorrectApps() = runTest {
+        val expected =
+            mapOf(
+                AppAccessState.Read to
+                    listOf(AppAccessMetadata(TEST_APP), AppAccessMetadata(TEST_APP_2)),
+                AppAccessState.Write to listOf(AppAccessMetadata(TEST_APP_2, COMBINED_PERMISSIONS)),
+                AppAccessState.Inactive to
+                    listOf(AppAccessMetadata(TEST_APP_3, MEDICAL_PERMISSIONS_ONLY)),
+            )
+        fakeLoadSymptomAccessUseCase.updateMap(expected)
+
+        val testObserver = TestObserver<AccessViewModel.AccessScreenState>()
+        viewModel.appMetadataMap.observeForever(testObserver)
+        viewModel.loadAppMetaDataMap(permissionType = null, showAllSymptoms = true)
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue())
+            .isEqualTo(AccessViewModel.AccessScreenState.WithData(expected))
+        assertThat(fakeLoadSymptomAccessUseCase.numberOfInvocations).isEqualTo(1)
+    }
+
+    @Test
+    fun loadAppMetadataMap_showAllSymptoms_loadFailed() = runTest {
+        fakeLoadSymptomAccessUseCase.setForceFail(true)
+
+        val testObserver = TestObserver<AccessViewModel.AccessScreenState>()
+        viewModel.appMetadataMap.observeForever(testObserver)
+        viewModel.loadAppMetaDataMap(permissionType = null, showAllSymptoms = true)
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue()).isEqualTo(AccessViewModel.AccessScreenState.Error)
+        assertThat(fakeLoadSymptomAccessUseCase.numberOfInvocations).isEqualTo(1)
+    }
+
+    @Test
+    fun loadAppMetadataMap_showAllSymptoms_resetsInvocationCount() = runTest {
+        val expected =
+            mapOf(
+                AppAccessState.Read to
+                    listOf(AppAccessMetadata(TEST_APP), AppAccessMetadata(TEST_APP_2)),
+                AppAccessState.Write to listOf(AppAccessMetadata(TEST_APP_2, COMBINED_PERMISSIONS)),
+                AppAccessState.Inactive to
+                    listOf(AppAccessMetadata(TEST_APP_3, MEDICAL_PERMISSIONS_ONLY)),
+            )
+        fakeLoadSymptomAccessUseCase.updateMap(expected)
+
+        viewModel.loadAppMetaDataMap(permissionType = null, showAllSymptoms = true)
+        advanceUntilIdle()
+        assertThat(fakeLoadSymptomAccessUseCase.numberOfInvocations).isEqualTo(1)
+
+        fakeLoadSymptomAccessUseCase.reset()
+        assertThat(fakeLoadSymptomAccessUseCase.numberOfInvocations).isEqualTo(0)
+
+        fakeLoadSymptomAccessUseCase.updateMap(expected)
+        viewModel.loadAppMetaDataMap(permissionType = null, showAllSymptoms = true)
+        advanceUntilIdle()
+        assertThat(fakeLoadSymptomAccessUseCase.numberOfInvocations).isEqualTo(1)
+    }
+
+    @Test
+    fun loadAppMetadataMap_nullPermissionTypeAndNotShowAllSymptoms_returnsError() = runTest {
+        val testObserver = TestObserver<AccessViewModel.AccessScreenState>()
+        viewModel.appMetadataMap.observeForever(testObserver)
+        viewModel.loadAppMetaDataMap(permissionType = null, showAllSymptoms = false)
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue()).isEqualTo(AccessViewModel.AccessScreenState.Error)
+        assertThat(fakeLoadSymptomAccessUseCase.numberOfInvocations).isEqualTo(0)
     }
 }

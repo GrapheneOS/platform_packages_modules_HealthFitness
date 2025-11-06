@@ -18,15 +18,12 @@ package com.android.healthconnect.controller.tests.selectabledeletion.api
 import android.health.connect.DeleteUsingFiltersRequest
 import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
-import android.health.connect.ReadRecordsRequestUsingFilters
-import android.health.connect.ReadRecordsResponse
 import android.health.connect.RecordIdFilter
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord
 import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MenstruationPeriodRecord
-import android.health.connect.datatypes.Metadata
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsCadenceRecord
 import android.health.connect.datatypes.StepsRecord
@@ -43,7 +40,6 @@ import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import java.time.Instant
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -118,50 +114,50 @@ class DeleteFitnessPermissionTypesUseCaseTest {
 
     @Test
     @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
-    fun invoke_deleteSymptomPermissionType_deletesOnlyThatSymptom() = runTest {
-        val coughRecord =
-            SymptomRecord.Builder(
-                    SymptomRecord.SYMPTOM_TYPE_COUGH,
-                    Instant.now(),
-                    Metadata.Builder().build(),
-                )
-                .build()
-        val feverRecord =
-            SymptomRecord.Builder(
-                    SymptomRecord.SYMPTOM_TYPE_FEVER,
-                    Instant.now(),
-                    Metadata.Builder().build(),
-                )
-                .build()
-        val symptomRecords = listOf(coughRecord, feverRecord)
-        val response = Mockito.mock(ReadRecordsResponse::class.java)
-        Mockito.`when`(response.records).thenReturn(symptomRecords)
-        doAnswer {
-                val receiver =
-                    it.getArgument(2)
-                        as
-                        OutcomeReceiver<ReadRecordsResponse<SymptomRecord>, HealthConnectException>
-                receiver.onResult(response as ReadRecordsResponse<SymptomRecord>)
-                null
-            }
-            .`when`(manager)
-            .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
-
+    fun invoke_deleteAnySymptomPermissionType_deletesAllSymptomRecords() = runTest {
         doAnswer(prepareAnswer())
             .`when`(manager)
-            .deleteRecords(any<List<RecordIdFilter>>(), any(), any())
+            .deleteRecords(any(DeleteUsingFiltersRequest::class.java), any(), any())
 
         val deletePermissionType =
             DeleteHealthPermissionTypes(setOf(FitnessPermissionType.SYMPTOM_COUGH), 1)
+
         useCase.invoke(deletePermissionType)
 
         Mockito.verify(manager, Mockito.times(1))
-            .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
-        Mockito.verify(manager, Mockito.times(1))
-            .deleteRecords(idFiltersCaptor.capture(), any(), any())
+            .deleteRecords(filtersCaptor.capture(), any(), any())
 
-        assertThat(idFiltersCaptor.value).hasSize(1)
-        assertThat(idFiltersCaptor.value[0].id).isEqualTo(coughRecord.metadata.id)
+        assertThat(filtersCaptor.value.timeRangeFilter).isNull()
+        assertThat(filtersCaptor.value.dataOrigins).isEmpty()
+        assertThat(filtersCaptor.value.recordTypes).containsExactly(SymptomRecord::class.java)
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun invoke_deleteSymptomAndOtherType_deletesAllSymptomRecordsAndOther() = runTest {
+        doAnswer(prepareAnswer())
+            .`when`(manager)
+            .deleteRecords(any(DeleteUsingFiltersRequest::class.java), any(), any())
+
+        val deletePermissionType =
+            DeleteHealthPermissionTypes(
+                setOf(FitnessPermissionType.SYMPTOM_FEVER, FitnessPermissionType.STEPS),
+                2,
+            )
+
+        useCase.invoke(deletePermissionType)
+
+        Mockito.verify(manager, Mockito.times(1))
+            .deleteRecords(filtersCaptor.capture(), any(), any())
+
+        assertThat(filtersCaptor.value.timeRangeFilter).isNull()
+        assertThat(filtersCaptor.value.dataOrigins).isEmpty()
+        assertThat(filtersCaptor.value.recordTypes)
+            .containsExactly(
+                SymptomRecord::class.java,
+                StepsRecord::class.java,
+                StepsCadenceRecord::class.java,
+            )
     }
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {

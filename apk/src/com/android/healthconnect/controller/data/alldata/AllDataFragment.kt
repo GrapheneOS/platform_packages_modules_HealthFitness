@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.data.alldata
 
 import android.graphics.drawable.Drawable
+import android.health.connect.HealthDataCategory
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -39,10 +40,10 @@ import com.android.healthconnect.controller.selectabledeletion.DeletionDataViewM
 import com.android.healthconnect.controller.selectabledeletion.DeletionDataViewModel.DeletionScreenState.VIEW
 import com.android.healthconnect.controller.selectabledeletion.DeletionFragment
 import com.android.healthconnect.controller.selectabledeletion.DeletionPermissionTypesPreference
-import com.android.healthconnect.controller.selectabledeletion.DeletionType
 import com.android.healthconnect.controller.selectabledeletion.DeletionViewModel
 import com.android.healthconnect.controller.selectabledeletion.SelectAllCheckboxPreference
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.MEDICAL
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.children
 import com.android.healthconnect.controller.shared.preference.EmptyPreferenceCategory
@@ -58,6 +59,7 @@ import com.android.healthconnect.controller.utils.logging.ToolbarElement
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.setupSharedMenu
+import com.android.healthfitness.flags.Flags
 import com.android.healthfitness.flags.Flags.newHomeScreen
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -299,7 +301,6 @@ open class AllDataFragment : Hilt_AllDataFragment() {
                     .filter { it.data.isNotEmpty() }
                     .sortByLocale { getString(it.category.uppercaseTitle()) }
             }
-
         if (populatedCategories.isEmpty()) {
             setupEmptyState()
             return
@@ -341,20 +342,63 @@ open class AllDataFragment : Hilt_AllDataFragment() {
                 preferenceOrder += 1
             }
 
-            permissionTypesPerCategory.data
-                .sortByLocale { getString(it.upperCaseLabel()) }
-                .forEach { permissionType ->
-                    val icon = permissionType.icon(requireContext())
-                    preferenceCategory.addPreference(
-                        getPermissionTypePreference(
-                            permissionType,
-                            icon,
-                            preferenceOrder = preferenceOrder,
+            if (category == HealthDataCategory.SYMPTOMS && Flags.symptoms()) {
+                preferenceCategory.addPreference(getAllSymptomsPreference(preferenceOrder))
+                preferenceOrder += 1
+            } else {
+                permissionTypesPerCategory.data
+                    .sortByLocale { getString(it.upperCaseLabel()) }
+                    .forEach { permissionType ->
+                        val icon = permissionType.icon(requireContext())
+                        preferenceCategory.addPreference(
+                            getPermissionTypePreference(
+                                permissionType,
+                                icon,
+                                preferenceOrder = preferenceOrder,
+                            )
                         )
-                    )
-                    preferenceOrder += 1
-                }
+                        preferenceOrder += 1
+                    }
+            }
         }
+    }
+
+    private fun getAllSymptomsPreference(preferenceOrder: Int): Preference {
+        val representativeSymptomType = FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN
+        val pref =
+            DeletionPermissionTypesPreference(requireContext(), viewModel) { _ ->
+                findNavController()
+                    .navigate(
+                        R.id.action_allData_to_entriesAndAccess,
+                        Bundle().apply {
+                            putString(
+                                PERMISSION_TYPE_NAME_KEY,
+                                // Use SYMPTOM_ABDOMINAL_PAIN to represent the Symptoms category for
+                                // navigation.
+                                representativeSymptomType.name,
+                            )
+                        },
+                    )
+                true
+            }
+
+        pref.apply {
+            key = getString(R.string.all_symptoms_uppercase_label)
+            setTitle(R.string.all_symptoms_uppercase_label)
+            icon = HealthDataCategory.SYMPTOMS.icon(requireContext())
+            order = preferenceOrder
+            setHealthPermissionType(representativeSymptomType)
+            setLogNameCheckbox(AllDataElement.PERMISSION_TYPE_BUTTON_WITH_CHECKBOX)
+            setLogNameNoCheckbox(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
+        }
+
+        viewModel.setOfPermissionTypesToBeDeleted.observe(viewLifecycleOwner) { deleteSet ->
+            pref.setIsChecked(representativeSymptomType in deleteSet)
+        }
+        viewModel.deletionScreenState.observe(viewLifecycleOwner) { screenState ->
+            pref.setShowCheckbox(screenState == DELETE)
+        }
+        return pref
     }
 
     private fun getMedicalHeaderPreference(preferenceOrder: Int = 0): Preference {
@@ -469,13 +513,11 @@ open class AllDataFragment : Hilt_AllDataFragment() {
     }
 
     private fun deleteData() {
-        deletionViewModel.setDeletionType(
-            DeletionType.DeleteHealthPermissionTypes(
-                viewModel.setOfPermissionTypesToBeDeleted.value.orEmpty(),
-                viewModel.getTheNumOfPermissionTypes(),
-            )
-        )
-        childFragmentManager.setFragmentResult(START_DELETION_KEY, Bundle())
+        val deletionType = viewModel.prepareDeletionType()
+        if (deletionType.healthPermissionTypes.isNotEmpty()) {
+            deletionViewModel.setDeletionType(deletionType)
+            childFragmentManager.setFragmentResult(START_DELETION_KEY, Bundle())
+        }
     }
 
     private fun getPermissionTypePreference(
@@ -540,8 +582,9 @@ open class AllDataFragment : Hilt_AllDataFragment() {
 
     private fun onSelectAllPermissionTypes(): () -> Unit {
         return {
+            val isChecked = selectAllCheckboxPreference.getIsChecked()
             iterateThroughPreferenceGroup { permissionTypePreference ->
-                if (selectAllCheckboxPreference.getIsChecked()) {
+                if (isChecked) {
                     viewModel.addToDeletionSet(permissionTypePreference.getHealthPermissionType())
                 } else {
                     viewModel.removeFromDeletionSet(

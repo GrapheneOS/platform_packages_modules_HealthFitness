@@ -23,6 +23,7 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.selectabledeletion.DeletionType
 import com.android.healthconnect.controller.selectabledeletion.DeletionViewModel
+import com.android.healthconnect.controller.selectabledeletion.api.DeleteAllSymptomsDataFromInactiveAppUseCase
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteAppDataUseCase
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteEntriesUseCase
 import com.android.healthconnect.controller.selectabledeletion.api.DeletePermissionTypesFromAppUseCase
@@ -64,6 +65,9 @@ class DeletionViewModelTest {
     private val deleteAppDataUseCase: DeleteAppDataUseCase = mock(DeleteAppDataUseCase::class.java)
     private val deletePermissionTypesFromAppUseCase: DeletePermissionTypesFromAppUseCase =
         mock(DeletePermissionTypesFromAppUseCase::class.java)
+    private val deleteAllSymptomsDataFromInactiveAppUseCase:
+        DeleteAllSymptomsDataFromInactiveAppUseCase =
+        mock(DeleteAllSymptomsDataFromInactiveAppUseCase::class.java)
 
     private lateinit var viewModel: DeletionViewModel
 
@@ -77,6 +81,7 @@ class DeletionViewModelTest {
                 deletePermissionTypesUseCase,
                 deleteEntriesUseCase,
                 deletePermissionTypesFromAppUseCase,
+                deleteAllSymptomsDataFromInactiveAppUseCase,
             )
     }
 
@@ -437,6 +442,20 @@ class DeletionViewModelTest {
         advanceUntilIdle()
         verify(deletePermissionTypesFromAppUseCase)
             .invoke("package.name", setOf(FitnessPermissionType.STEPS))
+    }
+
+    @Test
+    fun inactiveSymptomData_delete_deletionInvokedCorrectly() = runTest {
+        val deletionType =
+            DeletionType.DeleteAllSymptomsDataFromInactiveApp(
+                packageName = "package.name",
+                appName = "app.name",
+            )
+
+        viewModel.setDeletionType(deletionType)
+        viewModel.delete()
+        advanceUntilIdle()
+        verify(deleteAllSymptomsDataFromInactiveAppUseCase).invoke(deletionType)
     }
 }
 

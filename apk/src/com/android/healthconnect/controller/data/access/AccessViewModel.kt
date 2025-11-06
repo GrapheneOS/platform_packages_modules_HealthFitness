@@ -23,31 +23,51 @@ import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.data.access.AccessViewModel.AccessScreenState.Error
 import com.android.healthconnect.controller.data.access.AccessViewModel.AccessScreenState.WithData
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.postValueIfUpdated
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
-/**
- * View model for the Access tab in [EntriesAccessFragment].
- */
+/** View model for the Access tab in [EntriesAccessFragment]. */
 @HiltViewModel
-class AccessViewModel @Inject constructor(private val loadAccessUseCase: ILoadAccessUseCase) :
-    ViewModel() {
+class AccessViewModel
+@Inject
+constructor(
+    private val loadAccessUseCase: ILoadAccessUseCase,
+    private val loadSymptomAccessUseCase:
+        BaseUseCase<Unit, Map<AppAccessState, List<AppAccessMetadata>>>,
+) : ViewModel() {
 
     private val _appMetadataMap = MutableLiveData<AccessScreenState>()
 
     val appMetadataMap: LiveData<AccessScreenState>
         get() = _appMetadataMap
 
-    fun loadAppMetaDataMap(permissionType: HealthPermissionType) {
+    fun loadAppMetaDataMap(
+        permissionType: HealthPermissionType?,
+        showAllSymptoms: Boolean = false,
+    ) {
         val appsMap = _appMetadataMap.value
         if (appsMap is WithData && appsMap.appMetadata.isEmpty()) {
             _appMetadataMap.postValue(AccessScreenState.Loading)
         }
         viewModelScope.launch {
-            when (val result = loadAccessUseCase.invoke(permissionType)) {
+            when (
+                val result =
+                    if (showAllSymptoms) {
+                        loadSymptomAccessUseCase.invoke(Unit)
+                    } else if (permissionType != null) {
+                        loadAccessUseCase.invoke(permissionType)
+                    } else {
+                        UseCaseResults.Failed(
+                            IllegalArgumentException(
+                                "permissionType is null and showAllSymptoms is false"
+                            )
+                        )
+                    }
+            ) {
                 is UseCaseResults.Success -> {
                     _appMetadataMap.postValueIfUpdated(WithData(result.data))
                 }

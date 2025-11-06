@@ -13,38 +13,54 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.android.healthconnect.controller.data.entries.api
 
 import android.health.connect.datatypes.SymptomRecord
 import com.android.healthconnect.controller.data.entries.FormattedEntry
+import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 
-/** Use case to load symptom data entries. */
+/** Use case to load all symptom data entries. */
 @Singleton
-open class LoadSymptomEntriesUseCase
+class LoadSymptomDataEntriesUseCase
 @Inject
 constructor(
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
     private val loadEntriesHelper: LoadEntriesHelper,
-) : BaseUseCase<LoadDataEntriesInput, List<FormattedEntry>>(dispatcher), ILoadDataEntriesUseCase {
+) : BaseUseCase<LoadSymptomDataEntriesInput, List<FormattedEntry>>(dispatcher) {
 
-    override suspend fun execute(input: LoadDataEntriesInput): List<FormattedEntry> {
-        val entryRecords = loadEntriesHelper.readRecords(input)
-
-        val filteredRecords =
-            entryRecords.filter {
-                (it as SymptomRecord).symptomType ==
-                    SymptomTypeMapper.getSymptomType(input.permissionType.category)
-            }
+    override suspend fun execute(input: LoadSymptomDataEntriesInput): List<FormattedEntry> {
+        val timeFilterRange =
+            loadEntriesHelper.getTimeFilter(
+                input.displayedStartTime,
+                input.period,
+                endTimeExclusive = true,
+            )
+        val entryRecords =
+            loadEntriesHelper.readDataType(
+                SymptomRecord::class.java,
+                timeFilterRange,
+                input.packageName,
+                ascending = false,
+            )
 
         return loadEntriesHelper.maybeAddDateSectionHeaders(
-            filteredRecords,
+            entryRecords,
             input.period,
             input.showDataOrigin,
         )
     }
 }
+
+data class LoadSymptomDataEntriesInput(
+    val packageName: String?,
+    val displayedStartTime: Instant,
+    val period: DateNavigationPeriod,
+    val showDataOrigin: Boolean,
+)

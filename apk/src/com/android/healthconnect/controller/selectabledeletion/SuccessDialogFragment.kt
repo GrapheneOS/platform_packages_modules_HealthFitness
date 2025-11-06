@@ -45,7 +45,8 @@ class SuccessDialogFragment : Hilt_SuccessDialogFragment() {
                     R.id.action_allDataFragment_to_connectedApps
                 }
                 is DeletionType.DeleteEntries,
-                is DeletionType.DeleteInactiveAppData -> {
+                is DeletionType.DeleteInactiveAppData,
+                is DeletionType.DeleteAllSymptomsDataFromInactiveApp -> {
                     R.id.action_entriesAndAccess_to_connectedApps
                 }
                 // Connected Apps fragment is already in the stack, no need to navigate.

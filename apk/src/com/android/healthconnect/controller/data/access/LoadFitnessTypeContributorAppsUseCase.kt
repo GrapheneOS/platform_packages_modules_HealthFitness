@@ -38,7 +38,6 @@ constructor(
     private val healthConnectManager: HealthConnectManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : ILoadFitnessTypeContributorAppsUseCase {
-
     /** Returns a list of [AppMetadata]s that have data in this [FitnessPermissionType]. */
     override suspend operator fun invoke(permissionType: FitnessPermissionType): List<AppMetadata> =
         withContext(dispatcher) {

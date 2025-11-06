@@ -1882,6 +1882,9 @@
     <string name="banner_default_dismiss_button" description="Default button to dismiss a banner in Health Connect [CHAR_LIMIT=NONE]">Not now</string>
 
     <!-- region Symptoms data types -->
+    <string name="all_symptoms_uppercase_label" description="Label for entry point to see all symptoms data [CHAR LIMIT=50]">All symptoms</string>
+    <string name="symptoms_lowercase_label" description="Label for entry point to see all symptoms data [CHAR LIMIT=50]">symptoms</string>
+
     <string name="acne_read_content_description" description="Content description for switch that enables permissions for reading the user's acne data [CHAR_LIMIT=NONE]">Read acne</string>
     <string name="acne_write_content_description" description="Content description for switch that enables permissions for writing the user's acne data [CHAR_LIMIT=NONE]">Write acne</string>
     <string name="brittle_nails_read_content_description" description="Content description for switch that enables permissions for reading the user's brittle nails data [CHAR_LIMIT=NONE]">Read brittle nails</string>
