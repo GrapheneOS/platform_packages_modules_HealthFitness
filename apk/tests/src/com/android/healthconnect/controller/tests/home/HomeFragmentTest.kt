@@ -95,6 +95,7 @@ import com.android.healthconnect.controller.tests.utils.setPreferenceSeen
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.NavigationUtils
+import com.android.healthconnect.controller.utils.SettingsTransitionHelper.createMainlineServiceUpdateSettingsIntent
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HomePageElement
@@ -611,8 +612,7 @@ class HomeFragmentTest {
 
                 onView(withText("Update now")).perform(click())
 
-                assertThat(navHostController.currentDestination?.id)
-                    .isEqualTo(R.id.systemUpdateActivity)
+                intended(hasAction(context.createMainlineServiceUpdateSettingsIntent().action))
                 verify(healthConnectLogger)
                     .logInteraction(DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON)
             }

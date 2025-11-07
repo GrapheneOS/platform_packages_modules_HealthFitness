@@ -21,12 +21,13 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.Constants.MODULE_UPDATE_NEEDED_SEEN
 import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
 import com.android.healthconnect.controller.shared.preference.HealthSetupFragment
 import com.android.healthconnect.controller.shared.preference.HealthSetupHeaderPreference
-import com.android.healthconnect.controller.utils.NavigationUtils
+import com.android.healthconnect.controller.utils.SettingsTransitionHelper.createMainlineServiceUpdateSettingsIntent
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -39,10 +40,9 @@ import javax.inject.Inject
 class ModuleUpdateRequiredFragment : Hilt_ModuleUpdateRequiredFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
-    @Inject lateinit var navigationUtils: NavigationUtils
 
     companion object {
-        private const val TAG = "ModuleUpdateRequiredFragment"
+        private const val FRAGMENT_TAG = "ModuleUpdateRequiredFragment"
         private const val HEADER = "header_pref"
         private const val FOOTER = "footer_pref"
     }
@@ -82,12 +82,9 @@ class ModuleUpdateRequiredFragment : Hilt_ModuleUpdateRequiredFragment() {
         updateButton.setOnClickListener {
             logger.logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
             try {
-                navigationUtils.navigate(
-                    this,
-                    R.id.action_migrationModuleUpdateNeededFragment_to_systemUpdateActivity,
-                )
+                startActivity(requireContext().createMainlineServiceUpdateSettingsIntent())
             } catch (exception: Exception) {
-                Log.e(TAG, "System update activity does not exist", exception)
+                Log.e(FRAGMENT_TAG, "System update activity does not exist", exception)
                 Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
             }
         }
@@ -103,10 +100,8 @@ class ModuleUpdateRequiredFragment : Hilt_ModuleUpdateRequiredFragment() {
                     putBoolean(MODULE_UPDATE_NEEDED_SEEN, true)
                     apply()
                 }
-                navigationUtils.navigate(
-                    this,
-                    R.id.action_migrationModuleUpdateNeededFragment_to_homeScreen,
-                )
+                findNavController()
+                    .navigate(R.id.action_migrationModuleUpdateNeededFragment_to_homeScreen)
             }
 
             requireActivity().finish()

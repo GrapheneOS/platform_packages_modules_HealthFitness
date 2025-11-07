@@ -25,6 +25,7 @@ import com.android.healthconnect.controller.newHome.HomeViewModel.BannerData
 import com.android.healthconnect.controller.shared.preference.HealthBannerPreference
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
+import com.android.healthconnect.controller.utils.SettingsTransitionHelper.createMainlineServiceUpdateSettingsIntent
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
 import com.android.healthconnect.controller.utils.logging.HomePageElement
 import com.android.healthconnect.controller.utils.logging.MigrationElement
@@ -122,7 +123,8 @@ class BannerFactory(
                 text = context.getString(R.string.data_restore_pending_banner_button),
                 logName = DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON,
             ) {
-                onAction(BannerAction.Navigate(R.id.action_newHomeFragment_to_systemUpdateActivity))
+                val intent = context.createMainlineServiceUpdateSettingsIntent()
+                onAction(BannerAction.StartActivity(intent))
             }
 
             banner.icon = AttributeResolver.getNullableDrawable(context, R.attr.updateNeededIcon)
