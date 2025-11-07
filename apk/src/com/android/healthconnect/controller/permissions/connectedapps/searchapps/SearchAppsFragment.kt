@@ -22,7 +22,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.SearchView
-import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.activityViewModels
@@ -213,7 +212,7 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
 
     private fun deleteData(packageName: String, appName: String) {
         deletionViewModel.setDeletionType(DeleteAppData(packageName, appName))
-        childFragmentManager.setFragmentResult(START_DELETION_KEY, bundleOf())
+        childFragmentManager.setFragmentResult(START_DELETION_KEY, Bundle())
     }
 
     private fun updateAllowedApps(appsList: List<ConnectedAppMetadata>) {
@@ -259,10 +258,10 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
         findNavController()
             .navigate(
                 navigationId,
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to app.appMetadata.packageName,
-                    EXTRA_APP_NAME to app.appMetadata.appName,
-                ),
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, app.appMetadata.packageName)
+                    putString(EXTRA_APP_NAME, app.appMetadata.appName)
+                },
             )
     }
 

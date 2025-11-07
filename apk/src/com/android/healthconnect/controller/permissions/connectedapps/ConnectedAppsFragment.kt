@@ -27,7 +27,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commitNow
 import androidx.navigation.fragment.findNavController
@@ -282,7 +281,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
 
     private fun deleteData(packageName: String, appName: String) {
         deletionViewModel.setDeletionType(DeleteAppData(packageName, appName))
-        childFragmentManager.setFragmentResult(START_DELETION_KEY, bundleOf())
+        childFragmentManager.setFragmentResult(START_DELETION_KEY, Bundle())
     }
 
     private fun updateNeedUpdateApps(appsList: List<ConnectedAppMetadata>) {
@@ -369,10 +368,10 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
         findNavController()
             .navigate(
                 navigationId,
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to app.appMetadata.packageName,
-                    EXTRA_APP_NAME to app.appMetadata.appName,
-                ),
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, app.appMetadata.packageName)
+                    putString(EXTRA_APP_NAME, app.appMetadata.appName)
+                },
             )
     }
 
