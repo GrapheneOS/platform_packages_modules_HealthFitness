@@ -798,6 +798,7 @@ public final class AppInfoHelper extends DatabaseHelper {
                         /* icon= */ null,
                         /* recordTypesUsed= */ null,
                         deviceInfoId);
+        // TODO(b/458001956): Update app info with latest advertisement.
         insertIfNotPresent(syntheticPackageName, appInfo);
     }
 

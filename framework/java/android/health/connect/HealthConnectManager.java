@@ -115,11 +115,13 @@ import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.FhirResource;
 import android.health.connect.datatypes.FhirVersion;
 import android.health.connect.datatypes.Identifier;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
+import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
@@ -3654,6 +3656,76 @@ public class HealthConnectManager {
                         public void onResult() {
                             Binder.clearCallingIdentity();
                             executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Inserts {@code records} from a device data source into the Health Connect database.
+     *
+     * <p>Upon successful completion, {@link OutcomeReceiver#onResult} will be invoked for the
+     * {@code callback}. The records returned in {@link InsertRecordsResponse} contain the unique
+     * IDs of the input records. The values are in same order as {@code records}. In case of an
+     * error or a permission failure in the Health Connect service, {@link OutcomeReceiver#onError}
+     * will be invoked with a {@link HealthConnectException}.
+     *
+     * <p>The {@code deviceId} must match the one used in {@link DeviceDataAdvertisement} in the
+     * latest call to {@link #advertiseDeviceDataSources}. A {@link Device} does not need to be
+     * populated in the {@link Metadata} for a {@link Record} as it will automatically be populated
+     * based on the {@link DeviceDataAdvertisement}.
+     *
+     * @param deviceId the identifier for the device that is the source of this data.
+     * @param records list of records to be inserted.
+     * @param executor executor on which to invoke the callback.
+     * @param callback callback to receive the result of performing this operation.
+     * @throws RuntimeException for internal errors
+     * @hide
+     */
+    @SystemApi
+    @RequiresPermission(PROVIDE_HEALTH_CONNECT_DEVICE_DATA)
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void insertDeviceRecords(
+            @NonNull String deviceId,
+            @NonNull List<Record> records,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<InsertRecordsResponse, HealthConnectException> callback) {
+        Objects.requireNonNull(records);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            // Unset any set ids for insert. This is to prevent random string ids from creating
+            // illegal argument exception.
+            records.forEach((record) -> record.getMetadata().setId(""));
+            List<RecordInternal<?>> recordInternals =
+                    records.stream()
+                            .map(
+                                    record ->
+                                            record.toRecordInternal()
+                                                    .setPackageName(mContext.getPackageName()))
+                            .collect(Collectors.toList());
+            mService.insertDeviceRecords(
+                    mContext.getAttributionSource(),
+                    deviceId,
+                    new RecordsParcel(recordInternals),
+                    new IInsertRecordsResponseCallback.Stub() {
+                        @Override
+                        public void onResult(InsertRecordsResponseParcel parcel) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(
+                                    () ->
+                                            callback.onResult(
+                                                    new InsertRecordsResponse(
+                                                            toExternalRecordsWithUuids(
+                                                                    recordInternals,
+                                                                    parcel.getUids()))));
                         }
 
                         @Override

@@ -15,15 +15,12 @@
  */
 package android.healthconnect.cts.device;
 
-import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 
-import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
 
-import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.HeartRateRecord;
@@ -66,12 +63,9 @@ public class AdvertiseDeviceDataSourcesTest {
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
-    private HealthConnectManager mManager;
-
     @Before
     public void before() throws Exception {
         TestUtils.deleteAllDataFromHealthConnect();
-        mManager = TestUtils.getHealthConnectManager();
     }
 
     @After
@@ -98,13 +92,9 @@ public class AdvertiseDeviceDataSourcesTest {
                 new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);
         HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
 
-        runWithShellPermissionIdentity(
-                () -> {
-                    mManager.advertiseDeviceDataSources(
-                            Set.of(advertisement), outcomeExecutor(), receiver);
-                    receiver.verifyNoExceptionOrThrow();
-                },
-                MANAGE_HEALTH_DATA_PERMISSION);
+        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
+
+        receiver.verifyNoExceptionOrThrow();
     }
 
     @Test
@@ -132,13 +122,9 @@ public class AdvertiseDeviceDataSourcesTest {
                 new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);
         HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
 
-        runWithShellPermissionIdentity(
-                () -> {
-                    mManager.advertiseDeviceDataSources(
-                            Set.of(advertisement), outcomeExecutor(), receiver);
-                    receiver.verifyNoExceptionOrThrow();
-                },
-                MANAGE_HEALTH_DATA_PERMISSION);
+        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
+
+        receiver.verifyNoExceptionOrThrow();
     }
 
     @Test
@@ -161,13 +147,9 @@ public class AdvertiseDeviceDataSourcesTest {
                 new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);
         HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
 
-        runWithShellPermissionIdentity(
-                () -> {
-                    mManager.advertiseDeviceDataSources(
-                            Set.of(advertisement), outcomeExecutor(), receiver);
-                    receiver.verifyNoExceptionOrThrow();
-                },
-                MANAGE_HEALTH_DATA_PERMISSION);
+        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
+
+        receiver.verifyNoExceptionOrThrow();
     }
 
     @Test
@@ -190,13 +172,9 @@ public class AdvertiseDeviceDataSourcesTest {
                 new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);
         HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
 
-        runWithShellPermissionIdentity(
-                () -> {
-                    mManager.advertiseDeviceDataSources(
-                            Set.of(advertisement), outcomeExecutor(), receiver);
-                    receiver.verifyNoExceptionOrThrow();
-                },
-                MANAGE_HEALTH_DATA_PERMISSION);
+        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
+
+        receiver.verifyNoExceptionOrThrow();
     }
 
     @Test
@@ -218,13 +196,9 @@ public class AdvertiseDeviceDataSourcesTest {
                 new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);
         HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
 
-        runWithShellPermissionIdentity(
-                () -> {
-                    mManager.advertiseDeviceDataSources(
-                            Set.of(advertisement), outcomeExecutor(), receiver);
-                    receiver.verifyNoExceptionOrThrow();
-                },
-                MANAGE_HEALTH_DATA_PERMISSION);
+        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
+
+        receiver.verifyNoExceptionOrThrow();
     }
 
     @Test
@@ -246,12 +220,8 @@ public class AdvertiseDeviceDataSourcesTest {
                 new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);
         HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
 
-        runWithShellPermissionIdentity(
-                () -> {
-                    mManager.advertiseDeviceDataSources(
-                            Set.of(advertisement), outcomeExecutor(), receiver);
-                    receiver.verifyNoExceptionOrThrow();
-                },
-                MANAGE_HEALTH_DATA_PERMISSION);
+        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
+
+        receiver.verifyNoExceptionOrThrow();
     }
 }
