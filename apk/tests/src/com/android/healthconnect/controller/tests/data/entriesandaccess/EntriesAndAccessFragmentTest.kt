@@ -15,8 +15,8 @@
  */
 package com.android.healthconnect.controller.tests.data.entriesandaccess
 
+import android.os.Bundle
 import android.health.connect.HealthConnectManager
-import androidx.core.os.bundleOf
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -57,7 +57,9 @@ class EntriesAndAccessFragmentTest {
 
     @Test
     fun entriesAndAccessInit_showsTabs() {
-        launchFragment<EntriesAndAccessFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
+        launchFragment<EntriesAndAccessFragment>(
+                Bundle().apply { putString(PERMISSION_TYPE_NAME_KEY, STEPS.name) }
+            )
             .use {
                 onView(withText("Entries")).check(matches(isDisplayed()))
                 onView(withText("Access")).check(matches(isDisplayed()))
@@ -67,7 +69,7 @@ class EntriesAndAccessFragmentTest {
     @Test
     fun entriesAndAccessInit_medicalData_showsTabs() {
         launchFragment<EntriesAndAccessFragment>(
-                bundleOf(PERMISSION_TYPE_NAME_KEY to VACCINES.name)
+                Bundle().apply { putString(PERMISSION_TYPE_NAME_KEY, VACCINES.name) }
             )
             .use {
                 onView(withText("Entries")).check(matches(isDisplayed()))

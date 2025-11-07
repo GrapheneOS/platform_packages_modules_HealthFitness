@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.data.fhir.raw
 
-import androidx.core.os.bundleOf
+import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
@@ -157,9 +157,12 @@ class RawFhirFragmentTest {
         whenever(viewModel.rawFhir).then { MutableLiveData(Error) }
 
         launchFragment<RawFhirFragment>(
-                bundleOf(
-                    RawFhirFragment.MEDICAL_RESOURCE_ID_KEY to TEST_MEDICAL_RESOURCE_IMMUNIZATION.id
-                )
+                Bundle().apply {
+                    putParcelable(
+                        RawFhirFragment.MEDICAL_RESOURCE_ID_KEY,
+                        TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
+                    )
+                }
             )
             .use {
                 onView(withText("Something went wrong. Please try again."))
@@ -172,9 +175,12 @@ class RawFhirFragmentTest {
         whenever(viewModel.rawFhir).then { MutableLiveData(Loading) }
 
         launchFragment<RawFhirFragment>(
-                bundleOf(
-                    RawFhirFragment.MEDICAL_RESOURCE_ID_KEY to TEST_MEDICAL_RESOURCE_IMMUNIZATION.id
-                )
+                Bundle().apply {
+                    putParcelable(
+                        RawFhirFragment.MEDICAL_RESOURCE_ID_KEY,
+                        TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
+                    )
+                }
             )
             .use {
                 onView(ViewMatchers.withId(R.id.loading)).check(matches(isDisplayed()))
@@ -215,9 +221,12 @@ class RawFhirFragmentTest {
         }
 
         return launchFragment<RawFhirFragment>(
-            bundleOf(
-                RawFhirFragment.MEDICAL_RESOURCE_ID_KEY to TEST_MEDICAL_RESOURCE_IMMUNIZATION.id
-            )
+            Bundle().apply {
+                putParcelable(
+                    RawFhirFragment.MEDICAL_RESOURCE_ID_KEY,
+                    TEST_MEDICAL_RESOURCE_IMMUNIZATION.id,
+                )
+            }
         )
     }
 }
