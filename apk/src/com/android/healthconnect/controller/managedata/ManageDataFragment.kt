@@ -1,10 +1,8 @@
 package com.android.healthconnect.controller.managedata
 
-import android.health.connect.HealthDataCategory
 import android.icu.text.MessageFormat
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
@@ -55,8 +53,7 @@ class ManageDataFragment : Hilt_ManageDataFragment() {
 
         mDataSourcesPreference.logName = ManageDataElement.DATA_SOURCES_AND_PRIORITY_BUTTON
         mDataSourcesPreference.setOnPreferenceClickListener {
-            findNavController()
-                .navigate(R.id.action_manageData_to_dataSources)
+            findNavController().navigate(R.id.action_manageData_to_dataSources)
             true
         }
 
