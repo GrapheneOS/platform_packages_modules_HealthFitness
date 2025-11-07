@@ -23,7 +23,6 @@ import android.health.connect.HealthPermissions
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
@@ -160,11 +159,11 @@ class AdditionalAccessFragment : Hilt_AdditionalAccessFragment() {
                 findNavController()
                     .navigate(
                         R.id.action_additionalAccess_to_medicalApp,
-                        bundleOf(
-                            EXTRA_PACKAGE_NAME to packageName,
-                            EXTRA_APP_NAME to appName,
-                            SHOW_MANAGE_APP_SECTION to false,
-                        ),
+                        Bundle().apply {
+                            putString(EXTRA_PACKAGE_NAME, packageName)
+                            putString(EXTRA_APP_NAME, appName)
+                            putBoolean(SHOW_MANAGE_APP_SECTION, false)
+                        },
                     )
             }
             return

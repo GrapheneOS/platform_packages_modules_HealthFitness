@@ -27,7 +27,6 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.android.healthconnect.controller.R
@@ -157,7 +156,7 @@ class ExerciseRoutesPermissionDialogFragment : Hilt_ExerciseRoutesPermissionDial
 
         fun createDialog(packageName: String): ExerciseRoutesPermissionDialogFragment {
             return ExerciseRoutesPermissionDialogFragment().apply {
-                arguments = bundleOf(EXTRA_PACKAGE_NAME to packageName)
+                arguments = Bundle().apply { putString(EXTRA_PACKAGE_NAME, packageName) }
             }
         }
     }

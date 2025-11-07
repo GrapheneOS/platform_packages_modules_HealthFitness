@@ -17,7 +17,7 @@ package com.android.healthconnect.controller.tests.permissions.connectedapps.set
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.content.pm.ActivityInfo
-import androidx.core.os.bundleOf
+import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -167,7 +167,7 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -192,7 +192,7 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -217,7 +217,7 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -239,7 +239,7 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -264,7 +264,7 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withContentDescription("All medical records. Write Access. On"))
@@ -283,7 +283,7 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withContentDescription("All medical records. Write Access. Off"))
@@ -307,7 +307,7 @@ class SettingsMedicalAppFragmentTest {
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { false }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -345,7 +345,7 @@ class SettingsMedicalAppFragmentTest {
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { false }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -377,7 +377,7 @@ class SettingsMedicalAppFragmentTest {
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -410,7 +410,7 @@ class SettingsMedicalAppFragmentTest {
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -440,10 +440,10 @@ class SettingsMedicalAppFragmentTest {
         whenever(viewModel.allMedicalPermissionsGranted).then { MediatorLiveData(false) }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("Allow all")).perform(click())
@@ -466,10 +466,10 @@ class SettingsMedicalAppFragmentTest {
         whenever(viewModel.allMedicalPermissionsGranted).then { MediatorLiveData(true) }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("Allow all")).perform(click())
@@ -486,7 +486,7 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { onView(withText(R.string.additional_access_label)).check(doesNotExist()) }
     }
@@ -503,7 +503,7 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
@@ -526,7 +526,7 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
@@ -545,7 +545,7 @@ class SettingsMedicalAppFragmentTest {
         }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText(R.string.additional_access_label)).perform(click())
@@ -590,7 +590,7 @@ class SettingsMedicalAppFragmentTest {
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(
@@ -649,7 +649,7 @@ class SettingsMedicalAppFragmentTest {
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(
@@ -706,7 +706,7 @@ class SettingsMedicalAppFragmentTest {
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
         launchFragment<SettingsMedicalAppFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Health Connect restore in progress"))

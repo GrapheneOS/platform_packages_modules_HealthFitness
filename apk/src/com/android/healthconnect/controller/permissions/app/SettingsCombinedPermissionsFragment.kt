@@ -21,7 +21,6 @@ import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceGroup
@@ -165,11 +164,11 @@ class SettingsCombinedPermissionsFragment : Hilt_SettingsCombinedPermissionsFrag
                     navigationUtils.navigate(
                         this,
                         R.id.action_settingsCombinedPermissions_to_FitnessAppFragment,
-                        bundleOf(
-                            EXTRA_PACKAGE_NAME to packageName,
-                            Constants.EXTRA_APP_NAME to appName,
-                            SHOW_MANAGE_APP_SECTION to false,
-                        ),
+                        Bundle().apply {
+                            putString(EXTRA_PACKAGE_NAME, packageName)
+                            putString(Constants.EXTRA_APP_NAME, appName)
+                            putBoolean(SHOW_MANAGE_APP_SECTION, false)
+                        },
                     )
                     true
                 }
@@ -184,11 +183,11 @@ class SettingsCombinedPermissionsFragment : Hilt_SettingsCombinedPermissionsFrag
                     navigationUtils.navigate(
                         this,
                         R.id.action_settingsCombinedPermissions_to_MedicalAppFragment,
-                        bundleOf(
-                            EXTRA_PACKAGE_NAME to packageName,
-                            Constants.EXTRA_APP_NAME to appName,
-                            SHOW_MANAGE_APP_SECTION to false,
-                        ),
+                        Bundle().apply {
+                            putString(EXTRA_PACKAGE_NAME, packageName)
+                            putString(Constants.EXTRA_APP_NAME, appName)
+                            putBoolean(SHOW_MANAGE_APP_SECTION, false)
+                        },
                     )
                     true
                 }
@@ -205,7 +204,8 @@ class SettingsCombinedPermissionsFragment : Hilt_SettingsCombinedPermissionsFrag
                         it.title = getString(R.string.additional_access_label)
                         it.summary = getString(R.string.additional_access_summary)
                         it.setOnPreferenceClickListener { _ ->
-                            val extras = bundleOf(EXTRA_PACKAGE_NAME to packageName)
+                            val extras =
+                                Bundle().apply { putString(EXTRA_PACKAGE_NAME, packageName) }
                             navigationUtils.navigate(
                                 this,
                                 R.id.action_settingsCombinedPermissions_to_additionalAccessFragment,

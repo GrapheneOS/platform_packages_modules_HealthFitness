@@ -21,7 +21,6 @@ import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.preference.PreferenceGroup
@@ -227,7 +226,8 @@ class SettingsMedicalAppFragment : Hilt_SettingsMedicalAppFragment() {
                         it.logName = ADDITIONAL_ACCESS_BUTTON
                         it.setTitle(R.string.additional_access_label)
                         it.setOnPreferenceClickListener { _ ->
-                            val extras = bundleOf(EXTRA_PACKAGE_NAME to packageName)
+                            val extras =
+                                Bundle().apply { putString(EXTRA_PACKAGE_NAME, packageName) }
                             navigationUtils.navigate(
                                 fragment = this,
                                 action = R.id.action_settingsMedicalApp_to_additionalAccessFragment,
