@@ -637,7 +637,7 @@
     <string name="delete_dialog_failure_close_button" msgid="4376647579348193224">"बन्द गर्नुहोस्"</string>
     <string name="delete_dialog_success_title" msgid="900884533930984889">"Health Connect मा भएको डेटा मेटाइएको छ"</string>
     <string name="delete_dialog_success_message" msgid="7454086333205881294">"तपाईं कनेक्ट गरिएका एपहरूमा भएका डेटा पूर्ण रूपमा मेटाउन चाहनुहुन्छ भने तपाईंको डेटा सेभ गरिएका हुन सक्ने सबै एपहरूमा चिन्ह लगाउनुहोस्।"</string>
-    <string name="delete_dialog_done_button" msgid="1371340030947835493">"सम्पन्न भयो"</string>
+    <string name="delete_dialog_done_button" msgid="1371340030947835493">"भयो"</string>
     <string name="delete_dialog_see_connected_apps_button" msgid="2975631672738138716">"कनेक्ट गरिएका एपहरू हेर्नुहोस्"</string>
     <string name="delete_progress_indicator" msgid="5799502879065833417">"तपाईंको डेटा मेटाइँदै छ"</string>
     <string name="delete_dialog_failure_title" msgid="1959020721355789496">"डेटा मेटाउन सकिएन"</string>
@@ -1577,4 +1577,6 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"शरीरमा पानी जम्मा हुने समस्या"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"स्वाँ-स्वाँ हुने समस्या"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"स्वाँ-स्वाँ हुने समस्या"</string>
+    <!-- no translation found for app_permissions_granted_summary (2542736165368066160) -->
+    <skip />
 </resources>

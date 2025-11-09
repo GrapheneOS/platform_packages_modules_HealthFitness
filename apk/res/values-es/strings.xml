@@ -30,7 +30,7 @@
     <string name="no_data" msgid="1906986019249068659">"No hay datos"</string>
     <string name="devices_summary" msgid="8653563324512654292">"Gestiona tus dispositivos conectados"</string>
     <string name="devices_title" msgid="7548105261104504301">"Dispositivos"</string>
-    <string name="connected_apps_title" msgid="279942692804743223">"Permisos de apps"</string>
+    <string name="connected_apps_title" msgid="279942692804743223">"Permisos de aplicaciones"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Gestionar apps y permisos"</string>
     <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_APPS_CONNECTED">%1$d</xliff:g> de <xliff:g id="NUM_POSSIBLE_APPS">%2$d</xliff:g> apps tienen acceso"</string>
     <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"<xliff:g id="NUM_APPS_CONNECTED">%1$d</xliff:g> de <xliff:g id="NUM_POSSIBLE_APPS">%2$d</xliff:g> apps tienen acceso"</string>
@@ -1577,4 +1577,6 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"retención de líquidos"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Sibilancias"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"sibilancias"</string>
+    <!-- no translation found for app_permissions_granted_summary (2542736165368066160) -->
+    <skip />
 </resources>
