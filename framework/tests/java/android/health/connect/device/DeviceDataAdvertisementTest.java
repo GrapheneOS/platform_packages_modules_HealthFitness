@@ -20,6 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.StepsRecord;
+import android.healthconnect.testing.shared.DataFactory;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -34,6 +35,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Set;
+import java.util.function.Function;
 
 @RunWith(AndroidJUnit4.class)
 @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
@@ -199,5 +201,39 @@ public class DeviceDataAdvertisementTest {
         assertThat(base.equals(diffId)).isFalse();
         assertThat(base.equals(diffDataTypes)).isFalse();
         assertThat(base.equals(emptyDataTypes)).isFalse();
+    }
+
+    @Test
+    public void toUnmasked_withDeviceId_returnsNewUnmaskedInstance() {
+        Device device = DataFactory.buildDevice();
+        String maskedDeviceId = "Masked";
+        String unmaskedDeviceId = "Unmasked";
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisement =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+
+        DeviceDataAdvertisement maskedAdvertisement =
+                new DeviceDataAdvertisement(device, maskedDeviceId, deviceDataTypeAdvertisement);
+
+        assertThat(maskedAdvertisement.getDeviceId()).isEqualTo(maskedDeviceId);
+
+        Function<String, String> unmasker =
+                packageName -> {
+                    assertThat(packageName).isEqualTo(maskedDeviceId);
+                    return unmaskedDeviceId;
+                };
+
+        DeviceDataAdvertisement unmaskedAdvertisement = maskedAdvertisement.toUnmasked(unmasker);
+
+        // Assert that the original advertisement remains unchanged.
+        assertThat(maskedAdvertisement.getDeviceId()).isEqualTo(maskedDeviceId);
+        assertThat(unmaskedAdvertisement).isNotSameInstanceAs(maskedAdvertisement);
+
+        assertThat(unmaskedAdvertisement.getDevice()).isEqualTo(maskedAdvertisement.getDevice());
+        assertThat(unmaskedAdvertisement.getDeviceDataTypeAdvertisements())
+                .isEqualTo(maskedAdvertisement.getDeviceDataTypeAdvertisements());
+        assertThat(unmaskedAdvertisement.getDeviceId()).isEqualTo(unmaskedDeviceId);
     }
 }

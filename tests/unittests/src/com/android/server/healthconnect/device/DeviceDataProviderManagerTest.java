@@ -476,7 +476,7 @@ public class DeviceDataProviderManagerTest {
 
         assertThat(thrown)
                 .hasMessageThat()
-                .contains("Data type 1 not advertised for device ID test_device_id");
+                .contains("The device with id test_device_id was not advertised for data type 1");
     }
 
     @Test
@@ -583,8 +583,8 @@ public class DeviceDataProviderManagerTest {
         assertThat(thrown)
                 .hasMessageThat()
                 .contains(
-                        "Device with ID non_existent_device not found, ensure the device data"
-                                + " source has been advertised");
+                        "The device with id non_existent_device was not found, ensure the device"
+                                + " data source has been advertised");
     }
 
     @Test
