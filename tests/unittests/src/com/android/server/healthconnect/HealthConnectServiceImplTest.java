@@ -3825,8 +3825,7 @@ public class HealthConnectServiceImplTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVELOPMENT_DATABASE
     })
-    public void deviceDataProviderManagerIsNull_insertDeviceRecords_throwsException()
-            throws RemoteException {
+    public void ddpApisDisabled_insertDeviceRecords_throwsException() throws RemoteException {
         Instant now = mFakeTimeSource.getInstantNow();
         String recordId = UUID.randomUUID().toString();
         String deviceId = "TestDeviceId";
@@ -3849,8 +3848,10 @@ public class HealthConnectServiceImplTest {
                 mock(IInsertRecordsResponseCallback.Stub.class);
         when(mPreferenceHelper.getPreference(eq(SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY)))
                 .thenReturn(UUID.randomUUID().toString());
-        advertiseStepsDeviceDataSource(deviceId, device);
 
+        // Normally, advertisement should be made first, however that API would also throw
+        // unsupported operation exception, so we skip that and just verify this API correctly
+        // throws.
         mHealthConnectService.insertDeviceRecords(
                 mAttributionSource, deviceId, recordsParcel, callback);
 
