@@ -44,7 +44,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 @RunWith(AndroidJUnit4.class)
@@ -58,7 +60,10 @@ import java.time.ZoneOffset;
 public class CyclePhasesRecordTest {
     @Rule public final SetFlagsRule mSetFlagRule = new SetFlagsRule();
 
-    private static final ZoneOffset TEST_OFFSET = ZoneOffset.ofHours(3);
+    private static final LocalDate TEST_DATE = LocalDate.of(2025, 11, 5);
+
+    private static final ZoneOffset TEST_START_OFFSET = ZoneOffset.ofHours(3);
+    private static final ZoneOffset TEST_END_OFFSET = ZoneOffset.ofHours(3);
     private static final Metadata TEST_METADATA = generateMetadata();
 
     @Rule
@@ -66,8 +71,6 @@ public class CyclePhasesRecordTest {
             new AssumptionCheckerRule(
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
-
-    private static final Instant TIME_MILLIS = Instant.ofEpochMilli(123456);
 
     @Before
     public void setup() {
@@ -80,13 +83,19 @@ public class CyclePhasesRecordTest {
     @Test
     public void builder_allFieldsSet() {
         CyclePhasesRecord record =
-                new CyclePhasesRecord.Builder(TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
-                        .setZoneOffset(TEST_OFFSET)
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
+                        .setStartZoneOffset(TEST_START_OFFSET)
+                        .setEndZoneOffset(TEST_END_OFFSET)
                         .setDayOfCycle(2)
                         .buildWithoutValidation();
         assertThat(record.getMetadata()).isEqualTo(TEST_METADATA);
-        assertThat(record.getTime()).isEqualTo(TIME_MILLIS);
-        assertThat(record.getZoneOffset()).isEqualTo(TEST_OFFSET);
+        assertThat(record.getDate()).isEqualTo(TEST_DATE);
+        assertThat(record.getStartTime())
+                .isEqualTo(TEST_DATE.atStartOfDay().toInstant(TEST_START_OFFSET));
+        assertThat(record.getEndTime())
+                .isEqualTo(TEST_DATE.atTime(LocalTime.MAX).toInstant(TEST_END_OFFSET));
+        assertThat(record.getStartZoneOffset()).isEqualTo(TEST_START_OFFSET);
+        assertThat(record.getEndZoneOffset()).isEqualTo(TEST_END_OFFSET);
         assertThat(record.getPhase()).isEqualTo(PHASE_LUTEAL);
         assertThat(record.getDayOfCycle()).isEqualTo(2);
     }
@@ -94,30 +103,51 @@ public class CyclePhasesRecordTest {
     @Test
     public void builder_requiredFieldsSet() {
         CyclePhasesRecord record =
-                new CyclePhasesRecord.Builder(TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
                         .buildWithoutValidation();
+        ZoneOffset defaultStartOffset =
+                ZoneId.systemDefault().getRules().getOffset(TEST_DATE.atStartOfDay());
+        ZoneOffset defaultEndOffset =
+                ZoneId.systemDefault().getRules().getOffset(TEST_DATE.atTime(LocalTime.MAX));
+
         assertThat(record.getMetadata()).isEqualTo(TEST_METADATA);
-        assertThat(record.getTime()).isEqualTo(TIME_MILLIS);
-        assertThat(record.getZoneOffset()).isEqualTo(getDefaultZoneOffset());
+        assertThat(record.getDate()).isEqualTo(TEST_DATE);
+        assertThat(record.getStartTime())
+                .isEqualTo(TEST_DATE.atStartOfDay().toInstant(defaultStartOffset));
+        assertThat(record.getEndTime())
+                .isEqualTo(TEST_DATE.atTime(LocalTime.MAX).toInstant(defaultEndOffset));
+        assertThat(record.getStartZoneOffset()).isEqualTo(defaultStartOffset);
+        assertThat(record.getEndZoneOffset()).isEqualTo(defaultEndOffset);
         assertThat(record.getPhase()).isEqualTo(PHASE_LUTEAL);
         assertThat(record.getDayOfCycle()).isEqualTo(DEFAULT_INT);
     }
 
     @Test
-    public void builder_clearZoneOffset_returnsDefault() {
+    public void builder_clearStartZoneOffset_returnsDefault() {
         CyclePhasesRecord record =
-                new CyclePhasesRecord.Builder(TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
-                        .setZoneOffset(TEST_OFFSET)
-                        .clearZoneOffset()
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
+                        .setStartZoneOffset(TEST_START_OFFSET)
+                        .clearStartZoneOffset()
                         .build();
-        assertThat(record.getZoneOffset()).isEqualTo(getDefaultZoneOffset());
+        assertThat(record.getStartZoneOffset()).isEqualTo(getDefaultZoneOffset());
+    }
+
+    @Test
+    public void builder_clearEndZoneOffset_returnsDefault() {
+        CyclePhasesRecord record =
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
+                        .setEndZoneOffset(TEST_START_OFFSET)
+                        .clearEndZoneOffset()
+                        .build();
+        assertThat(record.getEndZoneOffset()).isEqualTo(getDefaultZoneOffset());
     }
 
     @Test
     public void toRecordInternal_andBack_noChange() {
         CyclePhasesRecord record =
-                new CyclePhasesRecord.Builder(TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
-                        .setZoneOffset(TEST_OFFSET)
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
+                        .setStartZoneOffset(TEST_START_OFFSET)
+                        .setEndZoneOffset(TEST_END_OFFSET)
                         .setDayOfCycle(2)
                         .buildWithoutValidation();
         assertThat(record.toRecordInternal().toExternalRecord()).isEqualTo(record);
@@ -126,10 +156,10 @@ public class CyclePhasesRecordTest {
     @Test
     public void equalsAndHashcode_allFieldsSame_isEqual() {
         CyclePhasesRecord record =
-                new CyclePhasesRecord.Builder(TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
                         .buildWithoutValidation();
         CyclePhasesRecord record2 =
-                new CyclePhasesRecord.Builder(TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
                         .buildWithoutValidation();
         assertThat(record).isEqualTo(record2);
         assertThat(record.hashCode()).isEqualTo(record2.hashCode());
@@ -138,37 +168,50 @@ public class CyclePhasesRecordTest {
     @Test
     public void equalsAndHashcode_metadataDifferent_isNotEqual() {
         CyclePhasesRecord record =
-                new CyclePhasesRecord.Builder(generateMetadata("a"), TIME_MILLIS, PHASE_LUTEAL)
+                new CyclePhasesRecord.Builder(generateMetadata("a"), TEST_DATE, PHASE_LUTEAL)
                         .buildWithoutValidation();
         CyclePhasesRecord record2 =
-                new CyclePhasesRecord.Builder(generateMetadata("b"), TIME_MILLIS, PHASE_LUTEAL)
+                new CyclePhasesRecord.Builder(generateMetadata("b"), TEST_DATE, PHASE_LUTEAL)
                         .buildWithoutValidation();
         assertThat(record).isNotEqualTo(record2);
         assertThat(record.hashCode()).isNotEqualTo(record2.hashCode());
     }
 
     @Test
-    public void equalsAndHashcode_timeDifferent_isNotEqual() {
+    public void equalsAndHashcode_dateDifferent_isNotEqual() {
         CyclePhasesRecord record =
-                new CyclePhasesRecord.Builder(TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
                         .buildWithoutValidation();
         CyclePhasesRecord record2 =
-                new CyclePhasesRecord.Builder(
-                                TEST_METADATA, TIME_MILLIS.plusMillis(1), PHASE_LUTEAL)
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE.plusDays(1), PHASE_LUTEAL)
                         .buildWithoutValidation();
         assertThat(record).isNotEqualTo(record2);
         assertThat(record.hashCode()).isNotEqualTo(record2.hashCode());
     }
 
     @Test
-    public void equalsAndHashcode_zoneDifferent_isNotEqual() {
+    public void equalsAndHashcode_startZoneDifferent_isNotEqual() {
         CyclePhasesRecord record =
-                new CyclePhasesRecord.Builder(TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
-                        .setZoneOffset(ZoneOffset.ofHours(1))
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
+                        .setStartZoneOffset(ZoneOffset.ofHours(1))
                         .buildWithoutValidation();
         CyclePhasesRecord record2 =
-                new CyclePhasesRecord.Builder(TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
-                        .setZoneOffset(ZoneOffset.ofHours(2))
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
+                        .setStartZoneOffset(ZoneOffset.ofHours(2))
+                        .buildWithoutValidation();
+        assertThat(record).isNotEqualTo(record2);
+        assertThat(record.hashCode()).isNotEqualTo(record2.hashCode());
+    }
+
+    @Test
+    public void equalsAndHashcode_endZoneDifferent_isNotEqual() {
+        CyclePhasesRecord record =
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
+                        .setEndZoneOffset(ZoneOffset.ofHours(1))
+                        .buildWithoutValidation();
+        CyclePhasesRecord record2 =
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
+                        .setEndZoneOffset(ZoneOffset.ofHours(2))
                         .buildWithoutValidation();
         assertThat(record).isNotEqualTo(record2);
         assertThat(record.hashCode()).isNotEqualTo(record2.hashCode());
@@ -177,10 +220,10 @@ public class CyclePhasesRecordTest {
     @Test
     public void equalsAndHashcode_phaseDifferent_isNotEqual() {
         CyclePhasesRecord record =
-                new CyclePhasesRecord.Builder(TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
                         .buildWithoutValidation();
         CyclePhasesRecord record2 =
-                new CyclePhasesRecord.Builder(TEST_METADATA, TIME_MILLIS, PHASE_FOLLICULAR)
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_FOLLICULAR)
                         .buildWithoutValidation();
         assertThat(record).isNotEqualTo(record2);
         assertThat(record.hashCode()).isNotEqualTo(record2.hashCode());
@@ -189,13 +232,11 @@ public class CyclePhasesRecordTest {
     @Test
     public void equalsAndHashcode_dayOfCycleDifferent_isNotEqual() {
         CyclePhasesRecord record =
-                new CyclePhasesRecord.Builder(TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
-                        .setZoneOffset(TEST_OFFSET)
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
                         .setDayOfCycle(2)
                         .buildWithoutValidation();
         CyclePhasesRecord record2 =
-                new CyclePhasesRecord.Builder(TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
-                        .setZoneOffset(TEST_OFFSET)
+                new CyclePhasesRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
                         .setDayOfCycle(3)
                         .buildWithoutValidation();
         assertThat(record).isNotEqualTo(record2);
@@ -209,7 +250,7 @@ public class CyclePhasesRecordTest {
                         IllegalArgumentException.class,
                         () ->
                                 new CyclePhasesRecord.Builder(
-                                                TEST_METADATA, TIME_MILLIS, PHASE_UNKNOWN)
+                                                TEST_METADATA, TEST_DATE, PHASE_UNKNOWN)
                                         .build());
         assertThat(thrown).hasMessageThat().contains("Unknown Intdef value");
     }
@@ -221,7 +262,7 @@ public class CyclePhasesRecordTest {
                         IllegalArgumentException.class,
                         () ->
                                 new CyclePhasesRecord.Builder(
-                                                TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
+                                                TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
                                         .setDayOfCycle(0)
                                         .build());
         assertThat(thrown).hasMessageThat().contains("dayOfCycle must not be less than");
@@ -234,7 +275,7 @@ public class CyclePhasesRecordTest {
                         IllegalArgumentException.class,
                         () ->
                                 new CyclePhasesRecord.Builder(
-                                                TEST_METADATA, TIME_MILLIS, PHASE_LUTEAL)
+                                                TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
                                         .setDayOfCycle(366)
                                         .build());
         assertThat(thrown).hasMessageThat().contains("dayOfCycle must not be more than");

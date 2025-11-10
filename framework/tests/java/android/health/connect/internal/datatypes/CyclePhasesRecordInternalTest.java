@@ -41,6 +41,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+
 @RunWith(AndroidJUnit4.class)
 @EnableFlags({
     Flags.FLAG_CYCLE_PHASES_FLAG,
@@ -88,14 +93,30 @@ public class CyclePhasesRecordInternalTest {
     public void toExternalRecord_andBack_noChange() {
         CyclePhasesRecordInternal record =
                 new CyclePhasesRecordInternal().setPhase(PHASE_FOLLICULAR).setDayOfCycle(3);
-        record.setTime(123456).setZoneOffset(5).setPackageName("test.package");
+        Instant time = Instant.ofEpochMilli(123456);
+        ZoneOffset startZoneOffset = ZoneOffset.ofHours(3);
+        Instant startOfDay =
+                time.atOffset(startZoneOffset).truncatedTo(ChronoUnit.DAYS).toInstant();
+
+        ZoneOffset endZoneOffset = ZoneOffset.ofHours(4);
+        Instant endOfDay = time.atOffset(endZoneOffset).with(LocalTime.MAX).toInstant();
+
+        record.setStartTime(startOfDay.toEpochMilli())
+                .setEndTime(endOfDay.toEpochMilli())
+                .setStartZoneOffset(startZoneOffset.getTotalSeconds())
+                .setEndZoneOffset(endZoneOffset.getTotalSeconds())
+                .setPackageName("test.package");
         CyclePhasesRecordInternal recordAfterRoundTrip =
                 (CyclePhasesRecordInternal) record.toExternalRecord().toRecordInternal();
         assertThat(recordAfterRoundTrip.getPackageName()).isEqualTo(record.getPackageName());
-        assertThat(recordAfterRoundTrip.getTimeInMillis()).isEqualTo(record.getTimeInMillis());
-        assertThat(recordAfterRoundTrip.getZoneOffsetInSeconds())
-                .isEqualTo(record.getZoneOffsetInSeconds());
-
+        assertThat(recordAfterRoundTrip.getStartTimeInMillis())
+                .isEqualTo(record.getStartTimeInMillis());
+        assertThat(recordAfterRoundTrip.getEndTimeInMillis())
+                .isEqualTo(record.getEndTimeInMillis());
+        assertThat(recordAfterRoundTrip.getStartZoneOffsetInSeconds())
+                .isEqualTo(record.getStartZoneOffsetInSeconds());
+        assertThat(recordAfterRoundTrip.getEndZoneOffsetInSeconds())
+                .isEqualTo(record.getEndZoneOffsetInSeconds());
         assertThat(recordAfterRoundTrip.getPhase()).isEqualTo(record.getPhase());
         assertThat(recordAfterRoundTrip.getDayOfCycle()).isEqualTo(record.getDayOfCycle());
     }

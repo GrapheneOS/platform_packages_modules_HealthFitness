@@ -27,11 +27,13 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.UUID_B
 import static com.android.server.healthconnect.storage.utils.StorageUtils.bytesToUuids;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.checkColumnExists;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.generateMedicalResourceUUID;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getDedupeByteBuffer;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getNormalisedString;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getSingleByteArray;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.health.connect.internal.datatypes.CyclePhasesRecordInternal;
 import android.util.Pair;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -45,6 +47,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.nio.ByteBuffer;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 
@@ -128,6 +132,33 @@ public class StorageUtilsTest {
         String id = "id with 'escaped' quotes";
         String result = getNormalisedString(id);
         assertThat(result).isEqualTo("'id with ''escaped'' quotes'");
+    }
+
+    @Test
+    public void getDedupeByteBuffer_cyclePhases_usesLocalDate() {
+        LocalDate date = LocalDate.of(2025, 11, 5);
+        CyclePhasesRecordInternal record1 = new CyclePhasesRecordInternal();
+        record1.setAppInfoId(1);
+        record1.setStartTime(date.atStartOfDay().toInstant(ZoneOffset.ofHours(2)).toEpochMilli());
+        record1.setStartZoneOffset(ZoneOffset.ofHours(2).getTotalSeconds());
+
+        CyclePhasesRecordInternal record2 = new CyclePhasesRecordInternal();
+        record2.setAppInfoId(1);
+        record2.setStartTime(date.atStartOfDay().toInstant(ZoneOffset.ofHours(8)).toEpochMilli());
+        record2.setStartZoneOffset(ZoneOffset.ofHours(8).getTotalSeconds());
+
+        CyclePhasesRecordInternal record3 = new CyclePhasesRecordInternal();
+        record3.setAppInfoId(1);
+        record3.setStartTime(
+                date.plusDays(1).atStartOfDay().toInstant(ZoneOffset.ofHours(2)).toEpochMilli());
+        record3.setStartZoneOffset(ZoneOffset.ofHours(2).getTotalSeconds());
+
+        byte[] hash1 = getDedupeByteBuffer(record1);
+        byte[] hash2 = getDedupeByteBuffer(record2);
+        byte[] hash3 = getDedupeByteBuffer(record3);
+
+        assertThat(hash1).isEqualTo(hash2);
+        assertThat(hash1).isNotEqualTo(hash3);
     }
 
     @Test

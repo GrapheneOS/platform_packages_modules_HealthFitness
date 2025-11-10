@@ -34,6 +34,10 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Objects;
 import java.util.Set;
@@ -52,7 +56,7 @@ import java.util.Set;
 // TODO(b/452289293): Unhide this when API implementation is done
 @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_CYCLE_PHASES)
-public final class CyclePhasesRecord extends InstantRecord {
+public final class CyclePhasesRecord extends IntervalRecord {
     /** Represents an unknown menstrual cycle phase. */
     public static final int PHASE_UNKNOWN = 0;
 
@@ -108,6 +112,12 @@ public final class CyclePhasesRecord extends InstantRecord {
         return mDayOfCycle;
     }
 
+    /** Returns the date of the record. */
+    @NonNull
+    public LocalDate getDate() {
+        return getStartTime().atOffset(getStartZoneOffset()).toLocalDate();
+    }
+
     @Override
     public boolean equals(@Nullable Object o) {
         if (this == o) return true;
@@ -122,18 +132,32 @@ public final class CyclePhasesRecord extends InstantRecord {
         return Objects.hash(super.hashCode(), mPhase, mDayOfCycle);
     }
 
-    /** Builder class for {@link CyclePhasesRecord} */
+    /** Builder class for {@link CyclePhasesRecord}. */
     public static final class Builder {
         private final Metadata mMetadata;
-        private final Instant mTime;
+        private final LocalDateTime mStartOfDay;
+        private final LocalDateTime mEndOfDay;
+        private ZoneOffset mStartZoneOffset;
+        private ZoneOffset mEndZoneOffset;
         @CyclePhase private final int mPhase;
-        private ZoneOffset mZoneOffset = RecordUtils.getDefaultZoneOffset();
         private int mDayOfCycle = DEFAULT_INT;
 
-        public Builder(Metadata metadata, Instant time, @CyclePhase int phase) {
+        /**
+         * @param metadata Metadata to be associated with the record. See {@link Metadata}.
+         * @param date The date of this record.
+         * @param phase The cycle phase for this record.
+         */
+        public Builder(Metadata metadata, LocalDate date, @CyclePhase int phase) {
+            Objects.requireNonNull(metadata);
+            Objects.requireNonNull(date);
+
             mMetadata = metadata;
-            mTime = time;
             mPhase = phase;
+
+            mStartOfDay = date.atStartOfDay();
+            mEndOfDay = LocalTime.MAX.atDate(date);
+            mStartZoneOffset = ZoneId.systemDefault().getRules().getOffset(mStartOfDay);
+            mEndZoneOffset = mStartZoneOffset;
         }
 
         /**
@@ -147,18 +171,33 @@ public final class CyclePhasesRecord extends InstantRecord {
             return this;
         }
 
-        /** Sets the zone offset of the user when the data was logged. */
+        /** Sets start zone offset of the user when the data was logged. */
         @NonNull
-        public Builder setZoneOffset(@NonNull ZoneOffset zoneOffset) {
-            requireNonNull(zoneOffset);
-            mZoneOffset = zoneOffset;
+        public Builder setStartZoneOffset(@NonNull ZoneOffset startZoneOffset) {
+            requireNonNull(startZoneOffset);
+            mStartZoneOffset = startZoneOffset;
             return this;
         }
 
-        /** Clears the zone offset of the user when the data was logged. */
+        /** Clears start zone offset of the user when the data was logged. */
         @NonNull
-        public Builder clearZoneOffset() {
-            mZoneOffset = RecordUtils.getDefaultZoneOffset();
+        public Builder clearStartZoneOffset() {
+            mStartZoneOffset = RecordUtils.getDefaultZoneOffset();
+            return this;
+        }
+
+        /** Sets end zone offset of the user when the data was logged. */
+        @NonNull
+        public Builder setEndZoneOffset(ZoneOffset endZoneOffset) {
+            requireNonNull(endZoneOffset);
+            mEndZoneOffset = endZoneOffset;
+            return this;
+        }
+
+        /** Clears end zone offset of the user when the data was logged. */
+        @NonNull
+        public Builder clearEndZoneOffset() {
+            mEndZoneOffset = RecordUtils.getDefaultZoneOffset();
             return this;
         }
 
@@ -169,7 +208,14 @@ public final class CyclePhasesRecord extends InstantRecord {
         @NonNull
         public CyclePhasesRecord buildWithoutValidation() {
             return new CyclePhasesRecord(
-                    mMetadata, mTime, mZoneOffset, mPhase, mDayOfCycle, /* skipValidation= */ true);
+                    mMetadata,
+                    mStartOfDay.toInstant(mStartZoneOffset),
+                    mStartZoneOffset,
+                    mEndOfDay.toInstant(mEndZoneOffset),
+                    mEndZoneOffset,
+                    mPhase,
+                    mDayOfCycle,
+                    /* skipValidation= */ true);
         }
 
         /**
@@ -179,22 +225,43 @@ public final class CyclePhasesRecord extends InstantRecord {
         public CyclePhasesRecord build() {
             return new CyclePhasesRecord(
                     mMetadata,
-                    mTime,
-                    mZoneOffset,
+                    mStartOfDay.toInstant(mStartZoneOffset),
+                    mStartZoneOffset,
+                    mEndOfDay.toInstant(mEndZoneOffset),
+                    mEndZoneOffset,
                     mPhase,
                     mDayOfCycle,
                     /* skipValidation= */ false);
         }
     }
 
+    /**
+     * @param metadata Metadata to be associated with the record. See {@link Metadata}.
+     * @param startTime Start time of this record.
+     * @param startZoneOffset Zone offset of the user when the measurement was taken.
+     * @param endTime End time of this record.
+     * @param endZoneOffset Zone offset of the user when the measurement was taken.
+     * @param phase The cycle phase for this record.
+     * @param dayOfCycle The day of the cycle for this record.
+     * @param skipValidation Boolean flag to skip validation of record values.
+     */
     private CyclePhasesRecord(
             @NonNull Metadata metadata,
-            @NonNull Instant time,
-            @NonNull ZoneOffset zoneOffset,
+            @NonNull Instant startTime,
+            @NonNull ZoneOffset startZoneOffset,
+            @NonNull Instant endTime,
+            @NonNull ZoneOffset endZoneOffset,
             @CyclePhase int phase,
             int dayOfCycle,
             boolean skipValidation) {
-        super(metadata, time, zoneOffset, skipValidation);
+        super(
+                metadata,
+                startTime,
+                startZoneOffset,
+                endTime,
+                endZoneOffset,
+                skipValidation,
+                /* enforceFutureTimeRestrictions= */ true);
 
         if (!skipValidation) {
             validateIntDefValue(phase, VALID_CYCLE_PHASES, CyclePhase.class.getSimpleName());
@@ -218,8 +285,10 @@ public final class CyclePhasesRecord extends InstantRecord {
                 (CyclePhasesRecordInternal)
                         new CyclePhasesRecordInternal().setMetaData(getMetadata());
         recordInternal
-                .setTime(getTime().toEpochMilli())
-                .setZoneOffset(getZoneOffset().getTotalSeconds());
+                .setStartTime(getStartTime().toEpochMilli())
+                .setStartZoneOffset(getStartZoneOffset().getTotalSeconds())
+                .setEndTime(getEndTime().toEpochMilli())
+                .setEndZoneOffset(getEndZoneOffset().getTotalSeconds());
         recordInternal.setPhase(mPhase).setDayOfCycle(mDayOfCycle);
         return recordInternal;
     }

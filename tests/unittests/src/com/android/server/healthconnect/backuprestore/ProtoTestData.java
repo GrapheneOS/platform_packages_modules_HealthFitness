@@ -192,8 +192,8 @@ final class ProtoTestData {
                             .build();
             case RecordTypeIdentifier.RECORD_TYPE_CYCLE_PHASES ->
                     generateCoreRecord()
-                            .setInstantRecord(
-                                    generateInstantRecord().setCyclePhases(generateCyclePhases()))
+                            .setIntervalRecord(
+                                    generateIntervalRecord().setCyclePhases(generateCyclePhases()))
                             .build();
             case RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE ->
                     generateCoreRecord()

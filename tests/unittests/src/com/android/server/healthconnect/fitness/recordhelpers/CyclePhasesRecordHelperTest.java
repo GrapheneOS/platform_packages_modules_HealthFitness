@@ -104,8 +104,8 @@ public class CyclePhasesRecordHelperTest {
     }
 
     @Test
-    public void getInstantRecordColumnInfo_returnsColumns() {
-        assertThat(new CyclePhasesRecordHelper().getInstantRecordColumnInfo())
+    public void getIntervalRecordColumnInfo_returnsColumns() {
+        assertThat(new CyclePhasesRecordHelper().getIntervalRecordColumnInfo())
                 .containsExactly(
                         new Pair<>(PHASE_COLUMN_NAME, INTEGER_NOT_NULL),
                         new Pair<>(DAY_OF_CYCLE_COLUMN_NAME, INTEGER));

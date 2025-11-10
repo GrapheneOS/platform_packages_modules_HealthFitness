@@ -236,6 +236,9 @@ public final class RecordProtoConverter {
             builder.setAlcoholConsumption(
                     toAlcoholConsumptionProto(alcoholConsumptionRecordInternal));
         } else if (intervalRecordInternal
+                instanceof CyclePhasesRecordInternal cyclePhasesRecordInternal) {
+            builder.setCyclePhases(toCyclePhasesProto(cyclePhasesRecordInternal));
+        } else if (intervalRecordInternal
                 instanceof
                 CyclingPedalingCadenceRecordInternal cyclingPedalingCadenceRecordInternal) {
             builder.setCyclingPedalingCadence(
@@ -930,9 +933,7 @@ public final class RecordProtoConverter {
         } else if (instantRecordInternal
                 instanceof CervicalMucusRecordInternal cervicalMucusRecordInternal) {
             builder.setCervicalMucus(toCervicalMucusProto(cervicalMucusRecordInternal));
-        } else if (instantRecordInternal
-                instanceof CyclePhasesRecordInternal cyclePhasesRecordInternal) {
-            builder.setCyclePhases(toCyclePhasesProto(cyclePhasesRecordInternal));
+
         } else if (instantRecordInternal
                 instanceof
                 HeartRateVariabilityRmssdRecordInternal heartRateVariabilityRmssdRecordInternal) {
@@ -1204,6 +1205,9 @@ public final class RecordProtoConverter {
                     intervalRecordInternal =
                             populateCyclingPedalingCadenceRecordInternal(
                                     intervalRecordProto.getCyclingPedalingCadence());
+            case CYCLE_PHASES ->
+                    intervalRecordInternal =
+                            populateCyclePhasesRecordInternal(intervalRecordProto.getCyclePhases());
             case DISTANCE ->
                     intervalRecordInternal =
                             populateDistanceRecordInternal(intervalRecordProto.getDistance());
@@ -1329,6 +1333,16 @@ public final class RecordProtoConverter {
                                                 sample.getRevolutionsPerMinute(),
                                                 sample.getEpochMillis()))
                         .collect(toSet()));
+    }
+
+    private static CyclePhasesRecordInternal populateCyclePhasesRecordInternal(
+            CyclePhases cyclePhasesProto) {
+        CyclePhasesRecordInternal record = new CyclePhasesRecordInternal();
+        record.setPhase(cyclePhasesProto.getPhase());
+        if (cyclePhasesProto.hasDayOfCycle()) {
+            record.setDayOfCycle(cyclePhasesProto.getDayOfCycle());
+        }
+        return record;
     }
 
     private static DistanceRecordInternal populateDistanceRecordInternal(Distance distanceProto) {
@@ -1800,10 +1814,6 @@ public final class RecordProtoConverter {
                     populateCervicalMucusRecordInternal(
                             instantRecordProto.getCervicalMucus(),
                             (CervicalMucusRecordInternal) instantRecordInternal);
-            case CYCLE_PHASES ->
-                    populateCyclePhasesRecordInternal(
-                            instantRecordProto.getCyclePhases(),
-                            (CyclePhasesRecordInternal) instantRecordInternal);
             case HEART_RATE_VARIABILITY_RMSSD ->
                     populateHeartRateVariabilityRmssdRecordInternal(
                             instantRecordProto.getHeartRateVariabilityRmssd(),
@@ -1923,14 +1933,6 @@ public final class RecordProtoConverter {
                 .setAppearance(cervicalMucusProto.getAppearance());
     }
 
-    private static void populateCyclePhasesRecordInternal(
-            CyclePhases cyclePhasesProto, CyclePhasesRecordInternal cyclePhasesRecordInternal) {
-        cyclePhasesRecordInternal.setPhase(cyclePhasesProto.getPhase());
-        if (cyclePhasesProto.hasDayOfCycle()) {
-            cyclePhasesRecordInternal.setDayOfCycle(cyclePhasesProto.getDayOfCycle());
-        }
-    }
-
     private static void populateMenstruationFlowRecordInternal(
             MenstruationFlow menstruationFlowProto,
             MenstruationFlowRecordInternal menstruationFlowRecordInternal) {
@@ -2014,6 +2016,7 @@ public final class RecordProtoConverter {
             case ACTIVE_CALORIES_BURNED -> RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED;
             case ACTIVITY_INTENSITY -> RecordTypeIdentifier.RECORD_TYPE_ACTIVITY_INTENSITY;
             case ALCOHOL_CONSUMPTION -> RecordTypeIdentifier.RECORD_TYPE_ALCOHOL_CONSUMPTION;
+            case CYCLE_PHASES -> RecordTypeIdentifier.RECORD_TYPE_CYCLE_PHASES;
             case CYCLING_PEDALING_CADENCE ->
                     RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE;
             case DISTANCE -> RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
@@ -2053,7 +2056,6 @@ public final class RecordProtoConverter {
             case BODY_WATER_MASS -> RecordTypeIdentifier.RECORD_TYPE_BODY_WATER_MASS;
             case BONE_MASS -> RecordTypeIdentifier.RECORD_TYPE_BONE_MASS;
             case CERVICAL_MUCUS -> RecordTypeIdentifier.RECORD_TYPE_CERVICAL_MUCUS;
-            case CYCLE_PHASES -> RecordTypeIdentifier.RECORD_TYPE_CYCLE_PHASES;
             case HEART_RATE_VARIABILITY_RMSSD ->
                     RecordTypeIdentifier.RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD;
             case HEIGHT -> RecordTypeIdentifier.RECORD_TYPE_HEIGHT;

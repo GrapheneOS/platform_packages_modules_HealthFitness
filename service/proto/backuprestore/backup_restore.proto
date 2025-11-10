@@ -111,6 +111,7 @@ message IntervalRecord {
     Steps steps = 100;
     StepsCadence steps_cadence = 118;
     Symptoms symptoms = 122;
+    CyclePhases cycle_phases = 124;
     TotalCaloriesBurned total_calories_burned = 119;
     WheelchairPushes wheelchair_pushes = 120;
   }
@@ -130,7 +131,7 @@ message InstantRecord {
     BodyWaterMass body_water_mass = 106;
     BoneMass bone_mass = 107;
     CervicalMucus cervical_mucus = 108;
-    CyclePhases cycle_phases = 121;
+
     HeartRateVariabilityRmssd heart_rate_variability_rmssd = 109;
     Height height = 110;
     IntermenstrualBleeding intermenstrual_bleeding = 111;

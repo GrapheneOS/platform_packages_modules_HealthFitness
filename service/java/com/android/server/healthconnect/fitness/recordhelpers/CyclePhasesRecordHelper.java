@@ -39,7 +39,7 @@ import java.util.List;
  *
  * @hide
  */
-public final class CyclePhasesRecordHelper extends InstantRecordHelper<CyclePhasesRecordInternal> {
+public final class CyclePhasesRecordHelper extends IntervalRecordHelper<CyclePhasesRecordInternal> {
     @VisibleForTesting public static final String TABLE_NAME = "cycle_phases_record_table";
 
     @VisibleForTesting public static final String PHASE_COLUMN_NAME = "phase";
@@ -55,7 +55,7 @@ public final class CyclePhasesRecordHelper extends InstantRecordHelper<CyclePhas
     }
 
     @Override
-    List<Pair<String, String>> getInstantRecordColumnInfo() {
+    List<Pair<String, String>> getIntervalRecordColumnInfo() {
         return Arrays.asList(
                 new Pair<>(PHASE_COLUMN_NAME, INTEGER_NOT_NULL),
                 new Pair<>(DAY_OF_CYCLE_COLUMN_NAME, INTEGER));

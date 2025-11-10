@@ -34,7 +34,7 @@ import android.os.Parcel;
  */
 @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_CYCLE_PHASES)
-public final class CyclePhasesRecordInternal extends InstantRecordInternal<CyclePhasesRecord> {
+public final class CyclePhasesRecordInternal extends IntervalRecordInternal<CyclePhasesRecord> {
     @CyclePhasesRecord.CyclePhase private int mPhase = PHASE_UNKNOWN;
     private int mDayOfCycle = DEFAULT_INT;
 
@@ -70,16 +70,17 @@ public final class CyclePhasesRecordInternal extends InstantRecordInternal<Cycle
     }
 
     @Override
-    void populateInstantRecordTo(@NonNull Parcel parcel) {
+    void populateIntervalRecordTo(@NonNull Parcel parcel) {
         parcel.writeInt(mPhase);
         parcel.writeInt(mDayOfCycle);
     }
 
     @Override
     public CyclePhasesRecord toExternalRecord() {
-        return new CyclePhasesRecord.Builder(buildMetaData(), getTime(), mPhase)
+        return new CyclePhasesRecord.Builder(buildMetaData(), getLocalDate(), mPhase)
                 .setDayOfCycle(mDayOfCycle)
-                .setZoneOffset(getZoneOffset())
+                .setStartZoneOffset(getStartZoneOffset())
+                .setEndZoneOffset(getEndZoneOffset())
                 .buildWithoutValidation();
     }
 }
