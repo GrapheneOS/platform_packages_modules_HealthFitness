@@ -23,6 +23,7 @@ import static android.healthconnect.testing.unittest.StorageUtils.clearDatabase;
 import static android.healthconnect.testing.unittest.StorageUtils.createEmptyDatabase;
 
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ALCOHOL_CONSUMPTION;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CYCLE_PHASES;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
@@ -30,6 +31,7 @@ import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PHR_CH
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_SYMPTOMS;
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
@@ -50,6 +52,7 @@ import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.AlcoholConsumptionRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.CyclePhasesRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSegmentRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.NicotineIntakeRecordHelper;
@@ -74,9 +77,9 @@ public class DatabaseUpgradeHelperTest {
     private static final int NUM_OF_TABLES_AT_NICOTINE_INTAKE_VERSION = 71;
     private static final int NUM_OF_TABLES_AT_SYMPTOMS_VERSION = 72;
     private static final int NUM_OF_TABLES_AT_ALCOHOL_CONSUMPTION_VERSION = 73;
-    private static final int NUM_OF_TABLES_IN_STAGING =
-            NUM_OF_TABLES_AT_ALCOHOL_CONSUMPTION_VERSION;
-    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_ALCOHOL_CONSUMPTION;
+    private static final int NUM_OF_TABLES_AT_CYCLE_PHASES = 74;
+    private static final int NUM_OF_TABLES_IN_STAGING = NUM_OF_TABLES_AT_CYCLE_PHASES;
+    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_CYCLE_PHASES;
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
@@ -270,6 +273,22 @@ public class DatabaseUpgradeHelperTest {
                             AlcoholConsumptionRecordHelper.SERVING_VOLUME_LITERS_COLUMN_NAME,
                             AlcoholConsumptionRecordHelper.ALCOHOL_BY_VOLUME_COLUMN_NAME,
                             AlcoholConsumptionRecordHelper.NOTE_COLUMN_NAME));
+        }
+    }
+
+    @Test
+    @EnableFlags(FLAG_CYCLE_PHASES_DB)
+    public void onUpgrade_cycle_phases_schemaUpToDate() {
+        try (var db = createEmptyDatabase()) {
+            onUpgrade(db, 0, DB_VERSION_CYCLE_PHASES);
+
+            assertNumberOfTables(db, NUM_OF_TABLES_AT_CYCLE_PHASES);
+            assertColumnsExist(
+                    db,
+                    CyclePhasesRecordHelper.TABLE_NAME,
+                    List.of(
+                            CyclePhasesRecordHelper.PHASE_COLUMN_NAME,
+                            CyclePhasesRecordHelper.DAY_OF_CYCLE_COLUMN_NAME));
         }
     }
 

@@ -699,4 +699,31 @@ interface IHealthConnectService {
         in AttributionSource attributionSource,
         in List<DeviceDataAdvertisement> deviceDataAdvertisements,
         in IEmptyResponseCallback callback);
+
+    /**
+     * Inserts {@code records} from a device data source into the Health Connect database.
+     *
+     * <p>Upon successful completion, {@link OutcomeReceiver#onResult} will be invoked for the
+     * {@code callback}. The records returned in {@link InsertRecordsResponse} contain the unique
+     * IDs of the input records. The values are in same order as {@code records}. In case of an
+     * error or a permission failure in the Health Connect service, {@link OutcomeReceiver#onError}
+     * will be invoked with a {@link HealthConnectException}.
+     *
+     * <p>The {@code deviceId} must match the one used in {@link DeviceDataAdvertisement} in the
+     * latest call to {@link #advertiseDeviceDataSources}. A {@link Device} does not need to be
+     * populated in the {@link Metadata} for a {@link Record} as it will automatically be populated
+     * based on the {@link DeviceDataAdvertisement}.
+     *
+     * @param deviceId the identifier for the device that is the source of this data.
+     * @param records list of records to be inserted.
+     * @param executor executor on which to invoke the callback.
+     * @param callback callback to receive the result of performing this operation.
+     * @throws RuntimeException for internal errors
+     * @hide
+     */
+    void insertDeviceRecords(
+        in AttributionSource attributionSource,
+        in String deviceId,
+        in RecordsParcel recordsParcel,
+        in IInsertRecordsResponseCallback callback);
 }

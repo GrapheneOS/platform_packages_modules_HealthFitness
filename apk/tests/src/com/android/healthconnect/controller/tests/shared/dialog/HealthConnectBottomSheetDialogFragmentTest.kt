@@ -41,14 +41,15 @@ class HealthConnectBottomSheetDialogFragmentTest {
 
     @Test
     fun bottomSheet_displaysContentFragment() {
-        val scenario = ActivityScenario.launch(TestActivity::class.java)
-        scenario.onActivity { activity ->
-            val bottomSheet =
-                HealthConnectBottomSheetDialogFragment.newInstance(TestFragment::class.java)
-            bottomSheet.show(activity.supportFragmentManager, "TestBottomSheet")
+        ActivityScenario.launch(TestActivity::class.java).use { scenario ->
+            scenario.onActivity { activity ->
+                val bottomSheet =
+                    HealthConnectBottomSheetDialogFragment.newInstance(TestFragment::class.java)
+                bottomSheet.show(activity.supportFragmentManager, "TestBottomSheet")
+            }
+            Thread.sleep(1000)
+            onView(withId(R.id.test_fragment_view)).inRoot(isDialog()).check(matches(isDisplayed()))
         }
-        Thread.sleep(1000)
-        onView(withId(R.id.test_fragment_view)).inRoot(isDialog()).check(matches(isDisplayed()))
     }
 
     class TestFragment : Fragment() {

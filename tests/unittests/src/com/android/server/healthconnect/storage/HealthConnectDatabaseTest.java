@@ -19,9 +19,7 @@ package com.android.server.healthconnect.storage;
 import static android.healthconnect.testing.unittest.StorageUtils.assertNumberOfTables;
 
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
-import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION_DB;
-import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS_DB;
@@ -69,7 +67,7 @@ public class HealthConnectDatabaseTest {
     // The number of table we released to the public. This number can only increase, as we are not
     // allowed to make changes that remove tables or columns.
     // Development tables that haven't reached prod are excluded.
-    static final int NUM_OF_TABLES = 67;
+    static final int NUM_OF_TABLES = 70;
     private static final String TEST_PACKAGE_NAME = "package.test";
 
     private Context mContext;
@@ -86,8 +84,6 @@ public class HealthConnectDatabaseTest {
     @Test
     @DisableFlags({
         FLAG_DEVELOPMENT_DATABASE,
-        FLAG_ACTIVITY_INTENSITY_DB,
-        FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
         FLAG_SMOKING_DB,
         FLAG_SYMPTOMS_DB,
         FLAG_ALCOHOL_CONSUMPTION_DB

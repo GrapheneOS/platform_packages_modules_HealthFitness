@@ -37,6 +37,7 @@ import com.android.server.healthconnect.common.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.common.logging.UsageStatsCollector;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
@@ -55,6 +56,7 @@ import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
@@ -475,6 +477,20 @@ public abstract class HealthConnectInjector {
      */
     @Nullable
     public abstract DeviceDataProviderManager getDeviceDataProviderManager();
+
+    /**
+     * Getter for {@link SyntheticPackageNameCreator} instance initialised by the Health Connect
+     * Injector.
+     */
+    @Nullable
+    public abstract SyntheticPackageNameCreator getSyntheticPackageNameCreator();
+
+    /**
+     * Getter for {@link DeviceDataProviderMetadataHelper} instance initialised by the Health
+     * Connect Injector.
+     */
+    @Nullable
+    public abstract DeviceDataProviderMetadataHelper getDeviceDataProviderMetadataHelper();
 
     /** Used to initialize the Injector. */
     public static void setInstance(HealthConnectInjector healthConnectInjector) {

@@ -168,47 +168,50 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
-            .check(matches(isDisplayed()))
-        onView(withText("Choose data you want this app to read or write to Health Connect"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you give read access, the app can read new data and data from the past 30 days"
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
+                .check(matches(isDisplayed()))
+            onView(withText("Choose data you want this app to read or write to Health Connect"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you give read access, the app can read new data and data from the past 30 days"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to read")).check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))
+                .check(matches(isDisplayed()))
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to write"))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to write"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to write")).check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withText("Allow \u201C$TEST_APP_NAME\u201D to write"))
+                .check(matches(isDisplayed()))
 
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.REQUEST_PERMISSIONS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger, times(4)).logImpression(PermissionsElement.PERMISSION_SWITCH)
-        verify(healthConnectLogger).logImpression(PermissionsElement.ALLOW_ALL_SWITCH)
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.REQUEST_PERMISSIONS_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger, times(4))
+                .logImpression(PermissionsElement.PERMISSION_SWITCH)
+            verify(healthConnectLogger).logImpression(PermissionsElement.ALLOW_ALL_SWITCH)
+        }
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
@@ -224,51 +227,54 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                    )
+                )
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you give read access, the app can read new data and data from the past 30 days"
+                    )
+                )
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                    )
+                )
+                .check(matches(isDisplayed()))
 
-        onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you give read access, the app can read new data and data from the past 30 days"
-                )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
-                )
-            )
-            .check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))
+                .check(matches(isDisplayed()))
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to read"))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to write"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to read")).check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withText("Allow \u201C$TEST_APP_NAME\u201D to write"))
+                .check(matches(isDisplayed()))
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Allow \u201C$TEST_APP_NAME\u201D to write"))
-                )
-            )
-        Espresso.onIdle()
-        onView(withText("Allow \u201C$TEST_APP_NAME\u201D to write")).check(matches(isDisplayed()))
-
-        verify(healthConnectLogger, atLeast(1)).setPageId(PageName.REQUEST_PERMISSIONS_PAGE)
-        verify(healthConnectLogger).logPageImpression()
-        verify(healthConnectLogger, times(4)).logImpression(PermissionsElement.PERMISSION_SWITCH)
-        verify(healthConnectLogger).logImpression(PermissionsElement.ALLOW_ALL_SWITCH)
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.REQUEST_PERMISSIONS_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger, times(4))
+                .logImpression(PermissionsElement.PERMISSION_SWITCH)
+            verify(healthConnectLogger).logImpression(PermissionsElement.ALLOW_ALL_SWITCH)
+        }
     }
 
     // TODO: b/407072322 - Enable test clicking "learn more" link.
@@ -305,11 +311,11 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withText("Allow $TEST_APP_NAME to access fitness and wellness data?"))
-            .check(matches(isDisplayed()))
-        onView(withText("Allow $TEST_APP_NAME to access Health Connect?")).check(doesNotExist())
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access fitness and wellness data?"))
+                .check(matches(isDisplayed()))
+            onView(withText("Allow $TEST_APP_NAME to access Health Connect?")).check(doesNotExist())
+        }
     }
 
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
@@ -325,12 +331,12 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
-            .check(doesNotExist())
-        onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
-            .check(matches(isDisplayed()))
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
+                .check(doesNotExist())
+            onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
@@ -346,11 +352,11 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
-            .check(matches(isDisplayed()))
-        onView(withText("Allow $TEST_APP_NAME to access Health Connect?")).check(doesNotExist())
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
+                .check(matches(isDisplayed()))
+            onView(withText("Allow $TEST_APP_NAME to access Health Connect?")).check(doesNotExist())
+        }
     }
 
     @Test
@@ -365,16 +371,16 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withText("If you give read access, the app can read new and past data"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you give read access, the app can read new data and data from the past 30 days"
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withText("If you give read access, the app can read new and past data"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you give read access, the app can read new data and data from the past 30 days"
+                    )
                 )
-            )
-            .check(doesNotExist())
+                .check(doesNotExist())
+        }
     }
 
     @Test
@@ -389,16 +395,16 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withText("If you give read access, the app can read new and past data"))
-            .check(doesNotExist())
-        onView(
-                withText(
-                    "If you give read access, the app can read new data and data from the past 30 days"
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withText("If you give read access, the app can read new and past data"))
+                .check(doesNotExist())
+            onView(
+                    withText(
+                        "If you give read access, the app can read new data and data from the past 30 days"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
@@ -414,16 +420,16 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withText("Choose data you want this app to read from Health Connect"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you give read access, the app can read new data and data from the past 30 days"
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withText("Choose data you want this app to read from Health Connect"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you give read access, the app can read new data and data from the past 30 days"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
@@ -439,20 +445,20 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(
-                withText(
-                    "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(
+                    withText(
+                        "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you give read access, the app can read new data and data from the past 30 days"
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you give read access, the app can read new data and data from the past 30 days"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
@@ -467,18 +473,18 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withText("Choose data you want this app to write to Health Connect"))
-            .check(matches(isDisplayed()))
-        onView(withText("If you give read access, the app can read new and past data"))
-            .check(doesNotExist())
-        onView(
-                withText(
-                    "If you give read access, the app can read new data and data from the past 30 days"
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withText("Choose data you want this app to write to Health Connect"))
+                .check(matches(isDisplayed()))
+            onView(withText("If you give read access, the app can read new and past data"))
+                .check(doesNotExist())
+            onView(
+                    withText(
+                        "If you give read access, the app can read new data and data from the past 30 days"
+                    )
                 )
-            )
-            .check(doesNotExist())
+                .check(doesNotExist())
+        }
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
@@ -493,22 +499,22 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(
-                withText(
-                    "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(
+                    withText(
+                        "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("If you give read access, the app can read new and past data"))
-            .check(doesNotExist())
-        onView(
-                withText(
-                    "If you give read access, the app can read new data and data from the past 30 days"
+                .check(matches(isDisplayed()))
+            onView(withText("If you give read access, the app can read new and past data"))
+                .check(doesNotExist())
+            onView(
+                    withText(
+                        "If you give read access, the app can read new data and data from the past 30 days"
+                    )
                 )
-            )
-            .check(doesNotExist())
+                .check(doesNotExist())
+        }
     }
 
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
@@ -524,24 +530,24 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
-            .check(matches(isDisplayed()))
-        onView(withText("Choose data you want this app to read or write to Health Connect"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you give read access, the app can read new data and data from the past 30 days"
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
+                .check(matches(isDisplayed()))
+            onView(withText("Choose data you want this app to read or write to Health Connect"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you give read access, the app can read new data and data from the past 30 days"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
@@ -557,28 +563,28 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you give read access, the app can read new data and data from the past 30 days"
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you give read access, the app can read new data and data from the past 30 days"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -594,25 +600,25 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Steps"))
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Steps"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withText("Steps")).check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withText("Steps")).check(matches(isDisplayed()))
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Sleep"))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Sleep"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withText("Sleep")).check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withText("Sleep")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -627,25 +633,25 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Heart rate"))
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Heart rate"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withText("Heart rate")).check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withText("Heart rate")).check(matches(isDisplayed()))
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Hydration"))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Hydration"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withText("Hydration")).check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withText("Hydration")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -662,29 +668,30 @@ class FitnessPermissionsFragmentTest {
             )
         }
 
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Hydration"))
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Hydration"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withText("Hydration")).perform(click())
-        Espresso.onIdle()
-        onView(withContentDescription("Hydration. Write Access. On")).check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withText("Hydration")).perform(click())
+            Espresso.onIdle()
+            onView(withContentDescription("Hydration. Write Access. On"))
+                .check(matches(isDisplayed()))
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Sleep"))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Sleep"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withText("Sleep")).perform(click())
-        Espresso.onIdle()
-        onView(withContentDescription("Sleep. Read Access. On")).check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withText("Sleep")).perform(click())
+            Espresso.onIdle()
+            onView(withContentDescription("Sleep. Read Access. On")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -700,25 +707,26 @@ class FitnessPermissionsFragmentTest {
             )
         }
 
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Hydration"))
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Hydration"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withContentDescription("Hydration. Write Access. Off")).check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withContentDescription("Hydration. Write Access. Off"))
+                .check(matches(isDisplayed()))
 
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Sleep"))
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Sleep"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withContentDescription("Sleep. Read Access. Off")).check(matches(isDisplayed()))
+            Espresso.onIdle()
+            onView(withContentDescription("Sleep. Read Access. Off")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -734,19 +742,20 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Sleep"))
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Sleep"))
+                    )
                 )
-            )
-        Espresso.onIdle()
-        onView(withText("Sleep")).perform(click())
+            Espresso.onIdle()
+            onView(withText("Sleep")).perform(click())
 
-        verify(viewModel).updateHealthPermission(any(FitnessPermission::class.java), eq(true))
-        verify(healthConnectLogger)
-            .logInteraction(PermissionsElement.PERMISSION_SWITCH, UIAction.ACTION_TOGGLE_ON)
+            verify(viewModel).updateHealthPermission(any(FitnessPermission::class.java), eq(true))
+            verify(healthConnectLogger)
+                .logInteraction(PermissionsElement.PERMISSION_SWITCH, UIAction.ACTION_TOGGLE_ON)
+        }
     }
 
     @Test
@@ -761,29 +770,30 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        val activityScenario = launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Allow all"))
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use { activityScenario ->
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Allow all"))
+                    )
                 )
-            )
-        var allowAllPreference: HealthMainSwitchPreference? = null
-        activityScenario.onActivity { activity: TestActivity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as PermissionsFragment
-            allowAllPreference = fragment.preferenceScreen.findPreference("allow_all_preference")
-            allowAllPreference?.isChecked =
-                false // makes sure the preference is on so OnPreferenceChecked is triggered
+            var allowAllPreference: HealthMainSwitchPreference? = null
+            activityScenario.onActivity { activity: TestActivity ->
+                val fragment =
+                    activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                        as PermissionsFragment
+                allowAllPreference =
+                    fragment.preferenceScreen.findPreference("allow_all_preference")
+                allowAllPreference?.isChecked =
+                    false // makes sure the preference is on so OnPreferenceChecked is triggered
+            }
+
+            onView(withText(allowAllPreference?.title?.toString())).perform(click())
+
+            verify(viewModel).updateFitnessPermissions(eq(true))
+            verify(healthConnectLogger)
+                .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_ON)
         }
-
-        onView(withText(allowAllPreference?.title?.toString())).perform(click())
-
-        verify(viewModel).updateFitnessPermissions(eq(true))
-        verify(healthConnectLogger)
-            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_ON)
     }
 
     @Test
@@ -798,29 +808,30 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        val activityScenario = launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Allow all"))
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use { activityScenario ->
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Allow all"))
+                    )
                 )
-            )
-        var allowAllPreference: HealthMainSwitchPreference? = null
-        activityScenario.onActivity { activity: TestActivity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as PermissionsFragment
-            allowAllPreference = fragment.preferenceScreen.findPreference("allow_all_preference")
-            allowAllPreference?.isChecked =
-                true // makes sure the preference is on so OnPreferenceChecked is triggered
+            var allowAllPreference: HealthMainSwitchPreference? = null
+            activityScenario.onActivity { activity: TestActivity ->
+                val fragment =
+                    activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                        as PermissionsFragment
+                allowAllPreference =
+                    fragment.preferenceScreen.findPreference("allow_all_preference")
+                allowAllPreference?.isChecked =
+                    true // makes sure the preference is on so OnPreferenceChecked is triggered
+            }
+
+            onView(withText(allowAllPreference?.title?.toString())).perform(click())
+
+            assertThat(viewModel.grantedFitnessPermissions.value).isEmpty()
+            verify(healthConnectLogger)
+                .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_OFF)
         }
-
-        onView(withText(allowAllPreference?.title?.toString())).perform(click())
-
-        assertThat(viewModel.grantedFitnessPermissions.value).isEmpty()
-        verify(healthConnectLogger)
-            .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_OFF)
     }
 
     @Test
@@ -839,8 +850,9 @@ class FitnessPermissionsFragmentTest {
             MutableLiveData(emptySet<FitnessPermission>())
         }
 
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-        onView(withText("Allow")).check(matches(ViewMatchers.isNotEnabled()))
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow")).check(matches(ViewMatchers.isNotEnabled()))
+        }
     }
 
     @Test
@@ -859,9 +871,9 @@ class FitnessPermissionsFragmentTest {
             MutableLiveData(setOf(HealthPermission.fromPermissionString(READ_STEPS)))
         }
 
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        onView(withText("Allow")).check(matches(ViewMatchers.isEnabled()))
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            onView(withText("Allow")).check(matches(ViewMatchers.isEnabled()))
+        }
     }
 
     @Test
@@ -877,60 +889,60 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        val scenario = launchFragment<FitnessPermissionsFragment>(bundleOf())
-
-        // Sorted order is Activity, Sleep for read.
-        // So Activity (1) should be expanded.
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Steps"))
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use { scenario ->
+            // Sorted order is Activity, Sleep for read.
+            // So Activity (1) should be expanded.
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Steps"))
+                    )
                 )
-            )
-        onView(withText("Steps")).check(matches(isDisplayed()))
+            onView(withText("Steps")).check(matches(isDisplayed()))
 
-        lateinit var expandablePreference: HealthToggleExpandablePreference
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as FitnessPermissionsFragment
-            expandablePreference =
-                fragment.preferenceScreen.findPreference(
-                    PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                        .toString()
-                )!!
+            lateinit var expandablePreference: HealthToggleExpandablePreference
+            scenario.onActivity { activity ->
+                val fragment =
+                    activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                        as FitnessPermissionsFragment
+                expandablePreference =
+                    fragment.preferenceScreen.findPreference(
+                        PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
+                            .toString()
+                    )!!
+            }
+            assertThat(expandablePreference.mIsExpanded).isTrue()
+
+            // Now expand Sleep category
+            clickOnRecyclerViewItemWithText("Sleep (1)")
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Sleep"))
+                    )
+                )
+            onView(withText("Sleep")).check(matches(isDisplayed()))
+
+            // Now expand Vitals category (write permissions)
+            clickOnRecyclerViewItemWithText("Vitals (1)")
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Heart rate"))
+                    )
+                )
+            onView(withText("Heart rate")).check(matches(isDisplayed()))
+
+            // Now expand Nutrition category
+            clickOnRecyclerViewItemWithText("Nutrition (1)")
+            onView(withId(androidx.preference.R.id.recycler_view))
+                .perform(
+                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+                        hasDescendant(withText("Hydration"))
+                    )
+                )
+            onView(withText("Hydration")).check(matches(isDisplayed()))
         }
-        assertThat(expandablePreference.mIsExpanded).isTrue()
-
-        // Now expand Sleep category
-        clickOnRecyclerViewItemWithText("Sleep (1)")
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Sleep"))
-                )
-            )
-        onView(withText("Sleep")).check(matches(isDisplayed()))
-
-        // Now expand Vitals category (write permissions)
-        clickOnRecyclerViewItemWithText("Vitals (1)")
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Heart rate"))
-                )
-            )
-        onView(withText("Heart rate")).check(matches(isDisplayed()))
-
-        // Now expand Nutrition category
-        clickOnRecyclerViewItemWithText("Nutrition (1)")
-        onView(withId(androidx.preference.R.id.recycler_view))
-            .perform(
-                RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                    hasDescendant(withText("Hydration"))
-                )
-            )
-        onView(withText("Hydration")).check(matches(isDisplayed()))
     }
 
     @Test
@@ -957,11 +969,11 @@ class FitnessPermissionsFragmentTest {
             )
         }
 
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            clickOnRecyclerViewItemWithText("Sleep")
 
-        clickOnRecyclerViewItemWithText("Sleep")
-
-        verify(viewModel).updateHealthPermission(sleepPermission, true)
+            verify(viewModel).updateHealthPermission(sleepPermission, true)
+        }
     }
 
     @Test
@@ -979,11 +991,11 @@ class FitnessPermissionsFragmentTest {
             )
         }
 
-        launchFragment<FitnessPermissionsFragment>(bundleOf())
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+            clickSwitchOnRecyclerViewItemWithText("Activity (1)")
 
-        clickSwitchOnRecyclerViewItemWithText("Activity (1)")
-
-        verify(viewModel).updateHealthPermissions(activityPermissions, true)
+            verify(viewModel).updateHealthPermissions(activityPermissions, true)
+        }
     }
 
     @Test
@@ -1003,31 +1015,31 @@ class FitnessPermissionsFragmentTest {
             )
         }
 
-        val scenario = launchFragment<FitnessPermissionsFragment>(bundleOf())
+        launchFragment<FitnessPermissionsFragment>(bundleOf()).use { scenario ->
+            lateinit var expandablePreference: HealthToggleExpandablePreference
+            scenario.onActivity { activity ->
+                val fragment =
+                    activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                        as FitnessPermissionsFragment
+                expandablePreference =
+                    fragment.preferenceScreen.findPreference(
+                        PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
+                            .toString()
+                    )!!
+            }
+            assertThat(expandablePreference.isChecked).isFalse()
 
-        lateinit var expandablePreference: HealthToggleExpandablePreference
-        scenario.onActivity { activity ->
-            val fragment =
-                activity.supportFragmentManager.findFragmentById(android.R.id.content)
-                    as FitnessPermissionsFragment
-            expandablePreference =
-                fragment.preferenceScreen.findPreference(
-                    PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                        .toString()
-                )!!
+            // 1. Click "Steps" to turn it on
+            clickOnRecyclerViewItemWithText("Steps")
+            assertThat(expandablePreference.isChecked).isFalse()
+
+            // 2. Click "Distance" to turn it on
+            clickOnRecyclerViewItemWithText("Distance")
+            assertThat(expandablePreference.mIsExpanded).isTrue()
+
+            // 3. Click "Steps" to turn it off again
+            clickOnRecyclerViewItemWithText("Steps")
+            assertThat(expandablePreference.isChecked).isFalse()
         }
-        assertThat(expandablePreference.isChecked).isFalse()
-
-        // 1. Click "Steps" to turn it on
-        clickOnRecyclerViewItemWithText("Steps")
-        assertThat(expandablePreference.isChecked).isFalse()
-
-        // 2. Click "Distance" to turn it on
-        clickOnRecyclerViewItemWithText("Distance")
-        assertThat(expandablePreference.mIsExpanded).isTrue()
-
-        // 3. Click "Steps" to turn it off again
-        clickOnRecyclerViewItemWithText("Steps")
-        assertThat(expandablePreference.isChecked).isFalse()
     }
 }

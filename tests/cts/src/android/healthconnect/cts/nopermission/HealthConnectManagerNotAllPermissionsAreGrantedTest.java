@@ -17,11 +17,6 @@
 package android.healthconnect.cts.nopermission;
 
 import static android.health.connect.HealthPermissions.READ_DISTANCE;
-import static android.health.connect.HealthPermissions.READ_EXERCISE;
-import static android.health.connect.HealthPermissions.READ_HEART_RATE;
-import static android.health.connect.HealthPermissions.READ_SLEEP;
-import static android.health.connect.HealthPermissions.READ_STEPS;
-import static android.health.connect.HealthPermissions.READ_TOTAL_CALORIES_BURNED;
 import static android.healthconnect.testing.cts.TestUtils.deleteRecords;
 import static android.healthconnect.testing.cts.TestUtils.getChangeLogToken;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
@@ -135,15 +130,6 @@ public class HealthConnectManagerNotAllPermissionsAreGrantedTest {
 
     @Test
     public void testGetChangeLogs_somePermissionsAreNotGranted_expectError() throws Exception {
-        mTestAppRule.revokeAllHealthPermissions();
-        mTestAppRule.grantHealthPermissions(
-                List.of(
-                        READ_STEPS,
-                        READ_DISTANCE,
-                        READ_HEART_RATE,
-                        READ_SLEEP,
-                        READ_EXERCISE,
-                        READ_TOTAL_CALORIES_BURNED));
         String token =
                 mTestApp.getChangeLogToken(
                         new ChangeLogTokenRequest.Builder()

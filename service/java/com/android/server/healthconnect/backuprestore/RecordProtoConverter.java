@@ -42,6 +42,7 @@ import android.health.connect.internal.datatypes.BodyTemperatureRecordInternal;
 import android.health.connect.internal.datatypes.BodyWaterMassRecordInternal;
 import android.health.connect.internal.datatypes.BoneMassRecordInternal;
 import android.health.connect.internal.datatypes.CervicalMucusRecordInternal;
+import android.health.connect.internal.datatypes.CyclePhasesRecordInternal;
 import android.health.connect.internal.datatypes.CyclingPedalingCadenceRecordInternal;
 import android.health.connect.internal.datatypes.DistanceRecordInternal;
 import android.health.connect.internal.datatypes.ElevationGainedRecordInternal;
@@ -102,6 +103,7 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.B
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BodyWaterMass;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BoneMass;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CervicalMucus;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CyclePhases;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CyclingPedalingCadence;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CyclingPedalingCadence.CyclingPedalingCadenceSample;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Distance;
@@ -163,7 +165,7 @@ import java.util.UUID;
  */
 public final class RecordProtoConverter {
 
-    public static final int PROTO_VERSION = 3;
+    public static final int PROTO_VERSION = 4;
 
     private final Map<Integer, Class<? extends RecordInternal<?>>> mDataTypeClassMap =
             HealthConnectMappings.getInstance().getRecordIdToInternalRecordClassMap();
@@ -929,6 +931,9 @@ public final class RecordProtoConverter {
                 instanceof CervicalMucusRecordInternal cervicalMucusRecordInternal) {
             builder.setCervicalMucus(toCervicalMucusProto(cervicalMucusRecordInternal));
         } else if (instantRecordInternal
+                instanceof CyclePhasesRecordInternal cyclePhasesRecordInternal) {
+            builder.setCyclePhases(toCyclePhasesProto(cyclePhasesRecordInternal));
+        } else if (instantRecordInternal
                 instanceof
                 HeartRateVariabilityRmssdRecordInternal heartRateVariabilityRmssdRecordInternal) {
             builder.setHeartRateVariabilityRmssd(
@@ -1049,6 +1054,15 @@ public final class RecordProtoConverter {
                 .setSensation(cervicalMucusRecordInternal.getSensation())
                 .setAppearance(cervicalMucusRecordInternal.getAppearance())
                 .build();
+    }
+
+    private static CyclePhases toCyclePhasesProto(CyclePhasesRecordInternal cyclePhasesInternal) {
+        CyclePhases.Builder builder =
+                CyclePhases.newBuilder().setPhase(cyclePhasesInternal.getPhase());
+        if (cyclePhasesInternal.getDayOfCycle() != DEFAULT_INT) {
+            builder.setDayOfCycle(cyclePhasesInternal.getDayOfCycle());
+        }
+        return builder.build();
     }
 
     private static HeartRateVariabilityRmssd toHeartRateVariabilityRmssdProto(
@@ -1786,6 +1800,10 @@ public final class RecordProtoConverter {
                     populateCervicalMucusRecordInternal(
                             instantRecordProto.getCervicalMucus(),
                             (CervicalMucusRecordInternal) instantRecordInternal);
+            case CYCLE_PHASES ->
+                    populateCyclePhasesRecordInternal(
+                            instantRecordProto.getCyclePhases(),
+                            (CyclePhasesRecordInternal) instantRecordInternal);
             case HEART_RATE_VARIABILITY_RMSSD ->
                     populateHeartRateVariabilityRmssdRecordInternal(
                             instantRecordProto.getHeartRateVariabilityRmssd(),
@@ -1903,6 +1921,14 @@ public final class RecordProtoConverter {
         cervicalMucusRecordInternal
                 .setSensation(cervicalMucusProto.getSensation())
                 .setAppearance(cervicalMucusProto.getAppearance());
+    }
+
+    private static void populateCyclePhasesRecordInternal(
+            CyclePhases cyclePhasesProto, CyclePhasesRecordInternal cyclePhasesRecordInternal) {
+        cyclePhasesRecordInternal.setPhase(cyclePhasesProto.getPhase());
+        if (cyclePhasesProto.hasDayOfCycle()) {
+            cyclePhasesRecordInternal.setDayOfCycle(cyclePhasesProto.getDayOfCycle());
+        }
     }
 
     private static void populateMenstruationFlowRecordInternal(
@@ -2027,6 +2053,7 @@ public final class RecordProtoConverter {
             case BODY_WATER_MASS -> RecordTypeIdentifier.RECORD_TYPE_BODY_WATER_MASS;
             case BONE_MASS -> RecordTypeIdentifier.RECORD_TYPE_BONE_MASS;
             case CERVICAL_MUCUS -> RecordTypeIdentifier.RECORD_TYPE_CERVICAL_MUCUS;
+            case CYCLE_PHASES -> RecordTypeIdentifier.RECORD_TYPE_CYCLE_PHASES;
             case HEART_RATE_VARIABILITY_RMSSD ->
                     RecordTypeIdentifier.RECORD_TYPE_HEART_RATE_VARIABILITY_RMSSD;
             case HEIGHT -> RecordTypeIdentifier.RECORD_TYPE_HEIGHT;

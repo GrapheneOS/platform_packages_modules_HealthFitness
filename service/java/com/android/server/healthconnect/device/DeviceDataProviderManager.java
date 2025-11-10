@@ -37,15 +37,14 @@ import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper.DeviceInfo;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
-import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 
 import java.security.SecureRandom;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 
 /**
  * Manages device data providers, handling advertisements and updating device, app, and DDP info in
@@ -63,31 +62,31 @@ public class DeviceDataProviderManager {
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final AppInfoHelper mAppInfoHelper;
     private final DeviceDataProviderHelper mDeviceDataProviderHelper;
+    private final DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
     private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
-    private final PreferenceHelper mPreferenceHelper;
+    private final SyntheticPackageNameCreator mSyntheticPackageNameCreator;
 
     @Nullable private String mStableCurrentDeviceId;
 
     // see {@link #getCurrentDeviceId}
     @Nullable private String mRuntimeCurrentDeviceId;
 
-    @VisibleForTesting
-    public static final String SYNTHETIC_PACKAGE_NAME_MASKING_SALT_PREFERENCE_KEY =
-            "synthetic_package_name_masking_salt";
-
     public DeviceDataProviderManager(
             @NonNull Context context,
             @NonNull DeviceInfoHelper deviceInfoHelper,
             @NonNull AppInfoHelper appInfoHelper,
             @NonNull DeviceDataProviderHelper deviceDataProviderHelper,
+            @NonNull DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
             @NonNull FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
-            @NonNull PreferenceHelper preferenceHelper) {
-        mContext = context;
+            @NonNull SyntheticPackageNameCreator syntheticPackageNameCreator) {
+        mContext = Objects.requireNonNull(context);
         mDeviceInfoHelper = Objects.requireNonNull(deviceInfoHelper);
         mAppInfoHelper = Objects.requireNonNull(appInfoHelper);
         mDeviceDataProviderHelper = Objects.requireNonNull(deviceDataProviderHelper);
+        mDeviceDataProviderMetadataHelper =
+                Objects.requireNonNull(deviceDataProviderMetadataHelper);
         mFitnessRecordUpsertHelper = Objects.requireNonNull(fitnessRecordUpsertHelper);
-        mPreferenceHelper = preferenceHelper;
+        mSyntheticPackageNameCreator = Objects.requireNonNull(syntheticPackageNameCreator);
     }
 
     /**
@@ -120,31 +119,14 @@ public class DeviceDataProviderManager {
      * #getCurrentDeviceId}.
      */
     public void initializeOrRefreshCurrentDeviceIds() {
-        String deviceId = getSerial() + '\u001F' + initializeOrGetMaskingSalt();
         mStableCurrentDeviceId =
-                SyntheticPackageNameCreator.createCanonical(Device.DEVICE_TYPE_PHONE, deviceId);
+                mSyntheticPackageNameCreator.createCanonical(Device.DEVICE_TYPE_PHONE, getSerial());
         mAppInfoHelper.addAppInfoIfNoAppInfoEntryExists(mStableCurrentDeviceId, null);
 
         String runtimeIdentifierSeed = String.valueOf(new SecureRandom().nextInt());
         mRuntimeCurrentDeviceId =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         Device.DEVICE_TYPE_PHONE, runtimeIdentifierSeed);
-    }
-
-    /**
-     * Initializes or retrieves the persisted masking salt for the current user. This ensures that a
-     * stable, masked identifier can be generated for the current device and reset when the device
-     * is factory reset.
-     */
-    public String initializeOrGetMaskingSalt() {
-        String salt =
-                mPreferenceHelper.getPreference(SYNTHETIC_PACKAGE_NAME_MASKING_SALT_PREFERENCE_KEY);
-        if (salt == null) {
-            salt = UUID.randomUUID().toString();
-            mPreferenceHelper.insertOrReplacePreference(
-                    SYNTHETIC_PACKAGE_NAME_MASKING_SALT_PREFERENCE_KEY, salt);
-        }
-        return salt;
     }
 
     /**
@@ -156,7 +138,7 @@ public class DeviceDataProviderManager {
         if (mRuntimeCurrentDeviceId == null) {
             throw new IllegalStateException(
                     "Current device id has not been initialized yet.Ensure to call"
-                            + " initializeCurrentDeviceIds before calling this method.");
+                            + " initializeOrRefreshCurrentDeviceIds before calling this method.");
         }
         return mRuntimeCurrentDeviceId;
     }
@@ -166,12 +148,11 @@ public class DeviceDataProviderManager {
      * restarts and only resets when the device is factory reset.
      */
     @NonNull
-    @VisibleForTesting
     public String getStableCurrentDeviceId() {
         if (mStableCurrentDeviceId == null) {
             throw new IllegalStateException(
                     "Current device id has not been initialized yet.Ensure to call"
-                            + " initializeCurrentDeviceIds before calling this method.");
+                            + " initializeOrRefreshCurrentDeviceIds before calling this method.");
         }
         return mStableCurrentDeviceId;
     }
@@ -208,7 +189,7 @@ public class DeviceDataProviderManager {
         // TODO(b/440066697): Check how we want to handle display name updates.
         long deviceInfoId = mDeviceInfoHelper.insertIfNotPresent(deviceInfo);
         String spn =
-                SyntheticPackageNameCreator.createCanonical(
+                mSyntheticPackageNameCreator.createCanonical(
                         device.getType(), advertisement.getDeviceId());
         // Synthetic package name for device + device info
         mAppInfoHelper.insertDeviceDataSourceIfNotPresent(spn, deviceInfoId);
@@ -216,6 +197,8 @@ public class DeviceDataProviderManager {
         // DDP package name + device info + data type + status
         mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
                 ddpPackageName, deviceInfoId, advertisement);
+
+        mDeviceDataProviderMetadataHelper.insertIfNotPresent(ddpPackageName);
     }
 
     /**
@@ -231,6 +214,7 @@ public class DeviceDataProviderManager {
      * @throws IllegalStateException if the generated syntheticPackageName or deviceInfoId is not
      *     valid
      */
+    // TODO(b/458002163): Check that the device data source has advertised the provided data type.
     public List<String> insertDeviceRecords(
             @NonNull String deviceId, @NonNull List<RecordInternal<?>> records) {
         Objects.requireNonNull(deviceId);
@@ -249,7 +233,7 @@ public class DeviceDataProviderManager {
         }
 
         String syntheticPackageName =
-                SyntheticPackageNameCreator.createCanonical(deviceInfo.getDeviceType(), deviceId);
+                mSyntheticPackageNameCreator.createCanonical(deviceInfo.getDeviceType(), deviceId);
         long deviceInfoId = getOrThrowDeviceInfoId(deviceInfo, syntheticPackageName);
 
         for (RecordInternal<?> record : records) {

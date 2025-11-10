@@ -18,7 +18,6 @@ package com.android.healthconnect.controller.autodelete
 import android.icu.text.MessageFormat
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResult
@@ -57,7 +56,12 @@ class AutoDeleteConfirmationDialogFragment : Hilt_AutoDeleteConfirmationDialogFr
                 ) { _, _ ->
                     setFragmentResult(
                         AUTO_DELETE_SAVED_EVENT,
-                        bundleOf(AUTO_DELETE_SAVED_EVENT to viewModel.newAutoDeleteRange.value),
+                        Bundle().apply {
+                            putSerializable(
+                                AUTO_DELETE_SAVED_EVENT,
+                                viewModel.newAutoDeleteRange.value,
+                            )
+                        },
                     )
                 }
                 .setNegativeButton(
@@ -66,7 +70,12 @@ class AutoDeleteConfirmationDialogFragment : Hilt_AutoDeleteConfirmationDialogFr
                 ) { _, _ ->
                     setFragmentResult(
                         AUTO_DELETE_CANCELLED_EVENT,
-                        bundleOf(AUTO_DELETE_CANCELLED_EVENT to viewModel.oldAutoDeleteRange.value),
+                        Bundle().apply {
+                            putSerializable(
+                                AUTO_DELETE_CANCELLED_EVENT,
+                                viewModel.oldAutoDeleteRange.value,
+                            )
+                        },
                     )
                 }
         }

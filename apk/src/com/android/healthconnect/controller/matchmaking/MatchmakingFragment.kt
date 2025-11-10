@@ -204,6 +204,13 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
             addPermissionSwitches(appData, expandablePreference)
             addPrivacyPolicyFooter(appData, expandablePreference)
         }
+
+        viewModel.grantedPermissions.observe(viewLifecycleOwner) { grantedPermissionsMap ->
+            val granted = grantedPermissionsMap[appData.metadata.packageName]?.size ?: 0
+            val total = appData.permissions.size
+            expandablePreference.summary =
+                requireContext().getString(R.string.app_permissions_granted_summary, granted, total)
+        }
     }
 
     private fun createExpandablePreference(

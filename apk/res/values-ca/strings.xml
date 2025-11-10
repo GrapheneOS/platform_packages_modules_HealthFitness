@@ -32,10 +32,8 @@
     <string name="devices_title" msgid="7548105261104504301">"Dispositius"</string>
     <string name="connected_apps_title" msgid="279942692804743223">"Permisos d\'aplicacions"</string>
     <string name="connected_apps_subtitle" msgid="8464462995533399175">"Gestiona les aplicacions i els permisos"</string>
-    <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> de <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> aplicacions té accés"</string>
-    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> de <xliff:g id="NUM_POSSIBLE_APPS">%2$s</xliff:g> aplicacions tenen accés"</string>
-    <string name="connected_apps_all_apps_connected_subtitle" msgid="3432698291862059492">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplicacions tenen accés"</string>
-    <string name="connected_apps_one_app_connected_subtitle" msgid="9095815882509754340">"<xliff:g id="NUM_APPS_CONNECTED">%1$s</xliff:g> aplicació té accés"</string>
+    <string name="only_one_connected_app_button_subtitle" msgid="1429452274331178121">"<xliff:g id="NUM_APPS_CONNECTED">%1$d</xliff:g> de <xliff:g id="NUM_POSSIBLE_APPS">%2$d</xliff:g> aplicacions té accés"</string>
+    <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"<xliff:g id="NUM_APPS_CONNECTED">%1$d</xliff:g> de <xliff:g id="NUM_POSSIBLE_APPS">%2$d</xliff:g> aplicacions tenen accés"</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{1 aplicació té accés}other{# aplicacions tenen accés}}"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Cap"</string>
     <string name="entry_details_title" msgid="590184849040247850">"Detalls de l\'entrada"</string>
@@ -875,8 +873,7 @@
     <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Beguda llarga"</string>
     <string name="serving_volume_title" msgid="4727986574534974167">"Volum de la dosi"</string>
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Grau alcohòlic volumètric adquirit"</string>
-    <!-- no translation found for notes_title (4596764711916248492) -->
-    <skip />
+    <string name="notes_title" msgid="4596764711916248492">"Notes"</string>
     <string name="details_title" msgid="8411891773854413790">"Detalls"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> min"</string>
@@ -1214,7 +1211,7 @@
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"Mostra a la botiga d\'aplicacions"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"Defineix un bloqueig de pantalla"</string>
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Per augmentar la seguretat de les teves dades de salut, configura un PIN, un patró o una contrasenya per a aquest dispositiu"</string>
-    <string name="lock_screen_banner_button" msgid="2537090011380728122">"Defineix un bloqueig de pantalla"</string>
+    <string name="lock_screen_banner_button" msgid="2537090011380728122">"Defineix bloqueig"</string>
     <string name="select_all" msgid="837499881590001166">"Selecciona-ho tot"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Les aplicacions connectades ja no podran llegir aquestes dades de Salut connectada"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Marcat"</string>

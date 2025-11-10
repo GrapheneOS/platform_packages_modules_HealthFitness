@@ -38,6 +38,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 
 import com.google.common.base.Preconditions;
 
@@ -267,6 +268,16 @@ public class DevelopmentDatabaseHelperTest {
             SQLiteDatabase db = helper.getWritableDatabase();
 
             assertThat(checkTableExists(db, DeviceDataProviderHelper.TABLE_NAME)).isTrue();
+        }
+    }
+
+    @Test
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
+    public void onUpgrade_ddpMetadataDb_schemaUpToDate() {
+        try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
+            SQLiteDatabase db = helper.getWritableDatabase();
+
+            assertThat(checkTableExists(db, DeviceDataProviderMetadataHelper.TABLE_NAME)).isTrue();
         }
     }
 }

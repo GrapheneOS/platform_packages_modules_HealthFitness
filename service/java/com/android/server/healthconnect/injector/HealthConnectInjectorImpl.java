@@ -49,6 +49,7 @@ import com.android.server.healthconnect.common.logging.DatabaseStatsCollector;
 import com.android.server.healthconnect.common.logging.UsageStatsCollector;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
@@ -69,6 +70,7 @@ import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
@@ -194,6 +196,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Nullable private final SyntheticPackageNameResolver mSyntheticPackageNameResolver;
     @Nullable private final DeviceDataProviderHelper mDeviceDataProviderHelper;
     @Nullable private final DeviceDataProviderManager mDeviceDataProviderManager;
+    @Nullable private final SyntheticPackageNameCreator mSyntheticPackageNameCreator;
+    @Nullable private final DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -620,10 +624,6 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthConnectMappings,
                                 Objects.requireNonNull(mMatchmakingDenialStateManager))
                         : builder.mMatchmakingManager;
-        mSyntheticPackageNameResolver =
-                builder.mSyntheticPackageNameResolver == null && Flags.deviceDataProvidersApi()
-                        ? new SyntheticPackageNameResolver(mAppInfoHelper)
-                        : builder.mSyntheticPackageNameResolver;
         mDeviceDataProviderHelper =
                 builder.mDeviceDataProviderHelper == null
                                 && Flags.deviceDataProvidersApi()
@@ -631,19 +631,40 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         ? new DeviceDataProviderHelper(
                                 mDatabaseHelpers, mTransactionManager, mHealthConnectMappings)
                         : builder.mDeviceDataProviderHelper;
+        mSyntheticPackageNameCreator =
+                builder.mSyntheticPackageNameCreator == null && Flags.deviceDataProvidersApi()
+                        ? new SyntheticPackageNameCreator(mPreferenceHelper)
+                        : builder.mSyntheticPackageNameCreator;
+        mDeviceDataProviderMetadataHelper =
+                builder.mDeviceDataProviderMetadataHelper == null
+                                && Flags.deviceDataProvidersApi()
+                                && AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                        ? new DeviceDataProviderMetadataHelper(
+                                mDatabaseHelpers, mTransactionManager)
+                        : builder.mDeviceDataProviderMetadataHelper;
         mDeviceDataProviderManager =
                 builder.mDeviceDataProviderManager == null
                                 && Flags.deviceDataProvidersApi()
                                 && AconfigFlagHelper.isDeviceDataProvidersEnabled()
                                 && mDeviceDataProviderHelper != null
+                                && mDeviceDataProviderMetadataHelper != null
+                                && mSyntheticPackageNameCreator != null
                         ? new DeviceDataProviderManager(
                                 hcContext,
                                 mDeviceInfoHelper,
                                 mAppInfoHelper,
                                 mDeviceDataProviderHelper,
+                                mDeviceDataProviderMetadataHelper,
                                 mFitnessRecordUpsertHelper,
-                                mPreferenceHelper)
+                                mSyntheticPackageNameCreator)
                         : builder.mDeviceDataProviderManager;
+        mSyntheticPackageNameResolver =
+                builder.mSyntheticPackageNameResolver == null
+                                && mDeviceDataProviderManager != null
+                                && Flags.deviceDataProvidersApi()
+                        ? new SyntheticPackageNameResolver(
+                                mAppInfoHelper, mDeviceDataProviderManager)
+                        : builder.mSyntheticPackageNameResolver;
     }
 
     @Override
@@ -1030,6 +1051,18 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         return mDeviceDataProviderManager;
     }
 
+    @Nullable
+    @Override
+    public SyntheticPackageNameCreator getSyntheticPackageNameCreator() {
+        return mSyntheticPackageNameCreator;
+    }
+
+    @Nullable
+    @Override
+    public DeviceDataProviderMetadataHelper getDeviceDataProviderMetadataHelper() {
+        return mDeviceDataProviderMetadataHelper;
+    }
+
     /**
      * Returns a new Builder of Health Connect Injector
      *
@@ -1116,6 +1149,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private SyntheticPackageNameResolver mSyntheticPackageNameResolver;
         @Nullable private DeviceDataProviderHelper mDeviceDataProviderHelper;
         @Nullable private DeviceDataProviderManager mDeviceDataProviderManager;
+        @Nullable private SyntheticPackageNameCreator mSyntheticPackageNameCreator;
+        @Nullable private DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
 
         private Builder(Context context) {
             mContext = context;
@@ -1548,6 +1583,20 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         public Builder setDeviceDataProviderManager(
                 DeviceDataProviderManager deviceDataProviderManager) {
             mDeviceDataProviderManager = deviceDataProviderManager;
+            return this;
+        }
+
+        /** Set fake or custom {@link SyntheticPackageNameCreator}. */
+        public Builder setSyntheticPackageNameCreator(
+                SyntheticPackageNameCreator syntheticPackageNameCreator) {
+            mSyntheticPackageNameCreator = syntheticPackageNameCreator;
+            return this;
+        }
+
+        /** Set fake or custom {@link DeviceDataProviderMetadataHelper}. */
+        public Builder setDeviceDataProviderMetadataHelper(
+                DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper) {
+            mDeviceDataProviderMetadataHelper = deviceDataProviderMetadataHelper;
             return this;
         }
 

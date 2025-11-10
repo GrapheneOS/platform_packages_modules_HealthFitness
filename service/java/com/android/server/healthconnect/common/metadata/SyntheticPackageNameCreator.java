@@ -39,6 +39,7 @@ import android.annotation.Nullable;
 import android.health.connect.datatypes.Device.DeviceType;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -71,9 +72,19 @@ import java.util.regex.Pattern;
  * <h2>Properties of SPNs</h2>
  *
  * <ul>
- *   <li><b>Deterministic and Reproducible:</b> The same input {@code deviceType} and {@code
- *       deviceId} will always produce the identical SPN across different systems.
- *   <li><b>Stateless:</b> Generation does not rely on stored state.
+ *   <li><b>Deterministic and Reproducible:</b> For a specific user and device state, the same input
+ *       will consistently produce the identical SPN. For canonical SPNs, this process relies on a
+ *       per-user random salt.
+ *       <p><b>Note:</b> This salt is regenerated during a factory reset. Consequently, SPNs
+ *       generated after a factory reset will differ from those generated before it, even with the
+ *       same inputs.
+ *   <li><b>Stateful vs. Stateless Creation:</b> The creation differs based on the SPN type:
+ *       <ul>
+ *         <li><i>Canonical SPN</i> creation is <b>stateful</b>; creation depends on the salt stored
+ *             persistently in a user's preferences.
+ *         <li><i>Masked SPN</i> creation is <b>stateless</b>; creation relies solely on the inputs
+ *             provided at the time of creation.
+ *       </ul>
  *   <li><b>Valid:</b> SPNs conform to Android package name syntax requirements, see <a
  *       href="https://developer.android.com/guide/topics/manifest/manifest-element.html#package">Android
  *       developer doc</a>
@@ -112,7 +123,7 @@ import java.util.regex.Pattern;
  * <p>The seeds differ based on the type:
  *
  * <ul>
- *   <li><b>Canonical:</b> Seeded by the {@code deviceId}.
+ *   <li><b>Canonical:</b> Seeded by a combination of {@code deviceId} and {@code salt}.
  *   <li><b>Masked:</b> Seeded by a combination of the Canonical SPN's UUID segment and the {@code
  *       callingPackageName}.
  * </ul>
@@ -128,6 +139,14 @@ import java.util.regex.Pattern;
  */
 public class SyntheticPackageNameCreator {
 
+    @VisibleForTesting
+    public static final String SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY =
+            "synthetic_package_name_salt";
+
+    // Add a unique separator between, so that "foo" + "bar and "f" + "oobar" don't create
+    // equal strings
+    private static final char UNIQUE_SEPARATOR = '\u001F';
+
     // The standard Android reverse-DNS prefix used for all SPNs.
     private static final String PACKAGE_PREFIX = "com.android.healthconnect";
 
@@ -137,6 +156,12 @@ public class SyntheticPackageNameCreator {
     private static final char MASKED_UUID_SEGMENT_PREFIX = 'j';
 
     private static final @DeviceType int FALLBACK_DEVICE_TYPE = DEVICE_TYPE_UNKNOWN;
+
+    private final PreferenceHelper mPreferenceHelper;
+
+    public SyntheticPackageNameCreator(PreferenceHelper preferenceHelper) {
+        mPreferenceHelper = preferenceHelper;
+    }
 
     /**
      * A fixed, immutable mapping from {@code @DeviceType} to their corresponding string
@@ -201,28 +226,6 @@ public class SyntheticPackageNameCreator {
     }
 
     /**
-     * Generates a Canonical (internal) Synthetic Package Name based on the device type and a unique
-     * device ID.
-     *
-     * <p>This identifier is stable and reproducible, serving as the primary key for the device
-     * within the Health Connect database.
-     *
-     * @param deviceType The type of the device (e.g., {@code DEVICE_TYPE_WATCH}).
-     * @param deviceId A unique, stable identifier for the physical device (e.g., serial number, MAC
-     *     address). If {@code null}, an empty string is used as the seed.
-     * @return The generated Canonical Synthetic Package Name.
-     */
-    @NonNull
-    public static String createCanonical(@DeviceType int deviceType, @Nullable String deviceId) {
-        String deviceSegment =
-                DEVICE_TYPE_TO_DISPLAY_NAME.getOrDefault(
-                        deviceType, DEVICE_TYPE_TO_DISPLAY_NAME.get(FALLBACK_DEVICE_TYPE));
-        String uuidSegment = CANONICAL_UUID_SEGMENT_PREFIX + getNormalizedUuid(deviceId);
-
-        return PACKAGE_PREFIX + "." + deviceSegment + "." + uuidSegment;
-    }
-
-    /**
      * Generates a Masked (application-scoped) Synthetic Package Name derived from a Canonical SPN
      * and the reading application's package name.
      *
@@ -248,13 +251,35 @@ public class SyntheticPackageNameCreator {
 
         int prefixLength = canonicalSpn.length() - UUID_HEX_LENGTH;
         String canonicalDeviceId = canonicalSpn.substring(prefixLength);
-        // Add a unique separator between, so that "foo" + "bar and "f" + "oobar" don't create
-        // the same seed
-        String maskedSeed = canonicalDeviceId + '\u001F' + callingPackageName;
+        String maskedSeed = canonicalDeviceId + UNIQUE_SEPARATOR + callingPackageName;
 
         return canonicalSpn.substring(0, prefixLength - 1) // -1 to exclude the 'd' prefix
                 + MASKED_UUID_SEGMENT_PREFIX
                 + getNormalizedUuid(maskedSeed);
+    }
+
+    /**
+     * Generates a Canonical (internal) Synthetic Package Name based on the device type, a unique
+     * device ID, and a random, per-user persisted salt stored in preferences.
+     *
+     * <p>This identifier is stable and reproducible, serving as the primary key for the device
+     * within the Health Connect database.
+     *
+     * @param deviceType The type of the device (e.g., {@code DEVICE_TYPE_WATCH}).
+     * @param deviceId A unique, stable identifier for the physical device (e.g., serial number, MAC
+     *     address). If {@code null}, an empty string is used as the seed.
+     * @return The generated Canonical Synthetic Package Name.
+     */
+    @NonNull
+    public String createCanonical(@DeviceType int deviceType, @Nullable String deviceId) {
+        String deviceSegment =
+                DEVICE_TYPE_TO_DISPLAY_NAME.getOrDefault(
+                        deviceType, DEVICE_TYPE_TO_DISPLAY_NAME.get(FALLBACK_DEVICE_TYPE));
+        String saltedDeviceId =
+                (deviceId == null ? "" : deviceId) + UNIQUE_SEPARATOR + initializeOrGetSalt();
+        String uuidSegment = CANONICAL_UUID_SEGMENT_PREFIX + getNormalizedUuid(saltedDeviceId);
+
+        return PACKAGE_PREFIX + "." + deviceSegment + "." + uuidSegment;
     }
 
     /**
@@ -286,6 +311,21 @@ public class SyntheticPackageNameCreator {
      */
     public static boolean isCanonicalSpn(@NonNull String candidate) {
         return matchesSpnPrefix(candidate, CANONICAL_UUID_SEGMENT_PREFIX);
+    }
+
+    /**
+     * Initializes or retrieves the persisted salt for the current user. This ensures that stable
+     * identifiers can be generated that change upon factory resets.
+     */
+    @NonNull
+    public String initializeOrGetSalt() {
+        String salt = mPreferenceHelper.getPreference(SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY);
+        if (salt == null) {
+            salt = UUID.randomUUID().toString();
+            mPreferenceHelper.insertOrReplacePreference(
+                    SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY, salt);
+        }
+        return salt;
     }
 
     /**

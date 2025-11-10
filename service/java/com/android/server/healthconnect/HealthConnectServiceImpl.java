@@ -186,6 +186,7 @@ import android.util.ArrayMap;
 import android.util.Pair;
 import android.util.Slog;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.modules.utils.build.SdkLevel;
 import com.android.server.appop.AppOpsManagerLocal;
@@ -548,7 +549,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      * @param recordsParcel parcel for list of records to be inserted.
      * @param callback Callback to receive result of performing this operation. The keys returned in
      *     {@link InsertRecordsResponseParcel} are the unique IDs of the input records. The values
-     *     are in same order as {@code record}. In case of an error or a permission failure the
+     *     are in same order as {@code record}. In case of an error or a permission failure in the
      *     HealthConnect service, {@link IInsertRecordsResponseCallback#onError} will be invoked
      *     with a {@link HealthConnectExceptionParcel}.
      */
@@ -3316,6 +3317,83 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             new HashSet<>(advertisements), packageName);
 
                     tryAndReturnResult(callback, logger);
+                },
+                logger,
+                errorCallback,
+                uid,
+                /* isController= */ false);
+    }
+
+    /**
+     * Inserts {@code recordsParcel} from a device data type source into the HealthConnect database.
+     *
+     * <p>Before this method is called, {@link #advertiseDeviceDataSources} must have been called.
+     *
+     * @param deviceId The identifier for the device that is the source of this data. This must
+     *     match the {@code deviceId} used in {@link DeviceDataAdvertisement} in the latest call to
+     *     {@link #advertiseDeviceDataSources}.
+     * @param recordsParcel Parcel for list of records to be inserted.
+     * @param callback Callback to receive result of performing this operation. The keys returned in
+     *     {@link InsertRecordsResponseParcel} are the unique IDs of the input records. The values
+     *     are in same order as {@code record}. In case of an error or a permission failure in the
+     *     HealthConnect service, {@link IInsertRecordsResponseCallback#onError} will be invoked
+     *     with a {@link HealthConnectExceptionParcel}.
+     */
+    @Override
+    public void insertDeviceRecords(
+            AttributionSource attributionSource,
+            String deviceId,
+            RecordsParcel recordsParcel,
+            IInsertRecordsResponseCallback callback) {
+        checkParamsNonNull(attributionSource, recordsParcel, callback);
+
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        String packageName = attributionSource.getPackageName();
+        // TODO(b/455514553): Use specific API method for logging.
+        final HealthConnectServiceLogger.Builder logger =
+                new HealthConnectServiceLogger.Builder(
+                                /* holdsDataManagementPermission= */ false, API_METHOD_UNKNOWN)
+                        .setHealthFitnessStatsLog(mStatsLog)
+                        .setPackageName(packageName);
+        ErrorCallback errorCallback = callback::onError;
+
+        scheduleLoggingHealthDataApiErrors(
+                () -> {
+                    enforceIsForegroundUser(userHandle);
+                    verifyPackageNameFromUid(uid, attributionSource);
+                    enforceMemoryRateLimit(
+                            recordsParcel.getRecordsSize(), recordsParcel.getRecordsChunkSize());
+                    final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
+                    logger.setNumberOfRecords(recordInternals.size());
+                    throwExceptionIfDataSyncInProgress();
+                    tryAcquireApiCallQuota(
+                            uid,
+                            QuotaCategory.QUOTA_CATEGORY_WRITE,
+                            mAppOpsManagerLocal.isUidInForeground(uid),
+                            logger,
+                            recordsParcel.getRecordsChunkSize());
+
+                    if (!Flags.deviceDataProvidersApi()
+                            || !AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                        throw new UnsupportedOperationException(
+                                "insertDeviceRecords is not supported");
+                    }
+
+                    DeviceDataProviderManager deviceDataProviderManager =
+                            requireNonNull(mDeviceDataProviderManager);
+                    if (!deviceDataProviderManager.isPermittedToProvideDeviceData(
+                            requireNonNull(packageName), uid, pid)) {
+                        throw new SecurityException(
+                                "Caller is not permitted to provide device data");
+                    }
+
+                    List<String> uuids =
+                            deviceDataProviderManager.insertDeviceRecords(
+                                    deviceId, recordInternals);
+                    tryAndReturnResult(callback, uuids, logger);
+                    // TODO(b/455514553): Add RecordType specific upsert metrics
                 },
                 logger,
                 errorCallback,

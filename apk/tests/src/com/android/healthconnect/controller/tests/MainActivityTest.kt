@@ -316,11 +316,11 @@ class MainActivityTest {
                 Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-            launchActivityForResult<MainActivity>(startActivityIntent)
-
-            checkTextIsDisplayed("Resume integration")
-            checkTextIsDisplayed("Your health apps")
-            checkTextIsDisplayed("Your health data")
+            launchActivityForResult<MainActivity>(startActivityIntent).use {
+                checkTextIsDisplayed("Resume integration")
+                checkTextIsDisplayed("Your health apps")
+                checkTextIsDisplayed("Your health data")
+            }
         }
 
     @Test
@@ -402,11 +402,11 @@ class MainActivityTest {
                 Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-            launchActivityForResult<MainActivity>(startActivityIntent)
-
-            checkTextIsDisplayed("Resume integration")
-            checkTextIsDisplayed("Your health apps")
-            checkTextIsDisplayed("Your health data")
+            launchActivityForResult<MainActivity>(startActivityIntent).use {
+                checkTextIsDisplayed("Resume integration")
+                checkTextIsDisplayed("Your health apps")
+                checkTextIsDisplayed("Your health data")
+            }
         }
 
     @Test
@@ -489,11 +489,11 @@ class MainActivityTest {
                 Intent.makeMainActivity(ComponentName(context, MainActivity::class.java))
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
-            launchActivityForResult<MainActivity>(startActivityIntent)
-
-            checkTextIsDisplayed("Resume integration")
-            checkTextIsDisplayed("Your health apps")
-            checkTextIsDisplayed("Your health data")
+            launchActivityForResult<MainActivity>(startActivityIntent).use {
+                checkTextIsDisplayed("Resume integration")
+                checkTextIsDisplayed("Your health apps")
+                checkTextIsDisplayed("Your health data")
+            }
         }
 
     @After

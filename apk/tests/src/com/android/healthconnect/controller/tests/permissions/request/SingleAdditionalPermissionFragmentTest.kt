@@ -101,23 +101,24 @@ class SingleAdditionalPermissionFragmentTest {
             )
         }
 
-        launchFragment<SingleAdditionalPermissionFragment>(bundleOf())
-
-        onView(withText("Allow $TEST_APP_NAME to access past data?")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you allow, this app can access Health Connect data added before October 20, 2022."
+        launchFragment<SingleAdditionalPermissionFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access past data?"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you allow, this app can access Health Connect data added before October 20, 2022."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("$TEST_APP_NAME can already access past data for your medical records"))
-            .check(doesNotExist())
+                .check(matches(isDisplayed()))
+            onView(withText("$TEST_APP_NAME can already access past data for your medical records"))
+                .check(doesNotExist())
 
-        verify(healthConnectLogger, atLeast(1))
-            .setPageId(PageName.REQUEST_HISTORY_READ_PERMISSION_PAGE)
-        verify(healthConnectLogger, times(0))
-            .setPageId(PageName.REQUEST_BACKGROUND_READ_PERMISSION_PAGE)
-        verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger, atLeast(1))
+                .setPageId(PageName.REQUEST_HISTORY_READ_PERMISSION_PAGE)
+            verify(healthConnectLogger, times(0))
+                .setPageId(PageName.REQUEST_BACKGROUND_READ_PERMISSION_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+        }
     }
 
     @Test
@@ -133,17 +134,18 @@ class SingleAdditionalPermissionFragmentTest {
             )
         }
 
-        launchFragment<SingleAdditionalPermissionFragment>(bundleOf())
-
-        onView(withText("Allow $TEST_APP_NAME to access past data?")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you allow, this app can access fitness and wellness data added before October 20, 2022."
+        launchFragment<SingleAdditionalPermissionFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access past data?"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you allow, this app can access fitness and wellness data added before October 20, 2022."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("$TEST_APP_NAME can already access past data for your medical records"))
-            .check(doesNotExist())
+                .check(matches(isDisplayed()))
+            onView(withText("$TEST_APP_NAME can already access past data for your medical records"))
+                .check(doesNotExist())
+        }
     }
 
     @Test
@@ -159,17 +161,18 @@ class SingleAdditionalPermissionFragmentTest {
             )
         }
 
-        launchFragment<SingleAdditionalPermissionFragment>(bundleOf())
-
-        onView(withText("Allow $TEST_APP_NAME to access past data?")).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you allow, this app can access fitness and wellness data added before October 20, 2022."
+        launchFragment<SingleAdditionalPermissionFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access past data?"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you allow, this app can access fitness and wellness data added before October 20, 2022."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
-        onView(withText("$TEST_APP_NAME can already access past data for your medical records"))
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+            onView(withText("$TEST_APP_NAME can already access past data for your medical records"))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -185,21 +188,22 @@ class SingleAdditionalPermissionFragmentTest {
             )
         }
 
-        launchFragment<SingleAdditionalPermissionFragment>(bundleOf())
-        onView(withText("Allow $TEST_APP_NAME to access data in the background?"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you allow, this app can access Health Connect data when you're not using the app."
+        launchFragment<SingleAdditionalPermissionFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access data in the background?"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you allow, this app can access Health Connect data when you're not using the app."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
 
-        verify(healthConnectLogger, atLeast(1))
-            .setPageId(PageName.REQUEST_BACKGROUND_READ_PERMISSION_PAGE)
-        verify(healthConnectLogger, times(0))
-            .setPageId(PageName.REQUEST_HISTORY_READ_PERMISSION_PAGE)
-        verify(healthConnectLogger).logPageImpression()
+            verify(healthConnectLogger, atLeast(1))
+                .setPageId(PageName.REQUEST_BACKGROUND_READ_PERMISSION_PAGE)
+            verify(healthConnectLogger, times(0))
+                .setPageId(PageName.REQUEST_HISTORY_READ_PERMISSION_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+        }
     }
 
     @Test
@@ -215,15 +219,16 @@ class SingleAdditionalPermissionFragmentTest {
             )
         }
 
-        launchFragment<SingleAdditionalPermissionFragment>(bundleOf())
-        onView(withText("Allow $TEST_APP_NAME to access data in the background?"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you allow, this app can access fitness and wellness data when you're not using the app."
+        launchFragment<SingleAdditionalPermissionFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access data in the background?"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you allow, this app can access fitness and wellness data when you're not using the app."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -239,15 +244,16 @@ class SingleAdditionalPermissionFragmentTest {
             )
         }
 
-        launchFragment<SingleAdditionalPermissionFragment>(bundleOf())
-        onView(withText("Allow $TEST_APP_NAME to access data in the background?"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you allow, this app can access medical records when you're not using the app."
+        launchFragment<SingleAdditionalPermissionFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access data in the background?"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you allow, this app can access medical records when you're not using the app."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -263,15 +269,16 @@ class SingleAdditionalPermissionFragmentTest {
             )
         }
 
-        launchFragment<SingleAdditionalPermissionFragment>(bundleOf())
-        onView(withText("Allow $TEST_APP_NAME to access data in the background?"))
-            .check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "If you allow, this app can access fitness and wellness data and medical records when you're not using the app."
+        launchFragment<SingleAdditionalPermissionFragment>(bundleOf()).use {
+            onView(withText("Allow $TEST_APP_NAME to access data in the background?"))
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "If you allow, this app can access fitness and wellness data and medical records when you're not using the app."
+                    )
                 )
-            )
-            .check(matches(isDisplayed()))
+                .check(matches(isDisplayed()))
+        }
     }
 
     // TODO

@@ -48,6 +48,7 @@ import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGet
 import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 import static android.healthconnect.testing.cts.HealthConnectReceiver.outcomeExecutor;
 import static android.healthconnect.testing.shared.DataFactory.DEFAULT_LONG;
+import static android.healthconnect.testing.shared.DataFactory.buildDevice;
 import static android.healthconnect.testing.shared.DataFactory.getDataOrigin;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
@@ -60,6 +61,7 @@ import static java.util.Map.entry;
 import static java.util.Objects.requireNonNull;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.UiAutomation;
 import android.content.Context;
 import android.content.Intent;
@@ -72,6 +74,7 @@ import android.health.connect.ApplicationInfoResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
+import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissionCategory;
 import android.health.connect.InsertRecordsResponse;
@@ -103,6 +106,7 @@ import android.health.connect.datatypes.BoneMassRecord;
 import android.health.connect.datatypes.CervicalMucusRecord;
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.ElevationGainedRecord;
 import android.health.connect.datatypes.ExerciseSessionRecord;
@@ -135,6 +139,8 @@ import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
 import android.health.connect.datatypes.Vo2MaxRecord;
 import android.health.connect.datatypes.WeightRecord;
 import android.health.connect.datatypes.WheelchairPushesRecord;
+import android.health.connect.device.DeviceDataAdvertisement;
+import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationException;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
@@ -171,6 +177,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public final class TestUtils {
+
     private static final String TAG = "HCTestUtils";
 
     private static final Map<Integer, String> DEVICE_TYPE_TO_DISPLAY_NAME =
@@ -1184,6 +1191,94 @@ public final class TestUtils {
      */
     public static boolean isMaskedSyntheticPackageName(String input) {
         return MASKED_SPN_PATTERN.matcher(input).matches();
+    }
+
+    /**
+     * Calls {@link #advertiseDeviceDataSources} for the provided {#code dataType} and default phone
+     * device with the provided {@code deviceId}.
+     */
+    @SuppressLint("MissingPermission")
+    public static void advertiseDevice(String deviceId, Class<? extends Record> dataType)
+            throws InterruptedException {
+        Device device = buildDevice();
+        advertiseDevice(deviceId, device, dataType);
+    }
+
+    /**
+     * Calls {@link #advertiseDeviceDataSources} for the provided {#code dataType}, {@code device}
+     * and {@code deviceId}.
+     */
+    @SuppressLint("MissingPermission")
+    public static void advertiseDevice(
+            String deviceId, Device device, Class<? extends Record> dataType)
+            throws InterruptedException {
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(dataType)
+                                .setAvailable(true)
+                                .build());
+        advertiseDevice(deviceId, device, deviceDataTypeAdvertisements);
+    }
+
+    /**
+     * Calls {@link #advertiseDeviceDataSources} for the provided {#code
+     * deviceDataTypeAdvertisements}, {@code device} and {@code deviceId}.
+     */
+    @SuppressLint("MissingPermission")
+    public static void advertiseDevice(
+            String deviceId,
+            Device device,
+            Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements)
+            throws InterruptedException {
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);
+        HealthConnectReceiver<Void> advertiseReceiver = new HealthConnectReceiver<>();
+
+        advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), advertiseReceiver);
+        advertiseReceiver.verifyNoExceptionOrThrow();
+    }
+
+    /**
+     * Calls {@link HealthConnectManager#advertiseDeviceDataSources} with shell permission identity
+     * and device data provider permissions.
+     */
+    @SuppressLint("MissingPermission")
+    public static void advertiseDeviceDataSources(
+            Set<DeviceDataAdvertisement> advertisement,
+            Executor executor,
+            TestOutcomeReceiver<Void, HealthConnectException> callback)
+            throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+
+        try {
+            getHealthConnectManager().advertiseDeviceDataSources(advertisement, executor, callback);
+            callback.awaitUnchecked();
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
+    }
+
+    /**
+     * Calls {@link HealthConnectManager#insertDeviceRecords} with shell permission identity and
+     * device data provider permissions.
+     */
+    @SuppressLint("MissingPermission")
+    public static void insertDeviceRecords(
+            String deviceId,
+            List<Record> records,
+            Executor executor,
+            TestOutcomeReceiver<InsertRecordsResponse, HealthConnectException> callback)
+            throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+
+        try {
+            getHealthConnectManager().insertDeviceRecords(deviceId, records, executor, callback);
+            callback.awaitUnchecked();
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
     }
 
     private static Field findFieldUsingReflection(Class<?> type, String fieldName) {

@@ -37,6 +37,7 @@ import static android.healthfitness.api.ApiStatus.SUCCESS;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
+import android.cts.statsdatom.lib.AtomTestUtils;
 import android.cts.statsdatom.lib.ConfigUtils;
 import android.cts.statsdatom.lib.DeviceUtils;
 import android.cts.statsdatom.lib.ReportUtils;
@@ -54,6 +55,7 @@ import com.android.tradefed.build.IBuildInfo;
 import com.android.tradefed.testtype.DeviceJUnit4ClassRunner;
 import com.android.tradefed.testtype.IBuildReceiver;
 import com.android.tradefed.testtype.junit4.BaseHostJUnit4Test;
+import com.android.tradefed.util.RunUtil;
 
 import com.google.protobuf.ExtensionRegistry;
 
@@ -607,6 +609,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
 
         DeviceUtils.runDeviceTests(
                 getDevice(), TEST_APP_PKG_NAME, SERVICE_LOG_TESTS_HELPER, testName);
+        RunUtil.getDefault().sleep(AtomTestUtils.WAIT_TIME_LONG);
         ExtensionRegistry registry = ExtensionRegistry.newInstance();
         ApiExtensionAtoms.registerAllExtensions(registry);
 

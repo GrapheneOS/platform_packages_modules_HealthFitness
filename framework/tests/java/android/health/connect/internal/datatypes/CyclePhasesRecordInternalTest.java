@@ -23,6 +23,9 @@ import static android.health.connect.datatypes.CyclePhasesRecord.PHASE_UNKNOWN;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assume.assumeTrue;
+
+import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.platform.test.annotations.EnableFlags;
@@ -30,14 +33,22 @@ import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-@EnableFlags({Flags.FLAG_CYCLE_PHASES_FLAG})
+@EnableFlags({
+    Flags.FLAG_CYCLE_PHASES_FLAG,
+    Flags.FLAG_CYCLE_PHASES_DB,
+    Flags.FLAG_SMOKING_DB,
+    Flags.FLAG_SYMPTOMS_DB,
+    Flags.FLAG_ALCOHOL_CONSUMPTION_DB
+})
 public class CyclePhasesRecordInternalTest {
     @Rule public final SetFlagsRule mSetFlagRule = new SetFlagsRule();
 
@@ -46,6 +57,14 @@ public class CyclePhasesRecordInternalTest {
             new AssumptionCheckerRule(
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
+
+    @Before
+    public void setup() {
+        assumeTrue(
+                "Skipping tests because cycle phases is disabled",
+                AconfigFlagHelper.isCyclePhasesEnabled());
+        HealthConnectMappings.resetInstanceForTesting();
+    }
 
     @Test
     public void testPhase_setterAndGetter() {

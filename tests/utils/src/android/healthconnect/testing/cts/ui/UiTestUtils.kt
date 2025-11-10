@@ -127,6 +127,13 @@ object UiTestUtils {
         waitDisplayed(selector = By.textContains("Allowed access"), waitTimeout = waitTimeout)
     }
 
+    fun waitMatchmakingActivityDisplayed(waitTimeout: Duration = WAIT_TIMEOUT) {
+        waitDisplayed(
+            selector = By.textContains("Share data between apps"),
+            waitTimeout = waitTimeout,
+        )
+    }
+
     /**
      * Returns an object if it's visible on the screen or returns null otherwise.
      *

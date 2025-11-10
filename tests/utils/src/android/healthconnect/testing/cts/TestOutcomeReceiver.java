@@ -107,6 +107,15 @@ public class TestOutcomeReceiver<T, E extends RuntimeException> implements Outco
         }
     }
 
+    /**
+     * Waits until a result or error has been received.
+     *
+     * @throws InterruptedException if this is interrupted before any response received
+     */
+    public void awaitUnchecked() throws InterruptedException {
+        assertThat(mLatch.await(DEFAULT_TIMEOUT_SECONDS, TimeUnit.SECONDS)).isTrue();
+    }
+
     @Override
     public void onResult(T result) {
         mResponse.set(result);

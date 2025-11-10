@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect;
 
+import static java.util.Objects.requireNonNull;
+
 import android.annotation.Nullable;
 import android.content.Context;
 import android.health.connect.ratelimiter.RateLimiter;
@@ -38,8 +40,6 @@ import com.android.server.healthconnect.onboarding.OnboardingNotificationJob;
 import com.android.server.healthconnect.permission.HealthConnectPermissionsChangedListener;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.telemetry.TelemetryJobService;
-
-import java.util.Objects;
 
 /**
  * HealthConnect system service scaffold.
@@ -182,7 +182,7 @@ public class HealthConnectManagerService extends SystemService {
     // triggered then.
     @Override
     public void onUserUnlocked(TargetUser user) {
-        Objects.requireNonNull(user);
+        requireNonNull(user);
         if (!user.getUserHandle().equals(mCurrentForegroundUser)) {
             // Ignore unlocking requests for non-foreground users
             return;
@@ -195,7 +195,7 @@ public class HealthConnectManagerService extends SystemService {
     public boolean isUserSupported(TargetUser user) {
         UserManager userManager =
                 getUserContext(mContext, user.getUserHandle()).getSystemService(UserManager.class);
-        return !(Objects.requireNonNull(userManager).isProfile());
+        return !(requireNonNull(userManager).isProfile());
     }
 
     private void setupForCurrentForegroundUser() {
@@ -327,15 +327,29 @@ public class HealthConnectManagerService extends SystemService {
                         }
                     });
         }
+
+        if (Flags.deviceDataProvidersApi()) {
+            threadScheduler.scheduleInternalTask(
+                    () -> {
+                        try {
+                            requireNonNull(mHealthConnectInjector.getSyntheticPackageNameCreator());
+                            mHealthConnectInjector
+                                    .getSyntheticPackageNameCreator()
+                                    .initializeOrGetSalt();
+                        } catch (Exception e) {
+                            Slog.e(TAG, "Failed to initialize salt for synthetic package names", e);
+                        }
+                    });
+        }
+
         if (Flags.deviceDataProvidersApi() && AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
             threadScheduler.scheduleInternalTask(
                     () -> {
                         try {
-                            if (mHealthConnectInjector.getDeviceDataProviderManager() != null) {
-                                mHealthConnectInjector
-                                        .getDeviceDataProviderManager()
-                                        .initializeOrRefreshCurrentDeviceIds();
-                            }
+                            requireNonNull(mHealthConnectInjector.getDeviceDataProviderManager());
+                            mHealthConnectInjector
+                                    .getDeviceDataProviderManager()
+                                    .initializeOrRefreshCurrentDeviceIds();
                         } catch (Exception e) {
                             Slog.e(TAG, "Failed to initialize current device id.", e);
                         }

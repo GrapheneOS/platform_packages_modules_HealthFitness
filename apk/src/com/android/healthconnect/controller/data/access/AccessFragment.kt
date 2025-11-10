@@ -18,7 +18,6 @@ package com.android.healthconnect.controller.data.access
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -185,7 +184,7 @@ class AccessFragment : Hilt_AccessFragment() {
                                 )
                                 parentFragmentManager.setFragmentResult(
                                     START_DELETION_ENTRIES_AND_ACCESS_KEY,
-                                    bundleOf(),
+                                    Bundle(),
                                 )
                             }
                         }
@@ -222,10 +221,10 @@ class AccessFragment : Hilt_AccessFragment() {
         findNavController()
             .navigate(
                 navigationId,
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to appAccessMetadata.appMetadata.packageName,
-                    EXTRA_APP_NAME to appAccessMetadata.appMetadata.appName,
-                ),
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, appAccessMetadata.appMetadata.packageName)
+                    putString(EXTRA_APP_NAME, appAccessMetadata.appMetadata.appName)
+                },
             )
     }
 }

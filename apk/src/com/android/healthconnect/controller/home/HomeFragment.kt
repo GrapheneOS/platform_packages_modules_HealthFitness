@@ -663,8 +663,8 @@ class HomeFragment : Hilt_HomeFragment() {
                 getString(
                     if (numAllowedApps == 1) R.string.only_one_connected_app_button_subtitle
                     else R.string.connected_apps_button_subtitle,
-                    numAllowedApps.toString(),
-                    numTotalApps.toString(),
+                    numAllowedApps,
+                    numTotalApps,
                 )
         }
     }
