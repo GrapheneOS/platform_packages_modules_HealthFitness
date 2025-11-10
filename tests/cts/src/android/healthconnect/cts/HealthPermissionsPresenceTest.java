@@ -18,6 +18,7 @@ package android.healthconnect.cts;
 
 import static android.health.connect.HealthPermissions.HEALTH_PERMISSION_GROUP;
 import static android.health.connect.HealthPermissions.READ_ACTIVE_CALORIES_BURNED;
+import static android.health.connect.HealthPermissions.READ_ALCOHOL_CONSUMPTION;
 import static android.health.connect.HealthPermissions.READ_BASAL_BODY_TEMPERATURE;
 import static android.health.connect.HealthPermissions.READ_BASAL_METABOLIC_RATE;
 import static android.health.connect.HealthPermissions.READ_BLOOD_GLUCOSE;
@@ -40,6 +41,7 @@ import static android.health.connect.HealthPermissions.READ_HYDRATION;
 import static android.health.connect.HealthPermissions.READ_INTERMENSTRUAL_BLEEDING;
 import static android.health.connect.HealthPermissions.READ_LEAN_BODY_MASS;
 import static android.health.connect.HealthPermissions.READ_MENSTRUATION;
+import static android.health.connect.HealthPermissions.READ_NICOTINE_INTAKE;
 import static android.health.connect.HealthPermissions.READ_NUTRITION;
 import static android.health.connect.HealthPermissions.READ_OVULATION_TEST;
 import static android.health.connect.HealthPermissions.READ_OXYGEN_SATURATION;
@@ -115,6 +117,7 @@ import static android.health.connect.HealthPermissions.READ_VO2_MAX;
 import static android.health.connect.HealthPermissions.READ_WEIGHT;
 import static android.health.connect.HealthPermissions.READ_WHEELCHAIR_PUSHES;
 import static android.health.connect.HealthPermissions.WRITE_ACTIVE_CALORIES_BURNED;
+import static android.health.connect.HealthPermissions.WRITE_ALCOHOL_CONSUMPTION;
 import static android.health.connect.HealthPermissions.WRITE_BASAL_BODY_TEMPERATURE;
 import static android.health.connect.HealthPermissions.WRITE_BASAL_METABOLIC_RATE;
 import static android.health.connect.HealthPermissions.WRITE_BLOOD_GLUCOSE;
@@ -136,6 +139,7 @@ import static android.health.connect.HealthPermissions.WRITE_HYDRATION;
 import static android.health.connect.HealthPermissions.WRITE_INTERMENSTRUAL_BLEEDING;
 import static android.health.connect.HealthPermissions.WRITE_LEAN_BODY_MASS;
 import static android.health.connect.HealthPermissions.WRITE_MENSTRUATION;
+import static android.health.connect.HealthPermissions.WRITE_NICOTINE_INTAKE;
 import static android.health.connect.HealthPermissions.WRITE_NUTRITION;
 import static android.health.connect.HealthPermissions.WRITE_OVULATION_TEST;
 import static android.health.connect.HealthPermissions.WRITE_OXYGEN_SATURATION;
@@ -211,6 +215,8 @@ import static android.health.connect.HealthPermissions.WRITE_VO2_MAX;
 import static android.health.connect.HealthPermissions.WRITE_WEIGHT;
 import static android.health.connect.HealthPermissions.WRITE_WHEELCHAIR_PUSHES;
 
+import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION;
+import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -238,10 +244,7 @@ import java.util.Set;
  * Configuration test to check that all health permissions are defined.
  */
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled(
-        value = {
-            FLAG_SYMPTOMS,
-        })
+@RequiresFlagsEnabled(value = {FLAG_SYMPTOMS, FLAG_SMOKING, FLAG_ALCOHOL_CONSUMPTION})
 public class HealthPermissionsPresenceTest {
 
     @Rule
@@ -251,6 +254,7 @@ public class HealthPermissionsPresenceTest {
     private static final Set<String> HEALTH_PERMISSIONS =
             Set.of(
                     READ_ACTIVE_CALORIES_BURNED,
+                    READ_ALCOHOL_CONSUMPTION,
                     READ_BASAL_BODY_TEMPERATURE,
                     READ_BASAL_METABOLIC_RATE,
                     READ_BLOOD_GLUCOSE,
@@ -273,6 +277,7 @@ public class HealthPermissionsPresenceTest {
                     READ_INTERMENSTRUAL_BLEEDING,
                     READ_LEAN_BODY_MASS,
                     READ_MENSTRUATION,
+                    READ_NICOTINE_INTAKE,
                     READ_NUTRITION,
                     READ_OVULATION_TEST,
                     READ_OXYGEN_SATURATION,
@@ -348,6 +353,7 @@ public class HealthPermissionsPresenceTest {
                     READ_WEIGHT,
                     READ_WHEELCHAIR_PUSHES,
                     WRITE_ACTIVE_CALORIES_BURNED,
+                    WRITE_ALCOHOL_CONSUMPTION,
                     WRITE_BASAL_BODY_TEMPERATURE,
                     WRITE_BASAL_METABOLIC_RATE,
                     WRITE_BLOOD_GLUCOSE,
@@ -369,6 +375,7 @@ public class HealthPermissionsPresenceTest {
                     WRITE_INTERMENSTRUAL_BLEEDING,
                     WRITE_LEAN_BODY_MASS,
                     WRITE_MENSTRUATION,
+                    WRITE_NICOTINE_INTAKE,
                     WRITE_NUTRITION,
                     WRITE_OVULATION_TEST,
                     WRITE_OXYGEN_SATURATION,
