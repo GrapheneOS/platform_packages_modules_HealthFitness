@@ -3849,7 +3849,6 @@ public class HealthConnectServiceImplTest {
                 mock(IInsertRecordsResponseCallback.Stub.class);
         when(mPreferenceHelper.getPreference(eq(SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY)))
                 .thenReturn(UUID.randomUUID().toString());
-        advertiseStepsDeviceDataSource(deviceId, device);
 
         mHealthConnectService.insertDeviceRecords(
                 mAttributionSource, deviceId, recordsParcel, callback);
