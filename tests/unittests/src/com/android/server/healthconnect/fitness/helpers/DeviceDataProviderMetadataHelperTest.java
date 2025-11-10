@@ -77,7 +77,7 @@ public class DeviceDataProviderMetadataHelperTest {
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
-        mTransactionManager = healthConnectInjector.getTransactionManager();
+        mTransactionManager = Mockito.spy(healthConnectInjector.getTransactionManager());
         mDeviceDataProviderMetadataHelper =
                 new DeviceDataProviderMetadataHelper(
                         healthConnectInjector.getDatabaseHelpers(), mTransactionManager);
@@ -166,11 +166,9 @@ public class DeviceDataProviderMetadataHelperTest {
     @Test
     public void withExistingEntry_insertIfNotPresent_returnsEarly() {
         mDeviceDataProviderMetadataHelper.insertIfNotPresent(TEST_DDP_PACKAGE);
-
-        TransactionManager spiedTransactionManager = Mockito.spy(mTransactionManager);
         mDeviceDataProviderMetadataHelper.insertIfNotPresent(TEST_DDP_PACKAGE);
 
-        verify(spiedTransactionManager, times(0)).read(any());
+        verify(mTransactionManager, times(1)).read(any());
     }
 
     @Test
