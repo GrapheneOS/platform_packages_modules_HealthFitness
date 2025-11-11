@@ -618,3 +618,14 @@ flag {
     is_fixed_read_only: false
     is_exported: false
 }
+
+flag {
+    # This flag should NEVER be turned on in prod / release for real users.
+    # This flag turns on development only features to dump database content for debugging.
+    name: "ddp_debug_util"
+    namespace: "health_fitness_aconfig"
+    description: "Flag for adding device data provider debugging information in device dumps."
+    bug: "452314599"
+    is_fixed_read_only: false
+    is_exported: false
+}
