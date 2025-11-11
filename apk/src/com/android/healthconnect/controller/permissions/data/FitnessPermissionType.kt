@@ -50,7 +50,7 @@ enum class FitnessPermissionType(val category: Int) : HealthPermissionType {
 
     // CYCLE_TRACKING
     CERVICAL_MUCUS(HealthPermissionCategory.CERVICAL_MUCUS),
-    CYCLE_PHASES(HealthPermissionCategory.CYCLE_PHASES),
+    MENSTRUAL_CYCLE_PHASE(HealthPermissionCategory.MENSTRUAL_CYCLE_PHASE),
     MENSTRUATION(HealthPermissionCategory.MENSTRUATION),
     OVULATION_TEST(HealthPermissionCategory.OVULATION_TEST),
     SEXUAL_ACTIVITY(HealthPermissionCategory.SEXUAL_ACTIVITY),
@@ -193,7 +193,8 @@ fun fromHealthPermissionCategory(healthPermissionCategory: Int): HealthPermissio
         HealthPermissionCategory.WEIGHT -> FitnessPermissionType.WEIGHT
         // CYCLE_TRACKING
         HealthPermissionCategory.CERVICAL_MUCUS -> FitnessPermissionType.CERVICAL_MUCUS
-        HealthPermissionCategory.CYCLE_PHASES -> FitnessPermissionType.CYCLE_PHASES
+        HealthPermissionCategory.MENSTRUAL_CYCLE_PHASE ->
+            FitnessPermissionType.MENSTRUAL_CYCLE_PHASE
         HealthPermissionCategory.MENSTRUATION -> FitnessPermissionType.MENSTRUATION
         HealthPermissionCategory.OVULATION_TEST -> FitnessPermissionType.OVULATION_TEST
         HealthPermissionCategory.SEXUAL_ACTIVITY -> FitnessPermissionType.SEXUAL_ACTIVITY

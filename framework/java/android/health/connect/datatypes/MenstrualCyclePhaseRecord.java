@@ -28,7 +28,7 @@ import android.annotation.FlaggedApi;
 import android.annotation.IntDef;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
-import android.health.connect.internal.datatypes.CyclePhasesRecordInternal;
+import android.health.connect.internal.datatypes.MenstrualCyclePhaseRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 
 import java.lang.annotation.Retention;
@@ -55,8 +55,8 @@ import java.util.Set;
  */
 // TODO(b/452289293): Unhide this when API implementation is done
 @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_CYCLE_PHASES)
-public final class CyclePhasesRecord extends IntervalRecord {
+@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_MENSTRUAL_CYCLE_PHASE)
+public final class MenstrualCyclePhaseRecord extends IntervalRecord {
     /** Represents an unknown menstrual cycle phase. */
     public static final int PHASE_UNKNOWN = 0;
 
@@ -123,7 +123,7 @@ public final class CyclePhasesRecord extends IntervalRecord {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        CyclePhasesRecord that = (CyclePhasesRecord) o;
+        MenstrualCyclePhaseRecord that = (MenstrualCyclePhaseRecord) o;
         return mPhase == that.mPhase && mDayOfCycle == that.mDayOfCycle;
     }
 
@@ -132,7 +132,7 @@ public final class CyclePhasesRecord extends IntervalRecord {
         return Objects.hash(super.hashCode(), mPhase, mDayOfCycle);
     }
 
-    /** Builder class for {@link CyclePhasesRecord}. */
+    /** Builder class for {@link MenstrualCyclePhaseRecord}. */
     public static final class Builder {
         private final Metadata mMetadata;
         private final LocalDateTime mStartOfDay;
@@ -202,12 +202,12 @@ public final class CyclePhasesRecord extends IntervalRecord {
         }
 
         /**
-         * @return Object of {@link CyclePhasesRecord} without validating the values.
+         * @return Object of {@link MenstrualCyclePhaseRecord} without validating the values.
          * @hide
          */
         @NonNull
-        public CyclePhasesRecord buildWithoutValidation() {
-            return new CyclePhasesRecord(
+        public MenstrualCyclePhaseRecord buildWithoutValidation() {
+            return new MenstrualCyclePhaseRecord(
                     mMetadata,
                     mStartOfDay.toInstant(mStartZoneOffset),
                     mStartZoneOffset,
@@ -219,11 +219,11 @@ public final class CyclePhasesRecord extends IntervalRecord {
         }
 
         /**
-         * @return Object of {@link CyclePhasesRecord}
+         * @return Object of {@link MenstrualCyclePhaseRecord}
          */
         @NonNull
-        public CyclePhasesRecord build() {
-            return new CyclePhasesRecord(
+        public MenstrualCyclePhaseRecord build() {
+            return new MenstrualCyclePhaseRecord(
                     mMetadata,
                     mStartOfDay.toInstant(mStartZoneOffset),
                     mStartZoneOffset,
@@ -245,7 +245,7 @@ public final class CyclePhasesRecord extends IntervalRecord {
      * @param dayOfCycle The day of the cycle for this record.
      * @param skipValidation Boolean flag to skip validation of record values.
      */
-    private CyclePhasesRecord(
+    private MenstrualCyclePhaseRecord(
             @NonNull Metadata metadata,
             @NonNull Instant startTime,
             @NonNull ZoneOffset startZoneOffset,
@@ -281,9 +281,9 @@ public final class CyclePhasesRecord extends IntervalRecord {
     /** @hide */
     @Override
     public RecordInternal<?> toRecordInternal() {
-        CyclePhasesRecordInternal recordInternal =
-                (CyclePhasesRecordInternal)
-                        new CyclePhasesRecordInternal().setMetaData(getMetadata());
+        MenstrualCyclePhaseRecordInternal recordInternal =
+                (MenstrualCyclePhaseRecordInternal)
+                        new MenstrualCyclePhaseRecordInternal().setMetaData(getMetadata());
         recordInternal
                 .setStartTime(getStartTime().toEpochMilli())
                 .setStartZoneOffset(getStartZoneOffset().getTotalSeconds())

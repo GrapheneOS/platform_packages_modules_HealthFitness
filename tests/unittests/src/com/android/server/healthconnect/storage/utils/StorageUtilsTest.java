@@ -33,7 +33,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getSin
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.health.connect.internal.datatypes.CyclePhasesRecordInternal;
+import android.health.connect.internal.datatypes.MenstrualCyclePhaseRecordInternal;
 import android.util.Pair;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -135,19 +135,19 @@ public class StorageUtilsTest {
     }
 
     @Test
-    public void getDedupeByteBuffer_cyclePhases_usesLocalDate() {
+    public void getDedupeByteBuffer_menstrualCyclePhase_usesLocalDate() {
         LocalDate date = LocalDate.of(2025, 11, 5);
-        CyclePhasesRecordInternal record1 = new CyclePhasesRecordInternal();
+        MenstrualCyclePhaseRecordInternal record1 = new MenstrualCyclePhaseRecordInternal();
         record1.setAppInfoId(1);
         record1.setStartTime(date.atStartOfDay().toInstant(ZoneOffset.ofHours(2)).toEpochMilli());
         record1.setStartZoneOffset(ZoneOffset.ofHours(2).getTotalSeconds());
 
-        CyclePhasesRecordInternal record2 = new CyclePhasesRecordInternal();
+        MenstrualCyclePhaseRecordInternal record2 = new MenstrualCyclePhaseRecordInternal();
         record2.setAppInfoId(1);
         record2.setStartTime(date.atStartOfDay().toInstant(ZoneOffset.ofHours(8)).toEpochMilli());
         record2.setStartZoneOffset(ZoneOffset.ofHours(8).getTotalSeconds());
 
-        CyclePhasesRecordInternal record3 = new CyclePhasesRecordInternal();
+        MenstrualCyclePhaseRecordInternal record3 = new MenstrualCyclePhaseRecordInternal();
         record3.setAppInfoId(1);
         record3.setStartTime(
                 date.plusDays(1).atStartOfDay().toInstant(ZoneOffset.ofHours(2)).toEpochMilli());

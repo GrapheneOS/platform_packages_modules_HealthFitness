@@ -73,7 +73,7 @@ public class RecordTypeIdForUuid {
     public static final int RECORD_TYPE_ID_FOR_UUID_NICOTINE_INTAKE = 75;
     public static final int RECORD_TYPE_ID_FOR_UUID_SYMPTOMS = 76;
     public static final int RECORD_TYPE_ID_FOR_UUID_ALCOHOL_CONSUMPTION = 77;
-    public static final int RECORD_TYPE_ID_FOR_UUID_CYCLE_PHASES = 78;
+    public static final int RECORD_TYPE_ID_FOR_UUID_MENSTRUAL_CYCLE_PHASE = 78;
 
     /** @hide */
     @IntDef({
@@ -123,7 +123,7 @@ public class RecordTypeIdForUuid {
         RECORD_TYPE_ID_FOR_UUID_NICOTINE_INTAKE,
         RECORD_TYPE_ID_FOR_UUID_SYMPTOMS,
         RECORD_TYPE_ID_FOR_UUID_ALCOHOL_CONSUMPTION,
-        RECORD_TYPE_ID_FOR_UUID_CYCLE_PHASES
+        RECORD_TYPE_ID_FOR_UUID_MENSTRUAL_CYCLE_PHASE
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface Type {}

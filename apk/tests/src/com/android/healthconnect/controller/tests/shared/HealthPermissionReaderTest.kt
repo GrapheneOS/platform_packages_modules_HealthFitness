@@ -216,8 +216,8 @@ class HealthPermissionReaderTest {
         )
         assertThat(permissionReader.getHealthPermissions())
             .containsAtLeast(
-                HealthPermissions.READ_CYCLE_PHASES,
-                HealthPermissions.WRITE_CYCLE_PHASES,
+                HealthPermissions.READ_MENSTRUAL_CYCLE_PHASE,
+                HealthPermissions.WRITE_MENSTRUAL_CYCLE_PHASE,
             )
     }
 
@@ -236,8 +236,8 @@ class HealthPermissionReaderTest {
         )
         assertThat(permissionReader.getHealthPermissions())
             .containsNoneOf(
-                HealthPermissions.READ_CYCLE_PHASES,
-                HealthPermissions.WRITE_CYCLE_PHASES,
+                HealthPermissions.READ_MENSTRUAL_CYCLE_PHASE,
+                HealthPermissions.WRITE_MENSTRUAL_CYCLE_PHASE,
             )
     }
 

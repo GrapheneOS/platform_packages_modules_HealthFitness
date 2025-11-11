@@ -407,12 +407,12 @@ public final class RecordTypeIdentifier {
     public static final int RECORD_TYPE_ALCOHOL_CONSUMPTION = 45;
 
     /**
-     * @see CyclePhasesRecord
+     * @see MenstrualCyclePhaseRecord
      * @hide
      */
     // TODO(b/452289293): Unhide this when API implementation is done
     @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
-    public static final int RECORD_TYPE_CYCLE_PHASES = 46;
+    public static final int RECORD_TYPE_MENSTRUAL_CYCLE_PHASE = 46;
 
     private RecordTypeIdentifier() {}
 
@@ -465,7 +465,7 @@ public final class RecordTypeIdentifier {
         RECORD_TYPE_NICOTINE_INTAKE,
         RECORD_TYPE_SYMPTOM,
         RECORD_TYPE_ALCOHOL_CONSUMPTION,
-        RECORD_TYPE_CYCLE_PHASES
+        RECORD_TYPE_MENSTRUAL_CYCLE_PHASE
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface RecordType {}

@@ -17,7 +17,7 @@
 package com.android.server.healthconnect.fitness.recordhelpers;
 
 import static android.health.connect.Constants.DEFAULT_INT;
-import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CYCLE_PHASES;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUAL_CYCLE_PHASE;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
@@ -26,7 +26,8 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.isNull
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.health.connect.internal.datatypes.CyclePhasesRecordInternal;
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord;
+import android.health.connect.internal.datatypes.MenstrualCyclePhaseRecordInternal;
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
@@ -35,18 +36,19 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Helper class for {@link android.health.connect.datatypes.CyclePhasesRecord}
+ * Helper class for {@link MenstrualCyclePhaseRecord}
  *
  * @hide
  */
-public final class CyclePhasesRecordHelper extends IntervalRecordHelper<CyclePhasesRecordInternal> {
-    @VisibleForTesting public static final String TABLE_NAME = "cycle_phases_record_table";
+public final class MenstrualCyclePhaseRecordHelper
+        extends IntervalRecordHelper<MenstrualCyclePhaseRecordInternal> {
+    @VisibleForTesting public static final String TABLE_NAME = "menstrual_cycle_phase_record_table";
 
     @VisibleForTesting public static final String PHASE_COLUMN_NAME = "phase";
     @VisibleForTesting public static final String DAY_OF_CYCLE_COLUMN_NAME = "day_of_cycle";
 
-    public CyclePhasesRecordHelper() {
-        super(RECORD_TYPE_CYCLE_PHASES);
+    public MenstrualCyclePhaseRecordHelper() {
+        super(RECORD_TYPE_MENSTRUAL_CYCLE_PHASE);
     }
 
     @Override
@@ -62,9 +64,10 @@ public final class CyclePhasesRecordHelper extends IntervalRecordHelper<CyclePha
     }
 
     @Override
-    CyclePhasesRecordInternal populateSpecificRecordValue(Cursor cursor) {
-        CyclePhasesRecordInternal recordInternal =
-                new CyclePhasesRecordInternal().setPhase(getCursorInt(cursor, PHASE_COLUMN_NAME));
+    MenstrualCyclePhaseRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        MenstrualCyclePhaseRecordInternal recordInternal =
+                new MenstrualCyclePhaseRecordInternal()
+                        .setPhase(getCursorInt(cursor, PHASE_COLUMN_NAME));
         if (!isNullValue(cursor, DAY_OF_CYCLE_COLUMN_NAME)) {
             recordInternal.setDayOfCycle(getCursorInt(cursor, DAY_OF_CYCLE_COLUMN_NAME));
         }
@@ -73,7 +76,7 @@ public final class CyclePhasesRecordHelper extends IntervalRecordHelper<CyclePha
 
     @Override
     void populateSpecificContentValues(
-            ContentValues contentValues, CyclePhasesRecordInternal recordInternal) {
+            ContentValues contentValues, MenstrualCyclePhaseRecordInternal recordInternal) {
         contentValues.put(PHASE_COLUMN_NAME, recordInternal.getPhase());
         int dayOfCycle = recordInternal.getDayOfCycle();
         if (dayOfCycle != DEFAULT_INT) {

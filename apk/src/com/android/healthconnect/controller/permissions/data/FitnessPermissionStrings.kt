@@ -949,12 +949,12 @@ private val PERMISSION_TYPE_STRINGS: ImmutableMap<FitnessPermissionType, Fitness
             ),
         )
         .put(
-            FitnessPermissionType.CYCLE_PHASES,
+            FitnessPermissionType.MENSTRUAL_CYCLE_PHASE,
             FitnessPermissionStrings(
-                R.string.cycle_phases_uppercase_label,
-                R.string.cycle_phases_lowercase_label,
-                R.string.cycle_phases_read_content_description,
-                R.string.cycle_phases_write_content_description,
+                R.string.menstrual_cycle_phase_uppercase_label,
+                R.string.menstrual_cycle_phase_lowercase_label,
+                R.string.menstrual_cycle_phase_read_content_description,
+                R.string.menstrual_cycle_phase_write_content_description,
             ),
         )
         .buildOrThrow()

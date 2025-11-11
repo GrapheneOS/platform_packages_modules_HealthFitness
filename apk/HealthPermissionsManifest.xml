@@ -193,8 +193,8 @@
         android:permissionGroup="android.permission-group.HEALTH" />
 
     <permission
-        android:name="android.permission.health.READ_CYCLE_PHASES"
-        android:label="@string/cycle_phases_read_content_description"
+        android:name="android.permission.health.READ_MENSTRUAL_CYCLE_PHASE"
+        android:label="@string/menstrual_cycle_phase_read_content_description"
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 
@@ -826,8 +826,8 @@
         android:permissionGroup="android.permission-group.HEALTH" />
 
     <permission
-        android:name="android.permission.health.WRITE_CYCLE_PHASES"
-        android:label="@string/cycle_phases_write_content_description"
+        android:name="android.permission.health.WRITE_MENSTRUAL_CYCLE_PHASE"
+        android:label="@string/menstrual_cycle_phase_write_content_description"
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 

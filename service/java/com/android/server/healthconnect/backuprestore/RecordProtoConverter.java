@@ -42,7 +42,6 @@ import android.health.connect.internal.datatypes.BodyTemperatureRecordInternal;
 import android.health.connect.internal.datatypes.BodyWaterMassRecordInternal;
 import android.health.connect.internal.datatypes.BoneMassRecordInternal;
 import android.health.connect.internal.datatypes.CervicalMucusRecordInternal;
-import android.health.connect.internal.datatypes.CyclePhasesRecordInternal;
 import android.health.connect.internal.datatypes.CyclingPedalingCadenceRecordInternal;
 import android.health.connect.internal.datatypes.DistanceRecordInternal;
 import android.health.connect.internal.datatypes.ElevationGainedRecordInternal;
@@ -62,6 +61,7 @@ import android.health.connect.internal.datatypes.InstantRecordInternal;
 import android.health.connect.internal.datatypes.IntermenstrualBleedingRecordInternal;
 import android.health.connect.internal.datatypes.IntervalRecordInternal;
 import android.health.connect.internal.datatypes.LeanBodyMassRecordInternal;
+import android.health.connect.internal.datatypes.MenstrualCyclePhaseRecordInternal;
 import android.health.connect.internal.datatypes.MenstruationFlowRecordInternal;
 import android.health.connect.internal.datatypes.MenstruationPeriodRecordInternal;
 import android.health.connect.internal.datatypes.MindfulnessSessionRecordInternal;
@@ -103,7 +103,6 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.B
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BodyWaterMass;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BoneMass;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CervicalMucus;
-import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CyclePhases;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CyclingPedalingCadence;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CyclingPedalingCadence.CyclingPedalingCadenceSample;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Distance;
@@ -122,6 +121,7 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.I
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.IntermenstrualBleeding;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.IntervalRecord;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.LeanBodyMass;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstrualCyclePhase;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstruationFlow;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstruationPeriod;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MindfulnessSession;
@@ -236,8 +236,9 @@ public final class RecordProtoConverter {
             builder.setAlcoholConsumption(
                     toAlcoholConsumptionProto(alcoholConsumptionRecordInternal));
         } else if (intervalRecordInternal
-                instanceof CyclePhasesRecordInternal cyclePhasesRecordInternal) {
-            builder.setCyclePhases(toCyclePhasesProto(cyclePhasesRecordInternal));
+                instanceof MenstrualCyclePhaseRecordInternal menstrualCyclePhaseRecordInternal) {
+            builder.setMenstrualCyclePhase(
+                    toMenstrualCyclePhaseProto(menstrualCyclePhaseRecordInternal));
         } else if (intervalRecordInternal
                 instanceof
                 CyclingPedalingCadenceRecordInternal cyclingPedalingCadenceRecordInternal) {
@@ -1057,11 +1058,12 @@ public final class RecordProtoConverter {
                 .build();
     }
 
-    private static CyclePhases toCyclePhasesProto(CyclePhasesRecordInternal cyclePhasesInternal) {
-        CyclePhases.Builder builder =
-                CyclePhases.newBuilder().setPhase(cyclePhasesInternal.getPhase());
-        if (cyclePhasesInternal.getDayOfCycle() != DEFAULT_INT) {
-            builder.setDayOfCycle(cyclePhasesInternal.getDayOfCycle());
+    private static MenstrualCyclePhase toMenstrualCyclePhaseProto(
+            MenstrualCyclePhaseRecordInternal menstrualCyclePhaseInternal) {
+        MenstrualCyclePhase.Builder builder =
+                MenstrualCyclePhase.newBuilder().setPhase(menstrualCyclePhaseInternal.getPhase());
+        if (menstrualCyclePhaseInternal.getDayOfCycle() != DEFAULT_INT) {
+            builder.setDayOfCycle(menstrualCyclePhaseInternal.getDayOfCycle());
         }
         return builder.build();
     }
@@ -1205,9 +1207,10 @@ public final class RecordProtoConverter {
                     intervalRecordInternal =
                             populateCyclingPedalingCadenceRecordInternal(
                                     intervalRecordProto.getCyclingPedalingCadence());
-            case CYCLE_PHASES ->
+            case MENSTRUAL_CYCLE_PHASE ->
                     intervalRecordInternal =
-                            populateCyclePhasesRecordInternal(intervalRecordProto.getCyclePhases());
+                            populateMenstrualCyclePhaseRecordInternal(
+                                    intervalRecordProto.getMenstrualCyclePhase());
             case DISTANCE ->
                     intervalRecordInternal =
                             populateDistanceRecordInternal(intervalRecordProto.getDistance());
@@ -1335,12 +1338,12 @@ public final class RecordProtoConverter {
                         .collect(toSet()));
     }
 
-    private static CyclePhasesRecordInternal populateCyclePhasesRecordInternal(
-            CyclePhases cyclePhasesProto) {
-        CyclePhasesRecordInternal record = new CyclePhasesRecordInternal();
-        record.setPhase(cyclePhasesProto.getPhase());
-        if (cyclePhasesProto.hasDayOfCycle()) {
-            record.setDayOfCycle(cyclePhasesProto.getDayOfCycle());
+    private static MenstrualCyclePhaseRecordInternal populateMenstrualCyclePhaseRecordInternal(
+            MenstrualCyclePhase menstrualCyclePhaseProto) {
+        MenstrualCyclePhaseRecordInternal record = new MenstrualCyclePhaseRecordInternal();
+        record.setPhase(menstrualCyclePhaseProto.getPhase());
+        if (menstrualCyclePhaseProto.hasDayOfCycle()) {
+            record.setDayOfCycle(menstrualCyclePhaseProto.getDayOfCycle());
         }
         return record;
     }
@@ -2016,7 +2019,7 @@ public final class RecordProtoConverter {
             case ACTIVE_CALORIES_BURNED -> RecordTypeIdentifier.RECORD_TYPE_ACTIVE_CALORIES_BURNED;
             case ACTIVITY_INTENSITY -> RecordTypeIdentifier.RECORD_TYPE_ACTIVITY_INTENSITY;
             case ALCOHOL_CONSUMPTION -> RecordTypeIdentifier.RECORD_TYPE_ALCOHOL_CONSUMPTION;
-            case CYCLE_PHASES -> RecordTypeIdentifier.RECORD_TYPE_CYCLE_PHASES;
+            case MENSTRUAL_CYCLE_PHASE -> RecordTypeIdentifier.RECORD_TYPE_MENSTRUAL_CYCLE_PHASE;
             case CYCLING_PEDALING_CADENCE ->
                     RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE;
             case DISTANCE -> RecordTypeIdentifier.RECORD_TYPE_DISTANCE;

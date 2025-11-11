@@ -120,13 +120,13 @@ public class HealthPermissionCategory {
     public static final int CERVICAL_MUCUS = 18;
 
     /**
-     * Permission category for {CyclePhasesRecord}
+     * Permission category for {MenstrualCyclePhaseRecord}
      *
      * @hide
      */
     // TODO(b/452289293): Unhide this when API implementation is done
     @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
-    public static final int CYCLE_PHASES = 104;
+    public static final int MENSTRUAL_CYCLE_PHASE = 104;
 
     /** Permission category for {IntermenstrualBleedingRecord} */
     public static final int INTERMENSTRUAL_BLEEDING = 38;
@@ -540,7 +540,7 @@ public class HealthPermissionCategory {
         SYMPTOM_VOMITING,
         SYMPTOM_WATER_RETENTION,
         SYMPTOM_WHEEZING,
-        CYCLE_PHASES
+        MENSTRUAL_CYCLE_PHASE
     })
     @Retention(RetentionPolicy.SOURCE)
     @Target(ElementType.TYPE_USE)

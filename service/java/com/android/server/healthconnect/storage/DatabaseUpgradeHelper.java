@@ -22,10 +22,10 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ACTIVITY_INTENSITY;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ALCOHOL_CONSUMPTION;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
-import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CYCLE_PHASES;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ECOSYSTEM_METRICS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_GENERATED_LOCAL_TIME;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MENSTRUAL_CYCLE_PHASE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_PERSONAL_HEALTH_RECORD;
@@ -58,9 +58,9 @@ import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.ActivityIntensityRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.AlcoholConsumptionRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.CyclePhasesRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSegmentRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.MenstrualCyclePhaseRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.MindfulnessSessionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.NicotineIntakeRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.PlannedExerciseSessionRecordHelper;
@@ -123,8 +123,8 @@ final class DatabaseUpgradeHelper {
     private static final Upgrader UPGRADE_TO_ALCOHOL_CONSUMPTION =
             db -> createTable(db, new AlcoholConsumptionRecordHelper().getCreateTableRequest());
 
-    private static final Upgrader UPGRADE_TO_CYCLE_PHASES =
-            db -> createTable(db, new CyclePhasesRecordHelper().getCreateTableRequest());
+    private static final Upgrader UPGRADE_TO_MENSTRUAL_CYCLE_PHASE =
+            db -> createTable(db, new MenstrualCyclePhaseRecordHelper().getCreateTableRequest());
 
     /**
      * A list of db version -> Upgrader to upgrade the db from the previous version to the version.
@@ -154,7 +154,9 @@ final class DatabaseUpgradeHelper {
                             entry(DB_VERSION_NICOTINE_INTAKE, UPGRADE_TO_NICOTINE_INTAKE),
                             entry(DB_VERSION_SYMPTOMS, UPGRADE_TO_SYMPTOMS),
                             entry(DB_VERSION_ALCOHOL_CONSUMPTION, UPGRADE_TO_ALCOHOL_CONSUMPTION),
-                            entry(DB_VERSION_CYCLE_PHASES, UPGRADE_TO_CYCLE_PHASES)));
+                            entry(
+                                    DB_VERSION_MENSTRUAL_CYCLE_PHASE,
+                                    UPGRADE_TO_MENSTRUAL_CYCLE_PHASE)));
 
     /**
      * Applies db upgrades to bring the current schema to the latest supported version.
