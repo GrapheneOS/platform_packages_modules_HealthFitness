@@ -119,12 +119,7 @@ public class HealthPermissionCategory {
     /** Permission category for {CervicalMucusRecord} */
     public static final int CERVICAL_MUCUS = 18;
 
-    /**
-     * Permission category for {MenstrualCyclePhaseRecord}
-     *
-     * @hide
-     */
-    // TODO(b/452289293): Unhide this when API implementation is done
+    /** Permission category for {MenstrualCyclePhaseRecord} */
     @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
     public static final int MENSTRUAL_CYCLE_PHASE = 104;
 

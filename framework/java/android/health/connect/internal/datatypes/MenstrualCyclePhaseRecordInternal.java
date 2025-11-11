@@ -79,10 +79,12 @@ public final class MenstrualCyclePhaseRecordInternal
 
     @Override
     public MenstrualCyclePhaseRecord toExternalRecord() {
-        return new MenstrualCyclePhaseRecord.Builder(buildMetaData(), getLocalDate(), mPhase)
-                .setDayOfCycle(mDayOfCycle)
-                .setStartZoneOffset(getStartZoneOffset())
-                .setEndZoneOffset(getEndZoneOffset())
-                .buildWithoutValidation();
+        MenstrualCyclePhaseRecord.Builder builder =
+                new MenstrualCyclePhaseRecord.Builder(buildMetaData(), getLocalDate(), mPhase)
+                        .setStartZoneOffset(getStartZoneOffset());
+        if (mDayOfCycle != DEFAULT_INT) {
+            builder.setDayOfCycle(mDayOfCycle);
+        }
+        return builder.buildWithoutValidation();
     }
 }

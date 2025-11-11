@@ -177,6 +177,7 @@ package android.health.connect {
     field @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final String READ_MEDICAL_DATA_VACCINES = "android.permission.health.READ_MEDICAL_DATA_VACCINES";
     field @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final String READ_MEDICAL_DATA_VISITS = "android.permission.health.READ_MEDICAL_DATA_VISITS";
     field @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final String READ_MEDICAL_DATA_VITAL_SIGNS = "android.permission.health.READ_MEDICAL_DATA_VITAL_SIGNS";
+    field @FlaggedApi("com.android.healthfitness.flags.cycle_phases_flag") public static final String READ_MENSTRUAL_CYCLE_PHASE = "android.permission.health.READ_MENSTRUAL_CYCLE_PHASE";
     field public static final String READ_MENSTRUATION = "android.permission.health.READ_MENSTRUATION";
     field @FlaggedApi("com.android.healthfitness.flags.mindfulness") public static final String READ_MINDFULNESS = "android.permission.health.READ_MINDFULNESS";
     field @FlaggedApi("com.android.healthfitness.flags.smoking") public static final String READ_NICOTINE_INTAKE = "android.permission.health.READ_NICOTINE_INTAKE";
@@ -281,6 +282,7 @@ package android.health.connect {
     field public static final String WRITE_INTERMENSTRUAL_BLEEDING = "android.permission.health.WRITE_INTERMENSTRUAL_BLEEDING";
     field public static final String WRITE_LEAN_BODY_MASS = "android.permission.health.WRITE_LEAN_BODY_MASS";
     field @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final String WRITE_MEDICAL_DATA = "android.permission.health.WRITE_MEDICAL_DATA";
+    field @FlaggedApi("com.android.healthfitness.flags.cycle_phases_flag") public static final String WRITE_MENSTRUAL_CYCLE_PHASE = "android.permission.health.WRITE_MENSTRUAL_CYCLE_PHASE";
     field public static final String WRITE_MENSTRUATION = "android.permission.health.WRITE_MENSTRUATION";
     field @FlaggedApi("com.android.healthfitness.flags.mindfulness") public static final String WRITE_MINDFULNESS = "android.permission.health.WRITE_MINDFULNESS";
     field @FlaggedApi("com.android.healthfitness.flags.smoking") public static final String WRITE_NICOTINE_INTAKE = "android.permission.health.WRITE_NICOTINE_INTAKE";
@@ -1512,6 +1514,23 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.MedicalResource.Builder setFhirResource(@NonNull android.health.connect.datatypes.FhirResource);
     method @NonNull public android.health.connect.datatypes.MedicalResource.Builder setFhirVersion(@NonNull android.health.connect.datatypes.FhirVersion);
     method @NonNull public android.health.connect.datatypes.MedicalResource.Builder setType(int);
+  }
+
+  @FlaggedApi("com.android.healthfitness.flags.cycle_phases_flag") public final class MenstrualCyclePhaseRecord extends android.health.connect.datatypes.IntervalRecord {
+    method @NonNull public java.time.LocalDate getDate();
+    method public int getDayOfCycle();
+    method public int getPhase();
+    method public boolean isDayOfCycleSet();
+    field public static final int PHASE_FOLLICULAR = 1; // 0x1
+    field public static final int PHASE_LUTEAL = 2; // 0x2
+  }
+
+  @FlaggedApi("com.android.healthfitness.flags.cycle_phases_flag") public static final class MenstrualCyclePhaseRecord.Builder {
+    ctor public MenstrualCyclePhaseRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.LocalDate, int);
+    method @NonNull public android.health.connect.datatypes.MenstrualCyclePhaseRecord build();
+    method @NonNull public android.health.connect.datatypes.MenstrualCyclePhaseRecord.Builder clearStartZoneOffset();
+    method @NonNull public android.health.connect.datatypes.MenstrualCyclePhaseRecord.Builder setDayOfCycle(@IntRange(from=1, to=365) int);
+    method @NonNull public android.health.connect.datatypes.MenstrualCyclePhaseRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
   public final class MenstruationFlowRecord extends android.health.connect.datatypes.InstantRecord {

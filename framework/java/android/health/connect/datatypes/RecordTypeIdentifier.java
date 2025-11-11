@@ -408,9 +408,7 @@ public final class RecordTypeIdentifier {
 
     /**
      * @see MenstrualCyclePhaseRecord
-     * @hide
      */
-    // TODO(b/452289293): Unhide this when API implementation is done
     @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
     public static final int RECORD_TYPE_MENSTRUAL_CYCLE_PHASE = 46;
 

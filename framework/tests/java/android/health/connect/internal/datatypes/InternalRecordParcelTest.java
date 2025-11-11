@@ -89,8 +89,8 @@ public class InternalRecordParcelTest {
      */
     @Test
     @EnableFlags(Flags.FLAG_SAMPLE_TIME_ORDERING)
-    // TODO(b/452289293): Remove this disable flag constraint once we remove the hide annotation
-    // Update RecordFactory and implement MenstrualCyclePhaseRecordFactory when removing this.
+    // TODO(b/452284725): Remove this disable flag constraint once we update RecordFactory and
+    // implement MenstrualCyclePhaseRecordFactory.
     @DisableFlags(Flags.FLAG_CYCLE_PHASES_FLAG)
     public void testAllInternalRecords_serializeToAndFromParcels() throws Exception {
         HealthConnectMappings mappings = HealthConnectMappings.getInstance();

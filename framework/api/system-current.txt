@@ -124,6 +124,7 @@ package android.health.connect {
     field public static final int HYDRATION = 23; // 0x17
     field public static final int INTERMENSTRUAL_BLEEDING = 38; // 0x26
     field public static final int LEAN_BODY_MASS = 15; // 0xf
+    field @FlaggedApi("com.android.healthfitness.flags.cycle_phases_flag") public static final int MENSTRUAL_CYCLE_PHASE = 104; // 0x68
     field public static final int MENSTRUATION = 20; // 0x14
     field @FlaggedApi("com.android.healthfitness.flags.mindfulness") public static final int MINDFULNESS = 41; // 0x29
     field @FlaggedApi("com.android.healthfitness.flags.smoking") public static final int NICOTINE_INTAKE = 43; // 0x2b
@@ -337,6 +338,7 @@ package android.health.connect.datatypes {
     field public static final int RECORD_TYPE_HYDRATION = 3; // 0x3
     field public static final int RECORD_TYPE_INTERMENSTRUAL_BLEEDING = 36; // 0x24
     field public static final int RECORD_TYPE_LEAN_BODY_MASS = 27; // 0x1b
+    field @FlaggedApi("com.android.healthfitness.flags.cycle_phases_flag") public static final int RECORD_TYPE_MENSTRUAL_CYCLE_PHASE = 46; // 0x2e
     field public static final int RECORD_TYPE_MENSTRUATION_FLOW = 21; // 0x15
     field public static final int RECORD_TYPE_MENSTRUATION_PERIOD = 10; // 0xa
     field @FlaggedApi("com.android.healthfitness.flags.mindfulness") public static final int RECORD_TYPE_MINDFULNESS_SESSION = 41; // 0x29

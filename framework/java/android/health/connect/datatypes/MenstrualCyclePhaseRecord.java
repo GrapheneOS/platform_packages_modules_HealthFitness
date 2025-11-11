@@ -22,10 +22,9 @@ import static android.health.connect.datatypes.validation.ValidationUtils.valida
 
 import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES_FLAG;
 
-import static java.util.Objects.requireNonNull;
-
 import android.annotation.FlaggedApi;
 import android.annotation.IntDef;
+import android.annotation.IntRange;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.internal.datatypes.MenstrualCyclePhaseRecordInternal;
@@ -46,18 +45,16 @@ import java.util.Set;
  * Represents a user's menstrual cycle phase for a specific day.
  *
  * <p>This record is designed to capture the current phase of the menstrual cycle (e.g., follicular,
- * luteal) for a given instant in time. It is not intended for predictive use cases.
- *
- * <p>The {@code phase} field indicates the current cycle phase, and {@code dayOfCycle} represents
- * the day within the menstrual cycle.
- *
- * @hide
+ * luteal) for a given day. It is not intended for predictive use cases.
  */
-// TODO(b/452289293): Unhide this when API implementation is done
 @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_MENSTRUAL_CYCLE_PHASE)
 public final class MenstrualCyclePhaseRecord extends IntervalRecord {
-    /** Represents an unknown menstrual cycle phase. */
+    /**
+     * Represents an unknown menstrual cycle phase. Not available to developers.
+     *
+     * @hide
+     */
     public static final int PHASE_UNKNOWN = 0;
 
     /**
@@ -103,12 +100,20 @@ public final class MenstrualCyclePhaseRecord extends IntervalRecord {
         return mPhase;
     }
 
+    /** Returns whether the day of cycle was set in this record. */
+    public boolean isDayOfCycleSet() {
+        return mDayOfCycle != DEFAULT_INT;
+    }
+
     /**
      * Returns the day within the menstrual cycle.
      *
-     * <p>Returns -1 if the day of cycle was not set.
+     * @throws IllegalStateException if the day of cycle was not set.
      */
     public int getDayOfCycle() {
+        if (!isDayOfCycleSet()) {
+            throw new IllegalStateException("Day of cycle was not set.");
+        }
         return mDayOfCycle;
     }
 
@@ -133,12 +138,12 @@ public final class MenstrualCyclePhaseRecord extends IntervalRecord {
     }
 
     /** Builder class for {@link MenstrualCyclePhaseRecord}. */
+    @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
     public static final class Builder {
         private final Metadata mMetadata;
         private final LocalDateTime mStartOfDay;
         private final LocalDateTime mEndOfDay;
-        private ZoneOffset mStartZoneOffset;
-        private ZoneOffset mEndZoneOffset;
+        private ZoneOffset mZoneOffset;
         @CyclePhase private final int mPhase;
         private int mDayOfCycle = DEFAULT_INT;
 
@@ -147,7 +152,7 @@ public final class MenstrualCyclePhaseRecord extends IntervalRecord {
          * @param date The date of this record.
          * @param phase The cycle phase for this record.
          */
-        public Builder(Metadata metadata, LocalDate date, @CyclePhase int phase) {
+        public Builder(@NonNull Metadata metadata, @NonNull LocalDate date, @CyclePhase int phase) {
             Objects.requireNonNull(metadata);
             Objects.requireNonNull(date);
 
@@ -156,48 +161,40 @@ public final class MenstrualCyclePhaseRecord extends IntervalRecord {
 
             mStartOfDay = date.atStartOfDay();
             mEndOfDay = LocalTime.MAX.atDate(date);
-            mStartZoneOffset = ZoneId.systemDefault().getRules().getOffset(mStartOfDay);
-            mEndZoneOffset = mStartZoneOffset;
+            mZoneOffset = ZoneId.systemDefault().getRules().getOffset(mStartOfDay);
         }
 
         /**
          * Sets the day of cycle for this data.
          *
-         * <p>If unset, the value will be -1.
+         * @throws IllegalArgumentException if the provided {@code dayOfCycle} is less than 1 or
+         *     more than 365.
          */
         @NonNull
-        public Builder setDayOfCycle(int dayOfCycle) {
+        public Builder setDayOfCycle(@IntRange(from = 1, to = 365) int dayOfCycle) {
             mDayOfCycle = dayOfCycle;
+            requireInRange(
+                    dayOfCycle, DAY_OF_CYCLE_LOWER_BOUND, DAY_OF_CYCLE_UPPER_BOUND, "dayOfCycle");
             return this;
         }
 
-        /** Sets start zone offset of the user when the data was logged. */
+        /**
+         * Sets the {@link ZoneOffset} of the user at the beginning of the measurement day.
+         *
+         * <p>If not set, the system default zone offset will be used.
+         */
         @NonNull
-        public Builder setStartZoneOffset(@NonNull ZoneOffset startZoneOffset) {
-            requireNonNull(startZoneOffset);
-            mStartZoneOffset = startZoneOffset;
+        public Builder setStartZoneOffset(@NonNull ZoneOffset zoneOffset) {
+            Objects.requireNonNull(zoneOffset);
+            mZoneOffset = zoneOffset;
             return this;
+
         }
 
-        /** Clears start zone offset of the user when the data was logged. */
+        /** Clears the {@link ZoneOffset} of the user at the beginning of the measurement day. */
         @NonNull
         public Builder clearStartZoneOffset() {
-            mStartZoneOffset = RecordUtils.getDefaultZoneOffset();
-            return this;
-        }
-
-        /** Sets end zone offset of the user when the data was logged. */
-        @NonNull
-        public Builder setEndZoneOffset(ZoneOffset endZoneOffset) {
-            requireNonNull(endZoneOffset);
-            mEndZoneOffset = endZoneOffset;
-            return this;
-        }
-
-        /** Clears end zone offset of the user when the data was logged. */
-        @NonNull
-        public Builder clearEndZoneOffset() {
-            mEndZoneOffset = RecordUtils.getDefaultZoneOffset();
+            mZoneOffset = ZoneId.systemDefault().getRules().getOffset(mStartOfDay);
             return this;
         }
 
@@ -209,10 +206,10 @@ public final class MenstrualCyclePhaseRecord extends IntervalRecord {
         public MenstrualCyclePhaseRecord buildWithoutValidation() {
             return new MenstrualCyclePhaseRecord(
                     mMetadata,
-                    mStartOfDay.toInstant(mStartZoneOffset),
-                    mStartZoneOffset,
-                    mEndOfDay.toInstant(mEndZoneOffset),
-                    mEndZoneOffset,
+                    mStartOfDay.toInstant(mZoneOffset),
+                    mZoneOffset,
+                    mEndOfDay.toInstant(mZoneOffset),
+                    mZoneOffset,
                     mPhase,
                     mDayOfCycle,
                     /* skipValidation= */ true);
@@ -225,10 +222,10 @@ public final class MenstrualCyclePhaseRecord extends IntervalRecord {
         public MenstrualCyclePhaseRecord build() {
             return new MenstrualCyclePhaseRecord(
                     mMetadata,
-                    mStartOfDay.toInstant(mStartZoneOffset),
-                    mStartZoneOffset,
-                    mEndOfDay.toInstant(mEndZoneOffset),
-                    mEndZoneOffset,
+                    mStartOfDay.toInstant(mZoneOffset),
+                    mZoneOffset,
+                    mEndOfDay.toInstant(mZoneOffset),
+                    mZoneOffset,
                     mPhase,
                     mDayOfCycle,
                     /* skipValidation= */ false);
