@@ -17,38 +17,39 @@
 package android.health.connect.internal.datatypes;
 
 import static android.health.connect.Constants.DEFAULT_INT;
-import static android.health.connect.datatypes.CyclePhasesRecord.PHASE_UNKNOWN;
+import static android.health.connect.datatypes.MenstrualCyclePhaseRecord.PHASE_UNKNOWN;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES_FLAG;
 
 import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
-import android.health.connect.datatypes.CyclePhasesRecord;
 import android.health.connect.datatypes.Identifier;
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.os.Parcel;
 
 /**
- * @see android.health.connect.datatypes.CyclePhasesRecord
+ * @see MenstrualCyclePhaseRecord
  * @hide
  */
 @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
-@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_CYCLE_PHASES)
-public final class CyclePhasesRecordInternal extends InstantRecordInternal<CyclePhasesRecord> {
-    @CyclePhasesRecord.CyclePhase private int mPhase = PHASE_UNKNOWN;
+@Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_MENSTRUAL_CYCLE_PHASE)
+public final class MenstrualCyclePhaseRecordInternal
+        extends IntervalRecordInternal<MenstrualCyclePhaseRecord> {
+    @MenstrualCyclePhaseRecord.CyclePhase private int mPhase = PHASE_UNKNOWN;
     private int mDayOfCycle = DEFAULT_INT;
 
-    public CyclePhasesRecordInternal() {
+    public MenstrualCyclePhaseRecordInternal() {
         super();
     }
 
-    public CyclePhasesRecordInternal(Parcel parcel) {
+    public MenstrualCyclePhaseRecordInternal(Parcel parcel) {
         super(parcel);
         mPhase = parcel.readInt();
         mDayOfCycle = parcel.readInt();
     }
 
-    @CyclePhasesRecord.CyclePhase
+    @MenstrualCyclePhaseRecord.CyclePhase
     public int getPhase() {
         return mPhase;
     }
@@ -58,28 +59,30 @@ public final class CyclePhasesRecordInternal extends InstantRecordInternal<Cycle
     }
 
     /** returns this object with the specified {@code phase} */
-    public CyclePhasesRecordInternal setPhase(@CyclePhasesRecord.CyclePhase int phase) {
+    public MenstrualCyclePhaseRecordInternal setPhase(
+            @MenstrualCyclePhaseRecord.CyclePhase int phase) {
         mPhase = phase;
         return this;
     }
 
     /** returns this object with the specified {@code dayOfCycle} */
-    public CyclePhasesRecordInternal setDayOfCycle(int dayOfCycle) {
+    public MenstrualCyclePhaseRecordInternal setDayOfCycle(int dayOfCycle) {
         mDayOfCycle = dayOfCycle;
         return this;
     }
 
     @Override
-    void populateInstantRecordTo(@NonNull Parcel parcel) {
+    void populateIntervalRecordTo(@NonNull Parcel parcel) {
         parcel.writeInt(mPhase);
         parcel.writeInt(mDayOfCycle);
     }
 
     @Override
-    public CyclePhasesRecord toExternalRecord() {
-        return new CyclePhasesRecord.Builder(buildMetaData(), getTime(), mPhase)
+    public MenstrualCyclePhaseRecord toExternalRecord() {
+        return new MenstrualCyclePhaseRecord.Builder(buildMetaData(), getLocalDate(), mPhase)
                 .setDayOfCycle(mDayOfCycle)
-                .setZoneOffset(getZoneOffset())
+                .setStartZoneOffset(getStartZoneOffset())
+                .setEndZoneOffset(getEndZoneOffset())
                 .buildWithoutValidation();
     }
 }

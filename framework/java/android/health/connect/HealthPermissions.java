@@ -326,7 +326,8 @@ public final class HealthPermissions {
     // TODO(b/450576343): Update HealthPermissionsTest and related tests after the permission
     // added to the manifest
     @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
-    public static final String READ_CYCLE_PHASES = "android.permission.health.READ_CYCLE_PHASES";
+    public static final String READ_MENSTRUAL_CYCLE_PHASE =
+            "android.permission.health.READ_MENSTRUAL_CYCLE_PHASE";
 
     /**
      * Allows an application to read the user's menstruation data.
@@ -1192,7 +1193,8 @@ public final class HealthPermissions {
     // TODO(b/450576343): Update HealthPermissionsTest and related tests after the permission
     // added to the manifest
     @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
-    public static final String WRITE_CYCLE_PHASES = "android.permission.health.WRITE_CYCLE_PHASES";
+    public static final String WRITE_MENSTRUAL_CYCLE_PHASE =
+            "android.permission.health.WRITE_MENSTRUAL_CYCLE_PHASE";
 
     /**
      * Allows an application to write the user's menstruation data.
@@ -2051,7 +2053,7 @@ public final class HealthPermissions {
                             WRITE_LEAN_BODY_MASS,
                             WRITE_WEIGHT,
                             WRITE_CERVICAL_MUCUS,
-                            WRITE_CYCLE_PHASES,
+                            WRITE_MENSTRUAL_CYCLE_PHASE,
                             WRITE_MENSTRUATION,
                             WRITE_INTERMENSTRUAL_BLEEDING,
                             WRITE_OVULATION_TEST,
@@ -2305,7 +2307,8 @@ public final class HealthPermissions {
                     WRITE_SYMPTOM_WHEEZING ->
                     Flags.symptoms();
             case READ_MEDICAL_DATA_DEVICES -> Flags.deviceResource();
-            case READ_CYCLE_PHASES, WRITE_CYCLE_PHASES -> AconfigFlagHelper.isCyclePhasesEnabled();
+            case READ_MENSTRUAL_CYCLE_PHASE, WRITE_MENSTRUAL_CYCLE_PHASE ->
+                    AconfigFlagHelper.isCyclePhasesEnabled();
             default -> true;
         };
     }
@@ -2361,7 +2364,7 @@ public final class HealthPermissions {
                 WRITE_CERVICAL_MUCUS, HealthDataCategory.CYCLE_TRACKING);
         if (AconfigFlagHelper.isCyclePhasesEnabled()) {
             sWriteHealthPermissionToHealthDataCategoryMap.put(
-                    WRITE_CYCLE_PHASES, HealthDataCategory.CYCLE_TRACKING);
+                    WRITE_MENSTRUAL_CYCLE_PHASE, HealthDataCategory.CYCLE_TRACKING);
         }
         sWriteHealthPermissionToHealthDataCategoryMap.put(
                 WRITE_MENSTRUATION, HealthDataCategory.CYCLE_TRACKING);
@@ -2439,7 +2442,7 @@ public final class HealthPermissions {
                     HealthDataCategory.CYCLE_TRACKING,
                     new String[] {
                         WRITE_CERVICAL_MUCUS,
-                        WRITE_CYCLE_PHASES,
+                        WRITE_MENSTRUAL_CYCLE_PHASE,
                         WRITE_MENSTRUATION,
                         WRITE_OVULATION_TEST,
                         WRITE_SEXUAL_ACTIVITY,

@@ -28,7 +28,6 @@ import static android.health.connect.HealthPermissions.READ_BODY_TEMPERATURE;
 import static android.health.connect.HealthPermissions.READ_BODY_WATER_MASS;
 import static android.health.connect.HealthPermissions.READ_BONE_MASS;
 import static android.health.connect.HealthPermissions.READ_CERVICAL_MUCUS;
-import static android.health.connect.HealthPermissions.READ_CYCLE_PHASES;
 import static android.health.connect.HealthPermissions.READ_DISTANCE;
 import static android.health.connect.HealthPermissions.READ_ELEVATION_GAINED;
 import static android.health.connect.HealthPermissions.READ_EXERCISE;
@@ -39,6 +38,7 @@ import static android.health.connect.HealthPermissions.READ_HEIGHT;
 import static android.health.connect.HealthPermissions.READ_HYDRATION;
 import static android.health.connect.HealthPermissions.READ_INTERMENSTRUAL_BLEEDING;
 import static android.health.connect.HealthPermissions.READ_LEAN_BODY_MASS;
+import static android.health.connect.HealthPermissions.READ_MENSTRUAL_CYCLE_PHASE;
 import static android.health.connect.HealthPermissions.READ_MENSTRUATION;
 import static android.health.connect.HealthPermissions.READ_MINDFULNESS;
 import static android.health.connect.HealthPermissions.READ_NICOTINE_INTAKE;
@@ -129,7 +129,6 @@ import static android.health.connect.HealthPermissions.WRITE_BODY_TEMPERATURE;
 import static android.health.connect.HealthPermissions.WRITE_BODY_WATER_MASS;
 import static android.health.connect.HealthPermissions.WRITE_BONE_MASS;
 import static android.health.connect.HealthPermissions.WRITE_CERVICAL_MUCUS;
-import static android.health.connect.HealthPermissions.WRITE_CYCLE_PHASES;
 import static android.health.connect.HealthPermissions.WRITE_DISTANCE;
 import static android.health.connect.HealthPermissions.WRITE_ELEVATION_GAINED;
 import static android.health.connect.HealthPermissions.WRITE_EXERCISE;
@@ -140,6 +139,7 @@ import static android.health.connect.HealthPermissions.WRITE_HEIGHT;
 import static android.health.connect.HealthPermissions.WRITE_HYDRATION;
 import static android.health.connect.HealthPermissions.WRITE_INTERMENSTRUAL_BLEEDING;
 import static android.health.connect.HealthPermissions.WRITE_LEAN_BODY_MASS;
+import static android.health.connect.HealthPermissions.WRITE_MENSTRUAL_CYCLE_PHASE;
 import static android.health.connect.HealthPermissions.WRITE_MENSTRUATION;
 import static android.health.connect.HealthPermissions.WRITE_MINDFULNESS;
 import static android.health.connect.HealthPermissions.WRITE_NICOTINE_INTAKE;
@@ -230,7 +230,6 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BODY_WATER_MASS;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BONE_MASS;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CERVICAL_MUCUS;
-import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CYCLE_PHASES;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED;
@@ -242,6 +241,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_INTERMENSTRUAL_BLEEDING;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_LEAN_BODY_MASS;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUAL_CYCLE_PHASE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_FLOW;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_PERIOD;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MINDFULNESS_SESSION;
@@ -281,7 +281,6 @@ import android.health.connect.datatypes.BodyTemperatureRecord;
 import android.health.connect.datatypes.BodyWaterMassRecord;
 import android.health.connect.datatypes.BoneMassRecord;
 import android.health.connect.datatypes.CervicalMucusRecord;
-import android.health.connect.datatypes.CyclePhasesRecord;
 import android.health.connect.datatypes.CyclingPedalingCadenceRecord;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.ElevationGainedRecord;
@@ -293,6 +292,7 @@ import android.health.connect.datatypes.HeightRecord;
 import android.health.connect.datatypes.HydrationRecord;
 import android.health.connect.datatypes.IntermenstrualBleedingRecord;
 import android.health.connect.datatypes.LeanBodyMassRecord;
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord;
 import android.health.connect.datatypes.MenstruationFlowRecord;
 import android.health.connect.datatypes.MenstruationPeriodRecord;
 import android.health.connect.datatypes.MindfulnessSessionRecord;
@@ -327,7 +327,6 @@ import android.health.connect.internal.datatypes.BodyTemperatureRecordInternal;
 import android.health.connect.internal.datatypes.BodyWaterMassRecordInternal;
 import android.health.connect.internal.datatypes.BoneMassRecordInternal;
 import android.health.connect.internal.datatypes.CervicalMucusRecordInternal;
-import android.health.connect.internal.datatypes.CyclePhasesRecordInternal;
 import android.health.connect.internal.datatypes.CyclingPedalingCadenceRecordInternal;
 import android.health.connect.internal.datatypes.DistanceRecordInternal;
 import android.health.connect.internal.datatypes.ElevationGainedRecordInternal;
@@ -339,6 +338,7 @@ import android.health.connect.internal.datatypes.HeightRecordInternal;
 import android.health.connect.internal.datatypes.HydrationRecordInternal;
 import android.health.connect.internal.datatypes.IntermenstrualBleedingRecordInternal;
 import android.health.connect.internal.datatypes.LeanBodyMassRecordInternal;
+import android.health.connect.internal.datatypes.MenstrualCyclePhaseRecordInternal;
 import android.health.connect.internal.datatypes.MenstruationFlowRecordInternal;
 import android.health.connect.internal.datatypes.MenstruationPeriodRecordInternal;
 import android.health.connect.internal.datatypes.MindfulnessSessionRecordInternal;
@@ -508,14 +508,15 @@ public class DataTypeDescriptors {
                                 .build(),
                         AconfigFlagHelper.isCyclePhasesEnabled()
                                 ? DataTypeDescriptor.builder()
-                                        .setRecordTypeIdentifier(RECORD_TYPE_CYCLE_PHASES)
+                                        .setRecordTypeIdentifier(RECORD_TYPE_MENSTRUAL_CYCLE_PHASE)
                                         .setDataCategory(HealthDataCategory.CYCLE_TRACKING)
-                                        .setRecordClass(CyclePhasesRecord.class)
-                                        .setRecordInternalClass(CyclePhasesRecordInternal.class)
+                                        .setRecordClass(MenstrualCyclePhaseRecord.class)
+                                        .setRecordInternalClass(
+                                                MenstrualCyclePhaseRecordInternal.class)
                                         .addPermissionCategory(
-                                                HealthPermissionCategory.CYCLE_PHASES,
-                                                READ_CYCLE_PHASES,
-                                                WRITE_CYCLE_PHASES)
+                                                HealthPermissionCategory.MENSTRUAL_CYCLE_PHASE,
+                                                READ_MENSTRUAL_CYCLE_PHASE,
+                                                WRITE_MENSTRUAL_CYCLE_PHASE)
                                         .build()
                                 : null,
                         Flags.smoking() && AconfigFlagHelper.isNicotineIntakeEnabled()

@@ -17,11 +17,11 @@
 package com.android.server.healthconnect.fitness.recordhelpers;
 
 import static android.health.connect.Constants.DEFAULT_INT;
-import static android.health.connect.datatypes.CyclePhasesRecord.PHASE_FOLLICULAR;
-import static android.health.connect.datatypes.CyclePhasesRecord.PHASE_LUTEAL;
+import static android.health.connect.datatypes.MenstrualCyclePhaseRecord.PHASE_FOLLICULAR;
+import static android.health.connect.datatypes.MenstrualCyclePhaseRecord.PHASE_LUTEAL;
 
-import static com.android.server.healthconnect.fitness.recordhelpers.CyclePhasesRecordHelper.DAY_OF_CYCLE_COLUMN_NAME;
-import static com.android.server.healthconnect.fitness.recordhelpers.CyclePhasesRecordHelper.PHASE_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.MenstrualCyclePhaseRecordHelper.DAY_OF_CYCLE_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.MenstrualCyclePhaseRecordHelper.PHASE_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
 
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.mock;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.health.connect.internal.datatypes.CyclePhasesRecordInternal;
+import android.health.connect.internal.datatypes.MenstrualCyclePhaseRecordInternal;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
@@ -63,7 +63,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 @RunWith(AndroidJUnit4.class)
-public class CyclePhasesRecordHelperTest {
+public class MenstrualCyclePhaseRecordHelperTest {
     @Rule public final SetFlagsRule mSetFlagRule = new SetFlagsRule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -76,7 +76,8 @@ public class CyclePhasesRecordHelperTest {
 
     private static final String TEST_PACKAGE_NAME = "package.name";
 
-    private final CyclePhasesRecordHelper mCyclePhasesRecordHelper = new CyclePhasesRecordHelper();
+    private final MenstrualCyclePhaseRecordHelper mMenstrualCyclePhaseRecordHelper =
+            new MenstrualCyclePhaseRecordHelper();
     private TransactionManager mTransactionManager;
     private FitnessTestUtils mFitnessTestUtils;
 
@@ -99,13 +100,13 @@ public class CyclePhasesRecordHelperTest {
 
     @Test
     public void getMainTableName_returnsTableName() {
-        assertThat(new CyclePhasesRecordHelper().getMainTableName())
-                .isEqualTo(CyclePhasesRecordHelper.TABLE_NAME);
+        assertThat(new MenstrualCyclePhaseRecordHelper().getMainTableName())
+                .isEqualTo(MenstrualCyclePhaseRecordHelper.TABLE_NAME);
     }
 
     @Test
-    public void getInstantRecordColumnInfo_returnsColumns() {
-        assertThat(new CyclePhasesRecordHelper().getInstantRecordColumnInfo())
+    public void getIntervalRecordColumnInfo_returnsColumns() {
+        assertThat(new MenstrualCyclePhaseRecordHelper().getIntervalRecordColumnInfo())
                 .containsExactly(
                         new Pair<>(PHASE_COLUMN_NAME, INTEGER_NOT_NULL),
                         new Pair<>(DAY_OF_CYCLE_COLUMN_NAME, INTEGER));
@@ -114,9 +115,10 @@ public class CyclePhasesRecordHelperTest {
     @Test
     public void populateSpecificContentValues_contentValuesUpdated() {
         ContentValues contentValues = new ContentValues();
-        CyclePhasesRecordInternal recordInternal =
-                new CyclePhasesRecordInternal().setPhase(PHASE_LUTEAL).setDayOfCycle(1);
-        mCyclePhasesRecordHelper.populateSpecificContentValues(contentValues, recordInternal);
+        MenstrualCyclePhaseRecordInternal recordInternal =
+                new MenstrualCyclePhaseRecordInternal().setPhase(PHASE_LUTEAL).setDayOfCycle(1);
+        mMenstrualCyclePhaseRecordHelper.populateSpecificContentValues(
+                contentValues, recordInternal);
 
         assertThat(contentValues.getAsInteger(PHASE_COLUMN_NAME)).isEqualTo(PHASE_LUTEAL);
         assertThat(contentValues.getAsInteger(DAY_OF_CYCLE_COLUMN_NAME)).isEqualTo(1);
@@ -125,9 +127,10 @@ public class CyclePhasesRecordHelperTest {
     @Test
     public void populateSpecificContentValues_optionalValueNull_notInContentValue() {
         ContentValues contentValues = new ContentValues();
-        CyclePhasesRecordInternal recordInternal =
-                new CyclePhasesRecordInternal().setPhase(PHASE_FOLLICULAR);
-        mCyclePhasesRecordHelper.populateSpecificContentValues(contentValues, recordInternal);
+        MenstrualCyclePhaseRecordInternal recordInternal =
+                new MenstrualCyclePhaseRecordInternal().setPhase(PHASE_FOLLICULAR);
+        mMenstrualCyclePhaseRecordHelper.populateSpecificContentValues(
+                contentValues, recordInternal);
 
         assertThat(contentValues.getAsInteger(PHASE_COLUMN_NAME)).isEqualTo(PHASE_FOLLICULAR);
         assertThat(contentValues.containsKey(DAY_OF_CYCLE_COLUMN_NAME)).isFalse();
@@ -145,15 +148,15 @@ public class CyclePhasesRecordHelperTest {
         assumeTrue(
                 "Skipping tests because cycle phases is disabled",
                 AconfigFlagHelper.isCyclePhasesEnabled());
-        CyclePhasesRecordInternal insertedRecord =
-                new CyclePhasesRecordInternal().setPhase(PHASE_FOLLICULAR).setDayOfCycle(5);
+        MenstrualCyclePhaseRecordInternal insertedRecord =
+                new MenstrualCyclePhaseRecordInternal().setPhase(PHASE_FOLLICULAR).setDayOfCycle(5);
         mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, insertedRecord);
 
-        ReadTableRequest request = new ReadTableRequest(CyclePhasesRecordHelper.TABLE_NAME);
+        ReadTableRequest request = new ReadTableRequest(MenstrualCyclePhaseRecordHelper.TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {
             assertThat(cursor.moveToNext()).isTrue();
-            CyclePhasesRecordInternal readRecord =
-                    mCyclePhasesRecordHelper.populateSpecificRecordValue(cursor);
+            MenstrualCyclePhaseRecordInternal readRecord =
+                    mMenstrualCyclePhaseRecordHelper.populateSpecificRecordValue(cursor);
 
             assertThat(readRecord.getPhase()).isEqualTo(PHASE_FOLLICULAR);
             assertThat(readRecord.getDayOfCycle()).isEqualTo(5);
@@ -172,15 +175,15 @@ public class CyclePhasesRecordHelperTest {
         assumeTrue(
                 "Skipping tests because cycle phases is disabled",
                 AconfigFlagHelper.isCyclePhasesEnabled());
-        CyclePhasesRecordInternal insertedRecord =
-                new CyclePhasesRecordInternal().setPhase(PHASE_LUTEAL);
+        MenstrualCyclePhaseRecordInternal insertedRecord =
+                new MenstrualCyclePhaseRecordInternal().setPhase(PHASE_LUTEAL);
         mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, insertedRecord);
 
-        ReadTableRequest request = new ReadTableRequest(CyclePhasesRecordHelper.TABLE_NAME);
+        ReadTableRequest request = new ReadTableRequest(MenstrualCyclePhaseRecordHelper.TABLE_NAME);
         try (Cursor cursor = mTransactionManager.read(request)) {
             assertThat(cursor.moveToNext()).isTrue();
-            CyclePhasesRecordInternal readRecord =
-                    mCyclePhasesRecordHelper.populateSpecificRecordValue(cursor);
+            MenstrualCyclePhaseRecordInternal readRecord =
+                    mMenstrualCyclePhaseRecordHelper.populateSpecificRecordValue(cursor);
 
             assertThat(readRecord.getPhase()).isEqualTo(PHASE_LUTEAL);
             assertThat(readRecord.getDayOfCycle()).isEqualTo(DEFAULT_INT);

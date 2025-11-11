@@ -18,6 +18,7 @@ package com.android.server.healthconnect.storage.utils;
 
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ALCOHOL_CONSUMPTION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUAL_CYCLE_PHASE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NUTRITION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SYMPTOM;
 import static android.text.TextUtils.isEmpty;
@@ -319,6 +320,12 @@ public final class StorageUtils {
         final int type = record.getRecordType();
 
         switch (type) {
+            case RECORD_TYPE_MENSTRUAL_CYCLE_PHASE -> {
+                return ByteBuffer.allocate(Long.BYTES * 2)
+                        .putLong(record.getAppInfoId())
+                        .putLong(record.getLocalDate().toEpochDay())
+                        .array();
+            }
             case RECORD_TYPE_HYDRATION,
                     RECORD_TYPE_NUTRITION,
                     RECORD_TYPE_SYMPTOM,
