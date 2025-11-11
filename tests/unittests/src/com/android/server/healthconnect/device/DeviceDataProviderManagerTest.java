@@ -59,8 +59,8 @@ import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
-import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -75,7 +75,6 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -104,7 +103,7 @@ public class DeviceDataProviderManagerTest {
 
     private PreferenceHelper mPreferenceHelper;
     private Context mContext;
-    private DeviceDataProviderHelper mDeviceDataProviderHelper;
+    private DeviceDataSourcesHelper mDeviceDataSourcesHelper;
     private DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
     private DeviceInfoHelper mDeviceInfoHelper;
     private AppInfoHelper mAppInfoHelper;
@@ -125,7 +124,7 @@ public class DeviceDataProviderManagerTest {
 
         mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
-        mDeviceDataProviderHelper = healthConnectInjector.getDeviceDataProviderHelper();
+        mDeviceDataSourcesHelper = healthConnectInjector.getDeviceDataSourcesHelper();
         mDeviceDataProviderMetadataHelper =
                 healthConnectInjector.getDeviceDataProviderMetadataHelper();
         mPreferenceHelper = healthConnectInjector.getPreferenceHelper();
@@ -136,7 +135,7 @@ public class DeviceDataProviderManagerTest {
                         mContext,
                         mDeviceInfoHelper,
                         mAppInfoHelper,
-                        mDeviceDataProviderHelper,
+                        mDeviceDataSourcesHelper,
                         mDeviceDataProviderMetadataHelper,
                         healthConnectInjector.getFitnessRecordUpsertHelper(),
                         healthConnectInjector.getSyntheticPackageNameCreator());
@@ -193,14 +192,14 @@ public class DeviceDataProviderManagerTest {
         assertThat(metadataInternalMap.size()).isEqualTo(1);
         assertThat(metadataInternalMap).containsKey(1L);
         assertThat(metadataInternalMap.get(1L).sourcePackageName()).isEqualTo(PACKAGE_NAME);
-        DeviceDataProviderHelper.DeviceDataProviderKey key =
-                new DeviceDataProviderHelper.DeviceDataProviderKey(
+        DeviceDataSourcesHelper.DeviceDataProviderKey key =
+                new DeviceDataSourcesHelper.DeviceDataProviderKey(
                         PACKAGE_NAME, expectedDeviceInfoId, RECORD_TYPE_STEPS);
-        assertThat(mDeviceDataProviderHelper.getDdpMap().size()).isEqualTo(1);
-        assertThat(mDeviceDataProviderHelper.getDdpMap()).containsKey(key);
-        assertThat(mDeviceDataProviderHelper.getDdpMap().get(key).isAvailable()).isEqualTo(true);
-        assertThat(mDeviceDataProviderHelper.getDdpMap().get(key).isUserEnabled()).isEqualTo(false);
-        assertThat(mDeviceDataProviderHelper.getDdpMap().get(key).isVisibleByDefaultInMatchmaking())
+        assertThat(mDeviceDataSourcesHelper.getDdpMap().size()).isEqualTo(1);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap()).containsKey(key);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap().get(key).isAvailable()).isEqualTo(true);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap().get(key).isUserEnabled()).isEqualTo(false);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap().get(key).isVisibleByDefaultInMatchmaking())
                 .isEqualTo(true);
     }
 
@@ -229,7 +228,7 @@ public class DeviceDataProviderManagerTest {
 
         assertThat(mDeviceInfoHelper.getIdDeviceInfoMap().size()).isEqualTo(1);
         assertThat(appInfoInternalMap.size()).isEqualTo(1);
-        assertThat(mDeviceDataProviderHelper.getDdpMap().size()).isEqualTo(1);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap().size()).isEqualTo(1);
         assertThat(metadataInternalMap.size()).isEqualTo(1);
     }
 
@@ -271,7 +270,7 @@ public class DeviceDataProviderManagerTest {
 
         assertThat(appInfoInternalMap.size()).isEqualTo(1);
         assertThat(metadataInternalMap.size()).isEqualTo(1);
-        assertThat(mDeviceDataProviderHelper.getDdpMap().size()).isEqualTo(2);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap().size()).isEqualTo(1);
         assertThat(mDeviceInfoHelper.getIdDeviceInfoMap().size()).isEqualTo(2);
         assertThat(
                         mDeviceInfoHelper
@@ -569,22 +568,25 @@ public class DeviceDataProviderManagerTest {
 
     @Test
     public void insertDeviceRecords_deviceNotFound_throwsException() {
-        List<RecordInternal<?>> records = Collections.emptyList();
+        List<RecordInternal<?>> records =
+                List.of(
+                        buildStepsRecord(
+                                /* startTimeMillis= */ 1000,
+                                /* endTimeMillis= */ 2000,
+                                /* stepsCount= */ 100));
 
         Throwable thrown =
                 assertThrows(
                         IllegalArgumentException.class,
                         () ->
                                 mDeviceDataProviderManager.insertDeviceRecords(
-                                        PACKAGE_NAME,
-                                        /* deviceId= */ "non_existent_device",
-                                        records));
+                                        PACKAGE_NAME, DEVICE_ID, records));
 
         assertThat(thrown)
                 .hasMessageThat()
                 .contains(
-                        "The device with id non_existent_device was not found, ensure the device"
-                                + " data source has been advertised");
+                        "appInfoId not found for calling package com.example.app, ensure an"
+                                + " advertisement has been made");
     }
 
     @Test

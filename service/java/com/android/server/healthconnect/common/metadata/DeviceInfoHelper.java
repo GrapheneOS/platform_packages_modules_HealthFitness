@@ -160,16 +160,10 @@ public class DeviceInfoHelper extends DatabaseHelper {
         return getDeviceInfoMap().get(deviceInfo);
     }
 
-    /** Returns DeviceInfo for the given deviceId. */
+    /** Returns DeviceInfo for the given deviceInfoId. */
     @Nullable
-    // TODO(b/445114536): Check if we want to store a map of deviceId <> deviceInfoId
-    public DeviceInfo getDeviceInfo(String deviceId) {
-        for (DeviceInfo deviceInfo : getIdDeviceInfoMap().values()) {
-            if (Objects.equals(deviceInfo.getDeviceId(), deviceId)) {
-                return deviceInfo;
-            }
-        }
-        return null;
+    public DeviceInfo getDeviceInfo(long deviceInfoId) {
+        return getIdDeviceInfoMap().getOrDefault(deviceInfoId, null);
     }
 
     /**
@@ -328,7 +322,6 @@ public class DeviceInfoHelper extends DatabaseHelper {
             return mDeviceType;
         }
 
-        @VisibleForTesting
         @Nullable
         public String getDeviceId() {
             return mDeviceId;

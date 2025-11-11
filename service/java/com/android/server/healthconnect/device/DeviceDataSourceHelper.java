@@ -32,8 +32,8 @@ import com.android.internal.annotations.VisibleForTesting;
  *
  * @hide
  */
-public class DeviceDataSourcesHelper {
-    private static final String TAG = "DeviceDataSourcesHelper";
+public class DeviceDataSourceHelper {
+    private static final String TAG = "DeviceDataSourceHelper";
     @VisibleForTesting static final int DISPLAY_NAME_MAX_LENGTH = 128;
 
     /**

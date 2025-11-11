@@ -30,8 +30,8 @@ import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
-import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 
 /**
@@ -51,7 +51,7 @@ public final class DevelopmentDatabaseHelper {
      * The current version number for the development database features. Increment this whenever you
      * make a breaking schema change to a development feature.
      */
-    @VisibleForTesting static final int CURRENT_VERSION = 23;
+    @VisibleForTesting static final int CURRENT_VERSION = 24;
 
     /** The name of the table to store development specific key value pairs. */
     private static final String SETTINGS_TABLE_NAME = "development_database_settings";
@@ -125,17 +125,17 @@ public final class DevelopmentDatabaseHelper {
     }
 
     private static void applyDdpDatabaseUpgrade(SQLiteDatabase db, int oldVersion) {
-        if (oldVersion < 17) {
-            // Version 16 adds unique column constraints
-            // Version 17 adds a new column
-            dropTableIfExists(db, DeviceDataProviderHelper.TABLE_NAME);
+        String oldDdpTableName = "device_data_provider_table";
+        if (oldVersion < 24) {
+            // Table is renamed and deviceInfoId column changed to appInfoId
+            dropTableIfExists(db, oldDdpTableName);
         }
 
-        if (checkTableExists(db, DeviceDataProviderHelper.TABLE_NAME)) {
+        if (checkTableExists(db, DeviceDataSourcesHelper.TABLE_NAME)) {
             // Upgrade has already been applied. Return early.
             return;
         }
-        createTable(db, DeviceDataProviderHelper.getCreateTableRequest());
+        createTable(db, DeviceDataSourcesHelper.getCreateTableRequest());
     }
 
     private static void applyDdpMetadataDatabaseUpgrade(SQLiteDatabase db) {

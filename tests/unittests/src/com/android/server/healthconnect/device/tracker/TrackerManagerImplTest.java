@@ -55,8 +55,8 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
-import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
-import com.android.server.healthconnect.device.FakeSerialDeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.DeviceDataSourceHelper;
+import com.android.server.healthconnect.device.FakeSerialDeviceDataSourceHelper;
 import com.android.server.healthconnect.device.notification.NativeStepsNotificationSender;
 import com.android.server.healthconnect.device.notification.NativeStepsNotificationStateManager;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
@@ -114,7 +114,7 @@ public class TrackerManagerImplTest {
         doReturn(TEST_USER).when(mContext).getUser();
         doReturn(true).when(mUserManager).isUserUnlocked();
         doReturn(true).when(mUserManager).isUserUnlocked(TEST_USER);
-        DeviceDataSourcesHelper deviceDataSourcesHelper = new FakeSerialDeviceDataSourcesHelper();
+        DeviceDataSourceHelper deviceDataSourceHelper = new FakeSerialDeviceDataSourceHelper();
         mHealthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
@@ -123,7 +123,7 @@ public class TrackerManagerImplTest {
                         .setAppOpLogsHelper(mock(AppOpLogsHelper.class))
                         .setUserManager(mUserManager)
                         .setNativeStepsNotificationSender(mNativeStepsNotificationSender)
-                        .setDeviceDataSourcesHelper(deviceDataSourcesHelper)
+                        .setDeviceDataSourceHelper(deviceDataSourceHelper)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mAppInfoHelper = mHealthConnectInjector.getAppInfoHelper();

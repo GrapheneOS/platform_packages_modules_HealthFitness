@@ -32,7 +32,7 @@ import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
-import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.DeviceDataSourceHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.device.notification.NativeStepsNotificationSender;
 import com.android.server.healthconnect.device.notification.NativeStepsNotificationStateManager;
@@ -89,7 +89,7 @@ public class TrackerManagerImpl implements TrackerManager {
             Context context,
             HealthConnectThreadScheduler threadScheduler,
             DeviceRecordHelper deviceRecordHelper,
-            DeviceDataSourcesHelper deviceDataSourcesHelper,
+            DeviceDataSourceHelper deviceDataSourceHelper,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             UserManager userManager,
             PreferenceHelper preferenceHelper,
@@ -100,7 +100,7 @@ public class TrackerManagerImpl implements TrackerManager {
         mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
         mListener =
                 new StepSensorEventListener(
-                        mContext, threadScheduler, deviceRecordHelper, deviceDataSourcesHelper);
+                        mContext, threadScheduler, deviceRecordHelper, deviceDataSourceHelper);
         mUserManager = userManager;
         mPackageManager = context.getPackageManager();
         mPreferenceHelper = preferenceHelper;
