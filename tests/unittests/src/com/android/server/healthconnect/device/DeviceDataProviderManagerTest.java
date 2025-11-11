@@ -233,6 +233,46 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
+    public void handleAdvertisement_deviceIdUsedForDifferentDeviceType_throwsException() {
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements1 =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement1 =
+                new DeviceDataAdvertisement(device1, DEVICE_ID, deviceDataTypeAdvertisements1);
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement1), PACKAGE_NAME);
+
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements2 =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement2 =
+                new DeviceDataAdvertisement(device2, DEVICE_ID, deviceDataTypeAdvertisements2);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mDeviceDataProviderManager.handleAdvertisement(
+                                Set.of(advertisement2), PACKAGE_NAME));
+    }
+
+    @Test
     // TODO(b/440066697): Check how we want to handle display name updates.
     public void handleAdvertisementWithNewDeviceName_savesNewDevice() {
         Device device =

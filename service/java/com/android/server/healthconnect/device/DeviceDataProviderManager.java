@@ -95,9 +95,12 @@ public class DeviceDataProviderManager {
      *
      * @param advertisements The device data source advertisements.
      * @param callingDdpPackageName The package name of the advertising DDP.
+     * @throws IllegalArgumentException if the given deviceId has already been used for a different
+     *     device type.
      */
     // TODO(b/440066697): Check if we want to handle advertisements that are no longer present.
-    // TODO(b/459404842): Throw if a deviceId has already been used for a different device type.
+    // TODO(b/459404842): Update API documentation with IllegalArgumentException information when
+    //  a deviceId is already being used by a different device type and add a CTS test.
     public void handleAdvertisement(
             @NonNull Set<DeviceDataAdvertisement> advertisements,
             @NonNull String callingDdpPackageName) {
@@ -168,6 +171,9 @@ public class DeviceDataProviderManager {
      *
      * <p>This is extracted to a separate method to allow it to be easily overridden in test cases,
      * and should not be used directly.
+     *
+     * @throws IllegalArgumentException if the given deviceId has already been used for a different
+     *     device type.
      */
     @SuppressLint("MissingPermission")
     @VisibleForTesting
@@ -181,18 +187,20 @@ public class DeviceDataProviderManager {
         Objects.requireNonNull(callingDdpPackageName);
 
         Device device = advertisement.getDevice();
+        String deviceId = advertisement.getDeviceId();
+        int deviceType = device.getType();
+        throwIfDeviceIdUsedByDifferentDeviceType(deviceId, deviceType);
+
         DeviceInfo deviceInfo =
                 new DeviceInfo(
                         device.getManufacturer(),
                         device.getModel(),
-                        device.getType(),
-                        advertisement.getDeviceId(),
+                        deviceType,
+                        deviceId,
                         device.getDisplayName());
         // TODO(b/440066697): Check how we want to handle display name updates.
         long deviceInfoId = mDeviceInfoHelper.insertIfNotPresent(deviceInfo);
-        String spn =
-                mSyntheticPackageNameCreator.createCanonical(
-                        device.getType(), advertisement.getDeviceId());
+        String spn = mSyntheticPackageNameCreator.createCanonical(device.getType(), deviceId);
         // Synthetic package name for device + device info
         long appInfoId = mAppInfoHelper.insertOrUpdateDeviceDataSource(spn, deviceInfoId);
 
@@ -302,6 +310,17 @@ public class DeviceDataProviderManager {
             return mContext.checkPermission(
                             Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA, pid, uid)
                     == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
+    private void throwIfDeviceIdUsedByDifferentDeviceType(String deviceId, int deviceType) {
+        Integer existingDeviceType = mDeviceInfoHelper.getDeviceType(deviceId);
+        if (existingDeviceType != null && existingDeviceType != deviceType) {
+            String message =
+                    censoredDeviceMessage(deviceId)
+                            + " has already been used for a different device type.";
+            Slog.e(TAG, message);
+            throw new IllegalArgumentException(message);
         }
     }
 
