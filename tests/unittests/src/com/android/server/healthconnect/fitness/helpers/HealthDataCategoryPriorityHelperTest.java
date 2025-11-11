@@ -55,7 +55,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
-import com.android.server.healthconnect.device.FakeSerialDeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.FakeSerialDeviceDataSourceHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
@@ -124,7 +124,7 @@ public class HealthDataCategoryPriorityHelperTest {
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setPreferenceHelper(mPreferenceHelper)
-                        .setDeviceDataSourcesHelper(new FakeSerialDeviceDataSourcesHelper())
+                        .setDeviceDataSourceHelper(new FakeSerialDeviceDataSourceHelper())
                         .setPackageInfoUtils(mPackageInfoUtils)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .setUserManager(mUserManager)

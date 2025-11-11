@@ -17,12 +17,12 @@
 package com.android.server.healthconnect.device;
 
 /**
- * A {@link DeviceDataSourcesHelper} that overrides the serial number of the device to a fake value.
+ * A {@link DeviceDataSourceHelper} that overrides the serial number of the device to a fake value.
  *
  * <p>This is designed to be used in testing, so that {@link android.os.Build#getSerial} doesn't
  * need to be called in a context where the permission is not present.
  */
-public class FakeSerialDeviceDataSourcesHelper extends DeviceDataSourcesHelper {
+public class FakeSerialDeviceDataSourceHelper extends DeviceDataSourceHelper {
 
     /** The string that will be returned as the serial number. */
     public static final String TEST_SERIAL_NUMBER = "TEST_SERIAL_NUMBER";

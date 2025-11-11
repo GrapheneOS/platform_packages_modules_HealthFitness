@@ -104,13 +104,13 @@ public class DeviceRecordHelperTest {
         mContext = spy(InstrumentationRegistry.getInstrumentation().getContext());
         AndroidPackageMocker.addToContext(mContext);
         mUserHandle = mContext.getUser();
-        DeviceDataSourcesHelper deviceDataSourcesHelper = new FakeSerialDeviceDataSourcesHelper();
+        DeviceDataSourceHelper deviceDataSourceHelper = new FakeSerialDeviceDataSourceHelper();
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setAppOpLogsHelper(mAppOpLogsHelper)
-                        .setDeviceDataSourcesHelper(deviceDataSourcesHelper)
+                        .setDeviceDataSourceHelper(deviceDataSourceHelper)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mDeviceRecordHelper = healthConnectInjector.getDeviceRecordHelper();

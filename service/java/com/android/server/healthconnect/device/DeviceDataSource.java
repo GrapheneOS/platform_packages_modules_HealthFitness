@@ -60,7 +60,7 @@ public class DeviceDataSource {
     /**
      * Note: this ID may be sensitive, particularly in the case of the current device.
      *
-     * <p>See {@link DeviceDataSourcesHelper#getCurrentDevice(Context)}.
+     * <p>See {@link DeviceDataSourceHelper#getCurrentDevice(Context)}.
      */
     public String getDeviceId() {
         return mDeviceId;

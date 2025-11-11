@@ -506,7 +506,7 @@ public class HealthConnectServiceImplTest {
                                     mServiceContext,
                                     healthConnectInjector.getDeviceInfoHelper(),
                                     healthConnectInjector.getAppInfoHelper(),
-                                    healthConnectInjector.getDeviceDataProviderHelper(),
+                                    healthConnectInjector.getDeviceDataSourcesHelper(),
                                     healthConnectInjector.getDeviceDataProviderMetadataHelper(),
                                     healthConnectInjector.getFitnessRecordUpsertHelper(),
                                     healthConnectInjector.getSyntheticPackageNameCreator()));
@@ -3853,9 +3853,9 @@ public class HealthConnectServiceImplTest {
                 .isEqualTo(ERROR_INVALID_ARGUMENT);
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
                 .isEqualTo(
-                        "java.lang.IllegalArgumentException: The device with id "
-                                + "TestDeviceId was not found, ensure the device data source "
-                                + "has been advertised");
+                        "java.lang.IllegalArgumentException: appInfoId not found for calling"
+                                + " package com.android.healthconnect.unittests, ensure an"
+                                + " advertisement has been made");
     }
 
     @Test

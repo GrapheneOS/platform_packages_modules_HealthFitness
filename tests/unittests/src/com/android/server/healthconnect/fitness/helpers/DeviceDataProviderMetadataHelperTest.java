@@ -111,7 +111,7 @@ public class DeviceDataProviderMetadataHelperTest {
                 .contains(RecordHelper.PRIMARY_COLUMN_NAME + " " + StorageUtils.PRIMARY);
         assertThat(createCommand)
                 .contains(
-                        DeviceDataProviderHelper.SOURCE_PACKAGE_NAME
+                        DeviceDataSourcesHelper.SOURCE_PACKAGE_NAME
                                 + " "
                                 + StorageUtils.TEXT_NOT_NULL);
     }
@@ -131,7 +131,7 @@ public class DeviceDataProviderMetadataHelperTest {
                         new ReadTableRequest(DeviceDataProviderMetadataHelper.TABLE_NAME))) {
             assertThat(cursor.getCount()).isEqualTo(1);
             cursor.moveToFirst();
-            assertThat(getCursorString(cursor, DeviceDataProviderHelper.SOURCE_PACKAGE_NAME))
+            assertThat(getCursorString(cursor, DeviceDataSourcesHelper.SOURCE_PACKAGE_NAME))
                     .isEqualTo(TEST_DDP_PACKAGE);
         }
     }

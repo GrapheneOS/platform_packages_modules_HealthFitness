@@ -57,7 +57,7 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
-import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.DeviceDataSourceHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
@@ -129,20 +129,20 @@ public final class AppInfoHelper extends DatabaseHelper {
     private HealthConnectContext mUserContext;
     private final TransactionManager mTransactionManager;
     private final InternalHealthConnectMappings mInternalHealthConnectMappings;
-    private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
+    private final DeviceDataSourceHelper mDeviceDataSourceHelper;
     private final HealthConnectMappings mHealthConnectMappings;
 
     public AppInfoHelper(
             HealthConnectContext userContext,
             TransactionManager transactionManager,
             InternalHealthConnectMappings internalHealthConnectMappings,
-            DeviceDataSourcesHelper deviceDataSourcesHelper,
+            DeviceDataSourceHelper deviceDataSourceHelper,
             DatabaseHelpers databaseHelpers) {
         super(databaseHelpers);
         mUserContext = userContext;
         mTransactionManager = transactionManager;
         mInternalHealthConnectMappings = internalHealthConnectMappings;
-        mDeviceDataSourcesHelper = deviceDataSourcesHelper;
+        mDeviceDataSourceHelper = deviceDataSourceHelper;
         mHealthConnectMappings = internalHealthConnectMappings.getExternalMappings();
     }
 
@@ -472,9 +472,7 @@ public final class AppInfoHelper extends DatabaseHelper {
                                 packageName, DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE)) {
                     // TODO(b/422986550): don't cache this as it may change at runtime.
                     appName =
-                            mDeviceDataSourcesHelper
-                                    .getCurrentDevice(mUserContext)
-                                    .getDisplayName();
+                            mDeviceDataSourceHelper.getCurrentDevice(mUserContext).getDisplayName();
                 }
                 byte[] icon = getCursorBlob(cursor, APP_ICON_COLUMN_NAME);
                 String recordTypesUsed = getCursorString(cursor, RECORD_TYPES_USED_COLUMN_NAME);
@@ -786,20 +784,38 @@ public final class AppInfoHelper extends DatabaseHelper {
 
     /**
      * Generates an app info for a device with {@code syntheticPackageName} used by DDP APIs and
-     * inserts it into the db.
+     * inserts or updates it in the db.
      */
-    public synchronized void insertDeviceDataSourceIfNotPresent(
+    public synchronized long insertOrUpdateDeviceDataSource(
             String syntheticPackageName, long deviceInfoId) {
-        AppInfoInternal appInfo =
+        AppInfoInternal existingAppInfo = getAppInfoMap().get(syntheticPackageName);
+        if (existingAppInfo == null) {
+            AppInfoInternal appInfo =
+                    new AppInfoInternal(
+                            DEFAULT_LONG,
+                            syntheticPackageName,
+                            /* name= */ null,
+                            /* icon= */ null,
+                            /* recordTypesUsed= */ null,
+                            deviceInfoId);
+            insertIfNotPresent(syntheticPackageName, appInfo);
+            return appInfo.getId();
+        }
+
+        if (Objects.equals(existingAppInfo.getDeviceInfoId(), deviceInfoId)) {
+            return existingAppInfo.getId();
+        }
+
+        AppInfoInternal updatedAppInfo =
                 new AppInfoInternal(
-                        DEFAULT_LONG,
+                        existingAppInfo.getId(),
                         syntheticPackageName,
                         /* name= */ null,
                         /* icon= */ null,
                         /* recordTypesUsed= */ null,
                         deviceInfoId);
-        // TODO(b/458001956): Update app info with latest advertisement.
-        insertIfNotPresent(syntheticPackageName, appInfo);
+        updateIfPresent(syntheticPackageName, updatedAppInfo);
+        return updatedAppInfo.getId();
     }
 
     /**
@@ -840,7 +856,7 @@ public final class AppInfoHelper extends DatabaseHelper {
         if (Flags.stepTrackingEnabled()
                 && Objects.equals(packageName, DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE)) {
             // TODO(b/422986550): don't cache this as it may change at runtime.
-            appName = mDeviceDataSourcesHelper.getCurrentDevice(mUserContext).getDisplayName();
+            appName = mDeviceDataSourceHelper.getCurrentDevice(mUserContext).getDisplayName();
         } else {
             appName = packageManager.getApplicationLabel(info).toString();
         }

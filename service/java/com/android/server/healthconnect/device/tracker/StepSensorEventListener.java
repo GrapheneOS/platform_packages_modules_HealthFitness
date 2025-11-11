@@ -31,7 +31,7 @@ import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
-import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.DeviceDataSourceHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 
 import java.time.Instant;
@@ -56,7 +56,7 @@ class StepSensorEventListener implements SensorEventListener {
     private final DeviceRecordHelper mDeviceRecordHelper;
 
     // TODO(b/413650602): Check if we ever want to cache the current device.
-    private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
+    private final DeviceDataSourceHelper mDeviceDataSourceHelper;
 
     /** Class to hold a cumulative step data point and associated timestamp since boot time. */
     @VisibleForTesting
@@ -74,11 +74,11 @@ class StepSensorEventListener implements SensorEventListener {
             Context context,
             HealthConnectThreadScheduler threadScheduler,
             DeviceRecordHelper deviceRecordHelper,
-            DeviceDataSourcesHelper deviceDataSourcesHelper) {
+            DeviceDataSourceHelper deviceDataSourceHelper) {
         this.mContext = context;
         this.mThreadScheduler = threadScheduler;
         this.mDeviceRecordHelper = deviceRecordHelper;
-        this.mDeviceDataSourcesHelper = deviceDataSourcesHelper;
+        this.mDeviceDataSourceHelper = deviceDataSourceHelper;
     }
 
     @Override
@@ -328,7 +328,7 @@ class StepSensorEventListener implements SensorEventListener {
         // Records are written into the DB on the internal background executor in
         // FitnessRecordUpsertHelper#insertRecords.
         mDeviceRecordHelper.insertRecords(
-                mDeviceDataSourcesHelper.getCurrentDevice(mContext), List.of(stepsRecordInternal));
+                mDeviceDataSourceHelper.getCurrentDevice(mContext), List.of(stepsRecordInternal));
     }
 
     @VisibleForTesting

@@ -42,7 +42,7 @@ import com.android.server.healthconnect.common.metadata.SyntheticPackageNameReso
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.device.DeviceDataProviderManager;
-import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.DeviceDataSourceHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.device.notification.NativeStepsNotificationSender;
 import com.android.server.healthconnect.device.notification.NativeStepsNotificationStateManager;
@@ -55,8 +55,8 @@ import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
-import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
@@ -362,10 +362,10 @@ public abstract class HealthConnectInjector {
     public abstract HealthConnectThreadScheduler getThreadScheduler();
 
     /**
-     * Getter for {@link DeviceDataSourcesHelper} instance initialised by the Health Connect
+     * Getter for {@link DeviceDataSourceHelper} instance initialised by the Health Connect
      * Injector.
      */
-    public abstract DeviceDataSourcesHelper getDeviceDataSourcesHelper();
+    public abstract DeviceDataSourceHelper getDeviceDataSourceHelper();
 
     /**
      * Getter for {@link File} instance representing root directory where Health Connect data should
@@ -465,11 +465,11 @@ public abstract class HealthConnectInjector {
     public abstract SyntheticPackageNameResolver getSyntheticPackageNameResolver();
 
     /**
-     * Getter for {@link DeviceDataProviderHelper} instance initialised by the Health Connect
+     * Getter for {@link DeviceDataSourcesHelper} instance initialised by the Health Connect
      * Injector.
      */
     @Nullable
-    public abstract DeviceDataProviderHelper getDeviceDataProviderHelper();
+    public abstract DeviceDataSourcesHelper getDeviceDataSourcesHelper();
 
     /**
      * Getter for {@link DeviceDataProviderManager} instance initialised by the Health Connect

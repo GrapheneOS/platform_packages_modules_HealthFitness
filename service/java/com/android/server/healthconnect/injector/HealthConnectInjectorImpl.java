@@ -54,7 +54,7 @@ import com.android.server.healthconnect.common.metadata.SyntheticPackageNameReso
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.device.DeviceDataProviderManager;
-import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.DeviceDataSourceHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.device.notification.NativeStepsNotificationSender;
 import com.android.server.healthconnect.device.notification.NativeStepsNotificationStateManager;
@@ -69,8 +69,8 @@ import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
-import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
@@ -173,7 +173,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final UserManager mUserManager;
     private final AppOpsManagerLocal mAppOpsManagerLocal;
     private final HealthConnectThreadScheduler mThreadScheduler;
-    private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
+    private final DeviceDataSourceHelper mDeviceDataSourceHelper;
     private final File mEnvironmentDataDirectory;
     private final HealthFitnessStatsLog mHealthFitnesssStatsLog;
     private final ExportImportLogger mExportImportLogger;
@@ -194,7 +194,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Nullable private final MatchmakingDenialStateManager mMatchmakingDenialStateManager;
     private final Clock mClock;
     @Nullable private final SyntheticPackageNameResolver mSyntheticPackageNameResolver;
-    @Nullable private final DeviceDataProviderHelper mDeviceDataProviderHelper;
+    @Nullable private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
     @Nullable private final DeviceDataProviderManager mDeviceDataProviderManager;
     @Nullable private final SyntheticPackageNameCreator mSyntheticPackageNameCreator;
     @Nullable private final DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
@@ -248,10 +248,10 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mThreadScheduler == null
                         ? new HealthConnectThreadScheduler()
                         : builder.mThreadScheduler;
-        mDeviceDataSourcesHelper =
-                builder.mDeviceDataSourcesHelper == null
-                        ? new DeviceDataSourcesHelper()
-                        : builder.mDeviceDataSourcesHelper;
+        mDeviceDataSourceHelper =
+                builder.mDeviceDataSourceHelper == null
+                        ? new DeviceDataSourceHelper()
+                        : builder.mDeviceDataSourceHelper;
         mMigrationEntityHelper =
                 builder.mMigrationEntityHelper == null
                         ? new MigrationEntityHelper(mDatabaseHelpers)
@@ -271,7 +271,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 hcContext,
                                 mTransactionManager,
                                 mInternalHealthConnectMappings,
-                                mDeviceDataSourcesHelper,
+                                mDeviceDataSourceHelper,
                                 mDatabaseHelpers)
                         : builder.mAppInfoHelper;
         mPackageInfoUtils =
@@ -540,7 +540,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 context,
                                 mThreadScheduler,
                                 mDeviceRecordHelper,
-                                mDeviceDataSourcesHelper,
+                                mDeviceDataSourceHelper,
                                 mHealthDataCategoryPriorityHelper,
                                 mUserManager,
                                 mPreferenceHelper,
@@ -624,13 +624,13 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthConnectMappings,
                                 Objects.requireNonNull(mMatchmakingDenialStateManager))
                         : builder.mMatchmakingManager;
-        mDeviceDataProviderHelper =
-                builder.mDeviceDataProviderHelper == null
+        mDeviceDataSourcesHelper =
+                builder.mDeviceDataSourcesHelper == null
                                 && Flags.deviceDataProvidersApi()
                                 && AconfigFlagHelper.isDeviceDataProvidersEnabled()
-                        ? new DeviceDataProviderHelper(
+                        ? new DeviceDataSourcesHelper(
                                 mDatabaseHelpers, mTransactionManager, mHealthConnectMappings)
-                        : builder.mDeviceDataProviderHelper;
+                        : builder.mDeviceDataSourcesHelper;
         mSyntheticPackageNameCreator =
                 builder.mSyntheticPackageNameCreator == null && Flags.deviceDataProvidersApi()
                         ? new SyntheticPackageNameCreator(mPreferenceHelper)
@@ -646,14 +646,14 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mDeviceDataProviderManager == null
                                 && Flags.deviceDataProvidersApi()
                                 && AconfigFlagHelper.isDeviceDataProvidersEnabled()
-                                && mDeviceDataProviderHelper != null
+                                && mDeviceDataSourcesHelper != null
                                 && mDeviceDataProviderMetadataHelper != null
                                 && mSyntheticPackageNameCreator != null
                         ? new DeviceDataProviderManager(
                                 hcContext,
                                 mDeviceInfoHelper,
                                 mAppInfoHelper,
-                                mDeviceDataProviderHelper,
+                                mDeviceDataSourcesHelper,
                                 mDeviceDataProviderMetadataHelper,
                                 mFitnessRecordUpsertHelper,
                                 mSyntheticPackageNameCreator)
@@ -941,8 +941,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     }
 
     @Override
-    public DeviceDataSourcesHelper getDeviceDataSourcesHelper() {
-        return mDeviceDataSourcesHelper;
+    public DeviceDataSourceHelper getDeviceDataSourceHelper() {
+        return mDeviceDataSourceHelper;
     }
 
     @Override
@@ -1041,8 +1041,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
 
     @Nullable
     @Override
-    public DeviceDataProviderHelper getDeviceDataProviderHelper() {
-        return mDeviceDataProviderHelper;
+    public DeviceDataSourcesHelper getDeviceDataSourcesHelper() {
+        return mDeviceDataSourcesHelper;
     }
 
     @Nullable
@@ -1131,7 +1131,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private File mEnvironmentDataDirectory;
         @Nullable private AppOpsManagerLocal mAppOpsManagerLocal;
         @Nullable private HealthConnectThreadScheduler mThreadScheduler;
-        @Nullable private DeviceDataSourcesHelper mDeviceDataSourcesHelper;
+        @Nullable private DeviceDataSourceHelper mDeviceDataSourceHelper;
         @Nullable private HealthFitnessStatsLog mStatsLog;
         @Nullable private TrackerManager mTrackerManager;
         @Nullable private MigrationUtils mMigrationUtils;
@@ -1147,7 +1147,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private MatchmakingDenialStateManager mMatchmakingDenialStateManager;
         @Nullable private Clock mClock;
         @Nullable private SyntheticPackageNameResolver mSyntheticPackageNameResolver;
-        @Nullable private DeviceDataProviderHelper mDeviceDataProviderHelper;
+        @Nullable private DeviceDataSourcesHelper mDeviceDataSourcesHelper;
         @Nullable private DeviceDataProviderManager mDeviceDataProviderManager;
         @Nullable private SyntheticPackageNameCreator mSyntheticPackageNameCreator;
         @Nullable private DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
@@ -1483,9 +1483,9 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
             return this;
         }
 
-        /** Set fake or custom {@link DeviceDataSourcesHelper}. */
-        public Builder setDeviceDataSourcesHelper(DeviceDataSourcesHelper deviceDataSourcesHelper) {
-            mDeviceDataSourcesHelper = Objects.requireNonNull(deviceDataSourcesHelper);
+        /** Set fake or custom {@link DeviceDataSourceHelper}. */
+        public Builder setDeviceDataSourceHelper(DeviceDataSourceHelper deviceDataSourceHelper) {
+            mDeviceDataSourceHelper = Objects.requireNonNull(deviceDataSourceHelper);
             return this;
         }
 
@@ -1572,10 +1572,9 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
             return this;
         }
 
-        /** Set fake or custom {@link DeviceDataProviderHelper}. */
-        public Builder setDeviceDataProviderHelper(
-                DeviceDataProviderHelper deviceDataProviderHelper) {
-            mDeviceDataProviderHelper = deviceDataProviderHelper;
+        /** Set fake or custom {@link DeviceDataSourcesHelper}. */
+        public Builder setDeviceDataSourcesHelper(DeviceDataSourcesHelper deviceDataSourcesHelper) {
+            mDeviceDataSourcesHelper = deviceDataSourcesHelper;
             return this;
         }
 

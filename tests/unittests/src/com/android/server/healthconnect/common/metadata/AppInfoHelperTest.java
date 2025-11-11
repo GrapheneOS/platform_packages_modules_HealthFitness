@@ -51,7 +51,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.device.DeviceDataSource;
-import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.DeviceDataSourceHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -86,7 +86,7 @@ public class AppInfoHelperTest {
     @Mock private Context mContext;
     @Mock private Drawable mDrawable;
     @Mock private PackageManager mPackageManager;
-    @Mock private DeviceDataSourcesHelper mMockDeviceDataSourcesHelper;
+    @Mock private DeviceDataSourceHelper mMockDeviceDataSourceHelper;
     @Mock private DeviceDataSource mMockDeviceDataSource;
 
     private static final String DEVICE_PROVIDER_PACKAGE_NAME =
@@ -110,10 +110,7 @@ public class AppInfoHelperTest {
         when(mDrawable.getIntrinsicHeight()).thenReturn(200);
         when(mDrawable.getIntrinsicWidth()).thenReturn(200);
 
-        mMockDeviceDataSourcesHelper = mock(DeviceDataSourcesHelper.class);
-        mMockDeviceDataSource = mock(DeviceDataSource.class);
-        when(mMockDeviceDataSourcesHelper.getCurrentDevice(any()))
-                .thenReturn(mMockDeviceDataSource);
+        when(mMockDeviceDataSourceHelper.getCurrentDevice(any())).thenReturn(mMockDeviceDataSource);
         when(mMockDeviceDataSource.getDisplayName()).thenReturn(EXPECTED_DEVICE_APP_NAME);
 
         HealthConnectInjector healthConnectInjector =
@@ -122,7 +119,7 @@ public class AppInfoHelperTest {
                         .setHealthPermissionIntentAppsTracker(
                                 mock(HealthPermissionIntentAppsTracker.class))
                         .setAppOpLogsHelper(mock(AppOpLogsHelper.class))
-                        .setDeviceDataSourcesHelper(mMockDeviceDataSourcesHelper)
+                        .setDeviceDataSourceHelper(mMockDeviceDataSourceHelper)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
@@ -137,7 +134,7 @@ public class AppInfoHelperTest {
                 mDrawable,
                 mContext,
                 mPackageManager,
-                mMockDeviceDataSourcesHelper,
+                mMockDeviceDataSourceHelper,
                 mMockDeviceDataSource);
     }
 
@@ -442,7 +439,7 @@ public class AppInfoHelperTest {
         mDeviceInfoHelper.populateDeviceInfoId(recordInternal);
         assertThat(recordInternal.getDeviceInfoId()).isEqualTo(deviceInfoId);
 
-        mAppInfoHelper.insertDeviceDataSourceIfNotPresent(canonicalSpn, deviceInfoId);
+        mAppInfoHelper.insertOrUpdateDeviceDataSource(canonicalSpn, deviceInfoId);
 
         assertThat(mAppInfoHelper.getAppInfoMap()).containsKey(canonicalSpn);
         assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getDeviceInfoId())
@@ -477,7 +474,7 @@ public class AppInfoHelperTest {
         mDeviceInfoHelper.populateDeviceInfoId(recordInternal);
         assertThat(recordInternal.getDeviceInfoId()).isEqualTo(deviceInfoId);
 
-        mAppInfoHelper.insertDeviceDataSourceIfNotPresent(canonicalSpn, deviceInfoId);
+        mAppInfoHelper.insertOrUpdateDeviceDataSource(canonicalSpn, deviceInfoId);
         recordInternal.setPackageName(canonicalSpn);
 
         mAppInfoHelper.populateAppInfoId(recordInternal, true);
