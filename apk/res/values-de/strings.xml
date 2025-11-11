@@ -1090,7 +1090,7 @@
     <string name="action_drag_label_move_down" msgid="3448000958912947588">"Nach unten verschieben"</string>
     <string name="action_drag_label_move_top" msgid="5114033774108663548">"An den Anfang verschieben"</string>
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"Ans Ende verschieben"</string>
-    <string name="reorder_button_content_description" msgid="2685032520710743533">"Schaltfläche zum Ziehen von <xliff:g id="SELECTED_APP">%s</xliff:g> in der Prioritätenliste, um die Reihenfolge zu ändern"</string>
+    <string name="reorder_button_content_description" msgid="2685032520710743533">"Button zum Ziehen von <xliff:g id="SELECTED_APP">%s</xliff:g> in der Prioritätenliste, um die Reihenfolge zu ändern"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"Taste zum Entfernen von <xliff:g id="SELECTED_APP">%s</xliff:g> aus der Prioritätenliste"</string>
     <string name="see_actions_button_content_description" msgid="2004104767369363475">"Button zum Neuanordnen der App „<xliff:g id="SELECTED_APP">%s</xliff:g>“ in der Liste der App-Quellen oder zum Entfernen der App aus der Liste der App-Quellen"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Doppeltippen und ziehen, um Reihenfolge zu ändern"</string>
@@ -1577,4 +1577,6 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"Wassereinlagerungen"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Pfeifende Atmung"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"Pfeifende Atmung"</string>
+    <!-- no translation found for app_permissions_granted_summary (2542736165368066160) -->
+    <skip />
 </resources>

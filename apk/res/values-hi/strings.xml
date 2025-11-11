@@ -1577,4 +1577,6 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"शरीर में पानी इकट्ठा होना"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"सांस लेने पर घरघराहट की आवाज़ आना"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"सांस लेने पर घरघराहट की आवाज़ आना"</string>
+    <!-- no translation found for app_permissions_granted_summary (2542736165368066160) -->
+    <skip />
 </resources>

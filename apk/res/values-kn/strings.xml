@@ -1577,4 +1577,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"ನೀರು ತುಂಬಿಕೊಳ್ಳುವಿಕೆ"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ಉಬ್ಬಸ"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ಉಬ್ಬಸ"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> ರಲ್ಲಿ <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
 </resources>
