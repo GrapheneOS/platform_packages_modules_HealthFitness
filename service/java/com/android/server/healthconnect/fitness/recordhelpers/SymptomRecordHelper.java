@@ -19,6 +19,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGE
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -29,13 +30,20 @@ import android.health.connect.internal.datatypes.utils.SymptomTypePermissionMapp
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
+import com.android.server.healthconnect.storage.request.ReadTableRequest;
+import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -159,6 +167,38 @@ public final class SymptomRecordHelper extends IntervalRecordHelper<SymptomRecor
             whereClauses.addWhereInClause(
                     SYMPTOM_TYPE_COLUMN_NAME,
                     allowedSymptomTypes.stream().map(String::valueOf).collect(Collectors.toList()));
+        }
+    }
+
+    @Override
+    public void enforcePreUpsertChecks(
+            List<RecordInternal<?>> recordInternals, TransactionManager transactionManager) {
+
+        Map<UUID, Integer> uuidToSymptomTypeMap = new HashMap<>();
+        List<String> uuids = new ArrayList<>();
+        for (RecordInternal<?> recordInternal : recordInternals) {
+            SymptomRecordInternal symptomRecordInternal = (SymptomRecordInternal) recordInternal;
+            uuids.add(StorageUtils.getHexString(symptomRecordInternal.getUuid()));
+            uuidToSymptomTypeMap.put(
+                    symptomRecordInternal.getUuid(), symptomRecordInternal.getSymptomType());
+        }
+
+        ReadTableRequest readTableRequest =
+                new ReadTableRequest(TABLE_NAME)
+                        .setColumnNames(List.of(UUID_COLUMN_NAME, SYMPTOM_TYPE_COLUMN_NAME))
+                        .setWhereClause(
+                                new WhereClauses(AND)
+                                        .addWhereInClauseWithoutQuotes(UUID_COLUMN_NAME, uuids));
+
+        try (Cursor cursor = transactionManager.read(readTableRequest)) {
+            while (cursor.moveToNext()) {
+                UUID recordUuid = StorageUtils.getCursorUUID(cursor, UUID_COLUMN_NAME);
+                if (uuidToSymptomTypeMap.containsKey(recordUuid)
+                        && uuidToSymptomTypeMap.get(recordUuid)
+                                != StorageUtils.getCursorInt(cursor, SYMPTOM_TYPE_COLUMN_NAME)) {
+                    throw new IllegalArgumentException("Updating Symptom type is not allowed.");
+                }
+            }
         }
     }
 }

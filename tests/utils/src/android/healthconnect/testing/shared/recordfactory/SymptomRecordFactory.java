@@ -46,10 +46,10 @@ public final class SymptomRecordFactory extends RecordFactory<SymptomRecord> {
     @Override
     public SymptomRecord anotherFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
         return new SymptomRecord.Builder(
-                        SymptomRecord.SYMPTOM_TYPE_HEADACHE, startTime, endTime, metadata)
+                        SymptomRecord.SYMPTOM_TYPE_COUGH, startTime, endTime, metadata)
                 .setStartZoneOffset(ZoneOffset.ofHours(-2))
                 .setEndZoneOffset(ZoneOffset.ofHours(-1))
-                .setNotes("Migraine")
+                .setNotes("Persistent cough updated note")
                 .setSeverity(SymptomRecord.SEVERITY_SEVERE)
                 .setCount(1)
                 .build();

@@ -158,6 +158,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return mRecordIdentifier;
     }
 
+    /** Function to enforce any checks before the records are upserted. */
+    public void enforcePreUpsertChecks(
+            List<RecordInternal<?>> records, TransactionManager transactionManager) {}
+
     /**
      * @return {@link AggregateRecordRequest} corresponding to {@code aggregationType}
      */
