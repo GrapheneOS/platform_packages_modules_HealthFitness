@@ -226,15 +226,11 @@ public class DeviceDataProviderManager {
         Objects.requireNonNull(records);
         DeviceInfoHelper.DeviceInfo deviceInfo = mDeviceInfoHelper.getDeviceInfo(deviceId);
         if (deviceInfo == null) {
-            Slog.e(
-                    TAG,
-                    "Device with ID "
-                            + deviceId
-                            + " not found, ensure the device data source has been advertised");
-            throw new IllegalArgumentException(
-                    "Device with ID "
-                            + deviceId
-                            + " not found, ensure the device data source has been advertised");
+            String message =
+                    censoredDeviceMessage(deviceId)
+                            + " was not found, ensure the device data source has been advertised";
+            Slog.e(TAG, message);
+            throw new IllegalArgumentException(message);
         }
 
         String syntheticPackageName =
@@ -248,10 +244,9 @@ public class DeviceDataProviderManager {
             if (!advertisedDataTypes.contains(record.getRecordType())) {
                 // TODO(b/459388902): Use the data type string in the exception.
                 throw new IllegalArgumentException(
-                        "Data type "
-                                + record.getRecordType()
-                                + " not advertised for device ID "
-                                + deviceId);
+                        censoredDeviceMessage(deviceId)
+                                + " was not advertised for data type "
+                                + record.getRecordType());
             }
             mDeviceInfoHelper.populateRecordWithValue(deviceInfoId, record);
             record.setDeviceInfoId(deviceInfoId);
@@ -325,6 +320,16 @@ public class DeviceDataProviderManager {
             return mContext.checkPermission(
                             Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA, pid, uid)
                     == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
+    @NonNull
+    private String censoredDeviceMessage(@NonNull String deviceId) {
+        // TODO(b/459541943): Handle censoring of canonical SPN on a higher level
+        if (SyntheticPackageNameCreator.isCanonicalSpn(deviceId)) {
+            return "The current device";
+        } else {
+            return "The device with id " + deviceId;
         }
     }
 }

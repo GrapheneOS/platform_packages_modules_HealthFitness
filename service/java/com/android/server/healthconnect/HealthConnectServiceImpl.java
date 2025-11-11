@@ -3292,13 +3292,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         int uid = Binder.getCallingUid();
         int pid = Binder.getCallingPid();
         UserHandle userHandle = Binder.getCallingUserHandle();
-        String packageName = attributionSource.getPackageName();
+        String packageName = requireNonNull(attributionSource.getPackageName());
         // TODO(b/455514553): Use specific API method for logging and additional telemetry.
         HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
                                 /* holdsDataManagementPermission= */ false, API_METHOD_UNKNOWN)
                         .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(packageName);
+        List<DeviceDataAdvertisement> unmaskedAdvertisements =
+                advertisements.stream()
+                        .map(
+                                advertisement ->
+                                        advertisement.toUnmasked(getUnmaskingFunction(packageName)))
+                        .toList();
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
@@ -3313,8 +3319,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         throw new SecurityException(
                                 "Caller is not permitted to provide device data");
                     }
+
                     mDeviceDataProviderManager.handleAdvertisement(
-                            new HashSet<>(advertisements), packageName);
+                            new HashSet<>(unmaskedAdvertisements), packageName);
 
                     tryAndReturnResult(callback, logger);
                 },
@@ -3350,7 +3357,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
-        String packageName = attributionSource.getPackageName();
+        String packageName = requireNonNull(attributionSource.getPackageName());
         // TODO(b/455514553): Use specific API method for logging.
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
@@ -3358,6 +3365,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(packageName);
         ErrorCallback errorCallback = callback::onError;
+        String unmaskedDeviceId = getUnmaskingFunction(packageName).apply(deviceId);
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
@@ -3391,7 +3399,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
                     List<String> uuids =
                             deviceDataProviderManager.insertDeviceRecords(
-                                    packageName, deviceId, recordInternals);
+                                    packageName, unmaskedDeviceId, recordInternals);
                     tryAndReturnResult(callback, uuids, logger);
                     // TODO(b/455514553): Add RecordType specific upsert metrics
                 },

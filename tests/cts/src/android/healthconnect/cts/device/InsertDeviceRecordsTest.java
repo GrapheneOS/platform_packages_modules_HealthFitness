@@ -105,8 +105,9 @@ public class InsertDeviceRecordsTest {
                 .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
         assertThat(receiver.assertAndGetException().getMessage())
                 .isEqualTo(
-                        "java.lang.IllegalArgumentException: Device with ID TestDeviceId not found,"
-                                + " ensure the device data source has been advertised");
+                        "java.lang.IllegalArgumentException: The device with id "
+                                + "TestDeviceId was not found, ensure the device data "
+                                + "source has been advertised");
     }
 
     @Test
@@ -135,8 +136,9 @@ public class InsertDeviceRecordsTest {
                 .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
         assertThat(receiver.assertAndGetException().getMessage())
                 .isEqualTo(
-                        "java.lang.IllegalArgumentException: Device with ID IncorrectTestDeviceId"
-                                + " not found, ensure the device data source has been advertised");
+                        "java.lang.IllegalArgumentException: The device with id "
+                                + "IncorrectTestDeviceId was not found, "
+                                + "ensure the device data source has been advertised");
     }
 
     @Test
@@ -310,8 +312,8 @@ public class InsertDeviceRecordsTest {
                 .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
         assertThat(receiver.assertAndGetException().getMessage())
                 .isEqualTo(
-                        "java.lang.IllegalArgumentException: Data type 1 not advertised for device"
-                                + " ID TestDeviceId");
+                        "java.lang.IllegalArgumentException: The device with id "
+                                + "TestDeviceId was not advertised for data type 1");
     }
 
     @Test
@@ -330,8 +332,8 @@ public class InsertDeviceRecordsTest {
                 .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
         assertThat(receiver.assertAndGetException().getMessage())
                 .isEqualTo(
-                        "java.lang.IllegalArgumentException: Data type 7 not advertised for device"
-                                + " ID TestDeviceId");
+                        "java.lang.IllegalArgumentException: The device with id "
+                                + "TestDeviceId was not advertised for data type 7");
     }
 
     @Test
@@ -522,9 +524,7 @@ public class InsertDeviceRecordsTest {
         assertThat(receiver.assertAndGetException().getErrorCode())
                 .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
         assertThat(receiver.assertAndGetException().getMessage())
-                .startsWith(
-                        "java.lang.IllegalArgumentException: Device with ID"
-                                + " com.android.healthconnect.phone.j");
+                .startsWith("java.lang.IllegalArgumentException: The current device was");
         assertThat(receiver.assertAndGetException().getMessage())
                 .endsWith(" not found, ensure the device data source has been advertised");
     }
