@@ -48,7 +48,8 @@ public final class DatabaseVersions {
     public static final int DB_VERSION_NICOTINE_INTAKE = 21;
     public static final int DB_VERSION_SYMPTOMS = 22;
     public static final int DB_VERSION_ALCOHOL_CONSUMPTION = 23;
-    public static final int DB_VERSION_MENSTRUAL_CYCLE_PHASE = 24;
+    // skip version 24, which introduced legacy table name of "cycle_phases_record_table"
+    public static final int DB_VERSION_MENSTRUAL_CYCLE_PHASE = 25;
 
     // For historical reasons, we do not support versions below this
     // See go/hc-mainline-dev/trunk_stable/db-and-aconfig#a-bit-of-history
