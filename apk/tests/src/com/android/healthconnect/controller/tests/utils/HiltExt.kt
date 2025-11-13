@@ -115,6 +115,7 @@ const val NESTED_FRAGMENT_TAG = "NESTED_FRAGMENT_TAG"
 inline fun <reified T : Fragment> launchNestedFragment(
     arguments: Bundle? = null,
     tag: String = NESTED_FRAGMENT_TAG,
+    crossinline action: Fragment.() -> Unit = {},
 ): ActivityScenario<TestActivity> {
     return launchFragment<FakeParentFragment>().onActivity { activity ->
         val parentFragment =
@@ -123,5 +124,6 @@ inline fun <reified T : Fragment> launchNestedFragment(
             .beginTransaction()
             .add(R.id.empty_fragment, T::class.java, arguments, tag)
             .commitNow()
+        parentFragment.action()
     }
 }
