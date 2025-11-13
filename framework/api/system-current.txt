@@ -79,6 +79,8 @@ package android.health.connect {
     field public static final String ACTION_HEALTH_HOME_SETTINGS = "android.health.connect.action.HEALTH_HOME_SETTINGS";
     field public static final String ACTION_MANAGE_HEALTH_DATA = "android.health.connect.action.MANAGE_HEALTH_DATA";
     field public static final String ACTION_REQUEST_HEALTH_PERMISSIONS = "android.health.connect.action.REQUEST_HEALTH_PERMISSIONS";
+    field @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public static final String ACTION_SHOW_DEVICE_MANAGEMENT = "android.health.connect.action.SHOW_DEVICE_MANAGEMENT";
+    field @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public static final String ACTION_SHOW_DEVICE_ONBOARDING = "android.health.connect.action.SHOW_DEVICE_ONBOARDING";
     field @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore_intent_api") @RequiresPermission(android.health.connect.HealthPermissions.START_BACKUP_RESTORE_SETTINGS_PERMISSION) public static final String ACTION_SHOW_HEALTH_CONNECT_BACKUP_SETTINGS = "android.health.connect.action.SHOW_HEALTH_CONNECT_BACKUP_SETTINGS";
     field public static final String ACTION_SHOW_MIGRATION_INFO = "android.health.connect.action.SHOW_MIGRATION_INFO";
     field @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore_intent_api") @RequiresPermission(android.health.connect.HealthPermissions.START_BACKUP_RESTORE_SETTINGS_PERMISSION) public static final String ACTION_SHOW_RESTORE_SETTINGS_AND_TRIGGER_RESTORE = "android.health.connect.action.SHOW_RESTORE_SETTINGS_AND_TRIGGER_RESTORE";
@@ -87,6 +89,8 @@ package android.health.connect {
     field public static final int DATA_DOWNLOAD_RETRY = 2; // 0x2
     field public static final int DATA_DOWNLOAD_STARTED = 1; // 0x1
     field public static final int DATA_DOWNLOAD_STATE_UNKNOWN = 0; // 0x0
+    field @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public static final String EXTRA_DEVICE_ID = "android.health.connect.extra.DEVICE_ID";
+    field @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public static final String EXTRA_DEVICE_RECORD_TYPES = "android.health.connect.extra.DEVICE_RECORD_TYPES";
   }
 
   public class HealthDataCategory {
