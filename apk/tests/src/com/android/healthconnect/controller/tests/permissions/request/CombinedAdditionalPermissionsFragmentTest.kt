@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.permissions.request
 
-import androidx.core.os.bundleOf
+import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
@@ -108,7 +108,7 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+        launchFragment<CombinedAdditionalPermissionsFragment>(Bundle()).use {
             onView(withText("Allow additional access for $TEST_APP_NAME?"))
                 .check(matches(isDisplayed()))
             onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
@@ -177,7 +177,7 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+        launchFragment<CombinedAdditionalPermissionsFragment>(Bundle()).use {
             onView(withText("Allow additional access for $TEST_APP_NAME?"))
                 .check(matches(isDisplayed()))
             onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
@@ -224,7 +224,7 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+        launchFragment<CombinedAdditionalPermissionsFragment>(Bundle()).use {
             onView(withText("Allow additional access for $TEST_APP_NAME?"))
                 .check(matches(isDisplayed()))
             onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
@@ -268,7 +268,7 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+        launchFragment<CombinedAdditionalPermissionsFragment>(Bundle()).use {
             onView(withText("Allow additional access for $TEST_APP_NAME?"))
                 .check(matches(isDisplayed()))
             onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
@@ -311,7 +311,7 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+        launchFragment<CombinedAdditionalPermissionsFragment>(Bundle()).use {
             onView(withText("Allow additional access for $TEST_APP_NAME?"))
                 .check(matches(isDisplayed()))
             onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
@@ -365,7 +365,7 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+        launchFragment<CombinedAdditionalPermissionsFragment>(Bundle()).use {
             onView(withText("Allow additional access for $TEST_APP_NAME?"))
                 .check(matches(isDisplayed()))
             onView(withText("$TEST_APP_NAME also wants to access these Health Connect settings"))
@@ -413,7 +413,7 @@ class CombinedAdditionalPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+        launchFragment<CombinedAdditionalPermissionsFragment>(Bundle()).use {
             onView(ViewMatchers.withId(androidx.preference.R.id.recycler_view))
                 .perform(
                     RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -458,7 +458,7 @@ class CombinedAdditionalPermissionsFragmentTest {
             )
             .thenReturn(true)
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+        launchFragment<CombinedAdditionalPermissionsFragment>(Bundle()).use {
             onView(withText("Access past fitness and wellness data")).check(matches(isDisplayed()))
             onView(withText("Access past fitness and wellness data")).perform(click())
 
@@ -491,7 +491,7 @@ class CombinedAdditionalPermissionsFragmentTest {
             MutableLiveData(emptySet<AdditionalPermission>())
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+        launchFragment<CombinedAdditionalPermissionsFragment>(Bundle()).use {
             onView(withText("Allow")).check(matches(ViewMatchers.isNotEnabled()))
         }
     }
@@ -513,7 +513,7 @@ class CombinedAdditionalPermissionsFragmentTest {
             MutableLiveData(setOf(AdditionalPermission.READ_HEALTH_DATA_HISTORY))
         }
 
-        launchFragment<CombinedAdditionalPermissionsFragment>(bundleOf()).use {
+        launchFragment<CombinedAdditionalPermissionsFragment>(Bundle()).use {
             onView(withText("Allow")).check(matches(ViewMatchers.isEnabled()))
         }
     }

@@ -22,10 +22,10 @@ import android.health.connect.HealthPermissions.READ_STEPS
 import android.health.connect.HealthPermissions.WRITE_HEART_RATE
 import android.health.connect.HealthPermissions.WRITE_HYDRATION
 import android.os.Build
+import android.os.Bundle
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
-import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -168,7 +168,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
                 .check(matches(isDisplayed()))
             onView(withText("Choose data you want this app to read or write to Health Connect"))
@@ -227,7 +227,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
                 .check(matches(isDisplayed()))
             onView(
@@ -291,7 +291,7 @@ class FitnessPermissionsFragmentTest {
     //             )
     //         )
     //     }
-    //     launchFragment<FitnessPermissionsFragment>(bundleOf())
+    //     launchFragment<FitnessPermissionsFragment>(android.os.Bundle())
     //
     //     onView(withId(R.id.data_access_type)).check(matches(isClickable()))
     //     onView(withId(R.id.data_access_type)).perform(click())
@@ -311,7 +311,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access fitness and wellness data?"))
                 .check(matches(isDisplayed()))
             onView(withText("Allow $TEST_APP_NAME to access Health Connect?")).check(doesNotExist())
@@ -331,7 +331,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
                 .check(doesNotExist())
             onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
@@ -352,7 +352,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
                 .check(matches(isDisplayed()))
             onView(withText("Allow $TEST_APP_NAME to access Health Connect?")).check(doesNotExist())
@@ -371,7 +371,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withText("If you give read access, the app can read new and past data"))
                 .check(matches(isDisplayed()))
             onView(
@@ -395,7 +395,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withText("If you give read access, the app can read new and past data"))
                 .check(doesNotExist())
             onView(
@@ -420,7 +420,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withText("Choose data you want this app to read from Health Connect"))
                 .check(matches(isDisplayed()))
             onView(
@@ -445,7 +445,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(
                     withText(
                         "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
@@ -473,7 +473,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withText("Choose data you want this app to write to Health Connect"))
                 .check(matches(isDisplayed()))
             onView(withText("If you give read access, the app can read new and past data"))
@@ -499,7 +499,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(
                     withText(
                         "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
@@ -530,7 +530,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
                 .check(matches(isDisplayed()))
             onView(withText("Choose data you want this app to read or write to Health Connect"))
@@ -563,7 +563,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
                 .check(matches(isDisplayed()))
             onView(
@@ -600,7 +600,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(
                     RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -633,7 +633,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(
                     RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -668,7 +668,7 @@ class FitnessPermissionsFragmentTest {
             )
         }
 
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(
                     RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -707,7 +707,7 @@ class FitnessPermissionsFragmentTest {
             )
         }
 
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(
                     RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -742,7 +742,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(
                     RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -770,7 +770,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use { activityScenario ->
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use { activityScenario ->
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(
                     RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -808,7 +808,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use { activityScenario ->
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use { activityScenario ->
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(
                     RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -850,7 +850,7 @@ class FitnessPermissionsFragmentTest {
             MutableLiveData(emptySet<FitnessPermission>())
         }
 
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withText("Allow")).check(matches(ViewMatchers.isNotEnabled()))
         }
     }
@@ -871,7 +871,7 @@ class FitnessPermissionsFragmentTest {
             MutableLiveData(setOf(HealthPermission.fromPermissionString(READ_STEPS)))
         }
 
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             onView(withText("Allow")).check(matches(ViewMatchers.isEnabled()))
         }
     }
@@ -889,7 +889,7 @@ class FitnessPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use { scenario ->
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use { scenario ->
             // Sorted order is Activity, Sleep for read.
             // So Activity (1) should be expanded.
             onView(withId(androidx.preference.R.id.recycler_view))
@@ -969,7 +969,7 @@ class FitnessPermissionsFragmentTest {
             )
         }
 
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             clickOnRecyclerViewItemWithText("Sleep")
 
             verify(viewModel).updateHealthPermission(sleepPermission, true)
@@ -991,7 +991,7 @@ class FitnessPermissionsFragmentTest {
             )
         }
 
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use {
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
             clickSwitchOnRecyclerViewItemWithText("Activity (1)")
 
             verify(viewModel).updateHealthPermissions(activityPermissions, true)
@@ -1015,7 +1015,7 @@ class FitnessPermissionsFragmentTest {
             )
         }
 
-        launchFragment<FitnessPermissionsFragment>(bundleOf()).use { scenario ->
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use { scenario ->
             lateinit var expandablePreference: HealthToggleExpandablePreference
             scenario.onActivity { activity ->
                 val fragment =
