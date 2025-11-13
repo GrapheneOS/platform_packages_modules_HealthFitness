@@ -17,7 +17,6 @@ import android.health.connect.HealthDataCategory
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
@@ -229,7 +228,7 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
                     findNavController()
                         .navigate(
                             R.id.action_dataSourcesFragment_to_addAnAppFragment,
-                            bundleOf(CATEGORY_KEY to currentCategorySelection),
+                            Bundle().apply { putInt(CATEGORY_KEY, currentCategorySelection) },
                         )
                     true
                 },
