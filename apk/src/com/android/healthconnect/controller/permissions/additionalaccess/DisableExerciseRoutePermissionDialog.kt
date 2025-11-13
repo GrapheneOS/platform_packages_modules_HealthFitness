@@ -23,7 +23,6 @@ import android.health.connect.HealthPermissions.READ_EXERCISE
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.android.healthconnect.controller.R
@@ -109,7 +108,11 @@ class DisableExerciseRoutePermissionDialog : Hilt_DisableExerciseRoutePermission
             appName: String,
         ): DisableExerciseRoutePermissionDialog {
             return DisableExerciseRoutePermissionDialog().apply {
-                arguments = bundleOf(EXTRA_PACKAGE_NAME to packageName, EXTRA_APP_NAME to appName)
+                arguments =
+                    Bundle().apply {
+                        putString(EXTRA_PACKAGE_NAME, packageName)
+                        putString(EXTRA_APP_NAME, appName)
+                    }
             }
         }
     }

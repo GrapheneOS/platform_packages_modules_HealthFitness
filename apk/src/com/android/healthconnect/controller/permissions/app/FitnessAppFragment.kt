@@ -22,7 +22,6 @@ import android.icu.number.NumberFormatter
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commitNow
 import androidx.navigation.fragment.findNavController
@@ -265,7 +264,8 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
                         it.logName = AppAccessElement.ADDITIONAL_ACCESS_BUTTON
                         it.setTitle(R.string.additional_access_label)
                         it.setOnPreferenceClickListener { _ ->
-                            val extras = bundleOf(EXTRA_PACKAGE_NAME to packageName)
+                            val extras =
+                                Bundle().apply { putString(EXTRA_PACKAGE_NAME, packageName) }
                             findNavController()
                                 .navigate(
                                     R.id.action_fitnessAppFragment_to_additionalAccessFragment,
@@ -288,7 +288,10 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
                     findNavController()
                         .navigate(
                             R.id.action_fitnessApp_to_appData,
-                            bundleOf(EXTRA_PACKAGE_NAME to packageName, EXTRA_APP_NAME to appName),
+                            Bundle().apply {
+                                putString(EXTRA_PACKAGE_NAME, packageName)
+                                putString(EXTRA_APP_NAME, appName)
+                            },
                         )
                     true
                 }

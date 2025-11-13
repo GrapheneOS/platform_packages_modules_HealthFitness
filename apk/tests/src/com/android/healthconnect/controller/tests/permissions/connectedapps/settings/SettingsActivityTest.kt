@@ -126,8 +126,7 @@ class SettingsActivityTest {
     @Test
     fun settingsActivityFinishes_whenNoPackageName_ifNoRationaleIntent_andNoPermissions() {
         val intent = Intent(context, SettingsActivity::class.java)
-        val bundle = Bundle()
-        bundle.putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+        val bundle = Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
         intent.putExtras(bundle)
 
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { false }
@@ -144,8 +143,7 @@ class SettingsActivityTest {
     @Test
     fun settingsActivity_navigatesToAppPermissionsFragment_ifRationaleIntentDeclared() {
         val intent = Intent(context, SettingsActivity::class.java)
-        val bundle = Bundle()
-        bundle.putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+        val bundle = Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
         intent.putExtras(bundle)
 
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
@@ -161,8 +159,7 @@ class SettingsActivityTest {
     @Test
     fun settingsActivity_navigatesToAppPermissionsFragment_ifNoRationaleIntentDeclared_andGrantedPermission() {
         val intent = Intent(context, SettingsActivity::class.java)
-        val bundle = Bundle()
-        bundle.putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+        val bundle = Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
         intent.putExtras(bundle)
 
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { false }

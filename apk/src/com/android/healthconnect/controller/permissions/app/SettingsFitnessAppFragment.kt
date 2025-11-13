@@ -23,7 +23,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.preference.Preference
@@ -264,7 +263,8 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
                         it.logName = ADDITIONAL_ACCESS_BUTTON
                         it.setTitle(R.string.additional_access_label)
                         it.setOnPreferenceClickListener { _ ->
-                            val extras = bundleOf(EXTRA_PACKAGE_NAME to packageName)
+                            val extras =
+                                Bundle().apply { putString(EXTRA_PACKAGE_NAME, packageName) }
                             navigationUtils.navigate(
                                 fragment = this,
                                 action = R.id.action_settingsFitnessApp_to_additionalAccessFragment,
