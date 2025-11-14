@@ -53,7 +53,7 @@ public class DeviceRecordHelper {
                 DEVICE_DATA_PROVIDER_PACKAGE,
                 records,
                 EMPTY_EXTRA_PERMISSION_MAPPING,
-                /* shouldGenerateAccessLog= */ false);
+                /* shouldGenerateAccessLogs= */ false);
     }
 
     private void addDeviceMetadataToRecords(

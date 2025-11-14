@@ -28,10 +28,12 @@ import static com.android.server.healthconnect.storage.utils.WhereClauses.Logica
 import android.annotation.Nullable;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.health.connect.datatypes.Record;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.Pair;
+import android.util.Slog;
 
 import androidx.annotation.VisibleForTesting;
 
@@ -46,7 +48,9 @@ import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -57,6 +61,7 @@ import java.util.stream.Collectors;
  * @hide
  */
 public class DeviceDataSourcesHelper extends DatabaseHelper {
+    private static final String TAG = "DeviceDataSourcesHelper";
 
     public static final String TABLE_NAME = "device_data_sources_table";
     public static final String SOURCE_PACKAGE_NAME = "source_package_name";
@@ -145,6 +150,46 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
                 insertOrUpdate(ddpInfo);
             }
         }
+    }
+
+    /** Returns a map of appInfoId -> (sourcePackageName -> list of DeviceDataTypeAdvertisement). */
+    public Map<Long, Map<String, List<DeviceDataTypeAdvertisement>>>
+            getDeviceDataTypeAdvertisements() {
+        Map<Long, Map<String, List<DeviceDataTypeAdvertisement>>> appInfoIdToDdpAds =
+                new HashMap<>();
+
+        for (Map.Entry<DeviceDataProviderKey, DeviceDataProviderInfo> entry :
+                getDdpMap().entrySet()) {
+            DeviceDataProviderKey key = entry.getKey();
+            DeviceDataProviderInfo info = entry.getValue();
+
+            long appInfoId = key.appInfoId();
+            String sourcePackageName = key.sourcePackageName();
+            int dataType = key.dataType();
+
+            Class<? extends Record> recordClass =
+                    mHealthConnectMappings.getRecordIdToExternalRecordClassMap().get(dataType);
+            if (recordClass == null) {
+                // Hypothetically possible if e.g. module rollback occurs.
+                Slog.e(TAG, "Encountered unrecognised record type");
+                continue;
+            }
+
+            DeviceDataTypeAdvertisement ad =
+                    new DeviceDataTypeAdvertisement.Builder(recordClass)
+                            .setAvailable(info.isAvailable())
+                            .setUserEnabled(info.isUserEnabled())
+                            .setVisibleByDefaultInMatchmaking(
+                                    info.isVisibleByDefaultInMatchmaking())
+                            .build();
+
+            appInfoIdToDdpAds
+                    .computeIfAbsent(appInfoId, k -> new HashMap<>())
+                    .computeIfAbsent(sourcePackageName, k -> new ArrayList<>())
+                    .add(ad);
+        }
+
+        return appInfoIdToDdpAds;
     }
 
     /**
@@ -252,7 +297,7 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
         return mDdpCache;
     }
 
-    private static synchronized ConcurrentHashMap<DeviceDataProviderKey, DeviceDataProviderInfo>
+    private synchronized ConcurrentHashMap<DeviceDataProviderKey, DeviceDataProviderInfo>
             generateDdpCache(TransactionManager transactionManager) {
         ConcurrentHashMap<DeviceDataProviderKey, DeviceDataProviderInfo> ddpInfoMap =
                 new ConcurrentHashMap<>();
@@ -261,6 +306,13 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
                 long appInfoId = getCursorInt(cursor, APP_INFO_ID_COLUMN_NAME);
                 String sourcePackageName = getCursorString(cursor, SOURCE_PACKAGE_NAME);
                 int dataType = getCursorInt(cursor, DATA_TYPE);
+                Class<? extends Record> recordClass =
+                        mHealthConnectMappings.getRecordIdToExternalRecordClassMap().get(dataType);
+                if (recordClass == null) {
+                    // Hypothetically possible if e.g. module rollback occurs.
+                    Slog.e(TAG, "Encountered unrecognised record type");
+                    continue;
+                }
                 boolean isAvailable = getIntegerAndConvertToBoolean(cursor, IS_AVAILABLE);
                 boolean isUserEnabled = getIntegerAndConvertToBoolean(cursor, IS_USER_ENABLED);
                 boolean isVisibleByDefaultInMatchmaking =

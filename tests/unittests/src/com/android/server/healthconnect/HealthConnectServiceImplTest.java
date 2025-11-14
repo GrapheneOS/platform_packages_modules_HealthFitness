@@ -109,6 +109,7 @@ import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.clearInvocations;
@@ -138,9 +139,12 @@ import android.graphics.drawable.Drawable;
 import android.health.HealthFitnessStatsLog;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.DeleteUsingFiltersRequest;
+import android.health.connect.DeviceDataProviderInfo;
+import android.health.connect.DeviceDataSourceInfo;
 import android.health.connect.GetMatchingAppsResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectException;
+import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthConnectOnboardingState;
 import android.health.connect.HealthPermissions;
 import android.health.connect.MatchmakingRequest;
@@ -161,6 +165,7 @@ import android.health.connect.aidl.IDeviceDataSourceCapabilitiesCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
+import android.health.connect.aidl.IGetDeviceDataSourceInfosCallback;
 import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
 import android.health.connect.aidl.IGetMatchingAppsCallback;
@@ -378,6 +383,7 @@ public class HealthConnectServiceImplTest {
                     "isTrackingEnabled",
                     "getCurrentDeviceId",
                     "advertiseDeviceDataSources",
+                    "getDeviceDataSourceInfos",
                     "getHealthConnectOnboardingState",
                     "updateHealthConnectBackupAndRestoreSettings",
                     "updateHealthConnectRestoreStatus",
@@ -432,7 +438,7 @@ public class HealthConnectServiceImplTest {
     @Mock IGetMatchingAppsCallback mGetMatchingAppsCallback;
     @Mock IIsMatchmakingPossibleCallback mIsMatchmakingPossibleCallback;
     @Mock IReadRecordsResponseCallback mReadRecordsResponseCallback;
-
+    @Mock IGetDeviceDataSourceInfosCallback mGetDeviceDataSourceInfosCallback;
     @Mock private Drawable mDrawable;
     @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
     @Mock private ChangeLogsHelper mChangeLogsHelper;
@@ -533,10 +539,12 @@ public class HealthConnectServiceImplTest {
                                     healthConnectInjector.getFitnessRecordReadHelper(),
                                     healthConnectInjector.getFitnessRecordDeleteHelper(),
                                     healthConnectInjector.getSyntheticPackageNameCreator()));
+
         }
 
         mSyntheticPackageNameResolver =
                 new SyntheticPackageNameResolver(mAppInfoHelper, mDeviceDataProviderManager);
+        mDeviceDataSourcesHelper = spy(healthConnectInjector.getDeviceDataSourcesHelper());
 
         mHealthConnectService =
                 new HealthConnectServiceImpl(
@@ -4933,6 +4941,93 @@ public class HealthConnectServiceImplTest {
         info.applicationInfo = aInfo;
         info.packageName = info.applicationInfo.packageName = packageName;
         return info;
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void testGetDeviceDataSourceInfos_masksDataOrigin() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
+
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+
+        advertiseStepsDeviceDataSource("device_id", device);
+
+        mHealthConnectService.getDeviceDataSourceInfos(
+                mAttributionSource, mGetDeviceDataSourceInfosCallback);
+
+        verify(mGetDeviceDataSourceInfosCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<List<DeviceDataSourceInfo>> captor = ArgumentCaptor.forClass(List.class);
+        verify(mGetDeviceDataSourceInfosCallback).onResult(captor.capture());
+
+        List<DeviceDataSourceInfo> result = captor.getValue();
+        assertThat(result).hasSize(1);
+        String spn = result.get(0).getDeviceDataOrigin().getPackageName();
+        assertTrue(SyntheticPackageNameCreator.isMaskedSpn(spn));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void testGetDeviceDataSourceInfos_populatesActivityLabels() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
+
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+
+        advertiseStepsDeviceDataSource("device_id", device);
+
+        ResolveInfo onboardingResolveInfo = new ResolveInfo();
+        onboardingResolveInfo.nonLocalizedLabel = "Onboarding";
+        String onboardingIntent = HealthConnectManager.ACTION_SHOW_DEVICE_ONBOARDING;
+        when(mPackageManager.resolveActivity(
+                        argThat(
+                                intent ->
+                                        intent != null
+                                                && onboardingIntent.equals(intent.getAction())),
+                        eq(0)))
+                .thenReturn(onboardingResolveInfo);
+
+        ResolveInfo managementResolveInfo = new ResolveInfo();
+        managementResolveInfo.nonLocalizedLabel = "Management";
+        String managementIntent = HealthConnectManager.ACTION_SHOW_DEVICE_MANAGEMENT;
+        when(mPackageManager.resolveActivity(
+                        argThat(
+                                intent ->
+                                        intent != null
+                                                && managementIntent.equals(intent.getAction())),
+                        eq(0)))
+                .thenReturn(managementResolveInfo);
+
+        mHealthConnectService.getDeviceDataSourceInfos(
+                mAttributionSource, mGetDeviceDataSourceInfosCallback);
+
+        verify(mGetDeviceDataSourceInfosCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<List<DeviceDataSourceInfo>> captor = ArgumentCaptor.forClass(List.class);
+        verify(mGetDeviceDataSourceInfosCallback).onResult(captor.capture());
+
+        List<DeviceDataSourceInfo> result = captor.getValue();
+        assertThat(result).hasSize(1);
+        DeviceDataProviderInfo info = result.get(0).getDeviceDataProviderInfos().get(0);
+        assertThat(info.getOnboardingActivityLabel()).isEqualTo("Onboarding");
+        assertThat(info.getManagementActivityLabel()).isEqualTo("Management");
     }
 
     private void advertiseStepsDeviceDataSource(String deviceId, Device device)

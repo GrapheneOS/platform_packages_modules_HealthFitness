@@ -29,6 +29,7 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -59,6 +60,10 @@ public final class DeviceDataAdvertisement implements Parcelable {
             @NonNull Device device,
             @NonNull String deviceId,
             @NonNull Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements) {
+        Objects.requireNonNull(device);
+        Objects.requireNonNull(deviceId);
+        Objects.requireNonNull(deviceDataTypeAdvertisements);
+
         mDevice = device;
         mDeviceId = deviceId;
         mDeviceDataTypeAdvertisements = Set.copyOf(deviceDataTypeAdvertisements);
