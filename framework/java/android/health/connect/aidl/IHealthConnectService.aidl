@@ -17,6 +17,7 @@ import android.health.connect.aidl.IAggregateRecordsResponseCallback;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
+import android.health.connect.aidl.IDeviceDataSourceCapabilitiesCallback;
 import android.health.connect.backuprestore.UpdateHealthConnectRestoreStatusRequest;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
@@ -64,6 +65,7 @@ import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsReques
 import android.health.connect.backuprestore.RestoreChange;
 import android.net.Uri;
 import android.os.UserHandle;
+import android.health.connect.aidl.DeviceDataSourceCapabilities;
 import android.health.connect.device.DeviceDataAdvertisement;
 
 import java.util.List;
@@ -746,4 +748,16 @@ interface IHealthConnectService {
         in String deviceId,
         in RecordsParcel recordsParcel,
         in IEmptyResponseCallback callback);
+
+    /**
+     * Returns a set of record type classes that device data sources are capable of providing. Use
+     * this method to avoid making unnecessary permission requests when reading device data.
+     *
+     * <p>This will filter out any sensitive data types, unless the caller holds the relevant
+     * permissions.
+     *
+     * @param attributionSource The attribution source of the caller.
+     * @param callback Callback to receive result of performing this operation.
+     */
+    void getDeviceDataSourceCapabilities(in AttributionSource attributionSource, in IDeviceDataSourceCapabilitiesCallback callback);
 }

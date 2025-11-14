@@ -306,4 +306,9 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
     protected String getMainTableName() {
         return TABLE_NAME;
     }
+
+    /** Returns a set of all advertised record types from all DDPs. */
+    public Set<Integer> getAllAdvertisedRecordTypes() {
+        return getDdpMap().keySet().stream().map(key -> key.dataType).collect(Collectors.toSet());
+    }
 }

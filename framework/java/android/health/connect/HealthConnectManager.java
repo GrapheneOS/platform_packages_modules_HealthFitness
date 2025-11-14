@@ -36,6 +36,8 @@ import static com.android.healthfitness.flags.Flags.FLAG_MATCHMAKING;
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
 
+import static java.util.stream.Collectors.toSet;
+
 import android.Manifest;
 import android.annotation.CallbackExecutor;
 import android.annotation.FlaggedApi;
@@ -74,6 +76,7 @@ import android.health.connect.aidl.IApplicationInfoResponseCallback;
 import android.health.connect.aidl.ICanRestoreResponseCallback;
 import android.health.connect.aidl.IChangeLogsResponseCallback;
 import android.health.connect.aidl.IDataStagingFinishedCallback;
+import android.health.connect.aidl.IDeviceDataSourceCapabilitiesCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
@@ -123,6 +126,7 @@ import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.exportimport.ExportImportDocumentProvider;
@@ -133,6 +137,8 @@ import android.health.connect.exportimport.ImportStatus;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.exportimport.ScheduledExportStatus;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.health.connect.internal.datatypes.utils.DataTypeDescriptor;
+import android.health.connect.internal.datatypes.utils.DataTypeDescriptors;
 import android.health.connect.internal.datatypes.utils.InternalExternalRecordConverter;
 import android.health.connect.migration.HealthConnectMigrationUiState;
 import android.health.connect.migration.MigrationEntity;
@@ -235,6 +241,27 @@ public class HealthConnectManager {
      * session.
      */
     public static final String EXTRA_EXERCISE_ROUTE = "android.health.connect.extra.EXERCISE_ROUTE";
+
+    // TODO(b/455620629): Add data type sensitivity to DataTypeDescriptor and use this as the source
+    //  of truth here.
+    @NonNull
+    private static final Set<Class<? extends Record>>
+            NON_PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES = Set.of(StepsRecord.class);
+
+    /**
+     * Data types which are excluded from the output of #getDeviceDataSourceCapabilities unless the
+     * caller holds the read permission for those data types.
+     */
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    @NonNull
+    public static final Set<Class<? extends Record>>
+            PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES =
+                    DataTypeDescriptors.getAllDataTypeDescriptors().stream()
+                            .map(DataTypeDescriptor::getRecordClass)
+                            .filter(
+                                    NON_PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES
+                                            ::contains)
+                            .collect(toSet());
 
     /**
      * Activity action: Launch UI to show and manage (e.g. grant/revoke) health permissions.
@@ -1779,6 +1806,55 @@ public class HealthConnectManager {
             @NonNull UpdateHealthConnectBackupStatusRequest request) {
         try {
             mService.updateHealthConnectBackupStatus(request);
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Returns a set of record type classes that device data sources are capable of providing.
+     *
+     * <p>Use this method to avoid making unnecessary permission requests when reading device data
+     * in case the data type is not provided by any device data sources.
+     *
+     * <p>This will filter out any permission sensitive data types the caller does not hold read
+     * permissions for. Data types contained in { @link
+     * #PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES } are excluded from the response unless
+     * the caller holds read permissions for those data types.
+     *
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     */
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void getDeviceDataSourceCapabilities(
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull
+                    OutcomeReceiver<DeviceDataSourceCapabilities, HealthConnectException>
+                            callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        try {
+            mService.getDeviceDataSourceCapabilities(
+                    mContext.getAttributionSource(),
+                    new IDeviceDataSourceCapabilitiesCallback.Stub() {
+                        @Override
+                        @PermissionManuallyEnforced
+                        public void onResult(
+                                android.health.connect.aidl.DeviceDataSourceCapabilities result) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(
+                                    () ->
+                                            callback.onResult(
+                                                    new DeviceDataSourceCapabilities(result)));
+                        }
+
+                        @Override
+                        @PermissionManuallyEnforced
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

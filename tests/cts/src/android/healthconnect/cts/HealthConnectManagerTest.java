@@ -64,6 +64,7 @@ import android.content.Context;
 import android.health.connect.AggregateRecordsGroupedByDurationResponse;
 import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
+import android.health.connect.DeviceDataSourceCapabilities;
 import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
@@ -109,6 +110,8 @@ import androidx.annotation.Nullable;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
+
+import com.android.healthfitness.flags.Flags;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -1460,6 +1463,23 @@ public class HealthConnectManagerTest {
         String deviceIdTwo = TestUtils.getCurrentDeviceId();
 
         assertNotEquals(deviceIdOne, deviceIdTwo);
+    }
+
+    @Test
+    @RequiresFlagsEnabled({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
+    })
+    public void testGetDeviceDataSourceCapabilities_returnsOnlySteps() throws InterruptedException {
+        TestOutcomeReceiver<DeviceDataSourceCapabilities, HealthConnectException> receiver =
+                new TestOutcomeReceiver<>();
+
+        mManager.getDeviceDataSourceCapabilities(Executors.newSingleThreadExecutor(), receiver);
+
+        DeviceDataSourceCapabilities deviceDataSourceCapabilities = receiver.getResponse();
+        assertThat(deviceDataSourceCapabilities).isNotNull();
+        assertThat(deviceDataSourceCapabilities.getRecordTypes())
+                .containsExactly(StepsRecord.class);
     }
 
     private boolean isEmptyContributingPackagesForAll(
