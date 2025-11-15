@@ -632,10 +632,13 @@ class RouteRequestActivityTest {
             verify(healthConnectLogger)
                 .logImpression(MigrationElement.MIGRATION_PENDING_DIALOG_CANCEL_BUTTON)
 
+            // Click the continue button on the migration dialog
             onView(withText("Continue")).inRoot(isDialog()).perform(ViewActions.click())
-            onView(withText("Continue")).check(ViewAssertions.doesNotExist())
             verify(healthConnectLogger)
                 .logInteraction(MigrationElement.MIGRATION_PENDING_DIALOG_CONTINUE_BUTTON)
+
+            // Assert that the route request dialog is now shown
+            onView(withText("Allow this route")).inRoot(isDialog()).check(matches(isDisplayed()))
         }
     }
 
