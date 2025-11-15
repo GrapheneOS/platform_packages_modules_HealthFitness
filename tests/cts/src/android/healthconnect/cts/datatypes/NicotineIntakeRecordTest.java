@@ -151,6 +151,19 @@ public class NicotineIntakeRecordTest {
     }
 
     @Test
+    public void nicotineIntakeRecordBuilder_invalidZeroQuantity() {
+        NicotineIntakeRecord.Builder builder =
+                new NicotineIntakeRecord.Builder(
+                        new Metadata.Builder().build(),
+                        Instant.now().minusSeconds(60),
+                        Instant.now(),
+                        /* quantity= */ 0,
+                        NICOTINE_INTAKE_TYPE_VAPE);
+
+        assertThrows(IllegalArgumentException.class, builder::build);
+    }
+
+    @Test
     public void nicotineIntakeRecordBuilder_invalidNicotineIntakeType() {
         NicotineIntakeRecord.Builder builder =
                 new NicotineIntakeRecord.Builder(
