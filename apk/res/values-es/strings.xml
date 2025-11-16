@@ -1303,7 +1303,7 @@
     <string name="almost_done_title" msgid="3966589349311156772">"Casi listo"</string>
     <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Abre estas apps ahora para finalizar la configuración y empezar a compartir datos"</string>
     <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Abre estas apps ahora para finalizar la configuración y empezar a compartir datos o sigue conectando otras apps disponibles"</string>
-    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Apps conectadas"</string>
+    <string name="almost_done_connected_apps" msgid="7278779868120518202">"Aplicaciones conectadas"</string>
     <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Apps que puedes conectar"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Consulta tus datos de salud en todas las apps"</string>
     <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Empieza a compartir datos de actividad física y bienestar entre apps"</string>
@@ -1318,7 +1318,7 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Dispositivo actual"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Dispositivo desconocido"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Info del dispositivo"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"Los datos recogidos por este dispositivo se almacenarán en Salud conectada, donde las apps conectadas podrán acceder a ellos"</string>
+    <string name="device_management_screen_footer" msgid="1787611015335737167">"Los datos recogidos por este dispositivo se almacenarán en Salud conectada, donde las aplicaciones conectadas podrán acceder a ellos"</string>
     <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Este dispositivo no admite la monitorización de pasos, pero aún tiene datos almacenados en Salud conectada"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Este dispositivo no monitoriza los pasos"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Con permiso de escritura"</string>
@@ -1330,7 +1330,7 @@
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Cerrar"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Revisar"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Los pasos ahora están en Salud conectada"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"Los pasos registrados por este dispositivo ahora se almacenan en Salud conectada para que las apps conectadas puedan acceder a ellos"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"Los pasos registrados por este dispositivo ahora se almacenan en Salud conectada para que las aplicaciones conectadas puedan acceder a ellos"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Tus apps de salud"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Tus datos de salud"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferencias"</string>
