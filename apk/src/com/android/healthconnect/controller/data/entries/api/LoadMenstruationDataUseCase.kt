@@ -55,7 +55,7 @@ constructor(
                     addAll(getMenstruationPeriodRecords(packageName, selectedDate, period))
                     addAll(getMenstruationFlowRecords(packageName, selectedDate, period))
                 }
-                .sortedBy { record ->
+                .sortedByDescending { record ->
                     when (record) {
                         is MenstruationPeriodRecord -> record.startTime
                         is MenstruationFlowRecord -> record.time
