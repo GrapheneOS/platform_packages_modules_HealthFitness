@@ -119,15 +119,6 @@ flag {
 }
 
 flag {
-    name: "new_information_architecture"
-    namespace: "health_fitness_aconfig"
-    description: "Enables new information architecture."
-    bug: "291249677"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
     name: "health_connect_mappings"
     namespace: "health_fitness_aconfig"
     description: "Uses new mappings for convenient data type maintenance."
@@ -170,18 +161,6 @@ flag {
     bug: "296855479"
     is_fixed_read_only: false
     is_exported: false
-}
-
-flag {
-   name: "add_missing_access_logs"
-   namespace: "health_fitness_aconfig"
-   description: "Adds missing access logs"
-   bug: "359582925"
-   is_fixed_read_only: true
-   is_exported: true
-   metadata {
-       purpose: PURPOSE_BUGFIX
-   }
 }
 
 flag {
@@ -228,14 +207,6 @@ flag {
 }
 
 flag {
-    name: "cloud_backup_and_restore_count_api"
-    namespace: "health_fitness_aconfig"
-    description: "Enables the API for counting cloud B&R changes in Health Connect."
-    bug: "400640806"
-    is_fixed_read_only: true
-}
-
-flag {
     name: "logcat_censor_iae"
     namespace: "health_fitness_aconfig"
     description: "In Health Connect service only log the stack trace, not the message for IllegalArgumentExceptions."
@@ -272,32 +243,6 @@ flag {
 }
 
 flag {
-    name: "expressive_theming_enabled"
-    namespace: "health_fitness_aconfig"
-    description: "Enables expressive theming for the UI."
-    bug: "376085738"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
-    name: "architecture_improvement"
-    namespace: "health_fitness_aconfig"
-    description: "Enables architecture and testing improvement for HC."
-    bug: "376085738"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
-    name: "replace_body_sensor_permission_enabled"
-    is_fixed_read_only: true
-    namespace: "android_health_services"
-    description: "This fixed read-only flag is used to enable replacing permission BODY_SENSORS (and BODY_SENSORS_BACKGROUND) with granular health permission READ_HEART_RATE (and READ_HEALTH_DATA_IN_BACKGROUND)"
-    bug: "364638912"
-}
-
-flag {
     name: "deprecate_exercise_session_type_breathing"
     namespace: "android_health_services"
     description: "Deprecates ExerciseSessionType#EXERCISE_SESSION_TYPE_GUIDED_BREATHING"
@@ -321,22 +266,6 @@ flag {
     bug: "383298243"
     is_fixed_read_only: true
     is_exported: true
-}
-
-flag {
-    name: "single_user_permission_intent_tracker"
-    namespace: "health_fitness_aconfig"
-    description: "Make changes to the HealthPermissionIntentAppsTracker to make it per user instead of handling all users in one class."
-    bug: "389614387"
-    is_fixed_read_only: true
-    is_exported: true
-}
-
-flag {
-    name: "entries_pagination"
-    namespace: "health_fitness_aconfig"
-    description: "Enables pagination for data entries screens."
-    bug: "384028690"
 }
 
 flag {
@@ -552,15 +481,6 @@ flag {
 }
 
 flag {
-    name: "health_app_cache"
-    namespace: "health_fitness_aconfig"
-    description: "Flag to enable caching of HealthApps data in the UI."
-    bug: "427960369"
-    is_fixed_read_only: true
-    is_exported: false
-}
-
-flag {
     name: "mindfulness_aggregation"
     namespace: "health_fitness_aconfig"
     description: "adds mindfulness aggregation"
@@ -588,15 +508,6 @@ flag {
 }
 
 flag {
-    name: "data_completeness"
-    namespace: "health_fitness_aconfig"
-    description: "Collecting and logging completeness metric for data quality telemetry"
-    bug: "432241024"
-    is_fixed_read_only: true
-    is_exported: false
-}
-
-flag {
     name: "fix_change_log_when_insert_with_same_timestamps"
     namespace: "health_fitness_aconfig"
     description: "Both the issue and the fix are quite subtle, for more context, see b/430891167. This flag is only for fixing the major part of the issue, but not fixing it completely."
@@ -613,15 +524,6 @@ flag {
     namespace: "health_fitness_aconfig"
     description: "Enables the new home screen UI."
     bug: "434918574"
-    is_fixed_read_only: true
-    is_exported: false
-}
-
-flag {
-    name: "active_data_granularity"
-    namespace: "health_fitness_aconfig"
-    description: "Collecting and logging granularity data for active data."
-    bug: "435361004"
     is_fixed_read_only: true
     is_exported: false
 }
