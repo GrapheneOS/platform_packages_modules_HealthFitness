@@ -27,7 +27,6 @@ import static android.health.connect.datatypes.BodyTemperatureMeasurementLocatio
 import static android.health.connect.datatypes.BodyTemperatureMeasurementLocation.MEASUREMENT_LOCATION_TOE;
 import static android.health.connect.datatypes.CervicalMucusRecord.CervicalMucusAppearance.APPEARANCE_UNUSUAL;
 import static android.health.connect.datatypes.CervicalMucusRecord.CervicalMucusSensation.SENSATION_HEAVY;
-import static android.health.connect.datatypes.CyclePhasesRecord.PHASE_FOLLICULAR;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
 import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_DEADLIFT;
 import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGMENT_TYPE_SQUAT;
@@ -35,6 +34,7 @@ import static android.health.connect.datatypes.ExerciseSegmentType.EXERCISE_SEGM
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_STRENGTH_TRAINING;
 import static android.health.connect.datatypes.MealType.MEAL_TYPE_DINNER;
 import static android.health.connect.datatypes.MealType.MEAL_TYPE_SNACK;
+import static android.health.connect.datatypes.MenstrualCyclePhaseRecord.PHASE_FOLLICULAR;
 import static android.health.connect.datatypes.MenstruationFlowRecord.MenstruationFlowType.FLOW_HEAVY;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_AUTOMATICALLY_RECORDED;
 import static android.health.connect.datatypes.OvulationTestRecord.OvulationTestResult.RESULT_HIGH;
@@ -58,7 +58,6 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.B
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BodyWaterMass;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.BoneMass;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CervicalMucus;
-import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CyclePhases;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CyclingPedalingCadence;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.CyclingPedalingCadence.CyclingPedalingCadenceSample;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Distance;
@@ -78,6 +77,7 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.I
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.IntermenstrualBleeding;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.IntervalRecord;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.LeanBodyMass;
+import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstrualCyclePhase;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstruationFlow;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MenstruationPeriod;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.MindfulnessSession;
@@ -190,11 +190,6 @@ final class ProtoTestData {
                                     generateInstantRecord()
                                             .setCervicalMucus(generateCervicalMucus()))
                             .build();
-            case RecordTypeIdentifier.RECORD_TYPE_CYCLE_PHASES ->
-                    generateCoreRecord()
-                            .setInstantRecord(
-                                    generateInstantRecord().setCyclePhases(generateCyclePhases()))
-                            .build();
             case RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE ->
                     generateCoreRecord()
                             .setIntervalRecord(
@@ -257,6 +252,12 @@ final class ProtoTestData {
                     generateCoreRecord()
                             .setInstantRecord(
                                     generateInstantRecord().setLeanBodyMass(generateLeanBodyMass()))
+                            .build();
+            case RecordTypeIdentifier.RECORD_TYPE_MENSTRUAL_CYCLE_PHASE ->
+                    generateCoreRecord()
+                            .setIntervalRecord(
+                                    generateIntervalRecord()
+                                            .setMenstrualCyclePhase(generateMenstrualCyclePhase()))
                             .build();
             case RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_FLOW ->
                     generateCoreRecord()
@@ -460,10 +461,6 @@ final class ProtoTestData {
                 .build();
     }
 
-    static CyclePhases generateCyclePhases() {
-        return CyclePhases.newBuilder().setPhase(PHASE_FOLLICULAR).setDayOfCycle(2).build();
-    }
-
     static CyclingPedalingCadence generateCyclingPedalingCadence() {
         return CyclingPedalingCadence.newBuilder()
                 .addSample(
@@ -553,6 +550,10 @@ final class ProtoTestData {
 
     static LeanBodyMass generateLeanBodyMass() {
         return LeanBodyMass.newBuilder().setMass(123.45).build();
+    }
+
+    static MenstrualCyclePhase generateMenstrualCyclePhase() {
+        return MenstrualCyclePhase.newBuilder().setPhase(PHASE_FOLLICULAR).setDayOfCycle(2).build();
     }
 
     static MenstruationFlow generateMenstruationFlow() {

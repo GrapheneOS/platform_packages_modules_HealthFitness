@@ -19,7 +19,7 @@
 package com.android.healthconnect.controller.tests.permissions.additionalaccess
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
-import androidx.core.os.bundleOf
+import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -114,7 +114,7 @@ class AdditionalAccessFragmentTest {
     @Test
     fun validArgument_startsFragment() {
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario -> assertThat(scenario.getState()).isEqualTo(Lifecycle.State.RESUMED) }
     }
@@ -122,7 +122,7 @@ class AdditionalAccessFragmentTest {
     @Test
     fun loadsAdditionalAccessPreferences() {
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 verify(additionalAccessViewModel)
@@ -140,7 +140,7 @@ class AdditionalAccessFragmentTest {
         }
 
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText(R.string.route_permissions_label)).check(matches(isDisplayed()))
@@ -163,7 +163,7 @@ class AdditionalAccessFragmentTest {
         }
 
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText(R.string.route_permissions_label)).check(matches(isDisplayed()))
@@ -182,7 +182,7 @@ class AdditionalAccessFragmentTest {
         }
 
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText(R.string.route_permissions_label)).check(matches(isDisplayed()))
@@ -219,7 +219,7 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
@@ -262,7 +262,7 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Access exercise routes")).check(matches(isDisplayed()))
@@ -322,7 +322,7 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Access exercise routes")).check(matches(isDisplayed()))
@@ -377,7 +377,7 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Access exercise routes")).check(matches(isDisplayed()))
@@ -437,7 +437,7 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Access exercise routes")).check(matches(isDisplayed()))
@@ -498,7 +498,7 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Access exercise routes")).check(matches(isDisplayed()))
@@ -579,7 +579,7 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Access exercise routes")).check(matches(isDisplayed()))
@@ -651,7 +651,7 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Access exercise routes")).check(matches(isDisplayed()))
@@ -708,7 +708,7 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Access exercise routes")).check(matches(isDisplayed()))
@@ -760,7 +760,7 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Access exercise routes")).check(matches(isDisplayed()))
@@ -821,7 +821,7 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Access exercise routes")).check(matches(isDisplayed()))
@@ -883,7 +883,7 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Access exercise routes")).check(matches(isDisplayed()))
@@ -964,7 +964,7 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Access exercise routes")).check(matches(isDisplayed()))
@@ -1040,7 +1040,7 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText("Access exercise routes")).check(matches(isDisplayed()))
@@ -1104,7 +1104,7 @@ class AdditionalAccessFragmentTest {
             )
         }
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Access exercise routes")).check(matches(isDisplayed()))
@@ -1168,7 +1168,7 @@ class AdditionalAccessFragmentTest {
         }
 
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText(R.string.route_permissions_label)).perform(click())
@@ -1197,7 +1197,7 @@ class AdditionalAccessFragmentTest {
             .thenReturn(MediatorLiveData(event))
 
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onIdle()
@@ -1215,7 +1215,7 @@ class AdditionalAccessFragmentTest {
             .thenReturn(MediatorLiveData(event))
 
         launchFragment<AdditionalAccessFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onIdle()

@@ -77,7 +77,7 @@ public class DeviceDataProviderMetadataHelperTest {
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
-        mTransactionManager = healthConnectInjector.getTransactionManager();
+        mTransactionManager = Mockito.spy(healthConnectInjector.getTransactionManager());
         mDeviceDataProviderMetadataHelper =
                 new DeviceDataProviderMetadataHelper(
                         healthConnectInjector.getDatabaseHelpers(), mTransactionManager);
@@ -111,7 +111,7 @@ public class DeviceDataProviderMetadataHelperTest {
                 .contains(RecordHelper.PRIMARY_COLUMN_NAME + " " + StorageUtils.PRIMARY);
         assertThat(createCommand)
                 .contains(
-                        DeviceDataProviderHelper.SOURCE_PACKAGE_NAME
+                        DeviceDataSourcesHelper.SOURCE_PACKAGE_NAME
                                 + " "
                                 + StorageUtils.TEXT_NOT_NULL);
     }
@@ -131,7 +131,7 @@ public class DeviceDataProviderMetadataHelperTest {
                         new ReadTableRequest(DeviceDataProviderMetadataHelper.TABLE_NAME))) {
             assertThat(cursor.getCount()).isEqualTo(1);
             cursor.moveToFirst();
-            assertThat(getCursorString(cursor, DeviceDataProviderHelper.SOURCE_PACKAGE_NAME))
+            assertThat(getCursorString(cursor, DeviceDataSourcesHelper.SOURCE_PACKAGE_NAME))
                     .isEqualTo(TEST_DDP_PACKAGE);
         }
     }
@@ -166,11 +166,9 @@ public class DeviceDataProviderMetadataHelperTest {
     @Test
     public void withExistingEntry_insertIfNotPresent_returnsEarly() {
         mDeviceDataProviderMetadataHelper.insertIfNotPresent(TEST_DDP_PACKAGE);
-
-        TransactionManager spiedTransactionManager = Mockito.spy(mTransactionManager);
         mDeviceDataProviderMetadataHelper.insertIfNotPresent(TEST_DDP_PACKAGE);
 
-        verify(spiedTransactionManager, times(0)).read(any());
+        verify(mTransactionManager, times(1)).read(any());
     }
 
     @Test

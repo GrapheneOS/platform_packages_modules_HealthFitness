@@ -21,7 +21,6 @@ import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceGroup
@@ -168,11 +167,11 @@ class CombinedPermissionsFragment : Hilt_CombinedPermissionsFragment() {
                     findNavController()
                         .navigate(
                             R.id.action_combinedPermissions_to_fitnessApp,
-                            bundleOf(
-                                EXTRA_PACKAGE_NAME to packageName,
-                                EXTRA_APP_NAME to appName,
-                                SHOW_MANAGE_APP_SECTION to false,
-                            ),
+                            Bundle().apply {
+                                putString(EXTRA_PACKAGE_NAME, packageName)
+                                putString(EXTRA_APP_NAME, appName)
+                                putBoolean(SHOW_MANAGE_APP_SECTION, false)
+                            },
                         )
                     true
                 }
@@ -188,11 +187,11 @@ class CombinedPermissionsFragment : Hilt_CombinedPermissionsFragment() {
                     findNavController()
                         .navigate(
                             R.id.action_combinedPermissions_to_medicalApp,
-                            bundleOf(
-                                EXTRA_PACKAGE_NAME to packageName,
-                                EXTRA_APP_NAME to appName,
-                                SHOW_MANAGE_APP_SECTION to false,
-                            ),
+                            Bundle().apply {
+                                putString(EXTRA_PACKAGE_NAME, packageName)
+                                putString(EXTRA_APP_NAME, appName)
+                                putBoolean(SHOW_MANAGE_APP_SECTION, false)
+                            },
                         )
                     true
                 }
@@ -209,7 +208,8 @@ class CombinedPermissionsFragment : Hilt_CombinedPermissionsFragment() {
                         it.title = getString(R.string.additional_access_label)
                         it.summary = getString(R.string.additional_access_summary)
                         it.setOnPreferenceClickListener { _ ->
-                            val extras = bundleOf(EXTRA_PACKAGE_NAME to packageName)
+                            val extras =
+                                Bundle().apply { putString(EXTRA_PACKAGE_NAME, packageName) }
                             findNavController()
                                 .navigate(
                                     R.id.action_combinedPermissions_to_additionalAccess,
@@ -238,7 +238,10 @@ class CombinedPermissionsFragment : Hilt_CombinedPermissionsFragment() {
                     findNavController()
                         .navigate(
                             R.id.action_combinedPermissions_to_appData,
-                            bundleOf(EXTRA_PACKAGE_NAME to packageName, EXTRA_APP_NAME to appName),
+                            Bundle().apply {
+                                putString(EXTRA_PACKAGE_NAME, packageName)
+                                putString(EXTRA_APP_NAME, appName)
+                            },
                         )
                     true
                 }

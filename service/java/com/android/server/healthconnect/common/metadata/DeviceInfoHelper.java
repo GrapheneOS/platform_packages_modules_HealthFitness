@@ -68,7 +68,9 @@ public class DeviceInfoHelper extends DatabaseHelper {
             // Map to store deviceInfoId -> DeviceInfo mapping for populating record for read.
             ConcurrentHashMap<Long, DeviceInfo> idToDevice,
             // DeviceInfo -> rowId mapping (model,manufacturer,device_type -> rowId)
-            ConcurrentHashMap<DeviceInfo, Long> deviceToRowId) {}
+            ConcurrentHashMap<DeviceInfo, Long> deviceToRowId,
+            // Map to store deviceId -> deviceType mapping
+            ConcurrentHashMap<String, Integer> deviceIdToDeviceType) {}
 
     @Nullable private volatile DeviceInfoCache mDeviceInfoCache;
 
@@ -160,16 +162,16 @@ public class DeviceInfoHelper extends DatabaseHelper {
         return getDeviceInfoMap().get(deviceInfo);
     }
 
-    /** Returns DeviceInfo for the given deviceId. */
+    /** Returns DeviceInfo for the given deviceInfoId. */
     @Nullable
-    // TODO(b/445114536): Check if we want to store a map of deviceId <> deviceInfoId
-    public DeviceInfo getDeviceInfo(String deviceId) {
-        for (DeviceInfo deviceInfo : getIdDeviceInfoMap().values()) {
-            if (Objects.equals(deviceInfo.getDeviceId(), deviceId)) {
-                return deviceInfo;
-            }
-        }
-        return null;
+    public DeviceInfo getDeviceInfo(long deviceInfoId) {
+        return getIdDeviceInfoMap().getOrDefault(deviceInfoId, null);
+    }
+
+    /** Returns the device type for the given deviceId. */
+    @Nullable
+    public Integer getDeviceType(String deviceId) {
+        return getDeviceIdToDeviceTypeMap().getOrDefault(deviceId, null);
     }
 
     /**
@@ -190,6 +192,7 @@ public class DeviceInfoHelper extends DatabaseHelper {
 
         ConcurrentHashMap<DeviceInfo, Long> deviceInfoMap = new ConcurrentHashMap<>();
         ConcurrentHashMap<Long, DeviceInfo> idDeviceInfoMap = new ConcurrentHashMap<>();
+        ConcurrentHashMap<String, Integer> deviceIdToDeviceTypeMap = new ConcurrentHashMap<>();
         try (Cursor cursor = mTransactionManager.read(new ReadTableRequest(TABLE_NAME))) {
             while (cursor.moveToNext()) {
                 long rowId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
@@ -202,6 +205,9 @@ public class DeviceInfoHelper extends DatabaseHelper {
                 if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                     deviceId = getCursorString(cursor, DEVICE_ID_COLUMN_NAME);
                     displayName = getCursorString(cursor, DISPLAY_NAME_COLUMN_NAME);
+                    if (deviceId != null) {
+                        deviceIdToDeviceTypeMap.put(deviceId, deviceType);
+                    }
                 }
 
                 DeviceInfo deviceInfo =
@@ -211,7 +217,7 @@ public class DeviceInfoHelper extends DatabaseHelper {
             }
         }
 
-        cache = new DeviceInfoCache(idDeviceInfoMap, deviceInfoMap);
+        cache = new DeviceInfoCache(idDeviceInfoMap, deviceInfoMap, deviceIdToDeviceTypeMap);
         mDeviceInfoCache = cache;
         return cache;
     }
@@ -236,6 +242,15 @@ public class DeviceInfoHelper extends DatabaseHelper {
         return cache.deviceToRowId;
     }
 
+    private Map<String, Integer> getDeviceIdToDeviceTypeMap() {
+        // Avoid a synchronized call to populateDeviceInfoCache if possible.
+        DeviceInfoCache cache = mDeviceInfoCache;
+        if (cache == null) {
+            cache = populateDeviceInfoCache();
+        }
+        return cache.deviceIdToDeviceType;
+    }
+
     /** Inserts the device info into the db and returns the row id. */
     public synchronized long insertIfNotPresent(DeviceInfo deviceInfo) {
         Long currentRowId = getDeviceInfoMap().get(deviceInfo);
@@ -255,6 +270,9 @@ public class DeviceInfoHelper extends DatabaseHelper {
                                         deviceInfo.mDisplayName)));
         getDeviceInfoMap().put(deviceInfo, rowId);
         getIdDeviceInfoMap().put(rowId, deviceInfo);
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled() && deviceInfo.mDeviceId != null) {
+            getDeviceIdToDeviceTypeMap().put(deviceInfo.mDeviceId, deviceInfo.mDeviceType);
+        }
         return rowId;
     }
 
@@ -328,7 +346,6 @@ public class DeviceInfoHelper extends DatabaseHelper {
             return mDeviceType;
         }
 
-        @VisibleForTesting
         @Nullable
         public String getDeviceId() {
             return mDeviceId;

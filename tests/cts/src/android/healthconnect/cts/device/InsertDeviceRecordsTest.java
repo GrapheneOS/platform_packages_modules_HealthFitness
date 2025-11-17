@@ -20,6 +20,7 @@ import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecu
 import static android.healthconnect.testing.cts.TestUtils.advertiseDevice;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.shared.DataFactory.buildDevice;
+import static android.healthconnect.testing.shared.DataFactory.getDistanceRecord;
 import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecordWithEmptyMetaData;
@@ -37,6 +38,7 @@ import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
@@ -54,7 +56,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,7 +69,6 @@ import java.util.Set;
     FLAG_DEVICE_DATA_PROVIDERS_DB,
     FLAG_DEVELOPMENT_DATABASE
 })
-// TODO(b/458002163): Add tests to check we can only insert advertised data types.
 // TODO(b/440343237): Add test to verify package name is not equal to writing app once we have
 // getDeviceDataSources
 public class InsertDeviceRecordsTest {
@@ -104,8 +104,9 @@ public class InsertDeviceRecordsTest {
                 .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
         assertThat(receiver.assertAndGetException().getMessage())
                 .isEqualTo(
-                        "java.lang.IllegalArgumentException: Device with ID TestDeviceId not found,"
-                                + " ensure the device data source has been advertised");
+                        "java.lang.IllegalArgumentException: appInfoId not found for "
+                                + "calling package android.healthconnect.cts, ensure an "
+                                + "advertisement has been made");
     }
 
     @Test
@@ -134,8 +135,9 @@ public class InsertDeviceRecordsTest {
                 .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
         assertThat(receiver.assertAndGetException().getMessage())
                 .isEqualTo(
-                        "java.lang.IllegalArgumentException: Device with ID IncorrectTestDeviceId"
-                                + " not found, ensure the device data source has been advertised");
+                        "java.lang.IllegalArgumentException: The device with id "
+                                + "IncorrectTestDeviceId was not found, "
+                                + "ensure the device data source has been advertised");
     }
 
     @Test
@@ -296,6 +298,44 @@ public class InsertDeviceRecordsTest {
     }
 
     @Test
+    public void insertsDeviceRecords_differentDataTypeAdvertised_throws()
+            throws InterruptedException {
+        String deviceId = "TestDeviceId";
+        HealthConnectReceiver<InsertRecordsResponse> receiver = new HealthConnectReceiver<>();
+
+        advertiseDevice(deviceId, DistanceRecord.class);
+        StepsRecord stepsRecord = getStepsRecord();
+        TestUtils.insertDeviceRecords(deviceId, List.of(stepsRecord), outcomeExecutor(), receiver);
+
+        assertThat(receiver.assertAndGetException().getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
+        assertThat(receiver.assertAndGetException().getMessage())
+                .isEqualTo(
+                        "java.lang.IllegalArgumentException: The device with id "
+                                + "TestDeviceId was not advertised for data type 1");
+    }
+
+    @Test
+    public void insertsDeviceRecords_extraDataTypeNotAdvertised_throws()
+            throws InterruptedException {
+        String deviceId = "TestDeviceId";
+        HealthConnectReceiver<InsertRecordsResponse> receiver = new HealthConnectReceiver<>();
+
+        advertiseDevice(deviceId, StepsRecord.class);
+        StepsRecord stepsRecord = getStepsRecord();
+        DistanceRecord distanceRecord = getDistanceRecord();
+        TestUtils.insertDeviceRecords(
+                deviceId, List.of(stepsRecord, distanceRecord), outcomeExecutor(), receiver);
+
+        assertThat(receiver.assertAndGetException().getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
+        assertThat(receiver.assertAndGetException().getMessage())
+                .isEqualTo(
+                        "java.lang.IllegalArgumentException: The device with id "
+                                + "TestDeviceId was not advertised for data type 7");
+    }
+
+    @Test
     public void insertsDeviceRecords_changelogsCreated() throws InterruptedException {
         String deviceId = "TestDeviceId";
         HealthConnectReceiver<InsertRecordsResponse> receiver = new HealthConnectReceiver<>();
@@ -388,10 +428,7 @@ public class InsertDeviceRecordsTest {
     }
 
     @Test
-    @Ignore("TODO(b/458001956): Update this test once the latest advertisement is being used.")
-    // TODO(b/458001956): Update this test once the latest advertisement is being used.
-    public void updateDeviceInAdvertisement_twoInsertions_recordsHaveDifferentPackageAndMetadata()
-            throws InterruptedException {
+    public void updateDeviceInAdvertisement_latestDeviceUsedInRecord() throws InterruptedException {
         String deviceId = "TestDeviceId";
         Device device1 =
                 new Device.Builder()
@@ -408,34 +445,21 @@ public class InsertDeviceRecordsTest {
                         .setType(Device.DEVICE_TYPE_PHONE)
                         .build();
         HealthConnectReceiver<InsertRecordsResponse> receiver = new HealthConnectReceiver<>();
-        HealthConnectReceiver<InsertRecordsResponse> receiver2 = new HealthConnectReceiver<>();
 
         advertiseDevice(deviceId, device1, StepsRecord.class);
         advertiseDevice(deviceId, device2, StepsRecord.class);
         TestUtils.insertDeviceRecords(
                 deviceId, List.of(getStepsRecord()), outcomeExecutor(), receiver);
         receiver.verifyNoExceptionOrThrow();
-        TestUtils.insertDeviceRecords(
-                deviceId, List.of(getStepsRecord()), outcomeExecutor(), receiver2);
-        receiver2.verifyNoExceptionOrThrow();
-        String uuid1 = receiver.getResponse().getRecords().get(0).getMetadata().getId();
-        String uuid2 = receiver2.getResponse().getRecords().get(0).getMetadata().getId();
+        String uuid = receiver.getResponse().getRecords().get(0).getMetadata().getId();
         ReadRecordsRequestUsingIds<StepsRecord> request =
-                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class)
-                        .addId(uuid1)
-                        .addId(uuid2)
-                        .build();
+                new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class).addId(uuid).build();
         List<StepsRecord> insertedRecords = TestUtils.readRecords(request);
 
-        assertThat(insertedRecords).hasSize(2);
-        StepsRecord record1 = insertedRecords.get(0);
-        StepsRecord record2 = insertedRecords.get(1);
-        assertThat(record1.getMetadata().getDataOrigin().getPackageName())
-                .isNotEqualTo(record2.getMetadata().getDataOrigin().getPackageName());
-        assertThat(record1.getMetadata().getDevice())
-                .isNotEqualTo(record2.getMetadata().getDevice());
-        assertThat(record1.getMetadata().getDevice()).isEqualTo(device1);
-        assertThat(record2.getMetadata().getDevice()).isEqualTo(device2);
+        assertThat(insertedRecords).hasSize(1);
+        StepsRecord record = insertedRecords.get(0);
+        assertThat(record.getMetadata().getDevice().getModel()).isEqualTo(device2.getModel());
+        assertThat(record.getMetadata().getDevice()).isEqualTo(device2);
     }
 
     @Test
@@ -483,11 +507,10 @@ public class InsertDeviceRecordsTest {
         assertThat(receiver.assertAndGetException().getErrorCode())
                 .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
         assertThat(receiver.assertAndGetException().getMessage())
-                .startsWith(
-                        "java.lang.IllegalArgumentException: Device with ID"
-                                + " com.android.healthconnect.phone.j");
-        assertThat(receiver.assertAndGetException().getMessage())
-                .endsWith(" not found, ensure the device data source has been advertised");
+                .isEqualTo(
+                        "java.lang.IllegalArgumentException: appInfoId not found for calling"
+                            + " package android.healthconnect.cts, ensure an advertisement has been"
+                            + " made");
     }
 
     @Test

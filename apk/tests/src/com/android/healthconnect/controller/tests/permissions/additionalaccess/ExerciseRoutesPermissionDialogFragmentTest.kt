@@ -19,7 +19,7 @@
 package com.android.healthconnect.controller.tests.permissions.additionalaccess
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
-import androidx.core.os.bundleOf
+import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
@@ -90,7 +90,7 @@ class ExerciseRoutesPermissionDialogFragmentTest {
         }
 
         launchDialog<ExerciseRoutesPermissionDialogFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withId(R.id.radio_button_always_allow))
@@ -106,7 +106,7 @@ class ExerciseRoutesPermissionDialogFragmentTest {
         }
 
         launchDialog<ExerciseRoutesPermissionDialogFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withId(R.id.radio_button_ask)).inRoot(isDialog()).check(matches(isChecked()))
@@ -120,7 +120,7 @@ class ExerciseRoutesPermissionDialogFragmentTest {
         }
 
         launchDialog<ExerciseRoutesPermissionDialogFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withId(R.id.radio_button_revoke))
@@ -132,7 +132,7 @@ class ExerciseRoutesPermissionDialogFragmentTest {
     @Test
     fun onOptionSelected_withAllowAll_callsViewModelWithGranted() {
         launchDialog<ExerciseRoutesPermissionDialogFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withId(R.id.radio_button_always_allow)).inRoot(isDialog()).perform(click())
@@ -145,7 +145,7 @@ class ExerciseRoutesPermissionDialogFragmentTest {
     @Test
     fun onOptionSelected_withAskEveryTime_callsViewModelWithDeclared() {
         launchDialog<ExerciseRoutesPermissionDialogFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withId(R.id.radio_button_ask)).inRoot(isDialog()).perform(click())
@@ -161,7 +161,7 @@ class ExerciseRoutesPermissionDialogFragmentTest {
             MutableLiveData(State(exerciseRoutePermissionUIState = ALWAYS_ALLOW))
         }
         launchDialog<ExerciseRoutesPermissionDialogFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withId(R.id.radio_button_revoke)).inRoot(isDialog()).perform(click())

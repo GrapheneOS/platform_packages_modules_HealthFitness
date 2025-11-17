@@ -19,7 +19,7 @@ package com.android.healthconnect.controller.tests.exportimport
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.core.os.bundleOf
+import android.os.Bundle
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -95,9 +95,12 @@ class ImportConfirmationDialogFragmentTest {
     fun importConfirmationDialogFragment_isDisplayedCorrectly() {
         val importFileUri: Uri = Uri.fromFile(importFile)
         launchDialog<ImportConfirmationDialogFragment>(
-                bundleOf(
-                    ImportConfirmationDialogFragment.IMPORT_FILE_URI_KEY to importFileUri.toString()
-                )
+                Bundle().apply {
+                    putString(
+                        ImportConfirmationDialogFragment.IMPORT_FILE_URI_KEY,
+                        importFileUri.toString(),
+                    )
+                }
             )
             .use {
                 onView(withText(R.string.import_confirmation_dialog_title))
@@ -127,9 +130,12 @@ class ImportConfirmationDialogFragmentTest {
     fun importConfirmationDialogFragment_importButtonClicked_returnsToBackupAndRestoreSettingsFragment() {
         val importFileUri: Uri = Uri.fromFile(importFile)
         launchDialog<ImportConfirmationDialogFragment>(
-                bundleOf(
-                    ImportConfirmationDialogFragment.IMPORT_FILE_URI_KEY to importFileUri.toString()
-                )
+                Bundle().apply {
+                    putString(
+                        ImportConfirmationDialogFragment.IMPORT_FILE_URI_KEY,
+                        importFileUri.toString(),
+                    )
+                }
             )
             .use {
                 val dialogImportButton =
@@ -148,9 +154,12 @@ class ImportConfirmationDialogFragmentTest {
     fun importConfirmationDialogFragment_cancelButtonClicked_interactionLogged() {
         val importFileUri: Uri = Uri.fromFile(importFile)
         launchDialog<ImportConfirmationDialogFragment>(
-                bundleOf(
-                    ImportConfirmationDialogFragment.IMPORT_FILE_URI_KEY to importFileUri.toString()
-                )
+                Bundle().apply {
+                    putString(
+                        ImportConfirmationDialogFragment.IMPORT_FILE_URI_KEY,
+                        importFileUri.toString(),
+                    )
+                }
             )
             .use {
                 val dialogCancelButton =

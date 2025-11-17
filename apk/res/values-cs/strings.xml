@@ -254,14 +254,18 @@
     <string name="cervical_mucus_lowercase_label" msgid="7460634889750669420">"cervikální hlen"</string>
     <string name="cervical_mucus_read_content_description" msgid="7163132301693064124">"Číst cervikální hlen"</string>
     <string name="cervical_mucus_write_content_description" msgid="175802615365382752">"Zapisovat cervikální hlen"</string>
-    <string name="cycle_phases_uppercase_label" msgid="1693612101973701017">"Fáze cyklu"</string>
-    <string name="cycle_phases_lowercase_label" msgid="6513009148778082622">"fáze cyklu"</string>
-    <string name="cycle_phases_read_content_description" msgid="1974818937933604194">"Číst fáze cyklu"</string>
-    <string name="cycle_phases_write_content_description" msgid="8779256196190212513">"Zapisovat fáze cyklu"</string>
     <string name="intermenstrual_bleeding_uppercase_label" msgid="1681956139742028987">"Intermenstruační krvácení"</string>
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"intermenstruační krvácení"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Číst intermenstruační krvácení"</string>
     <string name="intermenstrual_bleeding_write_content_description" msgid="1377719923165234099">"Zapisovat intermenstruační krvácení"</string>
+    <!-- no translation found for menstrual_cycle_phase_uppercase_label (5030753898761492690) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_lowercase_label (4400175522136299478) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_read_content_description (579636561137547897) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_write_content_description (5631263314813590544) -->
+    <skip />
     <string name="menstruation_uppercase_label" msgid="9119506748428874832">"Menstruace"</string>
     <string name="menstruation_lowercase_label" msgid="8098816978006207242">"menstruace"</string>
     <string name="menstruation_read_content_description" msgid="7710047469771882021">"Číst menstruaci"</string>
@@ -1577,4 +1581,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"zadržování vody"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Sípání"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"sípání"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> z <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
 </resources>

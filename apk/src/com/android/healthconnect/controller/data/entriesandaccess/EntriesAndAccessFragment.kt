@@ -21,7 +21,6 @@ import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commitNow
 import androidx.fragment.app.viewModels
@@ -71,7 +70,7 @@ class EntriesAndAccessFragment : Hilt_EntriesAndAccessFragment() {
             START_DELETION_ENTRIES_AND_ACCESS_KEY,
             this,
         ) { _, _ ->
-            childFragmentManager.setFragmentResult(START_DELETION_KEY, bundleOf())
+            childFragmentManager.setFragmentResult(START_DELETION_KEY, Bundle())
         }
         if (requireArguments().containsKey(PERMISSION_TYPE_NAME_KEY)) {
             val permissionTypeName =
@@ -153,7 +152,8 @@ class EntriesAndAccessFragment : Hilt_EntriesAndAccessFragment() {
 
         override fun createFragment(position: Int): Fragment {
             val fragment: Fragment = if (position == 0) AllEntriesFragment() else AccessFragment()
-            fragment.arguments = bundleOf(PERMISSION_TYPE_NAME_KEY to permissionType.name)
+            fragment.arguments =
+                Bundle().apply { putString(PERMISSION_TYPE_NAME_KEY, permissionType.name) }
             return fragment
         }
     }

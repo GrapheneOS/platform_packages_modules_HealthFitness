@@ -19,7 +19,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -77,11 +76,11 @@ class DataEntryDetailsFragment : Hilt_DataEntryDetailsFragment() {
             entryId: String,
             showDataOrigin: Boolean,
         ): Bundle {
-            return bundleOf(
-                PERMISSION_TYPE_KEY to permissionType,
-                ENTRY_ID_KEY to entryId,
-                SHOW_DATA_ORIGIN_KEY to showDataOrigin,
-            )
+            return Bundle().apply {
+                putSerializable(PERMISSION_TYPE_KEY, permissionType)
+                putString(ENTRY_ID_KEY, entryId)
+                putBoolean(SHOW_DATA_ORIGIN_KEY, showDataOrigin)
+            }
         }
     }
 

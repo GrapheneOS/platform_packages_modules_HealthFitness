@@ -416,27 +416,6 @@ public class HealthConnectMappingsTest {
         }
     }
 
-    @RequiresFlagsDisabled({
-        Flags.FLAG_ACTIVITY_INTENSITY,
-        Flags.FLAG_SMOKING,
-        Flags.FLAG_SYMPTOMS,
-        Flags.FLAG_ALCOHOL_CONSUMPTION
-    })
-    @Test
-    public void getRecordCategoryForRecordType_equalsToLegacy() {
-        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
-        for (var descriptor : getAllDataTypeDescriptors()) {
-            int dataCategory =
-                    healthConnectMappings.getRecordCategoryForRecordType(
-                            descriptor.getRecordTypeIdentifier());
-
-            assertThat(dataCategory)
-                    .isEqualTo(
-                            RecordTypeRecordCategoryMapper.getRecordCategoryForRecordType(
-                                    descriptor.getRecordTypeIdentifier()));
-        }
-    }
-
     @Test
     public void getAllHealthDataCategories() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();

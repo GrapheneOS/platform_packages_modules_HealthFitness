@@ -38,8 +38,8 @@ import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper.DeviceInfo;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
-import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
 
 import java.security.SecureRandom;
 import java.util.List;
@@ -61,7 +61,7 @@ public class DeviceDataProviderManager {
     private final Context mContext;
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final AppInfoHelper mAppInfoHelper;
-    private final DeviceDataProviderHelper mDeviceDataProviderHelper;
+    private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
     private final DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
     private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
     private final SyntheticPackageNameCreator mSyntheticPackageNameCreator;
@@ -75,14 +75,14 @@ public class DeviceDataProviderManager {
             @NonNull Context context,
             @NonNull DeviceInfoHelper deviceInfoHelper,
             @NonNull AppInfoHelper appInfoHelper,
-            @NonNull DeviceDataProviderHelper deviceDataProviderHelper,
+            @NonNull DeviceDataSourcesHelper deviceDataSourcesHelper,
             @NonNull DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
             @NonNull FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             @NonNull SyntheticPackageNameCreator syntheticPackageNameCreator) {
         mContext = Objects.requireNonNull(context);
         mDeviceInfoHelper = Objects.requireNonNull(deviceInfoHelper);
         mAppInfoHelper = Objects.requireNonNull(appInfoHelper);
-        mDeviceDataProviderHelper = Objects.requireNonNull(deviceDataProviderHelper);
+        mDeviceDataSourcesHelper = Objects.requireNonNull(deviceDataSourcesHelper);
         mDeviceDataProviderMetadataHelper =
                 Objects.requireNonNull(deviceDataProviderMetadataHelper);
         mFitnessRecordUpsertHelper = Objects.requireNonNull(fitnessRecordUpsertHelper);
@@ -94,16 +94,21 @@ public class DeviceDataProviderManager {
      * updating device data provider information.
      *
      * @param advertisements The device data source advertisements.
-     * @param ddpPackageName The package name of the advertising DDP.
+     * @param callingDdpPackageName The package name of the advertising DDP.
+     * @throws IllegalArgumentException if the given deviceId has already been used for a different
+     *     device type.
      */
     // TODO(b/440066697): Check if we want to handle advertisements that are no longer present.
+    // TODO(b/459404842): Update API documentation with IllegalArgumentException information when
+    //  a deviceId is already being used by a different device type and add a CTS test.
     public void handleAdvertisement(
-            @NonNull Set<DeviceDataAdvertisement> advertisements, @NonNull String ddpPackageName) {
+            @NonNull Set<DeviceDataAdvertisement> advertisements,
+            @NonNull String callingDdpPackageName) {
         Objects.requireNonNull(advertisements);
-        Objects.requireNonNull(ddpPackageName);
+        Objects.requireNonNull(callingDdpPackageName);
 
         for (DeviceDataAdvertisement advertisement : advertisements) {
-            handleAdvertisement(advertisement, ddpPackageName);
+            handleAdvertisement(advertisement, callingDdpPackageName);
         }
     }
 
@@ -166,6 +171,9 @@ public class DeviceDataProviderManager {
      *
      * <p>This is extracted to a separate method to allow it to be easily overridden in test cases,
      * and should not be used directly.
+     *
+     * @throws IllegalArgumentException if the given deviceId has already been used for a different
+     *     device type.
      */
     @SuppressLint("MissingPermission")
     @VisibleForTesting
@@ -174,31 +182,33 @@ public class DeviceDataProviderManager {
     }
 
     private void handleAdvertisement(
-            @NonNull DeviceDataAdvertisement advertisement, @NonNull String ddpPackageName) {
+            @NonNull DeviceDataAdvertisement advertisement, @NonNull String callingDdpPackageName) {
         Objects.requireNonNull(advertisement);
-        Objects.requireNonNull(ddpPackageName);
+        Objects.requireNonNull(callingDdpPackageName);
 
         Device device = advertisement.getDevice();
+        String deviceId = advertisement.getDeviceId();
+        int deviceType = device.getType();
+        throwIfDeviceIdUsedByDifferentDeviceType(deviceId, deviceType);
+
         DeviceInfo deviceInfo =
                 new DeviceInfo(
                         device.getManufacturer(),
                         device.getModel(),
-                        device.getType(),
-                        advertisement.getDeviceId(),
+                        deviceType,
+                        deviceId,
                         device.getDisplayName());
         // TODO(b/440066697): Check how we want to handle display name updates.
         long deviceInfoId = mDeviceInfoHelper.insertIfNotPresent(deviceInfo);
-        String spn =
-                mSyntheticPackageNameCreator.createCanonical(
-                        device.getType(), advertisement.getDeviceId());
+        String spn = mSyntheticPackageNameCreator.createCanonical(device.getType(), deviceId);
         // Synthetic package name for device + device info
-        mAppInfoHelper.insertDeviceDataSourceIfNotPresent(spn, deviceInfoId);
+        long appInfoId = mAppInfoHelper.insertOrUpdateDeviceDataSource(spn, deviceInfoId);
 
-        // DDP package name + device info + data type + status
-        mDeviceDataProviderHelper.insertOrUpdateAdvertisement(
-                ddpPackageName, deviceInfoId, advertisement);
+        // DDP package name + app info id + data type + status
+        mDeviceDataSourcesHelper.insertOrUpdateAdvertisement(
+                callingDdpPackageName, appInfoId, advertisement);
 
-        mDeviceDataProviderMetadataHelper.insertIfNotPresent(ddpPackageName);
+        mDeviceDataProviderMetadataHelper.insertIfNotPresent(callingDdpPackageName);
     }
 
     /**
@@ -207,40 +217,26 @@ public class DeviceDataProviderManager {
      * <p>Note: The device data source must be advertised first through {@link
      * #handleAdvertisement}.
      *
+     * @param callingDdpPackageName The package name of the device data provider.
      * @param deviceId The ID of the device.
      * @param records The list of records to insert.
      * @return A list of UUIDs of the inserted records.
-     * @throws IllegalArgumentException if the device with the given ID is not found
-     * @throws IllegalStateException if the generated syntheticPackageName or deviceInfoId is not
-     *     valid
+     * @throws IllegalArgumentException if the device with the given ID is not found or if any
+     *     record type is not advertised.
+     * @throws IllegalStateException if the generated syntheticPackageName or appInfoId is not valid
      */
-    // TODO(b/458002163): Check that the device data source has advertised the provided data type.
     public List<String> insertDeviceRecords(
-            @NonNull String deviceId, @NonNull List<RecordInternal<?>> records) {
+            @NonNull String callingDdpPackageName,
+            @NonNull String deviceId,
+            @NonNull List<RecordInternal<?>> records) {
+        Objects.requireNonNull(callingDdpPackageName);
         Objects.requireNonNull(deviceId);
         Objects.requireNonNull(records);
-        DeviceInfoHelper.DeviceInfo deviceInfo = mDeviceInfoHelper.getDeviceInfo(deviceId);
-        if (deviceInfo == null) {
-            Slog.e(
-                    TAG,
-                    "Device with ID "
-                            + deviceId
-                            + " not found, ensure the device data source has been advertised");
-            throw new IllegalArgumentException(
-                    "Device with ID "
-                            + deviceId
-                            + " not found, ensure the device data source has been advertised");
-        }
 
-        String syntheticPackageName =
-                mSyntheticPackageNameCreator.createCanonical(deviceInfo.getDeviceType(), deviceId);
-        long deviceInfoId = getOrThrowDeviceInfoId(deviceInfo, syntheticPackageName);
-
-        for (RecordInternal<?> record : records) {
-            mDeviceInfoHelper.populateRecordWithValue(deviceInfoId, record);
-            record.setDeviceInfoId(deviceInfoId);
-            record.setPackageName(syntheticPackageName);
-        }
+        long appInfoId = getOrThrowAppInfoId(callingDdpPackageName, deviceId);
+        String syntheticPackageName = getOrThrowSyntheticPackageName(appInfoId);
+        populateOrThrowRecords(
+                callingDdpPackageName, deviceId, records, syntheticPackageName, appInfoId);
 
         return mFitnessRecordUpsertHelper.insertRecords(
                 syntheticPackageName,
@@ -249,26 +245,31 @@ public class DeviceDataProviderManager {
                 /* shouldGenerateAccessLogs= */ false);
     }
 
-    private long getOrThrowDeviceInfoId(DeviceInfo deviceInfo, String syntheticPackageName) {
-        AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(syntheticPackageName);
-        if (appInfo == null) {
-            throw new IllegalStateException(
-                    "syntheticPackageName not found in application_info_table");
-        }
-        Long deviceInfoIdFromAppInfoDb = appInfo.getDeviceInfoId();
-        Long deviceInfoIdFromDeviceInfoDb = mDeviceInfoHelper.getDeviceInfoId(deviceInfo);
-        if (deviceInfoIdFromAppInfoDb == null) {
-            throw new IllegalStateException("deviceInfoId not found in application_info_table");
-        }
-        if (deviceInfoIdFromDeviceInfoDb == null) {
-            throw new IllegalStateException("deviceInfoId not found in device_info_table");
-        }
-        // Check that the inferred synthetic package name is the correct one for the deviceId
-        if (!deviceInfoIdFromDeviceInfoDb.equals(deviceInfoIdFromAppInfoDb)) {
-            throw new IllegalStateException(
-                    "deviceInfoId in device_info_table does not match application_info_table");
-        }
-        return deviceInfoIdFromDeviceInfoDb;
+    /**
+     * Updates {@code records} from a device data source in the Health Connect database.
+     *
+     * @param deviceId The ID of the device.
+     * @param records The list of records to update.
+     * @return A list of UUIDs of the inserted records.
+     * @throws IllegalArgumentException if the device with the given ID is not found
+     * @throws IllegalStateException if the generated syntheticPackageName or deviceInfoId is not
+     *     valid
+     */
+    public List<String> updateDeviceRecords(
+            @NonNull String callingDdpPackageName,
+            @NonNull String deviceId,
+            @NonNull List<RecordInternal<?>> records) {
+        Objects.requireNonNull(callingDdpPackageName);
+        Objects.requireNonNull(deviceId);
+        Objects.requireNonNull(records);
+
+        long appInfoId = getOrThrowAppInfoId(callingDdpPackageName, deviceId);
+        String syntheticPackageName = getOrThrowSyntheticPackageName(appInfoId);
+        populateOrThrowRecords(
+                callingDdpPackageName, deviceId, records, syntheticPackageName, appInfoId);
+
+        return mFitnessRecordUpsertHelper.updateRecords(
+                syntheticPackageName, records, EMPTY_EXTRA_PERMISSION_MAPPING);
     }
 
     /**
@@ -309,6 +310,107 @@ public class DeviceDataProviderManager {
             return mContext.checkPermission(
                             Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA, pid, uid)
                     == PackageManager.PERMISSION_GRANTED;
+        }
+    }
+
+    private void throwIfDeviceIdUsedByDifferentDeviceType(String deviceId, int deviceType) {
+        Integer existingDeviceType = mDeviceInfoHelper.getDeviceType(deviceId);
+        if (existingDeviceType != null && existingDeviceType != deviceType) {
+            String message =
+                    censoredDeviceMessage(deviceId)
+                            + " has already been used for a different device type.";
+            Slog.e(TAG, message);
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    private void populateOrThrowRecords(
+            String callingDdpPackageName,
+            String deviceId,
+            List<RecordInternal<?>> records,
+            String syntheticPackageName,
+            long appInfoId) {
+        AppInfoInternal appInfo = getOrThrowAppInfo(syntheticPackageName);
+        long deviceInfoId = Objects.requireNonNull(appInfo.getDeviceInfoId());
+
+        List<Integer> advertisedDataTypes =
+                mDeviceDataSourcesHelper.getAdvertisedDataTypes(callingDdpPackageName, appInfoId);
+
+        long deviceDataProviderId =
+                mDeviceDataProviderMetadataHelper.getDeviceDataProviderMetadataId(
+                        callingDdpPackageName);
+
+        for (RecordInternal<?> record : records) {
+            throwIfDataTypeNotAdvertised(advertisedDataTypes, deviceId, record.getRecordType());
+
+            mDeviceInfoHelper.populateRecordWithValue(deviceInfoId, record);
+            record.setDeviceInfoId(deviceInfoId);
+            record.setPackageName(syntheticPackageName);
+            record.setDeviceDataProviderId(deviceDataProviderId);
+        }
+    }
+
+    private long getOrThrowAppInfoId(String callingDdpPackageName, String deviceId) {
+        List<Long> appInfoIds = mDeviceDataSourcesHelper.getAppInfoIds(callingDdpPackageName);
+        if (appInfoIds.isEmpty()) {
+            // TODO(b/459388902): Use the data type string in the exception.
+            throw new IllegalArgumentException(
+                    "appInfoId not found for calling package "
+                            + callingDdpPackageName
+                            + ", ensure an advertisement has been made");
+        }
+        for (Long appInfoId : appInfoIds) {
+            String syntheticPackageName = getOrThrowSyntheticPackageName(appInfoId);
+            AppInfoInternal appInfo = getOrThrowAppInfo(syntheticPackageName);
+            long deviceInfoId = Objects.requireNonNull(appInfo.getDeviceInfoId());
+            DeviceInfoHelper.DeviceInfo deviceInfo = mDeviceInfoHelper.getDeviceInfo(deviceInfoId);
+            if (deviceInfo != null && deviceId.equals(deviceInfo.getDeviceId())) {
+                return appInfoId;
+            }
+        }
+
+        String message =
+                censoredDeviceMessage(deviceId)
+                        + " was not found, ensure the device data source has been advertised";
+        Slog.e(TAG, message);
+        throw new IllegalArgumentException(message);
+    }
+
+    private String getOrThrowSyntheticPackageName(long appInfoId) {
+        try {
+            return mAppInfoHelper.getPackageName(appInfoId);
+        } catch (PackageManager.NameNotFoundException e) {
+            throw new IllegalStateException(
+                    "syntheticPackageName not found in application_info_table");
+        }
+    }
+
+    private AppInfoInternal getOrThrowAppInfo(String syntheticPackageName) {
+        AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(syntheticPackageName);
+        if (appInfo != null) {
+            return appInfo;
+        }
+
+        throw new IllegalStateException("syntheticPackageName not found in app_info_table");
+    }
+
+    private void throwIfDataTypeNotAdvertised(
+            List<Integer> advertisedDataTypes, String deviceId, int recordType) {
+        if (!advertisedDataTypes.contains(recordType)) {
+            // TODO(b/459388902): Use the data type string in the exception.
+            throw new IllegalArgumentException(
+                    censoredDeviceMessage(deviceId)
+                            + " was not advertised for data type "
+                            + recordType);
+        }
+    }
+
+    private String censoredDeviceMessage(String deviceId) {
+        // TODO(b/459541943): Handle censoring of canonical SPN on a higher level
+        if (SyntheticPackageNameCreator.isCanonicalSpn(deviceId)) {
+            return "The current device";
+        } else {
+            return "The device with id " + deviceId;
         }
     }
 }

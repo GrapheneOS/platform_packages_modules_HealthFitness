@@ -20,7 +20,6 @@ import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.health.connect.HealthConnectManager
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
@@ -328,11 +327,11 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
                         .navigate(
                             R.id
                                 .action_connectAppsOnboardingFragment_to_fitnessAppOnboardingFragment,
-                            bundleOf(
-                                EXTRA_PACKAGE_NAME to connectedApp.appMetadata.packageName,
-                                EXTRA_APP_NAME to connectedApp.appMetadata.appName,
-                                SHOW_MANAGE_APP_SECTION to false,
-                            ),
+                            Bundle().apply {
+                                putString(EXTRA_PACKAGE_NAME, connectedApp.appMetadata.packageName)
+                                putString(EXTRA_APP_NAME, connectedApp.appMetadata.appName)
+                                putBoolean(SHOW_MANAGE_APP_SECTION, false)
+                            },
                         )
                 }
                 true

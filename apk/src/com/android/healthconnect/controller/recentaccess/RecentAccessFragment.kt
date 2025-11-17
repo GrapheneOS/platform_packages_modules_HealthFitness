@@ -23,7 +23,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -286,10 +285,10 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
         findNavController()
             .navigate(
                 navigationId,
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to recentApp.metadata.packageName,
-                    Constants.EXTRA_APP_NAME to recentApp.metadata.appName,
-                ),
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, recentApp.metadata.packageName)
+                    putString(Constants.EXTRA_APP_NAME, recentApp.metadata.appName)
+                },
             )
     }
 }

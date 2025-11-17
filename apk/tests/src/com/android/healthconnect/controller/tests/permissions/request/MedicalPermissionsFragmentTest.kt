@@ -28,7 +28,7 @@ import android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VACCINES
 import android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VISITS
 import android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VITAL_SIGNS
 import android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA
-import androidx.core.os.bundleOf
+import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
@@ -153,7 +153,7 @@ class MedicalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+        launchFragment<MedicalPermissionsFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access your medical records?"))
                 .check(matches(isDisplayed()))
             onView(withText("Choose data you want this app to read or write to Health Connect"))
@@ -203,7 +203,7 @@ class MedicalPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+        launchFragment<MedicalPermissionsFragment>(Bundle()).use {
             verify(healthConnectLogger, atLeast(1))
                 .setPageId(PageName.REQUEST_MEDICAL_PERMISSIONS_PAGE)
             verify(healthConnectLogger).logPageImpression()
@@ -224,7 +224,7 @@ class MedicalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+        launchFragment<MedicalPermissionsFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access your medical records?"))
                 .check(matches(isDisplayed()))
             onView(withText("Choose data you want this app to read from Health Connect"))
@@ -271,7 +271,7 @@ class MedicalPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+        launchFragment<MedicalPermissionsFragment>(Bundle()).use {
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(
                     RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -310,7 +310,7 @@ class MedicalPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+        launchFragment<MedicalPermissionsFragment>(Bundle()).use {
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(
                     RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -348,7 +348,7 @@ class MedicalPermissionsFragmentTest {
                 )
             )
         }
-        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+        launchFragment<MedicalPermissionsFragment>(Bundle()).use {
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(
                     RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -380,7 +380,7 @@ class MedicalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<MedicalPermissionsFragment>(bundleOf()).use { activityScenario ->
+        launchFragment<MedicalPermissionsFragment>(Bundle()).use { activityScenario ->
             var allowAllPreference: HealthMainSwitchPreference? = null
             activityScenario.onActivity { activity: TestActivity ->
                 val fragment =
@@ -417,7 +417,7 @@ class MedicalPermissionsFragmentTest {
             )
         }
 
-        launchFragment<MedicalPermissionsFragment>(bundleOf()).use { activityScenario ->
+        launchFragment<MedicalPermissionsFragment>(Bundle()).use { activityScenario ->
             var allowAllPreference: HealthMainSwitchPreference? = null
             activityScenario.onActivity { activity: TestActivity ->
                 val fragment =
@@ -457,7 +457,7 @@ class MedicalPermissionsFragmentTest {
             MutableLiveData(emptySet<MedicalPermission>())
         }
 
-        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+        launchFragment<MedicalPermissionsFragment>(Bundle()).use {
             onView(withText("Allow")).check(matches(ViewMatchers.isNotEnabled()))
         }
     }
@@ -481,7 +481,7 @@ class MedicalPermissionsFragmentTest {
             MutableLiveData(setOf(fromPermissionString(READ_MEDICAL_DATA_VACCINES)))
         }
 
-        launchFragment<MedicalPermissionsFragment>(bundleOf()).use {
+        launchFragment<MedicalPermissionsFragment>(Bundle()).use {
             onView(withText("Allow")).check(matches(ViewMatchers.isEnabled()))
         }
     }

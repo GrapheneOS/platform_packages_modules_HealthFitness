@@ -16,7 +16,7 @@
 package com.android.healthconnect.controller.tests.permissions.connectedapps.settings
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
-import androidx.core.os.bundleOf
+import android.os.Bundle
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -183,7 +183,7 @@ class SettingsCombinedPermissionsFragmentTest {
         }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText("Permissions")).check(matches(isDisplayed()))
@@ -241,7 +241,7 @@ class SettingsCombinedPermissionsFragmentTest {
         }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 verify(healthConnectLogger, atLeast(1))
@@ -257,7 +257,7 @@ class SettingsCombinedPermissionsFragmentTest {
         }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { onView(withText(R.string.additional_access_label)).check(doesNotExist()) }
     }
@@ -274,7 +274,7 @@ class SettingsCombinedPermissionsFragmentTest {
         }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
@@ -297,7 +297,7 @@ class SettingsCombinedPermissionsFragmentTest {
         }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText(R.string.additional_access_label)).check(matches(isDisplayed()))
@@ -316,7 +316,7 @@ class SettingsCombinedPermissionsFragmentTest {
         }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText(R.string.additional_access_label)).perform(click())
@@ -364,7 +364,7 @@ class SettingsCombinedPermissionsFragmentTest {
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(
@@ -425,7 +425,7 @@ class SettingsCombinedPermissionsFragmentTest {
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(
@@ -484,7 +484,7 @@ class SettingsCombinedPermissionsFragmentTest {
         whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { true }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Health Connect restore in progress"))
@@ -518,7 +518,7 @@ class SettingsCombinedPermissionsFragmentTest {
         whenever(viewModel.atLeastOneHealthPermissionGranted).then { MediatorLiveData(false) }
 
         launchFragment<SettingsCombinedPermissionsFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText("Remove access for this app"))
@@ -555,7 +555,7 @@ class SettingsCombinedPermissionsFragmentTest {
             )
         }
         launchFragment<SettingsCombinedPermissionsFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText("Remove access for this app"))
@@ -615,7 +615,7 @@ class SettingsCombinedPermissionsFragmentTest {
             )
         }
         launchFragment<SettingsCombinedPermissionsFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText("Remove access for this app"))
@@ -675,7 +675,7 @@ class SettingsCombinedPermissionsFragmentTest {
             )
         }
         launchFragment<SettingsCombinedPermissionsFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText("Remove access for this app"))
@@ -717,7 +717,7 @@ class SettingsCombinedPermissionsFragmentTest {
             )
         }
         launchFragment<SettingsCombinedPermissionsFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
                 onView(withText("Remove access for this app"))
@@ -759,7 +759,7 @@ class SettingsCombinedPermissionsFragmentTest {
             )
         }
         launchFragment<SettingsCombinedPermissionsFragment>(
-                bundleOf(EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME)
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use { scenario ->
                 onView(withText("Remove access for this app"))

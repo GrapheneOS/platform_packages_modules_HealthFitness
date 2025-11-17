@@ -39,6 +39,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
@@ -58,8 +59,8 @@ import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
-import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -74,7 +75,6 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -103,7 +103,7 @@ public class DeviceDataProviderManagerTest {
 
     private PreferenceHelper mPreferenceHelper;
     private Context mContext;
-    private DeviceDataProviderHelper mDeviceDataProviderHelper;
+    private DeviceDataSourcesHelper mDeviceDataSourcesHelper;
     private DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
     private DeviceInfoHelper mDeviceInfoHelper;
     private AppInfoHelper mAppInfoHelper;
@@ -124,7 +124,7 @@ public class DeviceDataProviderManagerTest {
 
         mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
-        mDeviceDataProviderHelper = healthConnectInjector.getDeviceDataProviderHelper();
+        mDeviceDataSourcesHelper = healthConnectInjector.getDeviceDataSourcesHelper();
         mDeviceDataProviderMetadataHelper =
                 healthConnectInjector.getDeviceDataProviderMetadataHelper();
         mPreferenceHelper = healthConnectInjector.getPreferenceHelper();
@@ -135,7 +135,7 @@ public class DeviceDataProviderManagerTest {
                         mContext,
                         mDeviceInfoHelper,
                         mAppInfoHelper,
-                        mDeviceDataProviderHelper,
+                        mDeviceDataSourcesHelper,
                         mDeviceDataProviderMetadataHelper,
                         healthConnectInjector.getFitnessRecordUpsertHelper(),
                         healthConnectInjector.getSyntheticPackageNameCreator());
@@ -192,14 +192,14 @@ public class DeviceDataProviderManagerTest {
         assertThat(metadataInternalMap.size()).isEqualTo(1);
         assertThat(metadataInternalMap).containsKey(1L);
         assertThat(metadataInternalMap.get(1L).sourcePackageName()).isEqualTo(PACKAGE_NAME);
-        DeviceDataProviderHelper.DeviceDataProviderKey key =
-                new DeviceDataProviderHelper.DeviceDataProviderKey(
+        DeviceDataSourcesHelper.DeviceDataProviderKey key =
+                new DeviceDataSourcesHelper.DeviceDataProviderKey(
                         PACKAGE_NAME, expectedDeviceInfoId, RECORD_TYPE_STEPS);
-        assertThat(mDeviceDataProviderHelper.getDdpMap().size()).isEqualTo(1);
-        assertThat(mDeviceDataProviderHelper.getDdpMap()).containsKey(key);
-        assertThat(mDeviceDataProviderHelper.getDdpMap().get(key).isAvailable()).isEqualTo(true);
-        assertThat(mDeviceDataProviderHelper.getDdpMap().get(key).isUserEnabled()).isEqualTo(false);
-        assertThat(mDeviceDataProviderHelper.getDdpMap().get(key).isVisibleByDefaultInMatchmaking())
+        assertThat(mDeviceDataSourcesHelper.getDdpMap().size()).isEqualTo(1);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap()).containsKey(key);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap().get(key).isAvailable()).isEqualTo(true);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap().get(key).isUserEnabled()).isEqualTo(false);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap().get(key).isVisibleByDefaultInMatchmaking())
                 .isEqualTo(true);
     }
 
@@ -228,8 +228,48 @@ public class DeviceDataProviderManagerTest {
 
         assertThat(mDeviceInfoHelper.getIdDeviceInfoMap().size()).isEqualTo(1);
         assertThat(appInfoInternalMap.size()).isEqualTo(1);
-        assertThat(mDeviceDataProviderHelper.getDdpMap().size()).isEqualTo(1);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap().size()).isEqualTo(1);
         assertThat(metadataInternalMap.size()).isEqualTo(1);
+    }
+
+    @Test
+    public void handleAdvertisement_deviceIdUsedForDifferentDeviceType_throwsException() {
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements1 =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement1 =
+                new DeviceDataAdvertisement(device1, DEVICE_ID, deviceDataTypeAdvertisements1);
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement1), PACKAGE_NAME);
+
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements2 =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement2 =
+                new DeviceDataAdvertisement(device2, DEVICE_ID, deviceDataTypeAdvertisements2);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mDeviceDataProviderManager.handleAdvertisement(
+                                Set.of(advertisement2), PACKAGE_NAME));
     }
 
     @Test
@@ -270,7 +310,7 @@ public class DeviceDataProviderManagerTest {
 
         assertThat(appInfoInternalMap.size()).isEqualTo(1);
         assertThat(metadataInternalMap.size()).isEqualTo(1);
-        assertThat(mDeviceDataProviderHelper.getDdpMap().size()).isEqualTo(2);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap().size()).isEqualTo(1);
         assertThat(mDeviceInfoHelper.getIdDeviceInfoMap().size()).isEqualTo(2);
         assertThat(
                         mDeviceInfoHelper
@@ -436,10 +476,46 @@ public class DeviceDataProviderManagerTest {
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
 
         List<String> insertedUuids =
-                mDeviceDataProviderManager.insertDeviceRecords(DEVICE_ID, records);
+                mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
 
         assertThat(insertedUuids).isNotNull();
         assertThat(insertedUuids).hasSize(1);
+    }
+
+    @Test
+    public void insertDeviceRecords_dataTypeNotAdvertised_throwsException() {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
+
+        List<RecordInternal<?>> records =
+                List.of(
+                        buildStepsRecord(
+                                /* startTimeMillis= */ 1000,
+                                /* endTimeMillis= */ 2000,
+                                /* stepsCount= */ 100));
+        Throwable thrown =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                mDeviceDataProviderManager.insertDeviceRecords(
+                                        PACKAGE_NAME, DEVICE_ID, records));
+
+        assertThat(thrown)
+                .hasMessageThat()
+                .contains("The device with id test_device_id was not advertised for data type 1");
     }
 
     @Test
@@ -467,7 +543,7 @@ public class DeviceDataProviderManagerTest {
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
 
         List<String> insertedUuids =
-                mDeviceDataProviderManager.insertDeviceRecords(DEVICE_ID, records);
+                mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
         assertThat(insertedUuids).isNotNull();
         assertThat(insertedUuids).hasSize(1);
         List<RecordInternal<?>> readRecords =
@@ -493,6 +569,7 @@ public class DeviceDataProviderManagerTest {
         assertThat(readRecord.getModel()).isEqualTo(MODEL);
         assertThat(readRecord.getDeviceType()).isEqualTo(DEVICE_TYPE);
         assertThat(readRecord.getDisplayName()).isEqualTo(DISPLAY_NAME);
+        assertThat(readRecord.getDeviceDataProviderId()).isEqualTo(1L);
     }
 
     @Test
@@ -524,7 +601,7 @@ public class DeviceDataProviderManagerTest {
         mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
 
         List<String> insertedUuids =
-                mDeviceDataProviderManager.insertDeviceRecords(DEVICE_ID, records);
+                mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
 
         assertThat(insertedUuids).isNotNull();
         assertThat(insertedUuids).hasSize(2);
@@ -532,20 +609,25 @@ public class DeviceDataProviderManagerTest {
 
     @Test
     public void insertDeviceRecords_deviceNotFound_throwsException() {
-        List<RecordInternal<?>> records = Collections.emptyList();
+        List<RecordInternal<?>> records =
+                List.of(
+                        buildStepsRecord(
+                                /* startTimeMillis= */ 1000,
+                                /* endTimeMillis= */ 2000,
+                                /* stepsCount= */ 100));
 
         Throwable thrown =
                 assertThrows(
                         IllegalArgumentException.class,
                         () ->
                                 mDeviceDataProviderManager.insertDeviceRecords(
-                                        /* deviceId= */ "non_existent_device", records));
+                                        PACKAGE_NAME, DEVICE_ID, records));
 
         assertThat(thrown)
                 .hasMessageThat()
                 .contains(
-                        "Device with ID non_existent_device not found, ensure the device data"
-                                + " source has been advertised");
+                        "appInfoId not found for calling package com.example.app, ensure an"
+                                + " advertisement has been made");
     }
 
     @Test
@@ -576,7 +658,7 @@ public class DeviceDataProviderManagerTest {
         int initialMetadataCount =
                 mDeviceDataProviderMetadataHelper.getIdDeviceDataProviderMetadataMap().size();
 
-        mDeviceDataProviderManager.insertDeviceRecords(DEVICE_ID, records);
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
 
         assertThat(mDeviceInfoHelper.getIdDeviceInfoMap().size()).isEqualTo(initialDeviceInfoCount);
         assertThat(mAppInfoHelper.getAppInfoMap().size()).isEqualTo(initialAppInfoCount);
@@ -593,12 +675,10 @@ public class DeviceDataProviderManagerTest {
                         .setType(Device.DEVICE_TYPE_PHONE)
                         .setDisplayName(DISPLAY_NAME)
                         .build();
-        // Simulate a normal insertion (without a device ID)
         DeviceInfoHelper.DeviceInfo normalDeviceInfo =
                 new DeviceInfoHelper.DeviceInfo(
                         MANUFACTURER, MODEL, DEVICE_TYPE, /* deviceId= */ null, DISPLAY_NAME);
         mDeviceInfoHelper.insertIfNotPresent(normalDeviceInfo);
-        // Simulate a DDP insertion (with a device ID)
         Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
                 Set.of(
                         new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
@@ -624,6 +704,150 @@ public class DeviceDataProviderManagerTest {
         assertThat(deviceInfo2.getModel()).isEqualTo(MODEL);
         assertThat(deviceInfo2.getDeviceType()).isEqualTo(DEVICE_TYPE);
         assertThat(deviceInfo2.getDisplayName()).isEqualTo(DISPLAY_NAME);
+    }
+
+    @Test
+    public void updateDeviceRecords_updatesRecordCorrectly() {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
+        List<RecordInternal<?>> records =
+                List.of(
+                        buildStepsRecord(
+                                /* startTimeMillis= */ 1000,
+                                /* endTimeMillis= */ 2000,
+                                /* stepsCount= */ 100));
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
+        List<String> insertedUuids =
+                mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+        assertThat(insertedUuids).isNotNull();
+        assertThat(insertedUuids).hasSize(1);
+
+        RecordInternal<?> updatedRecord =
+                buildStepsRecord(
+                        /* startTimeMillis= */ 1000,
+                        /* endTimeMillis= */ 2000,
+                        /* stepsCount= */ 200);
+        updatedRecord.setUuid(UUID.fromString(insertedUuids.get(0)));
+
+        mDeviceDataProviderManager.updateDeviceRecords(
+                PACKAGE_NAME, DEVICE_ID, List.of(updatedRecord));
+
+        List<RecordInternal<?>> readRecords =
+                mFitnessRecordReadHelper.readRecords(
+                        mTransactionManager,
+                        PACKAGE_NAME,
+                        ImmutableMap.of(
+                                RECORD_TYPE_STEPS,
+                                insertedUuids.stream().map(UUID::fromString).toList()),
+                        /* grantedExtraReadPermissions= */ Set.of(),
+                        /* grantedGranularPermissions= */ Set.of(),
+                        /* startDateAccessMillis= */ 0,
+                        /* isInForeground= */ false,
+                        /* shouldRecordAccessLogs= */ false);
+        assertThat(readRecords).hasSize(1);
+        StepsRecord stepsRecord =
+                ((android.health.connect.internal.datatypes.StepsRecordInternal) readRecords.get(0))
+                        .toExternalRecord();
+        assertThat(stepsRecord.getCount()).isEqualTo(200);
+    }
+
+    @Test
+    public void updateDeviceRecords_uuidNotFound_throwsException() {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
+
+        RecordInternal<?> record =
+                buildStepsRecord(
+                        /* startTimeMillis= */ 1000,
+                        /* endTimeMillis= */ 2000,
+                        /* stepsCount= */ 200);
+        record.setUuid(UUID.randomUUID());
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mDeviceDataProviderManager.updateDeviceRecords(
+                                PACKAGE_NAME, DEVICE_ID, List.of(record)));
+    }
+
+    @Test
+    public void updateDeviceRecords_incorrectUuid_throwsException() {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
+        List<RecordInternal<?>> records =
+                List.of(
+                        buildStepsRecord(
+                                /* startTimeMillis= */ 1000,
+                                /* endTimeMillis= */ 2000,
+                                /* stepsCount= */ 100));
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+
+        RecordInternal<?> updatedRecord =
+                buildStepsRecord(
+                        /* startTimeMillis= */ 1000,
+                        /* endTimeMillis= */ 2000,
+                        /* stepsCount= */ 200);
+        updatedRecord.setUuid(UUID.randomUUID());
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mDeviceDataProviderManager.updateDeviceRecords(
+                                PACKAGE_NAME, DEVICE_ID, List.of(updatedRecord)));
+    }
+
+    @Test
+    public void updateDeviceRecords_deviceNotFound_throwsException() {
+        RecordInternal<?> updatedRecord =
+                buildStepsRecord(
+                        /* startTimeMillis= */ 1000,
+                        /* endTimeMillis= */ 2000,
+                        /* stepsCount= */ 200);
+        updatedRecord.setUuid(UUID.randomUUID());
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mDeviceDataProviderManager.updateDeviceRecords(
+                                PACKAGE_NAME, "non_existent_device", List.of(updatedRecord)));
     }
 
     @Test

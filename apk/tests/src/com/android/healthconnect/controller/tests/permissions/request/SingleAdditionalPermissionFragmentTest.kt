@@ -15,7 +15,7 @@
  */
 package com.android.healthconnect.controller.tests.permissions.request
 
-import androidx.core.os.bundleOf
+import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
@@ -101,7 +101,7 @@ class SingleAdditionalPermissionFragmentTest {
             )
         }
 
-        launchFragment<SingleAdditionalPermissionFragment>(bundleOf()).use {
+        launchFragment<SingleAdditionalPermissionFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access past data?"))
                 .check(matches(isDisplayed()))
             onView(
@@ -134,7 +134,7 @@ class SingleAdditionalPermissionFragmentTest {
             )
         }
 
-        launchFragment<SingleAdditionalPermissionFragment>(bundleOf()).use {
+        launchFragment<SingleAdditionalPermissionFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access past data?"))
                 .check(matches(isDisplayed()))
             onView(
@@ -161,7 +161,7 @@ class SingleAdditionalPermissionFragmentTest {
             )
         }
 
-        launchFragment<SingleAdditionalPermissionFragment>(bundleOf()).use {
+        launchFragment<SingleAdditionalPermissionFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access past data?"))
                 .check(matches(isDisplayed()))
             onView(
@@ -188,7 +188,7 @@ class SingleAdditionalPermissionFragmentTest {
             )
         }
 
-        launchFragment<SingleAdditionalPermissionFragment>(bundleOf()).use {
+        launchFragment<SingleAdditionalPermissionFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access data in the background?"))
                 .check(matches(isDisplayed()))
             onView(
@@ -219,7 +219,7 @@ class SingleAdditionalPermissionFragmentTest {
             )
         }
 
-        launchFragment<SingleAdditionalPermissionFragment>(bundleOf()).use {
+        launchFragment<SingleAdditionalPermissionFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access data in the background?"))
                 .check(matches(isDisplayed()))
             onView(
@@ -244,7 +244,7 @@ class SingleAdditionalPermissionFragmentTest {
             )
         }
 
-        launchFragment<SingleAdditionalPermissionFragment>(bundleOf()).use {
+        launchFragment<SingleAdditionalPermissionFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access data in the background?"))
                 .check(matches(isDisplayed()))
             onView(
@@ -269,7 +269,7 @@ class SingleAdditionalPermissionFragmentTest {
             )
         }
 
-        launchFragment<SingleAdditionalPermissionFragment>(bundleOf()).use {
+        launchFragment<SingleAdditionalPermissionFragment>(Bundle()).use {
             onView(withText("Allow $TEST_APP_NAME to access data in the background?"))
                 .check(matches(isDisplayed()))
             onView(

@@ -72,7 +72,6 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BODY_WATER_MASS;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_BONE_MASS;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CERVICAL_MUCUS;
-import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CYCLE_PHASES;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_CYCLING_PEDALING_CADENCE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_DISTANCE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ELEVATION_GAINED;
@@ -84,6 +83,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HYDRATION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_INTERMENSTRUAL_BLEEDING;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_LEAN_BODY_MASS;
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUAL_CYCLE_PHASE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_FLOW;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MENSTRUATION_PERIOD;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_MINDFULNESS_SESSION;
@@ -120,7 +120,6 @@ import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForU
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BODY_WATER_MASS;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_BONE_MASS;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_CERVICAL_MUCUS;
-import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_CYCLE_PHASES;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_CYCLING_PEDALING_CADENCE;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_DISTANCE;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_ELEVATION_GAINED;
@@ -132,6 +131,7 @@ import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForU
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_HYDRATION;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_INTERMENSTRUAL_BLEEDING;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_LEAN_BODY_MASS;
+import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_MENSTRUAL_CYCLE_PHASE;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_MENSTRUATION_FLOW;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_MENSTRUATION_PERIOD;
 import static com.android.server.healthconnect.fitness.mappings.RecordTypeIdForUuid.RECORD_TYPE_ID_FOR_UUID_MINDFULNESS_SESSION;
@@ -172,7 +172,6 @@ import com.android.server.healthconnect.fitness.recordhelpers.BodyTemperatureRec
 import com.android.server.healthconnect.fitness.recordhelpers.BodyWaterMassRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.BoneMassRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.CervicalMucusRecordHelper;
-import com.android.server.healthconnect.fitness.recordhelpers.CyclePhasesRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.CyclingPedalingCadenceRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.DistanceRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ElevationGainedRecordHelper;
@@ -184,6 +183,7 @@ import com.android.server.healthconnect.fitness.recordhelpers.HeightRecordHelper
 import com.android.server.healthconnect.fitness.recordhelpers.HydrationRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.IntermenstrualBleedingRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.LeanBodyMassRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.MenstrualCyclePhaseRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.MenstruationFlowRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.MenstruationPeriodRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.MindfulnessSessionRecordHelper;
@@ -318,9 +318,10 @@ public class InternalDataTypeDescriptors {
                         .build(),
                 AconfigFlagHelper.isCyclePhasesEnabled()
                         ? InternalDataTypeDescriptor.builder()
-                                .setRecordTypeIdentifier(RECORD_TYPE_CYCLE_PHASES)
-                                .setRecordHelper(new CyclePhasesRecordHelper())
-                                .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_CYCLE_PHASES)
+                                .setRecordTypeIdentifier(RECORD_TYPE_MENSTRUAL_CYCLE_PHASE)
+                                .setRecordHelper(new MenstrualCyclePhaseRecordHelper())
+                                .setRecordTypeIdForUuid(
+                                        RECORD_TYPE_ID_FOR_UUID_MENSTRUAL_CYCLE_PHASE)
                                 .setLoggingEnum(
                                         HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__CYCLE_PHASES)
                                 .build()

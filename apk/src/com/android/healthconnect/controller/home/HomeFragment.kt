@@ -23,7 +23,6 @@ import android.os.Bundle
 import android.provider.Settings.ACTION_SECURITY_SETTINGS
 import android.view.View
 import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -425,7 +424,7 @@ class HomeFragment : Hilt_HomeFragment() {
                     findNavController()
                         .navigate(
                             R.id.action_homeFragment_to_medicalDataFragment,
-                            bundleOf(IS_BROWSE_MEDICAL_DATA_SCREEN to true),
+                            Bundle().apply { putBoolean(IS_BROWSE_MEDICAL_DATA_SCREEN, true) },
                         )
                     true
                 }
@@ -793,10 +792,10 @@ class HomeFragment : Hilt_HomeFragment() {
         findNavController()
             .navigate(
                 navigationId,
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to recentApp.metadata.packageName,
-                    Constants.EXTRA_APP_NAME to recentApp.metadata.appName,
-                ),
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, recentApp.metadata.packageName)
+                    putString(Constants.EXTRA_APP_NAME, recentApp.metadata.appName)
+                },
             )
     }
 

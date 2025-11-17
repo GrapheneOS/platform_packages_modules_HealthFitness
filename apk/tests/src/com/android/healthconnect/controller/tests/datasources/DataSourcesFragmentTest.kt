@@ -16,7 +16,7 @@
 package com.android.healthconnect.controller.tests.datasources
 
 import android.health.connect.HealthDataCategory
-import androidx.core.os.bundleOf
+import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onIdle
@@ -156,7 +156,9 @@ class DataSourcesFragmentTest {
                 )
             )
         }
-        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        launchFragment<DataSourcesFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
+            )
             .use {
                 onIdle()
                 verify(healthConnectLogger, atLeast(1)).setPageId(PageName.DATA_SOURCES_PAGE)
@@ -187,7 +189,9 @@ class DataSourcesFragmentTest {
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
             MutableLiveData(AggregationCardsState.WithData(true, listOf()))
         }
-        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        launchFragment<DataSourcesFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
+            )
             .use {
                 onIdle()
 
@@ -256,7 +260,9 @@ class DataSourcesFragmentTest {
                 )
             )
         }
-        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        launchFragment<DataSourcesFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
+            )
             .use {
                 onView(withText("Activity")).check(matches(isDisplayed()))
                 onView(withText("Data totals")).check(matches(isDisplayed()))
@@ -324,7 +330,9 @@ class DataSourcesFragmentTest {
                 )
             )
         }
-        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        launchFragment<DataSourcesFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
+            )
             .use {
                 onView(withText("Data totals")).check(matches(isDisplayed()))
                 onView(withText("1234 steps")).check(matches(isDisplayed()))
@@ -378,7 +386,9 @@ class DataSourcesFragmentTest {
             )
         }
 
-        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.SLEEP))
+        launchFragment<DataSourcesFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.SLEEP) }
+            )
             .use {
                 onView(withText("Sleep")).check(matches(isDisplayed()))
                 onView(withText("Data totals")).check(matches(isDisplayed()))
@@ -445,7 +455,9 @@ class DataSourcesFragmentTest {
             )
         }
 
-        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.SLEEP))
+        launchFragment<DataSourcesFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.SLEEP) }
+            )
             .use {
                 onView(withText("Sleep")).check(matches(isDisplayed()))
                 onView(withText("Data totals")).check(matches(isDisplayed()))
@@ -512,7 +524,9 @@ class DataSourcesFragmentTest {
             )
         }
 
-        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.SLEEP))
+        launchFragment<DataSourcesFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.SLEEP) }
+            )
             .use {
                 onView(withText("Sleep")).check(matches(isDisplayed()))
                 onView(withText("Data totals")).check(matches(isDisplayed()))
@@ -547,7 +561,9 @@ class DataSourcesFragmentTest {
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
             MutableLiveData(AggregationCardsState.WithData(true, listOf()))
         }
-        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        launchFragment<DataSourcesFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
+            )
             .use {
                 onView(withText("Activity")).check(matches(isDisplayed()))
                 onView(withText("No data sources")).check(matches(isDisplayed()))
@@ -578,7 +594,9 @@ class DataSourcesFragmentTest {
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
             MutableLiveData(AggregationCardsState.WithData(true, listOf()))
         }
-        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        launchFragment<DataSourcesFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
+            )
             .use {
                 onIdle()
 
@@ -659,7 +677,9 @@ class DataSourcesFragmentTest {
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
             MutableLiveData(AggregationCardsState.Loading(false))
         }
-        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        launchFragment<DataSourcesFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
+            )
             .use { onView(withId(R.id.progress_indicator)).check(matches(isDisplayed())) }
     }
 
@@ -679,7 +699,9 @@ class DataSourcesFragmentTest {
         whenever(dataSourcesViewModel.updatedAggregationCardsData).then {
             MutableLiveData(AggregationCardsState.WithData(true, listOf()))
         }
-        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        launchFragment<DataSourcesFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
+            )
             .use {
                 onIdle()
 
@@ -805,7 +827,9 @@ class DataSourcesFragmentTest {
             dataSourcesLiveData.postValue(withData)
         }
 
-        launchFragment<DataSourcesFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        launchFragment<DataSourcesFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
+            )
             .use {
                 onIdle()
                 onView(withText("No data sources")).check(matches(isDisplayed()))
@@ -874,7 +898,7 @@ class DataSourcesFragmentTest {
             )
         }
         return launchFragment<DataSourcesFragment>(
-            bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY)
+            Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
         )
     }
 

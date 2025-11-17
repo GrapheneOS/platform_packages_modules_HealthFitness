@@ -57,6 +57,7 @@ import android.util.Slog;
 
 import androidx.annotation.Nullable;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
@@ -65,9 +66,11 @@ import com.android.server.healthconnect.fitness.RecordReadTableRequest;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.fitness.aggregation.AggregateRecordRequest;
 import com.android.server.healthconnect.fitness.aggregation.TimeSplits;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.request.ReadTableRequest;
@@ -109,6 +112,13 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                     new Pair<>(DEDUPE_HASH_COLUMN_NAME, UpsertTableRequest.TYPE_BLOB),
                     new Pair<>(UUID_COLUMN_NAME, UpsertTableRequest.TYPE_BLOB));
     @RecordTypeIdentifier.RecordType private final int mRecordIdentifier;
+
+    /**
+     * Public because it is used in {@link
+     * com.android.server.healthconnect.storage.DevelopmentDatabaseHelper} to check if the DDP
+     * upgrade has already been applied.
+     */
+    public static final String DDP_ID_COLUMN_NAME = "device_data_provider_id";
 
     RecordHelper(@RecordTypeIdentifier.RecordType int recordIdentifier) {
         mRecordIdentifier = recordIdentifier;
@@ -302,17 +312,28 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      * helper
      */
     public final CreateTableRequest getCreateTableRequest() {
-        return new CreateTableRequest(getMainTableName(), getColumnInfo())
-                .addForeignKey(
-                        DeviceInfoHelper.TABLE_NAME,
-                        Collections.singletonList(DEVICE_INFO_ID_COLUMN_NAME),
-                        Collections.singletonList(PRIMARY_COLUMN_NAME))
-                .addForeignKey(
-                        AppInfoHelper.TABLE_NAME,
-                        Collections.singletonList(APP_INFO_ID_COLUMN_NAME),
-                        Collections.singletonList(PRIMARY_COLUMN_NAME))
-                .setChildTableRequests(getChildTableCreateRequests())
+        CreateTableRequest request =
+                new CreateTableRequest(getMainTableName(), getColumnInfo())
+                        .addForeignKey(
+                                DeviceInfoHelper.TABLE_NAME,
+                                Collections.singletonList(DEVICE_INFO_ID_COLUMN_NAME),
+                                Collections.singletonList(PRIMARY_COLUMN_NAME))
+                        .addForeignKey(
+                                AppInfoHelper.TABLE_NAME,
+                                Collections.singletonList(APP_INFO_ID_COLUMN_NAME),
+                                Collections.singletonList(PRIMARY_COLUMN_NAME));
+
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            request.addForeignKey(
+                    DeviceDataProviderMetadataHelper.TABLE_NAME,
+                    Collections.singletonList(DDP_ID_COLUMN_NAME),
+                    Collections.singletonList(PRIMARY_COLUMN_NAME));
+        }
+
+        request.setChildTableRequests(getChildTableCreateRequests())
                 .setGeneratedColumnInfo(getGeneratedColumnInfo());
+
+        return request;
     }
 
     /** Gets {@link UpsertTableRequest} from {@code recordInternal}. */
@@ -723,6 +744,12 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             throw new IllegalArgumentException(exception);
         }
         record.setAppInfoId(appInfoId);
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            // TODO(b/459827738): Remove manual fixing when ddp caches have been properly set
+            long ddpId = getCursorLong(cursor, DDP_ID_COLUMN_NAME);
+            ddpId = (ddpId < 1L) ? DEFAULT_LONG : ddpId;
+            record.setDeviceDataProviderId(ddpId);
+        }
 
         return record;
     }
@@ -1009,6 +1036,11 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         recordContentValues.put(DEVICE_INFO_ID_COLUMN_NAME, recordInternal.getDeviceInfoId());
         recordContentValues.put(APP_INFO_ID_COLUMN_NAME, recordInternal.getAppInfoId());
         recordContentValues.put(DEDUPE_HASH_COLUMN_NAME, getDedupeByteBuffer(recordInternal));
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                && recordInternal.getDeviceDataProviderId() != DEFAULT_LONG) {
+            // TODO(b/459827738): Remove manual extra check when ddp caches have been properly set
+            recordContentValues.put(DDP_ID_COLUMN_NAME, recordInternal.getDeviceDataProviderId());
+        }
 
         populateContentValues(recordContentValues, recordInternal);
 
@@ -1035,9 +1067,23 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         columnInfo.add(new Pair<>(RECORDING_METHOD_COLUMN_NAME, INTEGER));
         columnInfo.add(new Pair<>(DEDUPE_HASH_COLUMN_NAME, BLOB_UNIQUE_NULL));
 
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            columnInfo.add(new Pair<>(DDP_ID_COLUMN_NAME, INTEGER));
+        }
+
         columnInfo.addAll(getSpecificColumnInfo());
 
         return columnInfo;
+    }
+
+    /** Adds the required column to reference device data provider information */
+    public AlterTableRequest getAlterTableRequestForDdpName() {
+        var columns = List.of(new Pair<>(DDP_ID_COLUMN_NAME, INTEGER));
+        return new AlterTableRequest(getMainTableName(), columns)
+                .addForeignKeyConstraint(
+                        DDP_ID_COLUMN_NAME,
+                        DeviceDataProviderMetadataHelper.TABLE_NAME,
+                        PRIMARY_COLUMN_NAME);
     }
 
     /** Returns permissions required to read extra record data. */

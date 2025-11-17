@@ -20,7 +20,6 @@ import android.health.connect.HealthDataCategory
 import android.health.connect.datatypes.StepsRecord
 import android.os.Bundle
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
@@ -86,11 +85,11 @@ class DeviceManagementFragment : Hilt_DeviceManagementFragment() {
                 findNavController()
                     .navigate(
                         R.id.action_deviceManagementFragment_to_appData,
-                        bundleOf(
-                            EXTRA_PACKAGE_NAME to DEVICE_DATA_PROVIDER_PACKAGE,
-                            EXTRA_APP_NAME to device.deviceName,
-                            EXTRA_DATA_LABEL to R.string.device_data_screen_title,
-                        ),
+                        Bundle().apply {
+                            putString(EXTRA_PACKAGE_NAME, DEVICE_DATA_PROVIDER_PACKAGE)
+                            putString(EXTRA_APP_NAME, device.deviceName)
+                            putInt(EXTRA_DATA_LABEL, R.string.device_data_screen_title)
+                        },
                     )
                 true
             }

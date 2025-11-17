@@ -46,9 +46,9 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
-import com.android.server.healthconnect.device.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.DeviceDataSourceHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
-import com.android.server.healthconnect.device.FakeSerialDeviceDataSourcesHelper;
+import com.android.server.healthconnect.device.FakeSerialDeviceDataSourceHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -100,14 +100,14 @@ public class StepSensorEventListenerTest {
     public void setup() throws PackageManager.NameNotFoundException {
         Context mContext = spy(InstrumentationRegistry.getInstrumentation().getContext());
         AndroidPackageMocker.addToContext(mContext);
-        DeviceDataSourcesHelper deviceDataSourcesHelper = new FakeSerialDeviceDataSourcesHelper();
+        DeviceDataSourceHelper deviceDataSourceHelper = new FakeSerialDeviceDataSourceHelper();
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setAppOpLogsHelper(mAppOpLogsHelper)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
-                        .setDeviceDataSourcesHelper(deviceDataSourcesHelper)
+                        .setDeviceDataSourceHelper(deviceDataSourceHelper)
                         .build();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
         DeviceRecordHelper mDeviceRecordHelper = healthConnectInjector.getDeviceRecordHelper();
@@ -120,7 +120,7 @@ public class StepSensorEventListenerTest {
                                 mContext,
                                 mThreadScheduler,
                                 mDeviceRecordHelper,
-                                deviceDataSourcesHelper));
+                                deviceDataSourceHelper));
 
         // Reduce the batching delay to speed up the tests
         when(mStepSensorEventListener.getBatchingDurationMillis()).thenReturn(500L);

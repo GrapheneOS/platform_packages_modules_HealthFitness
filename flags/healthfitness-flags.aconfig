@@ -155,17 +155,6 @@ flag {
 }
 
 flag {
-   name: "clear_caches_after_switching_user"
-   namespace: "health_fitness_aconfig"
-   description: "Enables clearing database caches after switching users."
-   bug: "355426144"
-   is_fixed_read_only: true
-   metadata {
-       purpose: PURPOSE_BUGFIX
-   }
-}
-
-flag {
     name: "cycle_phases_flag"
     namespace: "health_fitness_aconfig"
     description: "A new flag for cycle phases, enables menstrual cycle phases data type."
@@ -483,15 +472,6 @@ flag {
     namespace: "health_fitness_aconfig"
     description: "Support the Device FHIR Resource type in PHR."
     bug: "399727839"
-    is_fixed_read_only: true
-    is_exported: false
-}
-
-flag {
-    name: "remove_old_onboarding"
-    namespace: "health_fitness_aconfig"
-    description: "Removes old onboarding flow."
-    bug: "418779070"
     is_fixed_read_only: true
     is_exported: false
 }

@@ -17,8 +17,8 @@ package com.android.healthconnect.controller.tests.units
 
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
+import android.os.Bundle
 import android.preference.PreferenceManager.getDefaultSharedPreferencesName
-import androidx.core.os.bundleOf
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -86,7 +86,7 @@ class UnitsFragmentTest {
 
     @Test
     fun unitsScreen_starts() {
-        launchFragment<UnitsFragment>(bundleOf()).use {
+        launchFragment<UnitsFragment>(Bundle()).use {
             onView(withText("Height")).check(matches(isDisplayed()))
             onView(withText("Weight")).check(matches(isDisplayed()))
             onView(withText("Distance")).check(matches(isDisplayed()))
@@ -105,7 +105,7 @@ class UnitsFragmentTest {
 
     @Test
     fun unitsScreen_showsDefaultSettings() {
-        launchFragment<UnitsFragment>(bundleOf()).use {
+        launchFragment<UnitsFragment>(Bundle()).use {
             onView(withText(getUnitLabel(HeightUnit.FEET))).check(matches(isDisplayed()))
             onView(withText(getUnitLabel(DistanceUnit.MILES))).check(matches(isDisplayed()))
             onView(withText(getUnitLabel(EnergyUnit.CALORIE))).check(matches(isDisplayed()))
@@ -118,7 +118,7 @@ class UnitsFragmentTest {
     fun unitsScreen_setHeightUnit_updatesValue() {
         unitPreferences.heightUnit = HeightUnit.CENTIMETERS
 
-        launchFragment<UnitsFragment>(bundleOf()).use {
+        launchFragment<UnitsFragment>(Bundle()).use {
             onView(withText(getUnitLabel(HeightUnit.CENTIMETERS))).check(matches(isDisplayed()))
         }
     }
@@ -127,7 +127,7 @@ class UnitsFragmentTest {
     fun unitsScreen_setWeightUnit_updatesValue() {
         unitPreferences.weightUnit = WeightUnit.STONE
 
-        launchFragment<UnitsFragment>(bundleOf()).use {
+        launchFragment<UnitsFragment>(Bundle()).use {
             onView(withText(getUnitLabel(WeightUnit.STONE))).check(matches(isDisplayed()))
         }
     }
@@ -136,7 +136,7 @@ class UnitsFragmentTest {
     fun unitsScreen_setTemperatureUnit_updatesValue() {
         unitPreferences.temperatureUnit = TemperatureUnit.KELVIN
 
-        launchFragment<UnitsFragment>(bundleOf()).use {
+        launchFragment<UnitsFragment>(Bundle()).use {
             onView(withText(getUnitLabel(TemperatureUnit.KELVIN))).check(matches(isDisplayed()))
         }
     }
@@ -145,7 +145,7 @@ class UnitsFragmentTest {
     fun unitsScreen_setDistanceUnit_updatesValue() {
         unitPreferences.distanceUnit = DistanceUnit.KILOMETERS
 
-        launchFragment<UnitsFragment>(bundleOf()).use {
+        launchFragment<UnitsFragment>(Bundle()).use {
             onView(withText(getUnitLabel(DistanceUnit.KILOMETERS))).check(matches(isDisplayed()))
         }
     }
@@ -154,14 +154,14 @@ class UnitsFragmentTest {
     fun unitsScreen_setEnergyUnit_updatesValue() {
         unitPreferences.energyUnit = EnergyUnit.KILOJOULE
 
-        launchFragment<UnitsFragment>(bundleOf()).use {
+        launchFragment<UnitsFragment>(Bundle()).use {
             onView(withText(getUnitLabel(EnergyUnit.KILOJOULE))).check(matches(isDisplayed()))
         }
     }
 
     @Test
     fun unitsScreen_modifiesHeight_updatesValue() {
-        launchFragment<UnitsFragment>(bundleOf()).use {
+        launchFragment<UnitsFragment>(Bundle()).use {
             onView(withText(R.string.height_uppercase_label)).perform(click())
             onView(withText(R.string.height_unit_centimeters_label))
                 .inRoot(isDialog())
@@ -173,7 +173,7 @@ class UnitsFragmentTest {
 
     @Test
     fun unitsScreen_modifiesDistance_updatesValue() {
-        launchFragment<UnitsFragment>(bundleOf()).use {
+        launchFragment<UnitsFragment>(Bundle()).use {
             onView(withText(R.string.distance_uppercase_label)).perform(click())
             onView(withText(R.string.distance_unit_kilometers_label))
                 .inRoot(isDialog())
@@ -185,7 +185,7 @@ class UnitsFragmentTest {
 
     @Test
     fun unitsScreen_modifiesWeight_updatesValue() {
-        launchFragment<UnitsFragment>(bundleOf()).use {
+        launchFragment<UnitsFragment>(Bundle()).use {
             onView(withText(R.string.weight_uppercase_label)).perform(click())
             onView(withText(R.string.weight_unit_kilogram_label))
                 .inRoot(isDialog())
@@ -197,7 +197,7 @@ class UnitsFragmentTest {
 
     @Test
     fun unitsScreen_modifiesEnergy_updatesValue() {
-        launchFragment<UnitsFragment>(bundleOf()).use {
+        launchFragment<UnitsFragment>(Bundle()).use {
             onView(withText(R.string.energy_unit_title)).perform(click())
             onView(withText(R.string.energy_unit_kilojoule_label))
                 .inRoot(isDialog())
@@ -209,7 +209,7 @@ class UnitsFragmentTest {
 
     @Test
     fun unitsScreen_modifiesTemperature_updatesValue() {
-        launchFragment<UnitsFragment>(bundleOf()).use {
+        launchFragment<UnitsFragment>(Bundle()).use {
             onView(withText(R.string.temperature_unit_title)).perform(click())
             onView(withText(R.string.temperature_unit_kelvin_label))
                 .inRoot(isDialog())

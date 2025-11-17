@@ -19,7 +19,6 @@ import android.content.Context
 import android.health.connect.datatypes.StepsCadenceRecord
 import android.health.connect.datatypes.StepsRecord
 import android.os.Bundle
-import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -102,7 +101,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected data?"))
@@ -135,7 +134,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected data?"))
@@ -168,7 +167,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete all data?"))
@@ -206,7 +205,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected $TEST_APP_NAME data?"))
@@ -243,7 +242,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected $TEST_APP_NAME data?"))
@@ -280,7 +279,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete all $TEST_APP_NAME data?"))
@@ -317,7 +316,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete all $DEVICE_DATA_PROVIDER_APP_NAME data?"))
@@ -362,7 +361,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete this entry?"))
@@ -400,7 +399,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected entries for Sep 19?"))
@@ -438,7 +437,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected entries for Sep 19?"))
@@ -476,7 +475,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected entries for Sep 19, 2021?"))
@@ -514,7 +513,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected entries for Sep 19, 2021?"))
@@ -552,7 +551,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete all entries for Sep 19?"))
@@ -590,7 +589,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete all entries for Sep 19, 2021?"))
@@ -631,7 +630,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete this entry?"))
@@ -671,7 +670,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected entries for the week of Sep 18 – 24?"))
@@ -711,7 +710,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected entries for the week of Sep 18 – 24?"))
@@ -751,7 +750,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -795,7 +794,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -839,7 +838,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete all entries for the week of Sep 18 – 24?"))
@@ -879,7 +878,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -924,7 +923,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete this entry?"))
@@ -962,7 +961,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected entries for September?"))
@@ -1000,7 +999,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected entries for September?"))
@@ -1038,7 +1037,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected entries for September 2021?"))
@@ -1076,7 +1075,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected entries for September 2021?"))
@@ -1114,7 +1113,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete all entries for September?"))
@@ -1152,7 +1151,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete all entries for September 2021?"))
@@ -1199,7 +1198,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete this $TEST_APP_NAME entry?"))
@@ -1239,7 +1238,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected $TEST_APP_NAME entries for Sep 19?"))
@@ -1279,7 +1278,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected $TEST_APP_NAME entries for Sep 19?"))
@@ -1319,7 +1318,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -1363,7 +1362,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -1407,7 +1406,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete all $TEST_APP_NAME entries for Sep 19?"))
@@ -1447,7 +1446,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete all $TEST_APP_NAME entries for Sep 19, 2021?"))
@@ -1490,7 +1489,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete this $TEST_APP_NAME entry?"))
@@ -1532,7 +1531,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -1578,7 +1577,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -1625,7 +1624,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -1672,7 +1671,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -1718,7 +1717,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -1764,7 +1763,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -1811,7 +1810,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete this $TEST_APP_NAME entry?"))
@@ -1851,7 +1850,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -1895,7 +1894,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -1939,7 +1938,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -1983,7 +1982,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -2027,7 +2026,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete all $TEST_APP_NAME entries for September?"))
@@ -2067,7 +2066,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(
@@ -2110,7 +2109,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete steps data for $TEST_APP_NAME?"))
@@ -2140,7 +2139,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected data?"))
@@ -2171,7 +2170,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected data?"))
@@ -2202,7 +2201,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected data?"))
@@ -2229,7 +2228,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected data?"))
@@ -2269,7 +2268,7 @@ class DeletionFragmentTest {
         launchFragment<DeletionFragment>(Bundle()) {
                 (this as DeletionFragment)
                     .parentFragmentManager
-                    .setFragmentResult(START_DELETION_KEY, bundleOf())
+                    .setFragmentResult(START_DELETION_KEY, Bundle())
             }
             .use {
                 onView(withText("Permanently delete selected data?"))

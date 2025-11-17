@@ -214,7 +214,7 @@ public class DeviceInfoHelperTest {
     @Test
     @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getDeviceInfo_deviceIdNotInCache_returnsNull() {
-        DeviceInfoHelper.DeviceInfo deviceInfo = mDeviceInfoHelper.getDeviceInfo("non_existent_id");
+        DeviceInfoHelper.DeviceInfo deviceInfo = mDeviceInfoHelper.getDeviceInfo(1);
         assertThat(deviceInfo).isNull();
     }
 
@@ -250,10 +250,10 @@ public class DeviceInfoHelperTest {
         DeviceInfoHelper.DeviceInfo deviceInfoWithId =
                 new DeviceInfoHelper.DeviceInfo(
                         "Google", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone");
-        mDeviceInfoHelper.insertIfNotPresent(deviceInfoWithId);
+        long deviceInfoId = mDeviceInfoHelper.insertIfNotPresent(deviceInfoWithId);
 
         DeviceInfoHelper.DeviceInfo retrievedDeviceInfo =
-                mDeviceInfoHelper.getDeviceInfo("pixel_id");
+                mDeviceInfoHelper.getDeviceInfo(deviceInfoId);
 
         assertThat(retrievedDeviceInfo).isNotNull();
         assertThat(retrievedDeviceInfo.getManufacturer()).isEqualTo("Google");

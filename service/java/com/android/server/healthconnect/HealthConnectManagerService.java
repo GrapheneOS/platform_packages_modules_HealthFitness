@@ -118,6 +118,7 @@ public class HealthConnectManagerService extends SystemService {
                         mHealthConnectInjector.getCloudRestoreManager(),
                         mHealthConnectInjector.getMatchingAppsManager(),
                         mHealthConnectInjector.getSyntheticPackageNameResolver(),
+                        mHealthConnectInjector.getDeviceDataSourcesHelper(),
                         mHealthConnectInjector.getDeviceDataProviderManager());
         mHealthConnectPermissionsChangedListener =
                 new HealthConnectPermissionsChangedListener(
@@ -234,14 +235,10 @@ public class HealthConnectManagerService extends SystemService {
         if (mHealthConnectInjector.getMatchmakingDenialStateManager() != null) {
             mHealthConnectInjector.getMatchmakingDenialStateManager().setupForUser(hcContext);
         }
-
-        if (Flags.clearCachesAfterSwitchingUser()) {
-            // Clear preferences cache again after the user switching is done as there's a race
-            // condition with tasks re-populating the preferences cache between clearing the cache
-            // and TransactionManager switching user, see b/355426144.
-            mHealthConnectInjector.getPreferenceHelper().clearCache();
-        }
-
+        // Clear preferences cache again after the user switching is done as there's a race
+        // condition with tasks re-populating the preferences cache between clearing the cache
+        // and TransactionManager switching user, see b/355426144.
+        mHealthConnectInjector.getPreferenceHelper().clearCache();
         HealthConnectThreadScheduler threadScheduler = mHealthConnectInjector.getThreadScheduler();
         threadScheduler.scheduleInternalTask(
                 () -> {

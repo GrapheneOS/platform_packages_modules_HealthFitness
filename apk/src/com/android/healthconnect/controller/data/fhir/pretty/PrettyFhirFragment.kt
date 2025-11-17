@@ -21,7 +21,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -80,13 +79,13 @@ class PrettyFhirFragment : Hilt_PrettyFhirFragment() {
             title: String,
             titleA11y: String,
         ): Bundle {
-            return bundleOf(
-                MEDICAL_RESOURCE_ID_KEY to medicalResourceId,
-                HEADER_KEY to header,
-                HEADER_A11Y_KEY to headerA11y,
-                TITLE_KEY to title,
-                TITLE_A11Y_KEY to titleA11y,
-            )
+            return Bundle().apply {
+                putParcelable(MEDICAL_RESOURCE_ID_KEY, medicalResourceId)
+                putString(HEADER_KEY, header)
+                putString(HEADER_A11Y_KEY, headerA11y)
+                putString(TITLE_KEY, title)
+                putString(TITLE_A11Y_KEY, titleA11y)
+            }
         }
     }
 
@@ -200,7 +199,9 @@ class PrettyFhirFragment : Hilt_PrettyFhirFragment() {
         findNavController()
             .navigate(
                 R.id.action_prettyFhirFragment_to_rawFhirFragment,
-                bundleOf(RawFhirFragment.MEDICAL_RESOURCE_ID_KEY to medicalResourceId),
+                Bundle().apply {
+                    putParcelable(RawFhirFragment.MEDICAL_RESOURCE_ID_KEY, medicalResourceId)
+                },
             )
     }
 

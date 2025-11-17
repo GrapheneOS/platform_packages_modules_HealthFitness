@@ -18,7 +18,7 @@ package com.android.server.healthconnect.device;
 
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
 
-import static com.android.server.healthconnect.device.DeviceDataSourcesHelper.DISPLAY_NAME_MAX_LENGTH;
+import static com.android.server.healthconnect.device.DeviceDataSourceHelper.DISPLAY_NAME_MAX_LENGTH;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -35,7 +35,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class DeviceDataSourcesHelperTest {
+public class DeviceDataSourceHelperTest {
 
     @Rule(order = 1)
     public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
@@ -43,36 +43,36 @@ public class DeviceDataSourcesHelperTest {
     @Test
     public void getCurrentDevice() {
         DeviceDataSource deviceDataSource =
-                new FakeSerialDeviceDataSourcesHelper()
+                new FakeSerialDeviceDataSourceHelper()
                         .getCurrentDevice(
                                 InstrumentationRegistry.getInstrumentation().getContext());
         assertThat(deviceDataSource.getDeviceId())
-                .isEqualTo(FakeSerialDeviceDataSourcesHelper.TEST_SERIAL_NUMBER);
+                .isEqualTo(FakeSerialDeviceDataSourceHelper.TEST_SERIAL_NUMBER);
         assertThat(deviceDataSource.getDeviceType()).isEqualTo(DEVICE_TYPE_PHONE);
     }
 
     @Test
     @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void isValidDisplayName_rejectsNullValues() {
-        assertThat(DeviceDataSourcesHelper.isValidDisplayName(null)).isFalse();
+        assertThat(DeviceDataSourceHelper.isValidDisplayName(null)).isFalse();
     }
 
     @Test
     @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void isValidDisplayName_rejectsEmptyStrings() {
-        assertThat(DeviceDataSourcesHelper.isValidDisplayName("")).isFalse();
+        assertThat(DeviceDataSourceHelper.isValidDisplayName("")).isFalse();
     }
 
     @Test
     @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void isValidDisplayName_rejectsStringsThatAreEmptyAfterTrimming() {
-        assertThat(DeviceDataSourcesHelper.isValidDisplayName("   ")).isFalse();
+        assertThat(DeviceDataSourceHelper.isValidDisplayName("   ")).isFalse();
     }
 
     @Test
     @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void sanitize_trimsWhiteSpace() {
-        assertThat(DeviceDataSourcesHelper.sanitize("  Some Device  ")).isEqualTo("Some Device");
+        assertThat(DeviceDataSourceHelper.sanitize("  Some Device  ")).isEqualTo("Some Device");
     }
 
     @Test
@@ -82,7 +82,7 @@ public class DeviceDataSourcesHelperTest {
         for (int i = 0; i < DISPLAY_NAME_MAX_LENGTH * 2; i++) {
             sb.append("x");
         }
-        assertThat(DeviceDataSourcesHelper.sanitize(sb.toString()))
+        assertThat(DeviceDataSourceHelper.sanitize(sb.toString()))
                 .hasLength(DISPLAY_NAME_MAX_LENGTH);
     }
 }

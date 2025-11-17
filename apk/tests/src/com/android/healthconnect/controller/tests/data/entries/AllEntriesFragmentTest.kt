@@ -24,15 +24,16 @@ import android.health.connect.datatypes.PlannedExerciseSessionRecord
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.SymptomRecord
+import android.os.Bundle
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import android.platform.test.flag.junit.SetFlagsRule
-import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -55,16 +56,15 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedAggregation
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedDataEntry
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
-import com.android.healthconnect.controller.data.entriesandaccess.EntriesAndAccessFragment
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.EXERCISE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.HEART_RATE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.PLANNED_EXERCISE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.SLEEP
-import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.STEPS
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.FakeParentFragment
 import com.android.healthconnect.controller.tests.utils.NESTED_FRAGMENT_TAG
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
@@ -72,7 +72,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION_2
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION_3
-import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.launchNestedFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.tests.utils.withIndex
@@ -158,68 +157,64 @@ class AllEntriesFragmentTest {
         whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_STEPS_LIST)))
         whenever(viewModel.getEntriesList()).thenReturn((FORMATTED_STEPS_LIST.toMutableList()))
 
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use {
-                onView(withId(R.id.date_picker_spinner)).check(matches(isDisplayed()))
-                verify(healthConnectLogger, atLeast(1))
-                    .logImpression(EntriesElement.DATE_VIEW_SPINNER_DAY)
-                verify(healthConnectLogger).logImpression(DataEntriesElement.PREVIOUS_DAY_BUTTON)
-                verify(healthConnectLogger).logImpression(DataEntriesElement.NEXT_DAY_BUTTON)
-            }
+        launchNestedEntriesFragment(FitnessPermissionType.STEPS.name).use {
+            onView(withId(R.id.date_picker_spinner)).check(matches(isDisplayed()))
+            verify(healthConnectLogger, atLeast(1))
+                .logImpression(EntriesElement.DATE_VIEW_SPINNER_DAY)
+            verify(healthConnectLogger).logImpression(DataEntriesElement.PREVIOUS_DAY_BUTTON)
+            verify(healthConnectLogger).logImpression(DataEntriesElement.NEXT_DAY_BUTTON)
+        }
     }
 
     @Test
     fun fitnessData_logsFitnessPageImpression() {
         whenever(viewModel.entries).thenReturn(MutableLiveData(Empty))
 
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use {
-                verify(healthConnectLogger, atLeast(1)).setPageId(PageName.TAB_ENTRIES_PAGE)
-                verify(healthConnectLogger).logPageImpression()
-            }
+        launchNestedEntriesFragment(FitnessPermissionType.STEPS.name).use {
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.TAB_ENTRIES_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+        }
     }
 
     @Test
     fun medicalData_logsMedicalPageImpression() {
         whenever(viewModel.entries).thenReturn(MutableLiveData(Empty))
 
-        launchNestedFragment<AllEntriesFragment>(
-                bundleOf(PERMISSION_TYPE_NAME_KEY to MedicalPermissionType.VACCINES.name)
-            )
-            .use {
-                verify(healthConnectLogger, atLeast(1)).setPageId(PageName.TAB_MEDICAL_ENTRIES_PAGE)
-                verify(healthConnectLogger).logPageImpression()
-            }
+        launchNestedEntriesFragment(MedicalPermissionType.VACCINES.name).use {
+            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.TAB_MEDICAL_ENTRIES_PAGE)
+            verify(healthConnectLogger).logPageImpression()
+        }
     }
 
     @Test
     fun whenNoData_showsNoData() {
         whenever(viewModel.entries).thenReturn(MutableLiveData(Empty))
 
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use {
-                if (SettingsThemeHelper.isExpressiveTheme(context)) {
-                    onView(withId(R.id.zerostate_view)).check(matches(isDisplayed()))
-                } else {
-                    onView(withId(R.id.no_data_view)).check(matches(isDisplayed()))
-                }
+        launchNestedEntriesFragment(FitnessPermissionType.STEPS.name).use {
+            if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                onView(withId(R.id.zerostate_view)).check(matches(isDisplayed()))
+            } else {
+                onView(withId(R.id.no_data_view)).check(matches(isDisplayed()))
             }
+        }
     }
 
     @Test
     fun whenError_showsErrorView() {
         whenever(viewModel.entries).thenReturn(MutableLiveData(LoadingFailed))
 
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use { onView(withId(R.id.error_view)).check(matches(isDisplayed())) }
+        launchNestedEntriesFragment(FitnessPermissionType.STEPS.name).use {
+            onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun whenLoading_showsLoading() {
         whenever(viewModel.entries).thenReturn(MutableLiveData(Loading))
 
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use { onView(withId(R.id.loading)).check(matches(isDisplayed())) }
+        launchNestedEntriesFragment(FitnessPermissionType.STEPS.name).use {
+            onView(withId(R.id.loading)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -227,13 +222,12 @@ class AllEntriesFragmentTest {
         whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_SLEEP_LIST)))
         whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_SLEEP_LIST.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to SLEEP.name))
-            .use {
-                onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
-                onView(withText("7 hours")).check(matches(isDisplayed()))
+        launchNestedEntriesFragment(SLEEP.name).use {
+            onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
+            onView(withText("7 hours")).check(matches(isDisplayed()))
 
-                verify(healthConnectLogger).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
-            }
+            verify(healthConnectLogger).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
+        }
     }
 
     @Test
@@ -241,14 +235,11 @@ class AllEntriesFragmentTest {
         whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_HEART_RATE_LIST)))
         whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_HEART_RATE_LIST.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(
-                bundleOf(PERMISSION_TYPE_NAME_KEY to HEART_RATE.name)
-            )
-            .use {
-                onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
-                onView(withText("128 - 140 bpm")).check(matches(isDisplayed()))
-                verify(healthConnectLogger).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
-            }
+        launchNestedEntriesFragment(HEART_RATE.name).use {
+            onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
+            onView(withText("128 - 140 bpm")).check(matches(isDisplayed()))
+            verify(healthConnectLogger).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
+        }
     }
 
     @Test
@@ -258,14 +249,11 @@ class AllEntriesFragmentTest {
         whenever(viewModel.getEntriesList())
             .thenReturn(FORMATTED_EXERCISE_SESSION_LIST.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(
-                bundleOf(PERMISSION_TYPE_NAME_KEY to EXERCISE.name)
-            )
-            .use {
-                onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
-                onView(withText("Biking")).check(matches(isDisplayed()))
-                verify(healthConnectLogger).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
-            }
+        launchNestedEntriesFragment(EXERCISE.name).use {
+            onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
+            onView(withText("Biking")).check(matches(isDisplayed()))
+            verify(healthConnectLogger).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
+        }
     }
 
     @Test
@@ -275,14 +263,11 @@ class AllEntriesFragmentTest {
         whenever(viewModel.getEntriesList())
             .thenReturn(FORMATTED_PLANNED_EXERCISE_LIST.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(
-                bundleOf(PERMISSION_TYPE_NAME_KEY to PLANNED_EXERCISE.name)
-            )
-            .use {
-                onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
-                onView(withText("Workout")).check(matches(isDisplayed()))
-                verify(healthConnectLogger).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
-            }
+        launchNestedEntriesFragment(PLANNED_EXERCISE.name).use {
+            onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
+            onView(withText("Workout")).check(matches(isDisplayed()))
+            verify(healthConnectLogger).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
+        }
     }
 
     @Test
@@ -291,15 +276,14 @@ class AllEntriesFragmentTest {
         whenever(viewModel.getEntriesList())
             .thenReturn(FORMATTED_PLANNED_EXERCISE_LIST.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use {
-                onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
-                onView(withText("12 steps")).check(matches(isDisplayed()))
-                onView(withText("8:06 - 8:06")).check(matches(isDisplayed()))
-                onView(withText("15 steps")).check(matches(isDisplayed()))
-                verify(healthConnectLogger, times(2))
-                    .logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
-            }
+        launchNestedEntriesFragment(FitnessPermissionType.STEPS.name).use {
+            onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
+            onView(withText("12 steps")).check(matches(isDisplayed()))
+            onView(withText("8:06 - 8:06")).check(matches(isDisplayed()))
+            onView(withText("15 steps")).check(matches(isDisplayed()))
+            verify(healthConnectLogger, times(2))
+                .logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
+        }
     }
 
     @Test
@@ -310,14 +294,11 @@ class AllEntriesFragmentTest {
         whenever(viewModel.getEntriesList())
             .thenReturn(FORMATTED_ALCOHOL_CONSUMPTION_LIST.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(
-                bundleOf(PERMISSION_TYPE_NAME_KEY to FitnessPermissionType.ALCOHOL_CONSUMPTION.name)
-            )
-            .use {
-                onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
-                onView(withText("Beer")).check(matches(isDisplayed()))
-                verify(healthConnectLogger).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
-            }
+        launchNestedEntriesFragment(FitnessPermissionType.ALCOHOL_CONSUMPTION.name).use {
+            onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
+            onView(withText("Beer")).check(matches(isDisplayed()))
+            verify(healthConnectLogger).logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
+        }
     }
 
     @Test
@@ -326,16 +307,13 @@ class AllEntriesFragmentTest {
         whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_SYMPTOMS_LIST)))
         whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_SYMPTOMS_LIST.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(
-                bundleOf(PERMISSION_TYPE_NAME_KEY to FitnessPermissionType.SYMPTOM_COUGH.name)
-            )
-            .use {
-                onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
-                onView(withText("Mild cough")).check(matches(isDisplayed()))
-                onView(withId(R.id.item_data_entry_notes)).check(matches(isDisplayed()))
-                onView(withId(R.id.item_data_entry_notes)).check(matches(withText("Test notes")))
-                onView(withId(R.id.item_data_entry_divider)).check(matches(not(isDisplayed())))
-            }
+        launchNestedEntriesFragment(FitnessPermissionType.SYMPTOM_COUGH.name).use {
+            onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
+            onView(withText("Mild cough")).check(matches(isDisplayed()))
+            onView(withId(R.id.item_data_entry_notes)).check(matches(isDisplayed()))
+            onView(withId(R.id.item_data_entry_notes)).check(matches(withText("Test notes")))
+            onView(withId(R.id.item_data_entry_divider)).check(matches(not(isDisplayed())))
+        }
     }
 
     @Test
@@ -356,15 +334,12 @@ class AllEntriesFragmentTest {
         whenever(viewModel.entries).thenReturn(MutableLiveData(With(symptomListNoNotes)))
         whenever(viewModel.getEntriesList()).thenReturn(symptomListNoNotes.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(
-                bundleOf(PERMISSION_TYPE_NAME_KEY to FitnessPermissionType.SYMPTOM_COUGH.name)
-            )
-            .use {
-                onView(withText("8:06 - 8:06")).check(matches(isDisplayed()))
-                onView(withText("Mild cough")).check(matches(isDisplayed()))
-                onView(withId(R.id.item_data_entry_notes))
-                    .check(matches(org.hamcrest.Matchers.not(isDisplayed())))
-            }
+        launchNestedEntriesFragment(FitnessPermissionType.SYMPTOM_COUGH.name).use {
+            onView(withText("8:06 - 8:06")).check(matches(isDisplayed()))
+            onView(withText("Mild cough")).check(matches(isDisplayed()))
+            onView(withId(R.id.item_data_entry_notes))
+                .check(matches(org.hamcrest.Matchers.not(isDisplayed())))
+        }
     }
 
     @Test
@@ -376,14 +351,11 @@ class AllEntriesFragmentTest {
         whenever(viewModel.getEntriesList())
             .thenReturn(FORMATTED_SYMPTOMS_LIST_NO_SEVERITY.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(
-                bundleOf(PERMISSION_TYPE_NAME_KEY to FitnessPermissionType.SYMPTOM_COUGH.name)
-            )
-            .use {
-                onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
-                onView(withText("Cough")).check(matches(isDisplayed()))
-                onView(withId(R.id.item_data_entry_divider)).check(matches(not(isDisplayed())))
-            }
+        launchNestedEntriesFragment(FitnessPermissionType.SYMPTOM_COUGH.name).use {
+            onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
+            onView(withText("Cough")).check(matches(isDisplayed()))
+            onView(withId(R.id.item_data_entry_divider)).check(matches(not(isDisplayed())))
+        }
     }
 
     @Test
@@ -391,57 +363,51 @@ class AllEntriesFragmentTest {
         whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_STEPS_LIST)))
         whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_STEPS_LIST.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use { scenario ->
-                onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
-                onView(withText("12 steps")).check(matches(isDisplayed()))
-                onView(withText("8:06 - 8:06")).check(matches(isDisplayed()))
-                onView(withText("15 steps")).check(matches(isDisplayed()))
+        launchNestedEntriesFragment(FitnessPermissionType.STEPS.name).use { scenario ->
+            onView(withText("7:06 - 7:06")).check(matches(isDisplayed()))
+            onView(withText("12 steps")).check(matches(isDisplayed()))
+            onView(withText("8:06 - 8:06")).check(matches(isDisplayed()))
+            onView(withText("15 steps")).check(matches(isDisplayed()))
 
-                scenario.recreate()
+            scenario.recreate()
 
-                onIdle()
-                onView(withText("7:06 - 7:06")).perform(scrollTo()).check(matches(isDisplayed()))
-                onView(withText("12 steps")).perform(scrollTo()).check(matches(isDisplayed()))
-                onView(withText("8:06 - 8:06")).perform(scrollTo()).check(matches(isDisplayed()))
-                onView(withText("15 steps")).perform(scrollTo()).check(matches(isDisplayed()))
-            }
+            onIdle()
+            onView(withText("7:06 - 7:06")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("12 steps")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("8:06 - 8:06")).perform(scrollTo()).check(matches(isDisplayed()))
+            onView(withText("15 steps")).perform(scrollTo()).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun whenNoMedicalData_showsNoData() {
         whenever(viewModel.entries).thenReturn(MutableLiveData(Empty))
 
-        launchNestedFragment<AllEntriesFragment>(
-                bundleOf(PERMISSION_TYPE_NAME_KEY to MedicalPermissionType.VACCINES.name)
-            )
-            .use {
-                if (SettingsThemeHelper.isExpressiveTheme(context)) {
-                    onView(withId(R.id.zerostate_view)).check(matches(isDisplayed()))
-                } else {
-                    onView(withId(R.id.no_data_view)).check(matches(isDisplayed()))
-                }
+        launchNestedEntriesFragment(MedicalPermissionType.VACCINES.name).use {
+            if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                onView(withId(R.id.zerostate_view)).check(matches(isDisplayed()))
+            } else {
+                onView(withId(R.id.no_data_view)).check(matches(isDisplayed()))
             }
+        }
     }
 
     @Test
     fun whenMedicalError_showsErrorView() {
         whenever(viewModel.entries).thenReturn(MutableLiveData(LoadingFailed))
 
-        launchNestedFragment<AllEntriesFragment>(
-                bundleOf(PERMISSION_TYPE_NAME_KEY to MedicalPermissionType.VACCINES.name)
-            )
-            .use { onView(withId(R.id.error_view)).check(matches(isDisplayed())) }
+        launchNestedEntriesFragment(MedicalPermissionType.VACCINES.name).use {
+            onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
     fun whenMedicalLoading_showsLoading() {
         whenever(viewModel.entries).thenReturn(MutableLiveData(Loading))
 
-        launchNestedFragment<AllEntriesFragment>(
-                bundleOf(PERMISSION_TYPE_NAME_KEY to MedicalPermissionType.VACCINES.name)
-            )
-            .use { onView(withId(R.id.loading)).check(matches(isDisplayed())) }
+        launchNestedEntriesFragment(MedicalPermissionType.VACCINES.name).use {
+            onView(withId(R.id.loading)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -449,19 +415,13 @@ class AllEntriesFragmentTest {
         whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_IMMUNIZATION_LIST)))
         whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_IMMUNIZATION_LIST.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(
-                bundleOf(PERMISSION_TYPE_NAME_KEY to MedicalPermissionType.VACCINES.name)
-            )
-            .use {
-                onView(withText("02 May 2023 • Health Connect Toolbox"))
-                    .check(matches(isDisplayed()))
-                onView(withText("12 Aug 2022 • Health Connect Toolbox"))
-                    .check(matches(isDisplayed()))
-                onView(withText("25 Sep 2021 • Health Connect Toolbox"))
-                    .check(matches(isDisplayed()))
-                verify(healthConnectLogger, times(3))
-                    .logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
-            }
+        launchNestedEntriesFragment(MedicalPermissionType.VACCINES.name).use {
+            onView(withText("02 May 2023 • Health Connect Toolbox")).check(matches(isDisplayed()))
+            onView(withText("12 Aug 2022 • Health Connect Toolbox")).check(matches(isDisplayed()))
+            onView(withText("25 Sep 2021 • Health Connect Toolbox")).check(matches(isDisplayed()))
+            verify(healthConnectLogger, times(3))
+                .logImpression(EntriesElement.ENTRY_BUTTON_NO_CHECKBOX)
+        }
     }
 
     @Test
@@ -470,18 +430,11 @@ class AllEntriesFragmentTest {
         whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_IMMUNIZATION_LIST)))
         whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_IMMUNIZATION_LIST.toMutableList())
 
-        launchFragment<EntriesAndAccessFragment>(
-                bundleOf(PERMISSION_TYPE_NAME_KEY to MedicalPermissionType.VACCINES.name)
-            ) {
-                navHostController.setGraph(R.navigation.entries_and_access_nav_graph)
-                navHostController.setCurrentDestination(R.id.entriesAndAccessFragment)
-                Navigation.setViewNavController(this.requireView(), navHostController)
-            }
-            .use {
-                onView(withText("Covid vaccine 2")).perform(click())
+        launchNestedEntriesFragmentWithNavigation(MedicalPermissionType.VACCINES.name).use {
+            onView(withText("Covid vaccine 2")).perform(click())
 
-                assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.rawFhirFragment)
-            }
+            assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.rawFhirFragment)
+        }
     }
 
     @Test
@@ -490,19 +443,11 @@ class AllEntriesFragmentTest {
         whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_IMMUNIZATION_LIST)))
         whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_IMMUNIZATION_LIST.toMutableList())
 
-        launchFragment<EntriesAndAccessFragment>(
-                bundleOf(PERMISSION_TYPE_NAME_KEY to MedicalPermissionType.VACCINES.name)
-            ) {
-                navHostController.setGraph(R.navigation.entries_and_access_nav_graph)
-                navHostController.setCurrentDestination(R.id.entriesAndAccessFragment)
-                Navigation.setViewNavController(this.requireView(), navHostController)
-            }
-            .use {
-                onView(withText("Covid vaccine 2")).perform(click())
+        launchNestedEntriesFragmentWithNavigation(MedicalPermissionType.VACCINES.name).use {
+            onView(withText("Covid vaccine 2")).perform(click())
 
-                assertThat(navHostController.currentDestination?.id)
-                    .isEqualTo(R.id.prettyFhirFragment)
-            }
+            assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.prettyFhirFragment)
+        }
     }
 
     @Test
@@ -510,24 +455,22 @@ class AllEntriesFragmentTest {
         whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_STEPS_LIST)))
         whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_STEPS_LIST.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use { scenario ->
-                scenario.onActivity { activity ->
-                    val parentFragment =
-                        activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
-                    val fragment =
-                        parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
-                    (fragment as AllEntriesFragment).triggerDeletionState(
-                        EntriesViewModel.EntriesDeletionScreenState.DELETE
-                    )
-                }
-
-                onView(withIndex(withId(R.id.item_checkbox_button), 1))
-                    .check(matches(isDisplayed()))
-                verify(healthConnectLogger).logImpression(EntriesElement.SELECT_ALL_BUTTON)
-                verify(healthConnectLogger, times(2))
-                    .logImpression(EntriesElement.ENTRY_BUTTON_WITH_CHECKBOX)
+        launchNestedEntriesFragment(FitnessPermissionType.STEPS.name).use { scenario ->
+            scenario.onActivity { activity ->
+                val parentFragment =
+                    activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
+                val fragment =
+                    parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
+                (fragment as AllEntriesFragment).triggerDeletionState(
+                    EntriesViewModel.EntriesDeletionScreenState.DELETE
+                )
             }
+
+            onView(withIndex(withId(R.id.item_checkbox_button), 1)).check(matches(isDisplayed()))
+            verify(healthConnectLogger).logImpression(EntriesElement.SELECT_ALL_BUTTON)
+            verify(healthConnectLogger, times(2))
+                .logImpression(EntriesElement.ENTRY_BUTTON_WITH_CHECKBOX)
+        }
     }
 
     @Test
@@ -537,27 +480,24 @@ class AllEntriesFragmentTest {
             .thenReturn(MutableLiveData(EntriesViewModel.EntriesDeletionScreenState.DELETE))
         whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_STEPS_LIST.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use { scenario ->
-                scenario.onActivity { activity ->
-                    val parentFragment =
-                        activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
-                    val fragment =
-                        parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
-                    (fragment as AllEntriesFragment).triggerDeletionState(
-                        EntriesViewModel.EntriesDeletionScreenState.DELETE
-                    )
-                }
-
-                onView(withIndex(withId(R.id.item_checkbox_button), 1))
-                    .check(matches(isDisplayed()))
-
-                scenario.recreate()
-
-                onIdle()
-                onView(withIndex(withId(R.id.item_checkbox_button), 0))
-                    .check(matches(isDisplayed()))
+        launchNestedEntriesFragment(FitnessPermissionType.STEPS.name).use { scenario ->
+            scenario.onActivity { activity ->
+                val parentFragment =
+                    activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
+                val fragment =
+                    parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
+                (fragment as AllEntriesFragment).triggerDeletionState(
+                    EntriesViewModel.EntriesDeletionScreenState.DELETE
+                )
             }
+
+            onView(withIndex(withId(R.id.item_checkbox_button), 1)).check(matches(isDisplayed()))
+
+            scenario.recreate()
+
+            onIdle()
+            onView(withIndex(withId(R.id.item_checkbox_button), 0)).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -567,24 +507,22 @@ class AllEntriesFragmentTest {
         whenever(viewModel.getEntriesList())
             .thenReturn(FORMATTED_STEPS_LIST_WITH_AGGREGATION.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use { scenario ->
-                scenario.onActivity { activity ->
-                    val parentFragment =
-                        activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
-                    val fragment =
-                        parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
-                    (fragment as AllEntriesFragment).triggerDeletionState(
-                        EntriesViewModel.EntriesDeletionScreenState.DELETE
-                    )
-                }
-
-                onView(withText("12 steps")).perform(click())
-                onIdle()
-                verify(viewModel).addToDeleteMap("test_id", StepsRecord::class)
-                verify(healthConnectLogger)
-                    .logInteraction(EntriesElement.ENTRY_BUTTON_WITH_CHECKBOX)
+        launchNestedEntriesFragment(FitnessPermissionType.STEPS.name).use { scenario ->
+            scenario.onActivity { activity ->
+                val parentFragment =
+                    activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
+                val fragment =
+                    parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
+                (fragment as AllEntriesFragment).triggerDeletionState(
+                    EntriesViewModel.EntriesDeletionScreenState.DELETE
+                )
             }
+
+            onView(withText("12 steps")).perform(click())
+            onIdle()
+            verify(viewModel).addToDeleteMap("test_id", StepsRecord::class)
+            verify(healthConnectLogger).logInteraction(EntriesElement.ENTRY_BUTTON_WITH_CHECKBOX)
+        }
     }
 
     @Test
@@ -594,24 +532,23 @@ class AllEntriesFragmentTest {
         whenever(viewModel.getEntriesList())
             .thenReturn(FORMATTED_STEPS_LIST_WITH_AGGREGATION.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use { scenario ->
-                scenario.onActivity { activity ->
-                    val parentFragment =
-                        activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
-                    val fragment =
-                        parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
-                    (fragment as AllEntriesFragment).triggerDeletionState(
-                        EntriesViewModel.EntriesDeletionScreenState.DELETE
-                    )
-                }
-
-                onIdle()
-                onView(withIndex(withText("Select all"), 0)).check(matches(isDisplayed()))
-                verify(healthConnectLogger, times(2))
-                    .logImpression(EntriesElement.ENTRY_BUTTON_WITH_CHECKBOX)
-                verify(healthConnectLogger).logImpression(EntriesElement.SELECT_ALL_BUTTON)
+        launchNestedEntriesFragment(FitnessPermissionType.STEPS.name).use { scenario ->
+            scenario.onActivity { activity ->
+                val parentFragment =
+                    activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
+                val fragment =
+                    parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
+                (fragment as AllEntriesFragment).triggerDeletionState(
+                    EntriesViewModel.EntriesDeletionScreenState.DELETE
+                )
             }
+
+            onIdle()
+            onView(withIndex(withText("Select all"), 0)).check(matches(isDisplayed()))
+            verify(healthConnectLogger, times(2))
+                .logImpression(EntriesElement.ENTRY_BUTTON_WITH_CHECKBOX)
+            verify(healthConnectLogger).logImpression(EntriesElement.SELECT_ALL_BUTTON)
+        }
     }
 
     @Test
@@ -621,24 +558,43 @@ class AllEntriesFragmentTest {
         whenever(viewModel.getEntriesList())
             .thenReturn(FORMATTED_STEPS_LIST_WITH_AGGREGATION.toMutableList())
 
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use { scenario ->
-                scenario.onActivity { activity ->
-                    val parentFragment =
-                        activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
-                    val fragment =
-                        parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
-                    (fragment as AllEntriesFragment).triggerDeletionState(
-                        EntriesViewModel.EntriesDeletionScreenState.DELETE
-                    )
-                }
-
-                onView(withText("Select all")).perform(click())
-                onIdle()
-                verify(viewModel).addToDeleteMap("test_id", StepsRecord::class)
-                verify(viewModel).addToDeleteMap("test_id_2", StepsRecord::class)
-                verify(healthConnectLogger).logImpression(EntriesElement.SELECT_ALL_BUTTON)
+        launchNestedEntriesFragment(FitnessPermissionType.STEPS.name).use { scenario ->
+            scenario.onActivity { activity ->
+                val parentFragment =
+                    activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
+                val fragment =
+                    parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
+                (fragment as AllEntriesFragment).triggerDeletionState(
+                    EntriesViewModel.EntriesDeletionScreenState.DELETE
+                )
             }
+
+            onView(withText("Select all")).perform(click())
+            onIdle()
+            verify(viewModel).addToDeleteMap("test_id", StepsRecord::class)
+            verify(viewModel).addToDeleteMap("test_id_2", StepsRecord::class)
+            verify(healthConnectLogger).logImpression(EntriesElement.SELECT_ALL_BUTTON)
+        }
+    }
+
+    private fun launchNestedEntriesFragment(
+        permissionName: String
+    ): ActivityScenario<TestActivity> {
+        return launchNestedFragment<AllEntriesFragment>(
+            Bundle().apply { putString(PERMISSION_TYPE_NAME_KEY, permissionName) }
+        )
+    }
+
+    private fun launchNestedEntriesFragmentWithNavigation(
+        permissionName: String
+    ): ActivityScenario<TestActivity> {
+        return launchNestedFragment<AllEntriesFragment>(
+            Bundle().apply { putString(PERMISSION_TYPE_NAME_KEY, permissionName) }
+        ) {
+            navHostController.setGraph(R.navigation.entries_and_access_nav_graph)
+            navHostController.setCurrentDestination(R.id.entriesAndAccessFragment)
+            Navigation.setViewNavController(this.requireView(), navHostController)
+        }
     }
 }
 

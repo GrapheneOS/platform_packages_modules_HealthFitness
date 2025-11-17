@@ -15,7 +15,7 @@
  */
 package com.android.server.healthconnect.fitness.helpers;
 
-import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.DEVICE_INFO_ID_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.request.UpsertTableRequest.TYPE_STRING;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER_NOT_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY;
@@ -35,7 +35,7 @@ import android.util.Pair;
 
 import androidx.annotation.VisibleForTesting;
 
-import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -52,13 +52,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
- * A class to help with the DB transaction for storing Device Data Provider metadata and state.
+ * A class to help with the DB transaction for storing device data source metadata and state.
  *
  * @hide
  */
-public class DeviceDataProviderHelper extends DatabaseHelper {
+public class DeviceDataSourcesHelper extends DatabaseHelper {
 
-    public static final String TABLE_NAME = "device_data_provider_table";
+    public static final String TABLE_NAME = "device_data_sources_table";
     public static final String SOURCE_PACKAGE_NAME = "source_package_name";
     public static final String DATA_TYPE = "data_type";
     public static final String IS_AVAILABLE = "is_available";
@@ -66,20 +66,19 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     public static final String IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING =
             "is_visible_by_default_in_matchmaking";
 
-    // Only update the states isAvailable and isUserEnabled for each sourcePackageName, deviceInfoId
+    // Only update the states isAvailable and isUserEnabled for each sourcePackageName, appInfoId
     // and dataType "key"
     public static final List<Pair<String, Integer>> UNIQUE_COLUMN_INFO =
             List.of(
                     new Pair<>(SOURCE_PACKAGE_NAME, TYPE_STRING),
-                    new Pair<>(DEVICE_INFO_ID_COLUMN_NAME, TYPE_STRING),
+                    new Pair<>(APP_INFO_ID_COLUMN_NAME, TYPE_STRING),
                     new Pair<>(DATA_TYPE, TYPE_STRING));
 
     private final TransactionManager mTransactionManager;
     private final HealthConnectMappings mHealthConnectMappings;
 
     @VisibleForTesting
-    public record DeviceDataProviderKey(
-            String sourcePackageName, long deviceInfoId, int dataType) {}
+    public record DeviceDataProviderKey(String sourcePackageName, long appInfoId, int dataType) {}
 
     @VisibleForTesting
     public record DeviceDataProviderInfo(
@@ -91,7 +90,7 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     @Nullable
     private volatile ConcurrentHashMap<DeviceDataProviderKey, DeviceDataProviderInfo> mDdpCache;
 
-    public DeviceDataProviderHelper(
+    public DeviceDataSourcesHelper(
             DatabaseHelpers databaseHelpers,
             TransactionManager transactionManager,
             HealthConnectMappings healthConnectMappings) {
@@ -112,29 +111,29 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     public static CreateTableRequest getCreateTableRequest() {
         return new CreateTableRequest(TABLE_NAME, getColumnInfo())
                 .addUniqueConstraints(
-                        List.of(SOURCE_PACKAGE_NAME, DEVICE_INFO_ID_COLUMN_NAME, DATA_TYPE))
+                        List.of(SOURCE_PACKAGE_NAME, APP_INFO_ID_COLUMN_NAME, DATA_TYPE))
                 .addForeignKey(
-                        /* referencedTable= */ DeviceInfoHelper.TABLE_NAME,
-                        /* columnNames= */ List.of(DEVICE_INFO_ID_COLUMN_NAME),
+                        /* referencedTable= */ AppInfoHelper.TABLE_NAME,
+                        /* columnNames= */ List.of(APP_INFO_ID_COLUMN_NAME),
                         /* referencedColumnNames= */ List.of(RecordHelper.PRIMARY_COLUMN_NAME));
     }
 
     /**
-     * Update the database with the provided Device Data Provider information.
+     * Update the database with the provided device data source information.
      *
      * <p>Any data types no longer being advertised are removed from the database.
      */
     public synchronized void insertOrUpdateAdvertisement(
             String sourcePackageName,
-            long deviceInfoId,
+            long appInfoId,
             DeviceDataAdvertisement deviceDataAdvertisement) {
-        deleteObsoleteAdvertisements(sourcePackageName, deviceInfoId, deviceDataAdvertisement);
+        deleteObsoleteAdvertisements(sourcePackageName, appInfoId, deviceDataAdvertisement);
 
         for (DeviceDataTypeAdvertisement state :
                 deviceDataAdvertisement.getDeviceDataTypeAdvertisements()) {
             int dataType = mHealthConnectMappings.getRecordType(state.getDataType());
             DeviceDataProviderKey key =
-                    new DeviceDataProviderKey(sourcePackageName, deviceInfoId, dataType);
+                    new DeviceDataProviderKey(sourcePackageName, appInfoId, dataType);
             DeviceDataProviderInfo ddpInfo =
                     new DeviceDataProviderInfo(
                             key,
@@ -149,19 +148,45 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     }
 
     /**
+     * Returns a list of data types that have been advertised for the given {@code
+     * sourcePackageName} and {@code appInfoId}.
+     */
+    public synchronized List<Integer> getAdvertisedDataTypes(
+            String sourcePackageName, long appInfoId) {
+        return getDdpMap().keySet().stream()
+                .filter(
+                        key ->
+                                key.sourcePackageName.equals(sourcePackageName)
+                                        && key.appInfoId == appInfoId)
+                .map(key -> key.dataType)
+                .collect(Collectors.toList());
+    }
+
+    /** Returns a list of all {@code appInfoId}s for the sourcePackageName. */
+    public synchronized List<Long> getAppInfoIds(String sourcePackageName) {
+        List<Long> appInfoIds = new ArrayList<>();
+        for (DeviceDataProviderKey key : getDdpMap().keySet()) {
+            if (key.sourcePackageName.equals(sourcePackageName)) {
+                appInfoIds.add(key.appInfoId);
+            }
+        }
+        return appInfoIds;
+    }
+
+    /**
      * Delete advertisements from the database for data types no longer present for the {@code
-     * sourcePackageName} and {@code deviceInfoId}.
+     * sourcePackageName} and {@code appInfoId}.
      */
     private synchronized void deleteObsoleteAdvertisements(
             String sourcePackageName,
-            long deviceInfoId,
+            long appInfoId,
             DeviceDataAdvertisement latestDeviceDataAdvertisement) {
         List<DeviceDataProviderKey> existingAdvertisements =
                 getDdpMap().keySet().stream()
                         .filter(
                                 key ->
                                         key.sourcePackageName.equals(sourcePackageName)
-                                                && key.deviceInfoId == deviceInfoId)
+                                                && key.appInfoId == appInfoId)
                         .toList();
 
         Set<Integer> latestDataTypes =
@@ -176,8 +201,7 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     }
 
     /**
-     * Delete ddpInfo from the db and cache for the given sourcePackageName, deviceInfoId and
-     * dataType.
+     * Delete ddpInfo from the db and cache for the given sourcePackageName, appInfoId and dataType.
      */
     private synchronized void delete(DeviceDataProviderKey key) {
         mTransactionManager.delete(
@@ -187,8 +211,8 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
                                         .addWhereEqualsClause(
                                                 SOURCE_PACKAGE_NAME, key.sourcePackageName)
                                         .addWhereEqualsClause(
-                                                DEVICE_INFO_ID_COLUMN_NAME,
-                                                String.valueOf(key.deviceInfoId))
+                                                APP_INFO_ID_COLUMN_NAME,
+                                                String.valueOf(key.appInfoId))
                                         .addWhereEqualsClause(
                                                 DATA_TYPE, String.valueOf(key.dataType))));
         getDdpMap().remove(key);
@@ -196,7 +220,7 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
 
     /**
      * Insert ddpInfo if not present in the db or updates the states isAvailable and isUserEnabled
-     * for the given sourcePackageName, deviceInfoId and dataType.
+     * for the given sourcePackageName, appInfoId and dataType.
      */
     private synchronized void insertOrUpdate(DeviceDataProviderInfo ddpInfo) {
         getDdpMap().remove(ddpInfo.key);
@@ -206,7 +230,7 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     }
 
     /**
-     * Returns a map of DDP key sourcePackageName, deviceInfoId, dataType <> key, isAvailable,
+     * Returns a map of DDP key sourcePackageName, appInfoId, dataType <> key, isAvailable,
      * isUserEnabled, isVisibleByDefaultInMatchmaking.
      */
     @VisibleForTesting
@@ -223,7 +247,7 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
                 new ConcurrentHashMap<>();
         try (Cursor cursor = transactionManager.read(new ReadTableRequest(TABLE_NAME))) {
             while (cursor.moveToNext()) {
-                long deviceInfoId = getCursorInt(cursor, DEVICE_INFO_ID_COLUMN_NAME);
+                long appInfoId = getCursorInt(cursor, APP_INFO_ID_COLUMN_NAME);
                 String sourcePackageName = getCursorString(cursor, SOURCE_PACKAGE_NAME);
                 int dataType = getCursorInt(cursor, DATA_TYPE);
                 boolean isAvailable = getIntegerAndConvertToBoolean(cursor, IS_AVAILABLE);
@@ -232,7 +256,7 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
                         getIntegerAndConvertToBoolean(cursor, IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING);
 
                 DeviceDataProviderKey key =
-                        new DeviceDataProviderKey(sourcePackageName, deviceInfoId, dataType);
+                        new DeviceDataProviderKey(sourcePackageName, appInfoId, dataType);
                 DeviceDataProviderInfo ddpInfo =
                         new DeviceDataProviderInfo(
                                 key, isAvailable, isUserEnabled, isVisibleByDefaultInMatchmaking);
@@ -246,7 +270,7 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     private ContentValues getContentValues(DeviceDataProviderInfo ddpInfo) {
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(DEVICE_INFO_ID_COLUMN_NAME, ddpInfo.key.deviceInfoId);
+        contentValues.put(APP_INFO_ID_COLUMN_NAME, ddpInfo.key.appInfoId);
         contentValues.put(SOURCE_PACKAGE_NAME, ddpInfo.key.sourcePackageName);
         contentValues.put(DATA_TYPE, ddpInfo.key.dataType);
         contentValues.put(IS_AVAILABLE, ddpInfo.isAvailable);
@@ -268,7 +292,7 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     private static List<Pair<String, String>> getColumnInfo() {
         ArrayList<Pair<String, String>> columnInfo = new ArrayList<>();
         columnInfo.add(new Pair<>(RecordHelper.PRIMARY_COLUMN_NAME, PRIMARY));
-        columnInfo.add(new Pair<>(DEVICE_INFO_ID_COLUMN_NAME, INTEGER_NOT_NULL)); // Foreign key
+        columnInfo.add(new Pair<>(APP_INFO_ID_COLUMN_NAME, INTEGER_NOT_NULL)); // Foreign key
         columnInfo.add(new Pair<>(SOURCE_PACKAGE_NAME, TEXT_NOT_NULL));
         columnInfo.add(new Pair<>(DATA_TYPE, INTEGER_NOT_NULL));
         columnInfo.add(new Pair<>(IS_AVAILABLE, INTEGER_NOT_NULL));
@@ -281,5 +305,10 @@ public class DeviceDataProviderHelper extends DatabaseHelper {
     @Override
     protected String getMainTableName() {
         return TABLE_NAME;
+    }
+
+    /** Returns a set of all advertised record types from all DDPs. */
+    public Set<Integer> getAllAdvertisedRecordTypes() {
+        return getDdpMap().keySet().stream().map(key -> key.dataType).collect(Collectors.toSet());
     }
 }

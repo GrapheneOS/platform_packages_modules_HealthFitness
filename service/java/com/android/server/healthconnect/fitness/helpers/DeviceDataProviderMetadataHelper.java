@@ -29,6 +29,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.util.Pair;
 
+import androidx.annotation.GuardedBy;
 import androidx.annotation.VisibleForTesting;
 
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
@@ -40,6 +41,7 @@ import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -57,10 +59,12 @@ public class DeviceDataProviderMetadataHelper extends DatabaseHelper {
     private final TransactionManager mTransactionManager;
 
     record MetadataCache(
-            ConcurrentHashMap<Long, DeviceDataProviderMetadata> idToMetadata,
-            ConcurrentHashMap<DeviceDataProviderMetadata, Long> metadataToId) {}
+            HashMap<Long, DeviceDataProviderMetadata> idToMetadata,
+            HashMap<DeviceDataProviderMetadata, Long> metadataToId) {}
 
-    @Nullable private volatile MetadataCache mCache;
+    @GuardedBy("this")
+    @Nullable
+    private MetadataCache mCache;
 
     @VisibleForTesting
     public record DeviceDataProviderMetadata(String sourcePackageName) {}
@@ -107,32 +111,27 @@ public class DeviceDataProviderMetadataHelper extends DatabaseHelper {
 
     /** Returns a map of key rowId <> DeviceDataProviderMetadata. */
     @VisibleForTesting
-    public ConcurrentHashMap<Long, DeviceDataProviderMetadata>
+    public synchronized HashMap<Long, DeviceDataProviderMetadata>
             getIdDeviceDataProviderMetadataMap() {
-        // Avoid a synchronized call to populateCache if possible.
-        MetadataCache cache = mCache;
-        if (cache == null) {
-            cache = populateCache(mTransactionManager);
+        if (mCache == null) {
+            mCache = populateCache(mTransactionManager);
         }
-        return cache.idToMetadata;
+        return mCache.idToMetadata;
     }
 
     /** Returns a map of key DeviceDataProviderMetadata <> rowId. */
     @VisibleForTesting
-    public ConcurrentHashMap<DeviceDataProviderMetadata, Long>
+    public synchronized HashMap<DeviceDataProviderMetadata, Long>
             getDeviceDataProviderMetadataIdMap() {
-        // Avoid a synchronized call to populateCache if possible.
-        MetadataCache cache = mCache;
-        if (cache == null) {
-            cache = populateCache(mTransactionManager);
+        if (mCache == null) {
+            mCache = populateCache(mTransactionManager);
         }
-        return cache.metadataToId;
+        return mCache.metadataToId;
     }
 
     private synchronized MetadataCache populateCache(TransactionManager transactionManager) {
-        MetadataCache cache = mCache;
-        if (cache != null) {
-            return cache;
+        if (mCache != null) {
+            return mCache;
         }
 
         ConcurrentHashMap<Long, DeviceDataProviderMetadata> idToMetadataMap =
@@ -153,11 +152,10 @@ public class DeviceDataProviderMetadataHelper extends DatabaseHelper {
             }
         }
 
-        cache =
+        mCache =
                 new DeviceDataProviderMetadataHelper.MetadataCache(
-                        idToMetadataMap, metadataToIdMap);
-        mCache = cache;
-        return cache;
+                        new HashMap<>(idToMetadataMap), new HashMap<>(metadataToIdMap));
+        return mCache;
     }
 
     /**

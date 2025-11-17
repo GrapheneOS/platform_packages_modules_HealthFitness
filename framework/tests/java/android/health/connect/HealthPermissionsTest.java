@@ -329,8 +329,8 @@ public class HealthPermissionsTest {
                                     : Stream.of(),
                             AconfigFlagHelper.isCyclePhasesEnabled()
                                     ? Stream.of(
-                                            HealthPermissions.READ_CYCLE_PHASES,
-                                            HealthPermissions.WRITE_CYCLE_PHASES)
+                                            HealthPermissions.READ_MENSTRUAL_CYCLE_PHASE,
+                                            HealthPermissions.WRITE_MENSTRUAL_CYCLE_PHASE)
                                     : Stream.of())
                     .flatMap(s -> s)
                     .collect(Collectors.toSet());

@@ -15,8 +15,8 @@
  */
 package com.android.healthconnect.controller.tests.datasources
 
+import android.os.Bundle
 import android.health.connect.HealthDataCategory
-import androidx.core.os.bundleOf
 import androidx.lifecycle.MutableLiveData
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -96,7 +96,9 @@ class AddAnAppFragmentTest {
             )
         }
 
-        launchFragment<AddAnAppFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        launchFragment<AddAnAppFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
+            )
             .use {
                 onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
                 onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
@@ -120,7 +122,9 @@ class AddAnAppFragmentTest {
             )
         }
 
-        launchFragment<AddAnAppFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        launchFragment<AddAnAppFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
+            )
             .use {
                 onView(ViewMatchers.withId(R.id.progress_indicator)).check(matches(isDisplayed()))
             }
@@ -137,7 +141,9 @@ class AddAnAppFragmentTest {
             )
         }
 
-        launchFragment<AddAnAppFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        launchFragment<AddAnAppFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
+            )
             .use { onView(ViewMatchers.withId(R.id.error_view)).check(matches(isDisplayed())) }
     }
 
@@ -157,7 +163,9 @@ class AddAnAppFragmentTest {
             )
         }
 
-        launchFragment<AddAnAppFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        launchFragment<AddAnAppFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
+            )
             .use {
                 onView(withText(TEST_APP_NAME_2)).perform(click())
                 verify(navigationUtils, times(1)).popBackStack(any<AddAnAppFragment>())
@@ -181,7 +189,9 @@ class AddAnAppFragmentTest {
             )
         }
 
-        launchFragment<AddAnAppFragment>(bundleOf(CATEGORY_KEY to HealthDataCategory.ACTIVITY))
+        launchFragment<AddAnAppFragment>(
+                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
+            )
             .use {
                 onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
                 onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))

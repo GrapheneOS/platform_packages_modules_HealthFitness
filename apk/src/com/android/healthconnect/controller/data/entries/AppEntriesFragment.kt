@@ -23,7 +23,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.VisibleForTesting
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -121,7 +120,9 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                 findNavController()
                     .navigate(
                         R.id.action_appEntriesFragment_to_rawFhirFragment,
-                        bundleOf(RawFhirFragment.MEDICAL_RESOURCE_ID_KEY to id),
+                        Bundle().apply {
+                            putParcelable(RawFhirFragment.MEDICAL_RESOURCE_ID_KEY, id)
+                        },
                     )
             }
 
@@ -538,7 +539,7 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                 entriesViewModel.currentSelectedDate.value!!,
             )
         )
-        childFragmentManager.setFragmentResult(DeletionConstants.START_DELETION_KEY, bundleOf())
+        childFragmentManager.setFragmentResult(DeletionConstants.START_DELETION_KEY, Bundle())
     }
 
     private fun observeEntriesUpdates() {

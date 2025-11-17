@@ -24,6 +24,7 @@ import android.util.Slog;
 
 import androidx.annotation.VisibleForTesting;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 
 import java.io.File;
@@ -62,8 +63,15 @@ public final class HealthConnectDatabase extends SQLiteOpenHelper {
     @Override
     public void onConfigure(SQLiteDatabase db) {
         // Enforce FK constraints for DB writes
-        // This is also required for when we delete entries, for cascade to work
-        db.setForeignKeyConstraintsEnabled(true);
+        // This is also required for when we delete entries, for cascade to work.
+        // Since onConfigure runs before onOpen — the method that applies pending development
+        // schema changes (like adding new FK constraints to existing tables) — we must defer
+        // Foreign Key enforcement until after the schema update has successfully run.
+        // When this flag is on, we set the FK constraint after the development database is created
+        // (see onOpen)
+        if (!Flags.developmentDatabase()) {
+            db.setForeignKeyConstraintsEnabled(true);
+        }
     }
 
     @Override
@@ -74,6 +82,11 @@ public final class HealthConnectDatabase extends SQLiteOpenHelper {
     @Override
     public void onOpen(SQLiteDatabase db) {
         DevelopmentDatabaseHelper.onOpen(db);
+
+        // see onConfigure
+        if (Flags.developmentDatabase()) {
+            db.setForeignKeyConstraintsEnabled(true);
+        }
     }
 
     public File getDatabasePath() {

@@ -30,6 +30,7 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
 /**
  * A device oriented source of data. This contains metadata about the device and information about
@@ -108,6 +109,17 @@ public final class DeviceDataAdvertisement implements Parcelable {
                     return new DeviceDataAdvertisement[size];
                 }
             };
+
+    /**
+     * Creates a new copy of the advertisement with the unmasker applied to {@link #mDeviceId}
+     *
+     * @hide
+     */
+    @NonNull
+    public DeviceDataAdvertisement toUnmasked(@NonNull Function<String, String> deviceIdUnmasker) {
+        return new DeviceDataAdvertisement(
+                mDevice, deviceIdUnmasker.apply(mDeviceId), mDeviceDataTypeAdvertisements);
+    }
 
     private DeviceDataAdvertisement(Parcel in) {
         mDevice =

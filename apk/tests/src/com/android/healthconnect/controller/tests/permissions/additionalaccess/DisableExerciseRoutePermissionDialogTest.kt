@@ -19,7 +19,7 @@
 package com.android.healthconnect.controller.tests.permissions.additionalaccess
 
 import android.content.Intent
-import androidx.core.os.bundleOf
+import android.os.Bundle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.matcher.RootMatchers.isDialog
@@ -52,10 +52,10 @@ class DisableExerciseRoutePermissionDialogTest {
     @BindValue val viewModel: AppPermissionViewModel = mock()
 
     private val bundle =
-        bundleOf(
-            Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-            Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-        )
+        Bundle().apply {
+            putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+            putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+        }
 
     @Before
     fun setup() {

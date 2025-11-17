@@ -17,9 +17,9 @@
 package android.health.connect.internal.datatypes;
 
 import static android.health.connect.Constants.DEFAULT_INT;
-import static android.health.connect.datatypes.CyclePhasesRecord.PHASE_FOLLICULAR;
-import static android.health.connect.datatypes.CyclePhasesRecord.PHASE_LUTEAL;
-import static android.health.connect.datatypes.CyclePhasesRecord.PHASE_UNKNOWN;
+import static android.health.connect.datatypes.MenstrualCyclePhaseRecord.PHASE_FOLLICULAR;
+import static android.health.connect.datatypes.MenstrualCyclePhaseRecord.PHASE_LUTEAL;
+import static android.health.connect.datatypes.MenstrualCyclePhaseRecord.PHASE_UNKNOWN;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -41,6 +41,11 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
+
 @RunWith(AndroidJUnit4.class)
 @EnableFlags({
     Flags.FLAG_CYCLE_PHASES_FLAG,
@@ -49,7 +54,7 @@ import org.junit.runner.RunWith;
     Flags.FLAG_SYMPTOMS_DB,
     Flags.FLAG_ALCOHOL_CONSUMPTION_DB
 })
-public class CyclePhasesRecordInternalTest {
+public class MenstrualCyclePhaseRecordInternalTest {
     @Rule public final SetFlagsRule mSetFlagRule = new SetFlagsRule();
 
     @Rule
@@ -68,7 +73,7 @@ public class CyclePhasesRecordInternalTest {
 
     @Test
     public void testPhase_setterAndGetter() {
-        CyclePhasesRecordInternal record = new CyclePhasesRecordInternal();
+        MenstrualCyclePhaseRecordInternal record = new MenstrualCyclePhaseRecordInternal();
         assertThat(record.getPhase()).isEqualTo(PHASE_UNKNOWN);
         record.setPhase(PHASE_FOLLICULAR);
         assertThat(record.getPhase()).isEqualTo(PHASE_FOLLICULAR);
@@ -78,7 +83,7 @@ public class CyclePhasesRecordInternalTest {
 
     @Test
     public void testDayOfCycle_setterAndGetter() {
-        CyclePhasesRecordInternal record = new CyclePhasesRecordInternal();
+        MenstrualCyclePhaseRecordInternal record = new MenstrualCyclePhaseRecordInternal();
         assertThat(record.getDayOfCycle()).isEqualTo(DEFAULT_INT);
         record.setDayOfCycle(12);
         assertThat(record.getDayOfCycle()).isEqualTo(12);
@@ -86,16 +91,32 @@ public class CyclePhasesRecordInternalTest {
 
     @Test
     public void toExternalRecord_andBack_noChange() {
-        CyclePhasesRecordInternal record =
-                new CyclePhasesRecordInternal().setPhase(PHASE_FOLLICULAR).setDayOfCycle(3);
-        record.setTime(123456).setZoneOffset(5).setPackageName("test.package");
-        CyclePhasesRecordInternal recordAfterRoundTrip =
-                (CyclePhasesRecordInternal) record.toExternalRecord().toRecordInternal();
-        assertThat(recordAfterRoundTrip.getPackageName()).isEqualTo(record.getPackageName());
-        assertThat(recordAfterRoundTrip.getTimeInMillis()).isEqualTo(record.getTimeInMillis());
-        assertThat(recordAfterRoundTrip.getZoneOffsetInSeconds())
-                .isEqualTo(record.getZoneOffsetInSeconds());
+        MenstrualCyclePhaseRecordInternal record =
+                new MenstrualCyclePhaseRecordInternal().setPhase(PHASE_FOLLICULAR).setDayOfCycle(3);
+        Instant time = Instant.ofEpochMilli(123456);
+        ZoneOffset startZoneOffset = ZoneOffset.ofHours(3);
+        Instant startOfDay =
+                time.atOffset(startZoneOffset).truncatedTo(ChronoUnit.DAYS).toInstant();
 
+        ZoneOffset endZoneOffset = ZoneOffset.ofHours(4);
+        Instant endOfDay = time.atOffset(endZoneOffset).with(LocalTime.MAX).toInstant();
+
+        record.setStartTime(startOfDay.toEpochMilli())
+                .setEndTime(endOfDay.toEpochMilli())
+                .setStartZoneOffset(startZoneOffset.getTotalSeconds())
+                .setEndZoneOffset(endZoneOffset.getTotalSeconds())
+                .setPackageName("test.package");
+        MenstrualCyclePhaseRecordInternal recordAfterRoundTrip =
+                (MenstrualCyclePhaseRecordInternal) record.toExternalRecord().toRecordInternal();
+        assertThat(recordAfterRoundTrip.getPackageName()).isEqualTo(record.getPackageName());
+        assertThat(recordAfterRoundTrip.getStartTimeInMillis())
+                .isEqualTo(record.getStartTimeInMillis());
+        assertThat(recordAfterRoundTrip.getEndTimeInMillis())
+                .isEqualTo(record.getEndTimeInMillis());
+        assertThat(recordAfterRoundTrip.getStartZoneOffsetInSeconds())
+                .isEqualTo(record.getStartZoneOffsetInSeconds());
+        assertThat(recordAfterRoundTrip.getEndZoneOffsetInSeconds())
+                .isEqualTo(record.getEndZoneOffsetInSeconds());
         assertThat(recordAfterRoundTrip.getPhase()).isEqualTo(record.getPhase());
         assertThat(recordAfterRoundTrip.getDayOfCycle()).isEqualTo(record.getDayOfCycle());
     }
