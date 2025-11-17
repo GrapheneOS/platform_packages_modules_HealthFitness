@@ -107,11 +107,13 @@
         <!-- Plus N Circle and Text (for 3+ matched apps) -->
         <FrameLayout
             android:id="@+id/plus_n_container"
-            android:layout_width="@dimen/matchmaking_header_matched_apps_icon_size"
-            android:layout_height="@dimen/matchmaking_header_matched_apps_icon_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/matchmaking_overlap_negative_margin"
             android:background="@drawable/circle_background_stroke"
             android:visibility="gone"
+            android:paddingHorizontal="@dimen/matchmaking_header_icon_horizontal_padding"
+            android:paddingVertical="@dimen/matchmaking_header_icon_vertical_padding"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/matched_app_icon_1_container"
             app:layout_constraintTop_toTopOf="parent">
@@ -121,7 +123,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAppearance="?attr/textAppearanceSummary" />
+                android:textAppearance="?attr/textAppearanceSummary"
+                android:importantForAccessibility="no"/>
 
         </FrameLayout>
 
