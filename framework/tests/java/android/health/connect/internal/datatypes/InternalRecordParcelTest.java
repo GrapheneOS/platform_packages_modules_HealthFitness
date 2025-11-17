@@ -23,7 +23,6 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.healthconnect.testing.shared.recordfactory.RecordFactory;
 import android.os.Parcel;
-import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -89,9 +88,6 @@ public class InternalRecordParcelTest {
      */
     @Test
     @EnableFlags(Flags.FLAG_SAMPLE_TIME_ORDERING)
-    // TODO(b/452284725): Remove this disable flag constraint once we update RecordFactory and
-    // implement MenstrualCyclePhaseRecordFactory.
-    @DisableFlags(Flags.FLAG_CYCLE_PHASES_FLAG)
     public void testAllInternalRecords_serializeToAndFromParcels() throws Exception {
         HealthConnectMappings mappings = HealthConnectMappings.getInstance();
         Map<Integer, Class<? extends RecordInternal<?>>> recordIdToInternalRecord =

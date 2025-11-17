@@ -46,6 +46,7 @@ import android.health.connect.datatypes.HeightRecord;
 import android.health.connect.datatypes.HydrationRecord;
 import android.health.connect.datatypes.IntermenstrualBleedingRecord;
 import android.health.connect.datatypes.LeanBodyMassRecord;
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord;
 import android.health.connect.datatypes.MenstruationFlowRecord;
 import android.health.connect.datatypes.MenstruationPeriodRecord;
 import android.health.connect.datatypes.Metadata;
@@ -381,6 +382,8 @@ public abstract class RecordFactory<T extends Record> {
             return new IntermenstrualBleedingRecordFactory();
         } else if (recordClass.equals(LeanBodyMassRecord.class)) {
             return new LeanBodyMassRecordFactory();
+        } else if (recordClass.equals(MenstrualCyclePhaseRecord.class)) {
+            return new MenstrualCyclePhaseRecordFactory();
         } else if (recordClass.equals(MenstruationFlowRecord.class)) {
             return new MenstruationFlowRecordFactory();
         } else if (recordClass.equals(MenstruationPeriodRecord.class)) {
