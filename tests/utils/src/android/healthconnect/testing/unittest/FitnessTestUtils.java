@@ -44,6 +44,8 @@ import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -57,15 +59,20 @@ import org.mockito.MockitoAnnotations;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /** Util class provides shared functionality for db transaction testing. */
 public final class FitnessTestUtils {
     private static final Set<String> NO_EXTRA_PERMS = Set.of();
-    private static final Set<String> NO_GRANULAR_PERMS = Set.of();
+    private static final Set<String> ALL_GRANULAR_PERMS =
+            InternalHealthConnectMappings.getInstance().getRecordHelpers().stream()
+                    .flatMap(recordHelper -> recordHelper.getGranularReadPermissions().stream())
+                    .collect(Collectors.toSet());
     private static final String TEST_PACKAGE_NAME = "package.name";
     private final TransactionManager mTransactionManager;
     private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
@@ -138,17 +145,35 @@ public final class FitnessTestUtils {
 
     /** Deletes records with the given IDs from storage. */
     public void deleteRecords(String packageName, RecordIdFilter... recordIdFilters) {
-        deleteRecords(packageName, List.of(recordIdFilters));
+        Set<String> grantedGranularWritePermissions = new HashSet<>();
+        for (RecordHelper<?> recordHelper :
+                InternalHealthConnectMappings.getInstance().getRecordHelpers()) {
+            grantedGranularWritePermissions.addAll(
+                    recordHelper.getAllGranularWritePermissionsForHelper());
+        }
+        deleteRecords(packageName, List.of(recordIdFilters), grantedGranularWritePermissions);
     }
 
-    private void deleteRecords(String packageName, List<RecordIdFilter> recordIdFilters) {
+    /** Deletes records with the given IDs from storage while enforcing extra permissions. */
+    public void deleteRecords(
+            String packageName,
+            Set<String> grantedGranularWritePermissions,
+            RecordIdFilter... recordIdFilters) {
+        deleteRecords(packageName, List.of(recordIdFilters), grantedGranularWritePermissions);
+    }
+
+    private void deleteRecords(
+            String packageName,
+            List<RecordIdFilter> recordIdFilters,
+            Set<String> grantedGranularWritePermissions) {
         DeleteUsingFiltersRequestParcel parcel =
                 new DeleteUsingFiltersRequestParcel(
                         new RecordIdFiltersParcel(recordIdFilters), packageName);
         mFitnessRecordDeleteHelper.deleteRecords(
                 packageName,
                 parcel,
-                /* holdsDataManagementPermission= */ false,
+                grantedGranularWritePermissions,
+                /* enforceSelfDelete= */ false,
                 /* shouldRecordAccessLog= */ false);
     }
 
@@ -173,7 +198,7 @@ public final class FitnessTestUtils {
                 packageName,
                 recordTypeToUuids,
                 NO_EXTRA_PERMS,
-                NO_GRANULAR_PERMS,
+                ALL_GRANULAR_PERMS,
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ true,
                 shouldRecordAccessLogs);
@@ -195,7 +220,7 @@ public final class FitnessTestUtils {
                         packageName,
                         request.toReadRecordsRequestParcel(),
                         NO_EXTRA_PERMS,
-                        NO_GRANULAR_PERMS,
+                        ALL_GRANULAR_PERMS,
                         /* startDateAccessMillis= */ 0,
                         /* isInForeground= */ true,
                         /* shouldRecordAccessLogs= */ false,

@@ -35,12 +35,10 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.RecordInternalFactory;
 import android.os.UserHandle;
-import android.platform.test.annotations.EnableFlags;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
@@ -62,6 +60,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -110,6 +109,7 @@ public class FitnessRecordDeleteHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 request,
+                /* grantedGranularWritePermissions= */ Collections.emptySet(),
                 /* enforceSelfDelete */ true,
                 /* shouldRecordAccessLog= */ false);
         List<UUID> uuidList = mFitnessTestUtils.getAllDeletedUuids();
@@ -133,7 +133,8 @@ public class FitnessRecordDeleteHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
-                /* holdsDataManagementPermission */ false,
+                /* grantedGranularWritePermissions= */ Collections.emptySet(),
+                /* enforceSelfDelete */ true,
                 /* shouldRecordAccessLog= */ false);
         List<UUID> uuidList = mFitnessTestUtils.getAllDeletedUuids();
         assertThat(uuidList).hasSize(1);
@@ -158,7 +159,8 @@ public class FitnessRecordDeleteHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
-                /* holdsDataManagementPermission */ false,
+                /* grantedGranularWritePermissions= */ Collections.emptySet(),
+                /* enforceSelfDelete */ true,
                 /* shouldRecordAccessLog= */ false);
 
         List<UUID> uuidList = mFitnessTestUtils.getAllDeletedUuids();
@@ -179,7 +181,8 @@ public class FitnessRecordDeleteHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
-                /* holdsDataManagementPermission */ false,
+                /* grantedGranularWritePermissions= */ Collections.emptySet(),
+                /* enforceSelfDelete */ true,
                 /* shouldRecordAccessLog= */ true);
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
@@ -204,7 +207,8 @@ public class FitnessRecordDeleteHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
-                /* holdsDataManagementPermission */ false,
+                /* grantedGranularWritePermissions= */ Collections.emptySet(),
+                /* enforceSelfDelete */ true,
                 /* shouldRecordAccessLog= */ false);
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
