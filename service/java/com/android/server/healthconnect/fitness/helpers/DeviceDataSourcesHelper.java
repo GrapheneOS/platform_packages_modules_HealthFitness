@@ -153,11 +153,7 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
      */
     public synchronized List<Integer> getAdvertisedDataTypes(
             String sourcePackageName, long appInfoId) {
-        return getDdpMap().keySet().stream()
-                .filter(
-                        key ->
-                                key.sourcePackageName.equals(sourcePackageName)
-                                        && key.appInfoId == appInfoId)
+        return getExistingAdvertisements(sourcePackageName, appInfoId).stream()
                 .map(key -> key.dataType)
                 .collect(Collectors.toList());
     }
@@ -173,6 +169,16 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
         return appInfoIds;
     }
 
+    /** Removes all advertisements for the given {@code sourcePackageName} and {@code appInfoId}. */
+    public synchronized void deleteAdvertisements(String sourcePackageName, long appInfoId) {
+        List<DeviceDataProviderKey> keysToDelete =
+                getExistingAdvertisements(sourcePackageName, appInfoId);
+
+        for (DeviceDataProviderKey key : keysToDelete) {
+            delete(key);
+        }
+    }
+
     /**
      * Delete advertisements from the database for data types no longer present for the {@code
      * sourcePackageName} and {@code appInfoId}.
@@ -182,12 +188,7 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
             long appInfoId,
             DeviceDataAdvertisement latestDeviceDataAdvertisement) {
         List<DeviceDataProviderKey> existingAdvertisements =
-                getDdpMap().keySet().stream()
-                        .filter(
-                                key ->
-                                        key.sourcePackageName.equals(sourcePackageName)
-                                                && key.appInfoId == appInfoId)
-                        .toList();
+                getExistingAdvertisements(sourcePackageName, appInfoId);
 
         Set<Integer> latestDataTypes =
                 latestDeviceDataAdvertisement.getDeviceDataTypeAdvertisements().stream()
@@ -198,6 +199,16 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
                 delete(existingAdvertisement);
             }
         }
+    }
+
+    private List<DeviceDataProviderKey> getExistingAdvertisements(
+            String sourcePackageName, long appInfoId) {
+        return getDdpMap().keySet().stream()
+                .filter(
+                        key ->
+                                key.sourcePackageName.equals(sourcePackageName)
+                                        && key.appInfoId == appInfoId)
+                .collect(Collectors.toList());
     }
 
     /**

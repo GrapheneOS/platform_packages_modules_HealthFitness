@@ -1239,6 +1239,32 @@ public final class TestUtils {
     }
 
     /**
+     * Calls {@link #advertiseDeviceDataSources} for the provided device IDs, creating
+     * advertisements for {@link StepsRecord} for each device.
+     */
+    @SuppressLint("MissingPermission")
+    public static void advertiseDevices(Set<String> deviceIds) throws InterruptedException {
+        Device device = buildDevice();
+        Set<DeviceDataAdvertisement> advertisements =
+                deviceIds.stream()
+                        .map(
+                                deviceId -> {
+                                    Set<DeviceDataTypeAdvertisement> dataTypes =
+                                            Set.of(
+                                                    new DeviceDataTypeAdvertisement.Builder(
+                                                                    StepsRecord.class)
+                                                            .setAvailable(true)
+                                                            .build());
+                                    return new DeviceDataAdvertisement(device, deviceId, dataTypes);
+                                })
+                        .collect(Collectors.toSet());
+
+        HealthConnectReceiver<Void> advertiseReceiver = new HealthConnectReceiver<>();
+        advertiseDeviceDataSources(advertisements, outcomeExecutor(), advertiseReceiver);
+        advertiseReceiver.verifyNoExceptionOrThrow();
+    }
+
+    /**
      * Calls {@link HealthConnectManager#advertiseDeviceDataSources} with shell permission identity
      * and device data provider permissions.
      */

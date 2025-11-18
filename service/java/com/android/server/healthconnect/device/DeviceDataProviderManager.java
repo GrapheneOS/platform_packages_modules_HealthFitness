@@ -119,8 +119,18 @@ public class DeviceDataProviderManager {
         Objects.requireNonNull(advertisements);
         Objects.requireNonNull(callingDdpPackageName);
 
+        List<Long> existingAppInfoIds =
+                mDeviceDataSourcesHelper.getAppInfoIds(callingDdpPackageName);
+        Set<Long> currentAppInfoIds = new HashSet<>();
+
         for (DeviceDataAdvertisement advertisement : advertisements) {
-            handleAdvertisement(advertisement, callingDdpPackageName);
+            currentAppInfoIds.add(handleAdvertisement(advertisement, callingDdpPackageName));
+        }
+
+        for (Long appInfoId : existingAppInfoIds) {
+            if (!currentAppInfoIds.contains(appInfoId)) {
+                mDeviceDataSourcesHelper.deleteAdvertisements(callingDdpPackageName, appInfoId);
+            }
         }
     }
 
@@ -190,7 +200,7 @@ public class DeviceDataProviderManager {
         return Build.getSerial();
     }
 
-    private void handleAdvertisement(
+    private long handleAdvertisement(
             @NonNull DeviceDataAdvertisement advertisement, @NonNull String callingDdpPackageName) {
         Objects.requireNonNull(advertisement);
         Objects.requireNonNull(callingDdpPackageName);
@@ -218,6 +228,8 @@ public class DeviceDataProviderManager {
                 callingDdpPackageName, appInfoId, advertisement);
 
         mDeviceDataProviderMetadataHelper.insertIfNotPresent(callingDdpPackageName);
+
+        return appInfoId;
     }
 
     /**

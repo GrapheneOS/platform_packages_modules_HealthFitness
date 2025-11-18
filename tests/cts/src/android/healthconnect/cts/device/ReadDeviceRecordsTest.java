@@ -332,8 +332,7 @@ public class ReadDeviceRecordsTest {
         String deviceIdOne = "Hello";
         String deviceIdTwo = "World";
 
-        TestUtils.advertiseDevice(deviceIdOne, StepsRecord.class);
-        TestUtils.advertiseDevice(deviceIdTwo, StepsRecord.class);
+        TestUtils.advertiseDevices(Set.of(deviceIdOne, deviceIdTwo));
 
         List<StepsRecord> stepsRecordsOne = List.of(DataFactory.getStepsRecord(111));
         List<StepsRecord> stepsRecordsTwo = List.of(DataFactory.getStepsRecord(222));
@@ -366,8 +365,7 @@ public class ReadDeviceRecordsTest {
         String deviceIdOne = "Hello";
         String deviceIdTwo = "World";
 
-        TestUtils.advertiseDevice(deviceIdOne, StepsRecord.class);
-        TestUtils.advertiseDevice(deviceIdTwo, StepsRecord.class);
+        TestUtils.advertiseDevices(Set.of(deviceIdOne, deviceIdTwo));
 
         List<StepsRecord> stepsRecordsOne = List.of(DataFactory.getStepsRecord(111));
         List<StepsRecord> stepsRecordsTwo = List.of(DataFactory.getStepsRecord(222));

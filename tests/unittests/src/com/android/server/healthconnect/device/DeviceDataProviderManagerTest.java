@@ -1370,8 +1370,25 @@ public class DeviceDataProviderManagerTest {
         String deviceIdOne = "Hello";
         String deviceIdTwo = "World";
 
-        advertiseDevice(deviceIdOne);
-        advertiseDevice(deviceIdTwo);
+        Device device =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisement =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        mDeviceDataProviderManager.handleAdvertisement(
+                Set.of(
+                        new DeviceDataAdvertisement(
+                                device, deviceIdOne, deviceDataTypeAdvertisement),
+                        new DeviceDataAdvertisement(
+                                device, deviceIdTwo, deviceDataTypeAdvertisement)),
+                PACKAGE_NAME);
 
         List<RecordInternal<?>> recordsOne = List.of(buildStepsRecord(100, 200, 111));
         List<RecordInternal<?>> recordsTwo = List.of(buildStepsRecord(100, 200, 222));
@@ -1413,11 +1430,32 @@ public class DeviceDataProviderManagerTest {
     @Test
     public void
             withMultipleAdvertisementsAndNoDeviceIdInRequest_readDeviceRecords_readsAllDevices() {
+
         String deviceIdOne = "Hello";
+
         String deviceIdTwo = "World";
 
-        advertiseDevice(deviceIdOne);
-        advertiseDevice(deviceIdTwo);
+        Device device =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisement =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+
+        mDeviceDataProviderManager.handleAdvertisement(
+                Set.of(
+                        new DeviceDataAdvertisement(
+                                device, deviceIdOne, deviceDataTypeAdvertisement),
+                        new DeviceDataAdvertisement(
+                                device, deviceIdTwo, deviceDataTypeAdvertisement)),
+                PACKAGE_NAME);
 
         List<RecordInternal<?>> recordsOne = List.of(buildStepsRecord(100, 200, 111));
         List<RecordInternal<?>> recordsTwo = List.of(buildStepsRecord(100, 200, 222));
@@ -1647,6 +1685,41 @@ public class DeviceDataProviderManagerTest {
 
         assertThat(actualTwo.size()).isEqualTo(1);
         assertThat(actualTwo.get(0).getUuid()).isEqualTo(UUID.fromString(uuidTwo));
+    }
+
+    @Test
+    public void handleAdvertisement_removeDevice_deviceRemoved() {
+        // 1. Advertise device
+        advertiseDevice(DEVICE_ID);
+
+        Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
+        assertThat(appInfoInternalMap).hasSize(1);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap()).hasSize(1);
+
+        // 2. Advertise empty set (device removed)
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(), PACKAGE_NAME);
+
+        // 3. Verify device is removed from advertisements
+        assertThat(mDeviceDataSourcesHelper.getDdpMap()).isEmpty();
+        assertThat(appInfoInternalMap).hasSize(1);
+        assertThat(mDeviceDataProviderMetadataHelper.getIdDeviceDataProviderMetadataMap())
+                .hasSize(1);
+    }
+
+    @Test
+    public void handleAdvertisement_removeDevice_deviceRemovedFromDb() {
+        // 1. Advertise device
+        advertiseDevice(DEVICE_ID);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap()).hasSize(1);
+
+        // 2. Advertise empty set (device removed)
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(), PACKAGE_NAME);
+
+        // 3. Clear cache to force read from DB
+        mDeviceDataSourcesHelper.clearCache();
+
+        // 4. Verify device is removed from DB
+        assertThat(mDeviceDataSourcesHelper.getDdpMap()).isEmpty();
     }
 
     private void advertiseDevice(
