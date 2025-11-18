@@ -25,9 +25,7 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.createAlle
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createDifferentVaccineMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResource;
 
-import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -68,11 +66,7 @@ import java.util.List;
 import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
-@EnableFlags({
-    FLAG_PHR_CHANGE_LOGS,
-    FLAG_PHR_CHANGE_LOGS_DB,
-    FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-})
+@EnableFlags({FLAG_PHR_CHANGE_LOGS})
 public final class MedicalChangeLogsHelperTest {
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();

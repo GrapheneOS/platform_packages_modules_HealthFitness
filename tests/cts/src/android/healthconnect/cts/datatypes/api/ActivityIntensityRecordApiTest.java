@@ -30,11 +30,7 @@ import org.junit.runner.RunWith;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({
-    Flags.FLAG_ACTIVITY_INTENSITY,
-    Flags.FLAG_ACTIVITY_INTENSITY_DB,
-    Flags.FLAG_HEALTH_CONNECT_MAPPINGS
-})
+@RequiresFlagsEnabled({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_HEALTH_CONNECT_MAPPINGS})
 public class ActivityIntensityRecordApiTest extends BaseApiTest<ActivityIntensityRecord> {
     public ActivityIntensityRecordApiTest() {
         super(

@@ -33,10 +33,7 @@ import org.junit.runner.RunWith;
 @RequiresFlagsEnabled({
     Flags.FLAG_SMOKING,
     Flags.FLAG_SMOKING_DB,
-    Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
     Flags.FLAG_HEALTH_CONNECT_MAPPINGS,
-    Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    Flags.FLAG_PHR_CHANGE_LOGS_DB
 })
 public class NicotineIntakeRecordMultiAppApiTest extends BaseMultiAppApiTest<NicotineIntakeRecord> {
     public NicotineIntakeRecordMultiAppApiTest() {

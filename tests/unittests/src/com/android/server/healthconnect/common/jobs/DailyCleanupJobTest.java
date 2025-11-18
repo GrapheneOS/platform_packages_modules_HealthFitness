@@ -16,8 +16,6 @@
 
 package com.android.server.healthconnect.common.jobs;
 
-import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
-
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -25,8 +23,6 @@ import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.os.Process;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -61,12 +57,9 @@ import java.util.List;
 import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
-@EnableFlags({FLAG_ACTIVITY_INTENSITY_DB})
 public class DailyCleanupJobTest {
     private static final String AUTO_DELETE_DURATION_RECORDS_KEY =
             "auto_delete_duration_records_key";
-
-    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 

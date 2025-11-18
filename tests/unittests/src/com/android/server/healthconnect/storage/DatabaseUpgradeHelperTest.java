@@ -32,9 +32,7 @@ import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_SYMPTO
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES_DB;
-import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS_DB;
@@ -132,9 +130,6 @@ public class DatabaseUpgradeHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    })
     public void onUpgrade_addingNewColumn_calledMultipleTimes() {
         onUpgrade(mSQLiteDatabase, 0, DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS);
         assertColumnsExist(
@@ -168,8 +163,6 @@ public class DatabaseUpgradeHelperTest {
     @Test
     @EnableFlags({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void onUpgrade_phrChangeLogs_schemaUpToDate() {
         try (var db = createEmptyDatabase()) {
@@ -193,8 +186,6 @@ public class DatabaseUpgradeHelperTest {
     @Test
     @EnableFlags({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void onUpgrade_phrChangeLogs_idempotent() {
         try (var db = createEmptyDatabase()) {

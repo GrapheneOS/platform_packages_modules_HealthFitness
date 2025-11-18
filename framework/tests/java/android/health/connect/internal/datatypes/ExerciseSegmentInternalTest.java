@@ -17,7 +17,6 @@
 package android.health.connect.internal.datatypes;
 
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS;
-import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -59,7 +58,7 @@ public class ExerciseSegmentInternalTest {
     }
 
     @Test
-    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS, FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB})
+    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS})
     public void testExerciseSegmentInternal_convertToExternalAndBack_recordsAreEqual_newFields() {
         ExerciseSegment externalSegment =
                 new ExerciseSegment.Builder(
@@ -89,7 +88,7 @@ public class ExerciseSegmentInternalTest {
     }
 
     @Test
-    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS, FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB})
+    @EnableFlags({FLAG_EXERCISE_SEGMENT_IMPROVEMENTS})
     public void testExerciseSegmentInternal_writeToParcelAndBack_recordsAreEqual_newFields() {
         ExerciseSegmentInternal segment =
                 new ExerciseSegmentInternal()

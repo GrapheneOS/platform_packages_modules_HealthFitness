@@ -21,9 +21,7 @@ import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 
-import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -214,11 +212,7 @@ public class HealthConnectChangeLogsDeviceTests {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS})
     public void testChangeLogs_phr_insert_multipleApps_noFilter_returnsUpsertLogsForAllApps()
             throws Exception {
         String changeLogToken =
@@ -248,11 +242,7 @@ public class HealthConnectChangeLogsDeviceTests {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS})
     public void testChangeLogs_phr_insert_multipleApps_filterDataOrigin_returnsUpsertLogs()
             throws Exception {
         String changeLogToken =
@@ -290,11 +280,7 @@ public class HealthConnectChangeLogsDeviceTests {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS})
     public void
             testChangeLogs_phr_insertAndDelete_multipleApps_noFilter_returnsDeletedLogsForAllApps()
                     throws Exception {
@@ -337,11 +323,7 @@ public class HealthConnectChangeLogsDeviceTests {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    })
+    @RequiresFlagsEnabled({FLAG_PHR_CHANGE_LOGS})
     public void
             testChangeLogs_phr_insertAndDelete_multipleApps_filterDataOrigin_returnsDeletedLogs()
                     throws Exception {

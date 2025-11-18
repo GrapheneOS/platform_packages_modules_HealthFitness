@@ -23,7 +23,6 @@ import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_MANUAL_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVITY_INTENSITY;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
-import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_HEALTH_CONNECT_MAPPINGS;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -55,11 +54,7 @@ import java.time.ZoneOffset;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({
-    FLAG_ACTIVITY_INTENSITY,
-    FLAG_ACTIVITY_INTENSITY_DB,
-    FLAG_HEALTH_CONNECT_MAPPINGS
-})
+@RequiresFlagsEnabled({FLAG_ACTIVITY_INTENSITY, FLAG_HEALTH_CONNECT_MAPPINGS})
 public class ActivityIntensityRecordTest {
 
     @Rule
