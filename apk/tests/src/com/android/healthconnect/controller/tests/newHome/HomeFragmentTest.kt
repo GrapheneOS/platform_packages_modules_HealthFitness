@@ -578,7 +578,8 @@ class HomeFragmentTest {
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
 
         launchFragmentWithNavigation().use {
-            scrollToTextAndClick("See more health apps")
+            onView(withText("See more health apps")).perform(click())
+            onIdle()
             assertThat(navHostController.currentDestination?.id)
                 .isEqualTo(R.id.connectedAppsFragment)
             verify(healthConnectLogger)
