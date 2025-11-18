@@ -495,6 +495,58 @@ public class HealthConnectManager {
     public static final String ACTION_MATCHMAKING = "android.health.connect.action.MATCHMAKING";
 
     /**
+     * Activity action: Launch UI to set up devices offered by a DDP. This intent will be launched
+     * by Health Connect whenever a user wishes to set up a device advertised via {@link
+     * #advertiseDeviceDataSources}. This offers the DDP an opportunity to provide custom
+     * configuration and management of the device. This onboarding intent will be triggered when the
+     * user has not previously enabled any data types for this device for the receiving device data
+     * provider.
+     *
+     * <p class="note">Applications exporting an activity that is launched by this intent must also
+     * guard it with {@link HealthPermissions#MANAGE_HEALTH_DATA_PERMISSION} so that only the system
+     * can launch it.
+     *
+     * <p>Input: {@link #EXTRA_DEVICE_ID} string extra with the ID of the device.
+     *
+     * <p>Input: {@link #EXTRA_DEVICE_RECORD_TYPES} optional string arraylist extra. When present,
+     * the user is requesting to manage the specified data types.
+     *
+     * @hide
+     */
+    @SystemApi
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
+    public static final String ACTION_SHOW_DEVICE_ONBOARDING =
+            "android.health.connect.action.SHOW_DEVICE_ONBOARDING";
+
+    /**
+     * Activity action: Launch UI to manage devices offered by a DDP. This intent will be launched
+     * by Health Connect whenever a user wishes to configure a device advertised via {@link
+     * #advertiseDeviceDataSources}. This offers the DDP an opportunity to provide custom
+     * configuration and management of the device. This management intent will be triggered when the
+     * user has previously enabled at least one data type for this device for the receiving device
+     * data provider.
+     *
+     * <p class="note">Applications exporting an activity that is launched by this intent must also
+     * guard it with {@link HealthPermissions#MANAGE_HEALTH_DATA_PERMISSION} so that only the system
+     * can launch it.
+     *
+     * <p>Input: {@link #EXTRA_DEVICE_ID} string extra with the ID of the device.
+     *
+     * <p>Input: {@link #EXTRA_DEVICE_RECORD_TYPES} optional string arraylist extra. When present,
+     * the user is requesting to manage the specified data types.
+     *
+     * @hide
+     */
+    @SystemApi
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
+    public static final String ACTION_SHOW_DEVICE_MANAGEMENT =
+            "android.health.connect.action.SHOW_DEVICE_MANAGEMENT";
+
+    /**
      * A string array of record type canonical class names to be used with {@link
      * #ACTION_MATCHMAKING}.
      *
@@ -502,6 +554,30 @@ public class HealthConnectManager {
      * @hide
      */
     public static final String EXTRA_RECORD_TYPES = "android.health.connect.extra.RECORD_TYPES";
+
+    /**
+     * A string ID of a device to be used with {@link #ACTION_SHOW_DEVICE_ONBOARDING} and {@link
+     * #ACTION_SHOW_DEVICE_MANAGEMENT}.
+     *
+     * <p>This is the same device ID as was advertised by the device data provider, see {@link
+     * #advertiseDeviceDataSources}.
+     *
+     * @hide
+     */
+    @SystemApi
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public static final String EXTRA_DEVICE_ID = "android.health.connect.extra.DEVICE_ID";
+
+    /**
+     * A string array of record type canonical class names to be used with {@link
+     * #ACTION_SHOW_DEVICE_ONBOARDING} and {@link #ACTION_SHOW_DEVICE_MANAGEMENT}.
+     *
+     * @hide
+     */
+    @SystemApi
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public static final String EXTRA_DEVICE_RECORD_TYPES =
+            "android.health.connect.extra.DEVICE_RECORD_TYPES";
 
     private static final String TAG = "HealthConnectManager";
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
