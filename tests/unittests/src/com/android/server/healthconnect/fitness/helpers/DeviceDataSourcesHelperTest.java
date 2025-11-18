@@ -30,6 +30,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
+import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
@@ -537,6 +538,118 @@ public class DeviceDataSourcesHelperTest {
                 mDeviceDataSourcesHelper.getAdvertisedDataTypes(TEST_APP_PACKAGE, otherAppInfoId);
 
         assertThat(advertisedDataTypes).isEmpty();
+    }
+
+    @Test
+    public void getAllAdvertisedRecordTypes_noAdvertisements_returnsEmptySet() {
+        // Verifies that an empty set is returned when no data types have been advertised.
+        Set<Integer> advertisedRecordTypes = mDeviceDataSourcesHelper.getAllAdvertisedRecordTypes();
+        assertThat(advertisedRecordTypes).isEmpty();
+    }
+
+    @Test
+    public void getAllAdvertisedRecordTypes_singleAdvertisement_returnsSingleType() {
+        // Verifies that a set with a single record type is returned for a single advertisement.
+        long deviceInfoId = insertDeviceInfo();
+        String canonicalSpn = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
+        long appInfoId = mAppInfoHelper.insertOrUpdateDeviceDataSource(canonicalSpn, deviceInfoId);
+        mDeviceDataSourcesHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                appInfoId,
+                new DeviceDataAdvertisement(
+                        mDevice,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .build())));
+
+        Set<Integer> advertisedRecordTypes = mDeviceDataSourcesHelper.getAllAdvertisedRecordTypes();
+
+        assertThat(advertisedRecordTypes)
+                .containsExactly(mHealthConnectMappings.getRecordType(StepsRecord.class));
+    }
+
+    @Test
+    public void getAllAdvertisedRecordTypes_multipleAdvertisementsSameSource_returnsAllTypes() {
+        // Verifies that all advertised record types from a single source are returned.
+        long deviceInfoId = insertDeviceInfo();
+        String canonicalSpn = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
+        long appInfoId = mAppInfoHelper.insertOrUpdateDeviceDataSource(canonicalSpn, deviceInfoId);
+        mDeviceDataSourcesHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                appInfoId,
+                new DeviceDataAdvertisement(
+                        mDevice,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .build(),
+                                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                                        .setAvailable(true)
+                                        .build())));
+
+        Set<Integer> advertisedRecordTypes = mDeviceDataSourcesHelper.getAllAdvertisedRecordTypes();
+
+        assertThat(advertisedRecordTypes)
+                .containsExactlyElementsIn(
+                        Set.of(
+                                mHealthConnectMappings.getRecordType(StepsRecord.class),
+                                mHealthConnectMappings.getRecordType(DistanceRecord.class)));
+    }
+
+    @Test
+    public void getAllAdvertisedRecordTypes_multipleAdsDifferentSources_returnsUnionOfTypes() {
+        // Verifies that a unique set of all record types is returned from multiple sources,
+        // including handling of duplicate types.
+        // Setup source 1
+        long deviceInfoId1 = insertDeviceInfo();
+        String canonicalSpn1 = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId1");
+        long appInfoId1 =
+                mAppInfoHelper.insertOrUpdateDeviceDataSource(canonicalSpn1, deviceInfoId1);
+        mDeviceDataSourcesHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                appInfoId1,
+                new DeviceDataAdvertisement(
+                        mDevice,
+                        "deviceId1",
+                        Set.of(
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .build(),
+                                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                                        .setAvailable(true)
+                                        .build())));
+
+        // Setup source 2
+        long deviceInfoId2 = insertDeviceInfo();
+        String canonicalSpn2 = mSyntheticPackageNameCreator.createCanonical(2, "testDeviceId2");
+        long appInfoId2 =
+                mAppInfoHelper.insertOrUpdateDeviceDataSource(canonicalSpn2, deviceInfoId2);
+        mDeviceDataSourcesHelper.insertOrUpdateAdvertisement(
+                "com.another.app",
+                appInfoId2,
+                new DeviceDataAdvertisement(
+                        mDevice,
+                        "deviceId2",
+                        Set.of(
+                                // This is a duplicate type to test uniqueness
+                                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                                        .setAvailable(true)
+                                        .build(),
+                                new DeviceDataTypeAdvertisement.Builder(HeartRateRecord.class)
+                                        .setAvailable(true)
+                                        .build())));
+
+        Set<Integer> advertisedRecordTypes = mDeviceDataSourcesHelper.getAllAdvertisedRecordTypes();
+
+        assertThat(advertisedRecordTypes)
+                .containsExactlyElementsIn(
+                        Set.of(
+                                mHealthConnectMappings.getRecordType(StepsRecord.class),
+                                mHealthConnectMappings.getRecordType(DistanceRecord.class),
+                                mHealthConnectMappings.getRecordType(HeartRateRecord.class)));
     }
 
     private long insertDeviceInfo() {
