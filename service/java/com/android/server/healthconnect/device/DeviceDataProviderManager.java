@@ -332,7 +332,8 @@ public class DeviceDataProviderManager {
      * @param deviceId The ID of the device.
      * @param records The list of records to update.
      * @return A list of UUIDs of the inserted records.
-     * @throws IllegalArgumentException if the device with the given ID is not found
+     * @throws IllegalArgumentException if the device with the given ID is not found, or if a record
+     *     to update has not been inserted by the calling ddp
      * @throws IllegalStateException if the generated syntheticPackageName or deviceInfoId is not
      *     valid
      */

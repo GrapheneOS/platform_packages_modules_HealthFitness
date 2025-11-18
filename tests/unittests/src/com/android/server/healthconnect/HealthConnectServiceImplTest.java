@@ -4190,6 +4190,40 @@ public class HealthConnectServiceImplTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVELOPMENT_DATABASE
     })
+    public void updateDeviceRecords_withCurrentDeviceId_unmasks() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
+
+        Device device = buildDevice();
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        advertiseStepsDeviceDataSource(clientExposedId, device);
+
+        String recordId = UUID.randomUUID().toString();
+        StepsRecord stepsRecord =
+                getStepsRecord(
+                        100, new Metadata.Builder().setId(recordId).setDevice(device).build());
+        RecordsParcel recordsParcel = getRestoredStepsRecordsParcel(stepsRecord);
+        IEmptyResponseCallback.Stub callback = mock(IEmptyResponseCallback.Stub.class);
+
+        mHealthConnectService.insertDeviceRecords(
+                mAttributionSource,
+                clientExposedId,
+                recordsParcel,
+                mock(IInsertRecordsResponseCallback.Stub.class));
+        mHealthConnectService.updateDeviceRecords(
+                mAttributionSource, clientExposedId, recordsParcel, callback);
+        verify(callback, timeout(TIMEOUT_MILLIS)).onResult();
+
+        String internalDeviceId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+        verify(mDeviceDataProviderManager).updateDeviceRecords(any(), eq(internalDeviceId), any());
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
     public void insertDeviceRecords_withCurrentDeviceId_unmasks() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         setDeviceDataProviderPermission(PERMISSION_GRANTED);

@@ -1504,17 +1504,7 @@ public class HealthConnectManager {
         try {
             List<RecordInternal<?>> recordInternals =
                     records.stream().map(Record::toRecordInternal).collect(Collectors.toList());
-            // Verify if the input record has clientRecordId or UUID.
-            for (RecordInternal<?> recordInternal : recordInternals) {
-                if ((recordInternal.getClientRecordId() == null
-                                || recordInternal.getClientRecordId().isEmpty())
-                        && recordInternal.getUuid() == null) {
-                    throw new IllegalArgumentException(
-                            "At least one of the records is missing both ClientRecordID"
-                                    + " and UUID. RecordType of the input: "
-                                    + recordInternal.getRecordType());
-                }
-            }
+            verifyIds(recordInternals);
 
             mService.updateRecords(
                     mContext.getAttributionSource(),
@@ -3886,6 +3876,68 @@ public class HealthConnectManager {
     }
 
     /**
+     * Updates records previously inserted using {@link #insertDeviceRecords}.
+     *
+     * <p>Records are keyed by their unique identifier ({@link Metadata#getId} or {@link
+     * Metadata#getClientRecordId}). The {@link Device} in record's {@link Metadata} is ignored and
+     * not updated.
+     *
+     * <p>In case of an error or a permission failure in the Health Connect service, {@link
+     * OutcomeReceiver#onError} will be invoked with a {@link HealthConnectException}.
+     *
+     * <p>In case the input record to be updated does not exist in the database or the caller is not
+     * the owner of the record, {@link OutcomeReceiver#onError} will be invoked with {@link
+     * HealthConnectException#ERROR_INVALID_ARGUMENT}.
+     *
+     * @param deviceId the identifier for the device that is the source of this data.
+     * @param records list of records to be updated.
+     * @param executor executor on which to invoke the callback.
+     * @param callback callback to receive the result of performing this operation.
+     * @throws IllegalArgumentException if at least one of the records is missing both {@link
+     *     Metadata#getId} and {@link Metadata#getClientRecordId}
+     * @throws RuntimeException for internal errors
+     * @hide
+     */
+    @SystemApi
+    @RequiresPermission(PROVIDE_HEALTH_CONNECT_DEVICE_DATA)
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void updateDeviceRecords(
+            @NonNull String deviceId,
+            @NonNull List<Record> records,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(records);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            List<RecordInternal<?>> recordInternals =
+                    records.stream().map(Record::toRecordInternal).collect(Collectors.toList());
+            verifyIds(recordInternals);
+
+            mService.updateDeviceRecords(
+                    mContext.getAttributionSource(),
+                    deviceId,
+                    new RecordsParcel(recordInternals),
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(
+                                    () -> callback.onError(exception.getHealthConnectException()));
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
      * Reads records previously inserted using {@link #insertDeviceRecords}.
      *
      * <p>This method is strictly scoped to records inserted by the calling device data provider.
@@ -3942,5 +3994,18 @@ public class HealthConnectManager {
     private static String getDataTypePrefKey(@NonNull Class<? extends Record> dataType) {
         return TRACKING_PREFERENCE_PREFIX
                 + dataType.getAnnotation(Identifier.class).recordIdentifier();
+    }
+
+    private void verifyIds(List<RecordInternal<?>> recordInternals) {
+        for (RecordInternal<?> recordInternal : recordInternals) {
+            if ((recordInternal.getClientRecordId() == null
+                            || recordInternal.getClientRecordId().isEmpty())
+                    && recordInternal.getUuid() == null) {
+                throw new IllegalArgumentException(
+                        "At least one of the records is missing either ClientRecordID"
+                                + " or UUID. RecordType of the input: "
+                                + recordInternal.getRecordType());
+            }
+        }
     }
 }
