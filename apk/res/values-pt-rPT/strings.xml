@@ -179,7 +179,7 @@
     <string name="distance_read_content_description" msgid="8787235642020285789">"Ler distância"</string>
     <string name="distance_write_content_description" msgid="494549494589487562">"Escrever distância"</string>
     <string name="elevation_gained_uppercase_label" msgid="7708101940695442377">"Elevação ganha"</string>
-    <string name="elevation_gained_lowercase_label" msgid="7532517182346738562">"elevação ganha"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7532517182346738562">"aumento de elevação"</string>
     <string name="elevation_gained_read_content_description" msgid="6018756385903843355">"Ler elevação ganha"</string>
     <string name="elevation_gained_write_content_description" msgid="6790199544670231367">"Escrever elevação ganha"</string>
     <string name="floors_climbed_uppercase_label" msgid="3754372357767832441">"Andares subidos"</string>
@@ -258,14 +258,10 @@
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"sangramento intermenstrual"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"Ler dados de sangramento intermenstrual"</string>
     <string name="intermenstrual_bleeding_write_content_description" msgid="1377719923165234099">"Escrever dados de sangramento intermenstrual"</string>
-    <!-- no translation found for menstrual_cycle_phase_uppercase_label (5030753898761492690) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_lowercase_label (4400175522136299478) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_read_content_description (579636561137547897) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_write_content_description (5631263314813590544) -->
-    <skip />
+    <string name="menstrual_cycle_phase_uppercase_label" msgid="5030753898761492690">"Fase do ciclo menstrual"</string>
+    <string name="menstrual_cycle_phase_lowercase_label" msgid="4400175522136299478">"fase do ciclo menstrual"</string>
+    <string name="menstrual_cycle_phase_read_content_description" msgid="579636561137547897">"Ler fase do ciclo menstrual"</string>
+    <string name="menstrual_cycle_phase_write_content_description" msgid="5631263314813590544">"Escrever fase do ciclo menstrual"</string>
     <string name="menstruation_uppercase_label" msgid="9119506748428874832">"Menstruação"</string>
     <string name="menstruation_lowercase_label" msgid="8098816978006207242">"menstruação"</string>
     <string name="menstruation_read_content_description" msgid="7710047469771882021">"Ler menstruação"</string>
