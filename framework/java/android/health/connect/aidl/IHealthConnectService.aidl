@@ -750,6 +750,20 @@ interface IHealthConnectService {
         in IEmptyResponseCallback callback);
 
     /**
+     * Reads all device data of a device data provider from the HealthConnect database.
+     *
+     * @param attributionSource attribution source for the data.
+     * @param request represents the request to be read.
+     * @param callback Callback to receive result of performing this operation.
+     *
+     * @hide
+     */
+    void readDeviceRecords(
+        in AttributionSource attributionSource,
+        in ReadRecordsRequestParcel request,
+        in IReadRecordsResponseCallback callback);
+
+    /**
      * Returns a set of record type classes that device data sources are capable of providing. Use
      * this method to avoid making unnecessary permission requests when reading device data.
      *

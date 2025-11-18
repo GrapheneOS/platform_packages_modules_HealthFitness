@@ -146,6 +146,7 @@ import android.health.connect.MatchmakingRequest;
 import android.health.connect.MatchmakingResponse;
 import android.health.connect.MedicalResourceId;
 import android.health.connect.ReadMedicalResourcesInitialRequest;
+import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.aidl.DeviceDataSourceCapabilities;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
@@ -168,7 +169,10 @@ import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.aidl.IMedicalResourceListParcelResponseCallback;
 import android.health.connect.aidl.IMigrationCallback;
 import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
+import android.health.connect.aidl.IReadRecordsResponseCallback;
 import android.health.connect.aidl.InsertRecordsResponseParcel;
+import android.health.connect.aidl.ReadRecordsRequestParcel;
+import android.health.connect.aidl.ReadRecordsResponseParcel;
 import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
 import android.health.connect.backuprestore.BackupMetadata;
@@ -344,7 +348,8 @@ public class HealthConnectServiceImplTest {
                     "restoreChanges",
                     "isMatchmakingPossible",
                     "getMatchingApps",
-                    "recordMatchmakingDenial");
+                    "recordMatchmakingDenial",
+                    "readDeviceRecords");
 
     /** Health connect service APIs that do not block calls when data sync is in progress. */
     public static final Set<String> DO_NOT_BLOCK_CALLS_DURING_DATA_SYNC_LIST =
@@ -420,6 +425,8 @@ public class HealthConnectServiceImplTest {
     @Mock IMedicalResourceListParcelResponseCallback mMedicalResourceListParcelResponseCallback;
     @Mock IGetMatchingAppsCallback mGetMatchingAppsCallback;
     @Mock IIsMatchmakingPossibleCallback mIsMatchmakingPossibleCallback;
+    @Mock IReadRecordsResponseCallback mReadRecordsResponseCallback;
+
     @Mock private Drawable mDrawable;
     @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
     @Mock private ChangeLogsHelper mChangeLogsHelper;
@@ -517,6 +524,7 @@ public class HealthConnectServiceImplTest {
                                     healthConnectInjector.getDeviceDataSourcesHelper(),
                                     healthConnectInjector.getDeviceDataProviderMetadataHelper(),
                                     healthConnectInjector.getFitnessRecordUpsertHelper(),
+                                    healthConnectInjector.getFitnessRecordReadHelper(),
                                     healthConnectInjector.getSyntheticPackageNameCreator()));
         }
 
@@ -3799,13 +3807,7 @@ public class HealthConnectServiceImplTest {
     })
     public void advertiseDeviceDataSources_withCurrentDeviceId_unmasks() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
-        when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
-                .thenReturn(PERMISSION_GRANTED);
-        when(mServiceContext.checkPermission(
-                        eq(Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA),
-                        anyInt(),
-                        anyInt()))
-                .thenReturn(PERMISSION_GRANTED);
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
 
         String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
         ArgumentCaptor<Set<DeviceDataAdvertisement>> advertisementArgumentCaptor =
@@ -4143,13 +4145,7 @@ public class HealthConnectServiceImplTest {
     })
     public void insertDeviceRecords_withCurrentDeviceId_unmasks() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
-        when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
-                .thenReturn(PERMISSION_GRANTED);
-        when(mServiceContext.checkPermission(
-                        eq(Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA),
-                        anyInt(),
-                        anyInt()))
-                .thenReturn(PERMISSION_GRANTED);
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
 
         String recordId = UUID.randomUUID().toString();
         Device device = buildDevice();
@@ -4201,13 +4197,7 @@ public class HealthConnectServiceImplTest {
         Flags.FLAG_DEVELOPMENT_DATABASE
     })
     public void getCurrentDeviceIdWithoutInit_NullException_throwsRuntimeError() {
-        when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
-                .thenReturn(PERMISSION_GRANTED);
-        when(mServiceContext.checkPermission(
-                        eq(Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA),
-                        anyInt(),
-                        anyInt()))
-                .thenReturn(PERMISSION_GRANTED);
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
 
         assertThrows(
                 RuntimeException.class,
@@ -4222,13 +4212,7 @@ public class HealthConnectServiceImplTest {
     })
     public void getCurrentDeviceIdWithoutPermission_SecurityException_throwsSecurityError() {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
-        when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
-                .thenReturn(PackageManager.PERMISSION_DENIED);
-        when(mServiceContext.checkPermission(
-                        eq(Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA),
-                        anyInt(),
-                        anyInt()))
-                .thenReturn(PackageManager.PERMISSION_DENIED);
+        setDeviceDataProviderPermission(PackageManager.PERMISSION_DENIED);
 
         assertThrows(
                 RuntimeException.class,
@@ -4243,13 +4227,7 @@ public class HealthConnectServiceImplTest {
     })
     public void getCurrentDeviceId_returnsMaskedSpn() throws Exception {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
-        when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
-                .thenReturn(PERMISSION_GRANTED);
-        when(mServiceContext.checkPermission(
-                        eq(Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA),
-                        anyInt(),
-                        anyInt()))
-                .thenReturn(PERMISSION_GRANTED);
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
 
         String currentDeviceId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
         awaitAllExecutorsIdle();
@@ -4265,13 +4243,7 @@ public class HealthConnectServiceImplTest {
     })
     public void getCurrentDeviceId_multipleCalls_returnsSameSpn() throws Exception {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
-        when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
-                .thenReturn(PERMISSION_GRANTED);
-        when(mServiceContext.checkPermission(
-                        eq(Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA),
-                        anyInt(),
-                        anyInt()))
-                .thenReturn(PERMISSION_GRANTED);
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
 
         String firstId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
         awaitAllExecutorsIdle();
@@ -4289,13 +4261,7 @@ public class HealthConnectServiceImplTest {
     })
     public void getCurrentDeviceId_returnValue_resolvesToStableIdWhenUnmasked() throws Exception {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
-        when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
-                .thenReturn(PERMISSION_GRANTED);
-        when(mServiceContext.checkPermission(
-                        eq(Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA),
-                        anyInt(),
-                        anyInt()))
-                .thenReturn(PERMISSION_GRANTED);
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
 
         String maskedRuntimeId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
         awaitAllExecutorsIdle();
@@ -4305,6 +4271,145 @@ public class HealthConnectServiceImplTest {
                         maskedRuntimeId, mAttributionSource.getPackageName());
 
         assertEquals(mDeviceDataProviderManager.getStableCurrentDeviceId(), actualUnmaskedStableId);
+    }
+
+    @Test
+    @DisableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void readDeviceRecords_disabledDdpFlags_exception() throws RemoteException {
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
+
+        mHealthConnectService.readDeviceRecords(
+                mAttributionSource,
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setDeviceId("some id")
+                        .build()
+                        .toReadRecordsRequestParcel(),
+                mReadRecordsResponseCallback);
+
+        verify(mReadRecordsResponseCallback, timeout(TIMEOUT_MILLIS))
+                .onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void readDeviceRecords_noDdpPermission_exception() throws RemoteException {
+        setDeviceDataProviderPermission(PackageManager.PERMISSION_DENIED);
+
+        mHealthConnectService.readDeviceRecords(
+                mAttributionSource,
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setDeviceId("some id")
+                        .build()
+                        .toReadRecordsRequestParcel(),
+                mReadRecordsResponseCallback);
+
+        verify(mReadRecordsResponseCallback, timeout(TIMEOUT_MILLIS))
+                .onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_SECURITY);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void readDeviceRecords_noAdvertising_exception() throws RemoteException {
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
+
+        mHealthConnectService.readDeviceRecords(
+                mAttributionSource,
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setDeviceId("some unknown id")
+                        .build()
+                        .toReadRecordsRequestParcel(),
+                mReadRecordsResponseCallback);
+
+        verify(mReadRecordsResponseCallback, timeout(TIMEOUT_MILLIS))
+                .onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_INVALID_ARGUMENT);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void readDeviceRecords_advertised_noData_emptyListReturned_success()
+            throws RemoteException {
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
+
+        advertiseStepsDeviceDataSource("test_device_id", buildDevice());
+
+        mHealthConnectService.readDeviceRecords(
+                mAttributionSource,
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setDeviceId("test_device_id")
+                        .build()
+                        .toReadRecordsRequestParcel(),
+                mReadRecordsResponseCallback);
+
+        ArgumentCaptor<ReadRecordsResponseParcel> responseCaptor =
+                ArgumentCaptor.forClass(ReadRecordsResponseParcel.class);
+        verify(mReadRecordsResponseCallback, timeout(TIMEOUT_MILLIS))
+                .onResult(responseCaptor.capture());
+        ReadRecordsResponseParcel actualResponse = responseCaptor.getValue();
+        assertThat(actualResponse.getRecordsParcel().getRecords().size()).isEqualTo(0);
+        verifyNoMoreInteractions(mReadRecordsResponseCallback);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void readDeviceRecords_currentDeviceId_unmasksId() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
+
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        advertiseStepsDeviceDataSource(clientExposedId, buildDevice());
+
+        mHealthConnectService.readDeviceRecords(
+                mAttributionSource,
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setDeviceId(clientExposedId)
+                        .build()
+                        .toReadRecordsRequestParcel(),
+                mReadRecordsResponseCallback);
+
+        verify(mReadRecordsResponseCallback, timeout(TIMEOUT_MILLIS)).onResult(any());
+
+        ArgumentCaptor<ReadRecordsRequestParcel> parcelCaptor =
+                ArgumentCaptor.forClass(ReadRecordsRequestParcel.class);
+        String internalDeviceId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+        verify(mDeviceDataProviderManager).readDeviceRecords(any(), any(), parcelCaptor.capture());
+        ReadRecordsRequestParcel capturedParcel = parcelCaptor.getValue();
+        assertThat(capturedParcel.getPackageFilters()).containsExactly(internalDeviceId);
+    }
+
+    private void setDeviceDataProviderPermission(int result) {
+        when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
+                .thenReturn(result);
+        when(mServiceContext.checkPermission(
+                        eq(Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA),
+                        anyInt(),
+                        anyInt()))
+                .thenReturn(result);
     }
 
     @Test

@@ -67,6 +67,7 @@ package android.health.connect {
     method @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void queryActivityDates(@NonNull java.util.List<java.lang.Class<? extends android.health.connect.datatypes.Record>>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<java.time.LocalDate>,android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.personal_health_record") @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void queryAllMedicalResourceTypeInfos(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.MedicalResourceTypeInfo>,android.health.connect.HealthConnectException>);
     method @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void queryAllRecordTypesInfo(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.Map<java.lang.Class<? extends android.health.connect.datatypes.Record>,android.health.connect.RecordTypeInfoResponse>,android.health.connect.HealthConnectException>);
+    method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @RequiresPermission(android.Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA) public <T extends android.health.connect.datatypes.Record> void readDeviceRecords(@NonNull android.health.connect.ReadRecordsRequest<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.ReadRecordsResponse<T>,android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") @RequiresPermission(android.Manifest.permission.RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS) public void restoreChanges(@NonNull java.util.List<android.health.connect.backuprestore.RestoreChange>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.cloud_backup_and_restore") @RequiresPermission(android.Manifest.permission.RESTORE_HEALTH_CONNECT_DATA_AND_SETTINGS) public void restoreLatestMetadata(@NonNull android.health.connect.backuprestore.BackupMetadata, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.HealthConnectException>);
     method @RequiresPermission(android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION) public void setRecordRetentionPeriodInDays(@IntRange(from=0, to=7300) int, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.lang.Void,android.health.connect.HealthConnectException>);
@@ -219,6 +220,14 @@ package android.health.connect {
     method public int getMedicalResourceType();
     method public void writeToParcel(@NonNull android.os.Parcel, int);
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.MedicalResourceTypeInfo> CREATOR;
+  }
+
+  public final class ReadRecordsRequestUsingFilters<T extends android.health.connect.datatypes.Record> extends android.health.connect.ReadRecordsRequest<T> {
+    method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @Nullable public String getDeviceId();
+  }
+
+  public static final class ReadRecordsRequestUsingFilters.Builder<T extends android.health.connect.datatypes.Record> {
+    method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @NonNull public android.health.connect.ReadRecordsRequestUsingFilters.Builder<T> setDeviceId(@NonNull String);
   }
 
   public class RecordTypeInfoResponse {

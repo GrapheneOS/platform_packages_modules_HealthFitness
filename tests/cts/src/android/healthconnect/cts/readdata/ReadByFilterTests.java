@@ -24,7 +24,11 @@ import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecor
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.DataFactory.getTotalCaloriesBurnedRecord;
 
+import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
+
 import static com.google.common.truth.Truth.assertThat;
+
+import static org.junit.Assert.assertThrows;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 import static java.time.temporal.ChronoUnit.HOURS;
@@ -34,6 +38,7 @@ import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.ReadRecordsRequest;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Record;
@@ -43,6 +48,7 @@ import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
+import android.platform.test.annotations.RequiresFlagsEnabled;
 
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -78,6 +84,19 @@ public class ReadByFilterTests {
     @After
     public void tearDown() throws InterruptedException {
         TestUtils.deleteAllDataFromHealthConnect();
+    }
+
+    @Test
+    @RequiresFlagsEnabled({
+        FLAG_DEVICE_DATA_PROVIDERS_API,
+    })
+    public void readDataWithDataOriginsAndDeviceId_throws() {
+        ReadRecordsRequestUsingFilters.Builder<DistanceRecord> requestBuilder =
+                new ReadRecordsRequestUsingFilters.Builder<>(DistanceRecord.class)
+                        .setDeviceId("Foo")
+                        .addDataOrigins(new DataOrigin.Builder().setPackageName("Bar").build());
+        Throwable thrown = assertThrows(IllegalStateException.class, requestBuilder::build);
+        assertThat(thrown).hasMessageThat().contains("Cannot set both device id and data origins");
     }
 
     @Test
