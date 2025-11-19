@@ -1528,8 +1528,9 @@ package android.health.connect.datatypes {
   @FlaggedApi("com.android.healthfitness.flags.cycle_phases_flag") public static final class MenstrualCyclePhaseRecord.Builder {
     ctor public MenstrualCyclePhaseRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.LocalDate, int);
     method @NonNull public android.health.connect.datatypes.MenstrualCyclePhaseRecord build();
+    method @NonNull public android.health.connect.datatypes.MenstrualCyclePhaseRecord.Builder clearDayOfCycle();
     method @NonNull public android.health.connect.datatypes.MenstrualCyclePhaseRecord.Builder clearStartZoneOffset();
-    method @NonNull public android.health.connect.datatypes.MenstrualCyclePhaseRecord.Builder setDayOfCycle(@IntRange(from=1, to=365) int);
+    method @NonNull public android.health.connect.datatypes.MenstrualCyclePhaseRecord.Builder setDayOfCycle(@IntRange(from=1, to=180) int);
     method @NonNull public android.health.connect.datatypes.MenstrualCyclePhaseRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 

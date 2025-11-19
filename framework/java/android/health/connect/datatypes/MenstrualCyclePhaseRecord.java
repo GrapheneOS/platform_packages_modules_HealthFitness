@@ -70,7 +70,7 @@ public final class MenstrualCyclePhaseRecord extends IntervalRecord {
     public static final int PHASE_LUTEAL = 2;
 
     private static final int DAY_OF_CYCLE_LOWER_BOUND = 1;
-    private static final int DAY_OF_CYCLE_UPPER_BOUND = 365;
+    private static final int DAY_OF_CYCLE_UPPER_BOUND = 180;
 
     /**
      * The phase of the menstrual cycle.
@@ -168,13 +168,20 @@ public final class MenstrualCyclePhaseRecord extends IntervalRecord {
          * Sets the day of cycle for this data.
          *
          * @throws IllegalArgumentException if the provided {@code dayOfCycle} is less than 1 or
-         *     more than 365.
+         *     more than 180.
          */
         @NonNull
-        public Builder setDayOfCycle(@IntRange(from = 1, to = 365) int dayOfCycle) {
+        public Builder setDayOfCycle(@IntRange(from = 1, to = 180) int dayOfCycle) {
             mDayOfCycle = dayOfCycle;
             requireInRange(
                     dayOfCycle, DAY_OF_CYCLE_LOWER_BOUND, DAY_OF_CYCLE_UPPER_BOUND, "dayOfCycle");
+            return this;
+        }
+
+        /** Clears the day of cycle for this data. */
+        @NonNull
+        public Builder clearDayOfCycle() {
+            mDayOfCycle = DEFAULT_INT;
             return this;
         }
 
