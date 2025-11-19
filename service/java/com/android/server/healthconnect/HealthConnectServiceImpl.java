@@ -1297,10 +1297,28 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 recordTypeIdsToDelete, attributionSource);
                     }
 
+                    final Set<String> grantedGranularWritePermissions =
+                            unmaskedRequest.getRecordTypeFilters().stream()
+                                    .map(mInternalHealthConnectMappings::getRecordHelper)
+                                    .flatMap(
+                                            recordHelper ->
+                                                    recordHelper
+                                                            .getAllGranularWritePermissionsForHelper()
+                                                            .stream())
+                                    .filter(
+                                            permission ->
+                                                    holdsDataManagementPermission
+                                                            || mDataPermissionEnforcer
+                                                                    .isPermissionGranted(
+                                                                            permission,
+                                                                            attributionSource))
+                                    .collect(Collectors.toSet());
+
                     int numberOfRecordsDeleted =
                             mFitnessRecordDeleteHelper.deleteRecords(
                                     requireNonNull(attributionSource.getPackageName()),
                                     unmaskedRequest,
+                                    grantedGranularWritePermissions,
                                     /* enforceSelfDelete= */ !holdsDataManagementPermission,
                                     /* shouldRecordAccessLog= */ !holdsDataManagementPermission);
                     tryAndReturnResult(callback, logger);

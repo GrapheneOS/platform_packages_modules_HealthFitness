@@ -29,6 +29,7 @@ import android.health.connect.internal.datatypes.utils.SymptomTypePermissionMapp
 import android.util.Pair;
 
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.Arrays;
@@ -68,6 +69,38 @@ public final class SymptomRecordHelper extends IntervalRecordHelper<SymptomRecor
         return SymptomTypePermissionMapper.getSymptomTypes().stream()
                 .map(SymptomTypePermissionMapper::getReadPermission)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<String> getAllGranularWritePermissionsForHelper() {
+        return SymptomTypePermissionMapper.getSymptomTypes().stream()
+                .map(SymptomTypePermissionMapper::getWritePermission)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    void addAdditionalDeletionFilters(
+            DeleteTableRequest deleteTableRequest, Set<String> grantedWritePermissions) {
+        WhereClauses whereClauses = new WhereClauses(WhereClauses.LogicalOperator.AND);
+        Set<Integer> allowedSymptomTypes =
+                SymptomTypePermissionMapper.getSymptomTypes().stream()
+                        .filter(
+                                (symptomType) ->
+                                        grantedWritePermissions.contains(
+                                                SymptomTypePermissionMapper.getWritePermission(
+                                                        symptomType)))
+                        .collect(Collectors.toSet());
+
+        if (allowedSymptomTypes.isEmpty()) {
+            // No permissions for any symptom types, return a request that yields empty results by
+            // adding a clause that is always false.
+            whereClauses.addFalseClause();
+        } else {
+            whereClauses.addWhereInClause(
+                    SYMPTOM_TYPE_COLUMN_NAME,
+                    allowedSymptomTypes.stream().map(String::valueOf).collect(Collectors.toList()));
+        }
+        deleteTableRequest.addExtraWhereClauses(whereClauses);
     }
 
     @Override

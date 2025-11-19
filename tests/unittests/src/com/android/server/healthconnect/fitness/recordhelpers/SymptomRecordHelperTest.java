@@ -15,24 +15,41 @@
  */
 package com.android.server.healthconnect.fitness.recordhelpers;
 
+import static android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN;
+import static android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_ACNE;
+import static android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_COUGH;
+import static android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_WHEEZING;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.HealthPermissions;
+import android.health.connect.RecordIdFilter;
 import android.health.connect.datatypes.SymptomRecord;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.SymptomRecordInternal;
+import android.health.connect.internal.datatypes.utils.SymptomTypePermissionMapper;
+import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.injector.HealthConnectInjector;
+import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
 @RequiresFlagsEnabled({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB})
@@ -41,18 +58,31 @@ public class SymptomRecordHelperTest {
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
+
     private SymptomRecordHelper mSymptomRecordHelper;
+    private FitnessTestUtils mFitnessTestUtils;
+    private static final String PACKAGE_NAME = "com.my.package";
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         mSymptomRecordHelper = new SymptomRecordHelper();
+
+        HealthConnectInjector healthConnectInjector =
+                HealthConnectInjectorImpl.newBuilderForTest(
+                                ApplicationProvider.getApplicationContext())
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+
+        mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        mFitnessTestUtils.insertApp(PACKAGE_NAME);
     }
 
     @Test
     public void getGranularWritePermissions_abdominalPain_returnsCorrectPermission() {
         SymptomRecordInternal record = new SymptomRecordInternal();
-        record.setSymptomType(SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN);
+        record.setSymptomType(SYMPTOM_TYPE_ABDOMINAL_PAIN);
         assertThat(mSymptomRecordHelper.getGranularWritePermissions(record))
                 .containsExactly(HealthPermissions.WRITE_SYMPTOM_ABDOMINAL_PAIN);
     }
@@ -60,7 +90,7 @@ public class SymptomRecordHelperTest {
     @Test
     public void getGranularWritePermissions_acne_returnsCorrectPermission() {
         SymptomRecordInternal record = new SymptomRecordInternal();
-        record.setSymptomType(SymptomRecord.SYMPTOM_TYPE_ACNE);
+        record.setSymptomType(SYMPTOM_TYPE_ACNE);
         assertThat(mSymptomRecordHelper.getGranularWritePermissions(record))
                 .containsExactly(HealthPermissions.WRITE_SYMPTOM_ACNE);
     }
@@ -586,5 +616,110 @@ public class SymptomRecordHelperTest {
                         HealthPermissions.READ_SYMPTOM_VOMITING,
                         HealthPermissions.READ_SYMPTOM_WATER_RETENTION,
                         HealthPermissions.READ_SYMPTOM_WHEEZING);
+    }
+
+    @Test
+    public void
+            testDeleteRecords_withPartialGranularWritePermissions_deletesOnlyPermittedRecords() {
+        SymptomRecordInternal recordOne = new SymptomRecordInternal();
+        recordOne.setSymptomType(SymptomRecord.SYMPTOM_TYPE_WHEEZING);
+
+        SymptomRecordInternal recordTwo = new SymptomRecordInternal();
+        recordTwo.setSymptomType(SYMPTOM_TYPE_ACNE);
+
+        String uuidOne = mFitnessTestUtils.insertRecords(PACKAGE_NAME, recordOne).get(0);
+        String uuidTwo = mFitnessTestUtils.insertRecords(PACKAGE_NAME, recordTwo).get(0);
+
+        mFitnessTestUtils.deleteRecords(
+                PACKAGE_NAME,
+                /* grantedGranularWritePermissions= */ Set.of(
+                        SymptomTypePermissionMapper.getWritePermission(SYMPTOM_TYPE_WHEEZING)),
+                RecordIdFilter.fromId(SymptomRecord.class, uuidOne),
+                RecordIdFilter.fromId(SymptomRecord.class, uuidTwo));
+
+        List<RecordInternal<?>> records =
+                mFitnessTestUtils.readAllRecordsOfType(PACKAGE_NAME, SymptomRecord.class);
+
+        assertThat(records).hasSize(1);
+        assertThat(records.get(0).getUuid().toString()).isEqualTo(uuidTwo);
+    }
+
+    @Test
+    public void testDeletion_grantBothPermissions_deletesBothRecords() {
+        SymptomRecordInternal recordOne = new SymptomRecordInternal();
+        recordOne.setSymptomType(SYMPTOM_TYPE_WHEEZING);
+
+        SymptomRecordInternal recordTwo = new SymptomRecordInternal();
+        recordTwo.setSymptomType(SYMPTOM_TYPE_ACNE);
+
+        String uuidOne = mFitnessTestUtils.insertRecords(PACKAGE_NAME, recordOne).get(0);
+        String uuidTwo = mFitnessTestUtils.insertRecords(PACKAGE_NAME, recordTwo).get(0);
+
+        mFitnessTestUtils.deleteRecords(
+                PACKAGE_NAME,
+                /* grantedGranularWritePermissions= */ Set.of(
+                        SymptomTypePermissionMapper.getWritePermission(SYMPTOM_TYPE_WHEEZING),
+                        SymptomTypePermissionMapper.getWritePermission(SYMPTOM_TYPE_ACNE)),
+                RecordIdFilter.fromId(SymptomRecord.class, uuidOne),
+                RecordIdFilter.fromId(SymptomRecord.class, uuidTwo));
+
+        List<RecordInternal<?>> records =
+                mFitnessTestUtils.readAllRecordsOfType(PACKAGE_NAME, SymptomRecord.class);
+
+        assertThat(records).hasSize(0);
+    }
+
+    @Test
+    public void testDeletion_grantZeroPermissions_deletesNoRecords() {
+        SymptomRecordInternal recordOne = new SymptomRecordInternal();
+        recordOne.setSymptomType(SYMPTOM_TYPE_WHEEZING);
+
+        SymptomRecordInternal recordTwo = new SymptomRecordInternal();
+        recordTwo.setSymptomType(SYMPTOM_TYPE_ACNE);
+
+        String uuidOne = mFitnessTestUtils.insertRecords(PACKAGE_NAME, recordOne).get(0);
+        String uuidTwo = mFitnessTestUtils.insertRecords(PACKAGE_NAME, recordTwo).get(0);
+
+        mFitnessTestUtils.deleteRecords(
+                PACKAGE_NAME,
+                /* grantedGranularWritePermissions= */ Set.of(),
+                RecordIdFilter.fromId(SymptomRecord.class, uuidOne),
+                RecordIdFilter.fromId(SymptomRecord.class, uuidTwo));
+
+        List<RecordInternal<?>> records =
+                mFitnessTestUtils.readAllRecordsOfType(PACKAGE_NAME, SymptomRecord.class);
+
+        assertThat(records).hasSize(2);
+        assertThat(
+                        records.stream()
+                                .map(recordInternal -> recordInternal.getUuid().toString())
+                                .collect(Collectors.toSet()))
+                .containsExactly(uuidOne, uuidTwo);
+    }
+
+    @Test
+    public void testDeletion_grantOneRelevantAndOneIrrelevantPermission_deletesOnlyRelevant() {
+        SymptomRecordInternal recordOne = new SymptomRecordInternal();
+        recordOne.setSymptomType(SYMPTOM_TYPE_WHEEZING);
+
+        SymptomRecordInternal recordTwo = new SymptomRecordInternal();
+        recordTwo.setSymptomType(SYMPTOM_TYPE_ACNE);
+
+        String uuidOne = mFitnessTestUtils.insertRecords(PACKAGE_NAME, recordOne).get(0);
+        String uuidTwo = mFitnessTestUtils.insertRecords(PACKAGE_NAME, recordTwo).get(0);
+
+        mFitnessTestUtils.deleteRecords(
+                PACKAGE_NAME,
+                /* grantedGranularWritePermissions= */ Set.of(
+                        SymptomTypePermissionMapper.getWritePermission(SYMPTOM_TYPE_WHEEZING),
+                        SymptomTypePermissionMapper.getWritePermission(SYMPTOM_TYPE_COUGH)),
+                RecordIdFilter.fromId(SymptomRecord.class, uuidOne),
+                RecordIdFilter.fromId(SymptomRecord.class, uuidTwo));
+
+        List<RecordInternal<?>> records =
+                mFitnessTestUtils.readAllRecordsOfType(PACKAGE_NAME, SymptomRecord.class);
+
+        assertThat(records).hasSize(1);
+        assertThat(records.get(0).getUuid().toString()).isEqualTo(uuidTwo);
     }
 }

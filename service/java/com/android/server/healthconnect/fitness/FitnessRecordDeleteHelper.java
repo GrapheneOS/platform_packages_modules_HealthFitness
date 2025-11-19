@@ -31,7 +31,6 @@ import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper.ChangeLogsTableRequests;
@@ -92,6 +91,8 @@ public final class FitnessRecordDeleteHelper {
      *
      * @param callingPackageName The package name trying to delete the records.
      * @param request The request that specifies what to delete.
+     * @param grantedGranularWritePermissions granular write permissions for record types being
+     *     deleted (if a record type is controlled via multiple permissions)
      * @param enforceSelfDelete Whether the caller should only be able to delete their own data.
      * @param shouldRecordAccessLog Whether access logs should be recorded for this call
      * @return number of records deleted.
@@ -99,6 +100,7 @@ public final class FitnessRecordDeleteHelper {
     public int deleteRecords(
             String callingPackageName,
             DeleteUsingFiltersRequestParcel request,
+            Set<String> grantedGranularWritePermissions,
             boolean enforceSelfDelete,
             boolean shouldRecordAccessLog) {
         if (request.usesIdFilters() && request.usesNonIdFilters()) {
@@ -114,10 +116,18 @@ public final class FitnessRecordDeleteHelper {
         if (request.usesIdFilters()) {
             recordsDeleted =
                     deleteByIdFilter(
-                            callingPackageName, request, enforceSelfDelete, shouldRecordAccessLog);
+                            callingPackageName,
+                            request,
+                            grantedGranularWritePermissions,
+                            enforceSelfDelete,
+                            shouldRecordAccessLog);
         } else {
             recordsDeleted =
-                    deleteByNonIdFilter(callingPackageName, request, shouldRecordAccessLog);
+                    deleteByNonIdFilter(
+                            callingPackageName,
+                            request,
+                            grantedGranularWritePermissions,
+                            shouldRecordAccessLog);
         }
 
         if (recordsDeleted > 0) {
@@ -141,6 +151,7 @@ public final class FitnessRecordDeleteHelper {
     private int deleteByIdFilter(
             String callingPackageName,
             DeleteUsingFiltersRequestParcel request,
+            Set<String> grantedGranularWritePermissions,
             boolean enforceSelfDelete,
             boolean shouldRecordAccessLog) {
         List<RecordDeleteTableRequest> deleteTableRequests =
@@ -166,7 +177,9 @@ public final class FitnessRecordDeleteHelper {
 
         recordTypeToUuids.forEach(
                 (recordHelper, uuids) -> {
-                    deleteTableRequests.add(recordHelper.getDeleteTableRequest(uuids));
+                    deleteTableRequests.add(
+                            recordHelper.getDeleteTableRequest(
+                                    uuids, grantedGranularWritePermissions));
                     recordTypeIds.add(recordHelper.getRecordIdentifier());
                 });
 
@@ -181,6 +194,7 @@ public final class FitnessRecordDeleteHelper {
     private int deleteByNonIdFilter(
             String callingPackageName,
             DeleteUsingFiltersRequestParcel request,
+            Set<String> grantedGranularWritePermissions,
             boolean shouldRecordAccessLog) {
         List<RecordDeleteTableRequest> deleteTableRequests =
                 new ArrayList<>(request.getRecordTypeFilters().size());
@@ -206,6 +220,7 @@ public final class FitnessRecordDeleteHelper {
                                     request.getStartTime(),
                                     request.getEndTime(),
                                     request.isLocalTimeFilter(),
+                                    grantedGranularWritePermissions,
                                     mAppInfoHelper));
                     recordTypeIds.add(recordHelper.getRecordIdentifier());
                 });

@@ -142,6 +142,14 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return Collections.emptySet();
     }
 
+    /**
+     * Returns a set of granular write permissions that apply to this record type. The default
+     * implementation returns an empty set.
+     */
+    public Set<String> getAllGranularWritePermissionsForHelper() {
+        return Collections.emptySet();
+    }
+
     /** Database migration. Introduces automatic local time generation. */
     public abstract void applyGeneratedLocalTimeUpgrade(SQLiteDatabase db);
 
@@ -766,6 +774,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             long startTime,
             long endTime,
             boolean usesLocalTimeFilter,
+            Set<String> grantedGranularWritePermissions,
             AppInfoHelper appInfoHelper) {
         final String timeColumnName =
                 usesLocalTimeFilter ? getLocalStartTimeColumnName() : getStartTimeColumnName();
@@ -779,14 +788,22 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             deleteTableRequest.setPackageFilter(
                     APP_INFO_ID_COLUMN_NAME, appInfoHelper.getAppInfoIds(packageFilters));
         }
+        if (AconfigFlagHelper.isSymptomsEnabled()) {
+            addAdditionalDeletionFilters(deleteTableRequest, grantedGranularWritePermissions);
+        }
+
         return new RecordDeleteTableRequest(deleteTableRequest, getRecordIdentifier());
     }
 
-    public RecordDeleteTableRequest getDeleteTableRequest(List<UUID> ids) {
+    public RecordDeleteTableRequest getDeleteTableRequest(
+            List<UUID> ids, Set<String> grantedGranularWritePermissions) {
         DeleteTableRequest deleteTableRequest =
                 new DeleteTableRequest(getMainTableName())
                         .setPackageColumnName(APP_INFO_ID_COLUMN_NAME)
                         .setIds(UUID_COLUMN_NAME, StorageUtils.getListOfHexStrings(ids));
+        if (AconfigFlagHelper.isSymptomsEnabled()) {
+            addAdditionalDeletionFilters(deleteTableRequest, grantedGranularWritePermissions);
+        }
         return new RecordDeleteTableRequest(deleteTableRequest, getRecordIdentifier());
     }
 
@@ -804,6 +821,12 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                         .setIdColumnName(UUID_COLUMN_NAME);
         return new RecordDeleteTableRequest(deleteTableRequest, getRecordIdentifier());
     }
+
+    /**
+     * Adds any extra filters for deletion request. Default implementation adds no extra filters.
+     */
+    void addAdditionalDeletionFilters(
+            DeleteTableRequest deleteTableRequest, Set<String> grantedPermissions) {}
 
     public abstract String getPeriodGroupByColumnName();
 
@@ -883,7 +906,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return Collections.emptyList();
     }
 
-    @SuppressWarnings("NullAway") // TODO(b/317029272): fix this suppression
+    @SuppressWarnings("NullAway")
+    // TODO(b/317029272): fix this suppression
     SqlJoin getJoinForReadRequest() {
         return null;
     }
