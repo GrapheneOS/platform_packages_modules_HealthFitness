@@ -85,17 +85,14 @@ import java.util.UUID;
 @RunWith(AndroidJUnit4.class)
 public class FitnessRecordDeleteHelperTest {
     private static final String TEST_PACKAGE_NAME = "package.name";
-
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     private UserHandle mUserHandle;
     private AccessLogsHelper mAccessLogsHelper;
     private FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
     private InternalHealthConnectMappings mInternalHealthConnectMappings;
     private FitnessTestUtils mFitnessTestUtils;
     private FakeSerialDeviceDataProviderManager mDeviceDataProviderManager;
-
-    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
-    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
-
     @Mock private AppOpLogsHelper mAppOpLogsHelper;
 
     @Before
@@ -249,7 +246,7 @@ public class FitnessRecordDeleteHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteRecords_callingInternalDelete_doesNotAddDdpIdsToDeleteRequests() {
         DeleteUsingFiltersRequest deleteRequest =
@@ -283,7 +280,7 @@ public class FitnessRecordDeleteHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_callingInternalDelete_addsDdpIdsToDeleteRequests() {
         DeleteUsingFiltersRequest deleteRequest =
@@ -338,7 +335,7 @@ public class FitnessRecordDeleteHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_shouldEnforceSelfRead_setsPackageFiltersToDdpPackageName() {
         DeleteUsingFiltersRequest deleteRequest =
@@ -367,7 +364,7 @@ public class FitnessRecordDeleteHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_withDeviceRecord_deletesRecord() {
         String deviceId = "device";

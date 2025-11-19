@@ -68,7 +68,7 @@ import java.util.Set;
 @EnableFlags({
     Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
     Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-    Flags.FLAG_DEVELOPMENT_DATABASE
+    Flags.FLAG_DEVELOPMENT_DATABASE_RW
 })
 public class DeviceDataSourcesHelperTest {
 

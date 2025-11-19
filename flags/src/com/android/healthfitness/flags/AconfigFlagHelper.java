@@ -40,6 +40,8 @@ public final class AconfigFlagHelper {
     private static final DatabaseVersionSupplier sDatabaseVersionSupplier =
             new DatabaseVersionSupplier(LAST_ROLLED_OUT_DB_VERSION, getDbVersionToDbFlagMap());
 
+    private AconfigFlagHelper() {}
+
     /**
      * Returns the DB version based on DB flag values, this DB version is used to initialize {@link
      * android.database.sqlite.SQLiteOpenHelper} to dictate which DB upgrades will be executed.
@@ -82,8 +84,6 @@ public final class AconfigFlagHelper {
     private static boolean isDbFlagEnabled(int dbVersion) {
         return getDbVersion() >= dbVersion;
     }
-
-    private AconfigFlagHelper() {}
 
     // =============================================================================================
     // Only things in below this comment should be updated when we move DB schema changes of a
@@ -147,7 +147,7 @@ public final class AconfigFlagHelper {
     public static boolean isDeviceDataProvidersEnabled() {
         return Flags.deviceDataProvidersApi()
                 && Flags.deviceDataProvidersDb()
-                && Flags.developmentDatabase();
+                && Flags.developmentDatabaseRw();
     }
 
     /** Returns a boolean indicating whether Symptoms data type is enabled. */

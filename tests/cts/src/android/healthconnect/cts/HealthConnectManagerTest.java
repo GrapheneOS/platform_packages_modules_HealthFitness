@@ -41,7 +41,7 @@ import static android.healthconnect.testing.cts.TestUtils.startMigrationWithShel
 
 import static com.android.compatibility.common.util.SystemUtil.eventually;
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
-import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
 
@@ -1457,7 +1457,7 @@ public class HealthConnectManagerTest {
     @RequiresFlagsEnabled({
         FLAG_DEVICE_DATA_PROVIDERS_API,
         FLAG_DEVICE_DATA_PROVIDERS_DB,
-        FLAG_DEVELOPMENT_DATABASE
+        FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void testGetCurrentDeviceId_calledOnce_returnsMaskedSpn() throws InterruptedException {
         String deviceId = TestUtils.getCurrentDeviceId();
@@ -1469,7 +1469,7 @@ public class HealthConnectManagerTest {
     @RequiresFlagsEnabled({
         FLAG_DEVICE_DATA_PROVIDERS_API,
         FLAG_DEVICE_DATA_PROVIDERS_DB,
-        FLAG_DEVELOPMENT_DATABASE
+        FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void testGetCurrentDeviceId_calledMultipleTimes_returnsSameId()
             throws InterruptedException {
@@ -1482,7 +1482,7 @@ public class HealthConnectManagerTest {
     @RequiresFlagsEnabled({
         FLAG_DEVICE_DATA_PROVIDERS_API,
         FLAG_DEVICE_DATA_PROVIDERS_DB,
-        FLAG_DEVELOPMENT_DATABASE
+        FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void testGetCurrentDeviceId_resetBetweenCalls_returnsDifferentIds()
             throws InterruptedException {

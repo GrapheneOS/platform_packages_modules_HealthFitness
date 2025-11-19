@@ -55,7 +55,7 @@ import org.mockito.junit.MockitoRule;
 
 @EnableFlags({
     Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-    Flags.FLAG_DEVELOPMENT_DATABASE,
+    Flags.FLAG_DEVELOPMENT_DATABASE_RW,
     Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
 })
 @RunWith(AndroidJUnit4.class)

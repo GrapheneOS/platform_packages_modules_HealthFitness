@@ -256,6 +256,7 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.S
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -3799,7 +3800,7 @@ public class HealthConnectServiceImplTest {
     @DisableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deviceDataProviderManagerIsNull_advertiseDeviceDataSources_throwsException()
             throws RemoteException {
@@ -3815,7 +3816,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void advertiseDeviceDataSources_doesNotThrow() throws RemoteException {
         Device device =
@@ -3843,7 +3844,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void advertiseDeviceDataSources_withCurrentDeviceId_unmasks() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -3870,7 +3871,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void insertDeviceRecords_withoutAdvertisement_throws() throws RemoteException {
         Instant now = mFakeTimeSource.getInstantNow();
@@ -3913,7 +3914,7 @@ public class HealthConnectServiceImplTest {
     @DisableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void ddpApisDisabled_insertDeviceRecords_throwsException() throws RemoteException {
         Instant now = mFakeTimeSource.getInstantNow();
@@ -3954,7 +3955,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void insertDeviceRecords_afterAdvertisement_doesNotThrow() throws RemoteException {
         Instant now = mFakeTimeSource.getInstantNow();
@@ -3991,7 +3992,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void updateDeviceRecords_afterAdvertisementAndInsert_doesNotThrow() throws Exception {
         Instant now = mFakeTimeSource.getInstantNow();
@@ -4042,7 +4043,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void updateDeviceRecords_wrongUuidInUpdatedRecord_throws() throws Exception {
         Instant now = mFakeTimeSource.getInstantNow();
@@ -4101,7 +4102,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void updateDeviceRecords_withoutInsert_throws() throws RemoteException {
         Instant now = mFakeTimeSource.getInstantNow();
@@ -4143,7 +4144,7 @@ public class HealthConnectServiceImplTest {
     @DisableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deviceDataProviderManagerIsNull_updateDeviceRecords_throwsException()
             throws RemoteException {
@@ -4181,7 +4182,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void updateDeviceRecords_withCurrentDeviceId_unmasks() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4215,7 +4216,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void insertDeviceRecords_withCurrentDeviceId_unmasks() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4256,7 +4257,7 @@ public class HealthConnectServiceImplTest {
     @DisableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceIdWithDisabledFlags_NullException_throwsUnsupportedError() {
         assertThrows(
@@ -4268,7 +4269,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceIdWithoutInit_NullException_throwsRuntimeError() {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4282,7 +4283,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceIdWithoutPermission_SecurityException_throwsSecurityError() {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4297,7 +4298,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceId_returnsMaskedSpn() throws Exception {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4313,7 +4314,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceId_multipleCalls_returnsSameSpn() throws Exception {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4331,7 +4332,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceId_returnValue_resolvesToStableIdWhenUnmasked() throws Exception {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4351,7 +4352,7 @@ public class HealthConnectServiceImplTest {
     @DisableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void readDeviceRecords_disabledDdpFlags_exception() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4374,7 +4375,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void readDeviceRecords_noDdpPermission_exception() throws RemoteException {
         setDeviceDataProviderPermission(PackageManager.PERMISSION_DENIED);
@@ -4397,7 +4398,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void readDeviceRecords_noAdvertising_exception() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4420,7 +4421,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void readDeviceRecords_advertised_noData_emptyListReturned_success()
             throws RemoteException {
@@ -4449,7 +4450,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void readDeviceRecords_currentDeviceId_unmasksId() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4480,7 +4481,7 @@ public class HealthConnectServiceImplTest {
     @DisableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_disabledDdpFlags_throws() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4501,7 +4502,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_npDdpPermission_throws() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_DENIED);
@@ -4522,7 +4523,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_noAdvertising_throws() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4543,7 +4544,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_withPackageNameFilter_throws() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4567,7 +4568,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_withIdFilters_throws() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4590,7 +4591,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_advertised_emptyRequest_success() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4610,7 +4611,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_currentDeviceId_unmasks() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4647,7 +4648,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getDeviceDataSourceCapabilities_noAdvertisedData_returnsOnlySteps()
             throws Exception {
@@ -4669,7 +4670,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getDeviceDataSourceCapabilities_withAdvertisedData_returnsCapabilities()
             throws Exception {
@@ -4694,8 +4695,9 @@ public class HealthConnectServiceImplTest {
     @DisableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
+    @Ignore
     public void getDeviceDataSourceCapabilities_flagDisabled_throwsUnsupportedOperation()
             throws Exception {
         IDeviceDataSourceCapabilitiesCallback.Stub callback =

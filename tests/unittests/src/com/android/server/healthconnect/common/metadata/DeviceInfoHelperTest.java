@@ -99,7 +99,7 @@ public class DeviceInfoHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE_RW, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void populateDeviceInfoId_deviceInfoNotInCache_insertsNewEntry() {
         RecordInternal<?> recordInternal = getStepsRecordInternal();
 
@@ -112,7 +112,7 @@ public class DeviceInfoHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE_RW, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void populateDeviceInfoId_deviceInfoInCache_doesNotInsert() {
         RecordInternal<?> recordInternal = getStepsRecordInternal();
 
@@ -126,7 +126,7 @@ public class DeviceInfoHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE_RW, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void clearCache_cacheIsCleared_doesNotRewriteToDb() {
         RecordInternal<?> recordInternal = getStepsRecordInternal();
         mDeviceInfoHelper.populateDeviceInfoId(recordInternal);
@@ -140,7 +140,7 @@ public class DeviceInfoHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE_RW, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void populateRecordWithValue_populatesRecordCorrectly() {
         RecordInternal<?> storedRecordInternal = getStepsRecordInternal();
         mDeviceInfoHelper.populateDeviceInfoId(storedRecordInternal);
@@ -155,7 +155,7 @@ public class DeviceInfoHelperTest {
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @DisableFlags({Flags.FLAG_DEVELOPMENT_DATABASE_RW, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void populateRecordWithValue_flagDisabled_doesNotPopulateEnhancedDeviceInfo() {
         RecordInternal<?> storedRecordInternal = getStepsRecordInternal();
         mDeviceInfoHelper.populateDeviceInfoId(storedRecordInternal);
@@ -170,7 +170,7 @@ public class DeviceInfoHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE_RW, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void deviceInfosAreEqual() {
         DeviceInfoHelper.DeviceInfo deviceInfo1 =
                 new DeviceInfoHelper.DeviceInfo(
@@ -183,7 +183,7 @@ public class DeviceInfoHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE_RW, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void deviceInfosAreDifferent() {
         DeviceInfoHelper.DeviceInfo deviceInfo =
                 new DeviceInfoHelper.DeviceInfo(
@@ -212,14 +212,14 @@ public class DeviceInfoHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE_RW, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getDeviceInfo_deviceIdNotInCache_returnsNull() {
         DeviceInfoHelper.DeviceInfo deviceInfo = mDeviceInfoHelper.getDeviceInfo(1);
         assertThat(deviceInfo).isNull();
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE_RW, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getDeviceInfoId_deviceInfoNotInCache_returnsNull() {
         DeviceInfoHelper.DeviceInfo nonExistentDeviceInfo =
                 new DeviceInfoHelper.DeviceInfo(
@@ -231,7 +231,7 @@ public class DeviceInfoHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE_RW, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getDeviceInfoId_deviceInfoInCache_returnsCorrectId() {
         RecordInternal<?> recordInternal = getStepsRecordInternal();
         mDeviceInfoHelper.populateDeviceInfoId(recordInternal);
@@ -245,7 +245,7 @@ public class DeviceInfoHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE_RW, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getDeviceInfo_deviceIdInCache_returnsCorrectDeviceInfo() {
         DeviceInfoHelper.DeviceInfo deviceInfoWithId =
                 new DeviceInfoHelper.DeviceInfo(
@@ -275,7 +275,7 @@ public class DeviceInfoHelperTest {
     @Test
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVELOPMENT_DATABASE,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
     })
     public void populateDeviceInfoId_syntheticPackageNameAndDeviceInfoIdPresent_returnsEarly() {

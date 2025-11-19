@@ -422,7 +422,7 @@ public class AppInfoHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void insertsDeviceDataSource() {
         String canonicalSpn = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
@@ -457,7 +457,7 @@ public class AppInfoHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void spnAlreadyPresent_populateAppInfoId_skipsPopulatingAppInfo() {
         String canonicalSpn = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
