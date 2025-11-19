@@ -194,7 +194,7 @@ public class MenstrualCyclePhaseRecordApiTest extends BaseApiTest<MenstrualCycle
     }
 
     @Test
-    public void insertRecords_sameDateWithClientId_existingRecordOverriden()
+    public void insertRecords_sameDateWithClientId_existingRecordOverridden()
             throws InterruptedException {
         Record recordToInsert =
                 mRecordFactory.newFullRecord(

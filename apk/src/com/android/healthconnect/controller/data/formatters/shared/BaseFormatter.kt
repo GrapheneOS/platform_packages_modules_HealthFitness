@@ -17,6 +17,7 @@ import android.content.Context
 import android.health.connect.datatypes.AlcoholConsumptionRecord
 import android.health.connect.datatypes.InstantRecord
 import android.health.connect.datatypes.IntervalRecord
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SymptomRecord
 import com.android.healthconnect.controller.R
@@ -94,6 +95,8 @@ abstract class BaseFormatter<T : Record>(
                     record.endTime,
                     record.date,
                 )
+            is MenstrualCyclePhaseRecord ->
+                timeFormatter.formatShortDateWithoutYear(record.date, record.startZoneOffset)
             is IntervalRecord -> timeFormatter.formatTimeRange(record.startTime, record.endTime)
             is InstantRecord -> timeFormatter.formatTime(record.time)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")
@@ -118,6 +121,7 @@ abstract class BaseFormatter<T : Record>(
                     record.endTime,
                     record.date,
                 )
+            is MenstrualCyclePhaseRecord -> timeFormatter.formatShortDate(record.startTime)
             is IntervalRecord -> timeFormatter.formatTimeRangeA11y(record.startTime, record.endTime)
             is InstantRecord -> timeFormatter.formatTime(record.time)
             else -> throw IllegalArgumentException("${record::class.java} Not supported!")

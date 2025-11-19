@@ -88,7 +88,7 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
             "CtsHealthConnectTestAppAWithNormalReadWritePermission"
     }
 
-    private lateinit var record: Record
+    protected lateinit var record: Record
 
     @Before
     fun setup() {
@@ -141,7 +141,7 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
     }
 
     @Test
-    fun dataAndAccess_showsEntriesOfFirstAvailableDay_deletesEntry() {
+    open fun dataAndAccess_showsEntriesOfFirstAvailableDay_deletesEntry() {
         context.launchDataActivity {
             scrollDownToAndFindText(dataCategoryString)
             navigateToNewPage(dataTypeString)

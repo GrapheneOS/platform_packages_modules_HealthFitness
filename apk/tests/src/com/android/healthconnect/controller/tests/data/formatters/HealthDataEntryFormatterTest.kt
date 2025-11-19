@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.tests.data.formatters
 import android.content.Context
 import android.health.connect.datatypes.BasalMetabolicRateRecord
 import android.health.connect.datatypes.HeartRateRecord
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord
 import android.health.connect.datatypes.PlannedExerciseSessionRecord
 import android.health.connect.datatypes.StepsRecord
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -27,12 +28,10 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry.Formatte
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SeriesDataEntry
 import com.android.healthconnect.controller.data.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.shared.app.AppInfoReader
-import com.android.healthconnect.controller.shared.app.AppMetadata
-import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
-import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.getBasalMetabolicRateRecord
 import com.android.healthconnect.controller.tests.utils.getHeartRateRecord
+import com.android.healthconnect.controller.tests.utils.getMenstrualCyclePhaseRecord
 import com.android.healthconnect.controller.tests.utils.getSamplePlannedExerciseSessionRecord
 import com.android.healthconnect.controller.tests.utils.getStepsRecord
 import com.android.healthconnect.controller.tests.utils.setLocale
@@ -50,9 +49,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.kotlin.any
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -142,6 +138,28 @@ class HealthDataEntryFormatterTest {
                         titleA11y = "Running • Morning Run",
                         dataType = PlannedExerciseSessionRecord::class,
                         notes = "Morning quick run by the park",
+                    )
+                )
+        }
+    }
+
+    @Test
+    fun format_formatsMenstrualCyclePhaseRecord() {
+        val record =
+            getMenstrualCyclePhaseRecord(
+                phase = MenstrualCyclePhaseRecord.PHASE_FOLLICULAR,
+                dayOfCycle = 5,
+            )
+        runBlocking {
+            assertThat(formatter.format(record))
+                .isEqualTo(
+                    FormattedDataEntry(
+                        uuid = "test_id",
+                        header = "20 Oct • Health Connect test app",
+                        headerA11y = "20 October • Health Connect test app",
+                        title = "Follicular Day 5",
+                        titleA11y = "Follicular Day 5",
+                        dataType = MenstrualCyclePhaseRecord::class,
                     )
                 )
         }
