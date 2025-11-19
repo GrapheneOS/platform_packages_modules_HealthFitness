@@ -144,9 +144,11 @@ public final class AconfigFlagHelper {
         return Flags.alcoholConsumption() && Flags.alcoholConsumptionDb();
     }
 
-    /** Returns a boolean indicating whether device data providers database changes are enabled. */
+    /** Returns a boolean indicating whether device data providers feature is enabled. */
     public static boolean isDeviceDataProvidersEnabled() {
-        return Flags.deviceDataProvidersDb() && Flags.developmentDatabase();
+        return Flags.deviceDataProvidersApi()
+                && Flags.deviceDataProvidersDb()
+                && Flags.developmentDatabase();
     }
 
     /** Returns a boolean indicating whether Symptoms data type is enabled. */

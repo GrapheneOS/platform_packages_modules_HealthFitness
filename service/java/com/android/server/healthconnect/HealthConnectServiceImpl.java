@@ -3414,8 +3414,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             logger,
                             recordsParcel.getRecordsChunkSize());
 
-                    if (!Flags.deviceDataProvidersApi()
-                            || !AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                         throw new UnsupportedOperationException(
                                 "insertDeviceRecords is not supported");
                     }
@@ -3491,8 +3490,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             logger,
                             recordsParcel.getRecordsChunkSize());
 
-                    if (!Flags.deviceDataProvidersApi()
-                            || !AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                         throw new UnsupportedOperationException(
                                 "updateDeviceRecords is not supported");
                     }
@@ -3564,14 +3562,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         enforceIsForegroundUser(userHandle);
         try {
-            DeviceDataProviderManager deviceDataProviderManager =
-                    requireNonNull(mDeviceDataProviderManager);
-
-            if (!Flags.deviceDataProvidersApi()) {
+            if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                 throw new UnsupportedOperationException(
                         "getCurrentDeviceId is not supported."
                                 + "Make sure to turn on the respective DDP flags.");
             }
+
+            DeviceDataProviderManager deviceDataProviderManager =
+                    requireNonNull(mDeviceDataProviderManager);
 
             if (!deviceDataProviderManager.isPermittedToProvideDeviceData(
                     callingPackageName, uid, pid)) {
@@ -3624,14 +3622,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     verifyPackageNameFromUid(uid, attributionSource);
                     throwExceptionIfDataSyncInProgress();
 
-                    DeviceDataProviderManager deviceDataProviderManager =
-                            requireNonNull(mDeviceDataProviderManager);
-
-                    if (!Flags.deviceDataProvidersApi()) {
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                         throw new UnsupportedOperationException(
                                 "readDeviceRecords is not supported."
                                         + "Make sure to turn on the respective DDP flags.");
                     }
+
+                    DeviceDataProviderManager deviceDataProviderManager =
+                            requireNonNull(mDeviceDataProviderManager);
 
                     if (!deviceDataProviderManager.isPermittedToProvideDeviceData(
                             callingPackageName, uid, pid)) {
