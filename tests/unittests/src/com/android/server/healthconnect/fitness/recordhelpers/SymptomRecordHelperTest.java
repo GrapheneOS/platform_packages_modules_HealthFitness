@@ -20,8 +20,15 @@ import static android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_ACNE;
 import static android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_COUGH;
 import static android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_WHEEZING;
 
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
+
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
+import static org.mockito.Mockito.mock;
+
+import android.content.Context;
+import android.database.Cursor;
 import android.health.connect.HealthPermissions;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.datatypes.SymptomRecord;
@@ -39,14 +46,22 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
+import com.android.server.healthconnect.permission.FirstGrantTimeManager;
+import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
+import com.android.server.healthconnect.storage.TransactionManager;
+import com.android.server.healthconnect.storage.request.ReadTableRequest;
+import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
+import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -55,28 +70,32 @@ import java.util.stream.Collectors;
 @RequiresFlagsEnabled({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB})
 public class SymptomRecordHelperTest {
 
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
 
     private SymptomRecordHelper mSymptomRecordHelper;
-    private FitnessTestUtils mFitnessTestUtils;
     private static final String PACKAGE_NAME = "com.my.package";
+    private FitnessTestUtils mFitnessTestUtils;
+    private TransactionManager mTransactionManager;
 
     @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        mSymptomRecordHelper = new SymptomRecordHelper();
-
+    public void setUp() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
         HealthConnectInjector healthConnectInjector =
-                HealthConnectInjectorImpl.newBuilderForTest(
-                                ApplicationProvider.getApplicationContext())
+                HealthConnectInjectorImpl.newBuilderForTest(context)
+                        .setFirstGrantTimeManager(mock(FirstGrantTimeManager.class))
+                        .setHealthPermissionIntentAppsTracker(
+                                mock(HealthPermissionIntentAppsTracker.class))
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
-
+        mTransactionManager = healthConnectInjector.getTransactionManager();
         mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
         mFitnessTestUtils.insertApp(PACKAGE_NAME);
+        mSymptomRecordHelper = new SymptomRecordHelper();
     }
 
     @Test
@@ -721,5 +740,129 @@ public class SymptomRecordHelperTest {
 
         assertThat(records).hasSize(1);
         assertThat(records.get(0).getUuid().toString()).isEqualTo(uuidTwo);
+    }
+
+    @Test
+    public void enforcePreUpsertChecks_updateNotes_noException() {
+        SymptomRecordInternal record = getSymptomRecord(SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN);
+        mFitnessTestUtils.insertRecords(PACKAGE_NAME, record);
+        record.setNotes("Testing");
+
+        mSymptomRecordHelper.enforcePreUpsertChecks(List.of(record), mTransactionManager);
+        // No exception thrown
+    }
+
+    @Test
+    public void enforcePreUpsertChecks_updateTemporalType_noException() {
+        SymptomRecordInternal record = getSymptomRecord(SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN);
+        mFitnessTestUtils.insertRecords(PACKAGE_NAME, record);
+        record.setTemporalType(SymptomRecord.RECORD_TEMPORAL_TYPE_INSTANT);
+
+        mSymptomRecordHelper.enforcePreUpsertChecks(List.of(record), mTransactionManager);
+        // No exception thrown
+    }
+
+    @Test
+    public void enforcePreUpsertChecks_updateCount_noException() {
+        SymptomRecordInternal record = getSymptomRecord(SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN);
+        mFitnessTestUtils.insertRecords(PACKAGE_NAME, record);
+        record.setCount(4);
+
+        mSymptomRecordHelper.enforcePreUpsertChecks(List.of(record), mTransactionManager);
+        // No exception thrown
+    }
+
+    @Test
+    public void enforcePreUpsertChecks_updateSeverity_noException() {
+        SymptomRecordInternal record = getSymptomRecord(SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN);
+        mFitnessTestUtils.insertRecords(PACKAGE_NAME, record);
+        record.setSeverity(SymptomRecord.SEVERITY_MILD);
+
+        mSymptomRecordHelper.enforcePreUpsertChecks(List.of(record), mTransactionManager);
+        // No exception thrown
+    }
+
+    @Test
+    public void enforcePreUpsertChecks_updateSymptomType_throwsIllegalArgumentException() {
+        SymptomRecordInternal record = getSymptomRecord(SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN);
+        mFitnessTestUtils.insertRecords(PACKAGE_NAME, record);
+
+        record.setSymptomType(SymptomRecord.SYMPTOM_TYPE_ACNE);
+        IllegalArgumentException thrown =
+                assertThrows(
+                        IllegalArgumentException.class,
+                        () ->
+                                mSymptomRecordHelper.enforcePreUpsertChecks(
+                                        List.of(record), mTransactionManager));
+
+        assertThat(thrown).hasMessageThat().isEqualTo("Updating Symptom type is not allowed.");
+    }
+
+    @Test
+    public void read_withAbdominalPainPermission_readsOnlyAbdominalPain() {
+        mFitnessTestUtils.insertRecords(
+                PACKAGE_NAME,
+                getSymptomRecord(SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN),
+                getSymptomRecord(SymptomRecord.SYMPTOM_TYPE_ACNE));
+
+        WhereClauses whereClauses = new WhereClauses(AND);
+        mSymptomRecordHelper.addCustomReadTableWhereClauses(
+                whereClauses, Set.of(HealthPermissions.READ_SYMPTOM_ABDOMINAL_PAIN));
+        ReadTableRequest request =
+                new ReadTableRequest(SymptomRecordHelper.TABLE_NAME).setWhereClause(whereClauses);
+
+        try (Cursor cursor = mTransactionManager.read(request)) {
+            assertThat(cursor.getCount()).isEqualTo(1);
+            cursor.moveToFirst();
+            SymptomRecordInternal record = mSymptomRecordHelper.populateSpecificRecordValue(cursor);
+            assertThat(record.getSymptomType())
+                    .isEqualTo(SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN);
+        }
+    }
+
+    @Test
+    public void read_withAllPermissions_readsAll() {
+        mFitnessTestUtils.insertRecords(
+                PACKAGE_NAME,
+                getSymptomRecord(SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN),
+                getSymptomRecord(SymptomRecord.SYMPTOM_TYPE_ACNE));
+
+        WhereClauses whereClauses = new WhereClauses(AND);
+        mSymptomRecordHelper.addCustomReadTableWhereClauses(
+                whereClauses,
+                Set.of(
+                        HealthPermissions.READ_SYMPTOM_ABDOMINAL_PAIN,
+                        HealthPermissions.READ_SYMPTOM_ACNE));
+        ReadTableRequest request =
+                new ReadTableRequest(SymptomRecordHelper.TABLE_NAME).setWhereClause(whereClauses);
+
+        try (Cursor cursor = mTransactionManager.read(request)) {
+            assertThat(cursor.getCount()).isEqualTo(2);
+        }
+    }
+
+    @Test
+    public void read_withNoPermissions_readsNone() {
+        mFitnessTestUtils.insertRecords(
+                PACKAGE_NAME,
+                getSymptomRecord(SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN),
+                getSymptomRecord(SymptomRecord.SYMPTOM_TYPE_ACNE));
+
+        WhereClauses whereClauses = new WhereClauses(AND);
+        mSymptomRecordHelper.addCustomReadTableWhereClauses(whereClauses, Collections.emptySet());
+        ReadTableRequest request =
+                new ReadTableRequest(SymptomRecordHelper.TABLE_NAME).setWhereClause(whereClauses);
+
+        try (Cursor cursor = mTransactionManager.read(request)) {
+            assertThat(cursor.getCount()).isEqualTo(0);
+        }
+    }
+
+    private SymptomRecordInternal getSymptomRecord(int type) {
+        SymptomRecordInternal record = new SymptomRecordInternal();
+        record.setSymptomType(type);
+        record.setStartTime(Instant.ofEpochMilli(1000).toEpochMilli());
+        record.setEndTime(Instant.ofEpochMilli(2000).toEpochMilli());
+        return record;
     }
 }
