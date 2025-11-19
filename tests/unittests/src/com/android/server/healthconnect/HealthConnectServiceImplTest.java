@@ -139,6 +139,7 @@ import android.database.sqlite.SQLiteException;
 import android.graphics.drawable.Drawable;
 import android.health.HealthFitnessStatsLog;
 import android.health.connect.DeleteMedicalResourcesRequest;
+import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.GetMatchingAppsResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectException;
@@ -149,7 +150,9 @@ import android.health.connect.MatchmakingResponse;
 import android.health.connect.MedicalResourceId;
 import android.health.connect.ReadMedicalResourcesInitialRequest;
 import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.RecordIdFilter;
 import android.health.connect.UpsertMedicalResourceRequest;
+import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.DeviceDataSourceCapabilities;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
 import android.health.connect.aidl.IApplicationInfoResponseCallback;
@@ -175,6 +178,7 @@ import android.health.connect.aidl.IReadRecordsResponseCallback;
 import android.health.connect.aidl.InsertRecordsResponseParcel;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.aidl.ReadRecordsResponseParcel;
+import android.health.connect.aidl.RecordIdFiltersParcel;
 import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
 import android.health.connect.backuprestore.BackupMetadata;
@@ -351,7 +355,8 @@ public class HealthConnectServiceImplTest {
                     "isMatchmakingPossible",
                     "getMatchingApps",
                     "recordMatchmakingDenial",
-                    "readDeviceRecords");
+                    "readDeviceRecords",
+                    "deleteDeviceRecords");
 
     /** Health connect service APIs that do not block calls when data sync is in progress. */
     public static final Set<String> DO_NOT_BLOCK_CALLS_DURING_DATA_SYNC_LIST =
@@ -527,6 +532,7 @@ public class HealthConnectServiceImplTest {
                                     healthConnectInjector.getDeviceDataProviderMetadataHelper(),
                                     healthConnectInjector.getFitnessRecordUpsertHelper(),
                                     healthConnectInjector.getFitnessRecordReadHelper(),
+                                    healthConnectInjector.getFitnessRecordDeleteHelper(),
                                     healthConnectInjector.getSyntheticPackageNameCreator()));
         }
 
@@ -4447,6 +4453,163 @@ public class HealthConnectServiceImplTest {
         verify(mDeviceDataProviderManager).readDeviceRecords(any(), any(), parcelCaptor.capture());
         ReadRecordsRequestParcel capturedParcel = parcelCaptor.getValue();
         assertThat(capturedParcel.getPackageFilters()).containsExactly(internalDeviceId);
+    }
+
+    @Test
+    @DisableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void deleteDeviceRecords_disabledDdpFlags_throws() throws RemoteException {
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
+
+        mHealthConnectService.deleteDeviceRecords(
+                mAttributionSource,
+                "some device id",
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder().build()),
+                mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void deleteDeviceRecords_npDdpPermission_throws() throws RemoteException {
+        setDeviceDataProviderPermission(PERMISSION_DENIED);
+
+        mHealthConnectService.deleteDeviceRecords(
+                mAttributionSource,
+                "some device id",
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder().build()),
+                mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_SECURITY);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void deleteDeviceRecords_noAdvertising_throws() throws RemoteException {
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
+
+        mHealthConnectService.deleteDeviceRecords(
+                mAttributionSource,
+                "some device id",
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder().build()),
+                mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_INVALID_ARGUMENT);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void deleteDeviceRecords_withPackageNameFilter_throws() throws RemoteException {
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
+
+        mHealthConnectService.deleteDeviceRecords(
+                mAttributionSource,
+                "some device id",
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder()
+                                .addDataOrigin(
+                                        new DataOrigin.Builder().setPackageName("Foo").build())
+                                .build()),
+                mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_INVALID_ARGUMENT);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void deleteDeviceRecords_withIdFilters_throws() throws RemoteException {
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
+
+        mHealthConnectService.deleteDeviceRecords(
+                mAttributionSource,
+                "some device id",
+                new DeleteUsingFiltersRequestParcel(
+                        new RecordIdFiltersParcel(
+                                List.of(RecordIdFilter.fromId(StepsRecord.class, "id"))),
+                        mAttributionSource.getPackageName()),
+                mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_INVALID_ARGUMENT);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void deleteDeviceRecords_advertised_emptyRequest_success() throws RemoteException {
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
+
+        advertiseStepsDeviceDataSource("test device id", buildDevice());
+        mHealthConnectService.deleteDeviceRecords(
+                mAttributionSource,
+                "test device id",
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder().build()),
+                mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE
+    })
+    public void deleteDeviceRecords_currentDeviceId_unmasks() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
+
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        advertiseStepsDeviceDataSource(clientExposedId, buildDevice());
+
+        mHealthConnectService.deleteDeviceRecords(
+                mAttributionSource,
+                clientExposedId,
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder().build()),
+                mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
+
+        String internalDeviceId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+        verify(mDeviceDataProviderManager, timeout(TIMEOUT_MILLIS))
+                .deleteDeviceRecords(any(), eq(internalDeviceId), any());
     }
 
     private void setDeviceDataProviderPermission(int result) {

@@ -27,6 +27,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.health.connect.HealthPermissions;
 import android.health.connect.PageTokenWrapper;
+import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.datatypes.Device;
 import android.health.connect.device.DeviceDataAdvertisement;
@@ -42,6 +43,7 @@ import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper.DeviceInfo;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
+import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
@@ -54,6 +56,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Manages device data providers, handling advertisements and updating device, app, and DDP info in
@@ -74,6 +77,7 @@ public class DeviceDataProviderManager {
     private final DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
     private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
     private final FitnessRecordReadHelper mFitnessRecordReadHelper;
+    private final FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
     private final SyntheticPackageNameCreator mSyntheticPackageNameCreator;
 
     @Nullable private String mStableCurrentDeviceId;
@@ -89,6 +93,7 @@ public class DeviceDataProviderManager {
             @NonNull DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
             @NonNull FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             @NonNull FitnessRecordReadHelper fitnessRecordReadHelper,
+            @NonNull FitnessRecordDeleteHelper fitnessRecordDeleteHelper,
             @NonNull SyntheticPackageNameCreator syntheticPackageNameCreator) {
         mContext = Objects.requireNonNull(context);
         mDeviceInfoHelper = Objects.requireNonNull(deviceInfoHelper);
@@ -98,6 +103,7 @@ public class DeviceDataProviderManager {
                 Objects.requireNonNull(deviceDataProviderMetadataHelper);
         mFitnessRecordUpsertHelper = Objects.requireNonNull(fitnessRecordUpsertHelper);
         mFitnessRecordReadHelper = fitnessRecordReadHelper;
+        mFitnessRecordDeleteHelper = Objects.requireNonNull(fitnessRecordDeleteHelper);
         mSyntheticPackageNameCreator = Objects.requireNonNull(syntheticPackageNameCreator);
     }
 
@@ -354,6 +360,45 @@ public class DeviceDataProviderManager {
     }
 
     /**
+     * Deletes records associated with a specific device.
+     *
+     * <p>The given delete request may not contain package name or id filters, as this method is
+     * intended to delete records associated with {@code deviceId} only.
+     *
+     * <p>Note: The device data source must be advertised first through {@link
+     * #handleAdvertisement}.
+     *
+     * @param callingDdpPackageName The package name of the device data provider.
+     * @param deviceId The ID of the device.
+     * @param request The request containing filters for records to delete.
+     * @throws IllegalArgumentException if the parcel has package name filters set, or the device
+     *     with the provided device Id can not be found.
+     * @throws IllegalStateException if the generated syntheticPackageName or appInfoId is not valid
+     */
+    public void deleteDeviceRecords(
+            String callingDdpPackageName,
+            String deviceId,
+            DeleteUsingFiltersRequestParcel request) {
+        Objects.requireNonNull(callingDdpPackageName);
+        Objects.requireNonNull(deviceId);
+        Objects.requireNonNull(request);
+
+        verifyDeleteRequestOrThrow(request);
+
+        long appInfoId = getOrThrowAppInfoId(callingDdpPackageName, deviceId);
+        String syntheticPackageName = getOrThrowSyntheticPackageName(appInfoId);
+        long callingDdpPackageId =
+                mDeviceDataProviderMetadataHelper.getDeviceDataProviderMetadataId(
+                        callingDdpPackageName);
+
+        mFitnessRecordDeleteHelper.deleteDeviceRecords(
+                syntheticPackageName,
+                callingDdpPackageId,
+                request,
+                getAllGranularWritePermissions());
+    }
+
+    /**
      * Checks whether a package is permitted to act as a device data provider.
      *
      * <p>On Android versions after Baklava where {@code
@@ -459,7 +504,9 @@ public class DeviceDataProviderManager {
         throw new IllegalArgumentException(message);
     }
 
-    private String getOrThrowSyntheticPackageName(long appInfoId) {
+    /** Acquire the SPN for the given device app info id or throw */
+    @VisibleForTesting
+    public String getOrThrowSyntheticPackageName(long appInfoId) {
         try {
             return mAppInfoHelper.getPackageName(appInfoId);
         } catch (PackageManager.NameNotFoundException e) {
@@ -529,5 +576,22 @@ public class DeviceDataProviderManager {
                         .getGranularReadPermissions();
 
         return new Pair<>(grantedExtraReadPermissions, grantedGranularReadPermissions);
+    }
+
+    private Set<String> getAllGranularWritePermissions() {
+        // conceptually DDPs operate outside the granular permission system, and thus we give all
+        // permissions, regardless of which data types they're actually interacting with
+        return InternalHealthConnectMappings.getInstance().getRecordHelpers().stream()
+                .flatMap(
+                        recordHelper ->
+                                recordHelper.getAllGranularWritePermissionsForHelper().stream())
+                .collect(Collectors.toSet());
+    }
+
+    private void verifyDeleteRequestOrThrow(DeleteUsingFiltersRequestParcel request) {
+        if (!request.getPackageNameFilters().isEmpty() || request.usesIdFilters()) {
+            throw new IllegalArgumentException(
+                    "Package name and ID filters must be empty for device delete requests.");
+        }
     }
 }
