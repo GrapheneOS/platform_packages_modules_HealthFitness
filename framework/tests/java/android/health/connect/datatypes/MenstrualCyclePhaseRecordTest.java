@@ -134,6 +134,16 @@ public class MenstrualCyclePhaseRecordTest {
     }
 
     @Test
+    public void builder_clearDayOfCycle_isCleared() {
+        MenstrualCyclePhaseRecord record =
+                new MenstrualCyclePhaseRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
+                        .setDayOfCycle(5)
+                        .clearDayOfCycle()
+                        .buildWithoutValidation();
+        assertThat(record.isDayOfCycleSet()).isFalse();
+    }
+
+    @Test
     public void toRecordInternal_andBack_noChange() {
         MenstrualCyclePhaseRecord record =
                 new MenstrualCyclePhaseRecord.Builder(TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
@@ -268,7 +278,7 @@ public class MenstrualCyclePhaseRecordTest {
                         () ->
                                 new MenstrualCyclePhaseRecord.Builder(
                                                 TEST_METADATA, TEST_DATE, PHASE_LUTEAL)
-                                        .setDayOfCycle(366)
+                                        .setDayOfCycle(181)
                                         .build());
         assertThat(thrown).hasMessageThat().contains("dayOfCycle must not be more than");
     }
