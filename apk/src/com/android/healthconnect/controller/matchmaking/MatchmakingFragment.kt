@@ -18,10 +18,7 @@ package com.android.healthconnect.controller.matchmaking
 
 import android.app.Activity.RESULT_CANCELED
 import android.app.Activity.RESULT_OK
-import android.health.connect.HealthConnectManager.EXTRA_RECORD_TYPES
-import android.health.connect.datatypes.Record
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -128,7 +125,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                 }
                 is MatchmakingViewModel.MatchmakingState.LoadingFailed -> {
                     setLoading(false)
-                    activity?.finish()
+                    finishWithCancelResult()
                 }
                 is MatchmakingViewModel.MatchmakingState.WithData -> {
                     setLoading(false)
@@ -146,23 +143,6 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
 
         allowAllPreference.logNameActive = PermissionsElement.ALLOW_ALL_SWITCH
         allowAllPreference.logNameInactive = PermissionsElement.ALLOW_ALL_SWITCH
-        val packageName = activity?.callingPackage
-        val recordTypeNames = activity?.intent?.getStringArrayExtra(EXTRA_RECORD_TYPES)
-
-        if (packageName == null) {
-            Log.i(
-                TAG,
-                "Calling package is null. Make sure you are using registerForActivityResult() to launch the Matchmaking intent.",
-            )
-            activity?.apply {
-                setResult(RESULT_CANCELED)
-                finish()
-            }
-            return
-        }
-
-        val recordTypes = parseRecordTypeNames(recordTypeNames)
-        viewModel.loadMatchmakingApps(packageName, recordTypes)
     }
 
     override fun onCreateAdapter(preferenceScreen: PreferenceScreen): PreferenceGroupAdapter {
@@ -412,23 +392,8 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
         }
     }
 
-    /**
-     * Parses an array of record type names into a set of `Class<out Record>`.
-     *
-     * @param recordTypeNames An array of class names for `Record` types, or null.
-     * @return A set of `Class<out Record>` corresponding to the valid record type names, filtering
-     *   out invalid names, or an empty set if `recordTypeNames` is null or empty.
-     */
-    private fun parseRecordTypeNames(recordTypeNames: Array<String>?): Set<Class<out Record>> {
-        return (recordTypeNames ?: emptyArray())
-            .mapNotNull {
-                try {
-                    Class.forName(it)
-                } catch (e: ClassNotFoundException) {
-                    null
-                }
-            }
-            .filterIsInstance<Class<out Record>>()
-            .toSet()
+    private fun finishWithCancelResult() {
+        activity?.setResult(RESULT_CANCELED)
+        activity?.finish()
     }
 }

@@ -94,7 +94,7 @@ class MatchMakingViewModelTest {
     @Test
     fun loadMatchmakingApps_withSuccess_updatesStateToWithData() = runTest {
         val packageName = TEST_APP_PACKAGE_NAME
-        val recordTypes = setOf(StepsRecord::class.java)
+        val recordTypeNames = arrayOf(StepsRecord::class.java.name)
         val appMetadata = AppMetadata(TEST_APP_NAME_2, TEST_APP_PACKAGE_NAME_2, null)
         val expected =
             listOf(
@@ -107,26 +107,42 @@ class MatchMakingViewModelTest {
                 )
             )
         val useCaseResult = UseCaseResults.Success(expected)
-        whenever(getMatchingAppsUseCase.invoke(any())).doReturn(useCaseResult)
+        val captor = argumentCaptor<GetMatchingAppsUseCase.GetMatchMakingAppsInput>()
+        whenever(getMatchingAppsUseCase.invoke(captor.capture())).doReturn(useCaseResult)
 
-        viewModel.loadMatchmakingApps(packageName, recordTypes)
+        viewModel.loadMatchmakingApps(packageName, recordTypeNames)
 
         val state = viewModel.matchmakingState.value
         assertThat(state).isInstanceOf(WithData::class.java)
         assertThat((state as WithData).matchingApps).isEqualTo(expected)
+        assertThat(captor.firstValue.recordTypes).containsExactly(StepsRecord::class.java)
     }
 
     @Test
     fun loadMatchmakingApps_withError_updatesStateToLoadingFailed() = runTest {
         val packageName = TEST_APP_PACKAGE_NAME
-        val recordTypes = setOf(StepsRecord::class.java)
+        val recordTypeNames = arrayOf(StepsRecord::class.java.name)
         val exception = IllegalStateException("Error")
         val useCaseResult = UseCaseResults.Failed(exception)
-        whenever(getMatchingAppsUseCase.invoke(any())).doReturn(useCaseResult)
+        val captor = argumentCaptor<GetMatchingAppsUseCase.GetMatchMakingAppsInput>()
+        whenever(getMatchingAppsUseCase.invoke(captor.capture())).doReturn(useCaseResult)
 
-        viewModel.loadMatchmakingApps(packageName, recordTypes)
+        viewModel.loadMatchmakingApps(packageName, recordTypeNames)
 
         assertThat(viewModel.matchmakingState.value).isInstanceOf(LoadingFailed::class.java)
+        assertThat(captor.firstValue.recordTypes).containsExactly(StepsRecord::class.java)
+    }
+
+    @Test
+    fun loadMatchmakingApps_withNullRecordTypes_callsUseCaseWithEmptySet() = runTest {
+        val packageName = TEST_APP_PACKAGE_NAME
+        val useCaseResult = UseCaseResults.Success(emptyList<MatchmakingAppData>())
+        val captor = argumentCaptor<GetMatchingAppsUseCase.GetMatchMakingAppsInput>()
+        whenever(getMatchingAppsUseCase.invoke(captor.capture())).doReturn(useCaseResult)
+
+        viewModel.loadMatchmakingApps(packageName, null)
+
+        assertThat(captor.firstValue.recordTypes).isEmpty()
     }
 
     @Test
@@ -146,12 +162,13 @@ class MatchMakingViewModelTest {
                 ),
             )
         val appB = MatchmakingAppData(AppMetadata("b.package", "B App", null), emptyList())
-        whenever(getMatchingAppsUseCase.invoke(any()))
+        val captor = argumentCaptor<GetMatchingAppsUseCase.GetMatchMakingAppsInput>()
+        whenever(getMatchingAppsUseCase.invoke(captor.capture()))
             .thenReturn(UseCaseResults.Success(listOf(appB, appA)))
         whenever(appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME))
             .thenReturn(AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null))
 
-        viewModel.loadMatchmakingApps(TEST_APP_PACKAGE_NAME, setOf(StepsRecord::class.java))
+        viewModel.loadMatchmakingApps(TEST_APP_PACKAGE_NAME, arrayOf(StepsRecord::class.java.name))
 
         val state = viewModel.matchmakingState.value
 
@@ -163,6 +180,7 @@ class MatchMakingViewModelTest {
             .isEqualTo(FitnessPermissionType.EXERCISE)
         assertThat(data[0].permissions[1].fitnessPermissionType)
             .isEqualTo(FitnessPermissionType.STEPS)
+        assertThat(captor.firstValue.recordTypes).containsExactly(StepsRecord::class.java)
     }
 
     @Test
@@ -270,7 +288,8 @@ class MatchMakingViewModelTest {
     @Test
     fun grantPermissions_allFromOneAppAndSomeFromAnother_recordsDenialCorrectly() = runTest {
         val packageName = TEST_APP_PACKAGE_NAME_3
-        val recordTypes = setOf(ExerciseSessionRecord::class.java, StepsRecord::class.java)
+        val recordTypeNames =
+            arrayOf(ExerciseSessionRecord::class.java.name, StepsRecord::class.java.name)
         val appMetadata = AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null)
         val appMetadata2 = AppMetadata(TEST_APP_PACKAGE_NAME_2, TEST_APP_NAME_2, null)
         val permissions =
@@ -292,7 +311,7 @@ class MatchMakingViewModelTest {
             )
         val useCaseResult = UseCaseResults.Success(expected)
         whenever(getMatchingAppsUseCase.invoke(any())).doReturn(useCaseResult)
-        viewModel.loadMatchmakingApps(packageName, recordTypes)
+        viewModel.loadMatchmakingApps(packageName, recordTypeNames)
 
         val writeStepsPermission =
             HealthPermission.fromPermissionString(WRITE_STEPS) as HealthPermission.FitnessPermission
@@ -332,7 +351,10 @@ class MatchMakingViewModelTest {
     fun recordMatchmakingDenial_noMatchingApps_doesNothing() = runTest {
         whenever(getMatchingAppsUseCase.invoke(any()))
             .thenReturn(UseCaseResults.Success(emptyList()))
-        viewModel.loadMatchmakingApps(TEST_APP_PACKAGE_NAME_3, setOf(StepsRecord::class.java))
+        viewModel.loadMatchmakingApps(
+            TEST_APP_PACKAGE_NAME_3,
+            arrayOf(StepsRecord::class.java.name),
+        )
 
         viewModel.recordMatchmakingDenial()
 
@@ -350,7 +372,10 @@ class MatchMakingViewModelTest {
             )
         whenever(getMatchingAppsUseCase.invoke(any()))
             .thenReturn(UseCaseResults.Success(appsWithNoPermissions))
-        viewModel.loadMatchmakingApps(TEST_APP_PACKAGE_NAME_3, setOf(StepsRecord::class.java))
+        viewModel.loadMatchmakingApps(
+            TEST_APP_PACKAGE_NAME_3,
+            arrayOf(StepsRecord::class.java.name),
+        )
 
         viewModel.recordMatchmakingDenial()
 
@@ -398,7 +423,8 @@ class MatchMakingViewModelTest {
 
     private suspend fun setupWithData() {
         val packageName = TEST_APP_PACKAGE_NAME_3
-        val recordTypes = setOf(ExerciseSessionRecord::class.java, StepsRecord::class.java)
+        val recordTypeNames =
+            arrayOf(ExerciseSessionRecord::class.java.name, StepsRecord::class.java.name)
         val appMetadata = AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null)
         val appMetadata2 = AppMetadata(TEST_APP_PACKAGE_NAME_2, TEST_APP_NAME_2, null)
         val permissions =
@@ -418,6 +444,6 @@ class MatchMakingViewModelTest {
             )
         val useCaseResult = UseCaseResults.Success(expected)
         whenever(getMatchingAppsUseCase.invoke(any())).doReturn(useCaseResult)
-        viewModel.loadMatchmakingApps(packageName, recordTypes)
+        viewModel.loadMatchmakingApps(packageName, recordTypeNames)
     }
 }

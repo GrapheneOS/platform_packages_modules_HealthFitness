@@ -148,6 +148,29 @@ class MatchmakingUITest : HealthConnectBaseTest() {
         assertThat(result.resultCode).isEqualTo(Activity.RESULT_CANCELED)
     }
 
+    @Test
+    fun noMatchingApps_activityReturnsResultCancelled() {
+        grantPermissionViaPackageManager(
+            context,
+            TEST_APP_PACKAGE_NAME,
+            HealthPermissions.READ_HEIGHT,
+        )
+        grantPermissionViaPackageManager(
+            context,
+            TEST_APP_2_PACKAGE_NAME,
+            HealthPermissions.WRITE_HEIGHT,
+        )
+
+        waitForIdle()
+
+        val result =
+            matchmakingReaderApp.startActivityForResult(
+                context.createMatchmakingIntent(listOf(HeightRecord::class.java))
+            )
+
+        assertThat(result.resultCode).isEqualTo(Activity.RESULT_CANCELED)
+    }
+
     @After
     fun tearDown() {
         revokePermissionViaPackageManager(
