@@ -2,6 +2,22 @@
 package: "com.android.healthfitness.flags"
 container: "com.android.healthfitness"
 
+# b/461867444 - This flag is replacing development_database flag, since we need
+# to use read write flags to be able to override them in tests.
+flag {
+    # This flag should NEVER be turned on in prod / release for real users.
+    # This flag turns on development only features in the database schema.
+    # It is used to guard database schema changes that are not finalized enough
+    # to add upgrade/downgrade code for, and so should only be used on development
+    # devices. If this flag is enabled then the device could have data loss.
+
+    name: "development_database_rw"
+    namespace: "health_fitness_aconfig"
+    description: "Flag for using currently being developed database tables."
+    bug: "354913565"
+    is_fixed_read_only: false
+}
+
 flag {
     # This flag should NEVER be turned on in prod / release for real users.
     # This flag turns on development only features in the database schema.
