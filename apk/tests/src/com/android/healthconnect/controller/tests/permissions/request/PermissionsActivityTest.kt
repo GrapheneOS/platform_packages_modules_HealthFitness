@@ -970,9 +970,9 @@ class PermissionsActivityTest {
         val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
         onView(withId(androidx.preference.R.id.recycler_view))
             .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-        onView(withText("Heart rate")).perform(click())
+        onView(withText("Heart rate")).inRoot(isDialog()).perform(click())
         onIdle()
-        onView(withText("Allow")).perform(click())
+        onView(withText("Allow")).inRoot(isDialog()).perform(click())
 
         assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
         val returnedIntent = scenario.result.resultData
@@ -1004,13 +1004,14 @@ class PermissionsActivityTest {
         launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-            onView(withText("Heart rate")).perform(click())
-            onView(withText("Allow")).perform(click())
+            onView(withText("Heart rate")).inRoot(isDialog()).perform(click())
+            onView(withText("Allow")).inRoot(isDialog()).perform(click())
             onIdle()
 
             onView(withText("Allow $BODY_SENSORS_TEST_APP_NAME to access data in the background?"))
+                .inRoot(isDialog())
                 .check(matches(isDisplayed()))
-            onView(withText("Allow")).perform(click())
+            onView(withText("Allow")).inRoot(isDialog()).perform(click())
             onIdle()
 
             assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
