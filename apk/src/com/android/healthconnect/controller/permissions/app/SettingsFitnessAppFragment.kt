@@ -18,7 +18,6 @@
 package com.android.healthconnect.controller.permissions.app
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
-import android.icu.number.NumberFormatter
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -387,10 +386,6 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
                 val preferenceKey = PermissionGroupKey(accessType, dataCategory)
                 val permissions = permissionGroupKeyToRequestedPermissions[preferenceKey]!!
 
-                if (viewModel.expandedDataCategoryPreferenceKeys.value?.isEmpty() == true) {
-                    viewModel.updateDataCategoryPreferenceKey(preferenceKey, /* isExpanded= */ true)
-                }
-
                 val expandablePreference =
                     getExpandablePreferenceForDataCategory(dataCategory, preferenceKey, permissions)
                 expandableParentPreferences.add(expandablePreference)
@@ -419,7 +414,12 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
         permissionsForCategory: List<FitnessPermission>,
     ): HealthToggleExpandablePreference {
         return HealthToggleExpandablePreference(requireContext()).apply {
-            title = getExpandablePreferenceTitle(dataCategory, permissionsForCategory.size)
+            title = getExpandablePreferenceTitle(dataCategory)
+            summary =
+                getExpandablePreferenceSummary(
+                    permissionsForCategory,
+                    viewModel.grantedFitnessPermissions.value,
+                )
             key = preferenceKey.toString()
             setExpanded(
                 viewModel.expandedDataCategoryPreferenceKeys.value?.contains(
@@ -431,6 +431,11 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
             }
             viewModel.grantedFitnessPermissions.observe(viewLifecycleOwner) { grantedPermissions ->
                 isChecked = grantedPermissions.containsAll(permissionsForCategory)
+                summary =
+                    getExpandablePreferenceSummary(
+                        permissionsForCategory,
+                        viewModel.grantedFitnessPermissions.value,
+                    )
             }
             setOnSwitchChangeListener { isChecked ->
                 viewModel.updatePermissions(packageName, permissionsForCategory, isChecked)
@@ -438,15 +443,30 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
         }
     }
 
-    private fun getExpandablePreferenceTitle(dataCategory: Int, permissionsCount: Int): String {
+    private fun getExpandablePreferenceTitle(dataCategory: Int): String {
         return requireContext()
             .getString(
                 R.string.health_data_category_expandable_preference_title,
                 getString(dataCategory.uppercaseTitle()),
-                NumberFormatter.with()
-                    .locale(requireContext().resources.configuration.locale)
-                    .format(permissionsCount)
-                    .toString(),
+            )
+    }
+
+    private fun getExpandablePreferenceSummary(
+        permissionsRequestedForCategory: List<FitnessPermission>,
+        allPermissionsGranted: Set<FitnessPermission>?,
+    ): String {
+        // TODO(b/461857819): Move this logic to the view model.
+        val numberOfPermissionsGrantedForCategory =
+            if (allPermissionsGranted.isNullOrEmpty()) {
+                0
+            } else {
+                allPermissionsGranted.intersect(permissionsRequestedForCategory).size
+            }
+        return requireContext()
+            .getString(
+                R.string.app_permissions_granted_summary,
+                numberOfPermissionsGrantedForCategory,
+                permissionsRequestedForCategory.size,
             )
     }
 

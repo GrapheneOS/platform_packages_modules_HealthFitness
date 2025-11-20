@@ -34,6 +34,7 @@ import android.content.pm.PackageManager.FLAG_PERMISSION_USER_FIXED
 import android.content.pm.PackageManager.FLAG_PERMISSION_USER_SET
 import android.content.pm.PackageManager.PERMISSION_DENIED
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.health.connect.HealthPermissions.READ_ACTIVE_CALORIES_BURNED
 import android.health.connect.HealthPermissions.READ_EXERCISE
 import android.health.connect.HealthPermissions.READ_HEALTH_DATA_HISTORY
 import android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND
@@ -118,15 +119,6 @@ class PermissionsActivityTest {
     companion object {
         private val fitnessPermissions =
             arrayOf(READ_EXERCISE, READ_SLEEP, WRITE_SKIN_TEMPERATURE, WRITE_ACTIVE_CALORIES_BURNED)
-        private val fitnessAndMedicalPermissions =
-            arrayOf(READ_EXERCISE, READ_MEDICAL_DATA_VACCINES)
-        private val fitnessAndAdditionalPermissions =
-            arrayOf(WRITE_SLEEP, READ_HEALTH_DATA_IN_BACKGROUND)
-        private val medicalPermissions = arrayOf(READ_MEDICAL_DATA_VACCINES, WRITE_MEDICAL_DATA)
-        private val medicalAndAdditionalPermissions =
-            arrayOf(READ_MEDICAL_DATA_VACCINES, READ_HEALTH_DATA_IN_BACKGROUND)
-        private val allThreeCombined =
-            arrayOf(READ_HEALTH_DATA_IN_BACKGROUND, READ_SLEEP, READ_MEDICAL_DATA_VACCINES)
     }
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
@@ -692,7 +684,7 @@ class PermissionsActivityTest {
             arrayOf(
                 READ_MEDICAL_DATA_CONDITIONS,
                 READ_MEDICAL_DATA_VACCINES,
-                READ_SLEEP,
+                READ_ACTIVE_CALORIES_BURNED,
                 WRITE_EXERCISE,
                 WRITE_MEDICAL_DATA,
             )
@@ -715,7 +707,9 @@ class PermissionsActivityTest {
             onView(withId(androidx.preference.R.id.recycler_view))
                 .inRoot(isDialog())
                 .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-            onView(withText("Sleep")).inRoot(isDialog()).check(matches(isDisplayed()))
+            onView(withText("Active calories burned"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
 
             assertThat(permissionManager.revokeHealthPermissionInvocations).isEqualTo(1)
             assertThat(permissionManager.grantHealthPermissionInvocations).isEqualTo(2)
@@ -769,7 +763,7 @@ class PermissionsActivityTest {
             arrayOf(
                 READ_MEDICAL_DATA_CONDITIONS,
                 READ_MEDICAL_DATA_VACCINES,
-                READ_SLEEP,
+                READ_ACTIVE_CALORIES_BURNED,
                 WRITE_EXERCISE,
                 WRITE_MEDICAL_DATA,
             )
@@ -792,7 +786,9 @@ class PermissionsActivityTest {
             onView(withId(androidx.preference.R.id.recycler_view))
                 .inRoot(isDialog())
                 .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-            onView(withText("Sleep")).inRoot(isDialog()).check(matches(isDisplayed()))
+            onView(withText("Active calories burned"))
+                .inRoot(isDialog())
+                .check(matches(isDisplayed()))
 
             assertThat(permissionManager.revokeHealthPermissionInvocations).isEqualTo(2)
             assertThat(permissionManager.grantHealthPermissionInvocations).isEqualTo(1)

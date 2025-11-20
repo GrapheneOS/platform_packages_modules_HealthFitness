@@ -157,6 +157,7 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
             )
 
             // Attempt to revoke Heart rate permission from system app.
+            findTextAndClick("Vitals")
             findTextAndClick("Heart rate")
             // Assert permissipn not revoked.
             assertThat(
@@ -203,6 +204,7 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
             )
 
             // Attempt to revoke Heart rate permission from system app.
+            findTextAndClick("Vitals")
             findTextAndClick("Heart rate")
             // Assert permissipn not revoked.
             assertThat(

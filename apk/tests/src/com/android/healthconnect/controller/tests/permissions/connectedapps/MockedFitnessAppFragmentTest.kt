@@ -42,6 +42,7 @@ import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.clickOnRecyclerViewItemWithText
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import dagger.hilt.android.testing.BindValue
@@ -111,6 +112,7 @@ class MockedFitnessAppFragmentTest {
                 }
             )
             .use {
+                clickOnRecyclerViewItemWithText("Activity")
                 onView(withText("Exercise")).perform(scrollTo()).perform(click())
 
                 // check for dialog
@@ -180,6 +182,7 @@ class MockedFitnessAppFragmentTest {
                 }
             )
             .use {
+                clickOnRecyclerViewItemWithText("Activity")
                 onView(withText("Exercise")).perform(scrollTo()).perform(click())
 
                 // check for dialog
@@ -237,6 +240,7 @@ class MockedFitnessAppFragmentTest {
                 }
             )
             .use {
+                clickOnRecyclerViewItemWithText("Activity")
                 onView(withText("Exercise")).perform(scrollTo()).perform(click())
 
                 // check for dialog

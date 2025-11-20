@@ -170,6 +170,7 @@ fun fromHealthPermissionCategory(healthPermissionCategory: Int): HealthPermissio
         // ACTIVITY
         HealthPermissionCategory.ACTIVE_CALORIES_BURNED ->
             FitnessPermissionType.ACTIVE_CALORIES_BURNED
+
         HealthPermissionCategory.ACTIVITY_INTENSITY -> FitnessPermissionType.ACTIVITY_INTENSITY
         HealthPermissionCategory.DISTANCE -> FitnessPermissionType.DISTANCE
         HealthPermissionCategory.ELEVATION_GAINED -> FitnessPermissionType.ELEVATION_GAINED
@@ -179,6 +180,7 @@ fun fromHealthPermissionCategory(healthPermissionCategory: Int): HealthPermissio
         HealthPermissionCategory.STEPS -> FitnessPermissionType.STEPS
         HealthPermissionCategory.TOTAL_CALORIES_BURNED ->
             FitnessPermissionType.TOTAL_CALORIES_BURNED
+
         HealthPermissionCategory.VO2_MAX -> FitnessPermissionType.VO2_MAX
         HealthPermissionCategory.WHEELCHAIR_PUSHES -> FitnessPermissionType.WHEELCHAIR_PUSHES
         HealthPermissionCategory.POWER -> FitnessPermissionType.POWER
@@ -208,12 +210,14 @@ fun fromHealthPermissionCategory(healthPermissionCategory: Int): HealthPermissio
         // VITALS
         HealthPermissionCategory.BASAL_BODY_TEMPERATURE ->
             FitnessPermissionType.BASAL_BODY_TEMPERATURE
+
         HealthPermissionCategory.BLOOD_GLUCOSE -> FitnessPermissionType.BLOOD_GLUCOSE
         HealthPermissionCategory.BLOOD_PRESSURE -> FitnessPermissionType.BLOOD_PRESSURE
         HealthPermissionCategory.BODY_TEMPERATURE -> FitnessPermissionType.BODY_TEMPERATURE
         HealthPermissionCategory.HEART_RATE -> FitnessPermissionType.HEART_RATE
         HealthPermissionCategory.HEART_RATE_VARIABILITY ->
             FitnessPermissionType.HEART_RATE_VARIABILITY
+
         HealthPermissionCategory.OXYGEN_SATURATION -> FitnessPermissionType.OXYGEN_SATURATION
         HealthPermissionCategory.RESPIRATORY_RATE -> FitnessPermissionType.RESPIRATORY_RATE
         HealthPermissionCategory.RESTING_HEART_RATE -> FitnessPermissionType.RESTING_HEART_RATE
@@ -227,19 +231,24 @@ fun fromHealthPermissionCategory(healthPermissionCategory: Int): HealthPermissio
         // SYMPTOMS
         HealthPermissionCategory.SYMPTOM_ABDOMINAL_PAIN ->
             FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN
+
         HealthPermissionCategory.SYMPTOM_ACNE -> FitnessPermissionType.SYMPTOM_ACNE
         HealthPermissionCategory.SYMPTOM_BACK_PAIN -> FitnessPermissionType.SYMPTOM_BACK_PAIN
         HealthPermissionCategory.SYMPTOM_BLOATING -> FitnessPermissionType.SYMPTOM_BLOATING
         HealthPermissionCategory.SYMPTOM_BRAIN_FOG -> FitnessPermissionType.SYMPTOM_BRAIN_FOG
         HealthPermissionCategory.SYMPTOM_BREAST_TENDERNESS ->
             FitnessPermissionType.SYMPTOM_BREAST_TENDERNESS
+
         HealthPermissionCategory.SYMPTOM_BRITTLE_NAILS ->
             FitnessPermissionType.SYMPTOM_BRITTLE_NAILS
+
         HealthPermissionCategory.SYMPTOM_BURNING_MOUTH ->
             FitnessPermissionType.SYMPTOM_BURNING_MOUTH
+
         HealthPermissionCategory.SYMPTOM_CHEST_PAIN -> FitnessPermissionType.SYMPTOM_CHEST_PAIN
         HealthPermissionCategory.SYMPTOM_CHEST_TIGHTNESS ->
             FitnessPermissionType.SYMPTOM_CHEST_TIGHTNESS
+
         HealthPermissionCategory.SYMPTOM_CHILLS -> FitnessPermissionType.SYMPTOM_CHILLS
         HealthPermissionCategory.SYMPTOM_CONSTIPATION -> FitnessPermissionType.SYMPTOM_CONSTIPATION
         HealthPermissionCategory.SYMPTOM_COUGH -> FitnessPermissionType.SYMPTOM_COUGH
@@ -249,6 +258,7 @@ fun fromHealthPermissionCategory(healthPermissionCategory: Int): HealthPermissio
         HealthPermissionCategory.SYMPTOM_DIARRHEA -> FitnessPermissionType.SYMPTOM_DIARRHEA
         HealthPermissionCategory.SYMPTOM_DIFFICULTY_SWALLOWING ->
             FitnessPermissionType.SYMPTOM_DIFFICULTY_SWALLOWING
+
         HealthPermissionCategory.SYMPTOM_DIZZINESS -> FitnessPermissionType.SYMPTOM_DIZZINESS
         HealthPermissionCategory.SYMPTOM_DRY_SKIN -> FitnessPermissionType.SYMPTOM_DRY_SKIN
         HealthPermissionCategory.SYMPTOM_EARACHES -> FitnessPermissionType.SYMPTOM_EARACHES
@@ -256,22 +266,28 @@ fun fromHealthPermissionCategory(healthPermissionCategory: Int): HealthPermissio
         HealthPermissionCategory.SYMPTOM_FEVER -> FitnessPermissionType.SYMPTOM_FEVER
         HealthPermissionCategory.SYMPTOM_GENERALIZED_BODY_ACHE ->
             FitnessPermissionType.SYMPTOM_GENERALIZED_BODY_ACHE
+
         HealthPermissionCategory.SYMPTOM_HAIR_LOSS -> FitnessPermissionType.SYMPTOM_HAIR_LOSS
         HealthPermissionCategory.SYMPTOM_HEADACHE -> FitnessPermissionType.SYMPTOM_HEADACHE
         HealthPermissionCategory.SYMPTOM_HEARTBURN -> FitnessPermissionType.SYMPTOM_HEARTBURN
         HealthPermissionCategory.SYMPTOM_HEART_PALPITATIONS ->
             FitnessPermissionType.SYMPTOM_HEART_PALPITATIONS
+
         HealthPermissionCategory.SYMPTOM_HOT_FLASHES -> FitnessPermissionType.SYMPTOM_HOT_FLASHES
         HealthPermissionCategory.SYMPTOM_INSOMNIA -> FitnessPermissionType.SYMPTOM_INSOMNIA
         HealthPermissionCategory.SYMPTOM_JOINT_PAIN -> FitnessPermissionType.SYMPTOM_JOINT_PAIN
         HealthPermissionCategory.SYMPTOM_JOINT_STIFFNESS ->
             FitnessPermissionType.SYMPTOM_JOINT_STIFFNESS
+
         HealthPermissionCategory.SYMPTOM_LOSS_OF_APPETITE ->
             FitnessPermissionType.SYMPTOM_LOSS_OF_APPETITE
+
         HealthPermissionCategory.SYMPTOM_LOSS_OF_CONSCIOUSNESS ->
             FitnessPermissionType.SYMPTOM_LOSS_OF_CONSCIOUSNESS
+
         HealthPermissionCategory.SYMPTOM_LOWER_BACK_PAIN ->
             FitnessPermissionType.SYMPTOM_LOWER_BACK_PAIN
+
         HealthPermissionCategory.SYMPTOM_MEMORY_LAPSE -> FitnessPermissionType.SYMPTOM_MEMORY_LAPSE
         HealthPermissionCategory.SYMPTOM_MOOD_CHANGE -> FitnessPermissionType.SYMPTOM_MOOD_CHANGE
         HealthPermissionCategory.SYMPTOM_MUSCLE_PAIN -> FitnessPermissionType.SYMPTOM_MUSCLE_PAIN
@@ -280,15 +296,20 @@ fun fromHealthPermissionCategory(healthPermissionCategory: Int): HealthPermissio
         HealthPermissionCategory.SYMPTOM_PELVIC_PAIN -> FitnessPermissionType.SYMPTOM_PELVIC_PAIN
         HealthPermissionCategory.SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT ->
             FitnessPermissionType.SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT
+
         HealthPermissionCategory.SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE ->
             FitnessPermissionType.SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE
+
         HealthPermissionCategory.SYMPTOM_RUNNY_NOSE -> FitnessPermissionType.SYMPTOM_RUNNY_NOSE
         HealthPermissionCategory.SYMPTOM_SHORTNESS_OF_BREATH ->
             FitnessPermissionType.SYMPTOM_SHORTNESS_OF_BREATH
+
         HealthPermissionCategory.SYMPTOM_SKIPPED_HEARTBEAT ->
             FitnessPermissionType.SYMPTOM_SKIPPED_HEARTBEAT
+
         HealthPermissionCategory.SYMPTOM_SLEEP_CHANGES ->
             FitnessPermissionType.SYMPTOM_SLEEP_CHANGES
+
         HealthPermissionCategory.SYMPTOM_SLEEPINESS -> FitnessPermissionType.SYMPTOM_SLEEPINESS
         HealthPermissionCategory.SYMPTOM_SNEEZING -> FitnessPermissionType.SYMPTOM_SNEEZING
         HealthPermissionCategory.SYMPTOM_SNORE -> FitnessPermissionType.SYMPTOM_SNORE
@@ -297,13 +318,17 @@ fun fromHealthPermissionCategory(healthPermissionCategory: Int): HealthPermissio
         HealthPermissionCategory.SYMPTOM_STUFFY_NOSE -> FitnessPermissionType.SYMPTOM_STUFFY_NOSE
         HealthPermissionCategory.SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES ->
             FitnessPermissionType.SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES
+
         HealthPermissionCategory.SYMPTOM_VAGINAL_DRYNESS ->
             FitnessPermissionType.SYMPTOM_VAGINAL_DRYNESS
+
         HealthPermissionCategory.SYMPTOM_VAGINAL_ITCHINESS ->
             FitnessPermissionType.SYMPTOM_VAGINAL_ITCHINESS
+
         HealthPermissionCategory.SYMPTOM_VOMITING -> FitnessPermissionType.SYMPTOM_VOMITING
         HealthPermissionCategory.SYMPTOM_WATER_RETENTION ->
             FitnessPermissionType.SYMPTOM_WATER_RETENTION
+
         HealthPermissionCategory.SYMPTOM_WHEEZING -> FitnessPermissionType.SYMPTOM_WHEEZING
         else -> throw IllegalArgumentException("PermissionType is not supported.")
     }
