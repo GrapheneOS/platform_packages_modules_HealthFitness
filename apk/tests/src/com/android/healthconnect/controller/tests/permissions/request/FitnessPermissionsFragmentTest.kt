@@ -31,9 +31,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
+import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -68,6 +68,7 @@ import com.android.healthconnect.controller.tests.utils.clickSwitchOnRecyclerVie
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.scrollToText
+import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
@@ -82,7 +83,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import java.util.Locale
-import kotlin.collections.listOf
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.After
 import org.junit.Before
@@ -900,6 +900,7 @@ class FitnessPermissionsFragmentTest {
             )
         }
         launchFragment<FitnessPermissionsFragment>(Bundle()).use { scenario ->
+            onIdle()
             // Sorted order is Activity, Sleep for read.
             // So Activity should be expanded.
             onView(withId(androidx.preference.R.id.recycler_view))
@@ -924,33 +925,18 @@ class FitnessPermissionsFragmentTest {
             assertThat(expandablePreference.mIsExpanded).isTrue()
 
             // Now expand Wellness category
-            clickOnRecyclerViewItemWithText("Wellness")
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .perform(
-                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                        hasDescendant(withText("Mindfulness"))
-                    )
-                )
+            scrollToTextAndClick("Wellness")
+            scrollToText("Mindfulness")
             onView(withText("Mindfulness")).check(matches(isDisplayed()))
 
             // Now expand Vitals category (write permissions)
-            clickOnRecyclerViewItemWithText("Vitals")
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .perform(
-                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                        hasDescendant(withText("Heart rate"))
-                    )
-                )
+            scrollToTextAndClick("Vitals")
+            scrollToText("Heart rate")
             onView(withText("Heart rate")).check(matches(isDisplayed()))
 
             // Now expand Nutrition category
-            clickOnRecyclerViewItemWithText("Nutrition")
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .perform(
-                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                        hasDescendant(withText("Hydration"))
-                    )
-                )
+            scrollToTextAndClick("Nutrition")
+            scrollToText("Hydration")
             onView(withText("Hydration")).check(matches(isDisplayed()))
         }
     }
@@ -980,7 +966,8 @@ class FitnessPermissionsFragmentTest {
         }
 
         launchFragment<FitnessPermissionsFragment>(Bundle()).use {
-            clickOnRecyclerViewItemWithText("Steps")
+            onIdle()
+            scrollToTextAndClick("Steps")
 
             verify(viewModel).updateHealthPermission(stepsPermission, true)
         }
@@ -1105,6 +1092,8 @@ class FitnessPermissionsFragmentTest {
         }
 
         launchFragment<FitnessPermissionsFragment>(Bundle()).use {
+            onIdle()
+            scrollToText("Activity")
             clickSwitchOnRecyclerViewItemWithText("Activity")
 
             verify(viewModel).updateHealthPermissions(activityPermissions, true)
@@ -1129,6 +1118,7 @@ class FitnessPermissionsFragmentTest {
         }
 
         launchFragment<FitnessPermissionsFragment>(Bundle()).use { scenario ->
+            onIdle()
             lateinit var expandablePreference: HealthToggleExpandablePreference
             scenario.onActivity { activity ->
                 val fragment =
@@ -1143,11 +1133,11 @@ class FitnessPermissionsFragmentTest {
             assertThat(expandablePreference.isChecked).isFalse()
 
             // 1. Click "Steps" to turn it on
-            clickOnRecyclerViewItemWithText("Steps")
+            scrollToTextAndClick("Steps")
             assertThat(expandablePreference.isChecked).isFalse()
 
             // 2. Click "Distance" to turn it on
-            clickOnRecyclerViewItemWithText("Distance")
+            scrollToTextAndClick("Distance")
             assertThat(expandablePreference.mIsExpanded).isTrue()
 
             // 3. Click "Steps" to turn it off again
