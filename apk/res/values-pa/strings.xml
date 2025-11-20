@@ -258,14 +258,10 @@
     <string name="intermenstrual_bleeding_lowercase_label" msgid="5284781275147619132">"ਮਾਹਵਾਰੀ ਦੌਰਾਨ ਖੂਨ ਵਹਿਣਾ"</string>
     <string name="intermenstrual_bleeding_read_content_description" msgid="5970939335115119015">"ਮਾਹਵਾਰੀ ਦੌਰਾਨ ਖੂਨ ਵਹਿਣ ਬਾਰੇ ਪੜ੍ਹੋ"</string>
     <string name="intermenstrual_bleeding_write_content_description" msgid="1377719923165234099">"ਮਾਹਵਾਰੀ ਦੌਰਾਨ ਖੂਨ ਵਹਿਣ ਬਾਰੇ ਲਿਖੋ"</string>
-    <!-- no translation found for menstrual_cycle_phase_uppercase_label (5030753898761492690) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_lowercase_label (4400175522136299478) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_read_content_description (579636561137547897) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_write_content_description (5631263314813590544) -->
-    <skip />
+    <string name="menstrual_cycle_phase_uppercase_label" msgid="5030753898761492690">"ਮਾਹਵਾਰੀ ਚੱਕਰ ਦਾ ਪੜਾਅ"</string>
+    <string name="menstrual_cycle_phase_lowercase_label" msgid="4400175522136299478">"ਮਾਹਵਾਰੀ ਚੱਕਰ ਦਾ ਪੜਾਅ"</string>
+    <string name="menstrual_cycle_phase_read_content_description" msgid="579636561137547897">"ਮਾਹਵਾਰੀ ਚੱਕਰ ਦੇ ਪੜਾਅ ਸੰਬੰਧੀ ਡਾਟਾ ਪੜ੍ਹੋ"</string>
+    <string name="menstrual_cycle_phase_write_content_description" msgid="5631263314813590544">"ਮਾਹਵਾਰੀ ਚੱਕਰ ਦੇ ਪੜਾਅ ਸੰਬੰਧੀ ਡਾਟਾ ਲਿਖੋ"</string>
     <string name="menstruation_uppercase_label" msgid="9119506748428874832">"ਮਾਹਵਾਰੀ ਸੰਬੰਧੀ ਡਾਟਾ"</string>
     <string name="menstruation_lowercase_label" msgid="8098816978006207242">"ਮਾਹਵਾਰੀ ਸੰਬੰਧੀ ਡਾਟਾ"</string>
     <string name="menstruation_read_content_description" msgid="7710047469771882021">"ਮਾਹਵਾਰੀ ਸੰਬੰਧੀ ਡਾਟਾ ਪੜ੍ਹੋ"</string>
