@@ -23,6 +23,7 @@ import static android.Manifest.permission.RESTORE_HEALTH_CONNECT_DATA_AND_SETTIN
 import static android.content.pm.PackageManager.PERMISSION_DENIED;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_PHR_API_INVOKED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_PHR_API_INVOKED__MEDICAL_RESOURCE_TYPE__MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
@@ -90,6 +91,7 @@ import static com.android.server.healthconnect.common.logging.HealthConnectServi
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.DELETE_MEDICAL_RESOURCES_BY_REQUESTS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_CHANGES;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_CHANGES_TOKEN;
+import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MATCHING_DATA_SOURCES;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MEDICAL_DATA_SOURCES_BY_IDS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MEDICAL_DATA_SOURCES_BY_REQUESTS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.READ_MEDICAL_RESOURCES_BY_IDS;
@@ -3251,6 +3253,17 @@ public class HealthConnectServiceImplTest {
                 .isEqualTo(ERROR_INVALID_ARGUMENT);
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
                 .contains("invalid package name provided");
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(GET_MATCHING_DATA_SOURCES),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -3348,6 +3361,7 @@ public class HealthConnectServiceImplTest {
     @Test
     @EnableFlags({FLAG_MATCHMAKING})
     public void getMatchingApps_packageProvided_areAvailableApps_success() throws Exception {
+        setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
         MatchmakingRequest request =
                 new MatchmakingRequest.Builder()
@@ -3373,6 +3387,17 @@ public class HealthConnectServiceImplTest {
         GetMatchingAppsResponse actualResponse = responseCaptor.getValue();
         assertThat(actualResponse.getMatchingApps()).isEqualTo(matchingApps);
         verifyNoMoreInteractions(mGetMatchingAppsCallback);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(GET_MATCHING_DATA_SOURCES),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -3491,6 +3516,17 @@ public class HealthConnectServiceImplTest {
                 .isEqualTo(ERROR_INVALID_ARGUMENT);
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
                 .contains("invalid package name provided");
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(GET_MATCHING_DATA_SOURCES),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -3514,6 +3550,17 @@ public class HealthConnectServiceImplTest {
         verify(mIsMatchmakingPossibleCallback, timeout(5000).times(1))
                 .onResult(new MatchmakingResponse.Builder(true).build());
         verifyNoMoreInteractions(mIsMatchmakingPossibleCallback);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(GET_MATCHING_DATA_SOURCES),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test

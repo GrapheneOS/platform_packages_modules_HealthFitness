@@ -47,6 +47,7 @@ import static com.android.server.healthconnect.common.logging.HealthConnectServi
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.DELETE_MEDICAL_RESOURCES_BY_REQUESTS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_CHANGES;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_CHANGES_TOKEN;
+import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MATCHING_DATA_SOURCES;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MEDICAL_DATA_SOURCES_BY_IDS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MEDICAL_DATA_SOURCES_BY_REQUESTS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.INSERT_DATA;
@@ -3169,11 +3170,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
-        // TODO(b/425634323): Update logger
         String attributionPackageName = attributionSource.getPackageName();
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
-                                holdsDataManagementPermission, API_METHOD_UNKNOWN)
+                                holdsDataManagementPermission, GET_MATCHING_DATA_SOURCES)
                         .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionPackageName);
         ErrorCallback errorCallback = callback::onError;
@@ -3210,8 +3210,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     GetMatchingAppsResponse maskedResponse =
                             new GetMatchingAppsResponse(matchingApps)
                                     .toMasked(getMaskingFunction(attributionPackageName));
+                    logger.setHealthDataServiceApiStatusSuccess();
                     callback.onResult(maskedResponse);
-                    // TODO(b/425634323): Add logging.
                 },
                 logger,
                 errorCallback,
