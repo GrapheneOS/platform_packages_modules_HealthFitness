@@ -259,8 +259,8 @@ flag {
 }
 
 flag {
-    name: "deprecate_exercise_session_type_breathing"
-    namespace: "android_health_services"
+    name: "deprecate_exercise_session_type_guided_breathing"
+    namespace: "health_fitness_aconfig"
     description: "Deprecates ExerciseSessionType#EXERCISE_SESSION_TYPE_GUIDED_BREATHING"
     bug: "373629817"
     is_exported: true
