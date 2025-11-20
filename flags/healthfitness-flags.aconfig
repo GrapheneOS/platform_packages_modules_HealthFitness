@@ -167,7 +167,7 @@ flag {
     description: "A new flag for cycle phases, enables menstrual cycle phases data type."
     bug: "296855479"
     is_fixed_read_only: false
-    is_exported: false
+    is_exported: true
 }
 
 flag {
