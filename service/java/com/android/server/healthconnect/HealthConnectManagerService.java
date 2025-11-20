@@ -339,7 +339,7 @@ public class HealthConnectManagerService extends SystemService {
                     });
         }
 
-        if (Flags.deviceDataProvidersApi() && AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
             threadScheduler.scheduleInternalTask(
                     () -> {
                         try {

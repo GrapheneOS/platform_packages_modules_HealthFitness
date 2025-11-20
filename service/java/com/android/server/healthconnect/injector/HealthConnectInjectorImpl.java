@@ -626,7 +626,6 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         : builder.mMatchmakingManager;
         mDeviceDataSourcesHelper =
                 builder.mDeviceDataSourcesHelper == null
-                                && Flags.deviceDataProvidersApi()
                                 && AconfigFlagHelper.isDeviceDataProvidersEnabled()
                         ? new DeviceDataSourcesHelper(
                                 mDatabaseHelpers, mTransactionManager, mHealthConnectMappings)
@@ -637,14 +636,12 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         : builder.mSyntheticPackageNameCreator;
         mDeviceDataProviderMetadataHelper =
                 builder.mDeviceDataProviderMetadataHelper == null
-                                && Flags.deviceDataProvidersApi()
                                 && AconfigFlagHelper.isDeviceDataProvidersEnabled()
                         ? new DeviceDataProviderMetadataHelper(
                                 mDatabaseHelpers, mTransactionManager)
                         : builder.mDeviceDataProviderMetadataHelper;
         mDeviceDataProviderManager =
                 builder.mDeviceDataProviderManager == null
-                                && Flags.deviceDataProvidersApi()
                                 && AconfigFlagHelper.isDeviceDataProvidersEnabled()
                                 && mDeviceDataSourcesHelper != null
                                 && mDeviceDataProviderMetadataHelper != null
