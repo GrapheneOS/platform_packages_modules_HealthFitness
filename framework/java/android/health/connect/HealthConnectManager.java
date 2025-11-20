@@ -242,26 +242,34 @@ public class HealthConnectManager {
      */
     public static final String EXTRA_EXERCISE_ROUTE = "android.health.connect.extra.EXERCISE_ROUTE";
 
-    // TODO(b/455620629): Add data type sensitivity to DataTypeDescriptor and use this as the source
-    //  of truth here.
+
     @NonNull
     private static final Set<Class<? extends Record>>
             NON_PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES = Set.of(StepsRecord.class);
 
+    private static class LazyHolder {
+        private static final Set<Class<? extends Record>>
+                PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES_INSTANCE =
+                        DataTypeDescriptors.getAllDataTypeDescriptors().stream()
+                                .map(DataTypeDescriptor::getRecordClass)
+                                .filter(
+                                        recordType ->
+                                                !NON_PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES
+                                                        .contains(recordType))
+                                .collect(toSet());
+    }
+
     /**
-     * Data types which are excluded from the output of #getDeviceDataSourceCapabilities unless the
-     * caller holds the read permission for those data types.
+     * Returns the set of data types which are excluded from the output of
+     * #getDeviceDataSourceCapabilities unless the caller holds the read permission for those data
+     * types.
      */
     @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
     @NonNull
-    public static final Set<Class<? extends Record>>
-            PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES =
-                    DataTypeDescriptors.getAllDataTypeDescriptors().stream()
-                            .map(DataTypeDescriptor::getRecordClass)
-                            .filter(
-                                    NON_PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES
-                                            ::contains)
-                            .collect(toSet());
+    public static Set<Class<? extends Record>>
+            getPermissionSensitiveDeviceDataSourceCapabilities() {
+        return LazyHolder.PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES_INSTANCE;
+    }
 
     /**
      * Activity action: Launch UI to show and manage (e.g. grant/revoke) health permissions.
