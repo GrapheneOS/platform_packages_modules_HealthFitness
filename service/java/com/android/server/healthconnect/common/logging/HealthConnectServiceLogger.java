@@ -18,6 +18,7 @@ package com.android.server.healthconnect.common.logging;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__CAN_CONNECT_MATCHING_APPS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__CREATE_MEDICAL_DATA_SOURCE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__DELETE_DATA;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__DELETE_MEDICAL_DATA_SOURCE_WITH_DATA;
@@ -201,6 +202,9 @@ public final class HealthConnectServiceLogger {
                 HEALTH_CONNECT_API_CALLED__API_METHOD__DELETE_MEDICAL_RESOURCES_BY_IDS;
         public static final int DELETE_MEDICAL_RESOURCES_BY_REQUESTS =
                 HEALTH_CONNECT_API_CALLED__API_METHOD__DELETE_MEDICAL_RESOURCES_BY_REQUESTS;
+        // Matchmaking APIs
+        public static final int GET_MATCHING_DATA_SOURCES =
+                HEALTH_CONNECT_API_CALLED__API_METHOD__CAN_CONNECT_MATCHING_APPS;
 
         @IntDef({
             API_METHOD_UNKNOWN,
@@ -223,7 +227,9 @@ public final class HealthConnectServiceLogger {
             READ_MEDICAL_RESOURCES_BY_IDS,
             READ_MEDICAL_RESOURCES_BY_REQUESTS,
             DELETE_MEDICAL_RESOURCES_BY_IDS,
-            DELETE_MEDICAL_RESOURCES_BY_REQUESTS
+            DELETE_MEDICAL_RESOURCES_BY_REQUESTS,
+            // Matchmaking APIs
+            GET_MATCHING_DATA_SOURCES
         })
         @Retention(RetentionPolicy.SOURCE)
         public @interface ApiMethod {}
