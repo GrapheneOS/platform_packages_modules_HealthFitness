@@ -52,6 +52,18 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     @get:Rule val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @Test
+    @RequiresFlagsEnabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
+    fun showDeclaredPermissions_withGrouping() {
+        context.launchMainActivity {
+            navigateToManagePermissionsForApp("Health Connect cts test app")
+            scrollDownToAndFindText("Activity")
+            findTextAndClick("Activity")
+            scrollDownToAndFindText("Steps")
+        }
+    }
+
+    @Test
+    @RequiresFlagsDisabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun showDeclaredPermissions() {
         context.launchMainActivity {
             navigateToManagePermissionsForApp("Health Connect cts test app")
@@ -99,8 +111,8 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
         context.launchMainActivity {
             navigateToManagePermissionsForApp("Health Connect cts test app")
 
-            scrollDownToAndFindText("Body measurements (2)")
-            findTextAndClick("Body measurements (2)")
+            scrollDownToAndFindText("Body measurements")
+            findTextAndClick("Body measurements")
             scrollDownToAndFindText("Body fat")
             findTextAndClick("Body fat")
             clickOnDescAndWaitForNewWindow("Navigate up")
@@ -119,8 +131,8 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
             navigateToManagePermissionsForApp("Health Connect cts test app")
             assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
 
-            scrollDownToAndFindText("Body measurements (2)")
-            findTextAndClick("Body measurements (2)")
+            scrollDownToAndFindText("Body measurements")
+            findTextAndClick("Body measurements")
             scrollDownToAndFindText("Body fat")
             findTextAndClick("Body fat")
             clickOnDescAndWaitForNewWindow("Navigate up")
@@ -139,8 +151,8 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
             navigateToManagePermissionsForApp("Health Connect cts test app")
 
             // TODO(b/447325422): Use content description once toggles have A11y support
-            scrollDownToAndFindText("Body measurements (2)")
-            val preferenceRow = findObject(By.hasDescendant(By.text("Body measurements (2)")))
+            scrollDownToAndFindText("Body measurements")
+            val preferenceRow = findObject(By.hasDescendant(By.text("Body measurements")))
             val switchWidget = preferenceRow.parent.findObject(By.checkable(true))
             switchWidget.click()
             clickOnDescAndWaitForNewWindow("Navigate up")
@@ -160,8 +172,8 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
             assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
 
             // TODO(b/447325422): Use content description once toggles have A11y support
-            scrollDownToAndFindText("Body measurements (2)")
-            val preferenceRow = findObject(By.hasDescendant(By.text("Body measurements (2)")))
+            scrollDownToAndFindText("Body measurements")
+            val preferenceRow = findObject(By.hasDescendant(By.text("Body measurements")))
             val switchWidget = preferenceRow.parent.findObject(By.checkable(true))
             switchWidget.click()
             clickOnDescAndWaitForNewWindow("Navigate up")
