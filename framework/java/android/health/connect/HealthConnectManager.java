@@ -3999,6 +3999,65 @@ public class HealthConnectManager {
         }
     }
 
+    /**
+     * Deletes records previously inserted using {@link #insertDeviceRecords}.
+     *
+     * <p>In case of an error or a permission failure in the Health Connect service, {@link
+     * OutcomeReceiver#onError} will be invoked with a {@link HealthConnectException}.
+     *
+     * <p>Deletions are performed in a transaction i.e. either all will be deleted or none.
+     *
+     * @param deviceId the identifier for the device that is the source of this data.
+     * @param recordType the type of record to be deleted.
+     * @param timeRangeFilter the time range filter to delete records.
+     * @param executor executor on which to invoke the callback.
+     * @param callback callback to receive the result of performing this operation.
+     * @throws RuntimeException for internal errors
+     * @hide
+     */
+    @SystemApi
+    @RequiresPermission(PROVIDE_HEALTH_CONNECT_DEVICE_DATA)
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void deleteDeviceRecords(
+            @NonNull String deviceId,
+            @NonNull Class<? extends Record> recordType,
+            @NonNull TimeRangeFilter timeRangeFilter,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(deviceId);
+        Objects.requireNonNull(recordType);
+        Objects.requireNonNull(timeRangeFilter);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        try {
+            mService.deleteDeviceRecords(
+                    mContext.getAttributionSource(),
+                    deviceId,
+                    new DeleteUsingFiltersRequestParcel(
+                            new DeleteUsingFiltersRequest.Builder()
+                                    .addRecordType(recordType)
+                                    .setTimeRangeFilter(timeRangeFilter)
+                                    .build()),
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(
+                                    () -> callback.onError(exception.getHealthConnectException()));
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
     private static String getDataTypePrefKey(@NonNull Class<? extends Record> dataType) {
         return TRACKING_PREFERENCE_PREFIX
                 + dataType.getAnnotation(Identifier.class).recordIdentifier();

@@ -1355,6 +1355,42 @@ public final class TestUtils {
     }
 
     /**
+     * Calls {@link HealthConnectManager#deleteDeviceRecords} with shell permission identity and
+     * device data provider permissions.
+     */
+    @SuppressLint("MissingPermission")
+    public static void deleteDeviceRecords(
+            String deviceId,
+            Class<? extends Record> recordType,
+            TimeRangeFilter timeRangeFilter,
+            Executor executor,
+            TestOutcomeReceiver<Void, HealthConnectException> callback)
+            throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+
+        try {
+            getHealthConnectManager()
+                    .deleteDeviceRecords(deviceId, recordType, timeRangeFilter, executor, callback);
+            callback.awaitUnchecked();
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
+    }
+
+    /**
+     * Calls {@link HealthConnectManager#deleteDeviceRecords} with shell permission identity and
+     * device data provider permissions in the default application context.
+     */
+    public static void deleteDeviceRecords(
+            String deviceId, Class<? extends Record> recordType, TimeRangeFilter timeRangeFilter)
+            throws InterruptedException {
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+        deleteDeviceRecords(deviceId, recordType, timeRangeFilter, outcomeExecutor(), receiver);
+        receiver.verifyNoExceptionOrThrow();
+    }
+
+    /**
      * Reads a list of records for the specified request. This method utilizes the default
      * application context to retrieve the records.
      */
