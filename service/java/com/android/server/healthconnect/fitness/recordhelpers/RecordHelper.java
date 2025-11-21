@@ -778,6 +778,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             long startTime,
             long endTime,
             boolean usesLocalTimeFilter,
+            long deviceDataProviderId,
             Set<String> grantedGranularWritePermissions,
             AppInfoHelper appInfoHelper) {
         final String timeColumnName =
@@ -794,6 +795,17 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         }
         if (AconfigFlagHelper.isSymptomsEnabled()) {
             addAdditionalDeletionFilters(deleteTableRequest, grantedGranularWritePermissions);
+        }
+
+        // SQLite starts ids at 1 (see https://sqlite.org/autoinc.html), any other value means the
+        // ddp ID has not been set and should be ignored
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled() && deviceDataProviderId > 0) {
+            WhereClauses ddpIdWhereClause =
+                    new WhereClauses(AND)
+                            .addWhereEqualsClause(
+                                    RecordHelper.DDP_ID_COLUMN_NAME,
+                                    String.valueOf(deviceDataProviderId));
+            deleteTableRequest.addExtraWhereClauses(ddpIdWhereClause);
         }
 
         return new RecordDeleteTableRequest(deleteTableRequest, getRecordIdentifier());
@@ -1065,7 +1077,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         recordContentValues.put(APP_INFO_ID_COLUMN_NAME, recordInternal.getAppInfoId());
         recordContentValues.put(DEDUPE_HASH_COLUMN_NAME, getDedupeByteBuffer(recordInternal));
         if (AconfigFlagHelper.isDeviceDataProvidersEnabled()
-                && recordInternal.getDeviceDataProviderId() != DEFAULT_LONG) {
+                && recordInternal.getDeviceDataProviderId() > 0) {
             // TODO(b/459827738): Remove manual extra check when ddp caches have been properly set
             recordContentValues.put(DDP_ID_COLUMN_NAME, recordInternal.getDeviceDataProviderId());
         }

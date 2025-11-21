@@ -40,12 +40,16 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthPermissions;
 import android.health.connect.PageTokenWrapper;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
+import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.accesslog.AccessLog;
+import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
+import android.health.connect.aidl.RecordIdFiltersParcel;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
@@ -101,6 +105,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
 @EnableFlags({
@@ -168,6 +173,7 @@ public class DeviceDataProviderManagerTest {
                         mDeviceDataProviderMetadataHelper,
                         healthConnectInjector.getFitnessRecordUpsertHelper(),
                         mFitnessRecordReadHelper,
+                        healthConnectInjector.getFitnessRecordDeleteHelper(),
                         healthConnectInjector.getSyntheticPackageNameCreator());
         mPreferenceHelper.insertOrReplacePreference(PREFERENCE_KEY, "Some Salt");
     }
@@ -1370,25 +1376,7 @@ public class DeviceDataProviderManagerTest {
         String deviceIdOne = "Hello";
         String deviceIdTwo = "World";
 
-        Device device =
-                new Device.Builder()
-                        .setManufacturer(MANUFACTURER)
-                        .setModel(MODEL)
-                        .setType(Device.DEVICE_TYPE_PHONE)
-                        .setDisplayName(DISPLAY_NAME)
-                        .build();
-        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisement =
-                Set.of(
-                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
-                                .setAvailable(true)
-                                .build());
-        mDeviceDataProviderManager.handleAdvertisement(
-                Set.of(
-                        new DeviceDataAdvertisement(
-                                device, deviceIdOne, deviceDataTypeAdvertisement),
-                        new DeviceDataAdvertisement(
-                                device, deviceIdTwo, deviceDataTypeAdvertisement)),
-                PACKAGE_NAME);
+        advertiseDevices(List.of(deviceIdOne, deviceIdTwo), PACKAGE_NAME, StepsRecord.class);
 
         List<RecordInternal<?>> recordsOne = List.of(buildStepsRecord(100, 200, 111));
         List<RecordInternal<?>> recordsTwo = List.of(buildStepsRecord(100, 200, 222));
@@ -1430,32 +1418,10 @@ public class DeviceDataProviderManagerTest {
     @Test
     public void
             withMultipleAdvertisementsAndNoDeviceIdInRequest_readDeviceRecords_readsAllDevices() {
-
         String deviceIdOne = "Hello";
-
         String deviceIdTwo = "World";
 
-        Device device =
-                new Device.Builder()
-                        .setManufacturer(MANUFACTURER)
-                        .setModel(MODEL)
-                        .setType(Device.DEVICE_TYPE_PHONE)
-                        .setDisplayName(DISPLAY_NAME)
-                        .build();
-
-        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisement =
-                Set.of(
-                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
-                                .setAvailable(true)
-                                .build());
-
-        mDeviceDataProviderManager.handleAdvertisement(
-                Set.of(
-                        new DeviceDataAdvertisement(
-                                device, deviceIdOne, deviceDataTypeAdvertisement),
-                        new DeviceDataAdvertisement(
-                                device, deviceIdTwo, deviceDataTypeAdvertisement)),
-                PACKAGE_NAME);
+        advertiseDevices(List.of(deviceIdOne, deviceIdTwo), PACKAGE_NAME, StepsRecord.class);
 
         List<RecordInternal<?>> recordsOne = List.of(buildStepsRecord(100, 200, 111));
         List<RecordInternal<?>> recordsTwo = List.of(buildStepsRecord(100, 200, 222));
@@ -1567,12 +1533,10 @@ public class DeviceDataProviderManagerTest {
                 buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(11000));
         ExerciseSessionRecordInternal ownSession =
                 buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
-        mDeviceDataProviderManager
-                .insertDeviceRecords("foo", DEVICE_ID, Collections.singletonList(fooSession))
-                .get(0);
-        mDeviceDataProviderManager
-                .insertDeviceRecords("bar", DEVICE_ID, Collections.singletonList(barSession))
-                .get(0);
+        mDeviceDataProviderManager.insertDeviceRecords(
+                "foo", DEVICE_ID, Collections.singletonList(fooSession));
+        mDeviceDataProviderManager.insertDeviceRecords(
+                "bar", DEVICE_ID, Collections.singletonList(barSession));
         String ownUuid =
                 mDeviceDataProviderManager
                         .insertDeviceRecords(
@@ -1722,6 +1686,231 @@ public class DeviceDataProviderManagerTest {
         assertThat(mDeviceDataSourcesHelper.getDdpMap()).isEmpty();
     }
 
+    @Test
+    public void withoutAdvertisement_deleteDeviceRecords_throwsIllegalArgumentException() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mDeviceDataProviderManager.deleteDeviceRecords(
+                                PACKAGE_NAME,
+                                DEVICE_ID,
+                                new DeleteUsingFiltersRequestParcel(
+                                        new DeleteUsingFiltersRequest.Builder().build())));
+    }
+
+    @Test
+    public void withPackageNameFilters_deleteDeviceRecords_throwsIllegalArgumentException() {
+        advertiseDevice(DEVICE_ID);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mDeviceDataProviderManager.deleteDeviceRecords(
+                                PACKAGE_NAME,
+                                DEVICE_ID,
+                                new DeleteUsingFiltersRequestParcel(
+                                        new DeleteUsingFiltersRequest.Builder()
+                                                .addDataOrigin(
+                                                        new DataOrigin.Builder()
+                                                                .setPackageName("Foo")
+                                                                .build())
+                                                .build())));
+    }
+
+    @Test
+    public void withIdFilters_deleteDeviceRecords_throwsIllegalArgumentException() {
+        advertiseDevice(DEVICE_ID);
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mDeviceDataProviderManager.deleteDeviceRecords(
+                                PACKAGE_NAME,
+                                DEVICE_ID,
+                                new DeleteUsingFiltersRequestParcel(
+                                        new RecordIdFiltersParcel(
+                                                List.of(
+                                                        RecordIdFilter.fromId(
+                                                                StepsRecord.class, "id"))),
+                                        PACKAGE_NAME)));
+    }
+
+    @Test
+    public void withEmptyRequest_deleteDeviceRecords_deletesAll() {
+        advertiseDevice(DEVICE_ID);
+
+        List<RecordInternal<?>> records = List.of(buildStepsRecord(100, 200, 111));
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, DEVICE_ID, 1, StepsRecord.class);
+
+        mDeviceDataProviderManager.deleteDeviceRecords(
+                PACKAGE_NAME,
+                DEVICE_ID,
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder().build()));
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, DEVICE_ID, 0, StepsRecord.class);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB})
+    public void withSymptomsAndEmptyRequest_deleteDeviceRecords_deletesAll() {
+        advertiseDevice(DEVICE_ID, PACKAGE_NAME, SymptomRecord.class);
+
+        List<RecordInternal<?>> records =
+                SymptomRecord.VALID_SYMPTOM_TYPES.stream()
+                        .map(symptomType -> new SymptomRecordInternal().setSymptomType(symptomType))
+                        .collect(Collectors.toUnmodifiableList());
+
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+        assertThatDdpHasRecordsSizeEqualTo(
+                PACKAGE_NAME,
+                DEVICE_ID,
+                SymptomRecord.VALID_SYMPTOM_TYPES.size(),
+                SymptomRecord.class);
+
+        mDeviceDataProviderManager.deleteDeviceRecords(
+                PACKAGE_NAME,
+                DEVICE_ID,
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder().build()));
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, DEVICE_ID, 0, SymptomRecord.class);
+    }
+
+    @Test
+    public void withExerciseRouteWithSegmentRecordAndEmptyRequest_deleteDeviceRecords_deletesAll() {
+        advertiseDevice(DEVICE_ID, PACKAGE_NAME, ExerciseSessionRecord.class);
+
+        List<RecordInternal<?>> records =
+                List.of(buildExerciseSessionRecordWithSegment(Instant.ofEpochSecond(123)));
+
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, DEVICE_ID, 1, ExerciseSessionRecord.class);
+
+        mDeviceDataProviderManager.deleteDeviceRecords(
+                PACKAGE_NAME,
+                DEVICE_ID,
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder().build()));
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, DEVICE_ID, 0, ExerciseSessionRecord.class);
+    }
+
+    @Test
+    public void withExerciseRouteWithSegmentRecords_deleteDeviceRecords_deletesOwnRoute() {
+        advertiseDevice(DEVICE_ID, "foo", ExerciseSessionRecord.class);
+        advertiseDevice(DEVICE_ID, "bar", ExerciseSessionRecord.class);
+        advertiseDevice(DEVICE_ID, PACKAGE_NAME, ExerciseSessionRecord.class);
+
+        ExerciseSessionRecordInternal fooSession =
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(10000));
+        ExerciseSessionRecordInternal barSession =
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(11000));
+        ExerciseSessionRecordInternal ownSession =
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(12000));
+
+        mDeviceDataProviderManager.insertDeviceRecords(
+                "foo", DEVICE_ID, Collections.singletonList(fooSession));
+        mDeviceDataProviderManager.insertDeviceRecords(
+                "bar", DEVICE_ID, Collections.singletonList(barSession));
+        mDeviceDataProviderManager.insertDeviceRecords(
+                PACKAGE_NAME, DEVICE_ID, Collections.singletonList(ownSession));
+
+        assertThatDdpHasRecordsSizeEqualTo("foo", DEVICE_ID, 1, ExerciseSessionRecord.class);
+        assertThatDdpHasRecordsSizeEqualTo("bar", DEVICE_ID, 1, ExerciseSessionRecord.class);
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, DEVICE_ID, 1, ExerciseSessionRecord.class);
+
+        mDeviceDataProviderManager.deleteDeviceRecords(
+                PACKAGE_NAME,
+                DEVICE_ID,
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder().build()));
+
+        assertThatDdpHasRecordsSizeEqualTo("foo", DEVICE_ID, 1, ExerciseSessionRecord.class);
+        assertThatDdpHasRecordsSizeEqualTo("bar", DEVICE_ID, 1, ExerciseSessionRecord.class);
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, DEVICE_ID, 0, ExerciseSessionRecord.class);
+    }
+
+    @Test
+    public void withValidRequest_deleteDeviceRecords_deletesRecordWithGivenType() {
+        advertiseDeviceWithSleepAndSteps(DEVICE_ID);
+
+        List<RecordInternal<?>> records =
+                List.of(buildStepsRecord(100, 200, 111), buildSleepSessionInternal());
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, DEVICE_ID, 1, StepsRecord.class);
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, DEVICE_ID, 1, SleepSessionRecord.class);
+
+        mDeviceDataProviderManager.deleteDeviceRecords(
+                PACKAGE_NAME,
+                DEVICE_ID,
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder()
+                                .addRecordType(StepsRecord.class)
+                                .build()));
+
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, DEVICE_ID, 0, StepsRecord.class);
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, DEVICE_ID, 1, SleepSessionRecord.class);
+    }
+
+    @Test
+    public void withMultipleAdvertisementsAndDevices_deleteDeviceRecords_deletesForOneDevice() {
+        String deviceIdOne = "Hello";
+        String deviceIdTwo = "World";
+
+        advertiseDevices(List.of(deviceIdOne, deviceIdTwo), PACKAGE_NAME, StepsRecord.class);
+
+        List<RecordInternal<?>> recordsOne =
+                List.of(buildStepsRecord(100, 200, 111), buildStepsRecord(300, 400, 222));
+
+        List<RecordInternal<?>> recordsTwo =
+                List.of(buildStepsRecord(500, 600, 111), buildStepsRecord(700, 800, 222));
+
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, deviceIdOne, recordsOne);
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, deviceIdTwo, recordsTwo);
+
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, deviceIdOne, 2, StepsRecord.class);
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, deviceIdTwo, 2, StepsRecord.class);
+
+        mDeviceDataProviderManager.deleteDeviceRecords(
+                PACKAGE_NAME,
+                deviceIdOne,
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder().build()));
+
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, deviceIdOne, 0, StepsRecord.class);
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, deviceIdTwo, 2, StepsRecord.class);
+    }
+
+    @Test
+    public void withMultipleAdvertisementsOnSameDevice_deleteDeviceRecords_deletesForOwnRecords() {
+        String packageOne = "foo";
+        String packageTwo = "bar";
+
+        advertiseDevice(DEVICE_ID, packageOne, StepsRecord.class);
+        advertiseDevice(DEVICE_ID, packageTwo, StepsRecord.class);
+
+        List<RecordInternal<?>> recordsOne =
+                List.of(buildStepsRecord(100, 200, 111), buildStepsRecord(300, 400, 222));
+
+        List<RecordInternal<?>> recordsTwo =
+                List.of(buildStepsRecord(500, 600, 111), buildStepsRecord(700, 800, 222));
+
+        mDeviceDataProviderManager.insertDeviceRecords(packageOne, DEVICE_ID, recordsOne);
+        mDeviceDataProviderManager.insertDeviceRecords(packageTwo, DEVICE_ID, recordsTwo);
+
+        assertThatDdpHasRecordsSizeEqualTo(packageOne, DEVICE_ID, 2, StepsRecord.class);
+        assertThatDdpHasRecordsSizeEqualTo(packageTwo, DEVICE_ID, 2, StepsRecord.class);
+
+        mDeviceDataProviderManager.deleteDeviceRecords(
+                packageOne,
+                DEVICE_ID,
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder().build()));
+
+        assertThatDdpHasRecordsSizeEqualTo(packageOne, DEVICE_ID, 0, StepsRecord.class);
+        assertThatDdpHasRecordsSizeEqualTo(packageTwo, DEVICE_ID, 2, StepsRecord.class);
+    }
+
     private void advertiseDevice(
             String deviceId, String callingDdpPackageName, Class<? extends Record> dataType) {
         Device device =
@@ -1743,7 +1932,75 @@ public class DeviceDataProviderManagerTest {
                 Set.of(advertisement), callingDdpPackageName);
     }
 
+    private void advertiseDevices(
+            List<String> deviceIds,
+            String callingDdpPackageName,
+            Class<? extends Record> dataType) {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisement =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(dataType)
+                                .setAvailable(true)
+                                .build());
+        mDeviceDataProviderManager.handleAdvertisement(
+                deviceIds.stream()
+                        .map(
+                                deviceId ->
+                                        new DeviceDataAdvertisement(
+                                                device, deviceId, deviceDataTypeAdvertisement))
+                        .collect(Collectors.toSet()),
+                callingDdpPackageName);
+    }
+
     private void advertiseDevice(String deviceId) {
         advertiseDevice(deviceId, PACKAGE_NAME, StepsRecord.class);
+    }
+
+    private void advertiseDeviceWithSleepAndSteps(String deviceId) {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisement =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build(),
+                        new DeviceDataTypeAdvertisement.Builder(SleepSessionRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisement);
+
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
+    }
+
+    private void assertThatDdpHasRecordsSizeEqualTo(
+            String callingDdpPackageName,
+            String deviceId,
+            int expectedSize,
+            Class<? extends Record> dataType) {
+        ReadRecordsRequestUsingFilters<? extends Record> request =
+                new ReadRecordsRequestUsingFilters.Builder<>(dataType)
+                        .setDeviceId(deviceId)
+                        .build();
+
+        List<RecordInternal<?>> actual =
+                mDeviceDataProviderManager.readDeviceRecords(
+                                mTransactionManager,
+                                callingDdpPackageName,
+                                request.toReadRecordsRequestParcel())
+                        .first;
+
+        assertThat(actual.size()).isEqualTo(expectedSize);
     }
 }

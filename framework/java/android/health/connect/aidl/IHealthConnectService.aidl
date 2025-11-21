@@ -750,7 +750,7 @@ interface IHealthConnectService {
         in IEmptyResponseCallback callback);
 
     /**
-     * Reads all device data of a device data provider from the HealthConnect database.
+     * Reads all device data from a device data source from the HealthConnect database.
      *
      * @param attributionSource attribution source for the data.
      * @param request represents the request to be read.
@@ -762,6 +762,22 @@ interface IHealthConnectService {
         in AttributionSource attributionSource,
         in ReadRecordsRequestParcel request,
         in IReadRecordsResponseCallback callback);
+
+    /**
+     * Deletes device data from a device data source from the HealthConnect database.
+     *
+     * @param attributionSource attribution source for the data.
+     * @param deviceId the identifier for the device that is the source of this data.
+     * @param request represents the request to be deleted.
+     * @param callback Callback to receive result of performing this operation.
+     *
+     * @hide
+     */
+    void deleteDeviceRecords(
+        in AttributionSource attributionSource,
+        in String deviceId,
+        in DeleteUsingFiltersRequestParcel request,
+        in IEmptyResponseCallback callback);
 
     /**
      * Returns a set of record type classes that device data sources are capable of providing. Use
