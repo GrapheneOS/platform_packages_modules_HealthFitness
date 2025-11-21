@@ -62,6 +62,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
+import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -183,7 +184,7 @@ class MatchmakingFragmentTest {
                     .check(matches(isDisplayed()))
                 onView(
                         withText(
-                            "Allow the Calling App app to read data from other apps on this device using Health\u00A0Connect"
+                            "Allow the Calling App app to read data from other apps on this device using Health\u00A0Connect. This data can also be read by other apps you give access to."
                         )
                     )
                     .perform(scrollTo())
@@ -377,8 +378,8 @@ class MatchmakingFragmentTest {
                         .commitNow()
                 }
 
-                onView(withText("Data from $TEST_APP_NAME")).perform(scrollTo()).perform(click())
-                onView(withText("Exercise")).perform(scrollTo()).perform(click())
+                scrollToTextAndClick("Data from $TEST_APP_NAME")
+                scrollToTextAndClick("Exercise")
                 onView(withText("Allow")).perform(click())
 
                 verify(viewModel).grantPermissions()

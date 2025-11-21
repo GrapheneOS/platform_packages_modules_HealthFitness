@@ -16,6 +16,7 @@
 
 package com.android.healthconnect.controller.shared.preference
 
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroupAdapter
@@ -69,6 +70,27 @@ class ExpandablePreferenceAdapter(
                     }
 
                 itemView.background = ContextCompat.getDrawable(itemView.context, backgroundResId)
+
+                val summary = holder.findViewById(android.R.id.summary)
+                if (summary is TextView) {
+                    summary.setTextColor(
+                        if (
+                            backgroundResId ==
+                                SettingsLibResources.drawable
+                                    .settingslib_round_background_top_highlighted
+                        ) {
+                            ContextCompat.getColorStateList(
+                                summary.context,
+                                R.color.expandable_preference_highlighted_summary_color,
+                            )
+                        } else {
+                            ContextCompat.getColorStateList(
+                                summary.context,
+                                R.color.expandable_preference_summary_color,
+                            )
+                        }
+                    )
+                }
             }
         }
     }
