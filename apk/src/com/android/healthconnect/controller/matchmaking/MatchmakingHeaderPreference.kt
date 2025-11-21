@@ -68,7 +68,7 @@ constructor(
             holder.findViewById(R.id.matchmaking_header_icon_view) as MatchmakingHeaderIconView
         iconView.requestingAppIcon = requestingAppIcon
         iconView.healthConnectIcon =
-            ContextCompat.getDrawable(context, R.drawable.health_connect_logo)
+            ContextCompat.getDrawable(context, R.drawable.health_connect_logo_contrast)
         iconView.matchedAppIcons = matchedAppIcons
         iconView.visibility = if (isIconViewVisible) VISIBLE else GONE
 
