@@ -64,8 +64,12 @@ import org.mockito.junit.MockitoRule;
 import java.util.List;
 import java.util.Set;
 
-@EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
 @RunWith(AndroidJUnit4.class)
+@EnableFlags({
+    Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+    Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+    Flags.FLAG_DEVELOPMENT_DATABASE
+})
 public class DeviceDataSourcesHelperTest {
 
     @Rule public final MockitoRule mockitoRule = MockitoJUnit.rule();
