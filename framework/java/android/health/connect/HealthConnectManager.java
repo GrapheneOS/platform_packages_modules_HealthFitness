@@ -86,7 +86,7 @@ import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
 import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
-import android.health.connect.aidl.IGetMatchingAppsCallback;
+import android.health.connect.aidl.IGetMatchingDataSourcesCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
@@ -243,7 +243,6 @@ public class HealthConnectManager {
      * session.
      */
     public static final String EXTRA_EXERCISE_ROUTE = "android.health.connect.extra.EXERCISE_ROUTE";
-
 
     @NonNull
     private static final Set<Class<? extends Record>>
@@ -3634,7 +3633,7 @@ public class HealthConnectManager {
      * @hide
      */
     @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
-    public void getMatchingApps(
+    public void getMatchingDataSources(
             @NonNull MatchmakingRequest request,
             @NonNull @CallbackExecutor Executor executor,
             @NonNull OutcomeReceiver<Map<String, Set<String>>, HealthConnectException> callback) {
@@ -3642,18 +3641,20 @@ public class HealthConnectManager {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
-            mService.getMatchingApps(
+            mService.getMatchingDataSources(
                     mContext.getAttributionSource(),
                     request,
-                    new IGetMatchingAppsCallback.Stub() {
+                    new IGetMatchingDataSourcesCallback.Stub() {
                         @Override
-                        public void onResult(GetMatchingAppsResponse response) {
+                        @PermissionManuallyEnforced
+                        public void onResult(GetMatchingDataSourcesResponse response) {
                             Binder.clearCallingIdentity();
                             Map<String, Set<String>> matchingApps = response.getMatchingApps();
                             executor.execute(() -> callback.onResult(matchingApps));
                         }
 
                         @Override
+                        @PermissionManuallyEnforced
                         public void onError(HealthConnectExceptionParcel exception) {
                             Binder.clearCallingIdentity();
                             executor.execute(

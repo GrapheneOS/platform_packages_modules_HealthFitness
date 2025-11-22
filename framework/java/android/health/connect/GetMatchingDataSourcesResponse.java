@@ -33,13 +33,13 @@ import java.util.Set;
 import java.util.function.Function;
 
 /**
- * Represents a response the matching applications for a given set of record types and a package
- * name.
+ * Represents a response containing the matching data sources (applications and devices) for a given
+ * set of record types.
  *
  * @hide
  */
-public final class GetMatchingAppsResponse
-        implements Parcelable, PackageNameMasker<GetMatchingAppsResponse> {
+public final class GetMatchingDataSourcesResponse
+        implements Parcelable, PackageNameMasker<GetMatchingDataSourcesResponse> {
     private final Map<String, Set<String>> mMatchingApps;
 
     /**
@@ -48,16 +48,17 @@ public final class GetMatchingAppsResponse
      *
      * @param matchingApps The map of matching apps to their matching permissions.
      */
-    public GetMatchingAppsResponse(@NonNull Map<String, Set<String>> matchingApps) {
+    public GetMatchingDataSourcesResponse(@NonNull Map<String, Set<String>> matchingApps) {
         mMatchingApps = Map.copyOf(requireNonNull(matchingApps));
     }
 
     /**
-     * Private constructor to reconstruct a {@link GetMatchingAppsResponse} from a {@link Parcel}.
+     * Private constructor to reconstruct a {@link GetMatchingDataSourcesResponse} from a {@link
+     * Parcel}.
      *
      * @param in The Parcel from which to read the object data.
      */
-    private GetMatchingAppsResponse(@NonNull Parcel in) {
+    private GetMatchingDataSourcesResponse(@NonNull Parcel in) {
         Bundle bundle = requireNonNull(in).readBundle(getClass().getClassLoader());
         if (bundle == null) {
             mMatchingApps = Map.of();
@@ -74,16 +75,16 @@ public final class GetMatchingAppsResponse
     }
 
     @NonNull
-    public static final Creator<GetMatchingAppsResponse> CREATOR =
+    public static final Creator<GetMatchingDataSourcesResponse> CREATOR =
             new Creator<>() {
                 @Override
-                public GetMatchingAppsResponse createFromParcel(Parcel in) {
-                    return new GetMatchingAppsResponse(in);
+                public GetMatchingDataSourcesResponse createFromParcel(Parcel in) {
+                    return new GetMatchingDataSourcesResponse(in);
                 }
 
                 @Override
-                public GetMatchingAppsResponse[] newArray(int size) {
-                    return new GetMatchingAppsResponse[size];
+                public GetMatchingDataSourcesResponse[] newArray(int size) {
+                    return new GetMatchingDataSourcesResponse[size];
                 }
             };
 
@@ -114,7 +115,7 @@ public final class GetMatchingAppsResponse
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof GetMatchingAppsResponse that)) return false;
+        if (!(o instanceof GetMatchingDataSourcesResponse that)) return false;
         return Objects.equals(mMatchingApps, that.mMatchingApps);
     }
 
@@ -136,13 +137,14 @@ public final class GetMatchingAppsResponse
     /** @hide */
     @NonNull
     @Override
-    public GetMatchingAppsResponse toMasked(@NonNull Function<String, String> packageMasker) {
+    public GetMatchingDataSourcesResponse toMasked(
+            @NonNull Function<String, String> packageMasker) {
         Map<String, Set<String>> maskedMap = new HashMap<>();
         for (Map.Entry<String, Set<String>> entry : mMatchingApps.entrySet()) {
             String newKey = entry.getKey() == null ? null : packageMasker.apply(entry.getKey());
             maskedMap.put(newKey, entry.getValue());
         }
 
-        return new GetMatchingAppsResponse(maskedMap);
+        return new GetMatchingDataSourcesResponse(maskedMap);
     }
 }
