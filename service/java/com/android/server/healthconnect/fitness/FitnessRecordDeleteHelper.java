@@ -28,7 +28,6 @@ import android.annotation.Nullable;
 import android.database.Cursor;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
-import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.ArrayMap;
 import android.util.ArraySet;
@@ -334,16 +333,10 @@ public final class FitnessRecordDeleteHelper {
                                 }
                                 UUID deletedRecordUuid =
                                         StorageUtils.getCursorUUID(cursor, idColumnName);
-                                // TODO(b/448836403): Prevent insertion of Symptoms change log as we
-                                //  are not sure yet what inserted ChangeLogs for Symptoms should
-                                //  look like.
-                                if (deleteTableRequest.getRecordType()
-                                        != RecordTypeIdentifier.RECORD_TYPE_SYMPTOM) {
-                                    deletionChangeLogs.addRecordInfo(
-                                            deleteTableRequest.getRecordType(),
-                                            readDataAppInfoId,
-                                            deletedRecordUuid);
-                                }
+                                deletionChangeLogs.addRecordInfo(
+                                        deleteTableRequest.getRecordType(),
+                                        readDataAppInfoId,
+                                        deletedRecordUuid);
 
                                 // Add change logs for affected records, e.g. a training plan
                                 // being deleted will create change logs for affected exercise
