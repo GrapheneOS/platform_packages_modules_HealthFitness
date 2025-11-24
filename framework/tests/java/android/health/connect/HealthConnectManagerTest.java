@@ -42,6 +42,7 @@ import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IIsMatchmakingPossibleCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
 import android.health.connect.datatypes.DistanceRecord;
+import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
@@ -90,6 +91,15 @@ public class HealthConnectManagerTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Mock IHealthConnectService mService;
+
+    @Test
+    public void testDeviceDataSourceCapabilitiesSets() {
+        Set<Class<? extends Record>> sensitiveCapabilities =
+                HealthConnectManager.getPermissionSensitiveDeviceDataSourceCapabilities();
+
+        assertThat(sensitiveCapabilities).doesNotContain(StepsRecord.class);
+        assertThat(sensitiveCapabilities).contains(HeartRateRecord.class);
+    }
 
     @Test
     public void testHealthConnectManager_getNoGrantedHealthPermissions_succeeds() throws Exception {
