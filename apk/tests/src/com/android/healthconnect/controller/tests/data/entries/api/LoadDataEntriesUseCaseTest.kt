@@ -50,7 +50,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -61,7 +60,6 @@ import org.mockito.invocation.InvocationOnMock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
-@Ignore // b/343647465
 @RunWith(AndroidJUnit4::class)
 class LoadDataEntriesUseCaseTest {
 
