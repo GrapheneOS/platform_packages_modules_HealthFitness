@@ -91,11 +91,11 @@ class RequestHealthPermissionUITest : HealthConnectBaseTest() {
             permissions = listOf(HealthPermissions.READ_HEIGHT, HealthPermissions.WRITE_STEPS),
         ) {
             findText("Allow Health Connect cts test app to access your fitness and wellness data?")
-            // First category expanded by default
-            scrollDownToAndFindText("Activity")
-            scrollDownToAndFindText("Steps")
-            scrollDownToAndClick(By.text("Body measurements"))
+            // First READ category expanded by default
+            scrollDownToAndFindText("Body measurements")
             scrollDownToAndFindText("Height")
+            scrollDownToAndClick(By.text("Activity"))
+            scrollDownToAndFindText("Steps")
         }
     }
 
