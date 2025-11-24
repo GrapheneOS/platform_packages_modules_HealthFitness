@@ -38,6 +38,7 @@ import android.health.connect.datatypes.HeightRecord
 import android.health.connect.datatypes.HydrationRecord
 import android.health.connect.datatypes.IntermenstrualBleedingRecord
 import android.health.connect.datatypes.LeanBodyMassRecord
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord
 import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.MindfulnessSessionRecord
@@ -104,6 +105,7 @@ object Constants {
             "android.permission.health.READ_HYDRATION",
             "android.permission.health.READ_LEAN_BODY_MASS",
             "android.permission.health.READ_MENSTRUATION",
+            "android.permission.health.READ_MENSTRUAL_CYCLE_PHASE",
             "android.permission.health.READ_MINDFULNESS",
             "android.permission.health.READ_NICOTINE_INTAKE",
             "android.permission.health.READ_NUTRITION",
@@ -208,6 +210,7 @@ object Constants {
             "android.permission.health.WRITE_HYDRATION",
             "android.permission.health.WRITE_LEAN_BODY_MASS",
             "android.permission.health.WRITE_MENSTRUATION",
+            "android.permission.health.WRITE_MENSTRUAL_CYCLE_PHASE",
             "android.permission.health.WRITE_MINDFULNESS",
             "android.permission.health.WRITE_NICOTINE_INTAKE",
             "android.permission.health.WRITE_NUTRITION",
@@ -407,6 +410,7 @@ object Constants {
                 HealthPermissionType.OVULATION_TEST,
                 HealthPermissionType.INTERMENSTRUAL_BLEEDING,
                 HealthPermissionType.SEXUAL_ACTIVITY,
+                HealthPermissionType.MENSTRUAL_CYCLE_PHASE,
             )
 
         val NUTRITION_PERMISSION_GROUPS =
@@ -482,6 +486,10 @@ object Constants {
 
         // CYCLE_TRACKING
         CERVICAL_MUCUS(CervicalMucusRecord::class, R.string.cervical_mucus_label),
+        MENSTRUAL_CYCLE_PHASE(
+            MenstrualCyclePhaseRecord::class,
+            R.string.menstrual_cycle_phase_label,
+        ),
         MENSTRUATION_FLOW(MenstruationFlowRecord::class, R.string.menstruation_flow),
         MENSTRUATION_PERIOD(MenstruationPeriodRecord::class, R.string.menstruation_period),
         OVULATION_TEST(OvulationTestRecord::class, R.string.ovulation_test_label),
