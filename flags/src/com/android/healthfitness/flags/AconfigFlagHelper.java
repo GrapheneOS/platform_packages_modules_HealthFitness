@@ -140,13 +140,14 @@ public final class AconfigFlagHelper {
 
     /** Returns a boolean indicating whether Alcohol Consumption data type is enabled. */
     public static boolean isAlcoholConsumptionEnabled() {
-        // TODO(b/397369117): Use isDbFlagEnabled once the database changes are finalized.
-        return Flags.alcoholConsumption() && Flags.alcoholConsumptionDb();
+        return Flags.alcoholConsumption() && isDbFlagEnabled(DB_VERSION_ALCOHOL_CONSUMPTION);
     }
 
-    /** Returns a boolean indicating whether device data providers database changes are enabled. */
+    /** Returns a boolean indicating whether device data providers feature is enabled. */
     public static boolean isDeviceDataProvidersEnabled() {
-        return Flags.deviceDataProvidersDb() && Flags.developmentDatabase();
+        return Flags.deviceDataProvidersApi()
+                && Flags.deviceDataProvidersDb()
+                && Flags.developmentDatabase();
     }
 
     /** Returns a boolean indicating whether Symptoms data type is enabled. */

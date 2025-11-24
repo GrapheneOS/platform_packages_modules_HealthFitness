@@ -125,7 +125,7 @@ public class MenstrualCyclePhaseRecordHelperTest {
     }
 
     @Test
-    public void populateSpecificContentValues_optionalValueNull_notInContentValue() {
+    public void populateSpecificContentValues_optionalValueDefault_isNullInContentValues() {
         ContentValues contentValues = new ContentValues();
         MenstrualCyclePhaseRecordInternal recordInternal =
                 new MenstrualCyclePhaseRecordInternal().setPhase(PHASE_FOLLICULAR);
@@ -133,7 +133,8 @@ public class MenstrualCyclePhaseRecordHelperTest {
                 contentValues, recordInternal);
 
         assertThat(contentValues.getAsInteger(PHASE_COLUMN_NAME)).isEqualTo(PHASE_FOLLICULAR);
-        assertThat(contentValues.containsKey(DAY_OF_CYCLE_COLUMN_NAME)).isFalse();
+        assertThat(contentValues.containsKey(DAY_OF_CYCLE_COLUMN_NAME)).isTrue();
+        assertThat(contentValues.get(DAY_OF_CYCLE_COLUMN_NAME)).isNull();
     }
 
     @Test

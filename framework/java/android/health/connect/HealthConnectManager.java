@@ -495,6 +495,58 @@ public class HealthConnectManager {
     public static final String ACTION_MATCHMAKING = "android.health.connect.action.MATCHMAKING";
 
     /**
+     * Activity action: Launch UI to set up devices offered by a DDP. This intent will be launched
+     * by Health Connect whenever a user wishes to set up a device advertised via {@link
+     * #advertiseDeviceDataSources}. This offers the DDP an opportunity to provide custom
+     * configuration and management of the device. This onboarding intent will be triggered when the
+     * user has not previously enabled any data types for this device for the receiving device data
+     * provider.
+     *
+     * <p class="note">Applications exporting an activity that is launched by this intent must also
+     * guard it with {@link HealthPermissions#MANAGE_HEALTH_DATA_PERMISSION} so that only the system
+     * can launch it.
+     *
+     * <p>Input: {@link #EXTRA_DEVICE_ID} string extra with the ID of the device.
+     *
+     * <p>Input: {@link #EXTRA_DEVICE_RECORD_TYPES} optional string arraylist extra. When present,
+     * the user is requesting to manage the specified data types.
+     *
+     * @hide
+     */
+    @SystemApi
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
+    public static final String ACTION_SHOW_DEVICE_ONBOARDING =
+            "android.health.connect.action.SHOW_DEVICE_ONBOARDING";
+
+    /**
+     * Activity action: Launch UI to manage devices offered by a DDP. This intent will be launched
+     * by Health Connect whenever a user wishes to configure a device advertised via {@link
+     * #advertiseDeviceDataSources}. This offers the DDP an opportunity to provide custom
+     * configuration and management of the device. This management intent will be triggered when the
+     * user has previously enabled at least one data type for this device for the receiving device
+     * data provider.
+     *
+     * <p class="note">Applications exporting an activity that is launched by this intent must also
+     * guard it with {@link HealthPermissions#MANAGE_HEALTH_DATA_PERMISSION} so that only the system
+     * can launch it.
+     *
+     * <p>Input: {@link #EXTRA_DEVICE_ID} string extra with the ID of the device.
+     *
+     * <p>Input: {@link #EXTRA_DEVICE_RECORD_TYPES} optional string arraylist extra. When present,
+     * the user is requesting to manage the specified data types.
+     *
+     * @hide
+     */
+    @SystemApi
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    @SdkConstant(SdkConstant.SdkConstantType.ACTIVITY_INTENT_ACTION)
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
+    public static final String ACTION_SHOW_DEVICE_MANAGEMENT =
+            "android.health.connect.action.SHOW_DEVICE_MANAGEMENT";
+
+    /**
      * A string array of record type canonical class names to be used with {@link
      * #ACTION_MATCHMAKING}.
      *
@@ -502,6 +554,30 @@ public class HealthConnectManager {
      * @hide
      */
     public static final String EXTRA_RECORD_TYPES = "android.health.connect.extra.RECORD_TYPES";
+
+    /**
+     * A string ID of a device to be used with {@link #ACTION_SHOW_DEVICE_ONBOARDING} and {@link
+     * #ACTION_SHOW_DEVICE_MANAGEMENT}.
+     *
+     * <p>This is the same device ID as was advertised by the device data provider, see {@link
+     * #advertiseDeviceDataSources}.
+     *
+     * @hide
+     */
+    @SystemApi
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public static final String EXTRA_DEVICE_ID = "android.health.connect.extra.DEVICE_ID";
+
+    /**
+     * A string array of record type canonical class names to be used with {@link
+     * #ACTION_SHOW_DEVICE_ONBOARDING} and {@link #ACTION_SHOW_DEVICE_MANAGEMENT}.
+     *
+     * @hide
+     */
+    @SystemApi
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public static final String EXTRA_DEVICE_RECORD_TYPES =
+            "android.health.connect.extra.DEVICE_RECORD_TYPES";
 
     private static final String TAG = "HealthConnectManager";
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
@@ -3683,11 +3759,6 @@ public class HealthConnectManager {
         }
     }
 
-    private static String getDataTypePrefKey(@NonNull Class<? extends Record> dataType) {
-        return TRACKING_PREFERENCE_PREFIX
-                + dataType.getAnnotation(Identifier.class).recordIdentifier();
-    }
-
     // TODO(b/440056683): Add information on how the data here is displayed in the controller.
     /**
      * Notify Health Connect of devices that can provide data and the data types each of them can
@@ -3812,5 +3883,64 @@ public class HealthConnectManager {
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
+    }
+
+    /**
+     * Reads records previously inserted using {@link #insertDeviceRecords}.
+     *
+     * <p>This method is strictly scoped to records inserted by the calling device data provider.
+     * Records inserted by other applications or device data providers are not accessible via this
+     * API.
+     *
+     * <p>The behavior of the read operation depends on the type of {@link ReadRecordsRequest}
+     * provided:
+     *
+     * <p>A request using {@link ReadRecordsRequestUsingIds} will filter device records using their
+     * record IDs or the client IDs. IDs that the device data provider has not inserted will be
+     * ignored.
+     *
+     * <p>A request using {@link ReadRecordsRequestUsingFilters} will filter device records with the
+     * request's given {@code deviceId}. The {@code deviceId} must match the one used in {@link
+     * DeviceDataAdvertisement} in the latest call to {@link #advertiseDeviceDataSources}. If {@code
+     * deviceId} is not set, records from all devices advertised by the caller will be returned.
+     *
+     * @param <T> the type of {@link Record} being requested.
+     * @param request the read request based on {@link ReadRecordsRequest}.
+     * @param executor the {@link Executor} on which the {@code callback} will be invoked.
+     * @param callback the callback to receive the {@link ReadRecordsResponse} on success or a
+     *     {@link HealthConnectException} on failure.
+     * @throws IllegalArgumentException if {@code request} contains {@link DataOrigin}s.
+     * @throws RuntimeException for internal errors.
+     * @hide
+     */
+    @SystemApi
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    @RequiresPermission(PROVIDE_HEALTH_CONNECT_DEVICE_DATA)
+    public <T extends Record> void readDeviceRecords(
+            @NonNull ReadRecordsRequest<T> request,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
+        Objects.requireNonNull(request);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        if (request instanceof ReadRecordsRequestUsingFilters<?> readRequest) {
+            if (!readRequest.getDataOrigins().isEmpty()) {
+                throw new IllegalArgumentException(
+                        "DataOrigins must be empty, use device id instead.");
+            }
+        }
+        try {
+            mService.readDeviceRecords(
+                    mContext.getAttributionSource(),
+                    request.toReadRecordsRequestParcel(),
+                    getReadCallback(executor, callback));
+        } catch (RemoteException remoteException) {
+            remoteException.rethrowFromSystemServer();
+        }
+    }
+
+    private static String getDataTypePrefKey(@NonNull Class<? extends Record> dataType) {
+        return TRACKING_PREFERENCE_PREFIX
+                + dataType.getAnnotation(Identifier.class).recordIdentifier();
     }
 }

@@ -21,10 +21,10 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissions.READ_DISTANCE
 import android.health.connect.HealthPermissions.READ_STEPS
+import android.os.Bundle
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
-import androidx.core.os.bundleOf
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
@@ -85,6 +85,7 @@ import com.android.healthconnect.controller.tests.utils.clickOnRecyclerViewItemW
 import com.android.healthconnect.controller.tests.utils.clickSwitchOnRecyclerViewItemWithText
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.scrollToBottomOfPreferenceScreen
+import com.android.healthconnect.controller.tests.utils.scrollToText
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.logging.AppAccessElement
 import com.android.healthconnect.controller.utils.logging.DisconnectAppDialogElement
@@ -197,10 +198,10 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity: TestActivity ->
@@ -221,10 +222,10 @@ class FitnessAppFragmentTest {
         whenever(viewModel.grantedFitnessPermissions).then { MutableLiveData(setOf(permission)) }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity: TestActivity ->
@@ -248,10 +249,10 @@ class FitnessAppFragmentTest {
         whenever(viewModel.grantedFitnessPermissions).then { MutableLiveData(setOf(permission)) }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity: TestActivity ->
@@ -279,10 +280,10 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withContentDescription("Exercise. Write Access. On"))
@@ -302,10 +303,10 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withContentDescription("Exercise. Write Access. Off"))
@@ -328,10 +329,10 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity: TestActivity ->
@@ -368,10 +369,10 @@ class FitnessAppFragmentTest {
         whenever(viewModel.allFitnessPermissionsGranted).then { MediatorLiveData(true) }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity: TestActivity ->
@@ -398,10 +399,10 @@ class FitnessAppFragmentTest {
         whenever(viewModel.allFitnessPermissionsGranted).then { MediatorLiveData(false) }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 scenario.onActivity { activity: TestActivity ->
@@ -432,10 +433,10 @@ class FitnessAppFragmentTest {
             )
         }
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("Allow all")).perform(click())
@@ -488,10 +489,10 @@ class FitnessAppFragmentTest {
             MutableLiveData(listOf(writePermission, readPermission))
         }
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("Allow all")).perform(click())
@@ -521,10 +522,10 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("Allow all")).perform(click())
@@ -577,10 +578,10 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("Allow all")).perform(click())
@@ -631,10 +632,10 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("Allow all")).perform(click())
@@ -683,10 +684,10 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("Allow all")).perform(click())
@@ -737,10 +738,10 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("Allow all")).perform(click())
@@ -787,10 +788,10 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("Allow all")).perform(click())
@@ -842,10 +843,10 @@ class FitnessAppFragmentTest {
         }
         whenever(viewModel.allFitnessPermissionsGranted).then { MediatorLiveData(true) }
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("Allow all")).perform(click())
@@ -872,10 +873,10 @@ class FitnessAppFragmentTest {
         }
         whenever(viewModel.allFitnessPermissionsGranted).then { MediatorLiveData(true) }
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onView(withText("Allow all")).perform(click())
@@ -903,10 +904,10 @@ class FitnessAppFragmentTest {
         whenever(healthPermissionReader.getApplicationRationaleIntent(TEST_APP_PACKAGE_NAME))
             .thenReturn(Intent())
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 scrollToBottomOfPreferenceScreen()
@@ -951,10 +952,10 @@ class FitnessAppFragmentTest {
             )
         }
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onIdle()
@@ -988,10 +989,10 @@ class FitnessAppFragmentTest {
         whenever(healthPermissionReader.getApplicationRationaleIntent(TEST_APP_PACKAGE_NAME))
             .thenReturn(Intent())
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onIdle()
@@ -1029,10 +1030,10 @@ class FitnessAppFragmentTest {
             .thenReturn(Intent(rationaleAction))
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onIdle()
@@ -1069,11 +1070,11 @@ class FitnessAppFragmentTest {
         }
         whenever(viewModel.allFitnessPermissionsGranted).then { MediatorLiveData(true) }
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                    SHOW_MANAGE_APP_SECTION to true, // shows manage app permission
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                    putBoolean(SHOW_MANAGE_APP_SECTION, true)
+                }
             )
             .use {
                 scrollToBottomOfPreferenceScreen()
@@ -1095,11 +1096,11 @@ class FitnessAppFragmentTest {
         }
         whenever(viewModel.allFitnessPermissionsGranted).then { MediatorLiveData(true) }
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                    SHOW_MANAGE_APP_SECTION to false, // hides manage app permission
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                    putBoolean(SHOW_MANAGE_APP_SECTION, false)
+                }
             )
             .use {
                 onView(withText("Manage app")).check(doesNotExist())
@@ -1114,10 +1115,10 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { onView(withText(R.string.additional_access_label)).check(doesNotExist()) }
     }
@@ -1134,10 +1135,10 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onIdle()
@@ -1164,10 +1165,10 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 onIdle()
@@ -1191,10 +1192,10 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             ) {
                 navHostController.setGraph(R.navigation.nav_graph)
                 navHostController.setCurrentDestination(R.id.fitnessAppFragment)
@@ -1217,21 +1218,20 @@ class FitnessAppFragmentTest {
 
     @Test
     @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
-    fun displaysGroupedPermissions_firstIsGroupExpanded_whenFlagEnabled() {
+    fun displaysGroupedPermissions_whenFlagEnabled() {
         val writePermission = FitnessPermission(HYDRATION, WRITE)
         val readPermission = FitnessPermission(STEPS, READ)
         whenever(viewModel.fitnessPermissions).then {
             MutableLiveData(listOf(writePermission, readPermission))
         }
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
-                // Sorted order is Activity, Sleep for read.
-                // So Activity (1) should be expanded.
+                // Activity category was marked expanded in the test Setup
                 onView(withId(androidx.preference.R.id.recycler_view))
                     .perform(
                         RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -1253,7 +1253,7 @@ class FitnessAppFragmentTest {
                 assertThat(expandablePreference.mIsExpanded).isTrue()
 
                 // Now expand Nutrition category (write permissions)
-                clickOnRecyclerViewItemWithText("Nutrition (1)")
+                clickOnRecyclerViewItemWithText("Nutrition")
                 onView(withId(androidx.preference.R.id.recycler_view))
                     .perform(
                         RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
@@ -1261,6 +1261,91 @@ class FitnessAppFragmentTest {
                         )
                     )
                 onView(withText("Hydration")).check(matches(isDisplayed()))
+            }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
+    fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_partialPermissionsGranted() {
+        val stepsPermission = fromPermissionString(READ_STEPS)
+        val distancePermission = fromPermissionString(READ_DISTANCE)
+        whenever(viewModel.fitnessPermissions).then {
+            MutableLiveData(listOf(stepsPermission, distancePermission))
+        }
+
+        whenever(viewModel.expandedDataCategoryPreferenceKeys).then {
+            MutableLiveData(setOf(PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString()))
+        }
+
+        whenever(viewModel.grantedFitnessPermissions).then {
+            MutableLiveData(setOf(stepsPermission))
+        }
+
+        launchFragment<FitnessAppFragment>(
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
+            )
+            .use {
+                scrollToText("1 of 2 selected")
+                onView(withText("1 of 2 selected")).check(matches(isDisplayed()))
+            }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
+    fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_allPermissionGranted() {
+        val stepsPermission = fromPermissionString(READ_STEPS)
+        val distancePermission = fromPermissionString(READ_DISTANCE)
+        whenever(viewModel.fitnessPermissions).then {
+            MutableLiveData(listOf(stepsPermission, distancePermission))
+        }
+
+        whenever(viewModel.expandedDataCategoryPreferenceKeys).then {
+            MutableLiveData(setOf(PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString()))
+        }
+
+        whenever(viewModel.grantedFitnessPermissions).then {
+            MutableLiveData(setOf(stepsPermission, distancePermission))
+        }
+
+        launchFragment<FitnessAppFragment>(
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
+            )
+            .use {
+                scrollToText("2 of 2 selected")
+                onView(withText("2 of 2 selected")).check(matches(isDisplayed()))
+            }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
+    fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_zeroPermissionGranted() {
+        val stepsPermission = fromPermissionString(READ_STEPS)
+        val distancePermission = fromPermissionString(READ_DISTANCE)
+        whenever(viewModel.fitnessPermissions).then {
+            MutableLiveData(listOf(stepsPermission, distancePermission))
+        }
+
+        whenever(viewModel.expandedDataCategoryPreferenceKeys).then {
+            MutableLiveData(setOf(PermissionGroupKey(READ, HealthDataCategory.ACTIVITY).toString()))
+        }
+
+        whenever(viewModel.grantedFitnessPermissions).then { MutableLiveData<Set<String>>() }
+
+        launchFragment<FitnessAppFragment>(
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
+            )
+            .use {
+                scrollToText("0 of 2 selected")
+                onView(withText("0 of 2 selected")).check(matches(isDisplayed()))
             }
     }
 
@@ -1275,10 +1360,10 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
                 clickOnRecyclerViewItemWithText("Steps")
@@ -1299,13 +1384,13 @@ class FitnessAppFragmentTest {
         }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
-                clickSwitchOnRecyclerViewItemWithText("Activity (1)")
+                clickSwitchOnRecyclerViewItemWithText("Activity")
 
                 verify(viewModel)
                     .updatePermissions(TEST_APP_PACKAGE_NAME, listOf(stepsPermission), grant = true)
@@ -1321,10 +1406,10 @@ class FitnessAppFragmentTest {
         whenever(viewModel.fitnessPermissions).then { MutableLiveData(activityPermissions) }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use { scenario ->
                 lateinit var expandablePreference: HealthToggleExpandablePreference

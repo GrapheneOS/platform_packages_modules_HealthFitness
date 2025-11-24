@@ -47,6 +47,7 @@ import static com.android.server.healthconnect.common.logging.HealthConnectServi
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.DELETE_MEDICAL_RESOURCES_BY_REQUESTS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_CHANGES;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_CHANGES_TOKEN;
+import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MATCHING_DATA_SOURCES;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MEDICAL_DATA_SOURCES_BY_IDS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MEDICAL_DATA_SOURCES_BY_REQUESTS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.INSERT_DATA;
@@ -1297,10 +1298,28 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 recordTypeIdsToDelete, attributionSource);
                     }
 
+                    final Set<String> grantedGranularWritePermissions =
+                            unmaskedRequest.getRecordTypeFilters().stream()
+                                    .map(mInternalHealthConnectMappings::getRecordHelper)
+                                    .flatMap(
+                                            recordHelper ->
+                                                    recordHelper
+                                                            .getAllGranularWritePermissionsForHelper()
+                                                            .stream())
+                                    .filter(
+                                            permission ->
+                                                    holdsDataManagementPermission
+                                                            || mDataPermissionEnforcer
+                                                                    .isPermissionGranted(
+                                                                            permission,
+                                                                            attributionSource))
+                                    .collect(Collectors.toSet());
+
                     int numberOfRecordsDeleted =
                             mFitnessRecordDeleteHelper.deleteRecords(
                                     requireNonNull(attributionSource.getPackageName()),
                                     unmaskedRequest,
+                                    grantedGranularWritePermissions,
                                     /* enforceSelfDelete= */ !holdsDataManagementPermission,
                                     /* shouldRecordAccessLog= */ !holdsDataManagementPermission);
                     tryAndReturnResult(callback, logger);
@@ -3151,11 +3170,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
-        // TODO(b/425634323): Update logger
         String attributionPackageName = attributionSource.getPackageName();
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
-                                holdsDataManagementPermission, API_METHOD_UNKNOWN)
+                                holdsDataManagementPermission, GET_MATCHING_DATA_SOURCES)
                         .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionPackageName);
         ErrorCallback errorCallback = callback::onError;
@@ -3192,8 +3210,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     GetMatchingAppsResponse maskedResponse =
                             new GetMatchingAppsResponse(matchingApps)
                                     .toMasked(getMaskingFunction(attributionPackageName));
+                    logger.setHealthDataServiceApiStatusSuccess();
                     callback.onResult(maskedResponse);
-                    // TODO(b/425634323): Add logging.
                 },
                 logger,
                 errorCallback,
@@ -3396,8 +3414,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             logger,
                             recordsParcel.getRecordsChunkSize());
 
-                    if (!Flags.deviceDataProvidersApi()
-                            || !AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                         throw new UnsupportedOperationException(
                                 "insertDeviceRecords is not supported");
                     }
@@ -3446,7 +3463,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
-        String packageName = attributionSource.getPackageName();
+        String callingPackageName = requireNonNull(attributionSource.getPackageName());
         // TODO(b/455514553): Use specific API method for logging.
         final HealthConnectServiceLogger.Builder logger =
                 new HealthConnectServiceLogger.Builder(
@@ -3454,7 +3471,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         .setHealthFitnessStatsLog(mStatsLog)
                         .setPackageName(attributionSource.getPackageName());
         ErrorCallback errorCallback = callback::onError;
-        String unmaskedDeviceId = getUnmaskingFunction(packageName).apply(deviceId);
+        String unmaskedDeviceId = getUnmaskingFunction(callingPackageName).apply(deviceId);
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
@@ -3473,8 +3490,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             logger,
                             recordsParcel.getRecordsChunkSize());
 
-                    if (!Flags.deviceDataProvidersApi()
-                            || !AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                         throw new UnsupportedOperationException(
                                 "updateDeviceRecords is not supported");
                     }
@@ -3482,13 +3498,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     DeviceDataProviderManager deviceDataProviderManager =
                             requireNonNull(mDeviceDataProviderManager);
                     if (!deviceDataProviderManager.isPermittedToProvideDeviceData(
-                            requireNonNull(packageName), uid, pid)) {
+                            requireNonNull(callingPackageName), uid, pid)) {
                         throw new SecurityException(
                                 "Caller is not permitted to provide or update device data");
                     }
 
                     deviceDataProviderManager.updateDeviceRecords(
-                            packageName, unmaskedDeviceId, recordInternals);
+                            callingPackageName, unmaskedDeviceId, recordInternals);
 
                     tryAndReturnResult(callback, logger);
                     // TODO(b/455514553): Add RecordType specific upsert metrics
@@ -3542,23 +3558,27 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
+        final String callingPackageName = requireNonNull(attributionSource.getPackageName());
 
         enforceIsForegroundUser(userHandle);
         try {
-            if (mDeviceDataProviderManager == null || !Flags.deviceDataProvidersApi()) {
+            if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                 throw new UnsupportedOperationException(
                         "getCurrentDeviceId is not supported."
                                 + "Make sure to turn on the respective DDP flags.");
             }
 
-            if (!mDeviceDataProviderManager.isPermittedToProvideDeviceData(
-                    attributionSource.getPackageName(), uid, pid)) {
+            DeviceDataProviderManager deviceDataProviderManager =
+                    requireNonNull(mDeviceDataProviderManager);
+
+            if (!deviceDataProviderManager.isPermittedToProvideDeviceData(
+                    callingPackageName, uid, pid)) {
                 throw new SecurityException(
                         "Caller does not have permission to call getCurrentDeviceId.");
             }
 
-            return getMaskingFunction(attributionSource.getPackageName())
-                    .apply(mDeviceDataProviderManager.getCurrentDeviceId());
+            return getMaskingFunction(callingPackageName)
+                    .apply(deviceDataProviderManager.getCurrentDeviceId());
         } catch (Exception e) {
             Slog.e(TAG, "Unable to get current device id for " + userHandle);
             if (e instanceof SQLiteException
@@ -3569,6 +3589,137 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         }
 
         throw new RuntimeException();
+    }
+
+    /**
+     * @see HealthConnectManager#readDeviceRecords
+     */
+    @Override
+    public void readDeviceRecords(
+            AttributionSource attributionSource,
+            ReadRecordsRequestParcel request,
+            IReadRecordsResponseCallback callback) {
+        // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
+        checkParamsNonNull(attributionSource, request, callback);
+
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
+        final String callingPackageName = requireNonNull(attributionSource.getPackageName());
+        // TODO(b/455514553): Use specific API method for logging.
+        final HealthConnectServiceLogger.Builder logger =
+                new HealthConnectServiceLogger.Builder(
+                                /* holdsDataManagementPermission= */ false, API_METHOD_UNKNOWN)
+                        .setHealthFitnessStatsLog(mStatsLog)
+                        .setPackageName(callingPackageName);
+        final ReadRecordsRequestParcel unmaskedRequest =
+                request.toUnmasked(getUnmaskingFunction(callingPackageName));
+
+        scheduleLoggingHealthDataApiErrors(
+                () -> {
+                    enforceIsForegroundUser(userHandle);
+                    verifyPackageNameFromUid(uid, attributionSource);
+                    throwExceptionIfDataSyncInProgress();
+
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                        throw new UnsupportedOperationException(
+                                "readDeviceRecords is not supported."
+                                        + "Make sure to turn on the respective DDP flags.");
+                    }
+
+                    DeviceDataProviderManager deviceDataProviderManager =
+                            requireNonNull(mDeviceDataProviderManager);
+
+                    if (!deviceDataProviderManager.isPermittedToProvideDeviceData(
+                            callingPackageName, uid, pid)) {
+                        throw new SecurityException(
+                                "Caller does not have permission to call readDeviceRecords.");
+                    }
+
+                    Pair<List<RecordInternal<?>>, PageTokenWrapper> readRecordsResponse =
+                            deviceDataProviderManager.readDeviceRecords(
+                                    mTransactionManager,
+                                    attributionSource.getPackageName(),
+                                    unmaskedRequest);
+                    List<RecordInternal<?>> records = readRecordsResponse.first;
+                    long pageToken = readRecordsResponse.second.encode();
+
+                    logger.setNumberOfRecords(records.size());
+
+                    if (Constants.DEBUG) {
+                        Slog.d(TAG, "pageToken: " + pageToken);
+                    }
+
+                    final ReadRecordsResponseParcel maskedResponseParcel =
+                            new ReadRecordsResponseParcel(new RecordsParcel(records), pageToken)
+                                    .toMasked(getMaskingFunction(callingPackageName));
+                    callback.onResult(maskedResponseParcel);
+
+                    logger.setDataTypesFromRecordInternals(records)
+                            .setHealthDataServiceApiStatusSuccess();
+                },
+                logger,
+                callback::onError,
+                uid,
+                /* isController= */ holdsDataManagementPermission);
+    }
+
+    /**
+     * @see HealthConnectManager#deleteDeviceRecords
+     */
+    @Override
+    public void deleteDeviceRecords(
+            AttributionSource attributionSource,
+            String deviceId,
+            DeleteUsingFiltersRequestParcel request,
+            IEmptyResponseCallback callback) {
+        checkParamsNonNull(attributionSource, request, callback);
+
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
+        final String callingPackageName = requireNonNull(attributionSource.getPackageName());
+        // TODO(b/455514553): Use specific API method for logging.
+        final HealthConnectServiceLogger.Builder logger =
+                new HealthConnectServiceLogger.Builder(
+                                /* holdsDataManagementPermission= */ false, API_METHOD_UNKNOWN)
+                        .setHealthFitnessStatsLog(mStatsLog)
+                        .setPackageName(callingPackageName);
+        String unmaskedDeviceId = getUnmaskingFunction(callingPackageName).apply(deviceId);
+
+        scheduleLoggingHealthDataApiErrors(
+                () -> {
+                    enforceIsForegroundUser(userHandle);
+                    verifyPackageNameFromUid(uid, attributionSource);
+                    throwExceptionIfDataSyncInProgress();
+
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                        throw new UnsupportedOperationException(
+                                "deleteDeviceRecords is not supported."
+                                        + "Make sure to turn on the respective DDP flags.");
+                    }
+
+                    DeviceDataProviderManager deviceDataProviderManager =
+                            requireNonNull(mDeviceDataProviderManager);
+
+                    if (!deviceDataProviderManager.isPermittedToProvideDeviceData(
+                            callingPackageName, uid, pid)) {
+                        throw new SecurityException(
+                                "Caller does not have permission to call deleteDeviceRecords.");
+                    }
+
+                    deviceDataProviderManager.deleteDeviceRecords(
+                            callingPackageName, unmaskedDeviceId, request);
+                    callback.onResult();
+
+                    logger.setHealthDataServiceApiStatusSuccess();
+                },
+                logger,
+                callback::onError,
+                uid,
+                /* isController= */ holdsDataManagementPermission);
     }
 
     // Cancel BR timeouts - this might be needed when a user is going into background.

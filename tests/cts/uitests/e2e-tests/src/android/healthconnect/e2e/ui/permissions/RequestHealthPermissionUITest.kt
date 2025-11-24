@@ -65,9 +65,11 @@ class RequestHealthPermissionUITest : HealthConnectBaseTest() {
             permissions = listOf(HealthPermissions.READ_HEIGHT, HealthPermissions.WRITE_STEPS),
         ) {
             findText("Allow Health Connect cts test app to access Health Connect?")
-            scrollDownToAndFindText("Height")
-            scrollDownToAndClick(By.text("Activity (1)"))
+            // First category expanded by default
+            scrollDownToAndFindText("Activity")
             scrollDownToAndFindText("Steps")
+            scrollDownToAndClick(By.text("Body measurements"))
+            scrollDownToAndFindText("Height")
         }
     }
 
@@ -89,9 +91,11 @@ class RequestHealthPermissionUITest : HealthConnectBaseTest() {
             permissions = listOf(HealthPermissions.READ_HEIGHT, HealthPermissions.WRITE_STEPS),
         ) {
             findText("Allow Health Connect cts test app to access your fitness and wellness data?")
-            scrollDownToAndFindText("Height")
-            scrollDownToAndClick(By.text("Activity (1)"))
+            // First category expanded by default
+            scrollDownToAndFindText("Activity")
             scrollDownToAndFindText("Steps")
+            scrollDownToAndClick(By.text("Body measurements"))
+            scrollDownToAndFindText("Height")
         }
     }
 
@@ -112,6 +116,8 @@ class RequestHealthPermissionUITest : HealthConnectBaseTest() {
             packageName = TEST_APP_PACKAGE_NAME,
             permissions = listOf(HealthPermissions.READ_HEIGHT, HealthPermissions.WRITE_BODY_FAT),
         ) {
+            // First category expanded by default
+            scrollDownToAndFindText("Body measurements")
             waitForObjectNotFound(By.text("Height"), timeout = ofSeconds(1))
             scrollDownToAndFindText("Body fat")
         }
@@ -133,6 +139,7 @@ class RequestHealthPermissionUITest : HealthConnectBaseTest() {
             packageName = TEST_APP_PACKAGE_NAME,
             permissions = listOf(HealthPermissions.READ_HEIGHT, HealthPermissions.WRITE_BODY_FAT),
         ) {
+            // Body measurements category expanded by default
             scrollDownToAndFindText("Height")
             findTextAndClick("Height")
             clickOnTextAndWaitForNewWindow("Allow")

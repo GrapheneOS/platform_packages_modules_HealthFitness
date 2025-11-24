@@ -815,6 +815,20 @@ public class HealthConnectManagerTest {
                         DistanceRecord.class, false);
     }
 
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void testDeviceDataProvidersIntentActionsAndExtrasExist() {
+        assertThat(HealthConnectManager.ACTION_SHOW_DEVICE_ONBOARDING)
+                .isEqualTo("android.health.connect.action.SHOW_DEVICE_ONBOARDING");
+        assertThat(HealthConnectManager.ACTION_SHOW_DEVICE_MANAGEMENT)
+                .isEqualTo("android.health.connect.action.SHOW_DEVICE_MANAGEMENT");
+
+        assertThat(HealthConnectManager.EXTRA_DEVICE_ID)
+                .isEqualTo("android.health.connect.extra.DEVICE_ID");
+        assertThat(HealthConnectManager.EXTRA_DEVICE_RECORD_TYPES)
+                .isEqualTo("android.health.connect.extra.DEVICE_RECORD_TYPES");
+    }
+
     /**
      * Constructs a {@link HealthConnectManager} using reflection to access the constructor.
      *

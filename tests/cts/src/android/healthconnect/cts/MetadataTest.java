@@ -15,27 +15,27 @@
  */
 package android.healthconnect.cts;
 
-import static com.google.common.truth.Truth.assertThat;
-
-import android.health.connect.ReadRecordsRequestUsingFilters;
-import android.health.connect.TimeInstantRangeFilter;
-import android.health.connect.datatypes.DataOrigin;
-import android.health.connect.HealthPermissions;
-import android.health.connect.datatypes.Device;
-import android.health.connect.datatypes.HeartRateRecord;
-import android.health.connect.datatypes.Metadata;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.readRecords;
 import static android.healthconnect.testing.cts.TestUtils.updateRecords;
 
-import android.health.connect.HealthPermissions;
+import static com.google.common.truth.Truth.assertThat;
+
+import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.TimeInstantRangeFilter;
+import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.HeartRateRecord;
+import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.platform.test.annotations.AppModeFull;
 import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.healthfitness.flags.Flags;
 
@@ -58,12 +58,16 @@ import java.util.List;
     Flags.FLAG_DEVELOPMENT_DATABASE
 })
 public class MetadataTest {
-    private static final String TAG = "MetadataTest";
     private static final String TEST_DISPLAY_NAME = "MyTestDevice";
     private static final String UPDATED_TEST_DISPLAY_NAME = "MyUpdatedTestDevice";
 
+    @Rule public final TestRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
+
     @Rule
-    public final TestRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
+    public AssumptionCheckerRule mSupportedHardwareRule =
+            new AssumptionCheckerRule(
+                    DeviceSupportUtils::isHealthConnectFullySupported,
+                    "Tests should run on supported hardware only.");
 
     @Before
     public void setUp() throws InterruptedException {

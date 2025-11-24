@@ -33,6 +33,7 @@ import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Slog;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
@@ -48,7 +49,10 @@ import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -108,12 +112,18 @@ public class FitnessRecordUpsertHelper {
             List<? extends RecordInternal<?>> recordInternals,
             ArrayMap<String, Boolean> extraPermsStateMap,
             boolean shouldGenerateAccessLogs) {
+        Map<Integer, List<RecordInternal<?>>> recordTypesToRecordInternals = new HashMap<>();
         for (RecordInternal<?> recordInternal : recordInternals) {
             // Override each record package to the given package i.e. the API caller package.
             StorageUtils.addPackageNameTo(recordInternal, callingPackageName);
             // For insert, we should generate a fresh UUID. Don't let the client choose it.
             addNameBasedUUIDTo(recordInternal);
+            recordTypesToRecordInternals
+                    .computeIfAbsent(recordInternal.getRecordType(), k -> new ArrayList<>())
+                    .add(recordInternal);
         }
+
+        enforcePreUpsertChecks(recordTypesToRecordInternals);
 
         List<String> insertedUuids =
                 upsert(
@@ -158,13 +168,21 @@ public class FitnessRecordUpsertHelper {
             String callingPackageName,
             List<? extends RecordInternal<?>> recordInternals,
             ArrayMap<String, Boolean> extraPermsStateMap) {
+
+        Map<Integer, List<RecordInternal<?>>> recordTypesToRecordInternals = new HashMap<>();
         for (RecordInternal<?> recordInternal : recordInternals) {
             // Override each record package to the given package i.e. the API caller package.
             StorageUtils.addPackageNameTo(recordInternal, callingPackageName);
             // For update requests, generate uuid if the clientRecordID is present, else use the
             // uuid passed as input.
             StorageUtils.updateNameBasedUUIDIfRequired(recordInternal);
+            recordTypesToRecordInternals
+                    .computeIfAbsent(recordInternal.getRecordType(), k -> new ArrayList<>())
+                    .add(recordInternal);
         }
+
+        enforcePreUpsertChecks(recordTypesToRecordInternals);
+
         List<String> updatedUuids =
                 upsert(
                         callingPackageName,
@@ -375,6 +393,22 @@ public class FitnessRecordUpsertHelper {
                         StorageUtils.getCursorUUID(cursorAdditionalUuids, UUID_COLUMN_NAME));
             }
             cursorAdditionalUuids.close();
+        }
+    }
+
+    private void enforcePreUpsertChecks(
+            Map<Integer, List<RecordInternal<?>>> recordTypesToRecordInternals) {
+        if (!AconfigFlagHelper.isSymptomsEnabled()) {
+            return;
+        }
+
+        for (Map.Entry<Integer, List<RecordInternal<?>>> recordTypeToRecordInternals :
+                recordTypesToRecordInternals.entrySet()) {
+            RecordHelper<?> recordHelper =
+                    mInternalHealthConnectMappings.getRecordHelper(
+                            recordTypeToRecordInternals.getKey());
+            recordHelper.enforcePreUpsertChecks(
+                    recordTypeToRecordInternals.getValue(), mTransactionManager);
         }
     }
 }

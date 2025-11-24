@@ -16,6 +16,8 @@
 
 package com.android.server.healthconnect.fitness;
 
+import static android.health.connect.Constants.DEFAULT_LONG;
+
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.APP_INFO_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.UUID_COLUMN_NAME;
 
@@ -31,7 +33,7 @@ import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.ArrayMap;
 import android.util.ArraySet;
 
-import com.android.healthfitness.flags.Flags;
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper.ChangeLogsTableRequests;
@@ -92,6 +94,8 @@ public final class FitnessRecordDeleteHelper {
      *
      * @param callingPackageName The package name trying to delete the records.
      * @param request The request that specifies what to delete.
+     * @param grantedGranularWritePermissions granular write permissions for record types being
+     *     deleted (if a record type is controlled via multiple permissions)
      * @param enforceSelfDelete Whether the caller should only be able to delete their own data.
      * @param shouldRecordAccessLog Whether access logs should be recorded for this call
      * @return number of records deleted.
@@ -99,6 +103,7 @@ public final class FitnessRecordDeleteHelper {
     public int deleteRecords(
             String callingPackageName,
             DeleteUsingFiltersRequestParcel request,
+            Set<String> grantedGranularWritePermissions,
             boolean enforceSelfDelete,
             boolean shouldRecordAccessLog) {
         if (request.usesIdFilters() && request.usesNonIdFilters()) {
@@ -114,11 +119,64 @@ public final class FitnessRecordDeleteHelper {
         if (request.usesIdFilters()) {
             recordsDeleted =
                     deleteByIdFilter(
-                            callingPackageName, request, enforceSelfDelete, shouldRecordAccessLog);
+                            callingPackageName,
+                            request,
+                            grantedGranularWritePermissions,
+                            enforceSelfDelete,
+                            shouldRecordAccessLog);
         } else {
             recordsDeleted =
-                    deleteByNonIdFilter(callingPackageName, request, shouldRecordAccessLog);
+                    deleteByNonIdFilter(
+                            callingPackageName,
+                            request,
+                            grantedGranularWritePermissions,
+                            shouldRecordAccessLog,
+                            DEFAULT_LONG);
         }
+
+        if (recordsDeleted > 0) {
+            mThreadScheduler.scheduleInternalTask(() -> postDeleteTasks(request));
+        }
+        return recordsDeleted;
+    }
+
+    /**
+     * Deletes records for a specific device, strictly scoped to the data owned by the calling
+     * Device Data Provider (DDP).
+     *
+     * <p>Since multiple DDPs may contribute to the same device, i.e., the same shared synthetic
+     * package name, this method enforces data isolation by limiting deletion to records originally
+     * inserted by the {@code callingDdpId}. This safeguards against removing peer DDP data, a
+     * protection not offered by the lower-level {@link #deleteRecords}, which wipes all data for
+     * the device regardless of origin.
+     *
+     * @param syntheticDevicePackageName The internal package name identifying the target shared
+     *     device.
+     * @param callingDdpId The ID of the provider initiating the delete to verify data ownership.
+     * @param request The specific criteria (e.g., time intervals, data types) for the deletion.
+     * @throws IllegalArgumentException for requests using record ID or package name filters.
+     * @return The count of records successfully deleted.
+     */
+    public int deleteDeviceRecords(
+            String syntheticDevicePackageName,
+            long callingDdpId,
+            DeleteUsingFiltersRequestParcel request,
+            Set<String> grantedGranularWritePermissions) {
+        if (request.usesIdFilters() || !request.getPackageNameFilters().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Requests with ID or package name filters are not supported for devices.");
+        }
+
+        // Enforce self read for devices
+        request.setPackageNameFilters(singletonList(syntheticDevicePackageName));
+
+        int recordsDeleted =
+                deleteByNonIdFilter(
+                        syntheticDevicePackageName,
+                        request,
+                        grantedGranularWritePermissions,
+                        /*shouldRecordAccessLog*/ false,
+                        callingDdpId);
 
         if (recordsDeleted > 0) {
             mThreadScheduler.scheduleInternalTask(() -> postDeleteTasks(request));
@@ -141,6 +199,7 @@ public final class FitnessRecordDeleteHelper {
     private int deleteByIdFilter(
             String callingPackageName,
             DeleteUsingFiltersRequestParcel request,
+            Set<String> grantedGranularWritePermissions,
             boolean enforceSelfDelete,
             boolean shouldRecordAccessLog) {
         List<RecordDeleteTableRequest> deleteTableRequests =
@@ -166,7 +225,9 @@ public final class FitnessRecordDeleteHelper {
 
         recordTypeToUuids.forEach(
                 (recordHelper, uuids) -> {
-                    deleteTableRequests.add(recordHelper.getDeleteTableRequest(uuids));
+                    deleteTableRequests.add(
+                            recordHelper.getDeleteTableRequest(
+                                    uuids, grantedGranularWritePermissions));
                     recordTypeIds.add(recordHelper.getRecordIdentifier());
                 });
 
@@ -178,10 +239,14 @@ public final class FitnessRecordDeleteHelper {
                 enforceSelfDelete);
     }
 
-    private int deleteByNonIdFilter(
+    /** Delete records based on a non id filter request */
+    @VisibleForTesting
+    public int deleteByNonIdFilter(
             String callingPackageName,
             DeleteUsingFiltersRequestParcel request,
-            boolean shouldRecordAccessLog) {
+            Set<String> grantedGranularWritePermissions,
+            boolean shouldRecordAccessLog,
+            long callingDdpId) {
         List<RecordDeleteTableRequest> deleteTableRequests =
                 new ArrayList<>(request.getRecordTypeFilters().size());
         Set<Integer> recordTypeIds = new HashSet<>();
@@ -206,7 +271,10 @@ public final class FitnessRecordDeleteHelper {
                                     request.getStartTime(),
                                     request.getEndTime(),
                                     request.isLocalTimeFilter(),
+                                    callingDdpId,
+                                    grantedGranularWritePermissions,
                                     mAppInfoHelper));
+
                     recordTypeIds.add(recordHelper.getRecordIdentifier());
                 });
 
@@ -219,7 +287,9 @@ public final class FitnessRecordDeleteHelper {
                 /* enforceSelfDelete= */ false);
     }
 
-    private int delete(
+    /** Delete records with given {@code deleteTableRequests} and {@code recordTypeIds} */
+    @VisibleForTesting
+    public int delete(
             @Nullable String callingPackageName,
             List<RecordDeleteTableRequest> deleteTableRequests,
             @Nullable Set<Integer> recordTypeIds,

@@ -402,8 +402,7 @@ public class InsertDeviceRecordsTest {
         HealthConnectReceiver<InsertRecordsResponse> receiver = new HealthConnectReceiver<>();
         HealthConnectReceiver<InsertRecordsResponse> receiver2 = new HealthConnectReceiver<>();
 
-        advertiseDevice(deviceId1, StepsRecord.class);
-        advertiseDevice(deviceId2, StepsRecord.class);
+        TestUtils.advertiseDevices(Set.of(deviceId1, deviceId2));
         TestUtils.insertDeviceRecords(
                 deviceId1, List.of(getStepsRecord()), outcomeExecutor(), receiver);
         receiver.verifyNoExceptionOrThrow();

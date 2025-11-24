@@ -88,7 +88,7 @@ public final class NicotineIntakeRecord extends IntervalRecord {
                 skipValidation,
                 /* enforceFutureTimeRestrictions= */ true);
         if (!skipValidation) {
-            ValidationUtils.requireInRange(quantity, 0, 100, "quantity");
+            ValidationUtils.requireInRange(quantity, 1, 100, "quantity");
             validateIntDefValue(
                     nicotineIntakeType,
                     VALID_NICOTINE_INTAKE_TYPES,

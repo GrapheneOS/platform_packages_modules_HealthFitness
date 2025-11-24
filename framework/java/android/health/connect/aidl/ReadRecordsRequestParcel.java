@@ -95,10 +95,15 @@ public class ReadRecordsRequestParcel
     }
 
     public ReadRecordsRequestParcel(ReadRecordsRequestUsingFilters<?> request) {
-        mPackageFilters =
-                request.getDataOrigins().stream()
-                        .map(DataOrigin::getPackageName)
-                        .collect(Collectors.toList());
+        if (request.getDeviceId() == null) {
+            mPackageFilters =
+                    request.getDataOrigins().stream()
+                            .map(DataOrigin::getPackageName)
+                            .collect(Collectors.toList());
+        } else {
+            mPackageFilters = Collections.singletonList(request.getDeviceId());
+        }
+
         mRecordIdFiltersParcel = null;
         if (request.getTimeRangeFilter() == null) {
             // Use defaults values to signal filters not set
@@ -206,6 +211,37 @@ public class ReadRecordsRequestParcel
                 mRecordIdFiltersParcel,
                 mRecordType,
                 mPackageFilters.stream().map(packageUnmasker).toList(),
+                mStartTime,
+                mEndTime,
+                mPageSize,
+                mPageToken,
+                mAscending,
+                mLocalTimeFilter);
+    }
+
+    /**
+     * Either returns the original object or a modified copy using the given synthetic package name
+     * for Device Data Provider (DDP) reads.
+     *
+     * <p>Only requests with packageFilters are modified, as they might contain a deviceId that has
+     * to be replaced with the synthetic package name to identify the data internally.
+     *
+     * <p>This function is exclusively intended for reading device records where data must be
+     * attributed to a synthetic package rather than the calling applications. It must not be used
+     * outside of the internal device record reading workflow.
+     *
+     * @hide
+     */
+    @NonNull
+    public ReadRecordsRequestParcel toDdpRequestParcel(@NonNull String syntheticPackageName) {
+        if (mPackageFilters.isEmpty()) {
+            return this;
+        }
+
+        return new ReadRecordsRequestParcel(
+                null,
+                mRecordType,
+                Collections.singletonList(syntheticPackageName),
                 mStartTime,
                 mEndTime,
                 mPageSize,

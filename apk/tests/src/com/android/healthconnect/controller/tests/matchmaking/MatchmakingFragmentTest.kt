@@ -16,14 +16,12 @@
 
 package com.android.healthconnect.controller.tests.matchmaking
 
-import android.app.Activity.RESULT_CANCELED
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.health.connect.HealthConnectManager
-import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.StepsRecord
 import android.platform.test.annotations.EnableFlags
 import androidx.lifecycle.MutableLiveData
@@ -62,6 +60,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
+import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -83,7 +82,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
@@ -183,7 +181,7 @@ class MatchmakingFragmentTest {
                     .check(matches(isDisplayed()))
                 onView(
                         withText(
-                            "Allow the Calling App app to read data from other apps on this device using Health\u00A0Connect"
+                            "Allow the Calling App app to read data from other apps on this device using Health\u00A0Connect. This data can also be read by other apps you give access to."
                         )
                     )
                     .perform(scrollTo())
@@ -191,7 +189,9 @@ class MatchmakingFragmentTest {
                 onView(withText("Data from $TEST_APP_NAME"))
                     .perform(scrollTo())
                     .check(matches(isDisplayed()))
-                onView(withText("1 of 2")).perform(scrollTo()).check(matches(isDisplayed()))
+                onView(withText("1 of 2 selected"))
+                    .perform(scrollTo())
+                    .check(matches(isDisplayed()))
                 onView(withId(androidx.preference.R.id.recycler_view))
                     .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
                 onView(withText("Data from $TEST_APP_NAME")).perform(scrollTo()).perform(click())
@@ -375,8 +375,8 @@ class MatchmakingFragmentTest {
                         .commitNow()
                 }
 
-                onView(withText("Data from $TEST_APP_NAME")).perform(scrollTo()).perform(click())
-                onView(withText("Exercise")).perform(scrollTo()).perform(click())
+                scrollToTextAndClick("Data from $TEST_APP_NAME")
+                scrollToTextAndClick("Exercise")
                 onView(withText("Allow")).perform(click())
 
                 verify(viewModel).grantPermissions()
@@ -582,36 +582,6 @@ class MatchmakingFragmentTest {
 
     @Test
     @EnableFlags(Flags.FLAG_MATCHMAKING)
-    fun matchmakingFragment_withZeroMatchingApps_hidesIconView() {
-        matchmakingState.postValue(
-            MatchmakingViewModel.MatchmakingState.WithData(
-                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
-                emptyList(),
-            )
-        )
-
-        ActivityScenario.launch<TestActivity>(
-                Intent(context, TestActivity::class.java).apply {
-                    putExtra(
-                        HealthConnectManager.EXTRA_RECORD_TYPES,
-                        arrayOf(StepsRecord::class.java.name),
-                    )
-                }
-            )
-            .use { scenario ->
-                scenario.onActivity { activity ->
-                    activity.supportFragmentManager
-                        .beginTransaction()
-                        .add(android.R.id.content, MatchmakingFragment())
-                        .commitNow()
-                }
-
-                onView(withId(R.id.matchmaking_header_icon_view)).check(matches(not(isDisplayed())))
-            }
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_MATCHMAKING)
     fun matchmakingHeaderIconView_activityRecreated_correctlyDisplaysIcons() {
         val numberOfMatchedApps = 3
         val mockAppIcon: Drawable = ColorDrawable(Color.RED)
@@ -659,143 +629,6 @@ class MatchmakingFragmentTest {
                 onView(withId(R.id.matched_app_icon_2_container))
                     .check(matches(withEffectiveVisibility(GONE)))
                 onView(withId(R.id.plus_n_container)).check(matches(isDisplayed()))
-            }
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_MATCHMAKING)
-    fun onCreatePreferences_nullRecordTypes_loadsAppsWithEmptySet() {
-        matchmakingState.postValue(
-            MatchmakingViewModel.MatchmakingState.WithData(
-                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
-                emptyList(),
-            )
-        )
-
-        ActivityScenario.launch<TestActivity>(
-                Intent(context, TestActivity::class.java).apply {
-                    // No EXTRA_RECORD_TYPES
-                }
-            )
-            .use { scenario ->
-                scenario.onActivity { activity ->
-                    activity.supportFragmentManager
-                        .beginTransaction()
-                        .add(android.R.id.content, MatchmakingFragment())
-                        .commitNow()
-                }
-                verify(viewModel).loadMatchmakingApps(any(), eq(emptySet()))
-            }
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_MATCHMAKING)
-    fun onCreatePreferences_invalidRecordTypes_loadsAppsWithEmptySet() {
-        matchmakingState.postValue(
-            MatchmakingViewModel.MatchmakingState.WithData(
-                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
-                emptyList(),
-            )
-        )
-        val intent =
-            Intent(context, TestActivity::class.java).apply {
-                putExtra(HealthConnectManager.EXTRA_RECORD_TYPES, arrayOf("invalid.record.type"))
-            }
-        ActivityScenario.launch<TestActivity>(intent).use { scenario ->
-            scenario.onActivity { activity ->
-                activity.supportFragmentManager
-                    .beginTransaction()
-                    .add(android.R.id.content, MatchmakingFragment())
-                    .commitNow()
-            }
-
-            verify(viewModel).loadMatchmakingApps(any(), eq(emptySet()))
-        }
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_MATCHMAKING)
-    fun onCreatePreferences_validRecordTypes_loadsAppsWithCorrectRecordTypes() {
-        matchmakingState.postValue(
-            MatchmakingViewModel.MatchmakingState.WithData(
-                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
-                emptyList(),
-            )
-        )
-
-        val intent =
-            Intent(context, TestActivity::class.java).apply {
-                putExtra(
-                    HealthConnectManager.EXTRA_RECORD_TYPES,
-                    arrayOf(HeartRateRecord::class.java.name, StepsRecord::class.java.name),
-                )
-            }
-        ActivityScenario.launch<TestActivity>(intent).use { scenario ->
-            scenario.onActivity { activity ->
-                activity.supportFragmentManager
-                    .beginTransaction()
-                    .add(android.R.id.content, MatchmakingFragment())
-                    .commitNow()
-            }
-
-            verify(viewModel)
-                .loadMatchmakingApps(
-                    any(),
-                    eq(setOf(HeartRateRecord::class.java, StepsRecord::class.java)),
-                )
-        }
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_MATCHMAKING)
-    fun onCreatePreferences_validAndInvalidRecordTypes_loadsAppsWithValidRecordType() {
-        matchmakingState.postValue(
-            MatchmakingViewModel.MatchmakingState.WithData(
-                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
-                emptyList(),
-            )
-        )
-
-        val intent =
-            Intent(context, TestActivity::class.java).apply {
-                putExtra(
-                    HealthConnectManager.EXTRA_RECORD_TYPES,
-                    arrayOf(HeartRateRecord::class.java.name, "invalid.record.type"),
-                )
-            }
-        ActivityScenario.launch<TestActivity>(intent).use { scenario ->
-            scenario.onActivity { activity ->
-                activity.supportFragmentManager
-                    .beginTransaction()
-                    .add(android.R.id.content, MatchmakingFragment())
-                    .commitNow()
-            }
-
-            verify(viewModel).loadMatchmakingApps(any(), eq(setOf(HeartRateRecord::class.java)))
-        }
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_MATCHMAKING)
-    fun matchmakingFragment_nullCallingPackage_finishesWithCanceledResult() {
-        ActivityScenario.launchActivityForResult<TestActivity>(
-                Intent(context, TestActivity::class.java).apply {
-                    putExtra(
-                        HealthConnectManager.EXTRA_RECORD_TYPES,
-                        arrayOf(StepsRecord::class.java.name),
-                    )
-                }
-            )
-            .use { scenario ->
-                scenario.onActivity { activity ->
-                    activity.callingPackageName = null
-                    activity.supportFragmentManager
-                        .beginTransaction()
-                        .add(android.R.id.content, MatchmakingFragment())
-                        .commitNow()
-                }
-
-                assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED)
             }
     }
 }

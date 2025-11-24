@@ -146,12 +146,14 @@ public class StorageUtilsTest {
         record2.setAppInfoId(1);
         record2.setStartTime(date.atStartOfDay().toInstant(ZoneOffset.ofHours(8)).toEpochMilli());
         record2.setStartZoneOffset(ZoneOffset.ofHours(8).getTotalSeconds());
+        record2.setClientRecordId("client-id");
 
         MenstrualCyclePhaseRecordInternal record3 = new MenstrualCyclePhaseRecordInternal();
         record3.setAppInfoId(1);
         record3.setStartTime(
                 date.plusDays(1).atStartOfDay().toInstant(ZoneOffset.ofHours(2)).toEpochMilli());
         record3.setStartZoneOffset(ZoneOffset.ofHours(2).getTotalSeconds());
+        record3.setClientRecordId("client-id");
 
         byte[] hash1 = getDedupeByteBuffer(record1);
         byte[] hash2 = getDedupeByteBuffer(record2);

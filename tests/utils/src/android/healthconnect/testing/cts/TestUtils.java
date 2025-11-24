@@ -1239,6 +1239,32 @@ public final class TestUtils {
     }
 
     /**
+     * Calls {@link #advertiseDeviceDataSources} for the provided device IDs, creating
+     * advertisements for {@link StepsRecord} for each device.
+     */
+    @SuppressLint("MissingPermission")
+    public static void advertiseDevices(Set<String> deviceIds) throws InterruptedException {
+        Device device = buildDevice();
+        Set<DeviceDataAdvertisement> advertisements =
+                deviceIds.stream()
+                        .map(
+                                deviceId -> {
+                                    Set<DeviceDataTypeAdvertisement> dataTypes =
+                                            Set.of(
+                                                    new DeviceDataTypeAdvertisement.Builder(
+                                                                    StepsRecord.class)
+                                                            .setAvailable(true)
+                                                            .build());
+                                    return new DeviceDataAdvertisement(device, deviceId, dataTypes);
+                                })
+                        .collect(Collectors.toSet());
+
+        HealthConnectReceiver<Void> advertiseReceiver = new HealthConnectReceiver<>();
+        advertiseDeviceDataSources(advertisements, outcomeExecutor(), advertiseReceiver);
+        advertiseReceiver.verifyNoExceptionOrThrow();
+    }
+
+    /**
      * Calls {@link HealthConnectManager#advertiseDeviceDataSources} with shell permission identity
      * and device data provider permissions.
      */
@@ -1279,6 +1305,71 @@ public final class TestUtils {
         } finally {
             uiAutomation.dropShellPermissionIdentity();
         }
+    }
+
+    /**
+     * Calls {@link HealthConnectManager#insertDeviceRecords} with shell permission identity and
+     * device data provider permissions in the default application context.
+     */
+    public static List<Record> insertDeviceRecords(String deviceId, List<? extends Record> records)
+            throws InterruptedException {
+        HealthConnectReceiver<InsertRecordsResponse> receiver = new HealthConnectReceiver<>();
+        insertDeviceRecords(deviceId, unmodifiableList(records), outcomeExecutor(), receiver);
+        List<Record> returnedRecords = receiver.getResponse().getRecords();
+        assertThat(returnedRecords).hasSize(records.size());
+        return returnedRecords;
+    }
+
+    /**
+     * Reads a list of records for the specified request. This method utilizes the default
+     * application context to retrieve the records.
+     */
+    public static <T extends Record> List<T> readDeviceRecords(ReadRecordsRequest<T> request)
+            throws InterruptedException {
+        return getReadDeviceRecordsResponse(request).getRecords();
+    }
+
+    /**
+     * Reads a list of records for the specified request using the provided Android context. This
+     * allows for context-specific configurations when retrieving device records.
+     */
+    public static <T extends Record> List<T> readDeviceRecords(
+            ReadRecordsRequest<T> request, Context context) throws InterruptedException {
+        return getReadDeviceRecordsResponse(request, context).getRecords();
+    }
+
+    /**
+     * Retrieves the full response object containing records for the specified request. This method
+     * defaults to using the context provided by {@link
+     * ApplicationProvider#getApplicationContext()}.
+     */
+    public static <T extends Record> ReadRecordsResponse<T> getReadDeviceRecordsResponse(
+            ReadRecordsRequest<T> request) throws InterruptedException {
+        return getReadDeviceRecordsResponse(request, ApplicationProvider.getApplicationContext());
+    }
+
+    /**
+     * Retrieves the full response object containing records for the specified request. This allows
+     * for context-specific configurations when retrieving device records.
+     */
+    @SuppressLint("MissingPermission")
+    public static <T extends Record> ReadRecordsResponse<T> getReadDeviceRecordsResponse(
+            ReadRecordsRequest<T> request, Context context) throws InterruptedException {
+        assertThat(request.getRecordType()).isNotNull();
+        HealthConnectReceiver<ReadRecordsResponse<T>> receiver = new HealthConnectReceiver<>();
+
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+
+        try {
+            getHealthConnectManager(context)
+                    .readDeviceRecords(request, outcomeExecutor(), receiver);
+            receiver.awaitUnchecked();
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
+
+        return receiver.getResponse();
     }
 
     private static Field findFieldUsingReflection(Class<?> type, String fieldName) {

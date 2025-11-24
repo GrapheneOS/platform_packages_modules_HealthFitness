@@ -27,7 +27,6 @@ import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;

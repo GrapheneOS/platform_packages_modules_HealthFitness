@@ -40,6 +40,7 @@ import static android.health.connect.HealthPermissions.READ_HEIGHT;
 import static android.health.connect.HealthPermissions.READ_HYDRATION;
 import static android.health.connect.HealthPermissions.READ_INTERMENSTRUAL_BLEEDING;
 import static android.health.connect.HealthPermissions.READ_LEAN_BODY_MASS;
+import static android.health.connect.HealthPermissions.READ_MENSTRUAL_CYCLE_PHASE;
 import static android.health.connect.HealthPermissions.READ_MENSTRUATION;
 import static android.health.connect.HealthPermissions.READ_NICOTINE_INTAKE;
 import static android.health.connect.HealthPermissions.READ_NUTRITION;
@@ -138,6 +139,7 @@ import static android.health.connect.HealthPermissions.WRITE_HEIGHT;
 import static android.health.connect.HealthPermissions.WRITE_HYDRATION;
 import static android.health.connect.HealthPermissions.WRITE_INTERMENSTRUAL_BLEEDING;
 import static android.health.connect.HealthPermissions.WRITE_LEAN_BODY_MASS;
+import static android.health.connect.HealthPermissions.WRITE_MENSTRUAL_CYCLE_PHASE;
 import static android.health.connect.HealthPermissions.WRITE_MENSTRUATION;
 import static android.health.connect.HealthPermissions.WRITE_NICOTINE_INTAKE;
 import static android.health.connect.HealthPermissions.WRITE_NUTRITION;
@@ -216,6 +218,7 @@ import static android.health.connect.HealthPermissions.WRITE_WEIGHT;
 import static android.health.connect.HealthPermissions.WRITE_WHEELCHAIR_PUSHES;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION;
+import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES_FLAG;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
 
@@ -244,13 +247,13 @@ import java.util.Set;
  * Configuration test to check that all health permissions are defined.
  */
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled(value = {FLAG_SYMPTOMS, FLAG_SMOKING, FLAG_ALCOHOL_CONSUMPTION})
+@RequiresFlagsEnabled(
+        value = {FLAG_SYMPTOMS, FLAG_SMOKING, FLAG_ALCOHOL_CONSUMPTION, FLAG_CYCLE_PHASES_FLAG})
 public class HealthPermissionsPresenceTest {
 
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
-    // TODO(b/452289293): Add cycle phases permissions after the API is not annotated with @hide
     private static final Set<String> HEALTH_PERMISSIONS =
             Set.of(
                     READ_ACTIVE_CALORIES_BURNED,
@@ -276,6 +279,7 @@ public class HealthPermissionsPresenceTest {
                     READ_HYDRATION,
                     READ_INTERMENSTRUAL_BLEEDING,
                     READ_LEAN_BODY_MASS,
+                    READ_MENSTRUAL_CYCLE_PHASE,
                     READ_MENSTRUATION,
                     READ_NICOTINE_INTAKE,
                     READ_NUTRITION,
@@ -374,6 +378,7 @@ public class HealthPermissionsPresenceTest {
                     WRITE_HYDRATION,
                     WRITE_INTERMENSTRUAL_BLEEDING,
                     WRITE_LEAN_BODY_MASS,
+                    WRITE_MENSTRUAL_CYCLE_PHASE,
                     WRITE_MENSTRUATION,
                     WRITE_NICOTINE_INTAKE,
                     WRITE_NUTRITION,

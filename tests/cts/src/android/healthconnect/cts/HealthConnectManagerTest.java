@@ -1237,6 +1237,18 @@ public class HealthConnectManagerTest {
                     .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
         }
 
+        try {
+            TestUtils.readDeviceRecords(
+                    new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class)
+                            .addId(testRecord.getMetadata().getId())
+                            .build());
+            Assert.fail();
+        } catch (HealthConnectException exception) {
+            assertThat(exception).isNotNull();
+            assertThat(exception.getErrorCode())
+                    .isEqualTo(HealthConnectException.ERROR_DATA_SYNC_IN_PROGRESS);
+        }
+
         finishMigrationWithShellPermissionIdentity();
     }
 

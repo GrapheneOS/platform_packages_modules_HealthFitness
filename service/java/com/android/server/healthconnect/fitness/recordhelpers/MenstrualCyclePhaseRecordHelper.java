@@ -79,8 +79,7 @@ public final class MenstrualCyclePhaseRecordHelper
             ContentValues contentValues, MenstrualCyclePhaseRecordInternal recordInternal) {
         contentValues.put(PHASE_COLUMN_NAME, recordInternal.getPhase());
         int dayOfCycle = recordInternal.getDayOfCycle();
-        if (dayOfCycle != DEFAULT_INT) {
-            contentValues.put(DAY_OF_CYCLE_COLUMN_NAME, dayOfCycle);
-        }
+        contentValues.put(
+                DAY_OF_CYCLE_COLUMN_NAME, (dayOfCycle != DEFAULT_INT) ? dayOfCycle : null);
     }
 }

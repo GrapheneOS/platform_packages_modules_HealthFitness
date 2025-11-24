@@ -75,9 +75,10 @@ constructor(
         savedStateHandle[EXPANDED_PREFERENCE_KEYS] = currentKeys
     }
 
-    fun loadMatchmakingApps(packageName: String, recordTypes: Set<Class<out Record>>) {
+    fun loadMatchmakingApps(packageName: String, recordTypeNames: Array<String>?) {
         _matchmakingState.postValue(MatchmakingState.Loading)
         viewModelScope.launch {
+            val recordTypes = parseRecordTypeNames(recordTypeNames)
             when (
                 val result =
                     getMatchingAppsUseCase.invoke(GetMatchMakingAppsInput(packageName, recordTypes))
@@ -238,6 +239,26 @@ constructor(
                 RecordMatchmakingDenialInput(callingPackageName, deniedApps)
             )
         }
+    }
+
+    /**
+     * Parses an array of record type names into a set of `Class<out Record>`.
+     *
+     * @param recordTypeNames An array of class names for `Record` types, or null.
+     * @return A set of `Class<out Record>` corresponding to the valid record type names, filtering
+     *   out invalid names, or an empty set if `recordTypeNames` is null or empty.
+     */
+    private fun parseRecordTypeNames(recordTypeNames: Array<String>?): Set<Class<out Record>> {
+        return (recordTypeNames ?: emptyArray())
+            .mapNotNull {
+                try {
+                    Class.forName(it)
+                } catch (e: ClassNotFoundException) {
+                    null
+                }
+            }
+            .filterIsInstance<Class<out Record>>()
+            .toSet()
     }
 
     sealed class MatchmakingState {

@@ -38,6 +38,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.internal.datatypes.InstantRecordInternal;
 import android.health.connect.internal.datatypes.IntervalRecordInternal;
+import android.health.connect.internal.datatypes.MenstrualCyclePhaseRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.Slog;
@@ -292,7 +293,8 @@ public final class StorageUtils {
     /** Encodes record properties participating in deduplication into a byte array. */
     @Nullable
     public static byte[] getDedupeByteBuffer(RecordInternal<?> record) {
-        if (!isEmpty(record.getClientRecordId())) {
+        if (!isEmpty(record.getClientRecordId())
+                && !(record instanceof MenstrualCyclePhaseRecordInternal)) {
             return null; // If dedupe by clientRecordId then don't dedupe by hash
         }
 

@@ -18,11 +18,11 @@
 
 package com.android.healthconnect.controller.tests.permissions.connectedapps
 
-import android.content.Intent
+import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.content.pm.PackageManager.FLAG_PERMISSION_USER_SET
 import android.health.connect.HealthConnectManager
 import android.health.connect.HealthPermissions
-import androidx.core.os.bundleOf
+import android.os.Bundle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
@@ -37,11 +37,12 @@ import com.android.healthconnect.controller.permissions.app.FitnessAppFragment
 import com.android.healthconnect.controller.permissions.data.HealthPermission.Companion.fromPermissionString
 import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.service.HealthPermissionManagerModule
-import com.android.healthconnect.controller.shared.Constants
+import com.android.healthconnect.controller.shared.Constants.EXTRA_APP_NAME
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.clickOnRecyclerViewItemWithText
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import dagger.hilt.android.testing.BindValue
@@ -105,12 +106,13 @@ class MockedFitnessAppFragmentTest {
             )
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
+                clickOnRecyclerViewItemWithText("Activity")
                 onView(withText("Exercise")).perform(scrollTo()).perform(click())
 
                 // check for dialog
@@ -174,12 +176,13 @@ class MockedFitnessAppFragmentTest {
             }
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
+                clickOnRecyclerViewItemWithText("Activity")
                 onView(withText("Exercise")).perform(scrollTo()).perform(click())
 
                 // check for dialog
@@ -231,12 +234,13 @@ class MockedFitnessAppFragmentTest {
             )
 
         launchFragment<FitnessAppFragment>(
-                bundleOf(
-                    Intent.EXTRA_PACKAGE_NAME to TEST_APP_PACKAGE_NAME,
-                    Constants.EXTRA_APP_NAME to TEST_APP_NAME,
-                )
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
+                }
             )
             .use {
+                clickOnRecyclerViewItemWithText("Activity")
                 onView(withText("Exercise")).perform(scrollTo()).perform(click())
 
                 // check for dialog

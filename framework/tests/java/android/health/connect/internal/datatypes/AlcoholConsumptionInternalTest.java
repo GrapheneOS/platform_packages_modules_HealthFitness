@@ -68,6 +68,7 @@ public class AlcoholConsumptionInternalTest {
 
     @Before
     public void setUp() {
+        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")));
         HealthConnectMappings.resetInstanceForTesting();
     }
 
@@ -161,12 +162,14 @@ public class AlcoholConsumptionInternalTest {
     @Test
     public void toExternalRecord_localDate_optionalFieldsNotSet() {
         UUID uuid = UUID.randomUUID();
+
         AlcoholConsumptionRecordInternal internalRecord =
                 (AlcoholConsumptionRecordInternal)
                         new AlcoholConsumptionRecordInternal()
                                 .setTemporalType(RECORD_TEMPORAL_TYPE_LOCAL_DATE)
                                 .setPackageName("package.name")
                                 .setUuid(uuid);
+
         Instant startOfDayEpoch =
                 Instant.EPOCH
                         .atZone(ZoneOffset.UTC)
@@ -364,7 +367,6 @@ public class AlcoholConsumptionInternalTest {
 
     @Test
     public void alcoholConsumptionRecord_toInternalRecord_optionalFieldsNotSet() {
-        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")));
         Metadata metadata = new Metadata.Builder().build();
         AlcoholConsumptionRecord externalRecord =
                 new AlcoholConsumptionRecord.Builder(
@@ -402,7 +404,6 @@ public class AlcoholConsumptionInternalTest {
 
     @Test
     public void alcoholConsumptionRecord_toInternalRecord_interval() {
-        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")));
         Metadata metadata = new Metadata.Builder().build();
         AlcoholConsumptionRecord externalRecord =
                 new AlcoholConsumptionRecord.Builder(
@@ -440,7 +441,6 @@ public class AlcoholConsumptionInternalTest {
 
     @Test
     public void alcoholConsumptionRecord_toInternalRecord_localDate() {
-        TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")));
         Metadata metadata = new Metadata.Builder().build();
         AlcoholConsumptionRecord externalRecord =
                 new AlcoholConsumptionRecord.Builder(

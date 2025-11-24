@@ -319,12 +319,7 @@ public final class HealthPermissions {
      * Allows an application to read the user's cycle phases data.
      *
      * <p>Protection level: dangerous.
-     *
-     * @hide
      */
-    // TODO(b/452289293): Unhide this when API implementation is done
-    // TODO(b/450576343): Update HealthPermissionsTest and related tests after the permission
-    // added to the manifest
     @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
     public static final String READ_MENSTRUAL_CYCLE_PHASE =
             "android.permission.health.READ_MENSTRUAL_CYCLE_PHASE";
@@ -1186,12 +1181,7 @@ public final class HealthPermissions {
      * Allows an application to write the user's cycle phases data.
      *
      * <p>Protection level: dangerous.
-     *
-     * @hide
      */
-    // TODO(b/452289293): Unhide this when API implementation is done
-    // TODO(b/450576343): Update HealthPermissionsTest and related tests after the permission
-    // added to the manifest
     @FlaggedApi(FLAG_CYCLE_PHASES_FLAG)
     public static final String WRITE_MENSTRUAL_CYCLE_PHASE =
             "android.permission.health.WRITE_MENSTRUAL_CYCLE_PHASE";

@@ -127,8 +127,8 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(15).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(45).toInstant()));
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(45).toInstant()));
 
         List<Record> insertedRecords = TestUtils.insertRecords(recordsToInsert);
 
@@ -219,12 +219,12 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(15).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(45).toInstant()),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(45).toInstant()),
                         mRecordFactory.anotherFullRecord(
                                 newFullMetadataWithId(UUID.randomUUID().toString()),
-                                YESTERDAY_11AM.plusMinutes(50).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(58).toInstant()));
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(50).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(58).toInstant()));
 
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
 
@@ -249,12 +249,12 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(15).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(45).toInstant()),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(45).toInstant()),
                         mRecordFactory.anotherFullRecord(
                                 newAnotherFullMetadataWithId(UUID.randomUUID().toString()),
-                                YESTERDAY_11AM.plusMinutes(50).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(58).toInstant()));
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(50).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(58).toInstant()));
 
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
 
@@ -280,12 +280,12 @@ abstract class BaseApiTest<T extends Record> {
                         YESTERDAY_11AM.plusMinutes(25).toInstant()),
                 mRecordFactory.newEmptyRecord(
                         newEmptyMetadata(),
-                        YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                        YESTERDAY_11AM.plusMinutes(45).toInstant()),
+                        YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant(),
+                        YESTERDAY_11AM.minusDays(1).plusMinutes(45).toInstant()),
                 mRecordFactory.newEmptyRecord(
                         newEmptyMetadata(),
-                        YESTERDAY_11AM.plusMinutes(50).toInstant(),
-                        YESTERDAY_11AM.plusMinutes(59).toInstant()));
+                        YESTERDAY_11AM.minusDays(2).plusMinutes(50).toInstant(),
+                        YESTERDAY_11AM.minusDays(2).plusMinutes(59).toInstant()));
 
         List<? extends Record> returnedRecords =
                 TestUtils.readRecords(
@@ -308,12 +308,12 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(15).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newFullMetadataWithClientIdAndVersion("buzz-client-id", 456),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(45).toInstant()),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(45).toInstant()),
                         mRecordFactory.anotherFullRecord(
                                 newFullMetadataWithClientIdAndVersion("bar-client-id", 789),
-                                YESTERDAY_11AM.plusMinutes(50).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(58).toInstant()));
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(50).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(58).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
 
         List<? extends Record> returnedRecords =
@@ -337,12 +337,12 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(15).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadataWithClientId("buzz-client-id"),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(45).toInstant()),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(45).toInstant()),
                         mRecordFactory.anotherFullRecord(
                                 newAnotherFullMetadataWithClientId("bar-client-id"),
-                                YESTERDAY_11AM.plusMinutes(50).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(58).toInstant()));
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(50).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(58).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
 
         List<? extends Record> returnedRecords =
@@ -367,12 +367,12 @@ abstract class BaseApiTest<T extends Record> {
                         YESTERDAY_11AM.plusMinutes(25).toInstant()),
                 mRecordFactory.newEmptyRecord(
                         newEmptyMetadataWithClientId("bar-client-id"),
-                        YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                        YESTERDAY_11AM.plusMinutes(45).toInstant()),
+                        YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant(),
+                        YESTERDAY_11AM.minusDays(1).plusMinutes(45).toInstant()),
                 mRecordFactory.newEmptyRecord(
                         newEmptyMetadataWithClientId("buzz-client-id"),
-                        YESTERDAY_11AM.plusMinutes(50).toInstant(),
-                        YESTERDAY_11AM.plusMinutes(59).toInstant()));
+                        YESTERDAY_11AM.minusDays(2).plusMinutes(50).toInstant(),
+                        YESTERDAY_11AM.minusDays(2).plusMinutes(59).toInstant()));
 
         List<? extends Record> returnedRecords =
                 TestUtils.readRecords(
@@ -395,16 +395,16 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(20).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(20).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant()),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(20).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant()),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(40).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(50).toInstant()));
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(40).toInstant(),
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(50).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
 
         List<? extends Record> returnedRecords =
@@ -429,16 +429,16 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(20).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(20).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant()),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(20).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant()),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(40).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(50).toInstant()));
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(40).toInstant(),
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(50).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
 
         List<? extends Record> returnedRecords =
@@ -468,16 +468,16 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(20).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(20).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant()),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(20).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant()),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(40).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(50).toInstant()));
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(40).toInstant(),
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(50).toInstant()));
         TestUtils.insertRecords(recordsToInsert);
 
         List<? extends Record> returnedRecords =
@@ -550,17 +550,17 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(20).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(20).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant()),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(20).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant()),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(40).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(50).toInstant()));
-        TestUtils.insertRecords(recordsToInsert);
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(40).toInstant(),
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(50).toInstant()));
+        assertThat(TestUtils.insertRecords(recordsToInsert)).hasSize(4);
 
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder().addRecordType(mRecordClass).build());
@@ -597,6 +597,7 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(60).toInstant(),
                                 YESTERDAY_11AM.plusMinutes(70).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
+        assertThat(recordIds).hasSize(6);
 
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
@@ -625,17 +626,17 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(20).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(20).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant()),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(20).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant()),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(40).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(50).toInstant()));
-        TestUtils.insertRecords(recordsToInsert);
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(40).toInstant(),
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(50).toInstant()));
+        assertThat(TestUtils.insertRecords(recordsToInsert)).hasSize(4);
 
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder()
@@ -657,12 +658,12 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(20).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(20).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant()),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(20).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant()));
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(40).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
 
         TestUtils.verifyDeleteRecords(
@@ -691,13 +692,14 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(20).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(20).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant()),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(20).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant()));
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(40).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
+        assertThat(recordIds).hasSize(3);
 
         TestUtils.verifyDeleteRecords(
                 List.of(
@@ -719,8 +721,8 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(20).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(20).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant()));
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(20).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
 
         TestUtils.verifyDeleteRecords(
@@ -742,12 +744,12 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(20).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadataWithClientId("bar-client-id"),
-                                YESTERDAY_11AM.plusMinutes(20).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant()),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(20).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadataWithClientId("buzz-client-id"),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant()));
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(40).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
 
         TestUtils.verifyDeleteRecords(
@@ -770,12 +772,12 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(20).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadataWithClientId("bar-client-id"),
-                                YESTERDAY_11AM.plusMinutes(20).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant()),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(20).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadataWithClientId("buzz-client-id"),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant()));
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(40).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
 
         TestUtils.verifyDeleteRecords(
@@ -802,14 +804,14 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(15).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(45).toInstant()));
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(45).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
         Record updatedRecord =
                 mRecordFactory.anotherFullRecord(
                         newFullMetadataWithId(recordIds.get(0)),
-                        YESTERDAY_11AM.plusMinutes(40).toInstant(),
-                        YESTERDAY_11AM.plusMinutes(55).toInstant());
+                        YESTERDAY_11AM.minusDays(2).plusMinutes(40).toInstant(),
+                        YESTERDAY_11AM.minusDays(2).plusMinutes(55).toInstant());
 
         TestUtils.updateRecords(List.of(updatedRecord));
 
@@ -829,8 +831,8 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(15).toInstant()),
                         mRecordFactory.anotherFullRecord(
                                 newAnotherFullMetadataWithClientIdAndVersion("bar-client-id", 789),
-                                YESTERDAY_11AM.plusMinutes(50).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(58).toInstant()));
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(50).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(58).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
         String ignoredId = UUID.randomUUID().toString();
         int ignoredVersion = 1;
@@ -838,8 +840,8 @@ abstract class BaseApiTest<T extends Record> {
                 mRecordFactory.newEmptyRecord(
                         newEmptyMetadataWithIdClientIdAndVersion(
                                 ignoredId, "bar-client-id", ignoredVersion),
-                        YESTERDAY_11AM.plusMinutes(40).toInstant(),
-                        YESTERDAY_11AM.plusMinutes(55).toInstant());
+                        YESTERDAY_11AM.minusDays(2).plusMinutes(40).toInstant(),
+                        YESTERDAY_11AM.minusDays(2).plusMinutes(55).toInstant());
 
         TestUtils.updateRecords(List.of(updatedRecord));
 
@@ -911,8 +913,8 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(15).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(45).toInstant()));
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(45).toInstant()));
         String token =
                 TestUtils.getChangeLogToken(
                                 new ChangeLogTokenRequest.Builder()
@@ -945,8 +947,8 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(20).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(20).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant()));
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(20).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
         String token =
                 TestUtils.getChangeLogToken(
@@ -978,13 +980,14 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(20).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(20).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant()),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(20).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadataWithClientId("bar-client-id"),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant()));
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(40).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
+        assertThat(recordIds).hasSize(3);
         String token =
                 TestUtils.getChangeLogToken(
                                 new ChangeLogTokenRequest.Builder()
@@ -1017,19 +1020,19 @@ abstract class BaseApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(15).toInstant()),
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadata(),
-                                YESTERDAY_11AM.plusMinutes(30).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(45).toInstant()));
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(45).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
         List<Record> updatedRecords =
                 List.of(
                         mRecordFactory.newEmptyRecord(
                                 newEmptyMetadataWithClientId("foo-client-id"),
-                                YESTERDAY_11AM.plusMinutes(20).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(27).toInstant()),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(20).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(27).toInstant()),
                         mRecordFactory.anotherFullRecord(
                                 newFullMetadataWithId(recordIds.get(1)),
-                                YESTERDAY_11AM.plusMinutes(40).toInstant(),
-                                YESTERDAY_11AM.plusMinutes(55).toInstant()));
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(40).toInstant(),
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(55).toInstant()));
         String token =
                 TestUtils.getChangeLogToken(
                                 new ChangeLogTokenRequest.Builder()
@@ -1052,7 +1055,7 @@ abstract class BaseApiTest<T extends Record> {
         return ApplicationProvider.getApplicationContext().getPackageName();
     }
 
-    private Record withIdAndTestPackageName(Record record, String id) {
+    protected Record withIdAndTestPackageName(Record record, String id) {
         return mRecordFactory.recordWithIdAndPackageName(record, id, TEST_PACKAGE_NAME);
     }
 
@@ -1061,7 +1064,7 @@ abstract class BaseApiTest<T extends Record> {
         return TestUtils.insertRecords(records).stream().map(r -> r.getMetadata().getId()).toList();
     }
 
-    private List<? extends Record> readAllRecords() throws InterruptedException {
+    protected List<? extends Record> readAllRecords() throws InterruptedException {
         return TestUtils.readRecords(
                 new ReadRecordsRequestUsingFilters.Builder<>(mRecordClass).build());
     }

@@ -23,6 +23,7 @@ import android.content.Intent
 import android.health.connect.HealthConnectManager
 import android.health.connect.HealthPermissions.WRITE_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_STEPS
+import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.StepsRecord
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
@@ -34,13 +35,10 @@ import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
-import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.matchmaking.MatchmakingActivity
 import com.android.healthconnect.controller.matchmaking.MatchmakingAppData
 import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel
@@ -63,7 +61,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @UninstallModules(DeviceInfoUtilsModule::class)
@@ -136,33 +137,74 @@ class MatchmakingActivityTest {
 
     @Test
     @EnableFlags(Flags.FLAG_MATCHMAKING)
-    fun matchmakingActivity_launchesBottomSheet() {
+    fun matchmakingActivity_withZeroMatchingApps_finishesWithCanceledResult() {
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                emptyList(),
+            )
+        )
+        launchMatchmakingActivity().use { scenario ->
+            assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED)
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingActivity_nullRecordTypes_loadsAppsWithNull() {
+        val intent = Intent(context, MatchmakingActivity::class.java)
+        launchActivityForResult<MatchmakingActivity>(intent).use {
+            verify(viewModel).loadMatchmakingApps(any(), eq(null))
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingActivity_invalidRecordTypes_loadsAppsWithInvalidRecordType() {
+        val intent =
+            Intent(context, MatchmakingActivity::class.java).apply {
+                putExtra(HealthConnectManager.EXTRA_RECORD_TYPES, arrayOf("invalid.record.type"))
+            }
+        launchActivityForResult<MatchmakingActivity>(intent).use {
+            verify(viewModel).loadMatchmakingApps(any(), eq(arrayOf("invalid.record.type")))
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingActivity_validRecordTypes_loadsAppsWithCorrectRecordTypes() {
         val intent =
             Intent(context, MatchmakingActivity::class.java).apply {
                 putExtra(
                     HealthConnectManager.EXTRA_RECORD_TYPES,
-                    arrayOf(StepsRecord::class.java.name),
+                    arrayOf(HeartRateRecord::class.java.name, StepsRecord::class.java.name),
                 )
             }
-
-        launchActivityForResult<MatchmakingActivity>(intent).use { scenario ->
-            registerBottomSheetIdlingResource(scenario)
-
-            onView(withText(context.getString(R.string.matchmaking_screen_title)))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
-            onView(withText(context.getString(R.string.matchmaking_screen_summary, TEST_APP_NAME)))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
-            onView(
-                    withText(
-                        context.getString(R.string.matchmaking_screen_data_from_app, TEST_APP_NAME)
-                    )
+        launchActivityForResult<MatchmakingActivity>(intent).use {
+            verify(viewModel)
+                .loadMatchmakingApps(
+                    any(),
+                    eq(arrayOf(HeartRateRecord::class.java.name, StepsRecord::class.java.name)),
                 )
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
-            onView(withText("Allow")).inRoot(isDialog()).check(matches(isDisplayed()))
-            onView(withText("Don\'t allow")).inRoot(isDialog()).check(matches(isDisplayed()))
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingActivity_validAndInvalidRecordTypes_loadsAppsWithValidRecordType() {
+        val intent =
+            Intent(context, MatchmakingActivity::class.java).apply {
+                putExtra(
+                    HealthConnectManager.EXTRA_RECORD_TYPES,
+                    arrayOf(HeartRateRecord::class.java.name, "invalid.record.type"),
+                )
+            }
+        launchActivityForResult<MatchmakingActivity>(intent).use {
+            verify(viewModel)
+                .loadMatchmakingApps(
+                    any(),
+                    eq(arrayOf(HeartRateRecord::class.java.name, "invalid.record.type")),
+                )
         }
     }
 

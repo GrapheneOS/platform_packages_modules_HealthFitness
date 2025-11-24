@@ -93,18 +93,15 @@ public class MenstrualCyclePhaseRecordInternalTest {
     public void toExternalRecord_andBack_noChange() {
         MenstrualCyclePhaseRecordInternal record =
                 new MenstrualCyclePhaseRecordInternal().setPhase(PHASE_FOLLICULAR).setDayOfCycle(3);
-        Instant time = Instant.ofEpochMilli(123456);
-        ZoneOffset startZoneOffset = ZoneOffset.ofHours(3);
-        Instant startOfDay =
-                time.atOffset(startZoneOffset).truncatedTo(ChronoUnit.DAYS).toInstant();
-
-        ZoneOffset endZoneOffset = ZoneOffset.ofHours(4);
-        Instant endOfDay = time.atOffset(endZoneOffset).with(LocalTime.MAX).toInstant();
+        Instant time = Instant.ofEpochMilli(123456789);
+        ZoneOffset offset = ZoneOffset.ofHours(3);
+        Instant startOfDay = time.atOffset(offset).truncatedTo(ChronoUnit.DAYS).toInstant();
+        Instant endOfDay = time.atOffset(offset).with(LocalTime.MAX).toInstant();
 
         record.setStartTime(startOfDay.toEpochMilli())
                 .setEndTime(endOfDay.toEpochMilli())
-                .setStartZoneOffset(startZoneOffset.getTotalSeconds())
-                .setEndZoneOffset(endZoneOffset.getTotalSeconds())
+                .setStartZoneOffset(offset.getTotalSeconds())
+                .setEndZoneOffset(offset.getTotalSeconds())
                 .setPackageName("test.package");
         MenstrualCyclePhaseRecordInternal recordAfterRoundTrip =
                 (MenstrualCyclePhaseRecordInternal) record.toExternalRecord().toRecordInternal();

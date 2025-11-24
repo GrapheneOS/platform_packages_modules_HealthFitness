@@ -551,7 +551,7 @@
     <!-- region Matchmaking request strings -->
     <string name="matchmaking_screen_title" description="Title for match making screen to add missing data">Share data between apps</string>
     <string name="matchmaking_screen_data_from_app" description="Title for category that holds list of matching apps">Data from <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g></string>
-    <string name="matchmaking_screen_summary" description="Summary on match making screen to allow the given app to read data from other apps using Health Connect">Allow the <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> app to read data from other apps on this device using Health&#160;Connect</string>
+    <string name="matchmaking_screen_summary" description="Summary on match making screen to allow the given app to read data from other apps using Health Connect">Allow the <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> app to read data from other apps on this device using Health&#160;Connect. This data can also be read by other apps you give access to.</string>
     <string name="matchmaking_screen_apps_category_title" description="Title for category that holds list of matching apps">Apps that can sync this data</string>
     <string name="app_privacy_policy_footer" description="Footer with a link to the app's privacy policy.">Learn how <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> uses your data in their <a href="%2$s">privacy policy</a>.</string>
     <string name="matchmaking_screen_footer" descriptio="Summary on match making screen explaining how Health Connect share health and fitness data between multiple apps">Health Connect lets you share your health and fitness data between multiple apps. This helps you unlock insights and experiences while keeping your data secure.</string>
@@ -1783,7 +1783,7 @@
     <string name="write_access" description="Label for switches to toggle write permissions.">Write Access</string>
     <string name="read_access" description="Label for switches to toggle read permissions.">Read Access</string>
     <string name="health_switch_content_description" description="A11y content description for a switch."><xliff:g id="switch_title" example="Steps">%1$s</xliff:g>. <xliff:g id="switch_function" example="Write Access">%2$s</xliff:g>. <xliff:g id="switch_state" example="On">%3$s</xliff:g></string>
-    <string name="health_data_category_expandable_preference_title" description="Title for the expandable data category preference when requesting permissions. It also shows the number of permissions being requested for that data category."><xliff:g id="data_category_title" example="Activity">%1$s</xliff:g> <xliff:g id="number_of_permissions_requested_for_category" example="(1)">(%2$s)</xliff:g></string>
+    <string name="health_data_category_expandable_preference_title" description="Title for the expandable data category preference when requesting permissions. It also shows the number of permissions being requested for that data category."><xliff:g id="data_category_title" example="Activity">%1$s</xliff:g></string>
     <!-- endregion -->
 
     <!-- region Permission Manager  -->
@@ -2122,5 +2122,5 @@
     <!--endregion-->
 
     <!-- endregion -->
-    <string name="app_permissions_granted_summary"><xliff:g example="1" id="granted_permissions">%1$d</xliff:g> of <xliff:g example="4" id="total_permissions">%2$d</xliff:g></string>
+    <string name="app_permissions_granted_summary"><xliff:g example="1" id="granted_permissions">%1$d</xliff:g> of <xliff:g example="4" id="total_permissions">%2$d selected</xliff:g></string>
 </resources>
