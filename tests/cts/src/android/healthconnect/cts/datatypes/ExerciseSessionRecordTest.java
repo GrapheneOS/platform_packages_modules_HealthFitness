@@ -34,7 +34,6 @@ import static android.healthconnect.testing.shared.DataFactory.sessionEndTime;
 import static android.healthconnect.testing.shared.DataFactory.sessionStartTime;
 
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS;
-import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -131,8 +130,7 @@ public class ExerciseSessionRecordTest {
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS
     })
     public void testExerciseSessionWithRpe_buildSession_buildCorrectObject() {
         ExerciseSessionRecord record = buildSessionWithRpe();
@@ -157,8 +155,7 @@ public class ExerciseSessionRecordTest {
 
     @Test(expected = IllegalArgumentException.class)
     @RequiresFlagsEnabled({
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS
     })
     public void testBuildSessionWithRpeTooHigh_throwsException() {
         Metadata metadata = generateMetadata();
@@ -173,8 +170,7 @@ public class ExerciseSessionRecordTest {
 
     @Test(expected = IllegalArgumentException.class)
     @RequiresFlagsEnabled({
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS
     })
     public void testBuildSessionWithRpeNegative_throwsException() {
         Metadata metadata = generateMetadata();
@@ -209,8 +205,7 @@ public class ExerciseSessionRecordTest {
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS
     })
     public void testExerciseSession_buildSessionWithAllFields_buildCorrectObject() {
         ExerciseRoute route = buildExerciseRoute();
@@ -433,8 +428,7 @@ public class ExerciseSessionRecordTest {
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
+        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS
     })
     public void testRead_insertAndReadByIdWithRpe_recordsAreEqual() throws InterruptedException {
         List<Record> records =

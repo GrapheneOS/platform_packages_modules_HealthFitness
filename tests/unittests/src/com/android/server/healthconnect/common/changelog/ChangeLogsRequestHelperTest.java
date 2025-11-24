@@ -17,10 +17,7 @@
 package com.android.server.healthconnect.common.changelog;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
-import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
-import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -60,16 +57,12 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class ChangeLogsRequestHelperTest {
 
-    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
-
-    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
-
-    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
-
-    private ChangeLogsRequestHelper mChangeLogsRequestHelper;
-
     private static final String TEST_PACKAGE_NAME = "com.example.test";
     private static final long TEST_LATEST_CHANGE_LOG_ROW_ID = 10L;
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
+    private ChangeLogsRequestHelper mChangeLogsRequestHelper;
 
     @Before
     public void setUp() throws Exception {
@@ -86,14 +79,14 @@ public class ChangeLogsRequestHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_CLOUD_BACKUP_AND_RESTORE, FLAG_CLOUD_BACKUP_AND_RESTORE_DB})
+    @EnableFlags({FLAG_CLOUD_BACKUP_AND_RESTORE})
     public void getChangeLogRetentionDuration_cloudBackupEnabled_returnsNewRetention() {
         assertThat(ChangeLogsRequestHelper.getChangeLogRetentionDuration())
                 .isEqualTo(Duration.ofDays(90));
     }
 
     @Test
-    @DisableFlags({FLAG_CLOUD_BACKUP_AND_RESTORE, FLAG_CLOUD_BACKUP_AND_RESTORE_DB})
+    @DisableFlags({FLAG_CLOUD_BACKUP_AND_RESTORE})
     public void getChangeLogRetentionDuration_cloudBackupDisabled_returnsDefaultRetention() {
         assertThat(ChangeLogsRequestHelper.getChangeLogRetentionDuration())
                 .isEqualTo(Duration.ofDays(32));
@@ -124,11 +117,7 @@ public class ChangeLogsRequestHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB
-    })
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS})
     public void getTokenAndGetRequest_phrEnabled_handlesMedicalResourceTypesCorrectly() {
         ChangeLogTokenRequest apiRequest =
                 new ChangeLogTokenRequest.Builder()
@@ -205,11 +194,7 @@ public class ChangeLogsRequestHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB
-    })
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS})
     public void getNextPageToken_phrEnabled_handlesMedicalResourceTypes() {
         ChangeLogsRequestHelper.TokenRequest originalTokenRequest =
                 new ChangeLogsRequestHelper.TokenRequest(

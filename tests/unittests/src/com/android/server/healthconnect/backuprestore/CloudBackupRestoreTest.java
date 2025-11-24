@@ -17,7 +17,6 @@
 package com.android.server.healthconnect.backuprestore;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
-import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
 import static com.android.server.healthconnect.backuprestore.ProtoTestData.TEST_PACKAGE_NAME;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -58,7 +57,6 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 @EnableFlags({
     FLAG_CLOUD_BACKUP_AND_RESTORE,
-    FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
 })
 public final class CloudBackupRestoreTest {
 

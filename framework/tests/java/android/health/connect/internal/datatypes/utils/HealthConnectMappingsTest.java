@@ -432,7 +432,7 @@ public class HealthConnectMappingsTest {
                                 .collect(Collectors.toSet()));
     }
 
-    @RequiresFlagsEnabled({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_ACTIVITY_INTENSITY_DB})
+    @RequiresFlagsEnabled({Flags.FLAG_ACTIVITY_INTENSITY})
     @Test
     public void activityIntensityFlagsEnabled_containsActivityIntensity() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -441,7 +441,6 @@ public class HealthConnectMappingsTest {
                 .contains(RECORD_TYPE_ACTIVITY_INTENSITY);
     }
 
-    @RequiresFlagsEnabled(Flags.FLAG_ACTIVITY_INTENSITY_DB)
     @RequiresFlagsDisabled(Flags.FLAG_ACTIVITY_INTENSITY)
     @Test
     public void activityIntensityFlagDisabled_doesNotContainsActivityIntensity() {
@@ -451,22 +450,9 @@ public class HealthConnectMappingsTest {
                 .doesNotContain(RECORD_TYPE_ACTIVITY_INTENSITY);
     }
 
-    @RequiresFlagsEnabled(Flags.FLAG_ACTIVITY_INTENSITY)
-    @RequiresFlagsDisabled(Flags.FLAG_ACTIVITY_INTENSITY_DB)
-    @Test
-    public void activityIntensityDbFlagDisabled_doesNotContainsActivityIntensity() {
-        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
-
-        assertThat(healthConnectMappings.getAllRecordTypeIdentifiers())
-                .doesNotContain(RECORD_TYPE_ACTIVITY_INTENSITY);
-    }
-
     @RequiresFlagsEnabled({
         Flags.FLAG_SMOKING,
         Flags.FLAG_SMOKING_DB,
-        Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
-        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-        Flags.FLAG_PHR_CHANGE_LOGS_DB
     })
     @Test
     public void nicotineIntakeFlagEnabled_containsNicotineIntake() {

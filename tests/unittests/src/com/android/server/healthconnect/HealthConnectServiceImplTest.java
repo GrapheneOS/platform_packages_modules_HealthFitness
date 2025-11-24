@@ -74,12 +74,10 @@ import static android.permission.PermissionManager.PERMISSION_HARD_DENIED;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API;
-import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
 import static com.android.healthfitness.flags.Flags.FLAG_MATCHMAKING;
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_STATE_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_RESTORE_STATE_KEY;
@@ -2691,8 +2689,6 @@ public class HealthConnectServiceImplTest {
     @Test
     @EnableFlags({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogToken_noPermissions_throwsSecurityException_phr() throws Exception {
         // Deny necessary permissions
@@ -2793,8 +2789,6 @@ public class HealthConnectServiceImplTest {
     @Test
     @EnableFlags({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogs_noPermissions_throwsSecurityException_phr() throws Exception {
         // Deny necessary permissions
@@ -2856,8 +2850,6 @@ public class HealthConnectServiceImplTest {
     @Test
     @EnableFlags({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogs_emptyToken_phrFlagOn_throwsIllegalArgumentException()
             throws Exception {
@@ -2897,8 +2889,6 @@ public class HealthConnectServiceImplTest {
     @Test
     @EnableFlags({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogs_bothTypesToken_phrFlagOn_throwsIllegalArgumentException()
             throws Exception {
@@ -2940,8 +2930,6 @@ public class HealthConnectServiceImplTest {
     @Test
     @DisableFlags({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogs_emptyToken_phrFlagOff_throwsIllegalArgumentException()
             throws Exception {
@@ -3041,8 +3029,6 @@ public class HealthConnectServiceImplTest {
     @Test
     @EnableFlags({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogs_validRequest_returnsChangeLogs_phr() throws Exception {
         // Grant necessary permissions

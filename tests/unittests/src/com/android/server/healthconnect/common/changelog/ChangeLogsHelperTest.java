@@ -32,10 +32,7 @@ import static android.healthconnect.testing.unittest.RecordInternalFactory.build
 import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
-import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
-import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.APP_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.OPERATION_TYPE_COLUMN_NAME;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.RECORD_TYPE_COLUMN_NAME;
@@ -348,7 +345,6 @@ public class ChangeLogsHelperTest {
     @Test
     @EnableFlags({
         FLAG_CLOUD_BACKUP_AND_RESTORE,
-        FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
     })
     public void getDeleteRequestForAutoDelete_doesNotRemoveChangeLogsLessThan90DaysOld() {
         insertRecordChangeLog(
@@ -365,7 +361,6 @@ public class ChangeLogsHelperTest {
     @Test
     @EnableFlags({
         FLAG_CLOUD_BACKUP_AND_RESTORE,
-        FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
     })
     public void getDeleteRequestForAutoDelete_removeChangeLogsMoreThan90DaysOld() {
         insertRecordChangeLog(
@@ -540,11 +535,7 @@ public class ChangeLogsHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    })
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS})
     public void getChangeLogs_medicalResources_skipsNotRequestedDataTypes() {
         var token =
                 mChangeLogsRequestHelper.getToken(
@@ -579,11 +570,7 @@ public class ChangeLogsHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    })
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS})
     public void getChangeLogs_medicalResources_returnsChangeLogs() {
         var token =
                 mChangeLogsRequestHelper.getToken(
@@ -619,11 +606,7 @@ public class ChangeLogsHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    })
+    @EnableFlags({FLAG_PHR_CHANGE_LOGS})
     public void getChangeLogs_medicalResources_withPageSize_returnsChangeLogs() {
         var token =
                 mChangeLogsRequestHelper.getToken(
@@ -745,7 +728,6 @@ public class ChangeLogsHelperTest {
     public void toMedicalResourceIdList_nullByteArray_throwsException() {
         assertThrows(Exception.class, () -> toMedicalResourceIdList(null));
     }
-
 
     private void insertRecordChangeLog(
             @RecordTypeIdentifier.RecordType int recordType,

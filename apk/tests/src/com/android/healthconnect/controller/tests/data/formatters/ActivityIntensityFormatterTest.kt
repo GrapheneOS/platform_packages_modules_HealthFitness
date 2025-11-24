@@ -47,11 +47,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RequiresFlagsEnabled(
-    Flags.FLAG_ACTIVITY_INTENSITY,
-    Flags.FLAG_ACTIVITY_INTENSITY_DB,
-    Flags.FLAG_HEALTH_CONNECT_MAPPINGS,
-)
+@RequiresFlagsEnabled(Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_HEALTH_CONNECT_MAPPINGS)
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class ActivityIntensityFormatterTest {

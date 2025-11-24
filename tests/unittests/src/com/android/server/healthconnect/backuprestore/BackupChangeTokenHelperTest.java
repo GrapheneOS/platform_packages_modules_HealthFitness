@@ -19,7 +19,6 @@ package com.android.server.healthconnect.backuprestore;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_UNKNOWN;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
-import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -49,7 +48,6 @@ import org.mockito.junit.MockitoRule;
 @RunWith(AndroidJUnit4.class)
 @EnableFlags({
     FLAG_CLOUD_BACKUP_AND_RESTORE,
-    FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
 })
 public class BackupChangeTokenHelperTest {
 

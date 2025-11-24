@@ -46,10 +46,7 @@ import java.util.List;
 @RequiresFlagsEnabled({
     Flags.FLAG_SYMPTOMS,
     Flags.FLAG_SYMPTOMS_DB,
-    Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
     Flags.FLAG_HEALTH_CONNECT_MAPPINGS,
-    Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    Flags.FLAG_PHR_CHANGE_LOGS_DB
 })
 public class SymptomRecordApiTest extends BaseApiTest<SymptomRecord> {
     public SymptomRecordApiTest() {

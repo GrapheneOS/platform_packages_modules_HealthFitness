@@ -29,7 +29,7 @@ import org.junit.runner.RunWith;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_ACTIVITY_INTENSITY_DB})
+@RequiresFlagsEnabled({Flags.FLAG_ACTIVITY_INTENSITY})
 public class ActivityIntensityNoPermissionsDeclaredTest
         extends BaseNoPermissionsDeclaredTest<ActivityIntensityRecord> {
     public ActivityIntensityNoPermissionsDeclaredTest() {
