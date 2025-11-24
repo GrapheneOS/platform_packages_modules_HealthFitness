@@ -64,6 +64,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * @deprecated Use {@link android.healthconnect.testing.shared.recordfactory.RecordFactory}.
+ */
+@Deprecated
 public final class DataFactory {
 
     /**
