@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Odaberite podatke koje želite da ova aplikacija čita iz Povezivanja zdravlja"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Delite podatke između aplikacija"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Podaci iz: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Dozvolite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pomoću Povezivanja zdravlja čita podatke iz drugih aplikacija na ovom uređaju"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikacije koje mogu da sinhronizuju ove podatke"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Da biste saznali kako aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> koristi vaše podatke, pogledajte njenu "<a href="%2$s">"politiku privatnosti"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Povezivanje zdravlja vam omogućava da delite podatke o zdravlju i fitnesu između više aplikacija. To vam pomaže da otkrijete uvide i doživljaje, a da podaci pritom ostanu bezbedni."</string>
@@ -1094,7 +1095,7 @@
     <string name="remove_button_content_description" msgid="6170490900032612048">"Dugme za uklanjanje aplikacije <xliff:g id="SELECTED_APP">%s</xliff:g> sa liste prioriteta"</string>
     <string name="see_actions_button_content_description" msgid="2004104767369363475">"Dugme za promenu mesta ili uklanjanje aplikacije <xliff:g id="SELECTED_APP">%s</xliff:g> sa liste izvora aplikacija"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Dvaput dodirnite i prevucite za promenu redosleda"</string>
-    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> na listi: <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g>. na listi: <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"fitnes, velnes"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"dozvole"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"povezivanje zdravlja, zdravstveni podaci, zdravstvene kategorije, pristup podacima, aktivnost, telesne mere, praćenje ciklusa, ishrana, spavanje, vitalne funkcije"</string>
@@ -1270,7 +1271,8 @@
     <string name="write_access" msgid="571547306854732263">"Pristup za pisanje"</string>
     <string name="read_access" msgid="3317759826769372785">"Pristup za čitanje"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"Aplikacije sa dozvolom: <xliff:g id="NUMBER_0">%1$d</xliff:g> od <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Nijedna aplikacija ne zahteva dozvolu"</string>
     <string name="allowed" msgid="4158456017482263737">"Dozvoljeno"</string>
@@ -1577,5 +1579,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"zadržavanje vode"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Zviždanje u grudima"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"zviždanje u grudima"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> od <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> od <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>

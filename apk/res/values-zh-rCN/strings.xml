@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"选择您希望允许此应用从“健康数据共享”读取的数据"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"在应用之间共享数据"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"“<xliff:g id="APP_NAME">%1$s</xliff:g>”的数据"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”应用使用“健康数据共享”读取此设备上其他应用中的数据"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"可以同步此数据的应用"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"如需了解“<xliff:g id="APP_NAME">%1$s</xliff:g>”如何使用您的数据，请参阅其"<a href="%2$s">"《隐私权政策》"</a>"。"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"借助“健康数据共享”，您可以在多个应用之间共享健康与健身数据。这能帮您获得更多见解和体验，同时保障数据安全。"</string>
@@ -1270,7 +1271,8 @@
     <string name="write_access" msgid="571547306854732263">"写入权限"</string>
     <string name="read_access" msgid="3317759826769372785">"读取权限"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>，<xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>，<xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"已允许 <xliff:g id="NUMBER_0">%1$d</xliff:g> 个应用（共 <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> 个）"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"没有应用请求权限"</string>
     <string name="allowed" msgid="4158456017482263737">"已允许"</string>
@@ -1577,5 +1579,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"水肿"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"哮鸣"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"哮鸣"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>

@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Vælg, hvilke data denne app skal kunne læse fra Health Connect"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Del data mellem apps"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data fra <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Giv appen <xliff:g id="APP_NAME">%1$s</xliff:g> tilladelse til at læse data fra andre apps på denne enhed ved hjælp af Health Connect"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps, der kan synkronisere disse data"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Få flere oplysninger om, hvordan <xliff:g id="APP_NAME">%1$s</xliff:g> bruger dine data, i "<a href="%2$s">"privatlivspolitikken"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect giver dig mulighed for at dele dine sundheds- og træningsdata mellem flere apps. Det hjælper dig med at få indsigt og oplevelser, samtidig med at dine data beskyttes."</string>
@@ -1270,7 +1271,8 @@
     <string name="write_access" msgid="571547306854732263">"Skriveadgang"</string>
     <string name="read_access" msgid="3317759826769372785">"Læseadgang"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> ud af <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> apps har tilladelse"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Ingen apps anmoder om tilladelsen"</string>
     <string name="allowed" msgid="4158456017482263737">"Har tilladelse"</string>
@@ -1577,5 +1579,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"væskeophobning"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Hvæsen"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"hvæsen"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> af <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> af <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>

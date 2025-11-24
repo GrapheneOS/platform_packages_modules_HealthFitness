@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Pilih data yang boleh dibaca aplikasi ini dari Health Connect"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Bagikan data antar-aplikasi"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data dari <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Izinkan aplikasi <xliff:g id="APP_NAME">%1$s</xliff:g> membaca data dari aplikasi lain di perangkat ini menggunakan Health Connect"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikasi yang dapat menyinkronkan data ini"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Pelajari cara <xliff:g id="APP_NAME">%1$s</xliff:g> menggunakan data Anda dalam "<a href="%2$s">"kebijakan privasi"</a>" mereka."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect memungkinkan Anda berbagi data kesehatan dan kebugaran antar-aplikasi. Hal ini membantu Anda mendapatkan analisis dan pengalaman baru sambil tetap menjaga keamanan data Anda."</string>
@@ -1270,7 +1271,8 @@
     <string name="write_access" msgid="571547306854732263">"Akses Tulis"</string>
     <string name="read_access" msgid="3317759826769372785">"Akses Baca"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> dari <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplikasi diizinkan"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Tidak ada aplikasi yang meminta"</string>
     <string name="allowed" msgid="4158456017482263737">"Diizinkan"</string>
@@ -1577,5 +1579,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"retensi air"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Sesak"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"sesak"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> dari <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> dari <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>
