@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"ເລືອກຂໍ້ມູນທີ່ທ່ານຕ້ອງການໃຫ້ແອັບນີ້ອ່ານຈາກ Health Connect"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"ແບ່ງປັນຂໍ້ມູນລະຫວ່າງແອັບ"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"ຂໍ້ມູນຈາກ <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"ອະນຸຍາດໃຫ້ແອັບ <xliff:g id="APP_NAME">%1$s</xliff:g> ອ່ານຂໍ້ມູນຈາກແອັບອື່ນຢູ່ອຸປະກອນນີ້ໂດຍໃຊ້ Health Connect"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ແອັບທີ່ສາມາດຊິ້ງຂໍ້ມູນນີ້ໄດ້"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ສຶກສາວ່າ <xliff:g id="APP_NAME">%1$s</xliff:g> ໃຊ້ຂໍ້ມູນຂອງທ່ານໃນ "<a href="%2$s">"ນະໂຍບາຍຄວາມເປັນສ່ວນຕົວ"</a>" ຂອງມັນແນວໃດ."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ຈະເຮັດໃຫ້ທ່ານສາມາດແບ່ງປັນຂໍ້ມູນສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍຂອງທ່ານລະຫວ່າງຫຼາຍໆແອັບໄດ້. ນີ້ຈະຊ່ວຍໃຫ້ທ່ານປົດລັອກຂໍ້ມູນເຈາະເລິກ ແລະ ປະສົບການຕ່າງໆໃນຂະນະທີ່ເກັບຂໍ້ມູນຂອງທ່ານໄວ້ຢ່າງປອດໄພ."</string>
@@ -1270,7 +1271,8 @@
     <string name="write_access" msgid="571547306854732263">"ສິດໃນການຂຽນ"</string>
     <string name="read_access" msgid="3317759826769372785">"ສິດໃນການອ່ານ"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>⁠"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"ອະນຸຍາດ <xliff:g id="NUMBER_0">%1$d</xliff:g> ແອັບຈາກທັງໝົດ <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> ແອັບແລ້ວ"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"ບໍ່ມີແອັບທີ່ກໍາລັງຮ້ອງຂໍ"</string>
     <string name="allowed" msgid="4158456017482263737">"ອະນຸຍາດແລ້ວ"</string>
@@ -1577,5 +1579,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"ບວມນ້ຳ"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ຫາຍໃຈມີສຽງຫວີດ"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ຫາຍໃຈມີສຽງຫວີດ"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> ຈາກທັງໝົດ <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> ຈາກທັງໝົດ <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>

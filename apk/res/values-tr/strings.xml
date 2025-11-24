@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Bu uygulamanın Health Connect\'ten okumasını istediğiniz verileri seçin"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Uygulamalar arasında veri paylaşın"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasından veriler"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasının, Health Connect\'i kullanarak bu cihazda bulunan diğer uygulamalardaki verileri okumasına izin verin"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Bu verileri senkronize edebilen uygulamalar"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasının, verilerinizi nasıl kullandığını "<a href="%2$s">"gizlilik politikasından"</a>" öğrenin."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect, sağlık ve fitness verilerinizi birden fazla uygulama arasında paylaşmanıza olanak tanır. Bu sayede verilerinizin güvenliğini sağlarken analizler ve deneyimlerden faydalanabilirsiniz."</string>
@@ -1270,7 +1271,8 @@
     <string name="write_access" msgid="571547306854732263">"Yazma erişimi"</string>
     <string name="read_access" msgid="3317759826769372785">"Okuma erişimi"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>: <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g> <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>⁠"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> / <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> uygulamaya izin veriliyor"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"İstekte bulunan uygulama yok"</string>
     <string name="allowed" msgid="4158456017482263737">"İzin veriliyor"</string>
@@ -1577,5 +1579,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"ödem"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Hırıltılı soluma"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"hırıltılı soluma"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>

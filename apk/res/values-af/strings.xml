@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Kies data wat jy wil hê hierdie app in Health Connect moet lees"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Deel data tussen apps"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data uit <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Laat die <xliff:g id="APP_NAME">%1$s</xliff:g>-app toe om data vanaf ander apps op hierdie toestel te lees met Health Connect"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps wat hierdie data kan sinkroniseer"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Vind uit hoe <xliff:g id="APP_NAME">%1$s</xliff:g> jou data gebruik in hul "<a href="%2$s">"privaatheidsbeleid"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Met Health Connect kan jy jou gesondheid- en fiksheiddata oor veelvuldige apps deel. Dit help jou om insigte en ervarings te ontsluit terwyl jou data veilig gehou word."</string>
@@ -1270,7 +1271,8 @@
     <string name="write_access" msgid="571547306854732263">"Skryftoegang"</string>
     <string name="read_access" msgid="3317759826769372785">"Leestoegang"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> van <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> apps toegelaat"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Geen apps wat versoek nie"</string>
     <string name="allowed" msgid="4158456017482263737">"Toegelaat"</string>
@@ -1577,5 +1579,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"waterretensie"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Hyg"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"hyg"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> van <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> van <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>

@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect-ൽ നിന്ന് ഈ ആപ്പ് റീഡ് ചെയ്യാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"ആപ്പുകൾ തമ്മിൽ ഡാറ്റ പങ്കിടുക"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> എന്ന ആപ്പിൽ നിന്നുള്ള ഡാറ്റ"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Health Connect ഉപയോഗിച്ച് ഈ ഉപകരണത്തിലെ മറ്റ് ആപ്പുകളിൽ നിന്ന് ഡാറ്റ വായിക്കാൻ <xliff:g id="APP_NAME">%1$s</xliff:g> ആപ്പിനെ അനുവദിക്കുക"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ഈ ഡാറ്റ സമന്വയിപ്പിക്കാനാകുന്ന ആപ്പുകൾ"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> നിങ്ങളുടെ ഡാറ്റ ഉപയോഗിക്കുന്ന രീതി അവരുടെ "<a href="%2$s">"സ്വകാര്യതാ നയത്തിൽ"</a>" അറിയൂ."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"ഒന്നിലധികം ആപ്പുകൾ തമ്മിൽ നിങ്ങളുടെ ആരോഗ്യവും ഫിറ്റ്‍നസും സംബന്ധിച്ച ഡാറ്റ പങ്കിടാൻ Health Connect അനുവദിക്കുന്നു. ഡാറ്റ സുരക്ഷിതമാക്കിക്കൊണ്ട് സ്ഥിതിവിവരക്കണക്കുകളും അനുഭവങ്ങളും അൺലോക്ക് ചെയ്യാൻ ഇത് നിങ്ങളെ സഹായിക്കുന്നു."</string>
@@ -1270,7 +1271,8 @@
     <string name="write_access" msgid="571547306854732263">"എഴുതാനുള്ള ആക്‌സസ്"</string>
     <string name="read_access" msgid="3317759826769372785">"വായനാ ആക്‌സസ്"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>⁠"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> / <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> ആപ്പുകൾ അനുവദനീയം"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"ആപ്പുകളൊന്നും അഭ്യർത്ഥിക്കുന്നില്ല"</string>
     <string name="allowed" msgid="4158456017482263737">"അനുവാദം ലഭിച്ചു"</string>
@@ -1577,5 +1579,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"നീര്"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ശ്വാസംമുട്ടൽ"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ശ്വാസംമുട്ടൽ"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>-ൽ <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>-ൽ <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
 </resources>

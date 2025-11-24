@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect પર તમે આ ઍપ દ્વારા જે ડેટા વંચાવવા માગતા હો, તે ડેટા પસંદ કરો"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"ઍપ વચ્ચે ડેટા શેર કરો"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g>નો ડેટા"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Health Connectનો ઉપયોગ કરીને આ ડિવાઇસ પરની અન્ય ઍપમાંથી <xliff:g id="APP_NAME">%1$s</xliff:g> ઍપને ડેટા વાંચવાની મંજૂરી આપો"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"આ ડેટા સિંક કરી શકે તેવી ઍપ"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> તમારા ડેટાનો ઉપયોગ કેવી રીતે કરે છે, તે તેમની "<a href="%2$s">"પ્રાઇવસી પૉલિસી"</a>"માં જાણો."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect તમને એકથી વધુ ઍપ વચ્ચે તમારા આરોગ્ય અને ફિટનેસ સંબંધિત ડેટા શેર કરવાની મંજૂરી આપે છે. આનાથી તમારા ડેટાને સુરક્ષિત રાખીને જાણકારીઓ અને અનુભવોને અનલૉક કરવામાં તમને મદદ મળે છે."</string>
@@ -1270,7 +1271,8 @@
     <string name="write_access" msgid="571547306854732263">"લખવાનો ઍક્સેસ"</string>
     <string name="read_access" msgid="3317759826769372785">"વાંચવાનો ઍક્સેસ"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g>માંથી <xliff:g id="NUMBER_0">%1$d</xliff:g> ઍપને મંજૂરી છે"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"કોઈ ઍપ વિનંતી કરી રહી નથી"</string>
     <string name="allowed" msgid="4158456017482263737">"આ ઍપને મંજૂરી છે"</string>
@@ -1577,5 +1579,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"શરીરમાં પાણી ભરાઈ જવું"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ઘરઘરાટી"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ઘરઘરાટી"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>માંથી <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>માંથી <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
 </resources>

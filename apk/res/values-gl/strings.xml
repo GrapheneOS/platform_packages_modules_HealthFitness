@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Escolle os datos que queres que lea esta aplicación en Saúde conectada"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Compartir os datos entre aplicacións"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Datos de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Permite que a aplicación <xliff:g id="APP_NAME">%1$s</xliff:g> lea os datos doutras aplicacións deste dispositivo por medio de Saúde conectada"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplicacións que poden sincronizar estes datos"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Infórmate sobre como <xliff:g id="APP_NAME">%1$s</xliff:g> utiliza os teus datos na súa "<a href="%2$s">"política de privacidade"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Saúde conectada permíteche compartir os teus datos de saúde e actividade física en varias aplicacións. Deste xeito, podes acceder a estatísticas e experiencias ao mesmo tempo que mantés seguros os datos."</string>
@@ -1270,7 +1271,8 @@
     <string name="write_access" msgid="571547306854732263">"Acceso de escritura"</string>
     <string name="read_access" msgid="3317759826769372785">"Acceso de lectura"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g> de <xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> de <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplicacións con permiso"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Non hai ningunha solicitude por parte das aplicacións"</string>
     <string name="allowed" msgid="4158456017482263737">"Con permiso"</string>
@@ -1577,5 +1579,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"retención de líquidos"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Sibilancias"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"sibilancias"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> de <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> de <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>

@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Chọn dữ liệu bạn muốn ứng dụng này đọc từ Health Connect"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Chia sẻ dữ liệu giữa các ứng dụng"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dữ liệu của <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Cho phép ứng dụng <xliff:g id="APP_NAME">%1$s</xliff:g> đọc dữ liệu của các ứng dụng khác trên thiết bị này thông qua Health Connect"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Các ứng dụng có thể đồng bộ hoá dữ liệu này"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Tìm hiểu cách <xliff:g id="APP_NAME">%1$s</xliff:g> dùng dữ liệu của bạn trong "<a href="%2$s">"chính sách quyền riêng tư"</a>" của họ."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Với Health Connect, bạn có thể chia sẻ dữ liệu về sức khoẻ và hoạt động thể dục giữa nhiều ứng dụng. Nhờ đó, bạn sẽ có thêm những hiểu biết và trải nghiệm, trong khi vẫn đảm bảo an toàn cho dữ liệu của mình."</string>
@@ -1270,7 +1271,8 @@
     <string name="write_access" msgid="571547306854732263">"Quyền ghi"</string>
     <string name="read_access" msgid="3317759826769372785">"Quyền đọc"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"Đã cho phép <xliff:g id="NUMBER_0">%1$d</xliff:g>/<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> ứng dụng"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Không có ứng dụng nào đang yêu cầu"</string>
     <string name="allowed" msgid="4158456017482263737">"Được phép"</string>
@@ -1577,5 +1579,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"giữ nước"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Thở khò khè"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"thở khò khè"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>

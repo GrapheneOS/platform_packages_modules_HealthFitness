@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"앱이 헬스 커넥트에서 읽을 수 있도록 허용할 데이터를 선택하세요."</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"앱 간 데이터 공유"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g>의 데이터"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"<xliff:g id="APP_NAME">%1$s</xliff:g> 앱에서 헬스 커넥트를 사용하여 이 기기의 다른 앱에서 데이터를 읽도록 허용"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"이 데이터를 동기화할 수 있는 앱"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g>에서 사용자 데이터를 사용하는 방식을 "<a href="%2$s">"개인정보처리방침"</a>"에서 확인하세요."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"헬스 커넥트를 사용하면 여러 앱 간에 건강 및 피트니스 데이터를 공유할 수 있습니다. 이를 통해 데이터를 안전하게 보호하면서 유용한 정보와 경험을 얻을 수 있습니다."</string>
@@ -1270,7 +1271,8 @@
     <string name="write_access" msgid="571547306854732263">"쓰기 액세스"</string>
     <string name="read_access" msgid="3317759826769372785">"읽기 액세스"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g><xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"앱 <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>개 중 <xliff:g id="NUMBER_0">%1$d</xliff:g>개 허용됨"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"권한을 요청하는 앱 없음"</string>
     <string name="allowed" msgid="4158456017482263737">"허용됨"</string>
@@ -1577,5 +1579,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"체액 부종"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"쌕쌕거림"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"쌕쌕거림"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>

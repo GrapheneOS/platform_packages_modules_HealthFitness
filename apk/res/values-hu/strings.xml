@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Adja meg, hogy az alkalmazás milyen adatokat olvashasson a Health Connectből."</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Adatok megosztása az alkalmazások között"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Adatok forrása: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Annak engedélyezése, hogy a(z) <xliff:g id="APP_NAME">%1$s</xliff:g> alkalmazás a Health Connect használatával beolvassa a más alkalmazásokból származó adatokat ezen az eszközön"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Azok az alkalmazások, amelyek szinkronizálhatják ezeket az adatokat"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"A(z) <xliff:g id="APP_NAME">%1$s</xliff:g> "<a href="%2$s">"adatvédelmi irányelveiben"</a>" tájékozódhat arról, hogy az alkalmazás hogyan használja fel az Ön adatait."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"A Health Connect segítségével több alkalmazás között is megoszthatja egészségügyi és fitneszadatait. Ezzel statisztikákhoz és élményekhez juthat hozzá, és közben adatai is biztonságban maradnak."</string>
@@ -1270,7 +1271,8 @@
     <string name="write_access" msgid="571547306854732263">"Írási hozzáférés"</string>
     <string name="read_access" msgid="3317759826769372785">"Olvasási hozzáférés"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g>/<xliff:g id="NUMBER_0">%1$d</xliff:g> alkalmazás kapott engedélyt"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Nincsenek kérelmező alkalmazások"</string>
     <string name="allowed" msgid="4158456017482263737">"Engedélyezve"</string>
@@ -1577,5 +1579,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"vizesedés"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Zihálás"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"zihálás"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>/<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>."</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>/<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>."</string>
 </resources>

@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Wybierz, jakie dane ta aplikacja może odczytywać z Health Connect"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Udostępniaj dane między aplikacjami"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dane z aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Zezwalaj aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g> na odczytywanie danych z innych aplikacji na tym urządzeniu za pomocą Health Connect"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikacje, które mogą synchronizować te dane"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"O tym, jak aplikacja <xliff:g id="APP_NAME">%1$s</xliff:g> wykorzystuje Twoje dane, dowiesz się z jej "<a href="%2$s">"polityki prywatności"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect pozwala udostępniać dane o zdrowiu i aktywności fizycznej między wieloma aplikacjami. Dzięki temu możesz przeglądać statystyki i odkrywać nowe funkcje, zachowując bezpieczeństwo danych."</string>
@@ -1270,7 +1271,8 @@
     <string name="write_access" msgid="571547306854732263">"Dostęp z uprawnieniami do zapisu"</string>
     <string name="read_access" msgid="3317759826769372785">"Dostęp z uprawnieniami do odczytu"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"Przyznano dostęp <xliff:g id="NUMBER_0">%1$d</xliff:g> z <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplikacji"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Brak aplikacji proszących o dostęp"</string>
     <string name="allowed" msgid="4158456017482263737">"Ma dostęp"</string>
@@ -1577,5 +1579,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"zatrzymywanie wody"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Świszczący oddech"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"świszczący oddech"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> z <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> z <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>
