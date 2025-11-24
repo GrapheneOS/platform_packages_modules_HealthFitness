@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.validation.ValidationUtils.requir
 import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION;
+import static com.android.healthfitness.flags.Flags.FLAG_TEMPORAL_FIELD_API;
 
 import static java.util.Objects.requireNonNull;
 
@@ -108,22 +109,44 @@ public class AlcoholConsumptionRecord extends IntervalRecord {
     /** Use this type for highball. */
     public static final int ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_HIGHBALL = 18;
 
-    /** @hide */
+    /**
+     * @hide
+     * @deprecated use {@link Record.RecordTemporalType} instead
+     */
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
         RECORD_TEMPORAL_TYPE_INSTANT,
         RECORD_TEMPORAL_TYPE_INTERVAL,
         RECORD_TEMPORAL_TYPE_LOCAL_DATE
     })
+    @Deprecated
     public @interface AlcoholConsumptionTemporalType {}
 
-    /** The record represents an instantaneous event. */
+    /**
+     * The record represents an instantaneous event.
+     *
+     * @deprecated use {@link Record#RECORD_TEMPORAL_TYPE_INSTANT} instead
+     */
+    @FlaggedApi(FLAG_TEMPORAL_FIELD_API)
+    @Deprecated
     public static final int RECORD_TEMPORAL_TYPE_INSTANT = 0;
 
-    /** The record represents an event over an interval. */
+    /**
+     * The record represents an event over an interval.
+     *
+     * @deprecated use {@link Record#RECORD_TEMPORAL_TYPE_INTERVAL} instead
+     */
+    @FlaggedApi(FLAG_TEMPORAL_FIELD_API)
+    @Deprecated
     public static final int RECORD_TEMPORAL_TYPE_INTERVAL = 1;
 
-    /** The record represents an event that occurred on a specific date. */
+    /**
+     * The record represents an event that occurred on a specific date.
+     *
+     * @deprecated use {@link Record#RECORD_TEMPORAL_TYPE_LOCAL_DATE} instead
+     */
+    @FlaggedApi(FLAG_TEMPORAL_FIELD_API)
+    @Deprecated
     public static final int RECORD_TEMPORAL_TYPE_LOCAL_DATE = 2;
 
     private static final Set<Integer> VALID_ALCOHOL_CONSUMPTION_BEVERAGE_TYPES =
