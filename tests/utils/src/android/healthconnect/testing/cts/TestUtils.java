@@ -1315,9 +1315,43 @@ public final class TestUtils {
             throws InterruptedException {
         HealthConnectReceiver<InsertRecordsResponse> receiver = new HealthConnectReceiver<>();
         insertDeviceRecords(deviceId, unmodifiableList(records), outcomeExecutor(), receiver);
+        receiver.verifyNoExceptionOrThrow();
         List<Record> returnedRecords = receiver.getResponse().getRecords();
         assertThat(returnedRecords).hasSize(records.size());
         return returnedRecords;
+    }
+
+    /**
+     * Calls {@link HealthConnectManager#updateDeviceRecords} with shell permission identity and
+     * device data provider permissions.
+     */
+    @SuppressLint("MissingPermission")
+    public static void updateDeviceRecords(
+            String deviceId,
+            List<Record> records,
+            Executor executor,
+            TestOutcomeReceiver<Void, HealthConnectException> callback)
+            throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+
+        try {
+            getHealthConnectManager().updateDeviceRecords(deviceId, records, executor, callback);
+            callback.awaitUnchecked();
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
+    }
+
+    /**
+     * Calls {@link HealthConnectManager#updateDeviceRecords} with shell permission identity and
+     * device data provider permissions in the default application context.
+     */
+    public static void updateDeviceRecords(String deviceId, List<? extends Record> records)
+            throws InterruptedException {
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+        updateDeviceRecords(deviceId, unmodifiableList(records), outcomeExecutor(), receiver);
+        receiver.verifyNoExceptionOrThrow();
     }
 
     /**

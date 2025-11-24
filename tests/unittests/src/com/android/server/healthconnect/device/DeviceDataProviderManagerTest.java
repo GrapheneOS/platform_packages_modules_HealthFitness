@@ -63,6 +63,7 @@ import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.health.connect.internal.datatypes.SymptomRecordInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.os.Build;
@@ -987,6 +988,78 @@ public class DeviceDataProviderManagerTest {
                 () ->
                         mDeviceDataProviderManager.updateDeviceRecords(
                                 PACKAGE_NAME, "non_existent_device", List.of(updatedRecord)));
+    }
+
+    @Test
+    public void withMultipleDdpsSameDevice_updateDeviceRecords_updatesOwnRecord() {
+        String packageOne = "foo";
+        String packageTwo = "bar";
+
+        advertiseDevice(DEVICE_ID, packageOne, StepsRecord.class);
+        advertiseDevice(DEVICE_ID, packageTwo, StepsRecord.class);
+
+        List<RecordInternal<?>> recordsOne = List.of(buildStepsRecord(100, 200, 111));
+        List<RecordInternal<?>> recordsTwo = List.of(buildStepsRecord(300, 400, 222));
+
+        String uuidOne =
+                mDeviceDataProviderManager
+                        .insertDeviceRecords(packageOne, DEVICE_ID, recordsOne)
+                        .get(0);
+        mDeviceDataProviderManager.insertDeviceRecords(packageTwo, DEVICE_ID, recordsTwo);
+
+        RecordInternal<?> updatedRecordOne = buildStepsRecord(100, 200, 333).setUuid(uuidOne);
+        mDeviceDataProviderManager.updateDeviceRecords(
+                packageOne, DEVICE_ID, List.of(updatedRecordOne));
+
+        ReadRecordsRequestUsingFilters<StepsRecord> request =
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setDeviceId(DEVICE_ID)
+                        .build();
+
+        List<RecordInternal<?>> actualOne =
+                mDeviceDataProviderManager.readDeviceRecords(
+                                mTransactionManager,
+                                packageOne,
+                                request.toReadRecordsRequestParcel())
+                        .first;
+
+        assertThat(actualOne.size()).isEqualTo(1);
+        assertThat(((StepsRecordInternal) actualOne.get(0)).getCount()).isEqualTo(333);
+
+        List<RecordInternal<?>> actualTwo =
+                mDeviceDataProviderManager.readDeviceRecords(
+                                mTransactionManager,
+                                packageTwo,
+                                request.toReadRecordsRequestParcel())
+                        .first;
+
+        assertThat(actualTwo.size()).isEqualTo(1);
+        assertThat(((StepsRecordInternal) actualTwo.get(0)).getCount()).isEqualTo(222);
+    }
+
+    @Test
+    public void withMultipleDdpsSameDevice_updateDeviceRecords_throwsWhenAttemptingToUpdateOther() {
+        String packageOne = "foo";
+        String packageTwo = "bar";
+
+        advertiseDevice(DEVICE_ID, packageOne, StepsRecord.class);
+        advertiseDevice(DEVICE_ID, packageTwo, StepsRecord.class);
+
+        List<RecordInternal<?>> recordsOne = List.of(buildStepsRecord(100, 200, 111));
+        List<RecordInternal<?>> recordsTwo = List.of(buildStepsRecord(300, 400, 222));
+
+        String uuidOne =
+                mDeviceDataProviderManager
+                        .insertDeviceRecords(packageOne, DEVICE_ID, recordsOne)
+                        .get(0);
+        mDeviceDataProviderManager.insertDeviceRecords(packageTwo, DEVICE_ID, recordsTwo);
+
+        RecordInternal<?> updatedRecordOne = buildStepsRecord(100, 200, 333).setUuid(uuidOne);
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mDeviceDataProviderManager.updateDeviceRecords(
+                                packageTwo, DEVICE_ID, List.of(updatedRecordOne)));
     }
 
     @Test

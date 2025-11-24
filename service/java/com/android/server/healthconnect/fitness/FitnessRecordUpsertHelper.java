@@ -356,6 +356,16 @@ public class FitnessRecordUpsertHelper {
         whereClauseForUpdateRequest.addWhereEqualsClause(
                 RecordHelper.APP_INFO_ID_COLUMN_NAME,
                 /* expected args value */ String.valueOf(recordInternal.getAppInfoId()));
+        // We filter for ids > 0 as valid SQLite row indices start at 1 (see
+        // https://sqlite.org/autoinc.html).
+        // Any value values below 1 (e.g., the internal initialization value DEFAULT_LONG) suggests
+        // that an id is not set / invalid and should be ignored.
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                && recordInternal.getDeviceDataProviderId() > 0) {
+            whereClauseForUpdateRequest.addWhereEqualsClause(
+                    RecordHelper.DDP_ID_COLUMN_NAME,
+                    String.valueOf(recordInternal.getDeviceDataProviderId()));
+        }
         return whereClauseForUpdateRequest;
     }
 
