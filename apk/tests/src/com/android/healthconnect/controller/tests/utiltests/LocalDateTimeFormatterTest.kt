@@ -103,6 +103,22 @@ class LocalDateTimeFormatterTest {
     }
 
     @Test
+    fun formatShortDateWithoutYear_localDate_ukLocale() {
+        val formatter = setLocaleAndCreateFormatter(Locale.UK)
+        val date = java.time.LocalDate.of(2022, 10, 20)
+        val zoneId = java.time.ZoneId.of("UTC")
+        assertThat(formatter.formatShortDateWithoutYear(date, zoneId)).isEqualTo("20 Oct")
+    }
+
+    @Test
+    fun formatShortDateWithoutYear_localDate_usLocale() {
+        val formatter = setLocaleAndCreateFormatter(Locale.US)
+        val date = java.time.LocalDate.of(2022, 10, 20)
+        val zoneId = java.time.ZoneId.of("UTC")
+        assertThat(formatter.formatShortDateWithoutYear(date, zoneId)).isEqualTo("Oct 20")
+    }
+
+    @Test
     fun formatDateAndTime_ukLocale() {
         val formatter = setLocaleAndCreateFormatter(Locale.UK)
         assertThat(formatter.formatDateAndTime(time)).isEqualTo("20 Oct, 14:06")

@@ -1181,6 +1181,14 @@
     <string name="notes_title" description="Title for note. [CHAR LIMIT=40]">Notes</string>
     <string name="details_title" description="Title for details section. [CHAR LIMIT=40]">Details</string>
     <!-- endregion -->
+
+    <!-- region Menstrual cycle phase -->
+    <string name="menstrual_cycle_phase_follicular" description="The follicular phase of the menstrual cycle. [CHAR LIMIT=50]">Follicular</string>
+    <string name="menstrual_cycle_phase_luteal" description="The luteal phase of the menstrual cycle. [CHAR LIMIT=50]">Luteal</string>
+    <string name="menstrual_cycle_phase_unknown" description="Unknown menstrual cycle phase. [CHAR LIMIT=50]">Unknown phase</string>
+    <string name="menstrual_cycle_phase_day_of_cycle" description="Which day of the user's menstrual cycle it was. [CHAR LIMIT=50]">Day <xliff:g example="2" id="day">%1$d</xliff:g></string>
+    <!-- endregion -->
+
     <!-- endregion -->
 
     <!-- region Duration -->

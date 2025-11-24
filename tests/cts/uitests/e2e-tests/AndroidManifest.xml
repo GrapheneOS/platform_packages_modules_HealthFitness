@@ -62,6 +62,7 @@
     <uses-permission android:name="android.permission.health.READ_HIP_CIRCUMFERENCE"/>
     <uses-permission android:name="android.permission.health.READ_HYDRATION"/>
     <uses-permission android:name="android.permission.health.READ_LEAN_BODY_MASS"/>
+    <uses-permission android:name="android.permission.health.READ_MENSTRUAL_CYCLE_PHASE"/>
     <uses-permission android:name="android.permission.health.READ_MENSTRUATION"/>
     <uses-permission android:name="android.permission.health.READ_MINDFULNESS"/>
     <uses-permission android:name="android.permission.health.READ_NICOTINE_INTAKE" />
@@ -107,6 +108,7 @@
     <uses-permission android:name="android.permission.health.WRITE_HIP_CIRCUMFERENCE"/>
     <uses-permission android:name="android.permission.health.WRITE_HYDRATION"/>
     <uses-permission android:name="android.permission.health.WRITE_LEAN_BODY_MASS"/>
+    <uses-permission android:name="android.permission.health.WRITE_MENSTRUAL_CYCLE_PHASE"/>
     <uses-permission android:name="android.permission.health.WRITE_MENSTRUATION"/>
     <uses-permission android:name="android.permission.health.WRITE_MINDFULNESS"/>
     <uses-permission android:name="android.permission.health.WRITE_NICOTINE_INTAKE" />

@@ -41,6 +41,7 @@ import android.health.connect.datatypes.HeightRecord
 import android.health.connect.datatypes.HydrationRecord
 import android.health.connect.datatypes.IntermenstrualBleedingRecord
 import android.health.connect.datatypes.LeanBodyMassRecord
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord
 import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MindfulnessSessionRecord
 import android.health.connect.datatypes.NicotineIntakeRecord
@@ -87,6 +88,7 @@ import com.android.healthconnect.controller.data.formatters.HeightFormatter
 import com.android.healthconnect.controller.data.formatters.HydrationFormatter
 import com.android.healthconnect.controller.data.formatters.IntermenstrualBleedingFormatter
 import com.android.healthconnect.controller.data.formatters.LeanBodyMassFormatter
+import com.android.healthconnect.controller.data.formatters.MenstrualCyclePhaseFormatter
 import com.android.healthconnect.controller.data.formatters.MenstruationFlowFormatter
 import com.android.healthconnect.controller.data.formatters.MindfulnessSessionFormatter
 import com.android.healthconnect.controller.data.formatters.NicotineIntakeFormatter
@@ -161,6 +163,7 @@ constructor(
     private val nicotineIntakeFormatter: NicotineIntakeFormatter,
     private val symptomFormatter: SymptomFormatter,
     private val alcoholConsumptionFormatter: AlcoholConsumptionFormatter,
+    private val menstrualCyclePhaseFormatter: MenstrualCyclePhaseFormatter,
 ) {
 
     suspend fun format(record: Record, showDataOrigin: Boolean = true): FormattedEntry {
@@ -199,6 +202,7 @@ constructor(
             is SexualActivityRecord -> sexualActivityFormatter.format(record, appName)
             is OvulationTestRecord -> ovulationTestFormatter.format(record, appName)
             is MenstruationFlowRecord -> menstruationFlowFormatter.format(record, appName)
+            is MenstrualCyclePhaseRecord -> menstrualCyclePhaseFormatter.format(record, appName)
             is SleepSessionRecord -> sleepSessionFormatter.format(record, appName)
             is ExerciseSessionRecord -> exerciseSessionFormatter.format(record, appName)
             is BodyWaterMassRecord -> bodyWaterMassFormatter.format(record, appName)
