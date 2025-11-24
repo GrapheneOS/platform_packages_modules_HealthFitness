@@ -76,6 +76,10 @@ constructor(
     }
 
     fun loadMatchmakingApps(packageName: String, recordTypeNames: Array<String>?) {
+        // Load data only if it has not been loaded before.
+        if (_matchmakingState.value is MatchmakingState.WithData) {
+            return
+        }
         _matchmakingState.postValue(MatchmakingState.Loading)
         viewModelScope.launch {
             val recordTypes = parseRecordTypeNames(recordTypeNames)
