@@ -3733,15 +3733,20 @@ public class HealthConnectManager {
         }
     }
 
-    // TODO(b/455837940): Update javadoc with links to API that deviceId is being used for when
-    // available.
     /**
-     * Retrieve a unique identifier of the device that Health Connect is currently running on. The
-     * identifier is scoped by user and will change on either switching the current user or
-     * rebooting the device. The identifier can then be used for advertising and writing data that
-     * originates from the device itself, e.g., phone pedometer, by populating the {@code deviceId}
-     * field.
+     * Retrieves the unique identifier of the device that Health Connect is currently running on.
      *
+     * <p>To avoid persistent tracking, this identifier changes whenever the device reboots or the
+     * user switches. However, this change does not affect data ownership. The system recognizes
+     * that the new identifier belongs to the same device, ensuring that records inserted before a
+     * reboot remain fully accessible using the current identifier.
+     *
+     * <p>This identifier can be used as the {@code deviceId} in {@link DeviceDataAdvertisement}
+     * passed to {@link #advertiseDeviceDataSources} to represent the current device as a data
+     * source. Subsequently, it can be used to read and manage data collected by the current device
+     * (e.g. phone pedometer data) through dedicated device methods like {@link #readDeviceRecords}.
+     *
+     * @return unique identifier for the current device.
      * @throws RuntimeException for internal errors
      * @hide
      */
