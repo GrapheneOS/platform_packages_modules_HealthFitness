@@ -38,6 +38,7 @@ import android.health.connect.datatypes.HeightRecord
 import android.health.connect.datatypes.HydrationRecord
 import android.health.connect.datatypes.IntermenstrualBleedingRecord
 import android.health.connect.datatypes.LeanBodyMassRecord
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord
 import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.MindfulnessSessionRecord
@@ -91,6 +92,8 @@ class DataEntryFormatter(
     private val nutritionFormatter: NutritionFormatter = NutritionFormatter(),
     private val activeCaloriesBurnedFormatter: ActiveCaloriesBurnedFormatter =
         ActiveCaloriesBurnedFormatter(),
+    private val menstrualCyclePhaseFormatter: MenstrualCyclePhaseFormatter =
+        MenstrualCyclePhaseFormatter(),
     private val menstruationFlowFormatter: MenstruationFlowFormatter = MenstruationFlowFormatter(),
     private val menstruationPeriodFormatter: MenstruationPeriodFormatter =
         MenstruationPeriodFormatter(),
@@ -154,6 +157,7 @@ class DataEntryFormatter(
 
             // CYCLE_TRACKING
             is CervicalMucusRecord -> cervicalMucusFormatter.format(record, context)
+            is MenstrualCyclePhaseRecord -> menstrualCyclePhaseFormatter.format(record, context)
             is MenstruationFlowRecord -> menstruationFlowFormatter.format(record, context)
             is MenstruationPeriodRecord -> menstruationPeriodFormatter.format(record, context)
             is OvulationTestRecord -> ovulationTestFormatter.format(record, context)

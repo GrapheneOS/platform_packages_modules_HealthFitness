@@ -17,10 +17,8 @@ package com.android.healthconnect.testapps.toolbox.read.controller
 
 import android.health.connect.HealthConnectManager
 import android.health.connect.TimeInstantRangeFilter
-import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.Record
-import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils
-import java.time.Duration
+import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.readRecords
 import java.time.Period.ofDays
 
 class LoadMenstruationEntries(private val healthConnectManager: HealthConnectManager) :
@@ -33,20 +31,13 @@ class LoadMenstruationEntries(private val healthConnectManager: HealthConnectMan
                 .setStartTime(input.endTime.minus(ofDays(30)))
                 .setEndTime(input.endTime)
 
-        val records =
-            GeneralUtils.readRecords(
-                recordType = input.dataType.recordClass!!.java,
-                timeFilterRange = timeFilter.build(),
-                numberOfRecordsPerBatch = 1000L,
-                manager = healthConnectManager,
-            )
-
-        return records.filter { menstruationPeriodRecord ->
-            menstruationPeriodRecord is MenstruationPeriodRecord &&
-                menstruationPeriodRecord.startTime.isBefore(input.endTime) &&
-                menstruationPeriodRecord.endTime.isAfter(
-                    input.startTime.minus(Duration.ofMillis(1))
-                )
-        }
+        // Return the latest 30 records
+        return readRecords(
+            recordType = input.dataType.recordClass!!.java,
+            timeFilterRange = timeFilter.build(),
+            numberOfRecordsPerBatch = 30L,
+            manager = healthConnectManager,
+            ascending = false,
+        )
     }
 }
