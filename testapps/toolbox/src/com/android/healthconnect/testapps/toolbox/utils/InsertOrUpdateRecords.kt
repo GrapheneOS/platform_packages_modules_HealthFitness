@@ -46,6 +46,7 @@ import android.health.connect.datatypes.HeightRecord
 import android.health.connect.datatypes.HydrationRecord
 import android.health.connect.datatypes.IntermenstrualBleedingRecord
 import android.health.connect.datatypes.LeanBodyMassRecord
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord
 import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.Metadata
@@ -370,6 +371,22 @@ class InsertOrUpdateRecords {
                             getIntegerValue(mFieldNameToFieldInput, "mSensation"),
                             getIntegerValue(mFieldNameToFieldInput, "mAppearance"),
                         )
+                        .build()
+
+                MenstrualCyclePhaseRecord::class ->
+                    MenstrualCyclePhaseRecord.Builder(
+                            metaData,
+                            LocalDate.ofInstant(
+                                getStartTime(mFieldNameToFieldInput),
+                                ZoneOffset.UTC,
+                            ),
+                            getIntegerValue(mFieldNameToFieldInput, "mPhase"),
+                        )
+                        .apply {
+                            mFieldNameToFieldInput["mDayOfCycle"]
+                                ?.takeIf { !it.isEmpty() }
+                                ?.let { setDayOfCycle(it.getFieldValue().toString().toInt()) }
+                        }
                         .build()
 
                 MenstruationFlowRecord::class ->
