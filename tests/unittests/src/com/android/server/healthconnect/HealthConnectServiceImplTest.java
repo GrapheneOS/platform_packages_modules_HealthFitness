@@ -223,6 +223,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
@@ -521,7 +522,7 @@ public class HealthConnectServiceImplTest {
 
         mInternalTaskScheduler = mThreadScheduler.mInternalBackgroundExecutor;
 
-        if (Flags.deviceDataProvidersApi()) {
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
             mDeviceDataProviderManager =
                     spy(
                             new FakeSerialDeviceDataProviderManager(

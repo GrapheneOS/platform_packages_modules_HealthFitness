@@ -52,6 +52,7 @@ import android.platform.test.annotations.EnableFlags;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
@@ -112,17 +113,19 @@ public class FitnessRecordDeleteHelperTest {
         mInternalHealthConnectMappings = injector.getInternalHealthConnectMappings();
         mFitnessTestUtils = new FitnessTestUtils(injector);
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
-        mDeviceDataProviderManager =
-                new FakeSerialDeviceDataProviderManager(
-                        context,
-                        injector.getDeviceInfoHelper(),
-                        injector.getAppInfoHelper(),
-                        injector.getDeviceDataSourcesHelper(),
-                        injector.getDeviceDataProviderMetadataHelper(),
-                        injector.getFitnessRecordUpsertHelper(),
-                        injector.getFitnessRecordReadHelper(),
-                        injector.getFitnessRecordDeleteHelper(),
-                        injector.getSyntheticPackageNameCreator());
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            mDeviceDataProviderManager =
+                    new FakeSerialDeviceDataProviderManager(
+                            context,
+                            injector.getDeviceInfoHelper(),
+                            injector.getAppInfoHelper(),
+                            injector.getDeviceDataSourcesHelper(),
+                            injector.getDeviceDataProviderMetadataHelper(),
+                            injector.getFitnessRecordUpsertHelper(),
+                            injector.getFitnessRecordReadHelper(),
+                            injector.getFitnessRecordDeleteHelper(),
+                            injector.getSyntheticPackageNameCreator());
+        }
     }
 
     @Test
