@@ -15,6 +15,8 @@
  */
 package android.healthconnect.testing.shared.recordfactory;
 
+import static java.time.Instant.now;
+
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.SymptomRecord;
 import android.os.Bundle;
@@ -55,9 +57,19 @@ public final class SymptomRecordFactory extends RecordFactory<SymptomRecord> {
                 .build();
     }
 
-    /** Creates a new SymptomRecord with an instant temporal type. */
-    public SymptomRecord newInstantRecord(Metadata metadata, Instant time) {
-        return new SymptomRecord.Builder(SymptomRecord.SYMPTOM_TYPE_DIZZINESS, time, metadata)
+    /** Creates a new SymptomRecord with an instant temporal type and given symptom. */
+    public static SymptomRecord newInstantRecord(int symptomType) {
+        return newInstantRecord(newEmptyMetadata(), symptomType);
+    }
+
+    /** Creates a new SymptomRecord with an instant temporal type, given metadata and symptom. */
+    public static SymptomRecord newInstantRecord(Metadata metadata, int symptomType) {
+        return newInstantRecord(metadata, /* time= */ now(), symptomType);
+    }
+
+    /** Creates a new SymptomRecord with an instant temporal type, given time and symptom. */
+    public static SymptomRecord newInstantRecord(Metadata metadata, Instant time, int symptomType) {
+        return new SymptomRecord.Builder(symptomType, time, metadata)
                 .setNotes("Sudden dizziness")
                 .setSeverity(SymptomRecord.SEVERITY_MILD)
                 .build();
@@ -144,18 +156,20 @@ public final class SymptomRecordFactory extends RecordFactory<SymptomRecord> {
             case SymptomRecord.RECORD_TEMPORAL_TYPE_LOCAL_DATE:
                 builder =
                         new SymptomRecord.Builder(
-                                symptomType,
-                                startTime.atZone(startZoneOffset).toLocalDate(),
-                                metadata);
+                                        symptomType,
+                                        startTime.atZone(startZoneOffset).toLocalDate(),
+                                        metadata)
+                                .setCount(count);
                 break;
             case SymptomRecord.RECORD_TEMPORAL_TYPE_INTERVAL:
             default:
                 builder = new SymptomRecord.Builder(symptomType, startTime, endTime, metadata);
                 builder.setStartZoneOffset(startZoneOffset);
                 builder.setEndZoneOffset(endZoneOffset);
+                builder.setCount(count);
                 break;
         }
-        return builder.setNotes(notes).setSeverity(severity).setCount(count).build();
+        return builder.setNotes(notes).setSeverity(severity).build();
     }
 
     @Override
