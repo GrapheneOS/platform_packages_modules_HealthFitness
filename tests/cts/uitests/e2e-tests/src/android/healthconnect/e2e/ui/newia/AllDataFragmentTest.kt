@@ -40,12 +40,10 @@ import android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmpty
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.uiautomator.By
-import com.android.compatibility.common.util.SystemUtil.runShellCommand
 import java.time.Duration
 import java.time.Instant
 import org.junit.After
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 
@@ -53,17 +51,8 @@ import org.junit.Test
 class AllDataFragmentTest : HealthConnectBaseTest() {
     @get:Rule val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
-    private var previousDate = ""
-
     @Before
     fun setup() {
-        previousDate = runShellCommand("date +%Y-%m-%d")
-        // Don't throw if failed to set the system time as this might not be available on all
-        // devices. As tests are generally expected to be running with the current real-world time
-        // this usually isn't an issue. However some tests might have previously had the device time
-        // set to the past and this protects against that as Health Connect records generally can't
-        // be in the future.
-        runShellCommand("su 0 date -s $TEST_SYSTEM_CLOCK_TIME")
         TestUtils.deleteAllDataFromHealthConnect()
         insertData()
     }
@@ -71,14 +60,6 @@ class AllDataFragmentTest : HealthConnectBaseTest() {
     @After
     fun tearDown() {
         TestUtils.deleteAllDataFromHealthConnect()
-        if (!previousDate.isEmpty()) {
-            runShellCommand("su 0 date -s $previousDate")
-        }
-    }
-
-    companion object {
-        private const val TEST_SYSTEM_CLOCK_TIME: String = "2025-03-31"
-        private val NOW: Instant = Instant.parse("2024-01-20T07:06:05.432Z")
     }
 
     @Test
@@ -97,11 +78,10 @@ class AllDataFragmentTest : HealthConnectBaseTest() {
     }
 
     @Test
-    @Ignore("b/422936207 - Test fails on samsung devices.")
     fun allDataFragment_clickOnDataSourcesIcon_navigatesToDataSources() {
         context.launchDataActivity {
             clickOnDescAndWaitForNewWindow("Data sources and priority")
-            scrollDownToAndFindText("App sources")
+            scrollDownToAndFindText("Data sources")
         }
     }
 
@@ -134,31 +114,39 @@ class AllDataFragmentTest : HealthConnectBaseTest() {
     }
 
     private fun insertData() {
+        val pastInstant = Instant.now().minus(Duration.ofDays(100))
         TestUtils.insertRecords(
             mutableListOf(
-                StepsRecord.Builder(newEmptyMetadata(), NOW, NOW.plusSeconds(2), 10).build(),
-                HeightRecord.Builder(newEmptyMetadata(), NOW, Length.fromMeters(1.75)).build(),
+                StepsRecord.Builder(newEmptyMetadata(), pastInstant, pastInstant.plusSeconds(2), 10)
+                    .build(),
+                HeightRecord.Builder(newEmptyMetadata(), pastInstant, Length.fromMeters(1.75))
+                    .build(),
                 HeartRateRecord.Builder(
                         newEmptyMetadata(),
-                        NOW,
-                        NOW.plusSeconds(10),
-                        listOf(HeartRateRecord.HeartRateSample(140, NOW)),
+                        pastInstant,
+                        pastInstant.plusSeconds(10),
+                        listOf(HeartRateRecord.HeartRateSample(140, pastInstant)),
                     )
                     .build(),
                 HydrationRecord.Builder(
                         newEmptyMetadata(),
-                        NOW,
-                        NOW.plusSeconds(100),
+                        pastInstant,
+                        pastInstant.plusSeconds(100),
                         Volume.fromLiters(0.5),
                     )
                     .build(),
                 OvulationTestRecord.Builder(
                         newEmptyMetadata(),
-                        NOW,
+                        pastInstant,
                         OvulationTestResult.RESULT_INCONCLUSIVE,
                     )
                     .build(),
-                SleepSessionRecord.Builder(newEmptyMetadata(), NOW, NOW.plusSeconds(1000)).build(),
+                SleepSessionRecord.Builder(
+                        newEmptyMetadata(),
+                        pastInstant,
+                        pastInstant.plusSeconds(1000),
+                    )
+                    .build(),
             )
         )
     }
