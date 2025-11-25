@@ -69,7 +69,7 @@ public final class HealthConnectDatabase extends SQLiteOpenHelper {
         // Foreign Key enforcement until after the schema update has successfully run.
         // When this flag is on, we set the FK constraint after the development database is created
         // (see onOpen)
-        if (!Flags.developmentDatabase()) {
+        if (!Flags.developmentDatabaseRw()) {
             db.setForeignKeyConstraintsEnabled(true);
         }
     }
@@ -84,7 +84,7 @@ public final class HealthConnectDatabase extends SQLiteOpenHelper {
         DevelopmentDatabaseHelper.onOpen(db);
 
         // see onConfigure
-        if (Flags.developmentDatabase()) {
+        if (Flags.developmentDatabaseRw()) {
             db.setForeignKeyConstraintsEnabled(true);
         }
     }
