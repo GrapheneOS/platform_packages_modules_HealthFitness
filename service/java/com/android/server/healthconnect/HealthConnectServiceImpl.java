@@ -3435,6 +3435,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                        throw new UnsupportedOperationException(
+                                "insertDeviceRecords is not supported");
+                    }
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
                     enforceMemoryRateLimit(
@@ -3448,11 +3452,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             mAppOpsManagerLocal.isUidInForeground(uid),
                             logger,
                             recordsParcel.getRecordsChunkSize());
-
-                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
-                        throw new UnsupportedOperationException(
-                                "insertDeviceRecords is not supported");
-                    }
 
                     DeviceDataProviderManager deviceDataProviderManager =
                             requireNonNull(mDeviceDataProviderManager);
@@ -3510,6 +3509,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                        throw new UnsupportedOperationException(
+                                "updateDeviceRecords is not supported");
+                    }
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
                     enforceMemoryRateLimit(
@@ -3524,11 +3527,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             isInForeground,
                             logger,
                             recordsParcel.getRecordsChunkSize());
-
-                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
-                        throw new UnsupportedOperationException(
-                                "updateDeviceRecords is not supported");
-                    }
 
                     DeviceDataProviderManager deviceDataProviderManager =
                             requireNonNull(mDeviceDataProviderManager);
@@ -3595,7 +3593,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final String callingPackageName = requireNonNull(attributionSource.getPackageName());
 
-        enforceIsForegroundUser(userHandle);
         try {
             if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                 throw new UnsupportedOperationException(
@@ -3603,6 +3600,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 + "Make sure to turn on the respective DDP flags.");
             }
 
+            enforceIsForegroundUser(userHandle);
             DeviceDataProviderManager deviceDataProviderManager =
                     requireNonNull(mDeviceDataProviderManager);
 
@@ -3653,15 +3651,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    enforceIsForegroundUser(userHandle);
-                    verifyPackageNameFromUid(uid, attributionSource);
-                    throwExceptionIfDataSyncInProgress();
-
                     if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                         throw new UnsupportedOperationException(
                                 "readDeviceRecords is not supported."
                                         + "Make sure to turn on the respective DDP flags.");
                     }
+                    enforceIsForegroundUser(userHandle);
+                    verifyPackageNameFromUid(uid, attributionSource);
+                    throwExceptionIfDataSyncInProgress();
 
                     DeviceDataProviderManager deviceDataProviderManager =
                             requireNonNull(mDeviceDataProviderManager);
@@ -3726,15 +3723,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    enforceIsForegroundUser(userHandle);
-                    verifyPackageNameFromUid(uid, attributionSource);
-                    throwExceptionIfDataSyncInProgress();
-
                     if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                         throw new UnsupportedOperationException(
                                 "deleteDeviceRecords is not supported."
                                         + "Make sure to turn on the respective DDP flags.");
                     }
+                    enforceIsForegroundUser(userHandle);
+                    verifyPackageNameFromUid(uid, attributionSource);
+                    throwExceptionIfDataSyncInProgress();
 
                     DeviceDataProviderManager deviceDataProviderManager =
                             requireNonNull(mDeviceDataProviderManager);
@@ -4260,13 +4256,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                        throw new UnsupportedOperationException(
+                                "getDeviceDataSourceCapabilities is not supported");
+                    }
+
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
                     throwExceptionIfDataSyncInProgress();
                     boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
                     tryAcquireApiCallQuota(
                             uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, logger);
-
                     Set<Integer> capabilities = getDeviceDataSourceCapabilities(attributionSource);
                     int[] recordTypeIds =
                             capabilities.stream().mapToInt(Integer::intValue).toArray();

@@ -261,7 +261,6 @@ import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.S
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -4705,7 +4704,6 @@ public class HealthConnectServiceImplTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
-    @Ignore
     public void getDeviceDataSourceCapabilities_flagDisabled_throwsUnsupportedOperation()
             throws Exception {
         IDeviceDataSourceCapabilitiesCallback.Stub callback =
