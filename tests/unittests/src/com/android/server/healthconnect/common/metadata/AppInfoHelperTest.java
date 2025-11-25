@@ -403,7 +403,11 @@ public class AppInfoHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void populateAppInfoId_spnNotAdvertised_throwsIllegalStateException() {
         String canonicalSpn = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
         RecordInternal<?> recordInternal =

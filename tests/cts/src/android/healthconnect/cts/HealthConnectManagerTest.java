@@ -1510,7 +1510,8 @@ public class HealthConnectManagerTest {
     @Test
     @RequiresFlagsEnabled({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void testGetDeviceDataSourceCapabilities_returnsOnlySteps() throws InterruptedException {
         TestOutcomeReceiver<DeviceDataSourceCapabilities, HealthConnectException> receiver =
