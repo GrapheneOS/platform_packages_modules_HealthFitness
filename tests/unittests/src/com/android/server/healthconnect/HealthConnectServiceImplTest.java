@@ -541,11 +541,11 @@ public class HealthConnectServiceImplTest {
                                     healthConnectInjector.getFitnessRecordDeleteHelper(),
                                     healthConnectInjector.getSyntheticPackageNameCreator()));
 
+            mDeviceDataSourcesHelper = spy(healthConnectInjector.getDeviceDataSourcesHelper());
         }
 
         mSyntheticPackageNameResolver =
                 new SyntheticPackageNameResolver(mAppInfoHelper, mDeviceDataProviderManager);
-        mDeviceDataSourcesHelper = spy(healthConnectInjector.getDeviceDataSourcesHelper());
 
         mHealthConnectService =
                 new HealthConnectServiceImpl(
@@ -4949,7 +4949,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void testGetDeviceDataSourceInfos_masksDataOrigin() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4981,7 +4981,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void testGetDeviceDataSourceInfos_populatesActivityLabels() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
