@@ -74,8 +74,36 @@ package android.health.connect {
     method @NonNull public android.health.connect.DeleteMedicalResourcesRequest.Builder clearMedicalResourceTypes();
   }
 
+  @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public final class DeviceDataSource implements android.os.Parcelable {
+    ctor public DeviceDataSource(@NonNull android.health.connect.datatypes.DataOrigin, @NonNull android.health.connect.datatypes.Device, @NonNull java.util.Set<android.health.connect.DeviceDataTypeSource>);
+    method public int describeContents();
+    method @NonNull public android.health.connect.datatypes.Device getDevice();
+    method @NonNull public android.health.connect.datatypes.DataOrigin getDeviceDataOrigin();
+    method @NonNull public java.util.Set<android.health.connect.DeviceDataTypeSource> getDeviceDataTypeSources();
+    method public void writeToParcel(@NonNull android.os.Parcel, int);
+    field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.DeviceDataSource> CREATOR;
+  }
+
   @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public final class DeviceDataSourceCapabilities {
     method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @NonNull public java.util.Set<java.lang.Class<? extends android.health.connect.datatypes.Record>> getRecordTypes();
+  }
+
+  @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public final class DeviceDataTypeSource implements android.os.Parcelable {
+    ctor public DeviceDataTypeSource(@NonNull Class<? extends android.health.connect.datatypes.Record>, boolean, boolean);
+    method public int describeContents();
+    method @NonNull public Class<? extends android.health.connect.datatypes.Record> getDataType();
+    method public boolean isAvailable();
+    method public boolean isUserEnabled();
+    method public void writeToParcel(@NonNull android.os.Parcel, int);
+    field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.DeviceDataTypeSource> CREATOR;
+  }
+
+  @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public final class GetDeviceDataSourcesResponse implements android.os.Parcelable {
+    ctor public GetDeviceDataSourcesResponse(@NonNull java.util.List<android.health.connect.DeviceDataSource>);
+    method public int describeContents();
+    method @NonNull public java.util.List<android.health.connect.DeviceDataSource> getDeviceDataSources();
+    method public void writeToParcel(@NonNull android.os.Parcel, int);
+    field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.GetDeviceDataSourcesResponse> CREATOR;
   }
 
   @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public final class GetMedicalDataSourcesRequest implements android.os.Parcelable {
@@ -121,6 +149,7 @@ package android.health.connect {
     method public void getChangeLogToken(@NonNull android.health.connect.changelog.ChangeLogTokenRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.changelog.ChangeLogTokenResponse,android.health.connect.HealthConnectException>);
     method public void getChangeLogs(@NonNull android.health.connect.changelog.ChangeLogsRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.changelog.ChangeLogsResponse,android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public void getDeviceDataSourceCapabilities(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.DeviceDataSourceCapabilities,android.health.connect.HealthConnectException>);
+    method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public void getDeviceDataSources(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.GetDeviceDataSourcesResponse,android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public void getMedicalDataSources(@NonNull java.util.List<java.lang.String>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.datatypes.MedicalDataSource>,android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public void getMedicalDataSources(@NonNull android.health.connect.GetMedicalDataSourcesRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.datatypes.MedicalDataSource>,android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @NonNull public static java.util.Set<java.lang.Class<? extends android.health.connect.datatypes.Record>> getPermissionSensitiveDeviceDataSourceCapabilities();

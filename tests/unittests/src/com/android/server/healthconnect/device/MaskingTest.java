@@ -84,6 +84,7 @@ public class MaskingTest {
                     "getContributorApplicationsInfo",
                     "queryAllRecordTypesInfo",
                     "getDeviceDataSourceInfos",
+                    "getDeviceDataSources",
                     "recordMatchmakingDenial",
                     "advertiseDeviceDataSources",
                     "insertDeviceRecords",
