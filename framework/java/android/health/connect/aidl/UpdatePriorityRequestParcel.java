@@ -20,14 +20,17 @@ import android.annotation.NonNull;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.UpdateDataOriginPriorityOrderRequest;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.internal.PackageNameUnmasker;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /** @hide */
-public final class UpdatePriorityRequestParcel implements Parcelable {
+public final class UpdatePriorityRequestParcel
+        implements Parcelable, PackageNameUnmasker<UpdatePriorityRequestParcel> {
     public static final Creator<UpdatePriorityRequestParcel> CREATOR =
             new Creator<>() {
                 @Override
@@ -42,6 +45,12 @@ public final class UpdatePriorityRequestParcel implements Parcelable {
             };
     private final List<String> mPackagePriorityOrder;
     @HealthDataCategory.Type private final int mDataCategory;
+
+    private UpdatePriorityRequestParcel(
+            List<String> packagePriorityOrder, @HealthDataCategory.Type int dataCategory) {
+        mPackagePriorityOrder = List.copyOf(packagePriorityOrder);
+        mDataCategory = dataCategory;
+    }
 
     private UpdatePriorityRequestParcel(Parcel in) {
         mPackagePriorityOrder = in.createStringArrayList();
@@ -75,5 +84,14 @@ public final class UpdatePriorityRequestParcel implements Parcelable {
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeStringList(mPackagePriorityOrder);
         dest.writeInt(mDataCategory);
+    }
+
+    @NonNull
+    @Override
+    public UpdatePriorityRequestParcel toUnmasked(
+            @NonNull Function<String, String> packageUnmasker) {
+        List<String> unmaskedPackages =
+                mPackagePriorityOrder.stream().map(packageUnmasker).toList();
+        return new UpdatePriorityRequestParcel(unmaskedPackages, mDataCategory);
     }
 }

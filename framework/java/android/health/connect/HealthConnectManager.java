@@ -1252,6 +1252,7 @@ public class HealthConnectManager {
                             callback) {
         try {
             mService.getCurrentPriority(
+                    mContext.getAttributionSource(),
                     dataCategory,
                     new IGetPriorityResponseCallback.Stub() {
                         @Override
@@ -1287,6 +1288,7 @@ public class HealthConnectManager {
             @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
         try {
             mService.updatePriority(
+                    mContext.getAttributionSource(),
                     new UpdatePriorityRequestParcel(request),
                     new IEmptyResponseCallback.Stub() {
                         @Override
@@ -1325,6 +1327,7 @@ public class HealthConnectManager {
         Objects.requireNonNull(callback);
         try {
             mService.queryAllRecordTypesInfo(
+                    mContext.getAttributionSource(),
                     new IRecordTypeInfoResponseCallback.Stub() {
                         @Override
                         public void onResult(RecordTypeInfoResponseParcel parcel) {
@@ -1559,6 +1562,7 @@ public class HealthConnectManager {
 
         try {
             mService.getContributorApplicationsInfo(
+                    mContext.getAttributionSource(),
                     new IApplicationInfoResponseCallback.Stub() {
                         @Override
                         public void onResult(ApplicationInfoResponseParcel parcel) {

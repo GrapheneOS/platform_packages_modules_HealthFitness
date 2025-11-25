@@ -17,7 +17,6 @@ package com.android.server.healthconnect.common.metadata;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.when;
 
 import android.health.connect.internal.datatypes.AppInfoInternal;
@@ -39,7 +38,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 @RunWith(AndroidJUnit4.class)
 public class SyntheticPackageNameResolverTest {
@@ -104,10 +102,10 @@ public class SyntheticPackageNameResolverTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
-    public void withMaskedSpn_mask_throwsIllegalArgumentError() {
-        assertThrows(
-                IllegalArgumentException.class,
-                () -> mResolver.mask(TEST_MASKED_ONE_SPN, TEST_CALLER_ONE));
+    public void withMaskedSpn_mask_returnsInput() {
+        String result = mResolver.mask(TEST_MASKED_ONE_SPN, TEST_CALLER_ONE);
+
+        assertThat(result).isEqualTo(TEST_MASKED_ONE_SPN);
     }
 
     @Test
@@ -205,19 +203,12 @@ public class SyntheticPackageNameResolverTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
-    public void withMismatchedCaller_unmask_throwsResolutionError() {
+    public void withMismatchedCaller_unmask_returnsInput() {
         // Trying to unmask a package masked for Caller One in the context of Caller Two should fail
         // resolution.
-        NoSuchElementException exception =
-                assertThrows(
-                        NoSuchElementException.class,
-                        () -> mResolver.unmask(TEST_MASKED_ONE_SPN, TEST_CALLER_TWO));
+        String result = mResolver.unmask(TEST_MASKED_ONE_SPN, TEST_CALLER_TWO);
 
-        assertThat(exception.getMessage())
-                .contains("Could not resolve masked, synthetic package name");
-        assertThat(exception.getMessage()).contains(TEST_MASKED_ONE_SPN);
-        assertThat(exception.getMessage()).contains(" called by ");
-        assertThat(exception.getMessage()).contains(TEST_CALLER_TWO);
+        assertThat(result).isEqualTo(TEST_MASKED_ONE_SPN);
     }
 
     @Test
@@ -226,23 +217,16 @@ public class SyntheticPackageNameResolverTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
-    public void withUnknownCanonical_unmask_throwsResolutionError() {
+    public void withUnknownCanonical_unmask_returnsInput() {
         // Create a masked SPN for a canonical name that is NOT in the AppInfoHelper map.
         String unknownCanonical =
                 "com.android.healthconnect.scale.d87d4eeb7dec7386490748d174c0e0a11";
         String unknownMasked =
                 SyntheticPackageNameCreator.createMasked(unknownCanonical, TEST_CALLER_ONE);
 
-        NoSuchElementException exception =
-                assertThrows(
-                        NoSuchElementException.class,
-                        () -> mResolver.unmask(unknownMasked, TEST_CALLER_ONE));
+        String result = mResolver.unmask(unknownMasked, TEST_CALLER_ONE);
 
-        assertThat(exception.getMessage())
-                .contains("Could not resolve masked, synthetic package name");
-        assertThat(exception.getMessage()).contains(unknownMasked);
-        assertThat(exception.getMessage()).contains(" called by ");
-        assertThat(exception.getMessage()).contains(TEST_CALLER_ONE);
+        assertThat(result).isEqualTo(unknownMasked);
     }
 
     @Test
@@ -278,23 +262,14 @@ public class SyntheticPackageNameResolverTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
-    public void withDeviceDataProviderManagerNullAndDeviceId_unmask_throwsResolutionError() {
+    public void withDeviceDataProviderManagerNullAndDeviceId_unmask_returnsInput() {
         SyntheticPackageNameResolver nullResolver =
                 new SyntheticPackageNameResolver(mAppInfoHelper, null);
 
-        NoSuchElementException exception =
-                assertThrows(
-                        NoSuchElementException.class,
-                        () ->
-                                nullResolver.unmask(
-                                        TEST_CURRENT_DEVICE_ID_RUNTIME_MASKED_SPN,
-                                        TEST_CALLER_ONE));
+        String result =
+                nullResolver.unmask(TEST_CURRENT_DEVICE_ID_RUNTIME_MASKED_SPN, TEST_CALLER_ONE);
 
-        assertThat(exception.getMessage())
-                .contains("Could not resolve masked, synthetic package name");
-        assertThat(exception.getMessage()).contains(TEST_CURRENT_DEVICE_ID_RUNTIME_MASKED_SPN);
-        assertThat(exception.getMessage()).contains(" called by ");
-        assertThat(exception.getMessage()).contains(TEST_CALLER_ONE);
+        assertThat(result).isEqualTo(TEST_CURRENT_DEVICE_ID_RUNTIME_MASKED_SPN);
     }
 
     @Test

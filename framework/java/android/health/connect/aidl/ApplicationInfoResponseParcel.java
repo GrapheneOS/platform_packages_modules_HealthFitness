@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.AppInfo;
+import android.health.connect.internal.PackageNameMasker;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -29,13 +30,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 /**
  * A parcel to carry response to {@link HealthConnectManager#getContributorApplicationsInfo}
  *
  * @hide
  */
-public class ApplicationInfoResponseParcel implements Parcelable {
+public class ApplicationInfoResponseParcel
+        implements Parcelable, PackageNameMasker<ApplicationInfoResponseParcel> {
 
     private final List<AppInfo> mAppInfoList;
     private static final int COMPRESS_FACTOR = 100;
@@ -108,5 +111,12 @@ public class ApplicationInfoResponseParcel implements Parcelable {
                     }
                     dest.writeByteArray(bitmapData);
                 }));
+    }
+
+    @NonNull
+    @Override
+    public ApplicationInfoResponseParcel toMasked(@NonNull Function<String, String> packageMasker) {
+        return new ApplicationInfoResponseParcel(
+                mAppInfoList.stream().map(appInfo -> appInfo.toMasked(packageMasker)).toList());
     }
 }

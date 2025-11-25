@@ -18,7 +18,6 @@ package android.health.connect;
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.fail;
 
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
@@ -33,7 +32,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Set;
-import java.util.function.Function;
 
 @RunWith(AndroidJUnit4.class)
 public class MatchmakingRequestTest {
@@ -250,57 +248,6 @@ public class MatchmakingRequestTest {
         assertThat(requestString).contains("recordTypes=[");
         assertThat(requestString).contains(StepsRecord.class.toString());
         assertThat(requestString).contains(SleepSessionRecord.class.toString());
-    }
-
-    @Test
-    public void toUnmasked_withCallingPackageName_returnsNewUnmaskedInstance() {
-        final String maskedPackageName = "masked.package.name";
-        final String unmaskedPackageName = "unmasked.package.name";
-
-        // Create a request with a calling package name to be unmasked.
-        MatchmakingRequest originalRequest =
-                new MatchmakingRequest.Builder()
-                        .addRecordType(StepsRecord.class)
-                        .setCallingPackageName(maskedPackageName)
-                        .build();
-
-        // Define the unmasker function that returns a new package name.
-        Function<String, String> unmasker =
-                packageName -> {
-                    assertThat(packageName).isEqualTo(maskedPackageName);
-                    return unmaskedPackageName;
-                };
-
-        // Call toUnmasked to get the new request.
-        MatchmakingRequest unmaskedRequest = originalRequest.toUnmasked(unmasker);
-
-        // Assert that a new instance is returned with the unmasked package name.
-        assertThat(unmaskedRequest).isNotSameInstanceAs(originalRequest);
-        assertThat(unmaskedRequest.getRecordTypes()).isEqualTo(originalRequest.getRecordTypes());
-        assertThat(unmaskedRequest.getCallingPackageName()).isEqualTo(unmaskedPackageName);
-
-        // Assert that the original request remains unchanged.
-        assertThat(originalRequest.getCallingPackageName()).isEqualTo(maskedPackageName);
-    }
-
-    @Test
-    public void toUnmasked_nullCallingPackageName_returnsSameInstance() {
-        // Create a request without a calling package name.
-        MatchmakingRequest originalRequest =
-                new MatchmakingRequest.Builder().addRecordType(StepsRecord.class).build();
-
-        // This unmasker function should never be called.
-        Function<String, String> unmasker =
-                packageName -> {
-                    fail("Unmasker function should not be called when package name is null.");
-                    return null;
-                };
-
-        // Call toUnmasked.
-        MatchmakingRequest unmaskedRequest = originalRequest.toUnmasked(unmasker);
-
-        // Assert that the same instance is returned as there's nothing to unmask.
-        assertThat(unmaskedRequest).isSameInstanceAs(originalRequest);
     }
 
     @Test

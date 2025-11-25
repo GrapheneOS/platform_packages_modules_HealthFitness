@@ -2377,7 +2377,8 @@ public class HealthConnectServiceImplTest {
                 .enforcePermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt(), isNull());
         IApplicationInfoResponseCallback callback = mock(IApplicationInfoResponseCallback.class);
 
-        mHealthConnectService.getContributorApplicationsInfo(callback);
+        mHealthConnectService.getContributorApplicationsInfo(
+                mContext.getAttributionSource(), callback);
 
         verify(callback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
@@ -3694,6 +3695,59 @@ public class HealthConnectServiceImplTest {
                 mEmptyResponseCallback);
 
         verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
+    }
+
+    @Test
+    @EnableFlags({
+        FLAG_MATCHMAKING,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void recordMatchmakingDenial_withMaskedNames_unmasks() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
+
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+        advertiseStepsDeviceDataSource("device_id", device);
+
+        mHealthConnectService.getDeviceDataSourceInfos(
+                mAttributionSource, mGetDeviceDataSourceInfosCallback);
+
+        ArgumentCaptor<List<DeviceDataSourceInfo>> deviceSourceCaptor =
+                ArgumentCaptor.forClass(List.class);
+        verify(mGetDeviceDataSourceInfosCallback, timeout(TIMEOUT_MILLIS))
+                .onResult(deviceSourceCaptor.capture());
+
+        String spn = deviceSourceCaptor.getValue().get(0).getDeviceDataOrigin().getPackageName();
+
+        ArgumentCaptor<Map<String, List<String>>> deniedAppsCaptor =
+                ArgumentCaptor.forClass(Map.class);
+        ArgumentCaptor<String> callingPackageCaptor = ArgumentCaptor.forClass(String.class);
+
+        mHealthConnectService.recordMatchmakingDenial(
+                mAttributionSource,
+                mAttributionSource.getPackageName(),
+                Map.of(spn, List.of(WRITE_STEPS)),
+                mEmptyResponseCallback);
+
+        verify(mMatchmakingManager, timeout(TIMEOUT_MILLIS))
+                .recordMatchmakingDenial(
+                        callingPackageCaptor.capture(), deniedAppsCaptor.capture());
+
+        // Calling package is not changed - needs to be equal to the caller used during
+        // advertisement, as unmasking the SPN will fail otherwise
+        assertThat(callingPackageCaptor.getValue()).isEqualTo(mAttributionSource.getPackageName());
+        // Inserted spn app is unmasked
+        String deniedAppName =
+                deniedAppsCaptor.getValue().entrySet().stream().iterator().next().getKey();
+        assertThat(deniedAppName).isNotEqualTo(spn);
+        assertThat(SyntheticPackageNameCreator.isCanonicalSpn(deniedAppName)).isTrue();
     }
 
     @Test
