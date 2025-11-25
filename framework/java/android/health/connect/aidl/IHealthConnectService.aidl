@@ -22,6 +22,7 @@ import android.health.connect.backuprestore.UpdateHealthConnectRestoreStatusRequ
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
+import android.health.connect.aidl.IGetDeviceDataSourceInfosCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
@@ -65,7 +66,6 @@ import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsReques
 import android.health.connect.backuprestore.RestoreChange;
 import android.net.Uri;
 import android.os.UserHandle;
-import android.health.connect.aidl.DeviceDataSourceCapabilities;
 import android.health.connect.device.DeviceDataAdvertisement;
 
 import java.util.List;
@@ -790,4 +790,15 @@ interface IHealthConnectService {
      * @param callback Callback to receive result of performing this operation.
      */
     void getDeviceDataSourceCapabilities(in AttributionSource attributionSource, in IDeviceDataSourceCapabilitiesCallback callback);
+
+    /**
+     * Retrieves the list of all device data sources and their provider info.
+     *
+     * @param attributionSource attribution source for the data.
+     * @param callback Callback to receive result of performing this operation.
+     * @hide
+     */
+    void getDeviceDataSourceInfos(
+        in AttributionSource attributionSource,
+        in IGetDeviceDataSourceInfosCallback callback);
 }

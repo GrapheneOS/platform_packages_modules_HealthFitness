@@ -18,19 +18,28 @@ package com.android.server.healthconnect.device;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
 
+import static java.util.Objects.requireNonNull;
+
 import android.Manifest;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.health.connect.DeviceDataProviderInfo;
+import android.health.connect.DeviceDataSourceInfo;
+import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissions;
 import android.health.connect.PageTokenWrapper;
 import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.device.DeviceDataAdvertisement;
+import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.os.Build;
@@ -52,8 +61,10 @@ import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMa
 import com.android.server.healthconnect.storage.TransactionManager;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -95,16 +106,15 @@ public class DeviceDataProviderManager {
             @NonNull FitnessRecordReadHelper fitnessRecordReadHelper,
             @NonNull FitnessRecordDeleteHelper fitnessRecordDeleteHelper,
             @NonNull SyntheticPackageNameCreator syntheticPackageNameCreator) {
-        mContext = Objects.requireNonNull(context);
-        mDeviceInfoHelper = Objects.requireNonNull(deviceInfoHelper);
-        mAppInfoHelper = Objects.requireNonNull(appInfoHelper);
-        mDeviceDataSourcesHelper = Objects.requireNonNull(deviceDataSourcesHelper);
-        mDeviceDataProviderMetadataHelper =
-                Objects.requireNonNull(deviceDataProviderMetadataHelper);
-        mFitnessRecordUpsertHelper = Objects.requireNonNull(fitnessRecordUpsertHelper);
+        mContext = requireNonNull(context);
+        mDeviceInfoHelper = requireNonNull(deviceInfoHelper);
+        mAppInfoHelper = requireNonNull(appInfoHelper);
+        mDeviceDataSourcesHelper = requireNonNull(deviceDataSourcesHelper);
+        mDeviceDataProviderMetadataHelper = requireNonNull(deviceDataProviderMetadataHelper);
+        mFitnessRecordUpsertHelper = requireNonNull(fitnessRecordUpsertHelper);
         mFitnessRecordReadHelper = fitnessRecordReadHelper;
         mFitnessRecordDeleteHelper = Objects.requireNonNull(fitnessRecordDeleteHelper);
-        mSyntheticPackageNameCreator = Objects.requireNonNull(syntheticPackageNameCreator);
+        mSyntheticPackageNameCreator = requireNonNull(syntheticPackageNameCreator);
     }
 
     /**
@@ -122,8 +132,8 @@ public class DeviceDataProviderManager {
     public void handleAdvertisement(
             @NonNull Set<DeviceDataAdvertisement> advertisements,
             @NonNull String callingDdpPackageName) {
-        Objects.requireNonNull(advertisements);
-        Objects.requireNonNull(callingDdpPackageName);
+        requireNonNull(advertisements);
+        requireNonNull(callingDdpPackageName);
 
         List<Long> existingAppInfoIds =
                 mDeviceDataSourcesHelper.getAppInfoIds(callingDdpPackageName);
@@ -208,8 +218,8 @@ public class DeviceDataProviderManager {
 
     private long handleAdvertisement(
             @NonNull DeviceDataAdvertisement advertisement, @NonNull String callingDdpPackageName) {
-        Objects.requireNonNull(advertisement);
-        Objects.requireNonNull(callingDdpPackageName);
+        requireNonNull(advertisement);
+        requireNonNull(callingDdpPackageName);
 
         Device device = advertisement.getDevice();
         String deviceId = advertisement.getDeviceId();
@@ -256,9 +266,9 @@ public class DeviceDataProviderManager {
             @NonNull String callingDdpPackageName,
             @NonNull String deviceId,
             @NonNull List<RecordInternal<?>> records) {
-        Objects.requireNonNull(callingDdpPackageName);
-        Objects.requireNonNull(deviceId);
-        Objects.requireNonNull(records);
+        requireNonNull(callingDdpPackageName);
+        requireNonNull(deviceId);
+        requireNonNull(records);
 
         long appInfoId = getOrThrowAppInfoId(callingDdpPackageName, deviceId);
         String syntheticPackageName = getOrThrowSyntheticPackageName(appInfoId);
@@ -347,9 +357,9 @@ public class DeviceDataProviderManager {
             @NonNull String callingDdpPackageName,
             @NonNull String deviceId,
             @NonNull List<RecordInternal<?>> records) {
-        Objects.requireNonNull(callingDdpPackageName);
-        Objects.requireNonNull(deviceId);
-        Objects.requireNonNull(records);
+        requireNonNull(callingDdpPackageName);
+        requireNonNull(deviceId);
+        requireNonNull(records);
 
         long appInfoId = getOrThrowAppInfoId(callingDdpPackageName, deviceId);
         String syntheticPackageName = getOrThrowSyntheticPackageName(appInfoId);
@@ -458,7 +468,7 @@ public class DeviceDataProviderManager {
             String syntheticPackageName,
             long appInfoId) {
         AppInfoInternal appInfo = getOrThrowAppInfo(syntheticPackageName);
-        long deviceInfoId = Objects.requireNonNull(appInfo.getDeviceInfoId());
+        long deviceInfoId = requireNonNull(appInfo.getDeviceInfoId());
 
         List<Integer> advertisedDataTypes =
                 mDeviceDataSourcesHelper.getAdvertisedDataTypes(callingDdpPackageName, appInfoId);
@@ -491,7 +501,7 @@ public class DeviceDataProviderManager {
         for (Long appInfoId : appInfoIds) {
             String syntheticPackageName = getOrThrowSyntheticPackageName(appInfoId);
             AppInfoInternal appInfo = getOrThrowAppInfo(syntheticPackageName);
-            long deviceInfoId = Objects.requireNonNull(appInfo.getDeviceInfoId());
+            long deviceInfoId = requireNonNull(appInfo.getDeviceInfoId());
             DeviceInfoHelper.DeviceInfo deviceInfo = mDeviceInfoHelper.getDeviceInfo(deviceInfoId);
             if (deviceInfo != null && deviceId.equals(deviceInfo.getDeviceId())) {
                 return appInfoId;
@@ -561,6 +571,114 @@ public class DeviceDataProviderManager {
         } else {
             return "The device with id " + deviceId;
         }
+    }
+
+    /** Retrieves the list of all device data sources and their provider info. */
+    public List<DeviceDataSourceInfo> getDeviceDataSourceInfos() {
+        Map<Long, Map<String, List<DeviceDataTypeAdvertisement>>> appInfoIdToDdpAds =
+                mDeviceDataSourcesHelper.getDeviceDataTypeAdvertisements();
+
+        List<DeviceDataSourceInfo> result = new ArrayList<>();
+
+        for (Map.Entry<Long, Map<String, List<DeviceDataTypeAdvertisement>>> entry :
+                appInfoIdToDdpAds.entrySet()) {
+            long appInfoId = entry.getKey();
+            Map<String, List<DeviceDataTypeAdvertisement>> ddpPackageToAdvertisements =
+                    entry.getValue();
+
+            try {
+                String syntheticPackageName = getOrThrowSyntheticPackageName(appInfoId);
+                AppInfoInternal appInfo = getOrThrowAppInfo(syntheticPackageName);
+
+                long deviceInfoId = requireNonNull(appInfo.getDeviceInfoId());
+                DeviceInfoHelper.DeviceInfo deviceInfo =
+                        requireNonNull(mDeviceInfoHelper.getDeviceInfo(deviceInfoId));
+
+                DataOrigin dataOrigin =
+                        new DataOrigin.Builder().setPackageName(syntheticPackageName).build();
+
+                Device device =
+                        new Device.Builder()
+                                .setManufacturer(deviceInfo.getManufacturer())
+                                .setModel(deviceInfo.getModel())
+                                .setType(deviceInfo.getDeviceType())
+                                .setDisplayName(deviceInfo.getDisplayName())
+                                .build();
+
+                String deviceId = deviceInfo.getDeviceId();
+                if (deviceId == null) {
+                    throw new IllegalStateException(
+                            "DDP device encountered with unexpected null device ID");
+                }
+
+                // Remap stable ID for current device to runtime version.
+                if (deviceId.equals(getStableCurrentDeviceId())) {
+                    deviceId = getCurrentDeviceId();
+                }
+
+                List<DeviceDataProviderInfo> providerInfos =
+                        getDeviceDataProviderInfos(ddpPackageToAdvertisements, deviceId);
+
+                boolean isCurrentDevice = getStableCurrentDeviceId().equals(syntheticPackageName);
+
+                result.add(
+                        new DeviceDataSourceInfo(
+                                dataOrigin, device, isCurrentDevice, providerInfos));
+
+            } catch (PackageManager.NameNotFoundException e) {
+                // Log error and skip.
+                Slog.e(TAG, "Device data provider package was unexpectedly not found", e);
+            } catch (IllegalStateException e) {
+                // Log error and skip.
+                Slog.e(TAG, "Failed to retrieve device data source info", e);
+            }
+        }
+        return result;
+    }
+
+    private List<DeviceDataProviderInfo> getDeviceDataProviderInfos(
+            Map<String, List<DeviceDataTypeAdvertisement>> ddpPackageToAdvertisements,
+            String deviceId)
+            throws PackageManager.NameNotFoundException {
+        List<DeviceDataProviderInfo> providerInfos = new ArrayList<>();
+        for (Map.Entry<String, List<DeviceDataTypeAdvertisement>> ddpEntry :
+                ddpPackageToAdvertisements.entrySet()) {
+            String packageName = ddpEntry.getKey();
+
+            // Verify that the package is installed
+            mContext.getPackageManager()
+                    .getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0));
+
+            String onboardingLabel =
+                    getResolvedActivityLabel(
+                            packageName, HealthConnectManager.ACTION_SHOW_DEVICE_ONBOARDING);
+            String managementLabel =
+                    getResolvedActivityLabel(
+                            packageName, HealthConnectManager.ACTION_SHOW_DEVICE_MANAGEMENT);
+
+            providerInfos.add(
+                    new DeviceDataProviderInfo(
+                            packageName,
+                            deviceId,
+                            onboardingLabel,
+                            managementLabel,
+                            new HashSet<>(ddpEntry.getValue())));
+        }
+        return providerInfos;
+    }
+
+    private String getResolvedActivityLabel(String packageName, String action) {
+        Intent intent = new Intent(action);
+        intent.setPackage(packageName);
+        ResolveInfo resolveInfo = mContext.getPackageManager().resolveActivity(intent, 0);
+        if (resolveInfo != null) {
+            // This is always non-null.
+            CharSequence label = resolveInfo.loadLabel(mContext.getPackageManager());
+            return label.toString();
+        }
+        // This shouldn't happen. We enforce that DDPs export these activities.
+        // TODO(b/462713187): validate DDP activities
+        return "";
     }
 
     private Pair<Set<String>, Set<String>> getAllReadPermissionsForRequest(

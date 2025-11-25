@@ -72,6 +72,7 @@ import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.ApplicationInfoResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
+import android.health.connect.DeviceDataSourceInfo;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectException;
@@ -1440,6 +1441,26 @@ public final class TestUtils {
         }
 
         return receiver.getResponse();
+    }
+
+    /**
+     * Calls {@link HealthConnectManager#getDeviceDataSourceInfos} with shell permission identity
+     * and device data provider permissions.
+     */
+    @SuppressLint("MissingPermission")
+    public static List<DeviceDataSourceInfo> getDeviceDataSourceInfos()
+            throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+
+        try {
+            HealthConnectReceiver<List<DeviceDataSourceInfo>> receiver =
+                    new HealthConnectReceiver<>();
+            getHealthConnectManager().getDeviceDataSourceInfos(outcomeExecutor(), receiver);
+            return receiver.getResponse();
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
     }
 
     private static Field findFieldUsingReflection(Class<?> type, String fieldName) {

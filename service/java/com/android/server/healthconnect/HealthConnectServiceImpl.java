@@ -77,6 +77,7 @@ import android.health.HealthFitnessStatsLog;
 import android.health.connect.Constants;
 import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
+import android.health.connect.DeviceDataSourceInfo;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
 import android.health.connect.GetMatchingAppsResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
@@ -115,6 +116,7 @@ import android.health.connect.aidl.IDeviceDataSourceCapabilitiesCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
+import android.health.connect.aidl.IGetDeviceDataSourceInfosCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
 import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
@@ -1995,6 +1997,39 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void getDeviceDataSourceInfos(
+            AttributionSource attributionSource, IGetDeviceDataSourceInfosCallback callback) {
+        checkParamsNonNull(attributionSource, callback);
+
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        scheduleControllerTaskWithExceptionHandling(
+                () -> {
+                    enforceIsForegroundUser(userHandle);
+                    mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
+
+                    if (mDeviceDataProviderManager == null) {
+                        callback.onResult(Collections.emptyList());
+                        return;
+                    }
+
+                    List<DeviceDataSourceInfo> infos =
+                            mDeviceDataProviderManager.getDeviceDataSourceInfos();
+                    Function<String, String> maskingFunction =
+                            getMaskingFunction(attributionSource.getPackageName());
+
+                    List<DeviceDataSourceInfo> maskedInfos = new ArrayList<>();
+                    for (DeviceDataSourceInfo info : infos) {
+                        maskedInfos.add(info.toMasked(maskingFunction));
+                    }
+
+                    callback.onResult(maskedInfos);
+                },
+                callback::onError);
     }
 
     @Override
