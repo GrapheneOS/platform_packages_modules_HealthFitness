@@ -27,6 +27,7 @@ import androidx.fragment.app.setFragmentResult
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.selectabledeletion.DeletionConstants.CONFIRMATION_KEY
+import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteAllSymptomsDataFromInactiveApp
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.utils.AttributeResolver
@@ -257,13 +258,25 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
                 val appName = deletionType.appName
                 getString(R.string.all_app_data_selected_deletion_confirmation_dialog, appName)
             }
-            is DeletionType.DeleteInactiveAppData -> {
-                val appName = deletionType.appName
-                val healthPermissionType =
-                    getString(deletionType.healthPermissionType.lowerCaseLabel())
+            is DeletionType.DeleteInactiveAppData,
+            is DeletionType.DeleteAllSymptomsDataFromInactiveApp -> {
+                val appName =
+                    when (deletionType) {
+                        is DeletionType.DeleteInactiveAppData -> deletionType.appName
+                        is DeletionType.DeleteAllSymptomsDataFromInactiveApp -> deletionType.appName
+                        else -> "" // Should not happen
+                    }
+                val dataTypeLabel =
+                    when (deletionType) {
+                        is DeletionType.DeleteInactiveAppData ->
+                            getString(deletionType.healthPermissionType.lowerCaseLabel())
+                        is DeletionType.DeleteAllSymptomsDataFromInactiveApp ->
+                            getString(R.string.symptoms_lowercase_label)
+                        else -> "" // Should not happen
+                    }
                 getString(
                     R.string.inactive_app_data_selected_deletion_confirmation_dialog,
-                    healthPermissionType,
+                    dataTypeLabel,
                     appName,
                 )
             }

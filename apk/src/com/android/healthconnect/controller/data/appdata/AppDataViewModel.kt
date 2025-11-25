@@ -22,7 +22,9 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
+import com.android.healthconnect.controller.permissions.data.getAllSymptomPermissionTypes
 import com.android.healthconnect.controller.selectabledeletion.DeletionDataViewModel
+import com.android.healthconnect.controller.selectabledeletion.DeletionType
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
@@ -73,6 +75,23 @@ constructor(
 
     val appInfo: LiveData<AppMetadata>
         get() = _appInfo
+
+    fun prepareDeletionType(): DeletionType.DeleteHealthPermissionTypesFromApp? {
+        val typesToDelete = setOfPermissionTypesToBeDeleted.value.orEmpty().toMutableSet()
+        if (typesToDelete.contains(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)) {
+            typesToDelete.remove(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)
+            typesToDelete.addAll(getAllSymptomPermissionTypes())
+        }
+
+        return _appInfo.value?.let { currentAppInfo ->
+            DeletionType.DeleteHealthPermissionTypesFromApp(
+                healthPermissionTypes = typesToDelete,
+                totalPermissionTypes = typesToDelete.size,
+                packageName = currentAppInfo.packageName,
+                appName = currentAppInfo.appName,
+            )
+        }
+    }
 
     fun loadAppData(packageName: String) {
         _appFitnessData.postValue(AppDataState.Loading)

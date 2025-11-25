@@ -359,6 +359,32 @@ class AllEntriesFragmentTest {
     }
 
     @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS)
+    fun inDeletion_checkedSymptomsAddedToDeleteSet() = runTest {
+        whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_SYMPTOMS_LIST)))
+        whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_SYMPTOMS_LIST.toMutableList())
+
+        launchNestedEntriesFragment(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN.name).use {
+            scenario ->
+            scenario.onActivity { activity ->
+                val parentFragment =
+                    activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
+                val fragment =
+                    parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
+                (fragment as AllEntriesFragment).triggerDeletionState(
+                    EntriesViewModel.EntriesDeletionScreenState.DELETE
+                )
+            }
+            onIdle()
+
+            onView(withText("Mild cough")).perform(click())
+            onIdle()
+            verify(viewModel).addToDeleteMap("test_id", SymptomRecord::class)
+            verify(healthConnectLogger).logInteraction(EntriesElement.ENTRY_BUTTON_WITH_CHECKBOX)
+        }
+    }
+
+    @Test
     fun showsData_onOrientationChange() {
         whenever(viewModel.entries).thenReturn(MutableLiveData(With(FORMATTED_STEPS_LIST)))
         whenever(viewModel.getEntriesList()).thenReturn(FORMATTED_STEPS_LIST.toMutableList())

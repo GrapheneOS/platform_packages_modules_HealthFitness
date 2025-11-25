@@ -29,6 +29,7 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.data.fromPermissionTypeName
+import com.android.healthconnect.controller.permissions.data.isSymptom
 import com.android.healthconnect.controller.selectabledeletion.DeletionType
 import com.android.healthconnect.controller.selectabledeletion.DeletionViewModel
 import com.android.healthconnect.controller.shared.Constants.EXTRA_APP_NAME
@@ -64,6 +65,7 @@ class AccessFragment : Hilt_AccessFragment() {
     private val deletionViewModel: DeletionViewModel by activityViewModels()
 
     private lateinit var permissionType: HealthPermissionType
+    private var isSymptomsEntries: Boolean = false
 
     private val mCanReadSection: PreferenceGroup by pref(CAN_READ_SECTION)
 
@@ -76,38 +78,48 @@ class AccessFragment : Hilt_AccessFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.access_screen, rootKey)
-        if (requireArguments().containsKey(PERMISSION_TYPE_NAME_KEY)) {
-            val permissionTypeName =
-                arguments?.getString(PERMISSION_TYPE_NAME_KEY)
-                    ?: throw IllegalArgumentException("PERMISSION_TYPE_NAME_KEY can't be null!")
-            permissionType = fromPermissionTypeName(permissionTypeName)
+
+        val permissionTypeName =
+            arguments?.getString(PERMISSION_TYPE_NAME_KEY)
+                ?: throw IllegalArgumentException("PERMISSION_TYPE_NAME_KEY must be set")
+        permissionType = fromPermissionTypeName(permissionTypeName)
+        isSymptomsEntries = permissionType.isSymptom()
+
+        val titleRes: Int
+        val lowerCaseTitleRes: Int
+        if (isSymptomsEntries) {
+            titleRes = R.string.all_symptoms_uppercase_label
+            lowerCaseTitleRes = R.string.symptoms_lowercase_label
+        } else {
+            titleRes = permissionType.upperCaseLabel()
+            lowerCaseTitleRes = permissionType.lowerCaseLabel()
         }
-
-        mCanReadSection.isVisible = false
-        mCanWriteSection.isVisible = false
-        mInactiveSection.isVisible = false
-        mCanReadSection.title =
-            getString(R.string.can_read, getString(permissionType.lowerCaseLabel()))
-        mCanWriteSection.title =
-            getString(R.string.can_write, getString(permissionType.lowerCaseLabel()))
-
         if (permissionType is FitnessPermissionType) {
             setPageName(PageName.TAB_ACCESS_PAGE)
         } else if (permissionType is MedicalPermissionType) {
             setPageName(PageName.TAB_MEDICAL_ACCESS_PAGE)
         }
+
+        setTitle(titleRes)
+        mCanReadSection.isVisible = false
+        mCanWriteSection.isVisible = false
+        mInactiveSection.isVisible = false
+        mCanReadSection.title = getString(R.string.can_read, getString(lowerCaseTitleRes))
+        mCanWriteSection.title = getString(R.string.can_write, getString(lowerCaseTitleRes))
     }
 
     override fun onResume() {
         super.onResume()
-        setTitle(permissionType.upperCaseLabel())
-        viewModel.loadAppMetaDataMap(permissionType)
+        val titleRes =
+            if (isSymptomsEntries) R.string.all_symptoms_uppercase_label
+            else permissionType.upperCaseLabel()
+        setTitle(titleRes)
+        viewModel.loadAppMetaDataMap(permissionType, isSymptomsEntries)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.loadAppMetaDataMap(permissionType)
         viewModel.appMetadataMap.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is AccessViewModel.AccessScreenState.Loading -> {
@@ -125,7 +137,7 @@ class AccessFragment : Hilt_AccessFragment() {
 
         deletionViewModel.inactiveAppsReloadNeeded.observe(viewLifecycleOwner) { isReloadNeeded ->
             if (isReloadNeeded) {
-                viewModel.loadAppMetaDataMap(permissionType)
+                viewModel.loadAppMetaDataMap(permissionType, isSymptomsEntries)
                 deletionViewModel.resetInactiveAppsReloadNeeded()
             }
         }
@@ -158,15 +170,15 @@ class AccessFragment : Hilt_AccessFragment() {
             }
         }
         if (appMetadataMap.containsKey(AppAccessState.Inactive)) {
+            val lowerCaseTitleRes =
+                if (isSymptomsEntries) R.string.symptoms_lowercase_label
+                else permissionType.lowerCaseLabel()
             if (appMetadataMap[AppAccessState.Inactive]!!.isEmpty()) {
                 mInactiveSection.isVisible = false
             } else {
                 mInactiveSection.isVisible = true
                 mInactiveSection.summary =
-                    getString(
-                        R.string.inactive_apps_message,
-                        getString(permissionType.lowerCaseLabel()),
-                    )
+                    getString(R.string.inactive_apps_message, getString(lowerCaseTitleRes))
                 appMetadataMap[AppAccessState.Inactive]?.forEach { appAccessMetadata ->
                     val appMetadata = appAccessMetadata.appMetadata
                     mInactiveSection.addPreference(
@@ -175,13 +187,20 @@ class AccessFragment : Hilt_AccessFragment() {
                             it.icon = appMetadata.icon
                             it.logName = DataAccessElement.DATA_ACCESS_INACTIVE_APP_BUTTON
                             it.setOnDeleteButtonClickListener {
-                                deletionViewModel.setDeletionType(
-                                    DeletionType.DeleteInactiveAppData(
-                                        healthPermissionType = permissionType,
-                                        packageName = appMetadata.packageName,
-                                        appName = appMetadata.appName,
-                                    )
-                                )
+                                val deletionType =
+                                    if (isSymptomsEntries) {
+                                        DeletionType.DeleteAllSymptomsDataFromInactiveApp(
+                                            packageName = appMetadata.packageName,
+                                            appName = appMetadata.appName,
+                                        )
+                                    } else {
+                                        DeletionType.DeleteInactiveAppData(
+                                            healthPermissionType = permissionType,
+                                            packageName = appMetadata.packageName,
+                                            appName = appMetadata.appName,
+                                        )
+                                    }
+                                deletionViewModel.setDeletionType(deletionType)
                                 parentFragmentManager.setFragmentResult(
                                     START_DELETION_ENTRIES_AND_ACCESS_KEY,
                                     Bundle(),

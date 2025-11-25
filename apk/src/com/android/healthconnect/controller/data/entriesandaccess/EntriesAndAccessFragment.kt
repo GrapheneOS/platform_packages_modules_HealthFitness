@@ -61,6 +61,14 @@ class EntriesAndAccessFragment : Hilt_EntriesAndAccessFragment() {
     private lateinit var tabLayoutDisabled: TabLayout
     private val entriesViewModel: EntriesViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val permissionTypeName =
+            arguments?.getString(PERMISSION_TYPE_NAME_KEY)
+                ?: throw IllegalArgumentException("PERMISSION_TYPE_NAME_KEY must be provided")
+        permissionType = fromPermissionTypeName(permissionTypeName)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,12 +79,6 @@ class EntriesAndAccessFragment : Hilt_EntriesAndAccessFragment() {
             this,
         ) { _, _ ->
             childFragmentManager.setFragmentResult(START_DELETION_KEY, Bundle())
-        }
-        if (requireArguments().containsKey(PERMISSION_TYPE_NAME_KEY)) {
-            val permissionTypeName =
-                arguments?.getString(PERMISSION_TYPE_NAME_KEY)
-                    ?: throw IllegalArgumentException("PERMISSION_TYPE_NAME_KEY can't be null!")
-            permissionType = fromPermissionTypeName(permissionTypeName)
         }
         return inflater.inflate(R.layout.fragment_entries_access, container, false)
     }
@@ -110,9 +112,6 @@ class EntriesAndAccessFragment : Hilt_EntriesAndAccessFragment() {
                     tabLayout.visibility = VISIBLE
                     tabLayoutDisabled.visibility = GONE
                     viewPager.isUserInputEnabled = true
-                }
-                else -> {
-                    // do nothing
                 }
             }
         }

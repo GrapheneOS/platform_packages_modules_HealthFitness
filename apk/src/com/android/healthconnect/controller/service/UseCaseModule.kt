@@ -18,12 +18,16 @@ package com.android.healthconnect.controller.service
 import android.content.Context
 import android.health.connect.HealthConnectManager
 import android.net.Uri
+import com.android.healthconnect.controller.data.access.AppAccessMetadata
+import com.android.healthconnect.controller.data.access.AppAccessState
 import com.android.healthconnect.controller.data.access.ILoadAccessUseCase
 import com.android.healthconnect.controller.data.access.ILoadFitnessTypeContributorAppsUseCase
 import com.android.healthconnect.controller.data.access.ILoadMedicalTypeContributorAppsUseCase
 import com.android.healthconnect.controller.data.access.LoadAccessUseCase
 import com.android.healthconnect.controller.data.access.LoadFitnessTypeContributorAppsUseCase
 import com.android.healthconnect.controller.data.access.LoadMedicalTypeContributorAppsUseCase
+import com.android.healthconnect.controller.data.access.LoadSymptomAccessUseCase
+import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.api.ILoadDataAggregationsUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadDataEntriesUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadLatestEntryDateUseCase
@@ -33,8 +37,12 @@ import com.android.healthconnect.controller.data.entries.api.LoadDataAggregation
 import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesUseCase
 import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
 import com.android.healthconnect.controller.data.entries.api.LoadLatestEntryDateUseCase
+import com.android.healthconnect.controller.data.entries.api.LoadLatestSymptomEntryDateInput
+import com.android.healthconnect.controller.data.entries.api.LoadLatestSymptomEntryDateUseCase
 import com.android.healthconnect.controller.data.entries.api.LoadMedicalEntriesUseCase
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataUseCase
+import com.android.healthconnect.controller.data.entries.api.LoadSymptomDataEntriesInput
+import com.android.healthconnect.controller.data.entries.api.LoadSymptomDataEntriesUseCase
 import com.android.healthconnect.controller.data.formatters.DistanceFormatter
 import com.android.healthconnect.controller.data.formatters.MindfulnessSessionFormatter
 import com.android.healthconnect.controller.data.formatters.SleepSessionFormatter
@@ -106,6 +114,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import java.time.Instant
 import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
@@ -166,6 +175,20 @@ class UseCaseModule {
         loadEntriesHelper: LoadEntriesHelper,
     ): ILoadLatestEntryDateUseCase {
         return LoadLatestEntryDateUseCase(dispatcher, loadEntriesHelper)
+    }
+
+    @Provides
+    fun providesLoadSymptomDataEntriesUseCase(
+        useCase: LoadSymptomDataEntriesUseCase
+    ): BaseUseCase<LoadSymptomDataEntriesInput, List<FormattedEntry>> {
+        return useCase
+    }
+
+    @Provides
+    fun providesLatestSymptomEntryDateUseCase(
+        useCase: LoadLatestSymptomEntryDateUseCase
+    ): BaseUseCase<LoadLatestSymptomEntryDateInput, Instant> {
+        return useCase
     }
 
     @Provides
@@ -327,6 +350,13 @@ class UseCaseModule {
             appInfoReader,
             dispatcher,
         )
+    }
+
+    @Provides
+    fun providesLoadSymptomAccessUseCase(
+        useCase: LoadSymptomAccessUseCase
+    ): BaseUseCase<Unit, Map<AppAccessState, List<AppAccessMetadata>>> {
+        return useCase
     }
 
     @Provides

@@ -48,6 +48,7 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.data.fromPermissionTypeName
+import com.android.healthconnect.controller.permissions.data.isSymptom
 import com.android.healthconnect.controller.selectabledeletion.DeletionType
 import com.android.healthconnect.controller.selectabledeletion.DeletionViewModel
 import com.android.healthconnect.controller.shared.DataType
@@ -262,19 +263,23 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
         savedInstanceState: Bundle?,
     ): View? {
         val view = inflater.inflate(R.layout.fragment_entries, container, false)
-        if (requireArguments().containsKey(PERMISSION_TYPE_NAME_KEY)) {
-            val permissionTypeName =
-                arguments?.getString(PERMISSION_TYPE_NAME_KEY)
-                    ?: throw IllegalArgumentException("PERMISSION_TYPE_NAME_KEY can't be null!")
-            permissionType = fromPermissionTypeName(permissionTypeName)
+        val permissionTypeName =
+            arguments?.getString(PERMISSION_TYPE_NAME_KEY)
+                ?: throw IllegalArgumentException("PERMISSION_TYPE_NAME_KEY can't be null!")
+        permissionType = fromPermissionTypeName(permissionTypeName)
+        val isSymptomType = permissionType.isSymptom()
+        if (isSymptomType) {
+            setTitle(R.string.all_symptoms_uppercase_label)
+        } else {
+            setTitle(permissionType.upperCaseLabel())
         }
-        setLoggerPageId()
-        setTitle(permissionType.upperCaseLabel())
         logger.logImpression(ToolbarElement.TOOLBAR_SETTINGS_BUTTON)
 
         dateNavigationView = view.findViewById(R.id.date_navigation_view)
         setDateNavigationViewMaxDate()
-        if (permissionType is MedicalPermissionType) {
+        if (permissionType is MedicalPermissionType || isSymptomType) {
+            dateNavigationView.isVisible = true
+        } else {
             dateNavigationView.isVisible = false
         }
         val isExpressiveThemeEnabled = SettingsThemeHelper.isExpressiveTheme(requireContext())
@@ -384,7 +389,11 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
 
     override fun onResume() {
         super.onResume()
-        setTitle(permissionType.upperCaseLabel())
+        if (permissionType.isSymptom()) {
+            setTitle(R.string.all_symptoms_uppercase_label)
+        } else {
+            setTitle(permissionType.upperCaseLabel())
+        }
         if (entriesViewModel.shouldReloadEntries) {
             reloadEntries()
             entriesViewModel.shouldReloadEntries = false
@@ -397,7 +406,7 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
                     displayedStartDate: Instant,
                     period: DateNavigationPeriod,
                 ) {
-                    entriesViewModel.loadEntries(permissionType, displayedStartDate, period)
+                    entriesViewModel.loadEntries(displayedStartDate, period, permissionType)
                 }
             }
         )
@@ -417,17 +426,17 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
             val selectedPeriod = entriesViewModel.period.value!!
             dateNavigationView.setDate(date)
             dateNavigationView.setPeriod(selectedPeriod)
-            entriesViewModel.loadEntries(permissionType, date, selectedPeriod)
+            entriesViewModel.loadEntries(date, selectedPeriod, permissionType)
         } else {
             entriesViewModel.loadLatestRecordDate(
-                permissionType,
                 timeSource.currentTimeMillis().toInstant(),
+                permissionType,
             )
 
             entriesViewModel.loadEntries(
-                permissionType,
                 dateNavigationView.getDate(),
                 dateNavigationView.getPeriod(),
+                permissionType,
             )
         }
     }

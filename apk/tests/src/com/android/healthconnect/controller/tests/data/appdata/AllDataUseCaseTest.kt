@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.tests.data.appdata
 import android.content.Context
 import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
+import android.health.connect.HealthDataCategory.SYMPTOMS
 import android.health.connect.HealthPermissionCategory
 import android.health.connect.MedicalResourceTypeInfo
 import android.health.connect.ReadRecordsRequestUsingFilters
@@ -47,7 +48,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE_2
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE_DIFFERENT_APP
-import com.android.healthconnect.controller.tests.utils.TestData.getSymptomRecord
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.android.healthfitness.flags.Flags
@@ -61,7 +61,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -147,7 +146,7 @@ class AllDataUseCaseTest {
                         listOf(FitnessPermissionType.HEART_RATE),
                     ),
                     PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
-                    PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, emptyList()),
                 )
             )
         assertThat(allDataUseCase.loadFitnessAppData(TEST_APP_PACKAGE_NAME)).isEqualTo(expected)
@@ -255,7 +254,7 @@ class AllDataUseCaseTest {
                         listOf(FitnessPermissionType.HEART_RATE),
                     ),
                     PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
-                    PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, emptyList()),
                 )
             )
         assertThat(allDataUseCase.loadAllFitnessData()).isEqualTo(expected)
@@ -575,9 +574,13 @@ class AllDataUseCaseTest {
             )
 
         val result = allDataUseCase.loadAllFitnessData()
+
         assertThat(result).isInstanceOf(Success::class.java)
+
         val categories = (result as Success).data
-        val symptomsCategory = categories.find { it.category == HealthDataCategory.SYMPTOMS }
+
+        val symptomsCategory = categories.find { it.category == SYMPTOMS }
+
         assertThat(symptomsCategory?.data).isEmpty()
     }
 
@@ -585,37 +588,26 @@ class AllDataUseCaseTest {
     @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun loadAllFitnessData_symptomsFlagEnabled_withSymptomData_returnsMappedPermissions() =
         runTest {
-            val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> = emptyMap()
+            val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+                mapOf(
+                    SymptomRecord::class.java to
+                        RecordTypeInfoResponse(
+                            HealthPermissionCategory.SYMPTOM_SNORE,
+                            SYMPTOMS,
+                            listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
+                        )
+                )
             Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
                 .`when`(healthConnectManager)
                 .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
-
-            val symptomRecord1 = getSymptomRecord(symptomType = 13) // COUGH
-            val symptomRecord2 = getSymptomRecord(symptomType = 2) // ACNE
-            val response = ReadRecordsResponse<Record>(listOf(symptomRecord1, symptomRecord2), -1)
-            Mockito.doAnswer { invocation ->
-                    val receiver =
-                        invocation.arguments[2]
-                            as OutcomeReceiver<ReadRecordsResponse<*>, Exception>
-                    receiver.onResult(response)
-                    null
-                }
-                .`when`(healthConnectManager)
-                .readRecords(
-                    ArgumentMatchers.any(ReadRecordsRequestUsingFilters::class.java),
-                    org.mockito.kotlin.any(),
-                    ArgumentMatchers.any(),
-                )
 
             val result = allDataUseCase.loadAllFitnessData()
             assertThat(result).isInstanceOf(Success::class.java)
             val categories = (result as Success).data
             val symptomsCategory = categories.find { it.category == HealthDataCategory.SYMPTOMS }
+            assertThat(symptomsCategory).isNotNull()
             assertThat(symptomsCategory?.data)
-                .containsExactly(
-                    FitnessPermissionType.SYMPTOM_COUGH,
-                    FitnessPermissionType.SYMPTOM_ACNE,
-                )
+                .containsExactly(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)
         }
 
     private fun prepareAnswer(
@@ -643,55 +635,49 @@ class AllDataUseCaseTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS)
-    fun symptomTypeToPermissionMap_symptomsFlagEnabled_isNotEmpty() {
-        assertThat(allDataUseCase.symptomTypeToPermissionMap).isNotEmpty()
-    }
-
-    @Test
-    @RequiresFlagsDisabled(Flags.FLAG_SYMPTOMS)
-    fun symptomTypeToPermissionMap_symptomsFlagDisabled_isEmpty() {
-        assertThat(allDataUseCase.symptomTypeToPermissionMap).isEmpty()
-    }
-
-    @Test
     @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun loadFitnessAppData_symptomsFlagEnabled_requestsFilteredSymptomData() = runTest {
-        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> = emptyMap()
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+            mapOf(
+                SymptomRecord::class.java to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.SYMPTOM_COUGH,
+                        HealthDataCategory.SYMPTOMS,
+                        listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
+                    )
+            )
         Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
             .`when`(healthConnectManager)
             .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
 
-        allDataUseCase.loadFitnessAppData(TEST_APP_PACKAGE_NAME)
-
-        val captor: ArgumentCaptor<ReadRecordsRequestUsingFilters<*>> =
-            ArgumentCaptor.forClass(ReadRecordsRequestUsingFilters::class.java)
-        Mockito.verify(healthConnectManager)
-            .readRecords(captor.capture(), org.mockito.kotlin.any(), ArgumentMatchers.any())
-
-        val request = captor.value
-        assertThat(request.recordType).isEqualTo(SymptomRecord::class.java)
-        assertThat(request.dataOrigins).hasSize(1)
-        assertThat(request.dataOrigins.first().packageName).isEqualTo(TEST_APP_PACKAGE_NAME)
+        val result = allDataUseCase.loadFitnessAppData(TEST_APP_PACKAGE_NAME)
+        assertThat(result).isInstanceOf(Success::class.java)
+        val categories = (result as Success).data
+        val symptomsCategory = categories.find { it.category == HealthDataCategory.SYMPTOMS }
+        assertThat(symptomsCategory).isNotNull()
+        assertThat(symptomsCategory?.data)
+            .containsExactly(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)
     }
 
     @Test
     @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun loadAllFitnessData_symptomsFlagEnabled_requestsAllSymptomData() = runTest {
-        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> = emptyMap()
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+            mapOf(
+                SymptomRecord::class.java to
+                    RecordTypeInfoResponse(
+                        HealthPermissionCategory.SYMPTOM_COUGH,
+                        HealthDataCategory.SYMPTOMS,
+                        listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
+                    )
+            )
         Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
             .`when`(healthConnectManager)
             .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
 
         allDataUseCase.loadAllFitnessData()
 
-        val captor: ArgumentCaptor<ReadRecordsRequestUsingFilters<*>> =
-            ArgumentCaptor.forClass(ReadRecordsRequestUsingFilters::class.java)
         Mockito.verify(healthConnectManager)
-            .readRecords(captor.capture(), org.mockito.kotlin.any(), ArgumentMatchers.any())
-
-        val request = captor.value
-        assertThat(request.recordType).isEqualTo(SymptomRecord::class.java)
-        assertThat(request.dataOrigins).isEmpty()
+            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
     }
 }

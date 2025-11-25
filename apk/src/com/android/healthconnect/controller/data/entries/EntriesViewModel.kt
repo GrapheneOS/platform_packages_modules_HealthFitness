@@ -28,9 +28,10 @@ import com.android.healthconnect.controller.data.entries.api.ILoadMenstruationDa
 import com.android.healthconnect.controller.data.entries.api.LoadAggregationInput
 import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadLatestEntryDateInput
+import com.android.healthconnect.controller.data.entries.api.LoadLatestSymptomEntryDateInput
 import com.android.healthconnect.controller.data.entries.api.LoadMedicalEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataInput
-import com.android.healthconnect.controller.data.entries.api.LoadSymptomEntriesUseCase
+import com.android.healthconnect.controller.data.entries.api.LoadSymptomDataEntriesInput
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.DISTANCE
@@ -39,9 +40,11 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.TOTAL_CALORIES_BURNED
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
+import com.android.healthconnect.controller.permissions.data.isSymptom
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthfitness.flags.Flags.mindfulnessAggregation
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -56,11 +59,14 @@ class EntriesViewModel
 constructor(
     private val appInfoReader: AppInfoReader,
     private val loadDataEntriesUseCase: ILoadDataEntriesUseCase,
-    private val loadSymptomEntriesUseCase: LoadSymptomEntriesUseCase,
     private val loadMenstruationDataUseCase: ILoadMenstruationDataUseCase,
     private val loadDataAggregationsUseCase: ILoadDataAggregationsUseCase,
     private val loadMedicalEntriesUseCase: ILoadMedicalEntriesUseCase,
     private val loadLatestDateUseCase: ILoadLatestEntryDateUseCase,
+    private val loadSymptomDataEntriesUseCase:
+        BaseUseCase<LoadSymptomDataEntriesInput, List<FormattedEntry>>,
+    private val loadLatestSymptomEntryDateUseCase:
+        BaseUseCase<LoadLatestSymptomEntryDateInput, Instant>,
 ) : ViewModel() {
 
     companion object {
@@ -112,24 +118,30 @@ constructor(
     var shouldReloadEntries = true
 
     fun loadLatestRecordDate(
-        permissionType: HealthPermissionType,
         selectedDate: Instant,
+        permissionType: HealthPermissionType,
         packageName: String? = null,
     ) {
-        // There is no browse by period for phr data
-        if (permissionType is MedicalPermissionType) {
-            return
-        }
-
         viewModelScope.launch {
             val latestDateResult =
-                loadLatestDateUseCase.invoke(
-                    LoadLatestEntryDateInput(
-                        permissionType as FitnessPermissionType,
-                        selectedDate,
-                        packageName,
+                if (permissionType.isSymptom()) {
+                    loadLatestSymptomEntryDateUseCase.invoke(
+                        LoadLatestSymptomEntryDateInput(selectedDate, packageName)
                     )
-                )
+                } else {
+                    when (permissionType) {
+                        is FitnessPermissionType -> {
+                            loadLatestDateUseCase.invoke(
+                                LoadLatestEntryDateInput(permissionType, selectedDate, packageName)
+                            )
+                        }
+                        is MedicalPermissionType -> {
+                            // There is no browse by period for phr data
+                            return@launch
+                        }
+                        else -> return@launch
+                    }
+                }
 
             val latestRecordDate =
                 when (latestDateResult) {
@@ -145,35 +157,86 @@ constructor(
     }
 
     fun loadEntries(
-        permissionType: HealthPermissionType,
         selectedDate: Instant,
         period: DateNavigationPeriod,
+        permissionType: HealthPermissionType,
     ) {
-        when (permissionType) {
-            is FitnessPermissionType ->
-                loadData(
-                    permissionType,
-                    packageName = null,
-                    selectedDate,
-                    period,
-                    showDataOrigin = true,
-                )
-            is MedicalPermissionType ->
-                loadData(permissionType, packageName = null, showDataOrigin = true)
+        if (permissionType.isSymptom()) {
+            loadSymptomsData(packageName = null, selectedDate, period, showDataOrigin = true)
+        } else {
+            when (permissionType) {
+                is FitnessPermissionType ->
+                    loadData(
+                        permissionType,
+                        packageName = null,
+                        selectedDate,
+                        period,
+                        showDataOrigin = true,
+                    )
+                is MedicalPermissionType ->
+                    loadData(permissionType, packageName = null, showDataOrigin = true)
+            }
         }
     }
 
     fun loadEntries(
-        permissionType: HealthPermissionType,
         packageName: String,
         selectedDate: Instant,
         period: DateNavigationPeriod,
+        permissionType: HealthPermissionType,
     ) {
-        when (permissionType) {
-            is FitnessPermissionType ->
-                loadData(permissionType, packageName, selectedDate, period, showDataOrigin = false)
-            is MedicalPermissionType ->
-                loadData(permissionType, packageName, showDataOrigin = false)
+        if (permissionType.isSymptom()) {
+            loadSymptomsData(packageName, selectedDate, period, showDataOrigin = false)
+        } else {
+            when (permissionType) {
+                is FitnessPermissionType ->
+                    loadData(
+                        permissionType,
+                        packageName,
+                        selectedDate,
+                        period,
+                        showDataOrigin = false,
+                    )
+                is MedicalPermissionType ->
+                    loadData(permissionType, packageName, showDataOrigin = false)
+            }
+        }
+    }
+
+    private fun loadSymptomsData(
+        packageName: String?,
+        selectedDate: Instant,
+        period: DateNavigationPeriod,
+        showDataOrigin: Boolean,
+    ) {
+        _isLoadingDateNavigation.postValue(true)
+        _entries.postValue(EntriesFragmentState.Loading)
+        currentSelectedDate.postValue(selectedDate)
+        this.period.postValue(period)
+        viewModelScope.launch {
+            val list = ArrayList<FormattedEntry>()
+            val entriesResults =
+                loadSymptomDataEntriesUseCase.invoke(
+                    LoadSymptomDataEntriesInput(packageName, selectedDate, period, showDataOrigin)
+                )
+            when (entriesResults) {
+                is UseCaseResults.Success -> {
+                    list.addAll(entriesResults.data)
+                    numOfEntries =
+                        list.filterNot { it is FormattedEntry.EntryDateSectionHeader }.size
+                    if (list.isEmpty()) {
+                        _entries.postValue(EntriesFragmentState.Empty)
+                    } else {
+                        _entries.postValue(EntriesFragmentState.With(list))
+                        entriesList = list.toMutableList()
+                    }
+                }
+                is UseCaseResults.Failed -> {
+                    Log.e(TAG, "Loading error ", entriesResults.exception)
+                    _entries.postValue(EntriesFragmentState.LoadingFailed)
+                }
+            }
+            _isLoadingDateNavigation.postValue(false)
         }
     }
 
@@ -271,11 +334,7 @@ constructor(
     ): UseCaseResults<List<FormattedEntry>> {
         val input =
             LoadDataEntriesInput(permissionType, packageName, selectedDate, period, showDataOrigin)
-        return if (permissionType.name.startsWith("SYMPTOM_")) {
-            loadSymptomEntriesUseCase.invoke(input)
-        } else {
-            loadDataEntriesUseCase.invoke(input)
-        }
+        return loadDataEntriesUseCase.invoke(input)
     }
 
     private suspend fun loadAppEntries(

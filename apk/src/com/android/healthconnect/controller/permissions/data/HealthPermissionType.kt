@@ -36,7 +36,7 @@ fun fromPermissionTypeName(name: String): HealthPermissionType {
         MedicalPermissionType.valueOf(name)
     } else {
         throw IllegalArgumentException(
-            "PERMISSION_TYPE_KEY is not a valid HealthPermissionType name!"
+            "PERMISSION_TYPE_KEY is not a valid HealthPermissionType name: $name"
         )
     }
 }

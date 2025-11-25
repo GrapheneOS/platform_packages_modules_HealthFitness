@@ -19,6 +19,7 @@ import android.content.Context
 import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.MindfulnessSessionRecord
 import android.health.connect.datatypes.StepsRecord
+import android.health.connect.internal.datatypes.utils.SymptomTypePermissionMapper
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
@@ -39,10 +40,12 @@ import com.android.healthconnect.controller.tests.utils.di.FakeFailureLoadLatest
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadDataAggregationsUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadDataEntriesUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadLatestEntryDateUseCase
+import com.android.healthconnect.controller.tests.utils.di.FakeLoadLatestSymptomEntryDateUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadMedicalEntriesUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadMenstruationDataUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadSymptomEntriesUseCase
+import com.android.healthconnect.controller.tests.utils.di.FakeLoadSymptomDataEntriesUseCase
 import com.android.healthconnect.controller.utils.TimeSource
+import com.android.healthconnect.controller.utils.toInstant
 import com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS_AGGREGATION
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
@@ -132,11 +135,12 @@ class EntriesViewModelTest {
     @BindValue lateinit var appInfoReader: AppInfoReader
     private val timeSource: TimeSource = TestTimeSource
     private val fakeLoadDataEntriesUseCase = FakeLoadDataEntriesUseCase()
-    private val fakeLoadSymptomEntriesUseCase = FakeLoadSymptomEntriesUseCase()
+    private val fakeLoadSymptomDataEntriesUseCase = FakeLoadSymptomDataEntriesUseCase()
     private val fakeLoadMenstruationDataUseCase = FakeLoadMenstruationDataUseCase()
     private val fakeLoadDataAggregationsUseCase = FakeLoadDataAggregationsUseCase()
     private val fakeLoadMedicalEntriesUseCase = FakeLoadMedicalEntriesUseCase()
     private val fakeLoadLatestEntryDateUseCase = FakeLoadLatestEntryDateUseCase()
+    private val fakeLoadLatestSymptomEntryDateUseCase = FakeLoadLatestSymptomEntryDateUseCase()
 
     private lateinit var viewModel: EntriesViewModel
     private lateinit var context: Context
@@ -146,16 +150,19 @@ class EntriesViewModelTest {
         appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
+
+        fakeLoadDataAggregationsUseCase.reset()
         context = InstrumentationRegistry.getInstrumentation().context
         viewModel =
             EntriesViewModel(
                 appInfoReader,
                 fakeLoadDataEntriesUseCase,
-                fakeLoadSymptomEntriesUseCase,
                 fakeLoadMenstruationDataUseCase,
                 fakeLoadDataAggregationsUseCase,
                 fakeLoadMedicalEntriesUseCase,
                 fakeLoadLatestEntryDateUseCase,
+                fakeLoadSymptomDataEntriesUseCase,
+                fakeLoadLatestSymptomEntryDateUseCase,
             )
     }
 
@@ -166,14 +173,15 @@ class EntriesViewModelTest {
 
     @Test
     fun loadDataEntries_hasStepsData_returnsFragmentStateWitAggregationAndSteps() = runTest {
+        fakeLoadDataAggregationsUseCase.reset()
         fakeLoadDataEntriesUseCase.updateList(listOf(FORMATTED_STEPS))
         fakeLoadDataAggregationsUseCase.updateAggregation(formattedAggregation("12 steps"))
         val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
         viewModel.entries.observeForever(testObserver)
         viewModel.loadEntries(
-            FitnessPermissionType.STEPS,
-            Instant.ofEpochMilli(timeSource.currentTimeMillis()),
-            DateNavigationPeriod.PERIOD_WEEK,
+            selectedDate = Instant.ofEpochMilli(timeSource.currentTimeMillis()),
+            period = DateNavigationPeriod.PERIOD_WEEK,
+            permissionType = FitnessPermissionType.STEPS,
         )
         advanceUntilIdle()
 
@@ -192,9 +200,9 @@ class EntriesViewModelTest {
         val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
         viewModel.entries.observeForever(testObserver)
         viewModel.loadEntries(
-            FitnessPermissionType.STEPS,
-            Instant.ofEpochMilli(timeSource.currentTimeMillis()),
-            DateNavigationPeriod.PERIOD_WEEK,
+            selectedDate = Instant.ofEpochMilli(timeSource.currentTimeMillis()),
+            period = DateNavigationPeriod.PERIOD_WEEK,
+            permissionType = FitnessPermissionType.STEPS,
         )
         advanceUntilIdle()
 
@@ -212,9 +220,9 @@ class EntriesViewModelTest {
         val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
         viewModel.entries.observeForever(testObserver)
         viewModel.loadEntries(
-            FitnessPermissionType.MENSTRUATION,
-            Instant.ofEpochMilli(timeSource.currentTimeMillis()),
-            DateNavigationPeriod.PERIOD_WEEK,
+            selectedDate = Instant.ofEpochMilli(timeSource.currentTimeMillis()),
+            period = DateNavigationPeriod.PERIOD_WEEK,
+            permissionType = FitnessPermissionType.MENSTRUATION,
         )
         advanceUntilIdle()
 
@@ -230,9 +238,9 @@ class EntriesViewModelTest {
         val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
         viewModel.entries.observeForever(testObserver)
         viewModel.loadEntries(
-            MedicalPermissionType.VACCINES,
-            Instant.ofEpochMilli(timeSource.currentTimeMillis()),
-            DateNavigationPeriod.PERIOD_WEEK,
+            selectedDate = Instant.ofEpochMilli(timeSource.currentTimeMillis()),
+            period = DateNavigationPeriod.PERIOD_WEEK,
+            permissionType = MedicalPermissionType.VACCINES,
         )
         advanceUntilIdle()
 
@@ -243,18 +251,18 @@ class EntriesViewModelTest {
 
     @Test
     fun loadDataEntries_symptomType_invokesLoadSymptomEntriesUseCase() = runTest {
-        fakeLoadSymptomEntriesUseCase.reset()
+        fakeLoadSymptomDataEntriesUseCase.reset()
         fakeLoadDataEntriesUseCase.updateList(emptyList())
         val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
         viewModel.entries.observeForever(testObserver)
         viewModel.loadEntries(
-            FitnessPermissionType.SYMPTOM_COUGH,
-            Instant.ofEpochMilli(timeSource.currentTimeMillis()),
-            DateNavigationPeriod.PERIOD_WEEK,
+            selectedDate = Instant.ofEpochMilli(timeSource.currentTimeMillis()),
+            period = DateNavigationPeriod.PERIOD_WEEK,
+            permissionType = FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN,
         )
         advanceUntilIdle()
 
-        assertThat(fakeLoadSymptomEntriesUseCase.wasInvoked).isTrue()
+        assertThat(fakeLoadSymptomDataEntriesUseCase.numberOfInvocations).isEqualTo(1)
         assertThat(fakeLoadDataEntriesUseCase.wasInvoked).isFalse()
     }
 
@@ -265,14 +273,14 @@ class EntriesViewModelTest {
         val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
         viewModel.entries.observeForever(testObserver)
         viewModel.loadEntries(
-            FitnessPermissionType.STEPS,
-            Instant.ofEpochMilli(timeSource.currentTimeMillis()),
-            DateNavigationPeriod.PERIOD_WEEK,
+            selectedDate = Instant.ofEpochMilli(timeSource.currentTimeMillis()),
+            period = DateNavigationPeriod.PERIOD_WEEK,
+            permissionType = FitnessPermissionType.STEPS,
         )
         advanceUntilIdle()
 
         assertThat(fakeLoadDataEntriesUseCase.wasInvoked).isTrue()
-        assertThat(fakeLoadSymptomEntriesUseCase.wasInvoked).isFalse()
+        assertThat(fakeLoadSymptomDataEntriesUseCase.numberOfInvocations).isEqualTo(0)
     }
 
     @Test
@@ -317,9 +325,9 @@ class EntriesViewModelTest {
         val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
         viewModel.entries.observeForever(testObserver)
         viewModel.loadEntries(
-            FitnessPermissionType.STEPS,
-            Instant.ofEpochMilli(timeSource.currentTimeMillis()),
-            DateNavigationPeriod.PERIOD_WEEK,
+            selectedDate = Instant.ofEpochMilli(timeSource.currentTimeMillis()),
+            period = DateNavigationPeriod.PERIOD_WEEK,
+            permissionType = FitnessPermissionType.STEPS,
         )
 
         advanceUntilIdle()
@@ -335,9 +343,9 @@ class EntriesViewModelTest {
         val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
         viewModel.entries.observeForever(testObserver)
         viewModel.loadEntries(
-            FitnessPermissionType.STEPS,
-            Instant.ofEpochMilli(timeSource.currentTimeMillis()),
-            DateNavigationPeriod.PERIOD_WEEK,
+            selectedDate = Instant.ofEpochMilli(timeSource.currentTimeMillis()),
+            period = DateNavigationPeriod.PERIOD_WEEK,
+            permissionType = FitnessPermissionType.STEPS,
         )
 
         viewModel.addToDeleteMap(FORMATTED_STEPS.uuid, FORMATTED_STEPS.dataType)
@@ -356,9 +364,9 @@ class EntriesViewModelTest {
         val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
         viewModel.entries.observeForever(testObserver)
         viewModel.loadEntries(
-            FitnessPermissionType.MINDFULNESS,
-            Instant.ofEpochMilli(timeSource.currentTimeMillis()),
-            DateNavigationPeriod.PERIOD_WEEK,
+            selectedDate = Instant.ofEpochMilli(timeSource.currentTimeMillis()),
+            period = DateNavigationPeriod.PERIOD_WEEK,
+            permissionType = FitnessPermissionType.MINDFULNESS,
         )
 
         assertThat(viewModel.getEntriesList())
@@ -374,9 +382,9 @@ class EntriesViewModelTest {
         val testObserver = TestObserver<EntriesViewModel.EntriesFragmentState>()
         viewModel.entries.observeForever(testObserver)
         viewModel.loadEntries(
-            FitnessPermissionType.MINDFULNESS,
-            Instant.ofEpochMilli(timeSource.currentTimeMillis()),
-            DateNavigationPeriod.PERIOD_WEEK,
+            selectedDate = Instant.ofEpochMilli(timeSource.currentTimeMillis()),
+            period = DateNavigationPeriod.PERIOD_WEEK,
+            permissionType = FitnessPermissionType.MINDFULNESS,
         )
 
         assertThat(viewModel.getEntriesList()).containsExactly(FORMATTED_MINDFULNESS)
@@ -384,29 +392,50 @@ class EntriesViewModelTest {
 
     @Test
     fun loadLatestRecordDate_doesNotUpdateForMedicalData() = runTest {
-        val now = Instant.now()
+        val now = timeSource.currentTimeMillis().toInstant()
         fakeLoadLatestEntryDateUseCase.updateInstant(now)
 
         MedicalPermissionType.entries.forEachIndexed { i, type ->
             val then = now.plusMillis(i.toLong())
             fakeLoadLatestEntryDateUseCase.updateInstant(then)
 
-            viewModel.loadLatestRecordDate(type, then)
+            viewModel.loadLatestRecordDate(selectedDate = then, permissionType = type)
             assertThat(viewModel.latestDate.value).isNull()
         }
     }
 
     @Test
     fun loadLatestRecordDate_updatesForFitnessType() = runTest {
-        val now = Instant.now()
+        val now = timeSource.currentTimeMillis().toInstant()
 
         FitnessPermissionType.entries.forEachIndexed { i, type ->
             val then = now.plusMillis(i.toLong())
-            fakeLoadLatestEntryDateUseCase.updateInstant(then)
+            val isSymptomType = SymptomTypePermissionMapper.isSymptomCategory(type.category)
 
-            viewModel.loadLatestRecordDate(type, then)
+            if (isSymptomType) {
+                fakeLoadLatestSymptomEntryDateUseCase.updateInstant(then)
+            } else {
+                fakeLoadLatestEntryDateUseCase.updateInstant(then)
+            }
+
+            viewModel.loadLatestRecordDate(selectedDate = then, permissionType = type)
+            advanceUntilIdle()
             assertThat(viewModel.latestDate.value).isEqualTo(then)
         }
+    }
+
+    @Test
+    fun loadLatestRecordDate_symptomType_invokesLoadLatestSymptomEntryDateUseCase() = runTest {
+        val now = timeSource.currentTimeMillis().toInstant()
+        fakeLoadLatestSymptomEntryDateUseCase.updateInstant(now)
+
+        viewModel.loadLatestRecordDate(
+            selectedDate = now,
+            permissionType = FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN,
+        )
+        advanceUntilIdle()
+        assertThat(viewModel.latestDate.value).isEqualTo(now)
+        assertThat(fakeLoadLatestSymptomEntryDateUseCase.numberOfInvocations).isEqualTo(1)
     }
 
     @Test
@@ -416,18 +445,23 @@ class EntriesViewModelTest {
             EntriesViewModel(
                 appInfoReader,
                 fakeLoadDataEntriesUseCase,
-                fakeLoadSymptomEntriesUseCase,
                 fakeLoadMenstruationDataUseCase,
                 fakeLoadDataAggregationsUseCase,
                 fakeLoadMedicalEntriesUseCase,
                 fakeFailureLoadLatestEntryDateUseCase,
+                fakeLoadSymptomDataEntriesUseCase,
+                fakeLoadLatestSymptomEntryDateUseCase,
             )
 
-        val now = Instant.now()
+        val now = timeSource.currentTimeMillis().toInstant()
         val then = now.plusMillis(100)
         fakeFailureLoadLatestEntryDateUseCase.updateInstant(now)
 
-        failureViewModel.loadLatestRecordDate(FitnessPermissionType.STEPS, then)
+        failureViewModel.loadLatestRecordDate(
+            selectedDate = then,
+            permissionType = FitnessPermissionType.STEPS,
+        )
+        advanceUntilIdle()
         assertThat(failureViewModel.latestDate.value).isEqualTo(then)
     }
 }

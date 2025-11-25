@@ -18,17 +18,11 @@ package com.android.healthconnect.controller.data.appdata
 import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
 import android.health.connect.MedicalResourceTypeInfo
-import android.health.connect.ReadRecordsRequestUsingFilters
-import android.health.connect.ReadRecordsResponse
 import android.health.connect.RecordTypeInfoResponse
-import android.health.connect.TimeInstantRangeFilter
-import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SymptomRecord
 import android.util.Log
-import androidx.annotation.VisibleForTesting
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.data.entries.api.SymptomTypeMapper
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
@@ -41,7 +35,6 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthfitness.flags.Flags
-import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -56,18 +49,6 @@ constructor(
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) {
 
-    // A map of SymptomType IntDef to its corresponding FitnessPermissionType
-    @VisibleForTesting
-    val symptomTypeToPermissionMap by lazy {
-        if (Flags.symptoms()) {
-            FitnessPermissionType.values()
-                .filter { it.name.startsWith("SYMPTOM_") }
-                .associateBy { SymptomTypeMapper.getSymptomType(it.category) }
-        } else {
-            emptyMap()
-        }
-    }
-
     /** Returns list of all fitness categories and permission types to be shown on the HC UI. */
     suspend fun loadAllFitnessData(): UseCaseResults<List<PermissionTypesPerCategory>> =
         withContext(dispatcher) {
@@ -75,11 +56,9 @@ constructor(
                 val recordTypeInfoMap = getRecordTypeInfoMap()
                 val categories =
                     FITNESS_DATA_CATEGORIES.map {
-                        PermissionTypesPerCategory(
-                            it,
-                            getPermissionTypesPerCategory(it, recordTypeInfoMap, packageName = null),
-                        )
-                    }
+                            getPermissionTypesPerCategory(it, recordTypeInfoMap, packageName = null)
+                        }
+                        .filter { it.category != HealthDataCategory.SYMPTOMS || Flags.symptoms() }
                 UseCaseResults.Success(categories)
             } catch (e: Exception) {
                 Log.e("TAG_ERROR", "Loading error ", e)
@@ -115,8 +94,19 @@ constructor(
             try {
                 val recordTypeInfoMap = getRecordTypeInfoMap()
                 val anyFitnessData =
-                    recordTypeInfoMap.any { it.value.contributingPackages.isNotEmpty() }
-                UseCaseResults.Success(anyFitnessData)
+                    recordTypeInfoMap.any { entry ->
+                        entry.key != SymptomRecord::class.java &&
+                            entry.value.contributingPackages.isNotEmpty()
+                    }
+                val hasSymptomData =
+                    if (Flags.symptoms()) {
+                        recordTypeInfoMap[SymptomRecord::class.java]
+                            ?.contributingPackages
+                            ?.isNotEmpty() == true
+                    } else {
+                        false
+                    }
+                UseCaseResults.Success(anyFitnessData || hasSymptomData)
             } catch (e: Exception) {
                 Log.e("TAG_ERROR", "Loading error ", e)
                 UseCaseResults.Failed(e)
@@ -149,11 +139,9 @@ constructor(
                 val recordTypeInfoMap = getRecordTypeInfoMap()
                 val categories =
                     FITNESS_DATA_CATEGORIES.map {
-                        PermissionTypesPerCategory(
-                            it,
-                            getPermissionTypesPerCategory(it, recordTypeInfoMap, packageName),
-                        )
-                    }
+                            getPermissionTypesPerCategory(it, recordTypeInfoMap, packageName)
+                        }
+                        .filter { it.category != HealthDataCategory.SYMPTOMS || Flags.symptoms() }
                 UseCaseResults.Success(categories)
             } catch (e: Exception) {
                 UseCaseResults.Failed(e)
@@ -219,53 +207,48 @@ constructor(
      * Returns those [HealthPermissionType]s that have some data written by the given [packageName]
      * app. If the is no app provided then return all data.
      */
-    private suspend fun getPermissionTypesPerCategory(
+    private fun getPermissionTypesPerCategory(
         category: @HealthDataCategoryInt Int,
         recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse>,
         packageName: String?,
-    ): List<HealthPermissionType> {
-        if (Flags.symptoms() && category == HealthDataCategory.SYMPTOMS) {
-            return getSymptomPermissionTypesWithData(packageName)
+    ): PermissionTypesPerCategory {
+        if (category == HealthDataCategory.SYMPTOMS) {
+            return getSymptomPermissionTypes(recordTypeInfoMap, packageName)
         }
-        val types = category.healthPermissionTypes()
-        if (packageName == null) {
-            return types.filter { hasData(it, recordTypeInfoMap) }
-        }
-        return types.filter { hasDataByApp(it, recordTypeInfoMap, packageName) }
+
+        val permissionTypes = category.healthPermissionTypes()
+        val filteredPermissions =
+            permissionTypes.filter {
+                if (packageName == null) {
+                    hasData(it, recordTypeInfoMap)
+                } else {
+                    hasDataByApp(it, recordTypeInfoMap, packageName)
+                }
+            }
+        return PermissionTypesPerCategory(category, filteredPermissions)
     }
 
-    private suspend fun getSymptomPermissionTypesWithData(
-        packageName: String? = null
-    ): List<HealthPermissionType> {
-        val requestBuilder =
-            ReadRecordsRequestUsingFilters.Builder(SymptomRecord::class.java)
-                .setTimeRangeFilter(
-                    TimeInstantRangeFilter.Builder()
-                        .setStartTime(Instant.EPOCH)
-                        .setEndTime(Instant.now())
-                        .build()
-                )
-        if (packageName != null) {
-            requestBuilder.addDataOrigins(DataOrigin.Builder().setPackageName(packageName).build())
-        }
-        val request = requestBuilder.build()
-        try {
-            val records =
-                suspendCancellableCoroutine<ReadRecordsResponse<SymptomRecord>> { continuation ->
-                    healthConnectManager.readRecords(
-                        request,
-                        Runnable::run,
-                        continuation.asOutcomeReceiver(),
-                    )
-                }
-            val symptomTypesWithData = records.records.map { it.symptomType }.toSet()
-
-            return symptomTypesWithData.mapNotNull { symptomType ->
-                symptomTypeToPermissionMap[symptomType]
+    private fun getSymptomPermissionTypes(
+        recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse>,
+        packageName: String?,
+    ): PermissionTypesPerCategory {
+        val symptomRecordInfo = recordTypeInfoMap[SymptomRecord::class.java]
+        val hasAnySymptomData =
+            if (packageName == null) {
+                symptomRecordInfo?.contributingPackages?.isNotEmpty() == true
+            } else {
+                symptomRecordInfo?.contributingPackages?.any { it.packageName == packageName } ==
+                    true
             }
-        } catch (e: Exception) {
-            Log.e("AllDataUseCase", "Error reading symptom data", e)
-            return emptyList()
+
+        return if (hasAnySymptomData) {
+            PermissionTypesPerCategory(
+                HealthDataCategory.SYMPTOMS,
+                // Use SYMPTOM_ABDOMINAL_PAIN to represent the Symptoms category.
+                listOf(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN),
+            )
+        } else {
+            PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, emptyList())
         }
     }
 
