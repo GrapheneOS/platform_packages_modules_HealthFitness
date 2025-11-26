@@ -918,4 +918,74 @@ public class FitnessRecordReadHelperTest {
         SymptomRecordInternal returnedRecord = (SymptomRecordInternal) result.first.get(0);
         assertThat(returnedRecord.getSymptomType()).isEqualTo(SymptomRecord.SYMPTOM_TYPE_COUGH);
     }
+
+    @Test
+    @RequiresFlagsEnabled({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB, Flags.FLAG_SMOKING_DB})
+    public void readRecordsUnrestrictedByDataType_returnsAllRecords() {
+        List<String> ids =
+                mFitnessTestUtils.insertRecords(
+                        TEST_PACKAGE_NAME,
+                        new SymptomRecordInternal()
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
+                                .setStartTime(1000L)
+                                .setEndTime(2000L),
+                        new SymptomRecordInternal()
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_FEVER)
+                                .setStartTime(3000L)
+                                .setEndTime(4000L));
+
+        List<UUID> uuids = ids.stream().map(UUID::fromString).toList();
+
+        ReadRecordsRequestUsingFilters<SymptomRecord> request =
+                new ReadRecordsRequestUsingFilters.Builder<>(SymptomRecord.class).build();
+
+        List<RecordInternal<?>> result =
+                mFitnessRecordReadHelper.readRecordsUnrestricted(
+                                mTransactionManager,
+                                request.toReadRecordsRequestParcel(),
+                                /* packageNamesByAppIds= */ null)
+                        .first;
+
+        assertThat(result).hasSize(2);
+        assertThat(result.stream().map(RecordInternal::getUuid).toList())
+                .containsExactlyElementsIn(uuids);
+    }
+
+    @Test
+    @RequiresFlagsEnabled({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB, Flags.FLAG_SMOKING_DB})
+    public void readRecordsUnrestrictedById_returnsAllRecords() {
+        List<String> symptomsIds =
+                mFitnessTestUtils.insertRecords(
+                        TEST_PACKAGE_NAME,
+                        new SymptomRecordInternal()
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
+                                .setStartTime(1000L)
+                                .setEndTime(2000L),
+                        new SymptomRecordInternal()
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_FEVER)
+                                .setStartTime(3000L)
+                                .setEndTime(4000L));
+        List<String> stepsIds =
+                mFitnessTestUtils.insertRecords(
+                        TEST_PACKAGE_NAME,
+                        buildStepsRecord(400, 500, 100),
+                        buildStepsRecord(700, 800, 100));
+
+        List<UUID> symptomsUuids = symptomsIds.stream().map(UUID::fromString).toList();
+        List<UUID> stepsUuids = stepsIds.stream().map(UUID::fromString).toList();
+        List<UUID> allUuids = Stream.concat(symptomsUuids.stream(), stepsUuids.stream()).toList();
+
+        List<RecordInternal<?>> result =
+                mFitnessRecordReadHelper.readRecordsUnrestricted(
+                        mTransactionManager,
+                        Map.of(
+                                RecordTypeIdentifier.RECORD_TYPE_SYMPTOM,
+                                symptomsUuids,
+                                RECORD_TYPE_STEPS,
+                                stepsUuids));
+
+        assertThat(result).hasSize(4);
+        assertThat(result.stream().map(RecordInternal::getUuid).toList())
+                .containsExactlyElementsIn(allUuids);
+    }
 }
