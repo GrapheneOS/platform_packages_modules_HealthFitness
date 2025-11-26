@@ -66,6 +66,7 @@ import static java.util.stream.Stream.concat;
 import android.Manifest;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.annotation.PermissionManuallyEnforced;
 import android.annotation.RequiresApi;
 import android.content.AttributionSource;
 import android.content.Context;
@@ -79,7 +80,7 @@ import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.DeviceDataSourceInfo;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
-import android.health.connect.GetMatchingAppsResponse;
+import android.health.connect.GetMatchingDataSourcesResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
@@ -121,7 +122,7 @@ import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
 import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
-import android.health.connect.aidl.IGetMatchingAppsCallback;
+import android.health.connect.aidl.IGetMatchingDataSourcesCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
@@ -3172,18 +3173,21 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final MatchmakingRequest unmaskedRequest =
                 request.toUnmasked(getUnmaskingFunction(attributionSource.getPackageName()));
 
-        getMatchingApps(
+        getMatchingDataSources(
                 attributionSource,
                 unmaskedRequest,
-                new IGetMatchingAppsCallback.Stub() {
+                new IGetMatchingDataSourcesCallback.Stub() {
                     @Override
-                    public void onResult(GetMatchingAppsResponse response) throws RemoteException {
+                    @PermissionManuallyEnforced
+                    public void onResult(GetMatchingDataSourcesResponse response)
+                            throws RemoteException {
                         callback.onResult(
                                 new MatchmakingResponse.Builder(response.hasMatchingApps())
                                         .build());
                     }
 
                     @Override
+                    @PermissionManuallyEnforced
                     public void onError(HealthConnectExceptionParcel exception)
                             throws RemoteException {
                         callback.onError(exception);
@@ -3192,13 +3196,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
-     * @see HealthConnectManager#getMatchingApps(Set, String, Executor, OutcomeReceiver)
+     * @see HealthConnectManager#getMatchingDataSources(Set, String, Executor, OutcomeReceiver)
      */
     @Override
-    public void getMatchingApps(
+    public void getMatchingDataSources(
             AttributionSource attributionSource,
             MatchmakingRequest request,
-            IGetMatchingAppsCallback callback) {
+            IGetMatchingDataSourcesCallback callback) {
         // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, request, callback);
         final int uid = Binder.getCallingUid();
@@ -3218,7 +3222,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         scheduleLoggingHealthDataApiErrors(
                 () -> {
                     if (mMatchmakingManager == null || !Flags.matchmaking()) {
-                        throw new UnsupportedOperationException("getMatchingApps is not supported");
+                        throw new UnsupportedOperationException(
+                                "getMatchingDataSources is not supported");
                     }
                     enforceIsForegroundUser(userHandle);
                     throwExceptionIfDataSyncInProgress();
@@ -3242,8 +3247,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     Set<Class<? extends Record>> recordTypes = unmaskedRequest.getRecordTypes();
                     Map<String, Set<String>> matchingApps =
                             mMatchmakingManager.fetchMatchingApps(recordTypes, packageName);
-                    GetMatchingAppsResponse maskedResponse =
-                            new GetMatchingAppsResponse(matchingApps)
+                    GetMatchingDataSourcesResponse maskedResponse =
+                            new GetMatchingDataSourcesResponse(matchingApps)
                                     .toMasked(getMaskingFunction(attributionPackageName));
                     logger.setHealthDataServiceApiStatusSuccess();
                     callback.onResult(maskedResponse);

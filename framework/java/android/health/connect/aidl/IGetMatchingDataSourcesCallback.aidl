@@ -14,7 +14,18 @@
  * limitations under the License.
  */
 
-package android.health.connect;
+package android.health.connect.aidl;
 
-/** @hide */
-parcelable GetMatchingAppsResponse;
+import android.health.connect.GetMatchingDataSourcesResponse;
+import android.health.connect.aidl.HealthConnectExceptionParcel;
+
+/**
+ * Callback for {@link IHealthConnectService#getMatchingDataSources}
+ *
+ * @hide
+ */
+interface IGetMatchingDataSourcesCallback {
+    oneway void onResult(in GetMatchingDataSourcesResponse response);
+
+    oneway void onError(in HealthConnectExceptionParcel exception);
+}

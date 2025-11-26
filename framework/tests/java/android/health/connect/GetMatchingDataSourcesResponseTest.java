@@ -32,33 +32,33 @@ import java.util.Set;
 import java.util.function.Function;
 
 @RunWith(AndroidJUnit4.class)
-public class GetMatchingAppsResponseTest {
+public class GetMatchingDataSourcesResponseTest {
 
     private static final String TEST_PACKAGE_NAME = "com.test.package";
 
     @Test
     public void getMatchingApps_returnsCorrectly() {
         Map<String, Set<String>> matchingApps = Map.of(TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        GetMatchingAppsResponse response = new GetMatchingAppsResponse(matchingApps);
+        GetMatchingDataSourcesResponse response = new GetMatchingDataSourcesResponse(matchingApps);
         assertThat(response.getMatchingApps()).isEqualTo(matchingApps);
     }
 
     @Test
     public void getMatchingApps_emptyMap_returnsEmptyMap() {
-        GetMatchingAppsResponse response = new GetMatchingAppsResponse(Map.of());
+        GetMatchingDataSourcesResponse response = new GetMatchingDataSourcesResponse(Map.of());
         assertThat(response.getMatchingApps()).isEmpty();
     }
 
     @Test
     public void hasMatchingApps_returnsCorrectly() {
         Map<String, Set<String>> matchingApps = Map.of(TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        GetMatchingAppsResponse response = new GetMatchingAppsResponse(matchingApps);
+        GetMatchingDataSourcesResponse response = new GetMatchingDataSourcesResponse(matchingApps);
         assertThat(response.hasMatchingApps()).isTrue();
     }
 
     @Test
     public void hasMatchingApps_emptyMap_returnsFalse() {
-        GetMatchingAppsResponse response = new GetMatchingAppsResponse(Map.of());
+        GetMatchingDataSourcesResponse response = new GetMatchingDataSourcesResponse(Map.of());
         assertThat(response.hasMatchingApps()).isFalse();
     }
 
@@ -66,13 +66,14 @@ public class GetMatchingAppsResponseTest {
     public void parcelable_writeToParcel_readFromParcel_objectsAreEqual() {
         Map<String, Set<String>> matchingApps =
                 Map.of(TEST_PACKAGE_NAME, Set.of(WRITE_STEPS, WRITE_SLEEP));
-        GetMatchingAppsResponse originalResponse = new GetMatchingAppsResponse(matchingApps);
+        GetMatchingDataSourcesResponse originalResponse =
+                new GetMatchingDataSourcesResponse(matchingApps);
 
         Parcel parcel = Parcel.obtain();
         originalResponse.writeToParcel(parcel, 0);
         parcel.setDataPosition(0);
-        GetMatchingAppsResponse newResponse =
-                GetMatchingAppsResponse.CREATOR.createFromParcel(parcel);
+        GetMatchingDataSourcesResponse newResponse =
+                GetMatchingDataSourcesResponse.CREATOR.createFromParcel(parcel);
         parcel.recycle();
 
         assertThat(newResponse).isEqualTo(originalResponse);
@@ -81,43 +82,48 @@ public class GetMatchingAppsResponseTest {
     @Test
     public void equals_sameObject_returnsTrue() {
         Map<String, Set<String>> matchingApps = Map.of(TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        GetMatchingAppsResponse response = new GetMatchingAppsResponse(matchingApps);
+        GetMatchingDataSourcesResponse response = new GetMatchingDataSourcesResponse(matchingApps);
         assertThat(response.equals(response)).isTrue();
     }
 
     @Test
     public void equals_equalObjects_returnsTrue() {
         Map<String, Set<String>> matchingApps1 = Map.of(TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        GetMatchingAppsResponse response1 = new GetMatchingAppsResponse(matchingApps1);
+        GetMatchingDataSourcesResponse response1 =
+                new GetMatchingDataSourcesResponse(matchingApps1);
         Map<String, Set<String>> matchingApps2 = Map.of(TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        GetMatchingAppsResponse response2 = new GetMatchingAppsResponse(matchingApps2);
+        GetMatchingDataSourcesResponse response2 =
+                new GetMatchingDataSourcesResponse(matchingApps2);
         assertThat(response1.equals(response2)).isTrue();
     }
 
     @Test
     public void equals_differentObjects_returnsFalse() {
         Map<String, Set<String>> matchingApps1 = Map.of(TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        GetMatchingAppsResponse response1 = new GetMatchingAppsResponse(matchingApps1);
-        GetMatchingAppsResponse response2 = new GetMatchingAppsResponse(Map.of());
+        GetMatchingDataSourcesResponse response1 =
+                new GetMatchingDataSourcesResponse(matchingApps1);
+        GetMatchingDataSourcesResponse response2 = new GetMatchingDataSourcesResponse(Map.of());
         assertThat(response1.equals(response2)).isFalse();
     }
 
     @Test
     public void hashCode_equalObjects_sameHashCode() {
         Map<String, Set<String>> matchingApps1 = Map.of(TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        GetMatchingAppsResponse response1 = new GetMatchingAppsResponse(matchingApps1);
+        GetMatchingDataSourcesResponse response1 =
+                new GetMatchingDataSourcesResponse(matchingApps1);
         Map<String, Set<String>> matchingApps2 = Map.of(TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        GetMatchingAppsResponse response2 = new GetMatchingAppsResponse(matchingApps2);
+        GetMatchingDataSourcesResponse response2 =
+                new GetMatchingDataSourcesResponse(matchingApps2);
         assertThat(response1.hashCode()).isEqualTo(response2.hashCode());
     }
 
     @Test
     public void toString_containsCorrectContent() {
         Map<String, Set<String>> matchingApps = Map.of(TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
-        GetMatchingAppsResponse response = new GetMatchingAppsResponse(matchingApps);
+        GetMatchingDataSourcesResponse response = new GetMatchingDataSourcesResponse(matchingApps);
         String responseString = response.toString();
         assertThat(responseString)
-                .contains("GetMatchingAppsResponse{hasMatchingApps=true,matchingApps=");
+                .contains("GetMatchingDataSourcesResponse{hasMatchingApps=true,matchingApps=");
         assertThat(responseString).contains(TEST_PACKAGE_NAME);
         assertThat(responseString).contains(WRITE_STEPS);
     }
@@ -129,11 +135,11 @@ public class GetMatchingAppsResponseTest {
                 Map.of(
                         "com.test.package1", Set.of(WRITE_STEPS),
                         "com.test.package2", Set.of(WRITE_SLEEP));
-        GetMatchingAppsResponse response = new GetMatchingAppsResponse(matchingApps);
+        GetMatchingDataSourcesResponse response = new GetMatchingDataSourcesResponse(matchingApps);
 
         // Define a simple masker that appends a suffix.
         Function<String, String> masker = (packageName) -> packageName + ".masked";
-        GetMatchingAppsResponse maskedResponse = response.toMasked(masker);
+        GetMatchingDataSourcesResponse maskedResponse = response.toMasked(masker);
 
         // Create the expected map after masking.
         Map<String, Set<String>> expectedMap =
@@ -148,11 +154,11 @@ public class GetMatchingAppsResponseTest {
     @Test
     public void toMasked_emptyMap_returnsEmptyResponse() {
         // Verifies that masking an empty response results in another empty response.
-        GetMatchingAppsResponse response = new GetMatchingAppsResponse(Map.of());
+        GetMatchingDataSourcesResponse response = new GetMatchingDataSourcesResponse(Map.of());
 
         // Define a masker (it won't be called).
         Function<String, String> masker = (packageName) -> packageName + ".masked";
-        GetMatchingAppsResponse maskedResponse = response.toMasked(masker);
+        GetMatchingDataSourcesResponse maskedResponse = response.toMasked(masker);
 
         // Assert that the masked response is also empty.
         assertThat(maskedResponse.getMatchingApps()).isEmpty();
@@ -166,11 +172,11 @@ public class GetMatchingAppsResponseTest {
                 Map.of(
                         "com.test.package1", Set.of(WRITE_STEPS),
                         "com.test.package2", Set.of(WRITE_SLEEP));
-        GetMatchingAppsResponse response = new GetMatchingAppsResponse(matchingApps);
+        GetMatchingDataSourcesResponse response = new GetMatchingDataSourcesResponse(matchingApps);
 
         // Define a masker that always returns the same string.
         Function<String, String> masker = (packageName) -> "com.masked.package";
-        GetMatchingAppsResponse maskedResponse = response.toMasked(masker);
+        GetMatchingDataSourcesResponse maskedResponse = response.toMasked(masker);
 
         // Because Map iteration order is not guaranteed, the final value could be either set.
         // However, the map size must be 1.

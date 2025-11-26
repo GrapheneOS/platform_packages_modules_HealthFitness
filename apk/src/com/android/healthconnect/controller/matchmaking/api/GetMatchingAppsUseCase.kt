@@ -41,7 +41,7 @@ constructor(
     override suspend fun execute(input: GetMatchMakingAppsInput): List<MatchmakingAppData> {
         val result =
             suspendCancellableCoroutine<Map<String, Set<String>>> { continuation ->
-                healthConnectManager.getMatchingApps(
+                healthConnectManager.getMatchingDataSources(
                     MatchmakingRequest.Builder()
                         .setCallingPackageName(input.packageName)
                         .addRecordTypes(input.recordTypes)
