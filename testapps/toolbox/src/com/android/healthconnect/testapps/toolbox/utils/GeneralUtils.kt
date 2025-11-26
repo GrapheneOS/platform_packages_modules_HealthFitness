@@ -31,6 +31,7 @@ import android.health.connect.TimeRangeFilter
 import android.health.connect.datatypes.AggregationType
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Device
+import android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH
 import android.health.connect.datatypes.Metadata
 import android.health.connect.datatypes.Record
 import android.os.Build.MANUFACTURER
@@ -49,7 +50,11 @@ class GeneralUtils {
     companion object {
         fun getMetaData(context: Context, recordUuid: String): Metadata {
             val device: Device =
-                Device.Builder().setManufacturer(MANUFACTURER).setModel(MODEL).setType(1).build()
+                Device.Builder()
+                    .setManufacturer(MANUFACTURER)
+                    .setModel(MODEL)
+                    .setType(DEVICE_TYPE_WATCH)
+                    .build()
             val dataOrigin = DataOrigin.Builder().setPackageName(context.packageName).build()
             return Metadata.Builder()
                 .setDevice(device)
@@ -60,7 +65,11 @@ class GeneralUtils {
 
         fun getMetaData(context: Context): Metadata {
             val device: Device =
-                Device.Builder().setManufacturer(MANUFACTURER).setModel(MODEL).setType(1).build()
+                Device.Builder()
+                    .setManufacturer(MANUFACTURER)
+                    .setModel(MODEL)
+                    .setType(DEVICE_TYPE_WATCH)
+                    .build()
             val dataOrigin = DataOrigin.Builder().setPackageName(context.packageName).build()
             return Metadata.Builder().setDevice(device).setDataOrigin(dataOrigin).build()
         }
@@ -110,11 +119,13 @@ class GeneralUtils {
             timeFilterRange: TimeRangeFilter,
             numberOfRecordsPerBatch: Long,
             manager: HealthConnectManager,
+            ascending: Boolean = true,
         ): List<Record> {
             val filter =
                 ReadRecordsRequestUsingFilters.Builder(recordType)
                     .setTimeRangeFilter(timeFilterRange)
                     .setPageSize(numberOfRecordsPerBatch.toInt())
+                    .setAscending(ascending)
                     .build()
             val records =
                 suspendCancellableCoroutine<ReadRecordsResponse<*>> { continuation ->
