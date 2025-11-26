@@ -876,6 +876,14 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Titre alcoométrique volumique"</string>
     <string name="notes_title" msgid="4596764711916248492">"Notes"</string>
     <string name="details_title" msgid="8411891773854413790">"Détails"</string>
+    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> h <xliff:g id="MIN">%2$s</xliff:g> min"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> h"</string>
@@ -1343,6 +1351,10 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Non associée"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Cliquez ici pour connecter cette appli à Connexion santé"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Pas maintenant"</string>
+    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
+    <skip />
+    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
+    <skip />
     <string name="acne_read_content_description" msgid="1176708404029936065">"Lecture des données relatives à l\'acné"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Écriture des données relatives à l\'acné"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Lecture des données relatives aux ongles cassants"</string>
