@@ -111,8 +111,9 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
         context.launchMainActivity {
             navigateToManagePermissionsForApp("Health Connect cts test app")
 
-            scrollDownToAndFindText("Body measurements")
-            findTextAndClick("Body measurements")
+            // TODO(b/447325422): Use content description once toggles have A11y support
+            scrollDownToAndFindText("0 of 2 selected")
+            findTextAndClick("0 of 2 selected")
             scrollDownToAndFindText("Body fat")
             findTextAndClick("Body fat")
             clickOnDescAndWaitForNewWindow("Navigate up")
@@ -131,8 +132,9 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
             navigateToManagePermissionsForApp("Health Connect cts test app")
             assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
 
-            scrollDownToAndFindText("Body measurements")
-            findTextAndClick("Body measurements")
+            // TODO(b/447325422): Use content description once toggles have A11y support
+            scrollDownToAndFindText("2 of 2 selected")
+            findTextAndClick("2 of 2 selected")
             scrollDownToAndFindText("Body fat")
             findTextAndClick("Body fat")
             clickOnDescAndWaitForNewWindow("Navigate up")
@@ -151,8 +153,8 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
             navigateToManagePermissionsForApp("Health Connect cts test app")
 
             // TODO(b/447325422): Use content description once toggles have A11y support
-            scrollDownToAndFindText("Body measurements")
-            val preferenceRow = findObject(By.hasDescendant(By.text("Body measurements")))
+            scrollDownToAndFindText("0 of 2 selected")
+            val preferenceRow = findObject(By.hasDescendant(By.text("0 of 2 selected")))
             val switchWidget = preferenceRow.parent.findObject(By.checkable(true))
             switchWidget.click()
             clickOnDescAndWaitForNewWindow("Navigate up")
@@ -170,10 +172,11 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
         context.launchMainActivity {
             navigateToManagePermissionsForApp("Health Connect cts test app")
             assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+            assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
 
             // TODO(b/447325422): Use content description once toggles have A11y support
-            scrollDownToAndFindText("Body measurements")
-            val preferenceRow = findObject(By.hasDescendant(By.text("Body measurements")))
+            scrollDownToAndFindText("2 of 2 selected")
+            val preferenceRow = findObject(By.hasDescendant(By.text("2 of 2 selected")))
             val switchWidget = preferenceRow.parent.findObject(By.checkable(true))
             switchWidget.click()
             clickOnDescAndWaitForNewWindow("Navigate up")
