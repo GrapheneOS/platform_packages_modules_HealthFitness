@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.tests.newhome
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
 import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
@@ -603,6 +604,19 @@ class HomeViewModelTest {
         assertThat(state).isInstanceOf(HomeBannerState.NoBanner::class.java)
     }
 
+    @Test
+    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+    fun onDismissBanner_nativeStepsBanner_setsSharedPreferenceSeen() = runTest {
+        setPreferenceSeen(context, Constants.NATIVE_STEPS_BANNER_SEEN, false)
+        val state = loadBannerState()
+        assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+        assertThat((state as HomeBannerState.ShowBanners).banners)
+            .containsExactly(BannerData.NativeStepsBanner)
+        viewModel.onDismissBanner(BannerData.NativeStepsBanner)
+        advanceUntilIdle()
+        assertPreferenceSeen(context, Constants.NATIVE_STEPS_BANNER_SEEN)
+    }
+
     // endregion
 
     // region Lock screen banner
@@ -696,6 +710,28 @@ class HomeViewModelTest {
         }
 
     @Test
+    fun onDismissBanner_fitnessLockScreenBanner_setsSharedPreferenceSeen() = runTest {
+        whenever(keyguardManagerUtil.isDeviceSecure(any())).thenReturn(false)
+        setPreferenceSeen(context, Constants.LOCK_SCREEN_BANNER_SEEN_FITNESS, false)
+        setPreferenceSeen(context, Constants.LOCK_SCREEN_BANNER_SEEN_MEDICAL, false)
+        mockLoadAllDataUseCase(
+            medicalResourceTypeInfo = listOf(),
+            recordTypeInfoMap = mockFitnessData,
+        )
+        val state = loadBannerState()
+        assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+        assertThat((state as HomeBannerState.ShowBanners).banners)
+            .containsExactly(
+                BannerData.LockScreenBanner(hasAnyFitnessData = true, hasAnyMedicalData = false)
+            )
+        viewModel.onDismissBanner(
+            BannerData.LockScreenBanner(hasAnyFitnessData = true, hasAnyMedicalData = false)
+        )
+        advanceUntilIdle()
+        assertPreferenceSeen(context, Constants.LOCK_SCREEN_BANNER_SEEN_FITNESS)
+    }
+
+    @Test
     fun loadLockScreenBanner_whenMedicalDataAndMedicalBannerNotSeen_addsLockScreenBanner() =
         runTest {
             whenever(keyguardManagerUtil.isDeviceSecure(any())).thenReturn(false)
@@ -712,6 +748,28 @@ class HomeViewModelTest {
                     BannerData.LockScreenBanner(hasAnyFitnessData = false, hasAnyMedicalData = true)
                 )
         }
+
+    @Test
+    fun onDismissBanner_medicalLockScreenBanner_setsSharedPreferenceSeen() = runTest {
+        whenever(keyguardManagerUtil.isDeviceSecure(any())).thenReturn(false)
+        setPreferenceSeen(context, Constants.LOCK_SCREEN_BANNER_SEEN_FITNESS, false)
+        setPreferenceSeen(context, Constants.LOCK_SCREEN_BANNER_SEEN_MEDICAL, false)
+        mockLoadAllDataUseCase(
+            medicalResourceTypeInfo = mockMedicalData,
+            recordTypeInfoMap = mapOf(),
+        )
+        val state = loadBannerState()
+        assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+        assertThat((state as HomeBannerState.ShowBanners).banners)
+            .containsExactly(
+                BannerData.LockScreenBanner(hasAnyFitnessData = false, hasAnyMedicalData = true)
+            )
+        viewModel.onDismissBanner(
+            BannerData.LockScreenBanner(hasAnyFitnessData = false, hasAnyMedicalData = true)
+        )
+        advanceUntilIdle()
+        assertPreferenceSeen(context, Constants.LOCK_SCREEN_BANNER_SEEN_MEDICAL)
+    }
 
     @Test
     fun loadLockScreenBanner_whenCombinedDataAndNoBannerNotSeen_addsLockScreenBanner() = runTest {
@@ -779,6 +837,22 @@ class HomeViewModelTest {
     }
 
     @Test
+    fun onDismissBanner_zeroAppsOnboardingBanner_setsSharedPreferenceSeen() = runTest {
+        setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
+        setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
+        loadOnboardingStateUseCase.setOnboardingBannerState(
+            OnboardingState.ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED
+        )
+        val state = loadBannerState()
+        assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+        assertThat((state as HomeBannerState.ShowBanners).banners)
+            .containsExactly(BannerData.ZeroAppsOnboardingBanner)
+        viewModel.onDismissBanner(BannerData.ZeroAppsOnboardingBanner)
+        advanceUntilIdle()
+        assertPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN)
+    }
+
+    @Test
     fun loadOnboardingBanner_whenOneAppBannerNotSeen_addsOnboardingBanner() = runTest {
         setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
         setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
@@ -789,6 +863,22 @@ class HomeViewModelTest {
         assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
         assertThat((state as HomeBannerState.ShowBanners).banners)
             .containsExactly(BannerData.OneAppOnboardingBanner)
+    }
+
+    @Test
+    fun onDismissBanner_oneAppOnboardingBanner_setsSharedPreferenceSeen() = runTest {
+        setPreferenceSeen(context, Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, false)
+        setPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN, false)
+        loadOnboardingStateUseCase.setOnboardingBannerState(
+            OnboardingState.ONBOARDING_BANNER_STATE_ONE_APP_CONNECTED
+        )
+        val state = loadBannerState()
+        assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+        assertThat((state as HomeBannerState.ShowBanners).banners)
+            .containsExactly(BannerData.OneAppOnboardingBanner)
+        viewModel.onDismissBanner(BannerData.OneAppOnboardingBanner)
+        advanceUntilIdle()
+        assertPreferenceSeen(context, Constants.ONBOARDING_ONE_APP_BANNER_SEEN)
     }
 
     @Test
@@ -1075,5 +1165,10 @@ class HomeViewModelTest {
         val editor = sharedPreference.edit()
         editor.putBoolean(preferenceName, seen)
         editor.apply()
+    }
+
+    private fun assertPreferenceSeen(context: Context, preferenceName: String) {
+        val preferences = context.getSharedPreferences("USER_ACTIVITY_TRACKER", MODE_PRIVATE)
+        assertThat(preferences.getBoolean(preferenceName, false)).isTrue()
     }
 }
