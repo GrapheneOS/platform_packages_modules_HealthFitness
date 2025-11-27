@@ -474,7 +474,7 @@ public class HealthConnectManagerTest {
     public void testGetMatchingDataSources_usesExceptionFromService() throws Exception {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
-        TestOutcomeReceiver<Map<String, Set<String>>> receiver = new TestOutcomeReceiver<>();
+        TestOutcomeReceiver<GetMatchingDataSourcesResponse> receiver = new TestOutcomeReceiver<>();
         doAnswer(
                         (Answer<Void>)
                                 invocation -> {
@@ -504,7 +504,7 @@ public class HealthConnectManagerTest {
     public void testGetMatchingDataSources_noMatchingDataSources_emptyMap() throws Exception {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
-        TestOutcomeReceiver<Map<String, Set<String>>> receiver = new TestOutcomeReceiver<>();
+        TestOutcomeReceiver<GetMatchingDataSourcesResponse> receiver = new TestOutcomeReceiver<>();
         doAnswer(
                         (Answer<Void>)
                                 invocation -> {
@@ -523,7 +523,7 @@ public class HealthConnectManagerTest {
                 Executors.newSingleThreadExecutor(),
                 receiver);
 
-        assertThat(receiver.getResponse()).isEmpty();
+        assertThat(receiver.getResponse().getMatchingApps()).isEmpty();
     }
 
     @Test
@@ -532,7 +532,7 @@ public class HealthConnectManagerTest {
             throws Exception {
         Context context = ApplicationProvider.getApplicationContext();
         HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
-        TestOutcomeReceiver<Map<String, Set<String>>> receiver = new TestOutcomeReceiver<>();
+        TestOutcomeReceiver<GetMatchingDataSourcesResponse> receiver = new TestOutcomeReceiver<>();
         doAnswer(
                         (Answer<Void>)
                                 invocation -> {
@@ -551,8 +551,46 @@ public class HealthConnectManagerTest {
                 Executors.newSingleThreadExecutor(),
                 receiver);
 
-        assertThat(receiver.getResponse())
+        assertThat(receiver.getResponse().getMatchingApps())
                 .containsExactlyEntriesIn(getMatchingDataSourcesResponse().getMatchingApps());
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_MATCHMAKING,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void testGetMatchingDataSources_matchingDataSources_withDevices_usesResultFromService()
+            throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        TestOutcomeReceiver<GetMatchingDataSourcesResponse> receiver = new TestOutcomeReceiver<>();
+        doAnswer(
+                        (Answer<Void>)
+                                invocation -> {
+                                    IGetMatchingDataSourcesCallback callback =
+                                            invocation.getArgument(2);
+                                    callback.onResult(getMatchingDataSourcesWithDevicesResponse());
+                                    return null;
+                                })
+                .when(mService)
+                .getMatchingDataSources(any(), any(), any());
+
+        healthConnectManager.getMatchingDataSources(
+                getMatchmakingRequest(
+                        ImmutableSet.of(StepsRecord.class, SleepSessionRecord.class),
+                        PACKAGE_TO_MATCH),
+                Executors.newSingleThreadExecutor(),
+                receiver);
+
+        assertThat(receiver.getResponse().getMatchingApps())
+                .containsExactlyEntriesIn(
+                        getMatchingDataSourcesWithDevicesResponse().getMatchingApps());
+        assertThat(receiver.getResponse().getMatchingDevices())
+                .containsExactlyEntriesIn(
+                        getMatchingDataSourcesWithDevicesResponse().getMatchingDevices());
     }
 
     @Test
@@ -916,6 +954,12 @@ public class HealthConnectManagerTest {
                 Map.of("package.name", Set.of(WRITE_STEPS, WRITE_SLEEP)));
     }
 
+    private GetMatchingDataSourcesResponse getMatchingDataSourcesWithDevicesResponse() {
+        return new GetMatchingDataSourcesResponse(
+                Map.of("package.name", Set.of(WRITE_STEPS, WRITE_SLEEP)),
+                Map.of("device.package.name", Set.of(WRITE_STEPS, WRITE_SLEEP)));
+    }
+
     private GetMatchingDataSourcesResponse emptyResponse() {
         return new GetMatchingDataSourcesResponse(Map.of());
     }
@@ -936,7 +980,7 @@ public class HealthConnectManagerTest {
         private final AtomicReference<HealthConnectException> mException = new AtomicReference<>();
 
         /**
-         * Returns the resppnse received. Fails if no response received within the default timeout.
+         * Returns the response received. Fails if no response received within the default timeout.
          *
          * @throws InterruptedException if this is interrupted before any response received
          */

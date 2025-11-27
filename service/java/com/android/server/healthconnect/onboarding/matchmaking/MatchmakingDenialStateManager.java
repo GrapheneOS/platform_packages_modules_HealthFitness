@@ -109,6 +109,12 @@ public final class MatchmakingDenialStateManager {
         return storedValues.denialCount() >= MAX_DENIALS_BEFORE_PAUSE;
     }
 
+    synchronized boolean isMatchmakingForDevicePaused(
+            String callingPackageName, String matchingDevicePackageName) {
+        // TODO (b/464275794) implement denial counter for devices
+        return false;
+    }
+
     private String getPreferenceKey(DenialKey denialKey) {
         return String.join(
                 "_",

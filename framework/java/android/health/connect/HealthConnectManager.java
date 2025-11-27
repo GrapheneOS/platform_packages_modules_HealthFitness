@@ -3709,7 +3709,9 @@ public class HealthConnectManager {
     public void getMatchingDataSources(
             @NonNull MatchmakingRequest request,
             @NonNull @CallbackExecutor Executor executor,
-            @NonNull OutcomeReceiver<Map<String, Set<String>>, HealthConnectException> callback) {
+            @NonNull
+                    OutcomeReceiver<GetMatchingDataSourcesResponse, HealthConnectException>
+                            callback) {
         Objects.requireNonNull(request);
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
@@ -3722,8 +3724,7 @@ public class HealthConnectManager {
                         @RequiresNoPermission
                         public void onResult(GetMatchingDataSourcesResponse response) {
                             Binder.clearCallingIdentity();
-                            Map<String, Set<String>> matchingApps = response.getMatchingApps();
-                            executor.execute(() -> callback.onResult(matchingApps));
+                            executor.execute(() -> callback.onResult(response));
                         }
 
                         @Override

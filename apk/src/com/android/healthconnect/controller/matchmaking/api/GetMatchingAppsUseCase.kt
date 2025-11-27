@@ -16,6 +16,7 @@
 
 package com.android.healthconnect.controller.matchmaking.api
 
+import android.health.connect.GetMatchingDataSourcesResponse
 import android.health.connect.HealthConnectManager
 import android.health.connect.MatchmakingRequest
 import android.health.connect.datatypes.Record
@@ -40,7 +41,7 @@ constructor(
 
     override suspend fun execute(input: GetMatchMakingAppsInput): List<MatchmakingAppData> {
         val result =
-            suspendCancellableCoroutine<Map<String, Set<String>>> { continuation ->
+            suspendCancellableCoroutine<GetMatchingDataSourcesResponse> { continuation ->
                 healthConnectManager.getMatchingDataSources(
                     MatchmakingRequest.Builder()
                         .setCallingPackageName(input.packageName)
@@ -50,7 +51,7 @@ constructor(
                     continuation.asOutcomeReceiver(),
                 )
             }
-        return result
+        return result.matchingApps
             .map { (packageName, permissions) ->
                 MatchmakingAppData(
                     appInfoReader.getAppMetadata(packageName),

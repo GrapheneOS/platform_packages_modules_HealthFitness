@@ -414,6 +414,8 @@ package android.health.connect {
 
   @FlaggedApi("com.android.healthfitness.flags.matchmaking") public final class MatchmakingRequest implements android.os.Parcelable {
     method public int describeContents();
+    method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @NonNull public java.util.Set<android.health.connect.datatypes.DataOrigin> getExcludedDataSources();
+    method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @NonNull public java.util.Set<android.health.connect.datatypes.DataOrigin> getIncludedDataSources();
     method @NonNull public java.util.Set<java.lang.Class<? extends android.health.connect.datatypes.Record>> getRecordTypes();
     method public void writeToParcel(@NonNull android.os.Parcel, int);
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.MatchmakingRequest> CREATOR;
@@ -424,6 +426,8 @@ package android.health.connect {
     method @NonNull public android.health.connect.MatchmakingRequest.Builder addRecordType(@NonNull Class<? extends android.health.connect.datatypes.Record>);
     method @NonNull public android.health.connect.MatchmakingRequest.Builder addRecordTypes(@NonNull java.util.Set<java.lang.Class<? extends android.health.connect.datatypes.Record>>);
     method @NonNull public android.health.connect.MatchmakingRequest build();
+    method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @NonNull public android.health.connect.MatchmakingRequest.Builder setExcludedDataSources(@NonNull java.util.Set<android.health.connect.datatypes.DataOrigin>);
+    method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @NonNull public android.health.connect.MatchmakingRequest.Builder setIncludedDataSources(@NonNull java.util.Set<android.health.connect.datatypes.DataOrigin>);
   }
 
   @FlaggedApi("com.android.healthfitness.flags.matchmaking") public final class MatchmakingResponse implements android.os.Parcelable {

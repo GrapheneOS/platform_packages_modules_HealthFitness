@@ -43,6 +43,7 @@ import java.util.function.Function;
 public final class GetMatchingDataSourcesResponse
         implements Parcelable, PackageNameMasker<GetMatchingDataSourcesResponse> {
     private final Map<String, Set<String>> mMatchingApps;
+    // TODO (b/466997475) return Set<DeviceDataSourceInfo> instead
     private final Map<String, Set<String>> mMatchingDevices;
 
     /**

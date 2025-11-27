@@ -21,21 +21,30 @@ import static org.junit.Assert.assertThrows;
 
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
+import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.os.Parcel;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.Flags;
+
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
 @RunWith(AndroidJUnit4.class)
 public class MatchmakingRequestTest {
     private static final String TEST_PACKAGE_NAME = "com.test.package";
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Test
     public void builder_addRecordType_success() {
@@ -91,6 +100,68 @@ public class MatchmakingRequestTest {
     }
 
     @Test
+    public void builder_setIncludeDataOrigins_success() {
+        Set<DataOrigin> dataOrigins = new HashSet<>();
+        dataOrigins.add(new DataOrigin.Builder().setPackageName("package1").build());
+        dataOrigins.add(new DataOrigin.Builder().setPackageName("package2").build());
+        dataOrigins.add(new DataOrigin.Builder().setPackageName("package3").build());
+
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().setIncludedDataSources(dataOrigins).build();
+
+        assertThat(request.getIncludedDataSources()).containsExactlyElementsIn(dataOrigins);
+        assertThat(request.getExcludedDataSources()).isEmpty();
+    }
+
+    @Test
+    public void builder_setExcludeDataOrigins_success() {
+        Set<DataOrigin> dataOrigins = new HashSet<>();
+        dataOrigins.add(new DataOrigin.Builder().setPackageName("package1").build());
+        dataOrigins.add(new DataOrigin.Builder().setPackageName("package2").build());
+        dataOrigins.add(new DataOrigin.Builder().setPackageName("package3").build());
+
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().setExcludedDataSources(dataOrigins).build();
+
+        assertThat(request.getExcludedDataSources()).containsExactlyElementsIn(dataOrigins);
+        assertThat(request.getIncludedDataSources()).isEmpty();
+    }
+
+    @Test
+    public void builder_setIncludeDataOrigins_whenExcludesSet_throws() {
+        Set<DataOrigin> includeDataOrigins = new HashSet<>();
+        includeDataOrigins.add(new DataOrigin.Builder().setPackageName("package1").build());
+        includeDataOrigins.add(new DataOrigin.Builder().setPackageName("package2").build());
+        includeDataOrigins.add(new DataOrigin.Builder().setPackageName("package3").build());
+        Set<DataOrigin> excludeDataOrigins =
+                Set.of(new DataOrigin.Builder().setPackageName("exclude.package").build());
+
+        MatchmakingRequest.Builder requestBuilder =
+                new MatchmakingRequest.Builder().setExcludedDataSources(excludeDataOrigins);
+
+        assertThrows(
+                IllegalStateException.class,
+                () -> requestBuilder.setIncludedDataSources(includeDataOrigins));
+    }
+
+    @Test
+    public void builder_setExcludeDataOrigins_whenIncludesSet_throws() {
+        Set<DataOrigin> excludeDataOrigins = new HashSet<>();
+        excludeDataOrigins.add(new DataOrigin.Builder().setPackageName("package1").build());
+        excludeDataOrigins.add(new DataOrigin.Builder().setPackageName("package2").build());
+        excludeDataOrigins.add(new DataOrigin.Builder().setPackageName("package3").build());
+        Set<DataOrigin> includeDataOrigins =
+                Set.of(new DataOrigin.Builder().setPackageName("exclude.package").build());
+
+        MatchmakingRequest.Builder requestBuilder =
+                new MatchmakingRequest.Builder().setIncludedDataSources(includeDataOrigins);
+
+        assertThrows(
+                IllegalStateException.class,
+                () -> requestBuilder.setExcludedDataSources(excludeDataOrigins));
+    }
+
+    @Test
     public void parcelable_writeToParcelAndCreateFromParcel_success() {
         Set<Class<? extends Record>> recordTypes =
                 Set.of(ActiveCaloriesBurnedRecord.class, BasalMetabolicRateRecord.class);
@@ -123,6 +194,50 @@ public class MatchmakingRequestTest {
         parcel.recycle();
 
         assertThat(newRequest).isEqualTo(originalRequest);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void parcelable_withIncludeDataOrigins() {
+        DataOrigin include = new DataOrigin.Builder().setPackageName("include.pkg").build();
+
+        MatchmakingRequest originalRequest =
+                new MatchmakingRequest.Builder()
+                        .addRecordType(StepsRecord.class)
+                        .setIncludedDataSources(Set.of(include))
+                        .build();
+
+        Parcel parcel = Parcel.obtain();
+        originalRequest.writeToParcel(parcel, 0);
+        parcel.setDataPosition(0);
+        MatchmakingRequest newRequest = MatchmakingRequest.CREATOR.createFromParcel(parcel);
+        parcel.recycle();
+
+        assertThat(newRequest).isEqualTo(originalRequest);
+        assertThat(newRequest.getIncludedDataSources()).containsExactly(include);
+        assertThat(newRequest.getExcludedDataSources()).isEmpty();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void parcelable_withExcludeDataOrigins() {
+        DataOrigin exclude = new DataOrigin.Builder().setPackageName("exclude.pkg").build();
+
+        MatchmakingRequest originalRequest =
+                new MatchmakingRequest.Builder()
+                        .addRecordType(StepsRecord.class)
+                        .setExcludedDataSources(Set.of(exclude))
+                        .build();
+
+        Parcel parcel = Parcel.obtain();
+        originalRequest.writeToParcel(parcel, 0);
+        parcel.setDataPosition(0);
+        MatchmakingRequest newRequest = MatchmakingRequest.CREATOR.createFromParcel(parcel);
+        parcel.recycle();
+
+        assertThat(newRequest).isEqualTo(originalRequest);
+        assertThat(newRequest.getExcludedDataSources()).containsExactly(exclude);
+        assertThat(newRequest.getIncludedDataSources()).isEmpty();
     }
 
     @Test
@@ -183,6 +298,44 @@ public class MatchmakingRequestTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void equals_withIncludeDataOrigins() {
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName("pkg1").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName("pkg2").build();
+
+        MatchmakingRequest request1 =
+                new MatchmakingRequest.Builder().setIncludedDataSources(Set.of(origin1)).build();
+        MatchmakingRequest request2 =
+                new MatchmakingRequest.Builder().setIncludedDataSources(Set.of(origin1)).build();
+        MatchmakingRequest request3 =
+                new MatchmakingRequest.Builder()
+                        .setIncludedDataSources(Set.of(origin2)) // Different included
+                        .build();
+
+        assertThat(request1).isEqualTo(request2);
+        assertThat(request1).isNotEqualTo(request3);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void equals_withExcludeDataOrigins() {
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName("pkg1").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName("pkg2").build();
+
+        MatchmakingRequest request1 =
+                new MatchmakingRequest.Builder().setExcludedDataSources(Set.of(origin1)).build();
+        MatchmakingRequest request2 =
+                new MatchmakingRequest.Builder().setExcludedDataSources(Set.of(origin1)).build();
+        MatchmakingRequest request3 =
+                new MatchmakingRequest.Builder()
+                        .setExcludedDataSources(Set.of(origin2)) // Different excluded
+                        .build();
+
+        assertThat(request1).isEqualTo(request2);
+        assertThat(request1).isNotEqualTo(request3);
+    }
+
+    @Test
     public void hashCode_sameRecordTypes_returnsSameHashCode() {
         Set<Class<? extends Record>> recordTypes1 = Set.of(ActiveCaloriesBurnedRecord.class);
         MatchmakingRequest request1 =
@@ -225,6 +378,40 @@ public class MatchmakingRequestTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void hashCode_withIncludeDataSources() {
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName("pkg1").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName("pkg2").build();
+
+        MatchmakingRequest request1 =
+                new MatchmakingRequest.Builder().setIncludedDataSources(Set.of(origin1)).build();
+        MatchmakingRequest request2 =
+                new MatchmakingRequest.Builder().setIncludedDataSources(Set.of(origin1)).build();
+        MatchmakingRequest request3 =
+                new MatchmakingRequest.Builder().setIncludedDataSources(Set.of(origin2)).build();
+
+        assertThat(request1.hashCode()).isEqualTo(request2.hashCode());
+        assertThat(request1.hashCode()).isNotEqualTo(request3.hashCode());
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void hashCode_withExcludeDataSources() {
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName("pkg1").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName("pkg2").build();
+
+        MatchmakingRequest request1 =
+                new MatchmakingRequest.Builder().setExcludedDataSources(Set.of(origin1)).build();
+        MatchmakingRequest request2 =
+                new MatchmakingRequest.Builder().setExcludedDataSources(Set.of(origin1)).build();
+        MatchmakingRequest request3 =
+                new MatchmakingRequest.Builder().setExcludedDataSources(Set.of(origin2)).build();
+
+        assertThat(request1.hashCode()).isEqualTo(request2.hashCode());
+        assertThat(request1.hashCode()).isNotEqualTo(request3.hashCode());
+    }
+
+    @Test
     public void toString_containsRecordTypes() {
         Set<Class<? extends Record>> recordTypes = Set.of(ActiveCaloriesBurnedRecord.class);
         MatchmakingRequest request =
@@ -248,6 +435,117 @@ public class MatchmakingRequestTest {
         assertThat(requestString).contains("recordTypes=[");
         assertThat(requestString).contains(StepsRecord.class.toString());
         assertThat(requestString).contains(SleepSessionRecord.class.toString());
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void toString_containsIncludeDataOrigins() {
+        DataOrigin include = new DataOrigin.Builder().setPackageName("included.pkg").build();
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().setIncludedDataSources(Set.of(include)).build();
+
+        assertThat(request.toString()).contains("includedDataSources=[");
+        assertThat(request.toString()).contains("included.pkg");
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void toString_containsExcludeDataOrigins() {
+        DataOrigin exclude = new DataOrigin.Builder().setPackageName("excluded.pkg").build();
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder().setExcludedDataSources(Set.of(exclude)).build();
+
+        assertThat(request.toString()).contains("excludedDataSources=[");
+        assertThat(request.toString()).contains("excluded.pkg");
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void toUnmasked_withIncludeDataOrigins_returnsNewUnmaskedInstance() {
+        final String maskedPackageName = "masked.package.name";
+        final String unmaskedPackageName = "unmasked.package.name";
+        DataOrigin include = new DataOrigin.Builder().setPackageName(maskedPackageName).build();
+
+        MatchmakingRequest originalRequest =
+                new MatchmakingRequest.Builder()
+                        .addRecordType(StepsRecord.class)
+                        .setCallingPackageName(TEST_PACKAGE_NAME)
+                        .setIncludedDataSources(Set.of(include))
+                        .build();
+
+        Function<String, String> unmasker =
+                packageName -> {
+                    assertThat(packageName).isEqualTo(maskedPackageName);
+                    return unmaskedPackageName;
+                };
+
+        MatchmakingRequest unmaskedRequest = originalRequest.toUnmasked(unmasker);
+
+        assertThat(unmaskedRequest).isNotSameInstanceAs(originalRequest);
+        assertThat(unmaskedRequest.getRecordTypes()).isEqualTo(originalRequest.getRecordTypes());
+        // Calling package name should not be masked
+        assertThat(unmaskedRequest.getCallingPackageName())
+                .isEqualTo(originalRequest.getCallingPackageName());
+        DataOrigin unmaskedInclude =
+                new DataOrigin.Builder().setPackageName(unmaskedPackageName).build();
+        assertThat(unmaskedRequest.getIncludedDataSources()).containsExactly(unmaskedInclude);
+        assertThat(unmaskedRequest.getExcludedDataSources()).isEmpty();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void toUnmasked_withExcludeDataOrigins_returnsNewUnmaskedInstance() {
+        final String maskedPackageName = "masked.package.name";
+        final String unmaskedPackageName = "unmasked.package.name";
+        DataOrigin exclude = new DataOrigin.Builder().setPackageName(maskedPackageName).build();
+
+        MatchmakingRequest originalRequest =
+                new MatchmakingRequest.Builder()
+                        .addRecordType(StepsRecord.class)
+                        .setCallingPackageName(TEST_PACKAGE_NAME)
+                        .setExcludedDataSources(Set.of(exclude))
+                        .build();
+
+        Function<String, String> unmasker =
+                packageName -> {
+                    assertThat(packageName).isEqualTo(maskedPackageName);
+                    return unmaskedPackageName;
+                };
+
+        MatchmakingRequest unmaskedRequest = originalRequest.toUnmasked(unmasker);
+
+        assertThat(unmaskedRequest).isNotSameInstanceAs(originalRequest);
+        assertThat(unmaskedRequest.getRecordTypes()).isEqualTo(originalRequest.getRecordTypes());
+        // Calling package name should not be masked
+        assertThat(unmaskedRequest.getCallingPackageName())
+                .isEqualTo(originalRequest.getCallingPackageName());
+        DataOrigin unmaskedInclude =
+                new DataOrigin.Builder().setPackageName(unmaskedPackageName).build();
+        assertThat(unmaskedRequest.getExcludedDataSources()).containsExactly(unmaskedInclude);
+        assertThat(unmaskedRequest.getIncludedDataSources()).isEmpty();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void toUnmasked_withoutIncludeOrExclude_returnsEquivalentRequest() {
+        final String maskedPackageName = "masked.package.name";
+        final String unmaskedPackageName = "unmasked.package.name";
+
+        MatchmakingRequest originalRequest =
+                new MatchmakingRequest.Builder()
+                        .addRecordType(StepsRecord.class)
+                        .setCallingPackageName(TEST_PACKAGE_NAME)
+                        .build();
+
+        Function<String, String> unmasker =
+                packageName -> {
+                    assertThat(packageName).isEqualTo(maskedPackageName);
+                    return unmaskedPackageName;
+                };
+
+        MatchmakingRequest unmaskedRequest = originalRequest.toUnmasked(unmasker);
+
+        assertThat(unmaskedRequest).isEqualTo(originalRequest);
     }
 
     @Test

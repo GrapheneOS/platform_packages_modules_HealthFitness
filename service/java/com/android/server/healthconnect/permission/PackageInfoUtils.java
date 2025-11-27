@@ -275,4 +275,24 @@ public final class PackageInfoUtils {
     private static boolean isExplicitlyRequested(int flags) {
         return (flags & PackageInfo.REQUESTED_PERMISSION_IMPLICIT) == 0;
     }
+
+    /**
+     * Returns true if the calling package has visibility over the requested package, in this user
+     * context.
+     *
+     * @param callingPackage The calling package name
+     * @param requestedPackage The package name that callingPackage wants to get information about
+     * @param user The current UserHandle
+     * @param context The context
+     * @return Whether the callingPackage has visibility over the requestedPackage.
+     */
+    public boolean hasPackageVisibility(
+            String callingPackage, String requestedPackage, UserHandle user, Context context) {
+        try {
+            return getPackageManagerAsUser(context, user)
+                    .canPackageQuery(callingPackage, requestedPackage);
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
 }
