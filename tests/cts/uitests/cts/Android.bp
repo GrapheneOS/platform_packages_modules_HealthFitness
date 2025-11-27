@@ -54,4 +54,5 @@ android_test {
     min_sdk_version: "34",
     sdk_version: "test_current",
     manifest: "AndroidManifest.xml",
+    jarjar_rules: ":health-cts-jarjar-rules",
 }
