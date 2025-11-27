@@ -233,7 +233,8 @@ public class FitnessRecordUpsertHelperTest {
                                 mFitnessRecordUpsertHelper.updateRecords(
                                         TEST_PACKAGE_NAME,
                                         List.of(symptomRecordInternal),
-                                        new ArrayMap<>()));
+                                        new ArrayMap<>(),
+                                        /* shouldGenerateAccessLogs= */ true));
 
         assertThat(thrown).hasMessageThat().isEqualTo("Updating Symptom type is not allowed.");
     }
@@ -260,7 +261,10 @@ public class FitnessRecordUpsertHelperTest {
 
         List<String> uuids =
                 mFitnessRecordUpsertHelper.updateRecords(
-                        TEST_PACKAGE_NAME, List.of(symptomRecordInternal), new ArrayMap<>());
+                        TEST_PACKAGE_NAME,
+                        List.of(symptomRecordInternal),
+                        new ArrayMap<>(),
+                        /* shouldGenerateAccessLogs= */ true);
 
         assertThat(uuids).containsExactly(uuid);
     }
