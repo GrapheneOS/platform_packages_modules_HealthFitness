@@ -31,6 +31,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
@@ -1065,6 +1066,9 @@ public class DeviceDataProviderManagerTest {
     @Test
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void isPermittedToProvideDeviceData_baklavaAndLower_withManagePermission_returnsTrue() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT <= Build.VERSION_CODES.BAKLAVA);
+
         doReturn(PackageManager.PERMISSION_DENIED)
                 .when(mContext)
                 .checkPermission(
@@ -1087,6 +1091,9 @@ public class DeviceDataProviderManagerTest {
     @Test
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void isPermittedToProvideDeviceData_baklavaAndLower_noPermission_returnsFalse() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT <= Build.VERSION_CODES.BAKLAVA);
+
         doReturn(PackageManager.PERMISSION_DENIED)
                 .when(mContext)
                 .checkPermission(
@@ -1109,6 +1116,9 @@ public class DeviceDataProviderManagerTest {
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA + 1)
     public void isPermittedToProvideDeviceData_postBaklava_withProvidePermission_returnsTrue() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT > Build.VERSION_CODES.BAKLAVA);
+
         doReturn(PackageManager.PERMISSION_GRANTED)
                 .when(mContext)
                 .checkPermission(
@@ -1131,6 +1141,9 @@ public class DeviceDataProviderManagerTest {
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA + 1)
     public void isPermittedToProvideDeviceData_postBaklava_withManagePermission_returnsFalse() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT > Build.VERSION_CODES.BAKLAVA);
+
         doReturn(PackageManager.PERMISSION_DENIED)
                 .when(mContext)
                 .checkPermission(
@@ -1153,6 +1166,9 @@ public class DeviceDataProviderManagerTest {
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA + 1)
     public void isPermittedToProvideDeviceData_postBaklava_noPermission_returnsFalse() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT > Build.VERSION_CODES.BAKLAVA);
+
         doReturn(PackageManager.PERMISSION_DENIED)
                 .when(mContext)
                 .checkPermission(
@@ -1175,6 +1191,9 @@ public class DeviceDataProviderManagerTest {
     @Test
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void isPermittedToProvideDeviceData_baklavaAndLower_aRPackage_returnsTrue() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT <= Build.VERSION_CODES.BAKLAVA);
+
         doReturn(PackageManager.PERMISSION_DENIED)
                 .when(mContext)
                 .checkPermission(
