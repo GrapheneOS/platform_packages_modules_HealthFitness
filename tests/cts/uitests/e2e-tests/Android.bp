@@ -17,21 +17,17 @@ package {
     default_team: "trendy_team_android_health",
 }
 
-android_test {
-    name: "HealthConnectUIE2ETests",
+android_library {
+    name: "HealthConnectUIE2ETestLibrary",
     team: "trendy_team_android_health",
+    srcs: [
+        "src/android/healthconnect/e2e/ui/HealthConnectBaseTest.kt",
+    ],
     libs: [
         "android.test.runner.stubs.test",
         "android.test.base.stubs.test",
         "android.test.mock.stubs.system",
         "framework-healthfitness.stubs.system",
-    ],
-    srcs: [
-        "src/**/*.kt",
-    ],
-    // Tag this module as a cts test artifact
-    test_suites: [
-        "general-tests",
     ],
     static_libs: [
         "androidx.test.rules",
@@ -49,7 +45,37 @@ android_test {
     ],
     min_sdk_version: "34",
     sdk_version: "test_current",
-    manifest: "AndroidManifest.xml",
+}
+
+java_defaults {
+    name: "health-connect-e2e-ui-tests-default",
+    team: "trendy_team_android_health",
+    libs: [
+        "android.test.runner.stubs.test",
+        "android.test.base.stubs.test",
+        "android.test.mock.stubs.system",
+        "framework-healthfitness.stubs.system",
+    ],
+    static_libs: [
+        "HealthConnectUIE2ETestLibrary",
+        "androidx.test.rules",
+        "androidx.test.ext.truth",
+        "androidx.test.core",
+        "platform-test-annotations",
+        "mockito-kotlin2",
+        "compatibility-device-util-axt",
+        "ctstestrunner-axt",
+        "cts-wm-util",
+        "testng",
+        "aconfig_settingstheme_exported_flags_java_lib",
+        "collector-device-lib",
+        "healthfitness-testing-cts",
+    ],
+    test_suites: [
+        "general-tests",
+    ],
+    min_sdk_version: "34",
+    sdk_version: "test_current",
     data: [
         ":HealthFitnessCtsTestApp",
         ":HealthFitnessCtsTestApp2",
@@ -57,4 +83,61 @@ android_test {
         ":CtsHealthConnectTestAppAWithNormalReadWritePermission",
         ":CtsHealthConnectTestAppBWithNormalReadWritePermission",
     ],
+}
+
+filegroup {
+    name: "e2e-permission-tests-srcs",
+    srcs: [
+        "src/android/healthconnect/e2e/ui/permissions/**/*.kt",
+        "src/android/healthconnect/e2e/ui/matchmaking/**/*.kt",
+        "src/android/healthconnect/e2e/ui/BaseDataTypeTest.kt",
+        "src/android/healthconnect/e2e/ui/ActivityIntensityTest.kt",
+        "src/android/healthconnect/e2e/ui/AlcoholConsumptionTest.kt",
+        "src/android/healthconnect/e2e/ui/MenstrualCyclePhaseTest.kt",
+        "src/android/healthconnect/e2e/ui/MindfulnessTest.kt",
+        "src/android/healthconnect/e2e/ui/NicotineIntakeTest.kt",
+    ],
+    visibility: ["//visibility:private"],
+}
+
+android_test {
+    name: "HealthConnectUIE2EPermissionTests",
+    defaults: ["health-connect-e2e-ui-tests-default"],
+    srcs: [":e2e-permission-tests-srcs"],
+    manifest: "AndroidManifest_PermissionTests.xml",
+    test_config: "AndroidTest_PermissionTests.xml",
+}
+
+filegroup {
+    name: "e2e-phr-tests-srcs",
+    srcs: [
+        "src/android/healthconnect/e2e/ui/phr/**/*.kt",
+    ],
+    visibility: ["//visibility:private"],
+}
+
+android_test {
+    name: "HealthConnectUIE2EPHRTests",
+    defaults: ["health-connect-e2e-ui-tests-default"],
+    srcs: [":e2e-phr-tests-srcs"],
+    manifest: "AndroidManifest_PHRTests.xml",
+    test_config: "AndroidTest_PHRTests.xml",
+}
+
+filegroup {
+    name: "e2e-data-mgmt-tests-srcs",
+    srcs: [
+        "src/android/healthconnect/e2e/ui/HomeFragmentTest.kt",
+        "src/android/healthconnect/e2e/ui/ManageDataFragmentTest.kt",
+        "src/android/healthconnect/e2e/ui/newia/**/*.kt",
+    ],
+    visibility: ["//visibility:private"],
+}
+
+android_test {
+    name: "HealthConnectUIE2EDataTests",
+    defaults: ["health-connect-e2e-ui-tests-default"],
+    srcs: [":e2e-data-mgmt-tests-srcs"],
+    manifest: "AndroidManifest_DataTests.xml",
+    test_config: "AndroidTest_DataTests.xml",
 }

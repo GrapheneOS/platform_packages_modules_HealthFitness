@@ -185,7 +185,13 @@
        "name": "CtsHealthFitnessDeviceTestCasesNotAllPermissionsAreGranted"
     },
     {
-      "name": "HealthConnectUIE2ETests"
+      "name": "HealthConnectUIE2EPermissionTests"
+    },
+    {
+    "name": "HealthConnectUIE2EPHRTests"
+    },
+    {
+    "name": "HealthConnectUIE2EDataTests"
     }
   ],
   // Run our bivalent tests.
