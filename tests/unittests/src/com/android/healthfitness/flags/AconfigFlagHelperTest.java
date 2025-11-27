@@ -103,13 +103,21 @@ public class AconfigFlagHelperTest {
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_DEVELOPMENT_DATABASE_RW, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @DisableFlags({
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API
+    })
     public void isDeviceDataProvidersEnabled_flagOff_expectFalse() {
         assertThat(isDeviceDataProvidersEnabled()).isFalse();
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE_RW, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @EnableFlags({
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API
+    })
     public void isDeviceDataProvidersEnabled_flagOn_expectTrue() {
         assertThat(isDeviceDataProvidersEnabled()).isTrue();
     }
