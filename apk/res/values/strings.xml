@@ -1157,7 +1157,7 @@
 
     <!-- region Alcohol Consumption -->
     <string name="alcohol_consumption_title" description="Title of a single data entry for Alcohol Consumption. [CHAR LIMIT=20]"><xliff:g example="Beer" id="type">%1$s</xliff:g></string>
-    <string name="alcohol_consumption_beverage_type_other" description="Alcohol consumption beverage type: Other. [CHAR LIMIT=20]">Other</string>
+    <string name="alcohol_consumption_beverage_type_other" description="Alcohol consumption beverage type: Other. Displayed to the user as an unknown beverage. [CHAR LIMIT=20]">Unknown beverage</string>
     <string name="alcohol_consumption_beverage_type_beer" description="Alcohol consumption beverage type: Beer. [CHAR LIMIT=20]">Beer</string>
     <string name="alcohol_consumption_beverage_type_wine" description="Alcohol consumption beverage type: Wine. [CHAR LIMIT=20]">Wine</string>
     <string name="alcohol_consumption_beverage_type_vodka" description="Alcohol consumption beverage type: Vodka. [CHAR LIMIT=20]">Vodka</string>

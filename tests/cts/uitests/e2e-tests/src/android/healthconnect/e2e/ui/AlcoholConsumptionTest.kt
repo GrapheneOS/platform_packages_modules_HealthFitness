@@ -43,7 +43,7 @@ class AlcoholConsumptionTest : BaseDataTypeTest<AlcoholConsumptionRecord>() {
 
     override val hasDetailsScreen = true
     override val expectedRecordDetailsHeader = "Serving Volume"
-    override val expectedRecordDetailsTitle = "568 ml"
+    override val expectedRecordDetailsTitle = "568 mL"
 
     override fun createRecord() =
         AlcoholConsumptionRecord.Builder(
