@@ -367,7 +367,10 @@ public class DeviceDataProviderManager {
                 callingDdpPackageName, deviceId, records, syntheticPackageName, appInfoId);
 
         return mFitnessRecordUpsertHelper.updateRecords(
-                syntheticPackageName, records, EMPTY_EXTRA_PERMISSION_MAPPING);
+                syntheticPackageName,
+                records,
+                EMPTY_EXTRA_PERMISSION_MAPPING,
+                /* shouldGenerateAccessLogs= */ false);
     }
 
     /**

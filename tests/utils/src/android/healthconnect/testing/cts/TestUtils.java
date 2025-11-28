@@ -211,6 +211,17 @@ public final class TestUtils {
         MASKED_SPN_PATTERN = Pattern.compile(regex);
     }
 
+    private static final Pattern CANONICAL_SPN_PATTERN;
+
+    static {
+        String typesRegexSegment = String.join("|", DEVICE_TYPE_TO_DISPLAY_NAME.values());
+
+        String regex =
+                "^com.android.healthconnect\\.(%s)\\.d[0-9a-f]{32}$".formatted(typesRegexSegment);
+
+        CANONICAL_SPN_PATTERN = Pattern.compile(regex);
+    }
+
     public static ChangeLogTokenResponse getChangeLogToken(ChangeLogTokenRequest request)
             throws InterruptedException {
         return getChangeLogToken(request, ApplicationProvider.getApplicationContext());
@@ -1192,6 +1203,15 @@ public final class TestUtils {
      */
     public static boolean isMaskedSyntheticPackageName(String input) {
         return MASKED_SPN_PATTERN.matcher(input).matches();
+    }
+
+    /**
+     * Returns whether the given String is a canonical Synthetic Package Name, meaning if it's a
+     * device identifier that's used internally only. This should always be false for the CTS side,
+     * as the identifier must not be leaked to clients, see go/hc-masking.
+     */
+    public static boolean isCanonicalSyntheticPackageName(String input) {
+        return CANONICAL_SPN_PATTERN.matcher(input).matches();
     }
 
     /**

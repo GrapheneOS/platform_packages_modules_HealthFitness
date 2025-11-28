@@ -162,12 +162,14 @@ public class FitnessRecordUpsertHelper {
      * @param recordInternals The list of records to be inserted.
      * @param extraPermsStateMap A map of extra permissions and their grant state. An empty map
      *     means all permissions are granted.
+     * @param shouldGenerateAccessLogs Whether access logs should be generated or not.
      * @return List of UUIDs of the inserted records.
      */
     public List<String> updateRecords(
             String callingPackageName,
             List<? extends RecordInternal<?>> recordInternals,
-            ArrayMap<String, Boolean> extraPermsStateMap) {
+            ArrayMap<String, Boolean> extraPermsStateMap,
+            boolean shouldGenerateAccessLogs) {
 
         Map<Integer, List<RecordInternal<?>>> recordTypesToRecordInternals = new HashMap<>();
         for (RecordInternal<?> recordInternal : recordInternals) {
@@ -188,7 +190,7 @@ public class FitnessRecordUpsertHelper {
                         callingPackageName,
                         recordInternals,
                         /* isInsertRequest= */ false,
-                        /* shouldGenerateAccessLog= */ true,
+                        shouldGenerateAccessLogs,
                         /* shouldGenerateChangeLog= */ true,
                         /* shouldPreferNewRecord= */ true,
                         /* updateLastModifiedTime= */ true,

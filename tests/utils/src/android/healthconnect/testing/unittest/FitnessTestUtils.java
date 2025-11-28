@@ -140,7 +140,10 @@ public final class FitnessTestUtils {
     /** Inserts records attributed to the given package. */
     public void updateRecords(String packageName, List<RecordInternal<?>> records) {
         mFitnessRecordUpsertHelper.updateRecords(
-                packageName, records, /* extraPermsStateMap= */ new ArrayMap<>());
+                packageName,
+                records,
+                /* extraPermsStateMap= */ new ArrayMap<>(),
+                /* shouldGenerateAccessLogs= */ true);
     }
 
     /** Deletes records with the given IDs from storage. */

@@ -808,6 +808,22 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
+    public void insertDeviceRecords_noAccessLogged() {
+        advertiseDevice(DEVICE_ID);
+
+        List<RecordInternal<?>> records =
+                List.of(
+                        buildStepsRecord(
+                                /* startTimeMillis= */ 1000,
+                                /* endTimeMillis= */ 2000,
+                                /* stepsCount= */ 100));
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+
+        List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mContext.getUser());
+        assertThat(result).hasSize(0);
+    }
+
+    @Test
     public void advertisementAndNormalInsertion_createsTwoDistinctDeviceInfoEntries() {
         Device device =
                 new Device.Builder()
@@ -902,6 +918,24 @@ public class DeviceDataProviderManagerTest {
                 ((android.health.connect.internal.datatypes.StepsRecordInternal) readRecords.get(0))
                         .toExternalRecord();
         assertThat(stepsRecord.getCount()).isEqualTo(200);
+    }
+
+    @Test
+    public void updateDeviceRecords_noAccessLogged() {
+        advertiseDevice(DEVICE_ID);
+
+        List<RecordInternal<?>> records = List.of(buildStepsRecord(100, 200, 111));
+        List<String> insertedUuids =
+                mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+
+        RecordInternal<?> updatedRecord = buildStepsRecord(300, 400, 222);
+        updatedRecord.setUuid(UUID.fromString(insertedUuids.get(0)));
+
+        mDeviceDataProviderManager.updateDeviceRecords(
+                PACKAGE_NAME, DEVICE_ID, List.of(updatedRecord));
+
+        List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mContext.getUser());
+        assertThat(result).hasSize(0);
     }
 
     @Test
@@ -1388,7 +1422,7 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
-    public void withReadUsingIds_readDeviceRecords_noAccessLogged() {
+    public void readDeviceRecords_noAccessLogged() {
         advertiseDevice(DEVICE_ID);
 
         ReadRecordsRequestUsingIds<StepsRecord> request =
@@ -1841,6 +1875,24 @@ public class DeviceDataProviderManagerTest {
                 new DeleteUsingFiltersRequestParcel(
                         new DeleteUsingFiltersRequest.Builder().build()));
         assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, DEVICE_ID, 0, StepsRecord.class);
+    }
+
+    @Test
+    public void deleteDeviceRecords_noAccessLogged() {
+        advertiseDevice(DEVICE_ID);
+
+        List<RecordInternal<?>> records = List.of(buildStepsRecord(100, 200, 111));
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, DEVICE_ID, 1, StepsRecord.class);
+
+        mDeviceDataProviderManager.deleteDeviceRecords(
+                PACKAGE_NAME,
+                DEVICE_ID,
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder().build()));
+
+        List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mContext.getUser());
+        assertThat(result).hasSize(0);
     }
 
     @Test
