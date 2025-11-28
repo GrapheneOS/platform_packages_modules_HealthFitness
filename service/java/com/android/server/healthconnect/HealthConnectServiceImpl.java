@@ -3446,11 +3446,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     }
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
+                    throwExceptionIfDataSyncInProgress();
                     enforceMemoryRateLimit(
                             recordsParcel.getRecordsSize(), recordsParcel.getRecordsChunkSize());
                     final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
                     logger.setNumberOfRecords(recordInternals.size());
-                    throwExceptionIfDataSyncInProgress();
                     tryAcquireApiCallQuota(
                             uid,
                             QuotaCategory.QUOTA_CATEGORY_WRITE,
@@ -3520,11 +3520,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     }
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
+                    throwExceptionIfDataSyncInProgress();
                     enforceMemoryRateLimit(
                             recordsParcel.getRecordsSize(), recordsParcel.getRecordsChunkSize());
                     final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
                     logger.setNumberOfRecords(recordInternals.size());
-                    throwExceptionIfDataSyncInProgress();
                     boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
                     tryAcquireApiCallQuota(
                             uid,
@@ -3604,8 +3604,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         "getCurrentDeviceId is not supported."
                                 + "Make sure to turn on the respective DDP flags.");
             }
-
             enforceIsForegroundUser(userHandle);
+            verifyPackageNameFromUid(uid, attributionSource);
             DeviceDataProviderManager deviceDataProviderManager =
                     requireNonNull(mDeviceDataProviderManager);
 
