@@ -403,8 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect থেকে কোন কোন ডেটা এই অ্যাপকে রিড করতে দিতে চান তা বেছে নিন"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"বিভিন্ন অ্যাপের মধ্যে ডেটা শেয়ার করুন"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> থেকে পাওয়া ডেটা"</string>
-    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> অ্যাপকে, Health Connect ব্যবহার করে এই ডিভাইসে অন্যান্য অ্যাপ থেকে ডেটা পড়ার অনুমতি দিন। এছাড়াও, আপনি অ্যাক্সেস দিয়েছেন এমন অন্যান্য অ্যাপ এই ডেটা পড়তে পারবে।"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"যেসব অ্যাপ এই ডেটা সিঙ্ক করতে পারে"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> কীভাবে আপনার ডেটা ব্যবহার করে সেই সম্পর্কে এটির "<a href="%2$s">"গোপনীয়তা নীতি"</a>" থেকে জানুন।"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect আপনাকে বিভিন্ন অ্যাপের মধ্যে নিজের স্বাস্থ্য ও ফিটনেস ডেটা শেয়ার করতে দেয়। এটি আপনার ডেটা সুরক্ষিত রাখার পাশাপাশি আপনাকে ইনসাইট ও অভিজ্ঞতা পেতে সাহায্য করে।"</string>
@@ -853,7 +852,8 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} অজানা"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"অন্যান্য"</string>
+    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
+    <skip />
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"বিয়ার"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"ওয়াইন"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"ভদকা"</string>
@@ -876,14 +876,10 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"অ্যালকোহলের পরিমাণ"</string>
     <string name="notes_title" msgid="4596764711916248492">"নোট"</string>
     <string name="details_title" msgid="8411891773854413790">"বিবরণ"</string>
-    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
-    <skip />
+    <string name="menstrual_cycle_phase_follicular" msgid="4515498093841723331">"ফলিকুলার"</string>
+    <string name="menstrual_cycle_phase_luteal" msgid="2369477800443212440">"লিউটেল"</string>
+    <string name="menstrual_cycle_phase_unknown" msgid="1126074973862101221">"অজানা পর্যায়"</string>
+    <string name="menstrual_cycle_phase_day_of_cycle" msgid="5910349012626523530">"<xliff:g id="DAY">%1$d</xliff:g>তম দিন"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> মিনিট"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g>ঘঃ <xliff:g id="MIN">%2$s</xliff:g>মিঃ"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> ঘণ্টা"</string>
