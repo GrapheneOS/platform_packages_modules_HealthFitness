@@ -969,7 +969,9 @@ class PermissionsActivityTest {
         )
 
         val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
+        registerBottomSheetIdlingResource(scenario)
         onView(withId(androidx.preference.R.id.recycler_view))
+            .inRoot(isDialog())
             .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
         onView(withText("Heart rate")).inRoot(isDialog()).perform(click())
         onIdle()
@@ -1003,9 +1005,12 @@ class PermissionsActivityTest {
         )
 
         launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
+            registerBottomSheetIdlingResource(scenario)
             onView(withId(androidx.preference.R.id.recycler_view))
+                .inRoot(isDialog())
                 .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
             onView(withText("Heart rate")).inRoot(isDialog()).perform(click())
+            onIdle()
             onView(withText("Allow")).inRoot(isDialog()).perform(click())
             onIdle()
 
