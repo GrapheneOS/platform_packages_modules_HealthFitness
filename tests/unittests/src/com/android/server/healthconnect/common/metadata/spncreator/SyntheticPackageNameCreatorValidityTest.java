@@ -21,6 +21,7 @@ import static org.junit.Assert.assertTrue;
 import android.content.Context;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.Device.DeviceType;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 import android.platform.test.annotations.LargeTest;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -116,8 +117,8 @@ public class SyntheticPackageNameCreatorValidityTest {
             initializeRun(params);
             String spn = mSyntheticPackageNameCreator.createCanonical(mDeviceType, mDeviceId);
 
-            assertTrue(SyntheticPackageNameCreator.isCanonicalSpn(spn));
-            assertFalse(SyntheticPackageNameCreator.isMaskedSpn(spn));
+            assertTrue(SyntheticPackageNameMatcher.matchesCanonical(spn));
+            assertFalse(SyntheticPackageNameMatcher.matchesMasked(spn));
         }
     }
 
@@ -144,8 +145,8 @@ public class SyntheticPackageNameCreatorValidityTest {
             String maskedSpn =
                     SyntheticPackageNameCreator.createMasked(canonicalSpn, mCallingPackage);
 
-            assertFalse(SyntheticPackageNameCreator.isCanonicalSpn(maskedSpn));
-            assertTrue(SyntheticPackageNameCreator.isMaskedSpn(maskedSpn));
+            assertFalse(SyntheticPackageNameMatcher.matchesCanonical(maskedSpn));
+            assertTrue(SyntheticPackageNameMatcher.matchesMasked(maskedSpn));
         }
     }
 

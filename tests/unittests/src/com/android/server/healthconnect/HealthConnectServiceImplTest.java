@@ -209,6 +209,7 @@ import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
@@ -240,7 +241,6 @@ import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
-import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
@@ -3757,7 +3757,7 @@ public class HealthConnectServiceImplTest {
         String deniedAppName =
                 deniedAppsCaptor.getValue().entrySet().stream().iterator().next().getKey();
         assertThat(deniedAppName).isNotEqualTo(spn);
-        assertThat(SyntheticPackageNameCreator.isCanonicalSpn(deniedAppName)).isTrue();
+        assertThat(SyntheticPackageNameMatcher.matchesCanonical(deniedAppName)).isTrue();
     }
 
     @Test
@@ -4385,7 +4385,7 @@ public class HealthConnectServiceImplTest {
         String currentDeviceId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
         awaitAllExecutorsIdle();
 
-        assertTrue(SyntheticPackageNameCreator.isMaskedSpn(currentDeviceId));
+        assertTrue(SyntheticPackageNameMatcher.matchesMasked(currentDeviceId));
     }
 
     @Test
@@ -5043,7 +5043,7 @@ public class HealthConnectServiceImplTest {
         List<DeviceDataSourceInfo> result = captor.getValue();
         assertThat(result).hasSize(1);
         String spn = result.get(0).getDeviceDataOrigin().getPackageName();
-        assertTrue(SyntheticPackageNameCreator.isMaskedSpn(spn));
+        assertTrue(SyntheticPackageNameMatcher.matchesMasked(spn));
     }
 
     @Test
@@ -5229,7 +5229,7 @@ public class HealthConnectServiceImplTest {
         List<DeviceDataSource> result = captor.getValue().getDeviceDataSources();
         assertThat(result).hasSize(1);
         String spn = result.get(0).getDeviceDataOrigin().getPackageName();
-        assertTrue(SyntheticPackageNameCreator.isMaskedSpn(spn));
+        assertTrue(SyntheticPackageNameMatcher.matchesMasked(spn));
     }
 
     private void advertiseDeviceDataSources(List<DeviceDataAdvertisement> advertisements)

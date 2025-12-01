@@ -49,6 +49,7 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.health.connect.Constants;
 import android.health.connect.datatypes.AppInfo;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
@@ -186,7 +187,7 @@ public final class AppInfoHelper extends DatabaseHelper {
         AppInfoInternal appInfo = getAppInfoMap().get(packageName);
 
         if (appInfo == null) {
-            if (SyntheticPackageNameCreator.isCanonicalSpn(packageName)) {
+            if (SyntheticPackageNameMatcher.matchesCanonical(packageName)) {
                 Slog.e(
                         TAG,
                         "Synthetic package name "

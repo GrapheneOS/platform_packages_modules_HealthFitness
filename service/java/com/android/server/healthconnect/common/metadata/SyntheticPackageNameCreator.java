@@ -15,36 +15,21 @@
  */
 package com.android.server.healthconnect.common.metadata;
 
-import static android.health.connect.datatypes.Device.DEVICE_TYPE_CHEST_STRAP;
-import static android.health.connect.datatypes.Device.DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE;
-import static android.health.connect.datatypes.Device.DEVICE_TYPE_FITNESS_BAND;
-import static android.health.connect.datatypes.Device.DEVICE_TYPE_FITNESS_EQUIPMENT;
-import static android.health.connect.datatypes.Device.DEVICE_TYPE_FITNESS_MACHINE;
-import static android.health.connect.datatypes.Device.DEVICE_TYPE_GLASSES;
-import static android.health.connect.datatypes.Device.DEVICE_TYPE_HEAD_MOUNTED;
-import static android.health.connect.datatypes.Device.DEVICE_TYPE_HEARABLE;
-import static android.health.connect.datatypes.Device.DEVICE_TYPE_METER;
-import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
-import static android.health.connect.datatypes.Device.DEVICE_TYPE_PORTABLE_COMPUTER;
-import static android.health.connect.datatypes.Device.DEVICE_TYPE_RING;
-import static android.health.connect.datatypes.Device.DEVICE_TYPE_SCALE;
-import static android.health.connect.datatypes.Device.DEVICE_TYPE_SMART_DISPLAY;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_UNKNOWN;
-import static android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH;
-
-import static java.util.Map.entry;
+import static android.health.connect.device.SyntheticPackageNameMatcher.DEVICE_TYPE_TO_DISPLAY_NAME;
+import static android.health.connect.device.SyntheticPackageNameMatcher.UUID_HEX_LENGTH;
+import static android.health.connect.device.SyntheticPackageNameMatcher.matchesCanonical;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.datatypes.Device.DeviceType;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Map;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 /**
  * Creates and validates Synthetic Package Names (SPNs) for Device Data Providers (DDP).
@@ -103,8 +88,8 @@ import java.util.regex.Pattern;
  * <h3>DeviceTypeSegment</h3>
  *
  * This segment is derived from {@code @DeviceType}. A fixed, internal mapping ({@link
- * #DEVICE_TYPE_TO_DISPLAY_NAME}) is used to determine the displayed name. Unknown types will
- * fallback to using {@code DEVICE_TYPE_UNKNOWN}.
+ * SyntheticPackageNameMatcher#DEVICE_TYPE_TO_DISPLAY_NAME}) is used to determine the displayed
+ * name. Unknown types will fallback to using {@code DEVICE_TYPE_UNKNOWN}.
  *
  * <h3>UUID Segment and Prefixes</h3>
  *
@@ -164,68 +149,6 @@ public class SyntheticPackageNameCreator {
     }
 
     /**
-     * A fixed, immutable mapping from {@code @DeviceType} to their corresponding string
-     * representations used in SPNs. This mapping MUST NOT change to guarantee the stability and
-     * reproducibility of SPNs across versions.
-     *
-     * <p>On new device types, add them to {@link
-     * android.healthconnect.testing.cts.TestUtils#DEVICE_TYPE_TO_DISPLAY_NAME} for cts tests as
-     * well.
-     */
-    @VisibleForTesting
-    public static final Map<Integer, String> DEVICE_TYPE_TO_DISPLAY_NAME =
-            Map.ofEntries(
-                    entry(DEVICE_TYPE_UNKNOWN, "unknown"),
-                    entry(DEVICE_TYPE_WATCH, "watch"),
-                    entry(DEVICE_TYPE_PHONE, "phone"),
-                    entry(DEVICE_TYPE_SCALE, "scale"),
-                    entry(DEVICE_TYPE_RING, "ring"),
-                    entry(DEVICE_TYPE_HEAD_MOUNTED, "head_mounted"),
-                    entry(DEVICE_TYPE_FITNESS_BAND, "fitness_band"),
-                    entry(DEVICE_TYPE_CHEST_STRAP, "chest_strap"),
-                    entry(DEVICE_TYPE_SMART_DISPLAY, "smart_display"),
-                    entry(DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE, "consumer_medical_device"),
-                    entry(DEVICE_TYPE_GLASSES, "glasses"),
-                    entry(DEVICE_TYPE_HEARABLE, "hearable"),
-                    entry(DEVICE_TYPE_FITNESS_MACHINE, "fitness_machine"),
-                    entry(DEVICE_TYPE_FITNESS_EQUIPMENT, "fitness_equipment"),
-                    entry(DEVICE_TYPE_PORTABLE_COMPUTER, "portable_computer"),
-                    entry(DEVICE_TYPE_METER, "meter"));
-
-    // A standard UUID (128 bits) represented as a hexadecimal string has 32 characters.
-    private static final int UUID_HEX_LENGTH = 32;
-
-    // A compiled regular expression pattern used to validate if a string is a SPN.
-    private static final Pattern SPN_PATTERN;
-
-    static {
-        // 1. Build the allowed device types segment (e.g., "phone|watch|scale")
-        // Note: This assumes the display names do not contain regex metacharacters.
-        String typesRegexSegment = String.join("|", DEVICE_TYPE_TO_DISPLAY_NAME.values());
-
-        // 2. Construct the full regex: ^PREFIX\.(type1|type2|...)\.(d|j)[0-9a-f]{32}$
-        // We validate against lowercase hexadecimal characters, which matches the output
-        // behavior of Java's UUID.toString().
-        // ^           - Start of the string
-        // PREFIX\.    - The package prefix followed by a literal dot
-        // (...)\.     - The device type alternation group followed by a literal dot
-        // (d|j)       - The prefix character (Canonical or Masked)
-        // [0-9a-f]    - Hexadecimal characters (lowercase)
-        // {32}        - Exactly 32 times
-        // $           - End of the string
-        String regex =
-                "^%s\\.(%s)\\.(%s|%s)[0-9a-f]{%d}$"
-                        .formatted(
-                                PACKAGE_PREFIX,
-                                typesRegexSegment,
-                                CANONICAL_UUID_SEGMENT_PREFIX,
-                                MASKED_UUID_SEGMENT_PREFIX,
-                                UUID_HEX_LENGTH);
-
-        SPN_PATTERN = Pattern.compile(regex);
-    }
-
-    /**
      * Generates a Masked (application-scoped) Synthetic Package Name derived from a Canonical SPN
      * and the reading application's package name.
      *
@@ -242,7 +165,7 @@ public class SyntheticPackageNameCreator {
     public static String createMasked(
             @NonNull String canonicalSpn, @Nullable String callingPackageName)
             throws IllegalArgumentException {
-        if (!isCanonicalSpn(canonicalSpn)) {
+        if (!matchesCanonical(canonicalSpn)) {
             throw new IllegalArgumentException(
                     ("Invalid SPN format: %s. Check SyntheticPackageNameCreator documentation "
                                     + "for reference.")
@@ -283,37 +206,6 @@ public class SyntheticPackageNameCreator {
     }
 
     /**
-     * Checks if the provided string is a structurally valid Synthetic Package Name (SPN), either
-     * Canonical or Masked.
-     *
-     * @param candidate The string to check.
-     * @return {@code true} if the string matches the SPN pattern, {@code false} otherwise.
-     */
-    public static boolean isSpn(@NonNull String candidate) {
-        return SPN_PATTERN.matcher(candidate).matches();
-    }
-
-    /**
-     * Checks if the provided string is specifically a Masked SPN.
-     *
-     * @param candidate The string to check.
-     * @return {@code true} if the string is a Masked SPN, {@code false} otherwise.
-     */
-    public static boolean isMaskedSpn(@NonNull String candidate) {
-        return matchesSpnPrefix(candidate, MASKED_UUID_SEGMENT_PREFIX);
-    }
-
-    /**
-     * Checks if the provided string is specifically a Canonical SPN.
-     *
-     * @param candidate The string to check.
-     * @return {@code true} if the string is a Canonical SPN, {@code false} otherwise.
-     */
-    public static boolean isCanonicalSpn(@NonNull String candidate) {
-        return matchesSpnPrefix(candidate, CANONICAL_UUID_SEGMENT_PREFIX);
-    }
-
-    /**
      * Initializes or retrieves the persisted salt for the current user. This ensures that stable
      * identifiers can be generated that change upon factory resets.
      */
@@ -326,17 +218,6 @@ public class SyntheticPackageNameCreator {
                     SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY, salt);
         }
         return salt;
-    }
-
-    /**
-     * Checks if the SPN candidate is valid and matches the expected prefix for the last segment.
-     */
-    private static boolean matchesSpnPrefix(@NonNull String candidate, char expectedPrefix) {
-        if (!isSpn(candidate)) return false;
-
-        int lastSegmentIndex = candidate.lastIndexOf(".");
-
-        return candidate.charAt(lastSegmentIndex + 1) == expectedPrefix;
     }
 
     /**

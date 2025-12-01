@@ -29,6 +29,7 @@ import android.annotation.Nullable;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.datatypes.Device.DeviceType;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 
@@ -93,7 +94,7 @@ public class DeviceInfoHelper extends DatabaseHelper {
     /** Populates record with deviceInfoId */
     public void populateDeviceInfoId(RecordInternal<?> recordInternal) {
         if (recordInternal.getPackageName() != null
-                && SyntheticPackageNameCreator.isSpn(recordInternal.getPackageName())
+                && SyntheticPackageNameMatcher.matches(recordInternal.getPackageName())
                 && recordInternal.getDeviceInfoId() != DEFAULT_LONG) {
             // DDP APIs will have already set the deviceInfoId and packageName. Return early as the
             // DeviceInfo from the DDP advertisement includes a deviceId but the record doesn't so

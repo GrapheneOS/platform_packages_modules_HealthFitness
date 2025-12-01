@@ -62,6 +62,7 @@ import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
@@ -421,7 +422,7 @@ public class DeviceDataProviderManagerTest {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         String deviceId = mDeviceDataProviderManager.getStableCurrentDeviceId();
 
-        assertTrue(SyntheticPackageNameCreator.isCanonicalSpn(deviceId));
+        assertTrue(SyntheticPackageNameMatcher.matchesCanonical(deviceId));
     }
 
     @Test
@@ -463,7 +464,7 @@ public class DeviceDataProviderManagerTest {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         String deviceId = mDeviceDataProviderManager.getCurrentDeviceId();
 
-        assertTrue(SyntheticPackageNameCreator.isCanonicalSpn(deviceId));
+        assertTrue(SyntheticPackageNameMatcher.matchesCanonical(deviceId));
     }
 
     @Test
@@ -604,7 +605,7 @@ public class DeviceDataProviderManagerTest {
         assertThat(readRecords).hasSize(1);
         RecordInternal<?> readRecord = readRecords.get(0);
         assertThat(readRecord.getRecordType()).isEqualTo(RECORD_TYPE_STEPS);
-        assertTrue(SyntheticPackageNameCreator.isCanonicalSpn(readRecord.getPackageName()));
+        assertTrue(SyntheticPackageNameMatcher.matchesCanonical(readRecord.getPackageName()));
         // RecordHelper#getRecord doesn't repopulate the deviceInfoId
         assertThat(readRecord.getDeviceInfoId()).isEqualTo(-1L);
         assertThat(readRecord.getManufacturer()).isEqualTo(MANUFACTURER);

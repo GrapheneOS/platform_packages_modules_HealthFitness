@@ -457,7 +457,8 @@ public class DeviceDataProviderManager {
         Integer existingDeviceType = mDeviceInfoHelper.getDeviceType(deviceId);
         if (existingDeviceType != null && existingDeviceType != deviceType) {
             String message =
-                    censoredDeviceMessage(deviceId)
+                    "The device with id "
+                            + deviceId
                             + " has already been used for a different device type.";
             Slog.e(TAG, message);
             throw new IllegalArgumentException(message);
@@ -512,7 +513,8 @@ public class DeviceDataProviderManager {
         }
 
         String message =
-                censoredDeviceMessage(deviceId)
+                "The device with id "
+                        + deviceId
                         + " was not found, ensure the device data source has been advertised";
         Slog.e(TAG, message);
         throw new IllegalArgumentException(message);
@@ -561,18 +563,10 @@ public class DeviceDataProviderManager {
         if (!advertisedDataTypes.contains(recordType)) {
             // TODO(b/459388902): Use the data type string in the exception.
             throw new IllegalArgumentException(
-                    censoredDeviceMessage(deviceId)
+                    "The device with id "
+                            + deviceId
                             + " was not advertised for data type "
                             + recordType);
-        }
-    }
-
-    private String censoredDeviceMessage(String deviceId) {
-        // TODO(b/459541943): Handle censoring of canonical SPN on a higher level
-        if (SyntheticPackageNameCreator.isCanonicalSpn(deviceId)) {
-            return "The current device";
-        } else {
-            return "The device with id " + deviceId;
         }
     }
 
