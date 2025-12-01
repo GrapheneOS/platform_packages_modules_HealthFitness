@@ -99,6 +99,7 @@
 
     <!-- region Cycle tracking data types -->
     <string name="cervical_mucus_label" description="Label used to show the user's cervical mucus data [CHAR_LIMIT=50]">Cervical mucus</string>
+    <string name="menstrual_cycle_phase_label" description="Label used to show the user's menstrual cycle phase data [CHAR_LIMIT=50]">Menstrual Cycle Phase</string>
     <string name="menstruation_flow" description="Label used to show the user's menstruation data [CHAR_LIMIT=50]">Menstruation Flow</string>
     <string name="menstruation_period" description="Label used to show the user's menstruation period data [CHAR_LIMIT=50]">Menstruation Period</string>
     <string name="ovulation_test_label" description="Label used to show the user's ovulation test data [CHAR_LIMIT=50]">Ovulation test</string>

@@ -20,12 +20,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteAllSymptomsDataFromInactiveApp
 import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteAppData
 import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteEntries
 import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteEntriesFromApp
 import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteHealthPermissionTypes
 import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteHealthPermissionTypesFromApp
 import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteInactiveAppData
+import com.android.healthconnect.controller.selectabledeletion.api.DeleteAllSymptomsDataFromInactiveAppUseCase
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteAppDataUseCase
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteEntriesUseCase
 import com.android.healthconnect.controller.selectabledeletion.api.DeletePermissionTypesFromAppUseCase
@@ -43,6 +45,8 @@ constructor(
     private val deletePermissionTypesUseCase: DeletePermissionTypesUseCase,
     private val deleteEntriesUseCase: DeleteEntriesUseCase,
     private val deletePermissionTypesFromAppUseCase: DeletePermissionTypesFromAppUseCase,
+    private val deleteAllSymptomsDataFromInactiveAppUseCase:
+        DeleteAllSymptomsDataFromInactiveAppUseCase,
 ) : ViewModel() {
 
     companion object {
@@ -138,6 +142,12 @@ constructor(
                             currentDeletionType.packageName,
                             setOf(currentDeletionType.healthPermissionType),
                         )
+                        delay(defaultDelay)
+                        _inactiveAppsReloadNeeded.postValue(true)
+                    }
+
+                    is DeleteAllSymptomsDataFromInactiveApp -> {
+                        deleteAllSymptomsDataFromInactiveAppUseCase.invoke(currentDeletionType)
                         delay(defaultDelay)
                         _inactiveAppsReloadNeeded.postValue(true)
                     }

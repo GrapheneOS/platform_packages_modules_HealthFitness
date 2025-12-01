@@ -20,28 +20,32 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.CervicalMucusRecord
 import android.health.connect.datatypes.CervicalMucusRecord.CervicalMucusAppearance
 import android.health.connect.datatypes.CervicalMucusRecord.CervicalMucusSensation
-import android.health.connect.datatypes.DataOrigin
-import android.health.connect.datatypes.Device
 import android.health.connect.datatypes.IntermenstrualBleedingRecord
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord.PHASE_FOLLICULAR
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord.PHASE_LUTEAL
 import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MenstruationFlowRecord.MenstruationFlowType
 import android.health.connect.datatypes.MenstruationPeriodRecord
-import android.health.connect.datatypes.Metadata
 import android.health.connect.datatypes.OvulationTestRecord
 import android.health.connect.datatypes.OvulationTestRecord.OvulationTestResult
 import android.health.connect.datatypes.SexualActivityRecord
 import android.health.connect.datatypes.SexualActivityRecord.SexualActivityProtectionUsed
-import android.os.Build.MANUFACTURER
-import android.os.Build.MODEL
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.getMetaData
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.insertRecords
-import kotlinx.coroutines.runBlocking
 import java.time.Duration.ofDays
 import java.time.Duration.ofMinutes
 import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneOffset
 import java.time.temporal.ChronoUnit
+import kotlin.random.Random
+import kotlinx.coroutines.runBlocking
 
-class SeedCycleTrackingData(private val context: Context, private val manager: HealthConnectManager) {
+class SeedCycleTrackingData(
+    private val context: Context,
+    private val manager: HealthConnectManager,
+) {
 
     companion object {
         val VALID_CERVICAL_MUCUS_SENSATION =
@@ -49,7 +53,7 @@ class SeedCycleTrackingData(private val context: Context, private val manager: H
                 CervicalMucusSensation.SENSATION_LIGHT,
                 CervicalMucusSensation.SENSATION_MEDIUM,
                 CervicalMucusSensation.SENSATION_HEAVY,
-                CervicalMucusSensation.SENSATION_UNKNOWN
+                CervicalMucusSensation.SENSATION_UNKNOWN,
             )
         val VALID_CERVICAL_MUCUS_APPEARANCE =
             setOf(
@@ -59,28 +63,29 @@ class SeedCycleTrackingData(private val context: Context, private val manager: H
                 CervicalMucusAppearance.APPEARANCE_WATERY,
                 CervicalMucusAppearance.APPEARANCE_EGG_WHITE,
                 CervicalMucusAppearance.APPEARANCE_UNUSUAL,
-                CervicalMucusAppearance.APPEARANCE_UNKNOWN
+                CervicalMucusAppearance.APPEARANCE_UNKNOWN,
             )
         val VALID_MENSTRUATION_FLOW_TYPE =
             setOf(
                 MenstruationFlowType.FLOW_LIGHT,
                 MenstruationFlowType.FLOW_MEDIUM,
                 MenstruationFlowType.FLOW_HEAVY,
-                MenstruationFlowType.FLOW_UNKNOWN
+                MenstruationFlowType.FLOW_UNKNOWN,
             )
         val VALID_OVULATION_TEST_RESULT =
             setOf(
                 OvulationTestResult.RESULT_NEGATIVE,
                 OvulationTestResult.RESULT_POSITIVE,
                 OvulationTestResult.RESULT_HIGH,
-                OvulationTestResult.RESULT_INCONCLUSIVE
+                OvulationTestResult.RESULT_INCONCLUSIVE,
             )
         val VALID_SEXUAL_ACTIVITY_PROTECTION_USED =
             setOf(
                 SexualActivityProtectionUsed.PROTECTION_USED_UNKNOWN,
                 SexualActivityProtectionUsed.PROTECTION_USED_PROTECTED,
-                SexualActivityProtectionUsed.PROTECTION_USED_UNPROTECTED
+                SexualActivityProtectionUsed.PROTECTION_USED_UNPROTECTED,
             )
+        val VALID_MENSTRUAL_CYCLE_PHASES = setOf(PHASE_FOLLICULAR, PHASE_LUTEAL)
     }
 
     private val start = Instant.now().truncatedTo(ChronoUnit.DAYS)
@@ -88,11 +93,12 @@ class SeedCycleTrackingData(private val context: Context, private val manager: H
     private val lastWeek = start.minus(ofDays(7))
     private val lastMonth = start.minus(ofDays(31))
 
-    fun seedCycleTrackingData(){
+    fun seedCycleTrackingData() {
         runBlocking {
             try {
                 seedAllMenstruationData()
                 seedCervicalMucusRecord()
+                seedMenstrualCyclePhaseRecord()
                 seedOvulationTestRecord()
                 seedSexualActivityRecord()
                 seedIntermenstrualBleedingRecord()
@@ -102,28 +108,17 @@ class SeedCycleTrackingData(private val context: Context, private val manager: H
         }
     }
 
-    private suspend fun seedAllMenstruationData(){
-        val todayPeriodRecord =
-            getMenstruationPeriodRecord(
-                start.minus(ofDays(5L)),
-                start)
+    private suspend fun seedAllMenstruationData() {
+        val todayPeriodRecord = getMenstruationPeriodRecord(start.minus(ofDays(5L)), start)
         val lastWeekPeriodRecord =
-            getMenstruationPeriodRecord(
-                lastWeek.minus(ofDays(1L)),
-                lastWeek.plus(ofDays(4)))
+            getMenstruationPeriodRecord(lastWeek.minus(ofDays(1L)), lastWeek.plus(ofDays(4)))
         val lastMonthPeriodRecord =
-            getMenstruationPeriodRecord(
-                lastMonth.minus(ofDays(1L)),
-                lastMonth.plus(ofDays(10L)))
+            getMenstruationPeriodRecord(lastMonth.minus(ofDays(1L)), lastMonth.plus(ofDays(10L)))
 
         val todayFlowRecords =
-            (-5..0).map { days ->
-                getMenstruationFlowRecord(start.plus(ofDays(days.toLong())))
-            }
+            (-5..0).map { days -> getMenstruationFlowRecord(start.plus(ofDays(days.toLong()))) }
         val lastWeekFlowRecords =
-            (-1..4).map { days ->
-                getMenstruationFlowRecord(lastWeek.plus(ofDays(days.toLong())))
-            }
+            (-1..4).map { days -> getMenstruationFlowRecord(lastWeek.plus(ofDays(days.toLong()))) }
         val lastMonthFlowRecords =
             (-1..10).map { days ->
                 getMenstruationFlowRecord(lastMonth.plus(ofDays(days.toLong())))
@@ -134,35 +129,39 @@ class SeedCycleTrackingData(private val context: Context, private val manager: H
                 add(todayPeriodRecord)
                 addAll(todayFlowRecords)
             },
-            manager)
+            manager,
+        )
         insertRecords(
             buildList {
                 add(lastWeekPeriodRecord)
                 addAll(lastWeekFlowRecords)
             },
-            manager)
+            manager,
+        )
         insertRecords(
             buildList {
                 add(lastMonthPeriodRecord)
                 addAll(lastMonthFlowRecords)
             },
-            manager
+            manager,
         )
     }
 
-    private suspend fun seedCervicalMucusRecord(){
-        val records = (1L..3).map { timeOffSet ->
-            getCervicalMucusRecord(start.plus(ofMinutes(timeOffSet)))
-        }
-        val yesterdayRecords = (1L..3).map { timeOffSet ->
-            getCervicalMucusRecord(yesterday.plus(ofMinutes(timeOffSet)))
-        }
-        val lastWeekRecords = (1L..3).map { timeOffSet ->
-            getCervicalMucusRecord(lastWeek.plus(ofMinutes(timeOffSet)))
-        }
-        val lastMonthRecords = (1L..3).map { timeOffSet ->
-            getCervicalMucusRecord(lastMonth.plus(ofMinutes(timeOffSet)))
-        }
+    private suspend fun seedCervicalMucusRecord() {
+        val records =
+            (1L..3).map { timeOffSet -> getCervicalMucusRecord(start.plus(ofMinutes(timeOffSet))) }
+        val yesterdayRecords =
+            (1L..3).map { timeOffSet ->
+                getCervicalMucusRecord(yesterday.plus(ofMinutes(timeOffSet)))
+            }
+        val lastWeekRecords =
+            (1L..3).map { timeOffSet ->
+                getCervicalMucusRecord(lastWeek.plus(ofMinutes(timeOffSet)))
+            }
+        val lastMonthRecords =
+            (1L..3).map { timeOffSet ->
+                getCervicalMucusRecord(lastMonth.plus(ofMinutes(timeOffSet)))
+            }
 
         insertRecords(records, manager)
         insertRecords(yesterdayRecords, manager)
@@ -170,19 +169,21 @@ class SeedCycleTrackingData(private val context: Context, private val manager: H
         insertRecords(lastMonthRecords, manager)
     }
 
-    private suspend fun seedOvulationTestRecord(){
-        val records = (1L..3).map { timeOffSet ->
-            getOvulationTestRecord(start.plus(ofMinutes(timeOffSet)))
-        }
-        val yesterdayRecords = (1L..3).map { timeOffSet ->
-            getOvulationTestRecord(yesterday.plus(ofMinutes(timeOffSet)))
-        }
-        val lastWeekRecords = (1L..3).map { timeOffSet ->
-            getOvulationTestRecord(lastWeek.plus(ofMinutes(timeOffSet)))
-        }
-        val lastMonthRecords = (1L..3).map { timeOffSet ->
-            getOvulationTestRecord(lastMonth.plus(ofMinutes(timeOffSet)))
-        }
+    private suspend fun seedOvulationTestRecord() {
+        val records =
+            (1L..3).map { timeOffSet -> getOvulationTestRecord(start.plus(ofMinutes(timeOffSet))) }
+        val yesterdayRecords =
+            (1L..3).map { timeOffSet ->
+                getOvulationTestRecord(yesterday.plus(ofMinutes(timeOffSet)))
+            }
+        val lastWeekRecords =
+            (1L..3).map { timeOffSet ->
+                getOvulationTestRecord(lastWeek.plus(ofMinutes(timeOffSet)))
+            }
+        val lastMonthRecords =
+            (1L..3).map { timeOffSet ->
+                getOvulationTestRecord(lastMonth.plus(ofMinutes(timeOffSet)))
+            }
 
         insertRecords(records, manager)
         insertRecords(yesterdayRecords, manager)
@@ -191,18 +192,20 @@ class SeedCycleTrackingData(private val context: Context, private val manager: H
     }
 
     private suspend fun seedSexualActivityRecord() {
-        val records = (1L..3).map { timeOffSet ->
-            getSexualActivityRecord(start.plus(ofMinutes(timeOffSet)))
-        }
-        val yesterdayRecords = (1L..3).map { timeOffSet ->
-            getSexualActivityRecord(yesterday.plus(ofMinutes(timeOffSet)))
-        }
-        val lastWeekRecords = (1L..3).map { timeOffSet ->
-            getSexualActivityRecord(lastWeek.plus(ofMinutes(timeOffSet)))
-        }
-        val lastMonthRecords = (1L..3).map { timeOffSet ->
-            getSexualActivityRecord(lastMonth.plus(ofMinutes(timeOffSet)))
-        }
+        val records =
+            (1L..3).map { timeOffSet -> getSexualActivityRecord(start.plus(ofMinutes(timeOffSet))) }
+        val yesterdayRecords =
+            (1L..3).map { timeOffSet ->
+                getSexualActivityRecord(yesterday.plus(ofMinutes(timeOffSet)))
+            }
+        val lastWeekRecords =
+            (1L..3).map { timeOffSet ->
+                getSexualActivityRecord(lastWeek.plus(ofMinutes(timeOffSet)))
+            }
+        val lastMonthRecords =
+            (1L..3).map { timeOffSet ->
+                getSexualActivityRecord(lastMonth.plus(ofMinutes(timeOffSet)))
+            }
 
         insertRecords(records, manager)
         insertRecords(yesterdayRecords, manager)
@@ -210,19 +213,23 @@ class SeedCycleTrackingData(private val context: Context, private val manager: H
         insertRecords(lastMonthRecords, manager)
     }
 
-    private suspend fun seedIntermenstrualBleedingRecord(){
-        val records = (1L..3).map { timeOffSet ->
-            getIntermenstrualBleedingRecord(start.plus(ofMinutes(timeOffSet)))
-        }
-        val yesterdayRecords = (1L..3).map { timeOffSet ->
-            getIntermenstrualBleedingRecord(yesterday.plus(ofMinutes(timeOffSet)))
-        }
-        val lastWeekRecords = (1L..3).map { timeOffSet ->
-            getIntermenstrualBleedingRecord(lastWeek.plus(ofMinutes(timeOffSet)))
-        }
-        val lastMonthRecords = (1L..3).map { timeOffSet ->
-            getIntermenstrualBleedingRecord(lastMonth.plus(ofMinutes(timeOffSet)))
-        }
+    private suspend fun seedIntermenstrualBleedingRecord() {
+        val records =
+            (1L..3).map { timeOffSet ->
+                getIntermenstrualBleedingRecord(start.plus(ofMinutes(timeOffSet)))
+            }
+        val yesterdayRecords =
+            (1L..3).map { timeOffSet ->
+                getIntermenstrualBleedingRecord(yesterday.plus(ofMinutes(timeOffSet)))
+            }
+        val lastWeekRecords =
+            (1L..3).map { timeOffSet ->
+                getIntermenstrualBleedingRecord(lastWeek.plus(ofMinutes(timeOffSet)))
+            }
+        val lastMonthRecords =
+            (1L..3).map { timeOffSet ->
+                getIntermenstrualBleedingRecord(lastMonth.plus(ofMinutes(timeOffSet)))
+            }
 
         insertRecords(records, manager)
         insertRecords(yesterdayRecords, manager)
@@ -230,32 +237,79 @@ class SeedCycleTrackingData(private val context: Context, private val manager: H
         insertRecords(lastMonthRecords, manager)
     }
 
-    private fun getMenstruationPeriodRecord(start: Instant, end:Instant): MenstruationPeriodRecord{
+    private fun getMenstruationPeriodRecord(
+        start: Instant,
+        end: Instant,
+    ): MenstruationPeriodRecord {
         return MenstruationPeriodRecord.Builder(getMetaData(context), start, end).build()
     }
 
-    private fun getMenstruationFlowRecord(time: Instant): MenstruationFlowRecord{
-        return MenstruationFlowRecord.Builder(getMetaData(context), time, VALID_MENSTRUATION_FLOW_TYPE.random()).build()
+    private fun getMenstruationFlowRecord(time: Instant): MenstruationFlowRecord {
+        return MenstruationFlowRecord.Builder(
+                getMetaData(context),
+                time,
+                VALID_MENSTRUATION_FLOW_TYPE.random(),
+            )
+            .build()
     }
 
     private fun getCervicalMucusRecord(time: Instant): CervicalMucusRecord {
         return CervicalMucusRecord.Builder(
-            getMetaData(context),
-            time,
-            VALID_CERVICAL_MUCUS_SENSATION.random(),
-            VALID_CERVICAL_MUCUS_APPEARANCE.random()
-        ).build()
+                getMetaData(context),
+                time,
+                VALID_CERVICAL_MUCUS_SENSATION.random(),
+                VALID_CERVICAL_MUCUS_APPEARANCE.random(),
+            )
+            .build()
     }
 
     private fun getOvulationTestRecord(time: Instant): OvulationTestRecord {
-        return OvulationTestRecord.Builder(getMetaData(context), time, VALID_OVULATION_TEST_RESULT.random()).build()
+        return OvulationTestRecord.Builder(
+                getMetaData(context),
+                time,
+                VALID_OVULATION_TEST_RESULT.random(),
+            )
+            .build()
     }
 
     private fun getSexualActivityRecord(time: Instant): SexualActivityRecord {
-        return SexualActivityRecord.Builder(getMetaData(context), time, VALID_SEXUAL_ACTIVITY_PROTECTION_USED.random()).build()
+        return SexualActivityRecord.Builder(
+                getMetaData(context),
+                time,
+                VALID_SEXUAL_ACTIVITY_PROTECTION_USED.random(),
+            )
+            .build()
     }
 
     private fun getIntermenstrualBleedingRecord(time: Instant): IntermenstrualBleedingRecord {
         return IntermenstrualBleedingRecord.Builder(getMetaData(context), time).build()
+    }
+
+    private suspend fun seedMenstrualCyclePhaseRecord() {
+        val records = getMenstrualCyclePhaseRecords(start)
+        val lastWeekRecords = getMenstrualCyclePhaseRecords(lastWeek)
+        val lastMonthRecords = getMenstrualCyclePhaseRecords(lastMonth)
+
+        insertRecords(records, manager)
+        insertRecords(lastWeekRecords, manager)
+        insertRecords(lastMonthRecords, manager)
+    }
+
+    private fun getMenstrualCyclePhaseRecords(startDate: Instant): List<MenstrualCyclePhaseRecord> {
+        return (0L..3).map { dayOffSet ->
+            getMenstrualCyclePhaseRecord(
+                LocalDate.ofInstant(startDate.minus(ofDays(dayOffSet)), ZoneOffset.systemDefault())
+            )
+        }
+    }
+
+    private fun getMenstrualCyclePhaseRecord(date: LocalDate): MenstrualCyclePhaseRecord {
+        return MenstrualCyclePhaseRecord.Builder(
+                getMetaData(context),
+                date,
+                VALID_MENSTRUAL_CYCLE_PHASES.random(),
+            )
+            .setDayOfCycle(Random.nextInt(1, 180))
+            .build()
     }
 }

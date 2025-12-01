@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"يُرجى اختيار البيانات المطلوب أن يقرأها هذا التطبيق من Health Connect"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"مشاركة البيانات بين التطبيقات"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"البيانات من \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"السماح لتطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" بقراءة البيانات من تطبيقات أخرى على هذا الجهاز باستخدام Health Connect"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"التطبيقات التي يمكنها مزامنة هذه البيانات"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"يمكنك الاطّلاع على "<a href="%2$s">"سياسة الخصوصية"</a>" لمعرفة طريقة استخدام \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" لبياناتك"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"يتيح لك تطبيق Health Connect مشاركة بيانات الصحة واللياقة البدنية بين تطبيقات متعددة، وبالتالي جمع الإحصاءات واكتشاف تجارب جديدة مع الحفاظ على أمان بياناتك."</string>
@@ -875,6 +876,14 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"نسبة الكحول من حيث الحجم"</string>
     <string name="notes_title" msgid="4596764711916248492">"ملاحظات"</string>
     <string name="details_title" msgid="8411891773854413790">"التفاصيل"</string>
+    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> د"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"‫<xliff:g id="HOUR">%1$s</xliff:g> ساعة و<xliff:g id="MIN">%2$s</xliff:g> دقيقة"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> س"</string>
@@ -1270,10 +1279,11 @@
     <string name="write_access" msgid="571547306854732263">"الإذن بالكتابة"</string>
     <string name="read_access" msgid="3317759826769372785">"الإذن بالقراءة"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g>: <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>⁠"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"عدد التطبيقات المسموح لها: <xliff:g id="NUMBER_0">%1$d</xliff:g> من أصل <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"ما مِن تطبيقات تطلب هذا الإذن"</string>
-    <string name="allowed" msgid="4158456017482263737">"التطيقات المسموح لها"</string>
+    <string name="allowed" msgid="4158456017482263737">"التطبيقات المسموح لها"</string>
     <string name="not_allowed" msgid="6092523505093372147">"التطبيقات غير الحاصلة على إذن"</string>
     <string name="access_sensor_note" msgid="7949933977197789634">"يمكن للتطبيقات التي لديها هذا الإذن الوصول إلى بيانات <xliff:g id="DATA_TYPE">%s</xliff:g> من أدوات الاستشعار في جهازك."</string>
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"هل تريد إزالة إذن الوصول إلى بيانات <xliff:g id="DATA_TYPE">%s</xliff:g> لجميع التطبيقات على ساعتك؟"</string>
@@ -1341,6 +1351,10 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"غير مرتبط"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"يُرجى النقر لربط هذا التطبيق بـ Health Connect"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"لاحقًا"</string>
+    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
+    <skip />
+    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
+    <skip />
     <string name="acne_read_content_description" msgid="1176708404029936065">"قراءة بيانات حب الشباب"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"كتابة بيانات حب الشباب"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"قراءة بيانات ضعف الأظافر"</string>
@@ -1577,5 +1591,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"احتباس الماء"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"صعوبة التنفّس"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"صعوبة التنفّس"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"‫<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> من إجمالي <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"‫<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> من إجمالي <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>

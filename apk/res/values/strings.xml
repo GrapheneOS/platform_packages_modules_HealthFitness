@@ -1157,7 +1157,7 @@
 
     <!-- region Alcohol Consumption -->
     <string name="alcohol_consumption_title" description="Title of a single data entry for Alcohol Consumption. [CHAR LIMIT=20]"><xliff:g example="Beer" id="type">%1$s</xliff:g></string>
-    <string name="alcohol_consumption_beverage_type_other" description="Alcohol consumption beverage type: Other. [CHAR LIMIT=20]">Other</string>
+    <string name="alcohol_consumption_beverage_type_other" description="Alcohol consumption beverage type: Other. Displayed to the user as an unknown beverage. [CHAR LIMIT=20]">Unknown beverage</string>
     <string name="alcohol_consumption_beverage_type_beer" description="Alcohol consumption beverage type: Beer. [CHAR LIMIT=20]">Beer</string>
     <string name="alcohol_consumption_beverage_type_wine" description="Alcohol consumption beverage type: Wine. [CHAR LIMIT=20]">Wine</string>
     <string name="alcohol_consumption_beverage_type_vodka" description="Alcohol consumption beverage type: Vodka. [CHAR LIMIT=20]">Vodka</string>
@@ -1181,6 +1181,14 @@
     <string name="notes_title" description="Title for note. [CHAR LIMIT=40]">Notes</string>
     <string name="details_title" description="Title for details section. [CHAR LIMIT=40]">Details</string>
     <!-- endregion -->
+
+    <!-- region Menstrual cycle phase -->
+    <string name="menstrual_cycle_phase_follicular" description="The follicular phase of the menstrual cycle. [CHAR LIMIT=50]">Follicular</string>
+    <string name="menstrual_cycle_phase_luteal" description="The luteal phase of the menstrual cycle. [CHAR LIMIT=50]">Luteal</string>
+    <string name="menstrual_cycle_phase_unknown" description="Unknown menstrual cycle phase. [CHAR LIMIT=50]">Unknown phase</string>
+    <string name="menstrual_cycle_phase_day_of_cycle" description="Which day of the user's menstrual cycle it was. [CHAR LIMIT=50]">Day <xliff:g example="2" id="day">%1$d</xliff:g></string>
+    <!-- endregion -->
+
     <!-- endregion -->
 
     <!-- region Duration -->
@@ -1882,6 +1890,9 @@
     <string name="banner_default_dismiss_button" description="Default button to dismiss a banner in Health Connect [CHAR_LIMIT=NONE]">Not now</string>
 
     <!-- region Symptoms data types -->
+    <string name="all_symptoms_uppercase_label" description="Label for entry point to see all symptoms data [CHAR LIMIT=50]">All symptoms</string>
+    <string name="symptoms_lowercase_label" description="Label for entry point to see all symptoms data [CHAR LIMIT=50]">symptoms</string>
+
     <string name="acne_read_content_description" description="Content description for switch that enables permissions for reading the user's acne data [CHAR_LIMIT=NONE]">Read acne</string>
     <string name="acne_write_content_description" description="Content description for switch that enables permissions for writing the user's acne data [CHAR_LIMIT=NONE]">Write acne</string>
     <string name="brittle_nails_read_content_description" description="Content description for switch that enables permissions for reading the user's brittle nails data [CHAR_LIMIT=NONE]">Read brittle nails</string>

@@ -19,17 +19,17 @@
     android:layout_height="wrap_content"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:gravity="center_vertical"
-    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
     android:clipToPadding="false"
-    android:clickable="true"
-    android:paddingVertical="@dimen/spacing_normal">
+    android:clickable="true">
 
     <RelativeLayout
         android:id="@+id/item_data_entry_container"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingVertical="@dimen/spacing_normal">
 
         <TextView
             android:id="@+id/item_data_entry_header"

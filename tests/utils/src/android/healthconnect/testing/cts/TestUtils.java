@@ -72,6 +72,7 @@ import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.ApplicationInfoResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
+import android.health.connect.DeviceDataSourceInfo;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectException;
@@ -208,6 +209,17 @@ public final class TestUtils {
                 "^com.android.healthconnect\\.(%s)\\.j[0-9a-f]{32}$".formatted(typesRegexSegment);
 
         MASKED_SPN_PATTERN = Pattern.compile(regex);
+    }
+
+    private static final Pattern CANONICAL_SPN_PATTERN;
+
+    static {
+        String typesRegexSegment = String.join("|", DEVICE_TYPE_TO_DISPLAY_NAME.values());
+
+        String regex =
+                "^com.android.healthconnect\\.(%s)\\.d[0-9a-f]{32}$".formatted(typesRegexSegment);
+
+        CANONICAL_SPN_PATTERN = Pattern.compile(regex);
     }
 
     public static ChangeLogTokenResponse getChangeLogToken(ChangeLogTokenRequest request)
@@ -1194,6 +1206,15 @@ public final class TestUtils {
     }
 
     /**
+     * Returns whether the given String is a canonical Synthetic Package Name, meaning if it's a
+     * device identifier that's used internally only. This should always be false for the CTS side,
+     * as the identifier must not be leaked to clients, see go/hc-masking.
+     */
+    public static boolean isCanonicalSyntheticPackageName(String input) {
+        return CANONICAL_SPN_PATTERN.matcher(input).matches();
+    }
+
+    /**
      * Calls {@link #advertiseDeviceDataSources} for the provided {#code dataType} and default phone
      * device with the provided {@code deviceId}.
      */
@@ -1315,9 +1336,79 @@ public final class TestUtils {
             throws InterruptedException {
         HealthConnectReceiver<InsertRecordsResponse> receiver = new HealthConnectReceiver<>();
         insertDeviceRecords(deviceId, unmodifiableList(records), outcomeExecutor(), receiver);
+        receiver.verifyNoExceptionOrThrow();
         List<Record> returnedRecords = receiver.getResponse().getRecords();
         assertThat(returnedRecords).hasSize(records.size());
         return returnedRecords;
+    }
+
+    /**
+     * Calls {@link HealthConnectManager#updateDeviceRecords} with shell permission identity and
+     * device data provider permissions.
+     */
+    @SuppressLint("MissingPermission")
+    public static void updateDeviceRecords(
+            String deviceId,
+            List<Record> records,
+            Executor executor,
+            TestOutcomeReceiver<Void, HealthConnectException> callback)
+            throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+
+        try {
+            getHealthConnectManager().updateDeviceRecords(deviceId, records, executor, callback);
+            callback.awaitUnchecked();
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
+    }
+
+    /**
+     * Calls {@link HealthConnectManager#updateDeviceRecords} with shell permission identity and
+     * device data provider permissions in the default application context.
+     */
+    public static void updateDeviceRecords(String deviceId, List<? extends Record> records)
+            throws InterruptedException {
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+        updateDeviceRecords(deviceId, unmodifiableList(records), outcomeExecutor(), receiver);
+        receiver.verifyNoExceptionOrThrow();
+    }
+
+    /**
+     * Calls {@link HealthConnectManager#deleteDeviceRecords} with shell permission identity and
+     * device data provider permissions.
+     */
+    @SuppressLint("MissingPermission")
+    public static void deleteDeviceRecords(
+            String deviceId,
+            Class<? extends Record> recordType,
+            TimeRangeFilter timeRangeFilter,
+            Executor executor,
+            TestOutcomeReceiver<Void, HealthConnectException> callback)
+            throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+
+        try {
+            getHealthConnectManager()
+                    .deleteDeviceRecords(deviceId, recordType, timeRangeFilter, executor, callback);
+            callback.awaitUnchecked();
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
+    }
+
+    /**
+     * Calls {@link HealthConnectManager#deleteDeviceRecords} with shell permission identity and
+     * device data provider permissions in the default application context.
+     */
+    public static void deleteDeviceRecords(
+            String deviceId, Class<? extends Record> recordType, TimeRangeFilter timeRangeFilter)
+            throws InterruptedException {
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+        deleteDeviceRecords(deviceId, recordType, timeRangeFilter, outcomeExecutor(), receiver);
+        receiver.verifyNoExceptionOrThrow();
     }
 
     /**
@@ -1370,6 +1461,26 @@ public final class TestUtils {
         }
 
         return receiver.getResponse();
+    }
+
+    /**
+     * Calls {@link HealthConnectManager#getDeviceDataSourceInfos} with shell permission identity
+     * and device data provider permissions.
+     */
+    @SuppressLint("MissingPermission")
+    public static List<DeviceDataSourceInfo> getDeviceDataSourceInfos()
+            throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+
+        try {
+            HealthConnectReceiver<List<DeviceDataSourceInfo>> receiver =
+                    new HealthConnectReceiver<>();
+            getHealthConnectManager().getDeviceDataSourceInfos(outcomeExecutor(), receiver);
+            return receiver.getResponse();
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
     }
 
     private static Field findFieldUsingReflection(Class<?> type, String fieldName) {

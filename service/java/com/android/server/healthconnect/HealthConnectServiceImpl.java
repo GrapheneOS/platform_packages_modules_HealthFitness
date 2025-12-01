@@ -66,6 +66,7 @@ import static java.util.stream.Stream.concat;
 import android.Manifest;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
+import android.annotation.PermissionManuallyEnforced;
 import android.annotation.RequiresApi;
 import android.content.AttributionSource;
 import android.content.Context;
@@ -77,8 +78,9 @@ import android.health.HealthFitnessStatsLog;
 import android.health.connect.Constants;
 import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
+import android.health.connect.DeviceDataSourceInfo;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
-import android.health.connect.GetMatchingAppsResponse;
+import android.health.connect.GetMatchingDataSourcesResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectDataState;
 import android.health.connect.HealthConnectException;
@@ -115,11 +117,12 @@ import android.health.connect.aidl.IDeviceDataSourceCapabilitiesCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
+import android.health.connect.aidl.IGetDeviceDataSourceInfosCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
 import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
-import android.health.connect.aidl.IGetMatchingAppsCallback;
+import android.health.connect.aidl.IGetMatchingDataSourcesCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
@@ -974,7 +977,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             requireNonNull(attributionSource.getPackageName()),
                             recordInternals,
                             mDataPermissionEnforcer.collectExtraWritePermissionStateMapping(
-                                    recordInternals, attributionSource));
+                                    recordInternals, attributionSource),
+                            /* shouldGenerateAccessLogs= */ true);
                     tryAndReturnResult(callback, logger);
                     logRecordTypeSpecificUpsertMetrics(
                             recordInternals, attributionSource.getPackageName());
@@ -1995,6 +1999,39 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void getDeviceDataSourceInfos(
+            AttributionSource attributionSource, IGetDeviceDataSourceInfosCallback callback) {
+        checkParamsNonNull(attributionSource, callback);
+
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        scheduleControllerTaskWithExceptionHandling(
+                () -> {
+                    enforceIsForegroundUser(userHandle);
+                    mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
+
+                    if (mDeviceDataProviderManager == null) {
+                        callback.onResult(Collections.emptyList());
+                        return;
+                    }
+
+                    List<DeviceDataSourceInfo> infos =
+                            mDeviceDataProviderManager.getDeviceDataSourceInfos();
+                    Function<String, String> maskingFunction =
+                            getMaskingFunction(attributionSource.getPackageName());
+
+                    List<DeviceDataSourceInfo> maskedInfos = new ArrayList<>();
+                    for (DeviceDataSourceInfo info : infos) {
+                        maskedInfos.add(info.toMasked(maskingFunction));
+                    }
+
+                    callback.onResult(maskedInfos);
+                },
+                callback::onError);
     }
 
     @Override
@@ -3137,18 +3174,21 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final MatchmakingRequest unmaskedRequest =
                 request.toUnmasked(getUnmaskingFunction(attributionSource.getPackageName()));
 
-        getMatchingApps(
+        getMatchingDataSources(
                 attributionSource,
                 unmaskedRequest,
-                new IGetMatchingAppsCallback.Stub() {
+                new IGetMatchingDataSourcesCallback.Stub() {
                     @Override
-                    public void onResult(GetMatchingAppsResponse response) throws RemoteException {
+                    @PermissionManuallyEnforced
+                    public void onResult(GetMatchingDataSourcesResponse response)
+                            throws RemoteException {
                         callback.onResult(
                                 new MatchmakingResponse.Builder(response.hasMatchingApps())
                                         .build());
                     }
 
                     @Override
+                    @PermissionManuallyEnforced
                     public void onError(HealthConnectExceptionParcel exception)
                             throws RemoteException {
                         callback.onError(exception);
@@ -3157,13 +3197,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     /**
-     * @see HealthConnectManager#getMatchingApps(Set, String, Executor, OutcomeReceiver)
+     * @see HealthConnectManager#getMatchingDataSources(Set, String, Executor, OutcomeReceiver)
      */
     @Override
-    public void getMatchingApps(
+    public void getMatchingDataSources(
             AttributionSource attributionSource,
             MatchmakingRequest request,
-            IGetMatchingAppsCallback callback) {
+            IGetMatchingDataSourcesCallback callback) {
         // TODO(b/451988490): Test SPN masking E2E once device data can be inserted
         checkParamsNonNull(attributionSource, request, callback);
         final int uid = Binder.getCallingUid();
@@ -3183,7 +3223,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         scheduleLoggingHealthDataApiErrors(
                 () -> {
                     if (mMatchmakingManager == null || !Flags.matchmaking()) {
-                        throw new UnsupportedOperationException("getMatchingApps is not supported");
+                        throw new UnsupportedOperationException(
+                                "getMatchingDataSources is not supported");
                     }
                     enforceIsForegroundUser(userHandle);
                     throwExceptionIfDataSyncInProgress();
@@ -3207,8 +3248,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     Set<Class<? extends Record>> recordTypes = unmaskedRequest.getRecordTypes();
                     Map<String, Set<String>> matchingApps =
                             mMatchmakingManager.fetchMatchingApps(recordTypes, packageName);
-                    GetMatchingAppsResponse maskedResponse =
-                            new GetMatchingAppsResponse(matchingApps)
+                    GetMatchingDataSourcesResponse maskedResponse =
+                            new GetMatchingDataSourcesResponse(matchingApps)
                                     .toMasked(getMaskingFunction(attributionPackageName));
                     logger.setHealthDataServiceApiStatusSuccess();
                     callback.onResult(maskedResponse);
@@ -3400,24 +3441,23 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                        throw new UnsupportedOperationException(
+                                "insertDeviceRecords is not supported");
+                    }
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
+                    throwExceptionIfDataSyncInProgress();
                     enforceMemoryRateLimit(
                             recordsParcel.getRecordsSize(), recordsParcel.getRecordsChunkSize());
                     final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
                     logger.setNumberOfRecords(recordInternals.size());
-                    throwExceptionIfDataSyncInProgress();
                     tryAcquireApiCallQuota(
                             uid,
                             QuotaCategory.QUOTA_CATEGORY_WRITE,
                             mAppOpsManagerLocal.isUidInForeground(uid),
                             logger,
                             recordsParcel.getRecordsChunkSize());
-
-                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
-                        throw new UnsupportedOperationException(
-                                "insertDeviceRecords is not supported");
-                    }
 
                     DeviceDataProviderManager deviceDataProviderManager =
                             requireNonNull(mDeviceDataProviderManager);
@@ -3475,13 +3515,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                        throw new UnsupportedOperationException(
+                                "updateDeviceRecords is not supported");
+                    }
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
+                    throwExceptionIfDataSyncInProgress();
                     enforceMemoryRateLimit(
                             recordsParcel.getRecordsSize(), recordsParcel.getRecordsChunkSize());
                     final List<RecordInternal<?>> recordInternals = recordsParcel.getRecords();
                     logger.setNumberOfRecords(recordInternals.size());
-                    throwExceptionIfDataSyncInProgress();
                     boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
                     tryAcquireApiCallQuota(
                             uid,
@@ -3489,11 +3533,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             isInForeground,
                             logger,
                             recordsParcel.getRecordsChunkSize());
-
-                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
-                        throw new UnsupportedOperationException(
-                                "updateDeviceRecords is not supported");
-                    }
 
                     DeviceDataProviderManager deviceDataProviderManager =
                             requireNonNull(mDeviceDataProviderManager);
@@ -3560,14 +3599,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final int pid = Binder.getCallingPid();
         final String callingPackageName = requireNonNull(attributionSource.getPackageName());
 
-        enforceIsForegroundUser(userHandle);
         try {
             if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                 throw new UnsupportedOperationException(
                         "getCurrentDeviceId is not supported."
                                 + "Make sure to turn on the respective DDP flags.");
             }
-
+            enforceIsForegroundUser(userHandle);
+            verifyPackageNameFromUid(uid, attributionSource);
             DeviceDataProviderManager deviceDataProviderManager =
                     requireNonNull(mDeviceDataProviderManager);
 
@@ -3618,15 +3657,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    enforceIsForegroundUser(userHandle);
-                    verifyPackageNameFromUid(uid, attributionSource);
-                    throwExceptionIfDataSyncInProgress();
-
                     if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                         throw new UnsupportedOperationException(
                                 "readDeviceRecords is not supported."
                                         + "Make sure to turn on the respective DDP flags.");
                     }
+                    enforceIsForegroundUser(userHandle);
+                    verifyPackageNameFromUid(uid, attributionSource);
+                    throwExceptionIfDataSyncInProgress();
 
                     DeviceDataProviderManager deviceDataProviderManager =
                             requireNonNull(mDeviceDataProviderManager);
@@ -3691,15 +3729,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    enforceIsForegroundUser(userHandle);
-                    verifyPackageNameFromUid(uid, attributionSource);
-                    throwExceptionIfDataSyncInProgress();
-
                     if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                         throw new UnsupportedOperationException(
                                 "deleteDeviceRecords is not supported."
                                         + "Make sure to turn on the respective DDP flags.");
                     }
+                    enforceIsForegroundUser(userHandle);
+                    verifyPackageNameFromUid(uid, attributionSource);
+                    throwExceptionIfDataSyncInProgress();
 
                     DeviceDataProviderManager deviceDataProviderManager =
                             requireNonNull(mDeviceDataProviderManager);
@@ -4225,13 +4262,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                        throw new UnsupportedOperationException(
+                                "getDeviceDataSourceCapabilities is not supported");
+                    }
+
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
                     throwExceptionIfDataSyncInProgress();
                     boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
                     tryAcquireApiCallQuota(
                             uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, logger);
-
                     Set<Integer> capabilities = getDeviceDataSourceCapabilities(attributionSource);
                     int[] recordTypeIds =
                             capabilities.stream().mapToInt(Integer::intValue).toArray();

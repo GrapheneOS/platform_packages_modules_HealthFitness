@@ -13,8 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.android.healthconnect.controller.permissions.data
 
-package android.health.connect;
+import android.health.connect.internal.datatypes.utils.SymptomTypePermissionMapper
 
-/** @hide */
-parcelable GetMatchingAppsResponse;
+/** Returns true if this [HealthPermissionType] belongs to the symptom category. */
+fun HealthPermissionType.isSymptom(): Boolean {
+    return this is FitnessPermissionType &&
+        SymptomTypePermissionMapper.isSymptomCategory(this.category)
+}
+
+/** Returns a set of all [FitnessPermissionType]s that are symptoms. */
+fun getAllSymptomPermissionTypes(): Set<FitnessPermissionType> {
+    return FitnessPermissionType.entries.filter { it.isSymptom() }.toSet()
+}

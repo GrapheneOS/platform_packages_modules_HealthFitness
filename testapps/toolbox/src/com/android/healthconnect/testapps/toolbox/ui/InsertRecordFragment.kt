@@ -31,6 +31,7 @@ import android.health.connect.datatypes.FloorsClimbedRecord
 import android.health.connect.datatypes.InstantRecord
 import android.health.connect.datatypes.IntervalRecord
 import android.health.connect.datatypes.MealType
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord
 import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MindfulnessSessionRecord
 import android.health.connect.datatypes.NicotineIntakeRecord
@@ -354,6 +355,25 @@ class InsertRecordFragment : Fragment() {
         when (mRecordClass) {
             FloorsClimbedRecord::class -> {
                 fieldName = "mFloors"
+                field = EditableTextView(this.requireContext(), fieldName, INPUT_TYPE_INT)
+            }
+
+            MenstrualCyclePhaseRecord::class -> {
+                val phases =
+                    mapOf(
+                        "Follicular" to MenstrualCyclePhaseRecord.PHASE_FOLLICULAR,
+                        "Luteal" to MenstrualCyclePhaseRecord.PHASE_LUTEAL,
+                    )
+                val phaseField =
+                    EnumDropDown(
+                        this.requireContext(),
+                        "mPhase",
+                        EnumFieldsWithValues(phases as Map<String, Any>),
+                    )
+                mLinearLayout.addView(phaseField)
+                mFieldNameToFieldInput["mPhase"] = phaseField
+
+                fieldName = "mDayOfCycle"
                 field = EditableTextView(this.requireContext(), fieldName, INPUT_TYPE_INT)
             }
 

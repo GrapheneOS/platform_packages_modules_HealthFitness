@@ -137,7 +137,7 @@ class HealthPermissionReaderTest {
             )
     }
 
-    @RequiresFlagsEnabled(Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_ACTIVITY_INTENSITY_DB)
+    @RequiresFlagsEnabled(Flags.FLAG_ACTIVITY_INTENSITY)
     @Test
     fun getHealthPermissions_activityIntensityFlagsEnabled_returnsPermissions() {
         assertThat(permissionReader.getHealthPermissions())
@@ -147,21 +147,9 @@ class HealthPermissionReaderTest {
             )
     }
 
-    @RequiresFlagsEnabled(Flags.FLAG_ACTIVITY_INTENSITY_DB)
     @RequiresFlagsDisabled(Flags.FLAG_ACTIVITY_INTENSITY)
     @Test
     fun getHealthPermissions_activityIntensityFlagDisabled_doesNotReturnPermissions() {
-        assertThat(permissionReader.getHealthPermissions())
-            .containsNoneOf(
-                HealthPermissions.READ_ACTIVITY_INTENSITY,
-                HealthPermissions.WRITE_ACTIVITY_INTENSITY,
-            )
-    }
-
-    @RequiresFlagsEnabled(Flags.FLAG_ACTIVITY_INTENSITY)
-    @RequiresFlagsDisabled(Flags.FLAG_ACTIVITY_INTENSITY_DB)
-    @Test
-    fun getHealthPermissions_activityIntensityDbFlagDisabled_doesNotReturnPermissions() {
         assertThat(permissionReader.getHealthPermissions())
             .containsNoneOf(
                 HealthPermissions.READ_ACTIVITY_INTENSITY,

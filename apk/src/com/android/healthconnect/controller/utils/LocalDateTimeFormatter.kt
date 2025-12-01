@@ -24,6 +24,7 @@ import android.text.format.DateUtils
 import com.android.healthconnect.controller.R
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -111,6 +112,11 @@ class LocalDateTimeFormatter @Inject constructor(@ApplicationContext private val
             startTime.toEpochMilli(),
             DATE_FORMAT_FLAGS_WITHOUT_YEAR,
         )
+    }
+
+    /** Returns localized short versions of date, such as "15 Aug" */
+    fun formatShortDateWithoutYear(date: LocalDate, zoneId: ZoneId): String {
+        return formatShortDateWithoutYear(date.atStartOfDay(zoneId).toInstant())
     }
 
     /** Returns localized short versions of date, such as "15 Aug, 2022" */

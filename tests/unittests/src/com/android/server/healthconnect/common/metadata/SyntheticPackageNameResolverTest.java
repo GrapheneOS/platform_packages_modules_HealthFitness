@@ -87,7 +87,11 @@ public class SyntheticPackageNameResolverTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @DisableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void withFlagDisabled_mask_returnsInput() {
         String result = mResolver.mask(TEST_CANONICAL_SPN, TEST_CALLER_ONE);
 
@@ -95,7 +99,11 @@ public class SyntheticPackageNameResolverTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void withMaskedSpn_mask_throwsIllegalArgumentError() {
         assertThrows(
                 IllegalArgumentException.class,
@@ -103,7 +111,11 @@ public class SyntheticPackageNameResolverTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void withRegularApp_mask_returnsInput() {
         String result = mResolver.mask(TEST_APP_PACKAGE_NAME, TEST_CALLER_ONE);
 
@@ -112,7 +124,11 @@ public class SyntheticPackageNameResolverTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void withCanonicalSpn_mask_returnsMasked() {
         String result = mResolver.mask(TEST_CANONICAL_SPN, TEST_CALLER_ONE);
 
@@ -120,7 +136,11 @@ public class SyntheticPackageNameResolverTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @DisableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void withFlagDisabled_unmask_returnsInput() {
         String result = mResolver.unmask(TEST_MASKED_ONE_SPN, TEST_CALLER_ONE);
 
@@ -128,7 +148,11 @@ public class SyntheticPackageNameResolverTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void withRegularApp_unmask_returnsInput() {
         String result = mResolver.unmask(TEST_APP_PACKAGE_NAME, TEST_CALLER_ONE);
 
@@ -136,7 +160,11 @@ public class SyntheticPackageNameResolverTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void withCanonicalSpn_unmask_returnsInput() {
         String result = mResolver.unmask(TEST_CANONICAL_SPN, TEST_CALLER_ONE);
 
@@ -147,7 +175,11 @@ public class SyntheticPackageNameResolverTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void withMaskedSpn_unmask_returnsUnmasked() {
         String result = mResolver.unmask(TEST_MASKED_ONE_SPN, TEST_CALLER_ONE);
 
@@ -155,7 +187,11 @@ public class SyntheticPackageNameResolverTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void withDifferentCallers_unmask_returnsUnmasked() {
         String resultOne = mResolver.unmask(TEST_MASKED_ONE_SPN, TEST_CALLER_ONE);
         String resultTwo = mResolver.unmask(TEST_MASKED_TWO_SPN, TEST_CALLER_TWO);
@@ -164,7 +200,11 @@ public class SyntheticPackageNameResolverTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void withMismatchedCaller_unmask_throwsResolutionError() {
         // Trying to unmask a package masked for Caller One in the context of Caller Two should fail
         // resolution.
@@ -181,7 +221,11 @@ public class SyntheticPackageNameResolverTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void withUnknownCanonical_unmask_throwsResolutionError() {
         // Create a masked SPN for a canonical name that is NOT in the AppInfoHelper map.
         String unknownCanonical =
@@ -202,7 +246,11 @@ public class SyntheticPackageNameResolverTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void withCurrentDeviceId_unmask_returnsStableCurrentDeviceId() {
         String result =
                 mResolver.unmask(TEST_CURRENT_DEVICE_ID_RUNTIME_MASKED_SPN, TEST_CALLER_ONE);
@@ -210,7 +258,11 @@ public class SyntheticPackageNameResolverTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void withCurrentDeviceId_maskAndUnmask_completeCallingChainSuccess() {
         String maskedRuntimeId =
                 mResolver.mask(TEST_CURRENT_DEVICE_ID_RUNTIME_CANONICAL_SPN, TEST_CALLER_ONE);
@@ -221,7 +273,11 @@ public class SyntheticPackageNameResolverTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void withDeviceDataProviderManagerNullAndDeviceId_unmask_throwsResolutionError() {
         SyntheticPackageNameResolver nullResolver =
                 new SyntheticPackageNameResolver(mAppInfoHelper, null);
@@ -242,7 +298,11 @@ public class SyntheticPackageNameResolverTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
     public void withDeviceDataProviderManagerAndMaskedSpn_unmask_success() {
         SyntheticPackageNameResolver nullResolver =
                 new SyntheticPackageNameResolver(mAppInfoHelper, null);

@@ -37,7 +37,12 @@ import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMP
 import android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE
 import android.health.connect.datatypes.units.Percentage
 import android.health.connect.datatypes.units.Volume
-import android.icu.text.MessageFormat
+import android.icu.number.IntegerWidth
+import android.icu.number.LocalizedNumberFormatter
+import android.icu.number.NumberFormatter
+import android.icu.number.NumberFormatter.UnitWidth
+import android.icu.number.Precision
+import android.icu.util.MeasureUnit
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.formatters.shared.EntryFormatter
@@ -45,7 +50,7 @@ import com.android.healthconnect.controller.data.formatters.shared.RecordDetails
 import com.android.healthconnect.controller.units.UnitPreferences
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import dagger.hilt.android.qualifiers.ApplicationContext
-import java.math.RoundingMode
+import java.util.Locale
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -60,6 +65,12 @@ constructor(
 ) :
     EntryFormatter<AlcoholConsumptionRecord>(context, timeFormatter, unitPreferences),
     RecordDetailsFormatter<AlcoholConsumptionRecord> {
+
+    private val localFormatter =
+        NumberFormatter.withLocale(Locale.getDefault())
+            .unitWidth(UnitWidth.SHORT)
+            .precision(Precision.maxFraction(3))
+            .integerWidth(IntegerWidth.zeroFillTo(1))
 
     override suspend fun formatRecord(
         record: AlcoholConsumptionRecord,
@@ -82,39 +93,41 @@ constructor(
     }
 
     private fun formatServingVolume(volume: Volume): String {
-        return MessageFormat.format(
-            context.getString(R.string.milliliter),
-            mapOf("count" to formatVolumeValueMilliliters(volume)),
-        )
+        val volumeLiters = volume.inLiters
+        return formatVolumeValue(volumeLiters, localFormatter)
     }
 
     private fun formatServingVolumeA11y(volume: Volume): String {
-        return MessageFormat.format(
-            context.getString(R.string.milliliter_long),
-            mapOf("count" to formatVolumeValueMilliliters(volume)),
-        )
+        val volumeLiters = volume.inLiters
+        return formatVolumeValue(volumeLiters, localFormatter.unitWidth(UnitWidth.FULL_NAME))
     }
 
-    private fun formatVolumeValueMilliliters(volume: Volume): Int {
-        return round(volume.inLiters * 1000, 2)
-    }
-
-    private fun round(value: Double, scale: Int): Int {
-        return value.toBigDecimal().setScale(scale, RoundingMode.UP).toInt()
+    private fun formatVolumeValue(
+        volumeLiters: Double,
+        formatter: LocalizedNumberFormatter,
+    ): String {
+        return if (volumeLiters < 1) {
+            formatter.unit(MeasureUnit.MILLILITER).format(volumeLiters * 1000).toString()
+        } else {
+            formatter.unit(MeasureUnit.LITER).format(volumeLiters).toString()
+        }
     }
 
     private fun formatPercentageValue(percentage: Percentage): String {
-        return MessageFormat.format(
-            context.getString(R.string.percent),
-            mapOf("value" to round(percentage.value, 2)),
-        )
+        return localFormatter
+            .unit(MeasureUnit.PERCENT)
+            .precision(Precision.maxFraction(1))
+            .format(percentage.value)
+            .toString()
     }
 
     private fun formatPercentageValueA11y(percentage: Percentage): String {
-        return MessageFormat.format(
-            context.getString(R.string.percent_long),
-            mapOf("value" to round(percentage.value, 2)),
-        )
+        return localFormatter
+            .unit(MeasureUnit.PERCENT)
+            .unitWidth(UnitWidth.FULL_NAME)
+            .precision(Precision.maxFraction(1))
+            .format(percentage.value)
+            .toString()
     }
 
     override suspend fun formatRecordDetails(
@@ -122,7 +135,6 @@ constructor(
     ): List<FormattedEntry> {
 
         val entries = mutableListOf<FormattedEntry>()
-
         if (record.servingVolume != null) {
             entries.add(
                 FormattedEntry.ReverseSessionDetail(

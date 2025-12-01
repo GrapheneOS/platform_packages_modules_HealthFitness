@@ -631,7 +631,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mDatabaseHelpers, mTransactionManager, mHealthConnectMappings)
                         : builder.mDeviceDataSourcesHelper;
         mSyntheticPackageNameCreator =
-                builder.mSyntheticPackageNameCreator == null && Flags.deviceDataProvidersApi()
+                builder.mSyntheticPackageNameCreator == null
+                                && AconfigFlagHelper.isDeviceDataProvidersEnabled()
                         ? new SyntheticPackageNameCreator(mPreferenceHelper)
                         : builder.mSyntheticPackageNameCreator;
         mDeviceDataProviderMetadataHelper =
@@ -660,7 +661,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         mSyntheticPackageNameResolver =
                 builder.mSyntheticPackageNameResolver == null
                                 && mDeviceDataProviderManager != null
-                                && Flags.deviceDataProvidersApi()
+                                && AconfigFlagHelper.isDeviceDataProvidersEnabled()
                         ? new SyntheticPackageNameResolver(
                                 mAppInfoHelper, mDeviceDataProviderManager)
                         : builder.mSyntheticPackageNameResolver;

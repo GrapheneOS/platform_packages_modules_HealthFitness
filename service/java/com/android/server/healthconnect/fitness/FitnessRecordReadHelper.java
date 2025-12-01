@@ -38,7 +38,6 @@ import com.android.server.healthconnect.storage.request.ReadTableRequest;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -186,12 +185,18 @@ public class FitnessRecordReadHelper {
                                 .getRecordHelper(request.getRecordType())
                                 .getExtraReadPermissions());
 
+        Set<String> grantedGranularReadPermissions =
+                new HashSet<>(
+                        mInternalHealthConnectMappings
+                                .getRecordHelper(request.getRecordType())
+                                .getGranularReadPermissions());
+
         return readRecords(
                 transactionManager,
                 callingPackageName,
                 request,
                 grantedExtraReadPermissions,
-                /* grantedGranularPermissions= */ Collections.emptySet(),
+                grantedGranularReadPermissions,
                 /* startDateAccessMillis= */ DEFAULT_LONG,
                 // Pass in caller as foreground so that all data is read.
                 /* isInForeground= */ true,
@@ -273,12 +278,18 @@ public class FitnessRecordReadHelper {
                         .flatMap(recordHelper -> recordHelper.getExtraReadPermissions().stream())
                         .collect(Collectors.toSet());
 
+        Set<String> grantedGranularReadPermissions =
+                recordTypeToUuids.keySet().stream()
+                        .map(mInternalHealthConnectMappings::getRecordHelper)
+                        .flatMap(recordHelper -> recordHelper.getGranularReadPermissions().stream())
+                        .collect(Collectors.toSet());
+
         return readRecords(
                 transactionManager,
                 callingPackageName,
                 recordTypeToUuids,
                 grantedExtraReadPermissions,
-                /* grantedGranularPermissions= */ Collections.emptySet(),
+                grantedGranularReadPermissions,
                 /* startDateAccessMillis= */ DEFAULT_LONG,
                 // Pass in caller as foreground so that all data is read.
                 /* isInForeground= */ true,

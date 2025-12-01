@@ -31,6 +31,7 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.doReturn;
@@ -63,6 +64,7 @@ import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
+import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.health.connect.internal.datatypes.SymptomRecordInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.os.Build;
@@ -111,7 +113,7 @@ import java.util.stream.Collectors;
 @EnableFlags({
     Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
     Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-    Flags.FLAG_DEVELOPMENT_DATABASE
+    Flags.FLAG_DEVELOPMENT_DATABASE_RW
 })
 public class DeviceDataProviderManagerTest {
 
@@ -806,6 +808,22 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
+    public void insertDeviceRecords_noAccessLogged() {
+        advertiseDevice(DEVICE_ID);
+
+        List<RecordInternal<?>> records =
+                List.of(
+                        buildStepsRecord(
+                                /* startTimeMillis= */ 1000,
+                                /* endTimeMillis= */ 2000,
+                                /* stepsCount= */ 100));
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+
+        List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mContext.getUser());
+        assertThat(result).hasSize(0);
+    }
+
+    @Test
     public void advertisementAndNormalInsertion_createsTwoDistinctDeviceInfoEntries() {
         Device device =
                 new Device.Builder()
@@ -903,6 +921,24 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
+    public void updateDeviceRecords_noAccessLogged() {
+        advertiseDevice(DEVICE_ID);
+
+        List<RecordInternal<?>> records = List.of(buildStepsRecord(100, 200, 111));
+        List<String> insertedUuids =
+                mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+
+        RecordInternal<?> updatedRecord = buildStepsRecord(300, 400, 222);
+        updatedRecord.setUuid(UUID.fromString(insertedUuids.get(0)));
+
+        mDeviceDataProviderManager.updateDeviceRecords(
+                PACKAGE_NAME, DEVICE_ID, List.of(updatedRecord));
+
+        List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mContext.getUser());
+        assertThat(result).hasSize(0);
+    }
+
+    @Test
     public void updateDeviceRecords_uuidNotFound_throwsException() {
         Device device =
                 new Device.Builder()
@@ -990,8 +1026,83 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
+    public void withMultipleDdpsSameDevice_updateDeviceRecords_updatesOwnRecord() {
+        String packageOne = "foo";
+        String packageTwo = "bar";
+
+        advertiseDevice(DEVICE_ID, packageOne, StepsRecord.class);
+        advertiseDevice(DEVICE_ID, packageTwo, StepsRecord.class);
+
+        List<RecordInternal<?>> recordsOne = List.of(buildStepsRecord(100, 200, 111));
+        List<RecordInternal<?>> recordsTwo = List.of(buildStepsRecord(300, 400, 222));
+
+        String uuidOne =
+                mDeviceDataProviderManager
+                        .insertDeviceRecords(packageOne, DEVICE_ID, recordsOne)
+                        .get(0);
+        mDeviceDataProviderManager.insertDeviceRecords(packageTwo, DEVICE_ID, recordsTwo);
+
+        RecordInternal<?> updatedRecordOne = buildStepsRecord(100, 200, 333).setUuid(uuidOne);
+        mDeviceDataProviderManager.updateDeviceRecords(
+                packageOne, DEVICE_ID, List.of(updatedRecordOne));
+
+        ReadRecordsRequestUsingFilters<StepsRecord> request =
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setDeviceId(DEVICE_ID)
+                        .build();
+
+        List<RecordInternal<?>> actualOne =
+                mDeviceDataProviderManager.readDeviceRecords(
+                                mTransactionManager,
+                                packageOne,
+                                request.toReadRecordsRequestParcel())
+                        .first;
+
+        assertThat(actualOne.size()).isEqualTo(1);
+        assertThat(((StepsRecordInternal) actualOne.get(0)).getCount()).isEqualTo(333);
+
+        List<RecordInternal<?>> actualTwo =
+                mDeviceDataProviderManager.readDeviceRecords(
+                                mTransactionManager,
+                                packageTwo,
+                                request.toReadRecordsRequestParcel())
+                        .first;
+
+        assertThat(actualTwo.size()).isEqualTo(1);
+        assertThat(((StepsRecordInternal) actualTwo.get(0)).getCount()).isEqualTo(222);
+    }
+
+    @Test
+    public void withMultipleDdpsSameDevice_updateDeviceRecords_throwsWhenAttemptingToUpdateOther() {
+        String packageOne = "foo";
+        String packageTwo = "bar";
+
+        advertiseDevice(DEVICE_ID, packageOne, StepsRecord.class);
+        advertiseDevice(DEVICE_ID, packageTwo, StepsRecord.class);
+
+        List<RecordInternal<?>> recordsOne = List.of(buildStepsRecord(100, 200, 111));
+        List<RecordInternal<?>> recordsTwo = List.of(buildStepsRecord(300, 400, 222));
+
+        String uuidOne =
+                mDeviceDataProviderManager
+                        .insertDeviceRecords(packageOne, DEVICE_ID, recordsOne)
+                        .get(0);
+        mDeviceDataProviderManager.insertDeviceRecords(packageTwo, DEVICE_ID, recordsTwo);
+
+        RecordInternal<?> updatedRecordOne = buildStepsRecord(100, 200, 333).setUuid(uuidOne);
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mDeviceDataProviderManager.updateDeviceRecords(
+                                packageTwo, DEVICE_ID, List.of(updatedRecordOne)));
+    }
+
+    @Test
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void isPermittedToProvideDeviceData_baklavaAndLower_withManagePermission_returnsTrue() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT <= Build.VERSION_CODES.BAKLAVA);
+
         doReturn(PackageManager.PERMISSION_DENIED)
                 .when(mContext)
                 .checkPermission(
@@ -1014,6 +1125,9 @@ public class DeviceDataProviderManagerTest {
     @Test
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void isPermittedToProvideDeviceData_baklavaAndLower_noPermission_returnsFalse() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT <= Build.VERSION_CODES.BAKLAVA);
+
         doReturn(PackageManager.PERMISSION_DENIED)
                 .when(mContext)
                 .checkPermission(
@@ -1036,6 +1150,9 @@ public class DeviceDataProviderManagerTest {
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA + 1)
     public void isPermittedToProvideDeviceData_postBaklava_withProvidePermission_returnsTrue() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT > Build.VERSION_CODES.BAKLAVA);
+
         doReturn(PackageManager.PERMISSION_GRANTED)
                 .when(mContext)
                 .checkPermission(
@@ -1058,6 +1175,9 @@ public class DeviceDataProviderManagerTest {
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA + 1)
     public void isPermittedToProvideDeviceData_postBaklava_withManagePermission_returnsFalse() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT > Build.VERSION_CODES.BAKLAVA);
+
         doReturn(PackageManager.PERMISSION_DENIED)
                 .when(mContext)
                 .checkPermission(
@@ -1080,6 +1200,9 @@ public class DeviceDataProviderManagerTest {
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA + 1)
     public void isPermittedToProvideDeviceData_postBaklava_noPermission_returnsFalse() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT > Build.VERSION_CODES.BAKLAVA);
+
         doReturn(PackageManager.PERMISSION_DENIED)
                 .when(mContext)
                 .checkPermission(
@@ -1102,6 +1225,9 @@ public class DeviceDataProviderManagerTest {
     @Test
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.BAKLAVA)
     public void isPermittedToProvideDeviceData_baklavaAndLower_aRPackage_returnsTrue() {
+        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
+        assumeTrue(Build.VERSION.SDK_INT <= Build.VERSION_CODES.BAKLAVA);
+
         doReturn(PackageManager.PERMISSION_DENIED)
                 .when(mContext)
                 .checkPermission(
@@ -1296,7 +1422,7 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
-    public void withReadUsingIds_readDeviceRecords_noAccessLogged() {
+    public void readDeviceRecords_noAccessLogged() {
         advertiseDevice(DEVICE_ID);
 
         ReadRecordsRequestUsingIds<StepsRecord> request =
@@ -1749,6 +1875,24 @@ public class DeviceDataProviderManagerTest {
                 new DeleteUsingFiltersRequestParcel(
                         new DeleteUsingFiltersRequest.Builder().build()));
         assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, DEVICE_ID, 0, StepsRecord.class);
+    }
+
+    @Test
+    public void deleteDeviceRecords_noAccessLogged() {
+        advertiseDevice(DEVICE_ID);
+
+        List<RecordInternal<?>> records = List.of(buildStepsRecord(100, 200, 111));
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, DEVICE_ID, 1, StepsRecord.class);
+
+        mDeviceDataProviderManager.deleteDeviceRecords(
+                PACKAGE_NAME,
+                DEVICE_ID,
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder().build()));
+
+        List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mContext.getUser());
+        assertThat(result).hasSize(0);
     }
 
     @Test

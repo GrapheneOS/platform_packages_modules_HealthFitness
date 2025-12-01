@@ -17,10 +17,14 @@ package android.healthconnect.cts.device;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
+import static android.healthconnect.testing.cts.TestUtils.advertiseDevice;
+import static android.healthconnect.testing.cts.TestUtils.insertDeviceRecords;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
+import static android.healthconnect.testing.cts.TestUtils.readDeviceRecords;
+import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
-import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
 
@@ -65,7 +69,7 @@ import java.util.UUID;
 @RequiresFlagsEnabled({
     FLAG_DEVICE_DATA_PROVIDERS_API,
     FLAG_DEVICE_DATA_PROVIDERS_DB,
-    FLAG_DEVELOPMENT_DATABASE
+    FLAG_DEVELOPMENT_DATABASE_RW
 })
 public class ReadDeviceRecordsTest {
     @Rule
@@ -117,10 +121,10 @@ public class ReadDeviceRecordsTest {
     @Test
     public void withEmptyDeviceIdInFiltersRequest_readDeviceRecords_returnsEmpty()
             throws InterruptedException {
-        TestUtils.advertiseDevice(mDeviceId, StepsRecord.class);
+        advertiseDevice(mDeviceId, StepsRecord.class);
 
         List<StepsRecord> readRecords =
-                TestUtils.readDeviceRecords(
+                readDeviceRecords(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
 
         assertThat(readRecords.size()).isEqualTo(0);
@@ -163,10 +167,10 @@ public class ReadDeviceRecordsTest {
 
     @Test
     public void withoutAnyData_readDeviceRecords_returnsEmpty() throws InterruptedException {
-        TestUtils.advertiseDevice(mDeviceId, StepsRecord.class);
+        advertiseDevice(mDeviceId, StepsRecord.class);
 
         List<StepsRecord> readRecords =
-                TestUtils.readDeviceRecords(
+                readDeviceRecords(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                                 .setDeviceId(mDeviceId)
                                 .build());
@@ -180,10 +184,10 @@ public class ReadDeviceRecordsTest {
         // BasalMetabolicRateRecord.
         insertRecords(DataFactory.getTestRecords());
 
-        TestUtils.advertiseDevice(mDeviceId, SleepSessionRecord.class);
+        advertiseDevice(mDeviceId, SleepSessionRecord.class);
 
         List<SleepSessionRecord> readRecords =
-                TestUtils.readDeviceRecords(
+                readDeviceRecords(
                         new ReadRecordsRequestUsingFilters.Builder<>(SleepSessionRecord.class)
                                 .setDeviceId(mDeviceId)
                                 .build());
@@ -198,13 +202,13 @@ public class ReadDeviceRecordsTest {
         // BasalMetabolicRateRecord.
         insertRecords(DataFactory.getTestRecords());
 
-        TestUtils.advertiseDevice(mDeviceId, StepsRecord.class);
+        advertiseDevice(mDeviceId, StepsRecord.class);
 
-        List<StepsRecord> records = List.of(DataFactory.getStepsRecord(123));
-        TestUtils.insertDeviceRecords(mDeviceId, records).get(0);
+        List<StepsRecord> records = List.of(getStepsRecord(123));
+        insertDeviceRecords(mDeviceId, records).get(0);
 
         List<StepsRecord> readRecords =
-                TestUtils.readDeviceRecords(
+                readDeviceRecords(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                                 .setDeviceId(mDeviceId)
                                 .build());
@@ -222,10 +226,10 @@ public class ReadDeviceRecordsTest {
         String appRecordsPackageName =
                 ApplicationProvider.getApplicationContext().getAttributionSource().getPackageName();
 
-        TestUtils.advertiseDevice(mDeviceId, StepsRecord.class);
+        advertiseDevice(mDeviceId, StepsRecord.class);
 
-        List<StepsRecord> records = List.of(DataFactory.getStepsRecord(123));
-        TestUtils.insertDeviceRecords(mDeviceId, records).get(0);
+        List<StepsRecord> records = List.of(getStepsRecord(123));
+        insertDeviceRecords(mDeviceId, records).get(0);
 
         HealthConnectReceiver<ReadRecordsResponse<StepsRecord>> receiver =
                 new HealthConnectReceiver<>();
@@ -272,13 +276,13 @@ public class ReadDeviceRecordsTest {
                 },
                 MANAGE_HEALTH_DATA_PERMISSION);
 
-        List<StepsRecord> stepsRecords = List.of(DataFactory.getStepsRecord(123));
+        List<StepsRecord> stepsRecords = List.of(getStepsRecord(123));
         List<SleepSessionRecord> sleepRecords = List.of(DataFactory.buildSleepSession());
-        TestUtils.insertDeviceRecords(mDeviceId, stepsRecords);
-        TestUtils.insertDeviceRecords(mDeviceId, sleepRecords);
+        insertDeviceRecords(mDeviceId, stepsRecords);
+        insertDeviceRecords(mDeviceId, sleepRecords);
 
         List<StepsRecord> readRecords =
-                TestUtils.readDeviceRecords(
+                readDeviceRecords(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                                 .setDeviceId(mDeviceId)
                                 .build());
@@ -289,16 +293,15 @@ public class ReadDeviceRecordsTest {
 
     @Test
     public void withRequestUsingId_readDeviceRecords_success() throws InterruptedException {
-        TestUtils.advertiseDevice(mDeviceId, StepsRecord.class);
+        advertiseDevice(mDeviceId, StepsRecord.class);
 
-        List<StepsRecord> stepsRecords = List.of(DataFactory.getStepsRecord(123));
-        String uuid =
-                TestUtils.insertDeviceRecords(mDeviceId, stepsRecords).get(0).getMetadata().getId();
+        List<StepsRecord> stepsRecords = List.of(getStepsRecord(123));
+        String uuid = insertDeviceRecords(mDeviceId, stepsRecords).get(0).getMetadata().getId();
 
         ReadRecordsRequestUsingIds<StepsRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class).addId(uuid).build();
 
-        List<StepsRecord> readRecords = TestUtils.readDeviceRecords(request);
+        List<StepsRecord> readRecords = readDeviceRecords(request);
 
         assertThat(readRecords.size()).isEqualTo(1);
         assertThat(readRecords.get(0).getCount()).isEqualTo(123);
@@ -307,11 +310,10 @@ public class ReadDeviceRecordsTest {
     @Test
     public void withRequestUsingIds_readDeviceRecords_ignoresMissingIds()
             throws InterruptedException {
-        TestUtils.advertiseDevice(mDeviceId, StepsRecord.class);
+        advertiseDevice(mDeviceId, StepsRecord.class);
 
-        List<StepsRecord> stepsRecords = List.of(DataFactory.getStepsRecord(123));
-        String uuid =
-                TestUtils.insertDeviceRecords(mDeviceId, stepsRecords).get(0).getMetadata().getId();
+        List<StepsRecord> stepsRecords = List.of(getStepsRecord(123));
+        String uuid = insertDeviceRecords(mDeviceId, stepsRecords).get(0).getMetadata().getId();
 
         ReadRecordsRequestUsingIds<StepsRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class)
@@ -320,7 +322,7 @@ public class ReadDeviceRecordsTest {
                         .addId(UUID.randomUUID().toString())
                         .build();
 
-        List<StepsRecord> readRecords = TestUtils.readDeviceRecords(request);
+        List<StepsRecord> readRecords = readDeviceRecords(request);
 
         assertThat(readRecords.size()).isEqualTo(1);
         assertThat(readRecords.get(0).getCount()).isEqualTo(123);
@@ -334,14 +336,14 @@ public class ReadDeviceRecordsTest {
 
         TestUtils.advertiseDevices(Set.of(deviceIdOne, deviceIdTwo));
 
-        List<StepsRecord> stepsRecordsOne = List.of(DataFactory.getStepsRecord(111));
-        List<StepsRecord> stepsRecordsTwo = List.of(DataFactory.getStepsRecord(222));
+        List<StepsRecord> stepsRecordsOne = List.of(getStepsRecord(111));
+        List<StepsRecord> stepsRecordsTwo = List.of(getStepsRecord(222));
 
-        TestUtils.insertDeviceRecords(deviceIdOne, stepsRecordsOne);
-        TestUtils.insertDeviceRecords(deviceIdTwo, stepsRecordsTwo);
+        insertDeviceRecords(deviceIdOne, stepsRecordsOne);
+        insertDeviceRecords(deviceIdTwo, stepsRecordsTwo);
 
         List<StepsRecord> readRecordsOne =
-                TestUtils.readDeviceRecords(
+                readDeviceRecords(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                                 .setDeviceId(deviceIdOne)
                                 .build());
@@ -350,7 +352,7 @@ public class ReadDeviceRecordsTest {
         assertThat(readRecordsOne.get(0).getCount()).isEqualTo(111);
 
         List<StepsRecord> readRecordsTwo =
-                TestUtils.readDeviceRecords(
+                readDeviceRecords(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
                                 .setDeviceId(deviceIdTwo)
                                 .build());
@@ -367,14 +369,14 @@ public class ReadDeviceRecordsTest {
 
         TestUtils.advertiseDevices(Set.of(deviceIdOne, deviceIdTwo));
 
-        List<StepsRecord> stepsRecordsOne = List.of(DataFactory.getStepsRecord(111));
-        List<StepsRecord> stepsRecordsTwo = List.of(DataFactory.getStepsRecord(222));
+        List<StepsRecord> stepsRecordsOne = List.of(getStepsRecord(111));
+        List<StepsRecord> stepsRecordsTwo = List.of(getStepsRecord(222));
 
-        TestUtils.insertDeviceRecords(deviceIdOne, stepsRecordsOne);
-        TestUtils.insertDeviceRecords(deviceIdTwo, stepsRecordsTwo);
+        insertDeviceRecords(deviceIdOne, stepsRecordsOne);
+        insertDeviceRecords(deviceIdTwo, stepsRecordsTwo);
 
         List<StepsRecord> readRecords =
-                TestUtils.readDeviceRecords(
+                readDeviceRecords(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
 
         assertThat(readRecords.size()).isEqualTo(2);

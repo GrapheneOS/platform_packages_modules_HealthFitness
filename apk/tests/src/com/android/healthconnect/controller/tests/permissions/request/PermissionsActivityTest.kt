@@ -640,7 +640,7 @@ class PermissionsActivityTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
+    @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET, Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun requestMedicalAndFitness_clickOnAllow_grantsMedical_showsFitness() {
         val permissions =
             arrayOf(
@@ -666,6 +666,7 @@ class PermissionsActivityTest {
 
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
+            // TODO(b/463347405) update with appropriate checks for permissions grouping UI
             onView(withText("Sleep")).check(matches(isDisplayed()))
 
             assertThat(permissionManager.revokeHealthPermissionInvocations).isEqualTo(1)

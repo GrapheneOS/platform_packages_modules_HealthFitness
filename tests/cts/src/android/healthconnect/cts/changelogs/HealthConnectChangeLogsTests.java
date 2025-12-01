@@ -46,10 +46,8 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.createAlle
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 
-import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_FIX_CHANGE_LOG_WHEN_INSERT_WITH_SAME_TIMESTAMPS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 import static com.android.healthfitness.flags.Flags.phrChangeLogs;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -191,8 +189,6 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogToken_forMedicalResource_hasFieldsSet() {
         var dataOriginFilter = new DataOrigin.Builder().setPackageName("package.name").build();
@@ -211,8 +207,6 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsDisabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogTokenRequest_emptyRecordTypes_throwsException() {
         Throwable thrown =
@@ -225,8 +219,6 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogTokenRequest_emptyBothTypes_throwsException() {
         Throwable thrown =
@@ -241,8 +233,6 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogTokenRequest_setBothTypes_throwsException_beforeBuild() {
         Throwable thrown =
@@ -398,8 +388,6 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testChangeLogs_noOperations_returnsEmptyChangelogs_phr()
             throws InterruptedException {
@@ -437,8 +425,6 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testChangeLogs_insert_returnsUpsertedLogsOnly_phr() throws InterruptedException {
         ChangeLogTokenResponse tokenResponse =
@@ -484,8 +470,6 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testChangeLogs_insert_filterNonExistingDataOrigin_returnsEmptyLogs_phr()
             throws InterruptedException {
@@ -536,8 +520,6 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testChangeLogs_insertAndDelete_filterNonExistingDataOrigin_returnsEmptyLogs_phr()
             throws InterruptedException {
@@ -594,8 +576,6 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testChangeLogs_insert_filterMedicalResourceType_returnsUpsertedLogs_phr()
             throws InterruptedException {
@@ -648,8 +628,6 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testChangeLogs_insertAndDeleteDataById_returnsDeletedLogsOnly_phr()
             throws InterruptedException {
@@ -788,8 +766,6 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testChangeLogs_insertAndDelete_onlyReturnsDeletedLogsForMedicalResourceType()
             throws InterruptedException {
@@ -995,8 +971,6 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testChangeLogs_noOperations_withPageSize_returnsEmptyChangeLogs_phr()
             throws InterruptedException {
@@ -1034,8 +1008,6 @@ public class HealthConnectChangeLogsTests {
     @Test
     @RequiresFlagsEnabled({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testChangeLogs_insert_withPageSize_doesNotExceedPageSize_phr()
             throws InterruptedException {

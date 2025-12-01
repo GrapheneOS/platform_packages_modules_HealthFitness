@@ -24,8 +24,6 @@ import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecor
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.DataFactory.getTotalCaloriesBurnedRecord;
 
-import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
-
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
@@ -51,6 +49,8 @@ import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.platform.test.annotations.RequiresFlagsEnabled;
 
 import androidx.test.platform.app.InstrumentationRegistry;
+
+import com.android.healthfitness.flags.Flags;
 
 import org.junit.After;
 import org.junit.Before;
@@ -88,7 +88,9 @@ public class ReadByFilterTests {
 
     @Test
     @RequiresFlagsEnabled({
-        FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void readDataWithDataOriginsAndDeviceId_throws() {
         ReadRecordsRequestUsingFilters.Builder<DistanceRecord> requestBuilder =

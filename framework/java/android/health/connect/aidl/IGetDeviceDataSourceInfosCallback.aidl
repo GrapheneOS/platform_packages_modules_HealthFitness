@@ -16,16 +16,16 @@
 
 package android.health.connect.aidl;
 
-import android.health.connect.GetMatchingAppsResponse;
+import android.health.connect.DeviceDataSourceInfo;
 import android.health.connect.aidl.HealthConnectExceptionParcel;
 
+import java.util.List;
+
 /**
- * Callback for {@link IHealthConnectService#getMatchingApps}
- *
+ * Callback for {@link IHealthConnectService#getDeviceDataSourceInfos}.
  * @hide
  */
-interface IGetMatchingAppsCallback {
-    oneway void onResult(in GetMatchingAppsResponse response);
-
-    oneway void onError(in HealthConnectExceptionParcel exception);
+oneway interface IGetDeviceDataSourceInfosCallback {
+    void onResult(in List<DeviceDataSourceInfo> result);
+    void onError(in HealthConnectExceptionParcel exception);
 }

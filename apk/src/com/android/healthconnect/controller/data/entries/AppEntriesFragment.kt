@@ -1,18 +1,3 @@
-/*
- * Copyright (C) 2025 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.android.healthconnect.controller.data.entries
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
@@ -49,6 +34,7 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.data.fromPermissionTypeName
+import com.android.healthconnect.controller.permissions.data.isSymptom
 import com.android.healthconnect.controller.selectabledeletion.DeletionConstants
 import com.android.healthconnect.controller.selectabledeletion.DeletionFragment
 import com.android.healthconnect.controller.selectabledeletion.DeletionType
@@ -286,16 +272,18 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
         }
 
         val view = inflater.inflate(R.layout.fragment_entries, container, false)
-        if (requireArguments().containsKey(PERMISSION_TYPE_NAME_KEY)) {
-            val permissionTypeName =
-                arguments?.getString(PERMISSION_TYPE_NAME_KEY)
-                    ?: throw IllegalArgumentException("PERMISSION_TYPE_NAME_KEY can't be null!")
-            permissionType = fromPermissionTypeName(permissionTypeName)
+        val permissionTypeName =
+            arguments?.getString(PERMISSION_TYPE_NAME_KEY)
+                ?: throw IllegalArgumentException("PERMISSION_TYPE_NAME_KEY can't be null!")
+        permissionType = fromPermissionTypeName(permissionTypeName)
+        if (permissionType.isSymptom()) {
+            setTitle(R.string.all_symptoms_uppercase_label)
+        } else {
+            setTitle(permissionType.upperCaseLabel())
         }
 
         logger.setPageId(PageName.APP_ENTRIES_PAGE)
         logger.logImpression(ToolbarElement.TOOLBAR_SETTINGS_BUTTON)
-        setTitle(permissionType.upperCaseLabel())
 
         val isExpressiveThemeEnabled = SettingsThemeHelper.isExpressiveTheme(requireContext())
 
@@ -425,7 +413,11 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
         super.onResume()
         logger.setPageId(PageName.APP_ENTRIES_PAGE)
         logger.logPageImpression()
-        setTitle(permissionType.upperCaseLabel())
+        if (permissionType.isSymptom()) {
+            setTitle(R.string.all_symptoms_uppercase_label)
+        } else {
+            setTitle(permissionType.upperCaseLabel())
+        }
         reloadEntries()
         dateNavigationView.setDateChangedListener(
             object : DateNavigationView.OnDateChangedListener {
@@ -434,10 +426,10 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
                     period: DateNavigationPeriod,
                 ) {
                     entriesViewModel.loadEntries(
-                        permissionType,
                         packageName,
                         displayedStartDate,
                         period,
+                        permissionType,
                     )
                 }
             }
@@ -458,19 +450,19 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
             val selectedPeriod = entriesViewModel.period.value!!
             dateNavigationView.setDate(date)
             dateNavigationView.setPeriod(selectedPeriod)
-            entriesViewModel.loadEntries(permissionType, packageName, date, selectedPeriod)
+            entriesViewModel.loadEntries(packageName, date, selectedPeriod, permissionType)
         } else {
             entriesViewModel.loadLatestRecordDate(
-                permissionType,
                 timeSource.currentTimeMillis().toInstant(),
+                permissionType,
                 packageName,
             )
 
             entriesViewModel.loadEntries(
-                permissionType,
                 packageName,
                 dateNavigationView.getDate(),
                 dateNavigationView.getPeriod(),
+                permissionType,
             )
         }
     }

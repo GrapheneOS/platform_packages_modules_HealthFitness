@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"選擇你希望此應用程式讀取的「健康資料同步」資料"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"在應用程式之間分享資料"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"資料來自「<xliff:g id="APP_NAME">%1$s</xliff:g>」"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」應用程式使用「健康資料同步」讀取此裝置上其他應用程式的資料"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"可同步這些資料的應用程式"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"查看《"<a href="%2$s">"私隱權政策"</a>"》以瞭解「<xliff:g id="APP_NAME">%1$s</xliff:g>」如何使用你的資料。"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"「健康資料同步」讓你在多個應用程式之間分享健康和健身資料，協助你取得分析資料和享用體驗，同時保障你的資料安全。"</string>
@@ -875,6 +876,14 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"酒精濃度"</string>
     <string name="notes_title" msgid="4596764711916248492">"備註"</string>
     <string name="details_title" msgid="8411891773854413790">"詳情"</string>
+    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> 分鐘"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> 小時 <xliff:g id="MIN">%2$s</xliff:g> 分鐘"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> 小時"</string>
@@ -1270,7 +1279,8 @@
     <string name="write_access" msgid="571547306854732263">"寫入權限"</string>
     <string name="read_access" msgid="3317759826769372785">"讀取權限"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>，<xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>，<xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"已允許 <xliff:g id="NUMBER_0">%1$d</xliff:g> 個應用程式 (共 <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> 個)"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"沒有任何應用程式提出要求"</string>
     <string name="allowed" msgid="4158456017482263737">"已允許"</string>
@@ -1341,6 +1351,10 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"未連接"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"按一下連結此應用程式至「健康資料同步」"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"暫時不要"</string>
+    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
+    <skip />
+    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
+    <skip />
     <string name="acne_read_content_description" msgid="1176708404029936065">"讀取暗瘡資料"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"寫入暗瘡資料"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"讀取脆甲資料"</string>
@@ -1577,5 +1591,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"水腫"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"哮鳴"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"哮鳴"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>

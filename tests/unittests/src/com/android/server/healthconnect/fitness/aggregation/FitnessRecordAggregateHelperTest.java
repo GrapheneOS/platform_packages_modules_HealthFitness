@@ -42,13 +42,10 @@ import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.os.UserHandle;
-import android.platform.test.annotations.EnableFlags;
-import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
@@ -77,7 +74,6 @@ public class FitnessRecordAggregateHelperTest {
 
     private static final String TEST_PACKAGE_NAME = "package.name";
 
-    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
@@ -142,7 +138,6 @@ public class FitnessRecordAggregateHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_ACTIVITY_INTENSITY_DB})
     public void populateWithAggregation_flagsEnabled_readAccessLogRecorded() {
         Instant testStartTime = Instant.now();
 
@@ -185,7 +180,6 @@ public class FitnessRecordAggregateHelperTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_ACTIVITY_INTENSITY_DB})
     public void populateWithAggregation_accessLogDisabled_readAccessLogNotRecorded() {
         String readerPackage = "reader.package";
         mFitnessTestUtils.insertApp(readerPackage);

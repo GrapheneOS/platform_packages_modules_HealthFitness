@@ -25,9 +25,6 @@ import static android.healthconnect.testing.unittest.RecordInternalFactory.build
 import static android.healthconnect.testing.unittest.RecordInternalFactory.buildExerciseSessionRecordWithSegment;
 import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
-import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
-import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
-
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -55,11 +52,9 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.SymptomRecordInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.os.UserHandle;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
-import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.Pair;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -98,8 +93,6 @@ import java.util.stream.Stream;
 
 @RunWith(AndroidJUnit4.class)
 public class FitnessRecordReadHelperTest {
-
-    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
@@ -436,7 +429,6 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_ACTIVITY_INTENSITY_DB})
     public void flagsEnabled_readRecordsById_addReadAccessLog() {
         String readerPackage = "reader.package";
         mFitnessTestUtils.insertApp(readerPackage);
@@ -472,7 +464,7 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_ACTIVITY_INTENSITY_DB, FLAG_CLOUD_BACKUP_AND_RESTORE_DB})
+
     // TODO(b/366149374): Fix this test to start recording read access log.
     public void flagsEnabled_readRecordsByIdRequest_shouldRecordAccessLogs_doNotAddReadAccessLog() {
         String readerPackage = "reader.package";
@@ -508,7 +500,6 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_ACTIVITY_INTENSITY_DB})
     public void flagsEnabled_readRecordsById_shouldNotRecordAccessLogs_doNotAddReadAccessLog() {
         String readerPackage = "reader.package";
         mFitnessTestUtils.insertApp(readerPackage);
@@ -541,7 +532,6 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_ACTIVITY_INTENSITY_DB})
     public void flagsEnabled_readRecordsAndPageToken_addReadAccessLog() {
         String readerPackage = "reader.package";
         mFitnessTestUtils.insertApp(readerPackage);
@@ -584,7 +574,6 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_ACTIVITY_INTENSITY_DB})
     public void flagsEnabled_doNotRecordAccessLogs_readRecordsAndPageToken_doNotReadAccessLog() {
         String readerPackage = "reader.package";
         mFitnessTestUtils.insertApp(readerPackage);
@@ -624,7 +613,6 @@ public class FitnessRecordReadHelperTest {
     }
 
     @Test
-    @EnableFlags({FLAG_ACTIVITY_INTENSITY_DB})
     public void flagsEnabled_readSelfData_readRecordsAndPageToken_doNotAddReadAccessLog() {
         mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
@@ -929,5 +917,75 @@ public class FitnessRecordReadHelperTest {
         assertThat(result.first).hasSize(1);
         SymptomRecordInternal returnedRecord = (SymptomRecordInternal) result.first.get(0);
         assertThat(returnedRecord.getSymptomType()).isEqualTo(SymptomRecord.SYMPTOM_TYPE_COUGH);
+    }
+
+    @Test
+    @RequiresFlagsEnabled({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB, Flags.FLAG_SMOKING_DB})
+    public void readRecordsUnrestrictedByDataType_returnsAllRecords() {
+        List<String> ids =
+                mFitnessTestUtils.insertRecords(
+                        TEST_PACKAGE_NAME,
+                        new SymptomRecordInternal()
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
+                                .setStartTime(1000L)
+                                .setEndTime(2000L),
+                        new SymptomRecordInternal()
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_FEVER)
+                                .setStartTime(3000L)
+                                .setEndTime(4000L));
+
+        List<UUID> uuids = ids.stream().map(UUID::fromString).toList();
+
+        ReadRecordsRequestUsingFilters<SymptomRecord> request =
+                new ReadRecordsRequestUsingFilters.Builder<>(SymptomRecord.class).build();
+
+        List<RecordInternal<?>> result =
+                mFitnessRecordReadHelper.readRecordsUnrestricted(
+                                mTransactionManager,
+                                request.toReadRecordsRequestParcel(),
+                                /* packageNamesByAppIds= */ null)
+                        .first;
+
+        assertThat(result).hasSize(2);
+        assertThat(result.stream().map(RecordInternal::getUuid).toList())
+                .containsExactlyElementsIn(uuids);
+    }
+
+    @Test
+    @RequiresFlagsEnabled({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB, Flags.FLAG_SMOKING_DB})
+    public void readRecordsUnrestrictedById_returnsAllRecords() {
+        List<String> symptomsIds =
+                mFitnessTestUtils.insertRecords(
+                        TEST_PACKAGE_NAME,
+                        new SymptomRecordInternal()
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
+                                .setStartTime(1000L)
+                                .setEndTime(2000L),
+                        new SymptomRecordInternal()
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_FEVER)
+                                .setStartTime(3000L)
+                                .setEndTime(4000L));
+        List<String> stepsIds =
+                mFitnessTestUtils.insertRecords(
+                        TEST_PACKAGE_NAME,
+                        buildStepsRecord(400, 500, 100),
+                        buildStepsRecord(700, 800, 100));
+
+        List<UUID> symptomsUuids = symptomsIds.stream().map(UUID::fromString).toList();
+        List<UUID> stepsUuids = stepsIds.stream().map(UUID::fromString).toList();
+        List<UUID> allUuids = Stream.concat(symptomsUuids.stream(), stepsUuids.stream()).toList();
+
+        List<RecordInternal<?>> result =
+                mFitnessRecordReadHelper.readRecordsUnrestricted(
+                        mTransactionManager,
+                        Map.of(
+                                RecordTypeIdentifier.RECORD_TYPE_SYMPTOM,
+                                symptomsUuids,
+                                RECORD_TYPE_STEPS,
+                                stepsUuids));
+
+        assertThat(result).hasSize(4);
+        assertThat(result.stream().map(RecordInternal::getUuid).toList())
+                .containsExactlyElementsIn(allUuids);
     }
 }

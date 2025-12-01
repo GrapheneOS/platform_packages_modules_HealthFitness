@@ -20,7 +20,7 @@ import static android.healthconnect.testing.unittest.StorageUtils.assertColumnsE
 import static android.healthconnect.testing.unittest.StorageUtils.createEmptyDatabase;
 
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
-import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
 import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.onUpgrade;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.checkTableExists;
 
@@ -80,7 +80,7 @@ public class DevelopmentDatabaseHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
     public void testChangesIdempotent() {
         // Database changes should be idempotent so you don't leave a teammate on a development
         // database that can't be fixed after switching the flag on or off.
@@ -97,7 +97,7 @@ public class DevelopmentDatabaseHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
     public void testOnOpen_readOnlyDatabase_successful() {
         // GIVEN we have a guaranteed read only database.
         File databaseFile;
@@ -121,7 +121,7 @@ public class DevelopmentDatabaseHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
     public void testGetOldVersionIfExists_nonExistent() {
         try (SQLiteDatabase db = createEmptyDatabase()) {
 
@@ -132,7 +132,7 @@ public class DevelopmentDatabaseHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
     public void testDropAndCreateDevelopmentSettings_nonExistent_creates() {
         try (SQLiteDatabase db = createEmptyDatabase()) {
             int version = 26;
@@ -144,7 +144,7 @@ public class DevelopmentDatabaseHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
     public void testDropAndCreateDevelopmentSettings_existent_overwrites() {
         try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
             // getWriteableDatabase() triggers onOpen(), so the dev database with
@@ -159,7 +159,7 @@ public class DevelopmentDatabaseHelperTest {
     }
 
     @Test
-    @DisableFlags(FLAG_DEVELOPMENT_DATABASE)
+    @DisableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
     public void testOnOpen_notDevelopment_deletesDevelopmentTables() {
         try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
             // Calling getWritableDatabase() triggers onOpen(). With the flag off,
@@ -181,7 +181,7 @@ public class DevelopmentDatabaseHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
     public void testOnOpen_isDevelopmentHasDevelopmentTables_noChange() {
         // GIVEN we have some current development database settings, and the flags are enabled
         try (SQLiteDatabase db = createEmptyDatabase()) {
@@ -201,7 +201,7 @@ public class DevelopmentDatabaseHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
     public void testOnOpen_oldDevelopmentSettingsTable_createsNew() {
         try (SQLiteDatabase db = createEmptyDatabase()) {
             // Apply production upgrades first
@@ -218,7 +218,7 @@ public class DevelopmentDatabaseHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
     public void onUpgrade_ddpInfo_schemaUpToDate() {
         try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
             SQLiteDatabase db = helper.getWritableDatabase();
@@ -231,7 +231,7 @@ public class DevelopmentDatabaseHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
     public void onUpgrade_enhancedDeviceInfo_schemaUpToDate() {
         try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
             SQLiteDatabase db = helper.getWritableDatabase();
@@ -246,7 +246,7 @@ public class DevelopmentDatabaseHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
     public void onUpgrade_enhancedDeviceInfo_idempotent() {
         try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
             SQLiteDatabase db = helper.getWritableDatabase();
@@ -264,7 +264,7 @@ public class DevelopmentDatabaseHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
     public void onUpgrade_deviceDataProviderDb_schemaUpToDate() {
         try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
             SQLiteDatabase db = helper.getWritableDatabase();
@@ -274,7 +274,7 @@ public class DevelopmentDatabaseHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
     public void onUpgrade_ddpMetadataDb_schemaUpToDate() {
         try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
             SQLiteDatabase db = helper.getWritableDatabase();
@@ -284,7 +284,7 @@ public class DevelopmentDatabaseHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE)
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
     public void onUpgrade_ddpNameEnhancedRecord_schemaUpToDate() {
         try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
             SQLiteDatabase db = helper.getWritableDatabase();

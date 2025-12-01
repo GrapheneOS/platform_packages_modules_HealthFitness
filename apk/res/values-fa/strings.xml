@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"داده‌هایی را که می‌خواهید این برنامه از Health Connect بخواند انتخاب کنید"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"هم‌رسانی کردن داده‌ها بین برنامه‌ها"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"داده‌ها از: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"به برنامه <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه دهید تا داده‌ها را بااستفاده از Health Connect از برنامه‌های دیگر در این دستگاه بخواند"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"برنامه‌هایی که می‌توانند این داده‌ها را همگام‌سازی کنند"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ببینید که <xliff:g id="APP_NAME">%1$s</xliff:g> چگونه از داده‌هایتان در "<a href="%2$s">"خط‌مشی رازداری"</a>" خود استفاده می‌کند."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"‫Health Connect به شما امکان می‌دهد داده‌های سلامتی و تناسب اندام خود را بین چند برنامه هم‌رسانی کنید. این به شما کمک می‌کند تا اطلاعات و تجربیات خود را باز کنید و درعین‌حال داده‌هایتان را ایمن نگه دارید."</string>
@@ -875,6 +876,14 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"میزان الکل"</string>
     <string name="notes_title" msgid="4596764711916248492">"یادداشت‌ها"</string>
     <string name="details_title" msgid="8411891773854413790">"جزئیات"</string>
+    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> دقیقه"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"‫<xliff:g id="HOUR">%1$s</xliff:g> ساعت و <xliff:g id="MIN">%2$s</xliff:g> دقیقه"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> ساعت"</string>
@@ -1270,7 +1279,8 @@
     <string name="write_access" msgid="571547306854732263">"دسترسی نوشتن"</string>
     <string name="read_access" msgid="3317759826769372785">"دسترسی خواندن"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"‫<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g>‏ <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"‫<xliff:g id="NUMBER_0">%1$d</xliff:g> برنامه از <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> برنامه مجاز است"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"برنامه‌ای درخواست نکرده است"</string>
     <string name="allowed" msgid="4158456017482263737">"اجازه داشتن"</string>
@@ -1341,6 +1351,10 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"متصل نیست"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"برای متصل کردن این برنامه به Health Connect، کلیک کنید"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"اکنون نه"</string>
+    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
+    <skip />
+    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
+    <skip />
     <string name="acne_read_content_description" msgid="1176708404029936065">"خواندن داده‌های آکنه"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"نوشتن داده‌های آکنه"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"خواندن داده‌های ناخن شکننده"</string>
@@ -1577,5 +1591,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"احتباس آب"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"خس‌خس سینه"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"خس‌خس سینه"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"‫<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> از <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"‫<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> از <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>

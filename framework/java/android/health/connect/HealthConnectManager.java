@@ -46,6 +46,7 @@ import android.annotation.IntRange;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.annotation.PermissionManuallyEnforced;
+import android.annotation.RequiresNoPermission;
 import android.annotation.RequiresPermission;
 import android.annotation.SdkConstant;
 import android.annotation.SystemApi;
@@ -80,11 +81,12 @@ import android.health.connect.aidl.IDeviceDataSourceCapabilitiesCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
+import android.health.connect.aidl.IGetDeviceDataSourceInfosCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
 import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
-import android.health.connect.aidl.IGetMatchingAppsCallback;
+import android.health.connect.aidl.IGetMatchingDataSourcesCallback;
 import android.health.connect.aidl.IGetPriorityResponseCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
@@ -242,26 +244,33 @@ public class HealthConnectManager {
      */
     public static final String EXTRA_EXERCISE_ROUTE = "android.health.connect.extra.EXERCISE_ROUTE";
 
-    // TODO(b/455620629): Add data type sensitivity to DataTypeDescriptor and use this as the source
-    //  of truth here.
     @NonNull
     private static final Set<Class<? extends Record>>
             NON_PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES = Set.of(StepsRecord.class);
 
+    private static class LazyHolder {
+        private static final Set<Class<? extends Record>>
+                PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES_INSTANCE =
+                        DataTypeDescriptors.getAllDataTypeDescriptors().stream()
+                                .map(DataTypeDescriptor::getRecordClass)
+                                .filter(
+                                        recordType ->
+                                                !NON_PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES
+                                                        .contains(recordType))
+                                .collect(toSet());
+    }
+
     /**
-     * Data types which are excluded from the output of #getDeviceDataSourceCapabilities unless the
-     * caller holds the read permission for those data types.
+     * Returns the set of data types which are excluded from the output of
+     * #getDeviceDataSourceCapabilities unless the caller holds the read permission for those data
+     * types.
      */
     @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
     @NonNull
-    public static final Set<Class<? extends Record>>
-            PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES =
-                    DataTypeDescriptors.getAllDataTypeDescriptors().stream()
-                            .map(DataTypeDescriptor::getRecordClass)
-                            .filter(
-                                    NON_PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES
-                                            ::contains)
-                            .collect(toSet());
+    public static Set<Class<? extends Record>>
+            getPermissionSensitiveDeviceDataSourceCapabilities() {
+        return LazyHolder.PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES_INSTANCE;
+    }
 
     /**
      * Activity action: Launch UI to show and manage (e.g. grant/revoke) health permissions.
@@ -1504,17 +1513,7 @@ public class HealthConnectManager {
         try {
             List<RecordInternal<?>> recordInternals =
                     records.stream().map(Record::toRecordInternal).collect(Collectors.toList());
-            // Verify if the input record has clientRecordId or UUID.
-            for (RecordInternal<?> recordInternal : recordInternals) {
-                if ((recordInternal.getClientRecordId() == null
-                                || recordInternal.getClientRecordId().isEmpty())
-                        && recordInternal.getUuid() == null) {
-                    throw new IllegalArgumentException(
-                            "At least one of the records is missing both ClientRecordID"
-                                    + " and UUID. RecordType of the input: "
-                                    + recordInternal.getRecordType());
-                }
-            }
+            verifyIds(recordInternals);
 
             mService.updateRecords(
                     mContext.getAttributionSource(),
@@ -1577,6 +1576,44 @@ public class HealthConnectManager {
                         }
                     });
 
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Retrieves the list of all device data sources and their provider info.
+     *
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     * @hide
+     */
+    @SystemApi
+    @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void getDeviceDataSourceInfos(
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<List<DeviceDataSourceInfo>, HealthConnectException> callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        try {
+            mService.getDeviceDataSourceInfos(
+                    mContext.getAttributionSource(),
+                    new IGetDeviceDataSourceInfosCallback.Stub() {
+                        @Override
+                        @RequiresNoPermission
+                        public void onResult(List<DeviceDataSourceInfo> result) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(result));
+                        }
+
+                        @Override
+                        @RequiresNoPermission
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -3596,7 +3633,7 @@ public class HealthConnectManager {
      * @hide
      */
     @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
-    public void getMatchingApps(
+    public void getMatchingDataSources(
             @NonNull MatchmakingRequest request,
             @NonNull @CallbackExecutor Executor executor,
             @NonNull OutcomeReceiver<Map<String, Set<String>>, HealthConnectException> callback) {
@@ -3604,18 +3641,20 @@ public class HealthConnectManager {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
-            mService.getMatchingApps(
+            mService.getMatchingDataSources(
                     mContext.getAttributionSource(),
                     request,
-                    new IGetMatchingAppsCallback.Stub() {
+                    new IGetMatchingDataSourcesCallback.Stub() {
                         @Override
-                        public void onResult(GetMatchingAppsResponse response) {
+                        @PermissionManuallyEnforced
+                        public void onResult(GetMatchingDataSourcesResponse response) {
                             Binder.clearCallingIdentity();
                             Map<String, Set<String>> matchingApps = response.getMatchingApps();
                             executor.execute(() -> callback.onResult(matchingApps));
                         }
 
                         @Override
+                        @PermissionManuallyEnforced
                         public void onError(HealthConnectExceptionParcel exception) {
                             Binder.clearCallingIdentity();
                             executor.execute(
@@ -3735,15 +3774,20 @@ public class HealthConnectManager {
         }
     }
 
-    // TODO(b/455837940): Update javadoc with links to API that deviceId is being used for when
-    // available.
     /**
-     * Retrieve a unique identifier of the device that Health Connect is currently running on. The
-     * identifier is scoped by user and will change on either switching the current user or
-     * rebooting the device. The identifier can then be used for advertising and writing data that
-     * originates from the device itself, e.g., phone pedometer, by populating the {@code deviceId}
-     * field.
+     * Retrieves the unique identifier of the device that Health Connect is currently running on.
      *
+     * <p>To avoid persistent tracking, this identifier changes whenever the device reboots or the
+     * user switches. However, this change does not affect data ownership. The system recognizes
+     * that the new identifier belongs to the same device, ensuring that records inserted before a
+     * reboot remain fully accessible using the current identifier.
+     *
+     * <p>This identifier can be used as the {@code deviceId} in {@link DeviceDataAdvertisement}
+     * passed to {@link #advertiseDeviceDataSources} to represent the current device as a data
+     * source. Subsequently, it can be used to read and manage data collected by the current device
+     * (e.g. phone pedometer data) through dedicated device methods like {@link #readDeviceRecords}.
+     *
+     * @return unique identifier for the current device.
      * @throws RuntimeException for internal errors
      * @hide
      */
@@ -3886,6 +3930,68 @@ public class HealthConnectManager {
     }
 
     /**
+     * Updates records previously inserted using {@link #insertDeviceRecords}.
+     *
+     * <p>Records are keyed by their unique identifier ({@link Metadata#getId} or {@link
+     * Metadata#getClientRecordId}). The {@link Device} in record's {@link Metadata} is ignored and
+     * not updated.
+     *
+     * <p>In case of an error or a permission failure in the Health Connect service, {@link
+     * OutcomeReceiver#onError} will be invoked with a {@link HealthConnectException}.
+     *
+     * <p>In case the input record to be updated does not exist in the database or the caller is not
+     * the owner of the record, {@link OutcomeReceiver#onError} will be invoked with {@link
+     * HealthConnectException#ERROR_INVALID_ARGUMENT}.
+     *
+     * @param deviceId the identifier for the device that is the source of this data.
+     * @param records list of records to be updated.
+     * @param executor executor on which to invoke the callback.
+     * @param callback callback to receive the result of performing this operation.
+     * @throws IllegalArgumentException if at least one of the records is missing both {@link
+     *     Metadata#getId} and {@link Metadata#getClientRecordId}
+     * @throws RuntimeException for internal errors
+     * @hide
+     */
+    @SystemApi
+    @RequiresPermission(PROVIDE_HEALTH_CONNECT_DEVICE_DATA)
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void updateDeviceRecords(
+            @NonNull String deviceId,
+            @NonNull List<Record> records,
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(records);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+        try {
+            List<RecordInternal<?>> recordInternals =
+                    records.stream().map(Record::toRecordInternal).collect(Collectors.toList());
+            verifyIds(recordInternals);
+
+            mService.updateDeviceRecords(
+                    mContext.getAttributionSource(),
+                    deviceId,
+                    new RecordsParcel(recordInternals),
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(
+                                    () -> callback.onError(exception.getHealthConnectException()));
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
      * Reads records previously inserted using {@link #insertDeviceRecords}.
      *
      * <p>This method is strictly scoped to records inserted by the calling device data provider.
@@ -3939,8 +4045,80 @@ public class HealthConnectManager {
         }
     }
 
+    /**
+     * Deletes records previously inserted using {@link #insertDeviceRecords}.
+     *
+     * <p>In case of an error or a permission failure in the Health Connect service, {@link
+     * OutcomeReceiver#onError} will be invoked with a {@link HealthConnectException}.
+     *
+     * <p>Deletions are performed in a transaction i.e. either all will be deleted or none.
+     *
+     * @param deviceId the identifier for the device that is the source of this data.
+     * @param recordType the type of record to be deleted.
+     * @param timeRangeFilter the time range filter to delete records.
+     * @param executor executor on which to invoke the callback.
+     * @param callback callback to receive the result of performing this operation.
+     * @throws RuntimeException for internal errors
+     * @hide
+     */
+    @SystemApi
+    @RequiresPermission(PROVIDE_HEALTH_CONNECT_DEVICE_DATA)
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void deleteDeviceRecords(
+            @NonNull String deviceId,
+            @NonNull Class<? extends Record> recordType,
+            @NonNull TimeRangeFilter timeRangeFilter,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(deviceId);
+        Objects.requireNonNull(recordType);
+        Objects.requireNonNull(timeRangeFilter);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        try {
+            mService.deleteDeviceRecords(
+                    mContext.getAttributionSource(),
+                    deviceId,
+                    new DeleteUsingFiltersRequestParcel(
+                            new DeleteUsingFiltersRequest.Builder()
+                                    .addRecordType(recordType)
+                                    .setTimeRangeFilter(timeRangeFilter)
+                                    .build()),
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(
+                                    () -> callback.onError(exception.getHealthConnectException()));
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
     private static String getDataTypePrefKey(@NonNull Class<? extends Record> dataType) {
         return TRACKING_PREFERENCE_PREFIX
                 + dataType.getAnnotation(Identifier.class).recordIdentifier();
+    }
+
+    private void verifyIds(List<RecordInternal<?>> recordInternals) {
+        for (RecordInternal<?> recordInternal : recordInternals) {
+            if ((recordInternal.getClientRecordId() == null
+                            || recordInternal.getClientRecordId().isEmpty())
+                    && recordInternal.getUuid() == null) {
+                throw new IllegalArgumentException(
+                        "At least one of the records is missing either ClientRecordID"
+                                + " or UUID. RecordType of the input: "
+                                + recordInternal.getRecordType());
+            }
+        }
     }
 }

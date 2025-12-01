@@ -22,6 +22,7 @@ import android.health.connect.backuprestore.UpdateHealthConnectRestoreStatusRequ
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
+import android.health.connect.aidl.IGetDeviceDataSourceInfosCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
@@ -39,7 +40,7 @@ import android.health.connect.aidl.IReadMedicalResourcesResponseCallback;
 import android.health.connect.aidl.IReadRecordsResponseCallback;
 import android.health.connect.aidl.IRecordTypeInfoResponseCallback;
 import android.health.connect.aidl.IIsMatchmakingPossibleCallback;
-import android.health.connect.aidl.IGetMatchingAppsCallback;
+import android.health.connect.aidl.IGetMatchingDataSourcesCallback;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.RecordsParcel;
@@ -65,7 +66,6 @@ import android.health.connect.backuprestore.UpdateBackupAndRestoreSettingsReques
 import android.health.connect.backuprestore.RestoreChange;
 import android.net.Uri;
 import android.os.UserHandle;
-import android.health.connect.aidl.DeviceDataSourceCapabilities;
 import android.health.connect.device.DeviceDataAdvertisement;
 
 import java.util.List;
@@ -601,8 +601,8 @@ interface IHealthConnectService {
     void getHealthConnectOnboardingState(in IGetHealthConnectOnboardingStateCallback callback);
 
     /**
-     * Checks if there are any other applications available on the user's device that could
-     * potentially become new data sources for specific Record types.
+     * Checks if there are any other data sources (applications and devices) available on the
+     * user's device that could potentially supply new data for specific Record types.
      *
      * @param attributionSource attribution source for the data.
      * @param request request containing the {@link Record} types to check for.
@@ -614,17 +614,17 @@ interface IHealthConnectService {
             in IIsMatchmakingPossibleCallback callback);
 
     /**
-     * Returns all other applications available on the user's device that could
-     * potentially become new data sources for specific Record types.
+     * Returns all other data sources (applications and devices) available on the user's system that
+     * could potentially supply new data for specific Record types.
      *
      * @param attributionSource attribution source for the data.
      * @param request request containing the {@link Record} types to check for.
      * @param callback Callback to receive result of performing this operation.
      */
-    void getMatchingApps(
+    void getMatchingDataSources(
             in AttributionSource attributionSource,
             in MatchmakingRequest request,
-            in IGetMatchingAppsCallback callback);
+            in IGetMatchingDataSourcesCallback callback);
 
     /**
      * Records that a user has denied matchmaking for a calling package, denied packages and their
@@ -790,4 +790,15 @@ interface IHealthConnectService {
      * @param callback Callback to receive result of performing this operation.
      */
     void getDeviceDataSourceCapabilities(in AttributionSource attributionSource, in IDeviceDataSourceCapabilitiesCallback callback);
+
+    /**
+     * Retrieves the list of all device data sources and their provider info.
+     *
+     * @param attributionSource attribution source for the data.
+     * @param callback Callback to receive result of performing this operation.
+     * @hide
+     */
+    void getDeviceDataSourceInfos(
+        in AttributionSource attributionSource,
+        in IGetDeviceDataSourceInfosCallback callback);
 }

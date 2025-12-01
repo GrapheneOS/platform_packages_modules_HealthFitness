@@ -74,12 +74,10 @@ import static android.permission.PermissionManager.PERMISSION_HARD_DENIED;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API;
-import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
 import static com.android.healthfitness.flags.Flags.FLAG_MATCHMAKING;
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_STATE_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_RESTORE_STATE_KEY;
@@ -111,6 +109,7 @@ import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.clearInvocations;
@@ -140,9 +139,12 @@ import android.graphics.drawable.Drawable;
 import android.health.HealthFitnessStatsLog;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.DeleteUsingFiltersRequest;
-import android.health.connect.GetMatchingAppsResponse;
+import android.health.connect.DeviceDataProviderInfo;
+import android.health.connect.DeviceDataSourceInfo;
+import android.health.connect.GetMatchingDataSourcesResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectException;
+import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthConnectOnboardingState;
 import android.health.connect.HealthPermissions;
 import android.health.connect.MatchmakingRequest;
@@ -163,9 +165,10 @@ import android.health.connect.aidl.IDeviceDataSourceCapabilitiesCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
+import android.health.connect.aidl.IGetDeviceDataSourceInfosCallback;
 import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
-import android.health.connect.aidl.IGetMatchingAppsCallback;
+import android.health.connect.aidl.IGetMatchingDataSourcesCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IInsertRecordsResponseCallback;
 import android.health.connect.aidl.IIsMatchmakingPossibleCallback;
@@ -223,6 +226,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
@@ -353,7 +357,7 @@ public class HealthConnectServiceImplTest {
                     "canRestore",
                     "restoreChanges",
                     "isMatchmakingPossible",
-                    "getMatchingApps",
+                    "getMatchingDataSources",
                     "recordMatchmakingDenial",
                     "readDeviceRecords",
                     "deleteDeviceRecords");
@@ -379,6 +383,7 @@ public class HealthConnectServiceImplTest {
                     "isTrackingEnabled",
                     "getCurrentDeviceId",
                     "advertiseDeviceDataSources",
+                    "getDeviceDataSourceInfos",
                     "getHealthConnectOnboardingState",
                     "updateHealthConnectBackupAndRestoreSettings",
                     "updateHealthConnectRestoreStatus",
@@ -430,10 +435,10 @@ public class HealthConnectServiceImplTest {
     @Mock IReadMedicalResourcesResponseCallback mReadMedicalResourcesResponseCallback;
     @Mock IEmptyResponseCallback mEmptyResponseCallback;
     @Mock IMedicalResourceListParcelResponseCallback mMedicalResourceListParcelResponseCallback;
-    @Mock IGetMatchingAppsCallback mGetMatchingAppsCallback;
+    @Mock IGetMatchingDataSourcesCallback mGetMatchingDataSourcesCallback;
     @Mock IIsMatchmakingPossibleCallback mIsMatchmakingPossibleCallback;
     @Mock IReadRecordsResponseCallback mReadRecordsResponseCallback;
-
+    @Mock IGetDeviceDataSourceInfosCallback mGetDeviceDataSourceInfosCallback;
     @Mock private Drawable mDrawable;
     @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
     @Mock private ChangeLogsHelper mChangeLogsHelper;
@@ -521,7 +526,7 @@ public class HealthConnectServiceImplTest {
 
         mInternalTaskScheduler = mThreadScheduler.mInternalBackgroundExecutor;
 
-        if (Flags.deviceDataProvidersApi()) {
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
             mDeviceDataProviderManager =
                     spy(
                             new FakeSerialDeviceDataProviderManager(
@@ -534,6 +539,8 @@ public class HealthConnectServiceImplTest {
                                     healthConnectInjector.getFitnessRecordReadHelper(),
                                     healthConnectInjector.getFitnessRecordDeleteHelper(),
                                     healthConnectInjector.getSyntheticPackageNameCreator()));
+
+            mDeviceDataSourcesHelper = spy(healthConnectInjector.getDeviceDataSourcesHelper());
         }
 
         mSyntheticPackageNameResolver =
@@ -2690,8 +2697,6 @@ public class HealthConnectServiceImplTest {
     @Test
     @EnableFlags({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogToken_noPermissions_throwsSecurityException_phr() throws Exception {
         // Deny necessary permissions
@@ -2792,8 +2797,6 @@ public class HealthConnectServiceImplTest {
     @Test
     @EnableFlags({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogs_noPermissions_throwsSecurityException_phr() throws Exception {
         // Deny necessary permissions
@@ -2855,8 +2858,6 @@ public class HealthConnectServiceImplTest {
     @Test
     @EnableFlags({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogs_emptyToken_phrFlagOn_throwsIllegalArgumentException()
             throws Exception {
@@ -2896,8 +2897,6 @@ public class HealthConnectServiceImplTest {
     @Test
     @EnableFlags({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogs_bothTypesToken_phrFlagOn_throwsIllegalArgumentException()
             throws Exception {
@@ -2939,8 +2938,6 @@ public class HealthConnectServiceImplTest {
     @Test
     @DisableFlags({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogs_emptyToken_phrFlagOff_throwsIllegalArgumentException()
             throws Exception {
@@ -3040,8 +3037,6 @@ public class HealthConnectServiceImplTest {
     @Test
     @EnableFlags({
         FLAG_PHR_CHANGE_LOGS,
-        FLAG_PHR_CHANGE_LOGS_DB,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
     })
     public void testGetChangeLogs_validRequest_returnsChangeLogs_phr() throws Exception {
         // Grant necessary permissions
@@ -3147,20 +3142,21 @@ public class HealthConnectServiceImplTest {
 
     @Test
     @DisableFlags(FLAG_MATCHMAKING)
-    public void getMatchingApps_flagOff_exception() throws Exception {
+    public void getMatchingDataSources_flagOff_exception() throws Exception {
         MatchmakingRequest request = new MatchmakingRequest.Builder().build();
 
-        mHealthConnectService.getMatchingApps(
-                mAttributionSource, request, mGetMatchingAppsCallback);
+        mHealthConnectService.getMatchingDataSources(
+                mAttributionSource, request, mGetMatchingDataSourcesCallback);
 
-        verify(mGetMatchingAppsCallback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        verify(mGetMatchingDataSourcesCallback, timeout(5000).times(1))
+                .onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
     }
 
     @Test
     @EnableFlags(FLAG_MATCHMAKING)
-    public void getMatchingApps_noDMPermission_emptySetRequest_emptyMapReturned_success()
+    public void getMatchingDataSources_noDMPermission_emptySetRequest_emptyMapReturned_success()
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of();
@@ -3169,17 +3165,17 @@ public class HealthConnectServiceImplTest {
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(Map.of());
 
-        mHealthConnectService.getMatchingApps(
-                mAttributionSource, request, mGetMatchingAppsCallback);
+        mHealthConnectService.getMatchingDataSources(
+                mAttributionSource, request, mGetMatchingDataSourcesCallback);
 
-        verify(mGetMatchingAppsCallback, timeout(5000).times(1))
-                .onResult(new GetMatchingAppsResponse(Map.of()));
-        verifyNoMoreInteractions(mGetMatchingAppsCallback);
+        verify(mGetMatchingDataSourcesCallback, timeout(5000).times(1))
+                .onResult(new GetMatchingDataSourcesResponse(Map.of()));
+        verifyNoMoreInteractions(mGetMatchingDataSourcesCallback);
     }
 
     @Test
     @EnableFlags(FLAG_MATCHMAKING)
-    public void getMatchingApps_noDMPermission_nonEmptySetRequest_emptyMapReturned_success()
+    public void getMatchingDataSources_noDMPermission_nonEmptySetRequest_emptyMapReturned_success()
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
@@ -3188,17 +3184,17 @@ public class HealthConnectServiceImplTest {
 
         MatchmakingRequest request =
                 new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
-        mHealthConnectService.getMatchingApps(
-                mAttributionSource, request, mGetMatchingAppsCallback);
+        mHealthConnectService.getMatchingDataSources(
+                mAttributionSource, request, mGetMatchingDataSourcesCallback);
 
-        verify(mGetMatchingAppsCallback, timeout(5000).times(1))
-                .onResult(new GetMatchingAppsResponse(Map.of()));
-        verifyNoMoreInteractions(mGetMatchingAppsCallback);
+        verify(mGetMatchingDataSourcesCallback, timeout(5000).times(1))
+                .onResult(new GetMatchingDataSourcesResponse(Map.of()));
+        verifyNoMoreInteractions(mGetMatchingDataSourcesCallback);
     }
 
     @Test
     @EnableFlags(FLAG_MATCHMAKING)
-    public void getMatchingApps_noDMPermission_emptySetRequest_nonEmptyMapReturned_success()
+    public void getMatchingDataSources_noDMPermission_emptySetRequest_nonEmptyMapReturned_success()
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of();
@@ -3208,18 +3204,19 @@ public class HealthConnectServiceImplTest {
 
         MatchmakingRequest request =
                 new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
-        mHealthConnectService.getMatchingApps(
-                mAttributionSource, request, mGetMatchingAppsCallback);
+        mHealthConnectService.getMatchingDataSources(
+                mAttributionSource, request, mGetMatchingDataSourcesCallback);
 
-        verify(mGetMatchingAppsCallback, timeout(5000).times(1))
-                .onResult(new GetMatchingAppsResponse(matchingApps));
-        verifyNoMoreInteractions(mGetMatchingAppsCallback);
+        verify(mGetMatchingDataSourcesCallback, timeout(5000).times(1))
+                .onResult(new GetMatchingDataSourcesResponse(matchingApps));
+        verifyNoMoreInteractions(mGetMatchingDataSourcesCallback);
     }
 
     @Test
     @EnableFlags(FLAG_MATCHMAKING)
-    public void getMatchingApps_noDMPermission_nonEmptySetRequest_nonEmptyMapReturned_success()
-            throws Exception {
+    public void
+            getMatchingDataSources_noDMPermission_nonEmptySetRequest_nonEmptyMapReturned_success()
+                    throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
         MatchmakingRequest request =
@@ -3228,17 +3225,17 @@ public class HealthConnectServiceImplTest {
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
-        mHealthConnectService.getMatchingApps(
-                mAttributionSource, request, mGetMatchingAppsCallback);
+        mHealthConnectService.getMatchingDataSources(
+                mAttributionSource, request, mGetMatchingDataSourcesCallback);
 
-        verify(mGetMatchingAppsCallback, timeout(5000).times(1))
-                .onResult(new GetMatchingAppsResponse(matchingApps));
-        verifyNoMoreInteractions(mGetMatchingAppsCallback);
+        verify(mGetMatchingDataSourcesCallback, timeout(5000).times(1))
+                .onResult(new GetMatchingDataSourcesResponse(matchingApps));
+        verifyNoMoreInteractions(mGetMatchingDataSourcesCallback);
     }
 
     @Test
     @EnableFlags(FLAG_MATCHMAKING)
-    public void getMatchingApps_noDMPermission_invalidPackageNameInRequest_throws()
+    public void getMatchingDataSources_noDMPermission_invalidPackageNameInRequest_throws()
             throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
@@ -3251,10 +3248,11 @@ public class HealthConnectServiceImplTest {
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
-        mHealthConnectService.getMatchingApps(
-                mAttributionSource, request, mGetMatchingAppsCallback);
+        mHealthConnectService.getMatchingDataSources(
+                mAttributionSource, request, mGetMatchingDataSourcesCallback);
 
-        verify(mGetMatchingAppsCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
+        verify(mGetMatchingDataSourcesCallback, timeout(TIMEOUT_MILLIS))
+                .onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_INVALID_ARGUMENT);
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
@@ -3274,7 +3272,8 @@ public class HealthConnectServiceImplTest {
 
     @Test
     @EnableFlags(FLAG_MATCHMAKING)
-    public void getMatchingApps_noDMPermission_packageNameSameAsCalling_success() throws Exception {
+    public void getMatchingDataSources_noDMPermission_packageNameSameAsCalling_success()
+            throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
         MatchmakingRequest request =
@@ -3286,17 +3285,18 @@ public class HealthConnectServiceImplTest {
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
-        mHealthConnectService.getMatchingApps(
-                mAttributionSource, request, mGetMatchingAppsCallback);
+        mHealthConnectService.getMatchingDataSources(
+                mAttributionSource, request, mGetMatchingDataSourcesCallback);
 
-        verify(mGetMatchingAppsCallback, timeout(5000).times(1))
-                .onResult(new GetMatchingAppsResponse(matchingApps));
-        verifyNoMoreInteractions(mGetMatchingAppsCallback);
+        verify(mGetMatchingDataSourcesCallback, timeout(5000).times(1))
+                .onResult(new GetMatchingDataSourcesResponse(matchingApps));
+        verifyNoMoreInteractions(mGetMatchingDataSourcesCallback);
     }
 
     @Test
     @EnableFlags(FLAG_MATCHMAKING)
-    public void getMatchingApps_hasDMPermission_noPackageNameInRequest_throws() throws Exception {
+    public void getMatchingDataSources_hasDMPermission_noPackageNameInRequest_throws()
+            throws Exception {
         setDataManagementPermission(PERMISSION_GRANTED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
         MatchmakingRequest request =
@@ -3305,10 +3305,11 @@ public class HealthConnectServiceImplTest {
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, THIS_TEST_PACKAGE_NAME))
                 .thenReturn(matchingApps);
 
-        mHealthConnectService.getMatchingApps(
-                mAttributionSource, request, mGetMatchingAppsCallback);
+        mHealthConnectService.getMatchingDataSources(
+                mAttributionSource, request, mGetMatchingDataSourcesCallback);
 
-        verify(mGetMatchingAppsCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
+        verify(mGetMatchingDataSourcesCallback, timeout(TIMEOUT_MILLIS))
+                .onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_INVALID_ARGUMENT);
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
@@ -3317,7 +3318,7 @@ public class HealthConnectServiceImplTest {
 
     @EnableFlags({FLAG_MATCHMAKING})
     @Test
-    public void getMatchingApps_hasDMPermission_packageProvided_recordsProvided_success()
+    public void getMatchingDataSources_hasDMPermission_packageProvided_recordsProvided_success()
             throws Exception {
         setDataManagementPermission(PERMISSION_GRANTED);
 
@@ -3330,17 +3331,18 @@ public class HealthConnectServiceImplTest {
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, THIS_TEST_PACKAGE_NAME))
                 .thenReturn(Map.of());
 
-        mHealthConnectService.getMatchingApps(
-                mAttributionSource, request, mGetMatchingAppsCallback);
+        mHealthConnectService.getMatchingDataSources(
+                mAttributionSource, request, mGetMatchingDataSourcesCallback);
 
-        verify(mGetMatchingAppsCallback, timeout(5000).times(1))
-                .onResult(new GetMatchingAppsResponse(Map.of()));
-        verifyNoMoreInteractions(mGetMatchingAppsCallback);
+        verify(mGetMatchingDataSourcesCallback, timeout(5000).times(1))
+                .onResult(new GetMatchingDataSourcesResponse(Map.of()));
+        verifyNoMoreInteractions(mGetMatchingDataSourcesCallback);
     }
 
     @Test
     @EnableFlags({FLAG_MATCHMAKING})
-    public void getMatchingApps_packageProvided_noRecordsProvided_success() throws Exception {
+    public void getMatchingDataSources_packageProvided_noRecordsProvided_success()
+            throws Exception {
         Set<Class<? extends Record>> recordTypes = Set.of();
         MatchmakingRequest request =
                 new MatchmakingRequest.Builder()
@@ -3350,23 +3352,23 @@ public class HealthConnectServiceImplTest {
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(Map.of());
 
-        mHealthConnectService.getMatchingApps(
-                mAttributionSource, request, mGetMatchingAppsCallback);
+        mHealthConnectService.getMatchingDataSources(
+                mAttributionSource, request, mGetMatchingDataSourcesCallback);
 
-        ArgumentCaptor<GetMatchingAppsResponse> responseCaptor =
-                ArgumentCaptor.forClass(GetMatchingAppsResponse.class);
-        verify(mGetMatchingAppsCallback, timeout(TIMEOUT_MILLIS))
+        ArgumentCaptor<GetMatchingDataSourcesResponse> responseCaptor =
+                ArgumentCaptor.forClass(GetMatchingDataSourcesResponse.class);
+        verify(mGetMatchingDataSourcesCallback, timeout(TIMEOUT_MILLIS))
                 .onResult(responseCaptor.capture());
-        GetMatchingAppsResponse actualResponse = responseCaptor.getValue();
+        GetMatchingDataSourcesResponse actualResponse = responseCaptor.getValue();
         assertThat(actualResponse.getMatchingApps()).isEqualTo(Map.of());
 
-        verify(mGetMatchingAppsCallback, never()).onError(any());
-        verifyNoMoreInteractions(mGetMatchingAppsCallback);
+        verify(mGetMatchingDataSourcesCallback, never()).onError(any());
+        verifyNoMoreInteractions(mGetMatchingDataSourcesCallback);
     }
 
     @Test
     @EnableFlags({FLAG_MATCHMAKING})
-    public void getMatchingApps_packageProvided_areAvailableApps_success() throws Exception {
+    public void getMatchingDataSources_packageProvided_areAvailableApps_success() throws Exception {
         setDataManagementPermission(PERMISSION_DENIED);
         Set<Class<? extends Record>> recordTypes = Set.of(SleepSessionRecord.class);
         MatchmakingRequest request =
@@ -3383,16 +3385,16 @@ public class HealthConnectServiceImplTest {
         when(mMatchmakingManager.fetchMatchingApps(recordTypes, mTestPackageName))
                 .thenReturn(matchingApps);
 
-        mHealthConnectService.getMatchingApps(
-                mAttributionSource, request, mGetMatchingAppsCallback);
+        mHealthConnectService.getMatchingDataSources(
+                mAttributionSource, request, mGetMatchingDataSourcesCallback);
 
-        ArgumentCaptor<GetMatchingAppsResponse> responseCaptor =
-                ArgumentCaptor.forClass(GetMatchingAppsResponse.class);
-        verify(mGetMatchingAppsCallback, timeout(TIMEOUT_MILLIS))
+        ArgumentCaptor<GetMatchingDataSourcesResponse> responseCaptor =
+                ArgumentCaptor.forClass(GetMatchingDataSourcesResponse.class);
+        verify(mGetMatchingDataSourcesCallback, timeout(TIMEOUT_MILLIS))
                 .onResult(responseCaptor.capture());
-        GetMatchingAppsResponse actualResponse = responseCaptor.getValue();
+        GetMatchingDataSourcesResponse actualResponse = responseCaptor.getValue();
         assertThat(actualResponse.getMatchingApps()).isEqualTo(matchingApps);
-        verifyNoMoreInteractions(mGetMatchingAppsCallback);
+        verifyNoMoreInteractions(mGetMatchingDataSourcesCallback);
         verify(mHealthFitnessStatsLog, times(1))
                 .write(
                         eq(HEALTH_CONNECT_API_CALLED),
@@ -3812,7 +3814,7 @@ public class HealthConnectServiceImplTest {
     @DisableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deviceDataProviderManagerIsNull_advertiseDeviceDataSources_throwsException()
             throws RemoteException {
@@ -3828,7 +3830,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void advertiseDeviceDataSources_doesNotThrow() throws RemoteException {
         Device device =
@@ -3856,7 +3858,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void advertiseDeviceDataSources_withCurrentDeviceId_unmasks() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -3883,7 +3885,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void insertDeviceRecords_withoutAdvertisement_throws() throws RemoteException {
         Instant now = mFakeTimeSource.getInstantNow();
@@ -3926,7 +3928,7 @@ public class HealthConnectServiceImplTest {
     @DisableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void ddpApisDisabled_insertDeviceRecords_throwsException() throws RemoteException {
         Instant now = mFakeTimeSource.getInstantNow();
@@ -3967,7 +3969,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void insertDeviceRecords_afterAdvertisement_doesNotThrow() throws RemoteException {
         Instant now = mFakeTimeSource.getInstantNow();
@@ -4004,7 +4006,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void updateDeviceRecords_afterAdvertisementAndInsert_doesNotThrow() throws Exception {
         Instant now = mFakeTimeSource.getInstantNow();
@@ -4055,7 +4057,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void updateDeviceRecords_wrongUuidInUpdatedRecord_throws() throws Exception {
         Instant now = mFakeTimeSource.getInstantNow();
@@ -4114,7 +4116,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void updateDeviceRecords_withoutInsert_throws() throws RemoteException {
         Instant now = mFakeTimeSource.getInstantNow();
@@ -4156,7 +4158,7 @@ public class HealthConnectServiceImplTest {
     @DisableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deviceDataProviderManagerIsNull_updateDeviceRecords_throwsException()
             throws RemoteException {
@@ -4194,7 +4196,41 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void updateDeviceRecords_withCurrentDeviceId_unmasks() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
+
+        Device device = buildDevice();
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        advertiseStepsDeviceDataSource(clientExposedId, device);
+
+        String recordId = UUID.randomUUID().toString();
+        StepsRecord stepsRecord =
+                getStepsRecord(
+                        100, new Metadata.Builder().setId(recordId).setDevice(device).build());
+        RecordsParcel recordsParcel = getRestoredStepsRecordsParcel(stepsRecord);
+        IEmptyResponseCallback.Stub callback = mock(IEmptyResponseCallback.Stub.class);
+
+        mHealthConnectService.insertDeviceRecords(
+                mAttributionSource,
+                clientExposedId,
+                recordsParcel,
+                mock(IInsertRecordsResponseCallback.Stub.class));
+        mHealthConnectService.updateDeviceRecords(
+                mAttributionSource, clientExposedId, recordsParcel, callback);
+        verify(callback, timeout(TIMEOUT_MILLIS)).onResult();
+
+        String internalDeviceId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+        verify(mDeviceDataProviderManager).updateDeviceRecords(any(), eq(internalDeviceId), any());
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void insertDeviceRecords_withCurrentDeviceId_unmasks() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4235,7 +4271,7 @@ public class HealthConnectServiceImplTest {
     @DisableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceIdWithDisabledFlags_NullException_throwsUnsupportedError() {
         assertThrows(
@@ -4247,7 +4283,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceIdWithoutInit_NullException_throwsRuntimeError() {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4261,7 +4297,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceIdWithoutPermission_SecurityException_throwsSecurityError() {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4276,7 +4312,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceId_returnsMaskedSpn() throws Exception {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4292,7 +4328,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceId_multipleCalls_returnsSameSpn() throws Exception {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4310,7 +4346,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceId_returnValue_resolvesToStableIdWhenUnmasked() throws Exception {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4330,7 +4366,7 @@ public class HealthConnectServiceImplTest {
     @DisableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void readDeviceRecords_disabledDdpFlags_exception() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4353,7 +4389,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void readDeviceRecords_noDdpPermission_exception() throws RemoteException {
         setDeviceDataProviderPermission(PackageManager.PERMISSION_DENIED);
@@ -4376,7 +4412,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void readDeviceRecords_noAdvertising_exception() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4399,7 +4435,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void readDeviceRecords_advertised_noData_emptyListReturned_success()
             throws RemoteException {
@@ -4428,7 +4464,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void readDeviceRecords_currentDeviceId_unmasksId() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4459,7 +4495,7 @@ public class HealthConnectServiceImplTest {
     @DisableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_disabledDdpFlags_throws() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4480,7 +4516,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_npDdpPermission_throws() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_DENIED);
@@ -4501,7 +4537,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_noAdvertising_throws() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4522,7 +4558,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_withPackageNameFilter_throws() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4546,7 +4582,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_withIdFilters_throws() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4569,7 +4605,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_advertised_emptyRequest_success() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4589,7 +4625,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_currentDeviceId_unmasks() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -4626,7 +4662,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getDeviceDataSourceCapabilities_noAdvertisedData_returnsOnlySteps()
             throws Exception {
@@ -4648,7 +4684,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getDeviceDataSourceCapabilities_withAdvertisedData_returnsCapabilities()
             throws Exception {
@@ -4673,7 +4709,7 @@ public class HealthConnectServiceImplTest {
     @DisableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getDeviceDataSourceCapabilities_flagDisabled_throwsUnsupportedOperation()
             throws Exception {
@@ -4912,6 +4948,93 @@ public class HealthConnectServiceImplTest {
         info.applicationInfo = aInfo;
         info.packageName = info.applicationInfo.packageName = packageName;
         return info;
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void testGetDeviceDataSourceInfos_masksDataOrigin() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
+
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+
+        advertiseStepsDeviceDataSource("device_id", device);
+
+        mHealthConnectService.getDeviceDataSourceInfos(
+                mAttributionSource, mGetDeviceDataSourceInfosCallback);
+
+        verify(mGetDeviceDataSourceInfosCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<List<DeviceDataSourceInfo>> captor = ArgumentCaptor.forClass(List.class);
+        verify(mGetDeviceDataSourceInfosCallback).onResult(captor.capture());
+
+        List<DeviceDataSourceInfo> result = captor.getValue();
+        assertThat(result).hasSize(1);
+        String spn = result.get(0).getDeviceDataOrigin().getPackageName();
+        assertTrue(SyntheticPackageNameCreator.isMaskedSpn(spn));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void testGetDeviceDataSourceInfos_populatesActivityLabels() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
+
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+
+        advertiseStepsDeviceDataSource("device_id", device);
+
+        ResolveInfo onboardingResolveInfo = new ResolveInfo();
+        onboardingResolveInfo.nonLocalizedLabel = "Onboarding";
+        String onboardingIntent = HealthConnectManager.ACTION_SHOW_DEVICE_ONBOARDING;
+        when(mPackageManager.resolveActivity(
+                        argThat(
+                                intent ->
+                                        intent != null
+                                                && onboardingIntent.equals(intent.getAction())),
+                        eq(0)))
+                .thenReturn(onboardingResolveInfo);
+
+        ResolveInfo managementResolveInfo = new ResolveInfo();
+        managementResolveInfo.nonLocalizedLabel = "Management";
+        String managementIntent = HealthConnectManager.ACTION_SHOW_DEVICE_MANAGEMENT;
+        when(mPackageManager.resolveActivity(
+                        argThat(
+                                intent ->
+                                        intent != null
+                                                && managementIntent.equals(intent.getAction())),
+                        eq(0)))
+                .thenReturn(managementResolveInfo);
+
+        mHealthConnectService.getDeviceDataSourceInfos(
+                mAttributionSource, mGetDeviceDataSourceInfosCallback);
+
+        verify(mGetDeviceDataSourceInfosCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<List<DeviceDataSourceInfo>> captor = ArgumentCaptor.forClass(List.class);
+        verify(mGetDeviceDataSourceInfosCallback).onResult(captor.capture());
+
+        List<DeviceDataSourceInfo> result = captor.getValue();
+        assertThat(result).hasSize(1);
+        DeviceDataProviderInfo info = result.get(0).getDeviceDataProviderInfos().get(0);
+        assertThat(info.getOnboardingActivityLabel()).isEqualTo("Onboarding");
+        assertThat(info.getManagementActivityLabel()).isEqualTo("Management");
     }
 
     private void advertiseStepsDeviceDataSource(String deviceId, Device device)

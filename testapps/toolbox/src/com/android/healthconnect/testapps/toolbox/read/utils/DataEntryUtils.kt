@@ -38,6 +38,7 @@ import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntr
 import com.android.healthconnect.testapps.toolbox.read.dataentries.FormattedEntry.Header
 import com.android.healthconnect.testapps.toolbox.utils.asString
 import java.time.Instant
+import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -56,6 +57,10 @@ class DataEntryUtils {
 
         fun getHeader(time: Instant): String {
             return "${formatTime(time)}"
+        }
+
+        fun getHeader(date: LocalDate): String {
+            return date.format(DateTimeFormatter.ofPattern("dd/MM"))
         }
 
         private fun getTimeField(record: Record): String {

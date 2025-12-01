@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connectରେ ଏହି ଆପ ଯେଉଁ ଡାଟାକୁ ପଢ଼ୁ ବୋଲି ଆପଣ ଚାହୁଁଛନ୍ତି ତାହା ବାଛନ୍ତୁ"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"ଆପ୍ସ ମଧ୍ୟରେ ଡାଟାକୁ ସେୟାର କରନ୍ତୁ"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g>ରୁ ଡାଟା"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Health Connectକୁ ବ୍ୟବହାର କରି ଏହି ଡିଭାଇସରେ ଥିବା ଅନ୍ୟ ଆପ୍ସରୁ ଡାଟା ପଢ଼ିବାକୁ <xliff:g id="APP_NAME">%1$s</xliff:g> ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ।"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ଏହି ଡାଟାକୁ ସିଙ୍କ କରିପାରୁଥିବା ଆପ୍ସ"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> ଆପଣଙ୍କ ଡାଟାକୁ କିପରି ଏହାର "<a href="%2$s">"ଗୋପନୀୟତା ନୀତି"</a>"ରେ ବ୍ୟବହାର କରେ ତାହା ଜାଣନ୍ତୁ।"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ଆପଣଙ୍କୁ ଆପଣଙ୍କର ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଫିଟନେସ ଡାଟାକୁ ଏକାଧିକ ଆପ୍ସ ମଧ୍ୟରେ ସେୟାର କରିବାକୁ ଦିଏ। ଏହା ଆପଣଙ୍କ ଡାଟାକୁ ସୁରକ୍ଷିତ ରଖିବା ସମୟରେ ଇନସାଇଟ ଏବଂ ଅନୁଭୂତିଗୁଡ଼ିକୁ ଅନଲକ କରିବାରେ ସାହାଯ୍ୟ କରେ।"</string>
@@ -875,6 +876,14 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"ଆଲକୋହଲ ପରିମାଣ"</string>
     <string name="notes_title" msgid="4596764711916248492">"ନୋଟ୍ସ"</string>
     <string name="details_title" msgid="8411891773854413790">"ବିବରଣୀ"</string>
+    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>ମି"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g>ଘ <xliff:g id="MIN">%2$s</xliff:g>ମି"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g>ଘ"</string>
@@ -1270,7 +1279,8 @@
     <string name="write_access" msgid="571547306854732263">"ଲେଖିବାର ଆକ୍ସେସ"</string>
     <string name="read_access" msgid="3317759826769372785">"ପଢ଼ିବାର ଆକ୍ସେସ"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>। <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>। <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> ଆପ୍ସରୁ <xliff:g id="NUMBER_0">%1$d</xliff:g>କୁ ଅନୁମତି ଦିଆଯାଇଛି"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"କୌଣସି ଆପ୍ସ ଅନୁରୋଧ କରୁନାହିଁ"</string>
     <string name="allowed" msgid="4158456017482263737">"ଅନୁମତି ଦିଆଯାଇଛି"</string>
@@ -1341,6 +1351,10 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"କନେକ୍ଟ କରାଯାଇନାହିଁ"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"ଏହି ଆପକୁ Health Connect ସହ କନେକ୍ଟ କରିବାକୁ କ୍ଲିକ କରନ୍ତୁ"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"ବର୍ତ୍ତମାନ ନୁହେଁ"</string>
+    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
+    <skip />
+    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
+    <skip />
     <string name="acne_read_content_description" msgid="1176708404029936065">"ବ୍ରଣ ବିଷୟରେ ପଢ଼ନ୍ତୁ"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"ବ୍ରଣ ବିଷୟରେ ଲେଖନ୍ତୁ"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"ଭଙ୍ଗୁର ନଖ ବିଷୟରେ ପଢ଼ନ୍ତୁ"</string>
@@ -1577,5 +1591,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"ୱାଟର ରିଟେନସନ"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ଚକ୍କର"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ଚକ୍କର"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>ରୁ <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>ରୁ <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
 </resources>

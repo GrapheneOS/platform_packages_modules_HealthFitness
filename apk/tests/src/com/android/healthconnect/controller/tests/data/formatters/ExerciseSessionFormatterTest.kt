@@ -97,10 +97,7 @@ class ExerciseSessionFormatterTest {
     }
 
     @Test
-    @DisableFlags(
-        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
-        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    )
+    @DisableFlags(Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
     fun formatRecordDetails_segmentImprovementsDisabledReturnSegments() = runBlocking {
         unitPreferences.distanceUnit = KILOMETERS
         val segments =
@@ -149,10 +146,7 @@ class ExerciseSessionFormatterTest {
     }
 
     @Test
-    @DisableFlags(
-        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
-        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    )
+    @DisableFlags(Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
     fun formatRecordDetails_segmentImprovementsDisabledReturnSegmentsWithoutNewFields() =
         runBlocking {
             unitPreferences.distanceUnit = KILOMETERS
@@ -209,10 +203,7 @@ class ExerciseSessionFormatterTest {
         }
 
     @Test
-    @EnableFlags(
-        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
-        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    )
+    @EnableFlags(Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
     fun formatRecordDetails_segmentImprovementsEnabledWithNewFields() = runBlocking {
         unitPreferences.distanceUnit = KILOMETERS
         unitPreferences.weightUnit = KILOGRAM
@@ -281,10 +272,7 @@ class ExerciseSessionFormatterTest {
     }
 
     @Test
-    @EnableFlags(
-        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
-        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    )
+    @EnableFlags(Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
     fun formatRecordDetails_segmentImprovementsEnabledWithoutNewFields() = runBlocking {
         unitPreferences.distanceUnit = KILOMETERS
         unitPreferences.weightUnit = KILOGRAM
@@ -350,10 +338,7 @@ class ExerciseSessionFormatterTest {
     }
 
     @Test
-    @EnableFlags(
-        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
-        Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    )
+    @EnableFlags(Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
     fun formatRecordDetails_zeroRepetitionsHidesRepCount() = runBlocking {
         unitPreferences.distanceUnit = KILOMETERS
         unitPreferences.weightUnit = KILOGRAM

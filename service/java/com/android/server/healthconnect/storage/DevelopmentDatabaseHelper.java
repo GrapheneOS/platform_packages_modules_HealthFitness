@@ -79,7 +79,7 @@ public final class DevelopmentDatabaseHelper {
         if (db.isReadOnly()) {
             return;
         }
-        if (!Flags.developmentDatabase()) {
+        if (!Flags.developmentDatabaseRw()) {
             // Use straight SQL to isolate development infrastructure from prod code.
             try {
                 dropDevelopmentSettingsTable(db);

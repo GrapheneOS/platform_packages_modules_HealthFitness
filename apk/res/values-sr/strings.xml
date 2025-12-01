@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Одаберите податке које желите да ова апликација чита из Повезивања здравља"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Делите податке између апликација"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Подаци из: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Дозволите апликацији <xliff:g id="APP_NAME">%1$s</xliff:g> да помоћу Повезивања здравља чита податке из других апликација на овом уређају"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Апликације које могу да синхронизују ове податке"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Да бисте сазнали како апликација <xliff:g id="APP_NAME">%1$s</xliff:g> користи ваше податке, погледајте њену "<a href="%2$s">"политику приватности"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Повезивање здравља вам омогућава да делите податке о здрављу и фитнесу између више апликација. То вам помаже да откријете увиде и доживљаје, a да подаци притом остану безбедни."</string>
@@ -875,6 +876,14 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Проценат алкохола"</string>
     <string name="notes_title" msgid="4596764711916248492">"Напомене"</string>
     <string name="details_title" msgid="8411891773854413790">"Детаљи"</string>
+    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> мин"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> с <xliff:g id="MIN">%2$s</xliff:g> м"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> с"</string>
@@ -1094,7 +1103,7 @@
     <string name="remove_button_content_description" msgid="6170490900032612048">"Дугме за уклањање апликације <xliff:g id="SELECTED_APP">%s</xliff:g> са листе приоритета"</string>
     <string name="see_actions_button_content_description" msgid="2004104767369363475">"Дугме за промену места или уклањање апликације <xliff:g id="SELECTED_APP">%s</xliff:g> са листе извора апликација"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"Двапут додирните и превуците за промену редоследа"</string>
-    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> на листи: <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
+    <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g>. на листи: <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"фитнес, велнес"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"дозволе"</string>
     <string name="search_keywords_data" msgid="5359602744325490523">"повезивање здравља, здравствени подаци, здравствене категорије, приступ подацима, активност, телесне мере, праћење циклуса, исхрана, спавање, виталне функције"</string>
@@ -1270,7 +1279,8 @@
     <string name="write_access" msgid="571547306854732263">"Приступ за писање"</string>
     <string name="read_access" msgid="3317759826769372785">"Приступ за читање"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"Апликације са дозволом: <xliff:g id="NUMBER_0">%1$d</xliff:g> од <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Ниједна апликација не захтева дозволу"</string>
     <string name="allowed" msgid="4158456017482263737">"Дозвољено"</string>
@@ -1341,6 +1351,10 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Није повезано"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Кликните да бисте повезали ову апликацију са Повезивањем здравља"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Не сада"</string>
+    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
+    <skip />
+    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
+    <skip />
     <string name="acne_read_content_description" msgid="1176708404029936065">"Читање података о акнама"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Уписивање података о акнама"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Читање података о ломљивим ноктима"</string>
@@ -1577,5 +1591,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"задржавање воде"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Звиждање у грудима"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"звиждање у грудима"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> од <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> од <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>

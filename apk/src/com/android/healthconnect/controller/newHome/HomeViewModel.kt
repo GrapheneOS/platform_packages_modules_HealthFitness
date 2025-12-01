@@ -20,7 +20,6 @@ import android.content.Context
 import android.content.Intent
 import android.provider.Settings.ACTION_SECURITY_SETTINGS
 import android.util.Log
-import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.data.appdata.AllDataUseCase
@@ -363,27 +362,36 @@ constructor(
     }
 
     fun onDismissBanner(banner: BannerData) {
-        when (banner) {
-            is BannerData.LockScreenBanner -> {
-                sharedPreferences.edit().apply {
-                    if (banner.hasAnyFitnessData) {
-                        putBoolean(LOCK_SCREEN_BANNER_SEEN_FITNESS, true)
-                    }
-                    if (banner.hasAnyMedicalData) {
-                        putBoolean(LOCK_SCREEN_BANNER_SEEN_MEDICAL, true)
-                    }
-                    apply()
+        // Special case lock screen banner since it sets two preferences as seen
+        if (banner is BannerData.LockScreenBanner) {
+            sharedPreferences.edit().apply() {
+                if (banner.hasAnyFitnessData) {
+                    putBoolean(LOCK_SCREEN_BANNER_SEEN_FITNESS, true)
                 }
-                null
+                if (banner.hasAnyMedicalData) {
+                    putBoolean(LOCK_SCREEN_BANNER_SEEN_MEDICAL, true)
+                }
+                apply()
             }
-            BannerData.NativeStepsBanner -> Constants.NATIVE_STEPS_BANNER_SEEN
-            BannerData.ZeroAppsOnboardingBanner -> Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN
-            BannerData.OneAppOnboardingBanner -> Constants.ONBOARDING_ONE_APP_BANNER_SEEN
-            BannerData.MigrationBanner,
-            BannerData.DataRestorePendingBanner,
-            is BannerData.ExportErrorBanner ->
-                // TODO(b/337749314): Add shared preference keys for these banners if needed
-                null
+            return
+        }
+
+        sharedPreferences.edit().apply() {
+            val bannerSeenPreference =
+                when (banner) {
+                    BannerData.NativeStepsBanner -> Constants.NATIVE_STEPS_BANNER_SEEN
+                    BannerData.ZeroAppsOnboardingBanner ->
+                        Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN
+                    BannerData.OneAppOnboardingBanner -> Constants.ONBOARDING_ONE_APP_BANNER_SEEN
+                    BannerData.MigrationBanner,
+                    BannerData.DataRestorePendingBanner,
+                    is BannerData.ExportErrorBanner ->
+                        // These banner are not dismissible
+                        null
+                    else -> null
+                }
+            bannerSeenPreference?.let { putBoolean(it, true) }
+            apply()
         }
         _banners.update { currentBanners -> currentBanners.filterNot { it.id == banner.id } }
     }
@@ -405,14 +413,6 @@ constructor(
             else -> {
                 // Do nothing
             }
-        }
-    }
-
-    private fun getSortOrder(status: ConnectedAppStatus): Int {
-        return when (status) {
-            ConnectedAppStatus.ALLOWED -> 1
-            ConnectedAppStatus.DENIED -> 2
-            else -> 3
         }
     }
 

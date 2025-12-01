@@ -52,6 +52,7 @@ import android.platform.test.annotations.EnableFlags;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
@@ -84,17 +85,14 @@ import java.util.UUID;
 @RunWith(AndroidJUnit4.class)
 public class FitnessRecordDeleteHelperTest {
     private static final String TEST_PACKAGE_NAME = "package.name";
-
+    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     private UserHandle mUserHandle;
     private AccessLogsHelper mAccessLogsHelper;
     private FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
     private InternalHealthConnectMappings mInternalHealthConnectMappings;
     private FitnessTestUtils mFitnessTestUtils;
     private FakeSerialDeviceDataProviderManager mDeviceDataProviderManager;
-
-    @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
-    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
-
     @Mock private AppOpLogsHelper mAppOpLogsHelper;
 
     @Before
@@ -112,17 +110,19 @@ public class FitnessRecordDeleteHelperTest {
         mInternalHealthConnectMappings = injector.getInternalHealthConnectMappings();
         mFitnessTestUtils = new FitnessTestUtils(injector);
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
-        mDeviceDataProviderManager =
-                new FakeSerialDeviceDataProviderManager(
-                        context,
-                        injector.getDeviceInfoHelper(),
-                        injector.getAppInfoHelper(),
-                        injector.getDeviceDataSourcesHelper(),
-                        injector.getDeviceDataProviderMetadataHelper(),
-                        injector.getFitnessRecordUpsertHelper(),
-                        injector.getFitnessRecordReadHelper(),
-                        injector.getFitnessRecordDeleteHelper(),
-                        injector.getSyntheticPackageNameCreator());
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            mDeviceDataProviderManager =
+                    new FakeSerialDeviceDataProviderManager(
+                            context,
+                            injector.getDeviceInfoHelper(),
+                            injector.getAppInfoHelper(),
+                            injector.getDeviceDataSourcesHelper(),
+                            injector.getDeviceDataProviderMetadataHelper(),
+                            injector.getFitnessRecordUpsertHelper(),
+                            injector.getFitnessRecordReadHelper(),
+                            injector.getFitnessRecordDeleteHelper(),
+                            injector.getSyntheticPackageNameCreator());
+        }
     }
 
     @Test
@@ -246,7 +246,7 @@ public class FitnessRecordDeleteHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteRecords_callingInternalDelete_doesNotAddDdpIdsToDeleteRequests() {
         DeleteUsingFiltersRequest deleteRequest =
@@ -280,7 +280,7 @@ public class FitnessRecordDeleteHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_callingInternalDelete_addsDdpIdsToDeleteRequests() {
         DeleteUsingFiltersRequest deleteRequest =
@@ -335,7 +335,7 @@ public class FitnessRecordDeleteHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_shouldEnforceSelfRead_setsPackageFiltersToDdpPackageName() {
         DeleteUsingFiltersRequest deleteRequest =
@@ -364,7 +364,7 @@ public class FitnessRecordDeleteHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void deleteDeviceRecords_withDeviceRecord_deletesRecord() {
         String deviceId = "device";

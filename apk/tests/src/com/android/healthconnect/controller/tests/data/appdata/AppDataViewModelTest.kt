@@ -39,11 +39,13 @@ import com.android.healthconnect.controller.data.appdata.AppDataViewModel
 import com.android.healthconnect.controller.data.appdata.PermissionTypesPerCategory
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType.VACCINES
+import com.android.healthconnect.controller.permissions.data.getAllSymptomPermissionTypes
 import com.android.healthconnect.controller.selectabledeletion.DeletionDataViewModel.DeletionScreenState.DELETE
 import com.android.healthconnect.controller.selectabledeletion.DeletionDataViewModel.DeletionScreenState.VIEW
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.MEDICAL
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
+import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
@@ -700,6 +702,37 @@ class AppDataViewModelTest {
         advanceUntilIdle()
 
         assertThat(viewModel.getTheNumOfPermissionTypes()).isEqualTo(3)
+    }
+
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun prepareDeletionType_withAllSymptoms_returnsAllSymptomTypes() = runTest {
+        viewModel.loadAppInfo(TEST_APP_PACKAGE_NAME)
+        advanceUntilIdle()
+        viewModel.addToDeletionSet(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)
+        val deletionType = viewModel.prepareDeletionType()
+        val expectedSymptomTypes = getAllSymptomPermissionTypes()
+        assertThat(deletionType).isNotNull()
+        assertThat(deletionType!!.healthPermissionTypes)
+            .containsExactlyElementsIn(expectedSymptomTypes)
+        assertThat(deletionType.totalPermissionTypes).isEqualTo(expectedSymptomTypes.size)
+        assertThat(deletionType.packageName).isEqualTo(TEST_APP_PACKAGE_NAME)
+        assertThat(deletionType.appName).isEqualTo(TEST_APP_NAME)
+    }
+
+    @Test
+    fun prepareDeletionType_withoutSymptoms_returnsSelectedTypes() = runTest {
+        viewModel.loadAppInfo(TEST_APP_PACKAGE_NAME)
+        advanceUntilIdle()
+        viewModel.addToDeletionSet(FitnessPermissionType.STEPS)
+        viewModel.addToDeletionSet(FitnessPermissionType.HEART_RATE)
+        val deletionType = viewModel.prepareDeletionType()
+        assertThat(deletionType).isNotNull()
+        assertThat(deletionType!!.healthPermissionTypes)
+            .containsExactly(FitnessPermissionType.STEPS, FitnessPermissionType.HEART_RATE)
+        assertThat(deletionType.totalPermissionTypes).isEqualTo(2)
+        assertThat(deletionType.packageName).isEqualTo(TEST_APP_PACKAGE_NAME)
+        assertThat(deletionType.appName).isEqualTo(TEST_APP_NAME)
     }
 
     private fun prepareAnswer(

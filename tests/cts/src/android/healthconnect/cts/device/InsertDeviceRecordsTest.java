@@ -25,7 +25,7 @@ import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecor
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecordWithEmptyMetaData;
 
-import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
 
@@ -67,7 +67,7 @@ import java.util.Set;
 @RequiresFlagsEnabled({
     FLAG_DEVICE_DATA_PROVIDERS_API,
     FLAG_DEVICE_DATA_PROVIDERS_DB,
-    FLAG_DEVELOPMENT_DATABASE
+    FLAG_DEVELOPMENT_DATABASE_RW
 })
 // TODO(b/440343237): Add test to verify package name is not equal to writing app once we have
 // getDeviceDataSources

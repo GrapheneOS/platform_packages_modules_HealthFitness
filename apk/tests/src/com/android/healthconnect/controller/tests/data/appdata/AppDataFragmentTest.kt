@@ -18,13 +18,17 @@ package com.android.healthconnect.controller.tests.data.appdata
 import android.content.Context
 import android.content.Intent
 import android.health.connect.HealthConnectManager
+import android.health.connect.HealthDataCategory
+import android.health.connect.HealthPermissionCategory
 import android.health.connect.MedicalResourceTypeInfo
 import android.health.connect.ReadRecordsRequestUsingFilters
 import android.health.connect.ReadRecordsResponse
 import android.health.connect.RecordTypeInfoResponse
 import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.SymptomRecord
 import android.os.Bundle
 import android.os.OutcomeReceiver
+import android.platform.test.annotations.RequiresFlagsEnabled
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.preference.PreferenceCategory
@@ -36,6 +40,7 @@ import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -67,6 +72,7 @@ import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.utils.logging.AppDataElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -1179,22 +1185,65 @@ class AppDataFragmentTest {
                 }
         }
 
+    @Test
+    @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
+    fun inDeletionState_clickAllSymptoms_togglesRepresentativeTypeInSet() = runTest {
+        mockData(listOf(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN))
+
+        launchFragment<AppDataFragment>(
+                Bundle().apply {
+                    putString(Intent.EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
+                    putString(Constants.EXTRA_APP_NAME, TEST_APP_NAME)
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment =
+                        activity.supportFragmentManager.fragments.first { it is AppDataFragment }
+                            as AppDataFragment
+                    fragment.triggerDeletionState(DELETE)
+                }
+                onIdle()
+
+                onView(withText("All symptoms")).perform(scrollTo()).perform(click())
+                onIdle()
+                assertThat(appDataViewModel.setOfPermissionTypesToBeDeleted.value)
+                    .contains(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)
+
+                onView(withText("All symptoms")).perform(click())
+                onIdle()
+                assertThat(appDataViewModel.setOfPermissionTypesToBeDeleted.value)
+                    .doesNotContain(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)
+            }
+    }
+
     private fun mockData(permissionTypesList: List<HealthPermissionType>) {
         val recordTypeInfoMap =
-            permissionTypesList.filterIsInstance<FitnessPermissionType>().associate {
-                fitnessPermissionType ->
-                val permissionCategory = fitnessPermissionType.category
-                val healthCategory = fromFitnessPermissionType(fitnessPermissionType)
-                val dataType =
-                    HealthPermissionToDatatypeMapper.getDataTypes(fitnessPermissionType)[0]
+            permissionTypesList
+                .filterIsInstance<FitnessPermissionType>()
+                .associate { fitnessPermissionType ->
+                    val permissionCategory = fitnessPermissionType.category
+                    val healthCategory = fromFitnessPermissionType(fitnessPermissionType)
+                    val dataType =
+                        HealthPermissionToDatatypeMapper.getDataTypes(fitnessPermissionType)[0]
 
-                dataType to
-                    RecordTypeInfoResponse(
-                        permissionCategory,
-                        healthCategory,
-                        listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
-                    )
-            }
+                    dataType to
+                        RecordTypeInfoResponse(
+                            permissionCategory,
+                            healthCategory,
+                            listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
+                        )
+                }
+                .toMutableMap()
+
+        if (permissionTypesList.contains(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)) {
+            recordTypeInfoMap[SymptomRecord::class.java] =
+                RecordTypeInfoResponse(
+                    HealthPermissionCategory.SYMPTOM_ABDOMINAL_PAIN,
+                    HealthDataCategory.SYMPTOMS,
+                    listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
+                )
+        }
 
         val medicalResourceTypeResources =
             permissionTypesList.filterIsInstance<MedicalPermissionType>().map {

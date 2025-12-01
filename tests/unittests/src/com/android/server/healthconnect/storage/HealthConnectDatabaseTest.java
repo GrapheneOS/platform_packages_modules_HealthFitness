@@ -20,7 +20,7 @@ import static android.healthconnect.testing.unittest.StorageUtils.assertNumberOf
 
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION_DB;
-import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS_DB;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.checkTableExists;
@@ -83,7 +83,7 @@ public class HealthConnectDatabaseTest {
 
     @Test
     @DisableFlags({
-        FLAG_DEVELOPMENT_DATABASE,
+        FLAG_DEVELOPMENT_DATABASE_RW,
         FLAG_SMOKING_DB,
         FLAG_SYMPTOMS_DB,
         FLAG_ALCOHOL_CONSUMPTION_DB

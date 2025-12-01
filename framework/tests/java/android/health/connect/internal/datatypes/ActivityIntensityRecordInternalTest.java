@@ -26,7 +26,6 @@ import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_UNKNOWN
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVITY_INTENSITY;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
-import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -54,7 +53,7 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({FLAG_ACTIVITY_INTENSITY, FLAG_ACTIVITY_INTENSITY_DB})
+@RequiresFlagsEnabled({FLAG_ACTIVITY_INTENSITY})
 public class ActivityIntensityRecordInternalTest {
 
     @Rule

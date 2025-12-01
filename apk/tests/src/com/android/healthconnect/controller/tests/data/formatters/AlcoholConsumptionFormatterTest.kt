@@ -97,7 +97,7 @@ class AlcoholConsumptionFormatterTest {
 
         assertThat(servingVolumeEntry.title).isEqualTo("Serving Volume")
         assertThat(servingVolumeEntry.titleA11y).isEqualTo("Serving Volume")
-        assertThat(servingVolumeEntry.header).isEqualTo("123 ml")
+        assertThat(servingVolumeEntry.header).isEqualTo("123 mL")
         assertThat(servingVolumeEntry.headerA11y).isEqualTo("123 milliliters")
         assertThat(alcoholByVolumeEntry.title).isEqualTo("Alcohol by Volume")
         assertThat(alcoholByVolumeEntry.titleA11y).isEqualTo("Alcohol by Volume")
@@ -122,8 +122,25 @@ class AlcoholConsumptionFormatterTest {
         val recordDetail = details[1] as FormattedEntry.ReverseSessionDetail
         assertThat(recordDetail.title).isEqualTo("Serving Volume")
         assertThat(recordDetail.titleA11y).isEqualTo("Serving Volume")
-        assertThat(recordDetail.header).isEqualTo("500 ml")
+        assertThat(recordDetail.header).isEqualTo("500 mL")
         assertThat(recordDetail.headerA11y).isEqualTo("500 milliliters")
+    }
+
+    @Test
+    fun formatRecordDetails_withVolumeOver1L_returnsFormattedString() = runBlocking {
+        val record = getAlcoholConsumptionRecord(volume = Volume.fromLiters(1.234))
+        val details = formatter.formatRecordDetails(record)
+        assertThat(details.size).isEqualTo(2)
+        assertThat(details[0]).isInstanceOf(FormattedEntry.FormattedSectionTitle::class.java)
+        val sectionTitle = details[0] as FormattedEntry.FormattedSectionTitle
+        assertThat(sectionTitle.title).isEqualTo("Details")
+
+        assertThat(details[1]).isInstanceOf(FormattedEntry.ReverseSessionDetail::class.java)
+        val recordDetail = details[1] as FormattedEntry.ReverseSessionDetail
+        assertThat(recordDetail.title).isEqualTo("Serving Volume")
+        assertThat(recordDetail.titleA11y).isEqualTo("Serving Volume")
+        assertThat(recordDetail.header).isEqualTo("1.234 L")
+        assertThat(recordDetail.headerA11y).isEqualTo("1.234 liters")
     }
 
     @Test

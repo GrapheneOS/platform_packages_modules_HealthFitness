@@ -89,7 +89,7 @@ class GetMatchingAppsUseCaseTest {
                 null
             }
             .whenever(healthConnectManager)
-            .getMatchingApps(any(), any(), any())
+            .getMatchingDataSources(any(), any(), any())
         whenever(appInfoReader.getAppMetadata(any())).thenReturn(appMetadata)
 
         val result = useCase.invoke(GetMatchMakingAppsInput(packageName, recordTypes))
@@ -112,7 +112,7 @@ class GetMatchingAppsUseCaseTest {
                 null
             }
             .whenever(healthConnectManager)
-            .getMatchingApps(any(), any(), any())
+            .getMatchingDataSources(any(), any(), any())
 
         val result = useCase.invoke(GetMatchMakingAppsInput(packageName, recordTypes))
 

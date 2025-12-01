@@ -20,7 +20,6 @@ import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealt
 import static android.permission.flags.Flags.FLAG_HEALTH_CONNECT_BACKUP_RESTORE_PERMISSION_ENABLED;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
-import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -54,7 +53,6 @@ import java.util.concurrent.Executors;
 @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
 @RequiresFlagsEnabled({
     FLAG_CLOUD_BACKUP_AND_RESTORE,
-    FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
     FLAG_HEALTH_CONNECT_BACKUP_RESTORE_PERMISSION_ENABLED
 })
 public class CloudBackupRestoreNoPermissionsGrantedTest {

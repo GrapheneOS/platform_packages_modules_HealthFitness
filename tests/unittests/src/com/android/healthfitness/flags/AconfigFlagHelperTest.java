@@ -91,9 +91,7 @@ public class AconfigFlagHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_CLOUD_BACKUP_AND_RESTORE
-    })
+    @EnableFlags({Flags.FLAG_CLOUD_BACKUP_AND_RESTORE})
     public void cloudBackupAndRestore_featureFlagTrue_expectTrue() {
         assertThat(isCloudBackupRestoreEnabled()).isTrue();
     }
@@ -105,13 +103,21 @@ public class AconfigFlagHelperTest {
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @DisableFlags({
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API
+    })
     public void isDeviceDataProvidersEnabled_flagOff_expectFalse() {
         assertThat(isDeviceDataProvidersEnabled()).isFalse();
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_DEVELOPMENT_DATABASE, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @EnableFlags({
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API
+    })
     public void isDeviceDataProvidersEnabled_flagOn_expectTrue() {
         assertThat(isDeviceDataProvidersEnabled()).isTrue();
     }

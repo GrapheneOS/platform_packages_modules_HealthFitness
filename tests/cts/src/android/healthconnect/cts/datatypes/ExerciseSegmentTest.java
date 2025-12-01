@@ -21,7 +21,6 @@ import static android.healthconnect.testing.shared.DataFactory.sessionEndTime;
 import static android.healthconnect.testing.shared.DataFactory.sessionStartTime;
 
 import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS;
-import static com.android.healthfitness.flags.Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -70,10 +69,7 @@ public class ExerciseSegmentTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    })
+    @RequiresFlagsEnabled(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
     public void testExerciseSegmentWithNewFields_buildSegment_buildCorrectObject() {
         ExerciseSegment segment =
                 new ExerciseSegment.Builder(
@@ -109,10 +105,7 @@ public class ExerciseSegmentTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    })
+    @RequiresFlagsEnabled(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
     public void testExerciseSegment_buildWithoutRpe_throwsException() {
         ExerciseSegment segment =
                 new ExerciseSegment.Builder(
@@ -124,10 +117,7 @@ public class ExerciseSegmentTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS,
-        FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    })
+    @RequiresFlagsEnabled(FLAG_EXERCISE_SEGMENT_IMPROVEMENTS)
     public void testExerciseSegment_buildWithoutSetIndex_throwsException() {
         ExerciseSegment segment =
                 new ExerciseSegment.Builder(

@@ -26,6 +26,7 @@ import android.health.connect.RecordIdFilter;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
+import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SymptomRecord;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.recordfactory.SymptomRecordFactory;
@@ -46,10 +47,7 @@ import java.util.List;
 @RequiresFlagsEnabled({
     Flags.FLAG_SYMPTOMS,
     Flags.FLAG_SYMPTOMS_DB,
-    Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_DB,
     Flags.FLAG_HEALTH_CONNECT_MAPPINGS,
-    Flags.FLAG_EXERCISE_SEGMENT_IMPROVEMENTS_DB,
-    Flags.FLAG_PHR_CHANGE_LOGS_DB
 })
 public class SymptomRecordApiTest extends BaseApiTest<SymptomRecord> {
     public SymptomRecordApiTest() {
@@ -79,13 +77,13 @@ public class SymptomRecordApiTest extends BaseApiTest<SymptomRecord> {
                                         .addRecordType(mRecordClass)
                                         .build())
                         .getToken();
-        TestUtils.insertRecords(recordsToInsert);
+        List<Record> insertedRecords = TestUtils.insertRecords(recordsToInsert);
 
         ChangeLogsResponse response =
                 TestUtils.getChangeLogs(new ChangeLogsRequest.Builder(token).build());
 
-        // TODO(b/448836403): Re-enable full checks when change log filtering is implemented.
-        assertThat(response.getUpsertedRecords()).isEmpty();
+        assertThat(response.getUpsertedRecords()).hasSize(2);
+        assertThat(response.getUpsertedRecords()).containsExactlyElementsIn(insertedRecords);
         assertThat(response.getDeletedLogs()).isEmpty();
     }
 
@@ -102,7 +100,7 @@ public class SymptomRecordApiTest extends BaseApiTest<SymptomRecord> {
                                 newEmptyMetadata(),
                                 YESTERDAY_11AM.plusMinutes(20).toInstant(),
                                 YESTERDAY_11AM.plusMinutes(30).toInstant()));
-        insertRecordsAndReturnIds(recordsToInsert);
+        List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
         String token =
                 TestUtils.getChangeLogToken(
                                 new ChangeLogTokenRequest.Builder()
@@ -116,7 +114,12 @@ public class SymptomRecordApiTest extends BaseApiTest<SymptomRecord> {
                 TestUtils.getChangeLogs(new ChangeLogsRequest.Builder(token).build());
 
         assertThat(response.getUpsertedRecords()).isEmpty();
-        assertThat(response.getDeletedLogs()).isEmpty();
+        assertThat(response.getDeletedLogs()).hasSize(2);
+        assertThat(
+                        response.getDeletedLogs().stream()
+                                .map(ChangeLogsResponse.DeletedLog::getDeletedRecordId)
+                                .toList())
+                .containsExactlyElementsIn(recordIds);
     }
 
     @Test
@@ -152,7 +155,12 @@ public class SymptomRecordApiTest extends BaseApiTest<SymptomRecord> {
                 TestUtils.getChangeLogs(new ChangeLogsRequest.Builder(token).build());
 
         assertThat(response.getUpsertedRecords()).isEmpty();
-        assertThat(response.getDeletedLogs()).isEmpty();
+        assertThat(response.getDeletedLogs()).hasSize(2);
+        assertThat(
+                        response.getDeletedLogs().stream()
+                                .map(ChangeLogsResponse.DeletedLog::getDeletedRecordId)
+                                .toList())
+                .containsExactly(recordIds.get(1), recordIds.get(2));
     }
 
     @Test
@@ -182,8 +190,13 @@ public class SymptomRecordApiTest extends BaseApiTest<SymptomRecord> {
         ChangeLogsResponse response =
                 TestUtils.getChangeLogs(new ChangeLogsRequest.Builder(token).build());
 
-        // TODO(b/448836403): Re-enable full checks when change log filtering is implemented.
-        assertThat(response.getUpsertedRecords()).isEmpty();
+        assertThat(response.getUpsertedRecords()).hasSize(1);
+        SymptomRecord updatedRecord = (SymptomRecord) response.getUpsertedRecords().get(0);
+        assertThat(updatedRecord.getMetadata().getId()).isEqualTo(recordIds.get(0));
+        assertThat(updatedRecord.getStartTime())
+                .isEqualTo(YESTERDAY_11AM.plusMinutes(40).toInstant());
+        assertThat(updatedRecord.getEndTime())
+                .isEqualTo(YESTERDAY_11AM.plusMinutes(55).toInstant());
         assertThat(response.getDeletedLogs()).isEmpty();
     }
 }

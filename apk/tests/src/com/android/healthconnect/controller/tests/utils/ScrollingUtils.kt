@@ -70,6 +70,8 @@ fun scrollToText(text: String) {
  * @param text The text of the item to scroll to and click.
  */
 fun scrollToTextAndClick(text: String) {
+    // Make sure the text is visible before clicking on it.
+    scrollToText(text)
     onView(withId(androidx.preference.R.id.recycler_view))
         .perform(
             RecyclerViewActions.actionOnItem<RecyclerView.ViewHolder>(

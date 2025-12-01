@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect నుండి ఈ యాప్, ఏ డేటాను చదవాలో లేదా రాయాలో ఎంచుకోండి"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"మీ యాప్‌ల మధ్య డేటాను షేర్ చేయండి"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> నుండి డేటా"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Health Connect ఉపయోగించి, ఈ డివైజ్‌లోని ఇతర యాప్‌ల నుండి డేటాను యాక్సెస్ చేయడానికి <xliff:g id="APP_NAME">%1$s</xliff:g> యాప్‌ను అనుమతించండి."</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ఈ డేటాను సింక్ చేయగల యాప్‌లు"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g>, మీ డేటాను వారి "<a href="%2$s">"గోప్యతా పాలసీ"</a>"లో ఎలా ఉపయోగిస్తారో తెలుసుకోండి."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"మీ ఆరోగ్యం, ఫిట్‌నెస్ డేటాను మీ ఫోన్‌లోని విభిన్న యాప్‌ల మధ్య షేర్ చేసే వీలును Health Connect మీకు కల్పిస్తుంది. ఇది మీ డేటాను సురక్షితంగా ఉంచుతూనే, కొత్త గణాంకాలను, ఎక్స్‌పీరియన్స్‌లను పొందడానికి మీకు సహాయపడుతుంది."</string>
@@ -875,6 +876,14 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"ఆల్కహాల్ పరిమాణం"</string>
     <string name="notes_title" msgid="4596764711916248492">"గమనికలు"</string>
     <string name="details_title" msgid="8411891773854413790">"వివరాలు"</string>
+    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>ని"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g>గం <xliff:g id="MIN">%2$s</xliff:g>నిమి"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g>గం"</string>
@@ -1270,7 +1279,8 @@
     <string name="write_access" msgid="571547306854732263">"రైట్ యాక్సెస్"</string>
     <string name="read_access" msgid="3317759826769372785">"రీడ్ యాక్సెస్"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>⁠"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g>‌లో <xliff:g id="NUMBER_0">%1$d</xliff:g> యాప్‌లు అనుమతించబడ్డాయి"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"యాప్‌లు ఏవీ రిక్వెస్ట్ చేయట్లేదు"</string>
     <string name="allowed" msgid="4158456017482263737">"అనుమతించబడింది"</string>
@@ -1341,6 +1351,10 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"కనెక్ట్ అయి లేదు"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"ఈ యాప్‌ను Health Connectకు కనెక్ట్ చేయడానికి క్లిక్ చేయండి"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"ఇప్పుడు కాదు"</string>
+    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
+    <skip />
+    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
+    <skip />
     <string name="acne_read_content_description" msgid="1176708404029936065">"మొటిమల డేటాను చదువుతుంది"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"మొటిమల డేటాను రాస్తుంది"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"పెళుసుగా ఉండే గోళ్ల డేటాను చదువుతుంది"</string>
@@ -1577,5 +1591,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"శరీరంలో ద్రవం పేరుకుపోవడం"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ఊపిరి పీల్చుకుంటున్నప్పుడు వచ్చే ఈల శబ్దం"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ఊపిరి పీల్చుకుంటున్నప్పుడు వచ్చే ఈల శబ్దం"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>లో <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>లో <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
 </resources>

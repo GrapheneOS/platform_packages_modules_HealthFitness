@@ -34,6 +34,7 @@ import android.health.connect.datatypes.HydrationRecord
 import android.health.connect.datatypes.IntermenstrualBleedingRecord
 import android.health.connect.datatypes.MedicalDataSource
 import android.health.connect.datatypes.MedicalResource
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord
 import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.Metadata
 import android.health.connect.datatypes.OxygenSaturationRecord
@@ -64,6 +65,7 @@ import com.android.healthconnect.controller.units.PowerConverter
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.randomInstant
 import com.android.healthconnect.controller.utils.toInstant
+import com.android.healthconnect.controller.utils.toLocalDate
 import com.android.healthconnect.controller.utils.toLocalDateTime
 import com.google.common.truth.Truth.assertThat
 import java.time.Duration.ofDays
@@ -141,6 +143,14 @@ fun getIntermenstrualBleedingRecord(time: Instant): IntermenstrualBleedingRecord
 
 fun getMenstruationPeriodRecord(startTime: Instant, endTime: Instant): MenstruationPeriodRecord {
     return MenstruationPeriodRecord.Builder(getMetaData(), startTime, endTime).build()
+}
+
+fun getMenstrualCyclePhaseRecord(phase: Int, dayOfCycle: Int? = null): MenstrualCyclePhaseRecord {
+    val builder = MenstrualCyclePhaseRecord.Builder(getMetaData(), NOW.toLocalDate(), phase)
+    if (dayOfCycle != null) {
+        builder.setDayOfCycle(dayOfCycle)
+    }
+    return builder.build()
 }
 
 fun getBodyTemperatureRecord(

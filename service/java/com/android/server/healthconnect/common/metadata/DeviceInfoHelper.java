@@ -351,7 +351,6 @@ public class DeviceInfoHelper extends DatabaseHelper {
             return mDeviceId;
         }
 
-        @VisibleForTesting
         @Nullable
         public String getDisplayName() {
             return mDisplayName;

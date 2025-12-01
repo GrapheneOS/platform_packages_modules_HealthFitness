@@ -235,6 +235,7 @@ private object CategoriesMappers {
             FitnessPermissionType.MENSTRUATION,
             FitnessPermissionType.OVULATION_TEST,
             FitnessPermissionType.SEXUAL_ACTIVITY,
+            FitnessPermissionType.MENSTRUAL_CYCLE_PHASE,
         )
 
     val NUTRITION_PERMISSION_GROUPS =

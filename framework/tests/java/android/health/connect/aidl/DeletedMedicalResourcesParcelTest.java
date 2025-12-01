@@ -18,7 +18,7 @@ package android.health.connect.aidl;
 import static android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.DATA_SOURCE_ID;
 
-import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -43,7 +43,7 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 @RequiresFlagsEnabled({
     FLAG_PHR_CHANGE_LOGS,
-    FLAG_DEVELOPMENT_DATABASE,
+    FLAG_DEVELOPMENT_DATABASE_RW,
 })
 public class DeletedMedicalResourcesParcelTest {
 

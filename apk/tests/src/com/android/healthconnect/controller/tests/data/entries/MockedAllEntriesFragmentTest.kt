@@ -24,9 +24,12 @@ import android.health.connect.datatypes.AggregationType
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsCadenceRecord
 import android.health.connect.datatypes.StepsRecord
+import android.os.Bundle
 import android.os.OutcomeReceiver
-import androidx.core.os.bundleOf
+import android.view.View
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
@@ -43,10 +46,12 @@ import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.usecase.DefaultDispatcher
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.MainDispatcher
+import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.CoroutineTestRule
 import com.android.healthconnect.controller.tests.utils.FakeParentFragment
 import com.android.healthconnect.controller.tests.utils.NESTED_FRAGMENT_TAG
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.ViewGoneIdlingResource
 import com.android.healthconnect.controller.tests.utils.assertCheckboxChecked
 import com.android.healthconnect.controller.tests.utils.assertCheckboxNotChecked
 import com.android.healthconnect.controller.tests.utils.assertCheckboxNotShown
@@ -70,6 +75,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -93,250 +99,260 @@ class MockedAllEntriesFragmentTest {
             .atZone(ZoneId.systemDefault())
             .toInstant()
     private val recyclerViewId = R.id.data_entries_list
+    private var loadingGoneIdlingResource: ViewGoneIdlingResource? = null
 
     @Before
     fun setup() {
         hiltRule.inject()
     }
 
+    @After
+    fun tearDown() {
+        loadingGoneIdlingResource?.let { IdlingRegistry.getInstance().unregister(it) }
+    }
+
     @Test
     fun fragmentDisplaysCorrectly() = runTest {
         mockData()
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use {
-                advanceUntilIdle()
+        launchAllEntriesFragment().use { scenario ->
+            advanceUntilIdle()
+            scenario.onActivity { activity -> registerIdlingResource(activity) }
+            advanceUntilIdle()
 
-                onView(withText("10 steps")).check(matches(isDisplayed()))
-                onView(withText("20 steps")).check(matches(isDisplayed()))
-                onView(withText("30 steps")).check(matches(isDisplayed()))
-                onView(withText("15.2 steps/min")).check(matches(isDisplayed()))
+            onView(withText("10 steps")).check(matches(isDisplayed()))
+            onView(withText("20 steps")).check(matches(isDisplayed()))
+            onView(withText("30 steps")).check(matches(isDisplayed()))
+            onView(withText("15.2 steps/min")).check(matches(isDisplayed()))
 
-                onView(withText("60 steps")).check(matches(isDisplayed()))
-                onView(withText("Select all")).check(doesNotExist())
+            onView(withText("60 steps")).check(matches(isDisplayed()))
+            onView(withText("Select all")).check(doesNotExist())
 
-                assertCheckboxNotShown(recyclerViewId, "10 steps", 1)
-                assertCheckboxNotShown(recyclerViewId, "20 steps", 2)
-                assertCheckboxNotShown(recyclerViewId, "30 steps", 3)
-                assertCheckboxNotShown(recyclerViewId, "15.2 steps/min", 4)
-            }
+            assertCheckboxNotShown(recyclerViewId, "10 steps", 1)
+            assertCheckboxNotShown(recyclerViewId, "20 steps", 2)
+            assertCheckboxNotShown(recyclerViewId, "30 steps", 3)
+            assertCheckboxNotShown(recyclerViewId, "15.2 steps/min", 4)
+        }
     }
 
     @Test
     fun toggleDeletion_hidesAggregation_showsSelectAll_showsCheckboxes() = runTest {
         mockData()
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use { scenario ->
-                advanceUntilIdle()
-                scenario.onActivity { activity ->
-                    val parentFragment =
-                        activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
-                    val fragment =
-                        parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
-                    (fragment as AllEntriesFragment).triggerDeletionState(
-                        EntriesViewModel.EntriesDeletionScreenState.DELETE
-                    )
-                }
-                advanceUntilIdle()
-
-                onView(withText("Select all")).check(matches(isDisplayed()))
-                onView(withText("60 steps")).check(doesNotExist())
-
-                assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-                assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-                assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+        launchAllEntriesFragment().use { scenario ->
+            advanceUntilIdle()
+            scenario.onActivity { activity ->
+                registerIdlingResource(activity)
+                triggerDeletion(activity)
             }
+            advanceUntilIdle()
+
+            onView(withText("Select all")).check(matches(isDisplayed()))
+            onView(withText("60 steps")).check(doesNotExist())
+
+            assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
+            assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
+            assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
+            assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+        }
     }
 
     @Test
     fun inDeletion_screenStateRemainsOnOrientationChange() = runTest {
         mockData()
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use { scenario ->
-                advanceUntilIdle()
+        launchAllEntriesFragment().use { scenario ->
+            advanceUntilIdle()
+            scenario.onActivity { activity ->
+                registerIdlingResource(activity)
+                triggerDeletion(activity)
+            }
+            advanceUntilIdle()
+
+            onView(withText("Select all")).check(matches(isDisplayed()))
+            onView(withText("60 steps")).check(doesNotExist())
+
+            assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
+            assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
+            assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
+            assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+
+            onView(withText("10 steps")).perform(click())
+
+            assertCheckboxChecked(recyclerViewId, "10 steps", 1)
+
+            scenario.recreate()
+            advanceUntilIdle()
+            // Re-register new idling resource to wait until loading is finished
+            var recreatedIdlingResource: ViewGoneIdlingResource? = null
+            try {
                 scenario.onActivity { activity ->
                     val parentFragment =
                         activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
                     val fragment =
                         parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
-                    (fragment as AllEntriesFragment).triggerDeletionState(
-                        EntriesViewModel.EntriesDeletionScreenState.DELETE
-                    )
+                    val loadingView = fragment!!.requireView().findViewById<View>(R.id.loading)
+                    recreatedIdlingResource = ViewGoneIdlingResource(loadingView)
+                    IdlingRegistry.getInstance().register(recreatedIdlingResource)
                 }
-                advanceUntilIdle()
-
-                onView(withText("Select all")).check(matches(isDisplayed()))
-                onView(withText("60 steps")).check(doesNotExist())
-
-                assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-                assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-                assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
-
-                onView(withText("10 steps")).perform(click())
-
-                assertCheckboxChecked(recyclerViewId, "10 steps", 1)
-
-                scenario.recreate()
-                advanceUntilIdle()
-                onView(withText("Select all")).check(matches(isDisplayed()))
-                onView(withText("60 steps")).check(doesNotExist())
-
-                assertCheckboxChecked(recyclerViewId, "10 steps", 1)
-                assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-                assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+            } finally {
+                recreatedIdlingResource?.let { IdlingRegistry.getInstance().unregister(it) }
             }
+            onView(withText("Select all")).check(matches(isDisplayed()))
+            onView(withText("60 steps")).check(doesNotExist())
+
+            assertCheckboxChecked(recyclerViewId, "10 steps", 1)
+            assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
+            assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
+            assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+        }
     }
 
     @Test
     fun inDeletion_whenAllCheckboxesChecked_selectAllChecked() = runTest {
         mockData()
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use { scenario ->
-                advanceUntilIdle()
-                scenario.onActivity { activity ->
-                    val parentFragment =
-                        activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
-                    val fragment =
-                        parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
-                    (fragment as AllEntriesFragment).triggerDeletionState(
-                        EntriesViewModel.EntriesDeletionScreenState.DELETE
-                    )
-                }
-                advanceUntilIdle()
-
-                onView(withText("Select all")).check(matches(isDisplayed()))
-                onView(withText("60 steps")).check(doesNotExist())
-
-                assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-                assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-                assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
-
-                onView(withText("10 steps")).perform(click())
-                onView(withText("20 steps")).perform(click())
-                onView(withText("30 steps")).perform(click())
-                onView(withText("15.2 steps/min")).perform(click())
-
-                // assert select all checked
-                assertCheckboxChecked(recyclerViewId, "Select all", 0)
+        launchAllEntriesFragment().use { scenario ->
+            advanceUntilIdle()
+            scenario.onActivity { activity ->
+                registerIdlingResource(activity)
+                triggerDeletion(activity)
             }
+            advanceUntilIdle()
+
+            onView(withText("Select all")).check(matches(isDisplayed()))
+            onView(withText("60 steps")).check(doesNotExist())
+
+            assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
+            assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
+            assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
+            assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+
+            onView(withText("10 steps")).perform(click())
+            onView(withText("20 steps")).perform(click())
+            onView(withText("30 steps")).perform(click())
+            onView(withText("15.2 steps/min")).perform(click())
+
+            // assert select all checked
+            assertCheckboxChecked(recyclerViewId, "Select all", 0)
+        }
     }
 
     @Test
     fun inDeletion_whenOneCheckboxUnchecked_selectAllUnchecked() = runTest {
         mockData()
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use { scenario ->
-                advanceUntilIdle()
-                scenario.onActivity { activity ->
-                    val parentFragment =
-                        activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
-                    val fragment =
-                        parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
-                    (fragment as AllEntriesFragment).triggerDeletionState(
-                        EntriesViewModel.EntriesDeletionScreenState.DELETE
-                    )
-                }
-                advanceUntilIdle()
-
-                onView(withText("Select all")).check(matches(isDisplayed()))
-                onView(withText("60 steps")).check(doesNotExist())
-
-                assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-                assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-                assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
-
-                onView(withText("Select all")).perform(click())
-
-                assertCheckboxChecked(recyclerViewId, "10 steps", 1)
-                assertCheckboxChecked(recyclerViewId, "20 steps", 2)
-                assertCheckboxChecked(recyclerViewId, "30 steps", 3)
-                assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 4)
-
-                assertCheckboxChecked(recyclerViewId, "Select all", 0)
-
-                onView(withText("10 steps")).perform(click())
-
-                assertCheckboxNotChecked(recyclerViewId, "Select all", 0)
+        launchAllEntriesFragment().use { scenario ->
+            advanceUntilIdle()
+            scenario.onActivity { activity ->
+                registerIdlingResource(activity)
+                triggerDeletion(activity)
             }
+            advanceUntilIdle()
+
+            onView(withText("Select all")).check(matches(isDisplayed()))
+            onView(withText("60 steps")).check(doesNotExist())
+
+            assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
+            assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
+            assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
+            assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+
+            onView(withText("Select all")).perform(click())
+
+            assertCheckboxChecked(recyclerViewId, "10 steps", 1)
+            assertCheckboxChecked(recyclerViewId, "20 steps", 2)
+            assertCheckboxChecked(recyclerViewId, "30 steps", 3)
+            assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 4)
+
+            assertCheckboxChecked(recyclerViewId, "Select all", 0)
+
+            onView(withText("10 steps")).perform(click())
+
+            assertCheckboxNotChecked(recyclerViewId, "Select all", 0)
+        }
     }
 
     @Test
     fun inDeletion_whenSelectAllChecked_allCheckboxesChecked() = runTest {
         mockData()
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use { scenario ->
-                advanceUntilIdle()
-                scenario.onActivity { activity ->
-                    val parentFragment =
-                        activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
-                    val fragment =
-                        parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
-                    (fragment as AllEntriesFragment).triggerDeletionState(
-                        EntriesViewModel.EntriesDeletionScreenState.DELETE
-                    )
-                }
-                advanceUntilIdle()
-
-                onView(withText("Select all")).check(matches(isDisplayed()))
-                onView(withText("60 steps")).check(doesNotExist())
-
-                assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-                assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-                assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
-
-                onView(withText("Select all")).perform(click())
-
-                assertCheckboxChecked(recyclerViewId, "10 steps", 1)
-                assertCheckboxChecked(recyclerViewId, "20 steps", 2)
-                assertCheckboxChecked(recyclerViewId, "30 steps", 3)
-                assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 4)
+        launchAllEntriesFragment().use { scenario ->
+            advanceUntilIdle()
+            scenario.onActivity { activity ->
+                registerIdlingResource(activity)
+                triggerDeletion(activity)
             }
+            advanceUntilIdle()
+
+            onView(withText("Select all")).check(matches(isDisplayed()))
+            onView(withText("60 steps")).check(doesNotExist())
+
+            assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
+            assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
+            assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
+            assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+
+            onView(withText("Select all")).perform(click())
+
+            assertCheckboxChecked(recyclerViewId, "10 steps", 1)
+            assertCheckboxChecked(recyclerViewId, "20 steps", 2)
+            assertCheckboxChecked(recyclerViewId, "30 steps", 3)
+            assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 4)
+        }
     }
 
     @Test
     fun inDeletion_whenSelectAllUnchecked_allCheckboxesUnchecked() = runTest {
         mockData()
-        launchNestedFragment<AllEntriesFragment>(bundleOf(PERMISSION_TYPE_NAME_KEY to STEPS.name))
-            .use { scenario ->
-                advanceUntilIdle()
-                scenario.onActivity { activity ->
-                    val parentFragment =
-                        activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
-                    val fragment =
-                        parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
-                    (fragment as AllEntriesFragment).triggerDeletionState(
-                        EntriesViewModel.EntriesDeletionScreenState.DELETE
-                    )
-                }
-                advanceUntilIdle()
-
-                onView(withText("Select all")).check(matches(isDisplayed()))
-                onView(withText("60 steps")).check(doesNotExist())
-
-                assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-                assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-                assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
-
-                onView(withText("Select all")).perform(click())
-
-                assertCheckboxChecked(recyclerViewId, "10 steps", 1)
-                assertCheckboxChecked(recyclerViewId, "20 steps", 2)
-                assertCheckboxChecked(recyclerViewId, "30 steps", 3)
-                assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 4)
-
-                onView(withText("Select all")).perform(click())
-
-                assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
-                assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
-                assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
-                assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+        launchAllEntriesFragment().use { scenario ->
+            advanceUntilIdle()
+            scenario.onActivity { activity ->
+                registerIdlingResource(activity)
+                triggerDeletion(activity)
             }
+            advanceUntilIdle()
+
+            onView(withText("Select all")).check(matches(isDisplayed()))
+            onView(withText("60 steps")).check(doesNotExist())
+
+            assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
+            assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
+            assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
+            assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+
+            onView(withText("Select all")).perform(click())
+
+            assertCheckboxChecked(recyclerViewId, "10 steps", 1)
+            assertCheckboxChecked(recyclerViewId, "20 steps", 2)
+            assertCheckboxChecked(recyclerViewId, "30 steps", 3)
+            assertCheckboxChecked(recyclerViewId, "15.2 steps/min", 4)
+
+            onView(withText("Select all")).perform(click())
+
+            assertCheckboxNotChecked(recyclerViewId, "10 steps", 1)
+            assertCheckboxNotChecked(recyclerViewId, "20 steps", 2)
+            assertCheckboxNotChecked(recyclerViewId, "30 steps", 3)
+            assertCheckboxNotChecked(recyclerViewId, "15.2 steps/min", 4)
+        }
+    }
+
+    private fun launchAllEntriesFragment(): ActivityScenario<TestActivity> {
+        return launchNestedFragment<AllEntriesFragment>(
+            Bundle().apply { putString(PERMISSION_TYPE_NAME_KEY, STEPS.name) }
+        )
+    }
+
+    private fun registerIdlingResource(activity: TestActivity) {
+        val parentFragment =
+            activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
+        val fragment = parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
+        val loadingView = fragment!!.requireView().findViewById<View>(R.id.loading)
+        loadingGoneIdlingResource = ViewGoneIdlingResource(loadingView)
+        IdlingRegistry.getInstance().register(loadingGoneIdlingResource)
+    }
+
+    private fun triggerDeletion(activity: TestActivity) {
+        val parentFragment =
+            activity.supportFragmentManager.findFragmentByTag("") as FakeParentFragment
+        val fragment = parentFragment.childFragmentManager.findFragmentByTag(NESTED_FRAGMENT_TAG)
+        (fragment as AllEntriesFragment).triggerDeletionState(
+            EntriesViewModel.EntriesDeletionScreenState.DELETE
+        )
     }
 
     private fun mockData() {

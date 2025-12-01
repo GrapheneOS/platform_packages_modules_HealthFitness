@@ -162,12 +162,14 @@ public class FitnessRecordUpsertHelper {
      * @param recordInternals The list of records to be inserted.
      * @param extraPermsStateMap A map of extra permissions and their grant state. An empty map
      *     means all permissions are granted.
+     * @param shouldGenerateAccessLogs Whether access logs should be generated or not.
      * @return List of UUIDs of the inserted records.
      */
     public List<String> updateRecords(
             String callingPackageName,
             List<? extends RecordInternal<?>> recordInternals,
-            ArrayMap<String, Boolean> extraPermsStateMap) {
+            ArrayMap<String, Boolean> extraPermsStateMap,
+            boolean shouldGenerateAccessLogs) {
 
         Map<Integer, List<RecordInternal<?>>> recordTypesToRecordInternals = new HashMap<>();
         for (RecordInternal<?> recordInternal : recordInternals) {
@@ -188,7 +190,7 @@ public class FitnessRecordUpsertHelper {
                         callingPackageName,
                         recordInternals,
                         /* isInsertRequest= */ false,
-                        /* shouldGenerateAccessLog= */ true,
+                        shouldGenerateAccessLogs,
                         /* shouldGenerateChangeLog= */ true,
                         /* shouldPreferNewRecord= */ true,
                         /* updateLastModifiedTime= */ true,
@@ -278,16 +280,10 @@ public class FitnessRecordUpsertHelper {
                                         recordInternal, isInsertRequest, extraPermsStateMap);
                         if (shouldGenerateChangeLog) {
                             if (!Flags.fixChangeLogWhenInsertWithSameTimestamps()) {
-                                // TODO(b/448836403): Prevent insertion of Symptoms change log as we
-                                //  are not sure yet what inserted ChangeLogs for Symptoms should
-                                //  look like.
-                                if (recordInternal.getRecordType()
-                                        != RecordTypeIdentifier.RECORD_TYPE_SYMPTOM) {
-                                    upsertionChangeLogs.addRecordInfo(
-                                            recordInternal.getRecordType(),
-                                            recordInternal.getAppInfoId(),
-                                            recordInternal.getUuid());
-                                }
+                                upsertionChangeLogs.addRecordInfo(
+                                        recordInternal.getRecordType(),
+                                        recordInternal.getAppInfoId(),
+                                        recordInternal.getUuid());
                             }
                             addChangeLogsForOtherModifiedRecords(
                                     recordInternal, otherModifiedRecordsChangeLogs);
@@ -309,15 +305,10 @@ public class FitnessRecordUpsertHelper {
                         // See b/430891167
                         if (shouldGenerateChangeLog
                                 && Flags.fixChangeLogWhenInsertWithSameTimestamps()) {
-                            // TODO(b/448836403): Prevent insertion of Symptoms change log as we are
-                            //  not sure yet what inserted ChangeLogs for Symptoms should look like.
-                            if (recordInternal.getRecordType()
-                                    != RecordTypeIdentifier.RECORD_TYPE_SYMPTOM) {
-                                upsertionChangeLogs.addRecordInfo(
-                                        recordInternal.getRecordType(),
-                                        recordInternal.getAppInfoId(),
-                                        recordInternal.getUuid());
-                            }
+                            upsertionChangeLogs.addRecordInfo(
+                                    recordInternal.getRecordType(),
+                                    recordInternal.getAppInfoId(),
+                                    recordInternal.getUuid());
                         }
                     }
                     if (shouldGenerateChangeLog) {
@@ -356,6 +347,16 @@ public class FitnessRecordUpsertHelper {
         whereClauseForUpdateRequest.addWhereEqualsClause(
                 RecordHelper.APP_INFO_ID_COLUMN_NAME,
                 /* expected args value */ String.valueOf(recordInternal.getAppInfoId()));
+        // We filter for ids > 0 as valid SQLite row indices start at 1 (see
+        // https://sqlite.org/autoinc.html).
+        // Any value values below 1 (e.g., the internal initialization value DEFAULT_LONG) suggests
+        // that an id is not set / invalid and should be ignored.
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                && recordInternal.getDeviceDataProviderId() > 0) {
+            whereClauseForUpdateRequest.addWhereEqualsClause(
+                    RecordHelper.DDP_ID_COLUMN_NAME,
+                    String.valueOf(recordInternal.getDeviceDataProviderId()));
+        }
         return whereClauseForUpdateRequest;
     }
 

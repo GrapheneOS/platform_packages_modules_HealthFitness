@@ -26,7 +26,10 @@ class LoadDataEntries(private val healthConnectManager: HealthConnectManager) : 
 
     override suspend fun load(input: LoadEntriesInput): List<Record> {
 
-        if (input.dataType == HealthPermissionType.MENSTRUATION_PERIOD) {
+        if (
+            input.dataType == HealthPermissionType.MENSTRUATION_PERIOD ||
+                input.dataType == HealthPermissionType.MENSTRUAL_CYCLE_PHASE
+        ) {
             val loadMenstruationEntries = LoadMenstruationEntries(healthConnectManager)
             return loadMenstruationEntries.load(input)
         }

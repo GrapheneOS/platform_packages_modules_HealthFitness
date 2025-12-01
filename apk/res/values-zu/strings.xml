@@ -403,7 +403,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Khetha idatha ofuna le app iyifunde kuHealth Connect"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Yabelana namanye ama-app ngedatha"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Idatha ye-<xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="1721713270456993279">"Vumela le app <xliff:g id="APP_NAME">%1$s</xliff:g> ukuba ifunde idatha yamanye ama-app akule divayisi usebenzisa isakhi esithi Health Connect"</string>
+    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Ama-app angase avumelane nale datha"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Funda indlela i-<xliff:g id="APP_NAME">%1$s</xliff:g> esebenzisa ngayo idatha yakho "<a href="%2$s">"kunqubomgomo yayo yobumfihlo"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"IHealth Connect ikuvumela ukuba wabelane ngedatha yakho yezempilo nokuzilolonga nama-app amaningi. Lokhu kwenza ube nolwazi nesipiliyoni kuyilapho ugcina idatha yakho ivikelekile."</string>
@@ -875,6 +876,14 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Utshwala Ngokwesilinganiso"</string>
     <string name="notes_title" msgid="4596764711916248492">"Amanothi"</string>
     <string name="details_title" msgid="8411891773854413790">"Imininingwane"</string>
+    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
+    <skip />
+    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
+    <skip />
     <string name="minute_duration" msgid="9035288227090160206">"umzuzu o-<xliff:g id="MINUTE">%1$s</xliff:g>"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g>h <xliff:g id="MIN">%2$s</xliff:g>m"</string>
     <string name="hour_duration" msgid="3472489613837138711">"ihora eli-<xliff:g id="HOUR">%1$s</xliff:g>"</string>
@@ -1270,7 +1279,8 @@
     <string name="write_access" msgid="571547306854732263">"Bhala indlela yokufinyelela"</string>
     <string name="read_access" msgid="3317759826769372785">"Funda indlela yokufinyelela"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <string name="health_data_category_expandable_preference_title" msgid="7942303192917497010">"<xliff:g id="DATA_CATEGORY_TITLE">%1$s</xliff:g> <xliff:g id="NUMBER_OF_PERMISSIONS_REQUESTED_FOR_CATEGORY">(%2$s)</xliff:g>⁠"</string>
+    <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
+    <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> kuzinhlelo zokusebenza ezingu-<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> ezivunyelwe"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Awekho ama-app acelayo"</string>
     <string name="allowed" msgid="4158456017482263737">"Kuvumelekile"</string>
@@ -1341,6 +1351,10 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Akuxhunyiwe"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Chofoza ukuze uxhume le app kuHealth Connect"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Hhayi manje"</string>
+    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
+    <skip />
+    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
+    <skip />
     <string name="acne_read_content_description" msgid="1176708404029936065">"Funda ngezinduna"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Bhala ngezinduna"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Funda ngezinzipho eziphukayo"</string>
@@ -1577,5 +1591,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"ukugcinwa kwamanzi"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Ukukhwifa"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ukukhwifa"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> kokungu-<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> kokungu-<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
 </resources>
