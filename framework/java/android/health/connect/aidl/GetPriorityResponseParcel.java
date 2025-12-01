@@ -19,14 +19,17 @@ package android.health.connect.aidl;
 import android.annotation.NonNull;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.internal.PackageNameMasker;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /** @hide */
-public final class GetPriorityResponseParcel implements Parcelable {
+public final class GetPriorityResponseParcel
+        implements Parcelable, PackageNameMasker<GetPriorityResponseParcel> {
     public static final Creator<GetPriorityResponseParcel> CREATOR =
             new Creator<GetPriorityResponseParcel>() {
                 @Override
@@ -43,6 +46,10 @@ public final class GetPriorityResponseParcel implements Parcelable {
 
     private GetPriorityResponseParcel(Parcel in) {
         mPackagesInPriorityOrder = in.createStringArrayList();
+    }
+
+    private GetPriorityResponseParcel(List<String> packagesInPriorityOrder) {
+        mPackagesInPriorityOrder = List.copyOf(packagesInPriorityOrder);
     }
 
     public GetPriorityResponseParcel(
@@ -72,5 +79,12 @@ public final class GetPriorityResponseParcel implements Parcelable {
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
         dest.writeStringList(mPackagesInPriorityOrder);
+    }
+
+    @NonNull
+    @Override
+    public GetPriorityResponseParcel toMasked(@NonNull Function<String, String> packageMasker) {
+        return new GetPriorityResponseParcel(
+                mPackagesInPriorityOrder.stream().map(packageMasker).toList());
     }
 }
