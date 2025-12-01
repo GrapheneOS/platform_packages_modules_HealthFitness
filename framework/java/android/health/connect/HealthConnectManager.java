@@ -45,7 +45,6 @@ import android.annotation.IntDef;
 import android.annotation.IntRange;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
-import android.annotation.PermissionManuallyEnforced;
 import android.annotation.RequiresNoPermission;
 import android.annotation.RequiresPermission;
 import android.annotation.SdkConstant;
@@ -1956,7 +1955,7 @@ public class HealthConnectManager {
                     mContext.getAttributionSource(),
                     new IDeviceDataSourceCapabilitiesCallback.Stub() {
                         @Override
-                        @PermissionManuallyEnforced
+                        @RequiresNoPermission
                         public void onResult(
                                 android.health.connect.aidl.DeviceDataSourceCapabilities result) {
                             Binder.clearCallingIdentity();
@@ -1967,7 +1966,7 @@ public class HealthConnectManager {
                         }
 
                         @Override
-                        @PermissionManuallyEnforced
+                        @RequiresNoPermission
                         public void onError(HealthConnectExceptionParcel exception) {
                             returnError(executor, exception, callback);
                         }
@@ -3530,14 +3529,14 @@ public class HealthConnectManager {
                     request,
                     new IIsMatchmakingPossibleCallback.Stub() {
                         @Override
-                        @PermissionManuallyEnforced
+                        @RequiresNoPermission
                         public void onResult(MatchmakingResponse response) {
                             Binder.clearCallingIdentity();
                             executor.execute(() -> callback.onResult(response));
                         }
 
                         @Override
-                        @PermissionManuallyEnforced
+                        @RequiresNoPermission
                         public void onError(HealthConnectExceptionParcel exception) {
                             returnError(executor, exception, callback);
                         }
@@ -3650,7 +3649,7 @@ public class HealthConnectManager {
                     request,
                     new IGetMatchingDataSourcesCallback.Stub() {
                         @Override
-                        @PermissionManuallyEnforced
+                        @RequiresNoPermission
                         public void onResult(GetMatchingDataSourcesResponse response) {
                             Binder.clearCallingIdentity();
                             Map<String, Set<String>> matchingApps = response.getMatchingApps();
@@ -3658,7 +3657,7 @@ public class HealthConnectManager {
                         }
 
                         @Override
-                        @PermissionManuallyEnforced
+                        @RequiresNoPermission
                         public void onError(HealthConnectExceptionParcel exception) {
                             Binder.clearCallingIdentity();
                             executor.execute(
