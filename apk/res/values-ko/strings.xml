@@ -403,8 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"앱이 헬스 커넥트에서 읽을 수 있도록 허용할 데이터를 선택하세요."</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"앱 간 데이터 공유"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g>의 데이터"</string>
-    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> 앱에서 헬스 커넥트를 사용하여 이 기기의 다른 앱에서 데이터를 읽도록 허용합니다. 액세스 권한을 부여한 다른 앱에서도 이 데이터를 읽을 수 있습니다."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"이 데이터를 동기화할 수 있는 앱"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g>에서 사용자 데이터를 사용하는 방식을 "<a href="%2$s">"개인정보처리방침"</a>"에서 확인하세요."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"헬스 커넥트를 사용하면 여러 앱 간에 건강 및 피트니스 데이터를 공유할 수 있습니다. 이를 통해 데이터를 안전하게 보호하면서 유용한 정보와 경험을 얻을 수 있습니다."</string>
@@ -853,7 +852,8 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} 알 수 없음"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"기타"</string>
+    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
+    <skip />
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"맥주"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"와인"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"보드카"</string>
@@ -876,14 +876,10 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"알코올 도수"</string>
     <string name="notes_title" msgid="4596764711916248492">"참고"</string>
     <string name="details_title" msgid="8411891773854413790">"세부정보"</string>
-    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
-    <skip />
+    <string name="menstrual_cycle_phase_follicular" msgid="4515498093841723331">"난포기"</string>
+    <string name="menstrual_cycle_phase_luteal" msgid="2369477800443212440">"황체기"</string>
+    <string name="menstrual_cycle_phase_unknown" msgid="1126074973862101221">"알 수 없는 단계"</string>
+    <string name="menstrual_cycle_phase_day_of_cycle" msgid="5910349012626523530">"<xliff:g id="DAY">%1$d</xliff:g>일 차"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>분"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g>시간 <xliff:g id="MIN">%2$s</xliff:g>분"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g>시간"</string>

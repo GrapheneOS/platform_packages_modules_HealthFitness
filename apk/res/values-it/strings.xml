@@ -403,8 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Scegli i dati da far leggere a questa app in Connessione Salute"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Condividi dati tra le app"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dati da <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Consenti all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di leggere i dati da altre app su questo dispositivo utilizzando Connessione Salute. Questi dati possono essere letti anche da altre app a cui concedi l\'accesso."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"App che possono sincronizzare questi dati"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Leggi le "<a href="%2$s">"norme sulla privacy"</a>" di <xliff:g id="APP_NAME">%1$s</xliff:g> per scoprire in che modo vengono utilizzati i tuoi dati."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Connessione Salute ti consente di condividere i tuoi dati relativi alla salute e all\'attività fisica tra più app. In questo modo, potrai accedere ad approfondimenti ed esperienze senza compromettere la sicurezza dei dati."</string>
@@ -853,7 +852,8 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number}: sconosciuto"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"Altro"</string>
+    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
+    <skip />
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Birra"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Vino"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
@@ -876,14 +876,10 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Gradazione alcolica"</string>
     <string name="notes_title" msgid="4596764711916248492">"Note"</string>
     <string name="details_title" msgid="8411891773854413790">"Dettagli"</string>
-    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
-    <skip />
+    <string name="menstrual_cycle_phase_follicular" msgid="4515498093841723331">"Follicolare"</string>
+    <string name="menstrual_cycle_phase_luteal" msgid="2369477800443212440">"Luteale"</string>
+    <string name="menstrual_cycle_phase_unknown" msgid="1126074973862101221">"Fase sconosciuta"</string>
+    <string name="menstrual_cycle_phase_day_of_cycle" msgid="5910349012626523530">"Giorno <xliff:g id="DAY">%1$d</xliff:g>"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> min"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g>h <xliff:g id="MIN">%2$s</xliff:g>m"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> h"</string>

@@ -355,7 +355,7 @@
     <string name="practitioner_details_uppercase_label" msgid="2940667649808082510">"Detajet e specialistit"</string>
     <string name="practitioner_details_lowercase_label" msgid="8195591077717971542">"detajet e specialistit"</string>
     <string name="practitioner_details_content_description" msgid="8775396516928504185">"Të lexosh detajet e specialistit"</string>
-    <string name="pregnancy_uppercase_label" msgid="5979925175194337864">"Shtatzëni"</string>
+    <string name="pregnancy_uppercase_label" msgid="5979925175194337864">"Shtatzënia"</string>
     <string name="pregnancy_lowercase_label" msgid="810439290131044517">"shtatzëni"</string>
     <string name="pregnancy_content_description" msgid="3436773729243586287">"Të lexojë informacionet për shtatzëninë"</string>
     <string name="procedures_uppercase_label" msgid="9176087520132593261">"Procedurat"</string>
@@ -421,7 +421,7 @@
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"Rreth kartelës mjekësore"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Të dhënat për t\'i ndarë përfshijnë"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"Nëse e lejon, <xliff:g id="APP_NAME">%1$s</xliff:g> mund të ndajë kartelën tënde mjekësore me Health Connect."</string>
-    <string name="medical_request_footer" msgid="157243861031258933">"Të sinkronizojë kartelën tënde mjekësore nga aplikacionet dhe burimet e tua të ndryshme për ta mbajtur në një vend të vetëm"</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"Sinkronizo kartelën tënde mjekësore nga aplikacionet dhe burimet e ndryshme për t\'i mbajtur në një vend të vetëm"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Të hiqen të gjitha lejet?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Hiqi të gjitha"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> nuk do të mund të lexojë apo të shkruajë më asnjë të dhënë nga Health Connect.\n\nKjo nuk ndikon te lejet e tjera që ky aplikacion mund të ketë, si p.sh. te kamera, mikrofoni ose vendndodhja."</string>
@@ -853,7 +853,8 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} - e panjohur"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"Tjetër"</string>
+    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
+    <skip />
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Birrë"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Verë"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>

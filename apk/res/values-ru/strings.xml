@@ -403,8 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Выберите, какие данные это приложение сможет считывать на платформе \"Здоровье и спорт\"."</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Обмен данными между приложениями"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Данные от приложения \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
-    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Предоставьте приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" право на чтение данных из других приложений на этом устройстве с помощью сервиса \"Здоровье и спорт\". Доступ к этим данным могут получить и другие приложения, если его предоставить."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Приложения, которые могут синхронизировать эти данные"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Чтобы узнать о том, как приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" использует ваши данные, ознакомьтесь с его "<a href="%2$s">"политикой конфиденциальности"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Платформа \"Здоровье и спорт\" позволяет обмениваться данными о здоровье и физической активности между приложениями. Благодаря этому вы получаете полезную информацию и новые возможности, не беспокоясь о безопасности."</string>
@@ -853,7 +852,8 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} неизв."</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"Другое"</string>
+    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
+    <skip />
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Пиво"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Вино"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Водка"</string>
@@ -876,14 +876,10 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Крепость напитка"</string>
     <string name="notes_title" msgid="4596764711916248492">"Примечания"</string>
     <string name="details_title" msgid="8411891773854413790">"Сведения"</string>
-    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
-    <skip />
+    <string name="menstrual_cycle_phase_follicular" msgid="4515498093841723331">"Фолликулярная"</string>
+    <string name="menstrual_cycle_phase_luteal" msgid="2369477800443212440">"Лютеиновая"</string>
+    <string name="menstrual_cycle_phase_unknown" msgid="1126074973862101221">"Неизвестная фаза"</string>
+    <string name="menstrual_cycle_phase_day_of_cycle" msgid="5910349012626523530">"День <xliff:g id="DAY">%1$d</xliff:g>"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> мин."</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> ч. <xliff:g id="MIN">%2$s</xliff:g> мин."</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> ч."</string>
@@ -1351,10 +1347,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Не подключено"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Нажмите, чтобы подключить это приложение к платформе \"Здоровье и спорт\"."</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Не сейчас"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Все симптомы"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"симптомы"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Читать данные об акне"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Записывать данные об акне"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Читать данные о ломкости ногтей"</string>

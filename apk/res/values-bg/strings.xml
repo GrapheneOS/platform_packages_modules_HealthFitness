@@ -403,8 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Изберете данните, които искате да чете това приложение от Health Connect"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Споделяне на данни между приложенията"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Данни от <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Разрешете на приложението <xliff:g id="APP_NAME">%1$s</xliff:g> да чете данни от други приложения на това устройство чрез Health Connect. Тези данни могат да се четат и от други приложения, на които предоставите достъп."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Приложения, които могат да синхронизират тези данни"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Научете как <xliff:g id="APP_NAME">%1$s</xliff:g> използва данните ви в "<a href="%2$s">"декларацията за поверителност на приложението"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ви дава възможност да споделяте данните за здравето и физическата си активност между няколко приложения. Това ви помага да отключвате статистика и нови възможности, като същевременно запазва безопасността на данните ви."</string>
@@ -853,7 +852,8 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"Няма информация за {quantity, number}"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"Друго"</string>
+    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
+    <skip />
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Бира"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Вино"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Водка"</string>
@@ -876,14 +876,10 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Алкохолно съдържание по обем"</string>
     <string name="notes_title" msgid="4596764711916248492">"Бележки"</string>
     <string name="details_title" msgid="8411891773854413790">"Подробности"</string>
-    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
-    <skip />
+    <string name="menstrual_cycle_phase_follicular" msgid="4515498093841723331">"Фоликуларна"</string>
+    <string name="menstrual_cycle_phase_luteal" msgid="2369477800443212440">"Лутеална"</string>
+    <string name="menstrual_cycle_phase_unknown" msgid="1126074973862101221">"Неизвестна фаза"</string>
+    <string name="menstrual_cycle_phase_day_of_cycle" msgid="5910349012626523530">"Ден <xliff:g id="DAY">%1$d</xliff:g>"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> мин"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g> ч и <xliff:g id="MIN">%2$s</xliff:g> мин"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> ч"</string>

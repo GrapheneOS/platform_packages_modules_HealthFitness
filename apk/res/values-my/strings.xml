@@ -403,8 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect တွင် ဤအက်ပ်အား ဖတ်စေလိုသော ဒေတာကို ရွေးပါ"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"အက်ပ်များအကြား ဒေတာမျှဝေခြင်း"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> ထံမှ ဒေတာ"</string>
-    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Health Connect သုံးနေသော ဤစက်ပစ္စည်းရှိ အခြားအက်ပ်များမှ ဒေတာကို ဖတ်ရန် <xliff:g id="APP_NAME">%1$s</xliff:g> အက်ပ်အား ခွင့်ပြုနိုင်သည်။ ဤဒေတာကို သင်သုံးခွင့်ပြုသော အခြားအက်ပ်များကလည်း ဖတ်နိုင်သည်။"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ဤဒေတာကို စင့်ခ်လုပ်နိုင်သော အက်ပ်များ"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> က သင့်ဒေတာ အသုံးပြုပုံကို ၎င်း၏ "<a href="%2$s">"ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒ"</a>" တွင် လေ့လာနိုင်သည်။"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect က သင့်ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးဒေတာကို အက်ပ်များအကြား မျှဝေခွင့်ပြုသည်။ ၎င်းက သင့်ဒေတာကို လုံခြုံအောင်ထားပေးသည့်အပြင် သိကောင်းစရာနှင့် အသုံးပြုနိုင်သည်များကို ရရှိစေသည်။"</string>
@@ -853,7 +852,8 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} မသိ"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"အခြား"</string>
+    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
+    <skip />
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"ဘီယာ"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"ဝိုင်"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"ဗော့ဒ်ကာ"</string>
@@ -876,14 +876,10 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"အရက်ပါဝင်နှုန်း"</string>
     <string name="notes_title" msgid="4596764711916248492">"မှတ်စုများ"</string>
     <string name="details_title" msgid="8411891773854413790">"အသေးစိတ်"</string>
-    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
-    <skip />
+    <string name="menstrual_cycle_phase_follicular" msgid="4515498093841723331">"သားဥကြီးထွားဆဲအဆင့်"</string>
+    <string name="menstrual_cycle_phase_luteal" msgid="2369477800443212440">"သားဥကြွေပြီး ရာသီပြန်မလာမီအဆင့်"</string>
+    <string name="menstrual_cycle_phase_unknown" msgid="1126074973862101221">"အဆင့်ကို မသိပါ"</string>
+    <string name="menstrual_cycle_phase_day_of_cycle" msgid="5910349012626523530">"<xliff:g id="DAY">%1$d</xliff:g> ရက်မြောက်"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g>m"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g>h <xliff:g id="MIN">%2$s</xliff:g>m"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g>h"</string>
@@ -1218,9 +1214,9 @@
     <string name="see_compatible_apps_banner_title" msgid="5217106184748241727">"တွဲသုံးနိုင်သော အက်ပ်များကို ကြည့်ခြင်း"</string>
     <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"Health Connect မှတစ်ဆင့် <xliff:g id="APP_NAME">%s</xliff:g> ဖြင့် စင့်ခ်လုပ်ရန် နောက်ထပ်အက်ပ်များ ရှာပါ"</string>
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"အက်ပ်စတိုးတွင် ကြည့်ရန်"</string>
-    <string name="lock_screen_banner_title" msgid="5384381892985739755">"ဖန်သားပြင်လော့ခ် သတ်မှတ်ခြင်း"</string>
+    <string name="lock_screen_banner_title" msgid="5384381892985739755">"စခရင်လော့ခ် သတ်မှတ်ရန်"</string>
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"သင့်ကျန်းမာရေးဒေတာ ပိုမိုလုံခြုံစေရန် ဤစက်အတွက် ပင်နံပါတ်၊ ပုံဖော်ခြင်း (သို့) စကားဝှက် သတ်မှတ်ပါ"</string>
-    <string name="lock_screen_banner_button" msgid="2537090011380728122">"ဖန်သားပြင်လော့ခ် သတ်မှတ်ရန်"</string>
+    <string name="lock_screen_banner_button" msgid="2537090011380728122">"စခရင်လော့ခ် သတ်မှတ်ရန်"</string>
     <string name="select_all" msgid="837499881590001166">"အားလုံး ရွေးရန်"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"ချိတ်ဆက်ထားသည့် အက်ပ်များက Health Connect ထံမှ ဤဒေတာကို ဖတ်နိုင်တော့မည်မဟုတ်ပါ"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"အမှန်ခြစ်ထားသည်"</string>
@@ -1347,7 +1343,7 @@
     <string name="home_devices_summary" msgid="6056984338393523399">"ကျန်းမာရေးဒေတာသုံးနိုင်သော စက်များကို ကြည့်ပါ"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect နှင့် တွဲသုံးနိုင်သော အက်ပ်များကို ဤနေရာတွင် မြင်ရရန် ထည့်သွင်းပါ"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"တွဲသုံးနိုင်သော အက်ပ်များကို ကြည့်ရန်"</string>
-    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"နောက်ထပ် ကျန်းမာရေးအက်ပ်များကို ကြည့်ရန်"</string>
+    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"နောက်ထပ် ကျန်းမာရေးအက်ပ်များ ကြည့်ရန်"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"ချိတ်ဆက်မထားပါ"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"ဤအက်ပ်ကို Health Connect နှင့် ချိတ်ဆက်ရန် နှိပ်ပါ"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"ယခုမလုပ်ပါ"</string>
