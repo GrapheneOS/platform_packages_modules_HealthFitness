@@ -17,8 +17,8 @@ package com.android.healthconnect.controller.tests.data.formatters
 
 import android.content.Context
 import android.health.connect.datatypes.MenstrualCyclePhaseRecord
-import android.platform.test.annotations.EnableFlags
-import android.platform.test.flag.junit.SetFlagsRule
+import android.platform.test.annotations.RequiresFlagsEnabled
+import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.formatters.MenstrualCyclePhaseFormatter
@@ -40,7 +40,7 @@ import org.junit.runner.RunWith
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-@EnableFlags(
+@RequiresFlagsEnabled(
     Flags.FLAG_CYCLE_PHASES_FLAG,
     Flags.FLAG_CYCLE_PHASES_DB,
     Flags.FLAG_SMOKING_DB,
@@ -50,7 +50,7 @@ import org.junit.runner.RunWith
 class MenstrualCyclePhaseFormatterTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @get:Rule val mSetFlagsRule: SetFlagsRule = SetFlagsRule()
+    @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @Inject lateinit var formatter: MenstrualCyclePhaseFormatter
     private lateinit var context: Context
