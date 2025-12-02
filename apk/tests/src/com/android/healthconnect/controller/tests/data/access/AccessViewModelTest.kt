@@ -197,5 +197,50 @@ class AccessViewModelTest {
 
         assertThat(testObserver.getLastValue()).isEqualTo(AccessViewModel.AccessScreenState.Error)
         assertThat(fakeLoadSymptomAccessUseCase.numberOfInvocations).isEqualTo(0)
+        assertThat(fakeLoadAccessUseCase.wasInvoked).isFalse()
+    }
+
+    @Test
+    fun loadAppMetadataMap_symptomType_invokesSymptomUseCase() = runTest {
+        fakeLoadSymptomAccessUseCase.reset()
+        fakeLoadAccessUseCase.reset()
+        val expected = mapOf<AppAccessState, List<AppAccessMetadata>>()
+        fakeLoadSymptomAccessUseCase.updateMap(expected)
+
+        viewModel.loadAppMetaDataMap(
+            FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN,
+            showAllSymptoms = true,
+        )
+        advanceUntilIdle()
+
+        assertThat(fakeLoadSymptomAccessUseCase.numberOfInvocations).isEqualTo(1)
+        assertThat(fakeLoadAccessUseCase.wasInvoked).isFalse()
+    }
+
+    @Test
+    fun loadAppMetaDataMap_nonSymptomType_invokesLoadAccessUseCase() = runTest {
+        fakeLoadSymptomAccessUseCase.reset()
+        fakeLoadAccessUseCase.reset()
+        val expected = mapOf<AppAccessState, List<AppAccessMetadata>>()
+        fakeLoadAccessUseCase.updateMap(expected)
+
+        viewModel.loadAppMetaDataMap(FitnessPermissionType.STEPS)
+        advanceUntilIdle()
+
+        assertThat(fakeLoadSymptomAccessUseCase.numberOfInvocations).isEqualTo(0)
+        assertThat(fakeLoadAccessUseCase.wasInvoked).isTrue()
+    }
+
+    @Test
+    fun loadAppMetadataMap_loadAccessUseCaseFails_returnsError() = runTest {
+        fakeLoadAccessUseCase.reset()
+        fakeLoadAccessUseCase.setForceFail(true)
+
+        val testObserver = TestObserver<AccessViewModel.AccessScreenState>()
+        viewModel.appMetadataMap.observeForever(testObserver)
+        viewModel.loadAppMetaDataMap(FitnessPermissionType.STEPS)
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue()).isEqualTo(AccessViewModel.AccessScreenState.Error)
     }
 }
