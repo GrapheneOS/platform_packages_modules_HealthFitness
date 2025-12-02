@@ -32,8 +32,10 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
+import android.app.UiAutomation;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectException;
+import android.health.connect.HealthPermissions;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.RecordIdFilter;
@@ -51,6 +53,7 @@ import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.After;
 import org.junit.Before;
@@ -564,6 +567,69 @@ abstract class BaseApiTest<T extends Record> {
 
         TestUtils.verifyDeleteRecords(
                 new DeleteUsingFiltersRequest.Builder().addRecordType(mRecordClass).build());
+
+        assertThat(readAllRecords()).isEmpty();
+    }
+
+    @Test
+    public void deleteRecordsUsingController_noFilters_deletesAllData() throws Exception {
+        List<Record> recordsToInsert =
+                List.of(
+                        mRecordFactory.newEmptyRecord(
+                                newEmptyMetadata(),
+                                YESTERDAY_11AM.plusMinutes(10).toInstant(),
+                                YESTERDAY_11AM.plusMinutes(20).toInstant()),
+                        mRecordFactory.newEmptyRecord(
+                                newEmptyMetadata(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(20).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant()),
+                        mRecordFactory.newEmptyRecord(
+                                newEmptyMetadata(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(40).toInstant()),
+                        mRecordFactory.newEmptyRecord(
+                                newEmptyMetadata(),
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(40).toInstant(),
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(50).toInstant()));
+        assertThat(TestUtils.insertRecords(recordsToInsert)).hasSize(4);
+
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
+        TestUtils.verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
+
+        assertThat(readAllRecords()).isEmpty();
+    }
+
+    @Test
+    public void deleteRecordsUsingController_usingPackageName_deletesPackageData()
+            throws Exception {
+        List<Record> recordsToInsert =
+                List.of(
+                        mRecordFactory.newEmptyRecord(
+                                newEmptyMetadata(),
+                                YESTERDAY_11AM.plusMinutes(10).toInstant(),
+                                YESTERDAY_11AM.plusMinutes(20).toInstant()),
+                        mRecordFactory.newEmptyRecord(
+                                newEmptyMetadata(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(20).toInstant(),
+                                YESTERDAY_11AM.minusDays(1).plusMinutes(30).toInstant()),
+                        mRecordFactory.newEmptyRecord(
+                                newEmptyMetadata(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(30).toInstant(),
+                                YESTERDAY_11AM.minusDays(2).plusMinutes(40).toInstant()),
+                        mRecordFactory.newEmptyRecord(
+                                newEmptyMetadata(),
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(40).toInstant(),
+                                YESTERDAY_11AM.minusDays(3).plusMinutes(50).toInstant()));
+        assertThat(TestUtils.insertRecords(recordsToInsert)).hasSize(4);
+
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
+        TestUtils.verifyDeleteRecords(
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(
+                                new DataOrigin.Builder().setPackageName(TEST_PACKAGE_NAME).build())
+                        .build());
 
         assertThat(readAllRecords()).isEmpty();
     }

@@ -1287,6 +1287,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                     .getRecordIdToExternalRecordClassMap()
                                                     .keySet());
 
+                    Set<String> grantedGranularWritePermissions;
                     if (!holdsDataManagementPermission) {
                         tryAcquireApiCallQuota(
                                 uid,
@@ -1295,24 +1296,29 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 logger);
                         mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
                                 recordTypeIdsToDelete, attributionSource);
+                        grantedGranularWritePermissions =
+                                unmaskedRequest.getRecordTypeFilters().stream()
+                                        .map(mInternalHealthConnectMappings::getRecordHelper)
+                                        .flatMap(
+                                                recordHelper ->
+                                                        recordHelper
+                                                                .getAllGranularWritePermissionsForHelper()
+                                                                .stream())
+                                        .filter(
+                                                permission ->
+                                                        mDataPermissionEnforcer.isPermissionGranted(
+                                                                permission, attributionSource))
+                                        .collect(Collectors.toSet());
+                    } else {
+                        grantedGranularWritePermissions =
+                                mInternalHealthConnectMappings.getRecordHelpers().stream()
+                                        .flatMap(
+                                                recordHelper ->
+                                                        recordHelper
+                                                                .getAllGranularWritePermissionsForHelper()
+                                                                .stream())
+                                        .collect(Collectors.toSet());
                     }
-
-                    final Set<String> grantedGranularWritePermissions =
-                            unmaskedRequest.getRecordTypeFilters().stream()
-                                    .map(mInternalHealthConnectMappings::getRecordHelper)
-                                    .flatMap(
-                                            recordHelper ->
-                                                    recordHelper
-                                                            .getAllGranularWritePermissionsForHelper()
-                                                            .stream())
-                                    .filter(
-                                            permission ->
-                                                    holdsDataManagementPermission
-                                                            || mDataPermissionEnforcer
-                                                                    .isPermissionGranted(
-                                                                            permission,
-                                                                            attributionSource))
-                                    .collect(Collectors.toSet());
 
                     int numberOfRecordsDeleted =
                             mFitnessRecordDeleteHelper.deleteRecords(
