@@ -48,8 +48,9 @@ class BottomSheetIdlingResource(private val activity: FragmentActivity, private 
                             object : BottomSheetBehavior.BottomSheetCallback() {
                                 override fun onStateChanged(bottomSheet: View, newState: Int) {
                                     isIdle =
-                                        (newState != BottomSheetBehavior.STATE_DRAGGING &&
-                                            newState != BottomSheetBehavior.STATE_SETTLING)
+                                        (newState == BottomSheetBehavior.STATE_EXPANDED ||
+                                            (newState != BottomSheetBehavior.STATE_DRAGGING &&
+                                                newState != BottomSheetBehavior.STATE_SETTLING))
                                     if (isIdle) {
                                         resourceCallback?.onTransitionToIdle()
                                     }
@@ -65,8 +66,9 @@ class BottomSheetIdlingResource(private val activity: FragmentActivity, private 
 
         isIdle =
             bottomSheetBehavior != null &&
-                bottomSheetBehavior?.state != BottomSheetBehavior.STATE_DRAGGING &&
-                bottomSheetBehavior?.state != BottomSheetBehavior.STATE_SETTLING
+                (bottomSheetBehavior?.state == BottomSheetBehavior.STATE_EXPANDED ||
+                    (bottomSheetBehavior?.state != BottomSheetBehavior.STATE_DRAGGING &&
+                        bottomSheetBehavior?.state != BottomSheetBehavior.STATE_SETTLING))
 
         if (isIdle) {
             resourceCallback?.onTransitionToIdle()
