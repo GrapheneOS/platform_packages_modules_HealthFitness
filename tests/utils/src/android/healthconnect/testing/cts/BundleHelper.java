@@ -201,7 +201,7 @@ public final class BundleHelper {
     }
 
     /** Converts an update records request to a bundle. */
-    public static Bundle fromUpdateRecordsRequest(List<Record> records) {
+    public static Bundle fromUpdateRecordsRequest(List<? extends Record> records) {
         Bundle bundle = new Bundle();
         bundle.putString(QUERY_TYPE, UPDATE_RECORDS_QUERY);
         bundle.putParcelableArrayList(RECORD_LIST, new ArrayList<>(fromRecordList(records)));
