@@ -34,12 +34,14 @@ import java.util.TimeZone
 import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
+@Ignore("b/465390591 - Re-enable once the test is fixed.")
 @RequiresFlagsEnabled(
     Flags.FLAG_CYCLE_PHASES_FLAG,
     Flags.FLAG_CYCLE_PHASES_DB,

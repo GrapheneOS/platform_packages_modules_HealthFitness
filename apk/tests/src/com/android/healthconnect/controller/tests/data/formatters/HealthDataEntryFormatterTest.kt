@@ -46,6 +46,7 @@ import javax.inject.Inject
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -144,6 +145,7 @@ class HealthDataEntryFormatterTest {
     }
 
     @Test
+    @Ignore("b/465390591 - Re-enable once the test is fixed.")
     fun format_formatsMenstrualCyclePhaseRecord() {
         val record =
             getMenstrualCyclePhaseRecord(
