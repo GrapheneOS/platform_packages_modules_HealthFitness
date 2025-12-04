@@ -471,7 +471,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                         enforceSelfRead,
                         startDateAccessMillis,
                         appInfoHelper);
-        addCustomReadTableWhereClauses(whereClause, grantedGranularPermissions);
+        addCustomReadTableWhereClauses(whereClause, grantedGranularPermissions, enforceSelfRead);
         ReadTableRequest readTableRequest =
                 new ReadTableRequest(getMainTableName())
                         .setJoinClause(getJoinForReadRequest())
@@ -546,7 +546,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                         .addWhereInClauseWithoutQuotes(
                                 UUID_COLUMN_NAME, StorageUtils.getListOfHexStrings(uuids))
                         .addWhereLaterThanTimeClause(getStartTimeColumnName(), startDateAccess);
-        addCustomReadTableWhereClauses(whereClause, grantedGranularPermissions);
+        addCustomReadTableWhereClauses(
+                whereClause, grantedGranularPermissions, /* enforceSelfRead= */ false);
         ReadTableRequest readTableRequest =
                 new ReadTableRequest(getMainTableName())
                         .setJoinClause(getJoinForReadRequest())
@@ -571,7 +572,9 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
      *     operation.
      */
     protected void addCustomReadTableWhereClauses(
-            WhereClauses whereClauses, Set<String> grantedGranularPermissions) {
+            WhereClauses whereClauses,
+            Set<String> grantedGranularPermissions,
+            boolean enforceSelfRead) {
         // Default is a no-op
     }
 

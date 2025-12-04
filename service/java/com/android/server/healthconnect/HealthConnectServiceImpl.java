@@ -832,6 +832,18 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                         mDataPermissionEnforcer.isPermissionGranted(
                                                                 permission, attributionSource))
                                         .collect(Collectors.toSet());
+
+                        if (enforceSelfRead) {
+                            grantedGranularPermissions.addAll(
+                                    recordHelper.getAllGranularWritePermissionsForHelper().stream()
+                                            .filter(
+                                                    permission ->
+                                                            mDataPermissionEnforcer
+                                                                    .isPermissionGranted(
+                                                                            permission,
+                                                                            attributionSource))
+                                            .collect(Collectors.toSet()));
+                        }
                     }
 
                     try {
