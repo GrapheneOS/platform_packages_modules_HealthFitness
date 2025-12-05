@@ -301,11 +301,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private static final String HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION =
             "android.permission.HEALTH_CONNECT_BACKUP_INTER_AGENT";
 
-    @Nullable private final ImportManager mImportManager;
+    private final ImportManager mImportManager;
 
     private final TransactionManager mTransactionManager;
-    @Nullable private final CloudBackupManager mCloudBackupManager;
-    @Nullable private final CloudRestoreManager mCloudRestoreManager;
+    private final CloudBackupManager mCloudBackupManager;
+    private final CloudRestoreManager mCloudRestoreManager;
     private final HealthConnectPermissionHelper mPermissionHelper;
     private final FirstGrantTimeManager mFirstGrantTimeManager;
     private final Context mContext;
@@ -355,10 +355,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             new WeakReference<>(null);
     private final HealthConnectThreadScheduler mThreadScheduler;
     private final HealthFitnessStatsLog mStatsLog;
-    @Nullable private final MatchmakingManager mMatchmakingManager;
-    @Nullable private final SyntheticPackageNameResolver mSyntheticPackageNameResolver;
-    @Nullable private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
-    @Nullable private final DeviceDataProviderManager mDeviceDataProviderManager;
+    private final MatchmakingManager mMatchmakingManager;
+    private final SyntheticPackageNameResolver mSyntheticPackageNameResolver;
+    private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
+    private final DeviceDataProviderManager mDeviceDataProviderManager;
 
     private volatile UserHandle mCurrentForegroundUser;
 
@@ -404,12 +404,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             BackupRestoreLogger backupRestoreLogger,
             ExportImportNotificationFactory exportImportNotificationFactory,
             TrackerManager trackerManager,
-            @Nullable CloudBackupManager cloudBackupManager,
-            @Nullable CloudRestoreManager cloudRestoreManager,
-            @Nullable MatchmakingManager matchmakingManager,
-            @Nullable SyntheticPackageNameResolver syntheticPackageNameResolver,
-            @Nullable DeviceDataSourcesHelper deviceDataSourcesHelper,
-            @Nullable DeviceDataProviderManager deviceDataProviderManager) {
+            CloudBackupManager cloudBackupManager,
+            CloudRestoreManager cloudRestoreManager,
+            MatchmakingManager matchmakingManager,
+            SyntheticPackageNameResolver syntheticPackageNameResolver,
+            DeviceDataSourcesHelper deviceDataSourcesHelper,
+            DeviceDataProviderManager deviceDataProviderManager) {
         mContext = context;
         mCurrentForegroundUser = context.getUser();
         mTimeSource = timeSource;
@@ -2051,7 +2051,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     enforceIsForegroundUser(userHandle);
                     mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
 
-                    if (mDeviceDataProviderManager == null) {
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                         callback.onResult(Collections.emptyList());
                         return;
                     }
@@ -2190,7 +2190,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     @Override
     public void runImport(UserHandle user, Uri file, IEmptyResponseCallback callback) {
-        if (mImportManager == null) return;
         checkParamsNonNull(user, file, callback);
         ErrorCallback errorCallback = callback::onError;
 
@@ -3047,7 +3046,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
                     // resolved.
-                    if (mCloudBackupManager == null || !isCloudBackupRestoreEnabled()) {
+                    if (!isCloudBackupRestoreEnabled()) {
                         throw new UnsupportedOperationException(
                                 "getChangesForBackup is not supported.");
                     }
@@ -3073,7 +3072,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final ErrorCallback errorCallback = callback::onError;
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
-                    if (mCloudBackupManager == null || !isCloudBackupRestoreEnabled()) {
+                    if (!isCloudBackupRestoreEnabled()) {
                         throw new UnsupportedOperationException(
                                 "getLatestMetadataForBackup is not supported.");
                     }
@@ -3101,7 +3100,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final ErrorCallback errorCallback = callback::onError;
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
-                    if (mCloudRestoreManager == null || !isCloudBackupRestoreEnabled()) {
+                    if (!isCloudBackupRestoreEnabled()) {
                         throw new UnsupportedOperationException(
                                 "restoreSettings is not supported.");
                     }
@@ -3128,7 +3127,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final ErrorCallback errorCallback = callback::onError;
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
-                    if (mCloudRestoreManager == null || !isCloudBackupRestoreEnabled()) {
+                    if (!isCloudBackupRestoreEnabled()) {
                         throw new UnsupportedOperationException("canRestore is not supported.");
                     }
                     enforceIsForegroundUser(userHandle);
@@ -3152,7 +3151,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final ErrorCallback errorCallback = callback::onError;
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
-                    if (mCloudRestoreManager == null || !isCloudBackupRestoreEnabled()) {
+                    if (!isCloudBackupRestoreEnabled()) {
                         throw new UnsupportedOperationException("restoreChanges is not supported.");
                     }
                     enforceIsForegroundUser(userHandle);
@@ -3254,7 +3253,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (mMatchmakingManager == null || !Flags.matchmaking()) {
+                    if (!Flags.matchmaking()) {
                         throw new UnsupportedOperationException(
                                 "getMatchingDataSources is not supported");
                     }
@@ -3317,7 +3316,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
-                    if (mMatchmakingManager == null || !Flags.matchmaking()) {
+                    if (!Flags.matchmaking()) {
                         throw new UnsupportedOperationException(
                                 "recordMatchmakingDenial is not supported");
                     }
@@ -3329,10 +3328,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 ERROR_INVALID_ARGUMENT, "Calling package name can't be empty.");
                     }
                     throwExceptionIfDataSyncInProgress();
-                    if (mMatchmakingManager != null) {
-                        mMatchmakingManager.recordMatchmakingDenial(
-                                callingPackageName, unmaskedMatchingApps);
-                    }
+                    mMatchmakingManager.recordMatchmakingDenial(
+                            callingPackageName, unmaskedMatchingApps);
+
                     callback.onResult();
                 },
                 errorCallback);
@@ -3417,7 +3415,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
-                    if (mDeviceDataProviderManager == null) {
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                         throw new UnsupportedOperationException(
                                 "advertiseDeviceDataSources is not supported");
                     }
@@ -4324,9 +4322,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     private Set<Integer> getDeviceDataSourceCapabilities(AttributionSource attributionSource) {
-        if (mDeviceDataSourcesHelper == null) {
-            return Set.of();
-        }
         Stream<Integer> nativeTrackingRecordTypes = Stream.of(RECORD_TYPE_STEPS);
         Set<Integer> supportedRecordTypes =
                 concat(
@@ -4414,7 +4409,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     private Function<String, String> getMaskingFunction(String callingPackageName) {
         return (packageName) -> {
-            if (!Flags.deviceDataProvidersApi() || mSyntheticPackageNameResolver == null) {
+            if (!Flags.deviceDataProvidersApi()) {
                 return packageName;
             }
 
@@ -4424,7 +4419,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
     private Function<String, String> getUnmaskingFunction(String callingPackageName) {
         return (packageName) -> {
-            if (!Flags.deviceDataProvidersApi() || mSyntheticPackageNameResolver == null) {
+            if (!Flags.deviceDataProvidersApi()) {
                 return packageName;
             }
 

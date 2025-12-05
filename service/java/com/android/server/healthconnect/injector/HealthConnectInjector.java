@@ -423,26 +423,22 @@ public abstract class HealthConnectInjector {
     /**
      * Getter for {@link CloudBackupManager} instance initialised by the Health Connect Injector.
      */
-    @Nullable
     public abstract CloudBackupManager getCloudBackupManager();
 
     /**
      * Getter for {@link CloudRestoreManager} instance initialised by the Health Connect Injector.
      */
-    @Nullable
     public abstract CloudRestoreManager getCloudRestoreManager();
 
     /**
      * Getter for {@link MatchmakingManager} instance initialised by the Health Connect Injector.
      */
-    @Nullable
     public abstract MatchmakingManager getMatchingAppsManager();
 
     /**
      * Getter for {@link MatchmakingDenialStateManager} instance initialised by the Health Connect
      * Injector.
      */
-    @Nullable
     public abstract MatchmakingDenialStateManager getMatchmakingDenialStateManager();
 
     /**
@@ -461,35 +457,30 @@ public abstract class HealthConnectInjector {
      * Getter for {@link SyntheticPackageNameResolver} instance initialised by the Health Connect
      * Injector.
      */
-    @Nullable
     public abstract SyntheticPackageNameResolver getSyntheticPackageNameResolver();
 
     /**
      * Getter for {@link DeviceDataSourcesHelper} instance initialised by the Health Connect
      * Injector.
      */
-    @Nullable
     public abstract DeviceDataSourcesHelper getDeviceDataSourcesHelper();
 
     /**
      * Getter for {@link DeviceDataProviderManager} instance initialised by the Health Connect
      * Injector.
      */
-    @Nullable
     public abstract DeviceDataProviderManager getDeviceDataProviderManager();
 
     /**
      * Getter for {@link SyntheticPackageNameCreator} instance initialised by the Health Connect
      * Injector.
      */
-    @Nullable
     public abstract SyntheticPackageNameCreator getSyntheticPackageNameCreator();
 
     /**
      * Getter for {@link DeviceDataProviderMetadataHelper} instance initialised by the Health
      * Connect Injector.
      */
-    @Nullable
     public abstract DeviceDataProviderMetadataHelper getDeviceDataProviderMetadataHelper();
 
     /** Used to initialize the Injector. */

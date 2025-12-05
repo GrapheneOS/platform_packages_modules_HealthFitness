@@ -329,7 +329,6 @@ public class HealthConnectManagerService extends SystemService {
             threadScheduler.scheduleInternalTask(
                     () -> {
                         try {
-                            requireNonNull(mHealthConnectInjector.getSyntheticPackageNameCreator());
                             mHealthConnectInjector
                                     .getSyntheticPackageNameCreator()
                                     .initializeOrGetSalt();
@@ -343,7 +342,6 @@ public class HealthConnectManagerService extends SystemService {
             threadScheduler.scheduleInternalTask(
                     () -> {
                         try {
-                            requireNonNull(mHealthConnectInjector.getDeviceDataProviderManager());
                             mHealthConnectInjector
                                     .getDeviceDataProviderManager()
                                     .initializeOrRefreshCurrentDeviceIds();
