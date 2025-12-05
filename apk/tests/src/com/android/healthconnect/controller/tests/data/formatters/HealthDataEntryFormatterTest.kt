@@ -21,6 +21,8 @@ import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.MenstrualCyclePhaseRecord
 import android.health.connect.datatypes.PlannedExerciseSessionRecord
 import android.health.connect.datatypes.StepsRecord
+import android.platform.test.annotations.RequiresFlagsEnabled
+import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
@@ -35,6 +37,7 @@ import com.android.healthconnect.controller.tests.utils.getMenstrualCyclePhaseRe
 import com.android.healthconnect.controller.tests.utils.getSamplePlannedExerciseSessionRecord
 import com.android.healthconnect.controller.tests.utils.getStepsRecord
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -56,6 +59,7 @@ import org.junit.runner.RunWith
 class HealthDataEntryFormatterTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @BindValue lateinit var appInfoReader: AppInfoReader
     @Inject lateinit var formatter: HealthDataEntryFormatter
@@ -146,6 +150,13 @@ class HealthDataEntryFormatterTest {
 
     @Test
     @Ignore("b/465390591 - Re-enable once the test is fixed.")
+    @RequiresFlagsEnabled(
+        Flags.FLAG_CYCLE_PHASES_FLAG,
+        Flags.FLAG_CYCLE_PHASES_DB,
+        Flags.FLAG_SMOKING_DB,
+        Flags.FLAG_SYMPTOMS_DB,
+        Flags.FLAG_ALCOHOL_CONSUMPTION_DB,
+    )
     fun format_formatsMenstrualCyclePhaseRecord() {
         val record =
             getMenstrualCyclePhaseRecord(
