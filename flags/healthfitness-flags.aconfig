@@ -579,3 +579,10 @@ flag {
     is_fixed_read_only: false
     is_exported: false
 }
+
+flag {
+    name: "device_data_providers_ui_matchmaking_screen"
+    namespace: "health_fitness_aconfig"
+    description: "Flag to show the updated matchmaking screen to show matched devices and apps"
+    bug: "466326887"
+}
