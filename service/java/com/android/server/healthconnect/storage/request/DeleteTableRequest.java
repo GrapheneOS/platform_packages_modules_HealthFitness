@@ -24,11 +24,13 @@ import android.annotation.Nullable;
 import android.health.connect.Constants;
 import android.util.Slog;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.storage.utils.StorageUtils;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Request object used in @{@link com.android.server.healthconnect.storage.TransactionManager} to
@@ -48,6 +50,8 @@ public class DeleteTableRequest {
     @Nullable private String mIdColumnName;
     @Nullable private String mPackageColumnName;
     @Nullable private String mTimeColumnName;
+    @Nullable private String mDeviceDataProviderIdColumnName;
+    private long mDeviceDataProviderId = DEFAULT_LONG;
     @Nullable private List<Long> mPackageFilters;
     private long mStartTime = DEFAULT_LONG;
     private long mEndTime = DEFAULT_LONG;
@@ -101,6 +105,22 @@ public class DeleteTableRequest {
         return mPackageColumnName;
     }
 
+    @Nullable
+    public String getDeviceDataProviderIdColumnName() {
+        return mDeviceDataProviderIdColumnName;
+    }
+
+    /**
+     * Set the device data provider ID associated with the delete request. If {@code DEFAULT_LONG},
+     * the ddp ID will be ignored in the request.
+     */
+    public DeleteTableRequest setDeviceDataProviderId(
+            String deviceDataProviderIdColumnName, long deviceDataProviderId) {
+        mDeviceDataProviderIdColumnName = deviceDataProviderIdColumnName;
+        mDeviceDataProviderId = deviceDataProviderId;
+        return this;
+    }
+
     /** Adds an extra {@link WhereClauses} that filters the rows to be deleted. */
     public DeleteTableRequest addExtraWhereClauses(WhereClauses whereClauses) {
         mExtraWhereClauses.addNestedWhereClauses(whereClauses);
@@ -117,6 +137,14 @@ public class DeleteTableRequest {
         whereClauses.addWhereInLongsClause(mPackageColumnName, mPackageFilters);
         whereClauses.addWhereBetweenTimeClause(mTimeColumnName, mStartTime, mEndTime);
         whereClauses.addWhereInClauseWithoutQuotes(mIdColumnName, mIds);
+
+        // SQLite starts ids at 1 (see https://sqlite.org/autoinc.html), any other value means the
+        // ddp ID has not been set and should be ignored
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled() && mDeviceDataProviderId > 0) {
+            Objects.requireNonNull(mDeviceDataProviderIdColumnName);
+            whereClauses.addWhereEqualsClause(
+                    mDeviceDataProviderIdColumnName, String.valueOf(mDeviceDataProviderId));
+        }
 
         if (Constants.DEBUG) {
             Slog.d(

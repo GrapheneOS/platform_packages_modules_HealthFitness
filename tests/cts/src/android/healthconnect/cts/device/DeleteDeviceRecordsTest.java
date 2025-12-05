@@ -15,11 +15,13 @@
  */
 package android.healthconnect.cts.device;
 
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_SLEEP_SESSION;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 import static android.healthconnect.testing.cts.TestUtils.advertiseDevice;
 import static android.healthconnect.testing.cts.TestUtils.advertiseDevices;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.deleteDeviceRecords;
+import static android.healthconnect.testing.cts.TestUtils.deleteRecordsByIdFilter;
 import static android.healthconnect.testing.cts.TestUtils.insertDeviceRecords;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.readAllRecords;
@@ -32,9 +34,12 @@ import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_D
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
+
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.BasalMetabolicRateRecord;
 import android.health.connect.datatypes.ExerciseSessionRecord;
@@ -64,6 +69,7 @@ import org.junit.runner.RunWith;
 import java.time.Instant;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 @RequiresFlagsEnabled({
@@ -318,5 +324,269 @@ public class DeleteDeviceRecordsTest {
         StepsRecord lastRecord = readAllRecords(StepsRecord.class).get(1);
         assertThat(firstRecord.getCount()).isEqualTo(100);
         assertThat(lastRecord.getCount()).isEqualTo(300);
+    }
+
+    @Test
+    public void withoutPermission_deleteDeviceRecordsUsingIds_throws() throws InterruptedException {
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+        advertiseDevice(mDeviceId, StepsRecord.class);
+
+        List<StepsRecord> records = List.of(DataFactory.getStepsRecord(123));
+        String id = insertDeviceRecords(mDeviceId, records).get(0).getMetadata().getId();
+
+        mHealthConnectManager.deleteDeviceRecords(
+                mDeviceId,
+                List.of(RecordIdFilter.fromId(StepsRecord.class, id)),
+                outcomeExecutor(),
+                receiver);
+
+        assertThat(receiver.assertAndGetException().getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_SECURITY);
+    }
+
+    @Test
+    public void withoutAdvertisement_deleteDeviceRecordsUsingIds_throws()
+            throws InterruptedException {
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+
+        deleteDeviceRecords(
+                mDeviceId,
+                List.of(RecordIdFilter.fromId(StepsRecord.class, "id")),
+                outcomeExecutor(),
+                receiver);
+
+        assertThat(receiver.assertAndGetException().getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
+    }
+
+    @Test
+    public void withUnknownDeviceId_deleteDeviceRecordsUsingIds_throws()
+            throws InterruptedException {
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+        advertiseDevice(mDeviceId, StepsRecord.class);
+
+        deleteDeviceRecords(
+                "unknown",
+                List.of(RecordIdFilter.fromId(StepsRecord.class, "id")),
+                outcomeExecutor(),
+                receiver);
+
+        assertThat(receiver.assertAndGetException().getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
+    }
+
+    @Test
+    public void withoutAnyRecords_deleteDeviceRecordsUsingIds_doesNotThrow()
+            throws InterruptedException {
+        advertiseDevice(mDeviceId, StepsRecord.class);
+
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+        deleteDeviceRecords(
+                mDeviceId,
+                List.of(RecordIdFilter.fromId(StepsRecord.class, UUID.randomUUID().toString())),
+                outcomeExecutor(),
+                receiver);
+
+        receiver.verifyNoExceptionOrThrow();
+    }
+
+    @Test
+    public void withAdvertisementAndRecord_deleteDeviceRecordsWithIds_deletesRecord()
+            throws InterruptedException {
+        advertiseDevice(mDeviceId, StepsRecord.class);
+
+        List<StepsRecord> records = List.of(DataFactory.getStepsRecord(123));
+        String id = insertDeviceRecords(mDeviceId, records).get(0).getMetadata().getId();
+
+        deleteDeviceRecords(mDeviceId, List.of(RecordIdFilter.fromId(StepsRecord.class, id)));
+
+        List<StepsRecord> readRecords =
+                readDeviceRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setDeviceId(mDeviceId)
+                                .build());
+
+        assertThat(readRecords).isEmpty();
+    }
+
+    @Test
+    public void withMultipleRecords_deleteDeviceRecordsWithIds_deletesSpecifiedRecord()
+            throws InterruptedException {
+        advertiseDevice(mDeviceId, StepsRecord.class);
+
+        List<StepsRecord> records =
+                List.of(
+                        DataFactory.getStepsRecord(123),
+                        DataFactory.getStepsRecord(456),
+                        DataFactory.getStepsRecord(789));
+        List<Record> insertedRecords = insertDeviceRecords(mDeviceId, records);
+
+        String idOne = insertedRecords.get(0).getMetadata().getId();
+        String idTwo = insertedRecords.get(1).getMetadata().getId();
+        String idThree = insertedRecords.get(2).getMetadata().getId();
+
+        deleteDeviceRecords(
+                mDeviceId,
+                List.of(
+                        RecordIdFilter.fromId(StepsRecord.class, idOne),
+                        RecordIdFilter.fromId(StepsRecord.class, idTwo)));
+
+        List<StepsRecord> readRecords =
+                readDeviceRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setDeviceId(mDeviceId)
+                                .build());
+
+        assertThat(readRecords).hasSize(1);
+        assertThat(readRecords.get(0).getMetadata().getId()).isEqualTo(idThree);
+    }
+
+    @Test
+    public void withAppSources_deleteDeviceRecordsUsingIds_ignoresAttemptingToDeletingOtherApps()
+            throws InterruptedException {
+        // Insert a sets of test records for StepRecords, ExerciseSessionRecord, HeartRateRecord,
+        // BasalMetabolicRateRecord.
+        List<Record> insertedRecords = insertRecords(DataFactory.getTestRecords());
+
+        advertiseDevice(mDeviceId, StepsRecord.class);
+
+        assertThat(readAllRecords(StepsRecord.class).size()).isEqualTo(1);
+        assertThat(readAllRecords(ExerciseSessionRecord.class).size()).isEqualTo(1);
+        assertThat(readAllRecords(HeartRateRecord.class).size()).isEqualTo(1);
+        assertThat(readAllRecords(BasalMetabolicRateRecord.class).size()).isEqualTo(1);
+
+        deleteDeviceRecords(
+                mDeviceId,
+                List.of(
+                        RecordIdFilter.fromId(
+                                StepsRecord.class, insertedRecords.get(0).getMetadata().getId())));
+        deleteDeviceRecords(
+                mDeviceId,
+                List.of(
+                        RecordIdFilter.fromId(
+                                ExerciseSessionRecord.class,
+                                insertedRecords.get(1).getMetadata().getId())));
+
+        assertThat(readAllRecords(StepsRecord.class).size()).isEqualTo(1);
+        assertThat(readAllRecords(ExerciseSessionRecord.class).size()).isEqualTo(1);
+        assertThat(readAllRecords(HeartRateRecord.class).size()).isEqualTo(1);
+        assertThat(readAllRecords(BasalMetabolicRateRecord.class).size()).isEqualTo(1);
+    }
+
+    @Test
+    public void withAppAndDeviceRecord_deleteDeviceRecordsUsingIds_deletesDeviceOne()
+            throws InterruptedException {
+        List<StepsRecord> stepRecord = List.of(DataFactory.getStepsRecord(123));
+
+        String appId = insertRecords(stepRecord).get(0).getMetadata().getId();
+
+        advertiseDevice(mDeviceId, StepsRecord.class);
+        String deviceId = insertDeviceRecords(mDeviceId, stepRecord).get(0).getMetadata().getId();
+
+        assertThat(readAllRecords(StepsRecord.class).size()).isEqualTo(2);
+
+        deleteDeviceRecords(mDeviceId, List.of(RecordIdFilter.fromId(StepsRecord.class, appId)));
+
+        assertThat(readAllRecords(StepsRecord.class).size()).isEqualTo(2);
+
+        deleteDeviceRecords(mDeviceId, List.of(RecordIdFilter.fromId(StepsRecord.class, deviceId)));
+
+        assertThat(readAllRecords(StepsRecord.class).size()).isEqualTo(1);
+        assertThat(readAllRecords(StepsRecord.class).get(0).getMetadata().getId()).isEqualTo(appId);
+
+        deleteRecordsByIdFilter(List.of(RecordIdFilter.fromId(StepsRecord.class, appId)));
+        assertThat(readAllRecords(StepsRecord.class)).isEmpty();
+    }
+
+    @Test
+    public void withAppAndDeviceRecord_deleteDeviceRecordsUsingIds_deleteRecordsWithDeviceThrows()
+            throws InterruptedException {
+        List<StepsRecord> stepRecord = List.of(DataFactory.getStepsRecord(123));
+
+        insertRecords(stepRecord).get(0).getMetadata().getId();
+
+        advertiseDevice(mDeviceId, StepsRecord.class);
+        String deviceId = insertDeviceRecords(mDeviceId, stepRecord).get(0).getMetadata().getId();
+
+        assertThat(readAllRecords(StepsRecord.class).size()).isEqualTo(2);
+
+        assertThrows(
+                HealthConnectException.class,
+                () ->
+                        deleteRecordsByIdFilter(
+                                List.of(RecordIdFilter.fromId(StepsRecord.class, deviceId))));
+
+        assertThat(readAllRecords(StepsRecord.class).size()).isEqualTo(2);
+    }
+
+    @Test
+    public void withMultipleRecordTypes_deleteDeviceRecordsUsingIds_throwsWhenDeletingOtherType()
+            throws InterruptedException {
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build(),
+                        new DeviceDataTypeAdvertisement.Builder(SleepSessionRecord.class)
+                                .setAvailable(true)
+                                .build());
+
+        advertiseDevice(mDeviceId, buildDevice(), deviceDataTypeAdvertisements);
+
+        List<Record> records =
+                List.of(DataFactory.getStepsRecord(111), DataFactory.buildSleepSession());
+        insertDeviceRecords(mDeviceId, records);
+
+        assertThat(readAllRecords(StepsRecord.class).size()).isEqualTo(1);
+        assertThat(readAllRecords(SleepSessionRecord.class).size()).isEqualTo(1);
+
+        assertThat(records.get(1).getRecordType()).isEqualTo(RECORD_TYPE_SLEEP_SESSION);
+
+        assertThrows(
+                HealthConnectException.class,
+                () ->
+                        deleteDeviceRecords(
+                                mDeviceId,
+                                List.of(
+                                        RecordIdFilter.fromId(
+                                                StepsRecord.class,
+                                                records.get(1).getMetadata().getId()))));
+
+        assertThat(readAllRecords(StepsRecord.class).size()).isEqualTo(1);
+        assertThat(readAllRecords(SleepSessionRecord.class).size()).isEqualTo(1);
+    }
+
+    @Test
+    public void withMultipleAdvertisements_deleteDeviceRecordsUsingIds_deletesOwnRecord()
+            throws InterruptedException {
+        String deviceIdOne = "Hello";
+        String deviceIdTwo = "World";
+
+        advertiseDevices(Set.of(deviceIdOne, deviceIdTwo));
+
+        List<StepsRecord> stepsRecordsOne = List.of(DataFactory.getStepsRecord(111));
+        List<StepsRecord> stepsRecordsTwo = List.of(DataFactory.getStepsRecord(222));
+
+        String idOne =
+                insertDeviceRecords(deviceIdOne, stepsRecordsOne).get(0).getMetadata().getId();
+        insertDeviceRecords(deviceIdTwo, stepsRecordsTwo);
+
+        ReadRecordsRequestUsingFilters<StepsRecord> readRequestOne =
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setDeviceId(deviceIdOne)
+                        .build();
+
+        ReadRecordsRequestUsingFilters<StepsRecord> readRequestTwo =
+                new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                        .setDeviceId(deviceIdTwo)
+                        .build();
+
+        assertThat(TestUtils.readDeviceRecords(readRequestOne).size()).isEqualTo(1);
+        assertThat(TestUtils.readDeviceRecords(readRequestTwo).size()).isEqualTo(1);
+
+        deleteDeviceRecords(deviceIdOne, List.of(RecordIdFilter.fromId(StepsRecord.class, idOne)));
+
+        assertThat(TestUtils.readDeviceRecords(readRequestOne).size()).isEqualTo(0);
+        assertThat(TestUtils.readDeviceRecords(readRequestTwo).size()).isEqualTo(1);
     }
 }

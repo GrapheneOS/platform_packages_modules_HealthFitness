@@ -800,28 +800,26 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             addAdditionalDeletionFilters(deleteTableRequest, grantedGranularWritePermissions);
         }
 
-        // SQLite starts ids at 1 (see https://sqlite.org/autoinc.html), any other value means the
-        // ddp ID has not been set and should be ignored
-        if (AconfigFlagHelper.isDeviceDataProvidersEnabled() && deviceDataProviderId > 0) {
-            WhereClauses ddpIdWhereClause =
-                    new WhereClauses(AND)
-                            .addWhereEqualsClause(
-                                    RecordHelper.DDP_ID_COLUMN_NAME,
-                                    String.valueOf(deviceDataProviderId));
-            deleteTableRequest.addExtraWhereClauses(ddpIdWhereClause);
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            deleteTableRequest.setDeviceDataProviderId(DDP_ID_COLUMN_NAME, deviceDataProviderId);
         }
 
         return new RecordDeleteTableRequest(deleteTableRequest, getRecordIdentifier());
     }
 
     public RecordDeleteTableRequest getDeleteTableRequest(
-            List<UUID> ids, Set<String> grantedGranularWritePermissions) {
+            List<UUID> ids,
+            Set<String> grantedGranularWritePermissions,
+            long deviceDataProviderId) {
         DeleteTableRequest deleteTableRequest =
                 new DeleteTableRequest(getMainTableName())
                         .setPackageColumnName(APP_INFO_ID_COLUMN_NAME)
                         .setIds(UUID_COLUMN_NAME, StorageUtils.getListOfHexStrings(ids));
         if (AconfigFlagHelper.isSymptomsEnabled()) {
             addAdditionalDeletionFilters(deleteTableRequest, grantedGranularWritePermissions);
+        }
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            deleteTableRequest.setDeviceDataProviderId(DDP_ID_COLUMN_NAME, deviceDataProviderId);
         }
         return new RecordDeleteTableRequest(deleteTableRequest, getRecordIdentifier());
     }
