@@ -89,6 +89,11 @@ public class TestAppRule extends ExternalResource {
         PermissionUtils.revokeHealthPermission(mPackageName, permission, /* reason= */ mTestName);
     }
 
+    /** Revokes the specified permissions from the test app via {@link PackageManager}. */
+    public void revokeHealthPermissions(List<String> permissions) {
+        PermissionUtils.revokeHealthPermissions(mPackageName, permissions, /* reason= */ mTestName);
+    }
+
     /** Revokes all health permissions from the test app via {@link PackageManager}. */
     public void revokeAllHealthPermissions() {
         PermissionUtils.revokeAllHealthPermissions(mPackageName, /* reason= */ mTestName);

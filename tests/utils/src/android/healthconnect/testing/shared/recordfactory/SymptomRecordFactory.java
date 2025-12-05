@@ -92,7 +92,7 @@ public final class SymptomRecordFactory extends RecordFactory<SymptomRecord> {
     }
 
     @Override
-    protected SymptomRecord recordWithMetadata(SymptomRecord record, Metadata metadata) {
+    public SymptomRecord recordWithMetadata(SymptomRecord record, Metadata metadata) {
         SymptomRecord.Builder builder;
         switch (record.getTemporalType()) {
             case SymptomRecord.RECORD_TEMPORAL_TYPE_INSTANT:
@@ -104,6 +104,7 @@ public final class SymptomRecordFactory extends RecordFactory<SymptomRecord> {
                 builder =
                         new SymptomRecord.Builder(
                                 record.getSymptomType(), record.getDate(), metadata);
+                builder.setCount(record.getCount());
                 break;
             case SymptomRecord.RECORD_TEMPORAL_TYPE_INTERVAL:
             default:
@@ -115,12 +116,10 @@ public final class SymptomRecordFactory extends RecordFactory<SymptomRecord> {
                                 metadata);
                 builder.setStartZoneOffset(record.getStartZoneOffset());
                 builder.setEndZoneOffset(record.getEndZoneOffset());
+                builder.setCount(record.getCount());
                 break;
         }
-        return builder.setNotes(record.getNotes())
-                .setSeverity(record.getSeverity())
-                .setCount(record.getCount())
-                .build();
+        return builder.setNotes(record.getNotes()).setSeverity(record.getSeverity()).build();
     }
 
     @Override
