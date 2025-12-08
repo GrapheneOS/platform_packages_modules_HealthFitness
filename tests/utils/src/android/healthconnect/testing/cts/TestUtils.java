@@ -138,6 +138,7 @@ import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.SpeedRecord;
 import android.health.connect.datatypes.StepsCadenceRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
 import android.health.connect.datatypes.Vo2MaxRecord;
 import android.health.connect.datatypes.WeightRecord;
@@ -1256,11 +1257,12 @@ public final class TestUtils {
     public static void advertiseDevice(
             String deviceId, Device device, Class<? extends Record> dataType)
             throws InterruptedException {
-        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
-                Set.of(
-                        new DeviceDataTypeAdvertisement.Builder(dataType)
-                                .setAvailable(true)
-                                .build());
+        DeviceDataTypeAdvertisement.Builder builder =
+                new DeviceDataTypeAdvertisement.Builder(dataType);
+        if (SymptomRecord.class.isAssignableFrom(dataType)) {
+            builder.setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH);
+        }
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements = Set.of(builder.build());
         advertiseDevice(deviceId, device, deviceDataTypeAdvertisements);
     }
 

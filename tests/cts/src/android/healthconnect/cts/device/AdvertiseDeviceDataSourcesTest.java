@@ -20,11 +20,13 @@ import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecu
 import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
 
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
@@ -49,7 +51,8 @@ import java.util.Set;
 @RequiresFlagsEnabled({
     FLAG_DEVICE_DATA_PROVIDERS_API,
     FLAG_DEVICE_DATA_PROVIDERS_DB,
-    FLAG_DEVELOPMENT_DATABASE_RW
+    FLAG_DEVELOPMENT_DATABASE_RW,
+    FLAG_SYMPTOMS
 })
 // TODO(b/455564575): Update this test when we can read back the advertisement.
 public class AdvertiseDeviceDataSourcesTest {
@@ -215,6 +218,31 @@ public class AdvertiseDeviceDataSourcesTest {
                 Set.of(
                         new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                 .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+
+        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
+
+        receiver.verifyNoExceptionOrThrow();
+    }
+
+    @Test
+    public void advertiseWithSymptomType() throws InterruptedException {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("TestDisplayName")
+                        .build();
+        String deviceId = "TestDeviceId";
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                                .setAvailable(true)
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
                                 .build());
         DeviceDataAdvertisement advertisement =
                 new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);

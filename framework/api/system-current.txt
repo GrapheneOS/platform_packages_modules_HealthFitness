@@ -420,6 +420,7 @@ package android.health.connect.device {
   @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public final class DeviceDataTypeAdvertisement implements android.os.Parcelable {
     method public int describeContents();
     method @NonNull public Class<? extends android.health.connect.datatypes.Record> getDataType();
+    method public int getSymptomType();
     method public boolean isAvailable();
     method public boolean isUserEnabled();
     method public boolean isVisibleByDefaultInMatchmaking();
@@ -431,6 +432,7 @@ package android.health.connect.device {
     ctor public DeviceDataTypeAdvertisement.Builder(@NonNull Class<? extends android.health.connect.datatypes.Record>);
     method @NonNull public android.health.connect.device.DeviceDataTypeAdvertisement build();
     method @NonNull public android.health.connect.device.DeviceDataTypeAdvertisement.Builder setAvailable(boolean);
+    method @NonNull public android.health.connect.device.DeviceDataTypeAdvertisement.Builder setSymptomType(int);
     method @NonNull public android.health.connect.device.DeviceDataTypeAdvertisement.Builder setUserEnabled(boolean);
     method @NonNull public android.health.connect.device.DeviceDataTypeAdvertisement.Builder setVisibleByDefaultInMatchmaking(boolean);
   }

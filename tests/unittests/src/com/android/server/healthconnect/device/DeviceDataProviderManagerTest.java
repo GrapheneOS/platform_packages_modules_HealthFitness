@@ -233,7 +233,10 @@ public class DeviceDataProviderManagerTest {
         assertThat(metadataInternalMap.get(1L).sourcePackageName()).isEqualTo(PACKAGE_NAME);
         DeviceDataSourcesHelper.DeviceDataProviderKey key =
                 new DeviceDataSourcesHelper.DeviceDataProviderKey(
-                        PACKAGE_NAME, expectedDeviceInfoId, RECORD_TYPE_STEPS);
+                        PACKAGE_NAME,
+                        expectedDeviceInfoId,
+                        RECORD_TYPE_STEPS,
+                        SymptomRecord.SYMPTOM_TYPE_UNKNOWN);
         assertThat(mDeviceDataSourcesHelper.getDdpMap().size()).isEqualTo(1);
         assertThat(mDeviceDataSourcesHelper.getDdpMap()).containsKey(key);
         assertThat(mDeviceDataSourcesHelper.getDdpMap().get(key).isAvailable()).isEqualTo(true);
@@ -2135,11 +2138,13 @@ public class DeviceDataProviderManagerTest {
                         .setType(Device.DEVICE_TYPE_PHONE)
                         .setDisplayName(DISPLAY_NAME)
                         .build();
+        DeviceDataTypeAdvertisement.Builder advertisementBuilder =
+                new DeviceDataTypeAdvertisement.Builder(dataType).setAvailable(true);
+        if (SymptomRecord.class.isAssignableFrom(dataType)) {
+            advertisementBuilder.setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH);
+        }
         Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisement =
-                Set.of(
-                        new DeviceDataTypeAdvertisement.Builder(dataType)
-                                .setAvailable(true)
-                                .build());
+                Set.of(advertisementBuilder.build());
         DeviceDataAdvertisement advertisement =
                 new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisement);
 

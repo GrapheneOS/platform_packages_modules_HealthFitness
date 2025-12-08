@@ -18,7 +18,10 @@ package android.health.connect.device;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
+
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.SymptomRecord;
 import android.os.Parcel;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -68,6 +71,15 @@ public class DeviceDataTypeAdvertisementTest {
         assertThat(state.isAvailable()).isFalse();
         assertThat(state.isUserEnabled()).isFalse();
         assertThat(state.isVisibleByDefaultInMatchmaking()).isFalse();
+    }
+
+    @Test
+    public void setSymptomType_notSymptomRecord_throwsException() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH));
     }
 
     @Test
