@@ -18,6 +18,8 @@ package com.android.server.healthconnect.common.logging;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_PERMISSION_STATS;
 
+import static java.util.function.Predicate.not;
+
 import android.health.HealthFitnessStatsLog;
 
 import java.util.List;
@@ -40,10 +42,13 @@ final class UsageStatsLogger {
     void log(UsageStatsCollector usageStatsCollector) {
         usageStatsCollector.upsertLastAccessLogTimeStamp();
         Map<String, List<String>> packageNameToPermissionsGranted =
-                usageStatsCollector.getPackagesHoldingHealthPermissions();
-        int numberOfConnectedApps = packageNameToPermissionsGranted.size();
-        int numberOfAvailableApps =
-                usageStatsCollector.getNumberOfAppsCompatibleWithHealthConnect();
+                usageStatsCollector.getPackagesCompatibleWithHealthConnect();
+        int numberOfAvailableApps = packageNameToPermissionsGranted.size();
+        int numberOfConnectedApps =
+                packageNameToPermissionsGranted.values().stream()
+                        .filter(not(List::isEmpty))
+                        .toList()
+                        .size();
         boolean isUserMonthlyActive = usageStatsCollector.isUserMonthlyActive();
 
         // If this condition is true then the user does not uses HC and we should not collect data.
@@ -82,10 +87,13 @@ final class UsageStatsLogger {
     }
 
     void logPermissionStats(Map<String, List<String>> packageNameToPermissionsGranted) {
-        for (Map.Entry<String, List<String>> connectedAppToPermissionsGranted :
+        for (Map.Entry<String, List<String>> appToPermissionsGranted :
                 packageNameToPermissionsGranted.entrySet()) {
 
-            List<String> grantedPermissions = connectedAppToPermissionsGranted.getValue();
+            List<String> grantedPermissions = appToPermissionsGranted.getValue();
+            if (grantedPermissions.isEmpty()) {
+                continue;
+            }
 
             // This is done to remove the common prefix android.permission.health from all
             // permissions
@@ -100,7 +108,7 @@ final class UsageStatsLogger {
 
             mStatsLog.write(
                     HEALTH_CONNECT_PERMISSION_STATS,
-                    connectedAppToPermissionsGranted.getKey(),
+                    appToPermissionsGranted.getKey(),
                     grantedPermissionsShortened);
         }
     }

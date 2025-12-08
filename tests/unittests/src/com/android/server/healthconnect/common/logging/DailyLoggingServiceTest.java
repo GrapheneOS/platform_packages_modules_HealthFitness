@@ -37,6 +37,7 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_STORAGE_STATS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_USAGE_STATS;
 import static android.health.connect.HealthPermissions.READ_DISTANCE;
 import static android.health.connect.HealthPermissions.READ_EXERCISE;
+import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_CONDITIONS;
 import static android.health.connect.HealthPermissions.READ_STEPS;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -93,6 +94,7 @@ public class DailyLoggingServiceTest {
 
     private static final String CONNECTED_APP_PACKAGE_NAME = "connected.app";
     private static final String CONNECTED_APP_TWO_PACKAGE_NAME = "connected.app.two";
+    private static final String NOT_CONNECTED_APP_PACKAGE_NAME = "not.connected.app";
 
     @Test
     public void testDatabaseLogsStats() {
@@ -139,10 +141,13 @@ public class DailyLoggingServiceTest {
 
     @Test
     public void testDailyUsageStatsLogs_oneConnectedApp_twoAvailableApps_userNotMonthlyActive() {
-
-        when(mUsageStatsCollector.getNumberOfAppsCompatibleWithHealthConnect()).thenReturn(2);
-        when(mUsageStatsCollector.getPackagesHoldingHealthPermissions())
-                .thenReturn(Map.of(CONNECTED_APP_PACKAGE_NAME, List.of(READ_DISTANCE)));
+        when(mUsageStatsCollector.getPackagesCompatibleWithHealthConnect())
+                .thenReturn(
+                        Map.of(
+                                CONNECTED_APP_PACKAGE_NAME,
+                                List.of(READ_DISTANCE),
+                                NOT_CONNECTED_APP_PACKAGE_NAME,
+                                List.of()));
         when(mUsageStatsCollector.isUserMonthlyActive()).thenReturn(false);
 
         DailyLoggingService.logDailyMetrics(
@@ -162,10 +167,13 @@ public class DailyLoggingServiceTest {
 
     @Test
     public void testDailyUsageStatsLogs_oneConnectedApp_twoAvailableApps_userMonthlyActive() {
-
-        when(mUsageStatsCollector.getNumberOfAppsCompatibleWithHealthConnect()).thenReturn(2);
-        when(mUsageStatsCollector.getPackagesHoldingHealthPermissions())
-                .thenReturn(Map.of(CONNECTED_APP_PACKAGE_NAME, List.of(READ_DISTANCE)));
+        when(mUsageStatsCollector.getPackagesCompatibleWithHealthConnect())
+                .thenReturn(
+                        Map.of(
+                                CONNECTED_APP_PACKAGE_NAME,
+                                List.of(READ_DISTANCE),
+                                NOT_CONNECTED_APP_PACKAGE_NAME,
+                                List.of()));
         when(mUsageStatsCollector.isUserMonthlyActive()).thenReturn(true);
 
         DailyLoggingService.logDailyMetrics(
@@ -184,8 +192,7 @@ public class DailyLoggingServiceTest {
     }
 
     public void permissionMetricsEnabled_twoConnectedApps_testPermissionsStatsLogs() {
-
-        when(mUsageStatsCollector.getPackagesHoldingHealthPermissions())
+        when(mUsageStatsCollector.getPackagesCompatibleWithHealthConnect())
                 .thenReturn(
                         Map.of(
                                 CONNECTED_APP_PACKAGE_NAME,
@@ -217,7 +224,9 @@ public class DailyLoggingServiceTest {
 
     @Test
     public void phrStats_isMonthlyActiveUser_expectCorrectLogs() {
-        when(mUsageStatsCollector.getNumberOfAppsCompatibleWithHealthConnect()).thenReturn(1);
+        when(mUsageStatsCollector.getPackagesCompatibleWithHealthConnect())
+                .thenReturn(
+                        Map.of(CONNECTED_APP_PACKAGE_NAME, List.of(READ_MEDICAL_DATA_CONDITIONS)));
         when(mUsageStatsCollector.isPhrMonthlyActiveUser()).thenReturn(true);
         when(mUsageStatsCollector.getMedicalDataSourcesCount()).thenReturn(101);
         when(mUsageStatsCollector.getMedicalResourcesCount()).thenReturn(204);
@@ -241,7 +250,9 @@ public class DailyLoggingServiceTest {
 
     @Test
     public void phrStats_isNotMonthlyActiveUser_expectCorrectLogs() {
-        when(mUsageStatsCollector.getNumberOfAppsCompatibleWithHealthConnect()).thenReturn(1);
+        when(mUsageStatsCollector.getPackagesCompatibleWithHealthConnect())
+                .thenReturn(
+                        Map.of(CONNECTED_APP_PACKAGE_NAME, List.of(READ_MEDICAL_DATA_CONDITIONS)));
         when(mUsageStatsCollector.isPhrMonthlyActiveUser()).thenReturn(false);
         when(mUsageStatsCollector.getMedicalDataSourcesCount()).thenReturn(101);
         when(mUsageStatsCollector.getMedicalResourcesCount()).thenReturn(204);
