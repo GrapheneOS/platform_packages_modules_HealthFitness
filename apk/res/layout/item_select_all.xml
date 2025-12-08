@@ -34,6 +34,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:minHeight="@dimen/button_size"
         android:layout_weight="0"
         android:background="?android:attr/selectableItemBackground"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
