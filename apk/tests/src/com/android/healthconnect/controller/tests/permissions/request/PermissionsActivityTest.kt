@@ -728,7 +728,7 @@ class PermissionsActivityTest {
             arrayOf(
                 READ_MEDICAL_DATA_CONDITIONS,
                 READ_MEDICAL_DATA_VACCINES,
-                READ_SLEEP,
+                READ_ACTIVE_CALORIES_BURNED,
                 WRITE_EXERCISE,
                 WRITE_MEDICAL_DATA,
             )
@@ -748,7 +748,7 @@ class PermissionsActivityTest {
             onIdle()
             onView(withId(androidx.preference.R.id.recycler_view))
                 .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-            onView(withText("Sleep")).check(matches(isDisplayed()))
+            onView(withText("Active calories burned")).check(matches(isDisplayed()))
 
             assertThat(permissionManager.revokeHealthPermissionInvocations).isEqualTo(2)
             assertThat(permissionManager.grantHealthPermissionInvocations).isEqualTo(1)
@@ -969,7 +969,9 @@ class PermissionsActivityTest {
         )
 
         val scenario = launchActivityForResult<PermissionsActivity>(startActivityIntent)
+        registerBottomSheetIdlingResource(scenario)
         onView(withId(androidx.preference.R.id.recycler_view))
+            .inRoot(isDialog())
             .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
         onView(withText("Heart rate")).inRoot(isDialog()).perform(click())
         onIdle()
@@ -1003,9 +1005,12 @@ class PermissionsActivityTest {
         )
 
         launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
+            registerBottomSheetIdlingResource(scenario)
             onView(withId(androidx.preference.R.id.recycler_view))
+                .inRoot(isDialog())
                 .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
             onView(withText("Heart rate")).inRoot(isDialog()).perform(click())
+            onIdle()
             onView(withText("Allow")).inRoot(isDialog()).perform(click())
             onIdle()
 

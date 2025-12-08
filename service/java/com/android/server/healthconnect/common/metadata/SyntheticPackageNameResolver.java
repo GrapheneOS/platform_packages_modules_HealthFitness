@@ -19,7 +19,7 @@ import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.HealthConnectManager;
 
-import com.android.healthfitness.flags.Flags;
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.device.DeviceDataProviderManager;
 
 import java.util.List;
@@ -62,13 +62,10 @@ public class SyntheticPackageNameResolver {
      * @param packageName The package name (potentially canonical) to mask.
      * @param callingPackageName The package name of the caller requesting the operation.
      * @return The masked SPN if required by the calling context, otherwise the original.
-     * @throws IllegalArgumentException if trying to mask an already masked name.
      */
     @NonNull
     public String mask(@NonNull String packageName, @NonNull String callingPackageName)
             throws IllegalArgumentException {
-        validateMaskRequest(packageName);
-
         if (!requiresMasking(packageName)) {
             return packageName;
         }
@@ -79,14 +76,13 @@ public class SyntheticPackageNameResolver {
     /**
      * Unmasks a SPN from an external caller's context to its internal representation.
      *
-     * <p>If the package name is a masked SPN, it is converted back into its canonical SPN.
-     * Otherwise, the original package name is returned.
+     * <p>If the package name is a masked SPN, it is converted back into its canonical SPN. In the
+     * case that the masked SPN can not be resolved to a canonical one, the original masked name is
+     * returned. For any other package names, the original name is returned as well.
      *
      * @param packageName The package name (potentially masked) to unmask.
      * @param callingPackageName The package name of the caller requesting the operation.
      * @return The canonical SPN if required by the calling context, otherwise the original.
-     * @throws NoSuchElementException if the masked package name cannot be resolved to a canonical
-     *     one.
      */
     @NonNull
     public String unmask(@NonNull String packageName, @NonNull String callingPackageName)
@@ -118,30 +114,7 @@ public class SyntheticPackageNameResolver {
             canonicalName = Optional.of(mDeviceDataProviderManager.getStableCurrentDeviceId());
         }
 
-        if (canonicalName.isEmpty()) {
-            throw new NoSuchElementException(
-                    "Could not resolve masked, synthetic package name "
-                            + packageName
-                            + " called by "
-                            + callingPackageName);
-        }
-
-        return canonicalName.get();
-    }
-
-    private void validateMaskRequest(@NonNull String packageName) throws IllegalArgumentException {
-        if (SyntheticPackageNameCreator.isMaskedSpn(packageName)) {
-            // Even though we could ignore masked names and just return them as-is in masking,
-            // this state suggests improper usage of the masking mechanic. Using the masked SPN in
-            // database requests would not necessarily throw an error but return empty data, as the
-            // associated device is saved with its canonical SPN. Throwing an error prevents
-            // skipping device data where it might has not been intended.
-            throw new IllegalArgumentException(
-                    "Trying to mask an already masked synthetic package name. "
-                            + "Make sure to call unmask() before masking, "
-                            + "as otherwise the data associated with the responding device "
-                            + "will not be found in requests.");
-        }
+        return canonicalName.orElse(packageName);
     }
 
     private List<String> getAllPackageNames() {
@@ -149,12 +122,12 @@ public class SyntheticPackageNameResolver {
     }
 
     private static boolean requiresUnmasking(@NonNull String packageName) {
-        return Flags.deviceDataProvidersApi()
+        return AconfigFlagHelper.isDeviceDataProvidersEnabled()
                 && SyntheticPackageNameCreator.isMaskedSpn(packageName);
     }
 
     private static boolean requiresMasking(@NonNull String packageName) {
-        return Flags.deviceDataProvidersApi()
+        return AconfigFlagHelper.isDeviceDataProvidersEnabled()
                 && SyntheticPackageNameCreator.isCanonicalSpn(packageName);
     }
 }

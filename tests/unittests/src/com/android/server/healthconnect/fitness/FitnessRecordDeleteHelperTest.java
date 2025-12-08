@@ -48,6 +48,7 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.os.UserHandle;
 import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -87,6 +88,7 @@ public class FitnessRecordDeleteHelperTest {
     private static final String TEST_PACKAGE_NAME = "package.name";
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     private UserHandle mUserHandle;
     private AccessLogsHelper mAccessLogsHelper;
     private FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;

@@ -174,19 +174,22 @@ interface IHealthConnectService {
         in IEmptyResponseCallback callback);
 
     /**
+     * @param attributionSource attribution source for the data
      * @param permissionCategory PermissionCategory corresponding to which priority is requested
      * @param callback Callback to receive result of performing this operation
      */
     void getCurrentPriority(
+        in AttributionSource attributionSource,
         int permissionCategory,
         in IGetPriorityResponseCallback callback);
 
     /**
-     * @param packageName Calling package's name
+     * @param attributionSource attribution source for the data
      * @param request Update request with the required priority changes
      * @param callback Callback to receive result of performing this operation
      */
     void updatePriority(
+        in AttributionSource attributionSource,
         in UpdatePriorityRequestParcel request,
         in IEmptyResponseCallback callback);
 
@@ -203,15 +206,18 @@ interface IHealthConnectService {
      * Returns information, represented by {@code ApplicationInfoResponse}, for all the
      * packages that have contributed to the health connect DB.
      *
+     * @param attributionSource attribution source for the data
      * @param callback Callback to receive result of performing this operation.
      */
-    void getContributorApplicationsInfo(in IApplicationInfoResponseCallback callback);
+    void getContributorApplicationsInfo(in AttributionSource attributionSource, in IApplicationInfoResponseCallback callback);
 
     /** Returns information for each RecordType like health permission category, record category and
      * contributing packages.
+     *
+     * @param attributionSource attribution source for the data
      * @param callback Callback to receive result of performing this operation.
      */
-    void queryAllRecordTypesInfo(in IRecordTypeInfoResponseCallback callback);
+    void queryAllRecordTypesInfo(in AttributionSource attributionSource, in IRecordTypeInfoResponseCallback callback);
 
     /**
      * @param packageName name of the package reading access logs
@@ -660,14 +666,8 @@ interface IHealthConnectService {
      */
     Map isTrackingEnabled(in List<String> dataTypePrefKeys);
 
-    // TODO(b/455837940): Update javadoc with links to API that deviceId is being used for when
-    // available.
     /**
-     * Retrieve a unique identifier of the device that Health Connect is currently running on. The
-     * identifier is scoped by user and will change on either switching the current user or
-     * rebooting the device. The identifier can then be used for advertising and writing data that
-     * originates from the device itself, e.g., phone pedometer, by populating the {@code deviceId}
-     * field.
+     * Retrieve a unique identifier of the device that Health Connect is currently running on.
      *
      * @param attributionSource attribution source for the data.
      *

@@ -145,7 +145,7 @@ public final class TestAppProxy {
     }
 
     /** Updates records in HC on behalf of the app. */
-    public void updateRecords(List<Record> records) throws Exception {
+    public void updateRecords(List<? extends Record> records) throws Exception {
         Bundle requestBundle = BundleHelper.fromUpdateRecordsRequest(records);
         getFromTestApp(requestBundle);
     }

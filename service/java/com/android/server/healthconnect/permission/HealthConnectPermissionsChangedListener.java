@@ -16,10 +16,13 @@
 
 package com.android.server.healthconnect.permission;
 
+import static java.util.Objects.requireNonNull;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.UserHandle;
+import android.os.UserManager;
 
 /**
  * Listener for permission changes happening across all apps for all users on device.
@@ -50,7 +53,21 @@ public class HealthConnectPermissionsChangedListener
 
     @Override
     public void onPermissionsChanged(int uid) {
+        UserHandle userHandle = UserHandle.getUserHandleForUid(uid);
+        if (isProfile(userHandle)) {
+            // Avoid doing work for profiles, which we don't support.
+            return;
+        }
         mFirstGrantTimeManager.updateFirstGrantTimesFromPermissionState(
-                UserHandle.getUserHandleForUid(uid), uid, /* sync= */ false);
+                userHandle, uid, /* sync= */ false);
+    }
+
+    private boolean isProfile(UserHandle userHandle) {
+        Context userContext =
+                mContext.getUser().equals(userHandle)
+                        ? mContext
+                        : mContext.createContextAsUser(userHandle, /* flags= */ 0);
+        UserManager userManager = requireNonNull(userContext.getSystemService(UserManager.class));
+        return userManager.isProfile();
     }
 }

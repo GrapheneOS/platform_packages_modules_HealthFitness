@@ -21,6 +21,7 @@ import android.health.connect.RecordTypeInfoResponse;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.PackageNameMasker;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -29,10 +30,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /** @hide */
-public class RecordTypeInfoResponseParcel implements Parcelable {
+public class RecordTypeInfoResponseParcel
+        implements Parcelable, PackageNameMasker<RecordTypeInfoResponseParcel> {
     @NonNull
     public static final Parcelable.Creator<RecordTypeInfoResponseParcel> CREATOR =
             new Parcelable.Creator<RecordTypeInfoResponseParcel>() {
@@ -132,5 +135,18 @@ public class RecordTypeInfoResponseParcel implements Parcelable {
                     dest.writeInt(recordType);
                     dest.writeStringList(contributingPackages);
                 });
+    }
+
+    @NonNull
+    @Override
+    public RecordTypeInfoResponseParcel toMasked(@NonNull Function<String, String> packageMasker) {
+        Map<Integer, List<DataOrigin>> maskedResponses = new HashMap<>();
+        for (Map.Entry<Integer, List<String>> entry : mRecordTypeInfoResponses.entrySet()) {
+            List<String> maskedContributors = entry.getValue().stream().map(packageMasker).toList();
+            maskedResponses.put(
+                    entry.getKey(), getContributingPackagesAsDataOrigin(maskedContributors));
+        }
+
+        return new RecordTypeInfoResponseParcel(maskedResponses);
     }
 }

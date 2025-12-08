@@ -21,6 +21,7 @@ import android.annotation.Nullable;
 import android.graphics.Bitmap;
 
 import java.util.Objects;
+import java.util.function.Function;
 
 /** Application Info class containing details about a given application */
 public final class AppInfo {
@@ -87,5 +88,11 @@ public final class AppInfo {
     @Nullable
     public String getName() {
         return mName;
+    }
+
+    /** @hide */
+    @NonNull
+    public AppInfo toMasked(@NonNull Function<String, String> packageMasker) {
+        return new AppInfo(packageMasker.apply(mPackageName), mName, mIcon);
     }
 }

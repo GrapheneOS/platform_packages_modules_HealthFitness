@@ -61,6 +61,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
@@ -807,7 +808,9 @@ public class SymptomRecordHelperTest {
 
         WhereClauses whereClauses = new WhereClauses(AND);
         mSymptomRecordHelper.addCustomReadTableWhereClauses(
-                whereClauses, Set.of(HealthPermissions.READ_SYMPTOM_ABDOMINAL_PAIN));
+                whereClauses,
+                Set.of(HealthPermissions.READ_SYMPTOM_ABDOMINAL_PAIN),
+                /* enforceSelfRead= */ false);
         ReadTableRequest request =
                 new ReadTableRequest(SymptomRecordHelper.TABLE_NAME).setWhereClause(whereClauses);
 
@@ -832,7 +835,8 @@ public class SymptomRecordHelperTest {
                 whereClauses,
                 Set.of(
                         HealthPermissions.READ_SYMPTOM_ABDOMINAL_PAIN,
-                        HealthPermissions.READ_SYMPTOM_ACNE));
+                        HealthPermissions.READ_SYMPTOM_ACNE),
+                /* enforceSelfRead= */ false);
         ReadTableRequest request =
                 new ReadTableRequest(SymptomRecordHelper.TABLE_NAME).setWhereClause(whereClauses);
 
@@ -849,13 +853,80 @@ public class SymptomRecordHelperTest {
                 getSymptomRecord(SymptomRecord.SYMPTOM_TYPE_ACNE));
 
         WhereClauses whereClauses = new WhereClauses(AND);
-        mSymptomRecordHelper.addCustomReadTableWhereClauses(whereClauses, Collections.emptySet());
+        mSymptomRecordHelper.addCustomReadTableWhereClauses(
+                whereClauses, Collections.emptySet(), /* enforceSelfRead= */ false);
         ReadTableRequest request =
                 new ReadTableRequest(SymptomRecordHelper.TABLE_NAME).setWhereClause(whereClauses);
 
         try (Cursor cursor = mTransactionManager.read(request)) {
             assertThat(cursor.getCount()).isEqualTo(0);
         }
+    }
+
+    @Test
+    public void enforceSelfRead_readBothReadAndWritePermission() {
+        SymptomRecordInternal recordOne = new SymptomRecordInternal();
+        recordOne.setSymptomType(SYMPTOM_TYPE_ABDOMINAL_PAIN);
+
+        SymptomRecordInternal recordTwo = new SymptomRecordInternal();
+        recordTwo.setSymptomType(SYMPTOM_TYPE_ACNE);
+
+        mFitnessTestUtils.insertRecords(PACKAGE_NAME, recordOne, recordTwo);
+
+        WhereClauses whereClauses = new WhereClauses(AND);
+        mSymptomRecordHelper.addCustomReadTableWhereClauses(
+                whereClauses,
+                Set.of(
+                        HealthPermissions.READ_SYMPTOM_ABDOMINAL_PAIN,
+                        HealthPermissions.WRITE_SYMPTOM_ACNE),
+                /* enforceSelfRead= */ true);
+
+        ReadTableRequest request =
+                new ReadTableRequest(SymptomRecordHelper.TABLE_NAME).setWhereClause(whereClauses);
+
+        List<Integer> symptomType = new ArrayList<>();
+        try (Cursor cursor = mTransactionManager.read(request)) {
+            while (cursor.moveToNext()) {
+                symptomType.add(
+                        mSymptomRecordHelper.populateSpecificRecordValue(cursor).getSymptomType());
+            }
+        }
+
+        assertThat(symptomType).hasSize(2);
+        assertThat(symptomType).containsExactly(SYMPTOM_TYPE_ABDOMINAL_PAIN, SYMPTOM_TYPE_ACNE);
+    }
+
+    @Test
+    public void doNotEnforceSelfRead_readOnlyReadPermission() {
+        SymptomRecordInternal recordOne = new SymptomRecordInternal();
+        recordOne.setSymptomType(SYMPTOM_TYPE_ABDOMINAL_PAIN);
+
+        SymptomRecordInternal recordTwo = new SymptomRecordInternal();
+        recordTwo.setSymptomType(SYMPTOM_TYPE_ACNE);
+
+        mFitnessTestUtils.insertRecords(PACKAGE_NAME, recordOne, recordTwo);
+
+        WhereClauses whereClauses = new WhereClauses(AND);
+        mSymptomRecordHelper.addCustomReadTableWhereClauses(
+                whereClauses,
+                Set.of(
+                        HealthPermissions.READ_SYMPTOM_ABDOMINAL_PAIN,
+                        HealthPermissions.WRITE_SYMPTOM_ACNE),
+                /* enforceSelfRead= */ false);
+
+        ReadTableRequest request =
+                new ReadTableRequest(SymptomRecordHelper.TABLE_NAME).setWhereClause(whereClauses);
+
+        List<Integer> symptomType = new ArrayList<>();
+        try (Cursor cursor = mTransactionManager.read(request)) {
+            while (cursor.moveToNext()) {
+                symptomType.add(
+                        mSymptomRecordHelper.populateSpecificRecordValue(cursor).getSymptomType());
+            }
+        }
+
+        assertThat(symptomType).hasSize(1);
+        assertThat(symptomType).containsExactly(SYMPTOM_TYPE_ABDOMINAL_PAIN);
     }
 
     private SymptomRecordInternal getSymptomRecord(int type) {

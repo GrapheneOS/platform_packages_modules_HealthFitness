@@ -149,14 +149,21 @@ public final class SymptomRecordHelper extends IntervalRecordHelper<SymptomRecor
 
     @Override
     protected void addCustomReadTableWhereClauses(
-            WhereClauses whereClauses, Set<String> grantedGranularPermissions) {
+            WhereClauses whereClauses,
+            Set<String> grantedGranularPermissions,
+            boolean enforceSelfRead) {
         Set<Integer> allowedSymptomTypes =
                 SymptomTypePermissionMapper.getSymptomTypes().stream()
                         .filter(
                                 (symptomType) ->
                                         grantedGranularPermissions.contains(
-                                                SymptomTypePermissionMapper.getReadPermission(
-                                                        symptomType)))
+                                                        SymptomTypePermissionMapper
+                                                                .getReadPermission(symptomType))
+                                                || (enforceSelfRead
+                                                        && grantedGranularPermissions.contains(
+                                                                SymptomTypePermissionMapper
+                                                                        .getWritePermission(
+                                                                                symptomType))))
                         .collect(Collectors.toSet());
 
         if (allowedSymptomTypes.isEmpty()) {

@@ -392,7 +392,7 @@
     <string name="symptom_severity_severe" msgid="4675732713898596705">"Hatari"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>⁠"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Ruhusu “<xliff:g id="APP_NAME">%1$s</xliff:g>” isome"</string>
-    <string name="write_permission_category" msgid="1529702804865008111">"Ruhusu “<xliff:g id="APP_NAME">%1$s</xliff:g>” ili uandike"</string>
+    <string name="write_permission_category" msgid="1529702804865008111">"Ruhusu “<xliff:g id="APP_NAME">%1$s</xliff:g>” iandike"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Ruhusu"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Ruhusu zote"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Usiruhusu"</string>
@@ -403,8 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Chagua data unayotaka programu hii isome kwenye Health Connect"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Kutuma data kati ya programu"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data kutoka <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Ruhusu programu ya <xliff:g id="APP_NAME">%1$s</xliff:g> isome data kutoka kwenye programu nyingine katika kifaa hiki kwa kutumia Health Connect. Data hii pia inaweza kusomwa na programu nyingine unazoruhusu ziifikie."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Programu zinazoweza kusawazisha data hii"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Pata maelezo kuhusu jinsi <xliff:g id="APP_NAME">%1$s</xliff:g> inavyotumia data yako kwenye "<a href="%2$s">"sera yao ya faragha"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect hukuwezesha kutuma data yako ya afya na siha kati ya programu mbalimbali. Hatua hii hukusaidia kupata maarifa na hali za utumiaji huku ukidumisha usalama wa data yako."</string>
@@ -413,13 +412,13 @@
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ukitoa idhini ya kusoma, programu hii inaweza kusoma data mpya na ya awali"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Ungependa kuruhusu programu ya <xliff:g id="APP_NAME">%1$s</xliff:g> ifikie Health Connect?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Ungependa kuruhusu <xliff:g id="APP_NAME">%1$s</xliff:g> ifikie data ya mazoezi na siha?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"Unaweza kujifunza jinsi <xliff:g id="APP_NAME">%1$s</xliff:g> inavyoshughulikia data yako kwenye <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"Unaweza kufahamu jinsi <xliff:g id="APP_NAME">%1$s</xliff:g> inavyoshughulikia data yako kwenye <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"sera ya faragha"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"Ungependa kuruhusu <xliff:g id="APP_NAME">%1$s</xliff:g> ifikie rekodi zako za matibabu?"</string>
-    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Ukiipa ruhusa, programu inaweza kusoma na kuandika data kama vile ya mizio, matokeo ya maabara, chanjo na nyingineyo\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Ukiipa ruhusa, programu inaweza kusoma data kama vile ya mizio, matokeo ya maabara, chanjo na nyingineyo\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
+    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Ukiipa ruhusa, programu inaweza kusoma na kuandika data kama vile ya mizio, matokeo ya maabara, chanjo na nyinginezo\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
+    <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Ukiipa ruhusa, programu inaweza kusoma data kama vile ya mizio, matokeo ya maabara, chanjo na nyinginezo\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"Kuhusu rekodi za matibabu"</string>
-    <string name="medical_request_data_to_share" msgid="6778034304921873317">"Data ya kutuma inajumuisha"</string>
+    <string name="medical_request_data_to_share" msgid="6778034304921873317">"Data inayotumwa inajumuisha"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"Ukiruhusu, <xliff:g id="APP_NAME">%1$s</xliff:g> inaweza kutuma rekodi zako za matibabu kwenye Health Connect."</string>
     <string name="medical_request_footer" msgid="157243861031258933">"Sawazisha rekodi zako za matibabu kutoka kwenye programu na vyanzo mbalimbali ili uziweke katika sehemu moja"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Ungependa kuondoa ruhusa zote?"</string>
@@ -853,7 +852,8 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} haijulikani"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <string name="alcohol_consumption_beverage_type_other" msgid="8951149340640427255">"Nyingine"</string>
+    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
+    <skip />
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Bia"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Mvinyo"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
@@ -876,14 +876,10 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Kiwango cha Kilevi"</string>
     <string name="notes_title" msgid="4596764711916248492">"Madokezo"</string>
     <string name="details_title" msgid="8411891773854413790">"Maelezo"</string>
-    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
-    <skip />
+    <string name="menstrual_cycle_phase_follicular" msgid="4515498093841723331">"Kipindi cha kupevuka"</string>
+    <string name="menstrual_cycle_phase_luteal" msgid="2369477800443212440">"Kipindi kinachotangulia hedhi"</string>
+    <string name="menstrual_cycle_phase_unknown" msgid="1126074973862101221">"Kipindi kisichojulikana cha hedhi"</string>
+    <string name="menstrual_cycle_phase_day_of_cycle" msgid="5910349012626523530">"Siku ya <xliff:g id="DAY">%1$d</xliff:g>"</string>
     <string name="minute_duration" msgid="9035288227090160206">"Dak <xliff:g id="MINUTE">%1$s</xliff:g>"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"Saa <xliff:g id="HOUR">%1$s</xliff:g> dak <xliff:g id="MIN">%2$s</xliff:g>"</string>
     <string name="hour_duration" msgid="3472489613837138711">"Saa <xliff:g id="HOUR">%1$s</xliff:g>"</string>

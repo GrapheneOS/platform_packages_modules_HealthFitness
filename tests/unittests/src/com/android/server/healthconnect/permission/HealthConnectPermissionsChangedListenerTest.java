@@ -19,12 +19,14 @@ package com.android.server.healthconnect.permission;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Process;
 import android.os.UserHandle;
+import android.os.UserManager;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -42,11 +44,14 @@ public class HealthConnectPermissionsChangedListenerTest {
     private HealthConnectPermissionsChangedListener mHealthConnectPermissionsChangedListener;
     @Mock FirstGrantTimeManager mFirstGrantTimeManager;
     @Mock Context mContext;
+    @Mock Context mProfileContext;
     @Mock PackageManager mPackageManager;
+    @Mock UserManager mUserManager;
 
     @Before
     public void setUp() throws PackageManager.NameNotFoundException {
         when(mContext.getPackageManager()).thenReturn(mPackageManager);
+        when(mContext.getUser()).thenReturn(Process.myUserHandle());
 
         mHealthConnectPermissionsChangedListener =
                 new HealthConnectPermissionsChangedListener(mContext, mFirstGrantTimeManager);
@@ -64,9 +69,24 @@ public class HealthConnectPermissionsChangedListenerTest {
     public void onPermissionsChanged_testUpdateFirstGrantTimesFromPermissionStateInvoked() {
         UserHandle currentUser = Process.myUserHandle();
         int uid = Process.myUid();
+        when(mContext.getSystemService(UserManager.class)).thenReturn(mUserManager);
+
         mHealthConnectPermissionsChangedListener.onPermissionsChanged(uid);
 
         verify(mFirstGrantTimeManager, times(1))
                 .updateFirstGrantTimesFromPermissionState(eq(currentUser), eq(uid), eq(false));
+    }
+
+    @Test
+    public void onPermissionsChanged_ignoresProfiles() {
+        UserHandle profile = UserHandle.of(999);
+        int uid = profile.getUid(/* appId= */ 1);
+        when(mContext.createContextAsUser(profile, /* flags= */ 0)).thenReturn(mProfileContext);
+        when(mProfileContext.getSystemService(UserManager.class)).thenReturn(mUserManager);
+        when(mUserManager.isProfile()).thenReturn(true);
+
+        mHealthConnectPermissionsChangedListener.onPermissionsChanged(uid);
+
+        verifyNoInteractions(mFirstGrantTimeManager);
     }
 }

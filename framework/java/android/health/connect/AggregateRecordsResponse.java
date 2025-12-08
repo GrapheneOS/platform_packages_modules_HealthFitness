@@ -167,7 +167,8 @@ public final class AggregateRecordsResponse<T> {
     @NonNull
     public AggregateRecordsResponse<T> toMasked(@NonNull Function<String, String> packageMasker) {
         Map<Integer, AggregateResult<?>> maskedResults = new HashMap<>();
-        for (var entry : mAggregateResults.entrySet()) {
+        for (Map.Entry<AggregationType<T>, AggregateResult<T>> entry :
+                mAggregateResults.entrySet()) {
             Integer newKey = AggregationTypeIdMapper.getInstance().getIdFor(entry.getKey());
             AggregateResult<?> newValue =
                     entry.getValue() == null ? null : entry.getValue().toMasked(packageMasker);

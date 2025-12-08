@@ -427,16 +427,12 @@ open class AppDataFragment : Hilt_AppDataFragment() {
         return {
             val isChecked = selectAllCheckboxPreference.getIsChecked()
             iterateThroughPreferenceGroup { permissionTypePreference ->
-                if (permissionTypePreference.getHealthPermissionType() != null) {
-                    if (isChecked) {
-                        viewModel.addToDeletionSet(
-                            permissionTypePreference.getHealthPermissionType()
-                        )
-                    } else {
-                        viewModel.removeFromDeletionSet(
-                            permissionTypePreference.getHealthPermissionType()
-                        )
-                    }
+                if (isChecked) {
+                    viewModel.addToDeletionSet(permissionTypePreference.getHealthPermissionType())
+                } else {
+                    viewModel.removeFromDeletionSet(
+                        permissionTypePreference.getHealthPermissionType()
+                    )
                 }
             }
             updateMenu(DELETE)

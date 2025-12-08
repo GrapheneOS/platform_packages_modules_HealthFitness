@@ -577,19 +577,34 @@ class FakeUpdatePriorityListUseCase : IUpdatePriorityListUseCase {
 class FakeLoadAccessUseCase : ILoadAccessUseCase {
 
     private var appDataMap: Map<AppAccessState, List<AppAccessMetadata>> = mutableMapOf()
+    var wasInvoked = false
+        private set
+
+    private var forceFail = false
 
     override suspend fun invoke(
         permissionType: HealthPermissionType
     ): UseCaseResults<Map<AppAccessState, List<AppAccessMetadata>>> {
-        return UseCaseResults.Success(appDataMap)
+        wasInvoked = true
+        return if (forceFail) {
+            UseCaseResults.Failed(IllegalStateException("Force failed"))
+        } else {
+            UseCaseResults.Success(appDataMap)
+        }
     }
 
     fun updateMap(map: Map<AppAccessState, List<AppAccessMetadata>>) {
         appDataMap = map
     }
 
+    fun setForceFail(forceFail: Boolean) {
+        this.forceFail = forceFail
+    }
+
     fun reset() {
         this.appDataMap = mutableMapOf()
+        wasInvoked = false
+        forceFail = false
     }
 }
 

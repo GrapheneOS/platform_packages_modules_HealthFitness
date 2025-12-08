@@ -1023,6 +1023,7 @@ public final class TestUtils {
                 newPriority.getDataOriginsPriorityOrder().stream()
                         .map(DataOrigin::getPackageName)
                         .toList();
+
         assertThat(newPriorityString).isEqualTo(packageNames);
     }
 
@@ -1067,6 +1068,26 @@ public final class TestUtils {
                 .isEqualTo(permissionCategory);
         assertThat(updateDataOriginPriorityOrderRequest.getDataOriginInOrder()).isNotNull();
         receiver.verifyNoExceptionOrThrow(3);
+    }
+
+    /** Gets the contributor applications list after getting the MANAGE_HEALTH_DATA permission. */
+    public static List<AppInfo> getContributorApplicationsInfo() throws InterruptedException {
+        UiAutomation uiAutomation =
+                androidx.test.platform.app.InstrumentationRegistry.getInstrumentation()
+                        .getUiAutomation();
+
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+        HealthConnectReceiver<ApplicationInfoResponse> receiver = new HealthConnectReceiver<>();
+
+        try {
+            getHealthConnectManager().getContributorApplicationsInfo(outcomeExecutor(), receiver);
+            receiver.verifyNoExceptionOrThrow();
+
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
+
+        return receiver.getResponse().getApplicationInfoList();
     }
 
     public static boolean areHealthPermissionsSupported() {

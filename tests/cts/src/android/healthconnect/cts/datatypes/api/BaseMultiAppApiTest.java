@@ -54,12 +54,12 @@ import java.util.List;
 import java.util.function.Supplier;
 
 abstract class BaseMultiAppApiTest<T extends Record> {
-    private static final ZonedDateTime YESTERDAY_11AM =
+    static final ZonedDateTime YESTERDAY_11AM =
             LocalDate.now(ZoneId.systemDefault())
                     .minusDays(1)
                     .atTime(11, 0)
                     .atZone(ZoneId.systemDefault());
-    private static final String TEST_PACKAGE_NAME = getTestPackageName();
+    static final String TEST_APP_ONE_PACKAGE_NAME = getTestAppOnePackageName();
 
     @Rule(order = 0)
     public final AssumptionCheckerRule mSupportedHardwareRule =
@@ -71,10 +71,10 @@ abstract class BaseMultiAppApiTest<T extends Record> {
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
     @Rule(order = 2)
-    public final TestAppRule mAppWithReadWritePermsRule =
+    public final TestAppRule mTestAppTwoRule =
             new TestAppRule.Builder("android.healthconnect.cts.testapp.readWritePerms.A").build();
 
-    private final TestAppProxy mAppWithReadWritePerms = mAppWithReadWritePermsRule.getProxy();
+    final TestAppProxy mTestAppTwo = mTestAppTwoRule.getProxy();
 
     /**
      * The record class may be unavailable on older builds. Using a supplier makes sure the class
@@ -84,8 +84,8 @@ abstract class BaseMultiAppApiTest<T extends Record> {
     private final Supplier<Class<T>> mRecordClassSupplier;
 
     private Class<T> mRecordClass;
-    private final String mReadPermission;
-    private final String mWritePermission;
+    final AppPermissions mTestPackagePermissions;
+    final AppPermissions mTestAppTwoPermissions;
     private final RecordFactory<T> mRecordFactory;
 
     BaseMultiAppApiTest(
@@ -93,9 +93,21 @@ abstract class BaseMultiAppApiTest<T extends Record> {
             String readPermission,
             String writePermission,
             RecordFactory<T> recordFactory) {
+        this(
+                recordClassSupplier,
+                new AppPermissions(List.of(readPermission), List.of(writePermission)),
+                new AppPermissions(List.of(readPermission), List.of(writePermission)),
+                recordFactory);
+    }
+
+    BaseMultiAppApiTest(
+            Supplier<Class<T>> recordClassSupplier,
+            AppPermissions testPackagePermissions,
+            AppPermissions testAppTwoPermissions,
+            RecordFactory<T> recordFactory) {
         mRecordClassSupplier = recordClassSupplier;
-        mReadPermission = readPermission;
-        mWritePermission = writePermission;
+        mTestPackagePermissions = testPackagePermissions;
+        mTestAppTwoPermissions = testAppTwoPermissions;
         mRecordFactory = recordFactory;
     }
 
@@ -104,10 +116,14 @@ abstract class BaseMultiAppApiTest<T extends Record> {
         TestUtils.deleteAllDataFromHealthConnect();
 
         mRecordClass = mRecordClassSupplier.get();
-        assertThat(getGrantedHealthPermissions(getTestPackageName()))
-                .containsAtLeast(mReadPermission, mWritePermission);
-        assertThat(getGrantedHealthPermissions(mAppWithReadWritePerms.getPackageName()))
-                .containsAtLeast(mReadPermission, mWritePermission);
+        assertThat(getGrantedHealthPermissions(getTestAppOnePackageName()))
+                .containsAtLeastElementsIn(mTestPackagePermissions.readPermissions);
+        assertThat(getGrantedHealthPermissions(getTestAppOnePackageName()))
+                .containsAtLeastElementsIn(mTestPackagePermissions.writePermissions);
+        assertThat(getGrantedHealthPermissions(mTestAppTwo.getPackageName()))
+                .containsAtLeastElementsIn(mTestAppTwoPermissions.readPermissions);
+        assertThat(getGrantedHealthPermissions(mTestAppTwo.getPackageName()))
+                .containsAtLeastElementsIn(mTestAppTwoPermissions.writePermissions);
     }
 
     @After
@@ -124,11 +140,11 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(10).toInstant(),
                                 YESTERDAY_11AM.plusMinutes(30).toInstant()));
 
-        mAppWithReadWritePermsRule.revokeHealthPermission(mWritePermission);
+        mTestAppTwoRule.revokeHealthPermissions(mTestAppTwoPermissions.writePermissions);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
-                        () -> mAppWithReadWritePerms.insertRecords(recordsToInsert));
+                        () -> mTestAppTwo.insertRecords(recordsToInsert));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
     }
@@ -144,7 +160,7 @@ abstract class BaseMultiAppApiTest<T extends Record> {
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
 
         List<? extends Record> returnedRecords =
-                mAppWithReadWritePerms.readRecords(
+                mTestAppTwo.readRecords(
                         new ReadRecordsRequestUsingIds.Builder<>(mRecordClass)
                                 .addId(recordIds.get(0))
                                 .build());
@@ -164,9 +180,9 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                                 YESTERDAY_11AM.plusMinutes(30).toInstant()));
         List<String> recordIds = insertRecordsAndReturnIds(recordsToInsert);
 
-        mAppWithReadWritePermsRule.revokeHealthPermission(mReadPermission);
+        mTestAppTwoRule.revokeHealthPermissions(mTestAppTwoPermissions.readPermissions);
         List<? extends Record> returnedRecords =
-                mAppWithReadWritePerms.readRecords(
+                mTestAppTwo.readRecords(
                         new ReadRecordsRequestUsingIds.Builder<>(mRecordClass)
                                 .addId(recordIds.get(0))
                                 .build());
@@ -183,10 +199,10 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                                 newEmptyMetadata(),
                                 YESTERDAY_11AM.plusMinutes(10).toInstant(),
                                 YESTERDAY_11AM.plusMinutes(30).toInstant()));
-        List<String> recordIds = mAppWithReadWritePerms.insertRecords(recordsToInsert);
+        List<String> recordIds = mTestAppTwo.insertRecords(recordsToInsert);
 
         List<? extends Record> returnedRecords =
-                mAppWithReadWritePerms.readRecords(
+                mTestAppTwo.readRecords(
                         new ReadRecordsRequestUsingIds.Builder<>(mRecordClass)
                                 .addId(recordIds.get(0))
                                 .build());
@@ -196,7 +212,7 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                         withIdAndPackageName(
                                 recordsToInsert.get(0),
                                 recordIds.get(0),
-                                mAppWithReadWritePerms.getPackageName()));
+                                mTestAppTwo.getPackageName()));
     }
 
     @Test
@@ -207,15 +223,15 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                                 newEmptyMetadata(),
                                 YESTERDAY_11AM.plusMinutes(10).toInstant(),
                                 YESTERDAY_11AM.plusMinutes(30).toInstant()));
-        List<String> recordIds = mAppWithReadWritePerms.insertRecords(recordsToInsert);
+        List<String> recordIds = mTestAppTwo.insertRecords(recordsToInsert);
 
-        mAppWithReadWritePermsRule.revokeHealthPermission(mReadPermission);
-        mAppWithReadWritePermsRule.revokeHealthPermission(mWritePermission);
+        mTestAppTwoRule.revokeHealthPermissions(mTestAppTwoPermissions.readPermissions);
+        mTestAppTwoRule.revokeHealthPermissions(mTestAppTwoPermissions.writePermissions);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
                         () ->
-                                mAppWithReadWritePerms.readRecords(
+                                mTestAppTwo.readRecords(
                                         new ReadRecordsRequestUsingIds.Builder<>(mRecordClass)
                                                 .addId(recordIds.get(0))
                                                 .build()));
@@ -231,14 +247,14 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                                 newEmptyMetadata(),
                                 YESTERDAY_11AM.plusMinutes(10).toInstant(),
                                 YESTERDAY_11AM.plusMinutes(30).toInstant()));
-        List<String> recordIds = mAppWithReadWritePerms.insertRecords(recordsToInsert);
+        List<String> recordIds = mTestAppTwo.insertRecords(recordsToInsert);
 
-        mAppWithReadWritePermsRule.revokeHealthPermission(mWritePermission);
+        mTestAppTwoRule.revokeHealthPermissions(mTestAppTwoPermissions.writePermissions);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
                         () ->
-                                mAppWithReadWritePerms.deleteRecords(
+                                mTestAppTwo.deleteRecords(
                                         RecordIdFilter.fromId(mRecordClass, recordIds.get(0))));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
@@ -247,7 +263,7 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                         withIdAndPackageName(
                                 recordsToInsert.get(0),
                                 recordIds.get(0),
-                                mAppWithReadWritePerms.getPackageName()));
+                                mTestAppTwo.getPackageName()));
     }
 
     @Test
@@ -264,7 +280,7 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                 assertThrows(
                         HealthConnectException.class,
                         () ->
-                                mAppWithReadWritePerms.deleteRecords(
+                                mTestAppTwo.deleteRecords(
                                         RecordIdFilter.fromId(mRecordClass, recordIds.get(0))));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
@@ -281,18 +297,18 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                                 newEmptyMetadata(),
                                 YESTERDAY_11AM.plusMinutes(10).toInstant(),
                                 YESTERDAY_11AM.plusMinutes(30).toInstant()));
-        List<String> recordIds = mAppWithReadWritePerms.insertRecords(recordsToInsert);
+        List<String> recordIds = mTestAppTwo.insertRecords(recordsToInsert);
         Record updatedRecord =
                 mRecordFactory.newEmptyRecord(
                         newEmptyMetadataWithId(recordIds.get(0)),
                         YESTERDAY_11AM.plusMinutes(20).toInstant(),
                         YESTERDAY_11AM.plusMinutes(35).toInstant());
 
-        mAppWithReadWritePermsRule.revokeHealthPermission(mWritePermission);
+        mTestAppTwoRule.revokeHealthPermissions(mTestAppTwoPermissions.writePermissions);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
-                        () -> mAppWithReadWritePerms.updateRecords(List.of(updatedRecord)));
+                        () -> mTestAppTwo.updateRecords(List.of(updatedRecord)));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
         assertThat(readAllRecords())
@@ -300,7 +316,7 @@ abstract class BaseMultiAppApiTest<T extends Record> {
                         withIdAndPackageName(
                                 recordsToInsert.get(0),
                                 recordIds.get(0),
-                                mAppWithReadWritePerms.getPackageName()));
+                                mTestAppTwo.getPackageName()));
     }
 
     @Test
@@ -321,7 +337,7 @@ abstract class BaseMultiAppApiTest<T extends Record> {
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
-                        () -> mAppWithReadWritePerms.updateRecords(List.of(updatedRecord)));
+                        () -> mTestAppTwo.updateRecords(List.of(updatedRecord)));
 
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
         assertThat(readAllRecords())
@@ -331,12 +347,12 @@ abstract class BaseMultiAppApiTest<T extends Record> {
 
     @Test
     public void getChangesToken_noReadPermission_throws() {
-        mAppWithReadWritePermsRule.revokeHealthPermission(mReadPermission);
+        mTestAppTwoRule.revokeHealthPermissions(mTestAppTwoPermissions.readPermissions);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
                         () ->
-                                mAppWithReadWritePerms.getChangeLogToken(
+                                mTestAppTwo.getChangeLogToken(
                                         new ChangeLogTokenRequest.Builder()
                                                 .addRecordType(mRecordClass)
                                                 .build()));
@@ -346,32 +362,33 @@ abstract class BaseMultiAppApiTest<T extends Record> {
     @Test
     public void getChanges_noReadPermission_throws() throws Exception {
         String token =
-                mAppWithReadWritePerms.getChangeLogToken(
+                mTestAppTwo.getChangeLogToken(
                         new ChangeLogTokenRequest.Builder().addRecordType(mRecordClass).build());
-        mAppWithReadWritePermsRule.revokeHealthPermission(mReadPermission);
+        mTestAppTwoRule.revokeHealthPermissions(mTestAppTwoPermissions.readPermissions);
         HealthConnectException e =
                 assertThrows(
                         HealthConnectException.class,
                         () ->
-                                mAppWithReadWritePerms.getChangeLogs(
+                                mTestAppTwo.getChangeLogs(
                                         new ChangeLogsRequest.Builder(token).build()));
         assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
     }
 
-    private static String getTestPackageName() {
+    public record AppPermissions(List<String> readPermissions, List<String> writePermissions) {}
+
+    private static String getTestAppOnePackageName() {
         return ApplicationProvider.getApplicationContext().getPackageName();
     }
 
     private Record withIdAndTestPackageName(Record record, String id) {
-        return mRecordFactory.recordWithIdAndPackageName(record, id, TEST_PACKAGE_NAME);
+        return mRecordFactory.recordWithIdAndPackageName(record, id, TEST_APP_ONE_PACKAGE_NAME);
     }
 
     private Record withIdAndPackageName(Record record, String id, String packageName) {
         return mRecordFactory.recordWithIdAndPackageName(record, id, packageName);
     }
 
-    private static List<String> insertRecordsAndReturnIds(List<? extends Record> records)
-            throws Exception {
+    static List<String> insertRecordsAndReturnIds(List<? extends Record> records) throws Exception {
         return TestUtils.insertRecords(records).stream().map(r -> r.getMetadata().getId()).toList();
     }
 
@@ -379,5 +396,4 @@ abstract class BaseMultiAppApiTest<T extends Record> {
         return TestUtils.readRecords(
                 new ReadRecordsRequestUsingFilters.Builder<>(mRecordClass).build());
     }
-
 }

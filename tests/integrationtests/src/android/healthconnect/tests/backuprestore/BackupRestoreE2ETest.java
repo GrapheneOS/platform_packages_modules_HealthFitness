@@ -57,6 +57,7 @@ import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.InstantRecord;
 import android.health.connect.datatypes.IntervalRecord;
 import android.health.connect.datatypes.MedicalResource;
+import android.health.connect.datatypes.MenstrualCyclePhaseRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.PlannedExerciseSessionRecord;
 import android.health.connect.datatypes.Record;
@@ -67,6 +68,7 @@ import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.ParcelFileDescriptor;
 import android.os.UserHandle;
 import android.platform.test.annotations.AppModeFull;
+import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import android.provider.Settings;
@@ -75,6 +77,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.android.compatibility.common.util.BackupUtils;
+import com.android.healthfitness.flags.Flags;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -84,6 +87,8 @@ import org.junit.runner.RunWith;
 import java.io.InputStream;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -334,6 +339,48 @@ public class BackupRestoreE2ETest {
                         assertThat(countAllRecords(ExerciseSessionRecord.class))
                                 .isEqualTo(numberOfSessions),
                 ASSERT_TIMEOUT_MILLIS);
+    }
+
+    @Test
+    @RequiresFlagsEnabled({
+        Flags.FLAG_CYCLE_PHASES_FLAG,
+        Flags.FLAG_CYCLE_PHASES_DB,
+        Flags.FLAG_SMOKING_DB,
+        Flags.FLAG_SYMPTOMS_DB,
+        Flags.FLAG_ALCOHOL_CONSUMPTION_DB
+    })
+    public void testBackupThenRestore_menstrualCyclePhaseRecords_expectDataIsRestoredCorrectly()
+            throws Exception {
+        assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
+
+        int numOfRecords = 90;
+        List<Record> insertedRecords =
+                insertRecordsWithChunking(
+                        (i) -> {
+                            LocalDate date = LocalDate.now(ZoneId.systemDefault()).minusDays(i);
+                            int phase =
+                                    ((i / 14) % 2 == 0)
+                                            ? MenstrualCyclePhaseRecord.PHASE_FOLLICULAR
+                                            : MenstrualCyclePhaseRecord.PHASE_LUTEAL;
+                            int dayOfCycle = (i % 14) + 1;
+                            return new MenstrualCyclePhaseRecord.Builder(
+                                            new Metadata.Builder().build(), date, phase)
+                                    .setDayOfCycle(dayOfCycle)
+                                    .build();
+                        },
+                        numOfRecords);
+        assertThat(insertedRecords).hasSize(numOfRecords);
+
+        mBackupUtils.backupNowAndAssertSuccessForUser(
+                mBackupRestoreApkPackageName, UserHandle.myUserId());
+
+        verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
+        readAndAssertRecordsNotExistUsingIds(insertedRecords);
+
+        mBackupUtils.restoreAndAssertSuccessForUser(
+                LOCAL_TRANSPORT_TOKEN, mBackupRestoreApkPackageName, UserHandle.myUserId());
+
+        eventually(() -> readAndAssertRecordsExistUsingIds(insertedRecords), ASSERT_TIMEOUT_MILLIS);
     }
 
     @Test

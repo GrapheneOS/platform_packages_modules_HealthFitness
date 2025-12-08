@@ -18,6 +18,7 @@ package android.healthconnect.cts.device;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 import static android.healthconnect.testing.cts.TestUtils.advertiseDevice;
+import static android.healthconnect.testing.cts.TestUtils.advertiseDeviceDataSources;
 import static android.healthconnect.testing.cts.TestUtils.insertDeviceRecords;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.readDeviceRecords;
@@ -268,13 +269,9 @@ public class ReadDeviceRecordsTest {
                 new DeviceDataAdvertisement(device, mDeviceId, deviceDataTypeAdvertisements);
         HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
 
-        runWithShellPermissionIdentity(
-                () -> {
-                    mHealthConnectManager.advertiseDeviceDataSources(
-                            Set.of(advertisement), outcomeExecutor(), receiver);
-                    receiver.verifyNoExceptionOrThrow();
-                },
-                MANAGE_HEALTH_DATA_PERMISSION);
+        advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
+
+        receiver.verifyNoExceptionOrThrow();
 
         List<StepsRecord> stepsRecords = List.of(getStepsRecord(123));
         List<SleepSessionRecord> sleepRecords = List.of(DataFactory.buildSleepSession());
