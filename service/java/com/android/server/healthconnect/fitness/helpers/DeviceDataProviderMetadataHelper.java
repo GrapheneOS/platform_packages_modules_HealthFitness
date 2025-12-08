@@ -32,6 +32,7 @@ import android.util.Pair;
 import androidx.annotation.GuardedBy;
 import androidx.annotation.VisibleForTesting;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -78,6 +79,14 @@ public class DeviceDataProviderMetadataHelper extends DatabaseHelper {
     @Override
     public synchronized void clearCache() {
         mCache = null;
+    }
+
+    @Override
+    public synchronized void clearData(TransactionManager transactionManager) {
+        if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            return;
+        }
+        super.clearData(transactionManager);
     }
 
     /** Returns the rowId for the given device data provider package name. */

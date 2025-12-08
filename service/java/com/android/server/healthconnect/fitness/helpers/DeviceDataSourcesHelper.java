@@ -37,6 +37,7 @@ import android.util.Slog;
 
 import androidx.annotation.VisibleForTesting;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
@@ -107,6 +108,14 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
     @Override
     public synchronized void clearCache() {
         mDdpCache = null;
+    }
+
+    @Override
+    public synchronized void clearData(TransactionManager transactionManager) {
+        if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            return;
+        }
+        super.clearData(transactionManager);
     }
 
     /**
