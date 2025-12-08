@@ -17,6 +17,7 @@
 package android.healthconnect.tests.backuprestore;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
+import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING;
 import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermission;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeAllHealthPermissions;
@@ -48,6 +49,7 @@ import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
+import android.health.connect.datatypes.AlcoholConsumptionRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.ExerciseRoute;
@@ -62,6 +64,8 @@ import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.PlannedExerciseSessionRecord;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.units.Energy;
+import android.health.connect.datatypes.units.Percentage;
+import android.health.connect.datatypes.units.Volume;
 import android.healthconnect.testing.cts.PhrCtsTestUtils;
 import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
@@ -339,6 +343,46 @@ public class BackupRestoreE2ETest {
                         assertThat(countAllRecords(ExerciseSessionRecord.class))
                                 .isEqualTo(numberOfSessions),
                 ASSERT_TIMEOUT_MILLIS);
+    }
+
+    @Test
+    @RequiresFlagsEnabled({
+        Flags.FLAG_SMOKING_DB,
+        Flags.FLAG_SYMPTOMS_DB,
+        Flags.FLAG_ALCOHOL_CONSUMPTION_DB,
+        Flags.FLAG_ALCOHOL_CONSUMPTION
+    })
+    public void testBackupThenRestore_alcoholConsumptionRecords_expectDataIsRestoredCorrectly()
+            throws Exception {
+        assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
+
+        int numOfRecords = 90;
+        List<Record> insertedRecords =
+                insertRecordsWithChunking(
+                        (i) -> {
+                            LocalDate date = LocalDate.now(ZoneId.systemDefault()).minusDays(i);
+                            return new AlcoholConsumptionRecord.Builder(
+                                            new Metadata.Builder().build(),
+                                            date,
+                                            ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER)
+                                    .setAlcoholByVolume(Percentage.fromValue(5.2))
+                                    .setServingVolume(Volume.fromLiters(0.122))
+                                    .setNotes("Drinking Notes")
+                                    .build();
+                        },
+                        numOfRecords);
+        assertThat(insertedRecords).hasSize(numOfRecords);
+
+        mBackupUtils.backupNowAndAssertSuccessForUser(
+                mBackupRestoreApkPackageName, UserHandle.myUserId());
+
+        verifyDeleteRecords(new DeleteUsingFiltersRequest.Builder().build());
+        readAndAssertRecordsNotExistUsingIds(insertedRecords);
+
+        mBackupUtils.restoreAndAssertSuccessForUser(
+                LOCAL_TRANSPORT_TOKEN, mBackupRestoreApkPackageName, UserHandle.myUserId());
+
+        eventually(() -> readAndAssertRecordsExistUsingIds(insertedRecords), ASSERT_TIMEOUT_MILLIS);
     }
 
     @Test
