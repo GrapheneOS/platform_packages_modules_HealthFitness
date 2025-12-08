@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"ไม่ทราบ {quantity, number}"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"ไม่รู้จักเครื่องดื่ม"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"เบียร์"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"ไวน์"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"วอดก้า"</string>
@@ -1279,8 +1278,8 @@
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"อนุญาตแล้ว <xliff:g id="NUMBER_0">%1$d</xliff:g> จาก <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> แอป"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"ไม่มีแอปที่ขอ"</string>
-    <string name="allowed" msgid="4158456017482263737">"อนุญาต"</string>
-    <string name="not_allowed" msgid="6092523505093372147">"ไม่อนุญาต"</string>
+    <string name="allowed" msgid="4158456017482263737">"มีสิทธิ์"</string>
+    <string name="not_allowed" msgid="6092523505093372147">"ไม่มีสิทธิ์"</string>
     <string name="access_sensor_note" msgid="7949933977197789634">"แอปที่มีสิทธิ์นี้จะเข้าถึงข้อมูล<xliff:g id="DATA_TYPE">%s</xliff:g>จากเซ็นเซอร์ของอุปกรณ์ได้"</string>
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"นําสิทธิ์เข้าถึง<xliff:g id="DATA_TYPE">%s</xliff:g>ออกจากแอปทั้งหมดในนาฬิกาไหม"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"เครื่องหมายถูก"</string>
@@ -1585,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"น้ำคั่งในร่างกาย"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"หายใจเป็นเสียงหวีด"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"หายใจเป็นเสียงหวีด"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> จาก <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"เลือกแล้ว <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> จาก <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> รายการ"</string>
 </resources>

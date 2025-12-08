@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} tidak diketahui"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Minuman tidak dikenal"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Bir"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Anggur"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
@@ -1341,16 +1340,14 @@
     <string name="data_and_access_summary" msgid="1435478623777637347">"Data dan aplikasi yang dapat mengaksesnya"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Aplikasi yang baru-baru ini menggunakan data Anda"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Tinjau perangkat yang dapat mengakses data kesehatan"</string>
-    <string name="empty_apps_section_title" msgid="1808646811838427261">"Instal aplikasi yang berfungsi dengan Health Connect untuk melihatnya di sini"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Instal aplikasi yang dapat berfungsi dengan Health Connect untuk melihatnya di sini"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Lihat aplikasi yang kompatibel"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Lihat aplikasi kesehatan lainnya"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Tidak terhubung"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Klik untuk menghubungkan aplikasi ini ke Health Connect"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Lain kali"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Semua gejala"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"gejala"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Baca jerawat"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Tulis jerawat"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Baca kuku rapuh"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"retensi air"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Sesak"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"sesak"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> dari <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> dari <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> dipilih"</string>
 </resources>

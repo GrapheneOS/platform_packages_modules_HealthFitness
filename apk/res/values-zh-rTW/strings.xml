@@ -361,8 +361,8 @@
     <string name="procedures_uppercase_label" msgid="9176087520132593261">"醫療程序"</string>
     <string name="procedures_lowercase_label" msgid="5320804313946273234">"醫療程序"</string>
     <string name="procedures_content_description" msgid="1086900373141440005">"閱讀程序資料"</string>
-    <string name="social_history_uppercase_label" msgid="4119611299449533999">"生活型態"</string>
-    <string name="social_history_lowercase_label" msgid="9027541979445736412">"社交活動記錄"</string>
+    <string name="social_history_uppercase_label" msgid="4119611299449533999">"個人史"</string>
+    <string name="social_history_lowercase_label" msgid="9027541979445736412">"個人史"</string>
     <string name="social_history_content_description" msgid="7187059309389849831">"讀取生活型態資料"</string>
     <string name="visits_uppercase_label" msgid="8532619758336375886">"就醫記錄"</string>
     <string name="visits_lowercase_label" msgid="2545887061364564151">"就醫記錄"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} 個不明來源"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"不明飲料"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"啤酒"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"葡萄酒"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"伏特加"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"未連結"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"點選即可將這個應用程式連結至「健康資料同步」"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"暫時不要"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"所有症狀"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"症狀"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"讀取「青春痘」資料"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"寫入「青春痘」資料"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"讀取「指甲易斷」資料"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"水腫"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"喘鳴"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"喘鳴"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"已選取 <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> 個，共 <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> 個"</string>
 </resources>

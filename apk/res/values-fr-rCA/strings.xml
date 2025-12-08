@@ -361,8 +361,8 @@
     <string name="procedures_uppercase_label" msgid="9176087520132593261">"Procédures"</string>
     <string name="procedures_lowercase_label" msgid="5320804313946273234">"procédures"</string>
     <string name="procedures_content_description" msgid="1086900373141440005">"Lecture des procédures"</string>
-    <string name="social_history_uppercase_label" msgid="4119611299449533999">"Habitudes"</string>
-    <string name="social_history_lowercase_label" msgid="9027541979445736412">"histoire sociale"</string>
+    <string name="social_history_uppercase_label" msgid="4119611299449533999">"Antécédents sociaux"</string>
+    <string name="social_history_lowercase_label" msgid="9027541979445736412">"antécédents sociaux"</string>
     <string name="social_history_content_description" msgid="7187059309389849831">"Lecture de l\'histoire sociale"</string>
     <string name="visits_uppercase_label" msgid="8532619758336375886">"Visites"</string>
     <string name="visits_lowercase_label" msgid="2545887061364564151">"visites"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"Inconnu ({quantity, number})"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Boisson inconnue"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Bière"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Vin"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Non associée"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Cliquez ici pour connecter cette appli à Connexion santé"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Pas maintenant"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Tous les symptômes"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"symptômes"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Lecture des données relatives à l\'acné"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Écriture des données relatives à l\'acné"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Lecture des données relatives aux ongles cassants"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"rétention d\'eau"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Respiration sifflante"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"respiration sifflante"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> de <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> autorisation(s) sélectionnée(s) sur <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
 </resources>

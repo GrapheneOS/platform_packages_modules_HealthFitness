@@ -358,8 +358,8 @@
     <string name="pregnancy_uppercase_label" msgid="5979925175194337864">"Trudnoća"</string>
     <string name="pregnancy_lowercase_label" msgid="810439290131044517">"trudnoća"</string>
     <string name="pregnancy_content_description" msgid="3436773729243586287">"Čitanje podataka o trudnoći"</string>
-    <string name="procedures_uppercase_label" msgid="9176087520132593261">"Postupci"</string>
-    <string name="procedures_lowercase_label" msgid="5320804313946273234">"postupci"</string>
+    <string name="procedures_uppercase_label" msgid="9176087520132593261">"Zahvati"</string>
+    <string name="procedures_lowercase_label" msgid="5320804313946273234">"zahvati"</string>
     <string name="procedures_content_description" msgid="1086900373141440005">"Čitanje podataka o postupcima"</string>
     <string name="social_history_uppercase_label" msgid="4119611299449533999">"Historija aktivnosti na društvenim medijima"</string>
     <string name="social_history_lowercase_label" msgid="9027541979445736412">"historija aktivnosti na društvenim medijima"</string>
@@ -412,13 +412,13 @@
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ako joj odobrite čitanje podataka, aplikacija će moći čitati nove i prethodne podatke"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Dozvoliti aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupa Health Connectu?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Dozvoliti aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupa podacima o fitnesu i wellnessu?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"Možete saznati kako aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> obrađuje vaše podatke u dokumentu \"<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>\""</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"Možete saznati kako aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> obrađuje vaše podatke u \"<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>\""</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"pravilima privatnosti"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"Dozvoliti aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupa zdravstvenim kartonima?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Ako joj odobrite pristup, aplikacija može čitati i zapisivati podatke kao što su podaci o alergijama, laboratorijskim nalazima, vakcinama i drugo\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Ako joj odobrite pristup, aplikacija može čitati podatke kao što su podaci o alergijama, laboratorijskim nalazima, vakcinama i drugo\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"O zdravstvenim kartonima"</string>
-    <string name="medical_request_data_to_share" msgid="6778034304921873317">"Podaci za dijeljenje uključuju"</string>
+    <string name="medical_request_data_to_share" msgid="6778034304921873317">"Podaci za dijeljenje uključuju sljedeće"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"Ako joj dozvolite pristup, aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> može dijeliti vaše zdravstvene kartone s Health Connectom."</string>
     <string name="medical_request_footer" msgid="157243861031258933">"Sinhronizirajte zdravstvene kartone iz različitih aplikacija i izvora da ih imate na jednom mjestu"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Ukloniti sva odobrenja?"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} – nepoznato"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Nepoznato piće"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Pivo"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Vino"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Nije povezano"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Povezivanje aplikacije s Health Connectom klikom"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Ne sada"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Svi simptomi"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"simptomi"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Čitanje podataka o aknama"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Zapisivanje podataka o aknama"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Čitanje podataka o lomljivim noktima"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"zadržavanje vode"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Sviranje u grudima"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"sviranje u grudima"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> od <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Odabrana odobrenja: <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> od <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
 </resources>

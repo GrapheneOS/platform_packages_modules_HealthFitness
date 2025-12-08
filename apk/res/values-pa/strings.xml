@@ -334,8 +334,8 @@
     <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"ਸਾਰੇ ਡਾਕਟਰੀ ਰਿਕਾਰਡ"</string>
     <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"ਸਾਰੇ ਡਾਕਟਰੀ ਰਿਕਾਰਡ"</string>
     <string name="all_medical_data_content_description" msgid="3454355551506537094">"ਸਾਰੇ ਡਾਕਟਰੀ ਰਿਕਾਰਡ ਲਿਖੋ"</string>
-    <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"ਅਲਰਜੀਆਂ"</string>
-    <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"ਅਲਰਜੀਆਂ"</string>
+    <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"ਐਲਰਜੀਆਂ"</string>
+    <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"ਐਲਰਜੀਆਂ"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"ਅਲਰਜੀਆਂ ਨੂੰ ਪੜ੍ਹੋ"</string>
     <string name="conditions_uppercase_label" msgid="5260404343402770877">"ਡਾਕਟਰੀ ਸਥਿਤੀਆਂ"</string>
     <string name="conditions_lowercase_label" msgid="2678248918552246997">"ਡਾਕਟਰੀ ਸਥਿਤੀਆਂ"</string>
@@ -415,7 +415,7 @@
     <string name="request_permissions_rationale" msgid="2642076968583316986">"ਤੁਸੀਂ ਜਾਣ ਸਕਦੇ ਹੋ ਕਿ <xliff:g id="APP_NAME">%1$s</xliff:g> ਉਨ੍ਹਾਂ ਦੀ <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> ਮੁਤਾਬਕ ਤੁਹਾਡੇ ਡਾਟੇ ਨੂੰ ਕਿਵੇਂ ਸੰਭਾਲਦੀ ਹੈ"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"ਪਰਦੇਦਾਰੀ ਨੀਤੀ"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"ਕੀ <xliff:g id="APP_NAME">%1$s</xliff:g> ਨੂੰ ਤੁਹਾਡੇ ਡਾਕਟਰੀ ਰਿਕਾਰਡਾਂ ਤੱਕ ਪਹੁੰਚ ਕਰਨ ਦੀ ਆਗਿਆ ਦੇਣੀ ਹੈ?"</string>
-    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"ਜੇ ਤੁਸੀਂ ਪਹੁੰਚ ਦਿੰਦੇ ਹੋ, ਤਾਂ ਐਪ ਅਲਰਜੀਆਂ, ਲੈਬ ਨਤੀਜਿਆਂ, ਟੀਕਿਆਂ ਅਤੇ ਹੋਰ ਜਾਣਕਾਰੀ ਵਰਗੇ ਡਾਟੇ ਨੂੰ ਪੜ੍ਹ ਅਤੇ ਲਿਖ ਸਕਦੀ ਹੈ\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
+    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"ਜੇ ਤੁਸੀਂ ਪਹੁੰਚ ਦਿੰਦੇ ਹੋ, ਤਾਂ ਐਪ ਐਲਰਜੀਆਂ, ਲੈਬ ਨਤੀਜਿਆਂ, ਟੀਕਿਆਂ ਅਤੇ ਹੋਰ ਜਾਣਕਾਰੀ ਵਰਗੇ ਡਾਟੇ ਨੂੰ ਪੜ੍ਹ ਅਤੇ ਲਿਖ ਸਕਦੀ ਹੈ\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"ਜੇ ਤੁਸੀਂ ਪਹੁੰਚ ਦਿੰਦੇ ਹੋ, ਤਾਂ ਐਪ ਅਲਰਜੀਆਂ, ਲੈਬ ਨਤੀਜਿਆਂ, ਟੀਕਿਆਂ ਅਤੇ ਹੋਰ ਜਾਣਕਾਰੀ ਵਰਗੇ ਡਾਟੇ ਨੂੰ ਪੜ੍ਹ ਸਕਦੀ ਹੈ\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"ਡਾਕਟਰੀ ਰਿਕਾਰਡਾਂ ਬਾਰੇ"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"ਸਾਂਝਾ ਕਰਨ ਵਾਲੇ ਡਾਟਾ ਵਿੱਚ ਸ਼ਾਮਲ ਹੈ"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} ਅਗਿਆਤ ਹੈ"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"ਅਗਿਆਤ ਪੀਣਯੋਗ ਪਦਾਰਥ"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"ਬੀਅਰ"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"ਵਾਈਨ"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"ਵੋਡਕਾ"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"ਕਨੈਕਟ ਨਹੀਂ ਹੈ"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"ਇਸ ਐਪ ਨੂੰ Health Connect ਨਾਲ ਕਨੈਕਟ ਕਰਨ ਲਈ ਕਲਿੱਕ ਕਰੋ"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"ਹੁਣੇ ਨਹੀਂ"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"ਸਾਰੇ ਲੱਛਣ"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"ਲੱਛਣ"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"ਐਕਨੇ ਸੰਬੰਧੀ ਡਾਟਾ ਪੜ੍ਹਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"ਐਕਨੇ ਸੰਬੰਧੀ ਡਾਟਾ ਲਿਖਣ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"ਟੁੱਟਣ ਵਾਲੇ ਨਹੁੰ ਸੰਬੰਧੀ ਡਾਟਾ ਪੜ੍ਹਨ ਦੀ ਇਜਾਜ਼ਤ ਦਿਓ"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"ਪਾਣੀ ਇਕੱਠਾ ਹੋਣਾ"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ਸਾਹ ਲੈਣ ਵਿੱਚ ਘੁਰਘੁਰਾਹਟ"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ਸਾਹ ਲੈਣ ਵਿੱਚ ਘੁਰਘੁਰਾਹਟ"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g> ਵਿੱਚੋਂ <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> ਵਿੱਚੋਂ <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> ਨੂੰ ਚੁਣਿਆ ਗਿਆ"</string>
 </resources>

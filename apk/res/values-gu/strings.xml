@@ -337,8 +337,8 @@
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"એલર્જી"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"એલર્જી"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"એલર્જી વિશે વાંચો"</string>
-    <string name="conditions_uppercase_label" msgid="5260404343402770877">"શરતો"</string>
-    <string name="conditions_lowercase_label" msgid="2678248918552246997">"શરતો"</string>
+    <string name="conditions_uppercase_label" msgid="5260404343402770877">"તબીબી સ્થિતિઓ"</string>
+    <string name="conditions_lowercase_label" msgid="2678248918552246997">"તબીબી સ્થિતિઓ"</string>
     <string name="conditions_content_description" msgid="3230552343616193829">"વાંચવાની શરતો"</string>
     <string name="vaccines_uppercase_label" msgid="1101176371071123187">"રસીઓ"</string>
     <string name="vaccines_lowercase_label" msgid="4991324441768127447">"રસીઓ"</string>
@@ -412,7 +412,7 @@
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"જો તમે વાંચવાનો ઍક્સેસ આપશો, તો આ ઍપ નવો અને અગાઉનો ડેટા વાંચી શકે છે"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g>ને Health Connect ઍક્સેસ કરવાની મંજૂરી આપીએ?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"શું <xliff:g id="APP_NAME">%1$s</xliff:g>ને ફિટનેસ અને સુખાકારી સંબંધિત ડેટા ઍક્સેસ કરવાની મંજૂરી આપીએ?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"તમે <xliff:g id="APP_NAME">%1$s</xliff:g>ની તમારો ડેટા હૅન્ડલ કરવાની રીતે વિશે તેમના <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>માં જાણી શકો છો"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"તમે <xliff:g id="APP_NAME">%1$s</xliff:g>ની તમારો ડેટા હૅન્ડલ કરવાની રીતે વિશે તેમની <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>માં જાણી શકો છો"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"પ્રાઇવસી પૉલિસી"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"<xliff:g id="APP_NAME">%1$s</xliff:g>ને તમારા મેડિકલ રેકોર્ડ ઍક્સેસ કરવાની મંજૂરી આપીએ?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"જો તમે ઍક્સેસ આપો, તો ઍપ એલર્જી, લેબના પરિણામો અને રસીઓ જેવી બીજી ઘણી બાબતોનો ડેટા લખી અને વાંચી શકે છે\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} અજાણ છે"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"અજાણ્યું પીણું"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"બિયર"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"વાઇન"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"વોડકા"</string>
@@ -1315,7 +1314,7 @@
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"ચાલુ રાખો"</string>
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"બધી ઍપમાં તમારા આરોગ્યનો ડેટા જુઓ"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect તમને તમારી ઍપ વચ્ચે ફિટનેસ અને સુખાકારીનો ડેટા શેર કરવાની મંજૂરી આપે છે. અત્યારે તમે કઈ ઍપ સાથે કનેક્ટ કરી શકો છો તે જુઓ."</string>
-    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"બીજી કોઈ ઍપ કનેક્ટ કરો"</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"બીજી ઍપ કનેક્ટ કરો"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Health Connect સાથે અન્ય ઍપનું સેટઅપ કરો, જેથી તે ફિટનેસ અને સુખાકારીનો ડેટા શેર કરી શકે"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"વર્તમાન ડિવાઇસ"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"અજાણ્યું ડિવાઇસ"</string>
@@ -1344,7 +1343,7 @@
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect સાથે કામ કરતી ઍપ અહીં જોવા માટે, તેને ઇન્સ્ટૉલ કરો"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"સુસંગત ઍપ જુઓ"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"આરોગ્ય વિશેની વધુ ઍપ જુઓ"</string>
-    <string name="app_not_connected_summary" msgid="3898921378270235598">"કનેક્ટેડ નથી"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"કનેક્ટ થયેલી નથી"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"આ ઍપને Health Connect સાથે કનેક્ટ કરવા માટે ક્લિક કરો"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"હમણાં નહીં"</string>
     <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"બધા લક્ષણો"</string>
@@ -1585,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"શરીરમાં પાણી ભરાઈ જવું"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ઘરઘરાટી"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ઘરઘરાટી"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>માંથી <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>માંથી <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> પસંદ કરી"</string>
 </resources>

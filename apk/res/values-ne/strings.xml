@@ -403,8 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"तपाईं यो एपलाई Health Connect मा कुन कुन जानकारी रिड गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"एपहरूका बिचमा डेटा सेयर गर्नुहोस्"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> मा भएको डेटा"</string>
-    <!-- no translation found for matchmaking_screen_summary (6028389402895099556) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> एपलाई Health Connect प्रयोग गरी यो डिभाइसका अन्य एपमा भएको डेटा रिड गर्ने अनुमति दिनुहोस्। तपाईंले एक्सेस दिएका अन्य एपहरूले पनि यो डेटा रिड गर्न सक्छन्।"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"यो डेटा सिंक गर्न सक्ने एपहरू"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> को "<a href="%2$s">"गोपनीयता नीति"</a>" पढेर यस एपले तपाईंको डेटा कसरी प्रयोग गर्छ भन्ने कुरा थाहा पाउनुहोस्।"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"तपाईं Health Connect प्रयोग गरी एकभन्दा बढी एपहरूका बिचमा आफ्नो स्वास्थ्य र व्यायामसम्बन्धी डेटा सेयर गर्न सक्नुहुन्छ। तपाईं यसका सहायताले आफ्नो डेटा सुरक्षित राखेर विश्लेषणात्मक डेटा र सुविधाहरू प्राप्त गर्न सक्नुहुन्छ।"</string>
@@ -853,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} अज्ञात"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"अज्ञात पेय पदार्थ"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"बियर"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"वाइन"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"भोड्का"</string>
@@ -877,14 +875,10 @@
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"अल्कोहलको मात्रा"</string>
     <string name="notes_title" msgid="4596764711916248492">"नोटहरू"</string>
     <string name="details_title" msgid="8411891773854413790">"विवरणहरू"</string>
-    <!-- no translation found for menstrual_cycle_phase_follicular (4515498093841723331) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_luteal (2369477800443212440) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_unknown (1126074973862101221) -->
-    <skip />
-    <!-- no translation found for menstrual_cycle_phase_day_of_cycle (5910349012626523530) -->
-    <skip />
+    <string name="menstrual_cycle_phase_follicular" msgid="4515498093841723331">"फोलिक्युलर"</string>
+    <string name="menstrual_cycle_phase_luteal" msgid="2369477800443212440">"लुटियल"</string>
+    <string name="menstrual_cycle_phase_unknown" msgid="1126074973862101221">"अज्ञात चरण"</string>
+    <string name="menstrual_cycle_phase_day_of_cycle" msgid="5910349012626523530">"दिन <xliff:g id="DAY">%1$d</xliff:g>"</string>
     <string name="minute_duration" msgid="9035288227090160206">"<xliff:g id="MINUTE">%1$s</xliff:g> मिनेट"</string>
     <string name="hour_minute_duration_short" msgid="1754616782635510999">"<xliff:g id="HOUR">%1$s</xliff:g>घण्टा <xliff:g id="MIN">%2$s</xliff:g>मिनेट"</string>
     <string name="hour_duration" msgid="3472489613837138711">"<xliff:g id="HOUR">%1$s</xliff:g> घण्टा"</string>
@@ -1352,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"कनेक्ट गरिएको छैन"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"यो एप Health Connect मा कनेक्ट गर्न क्लिक गर्नुहोस्"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"अहिले होइन"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"सबै लक्षणहरू"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"लक्षणहरू"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"डन्डीफोरसम्बन्धी समस्याका बारेमा जानकारी हेर्ने अनुमति दिनुहोस्"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"डन्डीफोरसम्बन्धी समस्याका बारेमा जानकारी सम्पादन गर्ने अनुमति दिनुहोस्"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"नङ नाजुक हुने समस्याका बारेमा जानकारी हेर्ने अनुमति दिनुहोस्"</string>
@@ -1592,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"शरीरमा पानी जम्मा हुने समस्या"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"स्वाँ-स्वाँ हुने समस्या"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"स्वाँ-स्वाँ हुने समस्या"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g> मध्ये <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> मध्ये <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> वटा अनुमति चयन गरिएका छन्"</string>
 </resources>

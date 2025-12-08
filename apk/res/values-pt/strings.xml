@@ -361,8 +361,8 @@
     <string name="procedures_uppercase_label" msgid="9176087520132593261">"Procedimentos"</string>
     <string name="procedures_lowercase_label" msgid="5320804313946273234">"procedimentos"</string>
     <string name="procedures_content_description" msgid="1086900373141440005">"Ler dados de procedimentos"</string>
-    <string name="social_history_uppercase_label" msgid="4119611299449533999">"História social"</string>
-    <string name="social_history_lowercase_label" msgid="9027541979445736412">"história social"</string>
+    <string name="social_history_uppercase_label" msgid="4119611299449533999">"Histórico social"</string>
+    <string name="social_history_lowercase_label" msgid="9027541979445736412">"histórico social"</string>
     <string name="social_history_content_description" msgid="7187059309389849831">"Ler história social"</string>
     <string name="visits_uppercase_label" msgid="8532619758336375886">"Consultas"</string>
     <string name="visits_lowercase_label" msgid="2545887061364564151">"visitas"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"Desconhecidos: {quantity, number}"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Bebida desconhecida"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Cerveja"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Vinho"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodca"</string>
@@ -1494,9 +1493,9 @@
     <string name="cough_uppercase_label" msgid="5570609736970603012">"Tosse"</string>
     <string name="cough_lowercase_label" msgid="459638956679172779">"tosse"</string>
     <string name="cramps_uppercase_label" msgid="5162905309136173937">"Cãibra"</string>
-    <string name="cramps_lowercase_label" msgid="4644485808002493449">"Cãibra"</string>
+    <string name="cramps_lowercase_label" msgid="4644485808002493449">"cãibra"</string>
     <string name="cravings_uppercase_label" msgid="4754194354806284307">"Fissuras"</string>
-    <string name="cravings_lowercase_label" msgid="5836041614136287213">"fissuras"</string>
+    <string name="cravings_lowercase_label" msgid="5836041614136287213">"desejos"</string>
     <string name="dehydration_uppercase_label" msgid="10278239942824711">"Desidratação"</string>
     <string name="dehydration_lowercase_label" msgid="8692632632276643276">"desidratação"</string>
     <string name="diarrhea_uppercase_label" msgid="6310170127529968752">"Diarreia"</string>
@@ -1585,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"retenção de líquido"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Chiado no peito"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"Chiado no peito"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> de <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> de <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> selecionados"</string>
 </resources>

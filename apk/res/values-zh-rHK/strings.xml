@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} 不明"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"不明飲品"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"啤酒"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"葡萄酒"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"伏特加"</string>
@@ -1328,11 +1327,11 @@
     <string name="device_data_label" msgid="2056618513138892435">"管理裝置"</string>
     <string name="device_data_button" msgid="8002406105399136401">"查看裝置資料"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"手機追蹤的步數會在「健康資料同步」中顯示"</string>
-    <string name="native_steps_banner_summary" msgid="8255767487167444809">"此裝置追蹤的步數現已儲存於「健康資料同步」供連結的應用程式存取"</string>
+    <string name="native_steps_banner_summary" msgid="8255767487167444809">"此裝置追蹤的步數現已儲存於「健康資料同步」，以供連結的應用程式存取"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"關閉"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"查看"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"現在「健康資料同步」會顯示步數"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"此裝置追蹤的步數現已儲存於「健康資料同步」供連結的應用程式存取"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"此裝置追蹤的步數現已儲存於「健康資料同步」，以供連結的應用程式存取"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"你的健康應用程式"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"你的健康資料"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"偏好設定"</string>
@@ -1585,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"水腫"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"哮鳴"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"哮鳴"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"已選取 <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> 個，共 <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> 個"</string>
 </resources>

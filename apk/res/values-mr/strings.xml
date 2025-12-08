@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} अज्ञात आहे"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"अज्ञात पेय"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"बीअर"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"वाइन"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"व्होड्का"</string>
@@ -1343,14 +1342,12 @@
     <string name="home_devices_summary" msgid="6056984338393523399">"आरोग्याशी संबंधित डेटा अ‍ॅक्सेस करू शकणाऱ्या डिव्हाइसचे पुनरावलोकन करा"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect सह काम करणारी अ‍ॅप्स येथे पाहण्यासाठी ती इंस्टॉल करा"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"कंपॅटिबल अ‍ॅप्स पहा"</string>
-    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"आणखी आरोग्यविषयक अ‍ॅप पहा"</string>
+    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"आणखी आरोग्यविषयक अ‍ॅप्स पहा"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"कनेक्ट केलेले नाही"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"हे अ‍ॅप Health Connect शी कनेक्ट करण्यासाठी क्लिक करा"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"आताच नको"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"सर्व लक्षणे"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"लक्षणे"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"मुरूम वाचा"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"मुरूम लिहा"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"ठिसूळ नखे वाचा"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"पाणी धारणा"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"घरघर"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"घरघर"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g> पैकी <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> पैकी <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> निवडल्या"</string>
 </resources>

@@ -396,10 +396,10 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"Engedélyezés"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Összes engedélyezése"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Tiltás"</string>
-    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Adja meg, hogy az alkalmazás milyen adatokat olvashasson, illetve írhasson a Health Connect számára."</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Adja meg, hogy az alkalmazás milyen adatokat olvashat, illetve írhat a Health Connectbe."</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Adja meg, hogy az alkalmazás milyen adatokat olvashasson a Health Connectből."</string>
-    <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Adja meg, hogy az alkalmazás milyen adatokat írhasson a Health Connect számára."</string>
-    <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Adja meg, hogy az alkalmazás milyen adatokat olvashasson, illetve írhasson a Health Connect számára."</string>
+    <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Adja meg, hogy az alkalmazás milyen adatokat írhat a Health Connectbe."</string>
+    <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Adja meg, hogy az alkalmazás milyen adatokat olvashat, illetve írhat a Health Connectbe."</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Adja meg, hogy az alkalmazás milyen adatokat olvashasson a Health Connectből."</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Adatok megosztása az alkalmazások között"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Adatok forrása: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -415,8 +415,8 @@
     <string name="request_permissions_rationale" msgid="2642076968583316986">"A(z) <xliff:g id="APP_NAME">%1$s</xliff:g> alkalmazás adatkezeléséről bővebben a következő oldalon tájékozódhat: <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"adatvédelmi irányelvek"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"Engedélyezi a(z) <xliff:g id="APP_NAME">%1$s</xliff:g> számára, hogy hozzáférjen az Ön egészségügyi dokumentációjához?"</string>
-    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Ha hozzáférést biztosít számára, az alkalmazás olvashatja és írhatja a különböző (például az allergiákkal, a laboratóriumi eredményekkel, az oltásokkal stb. kapcsolatos) adatokat.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Ha hozzáférést biztosít számára, az alkalmazás olvashatja a különböző (például az allergiákkal, a laboratóriumi eredményekkel, az oltásokkal stb. kapcsolatos) adatokat.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
+    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Ha hozzáférést biztosít számára, az alkalmazás olvashatja és írhatja a különböző (például az allergiákkal, a laborvizsgálati eredményekkel, az oltásokkal stb. kapcsolatos) adatokat.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
+    <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Ha hozzáférést biztosít számára, az alkalmazás olvashatja a különböző (például az allergiákkal, a laborvizsgálati eredményekkel, az oltásokkal stb. kapcsolatos) adatokat.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"Az egészségügyi dokumentációról"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"A megosztani kívánt adatok a következőket tartalmazzák:"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"Ha engedélyezi, a(z) <xliff:g id="APP_NAME">%1$s</xliff:g> megoszthatja az Ön egészségügyi dokumentációját a Health Connect szolgáltatással."</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} ismeretlen"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Ismeretlen ital"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Sör"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Bor"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
@@ -1341,16 +1340,14 @@
     <string name="data_and_access_summary" msgid="1435478623777637347">"A saját adatok és annak megtekintése, hogy mely alkalmazások férhetnek hozzájuk"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Az Ön adatait nemrég használó alkalmazások"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Az egészségügyi adatokhoz hozzáférő eszközök áttekintése"</string>
-    <string name="empty_apps_section_title" msgid="1808646811838427261">"Telepíthet olyan alkalmazásokat, amelyek működnek a Health Connect szolgáltatással, és itt fognak megjelenni"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Ha olyan appokat telepít, amelyek működnek a Health Connect szolgáltatással, azok itt fognak megjelenni"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Kompatibilis appok megtekintése"</string>
-    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"További egészségügyi alkalmazások megtekintése"</string>
+    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"További egészségügyi appok"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Nincs csatlakoztatva"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Kattintson az alkalmazás Health Connecthez való csatlakoztatásához"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Most nem"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Minden tünet"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"tünetek"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Pattanásokra vonatkozó adatok olvasása"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Pattanásokra vonatkozó adatok írása"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Töredező körmökre vonatkozó adatok olvasása"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"vizesedés"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Zihálás"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"zihálás"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>/<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>."</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>/<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> kijelölve"</string>
 </resources>

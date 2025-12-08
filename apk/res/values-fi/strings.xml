@@ -352,7 +352,7 @@
     <string name="personal_details_uppercase_label" msgid="7241635933310394120">"Henkilökohtaiset tiedot"</string>
     <string name="personal_details_lowercase_label" msgid="1907848447611775151">"henkilökohtaiset tiedot"</string>
     <string name="personal_details_content_description" msgid="3191211304673909831">"Lukee henkilökohtaisia tietoja"</string>
-    <string name="practitioner_details_uppercase_label" msgid="2940667649808082510">"terveydenhuollon ammattilaisen tiedot"</string>
+    <string name="practitioner_details_uppercase_label" msgid="2940667649808082510">"Terveydenhuollon ammattilaisen tiedot"</string>
     <string name="practitioner_details_lowercase_label" msgid="8195591077717971542">"terveydenhuollon ammattilaisen tiedot"</string>
     <string name="practitioner_details_content_description" msgid="8775396516928504185">"Lukee terveydenhuollon ammattilaisten tietoja"</string>
     <string name="pregnancy_uppercase_label" msgid="5979925175194337864">"Raskaus"</string>
@@ -361,7 +361,7 @@
     <string name="procedures_uppercase_label" msgid="9176087520132593261">"Toimenpiteet"</string>
     <string name="procedures_lowercase_label" msgid="5320804313946273234">"toimenpiteet"</string>
     <string name="procedures_content_description" msgid="1086900373141440005">"Lukee toimenpiteitä"</string>
-    <string name="social_history_uppercase_label" msgid="4119611299449533999">"Somehistoria"</string>
+    <string name="social_history_uppercase_label" msgid="4119611299449533999">"Sosiaalinen historia"</string>
     <string name="social_history_lowercase_label" msgid="9027541979445736412">"Sosiaalihistoria"</string>
     <string name="social_history_content_description" msgid="7187059309389849831">"Lukee sosiaalisen historian dataa"</string>
     <string name="visits_uppercase_label" msgid="8532619758336375886">"Käynnit"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} tuntematon"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Tuntematon juoma"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Olut"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Viini"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Ei yhdistetty"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Yhdistä sovellus Health Connectiin klikkaamalla"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Ei nyt"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Kaikki oireet"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"oireet"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Lue dataa aknesta"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Kirjoita dataa aknesta"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Lue dataa hauraista kynsistä"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"nesteen kertyminen"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Vinkuva hengitys"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"vinkuva hengitys"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> valittu"</string>
 </resources>

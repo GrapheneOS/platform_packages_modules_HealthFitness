@@ -337,9 +337,9 @@
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Алергії"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"алергії"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Переглядати дані про алергії"</string>
-    <string name="conditions_uppercase_label" msgid="5260404343402770877">"Стан здоров’я"</string>
-    <string name="conditions_lowercase_label" msgid="2678248918552246997">"стан здоров’я"</string>
-    <string name="conditions_content_description" msgid="3230552343616193829">"Переглядати дані про стан здоров’я"</string>
+    <string name="conditions_uppercase_label" msgid="5260404343402770877">"Захворювання"</string>
+    <string name="conditions_lowercase_label" msgid="2678248918552246997">"захворювання"</string>
+    <string name="conditions_content_description" msgid="3230552343616193829">"Переглядати дані про захворювання"</string>
     <string name="vaccines_uppercase_label" msgid="1101176371071123187">"Вакцини"</string>
     <string name="vaccines_lowercase_label" msgid="4991324441768127447">"вакцини"</string>
     <string name="vaccines_content_description" msgid="7152741514791951684">"Переглядати дані про вакцини"</string>
@@ -352,9 +352,9 @@
     <string name="personal_details_uppercase_label" msgid="7241635933310394120">"Особисті дані"</string>
     <string name="personal_details_lowercase_label" msgid="1907848447611775151">"особисті дані"</string>
     <string name="personal_details_content_description" msgid="3191211304673909831">"Переглядати особисті дані"</string>
-    <string name="practitioner_details_uppercase_label" msgid="2940667649808082510">"Відомості про медичних працівників"</string>
-    <string name="practitioner_details_lowercase_label" msgid="8195591077717971542">"відомості про медичних працівників"</string>
-    <string name="practitioner_details_content_description" msgid="8775396516928504185">"Переглядати відомості про медичних працівників"</string>
+    <string name="practitioner_details_uppercase_label" msgid="2940667649808082510">"Інформація про спеціалістів"</string>
+    <string name="practitioner_details_lowercase_label" msgid="8195591077717971542">"інформація про спеціалістів"</string>
+    <string name="practitioner_details_content_description" msgid="8775396516928504185">"Переглядати інформацію про спеціалістів"</string>
     <string name="pregnancy_uppercase_label" msgid="5979925175194337864">"Вагітність"</string>
     <string name="pregnancy_lowercase_label" msgid="810439290131044517">"вагітність"</string>
     <string name="pregnancy_content_description" msgid="3436773729243586287">"Переглядати дані про вагітність"</string>
@@ -413,7 +413,7 @@
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до Health Connect?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до даних про фізичну активність і здоров’я?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Щоб дізнатися, як додаток <xliff:g id="APP_NAME">%1$s</xliff:g> обробляє ваші дані, перегляньте його <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
-    <string name="request_permissions_privacy_policy" msgid="228503452643555737">"політиці конфіденційності"</string>
+    <string name="request_permissions_privacy_policy" msgid="228503452643555737">"політику конфіденційності"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до ваших медичних даних?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Якщо ви надасте доступ, додаток зможе переглядати й записувати такі дані, як відомості про алергії, результати аналізів, щеплення тощо\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Якщо ви надасте доступ, додаток зможе переглядати такі дані, як відомості про алергії, результати аналізів, щеплення тощо\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} невідомо"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Невідомий напій"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Пиво"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Вино"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Горілка"</string>
@@ -1215,7 +1214,7 @@
     <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"Знайдіть більше додатків для синхронізації з додатком <xliff:g id="APP_NAME">%s</xliff:g> через Health Connect"</string>
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"Переглянути в магазині додатків"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"Налаштуйте блокування екрана"</string>
-    <string name="lock_screen_banner_content" msgid="3392527073622152481">"Для додаткового захисту даних про здоров’я установіть PIN-код, ключ або пароль на цьому пристрої"</string>
+    <string name="lock_screen_banner_content" msgid="3392527073622152481">"Для додаткового захисту даних про здоров’я налаштуйте PIN-код, ключ або пароль на цьому пристрої"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Налаштувати блокування екрана"</string>
     <string name="select_all" msgid="837499881590001166">"Вибрати всі"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Підключені додатки більше не зможуть переглядати ці дані з Health Connect"</string>
@@ -1308,7 +1307,7 @@
     <string name="almost_done_connected_apps" msgid="7278779868120518202">"Підключені додатки"</string>
     <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Доступні додатки для підключення"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Переглядайте дані про здоров’я в різних додатках"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Почніть обмінюватися даними про фізичну активність і самопочуття між додатками"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Почніть обмін даними про фізичну активність і самопочуття між додатками"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Налаштувати"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Підключіть другий додаток"</string>
     <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Налаштуйте інший додаток, щоб він міг передавати дані про фізичну активність і самопочуття"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Не підключено"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Натисніть, щоб підключити цей додаток до Health Connect"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Не зараз"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Усі симптоми"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"симптоми"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Переглядати дані про вугрову хворобу"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Записувати дані про вугрову хворобу"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Переглядати дані про ламкість нігтів"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"затримка води"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Хрипи"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"хрипи"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> з <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Вибрано <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> з <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
 </resources>
