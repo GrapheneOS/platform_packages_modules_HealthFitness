@@ -28,6 +28,7 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -48,6 +49,7 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
 import android.os.OutcomeReceiver;
 import android.os.RemoteException;
@@ -827,6 +829,47 @@ public class HealthConnectManagerTest {
                 .containsExactly(
                         StepsRecord.class, true,
                         DistanceRecord.class, false);
+    }
+
+    @Test
+    public void hasUserEnabledTracking_withException_throwsException() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        when(mService.hasUserEnabledTracking(any(), any()))
+                .thenThrow(new RemoteException("message"));
+
+        assertThrows(
+                RuntimeException.class,
+                () -> healthConnectManager.hasUserEnabledTracking(StepsRecord.class));
+    }
+
+    @Test
+    public void hasUserEnabledTracking_withRecordTypes_generatesDataTypeKeys() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+
+        for (Class<? extends Record> recordClass :
+                HealthConnectMappings.getInstance()
+                        .getRecordIdToExternalRecordClassMap()
+                        .values()) {
+            int recordIdentifier = HealthConnectMappings.getInstance().getRecordType(recordClass);
+            healthConnectManager.hasUserEnabledTracking(recordClass);
+            verify(mService).hasUserEnabledTracking(any(), captor.capture());
+            assertThat(captor.getValue()).isEqualTo("TRACKING_PREF_" + recordIdentifier);
+            clearInvocations(mService);
+        }
+    }
+
+    @Test
+    public void hasUserEnabledTracking_withHavingDisabled_success() throws Exception {
+        Context context = ApplicationProvider.getApplicationContext();
+        HealthConnectManager healthConnectManager = newHealthConnectManager(context, mService);
+        when(mService.hasUserEnabledTracking(any(), eq("TRACKING_PREF_1"))).thenReturn(false);
+
+        boolean result = healthConnectManager.hasUserEnabledTracking(StepsRecord.class);
+
+        assertThat(result).isFalse();
     }
 
     @Test

@@ -190,7 +190,8 @@ public class MaskingTest {
                     Map.entry("setTrackingEnabled", DOES_NOT_INCLUDE_PACKAGE_NAMES),
                     Map.entry("isTrackingEnabled", DOES_NOT_INCLUDE_PACKAGE_NAMES),
                     Map.entry("getDeviceDataSourceCapabilities", DOES_NOT_INCLUDE_PACKAGE_NAMES),
-                    Map.entry("dump", DOES_NOT_INCLUDE_PACKAGE_NAMES));
+                    Map.entry("dump", DOES_NOT_INCLUDE_PACKAGE_NAMES),
+                    Map.entry("hasUserEnabledTracking", DOES_NOT_INCLUDE_PACKAGE_NAMES));
 
     /**
      * Enforces that every method in {@code IHealthConnectService} has a defined security contract.

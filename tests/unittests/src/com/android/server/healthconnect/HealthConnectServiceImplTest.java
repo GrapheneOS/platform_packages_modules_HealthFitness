@@ -397,7 +397,8 @@ public class HealthConnectServiceImplTest {
                     "updateHealthConnectBackupAndRestoreSettings",
                     "updateHealthConnectRestoreStatus",
                     "updateHealthConnectBackupStatus",
-                    "getDeviceDataSourceCapabilities");
+                    "getDeviceDataSourceCapabilities",
+                    "hasUserEnabledTracking");
 
     static final String ONBOARDING_STATE_PREFERENCE_KEY = "onboarding_state_";
     private static final String TEST_URI = "content://com.android.server.healthconnect/testuri";
@@ -4329,6 +4330,60 @@ public class HealthConnectServiceImplTest {
                             public void write(int i) throws IOException {}
                         }),
                 null);
+    }
+
+    @Test
+    @DisableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void hasUserEnabledTrackingWithDisabledFlags_NullException_throwsUnsupportedError() {
+        assertThrows(
+                UnsupportedOperationException.class,
+                () ->
+                        mHealthConnectService.hasUserEnabledTracking(
+                                mAttributionSource, "TRACKING_PREF_1"));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void hasUserEnabledTrackingWithoutPermission_SecurityException_throwsSecurityError() {
+        setDeviceDataProviderPermission(PackageManager.PERMISSION_DENIED);
+
+        assertThrows(
+                SecurityException.class,
+                () ->
+                        mHealthConnectService.hasUserEnabledTracking(
+                                mAttributionSource, "TRACKING_PREF_1"));
+    }
+
+    @Test
+    public void hasUserEnabledTracking_withPreferencesSet_returnsPreferences() {
+        when(mPreferenceHelper.getPreference("TRACKING_PREF_1")).thenReturn("true");
+        when(mPreferenceHelper.getPreference("TRACKING_PREF_2")).thenReturn("false");
+
+        boolean resultOne =
+                mHealthConnectService.hasUserEnabledTracking(mAttributionSource, "TRACKING_PREF_1");
+        boolean resultTwo =
+                mHealthConnectService.hasUserEnabledTracking(mAttributionSource, "TRACKING_PREF_2");
+
+        assertThat(resultOne).isTrue();
+        assertThat(resultTwo).isFalse();
+    }
+
+    @Test
+    public void hasUserEnabledTracking_noPreferenceSet_defaultsToTrue() {
+        when(mPreferenceHelper.getPreference("TRACKING_PREF_1")).thenReturn(null);
+
+        boolean result =
+                mHealthConnectService.hasUserEnabledTracking(mAttributionSource, "TRACKING_PREF_1");
+
+        assertThat(result).isTrue();
     }
 
     @Test
