@@ -412,7 +412,7 @@
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ако ѝ дадете пристап за читање, апликацијата ќе може да ги чита новите и минатите податоци"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Да се дозволи <xliff:g id="APP_NAME">%1$s</xliff:g> да пристапува до Health Connect?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Да се дозволи „<xliff:g id="APP_NAME">%1$s</xliff:g>“ да пристапува до податоците за фитнес и благосостојба?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"Може да дознаете како <xliff:g id="APP_NAME">%1$s</xliff:g> постапува со вашите податоци во <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"Може да дознаете како <xliff:g id="APP_NAME">%1$s</xliff:g> постапува со вашите податоци во таа <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"политика за приватност"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"Да ѝ се дозволи на <xliff:g id="APP_NAME">%1$s</xliff:g> да пристапува до вашите медицински досиеја?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Ако доделите пристап, апликацијата ќе може да чита и запишува податоци како што се алергии, лабораториски резултати, вакцини и друго \n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"Непознато: {quantity, number}"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Непознат пијалак"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Пиво"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Вино"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Вотка"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Не е поврзано"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Кликнете за да ја поврзете апликацијава со Health Connect"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Не сега"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Сите симптоми"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"симптоми"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Читање на акните"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Запишување на акните"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Читање на кршливите нокти"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"задржување на водата"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Отежнато дишење"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"отежнато дишење"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> од <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Избравте <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> од <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
 </resources>

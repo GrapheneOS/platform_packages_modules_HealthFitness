@@ -349,11 +349,11 @@
     <string name="medications_uppercase_label" msgid="4783281053427990225">"Medicamentos"</string>
     <string name="medications_lowercase_label" msgid="7808038774503092207">"medicamentos"</string>
     <string name="medications_content_description" msgid="6165382876281780190">"Leer medicamentos"</string>
-    <string name="personal_details_uppercase_label" msgid="7241635933310394120">"Detalles personales"</string>
-    <string name="personal_details_lowercase_label" msgid="1907848447611775151">"detalles personales"</string>
+    <string name="personal_details_uppercase_label" msgid="7241635933310394120">"Datos personales"</string>
+    <string name="personal_details_lowercase_label" msgid="1907848447611775151">"datos personales"</string>
     <string name="personal_details_content_description" msgid="3191211304673909831">"Leer detalles personales"</string>
-    <string name="practitioner_details_uppercase_label" msgid="2940667649808082510">"Detalles del profesional"</string>
-    <string name="practitioner_details_lowercase_label" msgid="8195591077717971542">"detalles del profesional"</string>
+    <string name="practitioner_details_uppercase_label" msgid="2940667649808082510">"Datos del profesional"</string>
+    <string name="practitioner_details_lowercase_label" msgid="8195591077717971542">"datos del profesional"</string>
     <string name="practitioner_details_content_description" msgid="8775396516928504185">"Leer los detalles de profesionales"</string>
     <string name="pregnancy_uppercase_label" msgid="5979925175194337864">"Embarazo"</string>
     <string name="pregnancy_lowercase_label" msgid="810439290131044517">"embarazo"</string>
@@ -391,8 +391,8 @@
     <string name="symptom_severity_moderate" msgid="8388787027751900668">"de gravedad media"</string>
     <string name="symptom_severity_severe" msgid="4675732713898596705">"grave"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="TYPE">%2$s</xliff:g> <xliff:g id="SEVERITY">%1$s</xliff:g>"</string>
-    <string name="read_permission_category" msgid="6002099618259628632">"Otorgar a \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" permiso de lectura"</string>
-    <string name="write_permission_category" msgid="1529702804865008111">"Permitir que \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tenga acceso de escritura"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"Permitir que \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tenga acceso de lectura sobre"</string>
+    <string name="write_permission_category" msgid="1529702804865008111">"Permitir que \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tenga acceso de escritura sobre"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Permitir"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Permitir todo"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"No permitir"</string>
@@ -418,7 +418,7 @@
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Si otorgas acceso, la app podrá leer y escribir datos como alergias, resultados de laboratorio, vacunas y más\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Si otorgas acceso, la app podrá leer datos como alergias, resultados de laboratorio, vacunas y más\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"Acerca de la historia clínica"</string>
-    <string name="medical_request_data_to_share" msgid="6778034304921873317">"Los datos para compartir incluyen"</string>
+    <string name="medical_request_data_to_share" msgid="6778034304921873317">"Los datos a compartir incluyen"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"Si lo permites, <xliff:g id="APP_NAME">%1$s</xliff:g> podrá compartir tu historia clínica con Health Connect."</string>
     <string name="medical_request_footer" msgid="157243861031258933">"Sincroniza la historia clínica de diferentes apps y fuentes para tenerlas en un solo lugar"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"¿Quieres quitar todos los permisos?"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} desconocido"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Bebida desconocida"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Cerveza"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Vino"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
@@ -1336,7 +1335,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Tus apps de salud"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Tus datos de salud"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferencias"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect te permite compartir tus datos de salud y actividad física entre varias apps. Esto te ayuda a desbloquear estadísticas y experiencias, a la vez que mantiene tus datos seguros."</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect te permite compartir tus datos de salud y actividad física entre varias apps. De esta manera, puedes acceder a estadísticas y experiencias sin dejar de proteger tus datos."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Más información sobre Health Connect"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Tus datos y las apps que pueden acceder a ellos"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Apps que usaron tus datos recientemente"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Sin conectar"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Haz clic para conectar esta app a Health Connect"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Ahora no"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Todos los síntomas"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"síntomas"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Leer datos de acné"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Registrar acné"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Leer datos de uñas quebradizas"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"retención de líquidos"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Sibilancias"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"sibilancias"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> de <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Selección: <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> de <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
 </resources>

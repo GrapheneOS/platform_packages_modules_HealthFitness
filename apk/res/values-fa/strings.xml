@@ -394,7 +394,7 @@
     <string name="read_permission_category" msgid="6002099618259628632">"اجازه دادن به «<xliff:g id="APP_NAME">%1$s</xliff:g>» برای خواندن"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"اجازه دادن به «<xliff:g id="APP_NAME">%1$s</xliff:g>» برای نوشتن"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"اجازه دادن"</string>
-    <string name="request_permissions_allow_all" msgid="3419414351406638770">"مجاز کردن همه موارد"</string>
+    <string name="request_permissions_allow_all" msgid="3419414351406638770">"اجازه دادن همه"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"اجازه ندادن"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"داده‌هایی را که می‌خواهید این برنامه بخواند یا در Health Connect بنویسد انتخاب کنید"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"داده‌هایی را که می‌خواهید این برنامه از Health Connect بخواند انتخاب کنید"</string>
@@ -459,7 +459,7 @@
     <string name="health_permission_header_description" msgid="7497601695462373927">"برنامه‌هایی که این اجازه را دارند می‌توانند داده‌های سلامتی و تناسب اندام شما را بخوانند و بنویسند."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"کنترل کنید کدام برنامه‌ها می‌توانند به داده‌های ذخیره‌شده در Health Connect دسترسی داشته باشند. با ضربه زدن روی برنامه موردنظر، مرور کنید این برنامه چه داده‌هایی را می‌تواند بخواند یا بنویسد."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"دسترسی دارند"</string>
-    <string name="not_connected_apps_section_title" msgid="452718769894103039">"دسترسی ندارند"</string>
+    <string name="not_connected_apps_section_title" msgid="452718769894103039">"دسترسی اجازه داده نشده"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"باید به‌روزرسانی شود"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"تنظیمات و راهنمایی"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"برداشتن دسترسی برای همه برنامه‌ها"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"‫{quantity, number} نامشخص"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"نوشیدنی نامشخص"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"آبجو"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"شراب"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"ودکا"</string>
@@ -1262,7 +1261,7 @@
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"هنگام استفاده از برنامه"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"نپذیرفتن همه"</string>
     <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"به <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه می‌دهید به داده‌های تناسب اندام و تندرستی دسترسی داشته باشد؟"</string>
-    <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"<xliff:g id="APP_NAME">%1$s</xliff:g> درخواست دسترسی به «<xliff:g id="DATA_TYPES">%2$s</xliff:g>» را دارد.\n\nمجاز کردن همه را انتخاب کنید یا آن‌ها را به‌صورت مجزا کنترل کنید."</string>
+    <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"<xliff:g id="APP_NAME">%1$s</xliff:g> درخواست دسترسی به «<xliff:g id="DATA_TYPES">%2$s</xliff:g>» را دارد.\n\n«اجازه دادن همه» را انتخاب کنید یا آن‌ها را به‌صورت مجزا کنترل کنید."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"به <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه دسترسی به <xliff:g id="DATA_TYPE">%2$s</xliff:g> داده شود؟"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"تناسب اندام و تندرستی"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"همیشه"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"متصل نیست"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"برای متصل کردن این برنامه به Health Connect، کلیک کنید"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"اکنون نه"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"همه علائم"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"علائم"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"خواندن داده‌های آکنه"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"نوشتن داده‌های آکنه"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"خواندن داده‌های ناخن شکننده"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"احتباس آب"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"خس‌خس سینه"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"خس‌خس سینه"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"‫<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> از <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"‫<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> مورد از <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> مورد انتخاب شده است"</string>
 </resources>

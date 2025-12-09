@@ -391,8 +391,8 @@
     <string name="symptom_severity_moderate" msgid="8388787027751900668">"Μέτριας έντασης"</string>
     <string name="symptom_severity_severe" msgid="4675732713898596705">"Σοβαρής έντασης"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>"</string>
-    <string name="read_permission_category" msgid="6002099618259628632">"Παροχή στην εφαρμογή “<xliff:g id="APP_NAME">%1$s</xliff:g>” του δικαιώματος ανάγνωσης"</string>
-    <string name="write_permission_category" msgid="1529702804865008111">"Να επιτρέπεται στην εφαρμογή “<xliff:g id="APP_NAME">%1$s</xliff:g>” να γράφει"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"Να επιτρέπεται η ανάγνωση στην εφαρμογή “<xliff:g id="APP_NAME">%1$s</xliff:g>”"</string>
+    <string name="write_permission_category" msgid="1529702804865008111">"Να επιτρέπεται η εγγραφή στην εφαρμογή “<xliff:g id="APP_NAME">%1$s</xliff:g>”"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Αποδοχή"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Αποδοχή όλων"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Να μην επιτρέπεται"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"άγνωστο {quantity, number}"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Άγνωστο ποτό"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Μπίρα"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Κρασί"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Βότκα"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Δεν είναι συνδεδεμένη"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Κάντε κλικ, για να συνδέσετε αυτή την εφαρμογή στο Health Connect"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Όχι τώρα"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Όλα τα συμπτώματα"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"συμπτώματα"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Ανάγνωση δεδομένων για ακμή"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Εγγραφή δεδομένων για ακμή"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Ανάγνωση δεδομένων για εύθραυστα νύχια"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"κατακράτηση υγρών"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Συριγμός"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"συριγμός"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> από <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Επιλέχθηκαν <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> από <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
 </resources>

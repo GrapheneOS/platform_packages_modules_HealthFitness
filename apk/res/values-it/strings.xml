@@ -349,12 +349,12 @@
     <string name="medications_uppercase_label" msgid="4783281053427990225">"Farmaci"</string>
     <string name="medications_lowercase_label" msgid="7808038774503092207">"farmaci"</string>
     <string name="medications_content_description" msgid="6165382876281780190">"Lettura farmaci"</string>
-    <string name="personal_details_uppercase_label" msgid="7241635933310394120">"Dettagli personali"</string>
-    <string name="personal_details_lowercase_label" msgid="1907848447611775151">"dettagli personali"</string>
-    <string name="personal_details_content_description" msgid="3191211304673909831">"Lettura di dettagli personali"</string>
-    <string name="practitioner_details_uppercase_label" msgid="2940667649808082510">"Dettagli del medico"</string>
-    <string name="practitioner_details_lowercase_label" msgid="8195591077717971542">"dettagli del medico"</string>
-    <string name="practitioner_details_content_description" msgid="8775396516928504185">"Lettura dei dettagli del medico"</string>
+    <string name="personal_details_uppercase_label" msgid="7241635933310394120">"Dati personali"</string>
+    <string name="personal_details_lowercase_label" msgid="1907848447611775151">"dati personali"</string>
+    <string name="personal_details_content_description" msgid="3191211304673909831">"Lettura di dati personali"</string>
+    <string name="practitioner_details_uppercase_label" msgid="2940667649808082510">"Dati del medico"</string>
+    <string name="practitioner_details_lowercase_label" msgid="8195591077717971542">"dati del medico"</string>
+    <string name="practitioner_details_content_description" msgid="8775396516928504185">"Lettura dei dati del medico"</string>
     <string name="pregnancy_uppercase_label" msgid="5979925175194337864">"Gravidanza"</string>
     <string name="pregnancy_lowercase_label" msgid="810439290131044517">"gravidanza"</string>
     <string name="pregnancy_content_description" msgid="3436773729243586287">"Lettura gravidanza"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number}: sconosciuto"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Bevanda sconosciuta"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Birra"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Vino"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
@@ -1216,7 +1215,7 @@
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"Vedi nello store"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"Imposta un blocco schermo"</string>
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Per una maggiore sicurezza dei dati relativi alla tua salute, imposta un PIN, una sequenza o una password per questo dispositivo"</string>
-    <string name="lock_screen_banner_button" msgid="2537090011380728122">"Imposta il blocco schermo"</string>
+    <string name="lock_screen_banner_button" msgid="2537090011380728122">"Imposta un blocco schermo"</string>
     <string name="select_all" msgid="837499881590001166">"Seleziona tutto"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Le app collegate non potranno più leggere questi dati di Connessione Salute"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Elemento selezionato"</string>
@@ -1295,7 +1294,7 @@
     <string name="accessed" msgid="4424701457530587176">"Ultimo accesso: <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
     <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Collega la prima app"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Connetti queste app per iniziare a condividere i dati relativi alla salute e all\'attività fisica"</string>
-    <string name="connect_second_app_title" msgid="6609568573884272692">"Collega una seconda app"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"Connetti una seconda app"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Configura un\'altra app per condividere dati relativi alla salute e all\'attività fisica con <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="set_up_later" msgid="223888663943501921">"Configura più tardi"</string>
     <string name="available_apps_to_connect" msgid="8425012138408583646">"App disponibili per la connessione"</string>
@@ -1307,15 +1306,15 @@
     <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Apri queste app ora per completare la configurazione e avviare la condivisione dei dati oppure continua a collegare le app disponibili"</string>
     <string name="almost_done_connected_apps" msgid="7278779868120518202">"App collegate"</string>
     <string name="almost_done_available_to_connect" msgid="8127248100268494160">"App disponibili per la connessione"</string>
-    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Visualizza i tuoi dati relativi alla salute tra le app"</string>
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Visualizza i tuoi dati relativi alla salute su più app"</string>
     <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Inizia a condividere dati relativi al benessere e all\'attività fisica tra le tue app"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Configura"</string>
-    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Collega una seconda app"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Connetti una seconda app"</string>
     <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Configura un\'altra app in modo che possa iniziare a condividere dati relativi al benessere e all\'attività fisica"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Continua"</string>
-    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Visualizza i tuoi dati relativi alla salute tra le app"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Visualizza i tuoi dati relativi alla salute su più app"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Connessione Salute ti consente di condividere dati relativi al benessere e all\'attività fisica tra le tue app. Scopri subito a quali app puoi connetterti."</string>
-    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Collega una seconda app"</string>
+    <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Connetti una seconda app"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configura un\'altra app con Connessione Salute in modo che possa iniziare a condividere dati relativi a benessere e attività fisica"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"Dispositivo corrente"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Dispositivo sconosciuto"</string>
@@ -1328,11 +1327,11 @@
     <string name="device_data_label" msgid="2056618513138892435">"Gestisci dispositivo"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Visualizza i dati sul dispositivo"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"I passi monitorati sul tuo smartphone verranno visualizzati in Connessione Salute"</string>
-    <string name="native_steps_banner_summary" msgid="8255767487167444809">"I passi monitorati da questo dispositivo sono ora archiviati in Connessione Salute e sono accessibili alle app collegate"</string>
+    <string name="native_steps_banner_summary" msgid="8255767487167444809">"I passi monitorati da questo dispositivo sono ora archiviati in Connessione Salute e sono accessibili alle app connesse"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Ignora"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Esamina"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"I passi sono ora in Connessione Salute"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"I passi monitorati da questo dispositivo sono ora archiviati in Connessione Salute e sono accessibili alle app collegate"</string>
+    <string name="native_steps_notification_content" msgid="6606582041727891093">"I passi monitorati da questo dispositivo sono ora archiviati in Connessione Salute e sono accessibili alle app connesse"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Le tue app per la salute"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"I tuoi dati sulla salute"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferenze"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Non connessa"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Fai clic per collegare questa app a Connessione Salute"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Non ora"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Tutti i sintomi"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"sintomi"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Lettura di dati sull\'acne"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Scrittura di dati sull\'acne"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Lettura di dati sulle unghie fragili"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"ritenzione idrica"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Respiro sibilante"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"respiro sibilante"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> di <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> di <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> selezionate"</string>
 </resources>

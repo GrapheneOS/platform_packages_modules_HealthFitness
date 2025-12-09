@@ -52,7 +52,7 @@
     <string name="manage_data_preferences_category_title" msgid="1183110821140344472">"환경설정"</string>
     <string name="manage_data_category_title" msgid="6328886061582616519">"데이터 관리"</string>
     <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"데이터 내보내기 및 가져오기"</string>
-    <string name="recent_access_header" msgid="7623497371790225888">"최근 데이터에 액세스한 앱"</string>
+    <string name="recent_access_header" msgid="7623497371790225888">"최근 액세스"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"최근에 헬스 커넥트를 사용한 앱이 없음"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"최근 액세스 내역 모두 보기"</string>
     <string name="recent_access_screen_description" msgid="331101209889185402">"지난 24시간 동안 내 데이터에 액세스한 앱을 확인합니다."</string>
@@ -337,7 +337,7 @@
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"알레르기"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"알레르기"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"알레르기 데이터 읽기"</string>
-    <string name="conditions_uppercase_label" msgid="5260404343402770877">"조건"</string>
+    <string name="conditions_uppercase_label" msgid="5260404343402770877">"건강 상태"</string>
     <string name="conditions_lowercase_label" msgid="2678248918552246997">"컨디션"</string>
     <string name="conditions_content_description" msgid="3230552343616193829">"조건 읽기"</string>
     <string name="vaccines_uppercase_label" msgid="1101176371071123187">"백신"</string>
@@ -346,8 +346,8 @@
     <string name="laboratory_results_uppercase_label" msgid="3400725778254150910">"검사 결과"</string>
     <string name="laboratory_results_lowercase_label" msgid="7647457227104919126">"실험실 결과"</string>
     <string name="laboratory_results_content_description" msgid="7888886103734085841">"실험실 결과 읽기"</string>
-    <string name="medications_uppercase_label" msgid="4783281053427990225">"복용약"</string>
-    <string name="medications_lowercase_label" msgid="7808038774503092207">"복용약"</string>
+    <string name="medications_uppercase_label" msgid="4783281053427990225">"복용 약"</string>
+    <string name="medications_lowercase_label" msgid="7808038774503092207">"복용 약"</string>
     <string name="medications_content_description" msgid="6165382876281780190">"복용약 정보 읽기"</string>
     <string name="personal_details_uppercase_label" msgid="7241635933310394120">"개인 정보"</string>
     <string name="personal_details_lowercase_label" msgid="1907848447611775151">"개인 정보"</string>
@@ -364,8 +364,8 @@
     <string name="social_history_uppercase_label" msgid="4119611299449533999">"소셜 기록"</string>
     <string name="social_history_lowercase_label" msgid="9027541979445736412">"사회력"</string>
     <string name="social_history_content_description" msgid="7187059309389849831">"사회력 데이터 읽기"</string>
-    <string name="visits_uppercase_label" msgid="8532619758336375886">"방문수"</string>
-    <string name="visits_lowercase_label" msgid="2545887061364564151">"방문수"</string>
+    <string name="visits_uppercase_label" msgid="8532619758336375886">"병원 방문"</string>
+    <string name="visits_lowercase_label" msgid="2545887061364564151">"병원 방문"</string>
     <string name="visits_content_description" msgid="6336796415049565697">"방문 읽기"</string>
     <string name="vital_signs_uppercase_label" msgid="289862347143374640">"생체 신호"</string>
     <string name="vital_signs_lowercase_label" msgid="9141304492316454529">"활력 징후"</string>
@@ -415,7 +415,7 @@
     <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>에서 <xliff:g id="APP_NAME">%1$s</xliff:g>의 데이터 처리 방식을 알아볼 수 있습니다."</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"개인정보처리방침"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"<xliff:g id="APP_NAME">%1$s</xliff:g>에서 의료 기록에 액세스하도록 허용하시겠습니까?"</string>
-    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"액세스 권한을 부여하면 앱에서 알레르기, 검사 결과, 백신 등과 같은 데이터를 읽고 쓸 수 있습니다\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
+    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"액세스 권한을 부여하면 앱에서 알레르기, 검사 결과, 백신 등의 데이터를 읽고 쓸 수 있습니다.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"액세스 권한을 부여하면 앱에서 알레르기, 임상 결과, 백신 등과 같은 데이터를 읽을 수 있습니다\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"의료 기록에 관한 정보"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"공유할 데이터에 포함되는 항목"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} 알 수 없음"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"알 수 없는 음료"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"맥주"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"와인"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"보드카"</string>
@@ -1279,8 +1278,8 @@
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"앱 <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>개 중 <xliff:g id="NUMBER_0">%1$d</xliff:g>개 허용됨"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"권한을 요청하는 앱 없음"</string>
-    <string name="allowed" msgid="4158456017482263737">"허용됨"</string>
-    <string name="not_allowed" msgid="6092523505093372147">"허용되지 않음"</string>
+    <string name="allowed" msgid="4158456017482263737">"허용된 앱"</string>
+    <string name="not_allowed" msgid="6092523505093372147">"허용되지 않은 앱"</string>
     <string name="access_sensor_note" msgid="7949933977197789634">"이 권한이 있는 앱은 기기 센서의 <xliff:g id="DATA_TYPE">%s</xliff:g> 데이터에 액세스할 수 있습니다."</string>
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"시계의 모든 앱에서 <xliff:g id="DATA_TYPE">%s</xliff:g> 액세스 권한을 삭제하시겠습니까?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"체크표시"</string>
@@ -1328,7 +1327,7 @@
     <string name="device_data_label" msgid="2056618513138892435">"기기 관리"</string>
     <string name="device_data_button" msgid="8002406105399136401">"기기 데이터 보기"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"휴대전화에서 추적한 걸음 수가 헬스 커넥트에 표시됩니다"</string>
-    <string name="native_steps_banner_summary" msgid="8255767487167444809">"이 기기에서 추적한 걸음 수가 이제 연결된 앱에서 액세스할 수 있도록 헬스 커넥트에 저장됩니다"</string>
+    <string name="native_steps_banner_summary" msgid="8255767487167444809">"이 기기에서 추적한 걸음 수가 이제 연결된 앱에서 액세스할 수 있도록 헬스 커넥트에 저장됩니다."</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"닫기"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"검토"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"이제 헬스 커넥트에서 걸음 수를 확인할 수 있습니다"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"연결되지 않음"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"이 앱을 헬스 커넥트에 연결하려면 클릭하세요."</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"나중에"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"모든 증상"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"증상"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"여드름 데이터 읽기"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"여드름 데이터 쓰기"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"잘 부러지는 손톱 데이터 읽기"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"체액 부종"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"쌕쌕거림"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"쌕쌕거림"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>개 중 <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>개 선택됨"</string>
 </resources>

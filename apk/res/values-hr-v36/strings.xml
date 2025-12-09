@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="permgrouplab_health" msgid="2189810208223060173">"Zdravlje, kondicija i opće stanje"</string>
-    <string name="health_permission_header_description" msgid="1816010176505069704">"Aplikacije s tim dopuštenjem mogu čitati i bilježiti vaše podatke o zdravlju, kondiciji i općem stanju. To uključuje podatke koji se prate pomoću vaših uređaja i podatke pohranjene u Health Connectu."</string>
+    <string name="health_permission_header_description" msgid="1816010176505069704">"Aplikacije s tim dopuštenjem mogu čitati i bilježiti podatke o vašem zdravlju, kondiciji i općem stanju. To uključuje podatke koji se prate pomoću vaših uređaja i podatke pohranjene u Health Connectu."</string>
     <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"Želite li dopustiti aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupa podacima o kondiciji i općem stanju?"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"Odaberite kojim podacima o kondiciji i općem stanju ova aplikacija može pristupiti. To uključuje podatke koji se prate i pohranjuju na ovom uređaju, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"Odaberite kojim podacima o kondiciji i općem stanju ova aplikacija može pristupiti. To uključuje podatke koji se prate i pohranjuju na ovom uređaju, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>

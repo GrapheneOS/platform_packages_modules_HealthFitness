@@ -337,8 +337,8 @@
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"ალერგიები"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"ალერგიები"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"ალერგიების წაკითხვა"</string>
-    <string name="conditions_uppercase_label" msgid="5260404343402770877">"პირობები"</string>
-    <string name="conditions_lowercase_label" msgid="2678248918552246997">"პირობები"</string>
+    <string name="conditions_uppercase_label" msgid="5260404343402770877">"დაავადებები"</string>
+    <string name="conditions_lowercase_label" msgid="2678248918552246997">"დაავადებები"</string>
     <string name="conditions_content_description" msgid="3230552343616193829">"პირობების წაკითხვა"</string>
     <string name="vaccines_uppercase_label" msgid="1101176371071123187">"ვაქცინები"</string>
     <string name="vaccines_lowercase_label" msgid="4991324441768127447">"ვაქცინები"</string>
@@ -396,7 +396,7 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"დაშვება"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"ყველას დაშვება"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"უარყოფა"</string>
-    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"აირჩიეთ მონაცემები, რომლებიც გსურთ, ამ აპმა წაიკითხოს ან ჩაიწეროს Health Connect-ში"</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"აირჩიეთ მონაცემები, რომლებიც გსურთ, ამ აპმა წაიკითხოს ან ჩაწეროს Health Connect-ში"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"აირჩიეთ მონაცემები, რომლებიც გსურთ, ამ აპმა წაიკითხოს Health Connect-იდან"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"აირჩიეთ მონაცემები, რომლებიც გსურთ, ამ აპმა ჩაიწეროს Health Connect-ში"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"აირჩიეთ მონაცემები, რომლებიც გსურთ, ამ აპმა წაიკითხოს ან ჩაიწეროს Health Connect-ში"</string>
@@ -415,7 +415,7 @@
     <string name="request_permissions_rationale" msgid="2642076968583316986">"შეგიძლიათ გაიგოთ, თუ როგორ ამუშავებს <xliff:g id="APP_NAME">%1$s</xliff:g> თქვენს მონაცემებს აქ:<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"კონფიდენციალურობის დებულება"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"გსურთ, მისცეთ წვდომა <xliff:g id="APP_NAME">%1$s</xliff:g>-ს თქვენს სამედიცინო ჩანაწერებზე?"</string>
-    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"თუ მისცემთ წვდომას, აპი შეძლებს წაიკითხოს და ჩაიწეროს ისეთი მონაცემები, როგორიცაა ალერგიები, ლაბორატორიული შედეგები, ვაქცინაციები და სხვა\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
+    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"თუ მისცემთ წვდომას, აპი შეძლებს წაიკითხოს და ჩაწეროს ისეთი მონაცემები, როგორიცაა ალერგიები, ლაბორატორიული შედეგები, ვაქცინაციები და სხვა\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"თუ მისცემთ წვდომას, აპი შეძლებს წაიკითხოს ისეთი მონაცემები, როგორიცაა ალერგიები, ლაბორატორიული შედეგები, ვაქცინაციები და სხვა\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"სამედიცინო ჩანაწერების შესახებ"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"გასაზიარებელი მონაცემები მოიცავს"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} უცნობია"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"უცნობი სასმელი"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"ლუდი"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"ღვინო"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"არაყი"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"არ არის დაკავშირებული"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"დააწკაპუნეთ ამ აპის Health Connect-თან დასაკავშირებლად"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"ახლა არა"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"ყველა სიმპტომი"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"სიმპტომები"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"აკნეს წაკითხვა"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"აკნეს ჩაწერა"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"მტვრევადი ფრჩხილების წაკითხვა"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"წყლის შეკავება"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ქშენა"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ქშენა"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>-დან <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"არჩეულია <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>-დან"</string>
 </resources>
