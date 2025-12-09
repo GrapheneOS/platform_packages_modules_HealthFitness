@@ -24,8 +24,11 @@ import android.annotation.NonNull;
 import android.annotation.SystemApi;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.Record;
+import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.Objects;
 
 /**
  * Represents information about a data type provided by a device.
@@ -165,7 +168,7 @@ public final class DeviceDataTypeAdvertisement implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeSerializable(mDataType);
+        dest.writeInt(HealthConnectMappings.getInstance().getRecordType(mDataType));
         dest.writeBoolean(mIsAvailable);
         dest.writeBoolean(mIsUserEnabled);
         dest.writeBoolean(mIsVisibleByDefaultInMatchmaking);
@@ -186,7 +189,11 @@ public final class DeviceDataTypeAdvertisement implements Parcelable {
             };
 
     private DeviceDataTypeAdvertisement(Parcel in) {
-        mDataType = (Class<? extends Record>) in.readSerializable();
+        mDataType =
+                Objects.requireNonNull(
+                        HealthConnectMappings.getInstance()
+                                .getRecordIdToExternalRecordClassMap()
+                                .get(in.readInt()));
         mIsAvailable = in.readBoolean();
         mIsUserEnabled = in.readBoolean();
         mIsVisibleByDefaultInMatchmaking = in.readBoolean();

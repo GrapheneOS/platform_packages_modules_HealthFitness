@@ -37,6 +37,7 @@ import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BAN
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
 import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VACCINES;
+import static android.health.connect.HealthPermissions.READ_STEPS;
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.HealthPermissions.WRITE_NUTRITION;
 import static android.health.connect.HealthPermissions.WRITE_SLEEP;
@@ -114,6 +115,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.clearInvocations;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -140,7 +142,10 @@ import android.health.HealthFitnessStatsLog;
 import android.health.connect.DeleteMedicalResourcesRequest;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.DeviceDataProviderInfo;
+import android.health.connect.DeviceDataSource;
 import android.health.connect.DeviceDataSourceInfo;
+import android.health.connect.DeviceDataTypeSource;
+import android.health.connect.GetDeviceDataSourcesResponse;
 import android.health.connect.GetMatchingDataSourcesResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectException;
@@ -166,6 +171,7 @@ import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
 import android.health.connect.aidl.IGetDeviceDataSourceInfosCallback;
+import android.health.connect.aidl.IGetDeviceDataSourcesCallback;
 import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
 import android.health.connect.aidl.IGetLatestMetadataForBackupResponseCallback;
 import android.health.connect.aidl.IGetMatchingDataSourcesCallback;
@@ -258,6 +264,8 @@ import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
+
+import com.google.common.collect.Iterables;
 
 import org.junit.After;
 import org.junit.Before;
@@ -384,6 +392,7 @@ public class HealthConnectServiceImplTest {
                     "getCurrentDeviceId",
                     "advertiseDeviceDataSources",
                     "getDeviceDataSourceInfos",
+                    "getDeviceDataSources",
                     "getHealthConnectOnboardingState",
                     "updateHealthConnectBackupAndRestoreSettings",
                     "updateHealthConnectRestoreStatus",
@@ -439,6 +448,7 @@ public class HealthConnectServiceImplTest {
     @Mock IIsMatchmakingPossibleCallback mIsMatchmakingPossibleCallback;
     @Mock IReadRecordsResponseCallback mReadRecordsResponseCallback;
     @Mock IGetDeviceDataSourceInfosCallback mGetDeviceDataSourceInfosCallback;
+    @Mock IGetDeviceDataSourcesCallback mGetDeviceDataSourcesCallback;
     @Mock private Drawable mDrawable;
     @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
     @Mock private ChangeLogsHelper mChangeLogsHelper;
@@ -5089,6 +5099,222 @@ public class HealthConnectServiceImplTest {
         DeviceDataProviderInfo info = result.get(0).getDeviceDataProviderInfos().get(0);
         assertThat(info.getOnboardingActivityLabel()).isEqualTo("Onboarding");
         assertThat(info.getManagementActivityLabel()).isEqualTo("Management");
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void getDeviceDataSources_flagDisabled_throwsUnsupportedOperationException()
+            throws RemoteException {
+        mHealthConnectService.getDeviceDataSources(
+                mAttributionSource, mGetDeviceDataSourcesCallback);
+
+        verify(mGetDeviceDataSourcesCallback, timeout(5000).times(1))
+                .onError(mErrorCaptor.capture());
+        HealthConnectException exception = mErrorCaptor.getValue().getHealthConnectException();
+        assertThat(exception.getErrorCode()).isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void getDeviceDataSources_success_returnsOnlyVisibleDataSources() throws Exception {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(
+                        eq(mTestPackageName), any()))
+                .thenReturn(List.of(READ_STEPS));
+
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .build();
+
+        // Caller has permission to read steps but not heart rate, so should only see first device.
+        advertiseDeviceDataSources(
+                List.of(
+                        createDeviceDataAdvertisement("device_id_1", device1, StepsRecord.class),
+                        createDeviceDataAdvertisement(
+                                "device_id_2", device2, HeartRateRecord.class)));
+
+        mHealthConnectService.getDeviceDataSources(
+                mAttributionSource, mGetDeviceDataSourcesCallback);
+
+        verify(mGetDeviceDataSourcesCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<GetDeviceDataSourcesResponse> captor =
+                ArgumentCaptor.forClass(GetDeviceDataSourcesResponse.class);
+        verify(mGetDeviceDataSourcesCallback).onResult(captor.capture());
+
+        GetDeviceDataSourcesResponse result = captor.getValue();
+        List<DeviceDataSource> deviceDataSources = result.getDeviceDataSources();
+        assertThat(deviceDataSources).hasSize(1);
+
+        DeviceDataSource deviceDataSource = deviceDataSources.get(0);
+        assertThat(deviceDataSource.getDevice()).isEqualTo(device1);
+        assertThat(deviceDataSource.getDeviceDataTypeSources()).hasSize(1);
+        assertThat(Iterables.getOnlyElement(deviceDataSource.getDeviceDataTypeSources()))
+                .isEqualTo(new DeviceDataTypeSource(StepsRecord.class, true, true));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void getDeviceDataSources_noPermissions_returnsEmptyList() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+
+        advertiseStepsDeviceDataSource("device_id", device);
+
+        mHealthConnectService.getDeviceDataSources(
+                mAttributionSource, mGetDeviceDataSourcesCallback);
+
+        verify(mGetDeviceDataSourcesCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<GetDeviceDataSourcesResponse> captor =
+                ArgumentCaptor.forClass(GetDeviceDataSourcesResponse.class);
+        verify(mGetDeviceDataSourcesCallback).onResult(captor.capture());
+
+        GetDeviceDataSourcesResponse result = captor.getValue();
+        assertThat(result.getDeviceDataSources()).isEmpty();
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void getDeviceDataSources_masksDataOrigin() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(
+                        eq(mTestPackageName), any()))
+                .thenReturn(List.of(READ_STEPS));
+        setDataReadWritePermissionGranted(READ_STEPS);
+
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+
+        advertiseStepsDeviceDataSource("device_id", device);
+
+        mHealthConnectService.getDeviceDataSources(
+                mAttributionSource, mGetDeviceDataSourcesCallback);
+
+        verify(mGetDeviceDataSourcesCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<GetDeviceDataSourcesResponse> captor =
+                ArgumentCaptor.forClass(GetDeviceDataSourcesResponse.class);
+        verify(mGetDeviceDataSourcesCallback).onResult(captor.capture());
+
+        List<DeviceDataSource> result = captor.getValue().getDeviceDataSources();
+        assertThat(result).hasSize(1);
+        String spn = result.get(0).getDeviceDataOrigin().getPackageName();
+        assertTrue(SyntheticPackageNameCreator.isMaskedSpn(spn));
+    }
+
+    private void advertiseDeviceDataSources(List<DeviceDataAdvertisement> advertisements)
+            throws RemoteException {
+        clearInvocations(mEmptyResponseCallback);
+        mHealthConnectService.advertiseDeviceDataSources(
+                mAttributionSource, advertisements, mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(5000)).onResult();
+    }
+
+    private DeviceDataAdvertisement createDeviceDataAdvertisement(
+            String deviceId, Device device, Class<? extends Record> recordType) {
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(recordType)
+                                .setAvailable(true)
+                                .setUserEnabled(true)
+                                .build());
+        return new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void testGetDeviceDataSources_mergesAvailabilityAndEnabledState()
+            throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(
+                        eq(mTestPackageName), any()))
+                .thenReturn(List.of(READ_STEPS));
+
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+
+        DataOrigin origin = new DataOrigin.Builder().setPackageName("com.example.device").build();
+
+        DeviceDataTypeAdvertisement ad1 =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setAvailable(true)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataProviderInfo provider1 =
+                new DeviceDataProviderInfo(
+                        "com.example.app1", "device_id", "Onboarding", "Management", Set.of(ad1));
+
+        DeviceDataTypeAdvertisement ad2 =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setAvailable(false)
+                        .setUserEnabled(true)
+                        .build();
+        DeviceDataProviderInfo provider2 =
+                new DeviceDataProviderInfo(
+                        "com.example.app2", "device_id", "Onboarding", "Management", Set.of(ad2));
+
+        DeviceDataSourceInfo info =
+                new DeviceDataSourceInfo(origin, device, true, List.of(provider1, provider2));
+
+        doReturn(List.of(info)).when(mDeviceDataProviderManager).getDeviceDataSourceInfos();
+
+        mHealthConnectService.getDeviceDataSources(
+                mAttributionSource, mGetDeviceDataSourcesCallback);
+
+        verify(mGetDeviceDataSourcesCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<GetDeviceDataSourcesResponse> captor =
+                ArgumentCaptor.forClass(GetDeviceDataSourcesResponse.class);
+        verify(mGetDeviceDataSourcesCallback).onResult(captor.capture());
+
+        List<DeviceDataSource> result = captor.getValue().getDeviceDataSources();
+        assertThat(result).hasSize(1);
+        DeviceDataSource deviceDataSource = result.get(0);
+        assertThat(deviceDataSource.getDeviceDataTypeSources()).hasSize(1);
+        DeviceDataTypeSource dataTypeSource =
+                deviceDataSource.getDeviceDataTypeSources().iterator().next();
+
+        assertThat(dataTypeSource.getDataType()).isEqualTo(StepsRecord.class);
+        assertThat(dataTypeSource.isAvailable()).isTrue();
+        assertThat(dataTypeSource.isUserEnabled()).isTrue();
     }
 
     private void advertiseStepsDeviceDataSource(String deviceId, Device device)

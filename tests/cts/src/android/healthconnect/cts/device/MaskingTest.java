@@ -440,6 +440,17 @@ public class MaskingTest {
         assertThat(isMaskedSyntheticPackageName(deviceId)).isTrue();
     }
 
+    @Test
+    public void getDeviceDataSources_masks() throws InterruptedException {
+        TestUtils.verifyGetDeviceDataSourcesWithPermission(
+                android.health.connect.HealthPermissions.READ_STEPS,
+                dataSources -> {
+                    assertThat(dataSources).hasSize(1);
+                    assertThat(dataSources.get(0).getDeviceDataOrigin().getPackageName())
+                            .isEqualTo(mMaskedDeviceName);
+                });
+    }
+
     private void insertDeviceDataAndInitializeIdentifiers() throws InterruptedException {
         advertiseDevice(mDeviceId, StepsRecord.class);
         Instant start = Instant.now().minus(1, ChronoUnit.DAYS);

@@ -72,8 +72,10 @@ import android.health.connect.AggregateRecordsRequest;
 import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.ApplicationInfoResponse;
 import android.health.connect.DeleteUsingFiltersRequest;
+import android.health.connect.DeviceDataSource;
 import android.health.connect.DeviceDataSourceInfo;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
+import android.health.connect.GetDeviceDataSourcesResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
@@ -1277,7 +1279,6 @@ public final class TestUtils {
         HealthConnectReceiver<Void> advertiseReceiver = new HealthConnectReceiver<>();
 
         advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), advertiseReceiver);
-        advertiseReceiver.verifyNoExceptionOrThrow();
     }
 
     /**
@@ -1303,7 +1304,6 @@ public final class TestUtils {
 
         HealthConnectReceiver<Void> advertiseReceiver = new HealthConnectReceiver<>();
         advertiseDeviceDataSources(advertisements, outcomeExecutor(), advertiseReceiver);
-        advertiseReceiver.verifyNoExceptionOrThrow();
     }
 
     /**
@@ -1322,6 +1322,7 @@ public final class TestUtils {
         try {
             getHealthConnectManager().advertiseDeviceDataSources(advertisement, executor, callback);
             callback.awaitUnchecked();
+            callback.verifyNoExceptionOrThrow();
         } finally {
             uiAutomation.dropShellPermissionIdentity();
         }
@@ -1504,6 +1505,28 @@ public final class TestUtils {
         }
     }
 
+    /** Runs the provided lambda after first adopting the specified shell permission. */
+    public static void verifyGetDeviceDataSourcesWithPermission(
+            String permission, Consumer<List<DeviceDataSource>> assertions)
+            throws InterruptedException {
+        InstrumentationRegistry.getInstrumentation()
+                .getUiAutomation()
+                .adoptShellPermissionIdentity(permission);
+        try {
+            List<DeviceDataSource> dataSources =
+                    HealthConnectReceiver.<GetDeviceDataSourcesResponse>callAndGetResponse(
+                                    (executor, resReceiver) ->
+                                            getHealthConnectManager()
+                                                    .getDeviceDataSources(executor, resReceiver))
+                            .getDeviceDataSources();
+            assertions.accept(dataSources);
+        } finally {
+            InstrumentationRegistry.getInstrumentation()
+                    .getUiAutomation()
+                    .dropShellPermissionIdentity();
+        }
+    }
+
     private static Field findFieldUsingReflection(Class<?> type, String fieldName) {
         try {
             return type.getDeclaredField(fieldName);
@@ -1559,25 +1582,6 @@ public final class TestUtils {
 
         public ArrayList<String> getContributingPackages() {
             return mContributingPackages;
-        }
-    }
-
-    /**
-     * A {@link Consumer} that allows throwing checked exceptions from its single abstract method.
-     */
-    @FunctionalInterface
-    @SuppressWarnings("FunctionalInterfaceMethodChanged")
-    public interface ThrowingConsumer<T> extends Consumer<T> {
-        /** Implementations of this method might throw exception. */
-        void acceptOrThrow(T t) throws Exception;
-
-        @Override
-        default void accept(T t) {
-            try {
-                acceptOrThrow(t);
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
         }
     }
 }
