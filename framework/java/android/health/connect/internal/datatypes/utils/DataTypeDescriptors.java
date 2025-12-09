@@ -302,6 +302,7 @@ import android.health.connect.datatypes.OvulationTestRecord;
 import android.health.connect.datatypes.OxygenSaturationRecord;
 import android.health.connect.datatypes.PlannedExerciseSessionRecord;
 import android.health.connect.datatypes.PowerRecord;
+import android.health.connect.datatypes.RecordTypeSensitivity;
 import android.health.connect.datatypes.RespiratoryRateRecord;
 import android.health.connect.datatypes.RestingHeartRateRecord;
 import android.health.connect.datatypes.SexualActivityRecord;
@@ -383,6 +384,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
                                 .setRecordClass(ActiveCaloriesBurnedRecord.class)
                                 .setRecordInternalClass(ActiveCaloriesBurnedRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.ACTIVE_CALORIES_BURNED,
                                         READ_ACTIVE_CALORIES_BURNED,
@@ -396,6 +398,7 @@ public class DataTypeDescriptors {
                                         .setRecordClass(ActivityIntensityRecord.class)
                                         .setRecordInternalClass(
                                                 ActivityIntensityRecordInternal.class)
+                                        .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                         .addPermissionCategory(
                                                 HealthPermissionCategory.ACTIVITY_INTENSITY,
                                                 READ_ACTIVITY_INTENSITY,
@@ -410,6 +413,7 @@ public class DataTypeDescriptors {
                                         .setRecordClass(AlcoholConsumptionRecord.class)
                                         .setRecordInternalClass(
                                                 AlcoholConsumptionRecordInternal.class)
+                                        .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                         .addPermissionCategory(
                                                 HealthPermissionCategory.ALCOHOL_CONSUMPTION,
                                                 READ_ALCOHOL_CONSUMPTION,
@@ -421,6 +425,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.VITALS)
                                 .setRecordClass(BasalBodyTemperatureRecord.class)
                                 .setRecordInternalClass(BasalBodyTemperatureRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.SENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.BASAL_BODY_TEMPERATURE,
                                         READ_BASAL_BODY_TEMPERATURE,
@@ -431,6 +436,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.BODY_MEASUREMENTS)
                                 .setRecordClass(BasalMetabolicRateRecord.class)
                                 .setRecordInternalClass(BasalMetabolicRateRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.BASAL_METABOLIC_RATE,
                                         READ_BASAL_METABOLIC_RATE,
@@ -441,6 +447,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.VITALS)
                                 .setRecordClass(BloodGlucoseRecord.class)
                                 .setRecordInternalClass(BloodGlucoseRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.SENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.BLOOD_GLUCOSE,
                                         READ_BLOOD_GLUCOSE,
@@ -451,6 +458,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.VITALS)
                                 .setRecordClass(BloodPressureRecord.class)
                                 .setRecordInternalClass(BloodPressureRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.BLOOD_PRESSURE,
                                         READ_BLOOD_PRESSURE,
@@ -461,6 +469,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.BODY_MEASUREMENTS)
                                 .setRecordClass(BodyFatRecord.class)
                                 .setRecordInternalClass(BodyFatRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.BODY_FAT,
                                         READ_BODY_FAT,
@@ -471,6 +480,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.VITALS)
                                 .setRecordClass(BodyTemperatureRecord.class)
                                 .setRecordInternalClass(BodyTemperatureRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.BODY_TEMPERATURE,
                                         READ_BODY_TEMPERATURE,
@@ -481,6 +491,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.BODY_MEASUREMENTS)
                                 .setRecordClass(BodyWaterMassRecord.class)
                                 .setRecordInternalClass(BodyWaterMassRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.BODY_WATER_MASS,
                                         READ_BODY_WATER_MASS,
@@ -491,6 +502,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.BODY_MEASUREMENTS)
                                 .setRecordClass(BoneMassRecord.class)
                                 .setRecordInternalClass(BoneMassRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.BONE_MASS,
                                         READ_BONE_MASS,
@@ -501,6 +513,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.CYCLE_TRACKING)
                                 .setRecordClass(CervicalMucusRecord.class)
                                 .setRecordInternalClass(CervicalMucusRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.CERVICAL_MUCUS,
                                         READ_CERVICAL_MUCUS,
@@ -513,6 +526,7 @@ public class DataTypeDescriptors {
                                         .setRecordClass(MenstrualCyclePhaseRecord.class)
                                         .setRecordInternalClass(
                                                 MenstrualCyclePhaseRecordInternal.class)
+                                        .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                         .addPermissionCategory(
                                                 HealthPermissionCategory.MENSTRUAL_CYCLE_PHASE,
                                                 READ_MENSTRUAL_CYCLE_PHASE,
@@ -525,6 +539,7 @@ public class DataTypeDescriptors {
                                         .setDataCategory(HealthDataCategory.WELLNESS)
                                         .setRecordClass(NicotineIntakeRecord.class)
                                         .setRecordInternalClass(NicotineIntakeRecordInternal.class)
+                                        .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                         .addPermissionCategory(
                                                 HealthPermissionCategory.NICOTINE_INTAKE,
                                                 READ_NICOTINE_INTAKE,
@@ -536,6 +551,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
                                 .setRecordClass(CyclingPedalingCadenceRecord.class)
                                 .setRecordInternalClass(CyclingPedalingCadenceRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.EXERCISE,
                                         READ_EXERCISE,
@@ -546,6 +562,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
                                 .setRecordClass(DistanceRecord.class)
                                 .setRecordInternalClass(DistanceRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.DISTANCE,
                                         READ_DISTANCE,
@@ -556,6 +573,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
                                 .setRecordClass(ElevationGainedRecord.class)
                                 .setRecordInternalClass(ElevationGainedRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.ELEVATION_GAINED,
                                         READ_ELEVATION_GAINED,
@@ -566,6 +584,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
                                 .setRecordClass(ExerciseSessionRecord.class)
                                 .setRecordInternalClass(ExerciseSessionRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.EXERCISE,
                                         READ_EXERCISE,
@@ -576,6 +595,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
                                 .setRecordClass(FloorsClimbedRecord.class)
                                 .setRecordInternalClass(FloorsClimbedRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.FLOORS_CLIMBED,
                                         READ_FLOORS_CLIMBED,
@@ -586,6 +606,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.VITALS)
                                 .setRecordClass(HeartRateRecord.class)
                                 .setRecordInternalClass(HeartRateRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.HEART_RATE,
                                         READ_HEART_RATE,
@@ -597,6 +618,7 @@ public class DataTypeDescriptors {
                                 .setRecordClass(HeartRateVariabilityRmssdRecord.class)
                                 .setRecordInternalClass(
                                         HeartRateVariabilityRmssdRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.HEART_RATE_VARIABILITY,
                                         READ_HEART_RATE_VARIABILITY,
@@ -607,6 +629,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.BODY_MEASUREMENTS)
                                 .setRecordClass(HeightRecord.class)
                                 .setRecordInternalClass(HeightRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.HEIGHT, READ_HEIGHT, WRITE_HEIGHT)
                                 .build(),
@@ -615,6 +638,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.NUTRITION)
                                 .setRecordClass(HydrationRecord.class)
                                 .setRecordInternalClass(HydrationRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.HYDRATION,
                                         READ_HYDRATION,
@@ -625,6 +649,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.CYCLE_TRACKING)
                                 .setRecordClass(IntermenstrualBleedingRecord.class)
                                 .setRecordInternalClass(IntermenstrualBleedingRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.INTERMENSTRUAL_BLEEDING,
                                         READ_INTERMENSTRUAL_BLEEDING,
@@ -635,6 +660,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.BODY_MEASUREMENTS)
                                 .setRecordClass(LeanBodyMassRecord.class)
                                 .setRecordInternalClass(LeanBodyMassRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.LEAN_BODY_MASS,
                                         READ_LEAN_BODY_MASS,
@@ -645,6 +671,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.CYCLE_TRACKING)
                                 .setRecordClass(MenstruationFlowRecord.class)
                                 .setRecordInternalClass(MenstruationFlowRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.MENSTRUATION,
                                         READ_MENSTRUATION,
@@ -655,6 +682,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.CYCLE_TRACKING)
                                 .setRecordClass(MenstruationPeriodRecord.class)
                                 .setRecordInternalClass(MenstruationPeriodRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.MENSTRUATION,
                                         READ_MENSTRUATION,
@@ -665,6 +693,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.WELLNESS)
                                 .setRecordClass(MindfulnessSessionRecord.class)
                                 .setRecordInternalClass(MindfulnessSessionRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.MINDFULNESS,
                                         READ_MINDFULNESS,
@@ -675,6 +704,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.NUTRITION)
                                 .setRecordClass(NutritionRecord.class)
                                 .setRecordInternalClass(NutritionRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.NUTRITION,
                                         READ_NUTRITION,
@@ -685,6 +715,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.CYCLE_TRACKING)
                                 .setRecordClass(OvulationTestRecord.class)
                                 .setRecordInternalClass(OvulationTestRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.SENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.OVULATION_TEST,
                                         READ_OVULATION_TEST,
@@ -695,6 +726,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.VITALS)
                                 .setRecordClass(OxygenSaturationRecord.class)
                                 .setRecordInternalClass(OxygenSaturationRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.OXYGEN_SATURATION,
                                         READ_OXYGEN_SATURATION,
@@ -705,6 +737,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
                                 .setRecordClass(PlannedExerciseSessionRecord.class)
                                 .setRecordInternalClass(PlannedExerciseSessionRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.PLANNED_EXERCISE,
                                         READ_PLANNED_EXERCISE,
@@ -715,6 +748,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
                                 .setRecordClass(PowerRecord.class)
                                 .setRecordInternalClass(PowerRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.POWER, READ_POWER, WRITE_POWER)
                                 .build(),
@@ -723,6 +757,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.VITALS)
                                 .setRecordClass(RespiratoryRateRecord.class)
                                 .setRecordInternalClass(RespiratoryRateRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.RESPIRATORY_RATE,
                                         READ_RESPIRATORY_RATE,
@@ -733,6 +768,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.VITALS)
                                 .setRecordClass(RestingHeartRateRecord.class)
                                 .setRecordInternalClass(RestingHeartRateRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.RESTING_HEART_RATE,
                                         READ_RESTING_HEART_RATE,
@@ -743,6 +779,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.CYCLE_TRACKING)
                                 .setRecordClass(SexualActivityRecord.class)
                                 .setRecordInternalClass(SexualActivityRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.SEXUAL_ACTIVITY,
                                         READ_SEXUAL_ACTIVITY,
@@ -753,6 +790,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.VITALS)
                                 .setRecordClass(SkinTemperatureRecord.class)
                                 .setRecordInternalClass(SkinTemperatureRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.SKIN_TEMPERATURE,
                                         READ_SKIN_TEMPERATURE,
@@ -763,6 +801,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.SLEEP)
                                 .setRecordClass(SleepSessionRecord.class)
                                 .setRecordInternalClass(SleepSessionRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.SLEEP, READ_SLEEP, WRITE_SLEEP)
                                 .build(),
@@ -771,6 +810,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
                                 .setRecordClass(SpeedRecord.class)
                                 .setRecordInternalClass(SpeedRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.SPEED, READ_SPEED, WRITE_SPEED)
                                 .build(),
@@ -779,6 +819,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
                                 .setRecordClass(StepsRecord.class)
                                 .setRecordInternalClass(StepsRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.STEPS, READ_STEPS, WRITE_STEPS)
                                 .build(),
@@ -787,6 +828,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
                                 .setRecordClass(StepsCadenceRecord.class)
                                 .setRecordInternalClass(StepsCadenceRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.STEPS, READ_STEPS, WRITE_STEPS)
                                 .build(),
@@ -796,6 +838,7 @@ public class DataTypeDescriptors {
                                         .setDataCategory(HealthDataCategory.SYMPTOMS)
                                         .setRecordClass(SymptomRecord.class)
                                         .setRecordInternalClass(SymptomRecordInternal.class)
+                                        .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                         .addPermissionCategory(
                                                 HealthPermissionCategory.SYMPTOM_COUGH,
                                                 READ_SYMPTOM_COUGH,
@@ -1046,6 +1089,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
                                 .setRecordClass(TotalCaloriesBurnedRecord.class)
                                 .setRecordInternalClass(TotalCaloriesBurnedRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.TOTAL_CALORIES_BURNED,
                                         READ_TOTAL_CALORIES_BURNED,
@@ -1056,6 +1100,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
                                 .setRecordClass(Vo2MaxRecord.class)
                                 .setRecordInternalClass(Vo2MaxRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.VO2_MAX,
                                         READ_VO2_MAX,
@@ -1066,6 +1111,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.BODY_MEASUREMENTS)
                                 .setRecordClass(WeightRecord.class)
                                 .setRecordInternalClass(WeightRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.WEIGHT, READ_WEIGHT, WRITE_WEIGHT)
                                 .build(),
@@ -1074,6 +1120,7 @@ public class DataTypeDescriptors {
                                 .setDataCategory(HealthDataCategory.ACTIVITY)
                                 .setRecordClass(WheelchairPushesRecord.class)
                                 .setRecordInternalClass(WheelchairPushesRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
                                 .addPermissionCategory(
                                         HealthPermissionCategory.WHEELCHAIR_PUSHES,
                                         READ_WHEELCHAIR_PUSHES,

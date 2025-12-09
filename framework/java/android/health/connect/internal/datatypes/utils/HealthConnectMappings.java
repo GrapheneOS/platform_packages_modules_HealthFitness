@@ -32,6 +32,7 @@ import android.health.connect.HealthPermissionCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.datatypes.RecordTypeSensitivity;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.DataTypeDescriptor.PermissionCategory;
 import android.util.ArrayMap;
@@ -273,6 +274,19 @@ public final class HealthConnectMappings {
                         mRecordIdToDescriptorMap.get(recordType),
                         "Unsupported record type: " + recordType)
                 .getDataCategory();
+    }
+
+    /**
+     * Returns {@link RecordTypeSensitivity} for the input {@link RecordTypeIdentifier.RecordType}.
+     *
+     * @hide
+     */
+    @RecordTypeSensitivity.Sensitivity
+    public int getSensitivityForRecordType(@RecordTypeIdentifier.RecordType int recordType) {
+        return Objects.requireNonNull(
+                        mRecordIdToDescriptorMap.get(recordType),
+                        "Unsupported record type: " + recordType)
+                .getRecordTypeSensitivity();
     }
 
     /** Returns a set of all supported data categories. */

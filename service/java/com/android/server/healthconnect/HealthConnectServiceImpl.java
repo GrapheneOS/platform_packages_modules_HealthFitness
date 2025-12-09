@@ -35,6 +35,7 @@ import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKG
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.datatypes.MedicalDataSource.validateMedicalDataSourceIds;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
+import static android.health.connect.datatypes.RecordTypeSensitivity.INSENSITIVE;
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isPhrChangeLogsEnabled;
@@ -4666,7 +4667,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         return recordTypes.stream()
                 .filter(
                         recordType -> {
-                            if (!isRecordTypeSensitive(recordType.intValue())) {
+                            if (mHealthConnectMappings.getSensitivityForRecordType(
+                                            recordType.intValue())
+                                    == INSENSITIVE) {
                                 return true;
                             }
 
@@ -4688,10 +4691,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             return false;
                         })
                 .collect(toSet());
-    }
-
-    private boolean isRecordTypeSensitive(int recordType) {
-        return !NON_SENSITIVE_RECORD_TYPES.contains(recordType);
     }
 
     private static void tryAndThrowException(

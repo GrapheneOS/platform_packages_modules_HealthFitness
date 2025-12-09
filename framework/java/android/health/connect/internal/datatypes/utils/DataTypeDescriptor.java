@@ -23,6 +23,7 @@ import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissionCategory;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.datatypes.RecordTypeSensitivity;
 import android.health.connect.internal.datatypes.RecordInternal;
 
 import java.util.HashSet;
@@ -36,6 +37,7 @@ public class DataTypeDescriptor {
     private final Set<PermissionCategory> mPermissionCategories;
     private final Class<? extends RecordInternal<?>> mRecordInternalClass;
     private final Class<? extends Record> mRecordClass;
+    @RecordTypeSensitivity.Sensitivity private final int mRecordTypeSensitivity;
 
     /** A class to hold the permission category which includes read and write permissions. */
     public record PermissionCategory(
@@ -55,6 +57,7 @@ public class DataTypeDescriptor {
         mDataCategory = builder.mHealthDataCategory;
         mRecordInternalClass = Objects.requireNonNull(builder.mRecordInternalClass);
         mRecordClass = Objects.requireNonNull(builder.mRecordClass);
+        mRecordTypeSensitivity = builder.mRecordTypeSensitivity;
     }
 
     @RecordTypeIdentifier.RecordType
@@ -79,6 +82,11 @@ public class DataTypeDescriptor {
         return mRecordClass;
     }
 
+    @RecordTypeSensitivity.Sensitivity
+    public int getRecordTypeSensitivity() {
+        return mRecordTypeSensitivity;
+    }
+
     interface RecordTypeIdentifierBuilderStep {
         DataCategoryBuilderStep setRecordTypeIdentifier(
                 @RecordTypeIdentifier.RecordType int recordTypeIdentifier);
@@ -92,10 +100,14 @@ public class DataTypeDescriptor {
         RecordInternalClassBuilderStep setRecordClass(Class<? extends Record> recordClass);
     }
 
-
     interface RecordInternalClassBuilderStep {
-        PermissionCategoryBuilderStep setRecordInternalClass(
+        RecordTypeSensitivityBuilderStep setRecordInternalClass(
                 Class<? extends RecordInternal<?>> recordInternalClass);
+    }
+
+    interface RecordTypeSensitivityBuilderStep {
+        PermissionCategoryBuilderStep setRecordTypeSensitivity(
+                @RecordTypeSensitivity.Sensitivity int sensitivity);
     }
 
     interface PermissionCategoryBuilderStep {
@@ -117,13 +129,17 @@ public class DataTypeDescriptor {
                     DataCategoryBuilderStep,
                     RecordClassBuilderStep,
                     RecordInternalClassBuilderStep,
-                    PermissionCategoryBuilderStep {
+                    PermissionCategoryBuilderStep,
+                    RecordTypeSensitivityBuilderStep {
         @RecordTypeIdentifier.RecordType private int mRecordTypeIdentifier = RECORD_TYPE_UNKNOWN;
 
         @HealthDataCategory.Type private int mHealthDataCategory = HealthDataCategory.UNKNOWN;
         @Nullable private Class<? extends Record> mRecordClass;
         @Nullable private Class<? extends RecordInternal<?>> mRecordInternalClass;
         private final Set<PermissionCategory> mPermissionCategories = new HashSet<>();
+
+        @RecordTypeSensitivity.Sensitivity
+        private int mRecordTypeSensitivity = RecordTypeSensitivity.SENSITIVE;
 
         private Builder() {}
 
@@ -154,9 +170,16 @@ public class DataTypeDescriptor {
         }
 
         @Override
-        public PermissionCategoryBuilderStep setRecordInternalClass(
+        public RecordTypeSensitivityBuilderStep setRecordInternalClass(
                 Class<? extends RecordInternal<?>> recordInternalClass) {
             mRecordInternalClass = Objects.requireNonNull(recordInternalClass);
+            return this;
+        }
+
+        @Override
+        public PermissionCategoryBuilderStep setRecordTypeSensitivity(
+                @RecordTypeSensitivity.Sensitivity int sensitivity) {
+            mRecordTypeSensitivity = sensitivity;
             return this;
         }
 
