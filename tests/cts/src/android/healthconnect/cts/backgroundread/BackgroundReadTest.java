@@ -19,9 +19,11 @@ package android.healthconnect.cts.backgroundread;
 import static android.health.connect.HealthConnectException.ERROR_SECURITY;
 import static android.health.connect.HealthDataCategory.ACTIVITY;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
+import static android.health.connect.HealthPermissions.WRITE_HEART_RATE;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.getRecordIds;
 import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
+import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecordWithEmptyMetaData;
 
@@ -43,6 +45,7 @@ import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
@@ -57,6 +60,7 @@ import androidx.test.platform.app.InstrumentationRegistry;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -131,6 +135,25 @@ public class BackgroundReadTest {
                                 new DataOrigin.Builder().setPackageName(PKG_TEST_APP).build())
                         .build();
         List<StepsRecord> records = mTestApp.readRecords(request);
+
+        assertThat(records.stream().map(r -> r.getMetadata().getId())).containsExactly(insertedId);
+    }
+
+    @Test
+    @Ignore("b/467290811")
+    public void testReadRecordsByFilters_inBackgroundWithOnlyReadPerm_canReadOwnHeartRateData()
+            throws Exception {
+        String insertedId = mTestApp.insertRecord(getHeartRateRecord(60, mNow));
+
+        mTestAppRule.revokeHealthPermission(WRITE_HEART_RATE);
+
+        // test app will try to read the heart rate record inserted by itself
+        ReadRecordsRequestUsingFilters<HeartRateRecord> request =
+                new ReadRecordsRequestUsingFilters.Builder<>(HeartRateRecord.class)
+                        .addDataOrigins(
+                                new DataOrigin.Builder().setPackageName(PKG_TEST_APP).build())
+                        .build();
+        List<HeartRateRecord> records = mTestApp.readRecords(request);
 
         assertThat(records.stream().map(r -> r.getMetadata().getId())).containsExactly(insertedId);
     }
