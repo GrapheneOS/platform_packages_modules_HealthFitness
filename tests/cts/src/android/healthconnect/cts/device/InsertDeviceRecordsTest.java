@@ -33,16 +33,21 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.HealthConnectException;
 import android.health.connect.InsertRecordsResponse;
+import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
+import android.health.connect.datatypes.ExerciseRoute;
+import android.health.connect.datatypes.ExerciseSessionRecord;
+import android.health.connect.datatypes.ExerciseSessionType;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
 import android.healthconnect.testing.cts.TestUtils;
@@ -60,6 +65,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 
@@ -584,5 +590,71 @@ public class InsertDeviceRecordsTest {
                 .isTrue();
         assertThat(insertedHeartRateRecord.getMetadata().getDevice())
                 .isEqualTo(insertedStepsRecord.getMetadata().getDevice());
+    }
+
+    @Test
+    public void insertsDeviceRecords_exerciseRouteRecordIsCorrect() throws InterruptedException {
+        String deviceId = "TestDeviceId";
+        advertiseDevice(deviceId, ExerciseSessionRecord.class);
+        ExerciseSessionRecord exerciseSessionRecord = getExerciseSessionWithRoute();
+        TestUtils.insertDeviceRecords(deviceId, List.of(exerciseSessionRecord));
+
+        ReadRecordsRequestUsingFilters<ExerciseSessionRecord> request =
+                new ReadRecordsRequestUsingFilters.Builder<>(ExerciseSessionRecord.class)
+                        .setDeviceId(deviceId)
+                        .build();
+        List<ExerciseSessionRecord> insertedRecords = TestUtils.readDeviceRecords(request);
+
+        assertThat(insertedRecords).hasSize(1);
+        ExerciseSessionRecord insertedRecord = insertedRecords.get(0);
+        assertThat(insertedRecord.getRoute()).isNotNull();
+        assertThat(insertedRecord.getRoute().getRouteLocations()).hasSize(3);
+    }
+
+    @Test
+    public void insertsDeviceRecords_SymptomRecordIsCorrect() throws InterruptedException {
+        String deviceId = "TestDeviceId";
+        advertiseDevice(deviceId, SymptomRecord.class);
+        SymptomRecord SymptomRecord = getSymptomRecord();
+        TestUtils.insertDeviceRecords(deviceId, List.of(SymptomRecord));
+
+        ReadRecordsRequestUsingFilters<SymptomRecord> request =
+                new ReadRecordsRequestUsingFilters.Builder<>(SymptomRecord.class)
+                        .setDeviceId(deviceId)
+                        .build();
+        List<SymptomRecord> insertedRecords = TestUtils.readDeviceRecords(request);
+
+        assertThat(insertedRecords).hasSize(1);
+        SymptomRecord insertedRecord = insertedRecords.get(0);
+        assertThat(insertedRecord.getSymptomType()).isEqualTo(SymptomRecord.SYMPTOM_TYPE_COUGH);
+    }
+
+    private SymptomRecord getSymptomRecord() {
+        Instant now = Instant.now();
+        return new SymptomRecord.Builder(
+                        SymptomRecord.SYMPTOM_TYPE_COUGH, now, new Metadata.Builder().build())
+                .build();
+    }
+
+    private ExerciseSessionRecord getExerciseSessionWithRoute() {
+        Instant now = Instant.now();
+        return new ExerciseSessionRecord.Builder(
+                        new Metadata.Builder().build(),
+                        now,
+                        now.plusSeconds(3600),
+                        ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
+                .setRoute(
+                        new ExerciseRoute(
+                                List.of(
+                                        new ExerciseRoute.Location.Builder(
+                                                        now.plusSeconds(10), 52.1, 0.1)
+                                                .build(),
+                                        new ExerciseRoute.Location.Builder(
+                                                        now.plusSeconds(20), 52.2, 0.2)
+                                                .build(),
+                                        new ExerciseRoute.Location.Builder(
+                                                        now.plusSeconds(30), 52.3, 0.3)
+                                                .build())))
+                .build();
     }
 }
