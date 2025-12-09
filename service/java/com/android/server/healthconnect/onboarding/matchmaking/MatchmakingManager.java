@@ -377,22 +377,21 @@ public final class MatchmakingManager {
 
         return deviceInfos.stream()
                 .filter(includeExcludeFilterForDevices(includeDataSources, excludeDataSources))
-                // Filter out paused devices
-                .filter(
-                        deviceDataSourceInfo ->
-                                !isMatchmakingForDevicePaused(
-                                        readingAppPackageName,
-                                        deviceDataSourceInfo
-                                                .getDeviceDataOrigin()
-                                                .getPackageName()))
                 .map(
                         deviceDataSourceInfo -> {
-                            Set<String> grantablePermissionsForDevice =
+                            Set<String> writePermissionsForDevice =
                                     getMatchingWritePermissionsForDevice(
                                             deviceDataSourceInfo, writePermissions);
+
+                            Set<String> unpausedWritePermissionsForDevice =
+                                    getUnpausedWritePermissionsForDevice(
+                                            writePermissionsForDevice,
+                                            readingAppPackageName,
+                                            deviceDataSourceInfo);
+
                             return Map.entry(
                                     deviceDataSourceInfo.getDeviceDataOrigin().getPackageName(),
-                                    grantablePermissionsForDevice);
+                                    unpausedWritePermissionsForDevice);
                         })
                 .filter(entry -> !entry.getValue().isEmpty())
                 .collect(Collectors.toUnmodifiableMap(Map.Entry::getKey, Map.Entry::getValue));
@@ -452,10 +451,31 @@ public final class MatchmakingManager {
                 .collect(Collectors.toSet());
     }
 
-    private boolean isMatchmakingForDevicePaused(
-            String readingAppPackageName, String matchingDevicePackageName) {
-        return mMatchmakingDenialStateManager.isMatchmakingForDevicePaused(
-                readingAppPackageName, matchingDevicePackageName);
+    private Set<String> getUnpausedWritePermissionsForDevice(
+            Set<String> writePermissions,
+            String readingAppPackageName,
+            DeviceDataSourceInfo device) {
+        Set<Integer> unpausedDataCategories =
+                writePermissions.stream()
+                        .map(mHealthConnectMappings::getHealthDataCategoryForWritePermission)
+                        .filter(category -> category != -1)
+                        .distinct()
+                        .filter(
+                                category -> {
+                                    return !mMatchmakingDenialStateManager.isMatchmakingPaused(
+                                            readingAppPackageName,
+                                            device.getDeviceDataOrigin().getPackageName(),
+                                            category);
+                                })
+                        .collect(Collectors.toSet());
+        return writePermissions.stream()
+                .filter(
+                        permission -> {
+                            return unpausedDataCategories.contains(
+                                    mHealthConnectMappings.getHealthDataCategoryForWritePermission(
+                                            permission));
+                        })
+                .collect(Collectors.toSet());
     }
 
     private Set<String> getUnpausedWritePermissions(

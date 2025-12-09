@@ -3617,21 +3617,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void recordMatchmakingDenial(
             AttributionSource attributionSource,
             String callingPackageName,
-            Map<String, List<String>> matchingApps,
+            Map<String, List<String>> matchingDataSources,
             IEmptyResponseCallback callback) {
         checkParamsNonNull(attributionSource, callingPackageName, callback);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final ErrorCallback errorCallback = callback::onError;
-        Map<String, List<String>> unmaskedMatchingApps =
-                matchingApps.entrySet().stream()
-                        .collect(
-                                Collectors.toMap(
-                                        entry ->
-                                                getUnmaskingFunction(callingPackageName)
-                                                        .apply(entry.getKey()),
-                                        Map.Entry::getValue));
 
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
@@ -3639,6 +3631,16 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         throw new UnsupportedOperationException(
                                 "recordMatchmakingDenial is not supported");
                     }
+
+                    Map<String, List<String>> unmaskedMatchingDataSources =
+                            matchingDataSources.entrySet().stream()
+                                    .collect(
+                                            Collectors.toMap(
+                                                    entry ->
+                                                            getUnmaskingFunction(callingPackageName)
+                                                                    .apply(entry.getKey()),
+                                                    Map.Entry::getValue));
+
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
                     mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
@@ -3648,7 +3650,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     }
                     throwExceptionIfDataSyncInProgress();
                     mMatchmakingManager.recordMatchmakingDenial(
-                            callingPackageName, unmaskedMatchingApps);
+                            callingPackageName, unmaskedMatchingDataSources);
 
                     callback.onResult();
                 },
