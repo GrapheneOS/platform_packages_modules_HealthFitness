@@ -22,6 +22,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ACTIVITY_INTENSITY;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ALCOHOL_CONSUMPTION;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_DEVICE_DATA_PROVIDERS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ECOSYSTEM_METRICS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_GENERATED_LOCAL_TIME;
@@ -53,6 +54,8 @@ import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
@@ -71,6 +74,7 @@ import com.android.server.healthconnect.migration.MigrationEntityHelper;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
+import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 import com.android.server.healthconnect.storage.request.DropTableRequest;
 
@@ -126,6 +130,9 @@ final class DatabaseUpgradeHelper {
     private static final Upgrader UPGRADE_TO_MENSTRUAL_CYCLE_PHASE =
             db -> createTable(db, new MenstrualCyclePhaseRecordHelper().getCreateTableRequest());
 
+    private static final Upgrader UPGRADE_TO_DEVICE_DATA_PROVIDERS =
+            DatabaseUpgradeHelper::applyDeviceDataProvidersDatabaseUpgrade;
+
     /**
      * A list of db version -> Upgrader to upgrade the db from the previous version to the version.
      * The upgrades must be executed one by one in the numeric order of db versions, hence TreeMap.
@@ -156,7 +163,10 @@ final class DatabaseUpgradeHelper {
                             entry(DB_VERSION_ALCOHOL_CONSUMPTION, UPGRADE_TO_ALCOHOL_CONSUMPTION),
                             entry(
                                     DB_VERSION_MENSTRUAL_CYCLE_PHASE,
-                                    UPGRADE_TO_MENSTRUAL_CYCLE_PHASE)));
+                                    UPGRADE_TO_MENSTRUAL_CYCLE_PHASE),
+                            entry(
+                                    DB_VERSION_DEVICE_DATA_PROVIDERS,
+                                    UPGRADE_TO_DEVICE_DATA_PROVIDERS)));
 
     /**
      * Applies db upgrades to bring the current schema to the latest supported version.
@@ -311,6 +321,48 @@ final class DatabaseUpgradeHelper {
         executeSqlStatements(db, changeLogsRequestStatements.getAddColumnsCommands());
         var changeLogsStatements = ChangeLogsHelper.getAlterTableRequestForPhrChangeLogs();
         executeSqlStatements(db, changeLogsStatements.getAddColumnsCommands());
+    }
+
+    private static void applyDeviceDataProvidersDatabaseUpgrade(SQLiteDatabase db) {
+        if (checkColumnExists(
+                db, AppInfoHelper.TABLE_NAME, AppInfoHelper.DEVICE_INFO_ID_COLUMN_NAME)) {
+            return;
+        }
+
+        // Add the column which links app info entries to device info entries.
+        executeSqlStatements(
+                db, AppInfoHelper.getAlterTableRequestForDdpInfo().getAddColumnsCommands());
+
+        // Add display name and device ID columns to the device info table.
+        executeSqlStatements(
+                db, DeviceInfoHelper.getAlterTableRequestForDdpColumns().getAddColumnsCommands());
+
+        // Create table for storing metadata about device data providers.
+        createTable(db, DeviceDataProviderMetadataHelper.getCreateTableRequest());
+
+        final InternalHealthConnectMappings mInternalHealthConnectMappings =
+                InternalHealthConnectMappings.getInstance();
+
+        // Add the column to all record tables that stores the ID of the writing DDP.
+        for (RecordHelper<?> recordHelper : mInternalHealthConnectMappings.getRecordHelpers()) {
+            if (!checkTableExists(db, recordHelper.getMainTableName())) {
+                // Data types under development may have a record helper, but no database changes
+                // outside of the DevelopmentDatabaseHelper, so we avoid attempting to alter such
+                // tables, as they don't exist.
+                continue;
+            }
+
+            // For fresh database creation, the column may already have been added at creation time.
+            if (checkColumnExists(
+                    db, recordHelper.getMainTableName(), RecordHelper.DDP_ID_COLUMN_NAME)) {
+                continue;
+            }
+            AlterTableRequest alterRecordHelperRequest =
+                    recordHelper.getAlterTableRequestForDdpName();
+            executeSqlStatements(db, alterRecordHelperRequest.getAddColumnsCommands());
+        }
+
+        createTable(db, DeviceDataSourcesHelper.getCreateTableRequest());
     }
 
     /** Executes a list of SQL statements one after another, in a transaction. */

@@ -16,13 +16,11 @@
 
 package com.android.server.healthconnect.storage;
 
-import static android.healthconnect.testing.unittest.StorageUtils.assertColumnsExist;
 import static android.healthconnect.testing.unittest.StorageUtils.createEmptyDatabase;
 
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
 import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.onUpgrade;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.checkTableExists;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -35,13 +33,6 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.android.server.healthconnect.common.metadata.AppInfoHelper;
-import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
-import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
-import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
-import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
-import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
-
 import com.google.common.base.Preconditions;
 
 import org.junit.Before;
@@ -51,7 +42,6 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 
 import java.io.File;
-import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class DevelopmentDatabaseHelperTest {
@@ -214,103 +204,6 @@ public class DevelopmentDatabaseHelperTest {
 
             assertThat(DevelopmentDatabaseHelper.getOldVersionIfExists(db))
                     .isEqualTo(DevelopmentDatabaseHelper.CURRENT_VERSION);
-        }
-    }
-
-    @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
-    public void onUpgrade_ddpInfo_schemaUpToDate() {
-        try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
-            SQLiteDatabase db = helper.getWritableDatabase();
-
-            assertColumnsExist(
-                    db,
-                    AppInfoHelper.TABLE_NAME,
-                    List.of(AppInfoHelper.DEVICE_INFO_ID_COLUMN_NAME));
-        }
-    }
-
-    @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
-    public void onUpgrade_enhancedDeviceInfo_schemaUpToDate() {
-        try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
-            SQLiteDatabase db = helper.getWritableDatabase();
-
-            assertColumnsExist(
-                    db,
-                    DeviceInfoHelper.TABLE_NAME,
-                    List.of(
-                            DeviceInfoHelper.DEVICE_ID_COLUMN_NAME,
-                            DeviceInfoHelper.DISPLAY_NAME_COLUMN_NAME));
-        }
-    }
-
-    @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
-    public void onUpgrade_enhancedDeviceInfo_idempotent() {
-        try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
-            SQLiteDatabase db = helper.getWritableDatabase();
-
-            // Force a second run of onOpen() and make sure there are no errors
-            DevelopmentDatabaseHelper.onOpen(db);
-
-            assertColumnsExist(
-                    db,
-                    DeviceInfoHelper.TABLE_NAME,
-                    List.of(
-                            DeviceInfoHelper.DEVICE_ID_COLUMN_NAME,
-                            DeviceInfoHelper.DISPLAY_NAME_COLUMN_NAME));
-        }
-    }
-
-    @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
-    public void onUpgrade_deviceDataProviderDb_schemaUpToDate() {
-        try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
-            SQLiteDatabase db = helper.getWritableDatabase();
-
-            assertThat(checkTableExists(db, DeviceDataSourcesHelper.TABLE_NAME)).isTrue();
-        }
-    }
-
-    @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
-    public void onUpgrade_ddpMetadataDb_schemaUpToDate() {
-        try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
-            SQLiteDatabase db = helper.getWritableDatabase();
-
-            assertThat(checkTableExists(db, DeviceDataProviderMetadataHelper.TABLE_NAME)).isTrue();
-        }
-    }
-
-    @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
-    public void onUpgrade_ddpNameEnhancedRecord_schemaUpToDate() {
-        try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
-            SQLiteDatabase db = helper.getWritableDatabase();
-
-            final InternalHealthConnectMappings mInternalHealthConnectMappings =
-                    InternalHealthConnectMappings.getInstance();
-
-            for (RecordHelper<?> recordHelper : mInternalHealthConnectMappings.getRecordHelpers()) {
-                assertColumnsExist(
-                        db,
-                        recordHelper.getMainTableName(),
-                        List.of(RecordHelper.DDP_ID_COLUMN_NAME));
-            }
-        }
-    }
-
-    @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
-    public void onUpgrade_dataSubtype_schemaUpToDate() {
-        try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
-            SQLiteDatabase db = helper.getWritableDatabase();
-
-            assertColumnsExist(
-                    db,
-                    DeviceDataSourcesHelper.TABLE_NAME,
-                    List.of(DeviceDataSourcesHelper.DATA_SUBTYPE));
         }
     }
 }

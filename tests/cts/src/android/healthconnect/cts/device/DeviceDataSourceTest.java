@@ -19,7 +19,6 @@ package android.healthconnect.cts.device;
 import static android.health.connect.HealthPermissions.READ_STEPS;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 
-import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
 
@@ -57,11 +56,7 @@ import java.util.List;
 import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({
-    FLAG_DEVICE_DATA_PROVIDERS_API,
-    FLAG_DEVICE_DATA_PROVIDERS_DB,
-    FLAG_DEVELOPMENT_DATABASE_RW
-})
+@RequiresFlagsEnabled({FLAG_DEVICE_DATA_PROVIDERS_API, FLAG_DEVICE_DATA_PROVIDERS_DB})
 public class DeviceDataSourceTest {
 
     @Rule

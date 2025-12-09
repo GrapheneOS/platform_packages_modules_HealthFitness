@@ -17,6 +17,7 @@
 package com.android.healthfitness.flags;
 
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ALCOHOL_CONSUMPTION;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_DEVICE_DATA_PROVIDERS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MENSTRUAL_CYCLE_PHASE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_SYMPTOMS;
@@ -109,6 +110,7 @@ public final class AconfigFlagHelper {
         map.put(DB_VERSION_SYMPTOMS, Flags::symptomsDb);
         map.put(DB_VERSION_ALCOHOL_CONSUMPTION, Flags::alcoholConsumptionDb);
         map.put(DB_VERSION_MENSTRUAL_CYCLE_PHASE, Flags::cyclePhasesDb);
+        map.put(DB_VERSION_DEVICE_DATA_PROVIDERS, Flags::deviceDataProvidersDb);
 
         return map;
     }
@@ -145,9 +147,7 @@ public final class AconfigFlagHelper {
 
     /** Returns a boolean indicating whether device data providers feature is enabled. */
     public static boolean isDeviceDataProvidersEnabled() {
-        return Flags.deviceDataProvidersApi()
-                && Flags.deviceDataProvidersDb()
-                && Flags.developmentDatabaseRw();
+        return Flags.deviceDataProvidersApi() && isDbFlagEnabled(DB_VERSION_DEVICE_DATA_PROVIDERS);
     }
 
     /** Returns a boolean indicating whether Symptoms data type is enabled. */
