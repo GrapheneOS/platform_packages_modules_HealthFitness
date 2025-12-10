@@ -32,6 +32,7 @@ import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
@@ -62,14 +63,17 @@ import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
 @EnableFlags({
     Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
     Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-    Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    Flags.FLAG_DEVELOPMENT_DATABASE_RW,
+    Flags.FLAG_SYMPTOMS
 })
 public class DeviceDataSourcesHelperTest {
 
@@ -122,6 +126,7 @@ public class DeviceDataSourcesHelperTest {
     public void testColumnNames() {
         assertThat(DeviceDataSourcesHelper.SOURCE_PACKAGE_NAME).isEqualTo("source_package_name");
         assertThat(DeviceDataSourcesHelper.DATA_TYPE).isEqualTo("data_type");
+        assertThat(DeviceDataSourcesHelper.DATA_SUBTYPE).isEqualTo("data_subtype");
         assertThat(DeviceDataSourcesHelper.IS_AVAILABLE).isEqualTo("is_available");
         assertThat(DeviceDataSourcesHelper.IS_USER_ENABLED).isEqualTo("is_user_enabled");
         assertThat(DeviceDataSourcesHelper.IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING)
@@ -163,6 +168,8 @@ public class DeviceDataSourcesHelperTest {
         assertThat(createCommand)
                 .contains(DeviceDataSourcesHelper.DATA_TYPE + " " + StorageUtils.INTEGER_NOT_NULL);
         assertThat(createCommand)
+                .contains(DeviceDataSourcesHelper.DATA_SUBTYPE + " " + StorageUtils.INTEGER);
+        assertThat(createCommand)
                 .contains(
                         DeviceDataSourcesHelper.IS_AVAILABLE + " " + StorageUtils.INTEGER_NOT_NULL);
         assertThat(createCommand)
@@ -175,6 +182,186 @@ public class DeviceDataSourcesHelperTest {
                         DeviceDataSourcesHelper.IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING
                                 + " "
                                 + StorageUtils.INTEGER_NOT_NULL);
+    }
+
+    @Test
+    public void insertOrUpdateDatabase_symptomRecord_entryInserted() {
+        long deviceInfoId = insertDeviceInfo();
+        String canonicalSpn = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
+        long appInfoId = mAppInfoHelper.insertOrUpdateDeviceDataSource(canonicalSpn, deviceInfoId);
+
+        mDeviceDataSourcesHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                appInfoId,
+                new DeviceDataAdvertisement(
+                        mDevice,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
+                                        .setAvailable(true)
+                                        .build())));
+
+        try (Cursor cursor =
+                mTransactionManager.read(
+                        new ReadTableRequest(DeviceDataSourcesHelper.TABLE_NAME))) {
+            assertThat(cursor.getCount()).isEqualTo(1);
+            cursor.moveToFirst();
+            assertThat(getCursorInt(cursor, DeviceDataSourcesHelper.DATA_TYPE))
+                    .isEqualTo(mHealthConnectMappings.getRecordType(SymptomRecord.class));
+            assertThat(getCursorInt(cursor, DeviceDataSourcesHelper.DATA_SUBTYPE))
+                    .isEqualTo(SymptomRecord.SYMPTOM_TYPE_COUGH);
+        }
+    }
+
+    @Test
+    public void insertOrUpdateDatabase_multipleSymptomRecords_entriesInserted() {
+        long deviceInfoId = insertDeviceInfo();
+        String canonicalSpn = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
+        long appInfoId = mAppInfoHelper.insertOrUpdateDeviceDataSource(canonicalSpn, deviceInfoId);
+
+        mDeviceDataSourcesHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                appInfoId,
+                new DeviceDataAdvertisement(
+                        mDevice,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build(),
+                                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_FEVER)
+                                        .setAvailable(true)
+                                        .setUserEnabled(false)
+                                        .build())));
+
+        try (Cursor cursor =
+                mTransactionManager.read(
+                        new ReadTableRequest(DeviceDataSourcesHelper.TABLE_NAME))) {
+            assertThat(cursor.getCount()).isEqualTo(2);
+
+            Set<Integer> symptomTypes = new HashSet<>();
+            while (cursor.moveToNext()) {
+                assertThat(getCursorInt(cursor, DeviceDataSourcesHelper.DATA_TYPE))
+                        .isEqualTo(mHealthConnectMappings.getRecordType(SymptomRecord.class));
+                int subtype = getCursorInt(cursor, DeviceDataSourcesHelper.DATA_SUBTYPE);
+                boolean userEnabled =
+                        getIntegerAndConvertToBoolean(
+                                cursor, DeviceDataSourcesHelper.IS_USER_ENABLED);
+
+                symptomTypes.add(subtype);
+
+                if (subtype == SymptomRecord.SYMPTOM_TYPE_COUGH) {
+                    assertThat(userEnabled).isTrue();
+                } else if (subtype == SymptomRecord.SYMPTOM_TYPE_FEVER) {
+                    assertThat(userEnabled).isFalse();
+                }
+            }
+            assertThat(symptomTypes)
+                    .containsExactly(
+                            SymptomRecord.SYMPTOM_TYPE_COUGH, SymptomRecord.SYMPTOM_TYPE_FEVER);
+        }
+    }
+
+    @Test
+    public void insertOrUpdateDatabase_updateSymptomTypes_deletesUnspecifiedSymptomType() {
+        long deviceInfoId = insertDeviceInfo();
+        String canonicalSpn = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
+        long appInfoId = mAppInfoHelper.insertOrUpdateDeviceDataSource(canonicalSpn, deviceInfoId);
+
+        mDeviceDataSourcesHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                appInfoId,
+                new DeviceDataAdvertisement(
+                        mDevice,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build(),
+                                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_FEVER)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build())));
+
+        try (Cursor cursor =
+                mTransactionManager.read(
+                        new ReadTableRequest(DeviceDataSourcesHelper.TABLE_NAME))) {
+            assertThat(cursor.getCount()).isEqualTo(2);
+        }
+
+        mDeviceDataSourcesHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                appInfoId,
+                new DeviceDataAdvertisement(
+                        mDevice,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build())));
+
+        try (Cursor cursor =
+                mTransactionManager.read(
+                        new ReadTableRequest(DeviceDataSourcesHelper.TABLE_NAME))) {
+            assertThat(cursor.getCount()).isEqualTo(1);
+            cursor.moveToFirst();
+            assertThat(getCursorInt(cursor, DeviceDataSourcesHelper.DATA_TYPE))
+                    .isEqualTo(mHealthConnectMappings.getRecordType(SymptomRecord.class));
+            assertThat(getCursorInt(cursor, DeviceDataSourcesHelper.DATA_SUBTYPE))
+                    .isEqualTo(SymptomRecord.SYMPTOM_TYPE_COUGH);
+        }
+    }
+
+    @Test
+    public void insertOrUpdateDatabase_symptomAndNormalRecord_entriesInserted() {
+        long deviceInfoId = insertDeviceInfo();
+        String canonicalSpn = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
+        long appInfoId = mAppInfoHelper.insertOrUpdateDeviceDataSource(canonicalSpn, deviceInfoId);
+
+        mDeviceDataSourcesHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                appInfoId,
+                new DeviceDataAdvertisement(
+                        mDevice,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build(),
+                                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build())));
+
+        try (Cursor cursor =
+                mTransactionManager.read(
+                        new ReadTableRequest(DeviceDataSourcesHelper.TABLE_NAME))) {
+            assertThat(cursor.getCount()).isEqualTo(2);
+        }
+
+        mDeviceDataSourcesHelper.clearCache();
+        List<DeviceDataTypeAdvertisement> dataTypeAdvertisements =
+                mDeviceDataSourcesHelper
+                        .getDeviceDataTypeAdvertisements()
+                        .get(appInfoId)
+                        .get(TEST_APP_PACKAGE);
+        assertThat(dataTypeAdvertisements).hasSize(2);
+        assertThat(
+                        dataTypeAdvertisements.stream()
+                                .map(DeviceDataTypeAdvertisement::getDataType)
+                                .collect(Collectors.toSet()))
+                .containsExactly(SymptomRecord.class, StepsRecord.class);
     }
 
     @Test
@@ -383,6 +570,7 @@ public class DeviceDataSourcesHelperTest {
         contentValues.put(
                 DeviceDataSourcesHelper.DATA_TYPE,
                 mHealthConnectMappings.getRecordType(StepsRecord.class));
+        contentValues.put(DeviceDataSourcesHelper.DATA_SUBTYPE, 0);
         contentValues.put(DeviceDataSourcesHelper.IS_AVAILABLE, 1);
         contentValues.put(DeviceDataSourcesHelper.IS_USER_ENABLED, 1);
         contentValues.put(DeviceDataSourcesHelper.IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING, 1);

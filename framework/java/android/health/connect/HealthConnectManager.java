@@ -81,6 +81,7 @@ import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
 import android.health.connect.aidl.IGetDeviceDataSourceInfosCallback;
+import android.health.connect.aidl.IGetDeviceDataSourcesCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
 import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
@@ -1579,6 +1580,49 @@ public class HealthConnectManager {
                         }
                     });
 
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Retrieves the list of all {@link DeviceDataSource}s.
+     *
+     * <p>The returned list includes all devices that have been advertised by device data providers,
+     * filtered based on the caller's permissions. A device is included if the caller holds the READ
+     * permission for at least one of the data types supported by the device. Other data types
+     * supported by the device that the caller does not have permission for will nonetheless be
+     * included.
+     *
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     */
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void getDeviceDataSources(
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull
+                    OutcomeReceiver<GetDeviceDataSourcesResponse, HealthConnectException>
+                            callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        try {
+            mService.getDeviceDataSources(
+                    mContext.getAttributionSource(),
+                    new IGetDeviceDataSourcesCallback.Stub() {
+                        @Override
+                        @RequiresNoPermission
+                        public void onResult(GetDeviceDataSourcesResponse result) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(result));
+                        }
+
+                        @Override
+                        @RequiresNoPermission
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }

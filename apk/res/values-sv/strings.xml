@@ -337,9 +337,9 @@
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Allergier"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"allergier"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Läsa allergier"</string>
-    <string name="conditions_uppercase_label" msgid="5260404343402770877">"Villkor"</string>
-    <string name="conditions_lowercase_label" msgid="2678248918552246997">"villkor"</string>
-    <string name="conditions_content_description" msgid="3230552343616193829">"Villkor för läsbehörighet"</string>
+    <string name="conditions_uppercase_label" msgid="5260404343402770877">"Hälsotillstånd"</string>
+    <string name="conditions_lowercase_label" msgid="2678248918552246997">"hälsotillstånd"</string>
+    <string name="conditions_content_description" msgid="3230552343616193829">"Läsa hälsotillstånd"</string>
     <string name="vaccines_uppercase_label" msgid="1101176371071123187">"Vacciner"</string>
     <string name="vaccines_lowercase_label" msgid="4991324441768127447">"vacciner"</string>
     <string name="vaccines_content_description" msgid="7152741514791951684">"Läsa vacciner"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} okänd"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Okänd dryck"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Öl"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Vin"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Inte ansluten"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Klicka för att ansluta den här appen till Health Connect"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Inte nu"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Alla symtom"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"symtom"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Läsbehörighet för akne"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Skrivbehörighet för akne"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Läsbehörighet för sköra naglar"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"vätskeretention"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Väsande andning"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"väsande andning"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> av <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> av <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> har valts"</string>
 </resources>

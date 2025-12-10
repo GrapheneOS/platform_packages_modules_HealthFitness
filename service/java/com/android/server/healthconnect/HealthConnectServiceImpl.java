@@ -78,8 +78,12 @@ import android.health.HealthFitnessStatsLog;
 import android.health.connect.Constants;
 import android.health.connect.CreateMedicalDataSourceRequest;
 import android.health.connect.DeleteMedicalResourcesRequest;
+import android.health.connect.DeviceDataProviderInfo;
+import android.health.connect.DeviceDataSource;
 import android.health.connect.DeviceDataSourceInfo;
+import android.health.connect.DeviceDataTypeSource;
 import android.health.connect.FetchDataOriginsPriorityOrderResponse;
+import android.health.connect.GetDeviceDataSourcesResponse;
 import android.health.connect.GetMatchingDataSourcesResponse;
 import android.health.connect.GetMedicalDataSourcesRequest;
 import android.health.connect.HealthConnectDataState;
@@ -118,6 +122,7 @@ import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
 import android.health.connect.aidl.IGetDeviceDataSourceInfosCallback;
+import android.health.connect.aidl.IGetDeviceDataSourcesCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
 import android.health.connect.aidl.IGetHealthConnectMigrationUiStateCallback;
 import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
@@ -161,6 +166,7 @@ import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
 import android.health.connect.device.DeviceDataAdvertisement;
+import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.exportimport.ExportImportDocumentProvider;
 import android.health.connect.exportimport.IImportStatusCallback;
 import android.health.connect.exportimport.IQueryDocumentProvidersCallback;
@@ -2036,6 +2042,166 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
                     }
                 });
+    }
+
+    @Override
+    public void getDeviceDataSources(
+            AttributionSource attributionSource, IGetDeviceDataSourcesCallback callback) {
+        checkParamsNonNull(attributionSource, callback);
+
+        final int uid = Binder.getCallingUid();
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        String callingPackageName = requireNonNull(attributionSource.getPackageName());
+
+        // TODO(b/455514553): Use specific API method for logging and additional telemetry.
+        final HealthConnectServiceLogger.Builder logger =
+                new HealthConnectServiceLogger.Builder(false, API_METHOD_UNKNOWN)
+                        .setHealthFitnessStatsLog(mStatsLog)
+                        .setPackageName(callingPackageName);
+
+        ErrorCallback errorCallback = callback::onError;
+
+        scheduleLoggingHealthDataApiErrors(
+                () -> {
+                    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                        throw new UnsupportedOperationException(
+                                "getDeviceDataSources is not supported");
+                    }
+
+                    enforceIsForegroundUser(userHandle);
+                    verifyPackageNameFromUid(uid, attributionSource);
+
+                    boolean isInForeground = mAppOpsManagerLocal.isUidInForeground(uid);
+                    tryAcquireApiCallQuota(
+                            uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, logger);
+
+                    List<DeviceDataSourceInfo> infos =
+                            requireNonNull(mDeviceDataProviderManager).getDeviceDataSourceInfos();
+
+                    List<String> grantedPermissionsList =
+                            mPermissionHelper.getGrantedHealthPermissions(
+                                    callingPackageName, userHandle);
+                    Set<String> grantedPermissions = new HashSet<>(grantedPermissionsList);
+
+                    List<DeviceDataSource> result =
+                            getVisibleDeviceDataSources(infos, grantedPermissions);
+
+                    Function<String, String> maskingFunction =
+                            getMaskingFunction(callingPackageName);
+
+                    List<DeviceDataSource> maskedResult = new ArrayList<>();
+                    for (DeviceDataSource dataSource : result) {
+                        maskedResult.add(dataSource.toMasked(maskingFunction));
+                    }
+
+                    callback.onResult(new GetDeviceDataSourcesResponse(maskedResult));
+                    logger.setHealthDataServiceApiStatusSuccess();
+                },
+                logger,
+                errorCallback,
+                uid,
+                /* isController= */ false);
+    }
+
+    /**
+     * Filters the raw device infos. A device is included only if the caller holds at least one read
+     * permission relevant to the data types offered by that device.
+     */
+    private List<DeviceDataSource> getVisibleDeviceDataSources(
+            List<DeviceDataSourceInfo> deviceDataSources, Set<String> grantedPermissions) {
+
+        List<DeviceDataSource> result = new ArrayList<>();
+        for (DeviceDataSourceInfo deviceDataSource : deviceDataSources) {
+            DeviceDataSource authorizedDevice =
+                    processDeviceDataSource(deviceDataSource, grantedPermissions);
+
+            if (authorizedDevice != null) {
+                result.add(authorizedDevice);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Processes a single device. Aggregates its data types, calculates status flags, and validates
+     * permissions. Returns null if there is not at least one permission among {@code
+     * grantedPermissions} that matches the data types offered by the device.
+     */
+    @Nullable
+    private DeviceDataSource processDeviceDataSource(
+            DeviceDataSourceInfo info, Set<String> grantedPermissions) {
+        Map<Class<? extends Record>, List<DeviceDataTypeAdvertisement>> recordTypeToAdvertisements =
+                new ArrayMap<>();
+
+        for (DeviceDataProviderInfo providerInfo : info.getDeviceDataProviderInfos()) {
+            for (DeviceDataTypeAdvertisement ad : providerInfo.getDeviceDataTypeAdvertisements()) {
+                recordTypeToAdvertisements
+                        .computeIfAbsent(ad.getDataType(), k -> new ArrayList<>())
+                        .add(ad);
+            }
+        }
+
+        Set<DeviceDataTypeSource> deviceDataTypeSources = new HashSet<>();
+        boolean hasAtLeastOnePermission = false;
+
+        for (Map.Entry<Class<? extends Record>, List<DeviceDataTypeAdvertisement>> entry :
+                recordTypeToAdvertisements.entrySet()) {
+
+            Class<? extends Record> dataType = entry.getKey();
+            List<DeviceDataTypeAdvertisement> ads = entry.getValue();
+
+            if (!hasAtLeastOnePermission
+                    && hasReadPermissionForDataType(dataType, grantedPermissions)) {
+                hasAtLeastOnePermission = true;
+            }
+
+            deviceDataTypeSources.add(createDeviceDataTypeSource(dataType, ads));
+        }
+
+        if (hasAtLeastOnePermission) {
+            return new DeviceDataSource(
+                    info.getDeviceDataOrigin(), info.getDevice(), deviceDataTypeSources);
+        }
+
+        return null;
+    }
+
+    /** Checks if required permission is present to read the provided data type. */
+    private boolean hasReadPermissionForDataType(
+            Class<? extends Record> dataType, Set<String> grantedPermissions) {
+        int recordType = mHealthConnectMappings.getRecordType(dataType);
+        Set<Integer> categories =
+                mHealthConnectMappings.getHealthPermissionCategoriesForRecordType(recordType);
+
+        for (int category : categories) {
+            String permission = mHealthConnectMappings.getHealthReadPermission(category);
+            if (grantedPermissions.contains(permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Creates the source status for a data type. Available if ANY advertisement is available.
+     * Enabled if ANY device data providers are enabled.
+     */
+    private DeviceDataTypeSource createDeviceDataTypeSource(
+            Class<? extends Record> dataType, List<DeviceDataTypeAdvertisement> ads) {
+
+        boolean isAvailable = false;
+        boolean isUserEnabled = false;
+
+        for (DeviceDataTypeAdvertisement ad : ads) {
+            if (ad.isAvailable()) {
+                isAvailable = true;
+            }
+            if (ad.isUserEnabled()) {
+                isUserEnabled = true;
+            }
+        }
+
+        return new DeviceDataTypeSource(dataType, isAvailable, isUserEnabled);
     }
 
     @Override
@@ -4322,6 +4488,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     private Set<Integer> getDeviceDataSourceCapabilities(AttributionSource attributionSource) {
+        if (mDeviceDataSourcesHelper == null) {
+            return Set.of();
+        }
+        // TODO(b/464473056) remove this once native tracking is represented fully in DDP schema.
         Stream<Integer> nativeTrackingRecordTypes = Stream.of(RECORD_TYPE_STEPS);
         Set<Integer> supportedRecordTypes =
                 concat(

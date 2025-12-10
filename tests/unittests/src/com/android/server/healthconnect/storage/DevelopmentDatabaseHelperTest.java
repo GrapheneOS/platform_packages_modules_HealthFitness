@@ -300,4 +300,17 @@ public class DevelopmentDatabaseHelperTest {
             }
         }
     }
+
+    @Test
+    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
+    public void onUpgrade_dataSubtype_schemaUpToDate() {
+        try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
+            SQLiteDatabase db = helper.getWritableDatabase();
+
+            assertColumnsExist(
+                    db,
+                    DeviceDataSourcesHelper.TABLE_NAME,
+                    List.of(DeviceDataSourcesHelper.DATA_SUBTYPE));
+        }
+    }
 }

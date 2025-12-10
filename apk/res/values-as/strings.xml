@@ -391,7 +391,7 @@
     <string name="symptom_severity_moderate" msgid="8388787027751900668">"মজলীয়া"</string>
     <string name="symptom_severity_severe" msgid="4675732713898596705">"গুৰুতৰ"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>"</string>
-    <string name="read_permission_category" msgid="6002099618259628632">"“<xliff:g id="APP_NAME">%1$s</xliff:g>”ক পঢ়িবলৈ দিয়ক"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"“<xliff:g id="APP_NAME">%1$s</xliff:g>”ক পঢ়িবলৈ অনুমতি দিয়ক"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"“<xliff:g id="APP_NAME">%1$s</xliff:g>”ক লিখিবলৈ দিয়ক"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"অনুমতি দিয়ক"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"আটাইবোৰকে অনুমতি দিয়ক"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{পৰিমাণ, সংখ্যা} অজ্ঞাত"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"অজ্ঞাত পানীয়"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"বীয়েৰ"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"ৱাইন"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"ভ’দকা"</string>
@@ -1215,7 +1214,7 @@
     <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"Health Connectৰ জৰিয়তে <xliff:g id="APP_NAME">%s</xliff:g>ৰ সৈতে ছিংক কৰিবলৈ অধিক এপ্‌বিচাৰক"</string>
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"app storeত চাওক"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"এটা স্ক্ৰীন লক ছেট কৰক"</string>
-    <string name="lock_screen_banner_content" msgid="3392527073622152481">"আপোনাৰ স্বাস্থ্য সম্পৰ্কীয় তথ্যৰ অতিৰিক্ত সুৰক্ষাৰ বাবে, এই ডিভাইচৰ বাবে এটা পিন, আৰ্হি, বা পাছৱৰ্ড ছেট কৰক"</string>
+    <string name="lock_screen_banner_content" msgid="3392527073622152481">"আপোনাৰ স্বাস্থ্য সম্পৰ্কীয় তথ্যৰ অতিৰিক্ত সুৰক্ষাৰ বাবে, এই ডিভাইচৰ বাবে এটা পিন, আৰ্হি বা পাছৱৰ্ড ছেট কৰক"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"স্ক্ৰীন লক ছেট কৰক"</string>
     <string name="select_all" msgid="837499881590001166">"আটাইবোৰ বাছনি কৰক"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"সংযুক্ত এপ্‌সমূহে আৰু Health Connectৰ পৰা এই ডেটা পঢ়িব নোৱাৰিব"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"সংযুক্ত হৈ থকা নাই"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Health Connectৰ সৈতে এই এপ্‌টো সংযোগ কৰিবলৈ ক্লিক কৰক"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"এতিয়া নহয়"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"আটাইবোৰ লক্ষণ"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"লক্ষণসমূহ"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"ব্ৰণ সম্পৰ্কীয় ডেটা পঢ়া"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"ব্ৰণ সম্পৰ্কীয় ডেটা লিখা"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"নখৰ ভংগুৰতা সম্পৰ্কীয় ডেটা পঢ়া"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"ৱাটাৰ ৰিটেনশ্বন"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"হাঁপানি ৰোগত হোৱাৰ দৰে স্বাসনলীৰ শব্দ"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"হাঁপানি ৰোগত হোৱাৰ দৰে স্বাসনলীৰ শব্দ"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g> টাৰ ভিতৰত <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> টা"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> টাৰ ভিতৰত <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> টা বাছনি কৰা হৈছে"</string>
 </resources>

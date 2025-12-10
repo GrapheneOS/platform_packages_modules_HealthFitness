@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} hindi malaman"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Hindi alam na inumin"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Beer"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Wine"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
@@ -1295,7 +1294,7 @@
     <string name="accessed" msgid="4424701457530587176">"Na-access noong <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
     <string name="connect_first_two_apps_title" msgid="1454255533865066646">"Ikonekta ang iyong unang app"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"Ikonekta ang mga app na ito para simulan ang pag-share ng data ng kalusugan at fitness sa pagitan ng mga ito"</string>
-    <string name="connect_second_app_title" msgid="6609568573884272692">"Magkonekta ng isang pang app"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"Magkonekta ng pangalawang app"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"Mag-set up ng isa pang app para mag-share ng data ng kalusugan at fitness sa <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="set_up_later" msgid="223888663943501921">"I-set up sa ibang pagkakataon"</string>
     <string name="available_apps_to_connect" msgid="8425012138408583646">"Mga available na app na ikokonekta"</string>
@@ -1310,7 +1309,7 @@
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Tingnan ang iyong data ng kalusugan sa mga app"</string>
     <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Simulan ang pag-share ng data ng fitness at wellness sa pagitan ng iyong mga app"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"I-set up"</string>
-    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Magkonekta ng isang pang app"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Magkonekta ng pangalawang app"</string>
     <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Mag-set up ng isa pang app para makapagsimula itong mag-share ng data ng fitness at wellness"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Magpatuloy"</string>
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Tingnan ang iyong data ng kalusugan sa iba\'t ibang app"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Hindi nakakonekta"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"I-click para ikonekta ang app na ito sa Health Connect"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Hindi ngayon"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Lahat ng sintomas"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"mga sintomas"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"I-read ang acne"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"I-write ang acne"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"I-read ang madaling maputol na kuko"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"pagkaipon ng tubig"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Maingay na paghinga"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"maingay na paghinga"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> sa <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> sa <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> ang napili"</string>
 </resources>

@@ -418,7 +418,7 @@
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"ನೀವು ಆ್ಯಕ್ಸೆಸ್ ನೀಡಿದರೆ, ಅಲರ್ಜಿಗಳು, ಲ್ಯಾಬ್ ಫಲಿತಾಂಶಗಳು, ವ್ಯಾಕ್ಸಿನ್‌ಗಳು ಮತ್ತು ಹೆಚ್ಚಿನವುಗಳಂತಹ ಡೇಟಾವನ್ನು ಆ್ಯಪ್ ಓದಬಹುದು ಮತ್ತು ಬರೆಯಬಹುದು\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"ನೀವು ಆ್ಯಕ್ಸೆಸ್ ನೀಡಿದರೆ, ಅಲರ್ಜಿಗಳು, ಲ್ಯಾಬ್ ಫಲಿತಾಂಶಗಳು, ವ್ಯಾಕ್ಸಿನ್‌ಗಳು ಮತ್ತು ಹೆಚ್ಚಿನವುಗಳಂತಹ ಡೇಟಾವನ್ನು ಆ್ಯಪ್ ಓದಬಹುದು \n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"ವೈದ್ಯಕೀಯ ದಾಖಲೆಗಳ ಕುರಿತು"</string>
-    <string name="medical_request_data_to_share" msgid="6778034304921873317">"ಹಂಚಿಕೊಳ್ಳಲು ಡೇಟಾ ಒಳಗೊಂಡಿದೆ"</string>
+    <string name="medical_request_data_to_share" msgid="6778034304921873317">"ಹಂಚಿಕೊಳ್ಳಲಿರುವ ಡೇಟಾ ಈ ಕೆಳಗಿನವುಗಳನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"ನೀವು ಅನುಮತಿಸಿದರೆ, <xliff:g id="APP_NAME">%1$s</xliff:g> ನಿಮ್ಮ ವೈದ್ಯಕೀಯ ದಾಖಲೆಗಳನ್ನು Health Connect ಜೊತೆಗೆ ಹಂಚಿಕೊಳ್ಳಬಲ್ಲದು."</string>
     <string name="medical_request_footer" msgid="157243861031258933">"ನಿಮ್ಮ ವಿಭಿನ್ನ ಆ್ಯಪ್‌ಗಳು ಮತ್ತು ಮೂಲಗಳಿಂದ ಲಭ್ಯವಾಗಿರುವ ನಿಮ್ಮ ವೈದ್ಯಕೀಯ ದಾಖಲೆಗಳನ್ನು ಒಂದೇ ಸ್ಥಳದಲ್ಲಿ ಇರಿಸಲು ಅವುಗಳನ್ನು ಸಿಂಕ್ ಮಾಡಿ"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"ಎಲ್ಲಾ ಅನುಮತಿಗಳನ್ನು ತೆಗೆದುಹಾಕಬೇಕೆ?"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} ಅಪರಿಚಿತ"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"ಅಪರಿಚಿತ ಪಾನೀಯ"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"ಬಿಯರ್"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"ವೈನ್"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"ವೋಡ್ಕಾ"</string>
@@ -1279,7 +1278,7 @@
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> ರಲ್ಲಿ <xliff:g id="NUMBER_0">%1$d</xliff:g> ಆ್ಯಪ್‌ಗಳನ್ನು ಅನುಮತಿಸಲಾಗಿದೆ"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"ಯಾವುದೇ ಆ್ಯಪ್‌ಗಳು ವಿನಂತಿಸಿಕೊಳ್ಳುತ್ತಿಲ್ಲ"</string>
-    <string name="allowed" msgid="4158456017482263737">"ಅನುಮತಿಸಲಾಗಿದೆ"</string>
+    <string name="allowed" msgid="4158456017482263737">"ಅನುಮತಿಸಿರುವುದು"</string>
     <string name="not_allowed" msgid="6092523505093372147">"ಅನುಮತಿಸಲಾಗುವುದಿಲ್ಲ"</string>
     <string name="access_sensor_note" msgid="7949933977197789634">"ಈ ಅನುಮತಿಯನ್ನು ಹೊಂದಿರುವ ಆ್ಯಪ್‌ಗಳು ನಿಮ್ಮ ಸಾಧನದ ಸೆನ್ಸರ್‌ಗಳಿಂದ <xliff:g id="DATA_TYPE">%s</xliff:g> ಅನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು."</string>
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"ನಿಮ್ಮ ವಾಚ್‌ನಲ್ಲಿರುವ ಎಲ್ಲಾ ಆ್ಯಪ್‌ಗಳಿಗೆ <xliff:g id="DATA_TYPE">%s</xliff:g> ಆ್ಯಕ್ಸೆಸ್ ಅನ್ನು ತೆಗೆದುಹಾಕಬೇಕೇ?"</string>
@@ -1585,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"ನೀರು ತುಂಬಿಕೊಳ್ಳುವಿಕೆ"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ಉಬ್ಬಸ"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ಉಬ್ಬಸ"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g> ರಲ್ಲಿ <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> ರಲ್ಲಿ <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ"</string>
 </resources>

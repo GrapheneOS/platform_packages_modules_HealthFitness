@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.device;
 
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
+import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
 import static android.healthconnect.testing.unittest.RecordInternalFactory.buildExerciseSessionRecordWithRoute;
 import static android.healthconnect.testing.unittest.RecordInternalFactory.buildExerciseSessionRecordWithSegment;
@@ -232,7 +233,10 @@ public class DeviceDataProviderManagerTest {
         assertThat(metadataInternalMap.get(1L).sourcePackageName()).isEqualTo(PACKAGE_NAME);
         DeviceDataSourcesHelper.DeviceDataProviderKey key =
                 new DeviceDataSourcesHelper.DeviceDataProviderKey(
-                        PACKAGE_NAME, expectedDeviceInfoId, RECORD_TYPE_STEPS);
+                        PACKAGE_NAME,
+                        expectedDeviceInfoId,
+                        RECORD_TYPE_STEPS,
+                        SymptomRecord.SYMPTOM_TYPE_UNKNOWN);
         assertThat(mDeviceDataSourcesHelper.getDdpMap().size()).isEqualTo(1);
         assertThat(mDeviceDataSourcesHelper.getDdpMap()).containsKey(key);
         assertThat(mDeviceDataSourcesHelper.getDdpMap().get(key).isAvailable()).isEqualTo(true);
@@ -1997,6 +2001,76 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
+    @EnableFlags({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB})
+    public void insertDeviceRecords_withSymptomRecord_insertsCorrectly() {
+        List<RecordInternal<?>> records =
+                SymptomRecord.VALID_SYMPTOM_TYPES.stream()
+                        .map(symptomType -> new SymptomRecordInternal().setSymptomType(symptomType))
+                        .collect(Collectors.toUnmodifiableList());
+
+        advertiseDevice(DEVICE_ID, PACKAGE_NAME, SymptomRecord.class);
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+
+        assertThatDdpHasRecordsSizeEqualTo(
+                PACKAGE_NAME,
+                DEVICE_ID,
+                SymptomRecord.VALID_SYMPTOM_TYPES.size(),
+                SymptomRecord.class);
+    }
+
+    @Test
+    public void insertDeviceRecords_withExerciseRoute_insertsCorrectly() {
+        ExerciseSessionRecordInternal exerciseSessionRecord =
+                buildExerciseSessionRecordWithRoute(Instant.ofEpochSecond(123));
+        List<RecordInternal<?>> records = List.of(exerciseSessionRecord);
+
+        advertiseDevice(DEVICE_ID, PACKAGE_NAME, ExerciseSessionRecord.class);
+        List<String> insertedUuids =
+                mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+
+        assertThat(insertedUuids).isNotNull();
+        assertThat(insertedUuids).hasSize(1);
+        ReadRecordsRequestUsingIds<ExerciseSessionRecord> request =
+                new ReadRecordsRequestUsingIds.Builder<>(ExerciseSessionRecord.class)
+                        .addId(insertedUuids.get(0))
+                        .build();
+        Pair<List<RecordInternal<?>>, PageTokenWrapper> actual =
+                mDeviceDataProviderManager.readDeviceRecords(
+                        mTransactionManager, PACKAGE_NAME, request.toReadRecordsRequestParcel());
+        assertThat(actual.first).hasSize(1);
+        ExerciseSessionRecordInternal readRecord =
+                (ExerciseSessionRecordInternal) actual.first.get(0);
+        assertThat(readRecord.hasRoute()).isTrue();
+        assertThat(readRecord.getRoute()).isEqualTo(exerciseSessionRecord.getRoute());
+        assertThat(readRecord.getRoute().getRouteLocations().size()).isEqualTo(3);
+    }
+
+    @Test
+    public void insertDeviceRecords_withExerciseRouteWithSegmentRecord_insertsCorrectly() {
+        List<RecordInternal<?>> records =
+                List.of(buildExerciseSessionRecordWithSegment(Instant.ofEpochSecond(123)));
+
+        advertiseDevice(DEVICE_ID, PACKAGE_NAME, ExerciseSessionRecord.class);
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+
+        ReadRecordsRequestUsingFilters<? extends Record> request =
+                new ReadRecordsRequestUsingFilters.Builder<>(ExerciseSessionRecord.class)
+                        .setDeviceId(DEVICE_ID)
+                        .build();
+        List<RecordInternal<?>> actual =
+                mDeviceDataProviderManager.readDeviceRecords(
+                                mTransactionManager,
+                                PACKAGE_NAME,
+                                request.toReadRecordsRequestParcel())
+                        .first;
+
+        assertThat(actual.size()).isEqualTo(1);
+        ExerciseSessionRecordInternal readRecord = (ExerciseSessionRecordInternal) actual.get(0);
+        assertThat(readRecord.getExerciseType()).isEqualTo(EXERCISE_SESSION_TYPE_RUNNING);
+        assertThat(readRecord.getSegments().size()).isEqualTo(1);
+    }
+
+    @Test
     public void withMultipleAdvertisementsAndDevices_deleteDeviceRecords_deletesForOneDevice() {
         String deviceIdOne = "Hello";
         String deviceIdTwo = "World";
@@ -2064,11 +2138,13 @@ public class DeviceDataProviderManagerTest {
                         .setType(Device.DEVICE_TYPE_PHONE)
                         .setDisplayName(DISPLAY_NAME)
                         .build();
+        DeviceDataTypeAdvertisement.Builder advertisementBuilder =
+                new DeviceDataTypeAdvertisement.Builder(dataType).setAvailable(true);
+        if (SymptomRecord.class.isAssignableFrom(dataType)) {
+            advertisementBuilder.setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH);
+        }
         Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisement =
-                Set.of(
-                        new DeviceDataTypeAdvertisement.Builder(dataType)
-                                .setAvailable(true)
-                                .build());
+                Set.of(advertisementBuilder.build());
         DeviceDataAdvertisement advertisement =
                 new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisement);
 

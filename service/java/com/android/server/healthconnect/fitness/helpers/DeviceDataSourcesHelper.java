@@ -29,6 +29,7 @@ import android.annotation.Nullable;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
@@ -37,6 +38,7 @@ import android.util.Slog;
 
 import androidx.annotation.VisibleForTesting;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
@@ -49,6 +51,7 @@ import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -66,6 +69,7 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
     public static final String TABLE_NAME = "device_data_sources_table";
     public static final String SOURCE_PACKAGE_NAME = "source_package_name";
     public static final String DATA_TYPE = "data_type";
+    public static final String DATA_SUBTYPE = "data_subtype";
     public static final String IS_AVAILABLE = "is_available";
     public static final String IS_USER_ENABLED = "is_user_enabled";
     public static final String IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING =
@@ -77,13 +81,15 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
             List.of(
                     new Pair<>(SOURCE_PACKAGE_NAME, TYPE_STRING),
                     new Pair<>(APP_INFO_ID_COLUMN_NAME, TYPE_STRING),
-                    new Pair<>(DATA_TYPE, TYPE_STRING));
+                    new Pair<>(DATA_TYPE, TYPE_STRING),
+                    new Pair<>(DATA_SUBTYPE, TYPE_STRING));
 
     private final TransactionManager mTransactionManager;
     private final HealthConnectMappings mHealthConnectMappings;
 
     @VisibleForTesting
-    public record DeviceDataProviderKey(String sourcePackageName, long appInfoId, int dataType) {}
+    public record DeviceDataProviderKey(
+            String sourcePackageName, long appInfoId, int dataType, int dataSubtype) {}
 
     @VisibleForTesting
     public record DeviceDataProviderInfo(
@@ -109,6 +115,14 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
         mDdpCache = null;
     }
 
+    @Override
+    public synchronized void clearData(TransactionManager transactionManager) {
+        if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            return;
+        }
+        super.clearData(transactionManager);
+    }
+
     /**
      * Returns a requests representing the tables that should be created corresponding to this
      * helper
@@ -116,7 +130,11 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
     public static CreateTableRequest getCreateTableRequest() {
         return new CreateTableRequest(TABLE_NAME, getColumnInfo())
                 .addUniqueConstraints(
-                        List.of(SOURCE_PACKAGE_NAME, APP_INFO_ID_COLUMN_NAME, DATA_TYPE))
+                        List.of(
+                                SOURCE_PACKAGE_NAME,
+                                APP_INFO_ID_COLUMN_NAME,
+                                DATA_TYPE,
+                                DATA_SUBTYPE))
                 .addForeignKey(
                         /* referencedTable= */ AppInfoHelper.TABLE_NAME,
                         /* columnNames= */ List.of(APP_INFO_ID_COLUMN_NAME),
@@ -137,8 +155,9 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
         for (DeviceDataTypeAdvertisement state :
                 deviceDataAdvertisement.getDeviceDataTypeAdvertisements()) {
             int dataType = mHealthConnectMappings.getRecordType(state.getDataType());
+            int dataSubtype = state.getSymptomType();
             DeviceDataProviderKey key =
-                    new DeviceDataProviderKey(sourcePackageName, appInfoId, dataType);
+                    new DeviceDataProviderKey(sourcePackageName, appInfoId, dataType, dataSubtype);
             DeviceDataProviderInfo ddpInfo =
                     new DeviceDataProviderInfo(
                             key,
@@ -166,6 +185,7 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
             long appInfoId = key.appInfoId();
             String sourcePackageName = key.sourcePackageName();
             int dataType = key.dataType();
+            int dataSubtype = key.dataSubtype();
 
             Class<? extends Record> recordClass =
                     mHealthConnectMappings.getRecordIdToExternalRecordClassMap().get(dataType);
@@ -175,18 +195,22 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
                 continue;
             }
 
-            DeviceDataTypeAdvertisement ad =
+            DeviceDataTypeAdvertisement.Builder adBuilder =
                     new DeviceDataTypeAdvertisement.Builder(recordClass)
                             .setAvailable(info.isAvailable())
                             .setUserEnabled(info.isUserEnabled())
                             .setVisibleByDefaultInMatchmaking(
-                                    info.isVisibleByDefaultInMatchmaking())
-                            .build();
+                                    info.isVisibleByDefaultInMatchmaking());
+
+            // Only set symptom type for symptom records.
+            if (SymptomRecord.class.isAssignableFrom(recordClass)) {
+                adBuilder.setSymptomType(dataSubtype);
+            }
 
             appInfoIdToDdpAds
                     .computeIfAbsent(appInfoId, k -> new HashMap<>())
                     .computeIfAbsent(sourcePackageName, k -> new ArrayList<>())
-                    .add(ad);
+                    .add(adBuilder.build());
         }
 
         return appInfoIdToDdpAds;
@@ -235,12 +259,19 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
         List<DeviceDataProviderKey> existingAdvertisements =
                 getExistingAdvertisements(sourcePackageName, appInfoId);
 
-        Set<Integer> latestDataTypes =
-                latestDeviceDataAdvertisement.getDeviceDataTypeAdvertisements().stream()
-                        .map(state -> mHealthConnectMappings.getRecordType(state.getDataType()))
-                        .collect(Collectors.toSet());
+        Set<Pair<Integer, Integer>> latestTypeSubtypes = new HashSet<>();
+        for (DeviceDataTypeAdvertisement state :
+                latestDeviceDataAdvertisement.getDeviceDataTypeAdvertisements()) {
+            latestTypeSubtypes.add(
+                    new Pair<>(
+                            mHealthConnectMappings.getRecordType(state.getDataType()),
+                            state.getSymptomType()));
+        }
+
         for (DeviceDataProviderKey existingAdvertisement : existingAdvertisements) {
-            if (!latestDataTypes.contains(existingAdvertisement.dataType)) {
+            if (!latestTypeSubtypes.contains(
+                    new Pair<>(
+                            existingAdvertisement.dataType, existingAdvertisement.dataSubtype))) {
                 delete(existingAdvertisement);
             }
         }
@@ -270,7 +301,9 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
                                                 APP_INFO_ID_COLUMN_NAME,
                                                 String.valueOf(key.appInfoId))
                                         .addWhereEqualsClause(
-                                                DATA_TYPE, String.valueOf(key.dataType))));
+                                                DATA_TYPE, String.valueOf(key.dataType))
+                                        .addWhereEqualsClause(
+                                                DATA_SUBTYPE, String.valueOf(key.dataSubtype))));
         getDdpMap().remove(key);
     }
 
@@ -306,6 +339,7 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
                 long appInfoId = getCursorInt(cursor, APP_INFO_ID_COLUMN_NAME);
                 String sourcePackageName = getCursorString(cursor, SOURCE_PACKAGE_NAME);
                 int dataType = getCursorInt(cursor, DATA_TYPE);
+                int dataSubtype = getCursorInt(cursor, DATA_SUBTYPE);
                 Class<? extends Record> recordClass =
                         mHealthConnectMappings.getRecordIdToExternalRecordClassMap().get(dataType);
                 if (recordClass == null) {
@@ -319,7 +353,8 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
                         getIntegerAndConvertToBoolean(cursor, IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING);
 
                 DeviceDataProviderKey key =
-                        new DeviceDataProviderKey(sourcePackageName, appInfoId, dataType);
+                        new DeviceDataProviderKey(
+                                sourcePackageName, appInfoId, dataType, dataSubtype);
                 DeviceDataProviderInfo ddpInfo =
                         new DeviceDataProviderInfo(
                                 key, isAvailable, isUserEnabled, isVisibleByDefaultInMatchmaking);
@@ -336,6 +371,8 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
         contentValues.put(APP_INFO_ID_COLUMN_NAME, ddpInfo.key.appInfoId);
         contentValues.put(SOURCE_PACKAGE_NAME, ddpInfo.key.sourcePackageName);
         contentValues.put(DATA_TYPE, ddpInfo.key.dataType);
+        // When not set, this defaults to zero which corresponds to the *_TYPE_UNKNOWN value.
+        contentValues.put(DATA_SUBTYPE, ddpInfo.key.dataSubtype);
         contentValues.put(IS_AVAILABLE, ddpInfo.isAvailable);
         contentValues.put(IS_USER_ENABLED, ddpInfo.isUserEnabled);
         contentValues.put(
@@ -358,6 +395,7 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
         columnInfo.add(new Pair<>(APP_INFO_ID_COLUMN_NAME, INTEGER_NOT_NULL)); // Foreign key
         columnInfo.add(new Pair<>(SOURCE_PACKAGE_NAME, TEXT_NOT_NULL));
         columnInfo.add(new Pair<>(DATA_TYPE, INTEGER_NOT_NULL));
+        columnInfo.add(new Pair<>(DATA_SUBTYPE, INTEGER_NOT_NULL));
         columnInfo.add(new Pair<>(IS_AVAILABLE, INTEGER_NOT_NULL));
         columnInfo.add(new Pair<>(IS_USER_ENABLED, INTEGER_NOT_NULL));
         columnInfo.add(new Pair<>(IS_VISIBLE_BY_DEFAULT_IN_MATCHMAKING, INTEGER_NOT_NULL));

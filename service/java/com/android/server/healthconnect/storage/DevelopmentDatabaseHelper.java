@@ -53,7 +53,7 @@ public final class DevelopmentDatabaseHelper {
      * The current version number for the development database features. Increment this whenever you
      * make a breaking schema change to a development feature.
      */
-    @VisibleForTesting static final int CURRENT_VERSION = 25;
+    @VisibleForTesting static final int CURRENT_VERSION = 26;
 
     /** The name of the table to store development specific key value pairs. */
     private static final String SETTINGS_TABLE_NAME = "development_database_settings";
@@ -106,6 +106,7 @@ public final class DevelopmentDatabaseHelper {
         applyDdpDatabaseUpgrade(db, oldVersion);
         applyDdpMetadataDatabaseUpgrade(db);
         applyDdpIdRecordDatabaseUpgrade(db);
+        applyDdpDataSubtypeUpgrade(db);
     }
 
     private static void applyDdpAppInfoDatabaseUpgrade(SQLiteDatabase db) {
@@ -169,6 +170,17 @@ public final class DevelopmentDatabaseHelper {
                     recordHelper.getAlterTableRequestForDdpName();
             executeSqlStatements(db, alterRecordHelperRequest.getAddColumnsCommands());
         }
+    }
+
+    private static void applyDdpDataSubtypeUpgrade(SQLiteDatabase db) {
+        if (checkColumnExists(
+                db, DeviceDataSourcesHelper.TABLE_NAME, DeviceDataSourcesHelper.DATA_SUBTYPE)) {
+            return;
+        }
+
+        // We need to recreate the table to add the new unique constraint.
+        dropTableIfExists(db, DeviceDataSourcesHelper.TABLE_NAME);
+        createTable(db, DeviceDataSourcesHelper.getCreateTableRequest());
     }
 
     @VisibleForTesting

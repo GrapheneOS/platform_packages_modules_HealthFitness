@@ -394,7 +394,7 @@
     <string name="read_permission_category" msgid="6002099618259628632">"Разрешаване на <xliff:g id="APP_NAME">%1$s</xliff:g> да чете"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Разрешаване на <xliff:g id="APP_NAME">%1$s</xliff:g> да записва"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Разрешаване"</string>
-    <string name="request_permissions_allow_all" msgid="3419414351406638770">"Разреш. на всички"</string>
+    <string name="request_permissions_allow_all" msgid="3419414351406638770">"Разрешаване на всички"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Забраняване"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Изберете данните, които искате да чете или записва това приложение в Health Connect"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Изберете данните, които искате да чете това приложение от Health Connect"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"Няма информация за {quantity, number}"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Неизвестна напитка"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Бира"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Вино"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Водка"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Няма връзка"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Кликнете, за да свържете това приложение с Health Connect"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Не сега"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Всички симптоми"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"симптоми"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Четене на данните за акнето"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Записване на данни за акнето"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Четене на данните за чупливите нокти"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"задържане на вода"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Хрипове"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"хрипове"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> от <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Избрахте <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> от <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
 </resources>

@@ -18,8 +18,11 @@ package android.health.connect.device;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
+
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.SymptomRecord;
 import android.healthconnect.testing.shared.DataFactory;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -91,7 +94,15 @@ public class DeviceDataAdvertisementTest {
     }
 
     @Test
+    public void build_symptomRecordWithoutSymptomType_throwsException() {
+        assertThrows(
+                IllegalStateException.class,
+                () -> new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class).build());
+    }
+
+    @Test
     public void testParceling_allFieldsSet() {
+
         Device device =
                 new Device.Builder()
                         .setManufacturer("TestManufacturer")
@@ -103,6 +114,39 @@ public class DeviceDataAdvertisementTest {
         Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisement =
                 Set.of(
                         new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement originalAdvertisement =
+                new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisement);
+
+        android.os.Parcel parcel = android.os.Parcel.obtain();
+        originalAdvertisement.writeToParcel(parcel, 0);
+        parcel.setDataPosition(0);
+        DeviceDataAdvertisement restoredAdvertisement =
+                DeviceDataAdvertisement.CREATOR.createFromParcel(parcel);
+        parcel.recycle();
+
+        assertThat(restoredAdvertisement.getDevice()).isEqualTo(originalAdvertisement.getDevice());
+        assertThat(restoredAdvertisement.getDeviceId())
+                .isEqualTo(originalAdvertisement.getDeviceId());
+        assertThat(restoredAdvertisement.getDeviceDataTypeAdvertisements())
+                .isEqualTo(originalAdvertisement.getDeviceDataTypeAdvertisements());
+    }
+
+    @Test
+    public void testParceling_withSymptomType() {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("TestDisplayName")
+                        .build();
+        String deviceId = "TestDeviceId";
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisement =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
                                 .setAvailable(true)
                                 .build());
         DeviceDataAdvertisement originalAdvertisement =

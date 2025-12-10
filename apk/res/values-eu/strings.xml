@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} ezezaguna"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Edari ezezaguna"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Garagardoa"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Ardoa"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Konektatu gabe"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Sakatu hau aplikazioa Health Connect-ekin konektatzeko"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Orain ez"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Sintoma guztiak"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"sintomak"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Irakurri akneari buruzko datuak"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Idatzi akneari buruzko datuak"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Irakurri azazkal hauskorrei buruzko datuak"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"ur-erretentzioa"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Arnasketa txistukaria"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"arnasketa txistukaria"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> hautatuta"</string>
 </resources>

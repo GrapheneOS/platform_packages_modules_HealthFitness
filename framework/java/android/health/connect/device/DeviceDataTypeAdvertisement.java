@@ -24,8 +24,12 @@ import android.annotation.NonNull;
 import android.annotation.SystemApi;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.SymptomRecord;
+import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.Objects;
 
 /**
  * Represents information about a data type provided by a device.
@@ -40,6 +44,7 @@ public final class DeviceDataTypeAdvertisement implements Parcelable {
     private final boolean mIsAvailable;
     private final boolean mIsUserEnabled;
     private final boolean mIsVisibleByDefaultInMatchmaking;
+    @SymptomRecord.SymptomType private final int mSymptomType;
 
     /**
      * @param dataType The data type provided by a device
@@ -49,16 +54,19 @@ public final class DeviceDataTypeAdvertisement implements Parcelable {
      * @param isVisibleByDefaultInMatchmaking Whether this data type should show up in matchmaking.
      *     If false, the device + data type combination for the device will only appear in
      *     matchmaking when explicitly requested by a developer.
+     * @param symptomType {@link SymptomRecord.SymptomType}
      */
     private DeviceDataTypeAdvertisement(
             Class<? extends Record> dataType,
             boolean isAvailable,
             boolean isUserEnabled,
-            boolean isVisibleByDefaultInMatchmaking) {
+            boolean isVisibleByDefaultInMatchmaking,
+            @SymptomRecord.SymptomType int symptomType) {
         this.mDataType = dataType;
         this.mIsAvailable = isAvailable;
         this.mIsUserEnabled = isUserEnabled;
         this.mIsVisibleByDefaultInMatchmaking = isVisibleByDefaultInMatchmaking;
+        this.mSymptomType = symptomType;
     }
 
     /** The data type provided by a device. */
@@ -95,12 +103,24 @@ public final class DeviceDataTypeAdvertisement implements Parcelable {
         return mIsVisibleByDefaultInMatchmaking;
     }
 
+    /**
+     * Returns the symptom type provided by the device.
+     *
+     * <p>Returns {@link SymptomRecord#SYMPTOM_TYPE_UNKNOWN} if this advertisement is not for a
+     * {@link SymptomRecord} or if the specific symptom type is unknown.
+     */
+    @SymptomRecord.SymptomType
+    public int getSymptomType() {
+        return mSymptomType;
+    }
+
     /** Builder for {@link DeviceDataTypeAdvertisement}. */
     public static final class Builder {
         private final Class<? extends Record> mDataType;
         private boolean mIsAvailable = true;
         private boolean mIsUserEnabled = false;
         private boolean mIsVisibleByDefaultInMatchmaking = true;
+        private int mSymptomType = SymptomRecord.SYMPTOM_TYPE_UNKNOWN;
 
         /**
          * @param dataType The data type provided by a device. This is a required field.
@@ -149,12 +169,38 @@ public final class DeviceDataTypeAdvertisement implements Parcelable {
         }
 
         /**
+         * Sets the symptom type provided by the device.
+         *
+         * <p>If not set, defaults to {@link SymptomRecord#SYMPTOM_TYPE_UNKNOWN}.
+         *
+         * @param symptomType The symptom type.
+         */
+        @NonNull
+        public Builder setSymptomType(@SymptomRecord.SymptomType int symptomType) {
+            if (!SymptomRecord.class.isAssignableFrom(mDataType)) {
+                throw new IllegalArgumentException(
+                        "Symptom type can only be set for SymptomRecord advertisements");
+            }
+            this.mSymptomType = symptomType;
+            return this;
+        }
+
+        /**
          * Builds and returns a {@link DeviceDataTypeAdvertisement} with the specified parameters.
          */
         @NonNull
         public DeviceDataTypeAdvertisement build() {
+            if (SymptomRecord.class.isAssignableFrom(mDataType)
+                    && mSymptomType == SymptomRecord.SYMPTOM_TYPE_UNKNOWN) {
+                throw new IllegalStateException(
+                        "A specific symptom type must be set for SymptomRecord advertisements");
+            }
             return new DeviceDataTypeAdvertisement(
-                    mDataType, mIsAvailable, mIsUserEnabled, mIsVisibleByDefaultInMatchmaking);
+                    mDataType,
+                    mIsAvailable,
+                    mIsUserEnabled,
+                    mIsVisibleByDefaultInMatchmaking,
+                    mSymptomType);
         }
     }
 
@@ -165,10 +211,11 @@ public final class DeviceDataTypeAdvertisement implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeSerializable(mDataType);
+        dest.writeInt(HealthConnectMappings.getInstance().getRecordType(mDataType));
         dest.writeBoolean(mIsAvailable);
         dest.writeBoolean(mIsUserEnabled);
         dest.writeBoolean(mIsVisibleByDefaultInMatchmaking);
+        dest.writeInt(mSymptomType);
     }
 
     @NonNull
@@ -186,10 +233,15 @@ public final class DeviceDataTypeAdvertisement implements Parcelable {
             };
 
     private DeviceDataTypeAdvertisement(Parcel in) {
-        mDataType = (Class<? extends Record>) in.readSerializable();
+        mDataType =
+                Objects.requireNonNull(
+                        HealthConnectMappings.getInstance()
+                                .getRecordIdToExternalRecordClassMap()
+                                .get(in.readInt()));
         mIsAvailable = in.readBoolean();
         mIsUserEnabled = in.readBoolean();
         mIsVisibleByDefaultInMatchmaking = in.readBoolean();
+        mSymptomType = in.readInt();
     }
 
     @Override
@@ -200,11 +252,17 @@ public final class DeviceDataTypeAdvertisement implements Parcelable {
         return mIsAvailable == that.mIsAvailable
                 && mIsUserEnabled == that.mIsUserEnabled
                 && mIsVisibleByDefaultInMatchmaking == that.mIsVisibleByDefaultInMatchmaking
-                && java.util.Objects.equals(mDataType, that.mDataType);
+                && java.util.Objects.equals(mDataType, that.mDataType)
+                && mSymptomType == that.mSymptomType;
     }
 
     @Override
     public int hashCode() {
-        return hash(mDataType, mIsAvailable, mIsUserEnabled, mIsVisibleByDefaultInMatchmaking);
+        return hash(
+                mDataType,
+                mIsAvailable,
+                mIsUserEnabled,
+                mIsVisibleByDefaultInMatchmaking,
+                mSymptomType);
     }
 }

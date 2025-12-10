@@ -391,12 +391,12 @@
     <string name="symptom_severity_moderate" msgid="8388787027751900668">"మధ్యస్థం"</string>
     <string name="symptom_severity_severe" msgid="4675732713898596705">"తీవ్రం"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>⁠"</string>
-    <string name="read_permission_category" msgid="6002099618259628632">"చదవడానికి \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" యాప్‌ను అనుమతించండి"</string>
-    <string name="write_permission_category" msgid="1529702804865008111">"రాయడానికి \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" యాప్‌ను అనుమతించండి"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"రీడ్ చేయడానికి \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" యాప్‌ను అనుమతించండి"</string>
+    <string name="write_permission_category" msgid="1529702804865008111">"రైట్ చేయడానికి \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" యాప్‌ను అనుమతించండి"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"అనుమతించండి"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"అన్నీ అనుమతించండి"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"అనుమతించవద్దు"</string>
-    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Health Connect కోసం ఈ యాప్, ఏ డేటాను చదవాలో లేదా రాయాలో ఎంచుకోండి"</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Health Connect కోసం ఈ యాప్, ఏ డేటాను రీడ్ చేయాలో లేదా రైట్ చేయాలో ఎంచుకోండి"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Health Connect నుండి ఈ యాప్, ఏ డేటాను చదవాలో లేదా రాయాలో ఎంచుకోండి"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connect కోసం ఈ యాప్, ఏ డేటాను రాయాలో ఎంచుకోండి"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Health Connect కోసం ఈ యాప్, ఏ డేటాను చదవాలో లేదా రాయాలో ఎంచుకోండి"</string>
@@ -415,7 +415,7 @@
     <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>‌లో మీ డేటాను <xliff:g id="APP_NAME">%1$s</xliff:g> ఎలా హ్యాండిల్ చేస్తుందో మీరు తెలుసుకోవచ్చు"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"గోప్యతా పాలసీ"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"మీ వైద్యపరమైన రికార్డ్‌లను యాక్సెస్ చేయడానికి <xliff:g id="APP_NAME">%1$s</xliff:g>‌ను అనుమతించాలా?"</string>
-    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"మీరు యాక్సెస్ ఇస్తే, అలర్జీలు, ల్యాబ్ ఫలితాలు, వ్యాక్సిన్‌లు వంటి \n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g> డేటాను ఈ యాప్ చదవగలదు, రాయగలదు"</string>
+    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"మీరు యాక్సెస్ ఇస్తే, అలర్జీలు, ల్యాబ్ ఫలితాలు, వ్యాక్సిన్‌లు వంటి \n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g> డేటాను ఈ యాప్ రీడ్ చేయగలదు, రైట్ చేయగలదు"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"మీరు యాక్సెస్ ఇస్తే, అలర్జీలు, ల్యాబ్ ఫలితాలు, వ్యాక్సిన్‌లు, మరిన్ని \n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g> వంటి డేటాను ఈ యాప్ చదవగలదు"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"వైద్యపరమైన రికార్డ్‌ల గురించిన సమాచారం"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"షేర్ చేసే డేటాలో ఇవి ఉంటాయి"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} తెలియనివి"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"తెలియని పానీయం"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"బీరు"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"వైన్"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"వోడ్కా"</string>
@@ -1280,7 +1279,7 @@
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g>‌లో <xliff:g id="NUMBER_0">%1$d</xliff:g> యాప్‌లు అనుమతించబడ్డాయి"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"యాప్‌లు ఏవీ రిక్వెస్ట్ చేయట్లేదు"</string>
     <string name="allowed" msgid="4158456017482263737">"అనుమతించబడింది"</string>
-    <string name="not_allowed" msgid="6092523505093372147">"అనుమతించబడలేదు"</string>
+    <string name="not_allowed" msgid="6092523505093372147">"అనుమతించనివి"</string>
     <string name="access_sensor_note" msgid="7949933977197789634">"ఈ అనుమతి ఉన్న యాప్‌లు మీ డివైజ్ సెన్సార్‌ల నుండి <xliff:g id="DATA_TYPE">%s</xliff:g> డేటాను యాక్సెస్ చేయగలవు."</string>
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"మీ వాచ్‌లో ఉన్న అన్ని యాప్‌లకు <xliff:g id="DATA_TYPE">%s</xliff:g> యాక్సెస్‌ను తీసివేయాలా?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"ఎంపిక గుర్తు"</string>
@@ -1585,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"శరీరంలో ద్రవం పేరుకుపోవడం"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ఊపిరి పీల్చుకుంటున్నప్పుడు వచ్చే ఈల శబ్దం"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ఊపిరి పీల్చుకుంటున్నప్పుడు వచ్చే ఈల శబ్దం"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>లో <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>లో <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> ఎంచుకోబడ్డాయి"</string>
 </resources>

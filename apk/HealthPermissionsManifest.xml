@@ -98,6 +98,16 @@
         android:name="android.permission.health.READ_VO2_MAX"
         android:label="@string/vo2_max_read_content_description"
         android:protectionLevel="dangerous"
+        android:backgroundPermission=
+            "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
+        android:featureFlag="com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
+        android:permissionGroup="android.permission-group.HEALTH" />
+
+    <permission
+        android:name="android.permission.health.READ_VO2_MAX"
+        android:label="@string/vo2_max_read_content_description"
+        android:protectionLevel="dangerous"
+        android:featureFlag="!com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
         android:permissionGroup="android.permission-group.HEALTH" />
 
     <permission
@@ -235,6 +245,16 @@
         android:name="android.permission.health.READ_BLOOD_PRESSURE"
         android:label="@string/blood_pressure_read_content_description"
         android:protectionLevel="dangerous"
+        android:backgroundPermission=
+            "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
+        android:featureFlag="com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
+        android:permissionGroup="android.permission-group.HEALTH" />
+
+    <permission
+        android:name="android.permission.health.READ_BLOOD_PRESSURE"
+        android:label="@string/blood_pressure_read_content_description"
+        android:protectionLevel="dangerous"
+        android:featureFlag="!com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
         android:permissionGroup="android.permission-group.HEALTH" />
 
     <permission
@@ -255,6 +275,16 @@
         android:name="android.permission.health.READ_HEART_RATE_VARIABILITY"
         android:label="@string/heart_rate_variability_read_content_description"
         android:protectionLevel="dangerous"
+        android:backgroundPermission=
+            "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
+        android:featureFlag="com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
+        android:permissionGroup="android.permission-group.HEALTH" />
+
+    <permission
+        android:name="android.permission.health.READ_HEART_RATE_VARIABILITY"
+        android:label="@string/heart_rate_variability_read_content_description"
+        android:protectionLevel="dangerous"
+        android:featureFlag="!com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
         android:permissionGroup="android.permission-group.HEALTH" />
 
     <permission
@@ -269,6 +299,16 @@
         android:name="android.permission.health.READ_RESPIRATORY_RATE"
         android:label="@string/respiratory_rate_read_content_description"
         android:protectionLevel="dangerous"
+        android:backgroundPermission=
+            "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
+        android:featureFlag="com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
+        android:permissionGroup="android.permission-group.HEALTH" />
+
+    <permission
+        android:name="android.permission.health.READ_RESPIRATORY_RATE"
+        android:label="@string/respiratory_rate_read_content_description"
+        android:protectionLevel="dangerous"
+        android:featureFlag="!com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
         android:permissionGroup="android.permission-group.HEALTH" />
 
     <permission

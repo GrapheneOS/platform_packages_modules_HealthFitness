@@ -361,7 +361,7 @@
     <string name="procedures_uppercase_label" msgid="9176087520132593261">"Müdahaleler"</string>
     <string name="procedures_lowercase_label" msgid="5320804313946273234">"müdahaleler"</string>
     <string name="procedures_content_description" msgid="1086900373141440005">"Müdahale verilerini oku"</string>
-    <string name="social_history_uppercase_label" msgid="4119611299449533999">"Sosyal tarih"</string>
+    <string name="social_history_uppercase_label" msgid="4119611299449533999">"Sosyal geçmiş"</string>
     <string name="social_history_lowercase_label" msgid="9027541979445736412">"sosyal tarih"</string>
     <string name="social_history_content_description" msgid="7187059309389849831">"Sosyal medya geçmişini oku"</string>
     <string name="visits_uppercase_label" msgid="8532619758336375886">"Ziyaretler"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} bilinmiyor"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Bilinmeyen içecek"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Bira"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Şarap"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Votka"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Bağlı değil"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Bu uygulamayı Health Connect\'e bağlamak için tıklayın"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Şimdi değil"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Tüm belirtiler"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"belirtiler"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Akne verilerini okuma"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Akne verilerini yazma"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Kolay kırılan tırnaklar verilerini okuma"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"ödem"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Hırıltılı soluma"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"hırıltılı soluma"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> seçildi"</string>
 </resources>

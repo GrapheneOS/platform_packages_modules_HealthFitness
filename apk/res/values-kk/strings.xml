@@ -412,10 +412,10 @@
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Оқуға рұқсат берсеңіз, қолданба жаңа және бұрынғы деректерді оқи алады."</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасына Health Connect-ті пайдалануға рұқсат берілсін бе?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасына фитнес пен сауықтыру деректерін пайдалануға рұқсат берілсін бе?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасының деректеріңізді қалай өңдейтіні туралы <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> құжатынан біле аласыз."</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасының деректеріңізді қалай өңдейтіні туралы мәліметті <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> құжатынан біле аласыз."</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"құпиялық саясаты"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасына медициналық журналдарыңызды пайдалануға рұқсат беру қажет пе?"</string>
-    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Рұқсат берсеңіз, қолданба аллергиялар, зертханалық талдау нәтижелері, вакциналар сияқты деректерді оқып, жаза алады.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
+    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Рұқсат берсеңіз, қолданба аллергиялар, зертханалық талдау нәтижелері, вакциналар сияқты деректерді оқиды және жазады.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Рұқсат берсеңіз, қолданба аллергиялар, зертханалық талдау нәтижелері, вакциналар сияқты деректерді оқи алады.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"Медициналық журналдар туралы ақпарат"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Бөлісетін деректер"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} белгісіз"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Белгісіз сусын"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Сыра"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Шарап"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Арақ"</string>
@@ -1308,10 +1307,10 @@
     <string name="almost_done_connected_apps" msgid="7278779868120518202">"Байланысқан қолданбалар"</string>
     <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Байланыстыруға болатын қолданбалар"</string>
     <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Денсаулық деректерін әртүрлі қолданбалардан көріңіз"</string>
-    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Фитнес пен денсаулық деректерін қолданбалар арасында бөлісуді бастаңыз"</string>
+    <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Фитнес пен денсаулық деректерін қолданбалар арасында бөлісу параметрлерін реттеңіз."</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Реттеу"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Екінші қолданбаны байланыстырыңыз"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Фитнес пен денсаулық деректерін бөлісуді бастауы үшін, басқа қолданба параметрлерін реттеңіз"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Фитнес пен денсаулық деректерін бөлісуді бастауы үшін, басқа қолданба параметрлерін реттеңіз."</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Жалғастыру"</string>
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Денсаулық деректерін әртүрлі қолданбалардан көріңіз"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect фитнес пен денсаулық деректерін қолданбалар арасында бөлісуге мүмкіндік береді. Қазір қандай қолданбаларды байланыстыруға болатынын көріңіз."</string>
@@ -1341,16 +1340,14 @@
     <string name="data_and_access_summary" msgid="1435478623777637347">"Деректерді және оларды пайдалана алатын қолданбаларды көру"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Жақында деректеріңізді пайдаланған қолданбалар"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Денсаулық деректерін пайдалана алатын құрылғыларды тексеру"</string>
-    <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect-пен істейтін қолданбаларды осы жерден көру үшін орнатыңыз"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect-пен істейтін қолданбаларды осы жерден көру үшін орнатыңыз."</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Үйлесімді қолданбаларды көру"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Басқа денсаулық қолданбаларын көру"</string>
-    <string name="app_not_connected_summary" msgid="3898921378270235598">"Қосылмаған"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"Байланыспаған"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Бұл қолданбаны Health Connect-пен байланыстыру үшін басыңыз"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Қазір емес"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Барлық симптом"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"симптомдар"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Безеу деректерін оқу"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Безеу деректерін жазу"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Тырнақтың сынғыштығы деректерін оқу"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"денеде судың жиналуы"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Пысылдау"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"пысылдау"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> таңдалды"</string>
 </resources>

@@ -406,7 +406,7 @@
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Dopustite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da čita podatke iz drugih aplikacija na ovom uređaju pomoću Health Connecta. Te podatke mogu čitati i druge aplikacije kojima odobrite pristup."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikacije koje mogu sinkronizirati te podatke"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Saznajte kako aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> upotrebljava vaše podatke u svojim "<a href="%2$s">"pravilima o privatnosti"</a>"."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect omogućuje vam dijeljenje podataka o zdravlju i fitnessu između više aplikacija. To vam omogućuje da otkrijete uvide i doživljaje, a pritom štiti vaše podatke."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect omogućuje vam dijeljenje podataka o zdravlju i fitnessu s više aplikacija. Na taj način dobivate pristup uvidima i doživljajima, a vaši su podaci sigurni."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Više o Health Connectu"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Ako date pristup za čitanje, aplikacija može čitati nove podatke i podatke iz proteklih 30 dana"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ako date pristup za čitanje, aplikacija može čitati nove i prijašnje podatke"</string>
@@ -420,7 +420,7 @@
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"O povijesti bolesti"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Podaci koji se dijele uključuju sljedeće"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"Ako to dopustite, <xliff:g id="APP_NAME">%1$s</xliff:g> može dijeliti vašu povijest bolesti s Health Connectom."</string>
-    <string name="medical_request_footer" msgid="157243861031258933">"Sinkronizirajte podatke o povijesti bolesti iz različitih aplikacija i izvora da biste ih zadržali na jednom mjestu"</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"Sinkronizirajte svoje zdravstvene podatke iz različitih aplikacija i izvora da biste ih objedinili na jednom mjestu"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Želite li ukloniti sva dopuštenja?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Ukloni sve"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti bilježiti podatke iz Health Connecta.\n\nTo ne utječe na druga dopuštenja dodijeljena ovoj aplikaciji kao što su pristup kameri, mikrofonu ili lokaciji."</string>
@@ -456,7 +456,7 @@
     <string name="raw_fhir_value" msgid="8627152854130338531">"<xliff:g id="PREFIX">%1$s</xliff:g>: <xliff:g id="VALUE">%2$s</xliff:g>."</string>
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Detaljni izvorni kôd: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"Prikaži izvorne podatke"</string>
-    <string name="health_permission_header_description" msgid="7497601695462373927">"Aplikacije s tim dopuštenjem mogu čitati i bilježiti vaše podatke o zdravlju i fitnessu."</string>
+    <string name="health_permission_header_description" msgid="7497601695462373927">"Aplikacije s tim dopuštenjem mogu čitati i bilježiti podatke o vašem zdravlju i fitnessu."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"Odredite koje aplikacije mogu pristupati podacima pohranjenim u Health Connectu. Dodirnite aplikaciju da biste pregledali podatke koje može čitati ili bilježiti."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Dopušten pristup"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Nije dopušten pristup"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"{quantity, number} – nepoznato"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Nepoznato piće"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Pivo"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Vino"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Votka"</string>
@@ -1336,21 +1335,19 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Vaše aplikacije za zdravlje"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Vaši podaci o zdravlju"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Postavke"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect omogućuje vam dijeljenje podataka o zdravlju i fitnessu između više aplikacija. To vam omogućuje da otkrijete uvide i doživljaje, a pritom štiti vaše podatke."</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect omogućuje vam dijeljenje podataka o zdravlju i fitnessu s više aplikacija. Na taj način dobivate pristup uvidima i doživljajima, a vaši su podaci sigurni."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Više o Health Connectu"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Vaši podaci i koje im aplikacije mogu pristupiti"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Aplikacije koje su nedavno upotrebljavale vaše podatke"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Pregledajte uređaje koji mogu pristupati podacima o zdravlju"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Instalirajte aplikacije koje funkcioniraju s Health Connectom da biste ih vidjeli ovdje"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Prikaži kompatibilne aplikacije"</string>
-    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Pogledajte više aplikacija za zdravlje"</string>
+    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Prikaži više aplikacija za zdravlje"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Nije povezano"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Kliknite da biste ovu aplikaciju povezali s Health Connectom"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Ne sad"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Svi simptomi"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"simptomi"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Čitaj podatke o aknama"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Upiši podatke o aknama"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Čitaj podatke o lomljivim noktima"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"zadržavanje vode"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Hroptanje"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"hroptanje"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> od <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Odabrano <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> od <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
 </resources>

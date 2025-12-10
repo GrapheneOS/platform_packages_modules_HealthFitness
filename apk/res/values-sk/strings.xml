@@ -419,7 +419,7 @@
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Ak udelíte prístup, aplikácia bude môcť čítať údaje, ako sú alergie, výsledky laboratórnych vyšetrení, očkovania a ďalšie\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"Informácie o zdravotných záznamoch"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Údaje na zdieľanie zahŕňajú"</string>
-    <string name="medical_request_summary" msgid="553735170968628758">"Ak povolíte, <xliff:g id="APP_NAME">%1$s</xliff:g> bude môcť zdieľať vaše zdravotné záznamy s Dátami o zdraví."</string>
+    <string name="medical_request_summary" msgid="553735170968628758">"Ak prístup povolíte, aplikácia <xliff:g id="APP_NAME">%1$s</xliff:g> bude môcť zdieľať vaše zdravotné záznamy s Dátami o zdraví."</string>
     <string name="medical_request_footer" msgid="157243861031258933">"Synchronizujte svoje zdravotné záznamy z rôznych aplikácií a zdrojov, aby ste ich mali na jednom mieste"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Chcete odstrániť všetky povolenia?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Odstrániť všetky"</string>
@@ -481,7 +481,7 @@
     <string name="manage_permissions_rationale" msgid="2780008055185441703">"V pravidlách ochrany súkromia príslušného vývojára zistíte, ako aplikácia <xliff:g id="APP_NAME">%1$s</xliff:g> narába s vašimi údajmi."</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Ak chcete spravovať ďalšie povolenia pre Android, ku ktorým má táto aplikácia prístup, prejdite do sekcie Nastavenia a potom Aplikácie"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Zobraziť pravidlá ochrany súkromia"</string>
-    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Použité v posledných 24 hodinách"</string>
+    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Použité za posledných 24 hodín"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Prístup aplikácie"</string>
     <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"Nie sú nainštalované žiadne kompatibilné aplikácie"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"Dodatočný prístup"</string>
@@ -852,8 +852,7 @@
     <string name="nicotine_intake_type_unknown" msgid="2096300681393598647">"Neznáme ({quantity, number})"</string>
     <!-- no translation found for alcohol_consumption_title (729645829048393177) -->
     <skip />
-    <!-- no translation found for alcohol_consumption_beverage_type_other (7936472575378572286) -->
-    <skip />
+    <string name="alcohol_consumption_beverage_type_other" msgid="7936472575378572286">"Neznámy nápoj"</string>
     <string name="alcohol_consumption_beverage_type_beer" msgid="1753954064025455693">"Pivo"</string>
     <string name="alcohol_consumption_beverage_type_wine" msgid="539865325714724419">"Víno"</string>
     <string name="alcohol_consumption_beverage_type_vodka" msgid="8617871659386650818">"Vodka"</string>
@@ -1347,10 +1346,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Nepripojená"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Kliknutím pripojíte túto aplikáciu k Dátam o zdraví"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Teraz nie"</string>
-    <!-- no translation found for all_symptoms_uppercase_label (8536062555780157046) -->
-    <skip />
-    <!-- no translation found for symptoms_lowercase_label (767123038349492995) -->
-    <skip />
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Všetky príznaky"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"príznaky"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Čítať údaje o akné"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Zapisovať údaje o akné"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Čítať údaje o lámavých nechtoch"</string>
@@ -1587,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"zadržiavanie vody v tele"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Chrčanie"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"chrčanie"</string>
-    <string name="app_permissions_granted_summary" msgid="2542736165368066160">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> z <xliff:g id="TOTAL_PERMISSIONS">%2$d selected</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Vybrané: <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> z <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
 </resources>
