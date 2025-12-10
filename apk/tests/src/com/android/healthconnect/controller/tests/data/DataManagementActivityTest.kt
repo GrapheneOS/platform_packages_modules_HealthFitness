@@ -21,7 +21,6 @@ import android.content.Intent
 import android.health.connect.HealthDataCategory
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.MutableLiveData
-import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
@@ -46,7 +45,6 @@ import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -65,7 +63,6 @@ class DataManagementActivityTest {
 
     @BindValue val allDataViewModel: AllDataViewModel = Mockito.mock(AllDataViewModel::class.java)
 
-    private lateinit var activityScenario: ActivityScenario<DataManagementActivity>
     private lateinit var context: Context
 
     @Before
@@ -122,9 +119,10 @@ class DataManagementActivityTest {
         }
         val startActivityIntent = Intent(context, DataManagementActivity::class.java)
 
-        activityScenario = launch<DataManagementActivity>(startActivityIntent)
-        onView(withText("Activity")).check(matches(isDisplayed()))
-        onView(withText("Steps")).check(matches(isDisplayed()))
+        launch<DataManagementActivity>(startActivityIntent).use {
+            onView(withText("Activity")).check(matches(isDisplayed()))
+            onView(withText("Steps")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -150,9 +148,9 @@ class DataManagementActivityTest {
 
         val startActivityIntent = Intent(context, DataManagementActivity::class.java)
 
-        activityScenario = launch<DataManagementActivity>(startActivityIntent)
-
-        onView(withText("Integration in progress")).check(matches(isDisplayed()))
+        launch<DataManagementActivity>(startActivityIntent).use {
+            onView(withText("Integration in progress")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -178,9 +176,9 @@ class DataManagementActivityTest {
 
         val startActivityIntent = Intent(context, DataManagementActivity::class.java)
 
-        activityScenario = launch<DataManagementActivity>(startActivityIntent)
-
-        onView(withText("Restore in progress")).check(matches(isDisplayed()))
+        launch<DataManagementActivity>(startActivityIntent).use {
+            onView(withText("Restore in progress")).check(matches(isDisplayed()))
+        }
     }
 
     @Test
@@ -206,29 +204,26 @@ class DataManagementActivityTest {
 
         val startActivityIntent = Intent(context, DataManagementActivity::class.java)
 
-        activityScenario = launch<DataManagementActivity>(startActivityIntent)
-
-        onView(withText("What's new")).inRoot(RootMatchers.isDialog()).check(matches(isDisplayed()))
-        onView(
-                withText(
-                    "You can now access Health Connect directly from your settings. Uninstall the Health Connect app any time to free up storage space."
+        launch<DataManagementActivity>(startActivityIntent).use { scenario ->
+            onView(withText("What's new"))
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()))
+            onView(
+                    withText(
+                        "You can now access Health Connect directly from your settings. Uninstall the Health Connect app any time to free up storage space."
+                    )
                 )
-            )
-            .inRoot(RootMatchers.isDialog())
-            .check(matches(isDisplayed()))
-        onView(withText("Got it")).inRoot(RootMatchers.isDialog()).check(matches(isDisplayed()))
+                .inRoot(RootMatchers.isDialog())
+                .check(matches(isDisplayed()))
+            onView(withText("Got it")).inRoot(RootMatchers.isDialog()).check(matches(isDisplayed()))
 
-        onView(withText("Got it")).inRoot(RootMatchers.isDialog()).perform(ViewActions.click())
+            onView(withText("Got it")).inRoot(RootMatchers.isDialog()).perform(ViewActions.click())
 
-        activityScenario.onActivity { activity ->
-            val preferences =
-                activity.getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
-            assertThat(preferences.getBoolean("Whats New Seen", false)).isTrue()
+            scenario.onActivity { activity ->
+                val preferences =
+                    activity.getSharedPreferences("USER_ACTIVITY_TRACKER", Context.MODE_PRIVATE)
+                assertThat(preferences.getBoolean("Whats New Seen", false)).isTrue()
+            }
         }
-    }
-
-    @After
-    fun tearDown() {
-        activityScenario.close()
     }
 }
