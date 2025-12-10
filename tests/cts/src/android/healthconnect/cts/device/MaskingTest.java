@@ -316,8 +316,10 @@ public class MaskingTest {
                 .isEqualTo(maskedOrigin);
     }
 
+    // Reason: Only the deleteDeviceRecords API is allowed to delete device data
     @Test
-    public void deleteUsingFilters_masks() throws InterruptedException {
+    public void deleteRecords_usingPackageNameFilters_doesNotUnmask_doesNotDelete()
+            throws InterruptedException {
         DataOrigin maskedOrigin =
                 new DataOrigin.Builder().setPackageName(mMaskedDeviceName).build();
 
@@ -328,12 +330,12 @@ public class MaskingTest {
 
         verifyDeleteRecords(request);
 
-        assertThat(readAllRecords(StepsRecord.class)).isEmpty();
+        assertThat(readAllRecords(StepsRecord.class)).hasSize(1);
     }
 
-    // TODO(b/464192041): Delete using ids should also delete device records
+    // Reason: Only the deleteDeviceRecords API is allowed to delete device data
     @Test
-    public void deleteRecords_usingIds_throws() throws InterruptedException {
+    public void deleteRecords_usingDeviceIds_throws() throws InterruptedException {
         List<RecordIdFilter> recordIds =
                 Collections.singletonList(
                         RecordIdFilter.fromId(StepsRecord.class, mInsertedRecordId));
@@ -343,7 +345,7 @@ public class MaskingTest {
         assertThrows(HealthConnectException.class, () -> verifyDeleteRecords(recordIds));
     }
 
-    // TODO(b/464192041): Delete using filters should also delete device records
+    // Reason: Only the deleteDeviceRecords API is allowed to delete device data
     @Test
     public void deleteRecords_usingTypeFilter_doesNotDelete() throws InterruptedException {
         assertThat(readAllRecords(StepsRecord.class)).hasSize(1);

@@ -376,8 +376,8 @@ public class DeviceDataProviderManager {
     /**
      * Deletes records associated with a specific device.
      *
-     * <p>The given delete request may not contain package name or id filters, as this method is
-     * intended to delete records associated with {@code deviceId} only.
+     * <p>The given delete request may not contain package name filters, as this method is intended
+     * to delete records associated with {@code deviceId} only.
      *
      * <p>Note: The device data source must be advertised first through {@link
      * #handleAdvertisement}.
@@ -705,9 +705,9 @@ public class DeviceDataProviderManager {
     }
 
     private void verifyDeleteRequestOrThrow(DeleteUsingFiltersRequestParcel request) {
-        if (!request.getPackageNameFilters().isEmpty() || request.usesIdFilters()) {
+        if (!request.getPackageNameFilters().isEmpty()) {
             throw new IllegalArgumentException(
-                    "Package name and ID filters must be empty for device delete requests.");
+                    "Package name filter must be empty for device delete requests.");
         }
     }
 }

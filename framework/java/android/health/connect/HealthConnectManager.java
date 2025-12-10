@@ -4151,6 +4151,70 @@ public class HealthConnectManager {
         }
     }
 
+    /**
+     * Deletes records previously inserted using {@link #insertDeviceRecords}.
+     *
+     * <p>In case of an error or a permission failure in the Health Connect service, {@link
+     * OutcomeReceiver#onError} will be invoked with a {@link HealthConnectException}.
+     *
+     * <p>Deletions are performed in a transaction i.e. either all will be deleted or none.
+     *
+     * @param deviceId the identifier for the device that is the source of this data.
+     * @param recordIds the list of record IDs to be deleted.
+     * @param executor executor on which to invoke the callback.
+     * @param callback callback to receive the result of performing this operation.
+     * @throws RuntimeException for internal errors
+     * @hide
+     */
+    @SystemApi
+    @RequiresPermission(PROVIDE_HEALTH_CONNECT_DEVICE_DATA)
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void deleteDeviceRecords(
+            @NonNull String deviceId,
+            @NonNull List<RecordIdFilter> recordIds,
+            @NonNull Executor executor,
+            @NonNull OutcomeReceiver<Void, HealthConnectException> callback) {
+        Objects.requireNonNull(deviceId);
+        Objects.requireNonNull(recordIds);
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        if (recordIds.isEmpty()) {
+            throw new IllegalArgumentException("recordIds cannot be empty");
+        }
+
+        try {
+            DeleteUsingFiltersRequestParcel parcel =
+                    new DeleteUsingFiltersRequestParcel(
+                            new RecordIdFiltersParcel(recordIds), mContext.getPackageName());
+            // Overwrite the package name filters, as by default, RecordIdFiltersParcel will have
+            // this set to the calling app itself. This would be incorrect, as the device has its
+            // own package name that is different to the calling device data provider package.
+            parcel.setPackageNameFilters(List.of());
+
+            mService.deleteDeviceRecords(
+                    mContext.getAttributionSource(),
+                    deviceId,
+                    parcel,
+                    new IEmptyResponseCallback.Stub() {
+                        @Override
+                        public void onResult() {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(null));
+                        }
+
+                        @Override
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(
+                                    () -> callback.onError(exception.getHealthConnectException()));
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
     private static String getDataTypePrefKey(@NonNull Class<? extends Record> dataType) {
         return TRACKING_PREFERENCE_PREFIX
                 + dataType.getAnnotation(Identifier.class).recordIdentifier();

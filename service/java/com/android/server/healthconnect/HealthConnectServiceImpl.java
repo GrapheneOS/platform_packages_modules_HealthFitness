@@ -1289,8 +1289,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         .setPackageName(attributionSource.getPackageName());
 
         final RequestContext requestContext = RequestContext.create();
-        final DeleteUsingFiltersRequestParcel unmaskedRequest =
-                request.toUnmasked(getUnmaskingFunction(attributionSource.getPackageName()));
 
         scheduleLoggingHealthDataApiErrors(
                 () -> {
@@ -1298,8 +1296,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     verifyPackageNameFromUid(uid, attributionSource);
                     throwExceptionIfDataSyncInProgress();
                     List<Integer> recordTypeIdsToDelete =
-                            (!unmaskedRequest.getRecordTypeFilters().isEmpty())
-                                    ? unmaskedRequest.getRecordTypeFilters()
+                            (!request.getRecordTypeFilters().isEmpty())
+                                    ? request.getRecordTypeFilters()
                                     : new ArrayList<>(
                                             mHealthConnectMappings
                                                     .getRecordIdToExternalRecordClassMap()
@@ -1315,7 +1313,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
                                 recordTypeIdsToDelete, attributionSource);
                         grantedGranularWritePermissions =
-                                unmaskedRequest.getRecordTypeFilters().stream()
+                                request.getRecordTypeFilters().stream()
                                         .map(mInternalHealthConnectMappings::getRecordHelper)
                                         .flatMap(
                                                 recordHelper ->
@@ -1341,7 +1339,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     int numberOfRecordsDeleted =
                             mFitnessRecordDeleteHelper.deleteRecords(
                                     requireNonNull(attributionSource.getPackageName()),
-                                    unmaskedRequest,
+                                    request,
                                     grantedGranularWritePermissions,
                                     /* enforceSelfDelete= */ !holdsDataManagementPermission,
                                     /* shouldRecordAccessLog= */ !holdsDataManagementPermission);
