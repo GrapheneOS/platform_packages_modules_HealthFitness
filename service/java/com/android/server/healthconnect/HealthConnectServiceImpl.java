@@ -167,6 +167,7 @@ import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.exportimport.ExportImportDocumentProvider;
@@ -2236,13 +2237,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             DeviceDataSourceInfo info,
             Set<String> grantedPermissions,
             boolean skipPermissionChecks) {
-        Map<Class<? extends Record>, List<DeviceDataTypeAdvertisement>> recordTypeToAdvertisements =
-                new ArrayMap<>();
+        Map<Pair<Class<? extends Record>, Integer>, List<DeviceDataTypeAdvertisement>>
+                recordTypeToAdvertisements = new ArrayMap<>();
 
         for (DeviceDataProviderInfo providerInfo : info.getDeviceDataProviderInfos()) {
             for (DeviceDataTypeAdvertisement ad : providerInfo.getDeviceDataTypeAdvertisements()) {
                 recordTypeToAdvertisements
-                        .computeIfAbsent(ad.getDataType(), k -> new ArrayList<>())
+                        .computeIfAbsent(
+                                new Pair<>(ad.getDataType(), ad.getSymptomType()),
+                                k -> new ArrayList<>())
                         .add(ad);
             }
         }
@@ -2250,10 +2253,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         Set<DeviceDataTypeSource> deviceDataTypeSources = new HashSet<>();
         boolean hasAtLeastOnePermission = false;
 
-        for (Map.Entry<Class<? extends Record>, List<DeviceDataTypeAdvertisement>> entry :
-                recordTypeToAdvertisements.entrySet()) {
+        for (Map.Entry<Pair<Class<? extends Record>, Integer>, List<DeviceDataTypeAdvertisement>>
+                entry : recordTypeToAdvertisements.entrySet()) {
 
-            Class<? extends Record> dataType = entry.getKey();
+            Class<? extends Record> dataType = entry.getKey().first;
+            int symptomType = entry.getKey().second;
             List<DeviceDataTypeAdvertisement> ads = entry.getValue();
 
             if (!skipPermissionChecks
@@ -2262,7 +2266,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 hasAtLeastOnePermission = true;
             }
 
-            deviceDataTypeSources.add(createDeviceDataTypeSource(dataType, ads));
+            deviceDataTypeSources.add(createDeviceDataTypeSource(dataType, symptomType, ads));
         }
 
         if (hasAtLeastOnePermission || skipPermissionChecks) {
@@ -2294,7 +2298,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      * Enabled if ANY device data providers are enabled.
      */
     private DeviceDataTypeSource createDeviceDataTypeSource(
-            Class<? extends Record> dataType, List<DeviceDataTypeAdvertisement> ads) {
+            Class<? extends Record> dataType,
+            int symptomType,
+            List<DeviceDataTypeAdvertisement> ads) {
 
         boolean isAvailable = false;
         boolean isUserEnabled = false;
@@ -2308,7 +2314,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             }
         }
 
-        return new DeviceDataTypeSource(dataType, isAvailable, isUserEnabled);
+        if (SymptomRecord.class.isAssignableFrom(dataType)) {
+            return DeviceDataTypeSource.ofSymptomType(symptomType, isAvailable, isUserEnabled);
+        } else {
+            return DeviceDataTypeSource.ofDataType(dataType, isAvailable, isUserEnabled);
+        }
     }
 
     @Override
