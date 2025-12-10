@@ -28,11 +28,13 @@ import static android.health.connect.datatypes.HeartRateRecord.BPM_MAX;
 import static android.health.connect.datatypes.SleepSessionRecord.SLEEP_DURATION_TOTAL;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.health.connect.datatypes.TotalCaloriesBurnedRecord.ENERGY_TOTAL;
+import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 import static android.healthconnect.testing.cts.TestUtils.deleteRecords;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponse;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGroupByDuration;
 import static android.healthconnect.testing.cts.TestUtils.getAggregateResponseGroupByPeriod;
 import static android.healthconnect.testing.cts.TestUtils.getChangeLogToken;
+import static android.healthconnect.testing.cts.TestUtils.getCurrentDeviceDataSource;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.readRecords;
 import static android.healthconnect.testing.cts.TestUtils.updateRecords;
@@ -47,11 +49,15 @@ import static android.healthconnect.testing.shared.DataFactory.getTotalCaloriesB
 import static android.healthconnect.testing.shared.DataFactory.getTotalCaloriesBurnedRecordWithEmptyMetadata;
 import static android.healthconnect.testing.shared.recordfactory.RecordFactory.newEmptyMetadataWithClientId;
 
+import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static java.time.temporal.ChronoUnit.DAYS;
 
 import android.health.connect.AggregateRecordsRequest;
+import android.health.connect.DeviceDataSource;
 import android.health.connect.HealthConnectException;
 import android.health.connect.LocalTimeRangeFilter;
 import android.health.connect.ReadRecordsRequestUsingFilters;
@@ -61,6 +67,7 @@ import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.HeartRateRecord;
@@ -68,6 +75,10 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
+import android.health.connect.device.DeviceDataAdvertisement;
+import android.health.connect.device.DeviceDataTypeAdvertisement;
+import android.healthconnect.testing.cts.HealthConnectReceiver;
+import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
 import android.healthconnect.testing.cts.testapphelpers.TestAppRule;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
@@ -75,6 +86,7 @@ import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.healthconnect.testing.shared.recordfactory.MindfulnessSessionRecordFactory;
 import android.platform.test.annotations.AppModeFull;
+import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import android.util.Pair;
@@ -94,6 +106,7 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 /** These test run under an environment which has no HC permissions */
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
@@ -380,6 +393,43 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
                         .isEqualTo(HealthConnectException.ERROR_SECURITY);
             }
         }
+    }
+
+    @Test
+    @RequiresFlagsEnabled({
+        FLAG_DEVICE_DATA_PROVIDERS_API,
+        FLAG_DEVICE_DATA_PROVIDERS_DB,
+    })
+    public void getCurrentDeviceDataSource_withNoPermission_throwSecurityException()
+            throws InterruptedException {
+        String currentDeviceId = TestUtils.getCurrentDeviceId();
+        Set<DeviceDataTypeAdvertisement> ads =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                                .setAvailable(true)
+                                .setUserEnabled(true)
+                                .build());
+        Device testDevice =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("TestDisplayName")
+                        .build();
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(testDevice, currentDeviceId, ads);
+        HealthConnectReceiver<Void> adReceiver = new HealthConnectReceiver<>();
+        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), adReceiver);
+
+        HealthConnectReceiver<DeviceDataSource> receiver = new HealthConnectReceiver<>();
+        getCurrentDeviceDataSource(outcomeExecutor(), receiver);
+
+        assertThat(receiver.assertAndGetException().getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_SECURITY);
+        assertThat(receiver.assertAndGetException().getMessage())
+                .isEqualTo(
+                        "java.lang.SecurityException: Caller must hold at least one Health Connect"
+                                + " permission");
     }
 
     private List<Record> getTestRecords() {
