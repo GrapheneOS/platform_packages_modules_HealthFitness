@@ -36,6 +36,8 @@ import static android.healthconnect.testing.cts.TestUtils.updatePriorityWithMana
 import static android.healthconnect.testing.cts.TestUtils.verifyDeleteRecords;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 
+import static com.android.compatibility.common.util.SystemUtil.getEventually;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
@@ -63,6 +65,7 @@ import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.AppInfo;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Metadata;
+import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
@@ -172,14 +175,21 @@ public class MaskingTest {
     }
 
     @Test
-    public void queryAllRecordTypesInfo_masks() throws InterruptedException {
-        Map<Class<? extends android.health.connect.datatypes.Record>, RecordTypeInfoResponse>
-                response = queryAllRecordTypesInfo();
+    public void queryAllRecordTypesInfo_masks() throws Exception {
+        Map<Class<? extends Record>, RecordTypeInfoResponse> eventualResponse =
+                getEventually(
+                        () -> {
+                            Map<Class<? extends Record>, RecordTypeInfoResponse> response =
+                                    queryAllRecordTypesInfo();
+                            assertThat(response.get(StepsRecord.class).getContributingPackages())
+                                    .hasSize(1);
+                            return response;
+                        });
 
         // response contains exactly one info and it's masked
         DataOrigin maskedOrigin =
                 new DataOrigin.Builder().setPackageName(mMaskedDeviceName).build();
-        assertThat(response.get(StepsRecord.class).getContributingPackages())
+        assertThat(eventualResponse.get(StepsRecord.class).getContributingPackages())
                 .containsExactly(maskedOrigin);
     }
 
