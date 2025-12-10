@@ -608,15 +608,15 @@ public class DeviceDataProviderManager {
                             "DDP device encountered with unexpected null device ID");
                 }
 
-                // Remap stable ID for current device to runtime version.
+                boolean isCurrentDevice = false;
                 if (deviceId.equals(getStableCurrentDeviceId())) {
+                    isCurrentDevice = true;
+                    // Remap stable ID for current device to runtime version.
                     deviceId = getCurrentDeviceId();
                 }
 
                 List<DeviceDataProviderInfo> providerInfos =
                         getDeviceDataProviderInfos(ddpPackageToAdvertisements, deviceId);
-
-                boolean isCurrentDevice = getStableCurrentDeviceId().equals(syntheticPackageName);
 
                 result.add(
                         new DeviceDataSourceInfo(

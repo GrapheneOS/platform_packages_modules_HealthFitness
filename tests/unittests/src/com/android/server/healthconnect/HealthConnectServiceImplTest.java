@@ -103,6 +103,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -239,6 +240,7 @@ import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
@@ -469,6 +471,7 @@ public class HealthConnectServiceImplTest {
     private String mTestPackageName;
     private HealthConnectThreadScheduler mThreadScheduler;
     private FakeSerialDeviceDataProviderManager mDeviceDataProviderManager;
+    private SyntheticPackageNameCreator mSyntheticPackageNameCreator;
     private SyntheticPackageNameResolver mSyntheticPackageNameResolver;
     private final Instant mNow = DataFactory.now();
     private AppInfoHelper mAppInfoHelper;
@@ -553,6 +556,7 @@ public class HealthConnectServiceImplTest {
 
         mSyntheticPackageNameResolver =
                 new SyntheticPackageNameResolver(mAppInfoHelper, mDeviceDataProviderManager);
+        mSyntheticPackageNameCreator = healthConnectInjector.getSyntheticPackageNameCreator();
 
         mHealthConnectService =
                 new HealthConnectServiceImpl(
@@ -5019,6 +5023,129 @@ public class HealthConnectServiceImplTest {
         assertThat(result).hasSize(1);
         String spn = result.get(0).getDeviceDataOrigin().getPackageName();
         assertTrue(SyntheticPackageNameMatcher.matchesMasked(spn));
+        assertFalse(result.get(0).isCurrentDevice());
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void getDeviceDataSourceInfos_withCurrentDeviceId_setsIsCurrentDevice()
+            throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+        advertiseStepsDeviceDataSource(clientExposedId, device);
+
+        mHealthConnectService.getDeviceDataSourceInfos(
+                mAttributionSource, mGetDeviceDataSourceInfosCallback);
+        verify(mGetDeviceDataSourceInfosCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<List<DeviceDataSourceInfo>> captor = ArgumentCaptor.forClass(List.class);
+        verify(mGetDeviceDataSourceInfosCallback).onResult(captor.capture());
+
+        List<DeviceDataSourceInfo> result = captor.getValue();
+        assertThat(result).hasSize(1);
+        String maskedSpn = result.get(0).getDeviceDataOrigin().getPackageName();
+        assertTrue(SyntheticPackageNameMatcher.matchesMasked(maskedSpn));
+        assertTrue(result.get(0).isCurrentDevice());
+        String unmaskedSpn =
+                mSyntheticPackageNameResolver.unmask(
+                        maskedSpn, mAttributionSource.getPackageName());
+        // TODO(b/468039569): Unnest the SPNs for the current device.
+        String currentDeviceSpn =
+                mSyntheticPackageNameCreator.createCanonical(
+                        Device.DEVICE_TYPE_PHONE,
+                        mDeviceDataProviderManager.getStableCurrentDeviceId());
+        assertEquals(unmaskedSpn, currentDeviceSpn);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void advertiseTwoDevices_withCurrentDeviceId_throws() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .build();
+        DeviceDataAdvertisement advertisement1 =
+                new DeviceDataAdvertisement(device1, clientExposedId, deviceDataTypeAdvertisements);
+        DeviceDataAdvertisement advertisement2 =
+                new DeviceDataAdvertisement(device2, clientExposedId, deviceDataTypeAdvertisements);
+        mHealthConnectService.advertiseDeviceDataSources(
+                mAttributionSource, List.of(advertisement1), mEmptyResponseCallback);
+        verify(mEmptyResponseCallback, timeout(5000).times(1)).onResult();
+        verify(mEmptyResponseCallback, timeout(5000).times(0)).onError(mErrorCaptor.capture());
+
+        mHealthConnectService.advertiseDeviceDataSources(
+                mAttributionSource, List.of(advertisement2), mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_INVALID_ARGUMENT);
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
+                .isEqualTo(
+                        "java.lang.IllegalArgumentException: The device with id"
+                                + " com.android.healthconnect.phone has already been used for a"
+                                + " different device type.");
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    // TODO(b/467694681): Check if we want to block this behaviour.
+    public void advertiseCurrentDeviceId_watchDevice_isSupported() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .build();
+        advertiseStepsDeviceDataSource(clientExposedId, device);
+
+        mHealthConnectService.getDeviceDataSourceInfos(
+                mAttributionSource, mGetDeviceDataSourceInfosCallback);
+        verify(mGetDeviceDataSourceInfosCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<List<DeviceDataSourceInfo>> captor = ArgumentCaptor.forClass(List.class);
+        verify(mGetDeviceDataSourceInfosCallback).onResult(captor.capture());
+
+        List<DeviceDataSourceInfo> result = captor.getValue();
+        assertThat(result).hasSize(1);
+        String spn = result.get(0).getDeviceDataOrigin().getPackageName();
+        assertTrue(SyntheticPackageNameMatcher.matchesMasked(spn));
+        assertTrue(result.get(0).isCurrentDevice());
     }
 
     @Test

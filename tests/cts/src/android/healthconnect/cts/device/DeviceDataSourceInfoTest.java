@@ -109,6 +109,7 @@ public class DeviceDataSourceInfoTest {
         DeviceDataSourceInfo info = result.get(0);
         assertThat(info.getDevice()).isEqualTo(device);
         assertThat(info.getDeviceDataProviderInfos()).hasSize(1);
+        assertThat(info.isCurrentDevice()).isFalse();
         DeviceDataProviderInfo providerInfo = info.getDeviceDataProviderInfos().get(0);
         assertThat(providerInfo.getDeviceId()).isEqualTo(deviceId);
         assertThat(providerInfo.getDeviceDataTypeAdvertisements()).containsExactly(stepsAd);
@@ -211,6 +212,7 @@ public class DeviceDataSourceInfoTest {
         DeviceDataSourceInfo info = result.get(0);
         assertThat(info.getDevice()).isEqualTo(device);
         assertThat(info.getDeviceDataProviderInfos()).hasSize(1);
+        assertThat(info.isCurrentDevice()).isTrue();
         DeviceDataProviderInfo providerInfo = info.getDeviceDataProviderInfos().get(0);
         assertThat(providerInfo.getDeviceId()).isEqualTo(deviceId);
         assertThat(providerInfo.getDeviceDataTypeAdvertisements()).containsExactly(stepsAd);
