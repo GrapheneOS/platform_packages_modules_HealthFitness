@@ -3939,16 +3939,14 @@ public class HealthConnectManager {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
-            // Unset any set ids for insert. This is to prevent random string ids from creating
-            // illegal argument exception.
-            records.forEach((record) -> record.getMetadata().setId(""));
-            List<RecordInternal<?>> recordInternals =
-                    records.stream()
-                            .map(
-                                    record ->
-                                            record.toRecordInternal()
-                                                    .setPackageName(mContext.getPackageName()))
-                            .collect(Collectors.toList());
+            List<RecordInternal<?>> recordInternals = new ArrayList<>(records.size());
+            for (Record record : records) {
+                // Unset any set ids for insert. This is to prevent random string ids from creating
+                // illegal argument exception.
+                record.getMetadata().setId("");
+                recordInternals.add(
+                        record.toRecordInternal().setPackageName(mContext.getPackageName()));
+            }
             mService.insertDeviceRecords(
                     mContext.getAttributionSource(),
                     deviceId,
@@ -4011,8 +4009,10 @@ public class HealthConnectManager {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
-            List<RecordInternal<?>> recordInternals =
-                    records.stream().map(Record::toRecordInternal).collect(Collectors.toList());
+            List<RecordInternal<?>> recordInternals = new ArrayList<>(records.size());
+            for (Record record : records) {
+                recordInternals.add(record.toRecordInternal());
+            }
             verifyIds(recordInternals);
 
             mService.updateDeviceRecords(
