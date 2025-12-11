@@ -250,7 +250,7 @@ public class FitnessRecordDeleteHelperTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
-    public void deleteRecords_callingInternalDelete_doesNotAddDdpIdsToDeleteRequests() {
+    public void deleteRecordsNonIdFilters_callingInternalDelete_doesNotAddDdpToDeleteRequests() {
         DeleteUsingFiltersRequest deleteRequest =
                 new DeleteUsingFiltersRequest.Builder()
                         .setTimeRangeFilter(
@@ -284,7 +284,41 @@ public class FitnessRecordDeleteHelperTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
-    public void deleteDeviceRecords_callingInternalDelete_addsDdpIdsToDeleteRequests() {
+    public void deleteRecordsIdFilters_callingInternalDelete_doesNotAddDdpToDeleteRequests() {
+        DeleteUsingFiltersRequestParcel deleteRequestParcel =
+                new DeleteUsingFiltersRequestParcel(
+                        new RecordIdFiltersParcel(
+                                List.of(
+                                        RecordIdFilter.fromId(
+                                                StepsRecord.class, UUID.randomUUID().toString()))),
+                        TEST_PACKAGE_NAME);
+
+        mFitnessRecordDeleteHelper.deleteRecords(
+                TEST_PACKAGE_NAME,
+                deleteRequestParcel,
+                /* grantedGranularWritePermissions= */ Collections.emptySet(),
+                /* holdsDataManagementPermission */ false,
+                /* shouldRecordAccessLog= */ false);
+
+        ArgumentCaptor<List<RecordDeleteTableRequest>> requestCaptor =
+                ArgumentCaptor.forClass(List.class);
+        verify(mFitnessRecordDeleteHelper)
+                .delete(any(), requestCaptor.capture(), any(), anyBoolean(), anyBoolean());
+        requestCaptor
+                .getValue()
+                .forEach(
+                        request ->
+                                assertThat(request.getReadCommand())
+                                        .doesNotContain(RecordHelper.DDP_ID_COLUMN_NAME));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void deleteDeviceRecordsNonIdFilter_callingInternalDelete_addsDdpIdsToDeleteRequests() {
         DeleteUsingFiltersRequest deleteRequest =
                 new DeleteUsingFiltersRequest.Builder()
                         .setTimeRangeFilter(
@@ -309,11 +343,50 @@ public class FitnessRecordDeleteHelperTest {
                         request ->
                                 assertThat(request.getReadCommand())
                                         .contains(
-                                                RecordHelper.DDP_ID_COLUMN_NAME + " = '1234' AND"));
+                                                "AND "
+                                                        + RecordHelper.DDP_ID_COLUMN_NAME
+                                                        + " = '1234'"));
     }
 
     @Test
-    public void deleteDeviceRecords_shouldNotRecordAccessLog_noLog() {
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void deleteDeviceRecordsIdFilter_callingInternalDelete_addsDdpIdsToDeleteRequests() {
+        DeleteUsingFiltersRequestParcel deleteRequestParcel =
+                new DeleteUsingFiltersRequestParcel(
+                        new RecordIdFiltersParcel(
+                                List.of(
+                                        RecordIdFilter.fromId(
+                                                StepsRecord.class, UUID.randomUUID().toString()))),
+                        TEST_PACKAGE_NAME);
+        deleteRequestParcel.setPackageNameFilters(List.of());
+
+        mFitnessRecordDeleteHelper.deleteDeviceRecords(
+                TEST_PACKAGE_NAME,
+                1234,
+                deleteRequestParcel,
+                /* grantedGranularWritePermissions= */ Collections.emptySet());
+
+        ArgumentCaptor<List<RecordDeleteTableRequest>> requestCaptor =
+                ArgumentCaptor.forClass(List.class);
+        verify(mFitnessRecordDeleteHelper)
+                .delete(any(), requestCaptor.capture(), any(), anyBoolean(), anyBoolean());
+        requestCaptor
+                .getValue()
+                .forEach(
+                        request ->
+                                assertThat(request.getReadCommand())
+                                        .contains(
+                                                "AND "
+                                                        + RecordHelper.DDP_ID_COLUMN_NAME
+                                                        + " = '1234'"));
+    }
+
+    @Test
+    public void deleteDeviceRecordsNonIdFilter_shouldNotRecordAccessLog_noLog() {
         DeleteUsingFiltersRequest deleteRequest =
                 new DeleteUsingFiltersRequest.Builder()
                         .addRecordType(StepsRecord.class)
@@ -327,6 +400,27 @@ public class FitnessRecordDeleteHelperTest {
                 TEST_PACKAGE_NAME,
                 1,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
+                /* grantedGranularWritePermissions= */ Collections.emptySet());
+
+        List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void deleteDeviceRecordsIdFilter_shouldNotRecordAccessLog_noLog() {
+        DeleteUsingFiltersRequestParcel deleteRequestParcel =
+                new DeleteUsingFiltersRequestParcel(
+                        new RecordIdFiltersParcel(
+                                List.of(
+                                        RecordIdFilter.fromId(
+                                                StepsRecord.class, UUID.randomUUID().toString()))),
+                        TEST_PACKAGE_NAME);
+        deleteRequestParcel.setPackageNameFilters(List.of());
+
+        mFitnessRecordDeleteHelper.deleteDeviceRecords(
+                TEST_PACKAGE_NAME,
+                1,
+                deleteRequestParcel,
                 /* grantedGranularWritePermissions= */ Collections.emptySet());
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
@@ -368,7 +462,7 @@ public class FitnessRecordDeleteHelperTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
-    public void deleteDeviceRecords_withDeviceRecord_deletesRecord() {
+    public void deleteDeviceRecordsNonIdFilter_withDeviceRecord_deletesRecord() {
         String deviceId = "device";
         Device device = buildDevice();
         Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisement =
@@ -399,21 +493,49 @@ public class FitnessRecordDeleteHelperTest {
     }
 
     @Test
-    public void deleteDeviceRecords_withIds_throws() {
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void deleteDeviceRecordsIdFilter_withDeviceRecord_deletesRecord() {
+        String deviceId = "device";
+        Device device = buildDevice();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisement =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisement);
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), TEST_PACKAGE_NAME);
+        String id =
+                mDeviceDataProviderManager
+                        .insertDeviceRecords(
+                                TEST_PACKAGE_NAME,
+                                deviceId,
+                                List.of(buildStepsRecord(123, 456, 100)))
+                        .get(0);
+
         DeleteUsingFiltersRequestParcel deleteRequestParcel =
                 new DeleteUsingFiltersRequestParcel(
                         new RecordIdFiltersParcel(
-                                List.of(RecordIdFilter.fromId(StepsRecord.class, "id"))),
+                                List.of(RecordIdFilter.fromId(StepsRecord.class, id))),
                         TEST_PACKAGE_NAME);
+        deleteRequestParcel.setPackageNameFilters(List.of());
 
-        assertThrows(
-                IllegalArgumentException.class,
-                () ->
-                        mFitnessRecordDeleteHelper.deleteDeviceRecords(
-                                TEST_PACKAGE_NAME,
-                                1,
-                                deleteRequestParcel,
-                                /* grantedGranularWritePermissions= */ Collections.emptySet()));
+        long deviceAppInfoId =
+                mDeviceDataProviderManager.getOrThrowAppInfoId(TEST_PACKAGE_NAME, deviceId);
+        String deviceSpn =
+                mDeviceDataProviderManager.getOrThrowSyntheticPackageName(deviceAppInfoId);
+        int deletedRecords =
+                mFitnessRecordDeleteHelper.deleteDeviceRecords(
+                        deviceSpn,
+                        1L,
+                        deleteRequestParcel,
+                        /* grantedGranularWritePermissions= */ Collections.emptySet());
+
+        assertThat(deletedRecords).isEqualTo(1);
     }
 
     @Test

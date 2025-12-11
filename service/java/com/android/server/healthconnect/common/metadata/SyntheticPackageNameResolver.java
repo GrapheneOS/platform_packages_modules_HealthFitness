@@ -18,6 +18,7 @@ package com.android.server.healthconnect.common.metadata;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.HealthConnectManager;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.device.DeviceDataProviderManager;
@@ -93,7 +94,7 @@ public class SyntheticPackageNameResolver {
 
         Optional<String> canonicalName =
                 getAllPackageNames().stream()
-                        .filter(SyntheticPackageNameCreator::isCanonicalSpn)
+                        .filter(SyntheticPackageNameMatcher::matchesCanonical)
                         .filter(
                                 canonicalSpn ->
                                         Objects.equals(
@@ -123,11 +124,11 @@ public class SyntheticPackageNameResolver {
 
     private static boolean requiresUnmasking(@NonNull String packageName) {
         return AconfigFlagHelper.isDeviceDataProvidersEnabled()
-                && SyntheticPackageNameCreator.isMaskedSpn(packageName);
+                && SyntheticPackageNameMatcher.matchesMasked(packageName);
     }
 
     private static boolean requiresMasking(@NonNull String packageName) {
         return AconfigFlagHelper.isDeviceDataProvidersEnabled()
-                && SyntheticPackageNameCreator.isCanonicalSpn(packageName);
+                && SyntheticPackageNameMatcher.matchesCanonical(packageName);
     }
 }

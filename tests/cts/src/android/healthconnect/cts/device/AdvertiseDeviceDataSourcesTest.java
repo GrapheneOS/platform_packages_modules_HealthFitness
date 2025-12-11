@@ -15,12 +15,16 @@
  */
 package android.healthconnect.cts.device;
 
+import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
+import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
 
 import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
+
+import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
@@ -40,11 +44,14 @@ import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
@@ -251,5 +258,32 @@ public class AdvertiseDeviceDataSourcesTest {
         TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
 
         receiver.verifyNoExceptionOrThrow();
+    }
+
+    @Test
+    public void testThrowsException_withCanonicalSpn_redacts() throws InterruptedException {
+        String deviceId = TestUtils.getCurrentDeviceId();
+        TestUtils.advertiseDevice(deviceId, StepsRecord.class);
+
+        List<HeartRateRecord> records = Collections.singletonList(getHeartRateRecord());
+
+        try {
+            TestUtils.insertDeviceRecords(deviceId, records);
+            Assert.fail();
+        } catch (Exception exception) {
+            assertThat(exception.getMessage())
+                    .isEqualTo(
+                            "java.lang.IllegalArgumentException: The device with id"
+                                    + " com.android.healthconnect.phone was not advertised for data"
+                                    + " type "
+                                    + RECORD_TYPE_HEART_RATE);
+            assertThat(exception.toString())
+                    .isEqualTo(
+                            "android.health.connect.HealthConnectException:"
+                                    + " java.lang.IllegalArgumentException: The device with id"
+                                    + " com.android.healthconnect.phone was not advertised for data"
+                                    + " type "
+                                    + RECORD_TYPE_HEART_RATE);
+        }
     }
 }

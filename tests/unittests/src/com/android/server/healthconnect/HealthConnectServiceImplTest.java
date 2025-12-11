@@ -157,7 +157,6 @@ import android.health.connect.MatchmakingResponse;
 import android.health.connect.MedicalResourceId;
 import android.health.connect.ReadMedicalResourcesInitialRequest;
 import android.health.connect.ReadRecordsRequestUsingFilters;
-import android.health.connect.RecordIdFilter;
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.DeviceDataSourceCapabilities;
@@ -187,7 +186,6 @@ import android.health.connect.aidl.IReadRecordsResponseCallback;
 import android.health.connect.aidl.InsertRecordsResponseParcel;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.aidl.ReadRecordsResponseParcel;
-import android.health.connect.aidl.RecordIdFiltersParcel;
 import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.aidl.UpsertMedicalResourceRequestsParcel;
 import android.health.connect.backuprestore.BackupMetadata;
@@ -209,6 +207,7 @@ import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.migration.MigrationEntityParcel;
 import android.health.connect.migration.MigrationException;
@@ -240,7 +239,6 @@ import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
-import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
@@ -3757,7 +3755,7 @@ public class HealthConnectServiceImplTest {
         String deniedAppName =
                 deniedAppsCaptor.getValue().entrySet().stream().iterator().next().getKey();
         assertThat(deniedAppName).isNotEqualTo(spn);
-        assertThat(SyntheticPackageNameCreator.isCanonicalSpn(deniedAppName)).isTrue();
+        assertThat(SyntheticPackageNameMatcher.matchesCanonical(deniedAppName)).isTrue();
     }
 
     @Test
@@ -4385,7 +4383,7 @@ public class HealthConnectServiceImplTest {
         String currentDeviceId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
         awaitAllExecutorsIdle();
 
-        assertTrue(SyntheticPackageNameCreator.isMaskedSpn(currentDeviceId));
+        assertTrue(SyntheticPackageNameMatcher.matchesMasked(currentDeviceId));
     }
 
     @Test
@@ -4635,29 +4633,6 @@ public class HealthConnectServiceImplTest {
                                 .addDataOrigin(
                                         new DataOrigin.Builder().setPackageName("Foo").build())
                                 .build()),
-                mEmptyResponseCallback);
-
-        verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
-        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
-                .isEqualTo(ERROR_INVALID_ARGUMENT);
-    }
-
-    @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
-    public void deleteDeviceRecords_withIdFilters_throws() throws RemoteException {
-        setDeviceDataProviderPermission(PERMISSION_GRANTED);
-
-        mHealthConnectService.deleteDeviceRecords(
-                mAttributionSource,
-                "some device id",
-                new DeleteUsingFiltersRequestParcel(
-                        new RecordIdFiltersParcel(
-                                List.of(RecordIdFilter.fromId(StepsRecord.class, "id"))),
-                        mAttributionSource.getPackageName()),
                 mEmptyResponseCallback);
 
         verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
@@ -5043,7 +5018,7 @@ public class HealthConnectServiceImplTest {
         List<DeviceDataSourceInfo> result = captor.getValue();
         assertThat(result).hasSize(1);
         String spn = result.get(0).getDeviceDataOrigin().getPackageName();
-        assertTrue(SyntheticPackageNameCreator.isMaskedSpn(spn));
+        assertTrue(SyntheticPackageNameMatcher.matchesMasked(spn));
     }
 
     @Test
@@ -5229,7 +5204,7 @@ public class HealthConnectServiceImplTest {
         List<DeviceDataSource> result = captor.getValue().getDeviceDataSources();
         assertThat(result).hasSize(1);
         String spn = result.get(0).getDeviceDataOrigin().getPackageName();
-        assertTrue(SyntheticPackageNameCreator.isMaskedSpn(spn));
+        assertTrue(SyntheticPackageNameMatcher.matchesMasked(spn));
     }
 
     private void advertiseDeviceDataSources(List<DeviceDataAdvertisement> advertisements)

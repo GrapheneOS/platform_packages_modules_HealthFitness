@@ -18,10 +18,8 @@ package com.android.server.healthconnect.common.metadata.spncreator;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_SCALE;
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH;
-import static android.health.connect.datatypes.Device.VALID_TYPES;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -46,9 +44,6 @@ import org.junit.rules.TemporaryFolder;
 import org.junit.runner.RunWith;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import java.util.Arrays;
-import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
 public class SyntheticPackageNameCreatorTest {
@@ -424,81 +419,6 @@ public class SyntheticPackageNameCreatorTest {
     }
 
     @Test
-    public void withEmptyString_isSpn_returnsFalse() {
-        assertFalse(SyntheticPackageNameCreator.isSpn(""));
-    }
-
-    @Test
-    public void withShorterUuid_isSpn_returnsFalse() {
-        assertFalse(
-                SyntheticPackageNameCreator.isSpn(
-                        mTestCanonicalSpnOne.substring(0, mTestCanonicalSpnOne.length() - 1)));
-    }
-
-    @Test
-    public void withLongerUuid_isSpn_returnsFalse() {
-        assertFalse(SyntheticPackageNameCreator.isSpn(mTestCanonicalSpnOne + "a"));
-    }
-
-    @Test
-    public void withMissingPartsInPackagePrefix_isSpn_returnsFalse() {
-        String canonicalSpn = "com.android.healthconnect.unknown.ddb6ff2ffe2df3b8cbc0d9542bdce27dc";
-        assertTrue(SyntheticPackageNameCreator.isSpn(canonicalSpn));
-
-        assertFalse(
-                SyntheticPackageNameCreator.isSpn(
-                        "com.android.unknown.ddb6ff2ffe2df3b8cbc0d9542bdce27dc"));
-        assertFalse(
-                SyntheticPackageNameCreator.isSpn(
-                        "com.healthconnect.unknown.ddb6ff2ffe2df3b8cbc0d9542bdce27dc"));
-        assertFalse(
-                SyntheticPackageNameCreator.isSpn("com.unknown.ddb6ff2ffe2df3b8cbc0d9542bdce27dc"));
-        assertFalse(
-                SyntheticPackageNameCreator.isSpn(
-                        "android.healthconnect.unknown.ddb6ff2ffe2df3b8cbc0d9542bdce27dc"));
-        assertFalse(
-                SyntheticPackageNameCreator.isSpn(
-                        "android.unknown.ddb6ff2ffe2df3b8cbc0d9542bdce27dc"));
-        assertFalse(
-                SyntheticPackageNameCreator.isSpn(
-                        "healthconnect.unknown.ddb6ff2ffe2df3b8cbc0d9542bdce27dc"));
-        assertFalse(SyntheticPackageNameCreator.isSpn("unknown.ddb6ff2ffe2df3b8cbc0d9542bdce27dc"));
-    }
-
-    @Test
-    public void withMissingDeviceType_isSpn_returnsFalse() {
-        String canonicalSpn = "com.android.healthconnect.unknown.ddb6ff2ffe2df3b8cbc0d9542bdce27dc";
-        assertTrue(SyntheticPackageNameCreator.isSpn(canonicalSpn));
-
-        assertFalse(
-                SyntheticPackageNameCreator.isSpn(
-                        "com.android.healthconnect.ddb6ff2ffe2df3b8cbc0d9542bdce27dc"));
-    }
-
-    @Test
-    public void withMissingUuidPrefix_isSpn_returnsFalse() {
-        String canonicalSpn = "com.android.healthconnect.unknown.ddb6ff2ffe2df3b8cbc0d9542bdce27dc";
-        assertTrue(SyntheticPackageNameCreator.isSpn(canonicalSpn));
-
-        assertFalse(
-                SyntheticPackageNameCreator.isSpn(
-                        "com.android.healthconnect.unknown.db6ff2ffe2df3b8cbc0d9542bdce27dc"));
-    }
-
-    @Test
-    public void withMutation_isSpn_returnsFalse() {
-        String validSpn = mTestCanonicalSpnOne;
-        assertTrue(SyntheticPackageNameCreator.isSpn(validSpn));
-
-        for (int i = 0; i < validSpn.length(); i++) {
-            char[] charArray = validSpn.toCharArray();
-            charArray[i] = 'z';
-            String mutatedSpn = Arrays.toString(charArray);
-            assertFalse(SyntheticPackageNameCreator.isSpn(mutatedSpn));
-        }
-    }
-
-    @Test
     public void withEmptyPreference_initializeOrGetSalt_addsPreference() {
         assertNull(mPreferenceHelper.getPreference(PREFERENCE_KEY));
 
@@ -552,17 +472,6 @@ public class SyntheticPackageNameCreatorTest {
                         TEST_DEVICE_TYPE_ONE, TEST_DEVICE_ID_ONE);
 
         assertNotEquals(first, second);
-    }
-
-    // When this test fails, the values from Device.VALID_TYPES and
-    // SyntheticPackageNameCreator.DEVICE_TYPE_TO_DISPLAY_NAME have diverged. Sync them to fix this
-    // test.
-    @Test
-    public void withMapping_deviceTypeToDisplayName_isComplete() {
-        Set<Integer> spnDeviceTypes =
-                SyntheticPackageNameCreator.DEVICE_TYPE_TO_DISPLAY_NAME.keySet();
-
-        assertEquals(VALID_TYPES, spnDeviceTypes);
     }
 
     private void resetSaltPreference() {

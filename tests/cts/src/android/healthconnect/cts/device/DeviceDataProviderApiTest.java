@@ -37,6 +37,7 @@ import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.accesslog.AccessLog;
 import android.health.connect.datatypes.Metadata;
@@ -113,6 +114,12 @@ public class DeviceDataProviderApiTest {
                 new TimeInstantRangeFilter.Builder()
                         .setStartTime(Instant.now().minus(1, HOURS))
                         .build());
+
+        deleteDeviceRecords(
+                mDeviceId,
+                List.of(
+                        RecordIdFilter.fromId(
+                                StepsRecord.class, updateRecord.getMetadata().getId())));
 
         readDeviceRecords(
                 new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)

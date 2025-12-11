@@ -36,6 +36,8 @@ import static android.healthconnect.testing.cts.TestUtils.updatePriorityWithMana
 import static android.healthconnect.testing.cts.TestUtils.verifyDeleteRecords;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 
+import static com.android.compatibility.common.util.SystemUtil.getEventually;
+
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
@@ -63,6 +65,7 @@ import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.AppInfo;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Metadata;
+import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
@@ -172,14 +175,21 @@ public class MaskingTest {
     }
 
     @Test
-    public void queryAllRecordTypesInfo_masks() throws InterruptedException {
-        Map<Class<? extends android.health.connect.datatypes.Record>, RecordTypeInfoResponse>
-                response = queryAllRecordTypesInfo();
+    public void queryAllRecordTypesInfo_masks() throws Exception {
+        Map<Class<? extends Record>, RecordTypeInfoResponse> eventualResponse =
+                getEventually(
+                        () -> {
+                            Map<Class<? extends Record>, RecordTypeInfoResponse> response =
+                                    queryAllRecordTypesInfo();
+                            assertThat(response.get(StepsRecord.class).getContributingPackages())
+                                    .hasSize(1);
+                            return response;
+                        });
 
         // response contains exactly one info and it's masked
         DataOrigin maskedOrigin =
                 new DataOrigin.Builder().setPackageName(mMaskedDeviceName).build();
-        assertThat(response.get(StepsRecord.class).getContributingPackages())
+        assertThat(eventualResponse.get(StepsRecord.class).getContributingPackages())
                 .containsExactly(maskedOrigin);
     }
 
@@ -316,8 +326,10 @@ public class MaskingTest {
                 .isEqualTo(maskedOrigin);
     }
 
+    // Reason: Only the deleteDeviceRecords API is allowed to delete device data
     @Test
-    public void deleteUsingFilters_masks() throws InterruptedException {
+    public void deleteRecords_usingPackageNameFilters_doesNotUnmask_doesNotDelete()
+            throws InterruptedException {
         DataOrigin maskedOrigin =
                 new DataOrigin.Builder().setPackageName(mMaskedDeviceName).build();
 
@@ -328,12 +340,12 @@ public class MaskingTest {
 
         verifyDeleteRecords(request);
 
-        assertThat(readAllRecords(StepsRecord.class)).isEmpty();
+        assertThat(readAllRecords(StepsRecord.class)).hasSize(1);
     }
 
-    // TODO(b/464192041): Delete using ids should also delete device records
+    // Reason: Only the deleteDeviceRecords API is allowed to delete device data
     @Test
-    public void deleteRecords_usingIds_throws() throws InterruptedException {
+    public void deleteRecords_usingDeviceIds_throws() throws InterruptedException {
         List<RecordIdFilter> recordIds =
                 Collections.singletonList(
                         RecordIdFilter.fromId(StepsRecord.class, mInsertedRecordId));
@@ -343,7 +355,7 @@ public class MaskingTest {
         assertThrows(HealthConnectException.class, () -> verifyDeleteRecords(recordIds));
     }
 
-    // TODO(b/464192041): Delete using filters should also delete device records
+    // Reason: Only the deleteDeviceRecords API is allowed to delete device data
     @Test
     public void deleteRecords_usingTypeFilter_doesNotDelete() throws InterruptedException {
         assertThat(readAllRecords(StepsRecord.class)).hasSize(1);

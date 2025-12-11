@@ -18,52 +18,63 @@ package android.health.connect;
 
 import android.annotation.IntDef;
 import android.annotation.Nullable;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Field;
+import java.util.Objects;
 
 /** Class representing health connect exceptions. */
 public class HealthConnectException extends RuntimeException {
     /** An unknown error occurred while processing the call. */
     public static final int ERROR_UNKNOWN = 1;
+
     /**
      * An internal error occurred which the caller cannot address.
      *
      * <p>This error may be considered similar to {@link IllegalStateException}
      */
     public static final int ERROR_INTERNAL = 2;
+
     /**
      * The caller supplied invalid arguments to the call.
      *
      * <p>This error may be considered similar to {@link IllegalArgumentException}.
      */
     public static final int ERROR_INVALID_ARGUMENT = 3;
+
     /**
      * An issue occurred reading or writing to storage. The call might succeed if repeated.
      *
      * <p>This error may be considered similar to {@link java.io.IOException}.
      */
     public static final int ERROR_IO = 4;
+
     /**
      * The caller doesn't have the correct permissions for this call.
      *
      * <p>This error may be considered similar to {@link java.lang.SecurityException}.
      */
     public static final int ERROR_SECURITY = 5;
+
     /**
      * An IPC related error occurred.
      *
      * <p>This error may be considered similar to {@link android.os.RemoteException}.
      */
     public static final int ERROR_REMOTE = 6;
+
     /** The caller exhausted the allotted rate limit. */
     public static final int ERROR_RATE_LIMIT_EXCEEDED = 7;
+
     /**
      * Data sync is in progress. Data read and writes are blocked.
      *
      * <p>Caller should try this api call again later.
      */
     public static final int ERROR_DATA_SYNC_IN_PROGRESS = 8;
+
     /**
      * This operation is currently not supported by the platform.
      *
@@ -81,7 +92,7 @@ public class HealthConnectException extends RuntimeException {
      * @hide
      */
     public HealthConnectException(@ErrorCode int errorCode, @Nullable String message) {
-        super(message);
+        super(SyntheticPackageNameMatcher.replaceAllCanonicalIn(message));
         mErrorCode = errorCode;
     }
 
@@ -95,7 +106,7 @@ public class HealthConnectException extends RuntimeException {
      */
     public HealthConnectException(
             @ErrorCode int errorCode, @Nullable String message, @Nullable Throwable cause) {
-        super(message, cause);
+        super(SyntheticPackageNameMatcher.replaceAllCanonicalIn(message), redactCause(cause));
         mErrorCode = errorCode;
     }
 
@@ -132,4 +143,33 @@ public class HealthConnectException extends RuntimeException {
             })
     @Retention(RetentionPolicy.SOURCE)
     public @interface ErrorCode {}
+
+    @Nullable
+    private static Throwable redactCause(@Nullable Throwable cause) {
+        if (cause == null) {
+            return null;
+        }
+
+        String redactedMessage =
+                SyntheticPackageNameMatcher.replaceAllCanonicalIn(cause.getMessage());
+        Objects.requireNonNull(redactedMessage);
+
+        try {
+            Field messageField = Throwable.class.getDeclaredField("detailMessage");
+            messageField.setAccessible(true);
+            messageField.set(cause, redactedMessage);
+
+            if (cause.getCause() == null) {
+                return cause;
+            }
+
+            Field causeField = Throwable.class.getDeclaredField("cause");
+            causeField.setAccessible(true);
+            causeField.set(cause, redactCause(cause.getCause()));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            return cause;
+        }
+
+        return cause;
+    }
 }

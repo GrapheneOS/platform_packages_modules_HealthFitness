@@ -107,7 +107,7 @@ public final class FitnessRecordDeleteHelper {
             boolean shouldRecordAccessLog) {
         if (request.usesIdFilters() && request.usesNonIdFilters()) {
             throw new IllegalArgumentException(
-                    "Requests with both id and non-id filters are not" + " supported");
+                    "Requests with both id and non-id filters are not supported");
         }
 
         if (enforceSelfDelete) {
@@ -122,7 +122,8 @@ public final class FitnessRecordDeleteHelper {
                             request,
                             grantedGranularWritePermissions,
                             enforceSelfDelete,
-                            shouldRecordAccessLog);
+                            shouldRecordAccessLog,
+                            /* callingDdpId= */ DEFAULT_LONG);
         } else {
             recordsDeleted =
                     deleteByNonIdFilter(
@@ -130,7 +131,7 @@ public final class FitnessRecordDeleteHelper {
                             request,
                             grantedGranularWritePermissions,
                             shouldRecordAccessLog,
-                            DEFAULT_LONG);
+                            /* callingDdpId= */ DEFAULT_LONG);
         }
 
         if (recordsDeleted > 0) {
@@ -161,21 +162,38 @@ public final class FitnessRecordDeleteHelper {
             long callingDdpId,
             DeleteUsingFiltersRequestParcel request,
             Set<String> grantedGranularWritePermissions) {
-        if (request.usesIdFilters() || !request.getPackageNameFilters().isEmpty()) {
+        if (request.usesIdFilters() && request.usesNonIdFilters()) {
             throw new IllegalArgumentException(
-                    "Requests with ID or package name filters are not supported for devices.");
+                    "Requests with both id and non-id filters are not supported");
+        }
+
+        if (!request.getPackageNameFilters().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Package name filters are not supported for devices.");
         }
 
         // Enforce self read for devices
         request.setPackageNameFilters(singletonList(syntheticDevicePackageName));
 
-        int recordsDeleted =
-                deleteByNonIdFilter(
-                        syntheticDevicePackageName,
-                        request,
-                        grantedGranularWritePermissions,
-                        /*shouldRecordAccessLog*/ false,
-                        callingDdpId);
+        int recordsDeleted;
+        if (request.usesIdFilters()) {
+            recordsDeleted =
+                    deleteByIdFilter(
+                            syntheticDevicePackageName,
+                            request,
+                            grantedGranularWritePermissions,
+                            /* enforceSelfDelete= */ true,
+                            /* shouldRecordAccessLog= */ false,
+                            callingDdpId);
+        } else {
+            recordsDeleted =
+                    deleteByNonIdFilter(
+                            syntheticDevicePackageName,
+                            request,
+                            grantedGranularWritePermissions,
+                            /*shouldRecordAccessLog*/ false,
+                            callingDdpId);
+        }
 
         if (recordsDeleted > 0) {
             mThreadScheduler.scheduleInternalTask(() -> postDeleteTasks(request));
@@ -200,7 +218,8 @@ public final class FitnessRecordDeleteHelper {
             DeleteUsingFiltersRequestParcel request,
             Set<String> grantedGranularWritePermissions,
             boolean enforceSelfDelete,
-            boolean shouldRecordAccessLog) {
+            boolean shouldRecordAccessLog,
+            long callingDdpId) {
         List<RecordDeleteTableRequest> deleteTableRequests =
                 new ArrayList<>(request.getRecordTypeFilters().size());
         Set<Integer> recordTypeIds = new HashSet<>();
@@ -226,7 +245,7 @@ public final class FitnessRecordDeleteHelper {
                 (recordHelper, uuids) -> {
                     deleteTableRequests.add(
                             recordHelper.getDeleteTableRequest(
-                                    uuids, grantedGranularWritePermissions));
+                                    uuids, grantedGranularWritePermissions, callingDdpId));
                     recordTypeIds.add(recordHelper.getRecordIdentifier());
                 });
 
@@ -325,14 +344,15 @@ public final class FitnessRecordDeleteHelper {
                                 numberOfRecordsDeleted++;
                                 long readDataAppInfoId =
                                         StorageUtils.getCursorLong(cursor, packageColumnName);
+                                UUID deletedRecordUuid =
+                                        StorageUtils.getCursorUUID(cursor, idColumnName);
+
                                 if (enforceSelfDelete) {
                                     enforcePackageCheck(
-                                            StorageUtils.getCursorUUID(cursor, idColumnName),
+                                            deletedRecordUuid,
                                             readDataAppInfoId,
                                             Objects.requireNonNull(callingPackageName));
                                 }
-                                UUID deletedRecordUuid =
-                                        StorageUtils.getCursorUUID(cursor, idColumnName);
                                 deletionChangeLogs.addRecordInfo(
                                         deleteTableRequest.getRecordType(),
                                         readDataAppInfoId,

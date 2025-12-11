@@ -376,8 +376,8 @@ public class DeviceDataProviderManager {
     /**
      * Deletes records associated with a specific device.
      *
-     * <p>The given delete request may not contain package name or id filters, as this method is
-     * intended to delete records associated with {@code deviceId} only.
+     * <p>The given delete request may not contain package name filters, as this method is intended
+     * to delete records associated with {@code deviceId} only.
      *
      * <p>Note: The device data source must be advertised first through {@link
      * #handleAdvertisement}.
@@ -457,7 +457,8 @@ public class DeviceDataProviderManager {
         Integer existingDeviceType = mDeviceInfoHelper.getDeviceType(deviceId);
         if (existingDeviceType != null && existingDeviceType != deviceType) {
             String message =
-                    censoredDeviceMessage(deviceId)
+                    "The device with id "
+                            + deviceId
                             + " has already been used for a different device type.";
             Slog.e(TAG, message);
             throw new IllegalArgumentException(message);
@@ -512,7 +513,8 @@ public class DeviceDataProviderManager {
         }
 
         String message =
-                censoredDeviceMessage(deviceId)
+                "The device with id "
+                        + deviceId
                         + " was not found, ensure the device data source has been advertised";
         Slog.e(TAG, message);
         throw new IllegalArgumentException(message);
@@ -561,18 +563,10 @@ public class DeviceDataProviderManager {
         if (!advertisedDataTypes.contains(recordType)) {
             // TODO(b/459388902): Use the data type string in the exception.
             throw new IllegalArgumentException(
-                    censoredDeviceMessage(deviceId)
+                    "The device with id "
+                            + deviceId
                             + " was not advertised for data type "
                             + recordType);
-        }
-    }
-
-    private String censoredDeviceMessage(String deviceId) {
-        // TODO(b/459541943): Handle censoring of canonical SPN on a higher level
-        if (SyntheticPackageNameCreator.isCanonicalSpn(deviceId)) {
-            return "The current device";
-        } else {
-            return "The device with id " + deviceId;
         }
     }
 
@@ -711,9 +705,9 @@ public class DeviceDataProviderManager {
     }
 
     private void verifyDeleteRequestOrThrow(DeleteUsingFiltersRequestParcel request) {
-        if (!request.getPackageNameFilters().isEmpty() || request.usesIdFilters()) {
+        if (!request.getPackageNameFilters().isEmpty()) {
             throw new IllegalArgumentException(
-                    "Package name and ID filters must be empty for device delete requests.");
+                    "Package name filter must be empty for device delete requests.");
         }
     }
 }
