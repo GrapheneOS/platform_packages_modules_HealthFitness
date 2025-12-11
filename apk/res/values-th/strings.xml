@@ -412,7 +412,7 @@
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"หากคุณให้สิทธิ์อ่าน แอปนี้จะอ่านข้อมูลใหม่และข้อมูลในอดีตได้"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"อนุญาตให้ <xliff:g id="APP_NAME">%1$s</xliff:g> เข้าถึง Health Connect ไหม"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"อนุญาตให้ <xliff:g id="APP_NAME">%1$s</xliff:g> เข้าถึงข้อมูลการออกกำลังกายและสุขภาวะไหม"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"ดูวิธีที่ <xliff:g id="APP_NAME">%1$s</xliff:g> จัดการข้อมูลของคุณใน<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"ดูวิธีที่ <xliff:g id="APP_NAME">%1$s</xliff:g> จัดการข้อมูลของคุณใน<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>ของแอปดังกล่าว"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"นโยบายความเป็นส่วนตัว"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"อนุญาตให้ <xliff:g id="APP_NAME">%1$s</xliff:g> เข้าถึงเวชระเบียนหรือไม่"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"หากคุณให้สิทธิ์เข้าถึง แอปนี้จะสามารถอ่านและเขียนข้อมูล เช่น อาการแพ้ ผลตรวจ วัคซีน และอื่นๆ\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>

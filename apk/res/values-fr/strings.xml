@@ -1584,5 +1584,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"rétention d\'eau"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Respiration sifflante"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"respiration sifflante"</string>
-    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> catégories sélectionnées sur <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> sur sélection de <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
 </resources>

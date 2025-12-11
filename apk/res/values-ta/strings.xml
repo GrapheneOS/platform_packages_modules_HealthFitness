@@ -417,7 +417,7 @@
     <string name="medical_request_header" msgid="5701693055388739014">"உங்கள் மருத்துவப் பதிவுகளை அணுக <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸை அனுமதிக்கவா?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"நீங்கள் அனுமதி வழங்கினால் ஒவ்வாமைகள், ஆய்வக முடிவுகள், தடுப்பூசிகள் போன்ற தரவை ஆப்ஸ் படிக்கலாம் எழுதலாம்\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"நீங்கள் அனுமதி வழங்கினால் ஒவ்வாமைகள், ஆய்வக முடிவுகள், தடுப்பூசிகள் போன்ற தரவை ஆப்ஸ் படிக்கலாம்\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_about_health_records" msgid="4569605370685007268">"மருத்துவப் பதிவுகள் குறித்த அறிமுகம்"</string>
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"மருத்துவப் பதிவுகள் பற்றி"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"பகிர்வதற்கான தரவில் இவையும் அடங்கும்"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"நீங்கள் அனுமதித்தால், உங்கள் மருத்துவப் பதிவுகளை Health Connect உடன் <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸ் பகிர முடியும்."</string>
     <string name="medical_request_footer" msgid="157243861031258933">"வெவ்வேறு ஆப்ஸ் மற்றும் ஆதாரங்களில் உள்ள உங்கள் மருத்துவப் பதிவுகள் அனைத்தையும் ஒரே இடத்தில் வைத்திருக்க அவற்றை ஒத்திசைக்கவும்"</string>

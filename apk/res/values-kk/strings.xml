@@ -1332,15 +1332,15 @@
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Тексеру"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Қадамдар енді Health Connect-ке қосылады"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Байланысқан қолданбалар қол жеткізуі үшін, бұл құрылғы бақылаған қадамдар енді Health Connect-ке сақталады."</string>
-    <string name="your_health_apps_category_title" msgid="2140744650535785802">"Денсаулық қолданбаларыңыз"</string>
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"Денсаулық туралы қолданбаларыңыз"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Денсаулық туралы деректеріңіз"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Параметрлер"</string>
     <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect денсаулық және фитнес деректерін бірнеше қолданба арасында бөлісуге мүмкіндік береді. Сондай-ақ статистика мен функциялар құлпын ашуға көмектеседі әрі деректеріңізді қорғайды."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect туралы қосымша ақпарат"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Деректерді және оларды пайдалана алатын қолданбаларды көру"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"Деректер және оларды пайдалана алатын қолданбалар"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Жақында деректеріңізді пайдаланған қолданбалар"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Денсаулық деректерін пайдалана алатын құрылғыларды тексеру"</string>
-    <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect-пен істейтін қолданбаларды осы жерден көру үшін орнатыңыз."</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect-пен істейтін қолданбаларды орнатқанда, олар осы жерде шығып тұрады."</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Үйлесімді қолданбаларды көру"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Басқа денсаулық қолданбаларын көру"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Байланыспаған"</string>

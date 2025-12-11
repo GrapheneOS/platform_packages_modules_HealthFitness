@@ -415,7 +415,7 @@
     <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="APP_NAME">%1$s</xliff:g> ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಹೇಗೆ ನಿರ್ವಹಿಸುತ್ತದೆ ಎಂಬುದನ್ನು ಅವರ <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> ಯಲ್ಲಿ ನೀವು ತಿಳಿದುಕೊಳ್ಳಬಹುದು"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"ಗೌಪ್ಯತೆ ನೀತಿ"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"ನಿಮ್ಮ ವೈದ್ಯಕೀಯ ದಾಖಲೆಗಳನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು <xliff:g id="APP_NAME">%1$s</xliff:g> ಗೆ ಅನುಮತಿಸಬೇಕೇ?"</string>
-    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"ನೀವು ಆ್ಯಕ್ಸೆಸ್ ನೀಡಿದರೆ, ಅಲರ್ಜಿಗಳು, ಲ್ಯಾಬ್ ಫಲಿತಾಂಶಗಳು, ವ್ಯಾಕ್ಸಿನ್‌ಗಳು ಮತ್ತು ಹೆಚ್ಚಿನವುಗಳಂತಹ ಡೇಟಾವನ್ನು ಆ್ಯಪ್ ಓದಬಹುದು ಮತ್ತು ಬರೆಯಬಹುದು\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
+    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"ನೀವು ಆ್ಯಕ್ಸೆಸ್ ನೀಡಿದರೆ, ಅಲರ್ಜಿಗಳು, ಲ್ಯಾಬ್ ಫಲಿತಾಂಶಗಳು, ವ್ಯಾಕ್ಸಿನ್‌ಗಳು ಮತ್ತು ಇಂತಹ ಇನ್ನಷ್ಟು ಡೇಟಾವನ್ನು ಆ್ಯಪ್ ಓದಬಹುದು ಮತ್ತು ಬರೆಯಬಹುದು\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"ನೀವು ಆ್ಯಕ್ಸೆಸ್ ನೀಡಿದರೆ, ಅಲರ್ಜಿಗಳು, ಲ್ಯಾಬ್ ಫಲಿತಾಂಶಗಳು, ವ್ಯಾಕ್ಸಿನ್‌ಗಳು ಮತ್ತು ಹೆಚ್ಚಿನವುಗಳಂತಹ ಡೇಟಾವನ್ನು ಆ್ಯಪ್ ಓದಬಹುದು \n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"ವೈದ್ಯಕೀಯ ದಾಖಲೆಗಳ ಕುರಿತು"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"ಹಂಚಿಕೊಳ್ಳಲಿರುವ ಡೇಟಾ ಈ ಕೆಳಗಿನವುಗಳನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ"</string>

@@ -394,7 +394,7 @@
     <string name="read_permission_category" msgid="6002099618259628632">"Permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> lea"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> escriba"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Permitir"</string>
-    <string name="request_permissions_allow_all" msgid="3419414351406638770">"Permitir todos"</string>
+    <string name="request_permissions_allow_all" msgid="3419414351406638770">"Permitir todo"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Non permitir"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Escolle os datos que queres que lea ou escriba esta aplicación en Saúde conectada"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Escolle os datos que queres que lea esta aplicación en Saúde conectada"</string>

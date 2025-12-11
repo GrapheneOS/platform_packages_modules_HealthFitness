@@ -1294,7 +1294,7 @@
     <string name="accessed" msgid="4424701457530587176">"છેલ્લે <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g> વાગ્યે ઍક્સેસ કરી"</string>
     <string name="connect_first_two_apps_title" msgid="1454255533865066646">"તમારી પહેલી ઍપ કનેક્ટ કરો"</string>
     <string name="connect_first_two_apps_description" msgid="6756143365112887865">"આ બધી ઍપ વચ્ચે આરોગ્ય અને ફિટનેસ સંબંધિત ડેટા શેર કરવાનું શરૂ કરવા માટે તેમને કનેક્ટ કરો"</string>
-    <string name="connect_second_app_title" msgid="6609568573884272692">"બીજી કોઈ ઍપ કનેક્ટ કરો"</string>
+    <string name="connect_second_app_title" msgid="6609568573884272692">"બીજી ઍપ કનેક્ટ કરો"</string>
     <string name="connect_second_app_description" msgid="159030733462822101">"<xliff:g id="APP_NAME">%1$s</xliff:g> સાથે આરોગ્ય અને ફિટનેસ સંબંધિત ડેટા શેર કરવા માટે વધુ એક ઍપનું સેટઅપ કરો"</string>
     <string name="set_up_later" msgid="223888663943501921">"થોડા સમય પછી સેટઅપ કરો"</string>
     <string name="available_apps_to_connect" msgid="8425012138408583646">"કનેક્ટ કરવા માટે ઉપલબ્ધ ઍપ"</string>
@@ -1306,13 +1306,13 @@
     <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"સેટઅપ પૂર્ણ કરવા માટે હમણાં જ આ ઍપ ખોલો અને ડેટા શેરિંગ શરૂ કરો અથવા ઉપલબ્ધ ઍપ સાથે કનેક્ટ કરવાનું ચાલુ રાખો"</string>
     <string name="almost_done_connected_apps" msgid="7278779868120518202">"કનેક્ટેડ ઍપ"</string>
     <string name="almost_done_available_to_connect" msgid="8127248100268494160">"કનેક્ટ કરવા માટે ઉપલબ્ધ ઍપ"</string>
-    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"બધી ઍપમાં તમારા આરોગ્યનો ડેટા જુઓ"</string>
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"બધી ઍપમાં આરોગ્ય સંબંધિત તમારો ડેટા જુઓ"</string>
     <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"તમારી ઍપ વચ્ચે ફિટનેસ અને સુખાકારીનો ડેટા શેર કરવાનું શરૂ કરો"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"સેટઅપ કરો"</string>
-    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"બીજી કોઈ ઍપ કનેક્ટ કરો"</string>
+    <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"બીજી ઍપ કનેક્ટ કરો"</string>
     <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"અન્ય ઍપનું સેટઅપ કરો જેથી તે ફિટનેસ અને સુખાકારીનો ડેટા શેર કરવાનું શરૂ કરી શકે"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"ચાલુ રાખો"</string>
-    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"બધી ઍપમાં તમારા આરોગ્યનો ડેટા જુઓ"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"બધી ઍપમાં આરોગ્ય સંબંધિત તમારો ડેટા જુઓ"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect તમને તમારી ઍપ વચ્ચે ફિટનેસ અને સુખાકારીનો ડેટા શેર કરવાની મંજૂરી આપે છે. અત્યારે તમે કઈ ઍપ સાથે કનેક્ટ કરી શકો છો તે જુઓ."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"બીજી ઍપ કનેક્ટ કરો"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Health Connect સાથે અન્ય ઍપનું સેટઅપ કરો, જેથી તે ફિટનેસ અને સુખાકારીનો ડેટા શેર કરી શકે"</string>

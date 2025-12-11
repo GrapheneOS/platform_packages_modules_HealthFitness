@@ -1254,7 +1254,7 @@
     <string name="on" msgid="8266542510798355807">"Włączony"</string>
     <string name="off" msgid="6996623844428550649">"Wyłączony"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Ostatni dostęp: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
-    <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"Ostatni dostęp wczoraj, <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
+    <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"Ostatni dostęp wczoraj o <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"Ostatni dostęp <xliff:g id="TIME_DATE_0">%1$s</xliff:g>, <xliff:g id="TIME_DATE_1">%2$s</xliff:g>"</string>
     <string name="request_permissions_allow_all_the_time" msgid="559097424823775606">"Przez cały czas"</string>
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Zezwól na wybrane"</string>

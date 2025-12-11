@@ -364,8 +364,8 @@
     <string name="social_history_uppercase_label" msgid="4119611299449533999">"Друштвене одреднице здравља"</string>
     <string name="social_history_lowercase_label" msgid="9027541979445736412">"друштвене одреднице здравља"</string>
     <string name="social_history_content_description" msgid="7187059309389849831">"Читање података о друштвеним одредницама здравља"</string>
-    <string name="visits_uppercase_label" msgid="8532619758336375886">"Посете"</string>
-    <string name="visits_lowercase_label" msgid="2545887061364564151">"посете"</string>
+    <string name="visits_uppercase_label" msgid="8532619758336375886">"Прегледи"</string>
+    <string name="visits_lowercase_label" msgid="2545887061364564151">"прегледи"</string>
     <string name="visits_content_description" msgid="6336796415049565697">"да читате податке о посетама"</string>
     <string name="vital_signs_uppercase_label" msgid="289862347143374640">"Витални знаци"</string>
     <string name="vital_signs_lowercase_label" msgid="9141304492316454529">"витални знаци"</string>
@@ -418,7 +418,7 @@
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Ако дате приступ, апликација може да чита и уписује податке, на пример, алергије, лабораторијске резултате, вакцине и друго\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Ако дате приступ, апликација може да чита податке, на пример, алергије, лабораторијске резултате, вакцине и друго\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"О медицинској евиденцији"</string>
-    <string name="medical_request_data_to_share" msgid="6778034304921873317">"Подаци за дељење обухватају"</string>
+    <string name="medical_request_data_to_share" msgid="6778034304921873317">"Делиће се следећи подаци:"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"Ако дозволите, <xliff:g id="APP_NAME">%1$s</xliff:g> може да дели вашу медицинску евиденцију са Повезивањем здравља."</string>
     <string name="medical_request_footer" msgid="157243861031258933">"Синхронизујте медицинску евиденцију из различитих апликација и извора да бисте је држали на једном месту"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Желите да уклоните све дозволе?"</string>
@@ -1329,7 +1329,7 @@
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Кораци који се прате на телефону приказују се у Повезивању здравља"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Кораци које прати овај уређај сада се чувају у Повезивању здравља како би им приступале повезане апликације"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Одбаци"</string>
-    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Преглед"</string>
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Прикажи"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Кораци су сада у Повезивању здравља"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Кораци које прати овај уређај сада се чувају у Повезивању здравља како би им приступале повезане апликације"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Здравствене апликације"</string>

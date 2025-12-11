@@ -337,8 +337,8 @@
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Ալերգիաներ"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"ալերգիաներ"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Կարդալ ալերգիաների մասին տվյալները"</string>
-    <string name="conditions_uppercase_label" msgid="5260404343402770877">"Ախտաբանական վիճակներ"</string>
-    <string name="conditions_lowercase_label" msgid="2678248918552246997">"ախտաբանական վիճակներ"</string>
+    <string name="conditions_uppercase_label" msgid="5260404343402770877">"Հիվանդություններ"</string>
+    <string name="conditions_lowercase_label" msgid="2678248918552246997">"հիվանդություններ"</string>
     <string name="conditions_content_description" msgid="3230552343616193829">"Կարդալ ախտաբանական վիճակների տվյալները"</string>
     <string name="vaccines_uppercase_label" msgid="1101176371071123187">"Պատվաստանյութեր"</string>
     <string name="vaccines_lowercase_label" msgid="4991324441768127447">"պատվաստանյութեր"</string>

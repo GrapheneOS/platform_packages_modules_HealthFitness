@@ -17,7 +17,7 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="permgrouplab_health" msgid="2189810208223060173">"Здраве, физ. активн. и уелнес"</string>
+    <string name="permgrouplab_health" msgid="2189810208223060173">"Здраве, физическа активност и уелнес"</string>
     <string name="health_permission_header_description" msgid="1816010176505069704">"Приложенията с това разрешение могат да четат и записват данни за здравето, физическата активност и уелнеса ви. Това включва данните, проследявани от устройствата ви, и тези, съхранявани в Health Connect"</string>
     <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"Да се разреши ли на <xliff:g id="APP_NAME">%1$s</xliff:g> достъп до данните ви за физическата активност и уелнес?"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"Изберете до коя информация за физическата активност и уелнес да има достъп това приложение. Това включва данните, проследявани и съхранявани на това устройство, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
