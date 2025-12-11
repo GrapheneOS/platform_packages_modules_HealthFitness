@@ -49,6 +49,8 @@
         <package android:name="android.healthconnect.cts.app2"/>
         <package android:name="android.healthconnect.cts.systemtestapp"/>
         <package android:name="android.healthconnect.cts.testapp.readWritePerms.A"/>
+        <package android:name="android.healthconnect.cts.testapp.readWritePerms.B" />
+        <package android:name="android.healthconnect.cts.testapp.writePermsOnly" />
     </queries>
 
     <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"/>
