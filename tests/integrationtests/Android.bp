@@ -47,8 +47,8 @@ android_test {
     manifest: "AndroidManifestBackupRestore.xml",
     resource_dirs: ["res"],
     data: [
-        ":CtsHealthConnectTestAppAWithNormalReadWritePermission",
-        ":CtsHealthConnectTestAppBWithNormalReadWritePermission",
+        ":HealthFitnessCtsTestApp",
+        ":HealthFitnessCtsTestApp2",
     ],
 }
 

@@ -71,9 +71,10 @@ android_test {
     min_sdk_version: "34",
     sdk_version: "test_current",
     data: [
+        ":HealthFitnessCtsTestApp",
+        ":HealthFitnessCtsTestApp2",
         ":HealthFitnessCtsSystemTestApp",
         ":CtsHealthConnectTestAppAWithNormalReadWritePermission",
-        ":CtsHealthConnectTestAppBWithNormalReadWritePermission",
         ":CtsHealthConnectTestAppWithWritePermissionsOnly",
     ],
     jarjar_rules: ":health-cts-jarjar-rules",
