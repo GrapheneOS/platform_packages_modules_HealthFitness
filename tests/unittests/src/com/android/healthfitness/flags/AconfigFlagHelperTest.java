@@ -104,7 +104,6 @@ public class AconfigFlagHelperTest {
 
     @Test
     @DisableFlags({
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API
     })
@@ -114,7 +113,6 @@ public class AconfigFlagHelperTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API
     })

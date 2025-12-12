@@ -19,7 +19,6 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
 
-import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
@@ -58,7 +57,6 @@ import java.util.Set;
 @RequiresFlagsEnabled({
     FLAG_DEVICE_DATA_PROVIDERS_API,
     FLAG_DEVICE_DATA_PROVIDERS_DB,
-    FLAG_DEVELOPMENT_DATABASE_RW,
     FLAG_SYMPTOMS
 })
 // TODO(b/455564575): Update this test when we can read back the advertisement.

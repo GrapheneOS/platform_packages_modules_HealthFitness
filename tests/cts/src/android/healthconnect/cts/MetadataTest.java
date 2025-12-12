@@ -52,11 +52,7 @@ import java.util.List;
 
 @AppModeFull(reason = "HealthConnectManager is not available in instant mode.")
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({
-    Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-    Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-    Flags.FLAG_DEVELOPMENT_DATABASE_RW
-})
+@RequiresFlagsEnabled({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
 public class MetadataTest {
     private static final String TEST_DISPLAY_NAME = "MyTestDevice";
     private static final String UPDATED_TEST_DISPLAY_NAME = "MyUpdatedTestDevice";

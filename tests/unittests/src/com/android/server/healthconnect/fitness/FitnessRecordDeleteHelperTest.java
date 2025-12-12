@@ -245,11 +245,7 @@ public class FitnessRecordDeleteHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void deleteRecordsNonIdFilters_callingInternalDelete_doesNotAddDdpToDeleteRequests() {
         DeleteUsingFiltersRequest deleteRequest =
                 new DeleteUsingFiltersRequest.Builder()
@@ -279,11 +275,7 @@ public class FitnessRecordDeleteHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void deleteRecordsIdFilters_callingInternalDelete_doesNotAddDdpToDeleteRequests() {
         DeleteUsingFiltersRequestParcel deleteRequestParcel =
                 new DeleteUsingFiltersRequestParcel(
@@ -428,11 +420,7 @@ public class FitnessRecordDeleteHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void deleteDeviceRecords_shouldEnforceSelfRead_setsPackageFiltersToDdpPackageName() {
         DeleteUsingFiltersRequest deleteRequest =
                 new DeleteUsingFiltersRequest.Builder()
@@ -457,11 +445,7 @@ public class FitnessRecordDeleteHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void deleteDeviceRecordsNonIdFilter_withDeviceRecord_deletesRecord() {
         String deviceId = "device";
         Device device = buildDevice();

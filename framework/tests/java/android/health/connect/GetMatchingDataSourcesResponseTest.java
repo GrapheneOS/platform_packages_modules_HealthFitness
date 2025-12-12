@@ -61,11 +61,7 @@ public class GetMatchingDataSourcesResponseTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getMatchingDevices_whenFlagOn_returnsCorrectly() {
         Map<String, Set<String>> matchingApps = Map.of(TEST_PACKAGE_NAME, Set.of(WRITE_STEPS));
         Map<String, Set<String>> matchingDevices =
@@ -109,11 +105,7 @@ public class GetMatchingDataSourcesResponseTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void hasMatchingDevices_returnsCorrectly() {
         Map<String, Set<String>> matchingDevices =
                 Map.of(DEVICE_PACKAGE_NAME, Set.of(WRITE_STEPS, WRITE_DISTANCE));
@@ -138,11 +130,7 @@ public class GetMatchingDataSourcesResponseTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void hasMatchingDataSources_whenNoMatchingApps_andSomeMatchingDevices_returnsTrue() {
         Map<String, Set<String>> matchingDevices =
                 Map.of(DEVICE_PACKAGE_NAME, Set.of(WRITE_STEPS, WRITE_DISTANCE));
