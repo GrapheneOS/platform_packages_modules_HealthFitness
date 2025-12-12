@@ -669,6 +669,19 @@ interface IHealthConnectService {
     Map isTrackingEnabled(in List<String> dataTypePrefKeys);
 
     /**
+     * Returns whether the user has enabled native tracking for a record type on the device that
+     * Health Connect is currently running on.
+     *
+     * @param attributionSource attribution source for the data.
+     * @param recordTypePrefKey key of record type to check tracking for.
+     *
+     * @hide
+     */
+    boolean hasUserEnabledTracking(
+        in AttributionSource attributionSource,
+        String recordTypePrefKey);
+
+    /**
      * Retrieve a unique identifier of the device that Health Connect is currently running on.
      *
      * @param attributionSource attribution source for the data.

@@ -1540,6 +1540,23 @@ public final class TestUtils {
         }
     }
 
+    /**
+     * Calls {@link HealthConnectManager#hasUserEnabledTracking} with shell permission identity and
+     * device data provider permissions.
+     */
+    @SuppressLint("MissingPermission")
+    public static boolean hasUserEnabledTracking(Class<? extends Record> recordType)
+            throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+
+        try {
+            return getHealthConnectManager().hasUserEnabledTracking(recordType);
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
+    }
+
     /** Runs the provided lambda after first adopting the specified shell permission. */
     public static void verifyGetDeviceDataSourcesWithPermission(
             String permission, Consumer<List<DeviceDataSource>> assertions)

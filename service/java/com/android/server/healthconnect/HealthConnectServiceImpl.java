@@ -3645,18 +3645,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         enforceIsForegroundUser(userHandle);
         mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
 
-        Map<String, Boolean> result = new ArrayMap<>();
-        for (String key : dataTypePrefKeys) {
-            String enabled = mPreferenceHelper.getPreference(key);
-            if (enabled == null) {
-                // User has never toggled the tracking preference, default tracking to on.
-                result.put(key, true);
-            } else {
-                result.put(key, Boolean.parseBoolean(enabled));
-            }
-        }
-
-        return result;
+        return dataTypePrefKeys.stream()
+                .collect(
+                        Collectors.toMap(
+                                key -> key,
+                                this::getTrackingPreferenceFor,
+                                (a, b) -> b,
+                                ArrayMap::new));
     }
 
     /**
@@ -3894,6 +3889,41 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         pw.printf(
                 "Data Restore State : %d, Data Restore Error : %d \n\n",
                 mBackupRestore.getDataRestoreState(), mBackupRestore.getDataRestoreError());
+    }
+
+    public boolean hasUserEnabledTracking(
+            AttributionSource attributionSource, String recordTypePrefKey) {
+        checkParamsNonNull(attributionSource);
+        final UserHandle userHandle = Binder.getCallingUserHandle();
+        final int uid = Binder.getCallingUid();
+        final int pid = Binder.getCallingPid();
+        final String callingPackageName = requireNonNull(attributionSource.getPackageName());
+
+        try {
+            if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                throw new UnsupportedOperationException(
+                        "hasUserEnabledTracking is not supported."
+                                + "Make sure to turn on the respective DDP flags.");
+            }
+            enforceIsForegroundUser(userHandle);
+            verifyPackageNameFromUid(uid, attributionSource);
+            DeviceDataProviderManager deviceDataProviderManager =
+                    requireNonNull(mDeviceDataProviderManager);
+
+            if (!deviceDataProviderManager.isPermittedToProvideDeviceData(
+                    callingPackageName, uid, pid)) {
+                throw new SecurityException(
+                        "Caller does not have permission to call hasUserEnabledTracking.");
+            }
+
+            return getTrackingPreferenceFor(recordTypePrefKey);
+
+        } catch (SQLiteException | UnsupportedOperationException | SecurityException e) {
+            Slog.e(TAG, "Unable to get current preference for " + recordTypePrefKey);
+            throw e;
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
     /**
@@ -4658,6 +4688,16 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private static void checkParamsNonNull(Object... params) {
         for (Object param : params) {
             requireNonNull(param);
+        }
+    }
+
+    private boolean getTrackingPreferenceFor(String recordTypePrefKey) {
+        String enabled = mPreferenceHelper.getPreference(recordTypePrefKey);
+        if (enabled == null) {
+            // User has never toggled the tracking preference, default tracking to on.
+            return true;
+        } else {
+            return Boolean.parseBoolean(enabled);
         }
     }
 

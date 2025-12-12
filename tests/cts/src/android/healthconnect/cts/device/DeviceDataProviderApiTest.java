@@ -19,6 +19,7 @@ import static android.healthconnect.testing.cts.TestUtils.advertiseDevice;
 import static android.healthconnect.testing.cts.TestUtils.deleteDeviceRecords;
 import static android.healthconnect.testing.cts.TestUtils.getCurrentDeviceId;
 import static android.healthconnect.testing.cts.TestUtils.getDeviceDataSourceInfos;
+import static android.healthconnect.testing.cts.TestUtils.hasUserEnabledTracking;
 import static android.healthconnect.testing.cts.TestUtils.insertDeviceRecords;
 import static android.healthconnect.testing.cts.TestUtils.isCanonicalSyntheticPackageName;
 import static android.healthconnect.testing.cts.TestUtils.isMaskedSyntheticPackageName;
@@ -168,5 +169,13 @@ public class DeviceDataProviderApiTest {
                                                                 log.getPackageName()))
                                 .findAny())
                 .isEmpty();
+    }
+
+    @Test
+    public void hasUserEnabledTracking_withStartCondition_returnsTrueAsDefault()
+            throws InterruptedException {
+        boolean actual = hasUserEnabledTracking(StepsRecord.class);
+
+        assertThat(actual).isTrue();
     }
 }

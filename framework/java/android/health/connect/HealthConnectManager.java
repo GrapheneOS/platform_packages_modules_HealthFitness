@@ -3773,6 +3773,7 @@ public class HealthConnectManager {
         Objects.requireNonNull(dataType);
         try {
             mService.setTrackingEnabled(
+                    // TODO(b/467338330): Send over RecordType (id) instead of preference string
                     getDataTypePrefKey(dataType),
                     enabled,
                     new IEmptyResponseCallback.Stub() {
@@ -3807,6 +3808,8 @@ public class HealthConnectManager {
                     dataTypes.stream()
                             .collect(
                                     Collectors.toMap(
+                                            // TODO(b/467338330): Send over RecordType (id) instead
+                                            // of preference string
                                             HealthConnectManager::getDataTypePrefKey,
                                             dataType -> dataType));
             Map<String, Boolean> dataTypeTrackingStatusMap =
@@ -3816,6 +3819,35 @@ public class HealthConnectManager {
                             Collectors.toMap(
                                     entry -> keyToDataTypeMap.get(entry.getKey()),
                                     Map.Entry::getValue));
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Returns whether the user has enabled native tracking for a record type on the device that
+     * Health Connect is currently running on.
+     *
+     * <p>This check is a prerequisite for Device Data Providers to assume responsibility for
+     * tracking a record type. A Device Data Provider must not populate device data using {@link
+     * #insertDeviceRecords} or {@link #updateDeviceRecords} when users have explicitly disabled
+     * tracking for that type.
+     *
+     * @param recordType the record type to query the tracking status for.
+     * @return {@code true} if the user has enabled tracking for {@code recordType}.
+     * @throws RuntimeException for internal errors
+     * @hide
+     */
+    @SystemApi
+    @RequiresPermission(Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA)
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public boolean hasUserEnabledTracking(@NonNull Class<? extends Record> recordType) {
+        Objects.requireNonNull(recordType);
+        try {
+            // TODO(b/467338330): Send over RecordType (id) instead of preference string
+            String dataTypePrefKey = getDataTypePrefKey(recordType);
+            return mService.hasUserEnabledTracking(
+                    mContext.getAttributionSource(), dataTypePrefKey);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -3920,6 +3952,10 @@ public class HealthConnectManager {
      * populated in the {@link Metadata} for a {@link Record} as it will automatically be populated
      * based on the {@link DeviceDataAdvertisement}.
      *
+     * <p>If a native tracking capability on the device (such as steps) has been taken over, callers
+     * must not insert records for that capability when {@link #hasUserEnabledTracking} returns
+     * {@code false}.
+     *
      * @param deviceId the identifier for the device that is the source of this data.
      * @param records list of records to be inserted.
      * @param executor executor on which to invoke the callback.
@@ -3987,6 +4023,10 @@ public class HealthConnectManager {
      * <p>In case the input record to be updated does not exist in the database or the caller is not
      * the owner of the record, {@link OutcomeReceiver#onError} will be invoked with {@link
      * HealthConnectException#ERROR_INVALID_ARGUMENT}.
+     *
+     * <p>If a native tracking capability on the device (such as steps) has been taken over, callers
+     * must not update records for that capability when {@link #hasUserEnabledTracking} returns
+     * {@code false}.
      *
      * @param deviceId the identifier for the device that is the source of this data.
      * @param records list of records to be updated.
