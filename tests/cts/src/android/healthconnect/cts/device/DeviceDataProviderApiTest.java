@@ -42,7 +42,9 @@ import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
 import android.app.UiAutomation;
+import android.health.connect.DeviceDataProviderInfo;
 import android.health.connect.DeviceDataSourceCapabilities;
+import android.health.connect.DeviceDataSourceInfo;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
@@ -76,7 +78,10 @@ import java.util.List;
 import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({FLAG_DEVICE_DATA_PROVIDERS_API, FLAG_DEVICE_DATA_PROVIDERS_DB})
+@RequiresFlagsEnabled({
+    FLAG_DEVICE_DATA_PROVIDERS_API,
+    FLAG_DEVICE_DATA_PROVIDERS_DB,
+})
 public class DeviceDataProviderApiTest {
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
@@ -187,6 +192,38 @@ public class DeviceDataProviderApiTest {
         boolean actual = hasUserEnabledTracking(StepsRecord.class);
 
         assertThat(actual).isTrue();
+    }
+
+    @Test
+    public void onStartup_advertisesCurrentDeviceCapabilities() throws InterruptedException {
+        List<DeviceDataSourceInfo> response = getDeviceDataSourceInfos();
+        String currentDeviceId = getCurrentDeviceId();
+
+        assertThat(response).hasSize(1);
+        DeviceDataSourceInfo sourceInfo = response.get(0);
+        assertThat(sourceInfo.getDeviceDataOrigin().getPackageName()).isEqualTo(currentDeviceId);
+        assertThat(sourceInfo.isCurrentDevice()).isTrue();
+
+        assertThat(sourceInfo.getDeviceDataProviderInfos()).hasSize(1);
+        DeviceDataProviderInfo deviceDataProviderInfo =
+                sourceInfo.getDeviceDataProviderInfos().iterator().next();
+
+        assertThat(deviceDataProviderInfo.getPackageName()).isEqualTo("android");
+        assertThat(deviceDataProviderInfo.getDeviceId()).isEqualTo(currentDeviceId);
+        assertThat(deviceDataProviderInfo.getOnboardingActivityLabel()).isEqualTo("");
+        assertThat(deviceDataProviderInfo.getManagementActivityLabel()).isEqualTo("");
+
+        assertThat(deviceDataProviderInfo.getDeviceDataTypeAdvertisements()).hasSize(1);
+        DeviceDataTypeAdvertisement expectedAd =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setAvailable(true)
+                        // TODO(b/468250208): Set to preference
+                        .setUserEnabled(true)
+                        // TODO(b/469717403): Decide Matchmaking behavior
+                        .setVisibleByDefaultInMatchmaking(true)
+                        .build();
+        assertThat(deviceDataProviderInfo.getDeviceDataTypeAdvertisements().iterator().next())
+                .isEqualTo(expectedAd);
     }
 
     @Test

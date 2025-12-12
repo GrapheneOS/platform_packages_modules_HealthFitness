@@ -67,7 +67,6 @@ import android.health.connect.changelog.ChangeLogTokenRequest;
 import android.health.connect.changelog.ChangeLogsRequest;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.DataOrigin;
-import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.HeartRateRecord;
@@ -75,10 +74,7 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
-import android.health.connect.device.DeviceDataAdvertisement;
-import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
-import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
 import android.healthconnect.testing.cts.testapphelpers.TestAppRule;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
@@ -106,7 +102,6 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 /** These test run under an environment which has no HC permissions */
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
@@ -402,25 +397,6 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
     })
     public void getCurrentDeviceDataSource_withNoPermission_throwSecurityException()
             throws InterruptedException {
-        String currentDeviceId = TestUtils.getCurrentDeviceId();
-        Set<DeviceDataTypeAdvertisement> ads =
-                Set.of(
-                        new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
-                                .setAvailable(true)
-                                .setUserEnabled(true)
-                                .build());
-        Device testDevice =
-                new Device.Builder()
-                        .setManufacturer("TestManufacturer")
-                        .setModel("TestModel")
-                        .setType(Device.DEVICE_TYPE_PHONE)
-                        .setDisplayName("TestDisplayName")
-                        .build();
-        DeviceDataAdvertisement advertisement =
-                new DeviceDataAdvertisement(testDevice, currentDeviceId, ads);
-        HealthConnectReceiver<Void> adReceiver = new HealthConnectReceiver<>();
-        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), adReceiver);
-
         HealthConnectReceiver<DeviceDataSource> receiver = new HealthConnectReceiver<>();
         getCurrentDeviceDataSource(outcomeExecutor(), receiver);
 

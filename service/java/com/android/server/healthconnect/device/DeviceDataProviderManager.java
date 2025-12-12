@@ -38,6 +38,7 @@ import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.internal.datatypes.AppInfoInternal;
@@ -165,7 +166,6 @@ public class DeviceDataProviderManager {
     public void initializeOrRefreshCurrentDeviceIds() {
         mStableCurrentDeviceId =
                 mSyntheticPackageNameCreator.createCanonical(Device.DEVICE_TYPE_PHONE, getSerial());
-        mAppInfoHelper.addAppInfoIfNoAppInfoEntryExists(mStableCurrentDeviceId, null);
 
         String runtimeIdentifierSeed = String.valueOf(new SecureRandom().nextInt());
         mRuntimeCurrentDeviceId =
@@ -225,6 +225,14 @@ public class DeviceDataProviderManager {
         Device device = advertisement.getDevice();
         String deviceId = advertisement.getDeviceId();
         int deviceType = device.getType();
+
+        String spn = mSyntheticPackageNameCreator.createCanonical(device.getType(), deviceId);
+        // Native device advertisements are saved by the stable device id so that we can later
+        // identify them as the current device without having to re-mask
+        if (Objects.equals(deviceId, getStableCurrentDeviceId())) {
+            spn = getStableCurrentDeviceId();
+        }
+
         throwIfDeviceIdUsedByDifferentDeviceType(deviceId, deviceType);
 
         DeviceInfo deviceInfo =
@@ -236,7 +244,7 @@ public class DeviceDataProviderManager {
                         device.getDisplayName());
         // TODO(b/440066697): Check how we want to handle display name updates.
         long deviceInfoId = mDeviceInfoHelper.insertIfNotPresent(deviceInfo);
-        String spn = mSyntheticPackageNameCreator.createCanonical(device.getType(), deviceId);
+
         // Synthetic package name for device + device info
         long appInfoId = mAppInfoHelper.insertOrUpdateDeviceDataSource(spn, deviceInfoId);
 
@@ -628,12 +636,7 @@ public class DeviceDataProviderManager {
                             "DDP device encountered with unexpected null device ID");
                 }
 
-                boolean isCurrentDevice = false;
-                if (deviceId.equals(getStableCurrentDeviceId())) {
-                    isCurrentDevice = true;
-                    // Remap stable ID for current device to runtime version.
-                    deviceId = getCurrentDeviceId();
-                }
+                boolean isCurrentDevice = deviceId.equals(getStableCurrentDeviceId());
 
                 List<DeviceDataProviderInfo> providerInfos =
                         getDeviceDataProviderInfos(ddpPackageToAdvertisements, deviceId);
@@ -651,6 +654,38 @@ public class DeviceDataProviderManager {
             }
         }
         return result;
+    }
+
+    /**
+     * Advertises all native tracking capabilities of this device on behalf of the system.
+     *
+     * <p>This method should be called at device startup only.
+     */
+    public void advertiseCurrentDeviceNativeCapabilities() {
+        DeviceDataSource currentDeviceSource = mDeviceDataSourceHelper.getCurrentDevice(mContext);
+
+        Device currentDevice =
+                new Device.Builder()
+                        .setManufacturer(currentDeviceSource.getManufacturer())
+                        .setModel(currentDeviceSource.getModel())
+                        .setType(currentDeviceSource.getDeviceType())
+                        .setDisplayName(currentDeviceSource.getDisplayName())
+                        .build();
+
+        // TODO(b/468339751): Have one shared source for all native capability types
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                // TODO(b/468250208): Set to preference
+                                .setUserEnabled(true)
+                                // TODO(b/469717403): Decide Matchmaking behavior
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(
+                        currentDevice, getStableCurrentDeviceId(), deviceDataTypeAdvertisements);
+
+        handleAdvertisement(Set.of(advertisement), "android");
     }
 
     private List<DeviceDataProviderInfo> getDeviceDataProviderInfos(
