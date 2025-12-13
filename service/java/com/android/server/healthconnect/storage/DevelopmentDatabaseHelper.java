@@ -16,11 +16,6 @@
 
 package com.android.server.healthconnect.storage;
 
-import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.executeSqlStatements;
-import static com.android.server.healthconnect.storage.HealthConnectDatabase.createTable;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.checkColumnExists;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.checkTableExists;
-
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -28,13 +23,6 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.common.metadata.AppInfoHelper;
-import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
-import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
-import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
-import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
-import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
-import com.android.server.healthconnect.storage.request.AlterTableRequest;
 
 /**
  * Code to manage development features of the Health Connect database before they are ready for
@@ -101,86 +89,6 @@ public final class DevelopmentDatabaseHelper {
         dropAndCreateDevelopmentSettingsTable(db, CURRENT_VERSION);
 
         // Code for under development schema changes goes in this method but below this comment
-        applyDdpAppInfoDatabaseUpgrade(db);
-        applyDeviceInfoEnhancementsDatabaseUpgrade(db);
-        applyDdpDatabaseUpgrade(db, oldVersion);
-        applyDdpMetadataDatabaseUpgrade(db);
-        applyDdpIdRecordDatabaseUpgrade(db);
-        applyDdpDataSubtypeUpgrade(db);
-    }
-
-    private static void applyDdpAppInfoDatabaseUpgrade(SQLiteDatabase db) {
-        if (checkColumnExists(
-                db, AppInfoHelper.TABLE_NAME, AppInfoHelper.DEVICE_INFO_ID_COLUMN_NAME)) {
-            return;
-        }
-
-        AlterTableRequest alterAppInfoRequest = AppInfoHelper.getAlterTableRequestForDdpInfo();
-        executeSqlStatements(db, alterAppInfoRequest.getAddColumnsCommands());
-    }
-
-    private static void applyDeviceInfoEnhancementsDatabaseUpgrade(SQLiteDatabase db) {
-        if (checkColumnExists(
-                db, DeviceInfoHelper.TABLE_NAME, DeviceInfoHelper.DEVICE_ID_COLUMN_NAME)) {
-            // Upgrade has already been applied. Return early.
-            return;
-        }
-        executeSqlStatements(db, DeviceInfoHelper.getAlterTableRequest().getAddColumnsCommands());
-    }
-
-    private static void applyDdpDatabaseUpgrade(SQLiteDatabase db, int oldVersion) {
-        String oldDdpTableName = "device_data_provider_table";
-        if (oldVersion < 24) {
-            // Table is renamed and deviceInfoId column changed to appInfoId
-            dropTableIfExists(db, oldDdpTableName);
-        }
-
-        if (checkTableExists(db, DeviceDataSourcesHelper.TABLE_NAME)) {
-            // Upgrade has already been applied. Return early.
-            return;
-        }
-        createTable(db, DeviceDataSourcesHelper.getCreateTableRequest());
-    }
-
-    private static void applyDdpMetadataDatabaseUpgrade(SQLiteDatabase db) {
-        if (checkTableExists(db, DeviceDataProviderMetadataHelper.TABLE_NAME)) {
-            return;
-        }
-
-        createTable(db, DeviceDataProviderMetadataHelper.getCreateTableRequest());
-    }
-
-    private static void applyDdpIdRecordDatabaseUpgrade(SQLiteDatabase db) {
-        final InternalHealthConnectMappings mInternalHealthConnectMappings =
-                InternalHealthConnectMappings.getInstance();
-
-        for (RecordHelper<?> recordHelper : mInternalHealthConnectMappings.getRecordHelpers()) {
-            if (!checkTableExists(db, recordHelper.getMainTableName())) {
-                // newer record types might have their own flags set which causes them to not
-                // exist yet and throwing an exception if not caught early here
-                continue;
-            }
-
-            if (checkColumnExists(
-                    db, recordHelper.getMainTableName(), RecordHelper.DDP_ID_COLUMN_NAME)) {
-                continue;
-            }
-
-            AlterTableRequest alterRecordHelperRequest =
-                    recordHelper.getAlterTableRequestForDdpName();
-            executeSqlStatements(db, alterRecordHelperRequest.getAddColumnsCommands());
-        }
-    }
-
-    private static void applyDdpDataSubtypeUpgrade(SQLiteDatabase db) {
-        if (checkColumnExists(
-                db, DeviceDataSourcesHelper.TABLE_NAME, DeviceDataSourcesHelper.DATA_SUBTYPE)) {
-            return;
-        }
-
-        // We need to recreate the table to add the new unique constraint.
-        dropTableIfExists(db, DeviceDataSourcesHelper.TABLE_NAME);
-        createTable(db, DeviceDataSourcesHelper.getCreateTableRequest());
     }
 
     @VisibleForTesting
@@ -243,4 +151,5 @@ public final class DevelopmentDatabaseHelper {
             }
         }
     }
+
 }

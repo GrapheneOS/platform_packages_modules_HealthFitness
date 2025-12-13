@@ -100,7 +100,6 @@ public class DeviceInfoHelperTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API
     })
@@ -117,7 +116,6 @@ public class DeviceInfoHelperTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API
     })
@@ -135,7 +133,6 @@ public class DeviceInfoHelperTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API
     })
@@ -153,7 +150,6 @@ public class DeviceInfoHelperTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API
     })
@@ -172,7 +168,6 @@ public class DeviceInfoHelperTest {
 
     @Test
     @DisableFlags({
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API
     })
@@ -191,7 +186,6 @@ public class DeviceInfoHelperTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API
     })
@@ -208,7 +202,6 @@ public class DeviceInfoHelperTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API
     })
@@ -241,7 +234,6 @@ public class DeviceInfoHelperTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API
     })
@@ -252,7 +244,6 @@ public class DeviceInfoHelperTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API
     })
@@ -268,7 +259,6 @@ public class DeviceInfoHelperTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API
     })
@@ -286,7 +276,6 @@ public class DeviceInfoHelperTest {
 
     @Test
     @EnableFlags({
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API
     })
@@ -319,7 +308,6 @@ public class DeviceInfoHelperTest {
     @Test
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
     })
     public void populateDeviceInfoId_syntheticPackageNameAndDeviceInfoIdPresent_returnsEarly() {

@@ -18,7 +18,6 @@ package android.healthconnect.cts.device;
 
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 
-import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
 
@@ -54,11 +53,7 @@ import java.util.List;
 import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({
-    FLAG_DEVICE_DATA_PROVIDERS_API,
-    FLAG_DEVICE_DATA_PROVIDERS_DB,
-    FLAG_DEVELOPMENT_DATABASE_RW
-})
+@RequiresFlagsEnabled({FLAG_DEVICE_DATA_PROVIDERS_API, FLAG_DEVICE_DATA_PROVIDERS_DB})
 public class DeviceDataSourceInfoTest {
 
     @Rule
@@ -109,6 +104,7 @@ public class DeviceDataSourceInfoTest {
         DeviceDataSourceInfo info = result.get(0);
         assertThat(info.getDevice()).isEqualTo(device);
         assertThat(info.getDeviceDataProviderInfos()).hasSize(1);
+        assertThat(info.isCurrentDevice()).isFalse();
         DeviceDataProviderInfo providerInfo = info.getDeviceDataProviderInfos().get(0);
         assertThat(providerInfo.getDeviceId()).isEqualTo(deviceId);
         assertThat(providerInfo.getDeviceDataTypeAdvertisements()).containsExactly(stepsAd);
@@ -211,6 +207,7 @@ public class DeviceDataSourceInfoTest {
         DeviceDataSourceInfo info = result.get(0);
         assertThat(info.getDevice()).isEqualTo(device);
         assertThat(info.getDeviceDataProviderInfos()).hasSize(1);
+        assertThat(info.isCurrentDevice()).isTrue();
         DeviceDataProviderInfo providerInfo = info.getDeviceDataProviderInfos().get(0);
         assertThat(providerInfo.getDeviceId()).isEqualTo(deviceId);
         assertThat(providerInfo.getDeviceDataTypeAdvertisements()).containsExactly(stepsAd);

@@ -35,11 +35,7 @@ import java.util.Map;
 import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({
-    Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-    Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-    Flags.FLAG_DEVELOPMENT_DATABASE_RW
-})
+@RequiresFlagsEnabled({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
 public class MaskingTest {
     /**
      * TLDR: go/hc-masking
@@ -84,6 +80,7 @@ public class MaskingTest {
                     "queryAllRecordTypesInfo",
                     "getDeviceDataSourceInfos",
                     "getDeviceDataSources",
+                    "getCurrentDeviceDataSource",
                     "recordMatchmakingDenial",
                     "advertiseDeviceDataSources",
                     "insertDeviceRecords",
@@ -190,7 +187,8 @@ public class MaskingTest {
                     Map.entry("setTrackingEnabled", DOES_NOT_INCLUDE_PACKAGE_NAMES),
                     Map.entry("isTrackingEnabled", DOES_NOT_INCLUDE_PACKAGE_NAMES),
                     Map.entry("getDeviceDataSourceCapabilities", DOES_NOT_INCLUDE_PACKAGE_NAMES),
-                    Map.entry("dump", DOES_NOT_INCLUDE_PACKAGE_NAMES));
+                    Map.entry("dump", DOES_NOT_INCLUDE_PACKAGE_NAMES),
+                    Map.entry("hasUserEnabledTracking", DOES_NOT_INCLUDE_PACKAGE_NAMES));
 
     /**
      * Enforces that every method in {@code IHealthConnectService} has a defined security contract.

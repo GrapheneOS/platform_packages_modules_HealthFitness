@@ -72,7 +72,6 @@ import java.util.stream.Collectors;
 @EnableFlags({
     Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
     Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-    Flags.FLAG_DEVELOPMENT_DATABASE_RW,
     Flags.FLAG_SYMPTOMS
 })
 public class DeviceDataSourcesHelperTest {

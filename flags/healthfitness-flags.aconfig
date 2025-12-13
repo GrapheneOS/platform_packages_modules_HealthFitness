@@ -594,3 +594,10 @@ flag {
     bug: "449221459"
     is_fixed_read_only: true
 }
+
+flag {
+    name: "temporal_field_api"
+    namespace: "health_fitness_aconfig"
+    description: "Flag for moving temporal field from individual records to base Record Helper."
+    bug: "463324870"
+}

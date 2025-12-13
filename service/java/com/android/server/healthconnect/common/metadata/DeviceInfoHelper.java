@@ -153,7 +153,7 @@ public class DeviceInfoHelper extends DatabaseHelper {
      * Creates an {@link AlterTableRequest} for adding enhanced device info specific columns, {@link
      * #DEVICE_ID_COLUMN_NAME} and {@link #DISPLAY_NAME_COLUMN_NAME} to the device_info_table.
      */
-    public static AlterTableRequest getAlterTableRequest() {
+    public static AlterTableRequest getAlterTableRequestForDdpColumns() {
         return new AlterTableRequest(TABLE_NAME, getEnhancedDeviceInfoColumnInfo());
     }
 

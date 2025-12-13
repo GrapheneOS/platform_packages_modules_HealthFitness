@@ -113,11 +113,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
-@EnableFlags({
-    Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-    Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-    Flags.FLAG_DEVELOPMENT_DATABASE_RW
-})
+@EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
 public class DeviceDataProviderManagerTest {
 
     private static final String PACKAGE_NAME = "com.example.app";

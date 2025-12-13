@@ -44,6 +44,7 @@ import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
+import android.healthconnect.testing.cts.testapphelpers.TestAppRule;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.platform.test.annotations.RequiresFlagsEnabled;
@@ -66,18 +67,21 @@ public class ReadByFilterTests {
     private static final String PKG_TEST_APP = "android.healthconnect.cts.testapp.readWritePerms.A";
 
     private Context mContext;
-    private TestAppProxy mTestApp;
 
-    @Rule
-    public AssumptionCheckerRule mSupportedHardwareRule =
+    @Rule(order = 0)
+    public final AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
+    @Rule(order = 1)
+    public final TestAppRule mTestAppRule = new TestAppRule.Builder(PKG_TEST_APP).build();
+
+    private final TestAppProxy mTestApp = mTestAppRule.getProxy();
+
     @Before
     public void setup() throws InterruptedException {
         mContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        mTestApp = TestAppProxy.forPackageName(PKG_TEST_APP);
         TestUtils.deleteAllDataFromHealthConnect();
     }
 
@@ -89,8 +93,7 @@ public class ReadByFilterTests {
     @Test
     @RequiresFlagsEnabled({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
     })
     public void readDataWithDataOriginsAndDeviceId_throws() {
         ReadRecordsRequestUsingFilters.Builder<DistanceRecord> requestBuilder =

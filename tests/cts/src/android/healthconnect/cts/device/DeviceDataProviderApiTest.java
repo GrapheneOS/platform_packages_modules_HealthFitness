@@ -19,6 +19,7 @@ import static android.healthconnect.testing.cts.TestUtils.advertiseDevice;
 import static android.healthconnect.testing.cts.TestUtils.deleteDeviceRecords;
 import static android.healthconnect.testing.cts.TestUtils.getCurrentDeviceId;
 import static android.healthconnect.testing.cts.TestUtils.getDeviceDataSourceInfos;
+import static android.healthconnect.testing.cts.TestUtils.hasUserEnabledTracking;
 import static android.healthconnect.testing.cts.TestUtils.insertDeviceRecords;
 import static android.healthconnect.testing.cts.TestUtils.isCanonicalSyntheticPackageName;
 import static android.healthconnect.testing.cts.TestUtils.isMaskedSyntheticPackageName;
@@ -27,7 +28,6 @@ import static android.healthconnect.testing.cts.TestUtils.readDeviceRecords;
 import static android.healthconnect.testing.cts.TestUtils.updateDeviceRecords;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 
-import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
 
@@ -61,11 +61,7 @@ import java.time.Instant;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({
-    FLAG_DEVICE_DATA_PROVIDERS_API,
-    FLAG_DEVICE_DATA_PROVIDERS_DB,
-    FLAG_DEVELOPMENT_DATABASE_RW
-})
+@RequiresFlagsEnabled({FLAG_DEVICE_DATA_PROVIDERS_API, FLAG_DEVICE_DATA_PROVIDERS_DB})
 public class DeviceDataProviderApiTest {
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
@@ -168,5 +164,13 @@ public class DeviceDataProviderApiTest {
                                                                 log.getPackageName()))
                                 .findAny())
                 .isEmpty();
+    }
+
+    @Test
+    public void hasUserEnabledTracking_withStartCondition_returnsTrueAsDefault()
+            throws InterruptedException {
+        boolean actual = hasUserEnabledTracking(StepsRecord.class);
+
+        assertThat(actual).isTrue();
     }
 }

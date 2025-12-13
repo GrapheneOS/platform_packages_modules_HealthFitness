@@ -37,6 +37,7 @@ import static android.health.connect.HealthConnectOnboardingState.ONBOARDING_BAN
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
 import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VACCINES;
+import static android.health.connect.HealthPermissions.READ_NUTRITION;
 import static android.health.connect.HealthPermissions.READ_STEPS;
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.HealthPermissions.WRITE_NUTRITION;
@@ -80,6 +81,7 @@ import static com.android.healthfitness.flags.Flags.FLAG_MATCHMAKING;
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE;
+import static com.android.server.healthconnect.HealthConnectServiceImpl.EMPTY_DEVICE_DATA_SOURCE;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_STATE_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_RESTORE_STATE_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_STAGING_DONE;
@@ -103,6 +105,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -169,6 +172,7 @@ import android.health.connect.aidl.IDeviceDataSourceCapabilitiesCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
+import android.health.connect.aidl.IGetCurrentDeviceDataSourceCallback;
 import android.health.connect.aidl.IGetDeviceDataSourceInfosCallback;
 import android.health.connect.aidl.IGetDeviceDataSourcesCallback;
 import android.health.connect.aidl.IGetHealthConnectOnboardingStateCallback;
@@ -239,6 +243,7 @@ import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
@@ -391,11 +396,13 @@ public class HealthConnectServiceImplTest {
                     "advertiseDeviceDataSources",
                     "getDeviceDataSourceInfos",
                     "getDeviceDataSources",
+                    "getCurrentDeviceDataSource",
                     "getHealthConnectOnboardingState",
                     "updateHealthConnectBackupAndRestoreSettings",
                     "updateHealthConnectRestoreStatus",
                     "updateHealthConnectBackupStatus",
-                    "getDeviceDataSourceCapabilities");
+                    "getDeviceDataSourceCapabilities",
+                    "hasUserEnabledTracking");
 
     static final String ONBOARDING_STATE_PREFERENCE_KEY = "onboarding_state_";
     private static final String TEST_URI = "content://com.android.server.healthconnect/testuri";
@@ -447,6 +454,7 @@ public class HealthConnectServiceImplTest {
     @Mock IReadRecordsResponseCallback mReadRecordsResponseCallback;
     @Mock IGetDeviceDataSourceInfosCallback mGetDeviceDataSourceInfosCallback;
     @Mock IGetDeviceDataSourcesCallback mGetDeviceDataSourcesCallback;
+    @Mock IGetCurrentDeviceDataSourceCallback mGetCurrentDeviceDataSourceCallback;
     @Mock private Drawable mDrawable;
     @Mock private HealthFitnessStatsLog mHealthFitnessStatsLog;
     @Mock private ChangeLogsHelper mChangeLogsHelper;
@@ -469,6 +477,7 @@ public class HealthConnectServiceImplTest {
     private String mTestPackageName;
     private HealthConnectThreadScheduler mThreadScheduler;
     private FakeSerialDeviceDataProviderManager mDeviceDataProviderManager;
+    private SyntheticPackageNameCreator mSyntheticPackageNameCreator;
     private SyntheticPackageNameResolver mSyntheticPackageNameResolver;
     private final Instant mNow = DataFactory.now();
     private AppInfoHelper mAppInfoHelper;
@@ -553,6 +562,7 @@ public class HealthConnectServiceImplTest {
 
         mSyntheticPackageNameResolver =
                 new SyntheticPackageNameResolver(mAppInfoHelper, mDeviceDataProviderManager);
+        mSyntheticPackageNameCreator = healthConnectInjector.getSyntheticPackageNameCreator();
 
         mHealthConnectService =
                 new HealthConnectServiceImpl(
@@ -3709,8 +3719,7 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         FLAG_MATCHMAKING,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
     })
     public void recordMatchmakingDenial_withMaskedNames_unmasks() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -3873,11 +3882,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void deviceDataProviderManagerIsNull_advertiseDeviceDataSources_throwsException()
             throws RemoteException {
         mHealthConnectService.advertiseDeviceDataSources(
@@ -3889,11 +3894,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void advertiseDeviceDataSources_doesNotThrow() throws RemoteException {
         Device device =
                 new Device.Builder()
@@ -3917,11 +3918,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void advertiseDeviceDataSources_withCurrentDeviceId_unmasks() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -3944,11 +3941,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void insertDeviceRecords_withoutAdvertisement_throws() throws RemoteException {
         Instant now = mFakeTimeSource.getInstantNow();
         String recordId = UUID.randomUUID().toString();
@@ -3987,11 +3980,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void ddpApisDisabled_insertDeviceRecords_throwsException() throws RemoteException {
         Instant now = mFakeTimeSource.getInstantNow();
         String recordId = UUID.randomUUID().toString();
@@ -4028,11 +4017,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void insertDeviceRecords_afterAdvertisement_doesNotThrow() throws RemoteException {
         Instant now = mFakeTimeSource.getInstantNow();
         String recordId = UUID.randomUUID().toString();
@@ -4065,11 +4050,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void updateDeviceRecords_afterAdvertisementAndInsert_doesNotThrow() throws Exception {
         Instant now = mFakeTimeSource.getInstantNow();
         String recordId = UUID.randomUUID().toString();
@@ -4116,11 +4097,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void updateDeviceRecords_wrongUuidInUpdatedRecord_throws() throws Exception {
         Instant now = mFakeTimeSource.getInstantNow();
         String recordId = UUID.randomUUID().toString();
@@ -4175,11 +4152,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void updateDeviceRecords_withoutInsert_throws() throws RemoteException {
         Instant now = mFakeTimeSource.getInstantNow();
         String recordId = UUID.randomUUID().toString();
@@ -4217,11 +4190,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void deviceDataProviderManagerIsNull_updateDeviceRecords_throwsException()
             throws RemoteException {
         Instant now = mFakeTimeSource.getInstantNow();
@@ -4255,11 +4224,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void updateDeviceRecords_withCurrentDeviceId_unmasks() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4289,11 +4254,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void insertDeviceRecords_withCurrentDeviceId_unmasks() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4335,10 +4296,12 @@ public class HealthConnectServiceImplTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
-    public void getCurrentDeviceIdWithDisabledFlags_NullException_throwsUnsupportedError() {
+    public void hasUserEnabledTrackingWithDisabledFlags_NullException_throwsUnsupportedError() {
         assertThrows(
                 UnsupportedOperationException.class,
-                () -> mHealthConnectService.getCurrentDeviceId(mAttributionSource));
+                () ->
+                        mHealthConnectService.hasUserEnabledTracking(
+                                mAttributionSource, "TRACKING_PREF_1"));
     }
 
     @Test
@@ -4347,6 +4310,50 @@ public class HealthConnectServiceImplTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
+    public void hasUserEnabledTrackingWithoutPermission_SecurityException_throwsSecurityError() {
+        setDeviceDataProviderPermission(PackageManager.PERMISSION_DENIED);
+
+        assertThrows(
+                SecurityException.class,
+                () ->
+                        mHealthConnectService.hasUserEnabledTracking(
+                                mAttributionSource, "TRACKING_PREF_1"));
+    }
+
+    @Test
+    public void hasUserEnabledTracking_withPreferencesSet_returnsPreferences() {
+        when(mPreferenceHelper.getPreference("TRACKING_PREF_1")).thenReturn("true");
+        when(mPreferenceHelper.getPreference("TRACKING_PREF_2")).thenReturn("false");
+
+        boolean resultOne =
+                mHealthConnectService.hasUserEnabledTracking(mAttributionSource, "TRACKING_PREF_1");
+        boolean resultTwo =
+                mHealthConnectService.hasUserEnabledTracking(mAttributionSource, "TRACKING_PREF_2");
+
+        assertThat(resultOne).isTrue();
+        assertThat(resultTwo).isFalse();
+    }
+
+    @Test
+    public void hasUserEnabledTracking_noPreferenceSet_defaultsToTrue() {
+        when(mPreferenceHelper.getPreference("TRACKING_PREF_1")).thenReturn(null);
+
+        boolean result =
+                mHealthConnectService.hasUserEnabledTracking(mAttributionSource, "TRACKING_PREF_1");
+
+        assertThat(result).isTrue();
+    }
+
+    @Test
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void getCurrentDeviceIdWithDisabledFlags_NullException_throwsUnsupportedError() {
+        assertThrows(
+                UnsupportedOperationException.class,
+                () -> mHealthConnectService.getCurrentDeviceId(mAttributionSource));
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getCurrentDeviceIdWithoutInit_NullException_throwsRuntimeError() {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
 
@@ -4356,11 +4363,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getCurrentDeviceIdWithoutPermission_SecurityException_throwsSecurityError() {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         setDeviceDataProviderPermission(PackageManager.PERMISSION_DENIED);
@@ -4371,11 +4374,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getCurrentDeviceId_returnsMaskedSpn() throws Exception {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4387,11 +4386,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getCurrentDeviceId_multipleCalls_returnsSameSpn() throws Exception {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4405,11 +4400,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getCurrentDeviceId_returnValue_resolvesToStableIdWhenUnmasked() throws Exception {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4425,11 +4416,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void readDeviceRecords_disabledDdpFlags_exception() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
 
@@ -4448,11 +4435,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void readDeviceRecords_noDdpPermission_exception() throws RemoteException {
         setDeviceDataProviderPermission(PackageManager.PERMISSION_DENIED);
 
@@ -4471,11 +4454,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void readDeviceRecords_noAdvertising_exception() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
 
@@ -4494,11 +4473,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void readDeviceRecords_advertised_noData_emptyListReturned_success()
             throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4523,11 +4498,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void readDeviceRecords_currentDeviceId_unmasksId() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4554,11 +4525,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void deleteDeviceRecords_disabledDdpFlags_throws() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
 
@@ -4575,11 +4542,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void deleteDeviceRecords_npDdpPermission_throws() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_DENIED);
 
@@ -4596,11 +4559,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void deleteDeviceRecords_noAdvertising_throws() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
 
@@ -4617,11 +4576,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void deleteDeviceRecords_withPackageNameFilter_throws() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
 
@@ -4641,11 +4596,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void deleteDeviceRecords_advertised_emptyRequest_success() throws RemoteException {
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
 
@@ -4661,11 +4612,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void deleteDeviceRecords_currentDeviceId_unmasks() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         setDeviceDataProviderPermission(PERMISSION_GRANTED);
@@ -4698,11 +4645,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getDeviceDataSourceCapabilities_noAdvertisedData_returnsOnlySteps()
             throws Exception {
         IDeviceDataSourceCapabilitiesCallback.Stub callback =
@@ -4720,11 +4663,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getDeviceDataSourceCapabilities_withAdvertisedData_returnsCapabilities()
             throws Exception {
         IDeviceDataSourceCapabilitiesCallback.Stub callback =
@@ -4745,11 +4684,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @DisableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getDeviceDataSourceCapabilities_flagDisabled_throwsUnsupportedOperation()
             throws Exception {
         IDeviceDataSourceCapabilitiesCallback.Stub callback =
@@ -4990,11 +4925,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void testGetDeviceDataSourceInfos_masksDataOrigin() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
@@ -5019,6 +4950,7 @@ public class HealthConnectServiceImplTest {
         assertThat(result).hasSize(1);
         String spn = result.get(0).getDeviceDataOrigin().getPackageName();
         assertTrue(SyntheticPackageNameMatcher.matchesMasked(spn));
+        assertFalse(result.get(0).isCurrentDevice());
     }
 
     @Test
@@ -5027,6 +4959,124 @@ public class HealthConnectServiceImplTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
+    public void getDeviceDataSourceInfos_withCurrentDeviceId_setsIsCurrentDevice()
+            throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+        advertiseStepsDeviceDataSource(clientExposedId, device);
+
+        mHealthConnectService.getDeviceDataSourceInfos(
+                mAttributionSource, mGetDeviceDataSourceInfosCallback);
+        verify(mGetDeviceDataSourceInfosCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<List<DeviceDataSourceInfo>> captor = ArgumentCaptor.forClass(List.class);
+        verify(mGetDeviceDataSourceInfosCallback).onResult(captor.capture());
+
+        List<DeviceDataSourceInfo> result = captor.getValue();
+        assertThat(result).hasSize(1);
+        String maskedSpn = result.get(0).getDeviceDataOrigin().getPackageName();
+        assertTrue(SyntheticPackageNameMatcher.matchesMasked(maskedSpn));
+        assertTrue(result.get(0).isCurrentDevice());
+        String unmaskedSpn =
+                mSyntheticPackageNameResolver.unmask(
+                        maskedSpn, mAttributionSource.getPackageName());
+        // TODO(b/468039569): Unnest the SPNs for the current device.
+        String currentDeviceSpn =
+                mSyntheticPackageNameCreator.createCanonical(
+                        Device.DEVICE_TYPE_PHONE,
+                        mDeviceDataProviderManager.getStableCurrentDeviceId());
+        assertEquals(unmaskedSpn, currentDeviceSpn);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void advertiseTwoDevices_withCurrentDeviceId_throws() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .build();
+        DeviceDataAdvertisement advertisement1 =
+                new DeviceDataAdvertisement(device1, clientExposedId, deviceDataTypeAdvertisements);
+        DeviceDataAdvertisement advertisement2 =
+                new DeviceDataAdvertisement(device2, clientExposedId, deviceDataTypeAdvertisements);
+        mHealthConnectService.advertiseDeviceDataSources(
+                mAttributionSource, List.of(advertisement1), mEmptyResponseCallback);
+        verify(mEmptyResponseCallback, timeout(5000).times(1)).onResult();
+        verify(mEmptyResponseCallback, timeout(5000).times(0)).onError(mErrorCaptor.capture());
+
+        mHealthConnectService.advertiseDeviceDataSources(
+                mAttributionSource, List.of(advertisement2), mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_INVALID_ARGUMENT);
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
+                .isEqualTo(
+                        "java.lang.IllegalArgumentException: The device with id"
+                                + " com.android.healthconnect.phone has already been used for a"
+                                + " different device type.");
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    // TODO(b/467694681): Check if we want to block this behaviour.
+    public void advertiseCurrentDeviceId_watchDevice_isSupported() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .build();
+        advertiseStepsDeviceDataSource(clientExposedId, device);
+
+        mHealthConnectService.getDeviceDataSourceInfos(
+                mAttributionSource, mGetDeviceDataSourceInfosCallback);
+        verify(mGetDeviceDataSourceInfosCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<List<DeviceDataSourceInfo>> captor = ArgumentCaptor.forClass(List.class);
+        verify(mGetDeviceDataSourceInfosCallback).onResult(captor.capture());
+
+        List<DeviceDataSourceInfo> result = captor.getValue();
+        assertThat(result).hasSize(1);
+        String spn = result.get(0).getDeviceDataOrigin().getPackageName();
+        assertTrue(SyntheticPackageNameMatcher.matchesMasked(spn));
+        assertTrue(result.get(0).isCurrentDevice());
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void testGetDeviceDataSourceInfos_populatesActivityLabels() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
@@ -5090,11 +5140,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getDeviceDataSources_success_returnsOnlyVisibleDataSources() throws Exception {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(
@@ -5142,11 +5188,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getDeviceDataSources_noPermissions_returnsEmptyList() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
 
@@ -5172,11 +5214,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void getDeviceDataSources_masksDataOrigin() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(
@@ -5207,6 +5245,209 @@ public class HealthConnectServiceImplTest {
         assertTrue(SyntheticPackageNameMatcher.matchesMasked(spn));
     }
 
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void getCurrentDeviceDataSource_flagDisabled_throwsUnsupportedOperationException()
+            throws RemoteException {
+        mHealthConnectService.getCurrentDeviceDataSource(
+                mAttributionSource, mGetCurrentDeviceDataSourceCallback);
+
+        verify(mGetCurrentDeviceDataSourceCallback, timeout(5000).times(1))
+                .onError(mErrorCaptor.capture());
+        HealthConnectException exception = mErrorCaptor.getValue().getHealthConnectException();
+        assertThat(exception.getErrorCode()).isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void getCurrentDeviceDataSource_returnsCurrentDevice() throws Exception {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(
+                        eq(mTestPackageName), any()))
+                .thenReturn(List.of(READ_STEPS));
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+        advertiseStepsDeviceDataSource(clientExposedId, device);
+
+        mHealthConnectService.getCurrentDeviceDataSource(
+                mAttributionSource, mGetCurrentDeviceDataSourceCallback);
+        verify(mGetCurrentDeviceDataSourceCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<DeviceDataSource> captor = ArgumentCaptor.forClass(DeviceDataSource.class);
+        verify(mGetCurrentDeviceDataSourceCallback).onResult(captor.capture());
+
+        DeviceDataSource result = captor.getValue();
+        assertThat(result.getDevice().getManufacturer()).isEqualTo(device.getManufacturer());
+        assertThat(result.getDevice().getModel()).isEqualTo(device.getModel());
+        assertThat(result.getDevice().getType()).isEqualTo(device.getType());
+        assertThat(result.getDevice().getDisplayName()).isEqualTo(device.getDisplayName());
+        assertThat(result.getDeviceDataTypeSources()).hasSize(1);
+        assertThat(Iterables.getOnlyElement(result.getDeviceDataTypeSources()))
+                .isEqualTo(new DeviceDataTypeSource(StepsRecord.class, true, false));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void getCurrentDeviceDataSource_currentDeviceNotAdvertised_returnsEmptyDeviceDataSource()
+            throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+
+        mHealthConnectService.getCurrentDeviceDataSource(
+                mAttributionSource, mGetCurrentDeviceDataSourceCallback);
+        verify(mGetCurrentDeviceDataSourceCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<DeviceDataSource> captor = ArgumentCaptor.forClass(DeviceDataSource.class);
+        verify(mGetCurrentDeviceDataSourceCallback).onResult(captor.capture());
+
+        DeviceDataSource result = captor.getValue();
+        assertThat(result).isEqualTo(EMPTY_DEVICE_DATA_SOURCE);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void getCurrentDeviceDataSource_noPermissions_throwsSecurityException()
+            throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        advertiseStepsDeviceDataSource(clientExposedId, device);
+
+        mHealthConnectService.getCurrentDeviceDataSource(
+                mAttributionSource, mGetCurrentDeviceDataSourceCallback);
+        verify(mGetCurrentDeviceDataSourceCallback, timeout(5000)).onError(mErrorCaptor.capture());
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(HealthConnectException.ERROR_SECURITY);
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
+                .isEqualTo(
+                        "java.lang.SecurityException: Caller must hold at least one Health Connect"
+                                + " permission");
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void getCurrentDeviceDataSource_hasDifferentHealthPermission_returnsCurrentDevice()
+            throws Exception {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(
+                        eq(mTestPackageName), any()))
+                .thenReturn(List.of(READ_NUTRITION));
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+        advertiseStepsDeviceDataSource(clientExposedId, device);
+
+        mHealthConnectService.getCurrentDeviceDataSource(
+                mAttributionSource, mGetCurrentDeviceDataSourceCallback);
+        verify(mGetCurrentDeviceDataSourceCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<DeviceDataSource> captor = ArgumentCaptor.forClass(DeviceDataSource.class);
+        verify(mGetCurrentDeviceDataSourceCallback).onResult(captor.capture());
+
+        DeviceDataSource result = captor.getValue();
+        assertThat(result.getDevice().getManufacturer()).isEqualTo(device.getManufacturer());
+        assertThat(result.getDevice().getModel()).isEqualTo(device.getModel());
+        assertThat(result.getDevice().getType()).isEqualTo(device.getType());
+        assertThat(result.getDevice().getDisplayName()).isEqualTo(device.getDisplayName());
+        assertThat(result.getDeviceDataTypeSources()).hasSize(1);
+        assertThat(Iterables.getOnlyElement(result.getDeviceDataTypeSources()))
+                .isEqualTo(new DeviceDataTypeSource(StepsRecord.class, true, false));
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void getCurrentDeviceDataSource_success_returnsOnlyCurrentDeviceDataSource()
+            throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(
+                        eq(mTestPackageName), any()))
+                .thenReturn(List.of(READ_STEPS));
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .build();
+        advertiseStepsDeviceDataSource(clientExposedId, device1);
+        advertiseStepsDeviceDataSource(clientExposedId, device2);
+
+        mHealthConnectService.getCurrentDeviceDataSource(
+                mAttributionSource, mGetCurrentDeviceDataSourceCallback);
+        verify(mGetCurrentDeviceDataSourceCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<DeviceDataSource> captor = ArgumentCaptor.forClass(DeviceDataSource.class);
+        verify(mGetCurrentDeviceDataSourceCallback).onResult(captor.capture());
+
+        DeviceDataSource result = captor.getValue();
+        assertThat(result.getDevice().getManufacturer()).isEqualTo(device1.getManufacturer());
+        assertThat(result.getDevice().getModel()).isEqualTo(device1.getModel());
+        assertThat(result.getDevice().getType()).isEqualTo(device1.getType());
+        assertThat(result.getDevice().getDisplayName()).isEqualTo(device1.getDisplayName());
+        assertThat(result.getDeviceDataTypeSources()).hasSize(1);
+        assertThat(Iterables.getOnlyElement(result.getDeviceDataTypeSources()))
+                .isEqualTo(new DeviceDataTypeSource(StepsRecord.class, true, false));
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void getCurrentDeviceDataSource_masksDataOrigin() throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(
+                        eq(mTestPackageName), any()))
+                .thenReturn(List.of(READ_STEPS));
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+        advertiseStepsDeviceDataSource(clientExposedId, device);
+
+        mHealthConnectService.getCurrentDeviceDataSource(
+                mAttributionSource, mGetCurrentDeviceDataSourceCallback);
+        verify(mGetCurrentDeviceDataSourceCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<DeviceDataSource> captor = ArgumentCaptor.forClass(DeviceDataSource.class);
+        verify(mGetCurrentDeviceDataSourceCallback).onResult(captor.capture());
+
+        DeviceDataSource result = captor.getValue();
+        assertThat(result).isNotNull();
+        String spn = result.getDeviceDataOrigin().getPackageName();
+        assertTrue(SyntheticPackageNameMatcher.matchesMasked(spn));
+    }
+
     private void advertiseDeviceDataSources(List<DeviceDataAdvertisement> advertisements)
             throws RemoteException {
         clearInvocations(mEmptyResponseCallback);
@@ -5228,11 +5469,7 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void testGetDeviceDataSources_mergesAvailabilityAndEnabledState()
             throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();

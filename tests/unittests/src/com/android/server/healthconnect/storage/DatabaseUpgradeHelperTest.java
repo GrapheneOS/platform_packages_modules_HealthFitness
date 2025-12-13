@@ -23,6 +23,7 @@ import static android.healthconnect.testing.unittest.StorageUtils.clearDatabase;
 import static android.healthconnect.testing.unittest.StorageUtils.createEmptyDatabase;
 
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ALCOHOL_CONSUMPTION;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_DEVICE_DATA_PROVIDERS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MENSTRUAL_CYCLE_PHASE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
@@ -32,6 +33,7 @@ import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_SYMPTO
 import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING_DB;
@@ -39,6 +41,7 @@ import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS_DB;
 import static com.android.server.healthconnect.fitness.recordhelpers.AlcoholConsumptionRecordHelper.ALCOHOL_CONSUMPTION_RECORD_TABLE_NAME;
 import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.onUpgrade;
 
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -49,11 +52,17 @@ import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.AlcoholConsumptionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSegmentRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.MenstrualCyclePhaseRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.NicotineIntakeRecordHelper;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.SymptomRecordHelper;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
@@ -76,8 +85,9 @@ public class DatabaseUpgradeHelperTest {
     private static final int NUM_OF_TABLES_AT_SYMPTOMS_VERSION = 72;
     private static final int NUM_OF_TABLES_AT_ALCOHOL_CONSUMPTION_VERSION = 73;
     private static final int NUM_OF_TABLES_AT_MENSTRUAL_CYCLE_PHASE = 74;
-    private static final int NUM_OF_TABLES_IN_STAGING = NUM_OF_TABLES_AT_MENSTRUAL_CYCLE_PHASE;
-    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_MENSTRUAL_CYCLE_PHASE;
+    private static final int NUM_OF_TABLES_AT_DEVICE_DATA_PROVIDERS = 76;
+    private static final int NUM_OF_TABLES_IN_STAGING = NUM_OF_TABLES_AT_DEVICE_DATA_PROVIDERS;
+    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_DEVICE_DATA_PROVIDERS;
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
@@ -280,6 +290,59 @@ public class DatabaseUpgradeHelperTest {
                     List.of(
                             MenstrualCyclePhaseRecordHelper.PHASE_COLUMN_NAME,
                             MenstrualCyclePhaseRecordHelper.DAY_OF_CYCLE_COLUMN_NAME));
+        }
+    }
+
+    @Test
+    @EnableFlags(FLAG_DEVICE_DATA_PROVIDERS_DB)
+    public void onUpgrade_deviceDataProviders_schemaUpToDate() {
+        try (var db = createEmptyDatabase()) {
+            onUpgrade(db, 0, DB_VERSION_DEVICE_DATA_PROVIDERS);
+
+            assertNumberOfTables(db, NUM_OF_TABLES_AT_DEVICE_DATA_PROVIDERS);
+
+            assertColumnsExist(
+                    db,
+                    AppInfoHelper.TABLE_NAME,
+                    List.of(AppInfoHelper.DEVICE_INFO_ID_COLUMN_NAME));
+
+            assertColumnsExist(
+                    db,
+                    DeviceInfoHelper.TABLE_NAME,
+                    List.of(
+                            DeviceInfoHelper.DEVICE_ID_COLUMN_NAME,
+                            DeviceInfoHelper.DISPLAY_NAME_COLUMN_NAME));
+
+            assertTablesExists(db, List.of(DeviceDataSourcesHelper.TABLE_NAME));
+            assertColumnsExist(
+                    db,
+                    DeviceDataSourcesHelper.TABLE_NAME,
+                    List.of(DeviceDataSourcesHelper.DATA_SUBTYPE));
+
+            assertTablesExists(db, List.of(DeviceDataProviderMetadataHelper.TABLE_NAME));
+
+            final InternalHealthConnectMappings mInternalHealthConnectMappings =
+                    InternalHealthConnectMappings.getInstance();
+
+            for (RecordHelper<?> recordHelper : mInternalHealthConnectMappings.getRecordHelpers()) {
+                // Some record helpers may have database changes in development and thus the tables
+                // may not exist.
+                boolean tablesExists =
+                        DatabaseUtils.queryNumEntries(
+                                        db,
+                                        "sqlite_master",
+                                        /* selection= */ "type = 'table' AND name == '"
+                                                + recordHelper.getMainTableName()
+                                                + "'",
+                                        /* selectionArgs= */ null)
+                                > 0;
+                if (tablesExists) {
+                    assertColumnsExist(
+                            db,
+                            recordHelper.getMainTableName(),
+                            List.of(RecordHelper.DDP_ID_COLUMN_NAME));
+                }
+            }
         }
     }
 

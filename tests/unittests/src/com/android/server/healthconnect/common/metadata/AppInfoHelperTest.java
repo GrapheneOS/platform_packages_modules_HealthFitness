@@ -403,11 +403,7 @@ public class AppInfoHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void populateAppInfoId_spnNotAdvertised_throwsIllegalStateException() {
         String canonicalSpn = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
         RecordInternal<?> recordInternal =
@@ -423,11 +419,7 @@ public class AppInfoHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void insertsDeviceDataSource() {
         String canonicalSpn = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
         long deviceInfoId = 1L;
@@ -458,11 +450,7 @@ public class AppInfoHelperTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void spnAlreadyPresent_populateAppInfoId_skipsPopulatingAppInfo() {
         String canonicalSpn = mSyntheticPackageNameCreator.createCanonical(1, "testDeviceId");
         long deviceInfoId = 1L;
