@@ -67,7 +67,6 @@ import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Percentage;
 import android.health.connect.datatypes.units.Volume;
 import android.healthconnect.testing.cts.PhrCtsTestUtils;
-import android.healthconnect.testing.cts.testapphelpers.TestAppConstants;
 import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.ParcelFileDescriptor;
@@ -113,10 +112,8 @@ public class BackupRestoreE2ETest {
     private static final String HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION =
             "android.permission.HEALTH_CONNECT_BACKUP_INTER_AGENT";
 
-    private static final String TEST_APP_1_PACKAGE_NAME =
-            TestAppConstants.TEST_APP_WITH_READ_WRITE_PERMS_A;
-    private static final String TEST_APP_2_PACKAGE_NAME =
-            TestAppConstants.TEST_APP_WITH_READ_WRITE_PERMS_B;
+    private static final String TEST_APP_1_PACKAGE_NAME = "android.healthconnect.cts.app";
+    private static final String TEST_APP_2_PACKAGE_NAME = "android.healthconnect.cts.app2";
     private static final String TEST_APP_DECLARED_PERMISSION =
             "android.permission.health.READ_HEIGHT";
 

@@ -71,7 +71,6 @@ import android.health.connect.migration.PermissionMigrationPayload;
 import android.health.connect.migration.PriorityMigrationPayload;
 import android.health.connect.migration.RecordMigrationPayload;
 import android.healthconnect.testing.cts.TestUtils;
-import android.healthconnect.testing.cts.testapphelpers.TestAppConstants;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.Build;
@@ -108,10 +107,8 @@ import java.util.stream.Collectors;
 public class DataMigrationTest {
 
     private static final String PACKAGE_NAME = "android.healthconnect.cts";
-    private static final String APP_PACKAGE_NAME =
-            TestAppConstants.TEST_APP_WITH_READ_WRITE_PERMS_A;
-    private static final String APP_PACKAGE_NAME_2 =
-            TestAppConstants.TEST_APP_WITH_READ_WRITE_PERMS_B;
+    private static final String APP_PACKAGE_NAME = "android.healthconnect.cts.app";
+    private static final String APP_PACKAGE_NAME_2 = "android.healthconnect.cts.app2";
     private static final String PACKAGE_NAME_NOT_INSTALLED = "not.installed.package";
     private static final String INVALID_PERMISSION_1 = "invalid.permission.1";
     private static final String INVALID_PERMISSION_2 = "invalid.permission.2";
