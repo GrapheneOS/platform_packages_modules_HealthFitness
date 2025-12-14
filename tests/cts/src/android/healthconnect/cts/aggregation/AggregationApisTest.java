@@ -69,7 +69,6 @@ import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
 import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
-import android.healthconnect.testing.cts.testapphelpers.TestAppRule;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 
@@ -95,17 +94,13 @@ public class AggregationApisTest {
 
     private final Context mContext = ApplicationProvider.getApplicationContext();
     private final String mPackageName = mContext.getPackageName();
+    private final TestAppProxy mTestApp = TestAppProxy.forPackageName(PKG_TEST_APP);
 
-    @Rule(order = 0)
-    public final AssumptionCheckerRule mSupportedHardwareRule =
+    @Rule
+    public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
-
-    @Rule(order = 1)
-    public final TestAppRule mTestAppRule = new TestAppRule.Builder(PKG_TEST_APP).build();
-
-    private final TestAppProxy mTestApp = mTestAppRule.getProxy();
 
     @Before
     public void setUp() throws InterruptedException {

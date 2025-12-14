@@ -23,6 +23,8 @@
     <target_preparer class="com.android.tradefed.targetprep.suite.SuiteApkInstaller">
         <option name="cleanup-apks" value="true" />
         <option name="test-file-name" value="HealthConnectUIE2EDataTests.apk" />
+        <option name="test-file-name" value="HealthFitnessCtsTestApp.apk"/>
+        <option name="test-file-name" value="HealthFitnessCtsTestApp2.apk"/>
         <option name="test-file-name" value="HealthFitnessCtsSystemTestApp.apk"/>
         <option name="test-file-name" value="CtsHealthConnectTestAppAWithNormalReadWritePermission.apk"/>
         <option name="test-file-name" value="CtsHealthConnectTestAppBWithNormalReadWritePermission.apk"/>

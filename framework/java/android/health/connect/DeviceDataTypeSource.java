@@ -21,6 +21,7 @@ import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_A
 import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -33,25 +34,86 @@ public final class DeviceDataTypeSource implements Parcelable {
     private final Class<? extends Record> mDataType;
     private final boolean mIsAvailable;
     private final boolean mIsUserEnabled;
+    @SymptomRecord.SymptomType private final int mSymptomType;
+
+    /**
+     * Create a source of data of a particular data type that is provided by a device. For the
+     * {@link SymptomRecord} data type, please us {@link #ofSymptomType}.
+     *
+     * @param dataType The data type provided by the device.
+     * @param isAvailable Whether this data type is currently available from the device. This may be
+     *     {@code false} if for example, the device is disconnected or out of range.
+     * @param isUserEnabled Whether the user has enabled this data type for the device.
+     */
+    @NonNull
+    public static DeviceDataTypeSource ofDataType(
+            @NonNull Class<? extends Record> dataType, boolean isAvailable, boolean isUserEnabled) {
+        return new DeviceDataTypeSource(
+                dataType, isAvailable, isUserEnabled, SymptomRecord.SYMPTOM_TYPE_UNKNOWN);
+    }
+
+    /**
+     * Create a source of {@link SymptomRecord} that is provided by a device.
+     *
+     * @param symptomType The symptom type provided by this device.
+     * @param isAvailable Whether this data type is currently available from the device. This may be
+     *     false if for example, the device is disconnected or out of range.
+     * @param isUserEnabled Whether the user has enabled this data type for the device.
+     */
+    @NonNull
+    public static DeviceDataTypeSource ofSymptomType(
+            @SymptomRecord.SymptomType int symptomType,
+            boolean isAvailable,
+            boolean isUserEnabled) {
+        return new DeviceDataTypeSource(
+                SymptomRecord.class, isAvailable, isUserEnabled, symptomType);
+    }
 
     /**
      * @param dataType The data type provided by the device.
      * @param isAvailable Whether this data type is currently available from the device. This may be
      *     false if for example, the device is disconnected or out of range.
      * @param isUserEnabled Whether the user has enabled this data type for the device.
+     * @param symptomType The symptom type provided by the device.
      */
-    public DeviceDataTypeSource(
-            @NonNull Class<? extends Record> dataType, boolean isAvailable, boolean isUserEnabled) {
+    private DeviceDataTypeSource(
+            @NonNull Class<? extends Record> dataType,
+            boolean isAvailable,
+            boolean isUserEnabled,
+            @SymptomRecord.SymptomType int symptomType) {
         Objects.requireNonNull(dataType);
         mDataType = dataType;
         mIsAvailable = isAvailable;
         mIsUserEnabled = isUserEnabled;
+        mSymptomType = symptomType;
+
+        if (SymptomRecord.class.isAssignableFrom(dataType)) {
+            if (symptomType == SymptomRecord.SYMPTOM_TYPE_UNKNOWN) {
+                throw new IllegalArgumentException("Symptom type must be set for SymptomRecord");
+            }
+        } else {
+            if (symptomType != SymptomRecord.SYMPTOM_TYPE_UNKNOWN) {
+                throw new IllegalArgumentException(
+                        "Symptom type must be UNKNOWN for non-SymptomRecord");
+            }
+        }
     }
 
     /** Returns the data type provided by the device. */
     @NonNull
     public Class<? extends Record> getDataType() {
         return mDataType;
+    }
+
+    /**
+     * Returns the symptom type provided by the device.
+     *
+     * <p>Returns {@link SymptomRecord#SYMPTOM_TYPE_UNKNOWN} if this source is not for a {@link
+     * SymptomRecord}.
+     */
+    @SymptomRecord.SymptomType
+    public int getSymptomType() {
+        return mSymptomType;
     }
 
     /**
@@ -74,12 +136,13 @@ public final class DeviceDataTypeSource implements Parcelable {
         if (!(o instanceof DeviceDataTypeSource that)) return false;
         return mIsAvailable == that.mIsAvailable
                 && mIsUserEnabled == that.mIsUserEnabled
-                && Objects.equals(mDataType, that.mDataType);
+                && Objects.equals(mDataType, that.mDataType)
+                && mSymptomType == that.mSymptomType;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mDataType, mIsAvailable, mIsUserEnabled);
+        return Objects.hash(mDataType, mIsAvailable, mIsUserEnabled, mSymptomType);
     }
 
     @Override
@@ -91,6 +154,8 @@ public final class DeviceDataTypeSource implements Parcelable {
                 + mIsAvailable
                 + ", mIsUserEnabled="
                 + mIsUserEnabled
+                + ", mSymptomType="
+                + mSymptomType
                 + '}';
     }
 
@@ -104,6 +169,7 @@ public final class DeviceDataTypeSource implements Parcelable {
         dest.writeInt(HealthConnectMappings.getInstance().getRecordType(mDataType));
         dest.writeBoolean(mIsAvailable);
         dest.writeBoolean(mIsUserEnabled);
+        dest.writeInt(mSymptomType);
     }
 
     @NonNull
@@ -128,5 +194,6 @@ public final class DeviceDataTypeSource implements Parcelable {
                                 .get(in.readInt()));
         mIsAvailable = in.readBoolean();
         mIsUserEnabled = in.readBoolean();
+        mSymptomType = in.readInt();
     }
 }

@@ -89,11 +89,13 @@ package android.health.connect {
   }
 
   @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public final class DeviceDataTypeSource implements android.os.Parcelable {
-    ctor public DeviceDataTypeSource(@NonNull Class<? extends android.health.connect.datatypes.Record>, boolean, boolean);
     method public int describeContents();
     method @NonNull public Class<? extends android.health.connect.datatypes.Record> getDataType();
+    method public int getSymptomType();
     method public boolean isAvailable();
     method public boolean isUserEnabled();
+    method @NonNull public static android.health.connect.DeviceDataTypeSource ofDataType(@NonNull Class<? extends android.health.connect.datatypes.Record>, boolean, boolean);
+    method @NonNull public static android.health.connect.DeviceDataTypeSource ofSymptomType(int, boolean, boolean);
     method public void writeToParcel(@NonNull android.os.Parcel, int);
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.DeviceDataTypeSource> CREATOR;
   }

@@ -17,10 +17,12 @@
 package android.healthconnect.cts.device;
 
 import static android.health.connect.HealthPermissions.READ_STEPS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_COUGH;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -32,6 +34,7 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
@@ -134,6 +137,64 @@ public class DeviceDataSourceTest {
                     assertThat(typeSource.getDataType()).isEqualTo(StepsRecord.class);
                     assertThat(typeSource.isAvailable()).isTrue();
                     assertThat(typeSource.isUserEnabled()).isTrue();
+                });
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_SYMPTOMS)
+    public void getDeviceDataSources_symptomTypes_returnsCorrectSymptomTypes()
+            throws InterruptedException {
+        Set<DeviceDataTypeAdvertisement> ads =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
+                                .setAvailable(true)
+                                .setUserEnabled(true)
+                                .build(),
+                        new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_HEADACHE)
+                                .setAvailable(true)
+                                .setUserEnabled(false)
+                                .build());
+        DeviceDataAdvertisement advertisement = createAdvertisement(ads);
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+
+        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
+
+        TestUtils.verifyGetDeviceDataSourcesWithPermission(
+                READ_SYMPTOM_COUGH,
+                dataSources -> {
+                    assertThat(dataSources).hasSize(1);
+                    DeviceDataSource dataSource = dataSources.get(0);
+
+                    // Should see BOTH Cough and Headache
+                    assertThat(dataSource.getDeviceDataTypeSources()).hasSize(2);
+
+                    DeviceDataTypeSource coughSource =
+                            dataSource.getDeviceDataTypeSources().stream()
+                                    .filter(
+                                            s ->
+                                                    s.getSymptomType()
+                                                            == SymptomRecord.SYMPTOM_TYPE_COUGH)
+                                    .findFirst()
+                                    .orElse(null);
+                    assertThat(coughSource).isNotNull();
+                    assertThat(coughSource.getDataType()).isEqualTo(SymptomRecord.class);
+                    assertThat(coughSource.isAvailable()).isTrue();
+                    assertThat(coughSource.isUserEnabled()).isTrue();
+
+                    DeviceDataTypeSource headacheSource =
+                            dataSource.getDeviceDataTypeSources().stream()
+                                    .filter(
+                                            s ->
+                                                    s.getSymptomType()
+                                                            == SymptomRecord.SYMPTOM_TYPE_HEADACHE)
+                                    .findFirst()
+                                    .orElse(null);
+                    assertThat(headacheSource).isNotNull();
+                    assertThat(headacheSource.getDataType()).isEqualTo(SymptomRecord.class);
+                    assertThat(headacheSource.isAvailable()).isTrue();
+                    assertThat(headacheSource.isUserEnabled()).isFalse();
                 });
     }
 

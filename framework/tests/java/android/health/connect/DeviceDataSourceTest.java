@@ -38,7 +38,7 @@ public class DeviceDataSourceTest {
     private static final Device DEVICE =
             new Device.Builder().setManufacturer("Manufacturer").setModel("Model").build();
     private static final DeviceDataTypeSource DEVICE_DATA_TYPE_SOURCE =
-            new DeviceDataTypeSource(StepsRecord.class, true, true);
+            DeviceDataTypeSource.ofDataType(StepsRecord.class, true, true);
 
     @Test
     public void testConstructorAndGetters() {
@@ -71,7 +71,7 @@ public class DeviceDataSourceTest {
                 new DeviceDataSource(
                         DATA_ORIGIN,
                         DEVICE,
-                        Set.of(new DeviceDataTypeSource(StepsRecord.class, false, false)));
+                        Set.of(DeviceDataTypeSource.ofDataType(StepsRecord.class, false, false)));
 
         assertThat(base.equals(base)).isTrue();
         assertThat(base.equals(same)).isTrue();
