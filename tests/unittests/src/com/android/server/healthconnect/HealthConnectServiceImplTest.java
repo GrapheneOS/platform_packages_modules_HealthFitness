@@ -39,6 +39,7 @@ import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKG
 import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VACCINES;
 import static android.health.connect.HealthPermissions.READ_NUTRITION;
 import static android.health.connect.HealthPermissions.READ_STEPS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_COUGH;
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.HealthPermissions.WRITE_NUTRITION;
 import static android.health.connect.HealthPermissions.WRITE_SLEEP;
@@ -209,6 +210,7 @@ import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.device.SyntheticPackageNameMatcher;
@@ -5184,7 +5186,7 @@ public class HealthConnectServiceImplTest {
         assertThat(deviceDataSource.getDevice()).isEqualTo(device1);
         assertThat(deviceDataSource.getDeviceDataTypeSources()).hasSize(1);
         assertThat(Iterables.getOnlyElement(deviceDataSource.getDeviceDataTypeSources()))
-                .isEqualTo(new DeviceDataTypeSource(StepsRecord.class, true, true));
+                .isEqualTo(DeviceDataTypeSource.ofDataType(StepsRecord.class, true, true));
     }
 
     @Test
@@ -5291,7 +5293,7 @@ public class HealthConnectServiceImplTest {
         assertThat(result.getDevice().getDisplayName()).isEqualTo(device.getDisplayName());
         assertThat(result.getDeviceDataTypeSources()).hasSize(1);
         assertThat(Iterables.getOnlyElement(result.getDeviceDataTypeSources()))
-                .isEqualTo(new DeviceDataTypeSource(StepsRecord.class, true, false));
+                .isEqualTo(DeviceDataTypeSource.ofDataType(StepsRecord.class, true, false));
     }
 
     @Test
@@ -5377,7 +5379,7 @@ public class HealthConnectServiceImplTest {
         assertThat(result.getDevice().getDisplayName()).isEqualTo(device.getDisplayName());
         assertThat(result.getDeviceDataTypeSources()).hasSize(1);
         assertThat(Iterables.getOnlyElement(result.getDeviceDataTypeSources()))
-                .isEqualTo(new DeviceDataTypeSource(StepsRecord.class, true, false));
+                .isEqualTo(DeviceDataTypeSource.ofDataType(StepsRecord.class, true, false));
     }
 
     @Test
@@ -5417,7 +5419,7 @@ public class HealthConnectServiceImplTest {
         assertThat(result.getDevice().getDisplayName()).isEqualTo(device1.getDisplayName());
         assertThat(result.getDeviceDataTypeSources()).hasSize(1);
         assertThat(Iterables.getOnlyElement(result.getDeviceDataTypeSources()))
-                .isEqualTo(new DeviceDataTypeSource(StepsRecord.class, true, false));
+                .isEqualTo(DeviceDataTypeSource.ofDataType(StepsRecord.class, true, false));
     }
 
     @Test
@@ -5527,6 +5529,81 @@ public class HealthConnectServiceImplTest {
         assertThat(dataTypeSource.getDataType()).isEqualTo(StepsRecord.class);
         assertThat(dataTypeSource.isAvailable()).isTrue();
         assertThat(dataTypeSource.isUserEnabled()).isTrue();
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
+        Flags.FLAG_SYMPTOMS
+    })
+    public void getDeviceDataSources_handlesSymptomTypes_returnsCorrectSymptomTypes()
+            throws RemoteException {
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(
+                        eq(mTestPackageName), any()))
+                .thenReturn(List.of(READ_SYMPTOM_COUGH));
+
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+
+        Set<DeviceDataTypeAdvertisement> ads =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
+                                .setAvailable(true)
+                                .setUserEnabled(true)
+                                .build(),
+                        new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_HEADACHE)
+                                .setAvailable(true)
+                                .setUserEnabled(false)
+                                .build());
+
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, "device_id", ads);
+
+        mHealthConnectService.advertiseDeviceDataSources(
+                mAttributionSource, List.of(advertisement), mEmptyResponseCallback);
+        verify(mEmptyResponseCallback, timeout(5000).times(1)).onResult();
+
+        mHealthConnectService.getDeviceDataSources(
+                mAttributionSource, mGetDeviceDataSourcesCallback);
+
+        verify(mGetDeviceDataSourcesCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<GetDeviceDataSourcesResponse> captor =
+                ArgumentCaptor.forClass(GetDeviceDataSourcesResponse.class);
+        verify(mGetDeviceDataSourcesCallback).onResult(captor.capture());
+
+        List<DeviceDataSource> result = captor.getValue().getDeviceDataSources();
+        assertThat(result).hasSize(1);
+        DeviceDataSource deviceDataSource = result.get(0);
+        assertThat(deviceDataSource.getDeviceDataTypeSources()).hasSize(2);
+
+        DeviceDataTypeSource coughSource =
+                deviceDataSource.getDeviceDataTypeSources().stream()
+                        .filter(s -> s.getSymptomType() == SymptomRecord.SYMPTOM_TYPE_COUGH)
+                        .findFirst()
+                        .orElse(null);
+        assertThat(coughSource).isNotNull();
+        assertThat(coughSource.getDataType()).isEqualTo(SymptomRecord.class);
+        assertThat(coughSource.isAvailable()).isTrue();
+        assertThat(coughSource.isUserEnabled()).isTrue();
+
+        DeviceDataTypeSource headacheSource =
+                deviceDataSource.getDeviceDataTypeSources().stream()
+                        .filter(s -> s.getSymptomType() == SymptomRecord.SYMPTOM_TYPE_HEADACHE)
+                        .findFirst()
+                        .orElse(null);
+        assertThat(headacheSource).isNotNull();
+        assertThat(headacheSource.getDataType()).isEqualTo(SymptomRecord.class);
+        assertThat(headacheSource.isAvailable()).isTrue();
+        assertThat(headacheSource.isUserEnabled()).isFalse();
     }
 
     private void advertiseStepsDeviceDataSource(String deviceId, Device device)
