@@ -64,7 +64,9 @@ class RequestHealthPermissionUITest : HealthConnectBaseTest() {
             packageName = TEST_APP_PACKAGE_NAME,
             permissions = listOf(HealthPermissions.READ_HEIGHT, HealthPermissions.WRITE_STEPS),
         ) {
-            findText("Allow Health Connect cts test app to access Health Connect?")
+            findText(
+                "Allow CtsHealthConnectTestAppAWithNormalReadWritePermission to access Health Connect?"
+            )
             // First category expanded by default
             scrollDownToAndFindText("Activity")
             scrollDownToAndFindText("Steps")
@@ -90,7 +92,9 @@ class RequestHealthPermissionUITest : HealthConnectBaseTest() {
             packageName = TEST_APP_PACKAGE_NAME,
             permissions = listOf(HealthPermissions.READ_HEIGHT, HealthPermissions.WRITE_STEPS),
         ) {
-            findText("Allow Health Connect cts test app to access your fitness and wellness data?")
+            findText(
+                "Allow CtsHealthConnectTestAppAWithNormalReadWritePermission to access fitness and wellness data?"
+            )
             // First READ category expanded by default
             scrollDownToAndFindText("Body measurements")
             scrollDownToAndFindText("Height")

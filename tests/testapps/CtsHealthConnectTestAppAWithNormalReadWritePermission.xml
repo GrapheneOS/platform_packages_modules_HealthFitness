@@ -139,5 +139,29 @@
     <!-- Used to check if App Ops considers the app to be in the background -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
-    <application android:label="CtsHealthConnectTestAppAWithNormalReadWritePermission"/>
+    <application android:label="CtsHealthConnectTestAppAWithNormalReadWritePermission">
+        <activity android:name="android.healthconnect.testing.testapp.MainActivity"
+            android:exported="true" android:label="MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.FRAMEWORK_INSTRUMENTATION_TEST" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="any.action" />
+            </intent-filter>
+        </activity>
+        <activity-alias android:name="OnboardingActivity"
+            android:exported="true"
+            android:permission="android.permission.health.START_ONBOARDING" android:targetActivity="android.healthconnect.testing.testapp.MainActivity">
+            <intent-filter>
+                <action android:name="android.health.connect.action.SHOW_ONBOARDING" />
+            </intent-filter>
+        </activity-alias>
+
+        <uses-library android:name="android.test.runner" />
+    </application>
 </manifest>

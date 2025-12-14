@@ -70,7 +70,7 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
     fun showsListOfHealthConnectApps() {
         context.launchMainActivity {
             navigateToAppPermissions()
-            scrollDownToAndFindText("Health Connect cts test app")
+            scrollDownToAndFindText("CtsHealthConnectTestAppAWithNormalReadWritePermission")
         }
     }
 
@@ -88,8 +88,8 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
         context.launchMainActivity {
             revokeAllHealthPermissionsViaPackageManager(context, TEST_APP_PACKAGE_NAME)
             navigateToAppPermissions()
-            scrollDownToAndFindText("Health Connect cts test app")
-            clickOnTextAndWaitForNewWindow("Health Connect cts test app")
+            scrollDownToAndFindText("CtsHealthConnectTestAppAWithNormalReadWritePermission")
+            clickOnTextAndWaitForNewWindow("CtsHealthConnectTestAppAWithNormalReadWritePermission")
             verifyOnboardingActivityLaunched()
         }
     }
@@ -102,8 +102,8 @@ class ManageHealthPermissionsUITest : HealthConnectBaseTest() {
             setPermissionsAsUserFixed(context, TEST_APP_PACKAGE_NAME, true)
             assertThat(hasUserFixedHealthPermissions(context, TEST_APP_PACKAGE_NAME)).isTrue()
             navigateToAppPermissions()
-            scrollDownToAndFindText("Health Connect cts test app")
-            clickOnTextAndWaitForNewWindow("Health Connect cts test app")
+            scrollDownToAndFindText("CtsHealthConnectTestAppAWithNormalReadWritePermission")
+            clickOnTextAndWaitForNewWindow("CtsHealthConnectTestAppAWithNormalReadWritePermission")
             verifyOnboardingActivityLaunched()
             assertThat(hasUserFixedHealthPermissions(context, TEST_APP_PACKAGE_NAME)).isFalse()
         }

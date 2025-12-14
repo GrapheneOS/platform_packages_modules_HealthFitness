@@ -74,11 +74,13 @@ class AdditionalPermissionsRequestUITest : HealthConnectBaseTest() {
             packageName = TEST_APP_PACKAGE_NAME,
             permissions = permissions,
         ) {
-            findText("Allow additional access for Health Connect cts test app?")
-            scrollDownToAndFindText("Access past data")
-            findTextAndClick("Access past data")
-            scrollDownToAndFindText("Access data in the background")
-            findTextAndClick("Access data in the background")
+            findText(
+                "Allow additional access for CtsHealthConnectTestAppAWithNormalReadWritePermission?"
+            )
+            scrollDownToAndFindText("Access past fitness and wellness data")
+            findTextAndClick("Access past fitness and wellness data")
+            scrollDownToAndFindText("Access all data in the background")
+            findTextAndClick("Access all data in the background")
             clickOnTextAndWaitForNewWindow("Allow")
 
             assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, READ_HEALTH_DATA_HISTORY)
@@ -94,11 +96,13 @@ class AdditionalPermissionsRequestUITest : HealthConnectBaseTest() {
             packageName = TEST_APP_PACKAGE_NAME,
             permissions = permissions,
         ) {
-            findText("Allow additional access for Health Connect cts test app?")
-            scrollDownToAndFindText("Access past data")
-            findTextAndClick("Access past data")
-            scrollDownToAndFindText("Access data in the background")
-            findTextAndClick("Access data in the background")
+            findText(
+                "Allow additional access for CtsHealthConnectTestAppAWithNormalReadWritePermission?"
+            )
+            scrollDownToAndFindText("Access past fitness and wellness data")
+            findTextAndClick("Access past fitness and wellness data")
+            scrollDownToAndFindText("Access all data in the background")
+            findTextAndClick("Access all data in the background")
             clickOnTextAndWaitForNewWindow("Don't allow")
 
             assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, READ_HEALTH_DATA_HISTORY)
@@ -114,9 +118,11 @@ class AdditionalPermissionsRequestUITest : HealthConnectBaseTest() {
             packageName = TEST_APP_PACKAGE_NAME,
             permissions = permissions,
         ) {
-            findText("Allow additional access for Health Connect cts test app?")
-            scrollDownToAndFindText("Access past data")
-            findTextAndClick("Access past data")
+            findText(
+                "Allow additional access for CtsHealthConnectTestAppAWithNormalReadWritePermission?"
+            )
+            scrollDownToAndFindText("Access past fitness and wellness data")
+            findTextAndClick("Access past fitness and wellness data")
             clickOnTextAndWaitForNewWindow("Allow")
 
             assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, READ_HEALTH_DATA_HISTORY)
@@ -133,7 +139,9 @@ class AdditionalPermissionsRequestUITest : HealthConnectBaseTest() {
             packageName = TEST_APP_PACKAGE_NAME,
             permissions = permissions,
         ) {
-            findText("Allow Health Connect cts test app to access data in the background?")
+            findText(
+                "Allow CtsHealthConnectTestAppAWithNormalReadWritePermission to access data in the background?"
+            )
             clickOnTextAndWaitForNewWindow("Allow")
 
             assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, READ_HEALTH_DATA_HISTORY)
@@ -181,14 +189,18 @@ class AdditionalPermissionsRequestUITest : HealthConnectBaseTest() {
             packageName = TEST_APP_PACKAGE_NAME,
             permissions = permissions,
         ) {
-            findText("Allow Health Connect cts test app to access Health Connect?")
+            findText(
+                "Allow CtsHealthConnectTestAppAWithNormalReadWritePermission to access HealthConnect?"
+            )
             scrollDownToAndFindText("Height")
             findTextAndClick("Height")
             clickOnTextAndWaitForNewWindow("Allow")
 
-            findText("Allow additional access for Health Connect cts test app?")
-            scrollDownToAndFindText("Access past data")
-            findTextAndClick("Access past data")
+            findText(
+                "Allow additional access for CtsHealthConnectTestAppAWithNormalReadWritePermission?"
+            )
+            scrollDownToAndFindText("Access past fitness and wellness data")
+            findTextAndClick("Access past fitness and wellness data")
             clickOnTextAndWaitForNewWindow("Allow")
 
             assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, READ_HEIGHT)
@@ -214,14 +226,18 @@ class AdditionalPermissionsRequestUITest : HealthConnectBaseTest() {
             packageName = TEST_APP_PACKAGE_NAME,
             permissions = permissions,
         ) {
-            findText("Allow Health Connect cts test app to access your fitness and wellness data?")
+            findText(
+                "Allow CtsHealthConnectTestAppAWithNormalReadWritePermission to access fitness and wellness data?"
+            )
             scrollDownToAndFindText("Height")
             findTextAndClick("Height")
             clickOnTextAndWaitForNewWindow("Allow")
 
-            findText("Allow additional access for Health Connect cts test app?")
-            scrollDownToAndFindText("Access past data")
-            findTextAndClick("Access past data")
+            findText(
+                "Allow additional access for CtsHealthConnectTestAppAWithNormalReadWritePermission?"
+            )
+            scrollDownToAndFindText("Access past fitness and wellness data")
+            findTextAndClick("Access past fitness and wellness data")
             clickOnTextAndWaitForNewWindow("Allow")
 
             assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, READ_HEIGHT)
