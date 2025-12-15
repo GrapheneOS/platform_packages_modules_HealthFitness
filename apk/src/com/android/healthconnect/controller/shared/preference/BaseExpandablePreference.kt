@@ -19,9 +19,12 @@ package com.android.healthconnect.controller.shared.preference
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.ImageView
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import androidx.preference.PreferenceViewHolder
+import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.utils.logging.ElementName
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
@@ -73,6 +76,19 @@ constructor(context: Context, attrs: AttributeSet? = null) : PreferenceGroup(con
 
         val arrow = holder.findViewById(getDropDownIconId()) as? ImageView
         arrow?.rotation = if (mIsExpanded) 180f else 0f
+
+        val accessibilityAction =
+            if (mIsExpanded) {
+                context.getString(R.string.expandable_preference_collapse_talkback_description)
+            } else {
+                context.getString(R.string.expandable_preference_expand_talkback_description)
+            }
+        ViewCompat.replaceAccessibilityAction(
+            holder.itemView,
+            AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_CLICK,
+            accessibilityAction,
+            null,
+        )
 
         holder.itemView.setOnClickListener {
             logger.logInteraction(logName, UIAction.ACTION_CLICK)
