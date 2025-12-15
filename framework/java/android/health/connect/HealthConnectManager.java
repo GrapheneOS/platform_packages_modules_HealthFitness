@@ -3825,12 +3825,17 @@ public class HealthConnectManager {
     }
 
     /**
-     * Returns whether the user has enabled native tracking for a record type on the device that
-     * Health Connect is currently running on.
+     * Returns whether the user has enabled native tracking for {@code recordType} on the device
+     * that Health Connect is currently running on.
+     *
+     * <p>Native tracking refers to the ability for Health Connect itself to provide device data of
+     * the current device. While {@code false} is returned, users have explicitly disabled tracking
+     * for that type and the current device stops contributing further data. Previously written
+     * records remain unaffected by this status.
      *
      * <p>This check is a prerequisite for Device Data Providers to assume responsibility for
      * tracking a record type. A Device Data Provider must not populate device data using {@link
-     * #insertDeviceRecords} or {@link #updateDeviceRecords} when users have explicitly disabled
+     * #insertDeviceRecords} or {@link #updateDeviceRecords} while users have explicitly disabled
      * tracking for that type.
      *
      * @param recordType the record type to query the tracking status for.
