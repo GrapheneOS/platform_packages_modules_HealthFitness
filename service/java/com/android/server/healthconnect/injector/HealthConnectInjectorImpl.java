@@ -640,6 +640,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 hcContext,
                                 mDeviceInfoHelper,
                                 mAppInfoHelper,
+                                mDeviceDataSourceHelper,
                                 mDeviceDataSourcesHelper,
                                 mDeviceDataProviderMetadataHelper,
                                 mFitnessRecordUpsertHelper,

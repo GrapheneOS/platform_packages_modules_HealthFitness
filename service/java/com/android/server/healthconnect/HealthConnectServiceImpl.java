@@ -164,7 +164,6 @@ import android.health.connect.changelog.ChangeLogsResponse.DeletedLog;
 import android.health.connect.changelog.ChangeLogsResponse.DeletedMedicalResource;
 import android.health.connect.datatypes.AppInfo;
 import android.health.connect.datatypes.DataOrigin;
-import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
@@ -206,7 +205,6 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
-import com.android.internal.annotations.VisibleForTesting;
 import com.android.modules.utils.build.SdkLevel;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
@@ -224,7 +222,6 @@ import com.android.server.healthconnect.common.metadata.SyntheticPackageNameReso
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.device.DeviceDataProviderManager;
-import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.exportimport.DocumentProvidersManager;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
@@ -312,15 +309,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     // Allows an application to act as a backup inter-agent to send and receive HealthConnect data
     private static final String HEALTH_CONNECT_BACKUP_INTER_AGENT_PERMISSION =
             "android.permission.HEALTH_CONNECT_BACKUP_INTER_AGENT";
-
-    @VisibleForTesting
-    static final DeviceDataSource EMPTY_DEVICE_DATA_SOURCE =
-            new DeviceDataSource(
-                    new DataOrigin.Builder()
-                            .setPackageName(DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE)
-                            .build(),
-                    new Device.Builder().build(),
-                    Set.of());
 
     private final ImportManager mImportManager;
 
@@ -2169,13 +2157,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     tryAcquireApiCallQuota(
                             uid, QuotaCategory.QUOTA_CATEGORY_READ, isInForeground, logger);
 
-                    DeviceDataSourceInfo deviceDataSourceInfo = getCurrentDeviceDataSourceInfo();
-                    if (deviceDataSourceInfo == null) {
-                        callback.onResult(EMPTY_DEVICE_DATA_SOURCE);
-                        logger.setHealthDataServiceApiStatusSuccess();
-                        return;
-                    }
-
                     List<String> grantedPermissionsList =
                             mPermissionHelper.getGrantedHealthPermissions(
                                     callingPackageName, userHandle);
@@ -2183,6 +2164,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     for (String grantedPermission : grantedPermissionsList) {
                         if (mHealthConnectMappings.isReadPermission(grantedPermission)) {
                             hasGrantedReadPermission = true;
+                            break;
                         }
                     }
 
@@ -2191,19 +2173,22 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 "Caller must hold at least one Health Connect permission");
                     }
 
-                    DeviceDataSource result =
-                            processDeviceDataSource(
-                                    deviceDataSourceInfo,
-                                    /* unused= */ Set.of(),
-                                    /* skipPermissionChecks= */ true);
-                    // Result will never be null here as we skip the permission checks in
-                    // #processDeviceDataSource
-                    if (result == null) {
-                        callback.onResult(EMPTY_DEVICE_DATA_SOURCE);
-                        logger.setHealthDataServiceApiStatusSuccess();
-                        return;
+                    DeviceDataSource result = null;
+                    DeviceDataSourceInfo deviceDataSourceInfo = getCurrentDeviceDataSourceInfo();
+                    if (deviceDataSourceInfo != null) {
+                        // result will never be null here as we skip the permission checks in
+                        // #processDeviceDataSource
+                        result =
+                                processDeviceDataSource(
+                                        deviceDataSourceInfo,
+                                        /* unused= */ Set.of(),
+                                        /* skipPermissionChecks= */ true);
                     }
-
+                    if (result == null) {
+                        result =
+                                requireNonNull(mDeviceDataProviderManager)
+                                        .getDefaultCurrentDeviceDataSource();
+                    }
                     Function<String, String> maskingFunction =
                             getMaskingFunction(callingPackageName);
                     DeviceDataSource maskedResult = result.toMasked(maskingFunction);

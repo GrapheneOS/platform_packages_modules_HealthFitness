@@ -89,13 +89,19 @@ public class CurrentDeviceDataSourceTest {
     }
 
     @Test
-    public void noAdvertisements_returnsEmptyDeviceDataSource() throws InterruptedException {
+    public void noAdvertisements_returnsCurrentDeviceWithEmptyDataTypeSources()
+            throws InterruptedException {
+        String currentDeviceId = TestUtils.getCurrentDeviceId();
         TestUtils.verifyGetCurrentDeviceDataSourceWithPermission(
                 dataSource -> {
                     assertThat(dataSource.getDeviceDataTypeSources()).isEmpty();
-                    assertThat(dataSource.getDevice()).isEqualTo(new Device.Builder().build());
                     assertThat(dataSource.getDeviceDataOrigin().getPackageName())
-                            .isEqualTo("android");
+                            .isEqualTo(currentDeviceId);
+                    assertThat(dataSource.getDevice().getModel()).isNotNull();
+                    assertThat(dataSource.getDevice().getManufacturer()).isNotNull();
+                    assertThat(dataSource.getDevice().getType())
+                            .isEqualTo(Device.DEVICE_TYPE_PHONE);
+                    assertThat(dataSource.getDevice().getDisplayName()).isNotNull();
                 },
                 READ_STEPS);
     }
