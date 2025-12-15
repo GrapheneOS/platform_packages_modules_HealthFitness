@@ -49,9 +49,6 @@
       "name": "CtsHealthConnectHostTestCases"
     },
     {
-      "name": "CtsHealthConnectHostSideDeviceTestCases"
-    },
-    {
       "name": "CtsExerciseRouteTestCases"
     },
     {
@@ -132,9 +129,6 @@
     },
     {
       "name": "CtsHealthConnectHostTestCases"
-    },
-    {
-      "name": "CtsHealthConnectHostSideDeviceTestCases"
     },
     {
       "name": "CtsExerciseRouteTestCases"

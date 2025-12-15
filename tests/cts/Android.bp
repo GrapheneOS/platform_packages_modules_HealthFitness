@@ -75,7 +75,10 @@ android_test {
         ":HealthFitnessCtsTestApp2",
         ":HealthFitnessCtsSystemTestApp",
         ":CtsHealthConnectTestAppAWithNormalReadWritePermission",
+        ":CtsHealthConnectTestAppBWithNormalReadWritePermission",
         ":CtsHealthConnectTestAppWithWritePermissionsOnly",
+        ":CtsHealthConnectTestAppWithDataManagePermission",
+        ":CtsHealthConnectTestAppWithNoPermission",
     ],
     jarjar_rules: ":health-cts-jarjar-rules",
 }

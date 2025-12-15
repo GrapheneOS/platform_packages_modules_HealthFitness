@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.healthconnect.cts.device;
+package android.healthconnect.cts;
 
 import static android.health.connect.HealthPermissions.READ_EXERCISE;
 import static android.health.connect.HealthPermissions.READ_HEART_RATE;
@@ -442,13 +442,11 @@ public final class HealthConnectDeviceTest {
             throws Exception {
         StepsRecord otherAppRecord = getStepsRecord(getEmptyMetadata());
         String otherAppRecordId = APP_A_WITH_READ_WRITE_PERMS.insertRecords(otherAppRecord).get(0);
-
-        List<Record> ownRecords = TestUtils.insertRecords(List.of(STEPS_1000, STEPS_2000));
         List<String> ownRecordIds =
-                ownRecords.stream().map(record -> record.getMetadata().getId()).toList();
+                APP_WITH_WRITE_PERMS_ONLY.insertRecords(List.of(STEPS_1000, STEPS_2000));
 
-        List<Record> readRecords =
-                TestUtils.readRecords(
+        List<? extends Record> readRecords =
+                APP_WITH_WRITE_PERMS_ONLY.readRecords(
                         new ReadRecordsRequestUsingIds.Builder(StepsRecord.class)
                                 .addId(ownRecordIds.get(0))
                                 .addId(ownRecordIds.get(1))
@@ -505,26 +503,13 @@ public final class HealthConnectDeviceTest {
 
     @Test
     public void testAggregateRecords_onlyWritePermissions_requestsOthersData_throwsHcException()
-            throws InterruptedException {
+            throws Exception {
         try {
-            TestUtils.getAggregateResponse(
-                    new AggregateRecordsRequest.Builder<Long>(
-                                    new TimeInstantRangeFilter.Builder()
-                                            .setStartTime(Instant.ofEpochMilli(0))
-                                            .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
-                                            .build())
-                            .addAggregationType(WRITE_ONLY_PERM_AGGREGATION_STEPS_TOTAL)
-                            .addDataOriginsFilter(
-                                    new DataOrigin.Builder()
-                                            .setPackageName(mContext.getPackageName())
-                                            .build())
-                            .addDataOriginsFilter(
-                                    new DataOrigin.Builder()
-                                            .setPackageName(
-                                                    APP_B_WITH_READ_WRITE_PERMS.getPackageName())
-                                            .build())
-                            .build(),
-                    /* recordsToInsert= */ List.of(STEPS_1000, STEPS_2000));
+            APP_WITH_WRITE_PERMS_ONLY.insertRecords(List.of(STEPS_1000, STEPS_2000));
+            APP_WITH_WRITE_PERMS_ONLY.aggregateStepsCountTotal(
+                    Instant.ofEpochMilli(0),
+                    Instant.now().plus(1, ChronoUnit.DAYS),
+                    List.of(APP_B_WITH_READ_WRITE_PERMS.getPackageName()));
             fail("Expected to fail with HealthConnectException but didn't");
         } catch (HealthConnectException e) {
             assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
@@ -533,47 +518,11 @@ public final class HealthConnectDeviceTest {
 
     @Test
     public void testAggregateRecords_onlyWritePermissions_allDataRequested_throwsHcException()
-            throws InterruptedException {
+            throws Exception {
         try {
-            TestUtils.getAggregateResponse(
-                    new AggregateRecordsRequest.Builder<Long>(
-                                    new TimeInstantRangeFilter.Builder()
-                                            .setStartTime(Instant.ofEpochMilli(0))
-                                            .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
-                                            .build())
-                            .addAggregationType(WRITE_ONLY_PERM_AGGREGATION_STEPS_TOTAL)
-                            .build(),
-                    /* recordsToInsert= */ List.of(STEPS_1000, STEPS_2000));
-            fail("Expected to fail with HealthConnectException but didn't");
-        } catch (HealthConnectException e) {
-            assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
-        }
-    }
-
-    @Test
-    public void
-            testAggregateRecords_someReadAndWritePermissions_requestsOthersData_throwsHcException()
-                    throws InterruptedException {
-        try {
-            TestUtils.getAggregateResponse(
-                    new AggregateRecordsRequest.Builder<Long>(
-                                    new TimeInstantRangeFilter.Builder()
-                                            .setStartTime(Instant.ofEpochMilli(0))
-                                            .setEndTime(Instant.now().plus(1, ChronoUnit.DAYS))
-                                            .build())
-                            .addAggregationType(WRITE_ONLY_PERM_AGGREGATION_STEPS_TOTAL)
-                            .addAggregationType(READ_PERM_AGGREGATION_EXERCISE_DURATION_TOTAL)
-                            .addDataOriginsFilter(
-                                    new DataOrigin.Builder()
-                                            .setPackageName(mContext.getPackageName())
-                                            .build())
-                            .addDataOriginsFilter(
-                                    new DataOrigin.Builder()
-                                            .setPackageName(
-                                                    APP_B_WITH_READ_WRITE_PERMS.getPackageName())
-                                            .build())
-                            .build(),
-                    /* recordsToInsert= */ List.of(STEPS_1000, STEPS_2000));
+            APP_WITH_WRITE_PERMS_ONLY.insertRecords(List.of(STEPS_1000, STEPS_2000));
+            APP_WITH_WRITE_PERMS_ONLY.aggregateStepsCountTotal(
+                    Instant.ofEpochMilli(0), Instant.now().plus(1, ChronoUnit.DAYS), List.of());
             fail("Expected to fail with HealthConnectException but didn't");
         } catch (HealthConnectException e) {
             assertThat(e.getErrorCode()).isEqualTo(HealthConnectException.ERROR_SECURITY);
