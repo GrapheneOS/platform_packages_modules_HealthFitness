@@ -1306,13 +1306,13 @@
     <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Åbn disse apps nu for at fuldføre konfigurationen og starte datadelingen, eller fortsæt med at tilknytte tilgængelige apps"</string>
     <string name="almost_done_connected_apps" msgid="7278779868120518202">"Tilknyttede apps"</string>
     <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Apps, der kan tilknyttes"</string>
-    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Se dine sundhedsdata i alle apps"</string>
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Se dine sundhedsdata i forskellige apps"</string>
     <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Begynd at dele trænings- og velværedata mellem dine apps"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Konfigurer"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Tilknyt en anden app"</string>
     <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Konfigurer en anden app, så den kan begynde at dele trænings- og velværedata"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Fortsæt"</string>
-    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Se dine sundhedsdata i alle apps"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Se dine sundhedsdata i forskellige apps"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Med Health Connect kan du dele trænings- og velværedata mellem dine apps. Se, hvilke apps du kan tilknytte nu."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Tilknyt en anden app"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Knyt en anden app til Health Connect, så den kan begynde at dele trænings- og velværedata"</string>
@@ -1322,7 +1322,7 @@
     <string name="device_management_screen_footer" msgid="1787611015335737167">"De data, der indsamles af denne enhed, gemmes i Health Connect, hvor tilknyttede apps kan tilgå dem"</string>
     <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Denne enhed understøtter ikke skridttælling, men har stadig data, der er gemt i Health Connect"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Denne enhed registrerer ikke skridt"</string>
-    <string name="device_settings_label" msgid="9053791237491247819">"Har tilladelse til at redigere"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"Har tilladelse til at skrive"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Enhedsdata"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Administrer enhed"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Se enhedsdata"</string>

@@ -396,7 +396,7 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"السماح"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"السماح بالكل"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"عدم السماح"</string>
-    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"يُرجى اختيار البيانات المطلوب أن يقرأها هذا التطبيق من Health Connect أو يكتبها فيه"</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"يُرجى اختيار البيانات المطلوب أن يقرأها هذا التطبيق من Health Connect أو يعدّلها فيه"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"يُرجى اختيار البيانات المطلوب أن يقرأها هذا التطبيق من Health Connect"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"يُرجى اختيار البيانات المطلوب أن يكتبها هذا التطبيق في Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"يُرجى اختيار البيانات المطلوب أن يقرأها هذا التطبيق من Health Connect أو يكتبها فيه"</string>
@@ -415,7 +415,7 @@
     <string name="request_permissions_rationale" msgid="2642076968583316986">"يمكنك الاطّلاع على <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> لمعرفة كيفية معالجة \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" لبياناتك"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"سياسة الخصوصية"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"السماح لـ \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" بالوصول إلى سجلّاتك الطبية؟"</string>
-    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"إذا منحت هذا الإذن، سيتمكّن هذا التطبيق من قراءة البيانات وكتابتها، مثل البيانات المتعلّقة بالحساسية ونتائج التحاليل الطبية واللقاحات وغير ذلك\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
+    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"إذا منحت هذا الإذن، سيتمكّن هذا التطبيق من قراءة البيانات وتعديلها، مثل البيانات المتعلّقة بالحساسية ونتائج التحاليل الطبية واللقاحات وغير ذلك\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"إذا منحت هذا الإذن، سيتمكّن هذا التطبيق من قراءة البيانات، مثل البيانات المتعلّقة بالحساسية ونتائج التحاليل الطبية واللقاحات وغير ذلك\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"لمحة عن السجلّات الطبية"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"تشمل البيانات المراد مشاركتها ما يلي:"</string>

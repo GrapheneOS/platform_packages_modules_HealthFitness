@@ -415,7 +415,7 @@
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Vous pouvez découvrir comment <xliff:g id="APP_NAME">%1$s</xliff:g> traite vos données en consultant sa <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"politique de confidentialité"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à vos dossiers médicaux?"</string>
-    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Si vous donnez l\'accès, l\'appli pourra consulter et modifier des données telles que celles concernant les allergies, les résultats de laboratoire, les vaccins et plus\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
+    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Si vous donnez l\'accès, l\'appli pourra lire et écrire des données telles que celles concernant les allergies, les résultats de laboratoire, les vaccins et plus\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Si vous donnez l\'accès, l\'appli pourra lire des données telles que celles concernant les allergies, les résultats de laboratoire, les vaccins et plus\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"À propos des dossiers médicaux"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Les données à partager comprennent"</string>

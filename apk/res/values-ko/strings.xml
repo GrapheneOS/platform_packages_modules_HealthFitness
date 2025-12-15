@@ -406,7 +406,7 @@
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> 앱에서 헬스 커넥트를 사용하여 이 기기의 다른 앱에서 데이터를 읽도록 허용합니다. 액세스 권한을 부여한 다른 앱에서도 이 데이터를 읽을 수 있습니다."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"이 데이터를 동기화할 수 있는 앱"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g>에서 사용자 데이터를 사용하는 방식을 "<a href="%2$s">"개인정보처리방침"</a>"에서 확인하세요."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"헬스 커넥트를 사용하면 여러 앱 간에 건강 및 피트니스 데이터를 공유할 수 있습니다. 이를 통해 데이터를 안전하게 보호하면서 유용한 정보와 경험을 얻을 수 있습니다."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"헬스 커넥트를 사용하면 여러 앱 간에 건강 및 피트니스 데이터를 공유할 수 있습니다. 이를 통해 데이터를 안전하게 보호하면서 유용한 정보와 경험 데이터를 모을 수 있습니다."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"헬스 커넥트에 관해 자세히 알아보기"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"읽기 액세스 권한을 부여하면 앱에서 새로운 데이터와 지난 30일간의 데이터를 읽을 수 있습니다."</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"읽기 액세스 권한을 부여하면 앱에서 새로운 데이터와 이전 데이터를 읽을 수 있습니다."</string>
@@ -463,8 +463,8 @@
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"업데이트 필요"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"설정 및 도움말"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"모든 앱의 액세스 권한 삭제"</string>
-    <string name="manage_permissions_read_header" msgid="2031153753057983683">"읽기가 허용되는 권한"</string>
-    <string name="manage_permissions_write_header" msgid="6876806848658168370">"쓰기가 허용되는 권한"</string>
+    <string name="manage_permissions_read_header" msgid="2031153753057983683">"읽기 허용됨"</string>
+    <string name="manage_permissions_write_header" msgid="6876806848658168370">"쓰기 허용됨"</string>
     <string name="no_apps_allowed" msgid="5794833581324128108">"허용된 앱 없음"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"거부된 앱 없음"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"모든 앱의 액세스 권한을 삭제하시겠습니까?"</string>
@@ -478,7 +478,7 @@
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"앱의 액세스 권한은 취소되었지만 데이터는 계속해서 헬스 커넥트에 저장됩니다."</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> 앱은 <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g> 이후 추가된 데이터를 읽을 수 있습니다."</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"앱이 액세스할 수 있는 다른 Android 권한을 관리하려면 설정 &gt; 앱으로 이동하세요."</string>
-    <string name="manage_permissions_rationale" msgid="2780008055185441703">"<xliff:g id="APP_NAME">%1$s</xliff:g> 앱이 개발자의 개인정보처리방침에 따라 데이터를 처리하는 방식을 알아볼 수 있습니다."</string>
+    <string name="manage_permissions_rationale" msgid="2780008055185441703">"개발자의 개인정보처리방침에서 <xliff:g id="APP_NAME">%1$s</xliff:g> 앱이 데이터를 처리하는 방식을 알아볼 수 있습니다."</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"앱이 액세스할 수 있는 다른 Android 권한을 관리하려면 설정으로 이동한 다음 앱을 탭하세요."</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"개인정보처리방침 읽기"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"지난 24시간 이내에 액세스함"</string>
@@ -1269,7 +1269,7 @@
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> 앱은 항상 모든 피트니스 및 웰니스 데이터에 액세스할 수 있습니다."</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> 앱은 사용 중인 경우 모든 피트니스 및 웰니스 데이터에 액세스할 수 있습니다."</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"액세스 허용됨"</string>
-    <string name="allowed_to_read" msgid="2775365229411407406">"읽기가 허용되는 권한"</string>
+    <string name="allowed_to_read" msgid="2775365229411407406">"읽기 허용됨"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"이 권한을 통해 <xliff:g id="APP_NAME">%1$s</xliff:g>에서 기기 센서의 데이터에 액세스할 수 있습니다."</string>
     <string name="write_access" msgid="571547306854732263">"쓰기 액세스"</string>
     <string name="read_access" msgid="3317759826769372785">"읽기 액세스"</string>
@@ -1322,7 +1322,7 @@
     <string name="device_management_screen_footer" msgid="1787611015335737167">"이 기기에서 수집한 데이터는 헬스 커넥트에 저장되며, 연결된 앱에서 이 데이터에 액세스합니다."</string>
     <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"이 기기에서 걸음 수 모니터링을 지원하지 않지만, 헬스 커넥트에 데이터가 저장되어 있습니다."</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"이 기기는 걸음 수를 모니터링하지 않습니다"</string>
-    <string name="device_settings_label" msgid="9053791237491247819">"쓰기가 허용되는 권한"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"쓰기 허용됨"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"기기 데이터"</string>
     <string name="device_data_label" msgid="2056618513138892435">"기기 관리"</string>
     <string name="device_data_button" msgid="8002406105399136401">"기기 데이터 보기"</string>
@@ -1335,7 +1335,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"내 건강 앱"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"내 건강 데이터"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"환경설정"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"헬스 커넥트를 사용하면 여러 앱 간에 건강 및 피트니스 데이터를 공유할 수 있습니다. 이를 통해 데이터를 안전하게 보호하면서 유용한 정보와 경험을 얻을 수 있습니다."</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"헬스 커넥트를 사용하면 여러 앱 간에 건강 및 피트니스 데이터를 공유할 수 있습니다. 이를 통해 데이터를 안전하게 보호하면서 유용한 정보와 경험 데이터를 모을 수 있습니다."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"헬스 커넥트에 관해 자세히 알아보기"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"데이터와 데이터에 액세스할 수 있는 앱"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"최근 내 데이터를 사용한 앱"</string>

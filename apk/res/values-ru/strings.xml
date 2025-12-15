@@ -1260,7 +1260,7 @@
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Разрешить выбранные"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"При использовании приложения"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Отклонить все"</string>
-    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Открыть приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к данным о самочувствии и физической активности?"</string>
+    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Разрешить приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к данным о самочувствии и физической активности?"</string>
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"Приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" запрашивает доступ к следующим типам данных: <xliff:g id="DATA_TYPES">%2$s</xliff:g>.\n\nВы можете предоставить сразу все разрешения или настроить их по отдельности."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Разрешить приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к данным этой категории: <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Физическая активность и самочувствие"</string>
@@ -1339,7 +1339,7 @@
     <string name="home_screen_footer_link" msgid="3276430842054286014">"О платформе \"Здоровье и спорт\""</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Ваши данные и список приложений с доступом к ним"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Приложения, которые недавно использовали ваши данные"</string>
-    <string name="home_devices_summary" msgid="6056984338393523399">"Посмотреть, какие устройства могут получать доступ к данным о здоровье"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"Список устройств, которые могут получать доступ к данным о здоровье"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Когда вы установите приложения, которые работают со Здоровьем и спортом, они появятся здесь."</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Посмотреть совместимые приложения"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Другие приложения для здоровья"</string>

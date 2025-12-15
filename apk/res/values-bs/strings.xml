@@ -337,7 +337,7 @@
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Alergije"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"alergije"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Čitanje podataka o alergijama"</string>
-    <string name="conditions_uppercase_label" msgid="5260404343402770877">"Uslovi"</string>
+    <string name="conditions_uppercase_label" msgid="5260404343402770877">"Stanja"</string>
     <string name="conditions_lowercase_label" msgid="2678248918552246997">"uslovi"</string>
     <string name="conditions_content_description" msgid="3230552343616193829">"Uslovi za čitanje"</string>
     <string name="vaccines_uppercase_label" msgid="1101176371071123187">"Vakcine"</string>
@@ -361,7 +361,7 @@
     <string name="procedures_uppercase_label" msgid="9176087520132593261">"Zahvati"</string>
     <string name="procedures_lowercase_label" msgid="5320804313946273234">"zahvati"</string>
     <string name="procedures_content_description" msgid="1086900373141440005">"Čitanje podataka o postupcima"</string>
-    <string name="social_history_uppercase_label" msgid="4119611299449533999">"Historija aktivnosti na društvenim medijima"</string>
+    <string name="social_history_uppercase_label" msgid="4119611299449533999">"Socijalna anamneza"</string>
     <string name="social_history_lowercase_label" msgid="9027541979445736412">"historija aktivnosti na društvenim medijima"</string>
     <string name="social_history_content_description" msgid="7187059309389849831">"Čitanje historije aktivnosti na društvenim medijima"</string>
     <string name="visits_uppercase_label" msgid="8532619758336375886">"Posjete"</string>
@@ -406,7 +406,7 @@
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Dozvolite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da čita podatke iz drugih aplikacija na ovom uređaju koristeći Health Connect. Ove podatke mogu čitati i druge aplikacije kojima date pristup."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikacije koje mogu sinhronizirati ove podatke"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Saznajte kako aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> koristi vaše podatke u njenim "<a href="%2$s">"pravilima privatnosti"</a>"."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect vam omogućava dijeljenje podataka o zdravlju i fitnesu između više aplikacija. Ovo vam pomaže da otključate uvide i iskustva štiteći pri tom svoje podatke."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect vam omogućava dijeljenje podataka o zdravlju i fitnesu između više aplikacija. Ovo vam pomaže da otključate uvide i iskustva štiteći pritom svoje podatke."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Više o Health Connectu"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Ako joj odobrite čitanje podataka, aplikacija će moći čitati nove podatke i podatke iz posljednjih 30 dana"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ako joj odobrite čitanje podataka, aplikacija će moći čitati nove i prethodne podatke"</string>
@@ -1327,12 +1327,12 @@
     <string name="device_data_label" msgid="2056618513138892435">"Upravljajte uređajem"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Pogledajte podatke uređaja"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Koraci koji se prate na telefonu će se prikazivati u Health Connectu"</string>
-    <string name="native_steps_banner_summary" msgid="8255767487167444809">"Koraci koje prati uređaj se sada pohranjuju u Health Connectu da im povezane aplikacije mogu pristupati"</string>
+    <string name="native_steps_banner_summary" msgid="8255767487167444809">"Koraci koje prati uređaj sada se pohranjuju u Health Connectu da im povezane aplikacije mogu pristupati"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Odbaci"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Pregledajte"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Koraci su sada u Health Connectu"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Koraci koje prati ovaj uređaj sada se pohranjuju u Health Connectu da im povezane aplikacije mogu pristupati"</string>
-    <string name="your_health_apps_category_title" msgid="2140744650535785802">"Aplikacija za zdravlje"</string>
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"Aplikacije za zdravlje"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Zdravstveni podaci"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Postavke"</string>
     <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect vam omogućava da dijelite podatke o zdravlju i fitnesu između više aplikacija. Ovo vam pomaže da otključate uvide i iskustva štiteći pri tom svoje podatke."</string>

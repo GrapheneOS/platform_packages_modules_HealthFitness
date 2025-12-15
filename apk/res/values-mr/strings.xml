@@ -392,7 +392,7 @@
     <string name="symptom_severity_severe" msgid="4675732713898596705">"तीव्र"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” ला रीड करण्याची अनुमती द्या"</string>
-    <string name="write_permission_category" msgid="1529702804865008111">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” राइट करण्याची अनुमती द्या"</string>
+    <string name="write_permission_category" msgid="1529702804865008111">"“<xliff:g id="APP_NAME">%1$s</xliff:g>” ला राइट करण्याची अनुमती द्या"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"अनुमती द्या"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"सर्वांना अनुमती द्या"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"अनुमती देऊ नका"</string>

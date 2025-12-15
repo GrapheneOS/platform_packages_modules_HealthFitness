@@ -358,9 +358,9 @@
     <string name="pregnancy_uppercase_label" msgid="5979925175194337864">"Schwangerschaft"</string>
     <string name="pregnancy_lowercase_label" msgid="810439290131044517">"Schwangerschaft"</string>
     <string name="pregnancy_content_description" msgid="3436773729243586287">"Daten zur Schwangerschaft lesen"</string>
-    <string name="procedures_uppercase_label" msgid="9176087520132593261">"Medizinische Verfahren"</string>
-    <string name="procedures_lowercase_label" msgid="5320804313946273234">"medizinische Verfahren"</string>
-    <string name="procedures_content_description" msgid="1086900373141440005">"Daten zu medizinischen Verfahren lesen"</string>
+    <string name="procedures_uppercase_label" msgid="9176087520132593261">"Medizinische Behandlungen"</string>
+    <string name="procedures_lowercase_label" msgid="5320804313946273234">"medizinische Behandlungen"</string>
+    <string name="procedures_content_description" msgid="1086900373141440005">"Daten zu medizinischen Behandlungen lesen"</string>
     <string name="social_history_uppercase_label" msgid="4119611299449533999">"Sozialanamnese"</string>
     <string name="social_history_lowercase_label" msgid="9027541979445736412">"Sozialanamnese"</string>
     <string name="social_history_content_description" msgid="7187059309389849831">"Sozialanamnese lesen"</string>
@@ -391,8 +391,8 @@
     <string name="symptom_severity_moderate" msgid="8388787027751900668">"mäßig"</string>
     <string name="symptom_severity_severe" msgid="4675732713898596705">"schwer"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="TYPE">%2$s</xliff:g>, <xliff:g id="SEVERITY">%1$s</xliff:g>"</string>
-    <string name="read_permission_category" msgid="6002099618259628632">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ Lesezugriff erlauben"</string>
-    <string name="write_permission_category" msgid="1529702804865008111">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ Schreibzugriff erlauben"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ für folgende Daten Lesezugriff erlauben"</string>
+    <string name="write_permission_category" msgid="1529702804865008111">"„<xliff:g id="APP_NAME">%1$s</xliff:g>“ für folgende Daten Schreibzugriff erlauben"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Erlauben"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Alle erlauben"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Nicht erlauben"</string>
@@ -1329,17 +1329,17 @@
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Vom Smartphone aufgezeichnete Schritte erscheinen in Health Connect"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Die von diesem Gerät aufgezeichneten Schritte werden jetzt in Health Connect gespeichert, damit verbundene Apps darauf zugreifen können"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Schließen"</string>
-    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Überprüfen"</string>
+    <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Ansehen"</string>
     <string name="native_steps_notification_title" msgid="4059138095111818516">"Schritte in Health Connect gespeichert"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"Die von diesem Gerät aufgezeichneten Schritte werden jetzt in Health Connect gespeichert, damit verbundene Apps darauf zugreifen können"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Deine Gesundheits-Apps"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Deine Gesundheitsdaten"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Einstellungen"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Mit Health Connect kannst du deine Gesundheits- und Fitnessdaten zwischen mehreren Apps teilen. So hast du Einblick in deine Statistiken und kannst neue Funktionen nutzen, während deine Daten geschützt werden."</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Mit Health Connect kannst du deine Gesundheits- und Fitnessdaten zwischen mehreren Apps synchronisieren. So hast du Einblick in deine Statistiken und kannst neue Funktionen nutzen, während deine Daten geschützt werden."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Mehr zu Health Connect"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Daten und Apps ansehen, die darauf zugreifen können"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"Deine Daten und welche Apps darauf zugreifen können"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Apps, die kürzlich deine Daten verwendet haben"</string>
-    <string name="home_devices_summary" msgid="6056984338393523399">"Geräte überprüfen, die auf Gesundheitsdaten zugreifen können"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"Ansehen, welche Geräte auf Gesundheitsdaten zugreifen können"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Wenn du Apps installierst, die mit Health Connect kompatibel sind, werden sie hier angezeigt"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Kompatible Apps ansehen"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Weitere Gesundheits-Apps ansehen"</string>

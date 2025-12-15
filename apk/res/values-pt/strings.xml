@@ -415,12 +415,12 @@
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Leia a <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> do <xliff:g id="APP_NAME">%1$s</xliff:g> para saber como esse app trata seus dados"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"política de privacidade"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"Permitir que o app <xliff:g id="APP_NAME">%1$s</xliff:g> acesse seus históricos médicos?"</string>
-    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Se você conceder acesso, o app poderá ler e gravar dados, como alergias, resultados de laboratório, vacinas e muito mais\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Se você conceder acesso, o app poderá ler dados, como alergias, resultados de laboratório, vacinas e muito mais\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
+    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Se você conceder acesso, o app poderá ler e gravar dados, como alergias, resultados de laboratório, vacinas e muito mais.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
+    <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Se você conceder acesso, o app poderá ler dados, como alergias, resultados de laboratório, vacinas e muito mais.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"Sobre históricos médicos"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Os dados que serão compartilhados incluem"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"Se você permitir, o app <xliff:g id="APP_NAME">%1$s</xliff:g> poderá compartilhar seus históricos médicos com a Conexão Saúde."</string>
-    <string name="medical_request_footer" msgid="157243861031258933">"Sincronize seus históricos médicos de diferentes apps e fontes para que eles fiquem em um só lugar"</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"Sincronize seus históricos médicos de diferentes apps e fontes para que eles fiquem em um só lugar."</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Remover todas as permissões?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Remover tudo"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"O app <xliff:g id="APP_NAME">%1$s</xliff:g> não poderá mais ler nem gravar dados da plataforma Conexão Saúde.\n\nIsso não afeta outras permissões que esse app possa ter, como de câmera, microfone ou localização."</string>
@@ -481,7 +481,7 @@
     <string name="manage_permissions_rationale" msgid="2780008055185441703">"Veja na Política de Privacidade do desenvolvedor como o app <xliff:g id="APP_NAME">%1$s</xliff:g> processa seus dados"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Para gerenciar outras permissões do Android que esse app pode acessar, vá até \"Configurações\" e toque em \"Apps\""</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Leia a Política de Privacidade"</string>
-    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Acessado nas últimas 24 horas"</string>
+    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Acessou nas últimas 24 horas"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Acesso de apps"</string>
     <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"Nenhum app compatível instalado"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"Acesso adicional"</string>
@@ -1335,12 +1335,12 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Seus apps de saúde"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Seus dados de saúde"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferências"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"O app da Conexão Saúde permite compartilhar seus dados de saúde e condicionamento físico entre vários aplicativos. Assim, você acessa insights e experiências sem deixar de lado a proteção dos seus dados."</string>
-    <string name="home_screen_footer_link" msgid="3276430842054286014">"Mais informações sobre o app da Conexão Saúde"</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Com a Conexão Saúde você compartilha seus dados de saúde e condicionamento físico entre vários apps. Assim, você acessa insights e experiências sem deixar de lado a proteção dos seus dados."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"Mais informações sobre a Conexão Saúde"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Seus dados e quais apps podem acessá-los"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Apps que usaram seus dados recentemente"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Analise dispositivos que podem acessar dados de saúde"</string>
-    <string name="empty_apps_section_title" msgid="1808646811838427261">"Instale apps que funcionem com a Conexão Saúde para que eles apareçam aqui"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Instale apps compatíveis com a Conexão Saúde para que eles apareçam aqui"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Ver apps compatíveis"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Ver mais apps de saúde"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Não conectado"</string>

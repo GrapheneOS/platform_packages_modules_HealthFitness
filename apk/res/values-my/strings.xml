@@ -358,7 +358,7 @@
     <string name="pregnancy_uppercase_label" msgid="5979925175194337864">"ကိုယ်ဝန်ဆောင်ခြင်း"</string>
     <string name="pregnancy_lowercase_label" msgid="810439290131044517">"ကိုယ်ဝန်ဆောင်ခြင်း"</string>
     <string name="pregnancy_content_description" msgid="3436773729243586287">"ကိုယ်ဝန်ဆောင်ခြင်းကို ဖတ်ရန်"</string>
-    <string name="procedures_uppercase_label" msgid="9176087520132593261">"လုပ်ငန်းစဉ်များ"</string>
+    <string name="procedures_uppercase_label" msgid="9176087520132593261">"ခွဲစိတ်ကုသမှုများ"</string>
     <string name="procedures_lowercase_label" msgid="5320804313946273234">"ခွဲစိတ်ကုသမှုများ"</string>
     <string name="procedures_content_description" msgid="1086900373141440005">"လုပ်ငန်းစဉ်များကို ဖတ်ရန်"</string>
     <string name="social_history_uppercase_label" msgid="4119611299449533999">"လူမှုမှတ်တမ်း"</string>
@@ -1339,7 +1339,7 @@
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect အကြောင်း ပိုမိုသိရှိရန်"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"သင့်ဒေတာနှင့် ၎င်းအားသုံးနိုင်သည့် အက်ပ်များ"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"သင့်ဒေတာကို လတ်တလောသုံးထားသည့် အက်ပ်များ"</string>
-    <string name="home_devices_summary" msgid="6056984338393523399">"ကျန်းမာရေးဒေတာသုံးနိုင်သော စက်များကို ကြည့်ပါ"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"ကျန်းမာရေးဒေတာသုံးနိုင်သော စက်များကို ကြည့်ရန်"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect နှင့် တွဲသုံးနိုင်သော အက်ပ်များကို ဤနေရာတွင် မြင်ရရန် ထည့်သွင်းပါ"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"တွဲသုံးနိုင်သော အက်ပ်များကို ကြည့်ရန်"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"နောက်ထပ် ကျန်းမာရေးအက်ပ်များ ကြည့်ရန်"</string>

@@ -412,7 +412,7 @@
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Якщо ви дозволите доступ для перегляду, додаток зможе переглядати нові й минулі дані"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до Health Connect?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до даних про фізичну активність і здоров’я?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"Щоб дізнатися, як додаток <xliff:g id="APP_NAME">%1$s</xliff:g> обробляє ваші дані, перегляньте його <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"Інформацію про те, як додаток <xliff:g id="APP_NAME">%1$s</xliff:g> обробляє ваші дані, можна знайти в його <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"політику конфіденційності"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до ваших медичних даних?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Якщо ви надасте доступ, додаток зможе переглядати й записувати такі дані, як відомості про алергії, результати аналізів, щеплення тощо\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>

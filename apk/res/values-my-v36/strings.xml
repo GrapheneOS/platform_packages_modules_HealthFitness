@@ -19,7 +19,7 @@
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="permgrouplab_health" msgid="2189810208223060173">"ကျန်းမာကြံ့ခိုင်ရေး၊ အထွေထွေသုခ"</string>
     <string name="health_permission_header_description" msgid="1816010176505069704">"ဤခွင့်ပြုချက်ရှိသော အက်ပ်များသည် သင့်ကျန်းမာကြံ့ခိုင်ရေးနှင့် အထွေထွေသုခဆိုင်ရာ ဒေတာများကို ဖတ်နိုင်၊ ရေးနိုင်သည်။ ၎င်းတွင် သင့်စက်များမှ စုဆောင်းရယူသည့် ဒေတာနှင့် Health Connect ၌ သိမ်းထားသော ဒေတာပါဝင်သည်"</string>
-    <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"<xliff:g id="APP_NAME">%1$s</xliff:g> အား သင့်ကြံ့ခိုင်ရေးနှင့် အထွေထွေသုခဆိုင်ရာဒေတာကို သုံးခွင့်ပြုမလား။"</string>
+    <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"<xliff:g id="APP_NAME">%1$s</xliff:g> အား သင့်ကြံ့ခိုင်ရေးနှင့် အထွေထွေသုခဆိုင်ရာဒေတာကို သုံးခွင့်ပြုမလား"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"ဤအက်ပ်ကသုံးနိုင်သည့် ကျန်းမာကြံ့ခိုင်ရေးဒေတာကို ရွေးပါ။ ၎င်းတွင် ဤစက်၌ စုဆောင်းရယူပြီး သိမ်းထားသော ဒေတာပါဝင်သည်။ <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"ဤအက်ပ်ကသုံးနိုင်သည့် ကျန်းမာကြံ့ခိုင်ရေးဒေတာကို ရွေးပါ။ ၎င်းတွင် ဤစက်၌ စုဆောင်းရယူပြီး သိမ်းထားသော ဒေတာပါဝင်သည်။ <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"ဤအက်ပ်ကသုံးနိုင်သည့် ကျန်းမာကြံ့ခိုင်ရေးဒေတာကို ရွေးပါ။ ၎င်းတွင် ဤစက်၌ စုဆောင်းရယူပြီး သိမ်းထားသော ဒေတာပါဝင်သည်။ <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
