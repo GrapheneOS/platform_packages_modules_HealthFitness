@@ -24,17 +24,20 @@
         <item name="android:paddingHorizontal">@dimen/spacing_large</item>
     </style>
 
-    <style name="TextAppearance.HealthConnect.Expressive.PermissionHeading" parent="@style/SettingsLibCollapsingToolbarTitle.Expanded">
+    <style name="TextAppearance.HealthConnect.Expressive.PermissionHeading" parent="@style/TextAppearance.PreferenceTitle.SettingsLib">
         <item name="android:textSize">28sp</item>
         <item name="android:lineHeight">36sp</item>
+        <item name="android:fontVariationSettings">"'ROND' 100"</item>
     </style>
 
-    <style name="TextAppearance.HealthConnect.Expressive.Heading" parent="@style/SettingsLibCollapsingToolbarTitle.Expanded">
+    <style name="TextAppearance.HealthConnect.Expressive.Heading" parent="@style/TextAppearance.PreferenceTitle.SettingsLib">
+        <item name="android:fontWeight">500</item>
         <item name="android:textSize">36sp</item>
         <item name="android:lineHeight">44sp</item>
+        <item name="android:fontVariationSettings">"'ROND' 100"</item>
     </style>
 
-    <style name="TextAppearance.HealthConnect.Expressive.DetailedHeading" parent="@style/SettingsLibCollapsingToolbarTitle.Expanded">
+    <style name="TextAppearance.HealthConnect.Expressive.DetailedHeading" parent="@style/TextAppearance.PreferenceTitle.SettingsLib">
         <item name="android:fontWeight">400</item>
         <item name="android:textSize">14sp</item>
         <item name="android:lineHeight">20sp</item>
