@@ -4296,7 +4296,6 @@ public class HealthConnectServiceImplTest {
     @DisableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void hasUserEnabledTrackingWithDisabledFlags_NullException_throwsUnsupportedError() {
         assertThrows(
@@ -4310,7 +4309,6 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void hasUserEnabledTrackingWithoutPermission_SecurityException_throwsSecurityError() {
         setDeviceDataProviderPermission(PackageManager.PERMISSION_DENIED);
@@ -4323,6 +4321,10 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+    })
     public void hasUserEnabledTracking_withPreferencesSet_returnsPreferences() {
         when(mPreferenceHelper.getPreference("TRACKING_PREF_1")).thenReturn("true");
         when(mPreferenceHelper.getPreference("TRACKING_PREF_2")).thenReturn("false");
@@ -4337,6 +4339,10 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+    })
     public void hasUserEnabledTracking_noPreferenceSet_defaultsToTrue() {
         when(mPreferenceHelper.getPreference("TRACKING_PREF_1")).thenReturn(null);
 
@@ -4959,7 +4965,6 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getDeviceDataSourceInfos_withCurrentDeviceId_setsIsCurrentDevice()
             throws RemoteException {
@@ -5000,7 +5005,6 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void advertiseTwoDevices_withCurrentDeviceId_throws() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -5049,7 +5053,6 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     // TODO(b/467694681): Check if we want to block this behaviour.
     public void advertiseCurrentDeviceId_watchDevice_isSupported() throws RemoteException {
@@ -5264,7 +5267,6 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceDataSource_returnsCurrentDevice() throws Exception {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -5300,7 +5302,6 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceDataSource_currentDeviceNotAdvertised_returnsEmptyDeviceDataSource()
             throws RemoteException {
@@ -5320,7 +5321,6 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceDataSource_noPermissions_throwsSecurityException()
             throws RemoteException {
@@ -5349,7 +5349,6 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getCurrentDeviceDataSource_hasDifferentHealthPermission_returnsCurrentDevice()
             throws Exception {
@@ -5383,7 +5382,10 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+    })
     public void getCurrentDeviceDataSource_success_returnsOnlyCurrentDeviceDataSource()
             throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -5423,7 +5425,10 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+    })
     public void getCurrentDeviceDataSource_masksDataOrigin() throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(
@@ -5535,7 +5540,6 @@ public class HealthConnectServiceImplTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_SYMPTOMS
     })
     public void getDeviceDataSources_handlesSymptomTypes_returnsCorrectSymptomTypes()
