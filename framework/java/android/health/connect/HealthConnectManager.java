@@ -80,6 +80,7 @@ import android.health.connect.aidl.IDeviceDataSourceCapabilitiesCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
+import android.health.connect.aidl.IGetCurrentDeviceDataSourceCallback;
 import android.health.connect.aidl.IGetDeviceDataSourceInfosCallback;
 import android.health.connect.aidl.IGetDeviceDataSourcesCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
@@ -1651,6 +1652,44 @@ public class HealthConnectManager {
                         @Override
                         @RequiresNoPermission
                         public void onResult(List<DeviceDataSourceInfo> result) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(result));
+                        }
+
+                        @Override
+                        @RequiresNoPermission
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
+     * Retrieves the {@link DeviceDataSource} for the current device.
+     *
+     * <p>The caller must hold at least one Health Connect read permission in order to call this
+     * method.
+     *
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     */
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void getCurrentDeviceDataSource(
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<DeviceDataSource, HealthConnectException> callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        try {
+            mService.getCurrentDeviceDataSource(
+                    mContext.getAttributionSource(),
+                    new IGetCurrentDeviceDataSourceCallback.Stub() {
+                        @Override
+                        @RequiresNoPermission
+                        public void onResult(DeviceDataSource result) {
                             Binder.clearCallingIdentity();
                             executor.execute(() -> callback.onResult(result));
                         }

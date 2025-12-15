@@ -1579,6 +1579,35 @@ public final class TestUtils {
         }
     }
 
+    /** Runs the provided lambda after first adopting the specified shell permission. */
+    public static void verifyGetCurrentDeviceDataSourceWithPermission(
+            Consumer<DeviceDataSource> assertions, String... permissions)
+            throws InterruptedException {
+        HealthConnectReceiver<DeviceDataSource> receiver = new HealthConnectReceiver<>();
+        getCurrentDeviceDataSource(outcomeExecutor(), receiver, permissions);
+        receiver.verifyNoExceptionOrThrow();
+        assertions.accept(receiver.getResponse());
+    }
+
+    /**
+     * Calls {@link HealthConnectManager#getCurrentDeviceDataSource} with shell permission identity.
+     */
+    @SuppressLint("MissingPermission")
+    public static void getCurrentDeviceDataSource(
+            Executor executor,
+            TestOutcomeReceiver<DeviceDataSource, HealthConnectException> callback,
+            String... permissions)
+            throws InterruptedException {
+        UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
+        uiAutomation.adoptShellPermissionIdentity(permissions);
+
+        try {
+            getHealthConnectManager().getCurrentDeviceDataSource(executor, callback);
+        } finally {
+            uiAutomation.dropShellPermissionIdentity();
+        }
+    }
+
     private static Field findFieldUsingReflection(Class<?> type, String fieldName) {
         try {
             return type.getDeclaredField(fieldName);
