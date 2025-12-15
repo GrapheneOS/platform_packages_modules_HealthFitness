@@ -76,6 +76,12 @@ public class HealthConnectMatchmakingTest {
     private static final TestAppProxy APP_WITH_WRITE_PERMS_ONLY =
             TestAppProxy.forPackageName("android.healthconnect.cts.testapp.writePermsOnly");
 
+    private static final String EXTRA_RECORD_TYPES = "android.health.connect.extra.RECORD_TYPES";
+    private static final String EXTRA_INCLUDED_DATA_SOURCES =
+            "android.health.connect.extra.INCLUDED_DATA_SOURCES";
+    private static final String EXTRA_EXCLUDED_DATA_SOURCES =
+            "android.health.connect.extra.EXCLUDED_DATA_SOURCES";
+
     @Rule
     public final AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
@@ -594,21 +600,89 @@ public class HealthConnectMatchmakingTest {
                 .isFalse();
     }
 
-    // TODO(b/427663271): Replace this with meaningful test once the controller handles this intent.
+    @RequiresFlagsEnabled(FLAG_MATCHMAKING)
     @Test
     public void testCreateMatchingAppsIntent_success() {
-
         Intent matchingAppsIntent = createMatchmakingIntent(Set.of());
         assertThat(matchingAppsIntent.getAction()).isNotNull();
+        assertThat(matchingAppsIntent.hasExtra(EXTRA_RECORD_TYPES)).isTrue();
+        assertThat(matchingAppsIntent.getStringArrayExtra(EXTRA_RECORD_TYPES)).isEmpty();
     }
 
-    // TODO(b/427663271): Replace this with meaningful test once the controller handles this intent.
+    @RequiresFlagsEnabled({
+        FLAG_MATCHMAKING,
+        FLAG_DEVICE_DATA_PROVIDERS_API,
+        FLAG_DEVICE_DATA_PROVIDERS_DB,
+        FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    @Test
+    public void testCreateEmptyMatchingAppsIntent_withDevices_success() {
+        Intent matchingAppsIntent = createMatchmakingIntent(Set.of());
+        assertThat(matchingAppsIntent.getAction()).isNotNull();
+        assertThat(matchingAppsIntent.hasExtra(EXTRA_RECORD_TYPES)).isTrue();
+        assertThat(matchingAppsIntent.getStringArrayExtra(EXTRA_RECORD_TYPES)).isEmpty();
+        assertThat(matchingAppsIntent.hasExtra(EXTRA_INCLUDED_DATA_SOURCES)).isTrue();
+        assertThat(matchingAppsIntent.getStringArrayExtra(EXTRA_INCLUDED_DATA_SOURCES)).isEmpty();
+        assertThat(matchingAppsIntent.hasExtra(EXTRA_EXCLUDED_DATA_SOURCES)).isTrue();
+        assertThat(matchingAppsIntent.getStringArrayExtra(EXTRA_EXCLUDED_DATA_SOURCES)).isEmpty();
+    }
+
+    @RequiresFlagsEnabled(FLAG_MATCHMAKING)
     @Test
     public void testCreateMatchingAppsIntent_multipleRecordsPassed_success() {
-
         Intent matchingAppsIntent =
                 createMatchmakingIntent(Set.of(StepsRecord.class, SleepSessionRecord.class));
         assertThat(matchingAppsIntent.getAction()).isNotNull();
+        assertThat(matchingAppsIntent.hasExtra(EXTRA_RECORD_TYPES)).isTrue();
+        assertThat(matchingAppsIntent.getStringArrayExtra(EXTRA_RECORD_TYPES))
+                .asList()
+                .containsExactly(
+                        StepsRecord.class.getCanonicalName(),
+                        SleepSessionRecord.class.getCanonicalName());
+    }
+
+    @RequiresFlagsEnabled({
+        FLAG_MATCHMAKING,
+        FLAG_DEVICE_DATA_PROVIDERS_API,
+        FLAG_DEVICE_DATA_PROVIDERS_DB,
+        FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    @Test
+    public void testCreateMatchingAppsIntent_multipleIncludeDataSources_success() {
+        Intent matchingAppsIntent =
+                createMatchmakingIntent(
+                        Set.of(), Set.of("include.package.1", "include.package.2"), Set.of());
+        assertThat(matchingAppsIntent.getAction()).isNotNull();
+        assertThat(matchingAppsIntent.hasExtra(EXTRA_RECORD_TYPES)).isTrue();
+        assertThat(matchingAppsIntent.getStringArrayExtra(EXTRA_RECORD_TYPES)).isEmpty();
+        assertThat(matchingAppsIntent.hasExtra(EXTRA_INCLUDED_DATA_SOURCES)).isTrue();
+        assertThat(matchingAppsIntent.getStringArrayExtra(EXTRA_INCLUDED_DATA_SOURCES))
+                .asList()
+                .containsExactly("include.package.1", "include.package.2");
+        assertThat(matchingAppsIntent.hasExtra(EXTRA_EXCLUDED_DATA_SOURCES)).isTrue();
+        assertThat(matchingAppsIntent.getStringArrayExtra(EXTRA_EXCLUDED_DATA_SOURCES)).isEmpty();
+    }
+
+    @RequiresFlagsEnabled({
+        FLAG_MATCHMAKING,
+        FLAG_DEVICE_DATA_PROVIDERS_API,
+        FLAG_DEVICE_DATA_PROVIDERS_DB,
+        FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    @Test
+    public void testCreateMatchingAppsIntent_multipleExcludeDataSources_success() {
+        Intent matchingAppsIntent =
+                createMatchmakingIntent(
+                        Set.of(), Set.of(), Set.of("exclude.package.1", "exclude.package.2"));
+        assertThat(matchingAppsIntent.getAction()).isNotNull();
+        assertThat(matchingAppsIntent.hasExtra(EXTRA_RECORD_TYPES)).isTrue();
+        assertThat(matchingAppsIntent.getStringArrayExtra(EXTRA_RECORD_TYPES)).isEmpty();
+        assertThat(matchingAppsIntent.hasExtra(EXTRA_INCLUDED_DATA_SOURCES)).isTrue();
+        assertThat(matchingAppsIntent.getStringArrayExtra(EXTRA_INCLUDED_DATA_SOURCES)).isEmpty();
+        assertThat(matchingAppsIntent.hasExtra(EXTRA_EXCLUDED_DATA_SOURCES)).isTrue();
+        assertThat(matchingAppsIntent.getStringArrayExtra(EXTRA_EXCLUDED_DATA_SOURCES))
+                .asList()
+                .containsExactly("exclude.package.1", "exclude.package.2");
     }
 
     private static class MatchmakingHelper {

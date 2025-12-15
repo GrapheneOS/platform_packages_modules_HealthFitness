@@ -157,6 +157,7 @@ import android.os.RemoteException;
 import android.os.UserHandle;
 import android.util.Log;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 
 import java.lang.annotation.Retention;
@@ -551,6 +552,26 @@ public class HealthConnectManager {
      * @hide
      */
     public static final String EXTRA_RECORD_TYPES = "android.health.connect.extra.RECORD_TYPES";
+
+    /**
+     * A string array of packageNames to be included in matchmaking, to use with {@link
+     * #ACTION_MATCHMAKING}.
+     *
+     * @see #createMatchmakingIntent(MatchmakingRequest)
+     * @hide
+     */
+    public static final String EXTRA_INCLUDED_DATA_SOURCES =
+            "android.health.connect.extra.INCLUDED_DATA_SOURCES";
+
+    /**
+     * A string array of packageNames to be excluded from matchmaking, to use with {@link
+     * #ACTION_MATCHMAKING}.
+     *
+     * @see #createMatchmakingIntent(MatchmakingRequest)
+     * @hide
+     */
+    public static final String EXTRA_EXCLUDED_DATA_SOURCES =
+            "android.health.connect.extra.EXCLUDED_DATA_SOURCES";
 
     /**
      * A string ID of a device to be used with {@link #ACTION_SHOW_DEVICE_ONBOARDING} and {@link
@@ -3653,7 +3674,7 @@ public class HealthConnectManager {
      *
      * <p>The launched flow will only show packages that have declared, but not yet been granted
      * write permissions (that have not been denied by the user twice) for at least one of the
-     * relevant {@code recordTypes}:
+     * relevant {@code recordTypes}, and for the relevant included/excluded data sources:
      *
      * <ul>
      *   <li><b>If {@code recordTypes} is not empty:</b> The launched screen will focus on data
@@ -3665,11 +3686,37 @@ public class HealthConnectManager {
      *       record types for which the calling package has already been granted read permission.
      *       The launched flow will then display data sources capable of writing any of these record
      *       types, where the user can grant write permissions for these types.
+     *   <li><b>If {@code includedDataSources} is not empty:</b> Only data sources whose package
+     *       names are present in this set are considered for matchmaking. If a data source is an
+     *       app, the calling app must have visibility of the package name (e.g. declared in the
+     *       manifest inside {@code <queries>}). If a data source is a device, the calling app does
+     *       not need to declare it in the manifest, but should identify available devices via
+     *       {@link #getDeviceDataSources(Executor, OutcomeReceiver)}.
+     *   <li><b>If {@code excludedDataSources} is not empty:</b> Data sources whose package names
+     *       are present in this set are excluded from matchmaking. As with inclusion, app data
+     *       sources must be visible to the calling app, while device data sources do not require
+     *       manifest declaration.
+     *   <li><b>If both are empty:</b> All compatible data sources are considered.
      * </ul>
      *
-     * @param request A {@link MatchmakingRequest} that contains a non-null set of {@link Record}
-     *     classes. If non-empty, the flow focuses on these specific types. If empty, the flow
-     *     focuses on types for which the calling package has permission to read.
+     * <p>Note: {@code includedDataSources} and {@code excludedDataSources} cannot both be non-empty
+     * at the same time.
+     *
+     * @param request A {@link MatchmakingRequest} that contains:
+     *     <ul>
+     *       <li>A non-null set of {@link Record} classes. If non-empty, the flow focuses on these
+     *           specific types. If empty, the flow focuses on types for which the calling package
+     *           has permission to read.
+     *       <li>A non-null set of {@link DataOrigin} to include in matchmaking. If non-empty, only
+     *           specified data origins are considered. App data origins must be visible to the
+     *           calling app (declared in {@code <queries>}). Device data origins (from {@link
+     *           #getDeviceDataSources(Executor, OutcomeReceiver)}) do not require manifest
+     *           declaration.
+     *       <li>A non-null set of {@link DataOrigin} to exclude from matchmaking. If non-empty,
+     *           specified data origins are EXCLUDED. App data origins must be visible to the
+     *           calling app. Device data origins do not require manifest declaration.
+     *     </ul>
+     *
      * @return An {@link Intent} configured to show the flow for discovering and managing write
      *     permissions for matching data origins. This intent must be launched using {@link
      *     android.app.Activity#startActivityForResult(Intent, int)}.
@@ -3686,6 +3733,19 @@ public class HealthConnectManager {
                         .distinct()
                         .toArray(String[]::new);
         intent.putExtra(EXTRA_RECORD_TYPES, recordTypeNames);
+        if (Flags.deviceDataProvidersApi()) {
+            String[] includedDataSources =
+                    request.getIncludedDataSources().stream()
+                            .map(DataOrigin::getPackageName)
+                            .toArray(String[]::new);
+
+            String[] excludedDataSources =
+                    request.getExcludedDataSources().stream()
+                            .map(DataOrigin::getPackageName)
+                            .toArray(String[]::new);
+            intent.putExtra(EXTRA_INCLUDED_DATA_SOURCES, includedDataSources);
+            intent.putExtra(EXTRA_EXCLUDED_DATA_SOURCES, excludedDataSources);
+        }
         return intent;
     }
 

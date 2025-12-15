@@ -316,7 +316,7 @@ public final class MatchmakingRequest implements Parcelable {
         @NonNull
         @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
         public Builder setIncludedDataSources(@NonNull Set<DataOrigin> dataOrigins) {
-            if (!mExcludedDataSources.isEmpty()) {
+            if (!mExcludedDataSources.isEmpty() && !dataOrigins.isEmpty()) {
                 throw new IllegalStateException("excludeDataSources already set for this request");
             }
 
@@ -342,7 +342,7 @@ public final class MatchmakingRequest implements Parcelable {
         @NonNull
         @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
         public Builder setExcludedDataSources(@NonNull Set<DataOrigin> dataOrigins) {
-            if (!mIncludedDataSources.isEmpty()) {
+            if (!mIncludedDataSources.isEmpty() && !dataOrigins.isEmpty()) {
                 throw new IllegalStateException("includeDataSources already set for this request");
             }
 

@@ -1184,6 +1184,32 @@ public final class TestUtils {
         return getHealthConnectManager().createMatchmakingIntent(request);
     }
 
+    /** Creates an {@link Intent} to launch the matching apps flow. */
+    public static Intent createMatchmakingIntent(
+            Set<Class<? extends Record>> recordTypes,
+            Set<String> includedDataSources,
+            Set<String> excludedDataSources) {
+        if (!includedDataSources.isEmpty() && !excludedDataSources.isEmpty()) {
+            throw new IllegalStateException("Cannot set both included and excluded data sources");
+        }
+
+        Set<DataOrigin> finalIncludedDataSources =
+                includedDataSources.stream()
+                        .map(pn -> new DataOrigin.Builder().setPackageName(pn).build())
+                        .collect(Collectors.toSet());
+        Set<DataOrigin> finalExcludedDataSources =
+                excludedDataSources.stream()
+                        .map(pn -> new DataOrigin.Builder().setPackageName(pn).build())
+                        .collect(Collectors.toSet());
+        MatchmakingRequest request =
+                new MatchmakingRequest.Builder()
+                        .addRecordTypes(recordTypes)
+                        .setIncludedDataSources(finalIncludedDataSources)
+                        .setExcludedDataSources(finalExcludedDataSources)
+                        .build();
+        return getHealthConnectManager().createMatchmakingIntent(request);
+    }
+
     /** Copies record ids from the one list to another in order. Workaround for b/328228842. */
     // TODO(b/328228842): Avoid using reflection once we have Builder(Record) constructors
     public static void copyRecordIdsViaReflection(
