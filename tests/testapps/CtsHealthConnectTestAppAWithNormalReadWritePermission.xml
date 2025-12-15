@@ -20,6 +20,12 @@
           android:versionCode="1"
           android:versionName="1.0">
 
+    <!-- Visibility for matching apps needed for matchmaking include/exclude filters -->
+    <queries>
+        <package android:name="android.healthconnect.cts.testapp.readWritePerms.B"/>
+        <package android:name="android.healthconnect.cts.testapp.writePermsOnly"/>
+    </queries>
+
     <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_HISTORY" />
     <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"/>
 
