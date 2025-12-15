@@ -82,7 +82,6 @@ import static com.android.healthfitness.flags.Flags.FLAG_MATCHMAKING;
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_RESOURCE_VALIDATOR_USE_WEAK_REFERENCE;
-import static com.android.server.healthconnect.HealthConnectServiceImpl.EMPTY_DEVICE_DATA_SOURCE;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_STATE_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_RESTORE_STATE_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_STAGING_DONE;
@@ -249,7 +248,9 @@ import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCrea
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.DeviceDataSourceHelper;
 import com.android.server.healthconnect.device.FakeSerialDeviceDataProviderManager;
+import com.android.server.healthconnect.device.FakeSerialDeviceDataSourceHelper;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
@@ -514,6 +515,7 @@ public class HealthConnectServiceImplTest {
         when(mPackageManager.getApplicationIcon(anyString()))
                 .thenThrow(new PackageManager.NameNotFoundException());
         when(mPackageManager.getDefaultActivityIcon()).thenReturn(mDrawable);
+        DeviceDataSourceHelper deviceDataSourceHelper = new FakeSerialDeviceDataSourceHelper();
 
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mServiceContext)
@@ -538,6 +540,7 @@ public class HealthConnectServiceImplTest {
                         .setMatchingAppsManager(mMatchmakingManager)
                         .setDeviceDataProviderManager(mDeviceDataProviderManager)
                         .setSyntheticPackageNameResolver(mSyntheticPackageNameResolver)
+                        .setDeviceDataSourceHelper(deviceDataSourceHelper)
                         .build();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
         mBackupRestore = healthConnectInjector.getBackupRestore();
@@ -552,6 +555,7 @@ public class HealthConnectServiceImplTest {
                                     mServiceContext,
                                     healthConnectInjector.getDeviceInfoHelper(),
                                     healthConnectInjector.getAppInfoHelper(),
+                                    healthConnectInjector.getDeviceDataSourceHelper(),
                                     healthConnectInjector.getDeviceDataSourcesHelper(),
                                     healthConnectInjector.getDeviceDataProviderMetadataHelper(),
                                     healthConnectInjector.getFitnessRecordUpsertHelper(),
@@ -5303,8 +5307,12 @@ public class HealthConnectServiceImplTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
     })
-    public void getCurrentDeviceDataSource_currentDeviceNotAdvertised_returnsEmptyDeviceDataSource()
-            throws RemoteException {
+    public void
+            getCurrentDeviceDataSource_currentDeviceNotAdvertised_returnsEmptyDeviceDataTypeSource()
+                    throws RemoteException {
+        when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(
+                        eq(mTestPackageName), any()))
+                .thenReturn(List.of(READ_STEPS));
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
 
         mHealthConnectService.getCurrentDeviceDataSource(
@@ -5314,7 +5322,16 @@ public class HealthConnectServiceImplTest {
         verify(mGetCurrentDeviceDataSourceCallback).onResult(captor.capture());
 
         DeviceDataSource result = captor.getValue();
-        assertThat(result).isEqualTo(EMPTY_DEVICE_DATA_SOURCE);
+        assertThat(result.getDeviceDataTypeSources()).isEmpty();
+        assertTrue(
+                SyntheticPackageNameMatcher.matchesMasked(
+                        result.getDeviceDataOrigin().getPackageName()));
+        assertThat(result.getDeviceDataOrigin().getPackageName())
+                .isEqualTo(mHealthConnectService.getCurrentDeviceId(mAttributionSource));
+        assertThat(result.getDevice().getType()).isEqualTo(Device.DEVICE_TYPE_PHONE);
+        assertThat(result.getDevice().getManufacturer()).isEqualTo(Build.MANUFACTURER);
+        assertThat(result.getDevice().getModel()).isEqualTo(Build.MODEL);
+        assertThat(result.getDevice().getDisplayName()).isNotNull();
     }
 
     @Test
