@@ -391,8 +391,8 @@
     <string name="symptom_severity_moderate" msgid="8388787027751900668">"tartekoa"</string>
     <string name="symptom_severity_severe" msgid="4675732713898596705">"larria"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="TYPE">%2$s</xliff:g> (<xliff:g id="SEVERITY">%1$s</xliff:g>)"</string>
-    <string name="read_permission_category" msgid="6002099618259628632">"Eman irakurtzeko baimena <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari"</string>
-    <string name="write_permission_category" msgid="1529702804865008111">"Eman idazteko baimena <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"Eman hauek irakurtzeko baimena <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari:"</string>
+    <string name="write_permission_category" msgid="1529702804865008111">"Eman hauek idazteko baimena <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari:"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Eman baimena"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Eman baimen guztiak"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Ez eman baimenik"</string>
@@ -419,7 +419,7 @@
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Sarbidea emanez gero, aplikazioak zenbait datu irakurri ahalko ditu; adibidez, alergiak, laborategiko emaitzak, txertoak eta abar\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"Historia klinikoei buruz"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Besteak beste, datu hauek partekatzen dira"</string>
-    <string name="medical_request_summary" msgid="553735170968628758">"Baimena ematen baduzu, historia klinikoak Health Connect-ekin partekatu ahalko ditu <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioak."</string>
+    <string name="medical_request_summary" msgid="553735170968628758">"Baimena ematen badiozu, historia klinikoak Health Connect-ekin partekatu ahalko ditu <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioak."</string>
     <string name="medical_request_footer" msgid="157243861031258933">"Sinkronizatu beste aplikazio eta iturburu batzuetako historia klinikoak, denak toki berean izateko"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Baimen guztiak kendu nahi dituzu?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Kendu guztiak"</string>

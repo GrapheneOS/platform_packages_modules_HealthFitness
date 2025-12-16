@@ -35,6 +35,7 @@ import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKG
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.datatypes.MedicalDataSource.validateMedicalDataSourceIds;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
+import static android.health.connect.datatypes.RecordTypeSensitivity.INSENSITIVE;
 
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isPhrChangeLogsEnabled;
@@ -223,6 +224,7 @@ import com.android.server.healthconnect.common.metadata.SyntheticPackageNameReso
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.device.DeviceDataProviderManager;
+import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.exportimport.DocumentProvidersManager;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
@@ -314,7 +316,11 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     @VisibleForTesting
     static final DeviceDataSource EMPTY_DEVICE_DATA_SOURCE =
             new DeviceDataSource(
-                    new DataOrigin.Builder().build(), new Device.Builder().build(), Set.of());
+                    new DataOrigin.Builder()
+                            .setPackageName(DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE)
+                            .build(),
+                    new Device.Builder().build(),
+                    Set.of());
 
     private final ImportManager mImportManager;
 
@@ -2173,7 +2179,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     List<String> grantedPermissionsList =
                             mPermissionHelper.getGrantedHealthPermissions(
                                     callingPackageName, userHandle);
-                    if (grantedPermissionsList.isEmpty()) {
+                    boolean hasGrantedReadPermission = false;
+                    for (String grantedPermission : grantedPermissionsList) {
+                        if (mHealthConnectMappings.isReadPermission(grantedPermission)) {
+                            hasGrantedReadPermission = true;
+                        }
+                    }
+
+                    if (!hasGrantedReadPermission) {
                         throw new SecurityException(
                                 "Caller must hold at least one Health Connect permission");
                     }
@@ -4654,7 +4667,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         return recordTypes.stream()
                 .filter(
                         recordType -> {
-                            if (!isRecordTypeSensitive(recordType.intValue())) {
+                            if (mHealthConnectMappings.getSensitivityForRecordType(
+                                            recordType.intValue())
+                                    == INSENSITIVE) {
                                 return true;
                             }
 
@@ -4676,10 +4691,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             return false;
                         })
                 .collect(toSet());
-    }
-
-    private boolean isRecordTypeSensitive(int recordType) {
-        return !NON_SENSITIVE_RECORD_TYPES.contains(recordType);
     }
 
     private static void tryAndThrowException(

@@ -488,7 +488,7 @@
     <string name="additional_access_summary" msgid="1076197455435130191">"Dati precedenti, dati in background"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"Autorizzazioni aggiuntive rimosse per questa app"</string>
     <string name="permissions_header" msgid="6519976063360071569">"Autorizzazioni"</string>
-    <string name="fitness_permissions" msgid="586264186537460254">"Fitness e benessere"</string>
+    <string name="fitness_permissions" msgid="586264186537460254">"Attività fisica e benessere"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Allenamento, sonno, alimentazione e altro"</string>
     <string name="medical_permissions" msgid="1066296298908103091">"Cartelle cliniche"</string>
     <string name="medical_permissions_lowercase" msgid="5825812584960807537">"cartelle cliniche"</string>
@@ -1263,7 +1263,7 @@
     <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere ai dati relativi a benessere e attività fisica?"</string>
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"<xliff:g id="APP_NAME">%1$s</xliff:g> richiede l\'accesso a <xliff:g id="DATA_TYPES">%2$s</xliff:g>.\n\nScegli se consentire l\'accesso a tutti i tipi di dati o controllarli singolarmente."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere a <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
-    <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitness e benessere"</string>
+    <string name="fitness_and_wellness" msgid="2002316898861559748">"Attività fisica e benessere"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Sempre"</string>
     <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"Mentre usi l\'app"</string>
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> può accedere a tutti i dati relativi a benessere e attività fisica in qualsiasi momento"</string>
@@ -1278,8 +1278,8 @@
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"App autorizzate: <xliff:g id="NUMBER_0">%1$d</xliff:g> su <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Nessuna app richiede l\'autorizzazione"</string>
-    <string name="allowed" msgid="4158456017482263737">"Autorizzata"</string>
-    <string name="not_allowed" msgid="6092523505093372147">"Non autorizzata"</string>
+    <string name="allowed" msgid="4158456017482263737">"Autorizzazioni concesse"</string>
+    <string name="not_allowed" msgid="6092523505093372147">"Autorizzazioni non concesse"</string>
     <string name="access_sensor_note" msgid="7949933977197789634">"Le app con questa autorizzazione possono accedere ai dati di <xliff:g id="DATA_TYPE">%s</xliff:g> dei sensori del tuo dispositivo."</string>
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"Rimuovere l\'accesso a <xliff:g id="DATA_TYPE">%s</xliff:g> per tutte le app sull\'orologio?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"Segno di spunta"</string>
@@ -1333,13 +1333,13 @@
     <string name="native_steps_notification_title" msgid="4059138095111818516">"I passi sono ora in Connessione Salute"</string>
     <string name="native_steps_notification_content" msgid="6606582041727891093">"I passi monitorati da questo dispositivo sono ora archiviati in Connessione Salute e sono accessibili alle app connesse"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Le tue app per la salute"</string>
-    <string name="your_health_data_category_title" msgid="7049426060456828669">"I tuoi dati sulla salute"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"I tuoi dati relativi alla salute"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferenze"</string>
     <string name="home_screen_footer" msgid="7572797414754117707">"Connessione Salute ti consente di condividere i tuoi dati relativi alla salute e all\'attività fisica tra più app. In questo modo, potrai accedere ad approfondimenti ed esperienze senza compromettere la sicurezza dei dati."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Scopri di più su Connessione Salute"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"I tuoi dati e quali app possono accedervi"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"App che hanno utilizzato i tuoi dati di recente"</string>
-    <string name="home_devices_summary" msgid="6056984338393523399">"Controlla i dispositivi che possono accedere ai dati sulla salute"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"Controlla i dispositivi che possono accedere ai dati relativi alla salute"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Installa le app compatibili con Connessione Salute per visualizzarle qui"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Vedi le app compatibili"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Visualizza altre app per la salute"</string>

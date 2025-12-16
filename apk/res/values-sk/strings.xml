@@ -478,7 +478,7 @@
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Tieto aplikácie už nemajú prístup, ale stále majú údaje uložené v Dátach o zdraví"</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"Aplikácia <xliff:g id="APP_NAME">%1$s</xliff:g> môže čítať údaje pridané od <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>."</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"Ak chcete spravovať ďalšie povolenia pre Android pre túto aplikáciu, prejdite do sekcie Nastavenia &gt; Aplikácie."</string>
-    <string name="manage_permissions_rationale" msgid="2780008055185441703">"V pravidlách ochrany súkromia príslušného vývojára zistíte, ako aplikácia <xliff:g id="APP_NAME">%1$s</xliff:g> narába s vašimi údajmi."</string>
+    <string name="manage_permissions_rationale" msgid="2780008055185441703">"Informácie o tom, ako aplikácia <xliff:g id="APP_NAME">%1$s</xliff:g> narába s vašimi údajmi, nájdete v pravidlách ochrany súkromia jej vývojára."</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Ak chcete spravovať ďalšie povolenia pre Android, ku ktorým má táto aplikácia prístup, prejdite do sekcie Nastavenia a potom Aplikácie"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Zobraziť pravidlá ochrany súkromia"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Použité za posledných 24 hodín"</string>
@@ -1254,7 +1254,7 @@
     <string name="on" msgid="8266542510798355807">"Zapnuté"</string>
     <string name="off" msgid="6996623844428550649">"Vypnuté"</string>
     <string name="wear_app_perms_24h_access" msgid="2997184871873750357">"Posledný prístup: <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
-    <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"Otvorené včera <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
+    <string name="wear_app_perms_24h_access_yest" msgid="325061728619254928">"Otvorené včera o <xliff:g id="TIME_DATE">%1$s</xliff:g>"</string>
     <string name="wear_app_perms_7d_access" msgid="5694169440873563459">"Otvorené <xliff:g id="TIME_DATE_0">%1$s</xliff:g> <xliff:g id="TIME_DATE_1">%2$s</xliff:g>"</string>
     <string name="request_permissions_allow_all_the_time" msgid="559097424823775606">"Po celý čas"</string>
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Povoliť vybrané"</string>

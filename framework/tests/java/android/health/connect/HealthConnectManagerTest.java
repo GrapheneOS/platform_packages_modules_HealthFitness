@@ -42,9 +42,11 @@ import android.health.connect.aidl.IGetMatchingDataSourcesCallback;
 import android.health.connect.aidl.IHealthConnectService;
 import android.health.connect.aidl.IIsMatchmakingPossibleCallback;
 import android.health.connect.aidl.IMedicalDataSourcesResponseCallback;
+import android.health.connect.datatypes.BasalBodyTemperatureRecord;
+import android.health.connect.datatypes.BloodGlucoseRecord;
 import android.health.connect.datatypes.DistanceRecord;
-import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.MedicalDataSource;
+import android.health.connect.datatypes.OvulationTestRecord;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.SleepSessionRecord;
@@ -99,8 +101,11 @@ public class HealthConnectManagerTest {
         Set<Class<? extends Record>> sensitiveCapabilities =
                 HealthConnectManager.getPermissionSensitiveDeviceDataSourceCapabilities();
 
-        assertThat(sensitiveCapabilities).doesNotContain(StepsRecord.class);
-        assertThat(sensitiveCapabilities).contains(HeartRateRecord.class);
+        assertThat(sensitiveCapabilities)
+                .containsExactly(
+                        BasalBodyTemperatureRecord.class,
+                        OvulationTestRecord.class,
+                        BloodGlucoseRecord.class);
     }
 
     @Test

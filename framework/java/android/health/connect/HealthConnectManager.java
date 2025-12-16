@@ -26,6 +26,7 @@ import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMIS
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 import static android.health.connect.HealthPermissions.START_BACKUP_RESTORE_SETTINGS_PERMISSION;
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
+import static android.health.connect.datatypes.RecordTypeSensitivity.SENSITIVE;
 
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API;
@@ -80,6 +81,7 @@ import android.health.connect.aidl.IDeviceDataSourceCapabilitiesCallback;
 import android.health.connect.aidl.IEmptyResponseCallback;
 import android.health.connect.aidl.IGetChangeLogTokenCallback;
 import android.health.connect.aidl.IGetChangesForBackupResponseCallback;
+import android.health.connect.aidl.IGetCurrentDeviceDataSourceCallback;
 import android.health.connect.aidl.IGetDeviceDataSourceInfosCallback;
 import android.health.connect.aidl.IGetDeviceDataSourcesCallback;
 import android.health.connect.aidl.IGetHealthConnectDataStateCallback;
@@ -128,7 +130,6 @@ import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
-import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.exportimport.ExportImportDocumentProvider;
@@ -244,22 +245,6 @@ public class HealthConnectManager {
      */
     public static final String EXTRA_EXERCISE_ROUTE = "android.health.connect.extra.EXERCISE_ROUTE";
 
-    @NonNull
-    private static final Set<Class<? extends Record>>
-            NON_PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES = Set.of(StepsRecord.class);
-
-    private static class LazyHolder {
-        private static final Set<Class<? extends Record>>
-                PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES_INSTANCE =
-                        DataTypeDescriptors.getAllDataTypeDescriptors().stream()
-                                .map(DataTypeDescriptor::getRecordClass)
-                                .filter(
-                                        recordType ->
-                                                !NON_PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES
-                                                        .contains(recordType))
-                                .collect(toSet());
-    }
-
     /**
      * Returns the set of data types which are excluded from the output of
      * #getDeviceDataSourceCapabilities unless the caller holds the read permission for those data
@@ -269,7 +254,10 @@ public class HealthConnectManager {
     @NonNull
     public static Set<Class<? extends Record>>
             getPermissionSensitiveDeviceDataSourceCapabilities() {
-        return LazyHolder.PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES_INSTANCE;
+        return DataTypeDescriptors.getAllDataTypeDescriptors().stream()
+                .filter(descriptor -> descriptor.getRecordTypeSensitivity() == SENSITIVE)
+                .map(DataTypeDescriptor::getRecordClass)
+                .collect(toSet());
     }
 
     /**
@@ -1667,6 +1655,44 @@ public class HealthConnectManager {
     }
 
     /**
+     * Retrieves the {@link DeviceDataSource} for the current device.
+     *
+     * <p>The caller must hold at least one Health Connect read permission in order to call this
+     * method.
+     *
+     * @param executor Executor on which to invoke the callback.
+     * @param callback Callback to receive result of performing this operation.
+     */
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void getCurrentDeviceDataSource(
+            @NonNull @CallbackExecutor Executor executor,
+            @NonNull OutcomeReceiver<DeviceDataSource, HealthConnectException> callback) {
+        Objects.requireNonNull(executor);
+        Objects.requireNonNull(callback);
+
+        try {
+            mService.getCurrentDeviceDataSource(
+                    mContext.getAttributionSource(),
+                    new IGetCurrentDeviceDataSourceCallback.Stub() {
+                        @Override
+                        @RequiresNoPermission
+                        public void onResult(DeviceDataSource result) {
+                            Binder.clearCallingIdentity();
+                            executor.execute(() -> callback.onResult(result));
+                        }
+
+                        @Override
+                        @RequiresNoPermission
+                        public void onError(HealthConnectExceptionParcel exception) {
+                            returnError(executor, exception, callback);
+                        }
+                    });
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
      * Stages all HealthConnect remote data and returns any errors in a callback. Errors encountered
      * for all the files are shared in the provided callback. Any authorization / permissions
      * related error is reported to the callback with an empty file name.
@@ -1978,8 +2004,8 @@ public class HealthConnectManager {
      * in case the data type is not provided by any device data sources.
      *
      * <p>This will filter out any permission sensitive data types the caller does not hold read
-     * permissions for. Data types contained in { @link
-     * #PERMISSION_SENSITIVE_DEVICE_DATA_SOURCE_CAPABILITIES } are excluded from the response unless
+     * permissions for. Data types belonging to {@link
+     * #getPermissionSensitiveDeviceDataSourceCapabilities} are excluded from the response unless
      * the caller holds read permissions for those data types.
      *
      * @param executor Executor on which to invoke the callback.

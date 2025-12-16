@@ -420,7 +420,7 @@
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"Acerca de las historias clínicas"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Los datos que se compartirán incluyen"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"Si lo permites, <xliff:g id="APP_NAME">%1$s</xliff:g> podrá compartir tus historias clínicas con Salud conectada."</string>
-    <string name="medical_request_footer" msgid="157243861031258933">"Sincroniza las historias clínicas que tienes en diferentes aplicaciones y fuentes para tenerlas en un mismo lugar"</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"Sincroniza tus historias clínicas de diferentes aplicaciones y fuentes para tenerlas en un mismo lugar"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"¿Quitar todos los permisos?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Quitar todos"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> ya no podrá leer ni escribir datos de Salud conectada.\n\nEsta acción no afecta a otros permisos de la aplicación, como los de la cámara, el micrófono o la ubicación."</string>

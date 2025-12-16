@@ -24,7 +24,7 @@
     <string name="home_subtitle" msgid="2154213430054477787">"Menaxho të dhënat e shëndetit dhe të fitnesit në pajisjen tënde dhe kontrollo se cilat aplikacione mund të kenë qasje në to"</string>
     <string name="data_title" msgid="4456619761533380816">"Të dhënat dhe qasja"</string>
     <string name="browse_medical_data" msgid="6492659245149862639">"Shfleto kartelën mjekësore"</string>
-    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"Shiko kartelën tënde mjekësore dhe se cilat aplikacione mund të qasen në të"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"Shiko të dhënat e tua mjekësore dhe se cilat aplikacione mund të qasen në to"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Të gjitha kategoritë"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Shiko të gjitha kategoritë"</string>
     <string name="no_data" msgid="1906986019249068659">"Nuk ka të dhëna"</string>

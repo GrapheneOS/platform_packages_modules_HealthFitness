@@ -419,7 +419,7 @@
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Kui annate juurdepääsu, saab see rakendus lugeda andmeid, näiteks teavet allergiate, laboritulemuste, vaktsiinide ja muu kohta.\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"Teave meditsiiniliste andmete kohta"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"Jagatavad andmed hõlmavad"</string>
-    <string name="medical_request_summary" msgid="553735170968628758">"Kui lubate, saab <xliff:g id="APP_NAME">%1$s</xliff:g> teie meditsiinilisi andmeid Health Connectiga jagada."</string>
+    <string name="medical_request_summary" msgid="553735170968628758">"Kui annate juurdepääsu, saab <xliff:g id="APP_NAME">%1$s</xliff:g> teie meditsiinilisi andmeid Health Connectiga jagada."</string>
     <string name="medical_request_footer" msgid="157243861031258933">"Sünkroonige oma eri rakendustest ja allikatest pärit meditsiinilised andmed, et neid ühes kohas hoida."</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Kas eemaldada kõik load?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Eemalda kõik"</string>

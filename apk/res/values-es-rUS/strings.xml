@@ -361,8 +361,8 @@
     <string name="procedures_uppercase_label" msgid="9176087520132593261">"Procedimientos"</string>
     <string name="procedures_lowercase_label" msgid="5320804313946273234">"procedimientos"</string>
     <string name="procedures_content_description" msgid="1086900373141440005">"Leer procedimientos"</string>
-    <string name="social_history_uppercase_label" msgid="4119611299449533999">"Historia social"</string>
-    <string name="social_history_lowercase_label" msgid="9027541979445736412">"historia social"</string>
+    <string name="social_history_uppercase_label" msgid="4119611299449533999">"Estilo de vida"</string>
+    <string name="social_history_lowercase_label" msgid="9027541979445736412">"estilo de vida"</string>
     <string name="social_history_content_description" msgid="7187059309389849831">"Leer historia social"</string>
     <string name="visits_uppercase_label" msgid="8532619758336375886">"Visitas"</string>
     <string name="visits_lowercase_label" msgid="2545887061364564151">"visitas"</string>
@@ -391,8 +391,8 @@
     <string name="symptom_severity_moderate" msgid="8388787027751900668">"de gravedad media"</string>
     <string name="symptom_severity_severe" msgid="4675732713898596705">"grave"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="TYPE">%2$s</xliff:g> <xliff:g id="SEVERITY">%1$s</xliff:g>"</string>
-    <string name="read_permission_category" msgid="6002099618259628632">"Permitir que \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tenga acceso de lectura sobre"</string>
-    <string name="write_permission_category" msgid="1529702804865008111">"Permitir que \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tenga acceso de escritura sobre"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"Permitir que \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tenga acceso de lectura"</string>
+    <string name="write_permission_category" msgid="1529702804865008111">"Permitir que \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tenga acceso de escritura"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Permitir"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Permitir todo"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"No permitir"</string>
@@ -406,7 +406,7 @@
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Permite que la app de <xliff:g id="APP_NAME">%1$s</xliff:g> lea datos de otras apps en este dispositivo con Health Connect. Otras apps a las que les otorgues acceso también pueden leer estos datos."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps que pueden sincronizar estos datos"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Consulta cómo <xliff:g id="APP_NAME">%1$s</xliff:g> usa tus datos en su "<a href="%2$s">"política de privacidad"</a>"."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect te permite compartir tus datos de salud y actividad física entre varias apps. Esto te ayuda a desbloquear estadísticas y experiencias, a la vez que mantiene tus datos seguros."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect te permite compartir tus datos de salud y actividad física entre varias apps. De esta manera, puedes acceder a información valiosa y experiencias sin dejar de proteger tus datos."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Más información sobre Health Connect"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Si otorgas acceso de lectura, la app podrá leer los datos nuevos y los de los últimos 30 días"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Si otorgas acceso de lectura, la app podrá leer datos nuevos y antiguos"</string>
@@ -418,7 +418,7 @@
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Si otorgas acceso, la app podrá leer y escribir datos como alergias, resultados de laboratorio, vacunas y más\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Si otorgas acceso, la app podrá leer datos como alergias, resultados de laboratorio, vacunas y más\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"Acerca de la historia clínica"</string>
-    <string name="medical_request_data_to_share" msgid="6778034304921873317">"Los datos a compartir incluyen"</string>
+    <string name="medical_request_data_to_share" msgid="6778034304921873317">"Los datos que se comparten incluyen"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"Si lo permites, <xliff:g id="APP_NAME">%1$s</xliff:g> podrá compartir tu historia clínica con Health Connect."</string>
     <string name="medical_request_footer" msgid="157243861031258933">"Sincroniza la historia clínica de diferentes apps y fuentes para tenerlas en un solo lugar"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"¿Quieres quitar todos los permisos?"</string>
@@ -481,7 +481,7 @@
     <string name="manage_permissions_rationale" msgid="2780008055185441703">"Consulta la política de privacidad del desarrollador para entender cómo <xliff:g id="APP_NAME">%1$s</xliff:g> maneja tus datos"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Para administrar otros permisos de Android a los que esta app puede acceder, ve a Configuración y, luego, presiona Apps"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Leer la política de privacidad"</string>
-    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Se accedió en las últimas 24 horas"</string>
+    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Accedió en las últimas 24 horas"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Acceso de la app"</string>
     <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"No hay apps compatibles instaladas"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"Acceso adicional"</string>
@@ -1335,7 +1335,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Tus apps de salud"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Tus datos de salud"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferencias"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect te permite compartir tus datos de salud y actividad física entre varias apps. De esta manera, puedes acceder a estadísticas y experiencias sin dejar de proteger tus datos."</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect te permite compartir tus datos de salud y actividad física entre varias apps. De esta manera, puedes acceder a información valiosa y experiencias sin dejar de proteger tus datos."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Más información sobre Health Connect"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Tus datos y las apps que pueden acceder a ellos"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Apps que usaron tus datos recientemente"</string>
