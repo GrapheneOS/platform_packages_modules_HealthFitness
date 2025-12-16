@@ -565,7 +565,8 @@ public class HealthConnectServiceImplTest {
                                     healthConnectInjector.getFitnessRecordUpsertHelper(),
                                     healthConnectInjector.getFitnessRecordReadHelper(),
                                     healthConnectInjector.getFitnessRecordDeleteHelper(),
-                                    healthConnectInjector.getSyntheticPackageNameCreator()));
+                                    healthConnectInjector.getSyntheticPackageNameCreator(),
+                                    true));
 
             mDeviceDataSourcesHelper = spy(healthConnectInjector.getDeviceDataSourcesHelper());
             mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();

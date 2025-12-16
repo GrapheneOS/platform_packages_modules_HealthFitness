@@ -127,8 +127,14 @@ public class DeviceDataProviderManager {
      *
      * @param advertisements The device data source advertisements.
      * @param callingDdpPackageName The package name of the advertising DDP.
-     * @throws IllegalArgumentException if the given deviceId has already been used for a different
-     *     device type.
+     * @throws IllegalArgumentException if
+     *     <ul>
+     *       <li>the given deviceId has already been used for a different device type
+     *       <li>the DDP does not configure {@link
+     *           HealthConnectManager.ACTION_SHOW_DEVICE_ONBOARDING} and {@link
+     *           HealthConnectManager.ACTION_SHOW_DEVICE_MANAGEMENT} correctly (existing activities,
+     *           exported, permission {@link HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION})
+     *     </ul>
      */
     // TODO(b/440066697): Check if we want to handle advertisements that are no longer present.
     public void handleAdvertisement(
@@ -136,6 +142,8 @@ public class DeviceDataProviderManager {
             @NonNull String callingDdpPackageName) {
         requireNonNull(advertisements);
         requireNonNull(callingDdpPackageName);
+
+        validateDdpConfiguration(callingDdpPackageName);
 
         List<Long> existingAppInfoIds =
                 mDeviceDataSourcesHelper.getAppInfoIds(callingDdpPackageName);
@@ -685,7 +693,7 @@ public class DeviceDataProviderManager {
                 new DeviceDataAdvertisement(
                         currentDevice, getStableCurrentDeviceId(), deviceDataTypeAdvertisements);
 
-        handleAdvertisement(Set.of(advertisement), "android");
+        handleAdvertisement(Set.of(advertisement), DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE);
     }
 
     private List<DeviceDataProviderInfo> getDeviceDataProviderInfos(
@@ -729,7 +737,7 @@ public class DeviceDataProviderManager {
             return label.toString();
         }
         // This shouldn't happen. We enforce that DDPs export these activities.
-        // TODO(b/462713187): validate DDP activities
+        // See validateDdpConfiguration
         return "";
     }
 
@@ -763,6 +771,46 @@ public class DeviceDataProviderManager {
         if (!request.getPackageNameFilters().isEmpty()) {
             throw new IllegalArgumentException(
                     "Package name filter must be empty for device delete requests.");
+        }
+    }
+
+    protected void validateDdpConfiguration(String packageName) {
+        // The "android" package is a privileged package representing the system.
+        // It is always allowed.
+        if (Objects.equals(DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE, packageName)) {
+            return;
+        }
+
+        validateActivityPresentAndPermissionGuarded(
+                packageName, HealthConnectManager.ACTION_SHOW_DEVICE_ONBOARDING);
+        validateActivityPresentAndPermissionGuarded(
+                packageName, HealthConnectManager.ACTION_SHOW_DEVICE_MANAGEMENT);
+    }
+
+    private void validateActivityPresentAndPermissionGuarded(String packageName, String action) {
+        Intent intent = new Intent(action);
+        intent.setPackage(packageName);
+        ResolveInfo resolveInfo = mContext.getPackageManager().resolveActivity(intent, 0);
+
+        if (resolveInfo == null || resolveInfo.activityInfo == null) {
+            throw new IllegalArgumentException(
+                    "Device data provider "
+                            + packageName
+                            + " must export an activity that handles "
+                            + action);
+        }
+
+        if (!resolveInfo.activityInfo.exported
+                || !Objects.equals(
+                        HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION,
+                        resolveInfo.activityInfo.permission)) {
+            throw new IllegalArgumentException(
+                    "Activity for "
+                            + action
+                            + " in "
+                            + packageName
+                            + " must be exported and permission guarded by "
+                            + HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
         }
     }
 }

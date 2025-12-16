@@ -180,7 +180,8 @@ public class DeviceDataProviderManagerTest {
                         healthConnectInjector.getFitnessRecordUpsertHelper(),
                         mFitnessRecordReadHelper,
                         healthConnectInjector.getFitnessRecordDeleteHelper(),
-                        healthConnectInjector.getSyntheticPackageNameCreator());
+                        healthConnectInjector.getSyntheticPackageNameCreator(),
+                        true);
         mPreferenceHelper.insertOrReplacePreference(PREFERENCE_KEY, "Some Salt");
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
     }
@@ -439,7 +440,8 @@ public class DeviceDataProviderManagerTest {
                         healthConnectInjector.getFitnessRecordUpsertHelper(),
                         healthConnectInjector.getFitnessRecordReadHelper(),
                         healthConnectInjector.getFitnessRecordDeleteHelper(),
-                        healthConnectInjector.getSyntheticPackageNameCreator());
+                        healthConnectInjector.getSyntheticPackageNameCreator(),
+                        true);
 
         assertThrows(IllegalStateException.class, newManager::getStableCurrentDeviceId);
     }
@@ -541,7 +543,8 @@ public class DeviceDataProviderManagerTest {
                         healthConnectInjector.getFitnessRecordUpsertHelper(),
                         healthConnectInjector.getFitnessRecordReadHelper(),
                         healthConnectInjector.getFitnessRecordDeleteHelper(),
-                        healthConnectInjector.getSyntheticPackageNameCreator());
+                        healthConnectInjector.getSyntheticPackageNameCreator(),
+                        true);
         assertThrows(IllegalStateException.class, () -> newManager.getCurrentDeviceId());
     }
 
