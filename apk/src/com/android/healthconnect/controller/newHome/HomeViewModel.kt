@@ -362,37 +362,32 @@ constructor(
     }
 
     fun onDismissBanner(banner: BannerData) {
-        // Special case lock screen banner since it sets two preferences as seen
-        if (banner is BannerData.LockScreenBanner) {
-            sharedPreferences.edit().apply() {
-                if (banner.hasAnyFitnessData) {
-                    putBoolean(LOCK_SCREEN_BANNER_SEEN_FITNESS, true)
-                }
-                if (banner.hasAnyMedicalData) {
-                    putBoolean(LOCK_SCREEN_BANNER_SEEN_MEDICAL, true)
-                }
-                apply()
-            }
-            return
-        }
-
         sharedPreferences.edit().apply() {
-            val bannerSeenPreference =
-                when (banner) {
-                    BannerData.NativeStepsBanner -> Constants.NATIVE_STEPS_BANNER_SEEN
-                    BannerData.ZeroAppsOnboardingBanner ->
-                        Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN
-                    BannerData.OneAppOnboardingBanner -> Constants.ONBOARDING_ONE_APP_BANNER_SEEN
-                    BannerData.MigrationBanner,
-                    BannerData.DataRestorePendingBanner,
-                    is BannerData.ExportErrorBanner ->
-                        // These banner are not dismissible
-                        null
-                    else -> null
+            when (banner) {
+                is BannerData.LockScreenBanner -> {
+                    if (banner.hasAnyFitnessData) {
+                        putBoolean(LOCK_SCREEN_BANNER_SEEN_FITNESS, true)
+                    }
+                    if (banner.hasAnyMedicalData) {
+                        putBoolean(LOCK_SCREEN_BANNER_SEEN_MEDICAL, true)
+                    }
                 }
-            bannerSeenPreference?.let { putBoolean(it, true) }
+                is BannerData.NativeStepsBanner ->
+                    putBoolean(Constants.NATIVE_STEPS_BANNER_SEEN, true)
+                is BannerData.ZeroAppsOnboardingBanner ->
+                    putBoolean(Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN, true)
+                is BannerData.OneAppOnboardingBanner ->
+                    putBoolean(Constants.ONBOARDING_ONE_APP_BANNER_SEEN, true)
+                is BannerData.MigrationBanner,
+                BannerData.DataRestorePendingBanner,
+                is BannerData.ExportErrorBanner -> {
+                    // These banners are not dismissible
+                    // do nothing
+                }
+            }
             apply()
         }
+
         _banners.update { currentBanners -> currentBanners.filterNot { it.id == banner.id } }
     }
 
