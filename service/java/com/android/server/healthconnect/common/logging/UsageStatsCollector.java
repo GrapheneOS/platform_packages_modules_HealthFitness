@@ -21,8 +21,6 @@ import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import android.content.pm.PackageInfo;
 import android.health.connect.HealthPermissions;
 
-import androidx.annotation.Nullable;
-
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
@@ -68,8 +66,6 @@ public final class UsageStatsCollector {
     private final PackageInfoUtils mPackageInfoUtils;
     private final TimeSource mTimeSource;
 
-    @Nullable private Map<String, PackageInfo> mPackageNameToPackageInfo;
-
     public UsageStatsCollector(
             HealthConnectContext hcContext,
             PreferenceHelper preferenceHelper,
@@ -90,17 +86,23 @@ public final class UsageStatsCollector {
     }
 
     /**
-     * Returns the number of apps that can be connected to Health Connect.
-     *
-     * <p>The apps not necessarily have permissions to read/write data. It just mentions permission
-     * in the manifest i.e. if not connected yet, it can be connected to Health Connect.
-     *
-     * @return Number of apps that can be connected (not necessarily connected) to Health Connect
+     * Returns apps that can be connected to Health Connect, as a map from package name to a list of
+     * granted health permissions.
      */
-    int getNumberOfAppsCompatibleWithHealthConnect() {
-        return mPackageInfoUtils
-                .getPackagesCompatibleWithHealthConnect(mHcContext, mHcContext.getUser())
-                .size();
+    Map<String, List<String>> getPackagesCompatibleWithHealthConnect() {
+        // TODO(b/461706432): Stop including implicit permissions once we decide how to handle the
+        // change in the metric.
+        List<PackageInfo> packagesCompatibleWithHealthConnect =
+                mPackageInfoUtils.getPackagesCompatibleWithHealthConnect(
+                        mHcContext, mHcContext.getUser(), /* includeImplicitPermissions= */ true);
+        Map<String, List<String>> packageNameToPermissionsGranted =
+                new HashMap<>(packagesCompatibleWithHealthConnect.size());
+        for (PackageInfo info : packagesCompatibleWithHealthConnect) {
+            packageNameToPermissionsGranted.put(
+                    info.packageName,
+                    PackageInfoUtils.getGrantedHealthPermissions(mHcContext, info));
+        }
+        return packageNameToPermissionsGranted;
     }
 
     /**
