@@ -55,15 +55,38 @@ public final class PackageInfoUtils {
         return healthAppsInfos;
     }
 
+    /**
+     * Returns {@link PackageInfo} for all installed apps that are compatible with Health Connect.
+     *
+     * <p>Any app that explicitly requests health permissions is assumed to be compatible with
+     * Health Connect.
+     */
     public List<PackageInfo> getPackagesCompatibleWithHealthConnect(
             Context context, UserHandle user) {
+        // Ignore implicit requests resulting from split permissions (eg. legacy apps requesting
+        // BODY_SENSORS implicitly requesting READ_HEART_RATE). These can't be used to access
+        // Health Connect.
+        return getPackagesCompatibleWithHealthConnect(
+                context, user, /* includeImplicitPermissions= */ false);
+    }
+
+    /**
+     * Returns {@link PackageInfo} for all installed apps that are compatible with Health Connect.
+     *
+     * <p>Any app that requests health permissions is assumed to be compatible with Health Connect.
+     *
+     * @param includeImplicitPermissions indicates if apps that only have implicit requests for
+     *     health permissions should be included.
+     */
+    public List<PackageInfo> getPackagesCompatibleWithHealthConnect(
+            Context context, UserHandle user, boolean includeImplicitPermissions) {
         List<PackageInfo> allInfos =
                 getPackageManagerAsUser(context, user)
                         .getInstalledPackages(PackageManager.PackageInfoFlags.of(GET_PERMISSIONS));
         List<PackageInfo> healthAppsInfos = new ArrayList<>();
 
         for (PackageInfo info : allInfos) {
-            if (hasRequestedHealthPermission(context, info)) {
+            if (hasRequestedHealthPermission(context, info, includeImplicitPermissions)) {
                 healthAppsInfos.add(info);
             }
         }
@@ -230,17 +253,26 @@ public final class PackageInfoUtils {
         return context.createContextAsUser(user, /* flags */ 0).getPackageManager();
     }
 
-    private boolean hasRequestedHealthPermission(Context context, PackageInfo packageInfo) {
-        if (packageInfo == null || packageInfo.requestedPermissions == null) {
+    private static boolean hasRequestedHealthPermission(
+            Context context, PackageInfo packageInfo, boolean includeImplicit) {
+        if (packageInfo == null
+                || packageInfo.requestedPermissions == null
+                || packageInfo.requestedPermissionsFlags == null) {
             return false;
         }
 
         Set<String> healthPermissions = HealthConnectManager.getHealthPermissions(context);
         for (int i = 0; i < packageInfo.requestedPermissions.length; i++) {
-            if (healthPermissions.contains(packageInfo.requestedPermissions[i])) {
+            if (healthPermissions.contains(packageInfo.requestedPermissions[i])
+                    && (includeImplicit
+                            || isExplicitlyRequested(packageInfo.requestedPermissionsFlags[i]))) {
                 return true;
             }
         }
         return false;
+    }
+
+    private static boolean isExplicitlyRequested(int flags) {
+        return (flags & PackageInfo.REQUESTED_PERMISSION_IMPLICIT) == 0;
     }
 }

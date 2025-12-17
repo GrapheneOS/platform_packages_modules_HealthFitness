@@ -56,6 +56,7 @@ import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -125,8 +126,7 @@ public class UsageStatsCollectorTest {
         mPackageInfoNotHoldingPermission.packageName = NOT_HOLDING_HC_PERMISSIONS_APP_PACKAGE_NAME;
 
         mPackageInfoNotConnectedApp.requestedPermissions = new String[] {READ_STEPS};
-        mPackageInfoNotConnectedApp.requestedPermissionsFlags =
-                new int[] {PackageInfo.REQUESTED_PERMISSION_NEVER_FOR_LOCATION};
+        mPackageInfoNotConnectedApp.requestedPermissionsFlags = new int[] {0};
         mPackageInfoNotConnectedApp.packageName = NOT_CONNECTED_APP_PACKAGE_NAME;
 
         mPackageInfoPhrConnectedApp.requestedPermissions =
@@ -157,8 +157,29 @@ public class UsageStatsCollectorTest {
     }
 
     @Test
-    public void testGetNumberOfCompatibleApps() {
-        assertThat(mUsageStatsCollector.getNumberOfAppsCompatibleWithHealthConnect()).isEqualTo(3);
+    public void testGetPackagesCompatibleWithHealthConnect() {
+        assertThat(mUsageStatsCollector.getPackagesCompatibleWithHealthConnect())
+                .containsExactly(
+                        CONNECTED_APP_PACKAGE_NAME,
+                        List.of(READ_STEPS, WRITE_STEPS),
+                        PHR_CONNECTED_APP_PACKAGE_NAME,
+                        List.of(READ_MEDICAL_DATA_CONDITIONS, WRITE_STEPS),
+                        NOT_CONNECTED_APP_PACKAGE_NAME,
+                        List.of());
+    }
+
+    @Test
+    @Ignore("b/461706432")
+    public void testGetPackagesCompatibleWithHealthConnect_ignoresImplicitlyRequestedPermissions() {
+        mPackageInfoNotConnectedApp.requestedPermissionsFlags =
+                new int[] {PackageInfo.REQUESTED_PERMISSION_IMPLICIT};
+
+        assertThat(mUsageStatsCollector.getPackagesCompatibleWithHealthConnect())
+                .containsExactly(
+                        CONNECTED_APP_PACKAGE_NAME,
+                        List.of(READ_STEPS, WRITE_STEPS),
+                        PHR_CONNECTED_APP_PACKAGE_NAME,
+                        List.of(READ_MEDICAL_DATA_CONDITIONS, WRITE_STEPS));
     }
 
     @Test

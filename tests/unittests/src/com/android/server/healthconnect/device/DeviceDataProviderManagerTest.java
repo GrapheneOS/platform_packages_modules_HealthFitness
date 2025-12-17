@@ -140,6 +140,7 @@ public class DeviceDataProviderManagerTest {
     private FakeSerialDeviceDataProviderManager mDeviceDataProviderManager;
     private FitnessTestUtils mFitnessTestUtils;
     private AccessLogsHelper mAccessLogsHelper;
+    private FakeSerialDeviceDataSourceHelper mDataSourceHelper;
 
     @Mock private AppOpLogsHelper mAppOpLogsHelper;
 
@@ -165,11 +166,13 @@ public class DeviceDataProviderManagerTest {
         mTransactionManager = healthConnectInjector.getTransactionManager();
         mAccessLogsHelper = healthConnectInjector.getAccessLogsHelper();
         mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
+        mDataSourceHelper = new FakeSerialDeviceDataSourceHelper();
         mDeviceDataProviderManager =
                 new FakeSerialDeviceDataProviderManager(
                         mContext,
                         mDeviceInfoHelper,
                         mAppInfoHelper,
+                        mDataSourceHelper,
                         mDeviceDataSourcesHelper,
                         mDeviceDataProviderMetadataHelper,
                         healthConnectInjector.getFitnessRecordUpsertHelper(),

@@ -118,6 +118,7 @@ public class FitnessRecordDeleteHelperTest {
                             context,
                             injector.getDeviceInfoHelper(),
                             injector.getAppInfoHelper(),
+                            injector.getDeviceDataSourceHelper(),
                             injector.getDeviceDataSourcesHelper(),
                             injector.getDeviceDataProviderMetadataHelper(),
                             injector.getFitnessRecordUpsertHelper(),

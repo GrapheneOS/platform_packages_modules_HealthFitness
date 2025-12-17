@@ -556,6 +556,8 @@
     <string name="app_privacy_policy_footer" description="Footer with a link to the app's privacy policy.">Learn how <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> uses your data in their <a href="%2$s">privacy policy</a>.</string>
     <string name="matchmaking_screen_footer" descriptio="Summary on match making screen explaining how Health Connect share health and fitness data between multiple apps">Health Connect lets you share your health and fitness data between multiple apps. This helps you unlock insights and experiences while keeping your data secure.</string>
     <string name="more_about_health_connect" description="Title for link to learn more about Health Connect">More about Health&#160;Connect</string>
+    <string name="expandable_preference_expand_talkback_description" description="A11y label for expanding an expandable item">expand</string>
+    <string name="expandable_preference_collapse_talkback_description" description="A11y label for collapsing an expandable item">collapse</string>
     <!--endregion-->
 
     <!-- region Fitness permission request -->

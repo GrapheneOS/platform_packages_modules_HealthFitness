@@ -84,6 +84,7 @@ public class DeviceDataProviderManager {
     private final Context mContext;
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final AppInfoHelper mAppInfoHelper;
+    private final DeviceDataSourceHelper mDeviceDataSourceHelper;
     private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
     private final DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
     private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
@@ -100,6 +101,7 @@ public class DeviceDataProviderManager {
             @NonNull Context context,
             @NonNull DeviceInfoHelper deviceInfoHelper,
             @NonNull AppInfoHelper appInfoHelper,
+            @NonNull DeviceDataSourceHelper deviceDataSourceHelper,
             @NonNull DeviceDataSourcesHelper deviceDataSourcesHelper,
             @NonNull DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
             @NonNull FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
@@ -109,6 +111,7 @@ public class DeviceDataProviderManager {
         mContext = requireNonNull(context);
         mDeviceInfoHelper = requireNonNull(deviceInfoHelper);
         mAppInfoHelper = requireNonNull(appInfoHelper);
+        mDeviceDataSourceHelper = requireNonNull(deviceDataSourceHelper);
         mDeviceDataSourcesHelper = requireNonNull(deviceDataSourcesHelper);
         mDeviceDataProviderMetadataHelper = requireNonNull(deviceDataProviderMetadataHelper);
         mFitnessRecordUpsertHelper = requireNonNull(fitnessRecordUpsertHelper);
@@ -568,6 +571,25 @@ public class DeviceDataProviderManager {
                             + " was not advertised for data type "
                             + recordType);
         }
+    }
+
+    /**
+     * Creates a DeviceDataSource for the current device with the currentDeviceId, populated Device
+     * metadata and empty set of supported data types.
+     */
+    public android.health.connect.DeviceDataSource getDefaultCurrentDeviceDataSource() {
+        DeviceDataSource currentDeviceSource = mDeviceDataSourceHelper.getCurrentDevice(mContext);
+        Device currentDevice =
+                new Device.Builder()
+                        .setManufacturer(currentDeviceSource.getManufacturer())
+                        .setModel(currentDeviceSource.getModel())
+                        .setType(currentDeviceSource.getDeviceType())
+                        .setDisplayName(currentDeviceSource.getDisplayName())
+                        .build();
+        return new android.health.connect.DeviceDataSource(
+                new DataOrigin.Builder().setPackageName(getCurrentDeviceId()).build(),
+                currentDevice,
+                /* dataTypes= */ Set.of());
     }
 
     /** Retrieves the list of all device data sources and their provider info. */
