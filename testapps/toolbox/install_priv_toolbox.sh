@@ -48,6 +48,8 @@ fi
 
 echo "--- Uninstalling existing user app (if any) ---"
 adb uninstall $PACKAGE_NAME
+echo "--- Uninstalling existing system app (if any) ---"
+adb shell rm /system/priv-app/$APP_TARGET/$APP_TARGET.apk
 
 echo "--- Installing APK to /system/priv-app/ ---"
 # Create the directory in priv-app
