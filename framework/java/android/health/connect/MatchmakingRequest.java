@@ -223,10 +223,6 @@ public final class MatchmakingRequest implements Parcelable {
     /** @hide */
     @NonNull
     public MatchmakingRequest toUnmasked(@NonNull Function<String, String> packageUnmasker) {
-        if (mCallingPackageName == null) {
-            return this;
-        }
-
         return new MatchmakingRequest(
                 mRecordTypes,
                 mCallingPackageName,

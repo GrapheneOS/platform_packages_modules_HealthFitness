@@ -549,6 +549,37 @@ public class MatchmakingRequestTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void toUnmasked_withoutCallingPackageName_returnsNewUnmaskedInstance() {
+        final String maskedPackageName = "masked.package.name";
+        final String unmaskedPackageName = "unmasked.package.name";
+        DataOrigin exclude = new DataOrigin.Builder().setPackageName(maskedPackageName).build();
+
+        MatchmakingRequest originalRequest =
+                new MatchmakingRequest.Builder()
+                        .addRecordType(StepsRecord.class)
+                        .setExcludedDataSources(Set.of(exclude))
+                        .build();
+
+        Function<String, String> unmasker =
+                packageName -> {
+                    assertThat(packageName).isEqualTo(maskedPackageName);
+                    return unmaskedPackageName;
+                };
+
+        MatchmakingRequest unmaskedRequest = originalRequest.toUnmasked(unmasker);
+
+        assertThat(unmaskedRequest).isNotSameInstanceAs(originalRequest);
+        assertThat(unmaskedRequest.getRecordTypes()).isEqualTo(originalRequest.getRecordTypes());
+        // Calling package name should not be set
+        assertThat(unmaskedRequest.getCallingPackageName()).isNull();
+        DataOrigin unmaskedInclude =
+                new DataOrigin.Builder().setPackageName(unmaskedPackageName).build();
+        assertThat(unmaskedRequest.getExcludedDataSources()).containsExactly(unmaskedInclude);
+        assertThat(unmaskedRequest.getIncludedDataSources()).isEmpty();
+    }
+
+    @Test
     public void describeContents_returnsZero() {
         MatchmakingRequest request = new MatchmakingRequest.Builder().build();
 

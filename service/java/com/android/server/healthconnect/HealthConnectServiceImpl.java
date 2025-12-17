@@ -3592,7 +3592,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         excludeDataSources);
                         maskedResponse =
                                 new GetMatchingDataSourcesResponse(matchingApps, matchingDevices)
-                                        .toMasked(getMaskingFunction(packageName));
+                                        // the masking package name is always the caller of this API
+                                        .toMasked(getMaskingFunction(attributionPackageName));
                     } else {
                         matchingApps =
                                 mMatchmakingManager.fetchMatchingApps(recordTypes, packageName);
@@ -3637,7 +3638,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                     .collect(
                                             Collectors.toMap(
                                                     entry ->
-                                                            getUnmaskingFunction(callingPackageName)
+                                                            getUnmaskingFunction(
+                                                                            attributionSource
+                                                                                    .getPackageName())
                                                                     .apply(entry.getKey()),
                                                     Map.Entry::getValue));
 
