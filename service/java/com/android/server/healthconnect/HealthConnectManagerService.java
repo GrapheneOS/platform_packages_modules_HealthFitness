@@ -20,6 +20,8 @@ import static java.util.Objects.requireNonNull;
 
 import android.annotation.Nullable;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.health.connect.HealthPermissions;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.os.Process;
 import android.os.UserHandle;
@@ -29,6 +31,7 @@ import android.util.Slog;
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.modules.utils.build.SdkLevel;
 import com.android.server.SystemService;
 import com.android.server.healthconnect.common.jobs.HealthConnectDailyJobs;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
@@ -48,6 +51,7 @@ import com.android.server.healthconnect.telemetry.TelemetryJobService;
  */
 public class HealthConnectManagerService extends SystemService {
     private static final String TAG = "HealthConnectManagerService";
+    private final boolean mIsHardwareSupported;
     private final Context mContext;
     private final HealthConnectServiceImpl mHealthConnectService;
     private final UserManager mUserManager;
@@ -66,9 +70,9 @@ public class HealthConnectManagerService extends SystemService {
         super(context);
         mRateLimiter = new RateLimiter();
         mContext = context;
+        mIsHardwareSupported = isHardwareSupported(context);
         mCurrentForegroundUser = context.getUser();
         mUserManager = context.getSystemService(UserManager.class);
-
         HealthConnectInjector.setInstance(healthConnectInjector);
         mHealthConnectInjector = HealthConnectInjector.getInstance();
         mHealthConnectService =
@@ -127,6 +131,21 @@ public class HealthConnectManagerService extends SystemService {
 
     @Override
     public void onStart() {
+        if (mIsHardwareSupported) {
+            registerEventListeners();
+            publishService(Context.HEALTHCONNECT_SERVICE, mHealthConnectService);
+        } else {
+            Slog.w(TAG, "Health Connect is not supported on this device.");
+        }
+    }
+
+    @VisibleForTesting
+    protected void publishService(String name, android.os.IBinder service) {
+        publishBinderService(name, service);
+    }
+
+    @VisibleForTesting
+    void registerEventListeners() {
         mHealthConnectPermissionsChangedListener.registerPermissionsChangeListener();
         mHealthConnectInjector
                 .getPermissionPackageChangesOrchestrator()
@@ -135,8 +154,6 @@ public class HealthConnectManagerService extends SystemService {
                 .registerBroadcastReceiver(mContext);
         new HealthConnectOnboardingReceiver(mHealthConnectInjector.getNotificationStatsLogger())
                 .registerBroadcastReceiver(mContext);
-
-        publishBinderService(Context.HEALTHCONNECT_SERVICE, mHealthConnectService);
     }
 
     /**
@@ -145,6 +162,10 @@ public class HealthConnectManagerService extends SystemService {
      */
     @Override
     public void onUserSwitching(@Nullable TargetUser from, TargetUser to) {
+        if (!mIsHardwareSupported) {
+            return;
+        }
+
         if (from != null && mUserManager.isUserUnlocked(from.getUserHandle())) {
             // We need to cancel any pending timers for the foreground user before it goes into the
             // background.
@@ -184,6 +205,9 @@ public class HealthConnectManagerService extends SystemService {
     @Override
     public void onUserUnlocked(TargetUser user) {
         requireNonNull(user);
+        if (!mIsHardwareSupported) {
+            return;
+        }
         if (!user.getUserHandle().equals(mCurrentForegroundUser)) {
             // Ignore unlocking requests for non-foreground users
             return;
@@ -200,6 +224,9 @@ public class HealthConnectManagerService extends SystemService {
     }
 
     private void setupForCurrentForegroundUser() {
+        if (!mIsHardwareSupported) {
+            return;
+        }
         Slog.d(TAG, "setupForCurrentForegroundUser: " + mCurrentForegroundUser);
         HealthConnectContext hcContext =
                 HealthConnectContext.create(
@@ -363,6 +390,27 @@ public class HealthConnectManagerService extends SystemService {
         }
     }
 
+    private static boolean isHardwareSupported(Context context) {
+        if (!Flags.enableHardwareSupportCheck()) {
+            return true;
+        }
+        PackageManager pm = context.getPackageManager();
+        // Not available on embedded/tv/auto.
+        if (pm.hasSystemFeature(PackageManager.FEATURE_EMBEDDED)
+                || pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
+                || pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)) {
+            return false;
+        }
+        // Only available on Wear for permission management.
+        if (pm.hasSystemFeature(PackageManager.FEATURE_WATCH)) {
+            return SdkLevel.isAtLeastB()
+                    && context.checkSelfPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
+                            == PackageManager.PERMISSION_GRANTED;
+        }
+        // Supported everywhere else.
+        return true;
+    }
+
     private static Context getUserContext(Context context, UserHandle user) {
         if (Process.myUserHandle().equals(user)) {
             return context;
@@ -370,4 +418,5 @@ public class HealthConnectManagerService extends SystemService {
             return context.createContextAsUser(user, 0);
         }
     }
+
 }
