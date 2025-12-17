@@ -197,6 +197,15 @@
             android:layout_marginTop="8dp"
             android:minWidth="250dp"
             android:text="@string/access_log_button"/>
+
+        <Button
+            android:id="@+id/advertise_device_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:minWidth="250dp"
+            android:text="@string/advertise_device"/>
     </LinearLayout>
 
 </ScrollView>

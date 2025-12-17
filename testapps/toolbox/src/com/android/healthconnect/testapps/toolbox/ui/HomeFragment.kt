@@ -22,8 +22,14 @@ import android.content.pm.PackageManager
 import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DEFAULT
 import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED
 import android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
+import android.health.connect.datatypes.Device
+import android.health.connect.datatypes.StepsRecord
+import android.health.connect.device.DeviceDataAdvertisement
+import android.health.connect.device.DeviceDataTypeAdvertisement
 import android.os.Bundle
+import android.os.OutcomeReceiver
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,6 +49,7 @@ import com.android.healthconnect.testapps.toolbox.read.HomeActivity
 import com.android.healthconnect.testapps.toolbox.seed.SeedData
 import com.android.healthconnect.testapps.toolbox.viewmodels.HomeFragmentViewModel
 import com.android.healthconnect.testapps.toolbox.viewmodels.PerformanceTestingViewModel
+import java.util.concurrent.Executors
 import kotlin.system.exitProcess
 
 /** Home fragment for Health Connect Toolbox. */
@@ -159,6 +166,10 @@ class HomeFragment : Fragment() {
         view.requireViewById<Button>(R.id.access_log_button).setOnClickListener {
             accessLogButtonPressed()
         }
+        view.requireViewById<Button>(R.id.advertise_device_button).setOnClickListener {
+            advertiseDevice()
+        }
+
         mNavigationController = findNavController()
 
         homeFragmentViewModel.seedAllDataState.observe(viewLifecycleOwner) { state ->
@@ -170,6 +181,46 @@ class HomeFragment : Fragment() {
         }
 
         setUpMatchmaking(view)
+    }
+
+    private fun advertiseDevice() {
+        val device =
+            Device.Builder()
+                .setManufacturer("FitTastic")
+                .setModel("FitWatch 2000")
+                .setType(Device.DEVICE_TYPE_WATCH)
+                .setDisplayName("FitWatch")
+                .build()
+        val deviceId = "TestDeviceId"
+        val deviceDataTypeAdvertisements =
+            setOf(
+                DeviceDataTypeAdvertisement.Builder(StepsRecord::class.java)
+                    .setAvailable(true)
+                    .build()
+            )
+        val advertisement = DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements)
+        val executor = Executors.newSingleThreadExecutor()
+        val receiver =
+            object : OutcomeReceiver<Void, HealthConnectException> {
+                override fun onResult(result: Void?) {
+                    activity?.runOnUiThread {
+                        Toast.makeText(context, "Device Advertised!", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onError(error: HealthConnectException) {
+                    activity?.runOnUiThread {
+                        Toast.makeText(
+                                context,
+                                "Advertisement Failed: ${error.message}",
+                                Toast.LENGTH_SHORT,
+                            )
+                            .show()
+                    }
+                }
+            }
+
+        manager.advertiseDeviceDataSources(setOf(advertisement), executor, receiver)
     }
 
     private fun setUpMatchmaking(view: View) {
