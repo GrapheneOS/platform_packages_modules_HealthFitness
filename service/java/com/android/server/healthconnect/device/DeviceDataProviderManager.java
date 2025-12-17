@@ -130,8 +130,6 @@ public class DeviceDataProviderManager {
      *     device type.
      */
     // TODO(b/440066697): Check if we want to handle advertisements that are no longer present.
-    // TODO(b/459404842): Update API documentation with IllegalArgumentException information when
-    //  a deviceId is already being used by a different device type and add a CTS test.
     public void handleAdvertisement(
             @NonNull Set<DeviceDataAdvertisement> advertisements,
             @NonNull String callingDdpPackageName) {

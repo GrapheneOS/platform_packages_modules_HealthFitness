@@ -3987,6 +3987,15 @@ public class HealthConnectManager {
      * representing each data type supported by the device and to be used as a device data type
      * source.
      *
+     * <p>Reusing a {@code deviceId} across multiple {@link DeviceDataAdvertisement} with different
+     * {@link Device.DeviceType} causes runtime exceptions. Reusing a {@code deviceId} across
+     * multiple {@link DeviceDataAdvertisement} with the same {@link Device.DeviceType} merges them
+     * to a single source in {@link #getDeviceDataSources}, where the latest advertisement
+     * overwrites previous entries. This means that different devices using the same {@code
+     * deviceId} when inserting records via {@link #insertDeviceRecords} attribute to the same
+     * origin. While this allows grouping generic hardware, unique identifiers (such as MAC
+     * addresses) are recommended to ensure distinct device attribution.
+     *
      * <p>This method must be called before data can be written for the advertised device data type
      * source. This should be called as frequently as needed to accurately describe the current
      * devices and statuses of supported data types. Every advertisement must represent the latest
