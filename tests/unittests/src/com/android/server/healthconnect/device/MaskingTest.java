@@ -87,7 +87,8 @@ public class MaskingTest {
                     "updateDeviceRecords",
                     "getCurrentDeviceId",
                     "readDeviceRecords",
-                    "deleteDeviceRecords");
+                    "deleteDeviceRecords",
+                    "getMatchingDataSources");
 
     /**
      * Neither the method arguments nor the return values contain package names or data origin data.
@@ -183,7 +184,6 @@ public class MaskingTest {
                     Map.entry("restoreChanges", DOES_NOT_INCLUDE_PACKAGE_NAMES),
                     Map.entry("getHealthConnectOnboardingState", DOES_NOT_INCLUDE_PACKAGE_NAMES),
                     Map.entry("isMatchmakingPossible", DOES_NOT_INTERACT_WITH_DEVICES),
-                    Map.entry("getMatchingDataSources", DOES_NOT_INTERACT_WITH_DEVICES),
                     Map.entry("setTrackingEnabled", DOES_NOT_INCLUDE_PACKAGE_NAMES),
                     Map.entry("isTrackingEnabled", DOES_NOT_INCLUDE_PACKAGE_NAMES),
                     Map.entry("getDeviceDataSourceCapabilities", DOES_NOT_INCLUDE_PACKAGE_NAMES),

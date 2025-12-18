@@ -16,6 +16,7 @@
 
 package com.android.healthconnect.controller.tests.matchmaking.api
 
+import android.health.connect.GetMatchingDataSourcesResponse
 import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.HealthPermissions.WRITE_STEPS
@@ -84,8 +85,8 @@ class GetMatchingAppsUseCaseTest {
         doAnswer {
                 val receiver =
                     it.arguments[2]
-                        as OutcomeReceiver<Map<String, Set<String>>, HealthConnectException>
-                receiver.onResult(matchingAppsResponse)
+                        as OutcomeReceiver<GetMatchingDataSourcesResponse, HealthConnectException>
+                receiver.onResult(GetMatchingDataSourcesResponse(matchingAppsResponse))
                 null
             }
             .whenever(healthConnectManager)
@@ -107,7 +108,7 @@ class GetMatchingAppsUseCaseTest {
         doAnswer {
                 val receiver =
                     it.arguments[2]
-                        as OutcomeReceiver<Map<String, Set<String>>, HealthConnectException>
+                        as OutcomeReceiver<GetMatchingDataSourcesResponse, HealthConnectException>
                 receiver.onError(exception)
                 null
             }

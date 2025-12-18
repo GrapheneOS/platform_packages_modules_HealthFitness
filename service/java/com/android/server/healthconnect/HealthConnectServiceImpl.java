@@ -3487,7 +3487,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             MatchmakingRequest request,
             IIsMatchmakingPossibleCallback callback) {
         checkParamsNonNull(attributionSource, request, callback);
-
         getMatchingDataSources(
                 attributionSource,
                 request,
@@ -3497,7 +3496,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     public void onResult(GetMatchingDataSourcesResponse response)
                             throws RemoteException {
                         callback.onResult(
-                                new MatchmakingResponse.Builder(response.hasMatchingApps())
+                                new MatchmakingResponse.Builder(response.hasMatchingDataSources())
                                         .build());
                     }
 
@@ -3532,6 +3531,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         .setPackageName(attributionPackageName);
         ErrorCallback errorCallback = callback::onError;
 
+        final String unmaskingPackageName;
+        if (holdsDataManagementPermission) {
+            unmaskingPackageName = request.getCallingPackageName();
+        } else {
+            unmaskingPackageName = attributionSource.getPackageName();
+        }
+        final MatchmakingRequest unmaskedRequest =
+                request.toUnmasked(getUnmaskingFunction(unmaskingPackageName));
+
         scheduleLoggingHealthDataApiErrors(
                 () -> {
                     if (!Flags.matchmaking()) {
@@ -3557,12 +3565,43 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             holdsDataManagementPermission
                                     ? requestPackageName
                                     : attributionPackageName;
-                    Set<Class<? extends Record>> recordTypes = request.getRecordTypes();
-                    Map<String, Set<String>> matchingApps =
-                            mMatchmakingManager.fetchMatchingApps(recordTypes, packageName);
-                    GetMatchingDataSourcesResponse maskedResponse =
-                            new GetMatchingDataSourcesResponse(matchingApps)
-                                    .toMasked(getMaskingFunction(packageName));
+                    Set<Class<? extends Record>> recordTypes = unmaskedRequest.getRecordTypes();
+
+                    Map<String, Set<String>> matchingApps;
+                    GetMatchingDataSourcesResponse maskedResponse;
+                    if (Flags.deviceDataProvidersApi()) {
+                        // If DDP feature is on, apply the include/exclude filters
+                        Set<DataOrigin> includeDataSources =
+                                unmaskedRequest.getIncludedDataSources();
+                        Set<DataOrigin> excludeDataSources =
+                                unmaskedRequest.getExcludedDataSources();
+
+                        matchingApps =
+                                mMatchmakingManager.fetchMatchingApps(
+                                        recordTypes,
+                                        packageName,
+                                        includeDataSources,
+                                        excludeDataSources);
+
+                        // Also look for devices
+                        Map<String, Set<String>> matchingDevices =
+                                mMatchmakingManager.fetchMatchingDevices(
+                                        recordTypes,
+                                        packageName,
+                                        includeDataSources,
+                                        excludeDataSources);
+                        maskedResponse =
+                                new GetMatchingDataSourcesResponse(matchingApps, matchingDevices)
+                                        // the masking package name is always the caller of this API
+                                        .toMasked(getMaskingFunction(attributionPackageName));
+                    } else {
+                        matchingApps =
+                                mMatchmakingManager.fetchMatchingApps(recordTypes, packageName);
+                        maskedResponse =
+                                new GetMatchingDataSourcesResponse(matchingApps)
+                                        .toMasked(getMaskingFunction(packageName));
+                    }
+
                     logger.setHealthDataServiceApiStatusSuccess();
                     callback.onResult(maskedResponse);
                 },
@@ -3579,21 +3618,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     public void recordMatchmakingDenial(
             AttributionSource attributionSource,
             String callingPackageName,
-            Map<String, List<String>> matchingApps,
+            Map<String, List<String>> matchingDataSources,
             IEmptyResponseCallback callback) {
         checkParamsNonNull(attributionSource, callingPackageName, callback);
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final ErrorCallback errorCallback = callback::onError;
-        Map<String, List<String>> unmaskedMatchingApps =
-                matchingApps.entrySet().stream()
-                        .collect(
-                                Collectors.toMap(
-                                        entry ->
-                                                getUnmaskingFunction(callingPackageName)
-                                                        .apply(entry.getKey()),
-                                        Map.Entry::getValue));
 
         scheduleControllerTaskWithExceptionHandling(
                 () -> {
@@ -3601,6 +3632,18 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         throw new UnsupportedOperationException(
                                 "recordMatchmakingDenial is not supported");
                     }
+
+                    Map<String, List<String>> unmaskedMatchingDataSources =
+                            matchingDataSources.entrySet().stream()
+                                    .collect(
+                                            Collectors.toMap(
+                                                    entry ->
+                                                            getUnmaskingFunction(
+                                                                            attributionSource
+                                                                                    .getPackageName())
+                                                                    .apply(entry.getKey()),
+                                                    Map.Entry::getValue));
+
                     enforceIsForegroundUser(userHandle);
                     verifyPackageNameFromUid(uid, attributionSource);
                     mContext.enforcePermission(MANAGE_HEALTH_DATA_PERMISSION, pid, uid, null);
@@ -3610,7 +3653,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     }
                     throwExceptionIfDataSyncInProgress();
                     mMatchmakingManager.recordMatchmakingDenial(
-                            callingPackageName, unmaskedMatchingApps);
+                            callingPackageName, unmaskedMatchingDataSources);
 
                     callback.onResult();
                 },

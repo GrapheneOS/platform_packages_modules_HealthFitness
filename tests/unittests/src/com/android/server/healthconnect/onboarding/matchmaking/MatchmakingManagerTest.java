@@ -38,6 +38,7 @@ import static android.health.connect.HealthPermissions.WRITE_STEPS;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -49,17 +50,28 @@ import static org.mockito.Mockito.when;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.health.connect.DeviceDataProviderInfo;
+import android.health.connect.DeviceDataSourceInfo;
+import android.health.connect.datatypes.DataOrigin;
+import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.ExerciseSessionRecord;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SkinTemperatureRecord;
+import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.device.DeviceDataProviderManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
 import com.android.server.healthconnect.storage.HealthConnectContext;
@@ -86,6 +98,7 @@ import java.util.Set;
 public class MatchmakingManagerTest {
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Mock private HealthConnectPermissionHelper mHealthConnectPermissionHelper;
     @Mock private PackageInfoUtils mPackageInfoUtils;
@@ -94,10 +107,23 @@ public class MatchmakingManagerTest {
     private final HealthConnectMappings mHealthConnectMappings = new HealthConnectMappings();
 
     private MatchmakingManager mMatchmakingManager;
+    @Mock private DeviceDataProviderManager mDeviceDataProviderManager;
 
     private static final String PACKAGE_NAME = "com.example.app";
     private static final String PACKAGE_NAME_2 = "com.example.app2";
     private static final String PACKAGE_NAME_3 = "com.example.app3";
+
+    private static final String DEVICE_PACKAGE_NAME = "device.package.name";
+    private static final String DEVICE_PACKAGE_NAME_2 = "device.package.name2";
+    private static final String DEVICE_PACKAGE_NAME_3 = "device.package.name3";
+
+    private static final String DEVICE_DATA_PROVIDER_PACKAGE_NAME = "ddp.package.name";
+    private static final String DEVICE_DATA_PROVIDER_PACKAGE_NAME_2 = "ddp.package.name2";
+    private static final String DEVICE_DATA_PROVIDER_PACKAGE_NAME_3 = "ddp.package.name3";
+
+    private static final String DEVICE_ID = "device.id";
+    private static final String DEVICE_ID_2 = "device.id2";
+    private static final String DEVICE_ID_3 = "device.id3";
 
     @Before
     public void setUp() throws PackageManager.NameNotFoundException {
@@ -110,7 +136,8 @@ public class MatchmakingManagerTest {
                         mHealthConnectPermissionHelper,
                         mPackageInfoUtils,
                         mHealthConnectMappings,
-                        mMatchmakingDenialStateManager);
+                        mMatchmakingDenialStateManager,
+                        mDeviceDataProviderManager);
         when(mMatchmakingDenialStateManager.isMatchmakingPaused(anyString(), anyString(), anyInt()))
                 .thenReturn(false);
     }
@@ -455,6 +482,1086 @@ public class MatchmakingManagerTest {
     }
 
     @Test
+    public void fetchMatchingApps_includeAndExcludeFiltersProvided_throws() {
+        Set<DataOrigin> includeDataSources =
+                Set.of(
+                        new DataOrigin.Builder().setPackageName(PACKAGE_NAME).build(),
+                        new DataOrigin.Builder().setPackageName(PACKAGE_NAME_2).build());
+        Set<DataOrigin> excludeDataSources =
+                Set.of(new DataOrigin.Builder().setPackageName(PACKAGE_NAME_3).build());
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mMatchmakingManager.fetchMatchingApps(
+                                Collections.emptySet(),
+                                PACKAGE_NAME,
+                                includeDataSources,
+                                excludeDataSources));
+    }
+
+    @Test
+    public void fetchMatchingApps_includeFilterProvided_returnsOnlyAppsInIncludeFilter() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_HEART_RATE));
+
+        PackageInfo matchingApp1 = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
+        PackageInfo matchingApp2 =
+                createPackageInfo(PACKAGE_NAME_3, new String[] {WRITE_HEART_RATE});
+        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp1, matchingApp2));
+        mockPackageVisibility(PACKAGE_NAME, PACKAGE_NAME_2, true);
+        mockPackageVisibility(PACKAGE_NAME, PACKAGE_NAME_3, true);
+
+        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
+
+        mockAppSystemStatus(PACKAGE_NAME_3, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_3, WRITE_HEART_RATE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_3, WRITE_HEART_RATE, 0);
+
+        Set<DataOrigin> includeDataSources =
+                Set.of(new DataOrigin.Builder().setPackageName(PACKAGE_NAME_2).build());
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingApps(
+                        Collections.emptySet(), PACKAGE_NAME, includeDataSources, Set.of());
+
+        assertThat(result).containsExactly(PACKAGE_NAME_2, ImmutableSet.of(WRITE_STEPS));
+    }
+
+    @Test
+    public void fetchMatchingApps_includeFilterProvided_noMatchingAppsReturned() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_HEART_RATE));
+
+        PackageInfo matchingApp1 = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
+        PackageInfo matchingApp2 =
+                createPackageInfo(PACKAGE_NAME_3, new String[] {WRITE_HEART_RATE});
+        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp1, matchingApp2));
+        mockPackageVisibility(PACKAGE_NAME, PACKAGE_NAME_2, true);
+        mockPackageVisibility(PACKAGE_NAME, PACKAGE_NAME_3, true);
+        mockPackageVisibility(PACKAGE_NAME, "another.package.name", true);
+
+        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
+
+        mockAppSystemStatus(PACKAGE_NAME_3, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_3, WRITE_HEART_RATE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_3, WRITE_HEART_RATE, 0);
+
+        Set<DataOrigin> includeDataSources =
+                Set.of(new DataOrigin.Builder().setPackageName("another.package.name").build());
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingApps(
+                        Collections.emptySet(), PACKAGE_NAME, includeDataSources, Set.of());
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void fetchMatchingApps_includeFilterProvided_hidesPackagesWithoutVisibility() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_HEART_RATE));
+
+        PackageInfo matchingApp1 = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
+        PackageInfo matchingApp2 =
+                createPackageInfo(PACKAGE_NAME_3, new String[] {WRITE_HEART_RATE});
+        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp1, matchingApp2));
+        mockPackageVisibility(PACKAGE_NAME, PACKAGE_NAME_2, true);
+        // No visibility over this package, so do not return it as a match
+        mockPackageVisibility(PACKAGE_NAME, PACKAGE_NAME_3, false);
+
+        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
+
+        mockAppSystemStatus(PACKAGE_NAME_3, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_3, WRITE_HEART_RATE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_3, WRITE_HEART_RATE, 0);
+
+        Set<DataOrigin> includeDataSources =
+                Set.of(new DataOrigin.Builder().setPackageName(PACKAGE_NAME_2).build());
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingApps(
+                        Collections.emptySet(), PACKAGE_NAME, includeDataSources, Set.of());
+
+        assertThat(result).containsExactly(PACKAGE_NAME_2, ImmutableSet.of(WRITE_STEPS));
+    }
+
+    @Test
+    public void fetchMatchingApps_excludeFilterProvided_skipsAppsInFilter() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_HEART_RATE));
+
+        PackageInfo matchingApp1 = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
+        PackageInfo matchingApp2 =
+                createPackageInfo(PACKAGE_NAME_3, new String[] {WRITE_HEART_RATE});
+        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp1, matchingApp2));
+        mockPackageVisibility(PACKAGE_NAME, PACKAGE_NAME_2, true);
+        mockPackageVisibility(PACKAGE_NAME, PACKAGE_NAME_3, true);
+
+        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
+
+        mockAppSystemStatus(PACKAGE_NAME_3, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_3, WRITE_HEART_RATE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_3, WRITE_HEART_RATE, 0);
+
+        Set<DataOrigin> excludeDataSources =
+                Set.of(new DataOrigin.Builder().setPackageName(PACKAGE_NAME_2).build());
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingApps(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), excludeDataSources);
+
+        assertThat(result).containsExactly(PACKAGE_NAME_3, ImmutableSet.of(WRITE_HEART_RATE));
+    }
+
+    @Test
+    public void fetchMatchingApps_excludeFilterProvided_noMatchingApps() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_HEART_RATE));
+
+        PackageInfo matchingApp1 = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
+        PackageInfo matchingApp2 =
+                createPackageInfo(PACKAGE_NAME_3, new String[] {WRITE_HEART_RATE});
+        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp1, matchingApp2));
+        mockPackageVisibility(PACKAGE_NAME, PACKAGE_NAME_2, true);
+        mockPackageVisibility(PACKAGE_NAME, PACKAGE_NAME_3, true);
+
+        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
+
+        mockAppSystemStatus(PACKAGE_NAME_3, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_3, WRITE_HEART_RATE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_3, WRITE_HEART_RATE, 0);
+
+        Set<DataOrigin> excludeDataSources =
+                Set.of(
+                        new DataOrigin.Builder().setPackageName(PACKAGE_NAME_2).build(),
+                        new DataOrigin.Builder().setPackageName(PACKAGE_NAME_3).build());
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingApps(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), excludeDataSources);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    public void fetchMatchingApps_excludeFilterProvided_returnsPackagesWithoutVisibility() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_HEART_RATE));
+
+        PackageInfo matchingApp1 = createPackageInfo(PACKAGE_NAME_2, new String[] {WRITE_STEPS});
+        PackageInfo matchingApp2 =
+                createPackageInfo(PACKAGE_NAME_3, new String[] {WRITE_HEART_RATE});
+        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp1, matchingApp2));
+        // No visibility over PACKAGE_NAME_2, so even if it's present in the exclude filter, we will
+        // return it as a match
+        mockPackageVisibility(PACKAGE_NAME, PACKAGE_NAME_2, false);
+        mockPackageVisibility(PACKAGE_NAME, PACKAGE_NAME_3, true);
+
+        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_STEPS, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_STEPS, 0);
+
+        mockAppSystemStatus(PACKAGE_NAME_3, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_3, WRITE_HEART_RATE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_3, WRITE_HEART_RATE, 0);
+
+        Set<DataOrigin> excludeDataSources =
+                Set.of(
+                        new DataOrigin.Builder().setPackageName(PACKAGE_NAME_2).build(),
+                        new DataOrigin.Builder().setPackageName(PACKAGE_NAME_3).build());
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingApps(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), excludeDataSources);
+
+        assertThat(result).containsExactly(PACKAGE_NAME_2, ImmutableSet.of(WRITE_STEPS));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_includeAndExcludeFiltersProvided_throws() {
+        Set<DataOrigin> includeDataSources =
+                Set.of(
+                        new DataOrigin.Builder().setPackageName(PACKAGE_NAME).build(),
+                        new DataOrigin.Builder().setPackageName(PACKAGE_NAME_2).build());
+        Set<DataOrigin> excludeDataSources =
+                Set.of(new DataOrigin.Builder().setPackageName(PACKAGE_NAME_3).build());
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mMatchmakingManager.fetchMatchingDevices(
+                                Collections.emptySet(),
+                                PACKAGE_NAME,
+                                includeDataSources,
+                                excludeDataSources));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_noReadPermissionsRequested_returnsEmpty() {
+        mockReadingApp(PACKAGE_NAME, Collections.emptyList());
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), Set.of());
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_noMatchingWritePermissions_returnsEmpty() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_SLEEP));
+
+        Device device = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin = new DataOrigin.Builder().setPackageName("device.package").build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class).build();
+
+        DeviceDataProviderInfo providerInfo =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement));
+
+        DeviceDataSourceInfo nonMatchingDeviceInfo =
+                new DeviceDataSourceInfo(origin, device, true, List.of(providerInfo));
+
+        mockCompatibleDevices(ImmutableList.of(nonMatchingDeviceInfo));
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), Set.of());
+
+        assertThat(result).isEmpty();
+    }
+
+    // TODO (b/462180668) fetchMatchingDevices_noMatchingWritePermissionsForSymptom_returnsEmpty
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_noDevicesExist_returnsEmpty() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_SLEEP));
+        mockCompatibleDevices(ImmutableList.of());
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), Set.of());
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void fetchMatchingDevices_flagOff_returnsEmpty() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_SLEEP));
+        Device device = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class).build();
+
+        DeviceDataProviderInfo providerInfo =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement));
+
+        DeviceDataSourceInfo nonMatchingDeviceInfo =
+                new DeviceDataSourceInfo(origin, device, true, List.of(providerInfo));
+
+        mockCompatibleDevices(ImmutableList.of(nonMatchingDeviceInfo));
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), Set.of());
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_matchingWritePermissionsAreUserEnabled_returnsEmpty() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_DISTANCE));
+        Device device = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(true)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(true)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo =
+                new DeviceDataSourceInfo(origin, device, true, List.of(providerInfo));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo));
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), Set.of());
+        assertThat(result).isEmpty();
+    }
+
+    // TODO (b/466983701)
+    // fetchMatchingDevices_matchingWritePermissionsNotVisibleByDefault_noIncludeFilter_returnsEmpty
+    // TODO (b/466983701)
+    // fetchMatchingDevices_matchingWritePermissionsNotVisibleByDefault_withIncludeFilter_returnsMatch
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_matchExists_returnsMatchingDevice() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_DISTANCE));
+        Device device = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo =
+                new DeviceDataSourceInfo(origin, device, true, List.of(providerInfo));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo));
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), Set.of());
+        assertThat(result)
+                .containsExactly(DEVICE_PACKAGE_NAME, Set.of(WRITE_STEPS, WRITE_DISTANCE));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_matchExists_paused_returnsEmpty() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_DISTANCE));
+        Device device = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo =
+                new DeviceDataSourceInfo(origin, device, true, List.of(providerInfo));
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo));
+        when(mMatchmakingDenialStateManager.isMatchmakingPaused(
+                        PACKAGE_NAME, DEVICE_PACKAGE_NAME, ACTIVITY))
+                .thenReturn(true);
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), Set.of());
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_matchExists_oneCategoryPaused_returnsMatchingDevices() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_DISTANCE, READ_SLEEP));
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataTypeAdvertisement sleepAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(SleepSessionRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        Device device2 = new Device.Builder().setManufacturer("Man2").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build();
+
+        DeviceDataProviderInfo providerInfo2 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_2,
+                        DEVICE_ID_2,
+                        "",
+                        "",
+                        ImmutableSet.of(sleepAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(origin1, device1, true, List.of(providerInfo1));
+        DeviceDataSourceInfo matchingDeviceInfo2 =
+                new DeviceDataSourceInfo(origin2, device2, true, List.of(providerInfo2));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo1, matchingDeviceInfo2));
+        when(mMatchmakingDenialStateManager.isMatchmakingPaused(
+                        PACKAGE_NAME, DEVICE_PACKAGE_NAME, ACTIVITY))
+                .thenReturn(false);
+        when(mMatchmakingDenialStateManager.isMatchmakingPaused(
+                        PACKAGE_NAME, DEVICE_PACKAGE_NAME_2, SLEEP))
+                .thenReturn(true);
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), Set.of());
+        assertThat(result)
+                .containsExactly(DEVICE_PACKAGE_NAME, Set.of(WRITE_DISTANCE, WRITE_STEPS));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void
+            fetchMatchingDevices_matchExists_oneCategoryPausedForDevice_returnsMatchingPermissions() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_DISTANCE, READ_SLEEP));
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataTypeAdvertisement sleepAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(SleepSessionRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        DeviceDataProviderInfo providerInfo2 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_2,
+                        DEVICE_ID_2,
+                        "",
+                        "",
+                        ImmutableSet.of(sleepAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(
+                        origin1, device1, true, List.of(providerInfo1, providerInfo2));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo1));
+        when(mMatchmakingDenialStateManager.isMatchmakingPaused(
+                        PACKAGE_NAME, DEVICE_PACKAGE_NAME, ACTIVITY))
+                .thenReturn(false);
+        when(mMatchmakingDenialStateManager.isMatchmakingPaused(
+                        PACKAGE_NAME, DEVICE_PACKAGE_NAME, SLEEP))
+                .thenReturn(true);
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), Set.of());
+        assertThat(result)
+                .containsExactly(DEVICE_PACKAGE_NAME, Set.of(WRITE_DISTANCE, WRITE_STEPS));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_queryOneRecordType_multipleMatches_returnsMatchingDevices() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_DISTANCE));
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        Device device2 = new Device.Builder().setManufacturer("Man2").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build();
+
+        DeviceDataProviderInfo providerInfo2 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_2,
+                        DEVICE_ID_2,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(origin1, device1, true, List.of(providerInfo1));
+        DeviceDataSourceInfo matchingDeviceInfo2 =
+                new DeviceDataSourceInfo(origin2, device2, true, List.of(providerInfo2));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo1, matchingDeviceInfo2));
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), Set.of());
+        assertThat(result)
+                .containsExactly(
+                        DEVICE_PACKAGE_NAME,
+                        Set.of(WRITE_DISTANCE),
+                        DEVICE_PACKAGE_NAME_2,
+                        Set.of(WRITE_DISTANCE));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_multipleDDPsPerDevice_returnsMatchingDevices() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_DISTANCE));
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement));
+
+        Device device2 = new Device.Builder().setManufacturer("Man2").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build();
+
+        DeviceDataProviderInfo providerInfo2 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_2,
+                        DEVICE_ID_2,
+                        "",
+                        "",
+                        ImmutableSet.of(distanceAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(origin1, device1, true, List.of(providerInfo1));
+        DeviceDataSourceInfo matchingDeviceInfo2 =
+                new DeviceDataSourceInfo(origin2, device2, true, List.of(providerInfo2));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo1, matchingDeviceInfo2));
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), Set.of());
+        assertThat(result)
+                .containsExactly(
+                        DEVICE_PACKAGE_NAME,
+                        Set.of(WRITE_STEPS),
+                        DEVICE_PACKAGE_NAME_2,
+                        Set.of(WRITE_DISTANCE));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_multipleDDPsPerDevice_excludesDeviceWhenNoMatchingDDP() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_STEPS, READ_SLEEP));
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(true)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataTypeAdvertisement sleepAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(SleepSessionRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement));
+
+        Device device2 = new Device.Builder().setManufacturer("Man2").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build();
+
+        DeviceDataProviderInfo providerInfo2 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_2,
+                        DEVICE_ID_2,
+                        "",
+                        "",
+                        ImmutableSet.of(distanceAdvertisement));
+
+        Device device3 = new Device.Builder().setManufacturer("Man3").build();
+        DataOrigin origin3 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_3).build();
+        DeviceDataProviderInfo providerInfo3 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_3,
+                        DEVICE_ID_3,
+                        "",
+                        "",
+                        ImmutableSet.of(sleepAdvertisement));
+
+        // Should not return because the DDP steps config is already enabled
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(origin1, device1, true, List.of(providerInfo1));
+        // Should not return because DPP does not have matching permissions
+        DeviceDataSourceInfo matchingDeviceInfo2 =
+                new DeviceDataSourceInfo(origin2, device2, true, List.of(providerInfo2));
+        // Should return because DDP is a match
+        DeviceDataSourceInfo matchingDeviceInfo3 =
+                new DeviceDataSourceInfo(origin3, device3, true, List.of(providerInfo3));
+
+        mockCompatibleDevices(
+                ImmutableList.of(matchingDeviceInfo1, matchingDeviceInfo2, matchingDeviceInfo3));
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), Set.of());
+        assertThat(result).containsExactly(DEVICE_PACKAGE_NAME_3, Set.of(WRITE_SLEEP));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_includeOneDataSource_matchExists() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_DISTANCE));
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        Device device2 = new Device.Builder().setManufacturer("Man2").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build();
+
+        DeviceDataProviderInfo providerInfo2 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_2,
+                        DEVICE_ID_2,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(origin1, device1, true, List.of(providerInfo1));
+        // Should not return because not in the include filter
+        DeviceDataSourceInfo matchingDeviceInfo2 =
+                new DeviceDataSourceInfo(origin2, device2, true, List.of(providerInfo2));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo1, matchingDeviceInfo2));
+        DataOrigin includeDataSource =
+                new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(includeDataSource), Set.of());
+        assertThat(result).containsExactly(DEVICE_PACKAGE_NAME, Set.of(WRITE_DISTANCE));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_includeMultipleDataSources_matchExists() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_DISTANCE));
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        Device device2 = new Device.Builder().setManufacturer("Man2").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build();
+
+        DeviceDataProviderInfo providerInfo2 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_2,
+                        DEVICE_ID_2,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(origin1, device1, true, List.of(providerInfo1));
+        DeviceDataSourceInfo matchingDeviceInfo2 =
+                new DeviceDataSourceInfo(origin2, device2, true, List.of(providerInfo2));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo1, matchingDeviceInfo2));
+        Set<DataOrigin> includeDataSources =
+                Set.of(
+                        new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build(),
+                        new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build());
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, includeDataSources, Set.of());
+        assertThat(result)
+                .containsExactly(
+                        DEVICE_PACKAGE_NAME,
+                        Set.of(WRITE_DISTANCE),
+                        DEVICE_PACKAGE_NAME_2,
+                        Set.of(WRITE_DISTANCE));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_includeMultipleDataSources_noMatch() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_DISTANCE));
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        Device device2 = new Device.Builder().setManufacturer("Man2").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build();
+
+        DeviceDataProviderInfo providerInfo2 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_2,
+                        DEVICE_ID_2,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(origin1, device1, true, List.of(providerInfo1));
+        DeviceDataSourceInfo matchingDeviceInfo2 =
+                new DeviceDataSourceInfo(origin2, device2, true, List.of(providerInfo2));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo1, matchingDeviceInfo2));
+        Set<DataOrigin> includeDataSources =
+                Set.of(
+                        new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_3).build(),
+                        new DataOrigin.Builder().setPackageName("some.other.device").build());
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, includeDataSources, Set.of());
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_excludeOneDataSource_returnsMatches() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_DISTANCE));
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        Device device2 = new Device.Builder().setManufacturer("Man2").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build();
+
+        DeviceDataProviderInfo providerInfo2 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_2,
+                        DEVICE_ID_2,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(origin1, device1, true, List.of(providerInfo1));
+        DeviceDataSourceInfo matchingDeviceInfo2 =
+                new DeviceDataSourceInfo(origin2, device2, true, List.of(providerInfo2));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo1, matchingDeviceInfo2));
+        Set<DataOrigin> excludeDataSources =
+                Set.of(new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build());
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), excludeDataSources);
+        assertThat(result).containsExactly(DEVICE_PACKAGE_NAME, Set.of(WRITE_DISTANCE));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_excludeMultipleDataSources_returnsMatches() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_DISTANCE));
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        Device device2 = new Device.Builder().setManufacturer("Man2").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build();
+
+        DeviceDataProviderInfo providerInfo2 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_2,
+                        DEVICE_ID_2,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(origin1, device1, true, List.of(providerInfo1));
+        DeviceDataSourceInfo matchingDeviceInfo2 =
+                new DeviceDataSourceInfo(origin2, device2, true, List.of(providerInfo2));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo1, matchingDeviceInfo2));
+        Set<DataOrigin> excludeDataSources =
+                Set.of(
+                        new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build(),
+                        new DataOrigin.Builder().setPackageName("another.device").build());
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), excludeDataSources);
+        assertThat(result).containsExactly(DEVICE_PACKAGE_NAME_2, Set.of(WRITE_DISTANCE));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void fetchMatchingDevices_excludeMultipleDataSources_returnsEmpty() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_DISTANCE));
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        Device device2 = new Device.Builder().setManufacturer("Man2").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build();
+
+        DeviceDataProviderInfo providerInfo2 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_2,
+                        DEVICE_ID_2,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(origin1, device1, true, List.of(providerInfo1));
+        DeviceDataSourceInfo matchingDeviceInfo2 =
+                new DeviceDataSourceInfo(origin2, device2, true, List.of(providerInfo2));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo1, matchingDeviceInfo2));
+        Set<DataOrigin> excludeDataSources =
+                Set.of(
+                        new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build(),
+                        new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build());
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), excludeDataSources);
+        assertThat(result).isEmpty();
+    }
+
+    @Test
     public void recordMatchmakingDenial_callsDenialManager() {
         mMatchmakingManager.recordMatchmakingDenial(
                 PACKAGE_NAME, Map.of(PACKAGE_NAME_2, List.of(WRITE_EXERCISE)));
@@ -579,6 +1686,17 @@ public class MatchmakingManagerTest {
                 app ->
                         when(mHealthConnectPermissionHelper.isRequestingFitnessPermission(app))
                                 .thenReturn(true));
+    }
+
+    private void mockCompatibleDevices(List<DeviceDataSourceInfo> devices) {
+        when(mDeviceDataProviderManager.getDeviceDataSourceInfos()).thenReturn(devices);
+    }
+
+    private void mockPackageVisibility(
+            String callingPackage, String requestedPackage, boolean hasVisibility) {
+        when(mPackageInfoUtils.hasPackageVisibility(
+                        eq(callingPackage), eq(requestedPackage), any(), any()))
+                .thenReturn(hasVisibility);
     }
 
     private void mockAppSystemStatus(String packageName, boolean isSystemApp) {

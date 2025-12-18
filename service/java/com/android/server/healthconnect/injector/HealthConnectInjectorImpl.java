@@ -610,16 +610,6 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mMatchmakingDenialStateManager == null
                         ? new MatchmakingDenialStateManager(hcContext, mPreferenceHelper)
                         : builder.mMatchmakingDenialStateManager;
-
-        mMatchmakingManager =
-                builder.mMatchmakingManager == null
-                        ? new MatchmakingManager(
-                                hcContext,
-                                mHealthConnectPermissionHelper,
-                                mPackageInfoUtils,
-                                mHealthConnectMappings,
-                                Objects.requireNonNull(mMatchmakingDenialStateManager))
-                        : builder.mMatchmakingManager;
         mDeviceDataSourcesHelper =
                 builder.mDeviceDataSourcesHelper == null
                         ? new DeviceDataSourcesHelper(
@@ -653,6 +643,16 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         ? new SyntheticPackageNameResolver(
                                 mAppInfoHelper, mDeviceDataProviderManager)
                         : builder.mSyntheticPackageNameResolver;
+        mMatchmakingManager =
+                builder.mMatchmakingManager == null
+                        ? new MatchmakingManager(
+                                hcContext,
+                                mHealthConnectPermissionHelper,
+                                mPackageInfoUtils,
+                                mHealthConnectMappings,
+                                mMatchmakingDenialStateManager,
+                                mDeviceDataProviderManager)
+                        : builder.mMatchmakingManager;
     }
 
     @Override
