@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Alamin kung paano ginagamit ng <xliff:g id="APP_NAME">%1$s</xliff:g> ang iyong data sa kanilang "<a href="%2$s">"patakaran sa privacy"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Nagbibigay-daan sa iyo ang Health Connect na i-share ang iyong data sa kalusugan at fitness sa pagitan ng maraming app. Nakakatulong ito sa iyong mag-unlock ng mga insight at experience habang pinapanatiling secure ang data mo."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Higit pa tungkol sa Health Connect"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Kung magbibigay ka ng access sa pag-read, mari-read ng app ang bagong data at data mula sa nakalipas na 30 araw"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Kung magbibigay ka ng access sa pag-read, mari-read ng app ang bago at nakaraang data"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Payagan ang <xliff:g id="APP_NAME">%1$s</xliff:g> na i-access ang Health Connect?"</string>

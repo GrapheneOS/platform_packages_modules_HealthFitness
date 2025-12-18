@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ສຶກສາວ່າ <xliff:g id="APP_NAME">%1$s</xliff:g> ໃຊ້ຂໍ້ມູນຂອງທ່ານໃນ "<a href="%2$s">"ນະໂຍບາຍຄວາມເປັນສ່ວນຕົວ"</a>" ຂອງມັນແນວໃດ."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ຈະເຮັດໃຫ້ທ່ານສາມາດແບ່ງປັນຂໍ້ມູນສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍຂອງທ່ານລະຫວ່າງຫຼາຍໆແອັບໄດ້. ນີ້ຈະຊ່ວຍໃຫ້ທ່ານປົດລັອກຂໍ້ມູນເຈາະເລິກ ແລະ ປະສົບການຕ່າງໆໃນຂະນະທີ່ເກັບຂໍ້ມູນຂອງທ່ານໄວ້ຢ່າງປອດໄພ."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"ເພີ່ມເຕີມກ່ຽວກັບ Health Connect"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"ຫາກທ່ານໃຫ້ສິດເຂົ້າເຖິງການອ່ານ, ແອັບຈະສາມາດອ່ານຂໍ້ມູນໃໝ່ ແລະ ຂໍ້ມູນຈາກ 30 ມື້ທີ່ຜ່ານມາໄດ້"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"ຫາກທ່ານໃຫ້ສິດເຂົ້າເຖິງ, ແອັບຈະສາມາດອ່ານຂໍ້ມູນໃໝ່ ແລະ ຂໍ້ມູນທີ່ຜ່ານມາໄດ້"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"ອະນຸຍາດໃຫ້ <xliff:g id="APP_NAME">%1$s</xliff:g> ເຂົ້າເຖິງ Health Connect ບໍ?"</string>

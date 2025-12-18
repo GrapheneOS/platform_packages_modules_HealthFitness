@@ -408,10 +408,14 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Découvrez comment <xliff:g id="APP_NAME">%1$s</xliff:g> utilise vos données dans sa "<a href="%2$s">"politique de confidentialité"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Connexion santé vous permet de partager vos données de santé et d\'activité physique entre plusieurs applis. Cela vous aide à débloquer des statistiques et des expériences tout en assurant la sécurité de vos données."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"En savoir plus sur Connexion santé"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Lorsque vous accordez l\'accès à la lecture des données, l\'appli peut lire les nouvelles données et celles des 30 derniers jours"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Lorsque vous accordez l\'accès à la lecture des données, l\'appli peut lire les nouvelles données et les données antérieures"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à Connexion santé?"</string>
-    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder aux données antérieures d\'activité physique et de bien-être?"</string>
+    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder aux données d\'activité physique et de bien-être?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Vous pouvez découvrir comment <xliff:g id="APP_NAME">%1$s</xliff:g> traite vos données en consultant sa <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"politique de confidentialité"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à vos dossiers médicaux?"</string>
@@ -478,7 +482,7 @@
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Ces applis n\'ont plus accès à Connexion santé, mais leurs données y sont toujours stockées"</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> peut lire les données ajoutées après le <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"Pour gérer les autres autorisations Android qui peuvent être accordées à cette appli, accédez à Paramètres &gt; Applis"</string>
-    <string name="manage_permissions_rationale" msgid="2780008055185441703">"Vous pouvez vous renseigner sur la façon dont <xliff:g id="APP_NAME">%1$s</xliff:g> traite vos données en consultant la politique de confidentialité du développeur"</string>
+    <string name="manage_permissions_rationale" msgid="2780008055185441703">"Vous pouvez découvrir comment <xliff:g id="APP_NAME">%1$s</xliff:g> traite vos données en consultant la politique de confidentialité du développeur"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Pour gérer les autres autorisations Android qui peuvent être accordées à cette appli, accédez à Paramètres, puis touchez Applis"</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Lire la politique de confidentialité"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Dernier accès : au cours des dernières 24 heures"</string>
@@ -504,7 +508,7 @@
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
     <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"Configurer"</string>
     <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"Impossible d\'exporter les données"</string>
-    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Un problème est survenu lors de l\'exportation pour le <xliff:g id="DATE">%1$s</xliff:g>. Veuillez configurer une nouvelle exportation programmée et réessayez."</string>
+    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Un problème est survenu lors de l\'exportation pour le <xliff:g id="DATE">%1$s</xliff:g>. Veuillez configurer une nouvelle exportation programmée et réessayer."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Prochaine exportation : <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"La prochaine exportation commence bientôt"</string>
     <string name="cloud_backup_option" msgid="2602990573804189525">"Sauvegarde"</string>
@@ -565,7 +569,7 @@
     <string name="scheduled_export_on_toast_text" msgid="945186472588537310">"L\'exportation programmée est activée"</string>
     <string name="export_notification_error_generic_error_title" msgid="7940091379629095465">"Connexion santé n\'a pas pu exporter les données"</string>
     <string name="export_notification_error_more_space_needed_title" msgid="5089783781556500431">"Espace insuffisant"</string>
-    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"Un problème est survenu lors de l\'exportation du <xliff:g id="DATE">%1$s</xliff:g>. Veuillez configurer une nouvelle exportation programmée et réessayez."</string>
+    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"Un problème est survenu lors de l\'exportation pour le <xliff:g id="DATE">%1$s</xliff:g>. Veuillez configurer une nouvelle exportation programmée et réessayer."</string>
     <string name="export_notification_error_more_space_needed_body_text" msgid="5519192430780383427">"Connexion santé a besoin de <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> d\'espace de stockage sur votre téléphone pour continuer l\'exportation programmée."</string>
     <string name="export_notification_set_up_intent_button" msgid="1484836974815713693">"Configurer"</string>
     <string name="export_notification_free_up_space_intent_button" msgid="2902823222861202203">"Libérer de l\'espace"</string>

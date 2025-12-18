@@ -408,10 +408,14 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> က သင့်ဒေတာ အသုံးပြုပုံကို ၎င်း၏ "<a href="%2$s">"ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒ"</a>" တွင် လေ့လာနိုင်သည်။"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect က သင့်ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးဒေတာကို အက်ပ်များအကြား မျှဝေခွင့်ပြုသည်။ ၎င်းက သင့်ဒေတာကို လုံခြုံအောင်ထားပေးသည့်အပြင် သိကောင်းစရာနှင့် အသုံးပြုနိုင်သည်များကို ရရှိစေသည်။"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect အကြောင်း ပိုလေ့လာရန်"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"ဖတ်ခွင့်ပေးပါက အက်ပ်သည် ဒေတာအသစ်နှင့် ပြီးခဲ့သော ရက် ၃၀ မှ ဒေတာများကို ဖတ်နိုင်သည်"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"ဖတ်ခွင့်ပေးပါက အက်ပ်သည် ဒေတာအသစ်နှင့် ယခင်ဒေတာများကို ဖတ်နိုင်သည်"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> ကို Health Connect သုံးခွင့်ပေးမလား။"</string>
-    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"<xliff:g id="APP_NAME">%1$s</xliff:g> အား ကျန်းမာကြံ့ခိုင်ရေးဒေတာကို သုံးခွင့်ပြုမလား။"</string>
+    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"<xliff:g id="APP_NAME">%1$s</xliff:g> ကို ကျန်းမာကြံ့ခိုင်ရေးဒေတာ သုံးခွင့်ပြုမလား"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="APP_NAME">%1$s</xliff:g> က သင့်ဒေတာအား စီမံဆောင်ရွက်ပုံကို ၎င်း၏ <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> တွင် လေ့လာနိုင်သည်"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒ"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"<xliff:g id="APP_NAME">%1$s</xliff:g> ကို သင့်ကျန်းမာရေးမှတ်တမ်းများ သုံးခွင့်ပြုမလား"</string>
@@ -1154,8 +1158,8 @@
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Health Connect ကို Android စနစ်နှင့် ဆက်လက်ပေါင်းစည်းရန် တို့ပါ။"</string>
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"ရှေ့ဆက်ရန်"</string>
     <string name="app_update_needed_banner_title" msgid="4724335956851853802">"အက်ပ်အပ်ဒိတ် လိုသည်"</string>
-    <string name="app_update_needed_banner_description_single" msgid="8220676317438592573">"Health Connect နှင့် စင့်ခ်ဆက်လုပ်ရန် <xliff:g id="APP_NAME">%1$s</xliff:g> ကို အပ်ဒိတ်လုပ်ရပါမည်။ အပ်ဒိတ်များကို အက်ပ်အားလုံးအတွက် မရနိုင်ပါ။"</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="6021498912770754575">"Health Connect နှင့် စင့်ခ်ဆက်လုပ်ရန် အက်ပ်အချို့ကို အပ်ဒိတ်လုပ်ရပါမည်။ အပ်ဒိတ်များကို အက်ပ်အားလုံးအတွက် မရနိုင်ပါ။"</string>
+    <string name="app_update_needed_banner_description_single" msgid="8220676317438592573">"Health Connect နှင့် စင့်ခ်ဆက်လုပ်ရန် <xliff:g id="APP_NAME">%1$s</xliff:g> ကို အပ်ဒိတ်လုပ်ရပါမည်။ အပ်ဒိတ်များကို အချို့အက်ပ်များအတွက် မရနိုင်ပါ။"</string>
+    <string name="app_update_needed_banner_description_multiple" msgid="6021498912770754575">"Health Connect နှင့် စင့်ခ်ဆက်လုပ်ရန် အက်ပ်အချို့ကို အပ်ဒိတ်လုပ်ရပါမည်။ အပ်ဒိတ်များကို အချို့အက်ပ်များအတွက် မရနိုင်ပါ။"</string>
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"အပ်ဒိတ်များ ရှာရန်"</string>
     <string name="app_update_needed_banner_learn_more_button" msgid="7269232067819258160">"ပိုလေ့လာရန်"</string>
     <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Health Connect ပေါင်းစည်းမှု"</string>
@@ -1260,7 +1264,7 @@
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"ရွေးထားသမျှ ခွင့်ပြုရန်"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"အက်ပ်ကို သုံးနေစဉ်"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"အားလုံး ငြင်းပယ်ရန်"</string>
-    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"<xliff:g id="APP_NAME">%1$s</xliff:g> အား ကျန်းမာကြံ့ခိုင်ရေးဒေတာကို သုံးခွင့်ပြုမလား။"</string>
+    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"<xliff:g id="APP_NAME">%1$s</xliff:g> ကို ကျန်းမာကြံ့ခိုင်ရေးဒေတာ သုံးခွင့်ပြုမလား"</string>
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"<xliff:g id="APP_NAME">%1$s</xliff:g> သည် <xliff:g id="DATA_TYPES">%2$s</xliff:g> သုံးခွင့် တောင်းဆိုနေသည်။\n\nအားလုံးခွင့်ပြုရန် (သို့) တစ်ခုချင်းစီ ထိန်းချုပ်ရန် ရွေးပါ။"</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"<xliff:g id="APP_NAME">%1$s</xliff:g> ကို <xliff:g id="DATA_TYPE">%2$s</xliff:g> သုံးခွင့် ပြုမလား။"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"ကျန်းမာကြံ့ခိုင်ရေး"</string>

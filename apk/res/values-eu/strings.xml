@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Lortu <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioak zure datuak erabiltzeko duen moduari buruzko informazio gehiago "<a href="%2$s">"pribatutasun-gidalerroetan"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect-ek osasunari eta fitnessari buruzko datuak aplikazio batekin baino gehiagorekin partekatzeko aukera ematen dizu. Horri esker, estatistikak eta eginbideak desblokea ditzakezu datuak seguru mantendu bitartean."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect-i buruzko informazio gehiago"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Datuak irakurtzeko baimena ematen badiozu, datu berriak eta azken 30 egunetako datuak irakurri ahal izango ditu aplikazioak"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Datuak irakurtzeko baimena ematen badiozu, datu berriak eta iraganekoak irakurri ahal izango ditu aplikazioak"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Health Connect erabiltzeko baimena eman nahi diozu <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari?"</string>

@@ -74,8 +74,8 @@
     <string name="body_measurements_category_lowercase" msgid="2259696274629666992">"身体測定"</string>
     <string name="sleep_category_uppercase" msgid="3422452674899706786">"睡眠"</string>
     <string name="sleep_category_lowercase" msgid="842609634386839011">"睡眠"</string>
-    <string name="vitals_category_uppercase" msgid="8982333138032938623">"主な指標"</string>
-    <string name="vitals_category_lowercase" msgid="4664457787866407963">"主な指標"</string>
+    <string name="vitals_category_uppercase" msgid="8982333138032938623">"バイタル"</string>
+    <string name="vitals_category_lowercase" msgid="4664457787866407963">"バイタル"</string>
     <string name="cycle_tracking_category_uppercase" msgid="4723200714782660489">"月経周期の管理"</string>
     <string name="cycle_tracking_category_lowercase" msgid="5245446435975317209">"月経周期の管理"</string>
     <string name="nutrition_category_uppercase" msgid="6665096097987741036">"栄養"</string>
@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> がユーザーデータをどのように使用するかについては、"<a href="%2$s">"プライバシー ポリシー"</a>"をご覧ください。"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"ヘルスコネクトを使用すると、健康とフィットネスに関するデータを複数のアプリ間で共有できます。これにより、データの安全を保ちながら、分析情報やエクスペリエンスを活用できます。"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"ヘルスコネクトの詳細"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"読み取りアクセス権を付与すると、このアプリは新規データと過去 30 日間のデータを読み取れるようになります"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"読み取りアクセス権を付与すると、このアプリは新規データと過去のデータを読み取れるようになります"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> にヘルスコネクトへのアクセスを許可しますか？"</string>
@@ -463,8 +467,8 @@
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"更新が必要"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"設定とヘルプ"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"すべてのアプリに対してアクセス権を削除する"</string>
-    <string name="manage_permissions_read_header" msgid="2031153753057983683">"読み取りの許可"</string>
-    <string name="manage_permissions_write_header" msgid="6876806848658168370">"書き込みの許可"</string>
+    <string name="manage_permissions_read_header" msgid="2031153753057983683">"読み取りを許可したデータ"</string>
+    <string name="manage_permissions_write_header" msgid="6876806848658168370">"書き込みを許可したデータ"</string>
     <string name="no_apps_allowed" msgid="5794833581324128108">"許可されているアプリはありません"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"許可されていないアプリはありません"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"すべてのアプリに対してアクセス権を削除しますか？"</string>
@@ -1269,7 +1273,7 @@
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> はフィットネスとウェルネスに関する全データへのアクセスを常に許可されています"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> はフィットネスとウェルネスに関する全データへのアクセスをアプリの使用中のみ許可されています"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"アクセスの許可"</string>
-    <string name="allowed_to_read" msgid="2775365229411407406">"読み取りの許可"</string>
+    <string name="allowed_to_read" msgid="2775365229411407406">"読み取りを許可したデータ"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"これらの権限により、<xliff:g id="APP_NAME">%1$s</xliff:g> はデバイスのセンサーからデータにアクセスできるようになります。"</string>
     <string name="write_access" msgid="571547306854732263">"書き込みアクセス権"</string>
     <string name="read_access" msgid="3317759826769372785">"読み取りアクセス権"</string>
@@ -1322,7 +1326,7 @@
     <string name="device_management_screen_footer" msgid="1787611015335737167">"このデバイスで収集されたデータはヘルスコネクトに保存され、接続されているアプリがアクセスできるようになります"</string>
     <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"このデバイスは歩数の記録に対応していませんが、ヘルスコネクトにデータがまだ保存されています"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"このデバイスでは歩数は記録されません"</string>
-    <string name="device_settings_label" msgid="9053791237491247819">"書き込みの許可"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"書き込みを許可したデータ"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"デバイスデータ"</string>
     <string name="device_data_label" msgid="2056618513138892435">"デバイスの管理"</string>
     <string name="device_data_button" msgid="8002406105399136401">"デバイスデータを表示"</string>

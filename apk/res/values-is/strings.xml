@@ -210,10 +210,10 @@
     <string name="wheelchair_pushes_lowercase_label" msgid="8919337990806379687">"fjöldi skipta sem hjólastól er ýtt"</string>
     <string name="wheelchair_pushes_read_content_description" msgid="157304610943976471">"Lesa fjölda skipta sem hjólastól er ýtt"</string>
     <string name="wheelchair_pushes_write_content_description" msgid="2745600707106818641">"Skrifa fjölda skipta sem hjólastól er ýtt"</string>
-    <string name="activity_intensity_uppercase_label" msgid="8718366426053335611">"Ákefð virkni"</string>
-    <string name="activity_intensity_lowercase_label" msgid="4260366013498161858">"ákefð virkni"</string>
-    <string name="activity_intensity_read_content_description" msgid="5503681098610026279">"Lesa ákefð virkni"</string>
-    <string name="activity_intensity_write_content_description" msgid="4843212785611055496">"Skrifa ákefð virkni"</string>
+    <string name="activity_intensity_uppercase_label" msgid="8718366426053335611">"Ákefð hreyfingar"</string>
+    <string name="activity_intensity_lowercase_label" msgid="4260366013498161858">"ákefð hreyfingar"</string>
+    <string name="activity_intensity_read_content_description" msgid="5503681098610026279">"Lesa ákefð hreyfingar"</string>
+    <string name="activity_intensity_write_content_description" msgid="4843212785611055496">"Skrifa ákefð hreyfingar"</string>
     <string name="basal_metabolic_rate_uppercase_label" msgid="4802351493928086473">"Grunnefnaskiptahraði"</string>
     <string name="basal_metabolic_rate_lowercase_label" msgid="7195596626083893231">"grunnefnaskiptahraði"</string>
     <string name="basal_metabolic_rate_read_content_description" msgid="5583222212705234907">"Lesa grunnefnaskiptahraða"</string>
@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Kynntu þér hvernig <xliff:g id="APP_NAME">%1$s</xliff:g> notar gögnin þín í "<a href="%2$s">"persónuverndarstefnu"</a>" forritsins."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Með Heilsutengingu geturðu deilt heilsu- og hreystigögnunum þínum á milli margra forrita. Þannig öðlastu aukna innsýn og bætir upplifun þína en heldur gögnunum áfram öruggum."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Nánar um Heilsutengingu"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Ef þú leyfir lesaðgang getur forritið lesið ný gögn og gögn síðustu 30 daga"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ef þú leyfir lesaðgang getur þetta forrit lesið ný og eldri gögn"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Veita <xliff:g id="APP_NAME">%1$s</xliff:g> aðgang að Heilsutengingu?"</string>
@@ -1178,7 +1182,7 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Endurheimt Heilsutengingar í gangi"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Ég skil"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Uppfærslu er krafist"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Uppfærðu kerfi símans áður en þú heldur áfram að endurheimta gögn"</string>
+    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Uppfærðu kerfi símans áður en þú heldur áfram að endurheimta gögn."</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Uppfæra núna"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Gagnasamtölur"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Gagnauppsprettur"</string>

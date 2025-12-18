@@ -74,8 +74,8 @@
     <string name="body_measurements_category_lowercase" msgid="2259696274629666992">"телесни мерења"</string>
     <string name="sleep_category_uppercase" msgid="3422452674899706786">"Спиење"</string>
     <string name="sleep_category_lowercase" msgid="842609634386839011">"спиење"</string>
-    <string name="vitals_category_uppercase" msgid="8982333138032938623">"Витални функции"</string>
-    <string name="vitals_category_lowercase" msgid="4664457787866407963">"витални функции"</string>
+    <string name="vitals_category_uppercase" msgid="8982333138032938623">"Витални параметри"</string>
+    <string name="vitals_category_lowercase" msgid="4664457787866407963">"витални параметри"</string>
     <string name="cycle_tracking_category_uppercase" msgid="4723200714782660489">"Следење циклус"</string>
     <string name="cycle_tracking_category_lowercase" msgid="5245446435975317209">"следење циклус"</string>
     <string name="nutrition_category_uppercase" msgid="6665096097987741036">"Исхрана"</string>
@@ -178,8 +178,8 @@
     <string name="distance_lowercase_label" msgid="2287154001209381379">"растојание"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"Читање растојание"</string>
     <string name="distance_write_content_description" msgid="494549494589487562">"Запишување растојание"</string>
-    <string name="elevation_gained_uppercase_label" msgid="7708101940695442377">"Достигната височина"</string>
-    <string name="elevation_gained_lowercase_label" msgid="7532517182346738562">"достигната височина"</string>
+    <string name="elevation_gained_uppercase_label" msgid="7708101940695442377">"Искачена височина"</string>
+    <string name="elevation_gained_lowercase_label" msgid="7532517182346738562">"искачена височина"</string>
     <string name="elevation_gained_read_content_description" msgid="6018756385903843355">"Читање достигната надморска висина"</string>
     <string name="elevation_gained_write_content_description" msgid="6790199544670231367">"Запишување достигната надморска висина"</string>
     <string name="floors_climbed_uppercase_label" msgid="3754372357767832441">"Искачени катови"</string>
@@ -392,7 +392,7 @@
     <string name="symptom_severity_severe" msgid="4675732713898596705">"Сериозно"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>⁠"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Дозволете „<xliff:g id="APP_NAME">%1$s</xliff:g>“ да чита"</string>
-    <string name="write_permission_category" msgid="1529702804865008111">"Дозволете „<xliff:g id="APP_NAME">%1$s</xliff:g>“ да пишува"</string>
+    <string name="write_permission_category" msgid="1529702804865008111">"Дозволете „<xliff:g id="APP_NAME">%1$s</xliff:g>“ да запишува"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Дозволи"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Дозволи ги сите"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Не дозволувај"</string>
@@ -408,11 +408,15 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Погледнете ја "<a href="%2$s">"политиката за приватност"</a>" на <xliff:g id="APP_NAME">%1$s</xliff:g> за да дознаете како ги користи вашите податоци."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ви овозможува да ги споделувате вашите здравствени и податоци за фитнес меѓу повеќе апликации. Ова ви помага да отклучите согледувања и доживувања, а и да ги заштитите вашите податоци."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Повеќе за Health Connect"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Ако ѝ дадете пристап за читање, апликацијата ќе може да ги чита новите податоци и податоците од минатите 30 дена"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ако ѝ дадете пристап за читање, апликацијата ќе може да ги чита новите и минатите податоци"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Да се дозволи <xliff:g id="APP_NAME">%1$s</xliff:g> да пристапува до Health Connect?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Да се дозволи „<xliff:g id="APP_NAME">%1$s</xliff:g>“ да пристапува до податоците за фитнес и благосостојба?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"Може да дознаете како <xliff:g id="APP_NAME">%1$s</xliff:g> постапува со вашите податоци во таа <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"Може да дознаете како „<xliff:g id="APP_NAME">%1$s</xliff:g>“ постапува со вашите податоци во нивната <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"политика за приватност"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"Да ѝ се дозволи на <xliff:g id="APP_NAME">%1$s</xliff:g> да пристапува до вашите медицински досиеја?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Ако доделите пристап, апликацијата ќе може да чита и запишува податоци како што се алергии, лабораториски резултати, вакцини и друго \n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -1121,7 +1125,7 @@
     <string name="route_permissions_always_allow" msgid="1383816362804293137">"Секогаш дозволувај"</string>
     <string name="route_permissions_label" msgid="6293377940884373190">"Пристап до маршрутите за вежбање"</string>
     <string name="route_permissions_summary" msgid="704859311037374130">"Дозволете <xliff:g id="APP_NAME">%1$s</xliff:g> да пристапува до маршрутите"</string>
-    <string name="route_permissions_ask" msgid="3927020960754781917">"Секогаш прашувај"</string>
+    <string name="route_permissions_ask" msgid="3927020960754781917">"Прашувај секогаш"</string>
     <string name="route_permissions_deny" msgid="4955644777239169593">"Не дозволувај"</string>
     <string name="exercise_permission_dialog_enable_title" msgid="4310997044811843391">"Да се овозможат двата типа податоци?"</string>
     <string name="exercise_permission_dialog_disable_title" msgid="1011777519918396883">"Да се оневозможат двата типа податоци?"</string>

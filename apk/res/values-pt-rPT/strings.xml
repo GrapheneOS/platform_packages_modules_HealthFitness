@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Saiba como a app <xliff:g id="APP_NAME">%1$s</xliff:g> usa os seus dados na respetiva "<a href="%2$s">"Política de Privacidade"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"A Saúde Connect permite-lhe partilhar os seus dados de saúde e fitness entre várias apps. Isto ajuda a desbloquear estatísticas e experiências, mantendo os seus dados seguros."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Mais sobre a Saúde Connect"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Se conceder acesso de leitura, a app pode ler dados novos e dados dos últimos 30 dias"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Se conceder acesso de leitura, a app pode ler dados novos e anteriores"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Permitir que a app <xliff:g id="APP_NAME">%1$s</xliff:g> aceda à Saúde Connect?"</string>
