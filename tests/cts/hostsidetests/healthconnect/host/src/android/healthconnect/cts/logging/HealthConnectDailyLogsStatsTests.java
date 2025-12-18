@@ -88,10 +88,10 @@ public class HealthConnectDailyLogsStatsTests extends DeviceTestCase implements 
         if (!isHardwareSupported(getDevice())) {
             return;
         }
-        resetTime();
         ConfigUtils.removeConfig(getDevice());
         ReportUtils.clearReports(getDevice());
         clearData(getDevice());
+        resetTime();
         super.tearDown();
     }
 

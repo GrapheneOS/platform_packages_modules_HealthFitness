@@ -22,6 +22,7 @@ import static android.healthconnect.cts.HostSideTestUtil.TEST_APP_PKG_NAME;
 import static android.healthconnect.cts.HostSideTestUtil.clearData;
 import static android.healthconnect.cts.HostSideTestUtil.grantPermissionsWithAdb;
 import static android.healthconnect.cts.HostSideTestUtil.isHardwareSupported;
+import static android.healthconnect.cts.HostSideTestUtil.resetTime;
 import static android.healthfitness.api.ApiMethod.CREATE_MEDICAL_DATA_SOURCE;
 import static android.healthfitness.api.ApiMethod.DELETE_MEDICAL_DATA_SOURCE_WITH_DATA;
 import static android.healthfitness.api.ApiMethod.DELETE_MEDICAL_RESOURCES_BY_IDS;
@@ -65,6 +66,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Instant;
 import java.util.List;
 
 @RunWith(DeviceJUnit4ClassRunner.class)
@@ -74,6 +76,8 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
             HostFlagsValueProvider.createCheckFlagsRule(this::getDevice);
 
     private IBuildInfo mCtsBuild;
+    private Instant mTestStartTime;
+    private Instant mTestStartTimeOnDevice;
 
     @Before
     public void setUp() throws Exception {
@@ -81,6 +85,8 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
             return;
         }
         assertThat(mCtsBuild).isNotNull();
+        mTestStartTime = Instant.now();
+        mTestStartTimeOnDevice = Instant.ofEpochMilli(getDevice().getDeviceDate());
         ConfigUtils.removeConfig(getDevice());
         ReportUtils.clearReports(getDevice());
         // b/396574091: Grant all permissions that the test helper app needs.
@@ -98,6 +104,7 @@ public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implement
         ConfigUtils.removeConfig(getDevice());
         ReportUtils.clearReports(getDevice());
         clearData(getDevice());
+        resetTime(getDevice(), mTestStartTime, mTestStartTimeOnDevice);
     }
 
     @Override
