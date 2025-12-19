@@ -61,7 +61,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -69,10 +69,7 @@ import java.util.function.Supplier;
 
 abstract class BaseApiTest<T extends Record> {
     protected static final ZonedDateTime YESTERDAY_11AM =
-            LocalDate.now(ZoneId.systemDefault())
-                    .minusDays(1)
-                    .atTime(11, 0)
-                    .atZone(ZoneId.systemDefault());
+            LocalDate.now(ZoneOffset.UTC).minusDays(1).atTime(11, 0).atZone(ZoneOffset.UTC);
     private static final String TEST_PACKAGE_NAME = getTestPackageName();
 
     /**
