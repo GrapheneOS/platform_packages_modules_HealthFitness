@@ -17,6 +17,7 @@
  */
 package com.android.healthconnect.controller.data.alldata
 
+import android.health.connect.HealthDataCategory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -55,7 +56,7 @@ class AllDataViewModel @Inject constructor(private val loadAllDataUseCase: AllDa
             typesToDelete.remove(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)
             typesToDelete.addAll(getAllSymptomPermissionTypes())
         }
-        return DeletionType.DeleteHealthPermissionTypes(typesToDelete, typesToDelete.size)
+        return DeletionType.DeleteHealthPermissionTypes(typesToDelete, numOfPermissionTypes)
     }
 
     fun loadAllFitnessData() {
@@ -65,6 +66,16 @@ class AllDataViewModel @Inject constructor(private val loadAllDataUseCase: AllDa
                 is UseCaseResults.Success -> {
                     _allData.postValue(AllDataState.WithData(result.data))
                     numOfPermissionTypes = result.data.sumOf { it.data.size }
+                    // If Symptoms is part of the categories loaded, we must manually add
+                    // the number of permission types
+                    if (
+                        result.data.any { permTypesPerCat ->
+                            permTypesPerCat.category == HealthDataCategory.SYMPTOMS &&
+                                permTypesPerCat.data.isNotEmpty()
+                        }
+                    ) {
+                        numOfPermissionTypes += getAllSymptomPermissionTypes().size - 1
+                    }
                 }
                 is UseCaseResults.Failed -> {
                     _allData.postValue(AllDataState.Error)
@@ -100,6 +111,16 @@ class AllDataViewModel @Inject constructor(private val loadAllDataUseCase: AllDa
                 val combinedData = fitnessResult.data + medicalResult.data
                 _allData.postValue(AllDataState.WithData(combinedData))
                 numOfPermissionTypes = combinedData.sumOf { it.data.size }
+                // If Symptoms is part of the categories loaded, we must manually add
+                // the number of permission types
+                if (
+                    fitnessResult.data.any { permTypesPerCat ->
+                        permTypesPerCat.category == HealthDataCategory.SYMPTOMS &&
+                            permTypesPerCat.data.isNotEmpty()
+                    }
+                ) {
+                    numOfPermissionTypes += getAllSymptomPermissionTypes().size - 1
+                }
             } else {
                 _allData.postValue(AllDataState.Error)
             }
