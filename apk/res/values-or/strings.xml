@@ -170,8 +170,8 @@
     <string name="exercise_route_write_content_description" msgid="257809942953352611">"ବ୍ୟାୟାମର ମାର୍ଗ ତିଆରି କରନ୍ତୁ"</string>
     <string name="exercise_route_read_content_description" msgid="8394028537674463440">"ବ୍ୟାୟାମର ମାର୍ଗକୁ ପଢ଼ନ୍ତୁ"</string>
     <string name="exercise_routes_read_content_description" msgid="9001690141308870706">"ବ୍ୟାୟାମର ମାର୍ଗ ପଢ଼ନ୍ତୁ"</string>
-    <string name="planned_exercise_uppercase_label" msgid="3315909901236811375">"ଟ୍ରେନିଂ ପ୍ଲାନଗୁଡ଼ିକ"</string>
-    <string name="planned_exercise_lowercase_label" msgid="7642993032791009809">"ଟ୍ରେନିଂ ପ୍ଲାନଗୁଡ଼ିକ"</string>
+    <string name="planned_exercise_uppercase_label" msgid="3315909901236811375">"ଟ୍ରେନିଂ ପ୍ଲାନ"</string>
+    <string name="planned_exercise_lowercase_label" msgid="7642993032791009809">"ଟ୍ରେନିଂ ପ୍ଲାନ"</string>
     <string name="planned_exercise_read_content_description" msgid="3240286968325192534">"ଟ୍ରେନିଂ ପ୍ଲାନଗୁଡ଼ିକ ପଢ଼ନ୍ତୁ"</string>
     <string name="planned_exercise_write_content_description" msgid="8146488636094126823">"ଟ୍ରେନିଂ ପ୍ଲାନଗୁଡ଼ିକ ଲେଖନ୍ତୁ"</string>
     <string name="distance_uppercase_label" msgid="1420705424462077174">"ଦୂରତା"</string>
@@ -408,11 +408,15 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> ଆପଣଙ୍କ ଡାଟାକୁ କିପରି ଏହାର "<a href="%2$s">"ଗୋପନୀୟତା ନୀତି"</a>"ରେ ବ୍ୟବହାର କରେ ତାହା ଜାଣନ୍ତୁ।"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ଆପଣଙ୍କୁ ଆପଣଙ୍କର ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଫିଟନେସ ଡାଟାକୁ ଏକାଧିକ ଆପ୍ସ ମଧ୍ୟରେ ସେୟାର କରିବାକୁ ଦିଏ। ଏହା ଆପଣଙ୍କ ଡାଟାକୁ ସୁରକ୍ଷିତ ରଖିବା ସମୟରେ ଇନସାଇଟ ଏବଂ ଅନୁଭୂତିଗୁଡ଼ିକୁ ଅନଲକ କରିବାରେ ସାହାଯ୍ୟ କରେ।"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect ବିଷୟରେ ଅଧିକ ସୂଚନା"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"ଯଦି ଆପଣ ପଢ଼ିବା ଆକ୍ସେସ ଦିଅନ୍ତି, ତେବେ ଆପ ନୂଆ ଡାଟା ଏବଂ ଗତ 30 ଦିନର ଡାଟାକୁ ପଢ଼ିପାରିବ"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"ଯଦି ଆପଣ ପଢ଼ିବା ଆକ୍ସେସ ଦିଅନ୍ତି, ତେବେ ଆପ ନୂଆ ଏବଂ ଅତୀତର ଡାଟାକୁ ପଢ଼ିପାରିବ"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Health Connectକୁ ଆକ୍ସେସ କରିବା ପାଇଁ <xliff:g id="APP_NAME">%1$s</xliff:g>କୁ ଅନୁମତି ଦେବେ?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"ଫିଟନେସ ଓ ସୁସ୍ଥତା ଡାଟାକୁ ଆକ୍ସେସ କରିବା ପାଇଁ <xliff:g id="APP_NAME">%1$s</xliff:g>କୁ ଅନୁମତି ଦେବେ?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="APP_NAME">%1$s</xliff:g> ତା\'ର <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>ରେ ଆପଣଙ୍କ ଡାଟାକୁ କିପରି ପରିଚାଳନା କରେ ତାହା ଆପଣ ଜାଣିପାରିବେ"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"<xliff:g id="APP_NAME">%1$s</xliff:g> ଆପଣଙ୍କ ଡାଟାକୁ କିପରି ପରିଚାଳନା କରେ ତା\'ର <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>ରେ ଆପଣ ଜାଣିପାରିବେ"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"ଗୋପନୀୟତା ନୀତି"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"ଆପଣଙ୍କ ମେଡିକାଲ ରେକର୍ଡଗୁଡ଼ିକୁ ଆକ୍ସେସ କରିବା ପାଇଁ <xliff:g id="APP_NAME">%1$s</xliff:g>କୁ ଅନୁମତି ଦେବେ?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"ଯଦି ଆପଣ ଆକ୍ସେସ ଦିଅନ୍ତି, ତେବେ ଆଲର୍ଜି, ଲେବ ଫଳାଫଳ, ଟୀକା ଏବଂ ଆହୁରି ଅନେକ କିଛି ପରି ଡାଟାକୁ ଆପ ପଢ଼ି ଲେଖିପାରିବ\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>

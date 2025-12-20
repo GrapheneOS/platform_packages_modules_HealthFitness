@@ -392,7 +392,7 @@
     <string name="symptom_severity_severe" msgid="4675732713898596705">"Ozbiljno"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Dozvolite da <xliff:g id="APP_NAME">%1$s</xliff:g> čita"</string>
-    <string name="write_permission_category" msgid="1529702804865008111">"Dozvola da <xliff:g id="APP_NAME">%1$s</xliff:g> upisuje podatke"</string>
+    <string name="write_permission_category" msgid="1529702804865008111">"Dozvolite da <xliff:g id="APP_NAME">%1$s</xliff:g> upisuje"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"Dozvoli"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Dozvoli sve"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Ne dozvoli"</string>
@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Da biste saznali kako aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> koristi vaše podatke, pogledajte njenu "<a href="%2$s">"politiku privatnosti"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Povezivanje zdravlja vam omogućava da delite podatke o zdravlju i fitnesu između više aplikacija. To vam pomaže da otkrijete uvide i doživljaje, a da podaci pritom ostanu bezbedni."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Više o Povezivanju zdravlja"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Ako date pristup za čitanje, aplikacija može da čita nove podatke i podatke iz prethodnih 30 dana"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ako date pristup za čitanje, ova aplikacija može da čita nove i ranije podatke"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Želite da dozvolite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupa Povezivanju zdravlja?"</string>

@@ -100,6 +100,7 @@ public class MatchmakingRequestTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     public void builder_setIncludeDataOrigins_success() {
         Set<DataOrigin> dataOrigins = new HashSet<>();
         dataOrigins.add(new DataOrigin.Builder().setPackageName("package1").build());
@@ -114,6 +115,7 @@ public class MatchmakingRequestTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     public void builder_setExcludeDataOrigins_success() {
         Set<DataOrigin> dataOrigins = new HashSet<>();
         dataOrigins.add(new DataOrigin.Builder().setPackageName("package1").build());
@@ -128,6 +130,7 @@ public class MatchmakingRequestTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     public void builder_setIncludeDataOrigins_whenExcludesSet_throws() {
         Set<DataOrigin> includeDataOrigins = new HashSet<>();
         includeDataOrigins.add(new DataOrigin.Builder().setPackageName("package1").build());
@@ -145,6 +148,7 @@ public class MatchmakingRequestTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     public void builder_setExcludeDataOrigins_whenIncludesSet_throws() {
         Set<DataOrigin> excludeDataOrigins = new HashSet<>();
         excludeDataOrigins.add(new DataOrigin.Builder().setPackageName("package1").build());

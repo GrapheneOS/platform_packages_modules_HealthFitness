@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"如需了解“<xliff:g id="APP_NAME">%1$s</xliff:g>”如何使用您的数据，请参阅其"<a href="%2$s">"《隐私权政策》"</a>"。"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"借助“健康数据共享”，您可以在多个应用之间共享健康与健身数据。这有助于您解锁更多分析洞见和体验，同时保障数据安全。"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"详细了解“健康数据共享”"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"如果您授予读取权限，该应用可以读取新数据和过去 30 天的数据"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"如果您授予读取权限，该应用可以读取新数据和过往数据"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"要允许 <xliff:g id="APP_NAME">%1$s</xliff:g> 访问“健康数据共享”吗？"</string>

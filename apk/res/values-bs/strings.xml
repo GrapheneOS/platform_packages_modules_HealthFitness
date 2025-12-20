@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Saznajte kako aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> koristi vaše podatke u njenim "<a href="%2$s">"pravilima privatnosti"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect vam omogućava dijeljenje podataka o zdravlju i fitnesu između više aplikacija. Ovo vam pomaže da otključate uvide i iskustva štiteći pritom svoje podatke."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Više o Health Connectu"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Ako joj odobrite čitanje podataka, aplikacija će moći čitati nove podatke i podatke iz posljednjih 30 dana"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ako joj odobrite čitanje podataka, aplikacija će moći čitati nove i prethodne podatke"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Dozvoliti aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupa Health Connectu?"</string>

@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Infórmate sobre como <xliff:g id="APP_NAME">%1$s</xliff:g> utiliza os teus datos na súa "<a href="%2$s">"política de privacidade"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Saúde conectada permíteche compartir os teus datos de saúde e actividade física en varias aplicacións. Deste xeito, podes acceder a estatísticas e experiencias ao mesmo tempo que mantés seguros os datos."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Máis información sobre Saúde conectada"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Se lle dás acceso de lectura a esta aplicación, poderá ler os datos novos e os correspondentes aos últimos 30 días"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Se lle dás acceso de lectura a esta aplicación, poderá ler os datos novos e os anteriores"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Queres permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda a Saúde conectada?"</string>

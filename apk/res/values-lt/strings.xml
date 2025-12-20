@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Sužinokite, kaip „<xliff:g id="APP_NAME">%1$s</xliff:g>“ naudoja jūsų duomenis, jos "<a href="%2$s">"privatumo politikoje"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Naudodami „Health Connect“ galite bendrinti sveikatos ir kūno rengybos duomenis tarp kelių programų. Tai padeda gauti įžvalgų ir funkcijų, o jūsų duomenys lieka saugūs."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Daugiau apie „Health Connect“"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Suteikus skaitymo prieigą, programa galės skaityti naujus ir pastarųjų trisdešimt dienų duomenis"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Suteikus skaitymo prieigą, programa galės skaityti naujus ir ankstesnius duomenis"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Leisti programai „<xliff:g id="APP_NAME">%1$s</xliff:g>“ pasiekti „Health Connect“?"</string>

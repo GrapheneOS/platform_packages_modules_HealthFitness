@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> को "<a href="%2$s">"गोपनीयता नीति"</a>" पढेर यस एपले तपाईंको डेटा कसरी प्रयोग गर्छ भन्ने कुरा थाहा पाउनुहोस्।"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"तपाईं Health Connect प्रयोग गरी एकभन्दा बढी एपहरूका बिचमा आफ्नो स्वास्थ्य र व्यायामसम्बन्धी डेटा सेयर गर्न सक्नुहुन्छ। तपाईं यसका सहायताले आफ्नो डेटा सुरक्षित राखेर विश्लेषणात्मक डेटा र सुविधाहरू प्राप्त गर्न सक्नुहुन्छ।"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect का बारेमा थप जानकारी"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"तपाईंले डेटा रिड गर्ने अनुमति दिनुभयो भने यो एपले नयाँ डेटाका साथै पछिल्ला ३० दिनका डेटा पनि रिड गर्न सक्छ"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"तपाईंले डेटा रिड गर्ने अनुमति दिनुभयो भने यो एपले नयाँ तथा पुराना डेटा रिड गर्न सक्छ"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> लाई Health Connect एक्सेस गर्ने अनुमति दिने हो?"</string>

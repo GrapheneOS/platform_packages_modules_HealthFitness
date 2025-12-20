@@ -308,7 +308,7 @@
     <string name="body_temperature_write_content_description" msgid="5498016171067859369">"Zapisovanie údajov o telesnej teplote"</string>
     <string name="heart_rate_uppercase_label" msgid="4990167215137642430">"Tep"</string>
     <string name="heart_rate_lowercase_label" msgid="693492686337628283">"pulz"</string>
-    <string name="heart_rate_read_content_description" msgid="4165867166260001259">"Čítanie údajov o pulze"</string>
+    <string name="heart_rate_read_content_description" msgid="4165867166260001259">"Čítať údaje o tepe"</string>
     <string name="heart_rate_write_content_description" msgid="2876667918366409170">"Zapisovanie údajov o pulze"</string>
     <string name="heart_rate_variability_uppercase_label" msgid="2047887230527012536">"Variabilita tepu"</string>
     <string name="heart_rate_variability_lowercase_label" msgid="2332638559415663836">"variabilita tepu"</string>
@@ -408,11 +408,15 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Prečítajte si, ako <xliff:g id="APP_NAME">%1$s</xliff:g> používa vaše údaje, v jej "<a href="%2$s">"pravidlách ochrany súkromia"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Dáta o zdraví umožňujú zdieľať údaje o zdraví a kondícii medzi viacerými aplikáciami. Pomôže vám to získať štatistiky aj prostredia a zároveň zachovať zabezpečenie údajov."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Ďalšie informácie o Dátach o zdraví"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Ak udelíte prístup na čítanie, aplikácia bude môcť čítať nové údaje aj údaje z posledných 30 dní"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ak udelíte prístup na čítanie, aplikácia bude môcť čítať nové aj minulé údaje"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Chcete povoliť aplikácii <xliff:g id="APP_NAME">%1$s</xliff:g> prístup k Dátam o zdraví?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Chcete aplikácii <xliff:g id="APP_NAME">%1$s</xliff:g> povoliť prístup k údajom o kondícii a zdraví?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"Spôsob, akým aplikácia <xliff:g id="APP_NAME">%1$s</xliff:g> spracúva vaše údaje, zistíte v jej <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"Informácie o tom, ako aplikácia <xliff:g id="APP_NAME">%1$s</xliff:g> spracúva vaše údaje, nájdete v jej <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"pravidlách ochrany súkromia"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"Chcete povoliť aplikácii <xliff:g id="APP_NAME">%1$s</xliff:g> prístup k vašim zdravotným záznamom?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Ak udelíte prístup, aplikácia bude môcť čítať a zapisovať údaje, ako sú alergie, výsledky laboratórnych vyšetrení, očkovania a ďalšie\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -1335,7 +1339,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Vaše zdravotné aplikácie"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Vaše zdravotné údaje"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Predvoľby"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Dáta o zdraví umožňujú zdieľať údaje o zdraví a kondícii medzi viacerými aplikáciami. Pomôže vám to získať štatistiky aj prostredia a zároveň zachovať zabezpečenie údajov."</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Dáta o zdraví umožňujú zdieľať údaje o zdraví a kondícii medzi viacerými aplikáciami. Pomôže vám to získať prehľad a zlepšiť fukčnosť aplikácie bez ohrozenia bezpečnosti údajov."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Ďalšie informácie o Dátach o zdraví"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Vaše údaje a aplikácie, ktoré k nim majú prístup"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Aplikácie, ktoré nedávno použili vaše údaje"</string>
