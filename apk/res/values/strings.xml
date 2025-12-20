@@ -1686,7 +1686,7 @@
     <!-- region Lock screen banner -->
     <string name="lock_screen_banner_title" description="Title for banner shown when users don't have a device lock screen set up">Set a screen lock</string>
     <string name="lock_screen_banner_content" description="Content for banner shown when users don't have a device lock screen set up">For added security for your health data, set a PIN, pattern, or password for this device</string>
-    <string name="lock_screen_banner_button" description="Button that takes users to the app store, for banner shown when users only have one available fitness app">Set screen lock</string>
+    <string name="lock_screen_banner_button" description="Button that takes users to the screen lock setup flow, for banner shown when users don't have a device lock screen set up">Set screen lock</string>
     <!-- endregion -->
 
     <!-- region Selectable deletion -->
