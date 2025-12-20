@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасының деректеріңізді қалай пайдаланатынын оның "<a href="%2$s">"құпиялық саясатынан"</a>" қараңыз."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect денсаулық және фитнес деректерін бірнеше қолданба арасында бөлісуге мүмкіндік береді. Сондай-ақ статистика мен функциялар құлпын ашуға көмектеседі әрі деректеріңізді қорғайды."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect туралы қосымша ақпарат"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Оқуға рұқсат берсеңіз, қолданба жаңа деректер мен соңғы 30 күндегі деректерді оқи алады."</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Оқуға рұқсат берсеңіз, қолданба жаңа және бұрынғы деректерді оқи алады."</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасына Health Connect-ті пайдалануға рұқсат берілсін бе?"</string>
@@ -1058,7 +1062,7 @@
     <string name="temperature_unit_celsius_label" msgid="4698347100553808449">"Цельсий"</string>
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Фаренгейт"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Кельвин"</string>
-    <string name="help_and_feedback" msgid="4772169905005369871">"Анықтама алу және пікір жіберу"</string>
+    <string name="help_and_feedback" msgid="4772169905005369871">"Анықтама және пікір"</string>
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Орнатылған қолданбаны көрмей тұрсаңыз, ол әзірге Health Connect-пен үйлесімді емес деген сөз."</string>
     <string name="things_to_try" msgid="8200374691546152703">"Пайдалы ұсыныстар"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Жаңартулардың бар-жоғын тексеру"</string>

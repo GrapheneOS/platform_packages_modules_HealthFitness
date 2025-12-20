@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Consulta cómo <xliff:g id="APP_NAME">%1$s</xliff:g> usa tus datos en su "<a href="%2$s">"política de privacidad"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect te permite compartir tus datos de salud y actividad física entre varias apps. De esta manera, puedes acceder a información valiosa y experiencias sin dejar de proteger tus datos."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Más información sobre Health Connect"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Si otorgas acceso de lectura, la app podrá leer los datos nuevos y los de los últimos 30 días"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Si otorgas acceso de lectura, la app podrá leer datos nuevos y antiguos"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"¿Quieres permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda a Health Connect?"</string>
@@ -502,7 +506,7 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"¿Por qué Health Connect les quita permisos a las apps?"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Si una app está suspendida o ya no está disponible en Google Play, Health Connect le quita automáticamente los permisos.\n\nEsto significa que la app ya no podrá acceder a los datos almacenados en Health Connect. Si la app escribió datos, aparecerá en la lista de apps inactivas."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Entendido"</string>
-    <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"Configuración"</string>
+    <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"Establecer"</string>
     <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"No se pudieron exportar los datos"</string>
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Se produjo un error con la exportación del día <xliff:g id="DATE">%1$s</xliff:g>. Establece una nueva exportación programada y vuelve a intentarlo."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Próxima exportación: <xliff:g id="DATE">%1$s</xliff:g>"</string>

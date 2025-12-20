@@ -157,8 +157,8 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Aktivizo të paktën një leje për lexim për të aktivizuar qasjen te të dhënat e kaluara për këtë aplikacion"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Lejo që ky aplikacion të ketë qasje te të gjitha të dhënat e kaluara të Health Connect"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Lejo që ky aplikacion të ketë qasje te të dhënat e Health Connect kur ti nuk e përdor aplikacionin"</string>
-    <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Kalori aktive të djegura"</string>
-    <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"kalori aktive të djegura"</string>
+    <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Kaloritë aktive të djegura"</string>
+    <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"kaloritë aktive të djegura"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Të lexojë të dhënat për kaloritë aktive të djegura"</string>
     <string name="active_calories_burned_write_content_description" msgid="8794383690157452892">"Të shkruajë të dhënat për kaloritë aktive të djegura"</string>
     <string name="exercise_uppercase_label" msgid="9174662895529523172">"Ushtrimet"</string>
@@ -206,7 +206,7 @@
     <string name="vo2_max_lowercase_label" msgid="824972630000900033">"Maksimumi i V02"</string>
     <string name="vo2_max_read_content_description" msgid="8132626885797169882">"Të lexojë të dhënat për maksimumin e V02"</string>
     <string name="vo2_max_write_content_description" msgid="4783300275788728546">"Të shkruajë të dhënat për maksimumin e V02"</string>
-    <string name="wheelchair_pushes_uppercase_label" msgid="5582991294340226965">"Shtyrje të karriges me rrota"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="5582991294340226965">"Shtyrjet e karriges me rrota"</string>
     <string name="wheelchair_pushes_lowercase_label" msgid="8919337990806379687">"shtyrje të karriges me rrota"</string>
     <string name="wheelchair_pushes_read_content_description" msgid="157304610943976471">"Të lexojë të dhënat për shtyrjet e karriges me rrota"</string>
     <string name="wheelchair_pushes_write_content_description" msgid="2745600707106818641">"Të shkruajë të dhënat për shtyrjet e karriges me rrota"</string>
@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Mëso se si <xliff:g id="APP_NAME">%1$s</xliff:g> i përdor të dhënat e tua në "<a href="%2$s">"politikën e vet të privatësisë"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect të lejon të ndash të dhënat e tua të shëndetit dhe fitnesit midis disa aplikacioneve. Kjo të ndihmon të shkyçësh statistikat dhe përvojat ndërkohë që i mban të dhënat të sigurta."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Më shumë rreth Health Connect"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Nëse i jep qasje për të lexuar, aplikacioni mund të lexojë të dhëna të reja dhe të dhëna nga 30 ditët e fundit"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Nëse i jep qasje për të lexuar, aplikacioni mund të lexojë të dhënat e reja dhe të kaluara"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Të lejohet <xliff:g id="APP_NAME">%1$s</xliff:g> që të ketë qasje në Health Connect?"</string>

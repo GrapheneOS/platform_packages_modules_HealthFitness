@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Informace o tom, jak aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> používá vaše data, najdete v jejích "<a href="%2$s">"zásadách ochrany soukromí"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Pomocí Health Connect můžete sdílet údaje o svém zdraví a kondici mezi aplikacemi. Můžete tak získat různé statistiky a funkce a přitom mít svá data v bezpečí."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Další informace o platformě Health Connect"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Pokud aplikaci udělíte přístup pro čtení, bude moct číst nová data a data z posledních 30 dnů"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Pokud aplikaci udělíte přístup pro čtení, bude moct číst nová i dřívější data"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup ke službě Health Connect?"</string>

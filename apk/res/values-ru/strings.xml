@@ -105,7 +105,7 @@
     <string name="delete_permission_type_data_button" msgid="2270819954943391797">"Удалить эти данные"</string>
     <string name="permgrouplab_health" msgid="468961137496587966">"Здоровье и спорт"</string>
     <string name="permgroupdesc_health" msgid="252080476917407273">"доступ к вашим данным о здоровье"</string>
-    <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Чтение данных о калориях"</string>
+    <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Чтение сожженных калорий"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Приложение сможет считывать данные о количестве сожженных калорий."</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Открыть приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к данным в фоновом режиме?"</string>
     <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Если вы предоставите разрешение, медицинские данные, а также данные о самочувствии и физической активности будут доступны приложению, когда вы им не пользуетесь."</string>
@@ -408,10 +408,14 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Чтобы узнать о том, как приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" использует ваши данные, ознакомьтесь с его "<a href="%2$s">"политикой конфиденциальности"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Платформа \"Здоровье и спорт\" позволяет обмениваться информацией о здоровье и физической активности с разными приложениями. Благодаря этому вы получаете полезную статистику и новые возможности, а ваши данные остаются в безопасности."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"О платформе \"Здоровье и спорт\""</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Если вы предоставите приложению доступ для чтения, оно сможет получать как новые данные, так и информацию за последние 30 дней."</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Если вы предоставите приложению доступ для чтения, оно сможет получать как новые, так и старые данные."</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Открыть приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к платформе \"Здоровье и спорт\"?"</string>
-    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Открыть приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к данным о самочувствии и физической активности?"</string>
+    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Разрешить приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к данным о самочувствии и физической активности?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"О том, как приложение \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" обрабатывает ваши данные, можно прочитать в его <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>."</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"политике конфиденциальности"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"Разрешить приложению \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" доступ к медицинским данным?"</string>

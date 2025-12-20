@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ببینید که <xliff:g id="APP_NAME">%1$s</xliff:g> چگونه از داده‌هایتان در "<a href="%2$s">"خط‌مشی رازداری"</a>" خود استفاده می‌کند."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"‫Health Connect به شما امکان می‌دهد داده‌های سلامتی و تناسب اندام خود را بین چند برنامه هم‌رسانی کنید. این به شما کمک می‌کند تا اطلاعات و تجربیات خود را باز کنید و درعین‌حال داده‌هایتان را ایمن نگه دارید."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"اطلاعات بیشتر درباره Health Connect"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"اگر دسترسی خواندن را اعطا کنید، این برنامه می‌تواند داده‌های جدید و داده‌های ۳۰ روز گذشته را بخواند"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"اگر دسترسی خواندن را اعطا کنید، این برنامه می‌تواند داده‌های جدید و قبلی را بخواند"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"به <xliff:g id="APP_NAME">%1$s</xliff:g> اجازه دسترسی به Health Connect داده شود؟"</string>

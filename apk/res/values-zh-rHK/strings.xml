@@ -80,8 +80,8 @@
     <string name="cycle_tracking_category_lowercase" msgid="5245446435975317209">"經期追蹤"</string>
     <string name="nutrition_category_uppercase" msgid="6665096097987741036">"營養"</string>
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"營養"</string>
-    <string name="wellness_category_uppercase" msgid="5900304317921557780">"身心健康"</string>
-    <string name="wellness_category_lowercase" msgid="1327642415424743588">"身心健康"</string>
+    <string name="wellness_category_uppercase" msgid="5900304317921557780">"健康"</string>
+    <string name="wellness_category_lowercase" msgid="1327642415424743588">"健康"</string>
     <string name="symptoms_category_uppercase" msgid="1357167834284360975">"症狀"</string>
     <string name="symptoms_category_lowercase" msgid="2298815597177353672">"症狀"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"瀏覽資料"</string>
@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"查看《"<a href="%2$s">"私隱權政策"</a>"》以瞭解「<xliff:g id="APP_NAME">%1$s</xliff:g>」如何使用你的資料。"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"「健康資料同步」讓你在多個應用程式之間分享健康和健身資料，協助你取得分析資料和享用體驗，同時保障你的資料安全。"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"進一步瞭解「健康資料同步」"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"如果授予讀取權限，應用程式可讀取新資料和過去 30 天內的資料"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"如果授予讀取權限，應用程式可讀取新資料和過去的資料"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取「健康資料同步」嗎？"</string>

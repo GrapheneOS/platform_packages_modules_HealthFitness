@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ស្វែងយល់អំពីរបៀប<xliff:g id="APP_NAME">%1$s</xliff:g>ប្រើប្រាស់ទិន្នន័យរបស់អ្នកនៅក្នុង"<a href="%2$s">"គោលការណ៍​ឯកជនភាព"</a>"របស់កម្មវិធី។"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect អនុញ្ញាតឱ្យអ្នកចែករំលែកទិន្នន័យសុខភាព និង​សម្បទារបស់អ្នករវាងកម្មវិធីជាច្រើន។ ការធ្វើបែបនេះជួយឱ្យអ្នកទទួលបានព័ត៌មានស៊ីជម្រៅ និងបទពិសោធប្រើប្រាស់ ដោយរក្សាទិន្នន័យរបស់អ្នកឱ្យមានសុវត្ថិភាព។"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"ព័ត៌មានបន្ថែម​អំពី Health Connect"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"ប្រសិនបើអ្នកផ្ដល់សិទ្ធិចូលអាន កម្មវិធីនេះអាចអានទិន្នន័យថ្មី និងទិន្នន័យពី 30 ថ្ងៃចុងក្រោយ"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"ប្រសិនបើអ្នកផ្ដល់សិទ្ធិចូលអាន កម្មវិធីនេះអាចអានទិន្នន័យថ្មី និងពីមុន"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"អនុញ្ញាតឱ្យ <xliff:g id="APP_NAME">%1$s</xliff:g> ចូលប្រើ Health Connect ឬ?"</string>

@@ -408,10 +408,14 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Acesse a "<a href="%2$s">"Política de Privacidade"</a>" do app <xliff:g id="APP_NAME">%1$s</xliff:g> para saber como ele usa seus dados."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"O app Conexão Saúde permite compartilhar seus dados de saúde e condicionamento físico entre vários aplicativos. Assim, você acessa insights e experiências sem deixar de lado a proteção dos seus dados."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Mais informações sobre o app Conexão Saúde"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Se o app tiver permissão de leitura, ele poderá acessar dados novos e dos últimos 30 dias"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Se o app tiver permissão de leitura, ele poderá acessar dados novos e antigos"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Permitir que o app <xliff:g id="APP_NAME">%1$s</xliff:g> acesse a plataforma Conexão Saúde?"</string>
-    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Permitir que o app <xliff:g id="APP_NAME">%1$s</xliff:g> acesse dados de fitness e bem-estar?"</string>
+    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Permitir que o app <xliff:g id="APP_NAME">%1$s</xliff:g> acesse dados de condicionamento físico e bem-estar?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Leia a <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> do <xliff:g id="APP_NAME">%1$s</xliff:g> para saber como esse app trata seus dados"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"política de privacidade"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"Permitir que o app <xliff:g id="APP_NAME">%1$s</xliff:g> acesse seus históricos médicos?"</string>
@@ -463,8 +467,8 @@
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"Atualização necessária"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"Configurações e ajuda"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"Remover acesso de todos os apps"</string>
-    <string name="manage_permissions_read_header" msgid="2031153753057983683">"Com permissão de leitura"</string>
-    <string name="manage_permissions_write_header" msgid="6876806848658168370">"Com permissão de gravação"</string>
+    <string name="manage_permissions_read_header" msgid="2031153753057983683">"Com permissão para ler"</string>
+    <string name="manage_permissions_write_header" msgid="6876806848658168370">"Com permissão para gravar"</string>
     <string name="no_apps_allowed" msgid="5794833581324128108">"Nenhum app permitido"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"Nenhum app negado"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Remover o acesso para todos os apps?"</string>
@@ -478,7 +482,7 @@
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Estes apps não têm mais acesso, mas ainda possuem dados armazenados na plataforma Conexão Saúde"</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"O app <xliff:g id="APP_NAME">%1$s</xliff:g> pode ler dados adicionados após <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"Para gerenciar outras permissões do Android que esse app pode acessar, vá até Configurações &gt; Apps"</string>
-    <string name="manage_permissions_rationale" msgid="2780008055185441703">"Veja na Política de Privacidade do desenvolvedor como o app <xliff:g id="APP_NAME">%1$s</xliff:g> processa seus dados"</string>
+    <string name="manage_permissions_rationale" msgid="2780008055185441703">"Veja na Política de Privacidade do desenvolvedor como o app <xliff:g id="APP_NAME">%1$s</xliff:g> trata seus dados"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"Para gerenciar outras permissões do Android que esse app pode acessar, vá até \"Configurações\" e toque em \"Apps\""</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Leia a Política de Privacidade"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Acessou nas últimas 24 horas"</string>
@@ -1260,7 +1264,7 @@
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Permitir escolhidos"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"Durante o uso do app"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Negar tudo"</string>
-    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Permitir que o app <xliff:g id="APP_NAME">%1$s</xliff:g> acesse dados de fitness e bem-estar?"</string>
+    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Permitir que o app <xliff:g id="APP_NAME">%1$s</xliff:g> acesse dados de condicionamento físico e bem-estar?"</string>
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"<xliff:g id="APP_NAME">%1$s</xliff:g> está pedindo acesso a dados de <xliff:g id="DATA_TYPES">%2$s</xliff:g>.\n\nVocê pode permitir o acesso a todos ou controlar individualmente."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Permitir que o app <xliff:g id="APP_NAME">%1$s</xliff:g> acesse dados de <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitness e bem-estar"</string>
@@ -1269,7 +1273,7 @@
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"O app <xliff:g id="APP_NAME">%1$s</xliff:g> pode acessar todos os seus dados de condicionamento físico e bem-estar o tempo todo"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"O app <xliff:g id="APP_NAME">%1$s</xliff:g> pode acessar todos os seus dados de condicionamento físico e bem-estar durante o uso"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"Com permissão de acesso"</string>
-    <string name="allowed_to_read" msgid="2775365229411407406">"Com permissão de leitura"</string>
+    <string name="allowed_to_read" msgid="2775365229411407406">"Com permissão para ler"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"Essas permissões dão ao app <xliff:g id="APP_NAME">%1$s</xliff:g> acesso aos dados dos sensores do dispositivo."</string>
     <string name="write_access" msgid="571547306854732263">"Acesso de gravação"</string>
     <string name="read_access" msgid="3317759826769372785">"Acesso de leitura"</string>
@@ -1322,7 +1326,7 @@
     <string name="device_management_screen_footer" msgid="1787611015335737167">"Os dados coletados por este dispositivo serão armazenados no app Conexão Saúde, onde serão acessados pelos aplicativos conectados"</string>
     <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Este dispositivo não é compatível com a contagem de passos, mas ainda tem dados armazenados na Conexão Saúde"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Este dispositivo não conta passos"</string>
-    <string name="device_settings_label" msgid="9053791237491247819">"Com permissão de gravação"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"Com permissão para gravar"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Dados do dispositivo"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Gerenciar dispositivo"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Ver dados do dispositivo"</string>

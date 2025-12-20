@@ -408,11 +408,15 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ב"<a href="%2$s">"מדיניות הפרטיות"</a>" של <xliff:g id="APP_NAME">%1$s</xliff:g> מוסבר איך האפליקציה משתמשת בנתונים שלך."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"אפליקציית Health Connect מאפשרת לשתף את נתוני הבריאות והכושר בין כמה אפליקציות. כך אפשר לקבל תובנות ולשפר את חוויית השימוש תוך שמירה על אבטחת המידע."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"מידע נוסף על Health Connect"</string>
-    <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"ההרשאה מאפשרת לאפליקציה לקרוא נתונים חדשים ונתונים קודמים מ-30 הימים האחרונים"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
+    <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"הרשאת קריאה מאפשרת לאפליקציה לקרוא נתונים חדשים ונתונים קודמים מ-30 הימים האחרונים"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"אם תינתן הרשאת קריאה, האפליקציה תוכל לקרוא נתונים חדשים ונתונים קודמים"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"לתת לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> הרשאת גישה אל Health Connect?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"לתת לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> הרשאת גישה לנתוני כושר ובריאות?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"אפשר לקרוא איך אפליקציית <xliff:g id="APP_NAME">%1$s</xliff:g> מטפלת בנתונים שלך ב<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> של האפליקציה"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"אפשר לקרוא איך אפליקציית <xliff:g id="APP_NAME">%1$s</xliff:g> מטפלת בנתונים ב<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> של האפליקציה"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"מדיניות הפרטיות"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"לתת לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> גישה לתיק הרפואי?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"אם הגישה תאושר, האפליקציה תוכל לקרוא ולכתוב נתונים כמו אלרגיות, תוצאות של בדיקות מעבדה, חיסונים ועוד\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -464,7 +468,7 @@
     <string name="settings_and_help_header" msgid="5749710693017621168">"הגדרות ועזרה"</string>
     <string name="disconnect_all_apps" msgid="748945115977534726">"הסרת הרשאת הגישה של כל האפליקציות"</string>
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"אישור לקרוא נתונים"</string>
-    <string name="manage_permissions_write_header" msgid="6876806848658168370">"אישור לכתוב"</string>
+    <string name="manage_permissions_write_header" msgid="6876806848658168370">"אישור לכתוב נתונים"</string>
     <string name="no_apps_allowed" msgid="5794833581324128108">"אין אפליקציות שקיבלו הרשאת גישה"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"אין אפליקציות שסורב לתת להן גישה"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"להסיר את הרשאת הגישה של כל האפליקציות?"</string>
@@ -1322,7 +1326,7 @@
     <string name="device_management_screen_footer" msgid="1787611015335737167">"הנתונים שנאספים מהמכשיר הזה יאוחסנו ב-Health Connect, והאפליקציות המקושרות יוכלו לגשת אליהם"</string>
     <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"המכשיר הזה לא תומך במעקב אחרי צעדים, אבל הנתונים שלו עדיין מאוחסנים ב-Health Connect"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"המכשיר הזה לא עוקב אחרי צעדים"</string>
-    <string name="device_settings_label" msgid="9053791237491247819">"אישור לכתוב"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"אישור לכתוב נתונים"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"נתוני המכשיר"</string>
     <string name="device_data_label" msgid="2056618513138892435">"ניהול המכשיר"</string>
     <string name="device_data_button" msgid="8002406105399136401">"צפייה בנתוני המכשיר"</string>

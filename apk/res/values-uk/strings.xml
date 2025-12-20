@@ -122,7 +122,7 @@
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Доступ до всіх даних у фоновому режимі"</string>
     <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"Доступ до медичних даних у фоновому режимі"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Доступ до даних про фізичну активність і здоров’я у фоновому режимі"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"Дозволити цьому додатку доступ до даних про фізичну активність і здоров’я, а також до медичних даних, коли ви не користуєтеся ним"</string>
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"Дозволити цьому додатку доступ до даних про фізичну активність і самопочуття, а також до медичних даних, коли ви не користуєтеся ним"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Дозволити цьому додатку доступ до цих даних, коли ви не користуєтеся ним"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Дозволити цьому додатку доступ до цих даних, коли ви не користуєтеся ним"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Доступ до даних у фоновому режимі"</string>
@@ -138,7 +138,7 @@
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Доступ до всіх даних у фоновому режимі"</string>
     <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"Доступ до медичних даних у фоновому режимі"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Доступ до даних про фізичну активність і здоров’я у фоновому режимі"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"Дозволити цьому додатку доступ до даних про фізичну активність і здоров’я, а також до медичних даних, коли ви не користуєтеся ним"</string>
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"Дозволити цьому додатку доступ до даних про фізичну активність і самопочуття, а також до медичних даних, коли ви не користуєтеся ним"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Дозволити цьому додатку доступ до цих даних, коли ви не користуєтеся ним"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Дозволити цьому додатку доступ до цих даних, коли ви не користуєтеся ним"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Доступ до даних у фоновому режимі"</string>
@@ -408,10 +408,14 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Ознайомтеся з інформацією про те, як додаток <xliff:g id="APP_NAME">%1$s</xliff:g> використовує ваші дані, у його "<a href="%2$s">"політиці конфіденційності"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"За допомогою сервісу Health Connect ви можете обмінюватися даними про стан здоров’я і фізичну активність між кількома додатками. Це допоможе вам отримувати статистику й користуватися різними функціями, не турбуючись про безпеку своїх даних."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Докладніше про Health Connect"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Якщо ви дозволите доступ для перегляду, додаток зможе переглядати нові дані, а також дані за останні 30 днів"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Якщо ви дозволите доступ для перегляду, додаток зможе переглядати нові й минулі дані"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до Health Connect?"</string>
-    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до даних про фізичну активність і здоров’я?"</string>
+    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до даних про фізичну активність і самопочуття?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Інформацію про те, як додаток <xliff:g id="APP_NAME">%1$s</xliff:g> обробляє ваші дані, можна знайти в його <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"політику конфіденційності"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до ваших медичних даних?"</string>
@@ -504,7 +508,7 @@
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
     <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"Налаштувати"</string>
     <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"Не вдалось експортувати дані"</string>
-    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Виникла проблема з експортом <xliff:g id="DATE">%1$s</xliff:g>. Налаштуйте новий запланований експорт і повторіть спробу."</string>
+    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Виникла проблема з експортом <xliff:g id="DATE">%1$s</xliff:g> Налаштуйте новий запланований експорт і повторіть спробу."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Наступний експорт: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Незабаром почнеться наступний експорт"</string>
     <string name="cloud_backup_option" msgid="2602990573804189525">"Резервне копіювання"</string>
@@ -565,7 +569,7 @@
     <string name="scheduled_export_on_toast_text" msgid="945186472588537310">"Запланований експорт увімкнено"</string>
     <string name="export_notification_error_generic_error_title" msgid="7940091379629095465">"Health Connect: помилка експорту даних"</string>
     <string name="export_notification_error_more_space_needed_title" msgid="5089783781556500431">"Потрібно більше пам’яті"</string>
-    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"Виникла проблема з експортом на <xliff:g id="DATE">%1$s</xliff:g>. Налаштуйте новий запланований експорт і повторіть спробу."</string>
+    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"Виникла проблема з експортом на <xliff:g id="DATE">%1$s</xliff:g> Налаштуйте новий запланований експорт і повторіть спробу."</string>
     <string name="export_notification_error_more_space_needed_body_text" msgid="5519192430780383427">"Щоб продовжити запланований експорт, Health Connect потрібно <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> вільної пам’яті на вашому телефоні."</string>
     <string name="export_notification_set_up_intent_button" msgid="1484836974815713693">"Налаштувати"</string>
     <string name="export_notification_free_up_space_intent_button" msgid="2902823222861202203">"Звільнити місце"</string>
@@ -1260,7 +1264,7 @@
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Дозволити вибрані"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"Під час використання додатка"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Відхилити всі"</string>
-    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до даних про фізичну активність і здоров’я?"</string>
+    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до даних про фізичну активність і самопочуття?"</string>
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"Додаток <xliff:g id="APP_NAME">%1$s</xliff:g> запитує доступ до таких даних: <xliff:g id="DATA_TYPES">%2$s</xliff:g>.\n\nНадайте доступ до всіх типів даних або керуйте кожним із них окремо."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Дозволити додатку <xliff:g id="APP_NAME">%1$s</xliff:g> доступ до даних типу \"<xliff:g id="DATA_TYPE">%2$s</xliff:g>\"?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Фізична активність і здоров’я"</string>

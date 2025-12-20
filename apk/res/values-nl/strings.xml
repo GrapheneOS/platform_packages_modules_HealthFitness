@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Meer informatie over hoe <xliff:g id="APP_NAME">%1$s</xliff:g> je gegevens gebruikt, vind je in hun "<a href="%2$s">"privacybeleid"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Met Health Connect kun je je gezondheids- en fitnessgegevens delen tussen meerdere apps. Zo kun je inzichten en ervaringen mogelijk maken terwijl je gegevens beveiligd blijven."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Meer informatie over Health Connect"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Als je leestoegang geeft, kan de app nieuwe gegevens en gegevens van de afgelopen 30 dagen lezen"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Als je leestoegang geeft, kan de app nieuwe en eerdere gegevens lezen"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> toegang geven tot Health Connect?"</string>

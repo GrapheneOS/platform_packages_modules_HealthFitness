@@ -80,7 +80,7 @@
     <string name="cycle_tracking_category_lowercase" msgid="5245446435975317209">"urmărirea ciclului menstrual"</string>
     <string name="nutrition_category_uppercase" msgid="6665096097987741036">"Nutriție"</string>
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"nutriție"</string>
-    <string name="wellness_category_uppercase" msgid="5900304317921557780">"Bunăstare"</string>
+    <string name="wellness_category_uppercase" msgid="5900304317921557780">"Wellness"</string>
     <string name="wellness_category_lowercase" msgid="1327642415424743588">"bunăstare"</string>
     <string name="symptoms_category_uppercase" msgid="1357167834284360975">"Simptome"</string>
     <string name="symptoms_category_lowercase" msgid="2298815597177353672">"simptome"</string>
@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Află cum îți folosește <xliff:g id="APP_NAME">%1$s</xliff:g> datele, în "<a href="%2$s">"politica de confidențialitate"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Cu Health Connect, poți să trimiți date despre sănătate și fitness între mai multe aplicații. Astfel, poți să descoperi statistici și experiențe, păstrându-ți datele în siguranță."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Mai multe despre Health Connect"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Dacă acorzi acces pentru citire, aplicația poate să citească date noi și date din ultimele 30 de zile"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Dacă acorzi acces pentru citire, aplicația poate să citească date noi și anterioare"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Permiți accesul <xliff:g id="APP_NAME">%1$s</xliff:g> la Health Connect?"</string>

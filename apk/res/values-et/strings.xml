@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Vaadake rakenduse <xliff:g id="APP_NAME">%1$s</xliff:g> "<a href="%2$s">"privaatsuseeskirjadest"</a>", kuidas teie andmeid kasutatakse."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect võimaldab teil oma tervise- ja treeninguandmeid jagada mitme rakenduse vahel. See aitab teil hankida statistikat ja avada kasutuskogemusi, samas tagades teie andmete turvalisuse."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Lisateave Health Connecti kohta"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Kui annate lugemisõiguse, võib rakendus lugeda uusi andmeid ja viimase 30 päeva andmeid."</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Kui annate lugemisõiguse, võib rakendus lugeda uusi ja varasemaid andmeid."</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Kas lubate rakendusel <xliff:g id="APP_NAME">%1$s</xliff:g> Health Connectile juurde pääseda?"</string>
@@ -565,7 +569,7 @@
     <string name="scheduled_export_on_toast_text" msgid="945186472588537310">"Ajastatud eksportimine on sisse lülitatud"</string>
     <string name="export_notification_error_generic_error_title" msgid="7940091379629095465">"Health Connect ei saanud andmeid eksportida"</string>
     <string name="export_notification_error_more_space_needed_title" msgid="5089783781556500431">"Vaja on rohkem ruumi"</string>
-    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"Kuupäeva <xliff:g id="DATE">%1$s</xliff:g> eksportimisel ilmnes probleem. Seadistage uus ajastatud eksportimine ja proovige uuesti."</string>
+    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"Eksportimisel (<xliff:g id="DATE">%1$s</xliff:g>) ilmnes probleem. Seadistage uus ajastatud eksportimine ja proovige uuesti."</string>
     <string name="export_notification_error_more_space_needed_body_text" msgid="5519192430780383427">"Health Connect vajab teie telefonis ajastatud eksportimise jätkamiseks <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> salvestusruumi."</string>
     <string name="export_notification_set_up_intent_button" msgid="1484836974815713693">"Seadista"</string>
     <string name="export_notification_free_up_space_intent_button" msgid="2902823222861202203">"Ruumi vabastamine"</string>
@@ -1149,7 +1153,7 @@
     <string name="resume_button" msgid="2255148549862208047">"Jätkake"</string>
     <string name="migration_paused_notification_title" msgid="4368414714202113077">"Integratsioon peatatud"</string>
     <string name="migration_paused_notification_content" msgid="1950511270109811771">"Health Connecti integreerimine Androidi süsteemiga on peatatud. Puudutage jätkamiseks"</string>
-    <string name="resume_migration_banner_title" msgid="4443957114824045317">"Jätka integratsiooni"</string>
+    <string name="resume_migration_banner_title" msgid="4443957114824045317">"Jätkake integratsiooni"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Puudutage, et integreerida Health Connect oma Androidi süsteemiga. Andmete säilitamiseks lõpetage toiming järgmise aja jooksul: <xliff:g id="TIME_NEEDED">%1$s</xliff:g>."</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Puudutage, et integreerida Health Connect oma Androidi süsteemiga."</string>
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"Jätka"</string>

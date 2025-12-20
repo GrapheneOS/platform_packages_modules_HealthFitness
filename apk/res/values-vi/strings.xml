@@ -408,6 +408,10 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Tìm hiểu cách <xliff:g id="APP_NAME">%1$s</xliff:g> dùng dữ liệu của bạn trong "<a href="%2$s">"chính sách quyền riêng tư"</a>" của họ."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Với Health Connect, bạn có thể chia sẻ dữ liệu về sức khoẻ và hoạt động thể dục giữa nhiều ứng dụng. Nhờ đó, bạn sẽ có thêm những hiểu biết và trải nghiệm, trong khi vẫn đảm bảo an toàn cho dữ liệu của mình."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Tìm hiểu thêm về Health Connect"</string>
+    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
+    <skip />
+    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
+    <skip />
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Nếu bạn cấp quyền đọc, ứng dụng này có thể đọc dữ liệu mới và dữ liệu trong 30 ngày qua"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Nếu bạn cấp quyền đọc, ứng dụng này có thể đọc dữ liệu mới và dữ liệu trước đây"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Cho phép <xliff:g id="APP_NAME">%1$s</xliff:g> truy cập vào Health Connect?"</string>
