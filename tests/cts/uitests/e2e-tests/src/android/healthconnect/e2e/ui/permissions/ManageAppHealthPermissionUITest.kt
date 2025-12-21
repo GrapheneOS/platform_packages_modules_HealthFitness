@@ -23,7 +23,9 @@ import android.health.connect.HealthPermissions.WRITE_BODY_FAT
 import android.health.connect.HealthPermissions.WRITE_HEIGHT
 import android.health.connect.HealthPermissions.WRITE_STEPS
 import android.healthconnect.cts.ui.HealthConnectBaseTest
+import android.healthconnect.testing.cts.PermissionUtils
 import android.healthconnect.testing.cts.ui.ActivityLauncher.launchMainActivity
+import android.healthconnect.testing.cts.ui.UiTestUtils.TEST_APP_NAME
 import android.healthconnect.testing.cts.ui.UiTestUtils.TEST_APP_PACKAGE_NAME
 import android.healthconnect.testing.cts.ui.UiTestUtils.clickOnDescAndWaitForNewWindow
 import android.healthconnect.testing.cts.ui.UiTestUtils.clickOnText
@@ -44,6 +46,7 @@ import com.android.healthfitness.flags.Flags
 import com.android.healthfitness.flags.Flags.FLAG_NEW_HOME_SCREEN
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -55,7 +58,9 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     @RequiresFlagsEnabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun showDeclaredPermissions_withGrouping() {
         context.launchMainActivity {
-            navigateToManagePermissionsForApp("Health Connect cts test app")
+            navigateToManagePermissionsForApp(TEST_APP_NAME)
+            scrollDownToAndFindText("Fitness and wellness")
+            findTextAndClick("Fitness and wellness")
             scrollDownToAndFindText("Activity")
             findTextAndClick("Activity")
             scrollDownToAndFindText("Steps")
@@ -66,7 +71,7 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     @RequiresFlagsDisabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun showDeclaredPermissions() {
         context.launchMainActivity {
-            navigateToManagePermissionsForApp("Health Connect cts test app")
+            navigateToManagePermissionsForApp(TEST_APP_NAME)
 
             scrollDownToAndFindText("Steps")
         }
@@ -77,8 +82,9 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     fun grantPermission_updatesAppPermissions() {
         revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
         context.launchMainActivity {
-            navigateToManagePermissionsForApp("Health Connect cts test app")
+            navigateToManagePermissionsForApp(TEST_APP_NAME)
 
+            scrollDownToAndFindText("Allowed to write")
             scrollDownToAndFindText("Body fat")
             findTextAndClick("Body fat")
             clickOnDescAndWaitForNewWindow("Navigate up")
@@ -92,9 +98,10 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     fun revokePermission_updatesAppPermissions() {
         grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
         context.launchMainActivity {
-            navigateToManagePermissionsForApp("Health Connect cts test app")
+            navigateToManagePermissionsForApp(TEST_APP_NAME)
             assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
 
+            scrollDownToAndFindText("Allowed to write")
             scrollDownToAndFindText("Body fat")
             findTextAndClick("Body fat")
             clickOnDescAndWaitForNewWindow("Navigate up")
@@ -109,11 +116,14 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
         revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
         revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
         context.launchMainActivity {
-            navigateToManagePermissionsForApp("Health Connect cts test app")
+            navigateToManagePermissionsForApp(TEST_APP_NAME)
+            scrollDownToAndFindText("Fitness and wellness")
+            findTextAndClick("Fitness and wellness")
+            scrollDownToAndFindText("Allowed to write")
 
             // TODO(b/447325422): Use content description once toggles have A11y support
-            scrollDownToAndFindText("0 of 2 selected")
-            findTextAndClick("0 of 2 selected")
+            scrollDownToAndFindText("5 of 7 selected")
+            findTextAndClick("5 of 7 selected")
             scrollDownToAndFindText("Body fat")
             findTextAndClick("Body fat")
             clickOnDescAndWaitForNewWindow("Navigate up")
@@ -126,15 +136,15 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     @Test
     @RequiresFlagsEnabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun whenGroupedPermissionsEnabled_revokePermission_updatesAppPermissions() {
-        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
-        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
         context.launchMainActivity {
-            navigateToManagePermissionsForApp("Health Connect cts test app")
-            assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+            navigateToManagePermissionsForApp(TEST_APP_NAME)
+            scrollDownToAndFindText("Fitness and wellness")
+            findTextAndClick("Fitness and wellness")
+            scrollDownToAndFindText("Allowed to write")
 
             // TODO(b/447325422): Use content description once toggles have A11y support
-            scrollDownToAndFindText("2 of 2 selected")
-            findTextAndClick("2 of 2 selected")
+            scrollDownToAndFindText("7 of 7 selected")
+            findTextAndClick("7 of 7 selected")
             scrollDownToAndFindText("Body fat")
             findTextAndClick("Body fat")
             clickOnDescAndWaitForNewWindow("Navigate up")
@@ -150,11 +160,14 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
         revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
         revokePermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
         context.launchMainActivity {
-            navigateToManagePermissionsForApp("Health Connect cts test app")
+            navigateToManagePermissionsForApp(TEST_APP_NAME)
+            scrollDownToAndFindText("Fitness and wellness")
+            findTextAndClick("Fitness and wellness")
+            scrollDownToAndFindText("Allowed to write")
 
             // TODO(b/447325422): Use content description once toggles have A11y support
-            scrollDownToAndFindText("0 of 2 selected")
-            val preferenceRow = findObject(By.hasDescendant(By.text("0 of 2 selected")))
+            scrollDownToAndFindText("5 of 7 selected")
+            val preferenceRow = findObject(By.hasDescendant(By.text("5 of 7 selected")))
             val switchWidget = preferenceRow.parent.findObject(By.checkable(true))
             switchWidget.click()
             clickOnDescAndWaitForNewWindow("Navigate up")
@@ -167,16 +180,15 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     @Test
     @RequiresFlagsEnabled(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun whenGroupedPermissionsEnabled_revokeAllPermissionsForCategory_updatesAppPermissions() {
-        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
-        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
         context.launchMainActivity {
-            navigateToManagePermissionsForApp("Health Connect cts test app")
-            assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
-            assertPermGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
+            navigateToManagePermissionsForApp(TEST_APP_NAME)
+            scrollDownToAndFindText("Fitness and wellness")
+            findTextAndClick("Fitness and wellness")
+            scrollDownToAndFindText("Allowed to write")
 
             // TODO(b/447325422): Use content description once toggles have A11y support
-            scrollDownToAndFindText("2 of 2 selected")
-            val preferenceRow = findObject(By.hasDescendant(By.text("2 of 2 selected")))
+            scrollDownToAndFindText("7 of 7 selected")
+            val preferenceRow = findObject(By.hasDescendant(By.text("7 of 7 selected")))
             val switchWidget = preferenceRow.parent.findObject(By.checkable(true))
             switchWidget.click()
             clickOnDescAndWaitForNewWindow("Navigate up")
@@ -189,18 +201,14 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
     @Test
     @RequiresFlagsDisabled(FLAG_NEW_HOME_SCREEN)
     fun revokeAllPermissions_revokesAllAppPermissions() {
-        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, READ_HEIGHT)
-        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, READ_MINDFULNESS)
-        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
-        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
-        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_STEPS)
-
         context.launchMainActivity {
-            navigateToManagePermissionsForApp("Health Connect cts test app")
+            navigateToManagePermissionsForApp(TEST_APP_NAME)
             scrollDownToAndFindText("Allow all")
             findTextAndClick("Allow all")
             findText("Remove all permissions?")
-            findText("Also delete Health Connect cts test app data from Health Connect")
+            findText(
+                "Also delete CtsHealthConnectTestAppAWithNormalReadWritePermission data from Health Connect"
+            )
             clickOnText("Remove all")
             clickOnDescAndWaitForNewWindow("Navigate up")
 
@@ -224,11 +232,15 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
             .isEqualTo(PackageManager.PERMISSION_GRANTED)
     }
 
+    @Before
+    fun setup() {
+        PermissionUtils.grantAllHealthPermissions(TEST_APP_PACKAGE_NAME)
+        navigateBackToHomeScreen()
+    }
+
     @After
     fun tearDown() {
-        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, READ_HEIGHT)
-        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
-        grantPermissionViaPackageManager(context, TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
+        PermissionUtils.grantAllHealthPermissions(TEST_APP_PACKAGE_NAME)
         navigateBackToHomeScreen()
     }
 }

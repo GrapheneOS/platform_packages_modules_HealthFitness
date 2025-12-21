@@ -56,7 +56,9 @@ import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.HeartRateRecord;
 import android.health.connect.datatypes.units.Length;
 import android.health.connect.datatypes.units.Mass;
+import android.healthconnect.testing.cts.testapphelpers.TestAppConstants;
 import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
+import android.healthconnect.testing.cts.testapphelpers.TestAppRule;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 
@@ -77,19 +79,23 @@ import java.time.ZoneOffset;
 import java.util.List;
 
 public class AggregateWithFiltersTest {
-    private static final String PKG_TEST_APP = "android.healthconnect.cts.testapp.readWritePerms.A";
+    private static final String PKG_TEST_APP = TestAppConstants.TEST_APP_WITH_READ_WRITE_PERMS_A;
 
     private final Context mContext = ApplicationProvider.getApplicationContext();
     private final String mPackageName = mContext.getPackageName();
     private final ZoneOffset mCurrentZone =
             ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
-    private final TestAppProxy mTestApp = TestAppProxy.forPackageName(PKG_TEST_APP);
 
-    @Rule
-    public AssumptionCheckerRule mSupportedHardwareRule =
+    @Rule(order = 0)
+    public final AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
+
+    @Rule(order = 1)
+    public final TestAppRule mTestAppRule = new TestAppRule.Builder(PKG_TEST_APP).build();
+
+    private final TestAppProxy mTestApp = mTestAppRule.getProxy();
 
     @Before
     public void setUp() throws InterruptedException {

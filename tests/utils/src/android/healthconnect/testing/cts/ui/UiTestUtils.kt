@@ -67,15 +67,15 @@ object UiTestUtils {
 
     private val PACKAGE_NAME = "android.healthconnect.cts.ui"
 
-    const val TEST_APP_PACKAGE_NAME = "android.healthconnect.cts.app"
+    const val TEST_APP_PACKAGE_NAME = "android.healthconnect.cts.testapp.readWritePerms.A"
 
-    const val TEST_APP_2_PACKAGE_NAME = "android.healthconnect.cts.app2"
+    const val TEST_APP_2_PACKAGE_NAME = "android.healthconnect.cts.testapp.readWritePerms.B"
 
     const val SYSTEM_TEST_APP_PACKAGE_NAME = "android.healthconnect.cts.systemtestapp"
 
-    const val TEST_APP_NAME = "Health Connect cts test app"
+    const val TEST_APP_NAME = "CtsHealthConnectTestAppAWithNormalReadWritePermission"
 
-    const val TEST_APP_2_NAME = "Health Connect cts test app 2"
+    const val TEST_APP_2_NAME = "CtsHealthConnectTestAppBWithNormalReadWritePermission"
 
     const val SYSTEM_TEST_APP_NAME = "Health Connect cts system test app"
 

@@ -44,12 +44,11 @@ import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 public class MigrationEntityParcelTest {
-    private static final String APP_PACKAGE_NAME = "android.healthconnect.cts.app";
     private static final String ENTITY_ID = "height";
     private static final Instant END_TIME = Instant.now().truncatedTo(ChronoUnit.MILLIS);
     private static final HeightRecord HEIGHT_RECORD =
             new HeightRecord.Builder(
-                            getMetadata(ENTITY_ID, APP_PACKAGE_NAME), END_TIME, fromMeters(3D))
+                            getMetadata(ENTITY_ID, "test.package"), END_TIME, fromMeters(3D))
                     .build();
     private static final MigrationEntity HEIGHT_MIGRATION_ENTITY =
             getRecordEntity(HEIGHT_RECORD, ENTITY_ID);
