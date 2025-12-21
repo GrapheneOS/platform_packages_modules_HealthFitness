@@ -118,30 +118,6 @@ android_test_helper_app {
 }
 
 android_test_helper_app {
-    name: "HealthFitnessCtsTestApp",
-    manifest: "CtsTestAppAndroidManifest.xml",
-    static_libs: [
-        "healthfitness-testing-testapp",
-    ],
-    defaults: ["cts_defaults"],
-    sdk_version: "test_current",
-    min_sdk_version: "34",
-    target_sdk_version: "34",
-}
-
-android_test_helper_app {
-    name: "HealthFitnessCtsTestApp2",
-    manifest: "CtsTestApp2AndroidManifest.xml",
-    static_libs: [
-        "healthfitness-testing-testapp",
-    ],
-    defaults: ["cts_defaults"],
-    sdk_version: "test_current",
-    min_sdk_version: "34",
-    target_sdk_version: "34",
-}
-
-android_test_helper_app {
     name: "HealthFitnessCtsSystemTestApp",
     manifest: "CtsSystemTestAppAndroidManifest.xml",
     static_libs: [

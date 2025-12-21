@@ -45,12 +45,10 @@
     <!-- To get visibility of the app with health permissions definitions,
          required for testing defined permissions. -->
     <queries>
-        <package android:name="android.healthconnect.cts.app"/>
-        <package android:name="android.healthconnect.cts.app2"/>
-        <package android:name="android.healthconnect.cts.systemtestapp"/>
         <package android:name="android.healthconnect.cts.testapp.readWritePerms.A"/>
         <package android:name="android.healthconnect.cts.testapp.readWritePerms.B" />
         <package android:name="android.healthconnect.cts.testapp.writePermsOnly" />
+        <package android:name="android.healthconnect.cts.systemtestapp" />
     </queries>
 
     <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"/>

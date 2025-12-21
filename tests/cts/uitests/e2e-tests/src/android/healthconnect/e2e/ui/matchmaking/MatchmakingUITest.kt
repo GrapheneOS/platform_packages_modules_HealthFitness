@@ -75,10 +75,12 @@ class MatchmakingUITest : HealthConnectBaseTest() {
                 waitMatchmakingActivityDisplayed()
                 findText("Share data between apps")
                 scrollDownToAndFindText(
-                    "Allow the Health Connect cts test app app to read data from other apps on this device using Health Connect. This data can also be read by other apps you give access to."
+                    "Allow the CtsHealthConnectTestAppAWithNormalReadWritePermission app to read data from other apps on this device using Health Connect. This data can also be read by other apps you give access to."
                 )
                 scrollDownToAndFindText("Allow all")
-                scrollDownToAndFindText("Data from Health Connect cts test app 2")
+                scrollDownToAndFindText(
+                    "Data from CtsHealthConnectTestAppBWithNormalReadWritePermission"
+                )
                 scrollDownToAndFindText("Height")
                 findTextAndClick("Height")
                 scrollDownToAndFindText("Steps")
@@ -109,7 +111,7 @@ class MatchmakingUITest : HealthConnectBaseTest() {
                 waitMatchmakingActivityDisplayed()
                 findText("Share data between apps")
                 scrollDownToAndFindText(
-                    "Allow the Health Connect cts test app app to read data from other apps on this device using Health Connect. This data can also be read by other apps you give access to."
+                    "Allow the CtsHealthConnectTestAppAWithNormalReadWritePermission app to read data from other apps on this device using Health Connect. This data can also be read by other apps you give access to."
                 )
                 scrollDownToAndFindText("Allow all")
                 findTextAndClick("Allow all")
@@ -139,7 +141,7 @@ class MatchmakingUITest : HealthConnectBaseTest() {
                 waitMatchmakingActivityDisplayed()
                 findText("Share data between apps")
                 scrollDownToAndFindText(
-                    "Allow the Health Connect cts test app app to read data from other apps on this device using Health Connect. This data can also be read by other apps you give access to."
+                    "Allow the CtsHealthConnectTestAppAWithNormalReadWritePermission app to read data from other apps on this device using Health Connect. This data can also be read by other apps you give access to."
                 )
 
                 pressBack()

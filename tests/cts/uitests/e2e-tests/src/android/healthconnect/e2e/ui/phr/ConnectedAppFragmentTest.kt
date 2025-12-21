@@ -39,9 +39,11 @@ class ConnectedAppFragmentTest : HealthConnectBaseTest() {
     @Test
     fun appWithMedicalAndFitnessPermissions_showsCombinedPermissionsScreen() {
         context.launchMainActivity {
-            navigateToManagePermissionsForApp("Health Connect cts test app 2")
+            navigateToManagePermissionsForApp(
+                "CtsHealthConnectTestAppBWithNormalReadWritePermission"
+            )
 
-            findText("Health Connect cts test app 2")
+            findText("CtsHealthConnectTestAppBWithNormalReadWritePermission")
             scrollDownToAndFindText("Permissions")
             scrollDownToAndFindText("Fitness and wellness")
             scrollDownToAndFindText("Medical records")
