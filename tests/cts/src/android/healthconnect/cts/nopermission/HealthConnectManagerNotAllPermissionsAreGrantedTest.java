@@ -57,6 +57,8 @@ import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.platform.test.annotations.AppModeFull;
 import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -85,6 +87,9 @@ public class HealthConnectManagerNotAllPermissionsAreGrantedTest {
             new TestAppRule.Builder("android.healthconnect.cts.testapp.readWritePerms.A").build();
 
     private final TestAppProxy mTestApp = mTestAppRule.getProxy();
+
+    @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
     @Test
     public void testInsert_somePermissionsAreNotGranted_expectError() throws InterruptedException {
