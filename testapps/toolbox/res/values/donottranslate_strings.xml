@@ -55,6 +55,7 @@
     <string name="toast_seed_data_success">Data inserted successfully</string>
     <string name="matchmaking_button">Matchmaking</string>
     <string name="access_log_button">Seed Access Logs</string>
+    <string name="advertise_device">Advertise Device</string>
 
 
     <!-- Data Categories -->
