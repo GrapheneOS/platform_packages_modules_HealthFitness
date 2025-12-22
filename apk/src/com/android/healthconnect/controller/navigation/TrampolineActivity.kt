@@ -19,8 +19,6 @@
 package com.android.healthconnect.controller.navigation
 
 import android.content.Intent
-import android.content.Intent.EXTRA_PACKAGE_NAME
-import android.content.Intent.EXTRA_REASON
 import android.health.connect.HealthConnectManager
 import android.os.Bundle
 import android.util.Log
@@ -29,9 +27,6 @@ import androidx.fragment.app.FragmentActivity
 import com.android.healthconnect.controller.MainActivity
 import com.android.healthconnect.controller.data.DataManagementActivity
 import com.android.healthconnect.controller.onboarding.ConnectAppsOnboardingActivity
-import com.android.healthconnect.controller.permissions.app.wear.WearViewAppInfoPermissionsActivity
-import com.android.healthconnect.controller.permissions.connectedapps.wear.WearSettingsPermissionActivity
-import com.android.healthconnect.controller.permissions.shared.SettingsActivity
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
 import dagger.hilt.android.AndroidEntryPoint
@@ -46,7 +41,6 @@ class TrampolineActivity : Hilt_TrampolineActivity() {
 
     companion object {
         private const val TAG = "TrampolineActivity"
-        private const val REASON_PRIVACY_DASHBOARD = "privacy_dashboard"
     }
 
     @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
@@ -58,79 +52,36 @@ class TrampolineActivity : Hilt_TrampolineActivity() {
             WindowManager.LayoutParams.SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERLAY_WINDOWS
         )
         // Handles unsupported devices and user profiles.
-        if (!deviceInfoUtils.isHealthConnectAvailable(this)) {
+        if (!deviceInfoUtils.isHealthConnectAvailable(this) || deviceInfoUtils.isOnWatch(this)) {
             Log.e(TAG, "Health connect is not available for this user or hardware, finishing!")
             finish()
             return
         }
-        val isOnWatch = deviceInfoUtils.isOnWatch(this)
 
         // Handles large screen support in settings.
-        if (!isOnWatch && maybeRedirectIntoTwoPaneSettings(this)) {
+        if (maybeRedirectIntoTwoPaneSettings(this)) {
             finish()
             return
         }
 
         val targetIntent =
-            if (isOnWatch) {
-                getWearTargetIntent()
-            } else {
-                getHandheldTargetIntent()
+            when (intent.action) {
+                HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS -> {
+                    Intent(this, MainActivity::class.java)
+                }
+                HealthConnectManager.ACTION_MANAGE_HEALTH_DATA -> {
+                    Intent(this, DataManagementActivity::class.java)
+                }
+                HealthConnectManager.ACTION_SYNC_MORE_APPS -> {
+                    Intent(this, ConnectAppsOnboardingActivity::class.java)
+                }
+                else -> {
+                    // Default to open Health Connect MainActivity
+                    Intent(this, MainActivity::class.java)
+                }
             }
 
         startActivity(targetIntent)
         finish()
-    }
-
-    private fun getHandheldTargetIntent(): Intent {
-        return when (intent.action) {
-            HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS -> {
-                Intent(this, MainActivity::class.java)
-            }
-            HealthConnectManager.ACTION_MANAGE_HEALTH_DATA -> {
-                Intent(this, DataManagementActivity::class.java)
-            }
-            HealthConnectManager.ACTION_MANAGE_HEALTH_PERMISSIONS -> {
-                val extraPackageName: String? = intent.getStringExtra(EXTRA_PACKAGE_NAME)
-
-                Intent(this, SettingsActivity::class.java).apply {
-                    if (extraPackageName != null) {
-                        putExtra(EXTRA_PACKAGE_NAME, extraPackageName)
-                    }
-                }
-            }
-            HealthConnectManager.ACTION_SYNC_MORE_APPS -> {
-                Intent(this, ConnectAppsOnboardingActivity::class.java)
-            }
-            else -> {
-                // Default to open Health Connect MainActivity
-                Intent(this, MainActivity::class.java)
-            }
-        }
-    }
-
-    // Returns an intent to handle Wear request.
-    private fun getWearTargetIntent(): Intent {
-        if (intent.action != HealthConnectManager.ACTION_MANAGE_HEALTH_PERMISSIONS) {
-            Log.e(TAG, "getWearTargetIntent() has unexpected intent action: " + intent.action)
-            // If unexpected intent, fall default to WearPermissionManagerActivity.
-        }
-        val extraPackageName: String? = intent.getStringExtra(EXTRA_PACKAGE_NAME)
-        val extraReason: String? = intent.getStringExtra(EXTRA_REASON)
-
-        return if (extraPackageName != null) {
-            // AppInfo page.
-            Intent(this, WearViewAppInfoPermissionsActivity::class.java).apply {
-                putExtra(EXTRA_PACKAGE_NAME, extraPackageName)
-            }
-        } else if (extraReason == REASON_PRIVACY_DASHBOARD) {
-            // PrivacyDashboard page.
-            Intent(this, WearSettingsPermissionActivity::class.java).apply {
-                putExtra(EXTRA_REASON, REASON_PRIVACY_DASHBOARD)
-            }
-        } else {
-            // PermissionManager page.
-            Intent(this, WearSettingsPermissionActivity::class.java)
-        }
     }
 }

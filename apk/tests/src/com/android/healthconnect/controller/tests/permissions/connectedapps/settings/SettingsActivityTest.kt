@@ -25,6 +25,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario.launch
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
+import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -43,8 +44,11 @@ import com.android.healthconnect.controller.service.HealthPermissionManagerModul
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionManager
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthconnect.controller.utils.DeviceInfoUtils
+import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -54,6 +58,7 @@ import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -61,7 +66,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.kotlin.whenever
 
-@UninstallModules(HealthPermissionManagerModule::class)
+@UninstallModules(DeviceInfoUtilsModule::class, HealthPermissionManagerModule::class)
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class SettingsActivityTest {
@@ -72,6 +77,7 @@ class SettingsActivityTest {
 
     @BindValue
     val viewModel: AppPermissionViewModel = Mockito.mock(AppPermissionViewModel::class.java)
+    @BindValue val deviceInfoUtils: DeviceInfoUtils = FakeDeviceInfoUtils()
     @BindValue val permissionManager: HealthPermissionManager = FakeHealthPermissionManager()
 
     @Before
@@ -121,6 +127,18 @@ class SettingsActivityTest {
             MutableLiveData(setOf(writePermission))
         }
         whenever(viewModel.lastReadPermissionDisconnected).then { MutableLiveData(false) }
+    }
+
+    @Test
+    fun settingsActivityFinishes_whenHealthConnectUnavailable() {
+        val intent = Intent(context, SettingsActivity::class.java)
+
+        (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(false)
+
+        launchActivityForResult<SettingsActivity>(intent).use { scenario ->
+            onIdle()
+            assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+        }
     }
 
     @Test

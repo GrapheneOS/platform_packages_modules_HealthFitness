@@ -21,15 +21,12 @@ package com.android.healthconnect.controller.tests.navigation
 import android.Manifest
 import android.content.ComponentName
 import android.content.Intent
-import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.content.Intent.makeMainActivity
 import android.health.connect.HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS
 import android.health.connect.HealthConnectManager.ACTION_MANAGE_HEALTH_DATA
-import android.health.connect.HealthConnectManager.ACTION_MANAGE_HEALTH_PERMISSIONS
 import android.health.connect.HealthConnectManager.ACTION_SYNC_MORE_APPS
 import android.health.connect.HealthDataCategory
-import android.os.Build
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
@@ -39,7 +36,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.alldata.AllDataViewModel
 import com.android.healthconnect.controller.data.appdata.PermissionTypesPerCategory
@@ -71,7 +67,6 @@ import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
-import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
@@ -323,46 +318,6 @@ class TrampolineActivityTest {
                 checkTextIsDisplayed("Activity")
                 checkTextIsDisplayed("Steps")
             }
-    }
-
-    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
-    @Test
-    fun manageHealthPermissions_launchesSettingsActivity_healthConnectBrand() {
-        launchActivityForResult<TrampolineActivity>(
-                createStartIntent(ACTION_MANAGE_HEALTH_PERMISSIONS)
-            )
-            .use {
-                checkTextIsDisplayed(
-                    "Apps with this permission can read and write your" +
-                        " health and fitness data."
-                )
-            }
-    }
-
-    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @Test
-    fun manageHealthPermissions_launchesSettingsActivity_healthFitnessBrand() {
-        launchActivityForResult<TrampolineActivity>(
-                createStartIntent(ACTION_MANAGE_HEALTH_PERMISSIONS)
-            )
-            .use {
-                checkTextIsDisplayed(
-                    "Apps with this permission can read and write your health, fitness and wellness data. This includes data tracked from your devices and data stored in Health Connect"
-                )
-            }
-    }
-
-    @Test
-    fun manageHealthPermissions_withPackageName_launchesSettingsActivity() {
-        val intent = createStartIntent(ACTION_MANAGE_HEALTH_PERMISSIONS)
-        intent.putExtra(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
-        whenever(appPermissionViewModel.showDisableExerciseRouteEvent)
-            .thenReturn(MediatorLiveData(AppPermissionViewModel.DisableExerciseRouteDialogEvent()))
-
-        launchActivityForResult<TrampolineActivity>(intent).use {
-            onIdle()
-            checkTextIsDisplayed(TEST_APP_NAME)
-        }
     }
 
     private fun createStartIntent(action: String = ACTION_HEALTH_HOME_SETTINGS): Intent {
