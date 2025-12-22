@@ -41,6 +41,8 @@ interface DeviceInfoUtils {
     fun isIntentHandlerAvailable(context: Context, intent: Intent): Boolean
 
     fun isOnWatch(context: Context): Boolean
+
+    fun isHardwareSupported(context: Context): Boolean
 }
 
 class DeviceInfoUtilsImpl @Inject constructor() : DeviceInfoUtils {
@@ -128,7 +130,7 @@ class DeviceInfoUtilsImpl @Inject constructor() : DeviceInfoUtils {
         return pm.hasSystemFeature(PackageManager.FEATURE_WATCH)
     }
 
-    private fun isHardwareSupported(context: Context): Boolean {
+    override fun isHardwareSupported(context: Context): Boolean {
         val pm: PackageManager = context.packageManager
         val disabledOnWatch = isOnWatch(context) && !SdkLevel.isAtLeastB()
         return (!pm.hasSystemFeature(PackageManager.FEATURE_EMBEDDED) &&

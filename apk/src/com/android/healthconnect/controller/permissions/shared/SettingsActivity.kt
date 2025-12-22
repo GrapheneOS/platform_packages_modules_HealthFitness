@@ -65,8 +65,9 @@ class SettingsActivity : Hilt_SettingsActivity() {
             return
         }
 
-        if (!deviceInfoUtils.isHealthConnectAvailable(this)) {
-            Log.e(TAG, "Health connect is not available for this user or hardware, finishing!")
+        // Allow profiles, as health permissions can be used outside Health Connect.
+        if (!deviceInfoUtils.isHardwareSupported(this)) {
+            Log.e(TAG, "Health connect is not available for this hardware, finishing!")
             finish()
             return
         }

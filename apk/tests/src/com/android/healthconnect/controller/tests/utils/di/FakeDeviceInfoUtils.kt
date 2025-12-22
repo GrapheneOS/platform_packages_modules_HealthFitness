@@ -32,6 +32,8 @@ class FakeDeviceInfoUtils : DeviceInfoUtils {
 
     private var isIntentHandlerAvailable = false
 
+    private var isHardwareSupported = true
+
     var helpCenterInvoked = false
     var backupAndRestoreHelpCenterInvoked = false
     var healthFitnessPermissionsHelpCenterInvoked = false
@@ -59,6 +61,13 @@ class FakeDeviceInfoUtils : DeviceInfoUtils {
 
     fun setIntentHandlerAvailability(available: Boolean) {
         isIntentHandlerAvailable = available
+    }
+
+    fun setHardwareSupported(isSupported: Boolean) {
+        isHardwareSupported = isSupported
+        if (!isSupported) {
+            isHealthConnectAvailable = false
+        }
     }
 
     override fun isHealthConnectAvailable(context: Context): Boolean {
@@ -93,5 +102,9 @@ class FakeDeviceInfoUtils : DeviceInfoUtils {
 
     override fun isOnWatch(context: Context): Boolean {
         return false
+    }
+
+    override fun isHardwareSupported(context: Context): Boolean {
+        return isHardwareSupported
     }
 }

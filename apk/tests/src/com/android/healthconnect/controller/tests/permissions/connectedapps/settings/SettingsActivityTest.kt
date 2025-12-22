@@ -130,14 +130,27 @@ class SettingsActivityTest {
     }
 
     @Test
-    fun settingsActivityFinishes_whenHealthConnectUnavailable() {
+    fun settingsActivityFinishes_whenHardwareUnsupported() {
         val intent = Intent(context, SettingsActivity::class.java)
 
-        (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(false)
+        (deviceInfoUtils as FakeDeviceInfoUtils).setHardwareSupported(false)
 
         launchActivityForResult<SettingsActivity>(intent).use { scenario ->
             onIdle()
             assertEquals(Lifecycle.State.DESTROYED, scenario.state)
+        }
+    }
+
+    @Test
+    fun settingsActivityStarts_whenHealthConnectUnavailable() {
+        val intent = Intent(context, SettingsActivity::class.java)
+
+        (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(false)
+        deviceInfoUtils.setHardwareSupported(true)
+
+        launchActivityForResult<SettingsActivity>(intent).use { scenario ->
+            onIdle()
+            assertEquals(Lifecycle.State.RESUMED, scenario.state)
         }
     }
 
