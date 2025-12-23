@@ -197,6 +197,7 @@ flag {
     description: "Enables the UI for cloud B&R in Health Connect settings."
     bug: "400640806"
     is_fixed_read_only: true
+    is_exported: true
 }
 
 flag {
@@ -303,7 +304,7 @@ flag {
     description: "Enables changes to add new optional fields, weight, set index and RPE to exercise segments APIs"
     bug: "396405077"
     is_fixed_read_only: true
-    is_exported: false
+    is_exported: true
 }
 
 flag {
@@ -407,7 +408,7 @@ flag {
     description: "Guards matchmaking APIs"
     bug: "424125125"
     is_fixed_read_only: true
-    is_exported: false
+    is_exported: true
 }
 
 flag {
@@ -461,7 +462,7 @@ flag {
     description: "Enables the alcohol consumption data type."
     bug: "397369117"
     is_fixed_read_only: true
-    is_exported: false
+    is_exported: true
 }
 
 flag {

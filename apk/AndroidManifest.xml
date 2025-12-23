@@ -63,9 +63,8 @@
             </intent-filter>
         </activity>
 
-        <activity-alias
-            android:name="PermissionControllerEntryPoint"
-            android:targetActivity=".navigation.TrampolineActivity"
+        <activity
+            android:name=".permissions.shared.SettingsActivity"
             android:permission="android.permission.GRANT_RUNTIME_PERMISSIONS"
             android:exported="true">
 
@@ -73,7 +72,7 @@
                 <action android:name="android.health.connect.action.MANAGE_HEALTH_PERMISSIONS" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity-alias>
+        </activity>
 
         <activity
             android:name=".MainActivity"
@@ -121,11 +120,6 @@
 
         <activity
             android:name=".data.DataManagementActivity"
-            android:exported="false">
-        </activity>
-
-        <activity
-            android:name=".permissions.shared.SettingsActivity"
             android:exported="false">
         </activity>
 
