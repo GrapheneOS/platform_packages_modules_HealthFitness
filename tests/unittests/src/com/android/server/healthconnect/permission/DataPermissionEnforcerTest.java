@@ -142,27 +142,27 @@ public class DataPermissionEnforcerTest {
 
     /** enforceRecordIdsWritePermissions */
     @Test
-    public void testEnforceRecordIdsWritePermissions_permissionGranted_doesNotThrow() {
+    public void testEnforceWritePermissions_permissionGranted_doesNotThrow() {
         when(mPermissionManager.checkPermissionForDataDelivery(
                         WRITE_STEPS, mAttributionSource, null))
                 .thenReturn(PERMISSION_GRANTED);
 
-        mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
+        mDataPermissionEnforcer.enforceWritePermissions(
                 List.of(RECORD_TYPE_STEPS), mAttributionSource);
     }
 
     @Test(expected = SecurityException.class)
-    public void testEnforceRecordIdsWritePermissions_permissionDenied_throwsSecurityException() {
+    public void testEnforceWritePermissions_permissionDenied_throwsSecurityException() {
         when(mPermissionManager.checkPermissionForDataDelivery(
                         WRITE_STEPS, mAttributionSource, null))
                 .thenReturn(PERMISSION_HARD_DENIED);
 
-        mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
+        mDataPermissionEnforcer.enforceWritePermissions(
                 List.of(RECORD_TYPE_STEPS), mAttributionSource);
     }
 
     @Test(expected = SecurityException.class)
-    public void testEnforceRecordIdsWritePermissions_onePermissionDenied_throwsSecurityException() {
+    public void testEnforceWritePermissions_onePermissionDenied_throwsSecurityException() {
         when(mPermissionManager.checkPermissionForDataDelivery(
                         WRITE_STEPS, mAttributionSource, null))
                 .thenReturn(PERMISSION_GRANTED);
@@ -170,7 +170,7 @@ public class DataPermissionEnforcerTest {
                         WRITE_ACTIVE_CALORIES_BURNED, mAttributionSource, null))
                 .thenReturn(PERMISSION_HARD_DENIED);
 
-        mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
+        mDataPermissionEnforcer.enforceWritePermissions(
                 List.of(RECORD_TYPE_STEPS, RECORD_TYPE_ACTIVE_CALORIES_BURNED), mAttributionSource);
     }
 
@@ -186,34 +186,34 @@ public class DataPermissionEnforcerTest {
         assertThrows(
                 SecurityException.class,
                 () ->
-                        mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
+                        mDataPermissionEnforcer.enforceWritePermissions(
                                 List.of(RECORD_TYPE_STEPS, RECORD_TYPE_ACTIVE_CALORIES_BURNED),
                                 mAttributionSource));
     }
 
     /** enforceRecordIdsReadPermissions */
     @Test
-    public void testEnforceRecordIdsReadPermissions_permissionGranted_doesNotThrow() {
+    public void testEnforceReadPermissions_permissionGranted_doesNotThrow() {
         when(mPermissionManager.checkPermissionForDataDelivery(
                         READ_STEPS, mAttributionSource, null))
                 .thenReturn(PERMISSION_GRANTED);
 
-        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+        mDataPermissionEnforcer.enforceReadPermissions(
                 List.of(RECORD_TYPE_STEPS), mAttributionSource);
     }
 
     @Test(expected = SecurityException.class)
-    public void testEnforceRecordIdsReadPermissions_permissionDenied_throwsSecurityException() {
+    public void testEnforceReadPermissions_permissionDenied_throwsSecurityException() {
         when(mPermissionManager.checkPermissionForDataDelivery(
                         READ_STEPS, mAttributionSource, null))
                 .thenReturn(PERMISSION_HARD_DENIED);
 
-        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+        mDataPermissionEnforcer.enforceReadPermissions(
                 List.of(RECORD_TYPE_STEPS), mAttributionSource);
     }
 
     @Test(expected = SecurityException.class)
-    public void testEnforceRecordIdsReadPermissions_onePermissionDenied_throwsSecurityException() {
+    public void testEnforceReadPermissions_onePermissionDenied_throwsSecurityException() {
         when(mPermissionManager.checkPermissionForDataDelivery(
                         READ_STEPS, mAttributionSource, null))
                 .thenReturn(PERMISSION_GRANTED);
@@ -221,7 +221,7 @@ public class DataPermissionEnforcerTest {
                         READ_ACTIVE_CALORIES_BURNED, mAttributionSource, null))
                 .thenReturn(PERMISSION_HARD_DENIED);
 
-        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+        mDataPermissionEnforcer.enforceReadPermissions(
                 List.of(RECORD_TYPE_STEPS, RECORD_TYPE_ACTIVE_CALORIES_BURNED), mAttributionSource);
     }
 
@@ -237,7 +237,7 @@ public class DataPermissionEnforcerTest {
         assertThrows(
                 SecurityException.class,
                 () ->
-                        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+                        mDataPermissionEnforcer.enforceReadPermissions(
                                 List.of(RECORD_TYPE_STEPS, RECORD_TYPE_ACTIVE_CALORIES_BURNED),
                                 mAttributionSource));
     }
@@ -263,7 +263,7 @@ public class DataPermissionEnforcerTest {
         assertThrows(
                 SecurityException.class,
                 () ->
-                        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+                        mDataPermissionEnforcer.enforceReadPermissions(
                                 List.of(TEST_RECORD_TYPE), mAttributionSource));
     }
 
@@ -284,7 +284,7 @@ public class DataPermissionEnforcerTest {
                         READ_PERM_2, mAttributionSource, null))
                 .thenReturn(PERMISSION_GRANTED);
 
-        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+        mDataPermissionEnforcer.enforceReadPermissions(
                 List.of(TEST_RECORD_TYPE), mAttributionSource); // Should not throw
     }
 
@@ -305,7 +305,7 @@ public class DataPermissionEnforcerTest {
                         READ_PERM_2, mAttributionSource, null))
                 .thenReturn(PERMISSION_GRANTED);
 
-        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+        mDataPermissionEnforcer.enforceReadPermissions(
                 List.of(TEST_RECORD_TYPE), mAttributionSource); // Should not throw
     }
 
@@ -329,7 +329,7 @@ public class DataPermissionEnforcerTest {
         assertThrows(
                 SecurityException.class,
                 () ->
-                        mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
+                        mDataPermissionEnforcer.enforceWritePermissions(
                                 List.of(TEST_RECORD_TYPE), mAttributionSource));
     }
 
@@ -350,7 +350,7 @@ public class DataPermissionEnforcerTest {
                         WRITE_PERM_2, mAttributionSource, null))
                 .thenReturn(PERMISSION_HARD_DENIED);
 
-        mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
+        mDataPermissionEnforcer.enforceWritePermissions(
                 List.of(TEST_RECORD_TYPE), mAttributionSource); // Should not throw
     }
 
@@ -371,14 +371,14 @@ public class DataPermissionEnforcerTest {
                         WRITE_PERM_2, mAttributionSource, null))
                 .thenReturn(PERMISSION_GRANTED);
 
-        mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
+        mDataPermissionEnforcer.enforceWritePermissions(
                 List.of(TEST_RECORD_TYPE), mAttributionSource); // Should not throw
     }
 
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     @Test(expected = SecurityException.class)
     public void
-            testEnforceRecordIdsReadPermissions_permissionGranted_heartRateFromSplitPermission_throwsSecurityException() {
+            testEnforceReadPermissions_permissionGranted_heartRateFromSplitPermission_throwsSecurityException() {
         when(mPermissionManager.checkPermissionForDataDelivery(
                         READ_HEART_RATE, mAttributionSource, null))
                 .thenReturn(PERMISSION_GRANTED);
@@ -394,7 +394,7 @@ public class DataPermissionEnforcerTest {
                         eq(READ_HEART_RATE), eq(mAttributionSource.getPackageName()), any()))
                 .thenReturn(PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED);
 
-        mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+        mDataPermissionEnforcer.enforceReadPermissions(
                 List.of(RECORD_TYPE_HEART_RATE), mAttributionSource);
     }
 
