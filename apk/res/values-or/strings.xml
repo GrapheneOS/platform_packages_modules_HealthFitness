@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> ଆପଣଙ୍କ ଡାଟାକୁ କିପରି ଏହାର "<a href="%2$s">"ଗୋପନୀୟତା ନୀତି"</a>"ରେ ବ୍ୟବହାର କରେ ତାହା ଜାଣନ୍ତୁ।"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ଆପଣଙ୍କୁ ଆପଣଙ୍କର ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଫିଟନେସ ଡାଟାକୁ ଏକାଧିକ ଆପ୍ସ ମଧ୍ୟରେ ସେୟାର କରିବାକୁ ଦିଏ। ଏହା ଆପଣଙ୍କ ଡାଟାକୁ ସୁରକ୍ଷିତ ରଖିବା ସମୟରେ ଇନସାଇଟ ଏବଂ ଅନୁଭୂତିଗୁଡ଼ିକୁ ଅନଲକ କରିବାରେ ସାହାଯ୍ୟ କରେ।"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect ବିଷୟରେ ଅଧିକ ସୂଚନା"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"ବିସ୍ତାର କରନ୍ତୁ"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"ସଙ୍କୁଚିତ କରନ୍ତୁ"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"ଯଦି ଆପଣ ପଢ଼ିବା ଆକ୍ସେସ ଦିଅନ୍ତି, ତେବେ ଆପ ନୂଆ ଡାଟା ଏବଂ ଗତ 30 ଦିନର ଡାଟାକୁ ପଢ଼ିପାରିବ"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"ଯଦି ଆପଣ ପଢ଼ିବା ଆକ୍ସେସ ଦିଅନ୍ତି, ତେବେ ଆପ ନୂଆ ଏବଂ ଅତୀତର ଡାଟାକୁ ପଢ଼ିପାରିବ"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Health Connectକୁ ଆକ୍ସେସ କରିବା ପାଇଁ <xliff:g id="APP_NAME">%1$s</xliff:g>କୁ ଅନୁମତି ଦେବେ?"</string>
@@ -507,7 +505,7 @@
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"ଯଦି ଏକ ଆପକୁ Google Playରୁ ସସପେଣ୍ଡ କରାଯାଏ କିମ୍ବା କାଢ଼ି ଦିଆଯାଏ, ତେବେ Health Connect ସ୍ୱଚାଳିତ ଭାବେ ଏହାର ଅନୁମତିଗୁଡ଼ିକୁ କାଢ଼ି ଦିଏ।\n\nଏହାର ଅର୍ଥ ହେଉଛି ଏହି ଆପଟି Health Connectରେ ଷ୍ଟୋର କରାଯାଇଥିବା ଡାଟାକୁ ଆଉ ଆକ୍ସେସ କରିପାରିବ ନାହିଁ। ଯଦି ଏହି ଆପରେ ପୂର୍ବରୁ ଲିଖିତ ଡାଟା ଅଛି, ତେବେ ଏହା ନିଷ୍କ୍ରିୟ ଆପ୍ସ ତାଲିକାରେ ଦେଖାଯାଏ।"</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"ବୁଝିଗଲି"</string>
     <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"ସେଟ ଅପ କରନ୍ତୁ"</string>
-    <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"ଡାଟା ଏକ୍ସପୋର୍ଟ କରାଯାଇପାରିଲା ନାହିଁ।"</string>
+    <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"ଡାଟା ଏକ୍ସପୋର୍ଟ କରାଯାଇପାରିଲା ନାହିଁ"</string>
     <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"<xliff:g id="DATE">%1$s</xliff:g> ପାଇଁ ଏକ୍ସପୋର୍ଟ ସହ ଏକ ସମସ୍ୟା ହୋଇଛି। ଦୟାକରି ଏକ ନୂଆ ସିଡୁଲ କରାଯାଇଥିବା ଏକ୍ସପୋର୍ଟ ସେଟ ଅପ କରି ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।"</string>
     <string name="next_export_time" msgid="3138247220014510213">"ପରବର୍ତ୍ତୀ ଏକ୍ସପୋର୍ଟ: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"ପରବର୍ତ୍ତୀ ଏକ୍ସପୋର୍ଟ ଶୀଘ୍ର ଆରମ୍ଭ ହେବାକୁ ଯାଉଛି"</string>
@@ -1153,7 +1151,7 @@
     <string name="resume_button" msgid="2255148549862208047">"ପୁଣି ଆରମ୍ଭ କରନ୍ତୁ"</string>
     <string name="migration_paused_notification_title" msgid="4368414714202113077">"ଇଣ୍ଟିଗ୍ରେସନକୁ ବିରତ କରାଯାଇଛି"</string>
     <string name="migration_paused_notification_content" msgid="1950511270109811771">"Health Connectକୁ Android ସିଷ୍ଟମ ସହ ଇଣ୍ଟିଗ୍ରେଟ କରାଯାଉଛି। ଜାରି ରଖିବାକୁ ଟାପ କରନ୍ତୁ"</string>
-    <string name="resume_migration_banner_title" msgid="4443957114824045317">"ଇଣ୍ଟିଗ୍ରେସନ ପୁଣି ଆରମ୍ଭ କରନ୍ତୁ"</string>
+    <string name="resume_migration_banner_title" msgid="4443957114824045317">"ଇଣ୍ଟିଗ୍ରେସନ ରିଜ୍ୟୁମ କରନ୍ତୁ"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Health Connectକୁ Android ସିଷ୍ଟମ ସହ ଇଣ୍ଟିଗ୍ରେଟ କରିବା ଜାରି ରଖିବା ପାଇଁ ଟାପ କରନ୍ତୁ। ଆପଣଙ୍କ ଡାଟା ରଖିବା ପାଇଁ, ଏହାକୁ <xliff:g id="TIME_NEEDED">%1$s</xliff:g> ମଧ୍ୟରେ ସମ୍ପୂର୍ଣ୍ଣ କରନ୍ତୁ"</string>
     <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Health Connectକୁ Android ସିଷ୍ଟମ ସହ ଇଣ୍ଟିଗ୍ରେଟ କରିବା ଜାରି ରଖିବା ପାଇଁ ଟାପ କରନ୍ତୁ।"</string>
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"ଜାରି ରଖନ୍ତୁ"</string>
@@ -1181,7 +1179,7 @@
     <string name="data_restore_in_progress_content" msgid="2684897189974069361">"Health Connect ଡାଟା ଏବଂ ଅନୁମତିକୁ ରିଷ୍ଟୋର କରୁଛି। ଏହା ସମ୍ପୂର୍ଣ୍ଣ ହେବାକୁ କିଛି ସମୟ ଲାଗିପାରେ।"</string>
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect ରିଷ୍ଟୋର ଚାଲିଛି"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"ବୁଝିଗଲି"</string>
-    <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"ଅପଡେଟ୍ ଆବଶ୍ୟକ"</string>
+    <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"ଅପଡେଟ ଆବଶ୍ୟକ"</string>
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"ଆପଣଙ୍କ ଡାଟା ରିଷ୍ଟୋର କରିବା ଜାରି ରଖିବା ପୂର୍ବରୁ, ଆପଣଙ୍କ ଫୋନ ସିଷ୍ଟମକୁ ଅପଡେଟ କରନ୍ତୁ।"</string>
     <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"ଏବେ ଅପଡେଟ କରନ୍ତୁ"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ଡାଟା ଟୋଟାଲ୍ସ"</string>

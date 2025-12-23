@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Mëso se si <xliff:g id="APP_NAME">%1$s</xliff:g> i përdor të dhënat e tua në "<a href="%2$s">"politikën e vet të privatësisë"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect të lejon të ndash të dhënat e tua të shëndetit dhe fitnesit midis disa aplikacioneve. Kjo të ndihmon të shkyçësh statistikat dhe përvojat ndërkohë që i mban të dhënat të sigurta."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Më shumë rreth Health Connect"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"zgjero"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"palos"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Nëse i jep qasje për të lexuar, aplikacioni mund të lexojë të dhëna të reja dhe të dhëna nga 30 ditët e fundit"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Nëse i jep qasje për të lexuar, aplikacioni mund të lexojë të dhënat e reja dhe të kaluara"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Të lejohet <xliff:g id="APP_NAME">%1$s</xliff:g> që të ketë qasje në Health Connect?"</string>

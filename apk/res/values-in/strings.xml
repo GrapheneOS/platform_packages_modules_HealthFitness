@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Pelajari cara <xliff:g id="APP_NAME">%1$s</xliff:g> menggunakan data Anda dalam "<a href="%2$s">"kebijakan privasi"</a>" mereka."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect memungkinkan Anda berbagi data kesehatan dan kebugaran antar-aplikasi. Hal ini membantu Anda mendapatkan analisis dan pengalaman baru sambil tetap menjaga keamanan data Anda."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Selengkapnya tentang Health Connect"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"luaskan"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"ciutkan"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Jika Anda memberikan akses baca, aplikasi dapat membaca data baru dan data dari 30 hari terakhir"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Jika Anda memberikan akses baca, aplikasi dapat membaca data baru dan data lama"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Izinkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses Health Connect?"</string>

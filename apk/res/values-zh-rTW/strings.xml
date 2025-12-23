@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"如要瞭解「<xliff:g id="APP_NAME">%1$s</xliff:g>」如何使用你的資料，請參閱對方的"<a href="%2$s">"隱私權政策"</a>"。"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"你可以透過「健康資料同步」在多個應用程式間共用健康與健身資料。這有助於發掘洞察資料及提供優質體驗，同時確保資料安全無虞。"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"進一步瞭解「健康資料同步」"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"展開"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"收合"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"如果授予讀取權限，這個應用程式將可讀取新資料和過去 30 天內的資料"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"如果授予讀取權限，這個應用程式將可讀取新資料和過往資料"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取「健康資料同步」嗎？"</string>
@@ -508,7 +506,7 @@
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"我知道了"</string>
     <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"設定"</string>
     <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"無法匯出資料"</string>
-    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"匯出 <xliff:g id="DATE">%1$s</xliff:g>的資料時發生問題，請設定新的資料匯出時間，然後再試一次。"</string>
+    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"匯出<xliff:g id="DATE">%1$s</xliff:g>的資料時發生問題，請設定新的資料匯出時間，然後再試一次。"</string>
     <string name="next_export_time" msgid="3138247220014510213">"下次匯出時間：<xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"下一次的匯出作業即將開始"</string>
     <string name="cloud_backup_option" msgid="2602990573804189525">"備份"</string>
@@ -569,7 +567,7 @@
     <string name="scheduled_export_on_toast_text" msgid="945186472588537310">"匯出排程已開啟"</string>
     <string name="export_notification_error_generic_error_title" msgid="7940091379629095465">"「健康資料同步」無法匯出資料"</string>
     <string name="export_notification_error_more_space_needed_title" msgid="5089783781556500431">"需要更多空間"</string>
-    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"匯出 <xliff:g id="DATE">%1$s</xliff:g>的資料時發生問題，請設定新的資料匯出時間，然後再試一次。"</string>
+    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"匯出<xliff:g id="DATE">%1$s</xliff:g>的資料時發生問題，請設定新的資料匯出時間，然後再試一次。"</string>
     <string name="export_notification_error_more_space_needed_body_text" msgid="5519192430780383427">"「健康資料同步」需要 <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> 的手機儲存空間，才能繼續安排好的匯出作業。"</string>
     <string name="export_notification_set_up_intent_button" msgid="1484836974815713693">"設定"</string>
     <string name="export_notification_free_up_space_intent_button" msgid="2902823222861202203">"釋出空間"</string>

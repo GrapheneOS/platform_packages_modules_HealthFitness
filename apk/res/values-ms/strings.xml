@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Ketahui cara <xliff:g id="APP_NAME">%1$s</xliff:g> menggunakan data anda dalam "<a href="%2$s">"dasar privasi"</a>" mereka."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect membolehkan anda berkongsi data kesihatan dan kecergasan anda antara berbilang apl. Ciri ini membantu anda membuka kunci cerapan dan pengalaman sambil memastikan data anda selamat."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Maklumat lanjut tentang Health Connect"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"kembangkan"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"kuncupkan"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Jika anda memberikan akses baca, apl tersebut boleh membaca data baharu dan data dari 30 hari yang lalu"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Jika anda memberikan akses baca, apl tersebut boleh membaca data baharu dan data yang lalu"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Benarkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses Health Connect?"</string>

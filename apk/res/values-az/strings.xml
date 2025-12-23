@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinin datanızı "<a href="%2$s">"məxfilik siyasətində"</a>" necə istifadə etdiyini öyrənin."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect sağlamlıq və fitnes datanızı çoxsaylı tətbiqlər arasında paylaşmağa imkan verir. Bu, datanızı təhlükəsiz saxlayaraq sizə yeni statistik məlumat və təcrübələrin kilidini açmağa kömək edir."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect haqqında ətraflı məlumat"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"genişləndirin"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"yığcamlaşdırın"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Oxumaq icazəsi versəniz, tətbiq yeni datanı və son 30 günə aid datanı oxuya bilər"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Oxumaq icazəsi versəniz, tətbiq yeni və keçmiş datanı oxuya bilər"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinə Health Connect-ə giriş icazəsi verilsin?"</string>
