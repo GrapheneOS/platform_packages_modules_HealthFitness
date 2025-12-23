@@ -37,7 +37,6 @@ import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.RecordIdFiltersParcel;
 import android.health.connect.datatypes.Record;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.util.ArrayMap;
 
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
@@ -122,8 +121,11 @@ public final class FitnessTestUtils {
 
     /** Inserts records attributed to the given package. */
     public List<String> insertRecords(String packageName, List<RecordInternal<?>> records) {
+        // Treat all extra permissions as granted to pass any per-record checks.
+        Set<String> grantedExtraWritePermissions =
+                mFitnessRecordUpsertHelper.getAllExtraWritePermissions();
         return mFitnessRecordUpsertHelper.insertRecords(
-                packageName, records, /* extraPermsStateMap= */ new ArrayMap<>(), true);
+                packageName, records, grantedExtraWritePermissions, true);
     }
 
     /** Inserts records where the UUID and the package name need to be provided. */
@@ -139,10 +141,13 @@ public final class FitnessTestUtils {
 
     /** Inserts records attributed to the given package. */
     public void updateRecords(String packageName, List<RecordInternal<?>> records) {
+        // Treat all extra permissions as granted to pass any per-record checks.
+        Set<String> grantedExtraWritePermissions =
+                mFitnessRecordUpsertHelper.getAllExtraWritePermissions();
         mFitnessRecordUpsertHelper.updateRecords(
                 packageName,
                 records,
-                /* extraPermsStateMap= */ new ArrayMap<>(),
+                /* grantedExtraWritePermissions= */ grantedExtraWritePermissions,
                 /* shouldGenerateAccessLogs= */ true);
     }
 

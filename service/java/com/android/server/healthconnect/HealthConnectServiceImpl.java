@@ -623,7 +623,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             mFitnessRecordUpsertHelper.insertRecords(
                                     requireNonNull(attributionSource.getPackageName()),
                                     recordInternals,
-                                    mDataPermissionEnforcer.collectExtraWritePermissionStateMapping(
+                                    mDataPermissionEnforcer.collectGrantedExtraWritePermissions(
                                             recordInternals, attributionSource),
                                     /* shouldGenerateAccessLogs= */ true);
                     tryAndReturnResult(callback, uuids, logger);
@@ -995,7 +995,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     mFitnessRecordUpsertHelper.updateRecords(
                             requireNonNull(attributionSource.getPackageName()),
                             recordInternals,
-                            mDataPermissionEnforcer.collectExtraWritePermissionStateMapping(
+                            mDataPermissionEnforcer.collectGrantedExtraWritePermissions(
                                     recordInternals, attributionSource),
                             /* shouldGenerateAccessLogs= */ true);
                     tryAndReturnResult(callback, logger);

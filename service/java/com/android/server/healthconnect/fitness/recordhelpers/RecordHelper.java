@@ -51,7 +51,6 @@ import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.util.ArrayMap;
 import android.util.Pair;
 import android.util.Slog;
 
@@ -349,16 +348,11 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     /** Gets {@link UpsertTableRequest} from {@code recordInternal}. */
-    public UpsertTableRequest getUpsertTableRequest(RecordInternal<?> recordInternal) {
-        return getUpsertTableRequest(recordInternal, null);
-    }
-
     @SuppressWarnings("unchecked")
     public UpsertTableRequest getUpsertTableRequest(
-            RecordInternal<?> recordInternal,
-            @Nullable ArrayMap<String, Boolean> extraWritePermissionToStateMap) {
+            RecordInternal<?> recordInternal, Set<String> grantedExtraWritePermissions) {
         ContentValues upsertValues = getContentValues((T) recordInternal);
-        updateUpsertValuesIfRequired(upsertValues, extraWritePermissionToStateMap);
+        updateUpsertValuesIfRequired(upsertValues, grantedExtraWritePermissions);
         return new UpsertTableRequest(getMainTableName(), upsertValues, UNIQUE_COLUMNS_INFO)
                 .setRequiresUpdateClause(
                         new UpsertTableRequest.IRequiresUpdate() {
@@ -395,22 +389,20 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                         })
                 .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal))
                 .setChildTablesWithRowsToBeDeletedDuringUpdate(
-                        getChildTablesWithRowsToBeDeletedDuringUpdate(
-                                extraWritePermissionToStateMap))
+                        getChildTablesWithRowsToBeDeletedDuringUpdate(grantedExtraWritePermissions))
                 .setPostUpsertCommands(getPostUpsertCommands(recordInternal));
     }
 
     /* Updates upsert content values based on extra permissions state. */
     protected void updateUpsertValuesIfRequired(
-            ContentValues values,
-            @Nullable ArrayMap<String, Boolean> extraWritePermissionToStateMap) {}
+            ContentValues values, Set<String> grantedExtraWritePermissions) {}
 
     /**
      * Returns child tables and the columns within them that references their parents. This is used
      * during updates to determine which child rows should be deleted.
      */
     public List<TableColumnPair> getChildTablesWithRowsToBeDeletedDuringUpdate(
-            @Nullable ArrayMap<String, Boolean> extraWritePermissionToState) {
+            Set<String> grantedExtraWritePermissions) {
         return getAllChildTables().stream().map(it -> new TableColumnPair(it, PARENT_KEY)).toList();
     }
 
@@ -1133,8 +1125,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     /** Returns all extra permissions associated with current record type. */
-    public List<String> getExtraWritePermissions() {
-        return Collections.emptyList();
+    public Set<String> getExtraWritePermissions() {
+        return Set.of();
     }
 
     /** Returns extra permissions required to write given record. */

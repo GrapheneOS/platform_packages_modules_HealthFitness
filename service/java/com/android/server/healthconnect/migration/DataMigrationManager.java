@@ -36,6 +36,7 @@ import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
+import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -157,9 +158,10 @@ public final class DataMigrationManager {
             StorageUtils.addNameBasedUUIDTo(record);
         }
 
-        return InternalHealthConnectMappings.getInstance()
-                .getRecordHelper(record.getRecordType())
-                .getUpsertTableRequest(record);
+        RecordHelper<?> recordHelper =
+                InternalHealthConnectMappings.getInstance().getRecordHelper(record.getRecordType());
+        // Treat all extra permissions as granted to pass any per-record checks.
+        return recordHelper.getUpsertTableRequest(record, recordHelper.getExtraWritePermissions());
     }
 
     @GuardedBy("sLock")
