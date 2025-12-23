@@ -31,9 +31,12 @@ import android.health.connect.TimeRangeFilter
 import android.health.connect.datatypes.AggregationType
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Device
+import android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE
+import android.health.connect.datatypes.Device.DEVICE_TYPE_SCALE
 import android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH
 import android.health.connect.datatypes.Metadata
 import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.StepsRecord
 import android.os.Build.MANUFACTURER
 import android.os.Build.MODEL
 import android.util.Log
@@ -47,7 +50,44 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 class GeneralUtils {
 
+    data class DeviceDataSource(
+        val device: Device,
+        val deviceId: String,
+        val advertisedDataType: Class<out Record> = StepsRecord::class.java,
+    )
+
     companion object {
+        val DEVICE_DATA_SOURCES =
+            listOf(
+                DeviceDataSource(
+                    Device.Builder()
+                        .setManufacturer("FitTastic")
+                        .setModel("FitWatch 2000")
+                        .setType(DEVICE_TYPE_WATCH)
+                        .setDisplayName("FitWatch")
+                        .build(),
+                    "TestDeviceId",
+                ),
+                DeviceDataSource(
+                    Device.Builder()
+                        .setManufacturer("WeighLess")
+                        .setModel("ScalePro 5")
+                        .setType(DEVICE_TYPE_SCALE)
+                        .setDisplayName("ScalePro")
+                        .build(),
+                    "ScaleDeviceId",
+                ),
+                DeviceDataSource(
+                    Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel 9")
+                        .setType(DEVICE_TYPE_PHONE)
+                        .setDisplayName("Pixel 9")
+                        .build(),
+                    "PhoneDeviceId",
+                ),
+            )
+
         fun getMetaData(context: Context, recordUuid: String): Metadata {
             val device: Device =
                 Device.Builder()
@@ -83,6 +123,28 @@ class GeneralUtils {
                 try {
                     suspendCancellableCoroutine<InsertRecordsResponse> { continuation ->
                             manager.insertRecords(
+                                records,
+                                Runnable::run,
+                                continuation.asOutcomeReceiver(),
+                            )
+                        }
+                        .records
+                } catch (ex: Exception) {
+                    throw ex
+                }
+            return insertedRecords
+        }
+
+        suspend fun <T : Record> insertDeviceRecords(
+            records: List<T>,
+            deviceId: String,
+            manager: HealthConnectManager,
+        ): List<Record> {
+            val insertedRecords =
+                try {
+                    suspendCancellableCoroutine<InsertRecordsResponse> { continuation ->
+                            manager.insertDeviceRecords(
+                                deviceId,
                                 records,
                                 Runnable::run,
                                 continuation.asOutcomeReceiver(),

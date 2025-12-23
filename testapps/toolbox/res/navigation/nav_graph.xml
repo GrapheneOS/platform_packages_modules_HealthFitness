@@ -45,6 +45,16 @@
     <action
         android:id="@+id/action_home_screen_to_backupRestoreScreen"
          app:destination="@id/backup_restore_screen" />
+    <action
+        android:id="@+id/action_homeFragment_to_advertiseDevices"
+        app:destination="@id/advertise_devices_screen" />
+  </fragment>
+
+  <fragment
+      android:id="@+id/advertise_devices_screen"
+      android:name="com.android.healthconnect.testapps.toolbox.ui.AdvertiseDevicesFragment"
+      android:label="advertise_devices"
+      tools:layout="@layout/fragment_advertise_devices">
   </fragment>
 
   <fragment
