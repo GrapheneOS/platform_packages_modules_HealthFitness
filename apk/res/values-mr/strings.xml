@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> तुमचा डेटा कसा वापरते ते त्यांच्या "<a href="%2$s">"गोपनीयता धोरण"</a>" यामध्ये जाणून घ्या."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect तुम्हाला तुमच्या एकाहून अधिक अ‍ॅप्सदरम्यान आरोग्य आणि फिटनेसशी संबंधित डेटा शेअर करू देते. हे तुमचा डेटा सुरक्षित ठेवून तुम्हाला इनसाइट आणि अनुभव अनलॉक करण्यास मदत करते."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect बद्दल आणखी बरेच काही"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"विस्तार करा"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"कोलॅप्स करा"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"तुम्ही रीड अ‍ॅक्सेस दिल्यास, अ‍ॅप नवीन डेटा आणि मागील ३० दिवसांचा डेटा रीड करू शकेल"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"तुम्ही रीड अ‍ॅक्सेस दिल्यास, हे अ‍ॅप नवीन आणि मागील डेटा रीड करू शकेल"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> ला Health Connect अ‍ॅक्सेस करण्याची अनुमती द्यायची आहे का?"</string>
@@ -525,7 +523,7 @@
     <string name="import_error_banner_title" msgid="1480977889067027790">"डेटा रिस्टोअर करता आला नाही"</string>
     <string name="import_wrong_file_error_banner_button" msgid="1518043363477255045">"फाइल निवडा"</string>
     <string name="import_wrong_file_error_banner_summary" msgid="4857514343099050126">"तुम्ही निवडलेली फाइल रिस्टोअर करण्यासाठी कंपॅटिबल नाही. एक्सपोर्ट केलेली योग्य फाइल निवडली असल्याची खात्री करा."</string>
-    <string name="import_version_mismatch_error_banner_button" msgid="4761716140032809817">"आता अपडेट करा"</string>
+    <string name="import_version_mismatch_error_banner_button" msgid="4761716140032809817">"आताच अपडेट करा"</string>
     <string name="import_version_mismatch_error_banner_summary" msgid="6165550114170534795">"तुमची सिस्टीम अपडेट करा, जेणेकरून Health Connect तुमचा डेटा रिस्टोअर करू शकेल, त्यानंतर पुन्हा प्रयत्न करा."</string>
     <string name="import_other_error_banner_button" msgid="8006947649520909176">"पुन्हा प्रयत्न करा"</string>
     <string name="import_other_error_banner_summary" msgid="4378957063605649197">"तुमच्या एक्सपोर्टमधून डेटा रिस्टोअर करण्यात समस्या आली."</string>
@@ -561,7 +559,7 @@
     <string name="import_notification_error_more_space_needed_body_text" msgid="7577564968089566232">"तुमचा डेटा रिस्टोअर करणे सुरू ठेवण्यासाठी Health Connect ला तुमच्या फोनवर <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> स्टोरेज जागा हवी आहे."</string>
     <string name="import_notification_error_generic_error_body_text" msgid="6562162452820282874">"तुमच्या एक्सपोर्टमधून डेटा रिस्टोअर करताना समस्या आली."</string>
     <string name="import_notification_error_version_mismatch_body_text" msgid="9186785816764607620">"Health Connect ला तुमचा डेटा रिस्टोअर करता येण्यासाठी तुमची सिस्टीम अपडेट करा, त्यानंतर पुन्हा प्रयत्न करा."</string>
-    <string name="import_notification_update_now_intent_button" msgid="2808579294292956628">"आता अपडेट करा"</string>
+    <string name="import_notification_update_now_intent_button" msgid="2808579294292956628">"आताच अपडेट करा"</string>
     <string name="import_notification_try_again_intent_button" msgid="3833062670098674999">"पुन्हा प्रयत्न करा"</string>
     <string name="import_notification_open_intent_button" msgid="2739924648846724969">"उघडा"</string>
     <string name="import_notification_choose_file_intent_button" msgid="2249671128440758769">"फाइल निवडा"</string>
@@ -1183,7 +1181,7 @@
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"समजले"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"अपडेट आवश्यक आहे"</string>
     <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"तुमचा डेटा रिस्टोअर करणे पुढे सुरू ठेवण्यापूर्वी, तुमची फोन सिस्टीम अपडेट करा."</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"आता अपडेट करा"</string>
+    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"आताच अपडेट करा"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"एकूण डेटा"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"डेटा स्रोत"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"एकूण डेटा कसा बदलू शकतो हे पाहण्यासाठी सूचीमध्ये डेटा स्रोत जोडा. या सूचीमधून डेटा स्रोत काढून टाकल्याने, तो एकूण डेटामध्ये योगदान देणे थांबवेल, पण तरीही त्याला राइट परवानग्या असतील."</string>

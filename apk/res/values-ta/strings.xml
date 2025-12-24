@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"உங்கள் தரவை <xliff:g id="APP_NAME">%1$s</xliff:g> எப்படிப் பயன்படுத்துகிறது என்பதை அதன் "<a href="%2$s">"தனியுரிமைக் கொள்கையில்"</a>" தெரிந்துகொள்ளுங்கள்."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"உங்கள் ஆரோக்கியம் மற்றும் ஃபிட்னஸ் தொடர்பான தரவை Health Connect மூலம் பல்வேறு ஆப்ஸுக்கிடையே பகிரலாம். இது உங்கள் தரவைப் பாதுகாப்பாக வைத்திருப்பதோடு, நீங்கள் புள்ளிவிவரங்களையும் அனுபவங்களையும் பெற உதவுகிறது."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect பற்றிய கூடுதல் தகவல்கள்"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"விரிவாக்கும்"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"சுருக்கும்"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"வாசிப்பதற்கான அணுகலை வழங்கினால், புதிய தரவையும் கடந்த 30 நாட்களில் பெறப்பட்ட தரவையும் ஆப்ஸ் வாசிக்க முடியும்"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"வாசிப்பதற்கான அணுகலை வழங்கினால், புதிய தரவையும் முந்தைய தரவையும் ஆப்ஸ் வாசிக்க முடியும்"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Health Connectடை அணுக <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸை அனுமதிக்கவா?"</string>
@@ -569,7 +567,7 @@
     <string name="scheduled_export_on_toast_text" msgid="945186472588537310">"திட்டமிடப்பட்ட வெளியீடு இயக்கப்பட்டுள்ளது"</string>
     <string name="export_notification_error_generic_error_title" msgid="7940091379629095465">"Health Connectடால் பதிவிறக்க முடியவில்லை"</string>
     <string name="export_notification_error_more_space_needed_title" msgid="5089783781556500431">"கூடுதல் சேமிப்பிடம் தேவை"</string>
-    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"<xliff:g id="DATE">%1$s</xliff:g> தேதிக்கான பதிவிறக்கத்தில் சிக்கல் ஏற்பட்டுள்ளது. புதிய திட்டமிடப்பட்ட பதிவிறக்கத்தை அமைத்து மீண்டும் முயலவும்."</string>
+    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"<xliff:g id="DATE">%1$s</xliff:g> தேதிக்கான எக்ஸ்போர்ட்டில் சிக்கல் ஏற்பட்டுள்ளது. ஒரு புதிய திட்டமிடப்பட்ட எக்ஸ்போர்ட்டை அமைத்து மீண்டும் முயலவும்."</string>
     <string name="export_notification_error_more_space_needed_body_text" msgid="5519192430780383427">"திட்டமிடப்பட்ட பதிவிறக்கத்தைத் தொடர, உங்கள் மொபைலில் <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> சேமிப்பிடம் Health Connect ஆப்ஸுக்குத் தேவை."</string>
     <string name="export_notification_set_up_intent_button" msgid="1484836974815713693">"அமை"</string>
     <string name="export_notification_free_up_space_intent_button" msgid="2902823222861202203">"சேமிப்பிடத்தைக் காலியாக்கு"</string>

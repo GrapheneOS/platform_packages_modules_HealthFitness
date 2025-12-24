@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Informace o tom, jak aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> používá vaše data, najdete v jejích "<a href="%2$s">"zásadách ochrany soukromí"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Pomocí Health Connect můžete sdílet údaje o svém zdraví a kondici mezi aplikacemi. Můžete tak získat různé statistiky a funkce a přitom mít svá data v bezpečí."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Další informace o platformě Health Connect"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"rozbalit"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"sbalit"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Pokud aplikaci udělíte přístup pro čtení, bude moct číst nová data a data z posledních 30 dnů"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Pokud aplikaci udělíte přístup pro čtení, bude moct číst nová i dřívější data"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Povolit aplikaci <xliff:g id="APP_NAME">%1$s</xliff:g> přístup ke službě Health Connect?"</string>
@@ -508,7 +506,7 @@
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Rozumím"</string>
     <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"Nastavit"</string>
     <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"Data nelze exportovat"</string>
-    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"U exportu na <xliff:g id="DATE">%1$s</xliff:g> se vyskytl problém. Nastavte nový naplánovaný export a zkuste to znovu."</string>
+    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"U exportu dne <xliff:g id="DATE">%1$s</xliff:g> se vyskytl problém. Nastavte nový naplánovaný export a zkuste to znovu."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Další export: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Další export začne brzy"</string>
     <string name="cloud_backup_option" msgid="2602990573804189525">"Zálohovat"</string>
@@ -569,7 +567,7 @@
     <string name="scheduled_export_on_toast_text" msgid="945186472588537310">"Naplánovaný export je zapnutý"</string>
     <string name="export_notification_error_generic_error_title" msgid="7940091379629095465">"Export dat z Health Connect se nezdařil"</string>
     <string name="export_notification_error_more_space_needed_title" msgid="5089783781556500431">"Je potřeba víc místa"</string>
-    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"U exportu na <xliff:g id="DATE">%1$s</xliff:g> se vyskytl problém. Nastavte nový naplánovaný export a zkuste to znovu."</string>
+    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"U exportu dne <xliff:g id="DATE">%1$s</xliff:g> se vyskytl problém. Nastavte nový naplánovaný export a zkuste to znovu."</string>
     <string name="export_notification_error_more_space_needed_body_text" msgid="5519192430780383427">"Aplikace Health Connect potřebuje <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> místa v telefonu, aby bylo možné v naplánovaném exportu pokračovat."</string>
     <string name="export_notification_set_up_intent_button" msgid="1484836974815713693">"Nastavit"</string>
     <string name="export_notification_free_up_space_intent_button" msgid="2902823222861202203">"Uvolnit místo"</string>

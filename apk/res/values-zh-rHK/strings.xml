@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"查看《"<a href="%2$s">"私隱權政策"</a>"》以瞭解「<xliff:g id="APP_NAME">%1$s</xliff:g>」如何使用你的資料。"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"「健康資料同步」讓你在多個應用程式之間分享健康和健身資料，協助你取得分析資料和享用體驗，同時保障你的資料安全。"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"進一步瞭解「健康資料同步」"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"打開"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"收埋"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"如果授予讀取權限，應用程式可讀取新資料和過去 30 天內的資料"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"如果授予讀取權限，應用程式可讀取新資料和過去的資料"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取「健康資料同步」嗎？"</string>
@@ -1155,7 +1153,7 @@
     <string name="migration_paused_notification_content" msgid="1950511270109811771">"Health Connect 已暫停與 Android 系統整合。輕按即可繼續"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"恢復整合"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"輕按即可繼續整合 Health Connect 和 Android 系統。請在 <xliff:g id="TIME_NEEDED">%1$s</xliff:g>內完成此程序，你的資料才得以保留"</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"輕按即可繼續整合 Health Connect 和 Android 系統。"</string>
+    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"輕按即可繼續整合「健康資料同步」和 Android 系統。"</string>
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"繼續"</string>
     <string name="app_update_needed_banner_title" msgid="4724335956851853802">"需要更新應用程式"</string>
     <string name="app_update_needed_banner_description_single" msgid="8220676317438592573">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」需要更新，才能繼續與「健康資料同步」同步。部分應用程式可能無法更新。"</string>

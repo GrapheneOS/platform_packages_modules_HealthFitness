@@ -374,8 +374,8 @@
     <string name="mindfulness_lowercase_label" msgid="5184488636180881614">"ärksameelsus"</string>
     <string name="mindfulness_read_content_description" msgid="739187536826062524">"Ärksameelsuse seansi lugemine"</string>
     <string name="mindfulness_write_content_description" msgid="7925112426563398421">"Ärksameelsuse seansi kirjutamine"</string>
-    <string name="nicotine_intake_uppercase_label" msgid="2726203918637743544">"Nikotiinitarbimine"</string>
-    <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"nikotiinitarbimine"</string>
+    <string name="nicotine_intake_uppercase_label" msgid="2726203918637743544">"Nikotiini tarbimine"</string>
+    <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"nikotiini tarbimine"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Loe nikotiinitarbimist"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Kirjuta nikotiinitarbimist"</string>
     <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"Alkoholi tarbimine"</string>
@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Vaadake rakenduse <xliff:g id="APP_NAME">%1$s</xliff:g> "<a href="%2$s">"privaatsuseeskirjadest"</a>", kuidas teie andmeid kasutatakse."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect võimaldab teil oma tervise- ja treeninguandmeid jagada mitme rakenduse vahel. See aitab teil hankida statistikat ja avada kasutuskogemusi, samas tagades teie andmete turvalisuse."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Lisateave Health Connecti kohta"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"laienda"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"ahenda"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Kui annate lugemisõiguse, võib rakendus lugeda uusi andmeid ja viimase 30 päeva andmeid."</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Kui annate lugemisõiguse, võib rakendus lugeda uusi ja varasemaid andmeid."</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Kas lubate rakendusel <xliff:g id="APP_NAME">%1$s</xliff:g> Health Connectile juurde pääseda?"</string>

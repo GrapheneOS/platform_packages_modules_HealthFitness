@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Saznajte kako aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> upotrebljava vaše podatke u svojim "<a href="%2$s">"pravilima o privatnosti"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect omogućuje vam dijeljenje podataka o zdravlju i fitnessu s više aplikacija. Na taj način dobivate pristup uvidima i doživljajima, a vaši su podaci sigurni."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Više o Health Connectu"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"proširi"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"sažmi"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Ako date pristup za čitanje, aplikacija može čitati nove podatke i podatke iz proteklih 30 dana"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ako date pristup za čitanje, aplikacija može čitati nove i prijašnje podatke"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Želite li dopustiti aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pristupa Health Connectu?"</string>
@@ -508,7 +506,7 @@
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Shvaćam"</string>
     <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"Postavi"</string>
     <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"Izvoz podataka nije uspio"</string>
-    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Došlo je do problema pri izvozu za <xliff:g id="DATE">%1$s</xliff:g>. Postavite novi zakazani izvoz i pokušajte ponovno."</string>
+    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Došlo je do problema pri izvozu zakazanom <xliff:g id="DATE">%1$s</xliff:g> Zakažite novi izvoz i pokušajte ponovno."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Datum sljedećeg izvoza: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Sljedeći izvoz uskoro započinje"</string>
     <string name="cloud_backup_option" msgid="2602990573804189525">"Sigurnosna kopija"</string>

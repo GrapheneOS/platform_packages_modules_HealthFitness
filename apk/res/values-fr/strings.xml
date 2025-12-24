@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Découvrez comment <xliff:g id="APP_NAME">%1$s</xliff:g> utilise vos données dans ses "<a href="%2$s">"règles de confidentialité"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Santé Connect vous permet de partager vos données de santé et de remise en forme entre plusieurs applis. Vous pouvez ainsi accéder à des informations et à des expériences tout en garantissant la sécurité de vos données."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"En savoir plus sur Santé Connect"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"développer"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"réduire"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Si vous lui donnez accès en lecture, l\'appli pourra lire les nouvelles données et celles des 30 derniers jours"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Si vous lui donnez accès en lecture, l\'appli pourra lire les anciennes et les nouvelles données"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder à Santé Connect ?"</string>
@@ -508,7 +506,7 @@
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
     <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"Configuration"</string>
     <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"Impossible d\'exporter les données"</string>
-    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Un problème est survenu avec l\'export pour <xliff:g id="DATE">%1$s</xliff:g>. Veuillez configurer un nouvel export programmé et réessayer."</string>
+    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Un problème est survenu avec l\'export pour le <xliff:g id="DATE">%1$s</xliff:g>. Veuillez configurer un nouvel export programmé et réessayer."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Prochain export : <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"La prochaine exportation débute bientôt"</string>
     <string name="cloud_backup_option" msgid="2602990573804189525">"Sauvegarde"</string>

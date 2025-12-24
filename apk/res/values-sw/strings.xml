@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Pata maelezo kuhusu jinsi <xliff:g id="APP_NAME">%1$s</xliff:g> inavyotumia data yako kwenye "<a href="%2$s">"sera yao ya faragha"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect hukuwezesha kutuma data yako ya afya na siha kati ya programu mbalimbali. Hatua hii hukusaidia kupata maarifa na hali za utumiaji huku ukidumisha usalama wa data yako."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Maelezo zaidi kuhusu Health Connect"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"panua"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"kunja"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Ukitoa idhini ya kusoma, programu hii inaweza kusoma data mpya na ya siku 30 zilizopita"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ukitoa idhini ya kusoma, programu hii inaweza kusoma data mpya na ya awali"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Ungependa kuruhusu programu ya <xliff:g id="APP_NAME">%1$s</xliff:g> ifikie Health Connect?"</string>

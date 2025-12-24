@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ב"<a href="%2$s">"מדיניות הפרטיות"</a>" של <xliff:g id="APP_NAME">%1$s</xliff:g> מוסבר איך האפליקציה משתמשת בנתונים שלך."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"אפליקציית Health Connect מאפשרת לשתף את נתוני הבריאות והכושר בין כמה אפליקציות. כך אפשר לקבל תובנות ולשפר את חוויית השימוש תוך שמירה על אבטחת המידע."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"מידע נוסף על Health Connect"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"הרחבה"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"כיווץ"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"הרשאת קריאה מאפשרת לאפליקציה לקרוא נתונים חדשים ונתונים קודמים מ-30 הימים האחרונים"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"אם תינתן הרשאת קריאה, האפליקציה תוכל לקרוא נתונים חדשים ונתונים קודמים"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"לתת לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> הרשאת גישה אל Health Connect?"</string>
@@ -508,7 +506,7 @@
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"הבנתי"</string>
     <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"הגדרה"</string>
     <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"לא ניתן לייצא נתונים"</string>
-    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"הייתה בעיה בייצוא ב-<xliff:g id="DATE">%1$s</xliff:g>. עליך להגדיר ייצוא מתוזמן חדש ולנסות שוב."</string>
+    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"הייתה בעיה בייצוא ב-<xliff:g id="DATE">%1$s</xliff:g>. עליך לתזמן מחדש את הייצוא ולנסות שוב."</string>
     <string name="next_export_time" msgid="3138247220014510213">"הייצוא הבא: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"פעולת הייצוא הבאה תתחיל בקרוב"</string>
     <string name="cloud_backup_option" msgid="2602990573804189525">"גיבוי"</string>
@@ -569,7 +567,7 @@
     <string name="scheduled_export_on_toast_text" msgid="945186472588537310">"הייצוא המתוזמן מופעל"</string>
     <string name="export_notification_error_generic_error_title" msgid="7940091379629095465">"הנתונים לא יוצאו על ידי Health Connect"</string>
     <string name="export_notification_error_more_space_needed_title" msgid="5089783781556500431">"צריך עוד מקום אחסון"</string>
-    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"הייתה בעיה בייצוא ב-<xliff:g id="DATE">%1$s</xliff:g>. עליך להגדיר ייצוא מתוזמן חדש ולנסות שוב."</string>
+    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"הייתה בעיה בייצוא ב-<xliff:g id="DATE">%1$s</xliff:g>. עליך לתזמן מחדש את הייצוא ולנסות שוב."</string>
     <string name="export_notification_error_more_space_needed_body_text" msgid="5519192430780383427">"אפליקציית Health Connect זקוקה לנפח אחסון של <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> בטלפון כדי להמשיך את הייצוא המתוזמן."</string>
     <string name="export_notification_set_up_intent_button" msgid="1484836974815713693">"הגדרה"</string>
     <string name="export_notification_free_up_space_intent_button" msgid="2902823222861202203">"פינוי מקום אחסון"</string>
@@ -1154,8 +1152,8 @@
     <string name="migration_paused_notification_title" msgid="4368414714202113077">"השילוב מושהה"</string>
     <string name="migration_paused_notification_content" msgid="1950511270109811771">"תהליך השילוב של Health Connect במערכת Android עוד לא הסתיים. צריך ללחוץ כדי להמשיך"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"המשך השילוב"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"יש ללחוץ כדי להמשיך בשילוב של Health Connect עם מערכת Android. כדי שהנתונים שלך יישמרו, עליך להשלים זאת בתוך <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"יש ללחוץ כדי להמשיך בשילוב של Health Connect עם מערכת Android."</string>
+    <string name="resume_migration_banner_description" msgid="6236230413670826036">"צריך ללחוץ כדי להמשיך בשילוב של Health Connect עם מערכת Android. כדי שהנתונים שלך יישמרו, עליך להשלים זאת בתוך <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
+    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"צריך ללחוץ כאן כדי להמשיך בשילוב של Health Connect עם מערכת Android."</string>
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"המשך"</string>
     <string name="app_update_needed_banner_title" msgid="4724335956851853802">"נדרש עדכון לאפליקציה"</string>
     <string name="app_update_needed_banner_description_single" msgid="8220676317438592573">"צריך לעדכן את אפליקציית <xliff:g id="APP_NAME">%1$s</xliff:g> כדי להמשיך בסנכרון עם Health Connect. יכול להיות שהעדכונים לא זמינים לכל האפליקציות."</string>
