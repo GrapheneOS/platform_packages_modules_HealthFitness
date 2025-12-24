@@ -159,6 +159,10 @@ class HomeFragment : Fragment() {
         view.requireViewById<Button>(R.id.access_log_button).setOnClickListener {
             accessLogButtonPressed()
         }
+        view.requireViewById<Button>(R.id.advertise_device_button).setOnClickListener {
+            mNavigationController.navigate(R.id.action_homeFragment_to_advertiseDevices)
+        }
+
         mNavigationController = findNavController()
 
         homeFragmentViewModel.seedAllDataState.observe(viewLifecycleOwner) { state ->

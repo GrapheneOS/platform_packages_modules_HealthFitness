@@ -36,17 +36,29 @@ class InsertOrUpdateRecordsViewModel : ViewModel() {
     val updatedRecordsState: LiveData<UpdatedRecordsState>
         get() = _updatedRecordsState
 
-    fun insertRecordsViaViewModel(records: List<Record>, manager: HealthConnectManager) {
+    fun insertRecordsViaViewModel(
+        records: List<Record>,
+        manager: HealthConnectManager,
+        useDdpApi: Boolean = false,
+        deviceId: String? = null,
+    ) {
         viewModelScope.launch {
             try {
-                val response = insertRecords(records, manager)
+                val response =
+                    if (useDdpApi && deviceId != null) {
+                        GeneralUtils.insertDeviceRecords(records, deviceId, manager)
+                    } else {
+                        insertRecords(records, manager)
+                    }
                 _insertedRecordsState.postValue(InsertedRecordsState.WithData(response))
             } catch (exception: HealthConnectException) {
                 _insertedRecordsState.postValue(
-                    InsertedRecordsState.Error(exception.localizedMessage!!))
+                    InsertedRecordsState.Error(exception.localizedMessage!!)
+                )
             } catch (exception: SecurityException) {
                 _insertedRecordsState.postValue(
-                    InsertedRecordsState.Error(exception.localizedMessage!!))
+                    InsertedRecordsState.Error(exception.localizedMessage!!)
+                )
             }
         }
     }
@@ -58,21 +70,25 @@ class InsertOrUpdateRecordsViewModel : ViewModel() {
                 _updatedRecordsState.postValue(UpdatedRecordsState.Success)
             } catch (exception: HealthConnectException) {
                 _updatedRecordsState.postValue(
-                    UpdatedRecordsState.Error(exception.localizedMessage!!))
+                    UpdatedRecordsState.Error(exception.localizedMessage!!)
+                )
             } catch (exception: SecurityException) {
                 _updatedRecordsState.postValue(
-                    UpdatedRecordsState.Error(exception.localizedMessage!!))
+                    UpdatedRecordsState.Error(exception.localizedMessage!!)
+                )
             }
         }
     }
 
     sealed class InsertedRecordsState {
         data class Error(val errorMessage: String) : InsertedRecordsState()
+
         data class WithData(val entries: List<Record>) : InsertedRecordsState()
     }
 
     sealed class UpdatedRecordsState {
         data class Error(val errorMessage: String) : UpdatedRecordsState()
+
         object Success : UpdatedRecordsState()
     }
 }

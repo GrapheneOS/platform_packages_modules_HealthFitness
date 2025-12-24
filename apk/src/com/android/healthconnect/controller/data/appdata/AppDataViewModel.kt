@@ -17,6 +17,8 @@
  */
 package com.android.healthconnect.controller.data.appdata
 
+import android.health.connect.HealthDataCategory
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -86,7 +88,7 @@ constructor(
         return _appInfo.value?.let { currentAppInfo ->
             DeletionType.DeleteHealthPermissionTypesFromApp(
                 healthPermissionTypes = typesToDelete,
-                totalPermissionTypes = typesToDelete.size,
+                totalPermissionTypes = numOfPermissionTypes,
                 packageName = currentAppInfo.packageName,
                 appName = currentAppInfo.appName,
             )
@@ -94,6 +96,8 @@ constructor(
     }
 
     fun loadAppData(packageName: String) {
+        Log.i("TEOG", "AppDataViewModel.loadData( $packageName )")
+
         _appFitnessData.postValue(AppDataState.Loading)
         _appMedicalData.postValue(AppDataState.Loading)
         numOfPermissionTypes = 0
@@ -114,6 +118,17 @@ constructor(
             is UseCaseResults.Success -> {
                 liveData.postValue(AppDataState.WithData(result.data))
                 numOfPermissionTypes += result.data.sumOf { it.data.size }
+                // TODO (b/376085888) Extract to separate useCase
+                // If Symptoms is part of the categories loaded, we must manually add
+                // the number of permission types
+                if (
+                    result.data.any { permTypesPerCat ->
+                        permTypesPerCat.category == HealthDataCategory.SYMPTOMS &&
+                            permTypesPerCat.data.isNotEmpty()
+                    }
+                ) {
+                    numOfPermissionTypes += getAllSymptomPermissionTypes().size - 1
+                }
             }
             is UseCaseResults.Failed -> liveData.postValue(AppDataState.Error)
         }

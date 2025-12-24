@@ -57,12 +57,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
+import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -81,6 +85,7 @@ import com.android.healthconnect.testapps.toolbox.fieldviews.ListInputField
 import com.android.healthconnect.testapps.toolbox.utils.EnumFieldsWithValues
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils
 import com.android.healthconnect.testapps.toolbox.utils.InsertOrUpdateRecords.Companion.createRecordObject
+import com.android.healthconnect.testapps.toolbox.viewmodels.AdvertiseDevicesViewModel
 import com.android.healthconnect.testapps.toolbox.viewmodels.InsertOrUpdateRecordsViewModel
 import java.lang.reflect.Field
 import java.lang.reflect.ParameterizedType
@@ -95,8 +100,11 @@ class InsertRecordFragment : Fragment() {
     private lateinit var mLinearLayout: LinearLayout
     private lateinit var mHealthConnectManager: HealthConnectManager
     private lateinit var mUpdateRecordUuid: InputFieldView
+    private lateinit var mUseDdpCheckBox: CheckBox
+    private lateinit var mDeviceDataSourceAutoCompleteTextView: AutoCompleteTextView
 
     private val mInsertOrUpdateViewModel: InsertOrUpdateRecordsViewModel by viewModels()
+    private val mAdvertiseDevicesViewModel: AdvertiseDevicesViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -162,6 +170,8 @@ class InsertRecordFragment : Fragment() {
         view.requireViewById<TextView>(R.id.title).setText(permissionType.title)
         mLinearLayout = view.requireViewById(R.id.record_input_linear_layout)
 
+        setupDdpFields()
+
         when (mRecordClass.java.superclass) {
             IntervalRecord::class.java -> {
                 setupStartAndEndTimeFields()
@@ -194,6 +204,39 @@ class InsertRecordFragment : Fragment() {
     private fun setupStartAndEndTimeFields() {
         setupTimeField("Start Time", "startTime", true)
         setupTimeField("End Time", "endTime")
+    }
+
+    private fun setupDdpFields() {
+        mUseDdpCheckBox = CheckBox(requireContext())
+        mUseDdpCheckBox.text = getString(R.string.insert_via_ddp_apis)
+        mLinearLayout.addView(mUseDdpCheckBox)
+
+        val spinnerContainer =
+            LayoutInflater.from(requireContext())
+                .inflate(R.layout.fragment_dropdown, mLinearLayout, false) as LinearLayout
+        spinnerContainer.requireViewById<TextView>(R.id.title).text =
+            getString(R.string.select_device_data_source)
+        val autoCompleteTextView =
+            spinnerContainer.requireViewById<AutoCompleteTextView>(R.id.enum_auto_complete_textview)
+
+        val deviceConfigs =
+            mAdvertiseDevicesViewModel.deviceConfigs.value?.filter { it.isEnabled } ?: listOf()
+        val deviceDisplayNames = deviceConfigs.map { it.displayName ?: it.deviceId }
+        val adapter =
+            ArrayAdapter(requireContext(), R.layout.simple_spinner_item, deviceDisplayNames)
+        autoCompleteTextView.setAdapter(adapter)
+
+        autoCompleteTextView.isEnabled = false
+        val textInputLayout = spinnerContainer.requireViewById<View>(R.id.enum_dropdown)
+        textInputLayout.isEnabled = false
+
+        mUseDdpCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            autoCompleteTextView.isEnabled = isChecked
+            textInputLayout.isEnabled = isChecked
+        }
+
+        mLinearLayout.addView(spinnerContainer)
+        mDeviceDataSourceAutoCompleteTextView = autoCompleteTextView
     }
 
     private fun setupRecordFields() {
@@ -512,9 +555,24 @@ class InsertRecordFragment : Fragment() {
             try {
                 val record =
                     createRecordObject(mRecordClass, mFieldNameToFieldInput, requireContext())
+                val useDdpApi = mUseDdpCheckBox.isChecked
+                val deviceId =
+                    if (useDdpApi) {
+                        val selectedName = mDeviceDataSourceAutoCompleteTextView.text.toString()
+                        val deviceConfigs =
+                            mAdvertiseDevicesViewModel.deviceConfigs.value?.filter { it.isEnabled }
+                                ?: listOf()
+                        deviceConfigs
+                            .find { (it.displayName ?: it.deviceId) == selectedName }
+                            ?.deviceId
+                            ?: throw IllegalArgumentException("Please select a device data source")
+                    } else null
+
                 mInsertOrUpdateViewModel.insertRecordsViaViewModel(
                     listOf(record),
                     mHealthConnectManager,
+                    useDdpApi,
+                    deviceId,
                 )
             } catch (ex: Exception) {
                 Log.d("InsertOrUpdateRecordsViewModel", ex.localizedMessage!!)

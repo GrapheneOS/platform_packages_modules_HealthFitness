@@ -1059,7 +1059,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         }
                     }
 
-                    mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+                    mDataPermissionEnforcer.enforceReadPermissions(
                             unmaskedRequest.getRecordTypeIds(), attributionSource);
                     if (isPhrChangeLogsEnabled()) {
                         mMedicalDataPermissionEnforcer.enforceMedicalResourceTypesReadPermissions(
@@ -1159,7 +1159,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     // Permissions check.
                     // This API doesn't support reading own data without read permissions, so
                     // enforce permissions instead of allowing self read.
-                    mDataPermissionEnforcer.enforceRecordIdsReadPermissions(
+                    mDataPermissionEnforcer.enforceReadPermissions(
                             changeLogsTokenRequest.getRecordTypes(), attributionSource);
                     if (isPhrChangeLogsEnabled()) {
                         mMedicalDataPermissionEnforcer.enforceMedicalResourceTypesReadPermissions(
@@ -1313,7 +1313,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 QuotaCategory.QUOTA_CATEGORY_WRITE,
                                 mAppOpsManagerLocal.isUidInForeground(uid),
                                 logger);
-                        mDataPermissionEnforcer.enforceRecordIdsWritePermissions(
+                        mDataPermissionEnforcer.enforceWritePermissions(
                                 recordTypeIdsToDelete, attributionSource);
                         grantedGranularWritePermissions =
                                 request.getRecordTypeFilters().stream()
