@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Да бисте сазнали како апликација <xliff:g id="APP_NAME">%1$s</xliff:g> користи ваше податке, погледајте њену "<a href="%2$s">"политику приватности"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Повезивање здравља вам омогућава да делите податке о здрављу и фитнесу између више апликација. То вам помаже да откријете увиде и доживљаје, a да подаци притом остану безбедни."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Више о Повезивању здравља"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"прошири"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"скупи"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Ако дате приступ за читање, апликација може да чита нове податке и податке из претходних 30 дана"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ако дате приступ за читање, ова апликација може да чита нове и раније податке"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Желите да дозволите апликацији <xliff:g id="APP_NAME">%1$s</xliff:g> да приступа Повезивању здравља?"</string>
@@ -506,9 +504,9 @@
     <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Зашто Повезивање здравља уклања дозволе за апликације"</string>
     <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Ако је апликација суспендована или уклоњена са Google Play-а, Повезивање здравља аутоматски уклања њене дозволе.\n\nТо значи да апликација више не може да приступа подацима сачуваним у Повезивању здравља. Ако је ова апликација претходно уписивала податке, појавиће се на листи неактивних апликација."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Важи"</string>
-    <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"Подесите"</string>
+    <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"Подеси"</string>
     <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"Извоз података није успео"</string>
-    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"<xliff:g id="DATE">%1$s</xliff:g> је дошло је до проблема са извозом. Подесите нови заказани извоз и пробајте поново."</string>
+    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Дошло је до проблема са извозом за <xliff:g id="DATE">%1$s</xliff:g>. Подесите нови заказани извоз и пробајте поново."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Следећи извоз: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Ускоро почиње нови извоз"</string>
     <string name="cloud_backup_option" msgid="2602990573804189525">"Резервна копија"</string>
@@ -569,7 +567,7 @@
     <string name="scheduled_export_on_toast_text" msgid="945186472588537310">"Заказани извоз је укључен"</string>
     <string name="export_notification_error_generic_error_title" msgid="7940091379629095465">"Повезивање здравља није извезло податке"</string>
     <string name="export_notification_error_more_space_needed_title" msgid="5089783781556500431">"Потребно је још простора"</string>
-    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"<xliff:g id="DATE">%1$s</xliff:g> је дошло је до проблема са извозом. Подесите нови заказани извоз и пробајте поново."</string>
+    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"Дошло је до проблема са извозом за <xliff:g id="DATE">%1$s</xliff:g>. Подесите нови заказани извоз и пробајте поново."</string>
     <string name="export_notification_error_more_space_needed_body_text" msgid="5519192430780383427">"Повезивању здравља треба <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> меморијског простора на телефону да би наставило заказани извоз."</string>
     <string name="export_notification_set_up_intent_button" msgid="1484836974815713693">"Подеси"</string>
     <string name="export_notification_free_up_space_intent_button" msgid="2902823222861202203">"Ослободи простор"</string>

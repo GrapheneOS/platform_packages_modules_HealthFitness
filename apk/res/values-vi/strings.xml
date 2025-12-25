@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Tìm hiểu cách <xliff:g id="APP_NAME">%1$s</xliff:g> dùng dữ liệu của bạn trong "<a href="%2$s">"chính sách quyền riêng tư"</a>" của họ."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Với Health Connect, bạn có thể chia sẻ dữ liệu về sức khoẻ và hoạt động thể dục giữa nhiều ứng dụng. Nhờ đó, bạn sẽ có thêm những hiểu biết và trải nghiệm, trong khi vẫn đảm bảo an toàn cho dữ liệu của mình."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Tìm hiểu thêm về Health Connect"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"mở rộng"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"thu gọn"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Nếu bạn cấp quyền đọc, ứng dụng này có thể đọc dữ liệu mới và dữ liệu trong 30 ngày qua"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Nếu bạn cấp quyền đọc, ứng dụng này có thể đọc dữ liệu mới và dữ liệu trước đây"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Cho phép <xliff:g id="APP_NAME">%1$s</xliff:g> truy cập vào Health Connect?"</string>
@@ -1155,7 +1153,7 @@
     <string name="migration_paused_notification_content" msgid="1950511270109811771">"Chưa tích hợp xong Health Connect với hệ thống Android. Nhấn để tiếp tục"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Tiếp tục tích hợp"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Hãy nhấn để tiếp tục tích hợp Health Connect với hệ thống Android Để duy trì dữ liệu của bạn, hãy hoàn tất trong vòng <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Hãy nhấn để tiếp tục tích hợp Health Connect với hệ thống Android"</string>
+    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Hãy nhấn để tiếp tục tích hợp Health Connect với hệ thống Android."</string>
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"Tiếp tục"</string>
     <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Cần cập nhật ứng dụng"</string>
     <string name="app_update_needed_banner_description_single" msgid="8220676317438592573">"Bạn cần cập nhật <xliff:g id="APP_NAME">%1$s</xliff:g> để tiếp tục quá trình đồng bộ hoá với Health Connect. Chỉ một số ứng dụng có bản cập nhật."</string>

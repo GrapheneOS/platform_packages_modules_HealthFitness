@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Lortu <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioak zure datuak erabiltzeko duen moduari buruzko informazio gehiago "<a href="%2$s">"pribatutasun-gidalerroetan"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect-ek osasunari eta fitnessari buruzko datuak aplikazio batekin baino gehiagorekin partekatzeko aukera ematen dizu. Horri esker, estatistikak eta eginbideak desblokea ditzakezu datuak seguru mantendu bitartean."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect-i buruzko informazio gehiago"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"zabaldu"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"tolestu"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Datuak irakurtzeko baimena ematen badiozu, datu berriak eta azken 30 egunetako datuak irakurri ahal izango ditu aplikazioak"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Datuak irakurtzeko baimena ematen badiozu, datu berriak eta iraganekoak irakurri ahal izango ditu aplikazioak"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Health Connect erabiltzeko baimena eman nahi diozu <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari?"</string>
@@ -508,7 +506,7 @@
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Ados"</string>
     <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"Konfiguratu"</string>
     <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"Ezin izan dira esportatu datuak"</string>
-    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Arazo bat izan da <xliff:g id="DATE">%1$s</xliff:g> datarako programatutako esportazioarekin. Konfiguratu beste esportazio programatu bat eta saiatu berriro."</string>
+    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Arazo bat izan da data honetarako programatutako esportazioarekin: <xliff:g id="DATE">%1$s</xliff:g>. Konfiguratu beste esportazio programatu bat eta saiatu berriro."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Hurrengo esportatze-data: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Laster hasiko da hurrengo esportazioa"</string>
     <string name="cloud_backup_option" msgid="2602990573804189525">"Babeskopiak"</string>
@@ -569,7 +567,7 @@
     <string name="scheduled_export_on_toast_text" msgid="945186472588537310">"Esportazio programatua aktibatuta dago"</string>
     <string name="export_notification_error_generic_error_title" msgid="7940091379629095465">"Health Connect-ek ezin izan ditu esportatu datuak"</string>
     <string name="export_notification_error_more_space_needed_title" msgid="5089783781556500431">"Toki gehiago behar da"</string>
-    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"Arazo bat izan da <xliff:g id="DATE">%1$s</xliff:g> datarako programatutako esportazioarekin. Konfiguratu beste esportazio programatu bat eta saiatu berriro."</string>
+    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"Arazo bat izan da data honetarako programatutako esportazioarekin: <xliff:g id="DATE">%1$s</xliff:g>. Konfiguratu beste esportazio programatu bat eta saiatu berriro."</string>
     <string name="export_notification_error_more_space_needed_body_text" msgid="5519192430780383427">"Programatutako esportazioarekin aurrera egiteko, Health Connect-ek <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> behar ditu telefonoaren biltegian."</string>
     <string name="export_notification_set_up_intent_button" msgid="1484836974815713693">"Konfiguratu"</string>
     <string name="export_notification_free_up_space_intent_button" msgid="2902823222861202203">"Egin tokia"</string>

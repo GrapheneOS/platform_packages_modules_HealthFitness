@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> ਵੱਲੋਂ ਤੁਹਾਡੇ ਡਾਟਾ ਦੀ ਵਰਤੋਂ ਕਰਨ ਦੇ ਤਰੀਕੇ ਬਾਰੇ ਜਾਣਨ ਲਈ, ਇਸਦੀ "<a href="%2$s">"ਪਰਦੇਦਾਰੀ ਨੀਤੀ"</a>" ਪੜ੍ਹੋ।"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ਨਾਲ ਤੁਸੀਂ ਆਪਣਾ ਸਿਹਤ ਅਤੇ ਫਿੱਟਨੈੱਸ ਡਾਟਾ ਕਈ ਐਪਾਂ ਵਿਚਕਾਰ ਸਾਂਝਾ ਕਰ ਸਕਦੇ ਹੋ। ਇਸ ਨਾਲ ਤੁਹਾਨੂੰ ਆਪਣੇ ਡਾਟੇ ਨੂੰ ਸੁਰੱਖਿਅਤ ਰੱਖਦੇ ਹੋਏ, ਅੰਦਰੂਨੀ-ਝਾਤਾਂ ਅਤੇ ਅਨੁਭਵਾਂ ਨੂੰ ਅਣਲਾਕ ਕਰਨ ਵਿੱਚ ਮਦਦ ਮਿਲਦੀ ਹੈ।"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect ਬਾਰੇ ਹੋਰ ਜਾਣਕਾਰੀ"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"ਵਿਸਤਾਰ ਕਰੋ"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"ਸਮੇਟੋ"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"ਜੇ ਤੁਸੀਂ ਪੜ੍ਹਨ ਦੀ ਪਹੁੰਚ ਕਰਨ ਦਿੰਦੇ ਹੋ, ਤਾਂ ਐਪ ਨਵੇਂ ਡਾਟੇ ਅਤੇ ਪਿਛਲੇ 30 ਦਿਨਾਂ ਦੇ ਡਾਟੇ ਨੂੰ ਪੜ੍ਹ ਸਕਦੀ ਹੈ"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"ਜੇ ਤੁਸੀਂ ਪੜ੍ਹਨ ਦੀ ਪਹੁੰਚ ਦਿੰਦੇ ਹੋ, ਤਾਂ ਐਪ ਨਵੇਂ ਅਤੇ ਪੁਰਾਣੇ ਡਾਟੇ ਨੂੰ ਪੜ੍ਹ ਸਕਦੀ ਹੈ"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"ਕੀ <xliff:g id="APP_NAME">%1$s</xliff:g> ਨੂੰ Health Connect ਤੱਕ ਪਹੁੰਚ ਕਰਨ ਦੇਣੀ ਹੈ?"</string>

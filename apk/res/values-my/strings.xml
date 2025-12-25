@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> က သင့်ဒေတာ အသုံးပြုပုံကို ၎င်း၏ "<a href="%2$s">"ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒ"</a>" တွင် လေ့လာနိုင်သည်။"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect က သင့်ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးဒေတာကို အက်ပ်များအကြား မျှဝေခွင့်ပြုသည်။ ၎င်းက သင့်ဒေတာကို လုံခြုံအောင်ထားပေးသည့်အပြင် သိကောင်းစရာနှင့် အသုံးပြုနိုင်သည်များကို ရရှိစေသည်။"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect အကြောင်း ပိုလေ့လာရန်"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"ချဲ့ရန်"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"ချုံ့ရန်"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"ဖတ်ခွင့်ပေးပါက အက်ပ်သည် ဒေတာအသစ်နှင့် ပြီးခဲ့သော ရက် ၃၀ မှ ဒေတာများကို ဖတ်နိုင်သည်"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"ဖတ်ခွင့်ပေးပါက အက်ပ်သည် ဒေတာအသစ်နှင့် ယခင်ဒေတာများကို ဖတ်နိုင်သည်"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> ကို Health Connect သုံးခွင့်ပေးမလား။"</string>

@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Acesse a "<a href="%2$s">"Política de Privacidade"</a>" do app <xliff:g id="APP_NAME">%1$s</xliff:g> para saber como ele usa seus dados."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"O app Conexão Saúde permite compartilhar seus dados de saúde e condicionamento físico entre vários aplicativos. Assim, você acessa insights e experiências sem deixar de lado a proteção dos seus dados."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Mais informações sobre o app Conexão Saúde"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"abrir"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"fechar"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Se o app tiver permissão de leitura, ele poderá acessar dados novos e dos últimos 30 dias"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Se o app tiver permissão de leitura, ele poderá acessar dados novos e antigos"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Permitir que o app <xliff:g id="APP_NAME">%1$s</xliff:g> acesse a plataforma Conexão Saúde?"</string>
@@ -1155,7 +1153,7 @@
     <string name="migration_paused_notification_content" msgid="1950511270109811771">"A integração entre o app Conexão Saúde e o sistema Android foi pausada. Toque para continuar."</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Retomar a integração"</string>
     <string name="resume_migration_banner_description" msgid="6236230413670826036">"Toque para continuar a integração do app Conexão Saúde ao sistema Android. Para manter seus dados, conclua em <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Toque para continuar integrando o app Conexão Saúde ao sistema Android."</string>
+    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Toque para continuar integrando a Conexão Saúde ao sistema Android."</string>
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"Continuar"</string>
     <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Atualização do app necessária"</string>
     <string name="app_update_needed_banner_description_single" msgid="8220676317438592573">"O app <xliff:g id="APP_NAME">%1$s</xliff:g> precisa ser atualizado para continuar a sincronização com a Conexão Saúde. As atualizações podem não estar disponíveis para todos os apps."</string>

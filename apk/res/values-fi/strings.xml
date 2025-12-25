@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Lue "<a href="%2$s">"tietosuojakäytännöstä"</a>", miten <xliff:g id="APP_NAME">%1$s</xliff:g> käyttää dataasi."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connectin avulla voit jakaa terveys- ja kuntoiludataa useiden sovellusten välillä. Näin voit hyödyntää havaintoja ja kokemuksia sekä pitää datasi turvassa."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Lisätietoa Health Connectista"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"laajenna"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"tiivistä"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Jos annat lukupääsyoikeudet, sovellus voi lukea uutta dataa ja dataa 30 viime päivältä"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Jos annat lukupääsyoikeudet, sovellus voi lukea uutta ja aiempaa dataa"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Saako <xliff:g id="APP_NAME">%1$s</xliff:g> pääsyn Health Connectiin?"</string>

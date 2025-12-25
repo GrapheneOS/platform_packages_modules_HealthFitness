@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Consulta cómo usa <xliff:g id="APP_NAME">%1$s</xliff:g> tus datos en su "<a href="%2$s">"política de privacidad"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Salud conectada te permite compartir tus datos de salud y actividad física entre varias apps. De esta forma, puedes acceder a estadísticas y experiencias sin desproteger tus datos."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Más información sobre Salud conectada"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"desplegar"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"contraer"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Si le das acceso de lectura, la aplicación podrá leer los datos nuevos y los de los últimos 30 días"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Si le das acceso de lectura, la aplicación podrá leer los datos nuevos y anteriores"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"¿Permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda a Salud conectada?"</string>
@@ -508,7 +506,7 @@
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Entendido"</string>
     <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"Configurar"</string>
     <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"No se han podido exportar los datos"</string>
-    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"No se ha podido exportar <xliff:g id="DATE">%1$s</xliff:g>. Configura una nueva exportación programada e inténtalo de nuevo."</string>
+    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Ha habido un problema con la exportación del <xliff:g id="DATE">%1$s</xliff:g>. Configura una nueva exportación programada e inténtalo de nuevo."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Siguiente exportación: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"La próxima exportación empezará pronto"</string>
     <string name="cloud_backup_option" msgid="2602990573804189525">"Crear copia de seguridad"</string>

@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Obtén informació sobre com <xliff:g id="APP_NAME">%1$s</xliff:g> utilitza les teves dades a la seva "<a href="%2$s">"política de privadesa"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Salut connectada et permet compartir les teves dades de Salut i fitnes entre diverses aplicacions. Això t\'ajuda a descobrir informació detallada i experiències alhora que mantens les teves dades protegides."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Més informació sobre Salut connectada"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"desplega"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"replega"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Si li dones accés de lectura, l\'aplicació podrà llegir les dades noves i les dels 30 darrers dies"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Si li dones accés de lectura, l\'aplicació podrà llegir les dades noves i les anteriors"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Vols permetre que <xliff:g id="APP_NAME">%1$s</xliff:g> accedeixi a Salut connectada?"</string>

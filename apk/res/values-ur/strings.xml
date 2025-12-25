@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> کی "<a href="%2$s">"رازداری کی پالیسی"</a>" میں جانیں کہ وہ آپ کا ڈیٹا کیسے استعمال کرتا ہے۔"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"‫Health Connect آپ کو اپنی صحت اور تندرستی کا ڈیٹا متعدد ایپس کے درمیان اشتراک کرنے دیتا ہے۔ یہ آپ کے ڈیٹا کو محفوظ رکھتے ہوئے بصیرتوں اور تجربات کو غیر مقفل کرنے میں مدد کرتا ہے۔"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"‫Health Connect سے متعلق مزید"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"پھیلائیں"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"سکیڑیں"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"اگر آپ پڑھنے کی رسائی دیتے ہیں تو ایپ نیا ڈیٹا اور گزشتہ 30 دن کا ڈیٹا پڑھ سکتی ہے"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"اگر آپ پڑھنے کی رسائی دیتے ہیں تو ایپ نئے اور گزشتہ ڈیٹا کو پڑھ سکتی ہے"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"<xliff:g id="APP_NAME">%1$s</xliff:g> کو Health Connect تک رسائی کی اجازت دیں؟"</string>

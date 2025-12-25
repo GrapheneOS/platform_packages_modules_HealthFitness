@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Få flere oplysninger om, hvordan <xliff:g id="APP_NAME">%1$s</xliff:g> bruger dine data, i "<a href="%2$s">"privatlivspolitikken"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect giver dig mulighed for at dele dine sundheds- og træningsdata mellem flere apps. Det hjælper dig med at få indsigt og oplevelser, samtidig med at dine data beskyttes."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Mere om Health Connect"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"udvid"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"skjul"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Hvis du giver læseadgang, kan appen læse nye data og data fra de seneste 30 dage"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Hvis du giver læseadgang, kan appen læse nye og gamle data"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Vil du give <xliff:g id="APP_NAME">%1$s</xliff:g> adgang til Health Connect?"</string>

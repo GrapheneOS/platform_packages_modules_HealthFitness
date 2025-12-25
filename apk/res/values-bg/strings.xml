@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Научете как <xliff:g id="APP_NAME">%1$s</xliff:g> използва данните ви в "<a href="%2$s">"декларацията за поверителност на приложението"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ви дава възможност да споделяте данните за здравето и физическата си активност между няколко приложения. Това ви помага да отключвате статистика и нови възможности, като същевременно запазва безопасността на данните ви."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Още за Health Connect"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"разгъване"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"свиване"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Ако предоставите достъп за четене, приложението ще може да чете новите данни и тези от последните 30 дни"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Ако предоставите достъп за четене, приложението ще може да чете новите и миналите данни"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Да се разреши ли на <xliff:g id="APP_NAME">%1$s</xliff:g> достъп до Health Connect?"</string>
@@ -508,7 +506,7 @@
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Разбрах"</string>
     <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"Настройване"</string>
     <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"Данните не бяха експортирани"</string>
-    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Възникна проблем с експортирането на <xliff:g id="DATE">%1$s</xliff:g>. Настройте ново експортиране по график и опитайте отново."</string>
+    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Възникна проблем с експортирането на <xliff:g id="DATE">%1$s</xliff:g> – настройте ново експортиране по график и опитайте отново."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Следващо експортиране: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"Следващото експортиране започва скоро"</string>
     <string name="cloud_backup_option" msgid="2602990573804189525">"Резервно копие"</string>
@@ -569,7 +567,7 @@
     <string name="scheduled_export_on_toast_text" msgid="945186472588537310">"Експортирането по график е включено"</string>
     <string name="export_notification_error_generic_error_title" msgid="7940091379629095465">"Health Connect не експортира данните"</string>
     <string name="export_notification_error_more_space_needed_title" msgid="5089783781556500431">"Необходимо е още място"</string>
-    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"Възникна проблем с експортирането на <xliff:g id="DATE">%1$s</xliff:g>. Настройте ново експортиране по график и опитайте отново."</string>
+    <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"Възникна проблем с експортирането на <xliff:g id="DATE">%1$s</xliff:g> – настройте ново експортиране по график и опитайте отново."</string>
     <string name="export_notification_error_more_space_needed_body_text" msgid="5519192430780383427">"За да продължи планираното експортиране, Health Connect се нуждае от <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> свободно място в хранилището на телефона ви."</string>
     <string name="export_notification_set_up_intent_button" msgid="1484836974815713693">"Настройване"</string>
     <string name="export_notification_free_up_space_intent_button" msgid="2902823222861202203">"Освобождаване на място"</string>

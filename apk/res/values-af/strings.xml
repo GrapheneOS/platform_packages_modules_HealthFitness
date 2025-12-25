@@ -408,10 +408,8 @@
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Vind uit hoe <xliff:g id="APP_NAME">%1$s</xliff:g> jou data gebruik in hul "<a href="%2$s">"privaatheidsbeleid"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Met Health Connect kan jy jou gesondheid- en fiksheiddata oor veelvuldige apps deel. Dit help jou om insigte en ervarings te ontsluit terwyl jou data veilig gehou word."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Meer oor Health Connect"</string>
-    <!-- no translation found for expandable_preference_expand_talkback_description (8063527636780725728) -->
-    <skip />
-    <!-- no translation found for expandable_preference_collapse_talkback_description (6402120808562232474) -->
-    <skip />
+    <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"vou uit"</string>
+    <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"vou in"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"As jy leestoegang gee, kan die app nuwe data en data van die afgelope 30 dae lees"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"As jy leestoegang gee, kan die app nuwe en vorige data lees"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Gee <xliff:g id="APP_NAME">%1$s</xliff:g> toegang tot Health Connect?"</string>
