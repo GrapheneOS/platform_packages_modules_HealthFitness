@@ -873,7 +873,7 @@
     <string name="alcohol_consumption_beverage_type_cocktail" msgid="4711099215987668649">"Cocktail"</string>
     <string name="alcohol_consumption_beverage_type_chuhai" msgid="4727177353197748690">"Cocktail Chuhai"</string>
     <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Cocktail Highball"</string>
-    <string name="serving_volume_title" msgid="4727986574534974167">"Dung tích ly tiêu chuẩn"</string>
+    <string name="serving_volume_title" msgid="4727986574534974167">"Dung tích tiêu thụ"</string>
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Đồ uống có cồn theo thể tích"</string>
     <string name="notes_title" msgid="4596764711916248492">"Ghi chú"</string>
     <string name="details_title" msgid="8411891773854413790">"Chi tiết"</string>

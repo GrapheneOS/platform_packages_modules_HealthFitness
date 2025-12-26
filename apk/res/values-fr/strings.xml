@@ -862,7 +862,7 @@
     <string name="alcohol_consumption_beverage_type_whiskey" msgid="1085904168947658887">"Whisky"</string>
     <string name="alcohol_consumption_beverage_type_rum" msgid="5230691377430212826">"Rhum"</string>
     <string name="alcohol_consumption_beverage_type_tequila" msgid="9074751455065347442">"Tequila"</string>
-    <string name="alcohol_consumption_beverage_type_lager" msgid="1490153167547219382">"Bière basse ferment."</string>
+    <string name="alcohol_consumption_beverage_type_lager" msgid="1490153167547219382">"Bière blonde"</string>
     <string name="alcohol_consumption_beverage_type_cider" msgid="3348115754435446544">"Cidre"</string>
     <string name="alcohol_consumption_beverage_type_sake" msgid="2773512901340614154">"Saké"</string>
     <string name="alcohol_consumption_beverage_type_shochu" msgid="3491300198222489324">"Shochu"</string>
@@ -873,8 +873,8 @@
     <string name="alcohol_consumption_beverage_type_cocktail" msgid="4711099215987668649">"Cocktail"</string>
     <string name="alcohol_consumption_beverage_type_chuhai" msgid="4727177353197748690">"Chuhai"</string>
     <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Alcool + soda"</string>
-    <string name="serving_volume_title" msgid="4727986574534974167">"Volume par verre"</string>
-    <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Degrés d\'alcool"</string>
+    <string name="serving_volume_title" msgid="4727986574534974167">"Volume de service"</string>
+    <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Degré d\'alcool"</string>
     <string name="notes_title" msgid="4596764711916248492">"Notes"</string>
     <string name="details_title" msgid="8411891773854413790">"Détails"</string>
     <string name="menstrual_cycle_phase_follicular" msgid="4515498093841723331">"Folliculaire"</string>
@@ -1194,7 +1194,7 @@
     <string name="move_up" msgid="9136155291380319606">"Déplacer vers le haut"</string>
     <string name="move_down" msgid="4404970288236170693">"Déplacer vers le bas"</string>
     <string name="remove" msgid="1340423400489007362">"Supprimer"</string>
-    <string name="app_data_title" msgid="6499967982291000837">"Données d\'application"</string>
+    <string name="app_data_title" msgid="6499967982291000837">"Données de l\'application"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"Les données de <xliff:g id="APP_NAME">%1$s</xliff:g> s\'afficheront ici"</string>
     <string name="all_data_no_data_footer" msgid="2553443887019153340">"Les données issues des applications ayant accès à Santé Connect s\'afficheront ici"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Jour"</string>

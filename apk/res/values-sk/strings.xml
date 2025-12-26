@@ -378,9 +378,9 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"príjem nikotínu"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Čítanie údajov o príjme nikotínu"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Zapisovanie údajov o príjme nikotínu"</string>
-    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"Spotreba alkoholu"</string>
-    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"spotreba alkoholu"</string>
-    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Čítanie spotreby alkoholu"</string>
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"Konzumácia alkoholu"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"konzumácia alkoholu"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Čítanie kozumácie alkoholu"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Zapisovať spotrebu alkoholu"</string>
     <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Kašeľ"</string>
     <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"kašeľ"</string>

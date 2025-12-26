@@ -36,7 +36,7 @@
     <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"ל-<xliff:g id="NUM_APPS_CONNECTED">%1$d</xliff:g> מתוך <xliff:g id="NUM_POSSIBLE_APPS">%2$d</xliff:g> אפליקציות יש הרשאת גישה"</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{לאפליקציה אחת יש הרשאת גישה}one{ל-# אפליקציות יש הרשאת גישה}two{ל-# אפליקציות יש הרשאת גישה}other{ל-# אפליקציות יש הרשאת גישה}}"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"ללא"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"פרטי כניסה"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"פרטי הרשומה"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"לעיון בנתונים"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"עיון בנתונים ובאפליקציות שיכולות לגשת אליהם"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"מחיקה אוטומטית, מקורות נתונים, גיבוי ושחזור"</string>
@@ -374,8 +374,8 @@
     <string name="mindfulness_lowercase_label" msgid="5184488636180881614">"מיינדפולנס"</string>
     <string name="mindfulness_read_content_description" msgid="739187536826062524">"קריאה של נתוני מיינדפולנס"</string>
     <string name="mindfulness_write_content_description" msgid="7925112426563398421">"כתיבה של נתוני מיינדפולנס"</string>
-    <string name="nicotine_intake_uppercase_label" msgid="2726203918637743544">"צריכת הניקוטין"</string>
-    <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"צריכת הניקוטין"</string>
+    <string name="nicotine_intake_uppercase_label" msgid="2726203918637743544">"צריכת ניקוטין"</string>
+    <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"צריכת ניקוטין"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"קריאה של נתוני צריכת הניקוטין"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"כתיבה של נתוני צריכת הניקוטין"</string>
     <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"צריכת אלכוהול"</string>
@@ -875,7 +875,7 @@
     <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"כוס הייבול"</string>
     <string name="serving_volume_title" msgid="4727986574534974167">"נפח המנה"</string>
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"כוהל בנפח (ABV)"</string>
-    <string name="notes_title" msgid="4596764711916248492">"פתקים"</string>
+    <string name="notes_title" msgid="4596764711916248492">"הערות"</string>
     <string name="details_title" msgid="8411891773854413790">"פרטים"</string>
     <string name="menstrual_cycle_phase_follicular" msgid="4515498093841723331">"שלב פוליקולרי"</string>
     <string name="menstrual_cycle_phase_luteal" msgid="2369477800443212440">"שלב לוטאלי"</string>

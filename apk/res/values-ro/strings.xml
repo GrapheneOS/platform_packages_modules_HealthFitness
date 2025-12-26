@@ -378,7 +378,7 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"consum de nicotină"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Să citească date despre consumul de nicotină"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Să scrie date despre consumul de nicotină"</string>
-    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"Consumul de alcool"</string>
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"Consum de alcool"</string>
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"consumul de alcool"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Să citească date despre consumul de alcool"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Să scrie date despre consumul de alcool"</string>

@@ -378,9 +378,9 @@
     <string name="nicotine_intake_lowercase_label" msgid="5551311180036082920">"никотин колдонуу"</string>
     <string name="nicotine_intake_read_content_description" msgid="959918212844960393">"Никотин колдонуу тууралуу маалыматты окуу"</string>
     <string name="nicotine_intake_write_content_description" msgid="4098088216049977997">"Никотин колдонуу тууралуу маалыматты жазуу"</string>
-    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"спирт ичимдиктерин керектөө"</string>
-    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"спирт ичимдиктерин керектөө"</string>
-    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Спирт ичимдиктерин керектөөгө байланыштуу маалыматты окуу"</string>
+    <string name="alcohol_consumption_uppercase_label" msgid="5675026820650543741">"Спирт ичимдиктерин ичүү"</string>
+    <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"спирт ичимдиктерин ичүү"</string>
+    <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Спирт ичимдиктерин ичүүгө байланыштуу маалыматты окуу"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Спирт ичимдиктерин керектөөгө байланыштуу маалыматты жазуу"</string>
     <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Жөтөл"</string>
     <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"жөтөл"</string>
@@ -874,7 +874,7 @@
     <string name="alcohol_consumption_beverage_type_chuhai" msgid="4727177353197748690">"Чухай"</string>
     <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Хайбол"</string>
     <string name="serving_volume_title" msgid="4727986574534974167">"Порциянын көлөмү"</string>
-    <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Көлөм боюнча спирт"</string>
+    <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Ичимдиктин күчтүүлүгү"</string>
     <string name="notes_title" msgid="4596764711916248492">"Кыска жазуулар"</string>
     <string name="details_title" msgid="8411891773854413790">"Чоо-жайы"</string>
     <string name="menstrual_cycle_phase_follicular" msgid="4515498093841723331">"Фолликулярдык"</string>
