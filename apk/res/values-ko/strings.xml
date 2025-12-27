@@ -873,9 +873,9 @@
     <string name="alcohol_consumption_beverage_type_cocktail" msgid="4711099215987668649">"칵테일"</string>
     <string name="alcohol_consumption_beverage_type_chuhai" msgid="4727177353197748690">"츄하이"</string>
     <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"하이볼"</string>
-    <string name="serving_volume_title" msgid="4727986574534974167">"제공량"</string>
+    <string name="serving_volume_title" msgid="4727986574534974167">"섭취량"</string>
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"알코올 도수"</string>
-    <string name="notes_title" msgid="4596764711916248492">"참고"</string>
+    <string name="notes_title" msgid="4596764711916248492">"메모"</string>
     <string name="details_title" msgid="8411891773854413790">"세부정보"</string>
     <string name="menstrual_cycle_phase_follicular" msgid="4515498093841723331">"난포기"</string>
     <string name="menstrual_cycle_phase_luteal" msgid="2369477800443212440">"황체기"</string>

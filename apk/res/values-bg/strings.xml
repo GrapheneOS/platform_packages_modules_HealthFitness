@@ -873,7 +873,7 @@
     <string name="alcohol_consumption_beverage_type_cocktail" msgid="4711099215987668649">"Коктейл"</string>
     <string name="alcohol_consumption_beverage_type_chuhai" msgid="4727177353197748690">"Чухай"</string>
     <string name="alcohol_consumption_beverage_type_highball" msgid="8694072892834520500">"Хайбол"</string>
-    <string name="serving_volume_title" msgid="4727986574534974167">"Размер на порцията"</string>
+    <string name="serving_volume_title" msgid="4727986574534974167">"Количество на напитката"</string>
     <string name="alcohol_by_volume_title" msgid="6942673552238435422">"Алкохолно съдържание по обем"</string>
     <string name="notes_title" msgid="4596764711916248492">"Бележки"</string>
     <string name="details_title" msgid="8411891773854413790">"Подробности"</string>

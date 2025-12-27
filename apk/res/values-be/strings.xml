@@ -36,7 +36,7 @@
     <string name="connected_apps_button_subtitle" msgid="8855528937028500370">"У <xliff:g id="NUM_APPS_CONNECTED">%1$d</xliff:g> праграм з <xliff:g id="NUM_POSSIBLE_APPS">%2$d</xliff:g> ёсць доступ"</string>
     <string name="connected_apps_connected_subtitle" msgid="7412413366085718583">"{count,plural, =1{Доступ мае 1 праграма}one{Доступ мае # праграма}few{Доступ маюць # праграмы}many{Доступ маюць # праграм}other{Доступ маюць # праграмы}}"</string>
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"Няма"</string>
-    <string name="entry_details_title" msgid="590184849040247850">"Звесткі пра ўвод"</string>
+    <string name="entry_details_title" msgid="590184849040247850">"Звесткі пра запіс"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Праглядзець даныя"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Праглядзець даныя і праграмы, якія маюць да іх доступ"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Аўтавыдаленне, крыніцы даных, рэзервовае капіраванне і аднаўленне"</string>
