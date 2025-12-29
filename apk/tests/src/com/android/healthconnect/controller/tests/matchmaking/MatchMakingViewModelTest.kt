@@ -244,6 +244,35 @@ class MatchMakingViewModelTest {
     }
 
     @Test
+    fun addAppPermissionsToGrantedList_addsAllPermissionsForSpecificApp() = runTest {
+        setupWithData()
+
+        viewModel.addAppPermissionsToGrantedList(TEST_APP_PACKAGE_NAME)
+
+        val state = viewModel.matchmakingState.value as WithData
+        val expectedPermissions =
+            state.matchingApps
+                .first { it.metadata.packageName == TEST_APP_PACKAGE_NAME }
+                .permissions
+        assertThat(viewModel.grantedPermissions.value?.get(TEST_APP_PACKAGE_NAME))
+            .isEqualTo(expectedPermissions)
+        assertThat(viewModel.atLeastOnePermissionGranted.value).isTrue()
+        assertThat(viewModel.allPermissionsGranted.value).isFalse()
+    }
+
+    @Test
+    fun removeAppPermissionsFromGrantedList_removesAllPermissionsForSpecificApp() = runTest {
+        setupWithData()
+        viewModel.addAppPermissionsToGrantedList(TEST_APP_PACKAGE_NAME)
+
+        viewModel.removeAppPermissionsFromGrantedList(TEST_APP_PACKAGE_NAME)
+
+        assertThat(viewModel.grantedPermissions.value?.get(TEST_APP_PACKAGE_NAME)).isNull()
+        assertThat(viewModel.atLeastOnePermissionGranted.value).isFalse()
+        assertThat(viewModel.allPermissionsGranted.value).isFalse()
+    }
+
+    @Test
     fun grantPermissions_grantsAllPermissions() = runTest {
         setupWithData()
 

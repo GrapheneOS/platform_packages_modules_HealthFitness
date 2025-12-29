@@ -18,34 +18,86 @@ package com.android.healthconnect.controller.shared.preference
 
 import android.content.Context
 import android.util.AttributeSet
-import androidx.preference.PreferenceGroup
+import android.view.View
+import android.widget.ImageView
+import androidx.appcompat.widget.SwitchCompat
+import androidx.core.view.isVisible
+import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
 import com.android.settingslib.widget.SettingsThemeHelper
-import com.android.settingslib.widget.preference.app.R as AppPreferenceR
-import com.android.settingslib.widget.theme.R as SettingslibR
 
-/**
- * A [PreferenceGroup] that can be expanded and collapsed.
- *
- * This preference will display an arrow that can be clicked to expand or collapse the preferences
- * contained within it.
- */
 class HealthExpandablePreference
 @JvmOverloads
 constructor(context: Context, attrs: AttributeSet? = null) :
     BaseExpandablePreference(context, attrs) {
 
+    private var onCheckedChangeListener: ((Boolean) -> Unit)? = null
+    var isChecked: Boolean = false
+        set(value) {
+            if (field != value) {
+                field = value
+                notifyChanged()
+            }
+        }
+
     init {
         layoutResource =
             if (SettingsThemeHelper.isExpressiveTheme(context)) {
-                SettingslibR.layout.settingslib_expressive_preference
+                R.layout.preference_expressive_expandable_switch
             } else {
-                AppPreferenceR.layout.preference_app
+                R.layout.preference_non_expressive_expandable_switch
             }
-        widgetLayoutResource = R.layout.preference_expand_arrow_widget
+        widgetLayoutResource =
+            if (SettingsThemeHelper.isExpressiveTheme(context)) {
+                R.layout.expressive_expand_arrow_switch_widget
+            } else {
+                R.layout.non_expressive_expand_arrow_switch_widget
+            }
+    }
+
+    fun setOnSwitchChangeListener(listener: ((Boolean) -> Unit)?) {
+        onCheckedChangeListener = listener
+    }
+
+    override fun onBindViewHolder(holder: PreferenceViewHolder) {
+        super.onBindViewHolder(holder)
+
+        val expandArrow = holder.findViewById(R.id.expand_arrow) as? ImageView
+        val twoTargetDivider = holder.findViewById(R.id.two_target_divider) as? View
+        val switch = holder.findViewById(R.id.switch_widget) as? SwitchCompat
+        switch?.isClickable = true
+
+        switch?.setOnCheckedChangeListener(null)
+        switch?.isChecked = isChecked
+        switch?.setOnCheckedChangeListener { _, newIsChecked ->
+            if (isChecked != newIsChecked) {
+                isChecked = newIsChecked
+                onCheckedChangeListener?.invoke(newIsChecked)
+            }
+        }
+
+        val hasChildren = preferenceCount > 0
+        expandArrow?.isVisible = hasChildren
+        twoTargetDivider?.isVisible = hasChildren
+
+        expandArrow?.rotation = if (mIsExpanded) 180f else 0f
+
+        if (hasChildren) {
+            holder.itemView.setOnClickListener {
+                logger.logInteraction(
+                    logName,
+                    com.android.healthconnect.controller.utils.logging.UIAction.ACTION_CLICK,
+                )
+                setExpanded(!mIsExpanded)
+                mOnExpandChangeListener?.onExpandChanged(mIsExpanded)
+                notifyChanged()
+            }
+        } else {
+            holder.itemView.setOnClickListener(null)
+        }
     }
 
     override fun getDropDownIconId(): Int {
-        return R.id.expand_arrow
+        return R.drawable.ic_expand_more
     }
 }

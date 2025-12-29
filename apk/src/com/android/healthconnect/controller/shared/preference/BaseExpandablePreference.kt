@@ -43,8 +43,8 @@ abstract class BaseExpandablePreference
 constructor(context: Context, attrs: AttributeSet? = null) : PreferenceGroup(context, attrs) {
 
     var mIsExpanded = false
-    private var mOnExpandChangeListener: OnExpandChangeListener? = null
-    private var logger: HealthConnectLogger
+    protected var mOnExpandChangeListener: OnExpandChangeListener? = null
+    protected var logger: HealthConnectLogger
     var logName: ElementName = UnknownGenericElement.UNKNOWN_HEALTH_PREFERENCE
 
     init {

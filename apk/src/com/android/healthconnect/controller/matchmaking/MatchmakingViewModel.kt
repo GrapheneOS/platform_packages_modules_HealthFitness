@@ -159,6 +159,32 @@ constructor(
         updateAllPermissionsGrantedStatus()
     }
 
+    fun addAppPermissionsToGrantedList(packageName: String) {
+        val state = (matchmakingState.value as? MatchmakingState.WithData)
+        val allPermissionsForApp =
+            state?.matchingApps?.firstOrNull { it.metadata.packageName == packageName }?.permissions
+
+        val currentPermissions = grantedPermissions.value?.toMutableMap() ?: mutableMapOf()
+
+        if (allPermissionsForApp != null) {
+            currentPermissions[packageName] = allPermissionsForApp
+        } else {
+            // Not an app, do nothing.
+            return
+        }
+        grantedPermissions.value = currentPermissions
+        atLeastOnePermissionGranted.value = true
+        updateAllPermissionsGrantedStatus()
+    }
+
+    fun removeAppPermissionsFromGrantedList(packageName: String) {
+        val currentPermissions = grantedPermissions.value?.toMutableMap() ?: mutableMapOf()
+        currentPermissions.remove(packageName)
+        grantedPermissions.value = currentPermissions
+        atLeastOnePermissionGranted.value = grantedPermissions.value?.isNotEmpty() == true
+        updateAllPermissionsGrantedStatus()
+    }
+
     private fun updateAllPermissionsGrantedStatus() {
         val grantedMap = grantedPermissions.value ?: emptyMap()
         val allApps = (matchmakingState.value as? MatchmakingState.WithData)?.matchingApps
