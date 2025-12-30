@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.tests.data.entries.datenavigation
 
 import android.content.Context
+import android.icu.util.VersionInfo
 import android.view.View
 import android.view.View.VISIBLE
 import android.widget.Spinner
@@ -189,7 +190,8 @@ class DateNavigationViewTest {
         dateNavigationView.setDate(NOW.minus(Duration.ofDays(14)))
         dateNavigationView.setPeriod(DateNavigationPeriod.PERIOD_WEEK)
 
-        assertSpinnerView("3–9 Oct")
+        val expected = if (VersionInfo.ICU_VERSION.major >= 78) "3 – 9 Oct" else "3–9 Oct"
+        assertSpinnerView(expected)
     }
 
     @Test
@@ -198,7 +200,9 @@ class DateNavigationViewTest {
         dateNavigationView.setDate(NOW.minus(Duration.ofDays(365)))
         dateNavigationView.setPeriod(DateNavigationPeriod.PERIOD_WEEK)
 
-        assertSpinnerView("18–24 Oct 2021")
+        val expected =
+            if (VersionInfo.ICU_VERSION.major >= 78) "18 – 24 Oct 2021" else "18–24 Oct 2021"
+        assertSpinnerView(expected)
     }
 
     @Test
@@ -207,7 +211,9 @@ class DateNavigationViewTest {
         dateNavigationView.setDate(NOW.minus(Duration.ofDays(379)))
         dateNavigationView.setPeriod(DateNavigationPeriod.PERIOD_WEEK)
 
-        assertSpinnerView("4–10 Oct 2021")
+        val expected =
+            if (VersionInfo.ICU_VERSION.major >= 78) "4 – 10 Oct 2021" else "4–10 Oct 2021"
+        assertSpinnerView(expected)
     }
 
     @Test
