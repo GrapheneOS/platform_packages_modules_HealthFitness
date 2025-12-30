@@ -162,14 +162,17 @@ class LocalDateTimeFormatterTest {
     fun formatDateRangeWithYear_ukLocale() {
         val formatter = setLocaleAndCreateFormatter(Locale.UK)
         val end = time.plus(10, ChronoUnit.DAYS)
-        assertThat(formatter.formatDateRangeWithYear(time, end)).isEqualTo("20–30 Oct 2022")
+        val expected =
+            if (VersionInfo.ICU_VERSION.major >= 78) "20 – 30 Oct 2022" else "20–30 Oct 2022"
+        assertThat(formatter.formatDateRangeWithYear(time, end)).isEqualTo(expected)
     }
 
     @Test
     fun formatDateRangeWithoutYear_ukLocale() {
         val formatter = setLocaleAndCreateFormatter(Locale.UK)
         val end = time.plus(10, ChronoUnit.DAYS)
-        assertThat(formatter.formatDateRangeWithoutYear(time, end)).isEqualTo("20–30 Oct")
+        val expected = if (VersionInfo.ICU_VERSION.major >= 78) "20 – 30 Oct" else "20–30 Oct"
+        assertThat(formatter.formatDateRangeWithoutYear(time, end)).isEqualTo(expected)
     }
 
     @Test
