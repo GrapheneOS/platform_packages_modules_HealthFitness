@@ -349,6 +349,17 @@ public class HealthConnectManagerService extends SystemService {
                             Slog.e(TAG, "Failed to initialize current device id.", e);
                         }
                     });
+
+            threadScheduler.scheduleInternalTask(
+                    () -> {
+                        try {
+                            mHealthConnectInjector
+                                    .getDeviceDataProviderManager()
+                                    .advertiseCurrentDeviceNativeCapabilities();
+                        } catch (Exception e) {
+                            Slog.e(TAG, "Failed to advertise current device capabilities.", e);
+                        }
+                    });
         }
     }
 

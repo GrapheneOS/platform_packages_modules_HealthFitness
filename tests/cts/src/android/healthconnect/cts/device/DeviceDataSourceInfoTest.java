@@ -17,6 +17,7 @@
 package android.healthconnect.cts.device;
 
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
+import static android.healthconnect.testing.cts.TestUtils.getCurrentDeviceId;
 
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
@@ -55,6 +56,7 @@ import java.util.Set;
 @RunWith(AndroidJUnit4.class)
 @RequiresFlagsEnabled({FLAG_DEVICE_DATA_PROVIDERS_API, FLAG_DEVICE_DATA_PROVIDERS_DB})
 public class DeviceDataSourceInfoTest {
+    private static final String SELF_PACKAGE_NAME = "android.healthconnect.cts";
 
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
@@ -100,8 +102,10 @@ public class DeviceDataSourceInfoTest {
 
         List<DeviceDataSourceInfo> result = TestUtils.getDeviceDataSourceInfos();
 
-        assertThat(result).hasSize(1);
-        DeviceDataSourceInfo info = result.get(0);
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getDeviceDataOrigin().getPackageName())
+                .isEqualTo(getCurrentDeviceId());
+        DeviceDataSourceInfo info = result.get(1);
         assertThat(info.getDevice()).isEqualTo(device);
         assertThat(info.getDeviceDataProviderInfos()).hasSize(1);
         assertThat(info.isCurrentDevice()).isFalse();
@@ -138,8 +142,10 @@ public class DeviceDataSourceInfoTest {
 
         List<DeviceDataSourceInfo> result = TestUtils.getDeviceDataSourceInfos();
 
-        assertThat(result).hasSize(1);
-        DeviceDataSourceInfo info = result.get(0);
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getDeviceDataOrigin().getPackageName())
+                .isEqualTo(getCurrentDeviceId());
+        DeviceDataSourceInfo info = result.get(1);
         assertThat(info.getDevice()).isEqualTo(device);
         DeviceDataProviderInfo providerInfo = info.getDeviceDataProviderInfos().get(0);
         assertThat(providerInfo.getDeviceDataTypeAdvertisements()).containsExactlyElementsIn(ads);
@@ -170,47 +176,14 @@ public class DeviceDataSourceInfoTest {
 
         List<DeviceDataSourceInfo> result = TestUtils.getDeviceDataSourceInfos();
 
-        assertThat(result).hasSize(1);
-        DeviceDataProviderInfo providerInfo = result.get(0).getDeviceDataProviderInfos().get(0);
+        assertThat(result).hasSize(2);
+        assertThat(result.get(0).getDeviceDataOrigin().getPackageName())
+                .isEqualTo(getCurrentDeviceId());
+        DeviceDataProviderInfo providerInfo = result.get(1).getDeviceDataProviderInfos().get(0);
         assertThat(
                         Iterables.getOnlyElement(providerInfo.getDeviceDataTypeAdvertisements())
                                 .isUserEnabled())
                 .isTrue();
-    }
-
-    @Test
-    public void getDeviceDataSourceInfos_currentDevice_returnsCorrectDeviceId() throws Exception {
-        Device device =
-                new Device.Builder()
-                        .setManufacturer("TestManufacturer")
-                        .setModel("TestModel")
-                        .setType(Device.DEVICE_TYPE_PHONE)
-                        .setDisplayName("TestDisplayName")
-                        .build();
-        String deviceId = TestUtils.getCurrentDeviceId();
-        DeviceDataTypeAdvertisement stepsAd =
-                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
-                        .setAvailable(true)
-                        .build();
-        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements = Set.of(stepsAd);
-        DeviceDataAdvertisement advertisement =
-                new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);
-        HealthConnectReceiver<Void> advertiseReceiver = new HealthConnectReceiver<>();
-
-        TestUtils.advertiseDeviceDataSources(
-                Set.of(advertisement), outcomeExecutor(), advertiseReceiver);
-        advertiseReceiver.verifyNoExceptionOrThrow();
-
-        List<DeviceDataSourceInfo> result = TestUtils.getDeviceDataSourceInfos();
-
-        assertThat(result).hasSize(1);
-        DeviceDataSourceInfo info = result.get(0);
-        assertThat(info.getDevice()).isEqualTo(device);
-        assertThat(info.getDeviceDataProviderInfos()).hasSize(1);
-        assertThat(info.isCurrentDevice()).isTrue();
-        DeviceDataProviderInfo providerInfo = info.getDeviceDataProviderInfos().get(0);
-        assertThat(providerInfo.getDeviceId()).isEqualTo(deviceId);
-        assertThat(providerInfo.getDeviceDataTypeAdvertisements()).containsExactly(stepsAd);
     }
 
     @Test
@@ -252,7 +225,9 @@ public class DeviceDataSourceInfoTest {
 
         List<DeviceDataSourceInfo> result = TestUtils.getDeviceDataSourceInfos();
 
-        assertThat(result).hasSize(2);
+        assertThat(result).hasSize(3);
+        assertThat(result.get(0).getDeviceDataOrigin().getPackageName())
+                .isEqualTo(getCurrentDeviceId());
 
         // Verify we can find both devices
         boolean found1 = false;

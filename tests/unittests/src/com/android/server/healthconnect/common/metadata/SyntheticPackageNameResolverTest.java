@@ -195,34 +195,18 @@ public class SyntheticPackageNameResolverTest {
 
     @Test
     @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
-    public void withCurrentDeviceId_maskAndUnmask_completeCallingChainSuccess() {
-        String maskedRuntimeId =
-                mResolver.mask(TEST_CURRENT_DEVICE_ID_RUNTIME_CANONICAL_SPN, TEST_CALLER_ONE);
-        assertThat(maskedRuntimeId).isEqualTo(TEST_CURRENT_DEVICE_ID_RUNTIME_MASKED_SPN);
-
-        String unmaskedStableId = mResolver.unmask(maskedRuntimeId, TEST_CALLER_ONE);
-        assertThat(unmaskedStableId).isEqualTo(TEST_CURRENT_DEVICE_ID_STABLE_SPN);
-    }
-
-    @Test
-    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
-    public void withDeviceDataProviderManagerNullAndDeviceId_unmask_returnsInput() {
-        SyntheticPackageNameResolver nullResolver =
-                new SyntheticPackageNameResolver(mAppInfoHelper, null);
-
-        String result =
-                nullResolver.unmask(TEST_CURRENT_DEVICE_ID_RUNTIME_MASKED_SPN, TEST_CALLER_ONE);
-
+    public void withCurrentDeviceId_mask_returnsMaskedRuntimeDeviceId() {
+        String result = mResolver.mask(TEST_CURRENT_DEVICE_ID_STABLE_SPN, TEST_CALLER_ONE);
         assertThat(result).isEqualTo(TEST_CURRENT_DEVICE_ID_RUNTIME_MASKED_SPN);
     }
 
     @Test
     @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
-    public void withDeviceDataProviderManagerAndMaskedSpn_unmask_success() {
-        SyntheticPackageNameResolver nullResolver =
-                new SyntheticPackageNameResolver(mAppInfoHelper, null);
-        String result = nullResolver.unmask(TEST_MASKED_ONE_SPN, TEST_CALLER_ONE);
+    public void withCurrentDeviceId_maskAndUnmask_completeCallingChainSuccess() {
+        String maskedStableId = mResolver.mask(TEST_CURRENT_DEVICE_ID_STABLE_SPN, TEST_CALLER_ONE);
+        assertThat(maskedStableId).isEqualTo(TEST_CURRENT_DEVICE_ID_RUNTIME_MASKED_SPN);
 
-        assertThat(result).isEqualTo(TEST_CANONICAL_SPN);
+        String unmaskedStableId = mResolver.unmask(maskedStableId, TEST_CALLER_ONE);
+        assertThat(unmaskedStableId).isEqualTo(TEST_CURRENT_DEVICE_ID_STABLE_SPN);
     }
 }

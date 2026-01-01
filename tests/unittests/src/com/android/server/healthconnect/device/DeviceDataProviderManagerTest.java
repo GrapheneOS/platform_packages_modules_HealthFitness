@@ -43,6 +43,8 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.health.connect.DeleteUsingFiltersRequest;
+import android.health.connect.DeviceDataProviderInfo;
+import android.health.connect.DeviceDataSourceInfo;
 import android.health.connect.HealthPermissions;
 import android.health.connect.PageTokenWrapper;
 import android.health.connect.ReadRecordsRequestUsingFilters;
@@ -180,6 +182,7 @@ public class DeviceDataProviderManagerTest {
                         healthConnectInjector.getFitnessRecordDeleteHelper(),
                         healthConnectInjector.getSyntheticPackageNameCreator());
         mPreferenceHelper.insertOrReplacePreference(PREFERENCE_KEY, "Some Salt");
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
     }
 
     @Test
@@ -199,11 +202,13 @@ public class DeviceDataProviderManagerTest {
         DeviceDataAdvertisement advertisement =
                 new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
         long expectedDeviceInfoId = 1;
-
-        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
         Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
         Map<Long, DeviceDataProviderMetadataHelper.DeviceDataProviderMetadata> metadataInternalMap =
                 mDeviceDataProviderMetadataHelper.getIdDeviceDataProviderMetadataMap();
+
+        assertThat(appInfoInternalMap).isEmpty();
+
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
 
         assertThat(mDeviceInfoHelper.getIdDeviceInfoMap().size()).isEqualTo(1);
         assertThat(
@@ -224,11 +229,13 @@ public class DeviceDataProviderManagerTest {
                                 .get(expectedDeviceInfoId)
                                 .getDisplayName())
                 .isEqualTo(DISPLAY_NAME);
+
         assertThat(appInfoInternalMap.size()).isEqualTo(1);
         String appInfoKey = "com.android.healthconnect.phone.d917cfe4687a83c6da4ecca162a5ba400";
         assertThat(appInfoInternalMap).containsKey(appInfoKey);
         assertThat(appInfoInternalMap.get(appInfoKey).getDeviceInfoId())
                 .isEqualTo(expectedDeviceInfoId);
+
         assertThat(metadataInternalMap.size()).isEqualTo(1);
         assertThat(metadataInternalMap).containsKey(1L);
         assertThat(metadataInternalMap.get(1L).sourcePackageName()).isEqualTo(PACKAGE_NAME);
@@ -263,11 +270,17 @@ public class DeviceDataProviderManagerTest {
         DeviceDataAdvertisement advertisement =
                 new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
 
-        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
-        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
         Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
         Map<Long, DeviceDataProviderMetadataHelper.DeviceDataProviderMetadata> metadataInternalMap =
                 mDeviceDataProviderMetadataHelper.getIdDeviceDataProviderMetadataMap();
+
+        assertThat(mDeviceInfoHelper.getIdDeviceInfoMap()).isEmpty();
+        assertThat(appInfoInternalMap).isEmpty();
+        assertThat(mDeviceDataSourcesHelper.getDdpMap()).isEmpty();
+        assertThat(metadataInternalMap).isEmpty();
+
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
 
         assertThat(mDeviceInfoHelper.getIdDeviceInfoMap().size()).isEqualTo(1);
         assertThat(appInfoInternalMap.size()).isEqualTo(1);
@@ -345,11 +358,17 @@ public class DeviceDataProviderManagerTest {
         long expectedDeviceInfoId1 = 1;
         long expectedDeviceInfoId2 = 2;
 
-        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement1), PACKAGE_NAME);
-        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement2), PACKAGE_NAME);
         Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
         Map<Long, DeviceDataProviderMetadataHelper.DeviceDataProviderMetadata> metadataInternalMap =
                 mDeviceDataProviderMetadataHelper.getIdDeviceDataProviderMetadataMap();
+
+        assertThat(appInfoInternalMap).isEmpty();
+        assertThat(metadataInternalMap).isEmpty();
+        assertThat(mDeviceDataSourcesHelper.getDdpMap()).isEmpty();
+        assertThat(mDeviceInfoHelper.getIdDeviceInfoMap()).isEmpty();
+
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement1), PACKAGE_NAME);
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement2), PACKAGE_NAME);
 
         assertThat(appInfoInternalMap.size()).isEqualTo(1);
         assertThat(metadataInternalMap.size()).isEqualTo(1);
@@ -403,14 +422,30 @@ public class DeviceDataProviderManagerTest {
 
     @Test
     public void withoutInit_getStableCurrentDeviceId_throws() {
-        assertThrows(
-                IllegalStateException.class,
-                () -> mDeviceDataProviderManager.getStableCurrentDeviceId());
+        HealthConnectInjector healthConnectInjector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setAppOpLogsHelper(mAppOpLogsHelper)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+
+        FakeSerialDeviceDataProviderManager newManager =
+                new FakeSerialDeviceDataProviderManager(
+                        mContext,
+                        healthConnectInjector.getDeviceInfoHelper(),
+                        healthConnectInjector.getAppInfoHelper(),
+                        new FakeSerialDeviceDataSourceHelper(),
+                        healthConnectInjector.getDeviceDataSourcesHelper(),
+                        healthConnectInjector.getDeviceDataProviderMetadataHelper(),
+                        healthConnectInjector.getFitnessRecordUpsertHelper(),
+                        healthConnectInjector.getFitnessRecordReadHelper(),
+                        healthConnectInjector.getFitnessRecordDeleteHelper(),
+                        healthConnectInjector.getSyntheticPackageNameCreator());
+
+        assertThrows(IllegalStateException.class, newManager::getStableCurrentDeviceId);
     }
 
     @Test
     public void withRegularCall_getStableCurrentDeviceId_doesNotContainSerial() {
-        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         String deviceId = mDeviceDataProviderManager.getStableCurrentDeviceId();
         String fakeSerial = FakeSerialDeviceDataProviderManager.TEST_SERIAL_NUMBER;
 
@@ -419,7 +454,7 @@ public class DeviceDataProviderManagerTest {
 
     @Test
     public void withRegularCall_getStableCurrentDeviceId_isCanonicalSpn() {
-        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+
         String deviceId = mDeviceDataProviderManager.getStableCurrentDeviceId();
 
         assertTrue(SyntheticPackageNameMatcher.matchesCanonical(deviceId));
@@ -427,7 +462,7 @@ public class DeviceDataProviderManagerTest {
 
     @Test
     public void withMultipleCalls_getStableCurrentDeviceId_returnsSameDeviceId() {
-        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+
         String firstId = mDeviceDataProviderManager.getStableCurrentDeviceId();
         String secondId = mDeviceDataProviderManager.getStableCurrentDeviceId();
 
@@ -436,7 +471,7 @@ public class DeviceDataProviderManagerTest {
 
     @Test
     public void withMultipleCallsAndSoftRefresh_getStableCurrentDeviceId_returnsSameDeviceId() {
-        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+
         String firstId = mDeviceDataProviderManager.getStableCurrentDeviceId();
 
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -447,7 +482,7 @@ public class DeviceDataProviderManagerTest {
 
     @Test
     public void withMultipleCallsAndHardReset_getStableCurrentDeviceId_returnsDifferentDeviceId() {
-        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+
         String firstId = mDeviceDataProviderManager.getStableCurrentDeviceId();
 
         mPreferenceHelper.removeKey(PREFERENCE_KEY);
@@ -461,7 +496,7 @@ public class DeviceDataProviderManagerTest {
 
     @Test
     public void withRegularCall_getCurrentDeviceId_isCanonicalSpn() {
-        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+
         String deviceId = mDeviceDataProviderManager.getCurrentDeviceId();
 
         assertTrue(SyntheticPackageNameMatcher.matchesCanonical(deviceId));
@@ -469,7 +504,6 @@ public class DeviceDataProviderManagerTest {
 
     @Test
     public void withMultipleCalls_getCurrentDeviceId_returnsSameDeviceId() {
-        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
 
         String firstId = mDeviceDataProviderManager.getCurrentDeviceId();
         String secondId = mDeviceDataProviderManager.getCurrentDeviceId();
@@ -479,7 +513,7 @@ public class DeviceDataProviderManagerTest {
 
     @Test
     public void withMultipleCallsAndRefresh_getCurrentDeviceId_returnsDifferentDeviceId() {
-        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+
         String firstId = mDeviceDataProviderManager.getCurrentDeviceId();
 
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
@@ -490,8 +524,25 @@ public class DeviceDataProviderManagerTest {
 
     @Test
     public void withoutInitialization_getCurrentDeviceId_throws() {
-        assertThrows(
-                IllegalStateException.class, () -> mDeviceDataProviderManager.getCurrentDeviceId());
+        HealthConnectInjector healthConnectInjector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setAppOpLogsHelper(mAppOpLogsHelper)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+
+        FakeSerialDeviceDataProviderManager newManager =
+                new FakeSerialDeviceDataProviderManager(
+                        mContext,
+                        healthConnectInjector.getDeviceInfoHelper(),
+                        healthConnectInjector.getAppInfoHelper(),
+                        new FakeSerialDeviceDataSourceHelper(),
+                        healthConnectInjector.getDeviceDataSourcesHelper(),
+                        healthConnectInjector.getDeviceDataProviderMetadataHelper(),
+                        healthConnectInjector.getFitnessRecordUpsertHelper(),
+                        healthConnectInjector.getFitnessRecordReadHelper(),
+                        healthConnectInjector.getFitnessRecordDeleteHelper(),
+                        healthConnectInjector.getSyntheticPackageNameCreator());
+        assertThrows(IllegalStateException.class, () -> newManager.getCurrentDeviceId());
     }
 
     @Test
@@ -716,12 +767,18 @@ public class DeviceDataProviderManagerTest {
         String packageOne = "foo";
         String packageTwo = "bar";
 
-        advertiseDevice(DEVICE_ID, packageOne, StepsRecord.class);
-        advertiseDevice(DEVICE_ID, packageTwo, StepsRecord.class);
-
         Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
         Map<Long, DeviceDataProviderMetadataHelper.DeviceDataProviderMetadata> metadataInternalMap =
                 mDeviceDataProviderMetadataHelper.getIdDeviceDataProviderMetadataMap();
+
+        assertThat(mDeviceInfoHelper.getIdDeviceInfoMap()).isEmpty();
+        assertThat(appInfoInternalMap).isEmpty();
+        assertThat(mDeviceDataSourcesHelper.getDdpMap()).isEmpty();
+        assertThat(metadataInternalMap).isEmpty();
+
+        advertiseDevice(DEVICE_ID, packageOne, StepsRecord.class);
+        advertiseDevice(DEVICE_ID, packageTwo, StepsRecord.class);
+
         assertThat(mDeviceInfoHelper.getIdDeviceInfoMap().size()).isEqualTo(1);
         assertThat(appInfoInternalMap.size()).isEqualTo(1);
         assertThat(mDeviceDataSourcesHelper.getDdpMap().size()).isEqualTo(2);
@@ -1784,12 +1841,17 @@ public class DeviceDataProviderManagerTest {
 
     @Test
     public void handleAdvertisement_removeDevice_deviceRemoved() {
+        Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
+        assertThat(appInfoInternalMap).isEmpty();
+        assertThat(mDeviceDataSourcesHelper.getDdpMap()).isEmpty();
+
         // 1. Advertise device
         advertiseDevice(DEVICE_ID);
 
-        Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
         assertThat(appInfoInternalMap).hasSize(1);
         assertThat(mDeviceDataSourcesHelper.getDdpMap()).hasSize(1);
+        assertThat(mDeviceDataProviderMetadataHelper.getIdDeviceDataProviderMetadataMap())
+                .hasSize(1);
 
         // 2. Advertise empty set (device removed)
         mDeviceDataProviderManager.handleAdvertisement(Set.of(), PACKAGE_NAME);
@@ -2219,6 +2281,137 @@ public class DeviceDataProviderManagerTest {
 
         assertThatDdpHasRecordsSizeEqualTo(packageOne, DEVICE_ID, 0, StepsRecord.class);
         assertThatDdpHasRecordsSizeEqualTo(packageTwo, DEVICE_ID, 2, StepsRecord.class);
+    }
+
+    @Test
+    public void advertiseCurrentDeviceNativeCapabilities_advertisesCurrentDeviceCapabilities() {
+        String stableId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+
+        long expectedDeviceInfoId = 1;
+        Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
+        Map<Long, DeviceDataProviderMetadataHelper.DeviceDataProviderMetadata> metadataInternalMap =
+                mDeviceDataProviderMetadataHelper.getIdDeviceDataProviderMetadataMap();
+
+        // Current device has been added to app info
+        assertThat(appInfoInternalMap.size()).isEqualTo(1);
+        assertThat(appInfoInternalMap).containsKey(stableId);
+        assertThat(appInfoInternalMap.get(stableId).getDeviceInfoId())
+                .isEqualTo(expectedDeviceInfoId);
+
+        // Current device has been added to device info
+        assertThat(mDeviceInfoHelper.getIdDeviceInfoMap()).hasSize(1);
+        DeviceInfoHelper.DeviceInfo actualDevice =
+                mDeviceInfoHelper.getIdDeviceInfoMap().get(expectedDeviceInfoId);
+        DeviceDataSource expectedDevice = mDataSourceHelper.getCurrentDevice(mContext);
+        assertThat(actualDevice.getManufacturer()).isEqualTo(expectedDevice.getManufacturer());
+        assertThat(actualDevice.getModel()).isEqualTo(expectedDevice.getModel());
+        assertThat(actualDevice.getDeviceType()).isEqualTo(expectedDevice.getDeviceType());
+        assertThat(actualDevice.getDeviceId()).isEqualTo(stableId);
+        assertThat(actualDevice.getDisplayName()).isEqualTo(expectedDevice.getDisplayName());
+
+        // Health Connect has been added to ddp metadata
+        assertThat(metadataInternalMap).hasSize(1);
+        assertThat(metadataInternalMap).containsKey(1L);
+        assertThat(metadataInternalMap.get(1L).sourcePackageName()).isEqualTo("android");
+
+        // Combination available as key in device data sources
+        DeviceDataSourcesHelper.DeviceDataProviderKey key =
+                new DeviceDataSourcesHelper.DeviceDataProviderKey(
+                        "android",
+                        expectedDeviceInfoId,
+                        RECORD_TYPE_STEPS,
+                        SymptomRecord.SYMPTOM_TYPE_UNKNOWN);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap()).hasSize(1);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap()).containsKey(key);
+        assertThat(mDeviceDataSourcesHelper.getDdpMap().get(key).isAvailable()).isEqualTo(true);
+        // TODO(b/468250208): Set to preference
+        assertThat(mDeviceDataSourcesHelper.getDdpMap().get(key).isUserEnabled()).isEqualTo(true);
+        // TODO(b/469717403): Decide Matchmaking behavior
+        assertThat(mDeviceDataSourcesHelper.getDdpMap().get(key).isVisibleByDefaultInMatchmaking())
+                .isEqualTo(true);
+    }
+
+    @Test
+    public void advertiseCurrentDeviceNativeCapabilities_addsStepsToDeviceDataSourceInfos() {
+        String stableDeviceId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+
+        List<DeviceDataSourceInfo> initialSourceInfos =
+                mDeviceDataProviderManager.getDeviceDataSourceInfos();
+        assertThat(initialSourceInfos).isEmpty();
+
+        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+        List<DeviceDataSourceInfo> newSourceInfos =
+                mDeviceDataProviderManager.getDeviceDataSourceInfos();
+
+        assertThat(newSourceInfos).hasSize(1);
+        DeviceDataSourceInfo currentDeviceSource = newSourceInfos.get(0);
+        assertThat(currentDeviceSource.getDeviceDataOrigin().getPackageName())
+                .isEqualTo(stableDeviceId);
+        assertThat(currentDeviceSource.isCurrentDevice()).isTrue();
+
+        DeviceDataSource expectedDeviceSource = mDataSourceHelper.getCurrentDevice(mContext);
+        Device expectedDevice =
+                new Device.Builder()
+                        .setDisplayName(expectedDeviceSource.getDisplayName())
+                        .setManufacturer(expectedDeviceSource.getManufacturer())
+                        .setModel(expectedDeviceSource.getModel())
+                        .setType(expectedDeviceSource.getDeviceType())
+                        .build();
+        assertThat(currentDeviceSource.getDevice()).isEqualTo(expectedDevice);
+
+        assertThat(currentDeviceSource.getDeviceDataProviderInfos()).hasSize(1);
+        DeviceDataProviderInfo currentDeviceProvider =
+                currentDeviceSource.getDeviceDataProviderInfos().get(0);
+        assertThat(currentDeviceProvider.getPackageName()).isEqualTo("android");
+        assertThat(currentDeviceProvider.getDeviceId()).isEqualTo(stableDeviceId);
+        assertThat(currentDeviceProvider.getOnboardingActivityLabel()).isEqualTo("");
+        assertThat(currentDeviceProvider.getManagementActivityLabel()).isEqualTo("");
+
+        assertThat(currentDeviceProvider.getDeviceDataTypeAdvertisements()).hasSize(1);
+        DeviceDataTypeAdvertisement expectedAd =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setAvailable(true)
+                        // TODO(b/468250208): Set to preference
+                        .setUserEnabled(true)
+                        // TODO(b/469717403): Decide Matchmaking behavior
+                        .setVisibleByDefaultInMatchmaking(true)
+                        .build();
+        assertThat(currentDeviceProvider.getDeviceDataTypeAdvertisements().iterator().next())
+                .isEqualTo(expectedAd);
+    }
+
+    @Test
+    public void withCurrentDevice_insertDeviceRecords_needsOwnAdvertisement() {
+        String currentDeviceId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+        List<RecordInternal<?>> records =
+                List.of(
+                        buildStepsRecord(
+                                /* startTimeMillis= */ 1000,
+                                /* endTimeMillis= */ 2000,
+                                /* stepsCount= */ 100));
+
+        // PACKAGE_NAME has not advertised device
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mDeviceDataProviderManager.insertDeviceRecords(
+                                PACKAGE_NAME, currentDeviceId, records));
+
+        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+
+        // System has advertised the device, but not PACKAGE_NAME
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mDeviceDataProviderManager.insertDeviceRecords(
+                                PACKAGE_NAME, currentDeviceId, records));
+
+        advertiseDevice(currentDeviceId, PACKAGE_NAME, StepsRecord.class);
+
+        // PACKAGE_NAME is allowed to insert after advertisement
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, currentDeviceId, records);
+        assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, currentDeviceId, 1, StepsRecord.class);
     }
 
     private void advertiseDevice(

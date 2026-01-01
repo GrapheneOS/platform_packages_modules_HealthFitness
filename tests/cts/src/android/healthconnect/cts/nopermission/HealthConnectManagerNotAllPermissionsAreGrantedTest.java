@@ -18,7 +18,6 @@ package android.healthconnect.cts.nopermission;
 
 import static android.health.connect.HealthPermissions.READ_DISTANCE;
 import static android.health.connect.HealthPermissions.READ_STEPS;
-import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 import static android.healthconnect.testing.cts.TestUtils.deleteRecords;
 import static android.healthconnect.testing.cts.TestUtils.getChangeLogToken;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
@@ -47,9 +46,6 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.TotalCaloriesBurnedRecord;
-import android.health.connect.device.DeviceDataAdvertisement;
-import android.health.connect.device.DeviceDataTypeAdvertisement;
-import android.healthconnect.testing.cts.HealthConnectReceiver;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
 import android.healthconnect.testing.cts.testapphelpers.TestAppRule;
@@ -69,7 +65,6 @@ import org.junit.runner.RunWith;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 /** These tests run under an environment which only some HC permissions are granted. */
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
@@ -182,35 +177,19 @@ public class HealthConnectManagerNotAllPermissionsAreGrantedTest {
     })
     public void getCurrentDeviceDataSource_withAnyHealthPermission_returnsDevice()
             throws InterruptedException {
-        String currentDeviceId = TestUtils.getCurrentDeviceId();
-        Set<DeviceDataTypeAdvertisement> ads =
-                Set.of(
-                        // Distance permission isn't granted in this test
-                        new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
-                                .setAvailable(true)
-                                .setUserEnabled(true)
-                                .build());
-        Device testDevice =
-                new Device.Builder()
-                        .setManufacturer("TestManufacturer")
-                        .setModel("TestModel")
-                        .setType(Device.DEVICE_TYPE_PHONE)
-                        .setDisplayName("TestDisplayName")
-                        .build();
-        DeviceDataAdvertisement advertisement =
-                new DeviceDataAdvertisement(testDevice, currentDeviceId, ads);
-        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
-        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
-
         TestUtils.verifyGetCurrentDeviceDataSourceWithPermission(
                 dataSource -> {
-                    assertThat(dataSource.getDevice().getManufacturer())
-                            .isEqualTo("TestManufacturer");
-                    assertThat(dataSource.getDevice().getModel()).isEqualTo("TestModel");
+                    assertThat(dataSource.getDevice().getModel()).isNotNull();
+                    assertThat(dataSource.getDevice().getManufacturer()).isNotNull();
+                    assertThat(dataSource.getDevice().getType())
+                            .isEqualTo(Device.DEVICE_TYPE_PHONE);
+                    assertThat(dataSource.getDevice().getDisplayName()).isNotNull();
+
                     assertThat(dataSource.getDeviceDataTypeSources()).hasSize(1);
+
                     DeviceDataTypeSource typeSource =
                             dataSource.getDeviceDataTypeSources().iterator().next();
-                    assertThat(typeSource.getDataType()).isEqualTo(DistanceRecord.class);
+                    assertThat(typeSource.getDataType()).isEqualTo(StepsRecord.class);
                     assertThat(typeSource.isAvailable()).isTrue();
                     assertThat(typeSource.isUserEnabled()).isTrue();
                 },

@@ -17,6 +17,8 @@ package android.healthconnect.cts.device;
 
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
+import static android.healthconnect.testing.cts.TestUtils.advertiseDevice;
+import static android.healthconnect.testing.cts.TestUtils.getDeviceDataSourceInfos;
 import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
 
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
@@ -25,9 +27,14 @@ import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
+
+import android.health.connect.DeviceDataSourceInfo;
+import android.health.connect.HealthConnectException;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.DistanceRecord;
 import android.health.connect.datatypes.HeartRateRecord;
+import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
@@ -51,6 +58,7 @@ import org.junit.runner.RunWith;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
@@ -59,7 +67,6 @@ import java.util.Set;
     FLAG_DEVICE_DATA_PROVIDERS_DB,
     FLAG_SYMPTOMS
 })
-// TODO(b/455564575): Update this test when we can read back the advertisement.
 public class AdvertiseDeviceDataSourcesTest {
 
     @Rule
@@ -70,6 +77,14 @@ public class AdvertiseDeviceDataSourcesTest {
             new AssumptionCheckerRule(
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
+
+    private static final Device PHONE_DEVICE =
+            new Device.Builder()
+                    .setManufacturer("TestManufacturer")
+                    .setModel("Some Model")
+                    .setDisplayName("Some Name")
+                    .setType(Device.DEVICE_TYPE_PHONE)
+                    .build();
 
     @Before
     public void before() throws Exception {
@@ -283,5 +298,187 @@ public class AdvertiseDeviceDataSourcesTest {
                                     + " type "
                                     + RECORD_TYPE_HEART_RATE);
         }
+    }
+
+    @Test
+    public void withSameDeviceId_differentDeviceTypes_sameDataType_advertise_throws()
+            throws InterruptedException {
+        String deviceId = "TestDeviceId";
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("Some Model")
+                        .setDisplayName("Some Name")
+                        .setType(Device.DEVICE_TYPE_CHEST_STRAP)
+                        .build();
+
+        advertiseDevice(deviceId, PHONE_DEVICE, StepsRecord.class);
+
+        HealthConnectException exception =
+                assertThrows(
+                        HealthConnectException.class,
+                        () -> advertiseDevice(deviceId, device2, StepsRecord.class));
+
+        assertThat(exception.getMessage())
+                .contains(
+                        "The device with id "
+                                + deviceId
+                                + " has already been used for a different device type.");
+    }
+
+    @Test
+    public void withSameDeviceId_differentDeviceTypes_differentDataTypes_advertise_throws()
+            throws InterruptedException {
+        String deviceId = "TestDeviceId";
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("Some Model")
+                        .setDisplayName("Some Name")
+                        .setType(Device.DEVICE_TYPE_CHEST_STRAP)
+                        .build();
+
+        advertiseDevice(deviceId, PHONE_DEVICE, StepsRecord.class);
+
+        HealthConnectException exception =
+                assertThrows(
+                        HealthConnectException.class,
+                        () -> advertiseDevice(deviceId, device2, DistanceRecord.class));
+
+        assertThat(exception.getMessage())
+                .contains(
+                        "The device with id "
+                                + deviceId
+                                + " has already been used for a different device type.");
+    }
+
+    @Test
+    public void withSameDeviceId_sameDeviceTypes_differentDataTypes_advertise_doesNotThrow()
+            throws InterruptedException {
+        String deviceId = "TestDeviceId";
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("Other TestManufacturer")
+                        .setModel("Some Model")
+                        .setDisplayName("Some Name")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+
+        advertiseDevice(deviceId, PHONE_DEVICE, StepsRecord.class);
+
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                                .setAvailable(true)
+                                .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device2, deviceId, deviceDataTypeAdvertisements);
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+
+        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
+
+        receiver.verifyNoExceptionOrThrow();
+    }
+
+    @Test
+    public void withSameDeviceId_sameDeviceTypes_sameDataTypes_advertise_doesNotThrow()
+            throws InterruptedException {
+        String deviceId = "TestDeviceId";
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("Other TestManufacturer")
+                        .setModel("Some Model")
+                        .setDisplayName("Some Name")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+
+        advertiseDevice(deviceId, PHONE_DEVICE, StepsRecord.class);
+
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device2, deviceId, deviceDataTypeAdvertisements);
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+
+        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
+
+        receiver.verifyNoExceptionOrThrow();
+    }
+
+    @Test
+    public void
+            withSameDeviceId_sameDeviceTypes_differentDataTypes_advertise_overwritesPreviousDevice()
+                    throws InterruptedException {
+        List<DeviceDataSourceInfo> startSources = getDeviceDataSourceInfos();
+        assertThat(startSources.stream().map(DeviceDataSourceInfo::getDevice))
+                .doesNotContain(PHONE_DEVICE);
+
+        // Advertise two devices with different data types but same deviceId
+        String deviceId = "TestDeviceId";
+        Set<DeviceDataTypeAdvertisement> stepAd =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisementOne =
+                new DeviceDataAdvertisement(PHONE_DEVICE, deviceId, stepAd);
+
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("Other TestManufacturer")
+                        .setModel("Some Model")
+                        .setDisplayName("Some Name")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> sleepAd =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(SleepSessionRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisementTwo =
+                new DeviceDataAdvertisement(device2, deviceId, sleepAd);
+
+        // Advertising both simultaneously is crucial to exclude the delete behavior of previous
+        // advertisements when advertising one at a time and truly verify the behavior for
+        // same deviceIds
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+        TestUtils.advertiseDeviceDataSources(
+                Set.of(advertisementOne, advertisementTwo), outcomeExecutor(), receiver);
+
+        // Only one source was added
+        List<DeviceDataSourceInfo> newSources = getDeviceDataSourceInfos();
+        assertThat(startSources.size() + 1).isEqualTo(newSources.size());
+
+        // Contains latter device
+        assertThat(newSources.stream().map(DeviceDataSourceInfo::getDevice))
+                .doesNotContain(PHONE_DEVICE);
+        assertThat(newSources.stream().map(DeviceDataSourceInfo::getDevice)).contains(device2);
+
+        DeviceDataSourceInfo newSource =
+                newSources.stream()
+                        .filter(
+                                source ->
+                                        Objects.equals(
+                                                "Other TestManufacturer",
+                                                source.getDevice().getManufacturer()))
+                        .findAny()
+                        .get();
+
+        // The new source has only one provider
+        assertThat(newSource.getDeviceDataProviderInfos()).hasSize(1);
+        assertThat(newSource.getDeviceDataProviderInfos().get(0).getDeviceDataTypeAdvertisements())
+                .hasSize(1);
+        DeviceDataTypeAdvertisement newAd =
+                newSource
+                        .getDeviceDataProviderInfos()
+                        .get(0)
+                        .getDeviceDataTypeAdvertisements()
+                        .iterator()
+                        .next();
+        assertThat(newAd.getDataType()).isEqualTo(SleepSessionRecord.class);
     }
 }

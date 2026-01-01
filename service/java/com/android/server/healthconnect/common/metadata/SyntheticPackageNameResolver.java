@@ -71,6 +71,16 @@ public class SyntheticPackageNameResolver {
             return packageName;
         }
 
+        // The given SPN might be the current device id - mask the runtime one instead of the stable
+        // one, as clients are exposed to the runtime one
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            Objects.requireNonNull(mDeviceDataProviderManager);
+            if (packageName.equals(mDeviceDataProviderManager.getStableCurrentDeviceId())) {
+                return SyntheticPackageNameCreator.createMasked(
+                        mDeviceDataProviderManager.getCurrentDeviceId(), callingPackageName);
+            }
+        }
+
         return SyntheticPackageNameCreator.createMasked(packageName, callingPackageName);
     }
 
@@ -105,14 +115,16 @@ public class SyntheticPackageNameResolver {
 
         // The given SPN might be the current device id - try to match the masked name with the
         // runtime id which is not in persisted storage but in cache
-        if (canonicalName.isEmpty()
-                && mDeviceDataProviderManager != null
-                && Objects.equals(
-                        SyntheticPackageNameCreator.createMasked(
-                                mDeviceDataProviderManager.getCurrentDeviceId(),
-                                callingPackageName),
-                        packageName)) {
-            canonicalName = Optional.of(mDeviceDataProviderManager.getStableCurrentDeviceId());
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            Objects.requireNonNull(mDeviceDataProviderManager);
+            if (canonicalName.isEmpty()
+                    && Objects.equals(
+                            SyntheticPackageNameCreator.createMasked(
+                                    mDeviceDataProviderManager.getCurrentDeviceId(),
+                                    callingPackageName),
+                            packageName)) {
+                canonicalName = Optional.of(mDeviceDataProviderManager.getStableCurrentDeviceId());
+            }
         }
 
         return canonicalName.orElse(packageName);

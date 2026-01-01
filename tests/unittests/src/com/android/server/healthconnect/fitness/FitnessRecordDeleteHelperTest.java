@@ -58,6 +58,7 @@ import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.device.FakeSerialDeviceDataProviderManager;
+import com.android.server.healthconnect.device.FakeSerialDeviceDataSourceHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
@@ -118,13 +119,14 @@ public class FitnessRecordDeleteHelperTest {
                             context,
                             injector.getDeviceInfoHelper(),
                             injector.getAppInfoHelper(),
-                            injector.getDeviceDataSourceHelper(),
+                            new FakeSerialDeviceDataSourceHelper(),
                             injector.getDeviceDataSourcesHelper(),
                             injector.getDeviceDataProviderMetadataHelper(),
                             injector.getFitnessRecordUpsertHelper(),
                             injector.getFitnessRecordReadHelper(),
                             injector.getFitnessRecordDeleteHelper(),
                             injector.getSyntheticPackageNameCreator());
+            mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         }
     }
 

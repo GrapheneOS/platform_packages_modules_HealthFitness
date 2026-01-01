@@ -193,11 +193,13 @@ public class MaskingTest {
     public void getDeviceDataSourceInfos_masks() throws InterruptedException {
         List<DeviceDataSourceInfo> response = getDeviceDataSourceInfos();
 
-        // response contains exactly one info and it's masked
-        assertThat(response).hasSize(1);
+        // response contains only masked names (current device, our test device)
+        assertThat(response).hasSize(2);
+        assertThat(response.get(0).getDeviceDataOrigin().getPackageName())
+                .isEqualTo(getCurrentDeviceId());
         assertThat(
                         isMaskedSyntheticPackageName(
-                                response.get(0).getDeviceDataOrigin().getPackageName()))
+                                response.get(1).getDeviceDataOrigin().getPackageName()))
                 .isTrue();
     }
 
@@ -450,11 +452,15 @@ public class MaskingTest {
 
     @Test
     public void getDeviceDataSources_masks() throws InterruptedException {
+        String currentDeviceId = getCurrentDeviceId();
+
         TestUtils.verifyGetDeviceDataSourcesWithPermission(
                 android.health.connect.HealthPermissions.READ_STEPS,
                 dataSources -> {
-                    assertThat(dataSources).hasSize(1);
+                    assertThat(dataSources).hasSize(2);
                     assertThat(dataSources.get(0).getDeviceDataOrigin().getPackageName())
+                            .isEqualTo(currentDeviceId);
+                    assertThat(dataSources.get(1).getDeviceDataOrigin().getPackageName())
                             .isEqualTo(mMaskedDeviceName);
                 });
     }
@@ -466,6 +472,10 @@ public class MaskingTest {
         List<StepsRecord> records = List.of(getStepsRecord(1000, start, end));
         mInsertedRecordId = insertDeviceRecords(mDeviceId, records).get(0).getMetadata().getId();
         mMaskedDeviceName =
-                getDeviceDataSourceInfos().get(0).getDeviceDataOrigin().getPackageName();
+                readAllRecords(StepsRecord.class)
+                        .get(0)
+                        .getMetadata()
+                        .getDataOrigin()
+                        .getPackageName();
     }
 }

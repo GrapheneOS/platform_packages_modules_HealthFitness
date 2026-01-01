@@ -19,6 +19,7 @@ import static android.health.connect.HealthPermissions.READ_DISTANCE;
 import static android.health.connect.HealthPermissions.READ_NUTRITION;
 import static android.health.connect.HealthPermissions.READ_STEPS;
 import static android.health.connect.HealthPermissions.READ_SYMPTOM_COUGH;
+import static android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_UNKNOWN;
 import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 
@@ -52,6 +53,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Optional;
 import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
@@ -89,14 +91,22 @@ public class CurrentDeviceDataSourceTest {
     }
 
     @Test
-    public void noAdvertisements_returnsCurrentDeviceWithEmptyDataTypeSources()
+    public void noCallerAdvertisements_returnsCurrentDeviceWitSystemDataTypeSources()
             throws InterruptedException {
         String currentDeviceId = TestUtils.getCurrentDeviceId();
         TestUtils.verifyGetCurrentDeviceDataSourceWithPermission(
                 dataSource -> {
-                    assertThat(dataSource.getDeviceDataTypeSources()).isEmpty();
+                    assertThat(dataSource.getDeviceDataTypeSources()).hasSize(1);
+                    DeviceDataTypeSource currentTypeSource =
+                            dataSource.getDeviceDataTypeSources().iterator().next();
+
+                    assertThat(currentTypeSource.isAvailable()).isTrue();
+                    assertThat(currentTypeSource.getSymptomType()).isEqualTo(SYMPTOM_TYPE_UNKNOWN);
+                    assertThat(currentTypeSource.getDataType()).isEqualTo(StepsRecord.class);
+
                     assertThat(dataSource.getDeviceDataOrigin().getPackageName())
                             .isEqualTo(currentDeviceId);
+
                     assertThat(dataSource.getDevice().getModel()).isNotNull();
                     assertThat(dataSource.getDevice().getManufacturer()).isNotNull();
                     assertThat(dataSource.getDevice().getType())
@@ -109,23 +119,17 @@ public class CurrentDeviceDataSourceTest {
     @Test
     public void withReadPermission_returnsDevice() throws InterruptedException {
         String currentDeviceId = TestUtils.getCurrentDeviceId();
-        Set<DeviceDataTypeAdvertisement> ads =
-                Set.of(
-                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
-                                .setAvailable(true)
-                                .setUserEnabled(true)
-                                .build());
-        DeviceDataAdvertisement advertisement =
-                new DeviceDataAdvertisement(TEST_DEVICE, currentDeviceId, ads);
-        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
-        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
-
         TestUtils.verifyGetCurrentDeviceDataSourceWithPermission(
                 dataSource -> {
-                    assertThat(dataSource.getDevice().getManufacturer())
-                            .isEqualTo("TestManufacturer");
-                    assertThat(dataSource.getDevice().getModel()).isEqualTo("TestModel");
-                    assertThat(dataSource.getDeviceDataTypeSources()).hasSize(1);
+                    assertThat(dataSource.getDeviceDataOrigin().getPackageName())
+                            .isEqualTo(currentDeviceId);
+
+                    assertThat(dataSource.getDevice().getModel()).isNotNull();
+                    assertThat(dataSource.getDevice().getManufacturer()).isNotNull();
+                    assertThat(dataSource.getDevice().getType())
+                            .isEqualTo(Device.DEVICE_TYPE_PHONE);
+                    assertThat(dataSource.getDevice().getDisplayName()).isNotNull();
+
                     DeviceDataTypeSource typeSource =
                             dataSource.getDeviceDataTypeSources().iterator().next();
                     assertThat(typeSource.getDataType()).isEqualTo(StepsRecord.class);
@@ -151,16 +155,23 @@ public class CurrentDeviceDataSourceTest {
 
         TestUtils.verifyGetCurrentDeviceDataSourceWithPermission(
                 dataSource -> {
-                    assertThat(dataSource.getDevice().getManufacturer())
-                            .isEqualTo("TestManufacturer");
-                    assertThat(dataSource.getDevice().getModel()).isEqualTo("TestModel");
+                    assertThat(dataSource.getDevice().getModel()).isNotNull();
+                    assertThat(dataSource.getDevice().getManufacturer()).isNotNull();
+                    assertThat(dataSource.getDevice().getType())
+                            .isEqualTo(Device.DEVICE_TYPE_PHONE);
+                    assertThat(dataSource.getDevice().getDisplayName()).isNotNull();
 
-                    assertThat(dataSource.getDeviceDataTypeSources()).hasSize(1);
-                    DeviceDataTypeSource typeSource =
-                            dataSource.getDeviceDataTypeSources().iterator().next();
-                    assertThat(typeSource.getDataType()).isEqualTo(NutritionRecord.class);
-                    assertThat(typeSource.isAvailable()).isTrue();
-                    assertThat(typeSource.isUserEnabled()).isTrue();
+                    assertThat(dataSource.getDeviceDataTypeSources()).hasSize(2);
+
+                    Optional<DeviceDataTypeSource> typeSource =
+                            dataSource.getDeviceDataTypeSources().stream()
+                                    .filter(source -> source.getDataType() == NutritionRecord.class)
+                                    .findAny();
+
+                    assertThat(typeSource.isPresent()).isTrue();
+                    assertThat(typeSource.get().getDataType()).isEqualTo(NutritionRecord.class);
+                    assertThat(typeSource.get().isAvailable()).isTrue();
+                    assertThat(typeSource.get().isUserEnabled()).isTrue();
                 },
                 READ_DISTANCE,
                 READ_NUTRITION,

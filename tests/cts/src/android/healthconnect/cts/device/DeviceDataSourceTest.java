@@ -18,7 +18,10 @@ package android.healthconnect.cts.device;
 
 import static android.health.connect.HealthPermissions.READ_STEPS;
 import static android.health.connect.HealthPermissions.READ_SYMPTOM_COUGH;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
+import static android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_UNKNOWN;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
+import static android.healthconnect.testing.cts.TestUtils.getCurrentDeviceId;
 
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
@@ -99,13 +102,29 @@ public class DeviceDataSourceTest {
     }
 
     @Test
-    public void getDeviceDataSources_noAdvertisements_returnsEmpty() throws InterruptedException {
+    public void getDeviceDataSources_noCallerAdvertisements_returnsCurrentDevice()
+            throws InterruptedException {
         List<DeviceDataSource> dataSources =
                 HealthConnectReceiver.<GetDeviceDataSourcesResponse>callAndGetResponse(
                                 (executor, receiver) ->
                                         mManager.getDeviceDataSources(executor, receiver))
                         .getDeviceDataSources();
-        assertThat(dataSources).isEmpty();
+        assertThat(dataSources).hasSize(1);
+        DeviceDataSource currentDeviceSource = dataSources.get(0);
+
+        assertThat(currentDeviceSource.getDeviceDataOrigin().getPackageName())
+                .isEqualTo(getCurrentDeviceId());
+        assertThat(currentDeviceSource.getDeviceDataTypeSources()).hasSize(1);
+        assertThat(currentDeviceSource.getDevice().getType()).isEqualTo(DEVICE_TYPE_PHONE);
+
+        DeviceDataTypeSource currentDeviceTypeSource =
+                currentDeviceSource.getDeviceDataTypeSources().iterator().next();
+        assertThat(currentDeviceTypeSource.isAvailable()).isTrue();
+        assertThat(currentDeviceTypeSource.getSymptomType()).isEqualTo(SYMPTOM_TYPE_UNKNOWN);
+        assertThat(currentDeviceTypeSource.getDataType()).isEqualTo(StepsRecord.class);
+
+        // TODO(b/468250208): Set to preference
+        assertThat(currentDeviceTypeSource.isUserEnabled()).isTrue();
     }
 
     @Test
@@ -122,11 +141,15 @@ public class DeviceDataSourceTest {
 
         TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
 
+        String currentDeviceId = getCurrentDeviceId();
+
         TestUtils.verifyGetDeviceDataSourcesWithPermission(
                 READ_STEPS,
                 dataSources -> {
-                    assertThat(dataSources).hasSize(1);
-                    DeviceDataSource dataSource = dataSources.get(0);
+                    assertThat(dataSources).hasSize(2);
+                    assertThat(dataSources.get(0).getDeviceDataOrigin().getPackageName())
+                            .isEqualTo(currentDeviceId);
+                    DeviceDataSource dataSource = dataSources.get(1);
                     assertThat(dataSource.getDevice().getManufacturer())
                             .isEqualTo("TestManufacturer");
                     assertThat(dataSource.getDevice().getModel()).isEqualTo("TestModel");
@@ -161,11 +184,15 @@ public class DeviceDataSourceTest {
 
         TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
 
+        String currentDeviceId = getCurrentDeviceId();
+
         TestUtils.verifyGetDeviceDataSourcesWithPermission(
                 READ_SYMPTOM_COUGH,
                 dataSources -> {
-                    assertThat(dataSources).hasSize(1);
-                    DeviceDataSource dataSource = dataSources.get(0);
+                    assertThat(dataSources).hasSize(2);
+                    assertThat(dataSources.get(0).getDeviceDataOrigin().getPackageName())
+                            .isEqualTo(currentDeviceId);
+                    DeviceDataSource dataSource = dataSources.get(1);
 
                     // Should see BOTH Cough and Headache
                     assertThat(dataSource.getDeviceDataTypeSources()).hasSize(2);
@@ -237,12 +264,16 @@ public class DeviceDataSourceTest {
 
         TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
 
+        String currentDeviceId = getCurrentDeviceId();
+
         // Grant ONLY READ_STEPS. We should still see the other data type (distance).
         TestUtils.verifyGetDeviceDataSourcesWithPermission(
                 READ_STEPS,
                 dataSources -> {
-                    assertThat(dataSources).hasSize(1);
-                    DeviceDataSource dataSource = dataSources.get(0);
+                    assertThat(dataSources).hasSize(2);
+                    assertThat(dataSources.get(0).getDeviceDataOrigin().getPackageName())
+                            .isEqualTo(currentDeviceId);
+                    DeviceDataSource dataSource = dataSources.get(1);
 
                     // Should see BOTH Steps and Distance
                     assertThat(dataSource.getDeviceDataTypeSources()).hasSize(2);

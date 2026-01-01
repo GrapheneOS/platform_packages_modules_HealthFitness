@@ -1860,8 +1860,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             for (String packageName : packageNames) {
                 mFirstGrantTimeManager.setFirstGrantTime(packageName, Instant.now(), userHandle);
             }
-            if (mDeviceDataProviderManager != null) {
+            if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                requireNonNull(mDeviceDataProviderManager);
                 mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+                mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
             }
         } finally {
             Binder.restoreCallingIdentity(token);
@@ -4680,6 +4682,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             return Set.of();
         }
         // TODO(b/464473056) remove this once native tracking is represented fully in DDP schema.
+        // TODO(b/468339751): Have one shared source for all native capability types
         Stream<Integer> nativeTrackingRecordTypes = Stream.of(RECORD_TYPE_STEPS);
         Set<Integer> supportedRecordTypes =
                 concat(
