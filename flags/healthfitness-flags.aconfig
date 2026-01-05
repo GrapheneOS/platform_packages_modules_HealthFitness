@@ -602,3 +602,18 @@ flag {
     description: "Flag for moving temporal field from individual records to base Record Helper."
     bug: "463324870"
 }
+
+flag {
+    name: "device_udi"
+    namespace: "health_fitness_aconfig"
+    description: "Flag for Device UDI API changes."
+    bug: "467999349"
+    # TODO(b/472306214): export this flag after API review
+}
+
+flag {
+    name: "device_udi_db"
+    namespace: "health_fitness_aconfig"
+    description: "Enables DB changes to support device UDI API changes."
+    bug: "467999349"
+}
