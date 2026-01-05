@@ -36,6 +36,7 @@ import android.util.Pair;
 import androidx.annotation.VisibleForTesting;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -64,6 +65,7 @@ public class DeviceInfoHelper extends DatabaseHelper {
     public static final String DEVICE_TYPE_COLUMN_NAME = "device_type";
     public static final String DEVICE_ID_COLUMN_NAME = "device_id";
     public static final String DISPLAY_NAME_COLUMN_NAME = "display_name";
+    public static final String UDI_COLUMN_NAME = "udi";
 
     record DeviceInfoCache(
             // Map to store deviceInfoId -> DeviceInfo mapping for populating record for read.
@@ -111,6 +113,7 @@ public class DeviceInfoHelper extends DatabaseHelper {
         if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
             displayName = recordInternal.getDisplayName();
         }
+        // TODO(b/472307884): get udi from record
 
         DeviceInfo deviceInfo =
                 new DeviceInfo(manufacturer, model, deviceType, deviceId, displayName);
@@ -136,6 +139,7 @@ public class DeviceInfoHelper extends DatabaseHelper {
             if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                 record.setDisplayName(deviceInfo.mDisplayName);
             }
+            // TODO(b/472307884): populate udi value
         }
     }
 
@@ -155,6 +159,14 @@ public class DeviceInfoHelper extends DatabaseHelper {
      */
     public static AlterTableRequest getAlterTableRequestForDdpColumns() {
         return new AlterTableRequest(TABLE_NAME, getEnhancedDeviceInfoColumnInfo());
+    }
+
+    /**
+     * Creates an {@link AlterTableRequest} for adding device UDI specific column, {@link
+     * #UDI_COLUMN_NAME} to the device_info_table.
+     */
+    public static AlterTableRequest getAlterTableRequestForUdiColumn() {
+        return new AlterTableRequest(TABLE_NAME, List.of(Pair.create(UDI_COLUMN_NAME, TEXT_NULL)));
     }
 
     /** Returns the rowId for the given DeviceInfo. */
@@ -210,9 +222,13 @@ public class DeviceInfoHelper extends DatabaseHelper {
                         deviceIdToDeviceTypeMap.put(deviceId, deviceType);
                     }
                 }
+                String udi = null;
+                if (Flags.deviceUdiDb()) {
+                    udi = getCursorString(cursor, UDI_COLUMN_NAME);
+                }
 
                 DeviceInfo deviceInfo =
-                        new DeviceInfo(manufacturer, model, deviceType, deviceId, displayName);
+                        new DeviceInfo(manufacturer, model, deviceType, deviceId, displayName, udi);
                 deviceInfoMap.put(deviceInfo, rowId);
                 idDeviceInfoMap.put(rowId, deviceInfo);
             }
@@ -268,7 +284,8 @@ public class DeviceInfoHelper extends DatabaseHelper {
                                         deviceInfo.mModel,
                                         deviceInfo.mDeviceType,
                                         deviceInfo.mDeviceId,
-                                        deviceInfo.mDisplayName)));
+                                        deviceInfo.mDisplayName,
+                                        deviceInfo.mUdi)));
         getDeviceInfoMap().put(deviceInfo, rowId);
         getIdDeviceInfoMap().put(rowId, deviceInfo);
         if (AconfigFlagHelper.isDeviceDataProvidersEnabled() && deviceInfo.mDeviceId != null) {
@@ -282,7 +299,8 @@ public class DeviceInfoHelper extends DatabaseHelper {
             String model,
             int deviceType,
             @Nullable String deviceId,
-            @Nullable String displayName) {
+            @Nullable String displayName,
+            @Nullable String udi) {
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(MANUFACTURER_COLUMN_NAME, manufacturer);
@@ -292,6 +310,10 @@ public class DeviceInfoHelper extends DatabaseHelper {
         if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
             contentValues.put(DEVICE_ID_COLUMN_NAME, deviceId);
             contentValues.put(DISPLAY_NAME_COLUMN_NAME, displayName);
+        }
+
+        if (Flags.deviceUdiDb()) {
+            contentValues.put(UDI_COLUMN_NAME, udi);
         }
 
         return contentValues;
@@ -315,12 +337,14 @@ public class DeviceInfoHelper extends DatabaseHelper {
         return columnInfo;
     }
 
+    // TODO(b/473489261): Migrate DeviceInfo to builder pattern
     public static final class DeviceInfo {
         private final String mManufacturer;
         private final String mModel;
         @DeviceType private final int mDeviceType;
         @Nullable private final String mDeviceId;
         @Nullable private final String mDisplayName;
+        @Nullable private final String mUdi;
 
         public DeviceInfo(
                 String manufacturer,
@@ -328,11 +352,22 @@ public class DeviceInfoHelper extends DatabaseHelper {
                 @DeviceType int deviceType,
                 @Nullable String deviceId,
                 @Nullable String displayName) {
+            this(manufacturer, model, deviceType, deviceId, displayName, /* udi= */ null);
+        }
+
+        public DeviceInfo(
+                String manufacturer,
+                String model,
+                @DeviceType int deviceType,
+                @Nullable String deviceId,
+                @Nullable String displayName,
+                @Nullable String udi) {
             mManufacturer = manufacturer;
             mModel = model;
             mDeviceType = deviceType;
             mDeviceId = deviceId;
             mDisplayName = displayName;
+            mUdi = Flags.deviceUdiDb() ? udi : null;
         }
 
         public String getManufacturer() {
@@ -357,12 +392,18 @@ public class DeviceInfoHelper extends DatabaseHelper {
             return mDisplayName;
         }
 
+        @Nullable
+        public String getUdi() {
+            return mUdi;
+        }
+
         @Override
         public int hashCode() {
             int result = mManufacturer != null ? mManufacturer.hashCode() : 0;
             result = 31 * result + (mModel != null ? mModel.hashCode() : 0) + mDeviceType;
             result = 31 * result + (mDeviceId != null ? mDeviceId.hashCode() : 0);
             result = 31 * result + (mDisplayName != null ? mDisplayName.hashCode() : 0);
+            result = 31 * result + (mUdi != null ? mUdi.hashCode() : 0);
             return result;
         }
 
@@ -389,6 +430,9 @@ public class DeviceInfoHelper extends DatabaseHelper {
                 return false;
             }
             if (!Objects.equals(mDisplayName, deviceInfo.mDisplayName)) {
+                return false;
+            }
+            if (!Objects.equals(mUdi, deviceInfo.mUdi)) {
                 return false;
             }
 

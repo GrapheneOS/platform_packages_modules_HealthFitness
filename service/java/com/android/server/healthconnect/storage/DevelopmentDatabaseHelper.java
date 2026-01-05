@@ -16,6 +16,9 @@
 
 package com.android.server.healthconnect.storage;
 
+import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.executeSqlStatements;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.checkColumnExists;
+
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -23,6 +26,7 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
+import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 
 /**
  * Code to manage development features of the Health Connect database before they are ready for
@@ -41,7 +45,7 @@ public final class DevelopmentDatabaseHelper {
      * The current version number for the development database features. Increment this whenever you
      * make a breaking schema change to a development feature.
      */
-    @VisibleForTesting static final int CURRENT_VERSION = 26;
+    @VisibleForTesting static final int CURRENT_VERSION = 27;
 
     /** The name of the table to store development specific key value pairs. */
     private static final String SETTINGS_TABLE_NAME = "development_database_settings";
@@ -89,6 +93,18 @@ public final class DevelopmentDatabaseHelper {
         dropAndCreateDevelopmentSettingsTable(db, CURRENT_VERSION);
 
         // Code for under development schema changes goes in this method but below this comment
+        if (Flags.deviceUdiDb()) {
+            applyDeviceUdiDatabaseUpgrade(db);
+        }
+    }
+
+    private static void applyDeviceUdiDatabaseUpgrade(SQLiteDatabase db) {
+        if (checkColumnExists(db, DeviceInfoHelper.TABLE_NAME, DeviceInfoHelper.UDI_COLUMN_NAME)) {
+            // Upgrade has already been applied. Return early.
+            return;
+        }
+        executeSqlStatements(
+                db, DeviceInfoHelper.getAlterTableRequestForUdiColumn().getAddColumnsCommands());
     }
 
     @VisibleForTesting
