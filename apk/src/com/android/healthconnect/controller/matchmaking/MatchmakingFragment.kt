@@ -179,17 +179,24 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
         val expandablePreference = createExpandablePreference(appData, appListSize)
         matchmakingAppsCategory.addPreference(expandablePreference)
         customStyledPrefs.add(expandablePreference)
-
-        if (appData.permissions.isNotEmpty()) {
-            addPermissionSwitches(appData, expandablePreference)
-            addPrivacyPolicyFooter(appData, expandablePreference)
-        }
+        addPermissionSwitches(appData, expandablePreference)
+        addPrivacyPolicyFooter(appData, expandablePreference)
 
         viewModel.grantedPermissions.observe(viewLifecycleOwner) { grantedPermissionsMap ->
             val granted = grantedPermissionsMap[appData.metadata.packageName]?.size ?: 0
             val total = appData.permissions.size
             expandablePreference.summary =
                 requireContext().getString(R.string.app_permissions_granted_summary, granted, total)
+
+            expandablePreference.isChecked = granted == total
+        }
+
+        expandablePreference.setOnSwitchChangeListener { isChecked ->
+            if (isChecked) {
+                viewModel.addAppPermissionsToGrantedList(appData.metadata.packageName)
+            } else {
+                viewModel.removeAppPermissionsFromGrantedList(appData.metadata.packageName)
+            }
         }
     }
 
@@ -334,15 +341,6 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     }
 
     private fun toggleAllMatchmakingPermissions(isChecked: Boolean) {
-        matchmakingAppsCategory.children.forEach { preference ->
-            if (preference is HealthExpandablePreference) {
-                preference.children.forEach { child ->
-                    if (child is HealthSwitchPreference) {
-                        child.isChecked = isChecked
-                    }
-                }
-            }
-        }
         if (isChecked) {
             viewModel.addAllPermissionsToGrantedList()
         } else {
@@ -382,7 +380,14 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
         dontAllowButton.setOnClickListener {
             logger.logInteraction(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
             viewModel.recordMatchmakingDenial()
-            viewModel.removeAllPermissionsFromGrantedList()
+            val callingPackageName =
+                (viewModel.matchmakingState.value
+                        as? MatchmakingViewModel.MatchmakingState.WithData)
+                    ?.callingAppMetaData
+                    ?.packageName
+            if (callingPackageName != null) {
+                viewModel.removeAllPermissionsFromGrantedList()
+            }
             activity?.setResult(RESULT_CANCELED)
             activity?.finish()
         }
