@@ -96,7 +96,7 @@
     <string name="can_read" msgid="4568261079308309564">"Có thể đọc <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Có thể ghi <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="inactive_apps" msgid="8956546286760797760">"Ứng dụng không hoạt động"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Những ứng dụng này không thể đọc hoặc ghi dữ liệu về <xliff:g id="DATA_TYPE">%s</xliff:g> nữa nhưng vẫn có dữ liệu được lưu trữ trong Health Connect"</string>
+    <string name="inactive_apps_message" msgid="8335803540719022910">"Những ứng dụng này không thể đọc hoặc ghi dữ liệu về <xliff:g id="DATA_TYPE">%s</xliff:g> nữa, nhưng dữ liệu hiện có của chúng vẫn được lưu trong Health Connect"</string>
     <string name="data_access_empty_message" msgid="9084350402254264452">"Các ứng dụng không thể đọc hoặc ghi dữ liệu về <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> nữa và không có dữ liệu về <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> được lưu trữ trong Health Connect"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Dữ liệu này bao gồm thông tin như thời gian hoạt động, loại bài tập, số vòng, số lần lặp lại, số phiên hoặc kiểu bơi"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Dữ liệu này bao gồm thông tin như các giai đoạn ngủ và giấc ngủ"</string>
@@ -406,7 +406,7 @@
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Cho phép ứng dụng <xliff:g id="APP_NAME">%1$s</xliff:g> đọc dữ liệu của các ứng dụng khác trên thiết bị này thông qua Health Connect. Các ứng dụng khác mà bạn cấp quyền truy cập cũng có thể đọc dữ liệu này."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Các ứng dụng có thể đồng bộ hoá dữ liệu này"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Tìm hiểu cách <xliff:g id="APP_NAME">%1$s</xliff:g> dùng dữ liệu của bạn trong "<a href="%2$s">"chính sách quyền riêng tư"</a>" của họ."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Với Health Connect, bạn có thể chia sẻ dữ liệu về sức khoẻ và hoạt động thể dục giữa nhiều ứng dụng. Nhờ đó, bạn sẽ có thêm những hiểu biết và trải nghiệm, trong khi vẫn đảm bảo an toàn cho dữ liệu của mình."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Với Health Connect, bạn có thể chia sẻ dữ liệu về sức khoẻ và hoạt động thể dục giữa nhiều ứng dụng. Nhờ đó, bạn sẽ có thêm những thông tin chuyên sâu và trải nghiệm hữu ích, trong khi vẫn đảm bảo an toàn cho dữ liệu của mình."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Tìm hiểu thêm về Health Connect"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"mở rộng"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"thu gọn"</string>

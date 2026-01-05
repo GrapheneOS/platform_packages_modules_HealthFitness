@@ -388,8 +388,8 @@
     <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Kirjoita oireet"</string>
     <string name="symptom_unknown" msgid="5796719193136239306">"Tuntematon"</string>
     <string name="symptom_severity_mild" msgid="2689415474774489874">"Lievä"</string>
-    <string name="symptom_severity_moderate" msgid="8388787027751900668">"Keskitaso"</string>
-    <string name="symptom_severity_severe" msgid="4675732713898596705">"Vakava"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"Kohtalainen"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"Kova"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Salli <xliff:g id="APP_NAME">%1$s</xliff:g>-sovelluksen lukea"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Salli sovelluksen “<xliff:g id="APP_NAME">%1$s</xliff:g>” kirjoittaa"</string>
@@ -403,7 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Valitse, mitä Health Connect -dataa haluat sovelluksen lukevan"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Jaa dataa sovellusten välillä"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data sovelluksesta: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Salli, että <xliff:g id="APP_NAME">%1$s</xliff:g> lukee dataa muista sovelluksista tällä laitteella Health Connectin avulla. Muut sovellukset, joille annat pääsyn, voivat myös lukea tätä dataa."</string>
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Salli, että <xliff:g id="APP_NAME">%1$s</xliff:g> lukee dataa muista sovelluksista tällä laitteella Health Connectin avulla. Myös muut sovellukset, joille annat pääsyn, voivat lukea tätä dataa."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Sovellukset, jotka voivat synkronoida tämän datan"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Lue "<a href="%2$s">"tietosuojakäytännöstä"</a>", miten <xliff:g id="APP_NAME">%1$s</xliff:g> käyttää dataasi."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connectin avulla voit jakaa terveys- ja kuntoiludataa useiden sovellusten välillä. Näin voit hyödyntää havaintoja ja kokemuksia sekä pitää datasi turvassa."</string>

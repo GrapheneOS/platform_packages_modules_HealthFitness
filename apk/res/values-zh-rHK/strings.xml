@@ -390,7 +390,7 @@
     <string name="symptom_severity_mild" msgid="2689415474774489874">"輕度"</string>
     <string name="symptom_severity_moderate" msgid="8388787027751900668">"中度"</string>
     <string name="symptom_severity_severe" msgid="4675732713898596705">"嚴重"</string>
-    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g><xliff:g id="TYPE">%2$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」讀取"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」寫入"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"允許"</string>
@@ -402,7 +402,7 @@
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"選擇你希望此應用程式讀取或寫入「健康資料同步」的資料"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"選擇你希望此應用程式讀取的「健康資料同步」資料"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"在應用程式之間分享資料"</string>
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"資料來自「<xliff:g id="APP_NAME">%1$s</xliff:g>」"</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」的資料"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」應用程式使用「健康資料同步」讀取此裝置上其他應用程式的資料。你授予存取權的其他應用程式亦可讀取有關資料。"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"可同步這些資料的應用程式"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"查看《"<a href="%2$s">"私隱權政策"</a>"》以瞭解「<xliff:g id="APP_NAME">%1$s</xliff:g>」如何使用你的資料。"</string>

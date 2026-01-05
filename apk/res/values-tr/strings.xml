@@ -403,7 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Bu uygulamanın Health Connect\'ten okumasını istediğiniz verileri seçin"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Uygulamalar arasında veri paylaşın"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasından veriler"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasının, Health Connect\'i kullanarak bu cihazda bulunan diğer uygulamalardaki verileri okumasına izin verin Bu veriler, erişim izni verdiğiniz diğer uygulamalar tarafından da okunabilir."</string>
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasının, Health Connect\'i kullanarak bu cihazda bulunan diğer uygulamalardaki verileri okumasına izin verin. Bu veriler, erişim izni verdiğiniz diğer uygulamalar tarafından da okunabilir."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Bu verileri senkronize edebilen uygulamalar"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasının, verilerinizi nasıl kullandığını "<a href="%2$s">"gizlilik politikasından"</a>" öğrenin."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect, sağlık ve fitness verilerinizi birden fazla uygulama arasında paylaşmanıza olanak tanır. Bu sayede verilerinizin güvenliğini sağlarken analizler ve deneyimlerden faydalanabilirsiniz."</string>
@@ -1349,7 +1349,7 @@
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Bu uygulamayı Health Connect\'e bağlamak için tıklayın"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Şimdi değil"</string>
     <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Tüm belirtiler"</string>
-    <string name="symptoms_lowercase_label" msgid="767123038349492995">"belirtiler"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"Belirtiler"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Akne verilerini okuma"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Akne verilerini yazma"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Kolay kırılan tırnaklar verilerini okuma"</string>

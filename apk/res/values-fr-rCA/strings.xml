@@ -96,7 +96,7 @@
     <string name="can_read" msgid="4568261079308309564">"Autorisation de lecture : <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Autorisation d\'écriture : <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="inactive_apps" msgid="8956546286760797760">"Applis inactives"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Ces applis ne peuvent plus lire ni écrire de données <xliff:g id="DATA_TYPE">%s</xliff:g>, mais ont toujours des données stockées dans Connexion santé"</string>
+    <string name="inactive_apps_message" msgid="8335803540719022910">"Ces applis ne peuvent plus lire ni écrire de données de type <xliff:g id="DATA_TYPE">%s</xliff:g>, mais ont toujours des données stockées dans Connexion santé"</string>
     <string name="data_access_empty_message" msgid="9084350402254264452">"Les applis ne peuvent plus lire ni écrire les données <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>, et aucune donnée <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> n\'est stockée dans Connexion santé"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Ces données incluent des informations telles que la durée d\'activité, le type d\'exercice, le nombre de tours, les répétitions, les séances ou les mouvements de nage"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Ces données incluent des informations telles que les phases de sommeil et les périodes de sommeil"</string>
@@ -108,7 +108,7 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Lire les calories brûlées"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Autorise l\'appli à lire les calories brûlées"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder aux données en arrière-plan?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Si vous l\'autorisez, cette appli peut accéder aux données d\'activité physique et de bien-être ainsi qu\'aux dossiers médicaux lorsque vous ne l\'utilisez pas."</string>
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Si vous l\'autorisez, cette appli pourra accéder aux données d\'activité physique et de bien-être ainsi qu\'aux dossiers médicaux lorsque vous ne l\'utiliserez pas."</string>
     <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"Si vous l\'autorisez, cette appli peut accéder aux dossiers médicaux lorsque vous ne l\'utilisez pas."</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Si vous l\'autorisez, cette appli peut accéder aux données d\'activité physique et de bien-être lorsque vous ne l\'utilisez pas."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Si vous l\'autorisez, cette appli peut accéder aux données de Connexion santé lorsque vous ne l\'utilisez pas."</string>
@@ -402,8 +402,8 @@
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Choisissez les données que vous voulez que cette appli puisse lire ou écrire dans Connexion santé"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Choisissez les données que vous voulez que l\'appli puisse lire dans Connexion santé"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Partager des données entre les applis"</string>
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Données de : <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Autorisez l\'appli <xliff:g id="APP_NAME">%1$s</xliff:g> à lire les données d\'autres applis sur cet appareil à l\'aide de Connexion santé Ces données peuvent également être lues par d\'autres applis auxquelles vous accordez l\'accès."</string>
+    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Données de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Autorisez l\'appli <xliff:g id="APP_NAME">%1$s</xliff:g> à lire les données d\'autres applis sur cet appareil à l\'aide de Connexion santé. Ces données peuvent également être lues par d\'autres applis auxquelles vous accordez l\'accès."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Applis qui peuvent synchroniser ces données"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Découvrez comment <xliff:g id="APP_NAME">%1$s</xliff:g> utilise vos données dans sa "<a href="%2$s">"politique de confidentialité"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Connexion santé vous permet de partager vos données de santé et d\'activité physique entre plusieurs applis. Cela vous aide à débloquer des statistiques et des expériences tout en assurant la sécurité de vos données."</string>

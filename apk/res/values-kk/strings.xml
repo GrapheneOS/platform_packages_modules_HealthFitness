@@ -93,8 +93,8 @@
     <string name="app_priority_button" msgid="3126133977893705098">"Қолданбалардың басымдығы"</string>
     <string name="delete_category_data_button" msgid="2324773398768267043">"<xliff:g id="CATEGORY">%s</xliff:g> деректерін жою"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"Барлық қолданба"</string>
-    <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> деректерін оқи алады"</string>
-    <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> деректерін жаза алады"</string>
+    <string name="can_read" msgid="4568261079308309564">"Оқи алады: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="can_write" msgid="5082414937218423823">"Жаза алады: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="inactive_apps" msgid="8956546286760797760">"Әрекетсіз қолданбалар"</string>
     <string name="inactive_apps_message" msgid="8335803540719022910">"Бұл қолданбалар бұдан былай <xliff:g id="DATA_TYPE">%s</xliff:g> деректерін оқи алмайды немесе жаза алмайды, бірақ деректерді бұрынғыша Health Connect қолданбасында сақтайды."</string>
     <string name="data_access_empty_message" msgid="9084350402254264452">"Қолданбалар бұдан былай <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> деректерін оқи не жаза алмайды, сондай-ақ <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> деректері Health Connect қолданбасында сақталмайды."</string>
@@ -403,7 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Бұл қолданба Health Connect қолданбасынан оқитын деректерді таңдаңыз."</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Деректерді қолданбалар арасында бөлісу"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Дереккөз: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасына осы құрылғыдағы басқа қолданбалардың деректерін Health Connect көмегімен оқуға рұқсат ету. Бұл деректерді сіз рұқсат берген басқа қолданбалар да оқи алады."</string>
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасына осы құрылғыдағы басқа қолданбалардың деректерін Health Connect көмегімен оқуға рұқсат етіңіз. Бұл деректерді сіз рұқсат берген басқа қолданбалар да оқи алады."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Бұл деректерді синхрондай алатын қолданбалар"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасының деректеріңізді қалай пайдаланатынын оның "<a href="%2$s">"құпиялық саясатынан"</a>" қараңыз."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect денсаулық және фитнес деректерін бірнеше қолданба арасында бөлісуге мүмкіндік береді. Сондай-ақ статистика мен функциялар құлпын ашуға көмектеседі әрі деректеріңізді қорғайды."</string>

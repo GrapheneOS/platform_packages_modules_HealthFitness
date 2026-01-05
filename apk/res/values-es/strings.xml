@@ -95,8 +95,8 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Todas las apps"</string>
     <string name="can_read" msgid="4568261079308309564">"Puede leer <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Puede escribir <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"Apps inactivas"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Estas apps ya no pueden leer o escribir datos de <xliff:g id="DATA_TYPE">%s</xliff:g>, pero aún tienen datos almacenados en Salud conectada"</string>
+    <string name="inactive_apps" msgid="8956546286760797760">"Aplicaciones inactivas"</string>
+    <string name="inactive_apps_message" msgid="8335803540719022910">"Estas aplicaciones ya no pueden leer ni escribir datos de <xliff:g id="DATA_TYPE">%s</xliff:g>, pero siguen teniendo datos almacenados en Salud conectada"</string>
     <string name="data_access_empty_message" msgid="9084350402254264452">"Las apps ya no pueden leer ni escribir datos de <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> y no hay datos de <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> guardados en Salud conectada"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Estos datos incluyen información como el tiempo de actividad, el tipo de ejercicio, los largos, las repeticiones, las sesiones o las brazadas"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Estos datos incluyen información como las fases y las sesiones del sueño"</string>
@@ -476,7 +476,7 @@
     <string name="see_app_data" msgid="3951030076195119476">"Ver datos de la aplicación"</string>
     <string name="remove_access_for_this_app" msgid="7701101420310711833">"Quitar acceso de esta aplicación"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Eliminar datos de la aplicación"</string>
-    <string name="inactive_apps_section_title" msgid="7492812973696378690">"Apps inactivas"</string>
+    <string name="inactive_apps_section_title" msgid="7492812973696378690">"Aplicaciones inactivas"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"Estas apps ya no tienen acceso, pero siguen teniendo datos almacenados en Salud conectada"</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> puede leer los datos añadidos después del <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"Para gestionar otros permisos de Android a los que puede acceder esta app, ve a Ajustes &gt; Apps"</string>
