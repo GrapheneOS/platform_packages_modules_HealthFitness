@@ -142,7 +142,7 @@ public class FitnessRecordDeleteHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 request,
-                /* grantedGranularWritePermissions= */ Collections.emptySet(),
+                /* grantedPerRecordWritePermissions= */ Collections.emptySet(),
                 /* enforceSelfDelete */ true,
                 /* shouldRecordAccessLog= */ false);
         List<UUID> uuidList = mFitnessTestUtils.getAllDeletedUuids();
@@ -165,7 +165,7 @@ public class FitnessRecordDeleteHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
-                /* grantedGranularWritePermissions= */ Collections.emptySet(),
+                /* grantedPerRecordWritePermissions= */ Collections.emptySet(),
                 /* enforceSelfDelete */ true,
                 /* shouldRecordAccessLog= */ false);
         List<UUID> uuidList = mFitnessTestUtils.getAllDeletedUuids();
@@ -191,7 +191,7 @@ public class FitnessRecordDeleteHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
-                /* grantedGranularWritePermissions= */ Collections.emptySet(),
+                /* grantedPerRecordWritePermissions= */ Collections.emptySet(),
                 /* enforceSelfDelete */ true,
                 /* shouldRecordAccessLog= */ false);
 
@@ -213,7 +213,7 @@ public class FitnessRecordDeleteHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
-                /* grantedGranularWritePermissions= */ Collections.emptySet(),
+                /* grantedPerRecordWritePermissions= */ Collections.emptySet(),
                 /* enforceSelfDelete */ true,
                 /* shouldRecordAccessLog= */ true);
 
@@ -239,7 +239,7 @@ public class FitnessRecordDeleteHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
-                /* grantedGranularWritePermissions= */ Collections.emptySet(),
+                /* grantedPerRecordWritePermissions= */ Collections.emptySet(),
                 /* enforceSelfDelete */ true,
                 /* shouldRecordAccessLog= */ false);
 
@@ -261,7 +261,7 @@ public class FitnessRecordDeleteHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
-                /* grantedGranularWritePermissions= */ Collections.emptySet(),
+                /* grantedPerRecordWritePermissions= */ Collections.emptySet(),
                 /* holdsDataManagementPermission */ false,
                 /* shouldRecordAccessLog= */ false);
 
@@ -291,7 +291,7 @@ public class FitnessRecordDeleteHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 deleteRequestParcel,
-                /* grantedGranularWritePermissions= */ Collections.emptySet(),
+                /* grantedPerRecordWritePermissions= */ Collections.emptySet(),
                 /* holdsDataManagementPermission */ false,
                 /* shouldRecordAccessLog= */ false);
 
@@ -326,7 +326,7 @@ public class FitnessRecordDeleteHelperTest {
                 TEST_PACKAGE_NAME,
                 1234,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
-                /* grantedGranularWritePermissions= */ Collections.emptySet());
+                /* grantedPerRecordWritePermissions= */ Collections.emptySet());
 
         ArgumentCaptor<List<RecordDeleteTableRequest>> requestCaptor =
                 ArgumentCaptor.forClass(List.class);
@@ -363,7 +363,7 @@ public class FitnessRecordDeleteHelperTest {
                 TEST_PACKAGE_NAME,
                 1234,
                 deleteRequestParcel,
-                /* grantedGranularWritePermissions= */ Collections.emptySet());
+                /* grantedPerRecordWritePermissions= */ Collections.emptySet());
 
         ArgumentCaptor<List<RecordDeleteTableRequest>> requestCaptor =
                 ArgumentCaptor.forClass(List.class);
@@ -395,7 +395,7 @@ public class FitnessRecordDeleteHelperTest {
                 TEST_PACKAGE_NAME,
                 1,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
-                /* grantedGranularWritePermissions= */ Collections.emptySet());
+                /* grantedPerRecordWritePermissions= */ Collections.emptySet());
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
         assertThat(result).isEmpty();
@@ -416,7 +416,7 @@ public class FitnessRecordDeleteHelperTest {
                 TEST_PACKAGE_NAME,
                 1,
                 deleteRequestParcel,
-                /* grantedGranularWritePermissions= */ Collections.emptySet());
+                /* grantedPerRecordWritePermissions= */ Collections.emptySet());
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
         assertThat(result).isEmpty();
@@ -437,7 +437,7 @@ public class FitnessRecordDeleteHelperTest {
                 TEST_PACKAGE_NAME,
                 1,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
-                /* grantedGranularWritePermissions= */ Collections.emptySet());
+                /* grantedPerRecordWritePermissions= */ Collections.emptySet());
 
         ArgumentCaptor<DeleteUsingFiltersRequestParcel> parcelCaptor =
                 ArgumentCaptor.forClass(DeleteUsingFiltersRequestParcel.class);
@@ -474,7 +474,7 @@ public class FitnessRecordDeleteHelperTest {
                         deviceSpn,
                         1L,
                         new DeleteUsingFiltersRequestParcel(deleteRequest),
-                        /* grantedGranularWritePermissions= */ Collections.emptySet());
+                        /* grantedPerRecordWritePermissions= */ Collections.emptySet());
 
         assertThat(deletedRecords).isEqualTo(1);
     }
@@ -520,7 +520,7 @@ public class FitnessRecordDeleteHelperTest {
                         deviceSpn,
                         1L,
                         deleteRequestParcel,
-                        /* grantedGranularWritePermissions= */ Collections.emptySet());
+                        /* grantedPerRecordWritePermissions= */ Collections.emptySet());
 
         assertThat(deletedRecords).isEqualTo(1);
     }
@@ -541,7 +541,7 @@ public class FitnessRecordDeleteHelperTest {
                                 TEST_PACKAGE_NAME,
                                 1,
                                 deleteRequestParcel,
-                                /* grantedGranularWritePermissions= */ Collections.emptySet()));
+                                /* grantedPerRecordWritePermissions= */ Collections.emptySet()));
     }
 
     @Test

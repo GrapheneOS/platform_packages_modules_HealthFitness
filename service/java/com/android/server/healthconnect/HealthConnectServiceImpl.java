@@ -167,6 +167,7 @@ import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
@@ -619,12 +620,16 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             recordsParcel.getRecordsChunkSize());
                     mDataPermissionEnforcer.enforceRecordsWritePermissions(
                             recordInternals, attributionSource);
+                    Set<@RecordTypeIdentifier.RecordType Integer> recordTypeIds =
+                            recordInternals.stream()
+                                    .map(RecordInternal::getRecordType)
+                                    .collect(toSet());
                     List<String> uuids =
                             mFitnessRecordUpsertHelper.insertRecords(
                                     requireNonNull(attributionSource.getPackageName()),
                                     recordInternals,
-                                    mDataPermissionEnforcer.collectGrantedExtraWritePermissions(
-                                            recordInternals, attributionSource),
+                                    mDataPermissionEnforcer.collectGrantedPerRecordWritePermissions(
+                                            recordTypeIds, attributionSource),
                                     /* shouldGenerateAccessLogs= */ true);
                     tryAndReturnResult(callback, uuids, logger);
 
@@ -844,7 +849,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
                         if (enforceSelfRead) {
                             grantedGranularPermissions.addAll(
-                                    recordHelper.getAllGranularWritePermissionsForHelper().stream()
+                                    recordHelper.getAllPerRecordWritePermissions().stream()
                                             .filter(
                                                     permission ->
                                                             mDataPermissionEnforcer
@@ -992,11 +997,15 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                             recordsParcel.getRecordsChunkSize());
                     mDataPermissionEnforcer.enforceRecordsWritePermissions(
                             recordInternals, attributionSource);
+                    Set<@RecordTypeIdentifier.RecordType Integer> recordTypeIds =
+                            recordInternals.stream()
+                                    .map(RecordInternal::getRecordType)
+                                    .collect(toSet());
                     mFitnessRecordUpsertHelper.updateRecords(
                             requireNonNull(attributionSource.getPackageName()),
                             recordInternals,
-                            mDataPermissionEnforcer.collectGrantedExtraWritePermissions(
-                                    recordInternals, attributionSource),
+                            mDataPermissionEnforcer.collectGrantedPerRecordWritePermissions(
+                                    recordTypeIds, attributionSource),
                             /* shouldGenerateAccessLogs= */ true);
                     tryAndReturnResult(callback, logger);
                     logRecordTypeSpecificUpsertMetrics(
@@ -1306,7 +1315,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                                     .getRecordIdToExternalRecordClassMap()
                                                     .keySet());
 
-                    Set<String> grantedGranularWritePermissions;
+                    Set<String> grantedPerRecordWritePermissions;
                     if (!holdsDataManagementPermission) {
                         tryAcquireApiCallQuota(
                                 uid,
@@ -1315,35 +1324,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                 logger);
                         mDataPermissionEnforcer.enforceWritePermissions(
                                 recordTypeIdsToDelete, attributionSource);
-                        grantedGranularWritePermissions =
-                                request.getRecordTypeFilters().stream()
-                                        .map(mInternalHealthConnectMappings::getRecordHelper)
-                                        .flatMap(
-                                                recordHelper ->
-                                                        recordHelper
-                                                                .getAllGranularWritePermissionsForHelper()
-                                                                .stream())
-                                        .filter(
-                                                permission ->
-                                                        mDataPermissionEnforcer.isPermissionGranted(
-                                                                permission, attributionSource))
-                                        .collect(Collectors.toSet());
+                        grantedPerRecordWritePermissions =
+                                mDataPermissionEnforcer.collectGrantedPerRecordWritePermissions(
+                                        request.getRecordTypeFilters(), attributionSource);
                     } else {
-                        grantedGranularWritePermissions =
-                                mInternalHealthConnectMappings.getRecordHelpers().stream()
-                                        .flatMap(
-                                                recordHelper ->
-                                                        recordHelper
-                                                                .getAllGranularWritePermissionsForHelper()
-                                                                .stream())
-                                        .collect(Collectors.toSet());
+                        grantedPerRecordWritePermissions =
+                                mInternalHealthConnectMappings.getAllPerRecordWritePermissions();
                     }
 
                     int numberOfRecordsDeleted =
                             mFitnessRecordDeleteHelper.deleteRecords(
                                     requireNonNull(attributionSource.getPackageName()),
                                     request,
-                                    grantedGranularWritePermissions,
+                                    grantedPerRecordWritePermissions,
                                     /* enforceSelfDelete= */ !holdsDataManagementPermission,
                                     /* shouldRecordAccessLog= */ !holdsDataManagementPermission);
                     tryAndReturnResult(callback, logger);

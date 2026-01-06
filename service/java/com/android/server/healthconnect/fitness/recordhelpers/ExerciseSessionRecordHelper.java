@@ -235,14 +235,14 @@ public final class ExerciseSessionRecordHelper
 
     @Override
     public List<TableColumnPair> getChildTablesWithRowsToBeDeletedDuringUpdate(
-            Set<String> grantedExtraWritePermissions) {
+            Set<String> grantedPerRecordWritePermissions) {
         ArrayList<TableColumnPair> childTablesToDelete = new ArrayList<>();
         childTablesToDelete.add(new TableColumnPair(EXERCISE_LAPS_RECORD_TABLE_NAME, PARENT_KEY));
         childTablesToDelete.add(
                 new TableColumnPair(EXERCISE_SEGMENT_RECORD_TABLE_NAME, PARENT_KEY));
 
         // If on session update app doesn't have granted write_route, then we leave the route as is.
-        if (grantedExtraWritePermissions.contains(WRITE_EXERCISE_ROUTE)) {
+        if (grantedPerRecordWritePermissions.contains(WRITE_EXERCISE_ROUTE)) {
             childTablesToDelete.add(
                     new TableColumnPair(EXERCISE_ROUTE_RECORD_TABLE_NAME, PARENT_KEY));
         }
@@ -251,10 +251,10 @@ public final class ExerciseSessionRecordHelper
 
     @Override
     protected void updateUpsertValuesIfRequired(
-            ContentValues values, Set<String> grantedExtraWritePermissions) {
+            ContentValues values, Set<String> grantedPerRecordWritePermissions) {
         // If app doesn't have granted write_route, then we ignore input hasRoute
         // value and use current value if recorded.
-        if (!grantedExtraWritePermissions.contains(WRITE_EXERCISE_ROUTE)) {
+        if (!grantedPerRecordWritePermissions.contains(WRITE_EXERCISE_ROUTE)) {
             values.remove(HAS_ROUTE_COLUMN_NAME);
         }
     }
@@ -363,7 +363,8 @@ public final class ExerciseSessionRecordHelper
         return List.of(READ_EXERCISE_ROUTE, READ_EXERCISE_ROUTES, WRITE_EXERCISE_ROUTE);
     }
 
-    public Set<String> getExtraWritePermissions() {
+    @Override
+    public Set<String> getAllPerRecordWritePermissions() {
         // If an app has write_route permission, we update existing route.
         // If app doesn't have this permission and wants to update non-route session data,
         // we don't change recorded route.

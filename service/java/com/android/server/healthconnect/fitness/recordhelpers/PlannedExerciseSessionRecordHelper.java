@@ -578,7 +578,7 @@ public final class PlannedExerciseSessionRecordHelper
 
     @Override
     public List<TableColumnPair> getChildTablesWithRowsToBeDeletedDuringUpdate(
-            Set<String> grantedExtraWritePermissions) {
+            Set<String> grantedPerRecordWritePermissions) {
         // Children of the block table will get automatically deleted via cascades.
         return Collections.singletonList(
                 new TableColumnPair(

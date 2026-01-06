@@ -652,7 +652,7 @@ public class SymptomRecordHelperTest {
 
         mFitnessTestUtils.deleteRecords(
                 PACKAGE_NAME,
-                /* grantedGranularWritePermissions= */ Set.of(
+                /* grantedPerRecordWritePermissions= */ Set.of(
                         SymptomTypePermissionMapper.getWritePermission(SYMPTOM_TYPE_WHEEZING)),
                 RecordIdFilter.fromId(SymptomRecord.class, uuidOne),
                 RecordIdFilter.fromId(SymptomRecord.class, uuidTwo));
@@ -677,7 +677,7 @@ public class SymptomRecordHelperTest {
 
         mFitnessTestUtils.deleteRecords(
                 PACKAGE_NAME,
-                /* grantedGranularWritePermissions= */ Set.of(
+                /* grantedPerRecordWritePermissions= */ Set.of(
                         SymptomTypePermissionMapper.getWritePermission(SYMPTOM_TYPE_WHEEZING),
                         SymptomTypePermissionMapper.getWritePermission(SYMPTOM_TYPE_ACNE)),
                 RecordIdFilter.fromId(SymptomRecord.class, uuidOne),
@@ -702,7 +702,7 @@ public class SymptomRecordHelperTest {
 
         mFitnessTestUtils.deleteRecords(
                 PACKAGE_NAME,
-                /* grantedGranularWritePermissions= */ Set.of(),
+                /* grantedPerRecordWritePermissions= */ Set.of(),
                 RecordIdFilter.fromId(SymptomRecord.class, uuidOne),
                 RecordIdFilter.fromId(SymptomRecord.class, uuidTwo));
 
@@ -730,7 +730,7 @@ public class SymptomRecordHelperTest {
 
         mFitnessTestUtils.deleteRecords(
                 PACKAGE_NAME,
-                /* grantedGranularWritePermissions= */ Set.of(
+                /* grantedPerRecordWritePermissions= */ Set.of(
                         SymptomTypePermissionMapper.getWritePermission(SYMPTOM_TYPE_WHEEZING),
                         SymptomTypePermissionMapper.getWritePermission(SYMPTOM_TYPE_COUGH)),
                 RecordIdFilter.fromId(SymptomRecord.class, uuidOne),

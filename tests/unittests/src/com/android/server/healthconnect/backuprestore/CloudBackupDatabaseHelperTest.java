@@ -484,7 +484,7 @@ public class CloudBackupDatabaseHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
-                /* grantedGranularWritePermissions= */ Collections.emptySet(),
+                /* grantedPerRecordWritePermissions= */ Collections.emptySet(),
                 /* holdsDataManagementPermission= */ false,
                 /* shouldRecordAccessLog= */ false);
 
@@ -569,7 +569,7 @@ public class CloudBackupDatabaseHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
-                /* grantedGranularWritePermissions= */ Collections.emptySet(),
+                /* grantedPerRecordWritePermissions= */ Collections.emptySet(),
                 /* holdsDataManagementPermission= */ false,
                 /* shouldRecordAccessLog= */ false);
         // Insert the record again with the same uuid.
@@ -611,7 +611,7 @@ public class CloudBackupDatabaseHelperTest {
         mFitnessRecordDeleteHelper.deleteRecords(
                 TEST_PACKAGE_NAME,
                 new DeleteUsingFiltersRequestParcel(deleteRequest),
-                /* grantedGranularWritePermissions= */ Collections.emptySet(),
+                /* grantedPerRecordWritePermissions= */ Collections.emptySet(),
                 /* holdsDataManagementPermission= */ false,
                 /* shouldRecordAccessLog= */ false);
 

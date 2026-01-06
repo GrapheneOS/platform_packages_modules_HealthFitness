@@ -101,14 +101,14 @@ public class FitnessRecordUpsertHelper {
      *
      * @param callingPackageName The package name inserting the records.
      * @param recordInternals The list of records to be inserted.
-     * @param grantedExtraWritePermissions The granted extra write permissions.
+     * @param grantedPerRecordWritePermissions The granted per-record write permissions.
      * @param shouldGenerateAccessLogs Whether access logs should be generated or not.
      * @return List of UUIDs of the inserted records.
      */
     public List<String> insertRecords(
             String callingPackageName,
             List<? extends RecordInternal<?>> recordInternals,
-            Set<String> grantedExtraWritePermissions,
+            Set<String> grantedPerRecordWritePermissions,
             boolean shouldGenerateAccessLogs) {
         Map<Integer, List<RecordInternal<?>>> recordTypesToRecordInternals = new HashMap<>();
         for (RecordInternal<?> recordInternal : recordInternals) {
@@ -132,7 +132,7 @@ public class FitnessRecordUpsertHelper {
                         /* shouldGenerateChangeLog= */ true,
                         /* shouldPreferNewRecord= */ true,
                         /* updateLastModifiedTime= */ true,
-                        grantedExtraWritePermissions);
+                        grantedPerRecordWritePermissions);
 
         mThreadScheduler.scheduleInternalTask(
                 () -> postInsertTasks(callingPackageName, recordInternals));
@@ -158,14 +158,14 @@ public class FitnessRecordUpsertHelper {
      *
      * @param callingPackageName The package name inserting the records.
      * @param recordInternals The list of records to be inserted.
-     * @param grantedExtraWritePermissions The granted extra write permissions.
+     * @param grantedPerRecordWritePermissions The granted per-record write permissions.
      * @param shouldGenerateAccessLogs Whether access logs should be generated or not.
      * @return List of UUIDs of the inserted records.
      */
     public List<String> updateRecords(
             String callingPackageName,
             List<? extends RecordInternal<?>> recordInternals,
-            Set<String> grantedExtraWritePermissions,
+            Set<String> grantedPerRecordWritePermissions,
             boolean shouldGenerateAccessLogs) {
 
         Map<Integer, List<RecordInternal<?>>> recordTypesToRecordInternals = new HashMap<>();
@@ -191,7 +191,7 @@ public class FitnessRecordUpsertHelper {
                         /* shouldGenerateChangeLog= */ true,
                         /* shouldPreferNewRecord= */ true,
                         /* updateLastModifiedTime= */ true,
-                        grantedExtraWritePermissions);
+                        grantedPerRecordWritePermissions);
 
         mThreadScheduler.scheduleInternalTask(
                 () ->
@@ -230,18 +230,7 @@ public class FitnessRecordUpsertHelper {
                 shouldGenerateChangeLog,
                 /* shouldPreferNewRecord= */ false,
                 /* updateLastModifiedTime= */ false,
-                getAllExtraWritePermissions());
-    }
-
-    /**
-     * Returns all possible extra write permissions.
-     *
-     * @see RecordHelper#getExtraWritePermissions()
-     */
-    public Set<String> getAllExtraWritePermissions() {
-        return mInternalHealthConnectMappings.getRecordHelpers().stream()
-                .flatMap(recordHelper -> recordHelper.getExtraWritePermissions().stream())
-                .collect(Collectors.toSet());
+                mInternalHealthConnectMappings.getAllPerRecordWritePermissions());
     }
 
     private List<String> upsert(
@@ -252,7 +241,7 @@ public class FitnessRecordUpsertHelper {
             boolean shouldGenerateChangeLog,
             boolean shouldPreferNewRecord,
             boolean updateLastModifiedTime,
-            Set<String> grantedExtraWritePermissions) {
+            Set<String> grantedPerRecordWritePermissions) {
         if (shouldGenerateAccessLog) {
             Objects.requireNonNull(callingPackageName);
         }
@@ -287,7 +276,7 @@ public class FitnessRecordUpsertHelper {
                                 createUpsertRequestForRecord(
                                         recordInternal,
                                         isInsertRequest,
-                                        grantedExtraWritePermissions);
+                                        grantedPerRecordWritePermissions);
                         if (shouldGenerateChangeLog) {
                             if (!Flags.fixChangeLogWhenInsertWithSameTimestamps()) {
                                 upsertionChangeLogs.addRecordInfo(
@@ -373,12 +362,13 @@ public class FitnessRecordUpsertHelper {
     private UpsertTableRequest createUpsertRequestForRecord(
             RecordInternal<?> recordInternal,
             boolean isInsertRequest,
-            Set<String> grantedExtraWritePermissions) {
+            Set<String> grantedPerRecordWritePermissions) {
         RecordHelper<?> recordHelper =
                 mInternalHealthConnectMappings.getRecordHelper(recordInternal.getRecordType());
 
         UpsertTableRequest request =
-                recordHelper.getUpsertTableRequest(recordInternal, grantedExtraWritePermissions);
+                recordHelper.getUpsertTableRequest(
+                        recordInternal, grantedPerRecordWritePermissions);
         if (!isInsertRequest) {
             request.setUpdateWhereClauses(generateWhereClausesForUpdate(recordInternal));
         }

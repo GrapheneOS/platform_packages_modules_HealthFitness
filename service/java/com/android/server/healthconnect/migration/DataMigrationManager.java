@@ -160,8 +160,9 @@ public final class DataMigrationManager {
 
         RecordHelper<?> recordHelper =
                 InternalHealthConnectMappings.getInstance().getRecordHelper(record.getRecordType());
-        // Treat all extra permissions as granted to pass any per-record checks.
-        return recordHelper.getUpsertTableRequest(record, recordHelper.getExtraWritePermissions());
+        // Treat all permissions as granted to pass any per-record checks.
+        return recordHelper.getUpsertTableRequest(
+                record, recordHelper.getAllPerRecordWritePermissions());
     }
 
     @GuardedBy("sLock")

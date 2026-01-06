@@ -26,6 +26,7 @@ import android.content.AttributionSource;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.UserHandle;
@@ -225,17 +226,17 @@ public class DataPermissionEnforcer {
     }
 
     /**
-     * Returns granted extra write permissions for the specified records.
+     * Returns all per-record write permissions for the specified record types.
      *
-     * @see RecordHelper#getExtraWritePermissions()
+     * @see RecordHelper#getAllPerRecordWritePermissions()
      */
-    public Set<String> collectGrantedExtraWritePermissions(
-            List<RecordInternal<?>> recordInternals, AttributionSource attributionSource) {
-        return recordInternals.stream()
-                .map(RecordInternal::getRecordType)
-                .distinct()
+    public Set<String> collectGrantedPerRecordWritePermissions(
+            Collection<@RecordTypeIdentifier.RecordType Integer> recordTypeIds,
+            AttributionSource attributionSource) {
+        return recordTypeIds.stream()
                 .map(mInternalHealthConnectMappings::getRecordHelper)
-                .flatMap(recordHelper -> recordHelper.getExtraWritePermissions().stream())
+                .flatMap(recordHelper -> recordHelper.getAllPerRecordWritePermissions().stream())
+                .distinct()
                 .filter(permission -> isPermissionGranted(permission, attributionSource))
                 .collect(toSet());
     }
