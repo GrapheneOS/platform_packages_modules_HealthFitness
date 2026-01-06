@@ -33,6 +33,8 @@ import static android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VITAL_S
 import static android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA;
 import static android.health.connect.HealthPermissions.isValidHealthPermission;
 
+import static com.android.healthfitness.flags.AconfigFlagHelper.isDeviceUdiEnabled;
+
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 
@@ -182,6 +184,9 @@ public class HealthPermissionsTest {
                                     HealthPermissions.WRITE_SKIN_TEMPERATURE,
                                     HealthPermissions.WRITE_MINDFULNESS,
                                     HealthPermissions.WRITE_MEDICAL_DATA),
+                            isDeviceUdiEnabled()
+                                    ? Stream.of(HealthPermissions.WRITE_DEVICE_UDI)
+                                    : Stream.of(),
                             Flags.symptoms()
                                     ? Stream.of(
                                             HealthPermissions.READ_SYMPTOM_ABDOMINAL_PAIN,

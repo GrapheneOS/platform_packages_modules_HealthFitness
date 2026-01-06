@@ -254,6 +254,7 @@ public class HealthPermissionsPresenceTest {
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
+    // TODO(b/472306214): add WRITE_DEVICE_UDI to the list after unhide API
     private static final Set<String> HEALTH_PERMISSIONS =
             Set.of(
                     READ_ACTIVE_CALORIES_BURNED,

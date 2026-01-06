@@ -19,12 +19,15 @@ package com.android.server.healthconnect.permission;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.HealthPermissions.READ_HEART_RATE;
 
+import static com.android.healthfitness.flags.AconfigFlagHelper.isDeviceUdiEnabled;
+
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toSet;
 
 import android.content.AttributionSource;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
@@ -164,12 +167,19 @@ public class DataPermissionEnforcer {
      */
     public void enforceRecordsWritePermissions(
             List<RecordInternal<?>> recordInternals, AttributionSource attributionSource) {
-        // First enforce category-level permissions.
+        // Enforce category-level permissions.
         Set<Integer> recordTypeIds =
                 recordInternals.stream().map(RecordInternal::getRecordType).collect(toSet());
         enforceWritePermissions(recordTypeIds, attributionSource);
 
-        // Then enforce per-record permissions.
+        // Enforce UDI permission.
+        boolean isUdiProvided =
+                recordInternals.stream().anyMatch(record -> record.getUdi() != null);
+        if (isUdiProvided && isDeviceUdiEnabled()) {
+            enforceWriteUdiPermission(attributionSource);
+        }
+
+        // Enforce per-record permissions.
         Set<String> grantedPerRecordPermissions = new HashSet<>();
         for (RecordInternal<?> recordInternal : recordInternals) {
             int recordTypeId = recordInternal.getRecordType();
@@ -226,6 +236,15 @@ public class DataPermissionEnforcer {
                 .distinct()
                 .filter(permission -> isPermissionGranted(permission, attributionSource))
                 .collect(toSet());
+    }
+
+    private void enforceWriteUdiPermission(AttributionSource attributionSource) {
+        if (!isPermissionGranted(HealthPermissions.WRITE_DEVICE_UDI, attributionSource)) {
+            throw new SecurityException(
+                    "Caller requires "
+                            + HealthPermissions.WRITE_DEVICE_UDI
+                            + " to write Device UDI");
+        }
     }
 
     private void enforceWritePermission(int recordTypeId, AttributionSource attributionSource) {
