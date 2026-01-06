@@ -61,7 +61,6 @@ import android.os.Build;
 import android.os.UserHandle;
 import android.permission.PermissionManager;
 import android.platform.test.flag.junit.SetFlagsRule;
-import android.util.ArrayMap;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SdkSuppress;
@@ -82,7 +81,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @RunWith(AndroidJUnit4.class)
@@ -598,39 +596,32 @@ public class DataPermissionEnforcerTest {
         assertThat(permissions).containsExactly(READ_EXERCISE_ROUTE);
     }
 
-    /** collectExtraWritePermissionStateMapping */
     @Test
-    public void
-            testCollectExtraWritePermissionStateMapping_permissionsGranted_permissionsMarkedTrue() {
+    public void testCollectGrantedExtraWritePermissions_permissionsGranted() {
         ExerciseSessionRecordInternal record = new ExerciseSessionRecordInternal();
         when(mPermissionManager.checkPermissionForDataDelivery(
                         WRITE_EXERCISE_ROUTE, mAttributionSource, null))
                 .thenReturn(PERMISSION_GRANTED);
 
-        Map<String, Boolean> permissionState =
-                mDataPermissionEnforcer.collectExtraWritePermissionStateMapping(
+        Set<String> permissions =
+                mDataPermissionEnforcer.collectGrantedExtraWritePermissions(
                         List.of(record), mAttributionSource);
 
-        Map<String, Boolean> expected = new ArrayMap<>();
-        expected.put(WRITE_EXERCISE_ROUTE, true);
-        assertThat(permissionState).containsExactlyEntriesIn(expected);
+        assertThat(permissions).containsExactly(WRITE_EXERCISE_ROUTE);
     }
 
     @Test
-    public void
-            testCollectExtraWritePermissionStateMapping_permissionDenied_permissionsMarkedFalse() {
+    public void testCollectGrantedExtraWritePermissions_permissionDenied() {
         ExerciseSessionRecordInternal record = new ExerciseSessionRecordInternal();
         when(mPermissionManager.checkPermissionForDataDelivery(
                         WRITE_EXERCISE_ROUTE, mAttributionSource, null))
                 .thenReturn(PERMISSION_HARD_DENIED);
 
-        Map<String, Boolean> permissionState =
-                mDataPermissionEnforcer.collectExtraWritePermissionStateMapping(
+        Set<String> permissions =
+                mDataPermissionEnforcer.collectGrantedExtraWritePermissions(
                         List.of(record), mAttributionSource);
 
-        Map<String, Boolean> expected = new ArrayMap<>();
-        expected.put(WRITE_EXERCISE_ROUTE, false);
-        assertThat(permissionState).containsExactlyEntriesIn(expected);
+        assertThat(permissions).isEmpty();
     }
 
     private static AttributionSource buildAttributionSource() {

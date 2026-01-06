@@ -44,7 +44,6 @@ import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.os.Build;
-import android.util.ArrayMap;
 import android.util.Pair;
 import android.util.Slog;
 
@@ -79,8 +78,6 @@ import java.util.stream.Collectors;
 public class DeviceDataProviderManager {
 
     private static final String TAG = "DeviceDataProviderManager";
-    private static final ArrayMap<String, Boolean> EMPTY_EXTRA_PERMISSION_MAPPING =
-            new ArrayMap<>();
 
     private final Context mContext;
     private final DeviceInfoHelper mDeviceInfoHelper;
@@ -284,10 +281,13 @@ public class DeviceDataProviderManager {
         populateOrThrowRecords(
                 callingDdpPackageName, deviceId, records, syntheticPackageName, appInfoId);
 
+        // Treat all extra permissions as granted to pass any per-record checks.
+        Set<String> grantedExtraWritePermissions =
+                mFitnessRecordUpsertHelper.getAllExtraWritePermissions();
         return mFitnessRecordUpsertHelper.insertRecords(
                 syntheticPackageName,
                 records,
-                EMPTY_EXTRA_PERMISSION_MAPPING,
+                grantedExtraWritePermissions,
                 /* shouldGenerateAccessLogs= */ false);
     }
 
@@ -375,10 +375,13 @@ public class DeviceDataProviderManager {
         populateOrThrowRecords(
                 callingDdpPackageName, deviceId, records, syntheticPackageName, appInfoId);
 
+        // Treat all extra permissions as granted to pass any per-record checks.
+        Set<String> grantedExtraWritePermissions =
+                mFitnessRecordUpsertHelper.getAllExtraWritePermissions();
         return mFitnessRecordUpsertHelper.updateRecords(
                 syntheticPackageName,
                 records,
-                EMPTY_EXTRA_PERMISSION_MAPPING,
+                grantedExtraWritePermissions,
                 /* shouldGenerateAccessLogs= */ false);
     }
 
