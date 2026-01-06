@@ -108,7 +108,7 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Lire les calories brûlées"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Autorise l\'appli à répondre à lire les calories brûlées"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Autoriser <xliff:g id="APP_NAME">%1$s</xliff:g> à accéder aux données en arrière-plan ?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Si vous l\'y autorisez, cette appli peut accéder à vos données de fitness et bien-être, ainsi qu\'à vos dossiers médicaux, lorsque vous ne l\'utilisez pas."</string>
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Si vous l\'autorisez, cette appli peut accéder à vos données de fitness et bien-être ainsi qu\'à vos dossiers médicaux lorsque vous ne l\'utilisez pas."</string>
     <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"Si vous l\'y autorisez, cette appli peut accéder à vos dossiers médicaux lorsque vous ne l\'utilisez pas."</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Si vous l\'y autorisez, cette appli peut accéder à vos données de forme et de bien-être lorsque vous ne l\'utilisez pas."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Si vous l\'y autorisez, cette appli peut accéder aux données de Santé Connect lorsque vous ne l\'utilisez pas."</string>
@@ -403,7 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Sélectionnez les données que vous voulez autoriser cette appli à lire dans Santé Connect"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Partager des données entre les applis"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Données provenant de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Autoriser l\'appli <xliff:g id="APP_NAME">%1$s</xliff:g> à lire les données d\'autres applis sur cet appareil en passant par Santé Connect. Ces données peuvent aussi être lues par d\'autres applis auxquelles vous accordez l\'accès."</string>
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Autorisez l\'appli <xliff:g id="APP_NAME">%1$s</xliff:g> à lire les données d\'autres applis sur cet appareil en passant par Santé Connect. Ces données peuvent aussi être lues par d\'autres applis auxquelles vous accordez l\'accès."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Applis pouvant synchroniser ces données"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Découvrez comment <xliff:g id="APP_NAME">%1$s</xliff:g> utilise vos données dans ses "<a href="%2$s">"règles de confidentialité"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Santé Connect vous permet de partager vos données de santé et de remise en forme entre plusieurs applis. Vous pouvez ainsi accéder à des informations et à des expériences tout en garantissant la sécurité de vos données."</string>

@@ -404,7 +404,7 @@
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"在应用之间共享数据"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"“<xliff:g id="APP_NAME">%1$s</xliff:g>”的数据"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”应用使用“健康数据共享”读取此设备上其他应用中的数据。您授予访问权限的其他应用也可以读取这些数据。"</string>
-    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"可以同步此数据的应用"</string>
+    <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"可以同步这些数据的应用"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"如需了解“<xliff:g id="APP_NAME">%1$s</xliff:g>”如何使用您的数据，请参阅其"<a href="%2$s">"《隐私权政策》"</a>"。"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"借助“健康数据共享”，您可以在多个应用之间共享健康与健身数据。这有助于您解锁更多分析洞见和体验，同时保障数据安全。"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"详细了解“健康数据共享”"</string>

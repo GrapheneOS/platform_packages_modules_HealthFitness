@@ -406,7 +406,7 @@
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"به برنامه «<xliff:g id="APP_NAME">%1$s</xliff:g>» اجازه دهید تا داده‌ها را بااستفاده از Health Connect از برنامه‌های دیگر در این دستگاه بخواند. برنامه‌های دیگری که به آن‌ها دسترسی می‌دهید نیز می‌توانند این داده‌ها را بخوانند."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"برنامه‌هایی که می‌توانند این داده‌ها را همگام‌سازی کنند"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ببینید که <xliff:g id="APP_NAME">%1$s</xliff:g> چگونه از داده‌هایتان در "<a href="%2$s">"خط‌مشی رازداری"</a>" خود استفاده می‌کند."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"‫Health Connect به شما امکان می‌دهد داده‌های سلامتی و تناسب اندام خود را بین چند برنامه هم‌رسانی کنید. این به شما کمک می‌کند تا اطلاعات و تجربیات خود را باز کنید و درعین‌حال داده‌هایتان را ایمن نگه دارید."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"‫Health Connect به شما امکان می‌دهد داده‌های سلامتی و تناسب اندام خود را بین برنامه‌های متعدد هم‌رسانی کنید. این به شما کمک می‌کند به اطلاعات آماری و تجربه‌های جدید دست پیدا کنید و درعین‌حال داده‌هایتان را ایمن نگه دارید."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"اطلاعات بیشتر درباره Health Connect"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"ازهم باز کردن"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"جمع کردن"</string>
@@ -1120,7 +1120,7 @@
     <string name="request_route_allow" msgid="4427372851821847274">"اجازه دادن به این مسیر"</string>
     <string name="request_route_allow_all" msgid="314830698958736916">"اجازه دادن به همه مسیرها"</string>
     <string name="request_route_dont_allow" msgid="1186236234664957228">"اجازه ندادن"</string>
-    <string name="route_permissions_always_allow" msgid="1383816362804293137">"همیشه مجاز"</string>
+    <string name="route_permissions_always_allow" msgid="1383816362804293137">"همیشه اجازه داشتن"</string>
     <string name="route_permissions_label" msgid="6293377940884373190">"دسترسی به مسیرهای تمرین"</string>
     <string name="route_permissions_summary" msgid="704859311037374130">"اجازه دادن به <xliff:g id="APP_NAME">%1$s</xliff:g> برای دسترسی به مسیرها"</string>
     <string name="route_permissions_ask" msgid="3927020960754781917">"هربار پرسیده شود"</string>
@@ -1337,7 +1337,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"برنامه‌های سلامتی شما"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"داده‌های سلامتی شما"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"اولویت‌ها"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"‫Health Connect به شما امکان می‌دهد داده‌های سلامتی و تناسب اندام خود را بین چند برنامه هم‌رسانی کنید. این کار به شما کمک می‌کند به اطلاعات آماری و تجربه‌های جدید دست پیدا کنید و درعین‌حال داده‌هایتان را ایمن نگه دارید."</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"‫Health Connect به شما امکان می‌دهد داده‌های سلامتی و تناسب اندام خود را بین برنامه‌های متعدد هم‌رسانی کنید. این به شما کمک می‌کند به اطلاعات آماری و تجربه‌های جدید دست پیدا کنید و درعین‌حال داده‌هایتان را ایمن نگه دارید."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"اطلاعات بیشتر درباره Health Connect"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"داده‌های شما و برنامه‌هایی که می‌توانند به آن دسترسی داشته باشند"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"برنامه‌هایی که اخیراً از داده‌های شما استفاده کرده‌اند"</string>

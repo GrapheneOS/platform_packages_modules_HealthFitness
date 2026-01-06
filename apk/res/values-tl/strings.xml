@@ -403,7 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Piliin ang data na gusto mong i-read ng app na ito sa Health Connect"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Mag-share ng data sa pagitan ng mga app"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data mula sa <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Payagan ang <xliff:g id="APP_NAME">%1$s</xliff:g> app na mag-read ng data mula sa iba pang app sa device na ito gamit ang Health Connect. Puwede ring basahin ng iba pang app na bibigyan mo ng access ang data na ito."</string>
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Payagan ang <xliff:g id="APP_NAME">%1$s</xliff:g> app na mag-read ng data mula sa iba pang app sa device na ito gamit ang Health Connect. Puwede ring ma-read ng iba pang app na bibigyan mo ng access ang data na ito."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Mga app na nakakapag-sync ng data na ito"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Alamin kung paano ginagamit ng <xliff:g id="APP_NAME">%1$s</xliff:g> ang iyong data sa kanilang "<a href="%2$s">"patakaran sa privacy"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Nagbibigay-daan sa iyo ang Health Connect na i-share ang iyong data sa kalusugan at fitness sa pagitan ng maraming app. Nakakatulong ito sa iyong mag-unlock ng mga insight at experience habang pinapanatiling secure ang data mo."</string>

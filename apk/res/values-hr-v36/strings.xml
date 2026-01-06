@@ -27,5 +27,5 @@
     <string name="settings_manage_permission" msgid="3585762257420446893">"Zdravlje, kondicija i opće stanje"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"Zdravlje, kondicija i opće stanje"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"Kondicija i opće stanje"</string>
-    <string name="settings_medical_permissions" msgid="3458484943007427070">"Povijest bolesti"</string>
+    <string name="settings_medical_permissions" msgid="3458484943007427070">"Medicinska dokumentacija"</string>
 </resources>

@@ -290,10 +290,10 @@
     <string name="sleep_lowercase_label" msgid="7795584924503475035">"søvn"</string>
     <string name="sleep_read_content_description" msgid="7064608272681424436">"Les søvn"</string>
     <string name="sleep_write_content_description" msgid="2259414465110376554">"Skriv søvn"</string>
-    <string name="basal_body_temperature_uppercase_label" msgid="4571393253935677019">"Grunnleggende kroppstemperatur"</string>
-    <string name="basal_body_temperature_lowercase_label" msgid="3363829208971016662">"grunnleggende kroppstemperatur"</string>
-    <string name="basal_body_temperature_read_content_description" msgid="3342604362011725500">"Les grunnleggende kroppstemperatur"</string>
-    <string name="basal_body_temperature_write_content_description" msgid="1081636817359407622">"Skriv grunnleggende kroppstemperatur"</string>
+    <string name="basal_body_temperature_uppercase_label" msgid="4571393253935677019">"Basal kroppstemperatur"</string>
+    <string name="basal_body_temperature_lowercase_label" msgid="3363829208971016662">"basal kroppstemperatur"</string>
+    <string name="basal_body_temperature_read_content_description" msgid="3342604362011725500">"Les basal kroppstemperatur"</string>
+    <string name="basal_body_temperature_write_content_description" msgid="1081636817359407622">"Skriv basal kroppstemperatur"</string>
     <string name="blood_glucose_uppercase_label" msgid="7462421849184720721">"Blodsukker"</string>
     <string name="blood_glucose_lowercase_label" msgid="5036157221577793772">"blodsukker"</string>
     <string name="blood_glucose_read_content_description" msgid="563393834563809318">"Les blodsukker"</string>
@@ -403,7 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Velg dataene du vil gi denne appen tillatelse til å lese fra Health Connect"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Del data mellom apper"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data fra <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"La <xliff:g id="APP_NAME">%1$s</xliff:g>-appen lese data fra andre apper på denne enheten via Health Connect. Disse dataene kan også leses av andre apper du gir tilgang til."</string>
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"La appen <xliff:g id="APP_NAME">%1$s</xliff:g> lese data fra andre apper på denne enheten via Health Connect. Disse dataene kan også leses av andre apper du gir tilgang."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apper som kan synkronisere disse dataene"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Finn ut hvordan <xliff:g id="APP_NAME">%1$s</xliff:g> bruker dataene dine, i "<a href="%2$s">"personvernreglene deres"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Med Health Connect kan du dele helse- og treningsdata mellom flere apper. Dette hjelper deg med å få innsikt og opplevelser samtidig som dataene dine holdes sikre."</string>

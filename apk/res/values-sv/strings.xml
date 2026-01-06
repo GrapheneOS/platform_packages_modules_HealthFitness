@@ -108,7 +108,7 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Läsbehörighet för brända kal."</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Tillåter att appen läser antalet brända kalorier"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Vill du ge <xliff:g id="APP_NAME">%1$s</xliff:g> åtkomst till data i bakgrunden?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Om du tillåter detta kan appen få åtkomst till tränings- och hälsodata och ournaler när du inte använder appen."</string>
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Om du tillåter detta kan appen få åtkomst till tränings- och hälsodata och journaler när du inte använder appen."</string>
     <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"Om du tillåter detta kan appen få åtkomst till journaler när du inte använder appen."</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Om du tillåter detta kan appen få åtkomst till tränings- och hälsodata när du inte använder appen."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Om du tillåter detta kan appen få åtkomst till Health Connect-data när du inte använder appen."</string>

@@ -401,7 +401,7 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Ilova Health Connect xizmatiga qaysi maʼlumotlarni yozishi mumkinligini tanlang"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Ilova qanday axborotlarni oʻqishi yoki Health Connectga yozishi mumkinligini tanlang."</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Bu ilova Health Connect xizmatidagi qaysi maʼlumotlarni oʻqishi mumkinligini tanlang"</string>
-    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Ilovalar aro axborot ulashish"</string>
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Ilovalar orasida maʼlumotlarni ulashish"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> maʼlumotlari asosida"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> ilovasining Health Connect yordamida bu qurilmadagi boshqa ilovalardan maʼlumotlarni oʻqishiga ruxsat berish. Bu maʼlumotlarni siz ruxsat bergan boshqa ilovalar ham oʻqishi mumkin."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Bu maʼlumotlar sinxronlanadigan ilovalar"</string>

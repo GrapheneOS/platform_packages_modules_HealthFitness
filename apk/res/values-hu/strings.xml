@@ -96,7 +96,7 @@
     <string name="can_read" msgid="4568261079308309564">"Olvashat <xliff:g id="PERMISSION_TYPE">%s</xliff:g> típusú adatokat"</string>
     <string name="can_write" msgid="5082414937218423823">"Írhat <xliff:g id="PERMISSION_TYPE">%s</xliff:g> típusú adatokat"</string>
     <string name="inactive_apps" msgid="8956546286760797760">"Inaktív alkalmazások"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Ezek az alkalmazások a továbbiakban nem olvashatnak be vagy írhatnak <xliff:g id="DATA_TYPE">%s</xliff:g> típusú adatokat, de továbbra is tárolhatnak adatokat a Health Connect szolgáltatásban"</string>
+    <string name="inactive_apps_message" msgid="8335803540719022910">"Ezek az alkalmazások a továbbiakban nem olvashatnak vagy írhatnak <xliff:g id="DATA_TYPE">%s</xliff:g> típusú adatokat, de tárolhatnak adatokat a Health Connect szolgáltatásban"</string>
     <string name="data_access_empty_message" msgid="9084350402254264452">"Az alkalmazások többé nem olvashatnak vagy írhatnak <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> típusú adatokat, és a Health Connect a továbbiakban nem tárol <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> típusú adatokat."</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Ezek az adatok olyan információkat tartalmaznak, mint az aktív idő, a testmozgás típusa, a körök, ismétlések, edzések száma, valamint a csapásszámok"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Ezek az adatok olyan információkat tartalmaznak, mint az alvási fázisok és az alvásidőszakok"</string>
