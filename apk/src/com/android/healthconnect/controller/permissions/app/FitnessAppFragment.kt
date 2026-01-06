@@ -449,6 +449,7 @@ class FitnessAppFragment : Hilt_FitnessAppFragment() {
                     permissionsForCategory,
                     appPermissionViewModel.grantedFitnessPermissions.value,
                 )
+            permissionType = preferenceKey.accessType
             key = preferenceKey.toString()
             setExpanded(
                 appPermissionViewModel.expandedDataCategoryPreferenceKeys.value?.contains(
