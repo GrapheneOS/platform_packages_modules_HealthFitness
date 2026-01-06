@@ -19,6 +19,8 @@ package android.health.connect.internal.datatypes;
 import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.Constants.DEFAULT_LONG;
 
+import static com.android.healthfitness.flags.AconfigFlagHelper.isDeviceUdiEnabled;
+
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.health.connect.datatypes.DataOrigin;
@@ -62,6 +64,7 @@ public abstract class RecordInternal<T extends Record>
     private int mRowId = DEFAULT_INT;
     @Nullable private String mDisplayName;
     private long mDeviceDataProviderId = DEFAULT_LONG;
+    @Nullable private String mUdi;
 
     @Metadata.RecordingMethod private int mRecordingMethod;
 
@@ -89,6 +92,9 @@ public abstract class RecordInternal<T extends Record>
         mDeviceType = parcel.readInt();
         mRecordingMethod = parcel.readInt();
         mDisplayName = parcel.readString();
+        if (isDeviceUdiEnabled()) {
+            mUdi = parcel.readString();
+        }
     }
 
     @NonNull
@@ -139,6 +145,9 @@ public abstract class RecordInternal<T extends Record>
         parcel.writeInt(mDeviceType);
         parcel.writeInt(mRecordingMethod);
         parcel.writeString(mDisplayName);
+        if (isDeviceUdiEnabled()) {
+            parcel.writeString(mUdi);
+        }
 
         populateRecordTo(parcel);
     }
@@ -331,6 +340,27 @@ public abstract class RecordInternal<T extends Record>
         return this;
     }
 
+    /**
+     * @return The device UDI if set, null otherwise
+     */
+    @Nullable
+    public String getUdi() {
+        if (!isDeviceUdiEnabled()) {
+            throw new UnsupportedOperationException("Device UDI flag off");
+        }
+        return mUdi;
+    }
+
+    /** Sets the device UDI. */
+    @NonNull
+    public RecordInternal<T> setUdi(@Nullable String udi) {
+        if (!isDeviceUdiEnabled()) {
+            throw new UnsupportedOperationException("Device UDI flag off");
+        }
+        mUdi = udi;
+        return this;
+    }
+
     /** Child class must implement this method and return an external record for this record */
     public abstract T toExternalRecord();
 
@@ -347,7 +377,9 @@ public abstract class RecordInternal<T extends Record>
         if (Flags.deviceDataProvidersApi()) {
             deviceBuilder.setDisplayName(getDisplayName());
         }
-
+        if (isDeviceUdiEnabled()) {
+            deviceBuilder.setUdi(getUdi());
+        }
         Metadata.Builder builder =
                 new Metadata.Builder()
                         .setClientRecordId(getClientRecordId())
@@ -377,6 +409,9 @@ public abstract class RecordInternal<T extends Record>
                 .setRecordingMethod(metaData.getRecordingMethod());
         if (Flags.deviceDataProvidersApi()) {
             this.setDisplayName(metaData.getDevice().getDisplayName());
+        }
+        if (isDeviceUdiEnabled()) {
+            this.setUdi(metaData.getDevice().getUdi());
         }
         return this;
     }

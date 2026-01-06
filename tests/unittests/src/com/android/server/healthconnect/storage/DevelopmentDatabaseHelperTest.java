@@ -245,22 +245,4 @@ public class DevelopmentDatabaseHelperTest {
                     .isTrue();
         }
     }
-
-    @Test
-    @EnableFlags(FLAG_DEVELOPMENT_DATABASE_RW)
-    @DisableFlags(FLAG_DEVICE_UDI_DB)
-    public void onUpgrade_udiColumn_flagDisabled_columnNotAdded() {
-        try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
-            SQLiteDatabase db = helper.getWritableDatabase();
-
-            DevelopmentDatabaseHelper.onOpen(db);
-
-            assertThat(
-                            checkColumnExists(
-                                    db,
-                                    DeviceInfoHelper.TABLE_NAME,
-                                    DeviceInfoHelper.UDI_COLUMN_NAME))
-                    .isFalse();
-        }
-    }
 }

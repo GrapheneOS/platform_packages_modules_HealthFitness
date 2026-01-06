@@ -188,6 +188,7 @@ public class DeviceInfoHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_UDI,
         Flags.FLAG_DEVICE_UDI_DB
     })
     public void deviceInfosAreEqual() {
@@ -205,6 +206,7 @@ public class DeviceInfoHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_UDI,
         Flags.FLAG_DEVICE_UDI_DB
     })
     public void deviceInfosAreDifferent() {
@@ -242,6 +244,7 @@ public class DeviceInfoHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_UDI,
         Flags.FLAG_DEVICE_UDI_DB
     })
     public void getDeviceInfo_deviceIdNotInCache_returnsNull() {
@@ -253,6 +256,7 @@ public class DeviceInfoHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_UDI,
         Flags.FLAG_DEVICE_UDI_DB
     })
     public void getDeviceInfoId_deviceInfoNotInCache_returnsNull() {
@@ -274,6 +278,7 @@ public class DeviceInfoHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_UDI,
         Flags.FLAG_DEVICE_UDI_DB
     })
     public void getDeviceInfoId_deviceInfoInCache_returnsCorrectId() {
@@ -289,7 +294,7 @@ public class DeviceInfoHelperTest {
 
     @Test
     @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_DB, Flags.FLAG_DEVICE_DATA_PROVIDERS_API})
-    @DisableFlags(Flags.FLAG_DEVICE_UDI_DB)
+    @DisableFlags({Flags.FLAG_DEVICE_UDI, Flags.FLAG_DEVICE_UDI_DB})
     public void getDeviceInfoId_deviceInfoInCache_udiFeatureDisabled_returnsCorrectId() {
         DeviceInfoHelper.DeviceInfo existingDeviceInfo =
                 new DeviceInfoHelper.DeviceInfo(
@@ -308,6 +313,7 @@ public class DeviceInfoHelperTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_UDI,
         Flags.FLAG_DEVICE_UDI_DB
     })
     public void getDeviceInfo_deviceIdInCache_returnsCorrectDeviceInfo() {
@@ -329,7 +335,7 @@ public class DeviceInfoHelperTest {
     }
 
     @Test
-    @DisableFlags({Flags.FLAG_DEVICE_UDI_DB})
+    @DisableFlags({Flags.FLAG_DEVICE_UDI, Flags.FLAG_DEVICE_UDI_DB})
     public void getIdDeviceInfo_udiFeatureDisabled_udiNotPopulated() {
         DeviceInfoHelper.DeviceInfo deviceInfoWithId =
                 new DeviceInfoHelper.DeviceInfo(
@@ -370,5 +376,21 @@ public class DeviceInfoHelperTest {
                 .insertOrThrowOnConflict(any(UpsertTableRequest.class));
         verify(mTransactionManager, times(0)).read(any(ReadTableRequest.class));
         assertThat(recordInternal.getDeviceInfoId()).isEqualTo(100L);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVICE_UDI, Flags.FLAG_DEVICE_UDI_DB})
+    public void populateRecordWithValue_withUdi_populatesUdiCorrectly() {
+        RecordInternal<?> storedRecordInternal = getStepsRecordInternal();
+        storedRecordInternal.setUdi("test-udi");
+
+        // write to db
+        mDeviceInfoHelper.populateDeviceInfoId(storedRecordInternal);
+        RecordInternal<?> retrievedRecordInternal = new StepsRecordInternal();
+
+        // read from db
+        mDeviceInfoHelper.populateRecordWithValue(1L, retrievedRecordInternal);
+
+        assertThat(retrievedRecordInternal.getUdi()).isEqualTo("test-udi");
     }
 }

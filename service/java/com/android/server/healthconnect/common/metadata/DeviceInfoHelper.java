@@ -18,6 +18,7 @@ package com.android.server.healthconnect.common.metadata;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
 
+import static com.android.healthfitness.flags.AconfigFlagHelper.isDeviceUdiEnabled;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.PRIMARY;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
@@ -36,7 +37,6 @@ import android.util.Pair;
 import androidx.annotation.VisibleForTesting;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.storage.DatabaseHelper;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -113,10 +113,13 @@ public class DeviceInfoHelper extends DatabaseHelper {
         if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
             displayName = recordInternal.getDisplayName();
         }
-        // TODO(b/472307884): get udi from record
+        String udi = null;
+        if (isDeviceUdiEnabled()) {
+            udi = recordInternal.getUdi();
+        }
 
         DeviceInfo deviceInfo =
-                new DeviceInfo(manufacturer, model, deviceType, deviceId, displayName);
+                new DeviceInfo(manufacturer, model, deviceType, deviceId, displayName, udi);
         long rowId = getDeviceInfoMap().getOrDefault(deviceInfo, DEFAULT_LONG);
         if (rowId == DEFAULT_LONG) {
             rowId = insertIfNotPresent(deviceInfo);
@@ -139,7 +142,9 @@ public class DeviceInfoHelper extends DatabaseHelper {
             if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                 record.setDisplayName(deviceInfo.mDisplayName);
             }
-            // TODO(b/472307884): populate udi value
+            if (isDeviceUdiEnabled()) {
+                record.setUdi(deviceInfo.mUdi);
+            }
         }
     }
 
@@ -223,7 +228,7 @@ public class DeviceInfoHelper extends DatabaseHelper {
                     }
                 }
                 String udi = null;
-                if (Flags.deviceUdiDb()) {
+                if (isDeviceUdiEnabled()) {
                     udi = getCursorString(cursor, UDI_COLUMN_NAME);
                 }
 
@@ -312,7 +317,7 @@ public class DeviceInfoHelper extends DatabaseHelper {
             contentValues.put(DISPLAY_NAME_COLUMN_NAME, displayName);
         }
 
-        if (Flags.deviceUdiDb()) {
+        if (isDeviceUdiEnabled()) {
             contentValues.put(UDI_COLUMN_NAME, udi);
         }
 
@@ -367,7 +372,7 @@ public class DeviceInfoHelper extends DatabaseHelper {
             mDeviceType = deviceType;
             mDeviceId = deviceId;
             mDisplayName = displayName;
-            mUdi = Flags.deviceUdiDb() ? udi : null;
+            mUdi = isDeviceUdiEnabled() ? udi : null;
         }
 
         public String getManufacturer() {
