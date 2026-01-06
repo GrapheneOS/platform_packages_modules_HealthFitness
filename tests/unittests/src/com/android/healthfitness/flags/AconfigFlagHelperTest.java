@@ -21,6 +21,7 @@ import static com.android.healthfitness.flags.AconfigFlagHelper.isAlcoholConsump
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCyclePhasesEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isDeviceDataProvidersEnabled;
+import static com.android.healthfitness.flags.AconfigFlagHelper.isDeviceUdiEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isSymptomsEnabled;
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 
@@ -199,5 +200,19 @@ public class AconfigFlagHelperTest {
     @DisableFlags(Flags.FLAG_CYCLE_PHASES_DB)
     public void isCyclePhaseEnabled_featureFlagTrueDbFlagFalse_expectFalse() {
         assertThat(isCyclePhasesEnabled()).isFalse();
+    }
+
+    // TODO(b/472307622): Also consider db flag
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_UDI)
+    public void isDeviceUdiEnabled_featureFlagTrue_expectTrue() {
+        assertThat(isDeviceUdiEnabled()).isTrue();
+    }
+
+    // TODO(b/472307622): Also consider db flag
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_UDI)
+    public void isDeviceUdiEnabled_featureFlagFalse_expectFalse() {
+        assertThat(isDeviceUdiEnabled()).isFalse();
     }
 }

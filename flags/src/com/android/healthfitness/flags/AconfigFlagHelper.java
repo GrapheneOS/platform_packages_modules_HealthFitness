@@ -159,4 +159,9 @@ public final class AconfigFlagHelper {
     public static boolean isCyclePhasesEnabled() {
         return Flags.cyclePhasesFlag() && isDbFlagEnabled(DB_VERSION_MENSTRUAL_CYCLE_PHASE);
     }
+
+    /** Returns a boolean indicating whether Cycle Phases data type is enabled. */
+    public static boolean isDeviceUdiEnabled() {
+        return Flags.deviceUdi(); // TODO(b/472307622): use device_udi_db flag here after impl done
+    }
 }
