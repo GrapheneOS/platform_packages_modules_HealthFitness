@@ -100,7 +100,7 @@ class BannerFactoryTest {
 
         assertThat(banner.title).isEqualTo("Update needed")
         assertThat(banner.summary)
-            .isEqualTo("Before continuing restoring your data, update your phone system.")
+            .isEqualTo("To continue restoring your data, update your device system.")
         assertThat(banner.key).isEqualTo(DATA_RESTORE_BANNER_PREFERENCE_KEY)
     }
 

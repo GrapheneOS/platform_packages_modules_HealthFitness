@@ -602,14 +602,14 @@ class HomeFragmentTest {
             }
             .use {
                 onView(withText("Update needed")).check(matches(isDisplayed()))
-                onView(withText("Before continuing restoring your data, update your phone system."))
+                onView(withText("To continue restoring your data, update your device system."))
                     .check(matches(isDisplayed()))
-                onView(withText("Update now")).check(matches(isDisplayed()))
+                onView(withText("Check for updates")).check(matches(isDisplayed()))
                 verify(healthConnectLogger).logImpression(DataRestoreElement.RESTORE_PENDING_BANNER)
                 verify(healthConnectLogger)
                     .logImpression(DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON)
 
-                onView(withText("Update now")).perform(click())
+                onView(withText("Check for updates")).perform(click())
 
                 assertThat(navHostController.currentDestination?.id)
                     .isEqualTo(R.id.systemUpdateActivity)
@@ -649,9 +649,9 @@ class HomeFragmentTest {
             }
             .use {
                 onView(withText("Update needed")).check(doesNotExist())
-                onView(withText("Before continuing restoring your data, update your phone system."))
+                onView(withText("To continue restoring your data, update your device system."))
                     .check(doesNotExist())
-                onView(withText("Update now")).check(doesNotExist())
+                onView(withText("Check for updates")).check(doesNotExist())
             }
     }
 
