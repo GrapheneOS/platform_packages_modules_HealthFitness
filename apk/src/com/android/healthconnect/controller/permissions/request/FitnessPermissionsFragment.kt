@@ -371,6 +371,7 @@ class FitnessPermissionsFragment : Hilt_FitnessPermissionsFragment() {
                     viewModel.grantedFitnessPermissions.value,
                 )
             key = preferenceKey.toString()
+            permissionType = preferenceKey.accessType
             setExpanded(
                 viewModel.expandedDataCategoryPreferenceKeys.value?.contains(
                     preferenceKey.toString()

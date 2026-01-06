@@ -23,6 +23,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SwitchCompat
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.settingslib.widget.SettingsThemeHelper
 import com.android.settingslib.widget.theme.R as SettingslibR
 
@@ -38,6 +39,7 @@ constructor(context: Context, attrs: AttributeSet? = null) :
     BaseExpandablePreference(context, attrs) {
 
     private var onCheckedChangeListener: ((Boolean) -> Unit)? = null
+    var permissionType: PermissionsAccessType? = null
     var isChecked: Boolean = false
         set(value) {
             if (field != value) {
@@ -83,6 +85,28 @@ constructor(context: Context, attrs: AttributeSet? = null) :
                 onCheckedChangeListener?.invoke(isChecked)
             }
         }
+
+        val contentDescription = getContentDescriptionString()
+        if (contentDescription != null) {
+            holder.itemView.contentDescription = contentDescription
+            switch.contentDescription = contentDescription
+        }
+    }
+
+    private fun getContentDescriptionString(): String? {
+        val permissionTypeString =
+            when (permissionType) {
+                PermissionsAccessType.READ -> context.getString(R.string.read_access)
+                PermissionsAccessType.WRITE -> context.getString(R.string.write_access)
+                null -> return null
+            }
+
+        return context.getString(
+            R.string.health_permission_grouping_switch_content_description,
+            title,
+            summary,
+            permissionTypeString,
+        )
     }
 
     override fun getDropDownIconId(): Int {

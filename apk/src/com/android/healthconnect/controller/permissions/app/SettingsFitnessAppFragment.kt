@@ -421,6 +421,7 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
                     viewModel.grantedFitnessPermissions.value,
                 )
             key = preferenceKey.toString()
+            permissionType = preferenceKey.accessType
             setExpanded(
                 viewModel.expandedDataCategoryPreferenceKeys.value?.contains(
                     preferenceKey.toString()
