@@ -21,9 +21,15 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
+import android.health.connect.DeviceDataProviderInfo
+import android.health.connect.DeviceDataSourceInfo
 import android.health.connect.HealthConnectManager
+import android.health.connect.datatypes.DataOrigin
+import android.health.connect.datatypes.Device
 import android.health.connect.datatypes.StepsRecord
+import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
@@ -31,6 +37,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
@@ -43,9 +50,10 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.matchmaking.MatchmakingAppData
 import com.android.healthconnect.controller.matchmaking.MatchmakingFragment
 import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel
+import com.android.healthconnect.controller.matchmaking.api.MatchmakingAppData
+import com.android.healthconnect.controller.matchmaking.api.MatchmakingDeviceData
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType.READ
@@ -93,7 +101,8 @@ import org.mockito.kotlin.whenever
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class MatchmakingFragmentTest {
-    @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule(order = 0) val hiltRule = HiltAndroidRule(this)
+    @get:Rule(order = 1) val setFlagsRule = SetFlagsRule()
 
     @BindValue val viewModel: MatchmakingViewModel = mock<MatchmakingViewModel>()
 
@@ -111,6 +120,8 @@ class MatchmakingFragmentTest {
     private val grantedPermissions =
         MutableLiveData<Map<String, List<FitnessPermission>>>(emptyMap())
 
+    val matchingAppsCount = MutableLiveData(0)
+
     @Before
     fun setup() {
         hiltRule.inject()
@@ -120,6 +131,7 @@ class MatchmakingFragmentTest {
         whenever(viewModel.atLeastOnePermissionGranted).thenReturn(atLeastOnePermissionGranted)
         whenever(viewModel.allPermissionsGranted).thenReturn(allPermissionsGranted)
         whenever(viewModel.grantedPermissions).thenReturn(grantedPermissions)
+        whenever(viewModel.matchingAppsCount).thenReturn(matchingAppsCount)
         whenever(deviceInfoUtils.isHealthConnectAvailable(any())).thenReturn(true)
     }
 
@@ -149,6 +161,7 @@ class MatchmakingFragmentTest {
             MatchmakingViewModel.MatchmakingState.WithData(
                 AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
                 apps,
+                emptyList<MatchmakingDeviceData>(),
             )
         )
         grantedPermissions.postValue(
@@ -244,6 +257,7 @@ class MatchmakingFragmentTest {
             MatchmakingViewModel.MatchmakingState.WithData(
                 AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
                 apps,
+                emptyList(),
             )
         )
 
@@ -272,7 +286,8 @@ class MatchmakingFragmentTest {
                     )
                 onView(withText("Allow all")).perform(click())
 
-                verify(viewModel).addAllPermissionsToGrantedList()
+                verify(viewModel).addAllPermissionsToGrantedList(TEST_APP_PACKAGE_NAME)
+                verify(viewModel).addAllPermissionsToGrantedList(TEST_APP_PACKAGE_NAME_2)
                 verify(logger)
                     .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_ON)
             }
@@ -299,6 +314,7 @@ class MatchmakingFragmentTest {
             MatchmakingViewModel.MatchmakingState.WithData(
                 AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
                 apps,
+                emptyList(),
             )
         )
         allPermissionsGranted.postValue(true)
@@ -328,7 +344,8 @@ class MatchmakingFragmentTest {
                     )
                 onView(withText("Allow all")).perform(click())
 
-                verify(viewModel).removeAllPermissionsFromGrantedList()
+                verify(viewModel).removeAllPermissionsFromGrantedList(TEST_APP_PACKAGE_NAME)
+                verify(viewModel).removeAllPermissionsFromGrantedList(TEST_APP_PACKAGE_NAME_2)
                 verify(logger)
                     .logInteraction(PermissionsElement.ALLOW_ALL_SWITCH, UIAction.ACTION_TOGGLE_OFF)
             }
@@ -355,6 +372,7 @@ class MatchmakingFragmentTest {
             MatchmakingViewModel.MatchmakingState.WithData(
                 AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
                 apps,
+                emptyList(),
             )
         )
         atLeastOnePermissionGranted.postValue(true)
@@ -409,6 +427,7 @@ class MatchmakingFragmentTest {
             MatchmakingViewModel.MatchmakingState.WithData(
                 AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
                 apps,
+                emptyList(),
             )
         )
 
@@ -431,7 +450,7 @@ class MatchmakingFragmentTest {
 
                 onView(withText("Don\u0027t allow")).perform(click())
 
-                verify(viewModel).removeAllPermissionsFromGrantedList()
+                verify(viewModel).removeAllPermissionsFromGrantedList(CALLING_PACKAGE_NAME)
                 verify(logger).logInteraction(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
             }
     }
@@ -453,6 +472,7 @@ class MatchmakingFragmentTest {
             MatchmakingViewModel.MatchmakingState.WithData(
                 AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
                 apps,
+                emptyList(),
             )
         )
         expandedKeys.postValue(emptySet())
@@ -501,6 +521,7 @@ class MatchmakingFragmentTest {
             MatchmakingViewModel.MatchmakingState.WithData(
                 AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
                 apps,
+                emptyList(),
             )
         )
         expandedKeys.postValue(emptySet())
@@ -548,6 +569,7 @@ class MatchmakingFragmentTest {
             MatchmakingViewModel.MatchmakingState.WithData(
                 AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, ColorDrawable(Color.BLUE)),
                 apps,
+                emptyList(),
             )
         )
 
@@ -597,6 +619,7 @@ class MatchmakingFragmentTest {
             MatchmakingViewModel.MatchmakingState.WithData(
                 AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, ColorDrawable(Color.BLUE)),
                 apps,
+                emptyList(),
             )
         )
 
@@ -649,6 +672,7 @@ class MatchmakingFragmentTest {
             MatchmakingViewModel.MatchmakingState.WithData(
                 AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
                 apps,
+                emptyList(),
             )
         )
 
@@ -672,7 +696,7 @@ class MatchmakingFragmentTest {
                 scrollToText("Data from $TEST_APP_NAME")
                 onView(allOf(withId(R.id.switch_widget))).perform(click())
 
-                verify(viewModel, times(1)).addAppPermissionsToGrantedList(TEST_APP_PACKAGE_NAME)
+                verify(viewModel, times(1)).addAllPermissionsToGrantedList(TEST_APP_PACKAGE_NAME)
             }
     }
 
@@ -692,6 +716,7 @@ class MatchmakingFragmentTest {
             MatchmakingViewModel.MatchmakingState.WithData(
                 AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
                 apps,
+                emptyList(),
             )
         )
         // Initially grant all permissions for this app so we can toggle them off
@@ -723,7 +748,147 @@ class MatchmakingFragmentTest {
                 onView(allOf(withId(R.id.switch_widget))).perform(click())
 
                 verify(viewModel, times(1))
-                    .removeAppPermissionsFromGrantedList(TEST_APP_PACKAGE_NAME)
+                    .removeAllPermissionsFromGrantedList(TEST_APP_PACKAGE_NAME)
+            }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    @DisableFlags(
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun matchmakingFragment_withDdpFlagDisabled_hidesDevicesSection() {
+        val apps =
+            listOf(
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                    listOf(
+                        FitnessPermission(FitnessPermissionType.EXERCISE, READ),
+                        FitnessPermission(FitnessPermissionType.STEPS, READ),
+                    ),
+                )
+            )
+        val devices =
+            listOf(
+                MatchmakingDeviceData(
+                    DeviceDataSourceInfo(
+                        DataOrigin.Builder().setPackageName("com.example.watchdevice").build(),
+                        Device.Builder()
+                            .setManufacturer("Google")
+                            .setModel("Pixel Watch")
+                            .setType(2)
+                            .build(),
+                        false,
+                        listOf(
+                            DeviceDataProviderInfo(
+                                "com.google.android.apps.fitness",
+                                "MyFit",
+                                "",
+                                "",
+                                emptySet(),
+                            )
+                        ),
+                    ),
+                    emptyList(),
+                )
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                apps,
+                devices,
+            )
+        )
+
+        ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, MatchmakingFragment())
+                        .commitNow()
+                }
+
+                onView(withText(R.string.matchmaking_screen_devices_category_title))
+                    .check(doesNotExist())
+            }
+    }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_MATCHMAKING,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun matchmakingFragment_withDdpFlagEnabled_showsDevicesSection() {
+        val apps =
+            listOf(
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                    listOf(
+                        FitnessPermission(FitnessPermissionType.EXERCISE, READ),
+                        FitnessPermission(FitnessPermissionType.STEPS, READ),
+                    ),
+                )
+            )
+        val devices =
+            listOf(
+                MatchmakingDeviceData(
+                    DeviceDataSourceInfo(
+                        DataOrigin.Builder().setPackageName("com.example.watchdevice").build(),
+                        Device.Builder()
+                            .setManufacturer("Google")
+                            .setModel("Pixel Watch")
+                            .setType(2)
+                            .build(),
+                        false,
+                        listOf(
+                            DeviceDataProviderInfo(
+                                "com.google.android.apps.fitness",
+                                "MyFit",
+                                "",
+                                "",
+                                emptySet(),
+                            )
+                        ),
+                    ),
+                    emptyList(),
+                )
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                apps,
+                devices,
+            )
+        )
+
+        ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, MatchmakingFragment())
+                        .commitNow()
+                }
+
+                onView(withText(R.string.matchmaking_screen_devices_category_title))
+                    .check(matches(withEffectiveVisibility(VISIBLE)))
             }
     }
 }
