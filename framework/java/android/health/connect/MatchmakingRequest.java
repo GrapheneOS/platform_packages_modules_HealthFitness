@@ -174,10 +174,13 @@ public final class MatchmakingRequest implements Parcelable {
                                                 .getRecordType(recordTypeClass))
                         .toArray());
         dest.writeString(mCallingPackageName);
-        dest.writeStringList(
-                mIncludedDataSources.stream().map(DataOrigin::getPackageName).toList());
-        dest.writeStringList(
-                mExcludedDataSources.stream().map(DataOrigin::getPackageName).toList());
+
+        if (Flags.deviceDataProvidersApi()) {
+            dest.writeStringList(
+                    mIncludedDataSources.stream().map(DataOrigin::getPackageName).toList());
+            dest.writeStringList(
+                    mExcludedDataSources.stream().map(DataOrigin::getPackageName).toList());
+        }
     }
 
     @Override
