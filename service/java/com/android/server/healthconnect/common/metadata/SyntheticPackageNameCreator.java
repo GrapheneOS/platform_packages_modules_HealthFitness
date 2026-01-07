@@ -210,7 +210,7 @@ public class SyntheticPackageNameCreator {
      * identifiers can be generated that change upon factory resets.
      */
     @NonNull
-    public String initializeOrGetSalt() {
+    public synchronized String initializeOrGetSalt() {
         String salt = mPreferenceHelper.getPreference(SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY);
         if (salt == null) {
             salt = UUID.randomUUID().toString();
