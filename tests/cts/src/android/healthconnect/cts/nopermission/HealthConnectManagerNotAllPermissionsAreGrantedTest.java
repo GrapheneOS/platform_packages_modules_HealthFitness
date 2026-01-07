@@ -20,6 +20,7 @@ import static android.health.connect.HealthPermissions.READ_DISTANCE;
 import static android.health.connect.HealthPermissions.READ_STEPS;
 import static android.healthconnect.testing.cts.TestUtils.deleteRecords;
 import static android.healthconnect.testing.cts.TestUtils.getChangeLogToken;
+import static android.healthconnect.testing.cts.TestUtils.hasPedometer;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.updateRecords;
 import static android.healthconnect.testing.shared.DataFactory.buildExerciseSession;
@@ -190,7 +191,7 @@ public class HealthConnectManagerNotAllPermissionsAreGrantedTest {
                     DeviceDataTypeSource typeSource =
                             dataSource.getDeviceDataTypeSources().iterator().next();
                     assertThat(typeSource.getDataType()).isEqualTo(StepsRecord.class);
-                    assertThat(typeSource.isAvailable()).isTrue();
+                    assertThat(typeSource.isAvailable()).isEqualTo(hasPedometer());
                     assertThat(typeSource.isUserEnabled()).isTrue();
                 },
                 READ_STEPS);
