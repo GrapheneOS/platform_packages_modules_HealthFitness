@@ -29,14 +29,19 @@ import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
 
 /**
  * A {@link DeviceDataProviderManager} that overrides the serial number of the device to a fake
- * value.
+ * value and optionally ignores caller permission configuration.
  *
  * <p>This is designed to be used in testing, so that {@link android.os.Build#getSerial} doesn't
  * need to be called in a context where the permission is not present.
+ *
+ * <p>Optionally, {@code ignoresActionConfiguration} can be set in the ctor to false to bypass
+ * action configurations checks when advertising.
  */
 public class FakeSerialDeviceDataProviderManager extends DeviceDataProviderManager {
     /** The string that will be returned as the serial number. */
     public static final String TEST_SERIAL_NUMBER = "TEST_SERIAL_NUMBER";
+
+    private final boolean mIgnoresActionConfiguration;
 
     public FakeSerialDeviceDataProviderManager(
             @NonNull Context context,
@@ -48,7 +53,8 @@ public class FakeSerialDeviceDataProviderManager extends DeviceDataProviderManag
             @NonNull FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             @NonNull FitnessRecordReadHelper fitnessRecordReadHelper,
             @NonNull FitnessRecordDeleteHelper fitnessRecordDeleteHelper,
-            @NonNull SyntheticPackageNameCreator syntheticPackageNameCreator) {
+            @NonNull SyntheticPackageNameCreator syntheticPackageNameCreator,
+            boolean ignoresActionConfiguration) {
         super(
                 context,
                 deviceInfoHelper,
@@ -60,10 +66,18 @@ public class FakeSerialDeviceDataProviderManager extends DeviceDataProviderManag
                 fitnessRecordReadHelper,
                 fitnessRecordDeleteHelper,
                 syntheticPackageNameCreator);
+        mIgnoresActionConfiguration = ignoresActionConfiguration;
     }
 
     @Override
     String getSerial() {
         return TEST_SERIAL_NUMBER;
+    }
+
+    @Override
+    protected void validateDdpConfiguration(String packageName) {
+        if (mIgnoresActionConfiguration) return;
+
+        super.validateDdpConfiguration(packageName);
     }
 }
