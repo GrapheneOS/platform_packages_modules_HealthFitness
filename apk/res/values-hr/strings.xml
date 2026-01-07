@@ -492,8 +492,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"Dopuštenja"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"Fitness i opće stanje"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Vježbanje, spavanje, prehrana i drugo"</string>
-    <string name="medical_permissions" msgid="1066296298908103091">"Povijest bolesti"</string>
-    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"povijest bolesti"</string>
+    <string name="medical_permissions" msgid="1066296298908103091">"Medicinska dokumentacija"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"medicinska dokumentacija"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Nalazi, lijekovi, cjepiva itd."</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Uklonjena dopuštenja aplikacije"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect uklonio je dopuštenja za aplikaciju <xliff:g id="APP_DATA">%s</xliff:g>"</string>

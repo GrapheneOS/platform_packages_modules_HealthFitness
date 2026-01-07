@@ -403,7 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Lege fest, welche Daten diese App in Health Connect lesen darf"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Daten zwischen Apps teilen"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Daten aus <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Der App „<xliff:g id="APP_NAME">%1$s</xliff:g>“ erlauben, Daten aus anderen Apps auf diesem Gerät über Health Connect zu lesen. Diese Daten können auch von anderen Apps gelesen werden, denen du Zugriff darauf gewährst."</string>
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Erlaube der App „<xliff:g id="APP_NAME">%1$s</xliff:g>“, Daten aus anderen Apps auf diesem Gerät über Health Connect zu lesen. Diese Daten können auch von anderen Apps gelesen werden, denen du Zugriff darauf gewährst."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps, die diese Daten synchronisieren können"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Informationen dazu, wie <xliff:g id="APP_NAME">%1$s</xliff:g> deine Daten verwendet, findest du in der "<a href="%2$s">"Datenschutzerklärung für die App"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Mit Health Connect kannst du deine Gesundheits- und Fitnessdaten zwischen mehreren Apps teilen. So hast du Einblick in deine Statistiken und kannst neue Funktionen nutzen, während deine Daten geschützt werden."</string>

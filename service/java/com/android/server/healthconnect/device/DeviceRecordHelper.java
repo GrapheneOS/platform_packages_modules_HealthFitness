@@ -17,12 +17,12 @@
 package com.android.server.healthconnect.device;
 
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.util.ArrayMap;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Manages insertions of device level data.
@@ -31,8 +31,6 @@ import java.util.List;
  */
 public class DeviceRecordHelper {
     public static final String DEVICE_DATA_PROVIDER_PACKAGE = "android";
-    private static final ArrayMap<String, Boolean> EMPTY_EXTRA_PERMISSION_MAPPING =
-            new ArrayMap<>();
     private final FitnessRecordUpsertHelper mUpsertHelper;
 
     public DeviceRecordHelper(FitnessRecordUpsertHelper upsertHelper) {
@@ -49,10 +47,12 @@ public class DeviceRecordHelper {
         }
         addDeviceMetadataToRecords(deviceDataSource, records);
 
+        // Treat all extra permissions as granted to pass any per-record checks.
+        Set<String> grantedExtraWritePermissions = mUpsertHelper.getAllExtraWritePermissions();
         mUpsertHelper.insertRecords(
                 DEVICE_DATA_PROVIDER_PACKAGE,
                 records,
-                EMPTY_EXTRA_PERMISSION_MAPPING,
+                grantedExtraWritePermissions,
                 /* shouldGenerateAccessLogs= */ false);
     }
 

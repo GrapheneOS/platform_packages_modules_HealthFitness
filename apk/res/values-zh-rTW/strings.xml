@@ -390,7 +390,7 @@
     <string name="symptom_severity_mild" msgid="2689415474774489874">"輕微"</string>
     <string name="symptom_severity_moderate" msgid="8388787027751900668">"中度"</string>
     <string name="symptom_severity_severe" msgid="4675732713898596705">"嚴重"</string>
-    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>"</string>
+    <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g><xliff:g id="TYPE">%2$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」讀取"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」寫入"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"允許"</string>

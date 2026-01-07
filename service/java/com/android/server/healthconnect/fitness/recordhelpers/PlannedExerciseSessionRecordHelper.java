@@ -39,7 +39,6 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorUUID;
 
-import android.annotation.Nullable;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.datatypes.RecordTypeIdentifier;
@@ -68,7 +67,6 @@ import android.health.connect.internal.datatypes.ExercisePerformanceGoalInternal
 import android.health.connect.internal.datatypes.PlannedExerciseBlockInternal;
 import android.health.connect.internal.datatypes.PlannedExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.PlannedExerciseStepInternal;
-import android.util.ArrayMap;
 import android.util.Pair;
 
 import com.android.server.healthconnect.fitness.RecordReadTableRequest;
@@ -87,6 +85,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -579,7 +578,7 @@ public final class PlannedExerciseSessionRecordHelper
 
     @Override
     public List<TableColumnPair> getChildTablesWithRowsToBeDeletedDuringUpdate(
-            @Nullable ArrayMap<String, Boolean> extraWritePermissionToState) {
+            Set<String> grantedExtraWritePermissions) {
         // Children of the block table will get automatically deleted via cascades.
         return Collections.singletonList(
                 new TableColumnPair(

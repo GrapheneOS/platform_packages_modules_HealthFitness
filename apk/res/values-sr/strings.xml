@@ -382,8 +382,8 @@
     <string name="alcohol_consumption_lowercase_label" msgid="3956015726333214503">"конзумирање алкохола"</string>
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Читање података о конзумирању алкохола"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Уписивање података о конзумирању алкохола"</string>
-    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Кашаљ"</string>
-    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"кашаљ"</string>
+    <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Кашљање"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"кашљање"</string>
     <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Читање симптома"</string>
     <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Уписивање симптома"</string>
     <string name="symptom_unknown" msgid="5796719193136239306">"Непознато"</string>

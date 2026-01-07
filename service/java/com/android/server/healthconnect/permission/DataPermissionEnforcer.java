@@ -224,19 +224,20 @@ public class DataPermissionEnforcer {
                 .collect(toSet());
     }
 
-    public ArrayMap<String, Boolean> collectExtraWritePermissionStateMapping(
+    /**
+     * Returns granted extra write permissions for the specified records.
+     *
+     * @see RecordHelper#getExtraWritePermissions()
+     */
+    public Set<String> collectGrantedExtraWritePermissions(
             List<RecordInternal<?>> recordInternals, AttributionSource attributionSource) {
-        ArrayMap<String, Boolean> mapping = new ArrayMap<>();
-        for (RecordInternal<?> recordInternal : recordInternals) {
-            int recordTypeId = recordInternal.getRecordType();
-            RecordHelper<?> recordHelper =
-                    mInternalHealthConnectMappings.getRecordHelper(recordTypeId);
-
-            for (String permName : recordHelper.getExtraWritePermissions()) {
-                mapping.put(permName, isPermissionGranted(permName, attributionSource));
-            }
-        }
-        return mapping;
+        return recordInternals.stream()
+                .map(RecordInternal::getRecordType)
+                .distinct()
+                .map(mInternalHealthConnectMappings::getRecordHelper)
+                .flatMap(recordHelper -> recordHelper.getExtraWritePermissions().stream())
+                .filter(permission -> isPermissionGranted(permission, attributionSource))
+                .collect(toSet());
     }
 
     private void enforceWritePermission(int recordTypeId, AttributionSource attributionSource) {

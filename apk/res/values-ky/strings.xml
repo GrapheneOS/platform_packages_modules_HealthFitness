@@ -401,12 +401,12 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Бул колдонмо Health Connect\'ке жаза турган нерселерди тандаңыз"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Бул колдонмо окуп же Health Connect\'ке жаза турган нерселерди тандаңыз"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Бул колдонмо Health Connect\'тен окуй турган нерселерди тандаңыз"</string>
-    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Маалыматты колдонмолордун ортосунда бөлүшүү"</string>
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Колдонмолор ортосунда маалымат алмашуу"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосунан алынган маалымат"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосуна Health Connect\'тин жардамы менен бул түзмөктөгү башка колдонмолордогу маалыматты окууга уруксат берүү. Бул маалыматты сиз уруксат берген башка колдонмолор да окуй алат."</string>
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосуна Health Connect аркылуу бул түзмөктөгү башка колдонмолордогу нерселерди окууга уруксат бересиз. Алар сиз уруксат берген башка колдонмолорго да жеткиликтүү болот."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Бул маалыматты шайкештире алган колдонмолор"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосу маалыматтарыңызды кантип колдонорун "<a href="%2$s">"купуялык эрежелеринен"</a>" караңыз."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ден соолук жана спорт тууралуу маалыматты колдонмолордун ортосунда бөлүшүүгө жардам берет. Бул статистиканы көрүп жана маалыматты коопсуз сактоого көмөктөшөт."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect платформасы аркылуу ар кайсы колдонмолордун ортосунда ден соолук жана кыймылдуулук тууралуу маалымат алмашууга болот. Ушуну менен, пайдалуу статистикалык маалымат аласыз жана маалыматтарыңыз коопсуз сакталат."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect жөнүндө кеңири маалымат"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"жайып көрсөтүү"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"жыйыштыруу"</string>
@@ -1337,7 +1337,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Ден соолук колдонмолоруңуз"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Ден соолугуңуз тууралуу маалымат"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Параметрлер"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect ден соолук жана спорт тууралуу маалыматты колдонмолордун ортосунда бөлүшүүгө жардам берет. Бул статистиканы көрүп жана маалыматты коопсуз сактоого көмөктөшөт."</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect платформасы аркылуу ар кайсы колдонмолордун ортосунда ден соолук жана кыймылдуулук тууралуу маалымат алмашууга болот. Ушуну менен, пайдалуу статистикалык маалымат аласыз жана маалыматтарыңыз коопсуз сакталат."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect жөнүндө кеңири маалымат"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Маалыматтарыңыз жана алар кайсы колдонмолорго жеткиликтүү"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Жакында маалыматтарыңызды колдонгон колдонмолор"</string>
@@ -1348,8 +1348,8 @@
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Туташкан жок"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Бул колдонмону Health Connect\'ке байланыштыруу үчүн чыкылдатыңыз"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Азыр эмес"</string>
-    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Катанын бардык белгилери"</string>
-    <string name="symptoms_lowercase_label" msgid="767123038349492995">"катанын белгилери"</string>
+    <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Оорунун бардык белгилери"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"оорунун белгилери"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Безетки тууралуу маалыматты окуу"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Безетки тууралуу маалыматты жазуу"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Морт тырмактар тууралуу маалыматты окуу"</string>

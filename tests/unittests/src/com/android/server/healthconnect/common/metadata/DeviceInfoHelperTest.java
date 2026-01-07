@@ -187,15 +187,16 @@ public class DeviceInfoHelperTest {
     @Test
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_UDI_DB
     })
     public void deviceInfosAreEqual() {
         DeviceInfoHelper.DeviceInfo deviceInfo1 =
                 new DeviceInfoHelper.DeviceInfo(
-                        "Google", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone");
+                        "Google", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone", "udi");
         DeviceInfoHelper.DeviceInfo deviceInfo2 =
                 new DeviceInfoHelper.DeviceInfo(
-                        "Google", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone");
+                        "Google", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone", "udi");
 
         assertThat(deviceInfo1).isEqualTo(deviceInfo2);
     }
@@ -203,39 +204,45 @@ public class DeviceInfoHelperTest {
     @Test
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_UDI_DB
     })
     public void deviceInfosAreDifferent() {
         DeviceInfoHelper.DeviceInfo deviceInfo =
                 new DeviceInfoHelper.DeviceInfo(
-                        "Google", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone");
+                        "Google", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone", "udi");
         DeviceInfoHelper.DeviceInfo differentManufacturer =
                 new DeviceInfoHelper.DeviceInfo(
-                        "Test", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone");
+                        "Test", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone", "udi");
         DeviceInfoHelper.DeviceInfo differentModel =
                 new DeviceInfoHelper.DeviceInfo(
-                        "Google", "Test", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone");
+                        "Google", "Test", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone", "udi");
         DeviceInfoHelper.DeviceInfo differentDeviceType =
                 new DeviceInfoHelper.DeviceInfo(
-                        "Google", "Pixel", DEVICE_TYPE_UNKNOWN, "pixel_id", "Pixel Phone");
+                        "Google", "Pixel", DEVICE_TYPE_UNKNOWN, "pixel_id", "Pixel Phone", "udi");
         DeviceInfoHelper.DeviceInfo differentId =
                 new DeviceInfoHelper.DeviceInfo(
-                        "Google", "Pixel", DEVICE_TYPE_PHONE, "Test", "Pixel Phone");
+                        "Google", "Pixel", DEVICE_TYPE_PHONE, "Test", "Pixel Phone", "udi");
         DeviceInfoHelper.DeviceInfo differentDisplayName =
                 new DeviceInfoHelper.DeviceInfo(
-                        "Google", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Test");
+                        "Google", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Test", "udi");
+        DeviceInfoHelper.DeviceInfo differentUdi =
+                new DeviceInfoHelper.DeviceInfo(
+                        "Google", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone", "Test");
 
         assertThat(deviceInfo).isNotEqualTo(differentManufacturer);
         assertThat(deviceInfo).isNotEqualTo(differentModel);
         assertThat(deviceInfo).isNotEqualTo(differentDeviceType);
         assertThat(deviceInfo).isNotEqualTo(differentId);
         assertThat(deviceInfo).isNotEqualTo(differentDisplayName);
+        assertThat(deviceInfo).isNotEqualTo(differentUdi);
     }
 
     @Test
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_UDI_DB
     })
     public void getDeviceInfo_deviceIdNotInCache_returnsNull() {
         DeviceInfoHelper.DeviceInfo deviceInfo = mDeviceInfoHelper.getDeviceInfo(1);
@@ -245,12 +252,18 @@ public class DeviceInfoHelperTest {
     @Test
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_UDI_DB
     })
     public void getDeviceInfoId_deviceInfoNotInCache_returnsNull() {
         DeviceInfoHelper.DeviceInfo nonExistentDeviceInfo =
                 new DeviceInfoHelper.DeviceInfo(
-                        "NonExistent", "Device", DEVICE_TYPE_UNKNOWN, null, "Non Existent Device");
+                        "NonExistent",
+                        "Device",
+                        DEVICE_TYPE_UNKNOWN,
+                        null,
+                        "Non Existent Device",
+                        "Non Existent Device UDI");
 
         Long id = mDeviceInfoHelper.getDeviceInfoId(nonExistentDeviceInfo);
 
@@ -260,14 +273,14 @@ public class DeviceInfoHelperTest {
     @Test
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_UDI_DB
     })
     public void getDeviceInfoId_deviceInfoInCache_returnsCorrectId() {
-        RecordInternal<?> recordInternal = getStepsRecordInternal();
-        mDeviceInfoHelper.populateDeviceInfoId(recordInternal);
         DeviceInfoHelper.DeviceInfo existingDeviceInfo =
                 new DeviceInfoHelper.DeviceInfo(
-                        "Google", "Pixel", DEVICE_TYPE_PHONE, null, "Pixel Phone");
+                        "Google", "Pixel", DEVICE_TYPE_PHONE, null, "Pixel Phone", "udi");
+        mDeviceInfoHelper.insertIfNotPresent(existingDeviceInfo);
 
         Long id = mDeviceInfoHelper.getDeviceInfoId(existingDeviceInfo);
 
@@ -275,14 +288,32 @@ public class DeviceInfoHelperTest {
     }
 
     @Test
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_DB, Flags.FLAG_DEVICE_DATA_PROVIDERS_API})
+    @DisableFlags(Flags.FLAG_DEVICE_UDI_DB)
+    public void getDeviceInfoId_deviceInfoInCache_udiFeatureDisabled_returnsCorrectId() {
+        DeviceInfoHelper.DeviceInfo existingDeviceInfo =
+                new DeviceInfoHelper.DeviceInfo(
+                        "Google", "Pixel", DEVICE_TYPE_PHONE, null, "Pixel Phone", "udi");
+        mDeviceInfoHelper.insertIfNotPresent(existingDeviceInfo);
+
+        DeviceInfoHelper.DeviceInfo existingDeviceInfoWithoutUdi =
+                new DeviceInfoHelper.DeviceInfo(
+                        "Google", "Pixel", DEVICE_TYPE_PHONE, null, "Pixel Phone");
+        Long id = mDeviceInfoHelper.getDeviceInfoId(existingDeviceInfoWithoutUdi);
+
+        assertThat(id).isEqualTo(1L);
+    }
+
+    @Test
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_UDI_DB
     })
     public void getDeviceInfo_deviceIdInCache_returnsCorrectDeviceInfo() {
         DeviceInfoHelper.DeviceInfo deviceInfoWithId =
                 new DeviceInfoHelper.DeviceInfo(
-                        "Google", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone");
+                        "Google", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone", "udi");
         long deviceInfoId = mDeviceInfoHelper.insertIfNotPresent(deviceInfoWithId);
 
         DeviceInfoHelper.DeviceInfo retrievedDeviceInfo =
@@ -294,6 +325,22 @@ public class DeviceInfoHelperTest {
         assertThat(retrievedDeviceInfo.getDeviceType()).isEqualTo(DEVICE_TYPE_PHONE);
         assertThat(retrievedDeviceInfo.getDeviceId()).isEqualTo("pixel_id");
         assertThat(retrievedDeviceInfo.getDisplayName()).isEqualTo("Pixel Phone");
+        assertThat(retrievedDeviceInfo.getUdi()).isEqualTo("udi");
+    }
+
+    @Test
+    @DisableFlags({Flags.FLAG_DEVICE_UDI_DB})
+    public void getIdDeviceInfo_udiFeatureDisabled_udiNotPopulated() {
+        DeviceInfoHelper.DeviceInfo deviceInfoWithId =
+                new DeviceInfoHelper.DeviceInfo(
+                        "Google", "Pixel", DEVICE_TYPE_PHONE, "pixel_id", "Pixel Phone", "udi");
+        long deviceInfoId = mDeviceInfoHelper.insertIfNotPresent(deviceInfoWithId);
+
+        DeviceInfoHelper.DeviceInfo retrievedDeviceInfo =
+                mDeviceInfoHelper.getDeviceInfo(deviceInfoId);
+
+        assertThat(retrievedDeviceInfo).isNotNull();
+        assertThat(retrievedDeviceInfo.getUdi()).isNull();
     }
 
     private RecordInternal<?> getStepsRecordInternal() {

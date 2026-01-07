@@ -403,7 +403,7 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Escolha dados que você quer que esse app leia na plataforma Conexão Saúde"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"Compartilhar dados entre apps"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dados coletados do app <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Permitir que o app <xliff:g id="APP_NAME">%1$s</xliff:g> leia dados de outros apps neste dispositivo usando a Conexão Saúde Esses dados também podem ser lidos por outros apps a que você dá acesso."</string>
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Permitir que o app <xliff:g id="APP_NAME">%1$s</xliff:g> leia dados de outros apps neste dispositivo usando a Conexão Saúde. Esses dados também podem ser lidos por outros apps, se você autorizar."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps que podem sincronizar esses dados"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Acesse a "<a href="%2$s">"Política de Privacidade"</a>" do app <xliff:g id="APP_NAME">%1$s</xliff:g> para saber como ele usa seus dados."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"O app Conexão Saúde permite compartilhar seus dados de saúde e condicionamento físico entre vários aplicativos. Assim, você acessa insights e experiências sem deixar de lado a proteção dos seus dados."</string>

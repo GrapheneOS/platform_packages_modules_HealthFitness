@@ -30,7 +30,6 @@ import android.healthconnect.testing.unittest.RecordInternalFactory;
 import android.os.UserHandle;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
-import android.util.ArrayMap;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -55,6 +54,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
@@ -98,7 +98,7 @@ public class FitnessRecordUpsertHelperTest {
                 List.of(
                         RecordInternalFactory.buildStepsRecord(500, 750, 100)
                                 .setPackageName(TEST_PACKAGE_NAME)),
-                new ArrayMap<>(),
+                /* grantedExtraWritePermissions= */ Set.of(),
                 /* shouldGenerateAccessLogs= */ true);
 
         assertThat(mTransactionManager.count(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME)))
@@ -114,7 +114,7 @@ public class FitnessRecordUpsertHelperTest {
                 List.of(
                         RecordInternalFactory.buildStepsRecord(500, 750, 100)
                                 .setPackageName(TEST_PACKAGE_NAME)),
-                new ArrayMap<>(),
+                /* grantedExtraWritePermissions= */ Set.of(),
                 /* shouldGenerateAccessLogs= */ false);
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
@@ -149,7 +149,7 @@ public class FitnessRecordUpsertHelperTest {
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
                                 List.of(symptomRecordInternal),
-                                new ArrayMap<>(),
+                                /* grantedExtraWritePermissions= */ Set.of(),
                                 /* shouldGenerateAccessLogs= */ true)
                         .get(0);
 
@@ -167,7 +167,7 @@ public class FitnessRecordUpsertHelperTest {
                                                 new SymptomRecordInternal()
                                                         .setSymptomType(
                                                                 SymptomRecord.SYMPTOM_TYPE_ACNE)),
-                                        new ArrayMap<>(),
+                                        /* grantedExtraWritePermissions= */ Set.of(),
                                         /* shouldGenerateAccessLogs= */ true));
 
         assertThat(thrown).hasMessageThat().isEqualTo("Updating Symptom type is not allowed.");
@@ -186,7 +186,7 @@ public class FitnessRecordUpsertHelperTest {
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
                                 List.of(symptomRecordInternal),
-                                new ArrayMap<>(),
+                                /* grantedExtraWritePermissions= */ Set.of(),
                                 /* shouldGenerateAccessLogs= */ true)
                         .get(0);
 
@@ -200,7 +200,7 @@ public class FitnessRecordUpsertHelperTest {
                                 symptomRecordInternal,
                                 new SymptomRecordInternal()
                                         .setSymptomType(SymptomRecord.SYMPTOM_TYPE_ACNE)),
-                        new ArrayMap<>(),
+                        /* grantedExtraWritePermissions= */ Set.of(),
                         /* shouldGenerateAccessLogs= */ true);
 
         assertThat(uuids).contains(uuid);
@@ -219,7 +219,7 @@ public class FitnessRecordUpsertHelperTest {
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
                                 List.of(symptomRecordInternal),
-                                new ArrayMap<>(),
+                                /* grantedExtraWritePermissions= */ Set.of(),
                                 /* shouldGenerateAccessLogs= */ true)
                         .get(0);
 
@@ -233,7 +233,7 @@ public class FitnessRecordUpsertHelperTest {
                                 mFitnessRecordUpsertHelper.updateRecords(
                                         TEST_PACKAGE_NAME,
                                         List.of(symptomRecordInternal),
-                                        new ArrayMap<>(),
+                                        /* grantedExtraWritePermissions= */ Set.of(),
                                         /* shouldGenerateAccessLogs= */ true));
 
         assertThat(thrown).hasMessageThat().isEqualTo("Updating Symptom type is not allowed.");
@@ -252,7 +252,7 @@ public class FitnessRecordUpsertHelperTest {
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
                                 List.of(symptomRecordInternal),
-                                new ArrayMap<>(),
+                                /* grantedExtraWritePermissions= */ Set.of(),
                                 /* shouldGenerateAccessLogs= */ true)
                         .get(0);
 
@@ -263,7 +263,7 @@ public class FitnessRecordUpsertHelperTest {
                 mFitnessRecordUpsertHelper.updateRecords(
                         TEST_PACKAGE_NAME,
                         List.of(symptomRecordInternal),
-                        new ArrayMap<>(),
+                        /* grantedExtraWritePermissions= */ Set.of(),
                         /* shouldGenerateAccessLogs= */ true);
 
         assertThat(uuids).containsExactly(uuid);

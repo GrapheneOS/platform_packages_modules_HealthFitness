@@ -394,7 +394,7 @@
     <string name="read_permission_category" msgid="6002099618259628632">"מתן הרשאה לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> לקרוא נתונים"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"מתן הרשאה לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> לכתוב נתונים"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"אישור"</string>
-    <string name="request_permissions_allow_all" msgid="3419414351406638770">"אישור של הכול"</string>
+    <string name="request_permissions_allow_all" msgid="3419414351406638770">"אישור של כל ההרשאות"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"אין אישור"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"צריך לבחור את הנתונים שהאפליקציה הזו תקרא מאפליקציית Health Connect או תכתוב אליה"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"יש לבחור את הנתונים שהאפליקציה הזו תקרא מ-Health Connect"</string>
@@ -403,10 +403,10 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"יש לבחור את הנתונים שהאפליקציה הזו תקרא מ-Health Connect"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"שיתוף נתונים בין אפליקציות"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"מקור הנתונים: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"אם תינתן הרשאה, האפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> תוכל לקרוא נתונים מאפליקציות אחרות במכשיר הזה באמצעות Health Connect. אפליקציות אחרות שנתת להן גישה יכולות גם לקרוא את הנתונים האלה."</string>
+    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"אם האפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> תקבל ממך הרשאה, היא תוכל לקרוא נתונים מאפליקציות אחרות במכשיר הזה באמצעות Health Connect. אפליקציות אחרות שנתת להן גישה גם יכולות לקרוא את הנתונים האלה."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"אפליקציות שיכולות לסנכרן את הנתונים האלה"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ב"<a href="%2$s">"מדיניות הפרטיות"</a>" של <xliff:g id="APP_NAME">%1$s</xliff:g> מוסבר איך האפליקציה משתמשת בנתונים שלך."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"אפליקציית Health Connect מאפשרת לשתף את נתוני הבריאות והכושר בין כמה אפליקציות. כך אפשר לקבל תובנות ולשפר את חוויית השימוש תוך שמירה על אבטחת המידע."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"רוצה לקבל תובנות ולשפר את חוויית השימוש? עם Health Connect אפשר לשתף את נתוני הבריאות והכושר בין אפליקציות בצורה מאובטחת."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"מידע נוסף על Health Connect"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"הרחבה"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"כיווץ"</string>

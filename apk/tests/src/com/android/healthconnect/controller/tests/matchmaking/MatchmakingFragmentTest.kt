@@ -60,6 +60,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
+import com.android.healthconnect.controller.tests.utils.scrollToText
 import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
@@ -74,7 +75,7 @@ import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
-import org.hamcrest.core.IsNot.not
+import org.hamcrest.CoreMatchers.allOf
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -428,7 +429,7 @@ class MatchmakingFragmentTest {
                         .commitNow()
                 }
 
-                onView(withText("Don\'t allow")).perform(click())
+                onView(withText("Don\u0027t allow")).perform(click())
 
                 verify(viewModel).removeAllPermissionsFromGrantedList()
                 verify(logger).logInteraction(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
@@ -629,6 +630,100 @@ class MatchmakingFragmentTest {
                 onView(withId(R.id.matched_app_icon_2_container))
                     .check(matches(withEffectiveVisibility(GONE)))
                 onView(withId(R.id.plus_n_container)).check(matches(isDisplayed()))
+            }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingFragment_expandablePreferenceSwitchOn_addsAppPermissions() {
+        val appWithMultiplePermissions =
+            MatchmakingAppData(
+                AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                listOf(
+                    FitnessPermission(FitnessPermissionType.EXERCISE, READ),
+                    FitnessPermission(FitnessPermissionType.STEPS, READ),
+                ),
+            )
+        val apps = listOf(appWithMultiplePermissions)
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                apps,
+            )
+        )
+
+        ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = MatchmakingFragment()
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, fragment)
+                        .commitNow()
+                }
+
+                scrollToText("Data from $TEST_APP_NAME")
+                onView(allOf(withId(R.id.switch_widget))).perform(click())
+
+                verify(viewModel, times(1)).addAppPermissionsToGrantedList(TEST_APP_PACKAGE_NAME)
+            }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingFragment_expandablePreferenceSwitchOff_removesAppPermissions() {
+        val appWithMultiplePermissions =
+            MatchmakingAppData(
+                AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                listOf(
+                    FitnessPermission(FitnessPermissionType.EXERCISE, READ),
+                    FitnessPermission(FitnessPermissionType.STEPS, READ),
+                ),
+            )
+        val apps = listOf(appWithMultiplePermissions)
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                apps,
+            )
+        )
+        // Initially grant all permissions for this app so we can toggle them off
+        whenever(viewModel.grantedPermissions)
+            .thenReturn(
+                MutableLiveData(
+                    mapOf(TEST_APP_PACKAGE_NAME to appWithMultiplePermissions.permissions)
+                )
+            )
+
+        ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = MatchmakingFragment()
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, fragment)
+                        .commitNow()
+                }
+
+                scrollToText("Data from $TEST_APP_NAME")
+                onView(allOf(withId(R.id.switch_widget))).perform(click())
+
+                verify(viewModel, times(1))
+                    .removeAppPermissionsFromGrantedList(TEST_APP_PACKAGE_NAME)
             }
     }
 }

@@ -29,7 +29,6 @@ import android.database.Cursor;
 import android.health.connect.Constants;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.RecordInternal;
-import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Slog;
 
@@ -102,15 +101,14 @@ public class FitnessRecordUpsertHelper {
      *
      * @param callingPackageName The package name inserting the records.
      * @param recordInternals The list of records to be inserted.
-     * @param extraPermsStateMap A map of extra permissions and their grant state. An empty map
-     *     means all permissions are granted.
+     * @param grantedExtraWritePermissions The granted extra write permissions.
      * @param shouldGenerateAccessLogs Whether access logs should be generated or not.
      * @return List of UUIDs of the inserted records.
      */
     public List<String> insertRecords(
             String callingPackageName,
             List<? extends RecordInternal<?>> recordInternals,
-            ArrayMap<String, Boolean> extraPermsStateMap,
+            Set<String> grantedExtraWritePermissions,
             boolean shouldGenerateAccessLogs) {
         Map<Integer, List<RecordInternal<?>>> recordTypesToRecordInternals = new HashMap<>();
         for (RecordInternal<?> recordInternal : recordInternals) {
@@ -134,7 +132,7 @@ public class FitnessRecordUpsertHelper {
                         /* shouldGenerateChangeLog= */ true,
                         /* shouldPreferNewRecord= */ true,
                         /* updateLastModifiedTime= */ true,
-                        extraPermsStateMap);
+                        grantedExtraWritePermissions);
 
         mThreadScheduler.scheduleInternalTask(
                 () -> postInsertTasks(callingPackageName, recordInternals));
@@ -160,15 +158,14 @@ public class FitnessRecordUpsertHelper {
      *
      * @param callingPackageName The package name inserting the records.
      * @param recordInternals The list of records to be inserted.
-     * @param extraPermsStateMap A map of extra permissions and their grant state. An empty map
-     *     means all permissions are granted.
+     * @param grantedExtraWritePermissions The granted extra write permissions.
      * @param shouldGenerateAccessLogs Whether access logs should be generated or not.
      * @return List of UUIDs of the inserted records.
      */
     public List<String> updateRecords(
             String callingPackageName,
             List<? extends RecordInternal<?>> recordInternals,
-            ArrayMap<String, Boolean> extraPermsStateMap,
+            Set<String> grantedExtraWritePermissions,
             boolean shouldGenerateAccessLogs) {
 
         Map<Integer, List<RecordInternal<?>>> recordTypesToRecordInternals = new HashMap<>();
@@ -194,7 +191,7 @@ public class FitnessRecordUpsertHelper {
                         /* shouldGenerateChangeLog= */ true,
                         /* shouldPreferNewRecord= */ true,
                         /* updateLastModifiedTime= */ true,
-                        extraPermsStateMap);
+                        grantedExtraWritePermissions);
 
         mThreadScheduler.scheduleInternalTask(
                 () ->
@@ -233,7 +230,18 @@ public class FitnessRecordUpsertHelper {
                 shouldGenerateChangeLog,
                 /* shouldPreferNewRecord= */ false,
                 /* updateLastModifiedTime= */ false,
-                /* extraPermsStateMap= */ null);
+                getAllExtraWritePermissions());
+    }
+
+    /**
+     * Returns all possible extra write permissions.
+     *
+     * @see RecordHelper#getExtraWritePermissions()
+     */
+    public Set<String> getAllExtraWritePermissions() {
+        return mInternalHealthConnectMappings.getRecordHelpers().stream()
+                .flatMap(recordHelper -> recordHelper.getExtraWritePermissions().stream())
+                .collect(Collectors.toSet());
     }
 
     private List<String> upsert(
@@ -244,7 +252,7 @@ public class FitnessRecordUpsertHelper {
             boolean shouldGenerateChangeLog,
             boolean shouldPreferNewRecord,
             boolean updateLastModifiedTime,
-            @Nullable ArrayMap<String, Boolean> extraPermsStateMap) {
+            Set<String> grantedExtraWritePermissions) {
         if (shouldGenerateAccessLog) {
             Objects.requireNonNull(callingPackageName);
         }
@@ -277,7 +285,9 @@ public class FitnessRecordUpsertHelper {
                     for (RecordInternal<?> recordInternal : recordInternals) {
                         UpsertTableRequest upsertRequest =
                                 createUpsertRequestForRecord(
-                                        recordInternal, isInsertRequest, extraPermsStateMap);
+                                        recordInternal,
+                                        isInsertRequest,
+                                        grantedExtraWritePermissions);
                         if (shouldGenerateChangeLog) {
                             if (!Flags.fixChangeLogWhenInsertWithSameTimestamps()) {
                                 upsertionChangeLogs.addRecordInfo(
@@ -363,12 +373,12 @@ public class FitnessRecordUpsertHelper {
     private UpsertTableRequest createUpsertRequestForRecord(
             RecordInternal<?> recordInternal,
             boolean isInsertRequest,
-            @Nullable ArrayMap<String, Boolean> extraPermsStateMap) {
+            Set<String> grantedExtraWritePermissions) {
         RecordHelper<?> recordHelper =
                 mInternalHealthConnectMappings.getRecordHelper(recordInternal.getRecordType());
 
         UpsertTableRequest request =
-                recordHelper.getUpsertTableRequest(recordInternal, extraPermsStateMap);
+                recordHelper.getUpsertTableRequest(recordInternal, grantedExtraWritePermissions);
         if (!isInsertRequest) {
             request.setUpdateWhereClauses(generateWhereClausesForUpdate(recordInternal));
         }

@@ -93,8 +93,8 @@
     <string name="app_priority_button" msgid="3126133977893705098">"Prioridad de las apps"</string>
     <string name="delete_category_data_button" msgid="2324773398768267043">"Borrar datos de <xliff:g id="CATEGORY">%s</xliff:g>"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"Todas las apps"</string>
-    <string name="can_read" msgid="4568261079308309564">"Acceso de lectura a <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="can_write" msgid="5082414937218423823">"Acceso de escritura a <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="can_read" msgid="4568261079308309564">"Pueden leer <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
+    <string name="can_write" msgid="5082414937218423823">"Pueden escribir <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="inactive_apps" msgid="8956546286760797760">"Apps inactivas"</string>
     <string name="inactive_apps_message" msgid="8335803540719022910">"Estas apps ya no tendrán acceso de lectura ni de escritura a datos de <xliff:g id="DATA_TYPE">%s</xliff:g>, pero seguirán teniendo datos almacenados en Health Connect"</string>
     <string name="data_access_empty_message" msgid="9084350402254264452">"Las apps ya no pueden leer ni escribir datos de <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>, y no hay datos almacenados de <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> en Health Connect"</string>
@@ -388,8 +388,8 @@
     <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Escribir síntomas"</string>
     <string name="symptom_unknown" msgid="5796719193136239306">"Desconocido"</string>
     <string name="symptom_severity_mild" msgid="2689415474774489874">"leve"</string>
-    <string name="symptom_severity_moderate" msgid="8388787027751900668">"de gravedad media"</string>
-    <string name="symptom_severity_severe" msgid="4675732713898596705">"grave"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"de intensidad moderada"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"de alta intensidad"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="TYPE">%2$s</xliff:g> <xliff:g id="SEVERITY">%1$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Permitir que \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tenga acceso de lectura"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Permitir que \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" tenga acceso de escritura"</string>
