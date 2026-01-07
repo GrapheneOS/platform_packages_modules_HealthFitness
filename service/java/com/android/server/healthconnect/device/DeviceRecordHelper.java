@@ -20,6 +20,7 @@ import android.health.connect.internal.datatypes.RecordInternal;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 
 import java.util.List;
 import java.util.Set;
@@ -32,9 +33,13 @@ import java.util.Set;
 public class DeviceRecordHelper {
     public static final String DEVICE_DATA_PROVIDER_PACKAGE = "android";
     private final FitnessRecordUpsertHelper mUpsertHelper;
+    private final InternalHealthConnectMappings mInternalHealthConnectMappings;
 
-    public DeviceRecordHelper(FitnessRecordUpsertHelper upsertHelper) {
+    public DeviceRecordHelper(
+            FitnessRecordUpsertHelper upsertHelper,
+            InternalHealthConnectMappings internalHealthConnectMappings) {
         mUpsertHelper = upsertHelper;
+        mInternalHealthConnectMappings = internalHealthConnectMappings;
     }
 
     /**
@@ -47,12 +52,13 @@ public class DeviceRecordHelper {
         }
         addDeviceMetadataToRecords(deviceDataSource, records);
 
-        // Treat all extra permissions as granted to pass any per-record checks.
-        Set<String> grantedExtraWritePermissions = mUpsertHelper.getAllExtraWritePermissions();
+        // Treat all permissions as granted to pass any per-record checks.
+        Set<String> grantedPerRecordWritePermissions =
+                mInternalHealthConnectMappings.getAllPerRecordWritePermissions();
         mUpsertHelper.insertRecords(
                 DEVICE_DATA_PROVIDER_PACKAGE,
                 records,
-                grantedExtraWritePermissions,
+                grantedPerRecordWritePermissions,
                 /* shouldGenerateAccessLogs= */ false);
     }
 

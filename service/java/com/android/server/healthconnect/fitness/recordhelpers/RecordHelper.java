@@ -142,10 +142,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     /**
-     * Returns a set of granular write permissions that apply to this record type. The default
-     * implementation returns an empty set.
+     * Returns the set of write permissions that are checked at per-record level for this record
+     * type. The default implementation returns an empty set.
      */
-    public Set<String> getAllGranularWritePermissionsForHelper() {
+    public Set<String> getAllPerRecordWritePermissions() {
         return Collections.emptySet();
     }
 
@@ -350,9 +350,9 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     /** Gets {@link UpsertTableRequest} from {@code recordInternal}. */
     @SuppressWarnings("unchecked")
     public UpsertTableRequest getUpsertTableRequest(
-            RecordInternal<?> recordInternal, Set<String> grantedExtraWritePermissions) {
+            RecordInternal<?> recordInternal, Set<String> grantedPerRecordWritePermissions) {
         ContentValues upsertValues = getContentValues((T) recordInternal);
-        updateUpsertValuesIfRequired(upsertValues, grantedExtraWritePermissions);
+        updateUpsertValuesIfRequired(upsertValues, grantedPerRecordWritePermissions);
         return new UpsertTableRequest(getMainTableName(), upsertValues, UNIQUE_COLUMNS_INFO)
                 .setRequiresUpdateClause(
                         new UpsertTableRequest.IRequiresUpdate() {
@@ -389,20 +389,21 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                         })
                 .setChildTableRequests(getChildTableUpsertRequests((T) recordInternal))
                 .setChildTablesWithRowsToBeDeletedDuringUpdate(
-                        getChildTablesWithRowsToBeDeletedDuringUpdate(grantedExtraWritePermissions))
+                        getChildTablesWithRowsToBeDeletedDuringUpdate(
+                                grantedPerRecordWritePermissions))
                 .setPostUpsertCommands(getPostUpsertCommands(recordInternal));
     }
 
-    /* Updates upsert content values based on extra permissions state. */
+    /* Updates upsert content values based on per-record permissions state. */
     protected void updateUpsertValuesIfRequired(
-            ContentValues values, Set<String> grantedExtraWritePermissions) {}
+            ContentValues values, Set<String> grantedPerRecordWritePermissions) {}
 
     /**
      * Returns child tables and the columns within them that references their parents. This is used
      * during updates to determine which child rows should be deleted.
      */
     public List<TableColumnPair> getChildTablesWithRowsToBeDeletedDuringUpdate(
-            Set<String> grantedExtraWritePermissions) {
+            Set<String> grantedPerRecordWritePermissions) {
         return getAllChildTables().stream().map(it -> new TableColumnPair(it, PARENT_KEY)).toList();
     }
 
@@ -774,7 +775,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             long endTime,
             boolean usesLocalTimeFilter,
             long deviceDataProviderId,
-            Set<String> grantedGranularWritePermissions,
+            Set<String> grantedPerRecordWritePermissions,
             AppInfoHelper appInfoHelper) {
         final String timeColumnName =
                 usesLocalTimeFilter ? getLocalStartTimeColumnName() : getStartTimeColumnName();
@@ -789,7 +790,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                     APP_INFO_ID_COLUMN_NAME, appInfoHelper.getAppInfoIds(packageFilters));
         }
         if (AconfigFlagHelper.isSymptomsEnabled()) {
-            addAdditionalDeletionFilters(deleteTableRequest, grantedGranularWritePermissions);
+            addAdditionalDeletionFilters(deleteTableRequest, grantedPerRecordWritePermissions);
         }
 
         if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
@@ -801,14 +802,14 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
     public RecordDeleteTableRequest getDeleteTableRequest(
             List<UUID> ids,
-            Set<String> grantedGranularWritePermissions,
+            Set<String> grantedPerRecordWritePermissions,
             long deviceDataProviderId) {
         DeleteTableRequest deleteTableRequest =
                 new DeleteTableRequest(getMainTableName())
                         .setPackageColumnName(APP_INFO_ID_COLUMN_NAME)
                         .setIds(UUID_COLUMN_NAME, StorageUtils.getListOfHexStrings(ids));
         if (AconfigFlagHelper.isSymptomsEnabled()) {
-            addAdditionalDeletionFilters(deleteTableRequest, grantedGranularWritePermissions);
+            addAdditionalDeletionFilters(deleteTableRequest, grantedPerRecordWritePermissions);
         }
         if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
             deleteTableRequest.setDeviceDataProviderId(DDP_ID_COLUMN_NAME, deviceDataProviderId);
@@ -1122,11 +1123,6 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     /** Returns permissions required to read extra record data. */
     public List<String> getExtraReadPermissions() {
         return Collections.emptyList();
-    }
-
-    /** Returns all extra permissions associated with current record type. */
-    public Set<String> getExtraWritePermissions() {
-        return Set.of();
     }
 
     /** Returns extra permissions required to write given record. */

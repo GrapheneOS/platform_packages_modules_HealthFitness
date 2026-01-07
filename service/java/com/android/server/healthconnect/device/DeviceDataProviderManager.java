@@ -67,7 +67,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Manages device data providers, handling advertisements and updating device, app, and DDP info in
@@ -289,13 +288,12 @@ public class DeviceDataProviderManager {
         populateOrThrowRecords(
                 callingDdpPackageName, deviceId, records, syntheticPackageName, appInfoId);
 
-        // Treat all extra permissions as granted to pass any per-record checks.
-        Set<String> grantedExtraWritePermissions =
-                mFitnessRecordUpsertHelper.getAllExtraWritePermissions();
+        // Treat all permissions as granted to pass any per-record checks.
+        Set<String> grantedPerRecordWritePermissions = getAllPerRecordWritePermissions();
         return mFitnessRecordUpsertHelper.insertRecords(
                 syntheticPackageName,
                 records,
-                grantedExtraWritePermissions,
+                grantedPerRecordWritePermissions,
                 /* shouldGenerateAccessLogs= */ false);
     }
 
@@ -383,13 +381,12 @@ public class DeviceDataProviderManager {
         populateOrThrowRecords(
                 callingDdpPackageName, deviceId, records, syntheticPackageName, appInfoId);
 
-        // Treat all extra permissions as granted to pass any per-record checks.
-        Set<String> grantedExtraWritePermissions =
-                mFitnessRecordUpsertHelper.getAllExtraWritePermissions();
+        // Treat all permissions as granted to pass any per-record checks.
+        Set<String> grantedPerRecordWritePermissions = getAllPerRecordWritePermissions();
         return mFitnessRecordUpsertHelper.updateRecords(
                 syntheticPackageName,
                 records,
-                grantedExtraWritePermissions,
+                grantedPerRecordWritePermissions,
                 /* shouldGenerateAccessLogs= */ false);
     }
 
@@ -429,7 +426,7 @@ public class DeviceDataProviderManager {
                 syntheticPackageName,
                 callingDdpPackageId,
                 request,
-                getAllGranularWritePermissions());
+                getAllPerRecordWritePermissions());
     }
 
     /**
@@ -760,14 +757,10 @@ public class DeviceDataProviderManager {
         return new Pair<>(grantedExtraReadPermissions, grantedGranularReadPermissions);
     }
 
-    private Set<String> getAllGranularWritePermissions() {
+    private Set<String> getAllPerRecordWritePermissions() {
         // conceptually DDPs operate outside the granular permission system, and thus we give all
         // permissions, regardless of which data types they're actually interacting with
-        return InternalHealthConnectMappings.getInstance().getRecordHelpers().stream()
-                .flatMap(
-                        recordHelper ->
-                                recordHelper.getAllGranularWritePermissionsForHelper().stream())
-                .collect(Collectors.toSet());
+        return InternalHealthConnectMappings.getInstance().getAllPerRecordWritePermissions();
     }
 
     private void verifyDeleteRequestOrThrow(DeleteUsingFiltersRequestParcel request) {

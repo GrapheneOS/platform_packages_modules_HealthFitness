@@ -28,6 +28,7 @@ import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.util.ArrayMap;
+import android.util.ArraySet;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /** @hide */
 public class InternalHealthConnectMappings {
@@ -43,6 +45,7 @@ public class InternalHealthConnectMappings {
     private final HealthConnectMappings mExternalMappings;
     private final Map<Integer, InternalDataTypeDescriptor> mRecordTypeIdToDescriptor;
     private final List<RecordHelper<?>> mAllRecordHelpers;
+    private final Set<String> mAllPerRecordWritePermissions;
 
     @Nullable private static volatile InternalHealthConnectMappings sInternalHealthConnectMappings;
 
@@ -83,10 +86,13 @@ public class InternalHealthConnectMappings {
         mExternalMappings = healthConnectMappings;
         mRecordTypeIdToDescriptor = new ArrayMap<>(descriptors.size());
         mAllRecordHelpers = new ArrayList<>(descriptors.size());
+        mAllPerRecordWritePermissions = new ArraySet<>();
 
         for (var descriptor : descriptors) {
             mRecordTypeIdToDescriptor.put(descriptor.getRecordTypeIdentifier(), descriptor);
             mAllRecordHelpers.add(descriptor.getRecordHelper());
+            mAllPerRecordWritePermissions.addAll(
+                    descriptor.getRecordHelper().getAllPerRecordWritePermissions());
         }
     }
 
@@ -102,6 +108,15 @@ public class InternalHealthConnectMappings {
     /** Returns a collection of all supported record helpers. */
     public Collection<RecordHelper<?>> getRecordHelpers() {
         return mAllRecordHelpers;
+    }
+
+    /**
+     * Returns all per-record write permissions.
+     *
+     * @see RecordHelper#getAllPerRecordWritePermissions()
+     */
+    public Set<String> getAllPerRecordWritePermissions() {
+        return mAllPerRecordWritePermissions;
     }
 
     /** Returns a {@link RecordHelper} for given record type id. */

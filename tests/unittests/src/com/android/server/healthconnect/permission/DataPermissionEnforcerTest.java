@@ -597,29 +597,29 @@ public class DataPermissionEnforcerTest {
     }
 
     @Test
-    public void testCollectGrantedExtraWritePermissions_permissionsGranted() {
+    public void testCollectGrantedPerRecordWritePermissions_permissionsGranted() {
         ExerciseSessionRecordInternal record = new ExerciseSessionRecordInternal();
         when(mPermissionManager.checkPermissionForDataDelivery(
                         WRITE_EXERCISE_ROUTE, mAttributionSource, null))
                 .thenReturn(PERMISSION_GRANTED);
 
         Set<String> permissions =
-                mDataPermissionEnforcer.collectGrantedExtraWritePermissions(
-                        List.of(record), mAttributionSource);
+                mDataPermissionEnforcer.collectGrantedPerRecordWritePermissions(
+                        List.of(record.getRecordType()), mAttributionSource);
 
         assertThat(permissions).containsExactly(WRITE_EXERCISE_ROUTE);
     }
 
     @Test
-    public void testCollectGrantedExtraWritePermissions_permissionDenied() {
+    public void testCollectGrantedPerRecordWritePermissions_permissionDenied() {
         ExerciseSessionRecordInternal record = new ExerciseSessionRecordInternal();
         when(mPermissionManager.checkPermissionForDataDelivery(
                         WRITE_EXERCISE_ROUTE, mAttributionSource, null))
                 .thenReturn(PERMISSION_HARD_DENIED);
 
         Set<String> permissions =
-                mDataPermissionEnforcer.collectGrantedExtraWritePermissions(
-                        List.of(record), mAttributionSource);
+                mDataPermissionEnforcer.collectGrantedPerRecordWritePermissions(
+                        List.of(record.getRecordType()), mAttributionSource);
 
         assertThat(permissions).isEmpty();
     }
