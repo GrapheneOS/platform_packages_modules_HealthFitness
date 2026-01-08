@@ -80,8 +80,8 @@
     <string name="cycle_tracking_category_lowercase" msgid="5245446435975317209">"cyclus bijhouden"</string>
     <string name="nutrition_category_uppercase" msgid="6665096097987741036">"Voeding"</string>
     <string name="nutrition_category_lowercase" msgid="7804134941649488990">"voeding"</string>
-    <string name="wellness_category_uppercase" msgid="5900304317921557780">"Wellness"</string>
-    <string name="wellness_category_lowercase" msgid="1327642415424743588">"wellness"</string>
+    <string name="wellness_category_uppercase" msgid="5900304317921557780">"Welzijn"</string>
+    <string name="wellness_category_lowercase" msgid="1327642415424743588">"welzijn"</string>
     <string name="symptoms_category_uppercase" msgid="1357167834284360975">"Symptomen"</string>
     <string name="symptoms_category_lowercase" msgid="2298815597177353672">"symptomen"</string>
     <string name="browse_data_category" msgid="4813955610391357638">"Door gegevens browsen"</string>
@@ -1276,6 +1276,8 @@
     <string name="write_access" msgid="571547306854732263">"Schrijftoegang"</string>
     <string name="read_access" msgid="3317759826769372785">"Leestoegang"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
+    <skip />
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> van <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> apps toegestaan"</string>

@@ -1276,6 +1276,8 @@
     <string name="write_access" msgid="571547306854732263">"এক্সেছ লিখক"</string>
     <string name="read_access" msgid="3317759826769372785">"এক্সেছ পঢ়ক"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>। <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>। <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
+    <skip />
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g>ৰ ভিতৰত <xliff:g id="NUMBER_0">%1$d</xliff:g>টা এপক অনুমতি দিয়া হৈছে"</string>
@@ -1586,5 +1588,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"ৱাটাৰ ৰিটেনশ্বন"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"হাঁপানি ৰোগত হোৱাৰ দৰে স্বাসনলীৰ শব্দ"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"হাঁপানি ৰোগত হোৱাৰ দৰে স্বাসনলীৰ শব্দ"</string>
-    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> টাৰ ভিতৰত <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> টা বাছনি কৰা হৈছে"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> টাৰ ভিতৰত <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> টা বাছনি কৰা হৈছে"</string>
 </resources>
