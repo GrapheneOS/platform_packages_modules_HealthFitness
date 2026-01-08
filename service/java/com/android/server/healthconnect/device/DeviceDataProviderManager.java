@@ -67,7 +67,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Manages device data providers, handling advertisements and updating device, app, and DDP info in
@@ -124,8 +123,14 @@ public class DeviceDataProviderManager {
      *
      * @param advertisements The device data source advertisements.
      * @param callingDdpPackageName The package name of the advertising DDP.
-     * @throws IllegalArgumentException if the given deviceId has already been used for a different
-     *     device type.
+     * @throws IllegalArgumentException if
+     *     <ul>
+     *       <li>the given deviceId has already been used for a different device type
+     *       <li>the DDP does not configure {@link
+     *           HealthConnectManager.ACTION_SHOW_DEVICE_ONBOARDING} and {@link
+     *           HealthConnectManager.ACTION_SHOW_DEVICE_MANAGEMENT} correctly (existing activities,
+     *           exported, permission {@link HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION})
+     *     </ul>
      */
     // TODO(b/440066697): Check if we want to handle advertisements that are no longer present.
     public void handleAdvertisement(
@@ -133,6 +138,8 @@ public class DeviceDataProviderManager {
             @NonNull String callingDdpPackageName) {
         requireNonNull(advertisements);
         requireNonNull(callingDdpPackageName);
+
+        validateDdpConfiguration(callingDdpPackageName);
 
         List<Long> existingAppInfoIds =
                 mDeviceDataSourcesHelper.getAppInfoIds(callingDdpPackageName);
@@ -281,13 +288,12 @@ public class DeviceDataProviderManager {
         populateOrThrowRecords(
                 callingDdpPackageName, deviceId, records, syntheticPackageName, appInfoId);
 
-        // Treat all extra permissions as granted to pass any per-record checks.
-        Set<String> grantedExtraWritePermissions =
-                mFitnessRecordUpsertHelper.getAllExtraWritePermissions();
+        // Treat all permissions as granted to pass any per-record checks.
+        Set<String> grantedPerRecordWritePermissions = getAllPerRecordWritePermissions();
         return mFitnessRecordUpsertHelper.insertRecords(
                 syntheticPackageName,
                 records,
-                grantedExtraWritePermissions,
+                grantedPerRecordWritePermissions,
                 /* shouldGenerateAccessLogs= */ false);
     }
 
@@ -375,13 +381,12 @@ public class DeviceDataProviderManager {
         populateOrThrowRecords(
                 callingDdpPackageName, deviceId, records, syntheticPackageName, appInfoId);
 
-        // Treat all extra permissions as granted to pass any per-record checks.
-        Set<String> grantedExtraWritePermissions =
-                mFitnessRecordUpsertHelper.getAllExtraWritePermissions();
+        // Treat all permissions as granted to pass any per-record checks.
+        Set<String> grantedPerRecordWritePermissions = getAllPerRecordWritePermissions();
         return mFitnessRecordUpsertHelper.updateRecords(
                 syntheticPackageName,
                 records,
-                grantedExtraWritePermissions,
+                grantedPerRecordWritePermissions,
                 /* shouldGenerateAccessLogs= */ false);
     }
 
@@ -421,7 +426,7 @@ public class DeviceDataProviderManager {
                 syntheticPackageName,
                 callingDdpPackageId,
                 request,
-                getAllGranularWritePermissions());
+                getAllPerRecordWritePermissions());
     }
 
     /**
@@ -688,7 +693,7 @@ public class DeviceDataProviderManager {
                 new DeviceDataAdvertisement(
                         currentDevice, getStableCurrentDeviceId(), deviceDataTypeAdvertisements);
 
-        handleAdvertisement(Set.of(advertisement), "android");
+        handleAdvertisement(Set.of(advertisement), DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE);
     }
 
     private List<DeviceDataProviderInfo> getDeviceDataProviderInfos(
@@ -732,7 +737,7 @@ public class DeviceDataProviderManager {
             return label.toString();
         }
         // This shouldn't happen. We enforce that DDPs export these activities.
-        // TODO(b/462713187): validate DDP activities
+        // See validateDdpConfiguration
         return "";
     }
 
@@ -752,20 +757,56 @@ public class DeviceDataProviderManager {
         return new Pair<>(grantedExtraReadPermissions, grantedGranularReadPermissions);
     }
 
-    private Set<String> getAllGranularWritePermissions() {
+    private Set<String> getAllPerRecordWritePermissions() {
         // conceptually DDPs operate outside the granular permission system, and thus we give all
         // permissions, regardless of which data types they're actually interacting with
-        return InternalHealthConnectMappings.getInstance().getRecordHelpers().stream()
-                .flatMap(
-                        recordHelper ->
-                                recordHelper.getAllGranularWritePermissionsForHelper().stream())
-                .collect(Collectors.toSet());
+        return InternalHealthConnectMappings.getInstance().getAllPerRecordWritePermissions();
     }
 
     private void verifyDeleteRequestOrThrow(DeleteUsingFiltersRequestParcel request) {
         if (!request.getPackageNameFilters().isEmpty()) {
             throw new IllegalArgumentException(
                     "Package name filter must be empty for device delete requests.");
+        }
+    }
+
+    protected void validateDdpConfiguration(String packageName) {
+        // The "android" package is a privileged package representing the system.
+        // It is always allowed.
+        if (Objects.equals(DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE, packageName)) {
+            return;
+        }
+
+        validateActivityPresentAndPermissionGuarded(
+                packageName, HealthConnectManager.ACTION_SHOW_DEVICE_ONBOARDING);
+        validateActivityPresentAndPermissionGuarded(
+                packageName, HealthConnectManager.ACTION_SHOW_DEVICE_MANAGEMENT);
+    }
+
+    private void validateActivityPresentAndPermissionGuarded(String packageName, String action) {
+        Intent intent = new Intent(action);
+        intent.setPackage(packageName);
+        ResolveInfo resolveInfo = mContext.getPackageManager().resolveActivity(intent, 0);
+
+        if (resolveInfo == null || resolveInfo.activityInfo == null) {
+            throw new IllegalArgumentException(
+                    "Device data provider "
+                            + packageName
+                            + " must export an activity that handles "
+                            + action);
+        }
+
+        if (!resolveInfo.activityInfo.exported
+                || !Objects.equals(
+                        HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION,
+                        resolveInfo.activityInfo.permission)) {
+            throw new IllegalArgumentException(
+                    "Activity for "
+                            + action
+                            + " in "
+                            + packageName
+                            + " must be exported and permission guarded by "
+                            + HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
         }
     }
 }

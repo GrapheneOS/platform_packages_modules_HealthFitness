@@ -486,7 +486,7 @@ public final class DatabaseMerger {
                         DEFAULT_LONG /* endTime */,
                         false /* useLocalTimeFilter */,
                         DEFAULT_LONG /* deviceDataProviderId */,
-                        recordHelper.getAllGranularWritePermissionsForHelper(),
+                        recordHelper.getAllPerRecordWritePermissions(),
                         mAppInfoHelper);
 
         stagedDatabase

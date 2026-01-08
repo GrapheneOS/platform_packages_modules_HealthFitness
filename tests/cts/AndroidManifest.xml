@@ -35,6 +35,18 @@
           </intent-filter>
       </activity>
       <activity android:name="android.healthconnect.testing.cts.testapphelpers.ProxyActivity" />
+      <activity android:name=".DeviceDataProviderActivity"
+                android:exported="true"
+                android:permission="android.permission.MANAGE_HEALTH_DATA">
+          <intent-filter>
+              <action android:name="android.health.connect.action.SHOW_DEVICE_ONBOARDING"/>
+              <category android:name="android.intent.category.DEFAULT"/>
+          </intent-filter>
+          <intent-filter>
+              <action android:name="android.health.connect.action.SHOW_DEVICE_MANAGEMENT"/>
+              <category android:name="android.intent.category.DEFAULT"/>
+          </intent-filter>
+      </activity>
     </application>
 
     <instrumentation android:name="androidx.test.runner.AndroidJUnitRunner"

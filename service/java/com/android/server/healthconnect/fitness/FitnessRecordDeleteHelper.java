@@ -93,7 +93,7 @@ public final class FitnessRecordDeleteHelper {
      *
      * @param callingPackageName The package name trying to delete the records.
      * @param request The request that specifies what to delete.
-     * @param grantedGranularWritePermissions granular write permissions for record types being
+     * @param grantedPerRecordWritePermissions per-record write permissions for record types being
      *     deleted (if a record type is controlled via multiple permissions)
      * @param enforceSelfDelete Whether the caller should only be able to delete their own data.
      * @param shouldRecordAccessLog Whether access logs should be recorded for this call
@@ -102,7 +102,7 @@ public final class FitnessRecordDeleteHelper {
     public int deleteRecords(
             String callingPackageName,
             DeleteUsingFiltersRequestParcel request,
-            Set<String> grantedGranularWritePermissions,
+            Set<String> grantedPerRecordWritePermissions,
             boolean enforceSelfDelete,
             boolean shouldRecordAccessLog) {
         if (request.usesIdFilters() && request.usesNonIdFilters()) {
@@ -120,7 +120,7 @@ public final class FitnessRecordDeleteHelper {
                     deleteByIdFilter(
                             callingPackageName,
                             request,
-                            grantedGranularWritePermissions,
+                            grantedPerRecordWritePermissions,
                             enforceSelfDelete,
                             shouldRecordAccessLog,
                             /* callingDdpId= */ DEFAULT_LONG);
@@ -129,7 +129,7 @@ public final class FitnessRecordDeleteHelper {
                     deleteByNonIdFilter(
                             callingPackageName,
                             request,
-                            grantedGranularWritePermissions,
+                            grantedPerRecordWritePermissions,
                             shouldRecordAccessLog,
                             /* callingDdpId= */ DEFAULT_LONG);
         }
@@ -161,7 +161,7 @@ public final class FitnessRecordDeleteHelper {
             String syntheticDevicePackageName,
             long callingDdpId,
             DeleteUsingFiltersRequestParcel request,
-            Set<String> grantedGranularWritePermissions) {
+            Set<String> grantedPerRecordWritePermissions) {
         if (request.usesIdFilters() && request.usesNonIdFilters()) {
             throw new IllegalArgumentException(
                     "Requests with both id and non-id filters are not supported");
@@ -181,7 +181,7 @@ public final class FitnessRecordDeleteHelper {
                     deleteByIdFilter(
                             syntheticDevicePackageName,
                             request,
-                            grantedGranularWritePermissions,
+                            grantedPerRecordWritePermissions,
                             /* enforceSelfDelete= */ true,
                             /* shouldRecordAccessLog= */ false,
                             callingDdpId);
@@ -190,7 +190,7 @@ public final class FitnessRecordDeleteHelper {
                     deleteByNonIdFilter(
                             syntheticDevicePackageName,
                             request,
-                            grantedGranularWritePermissions,
+                            grantedPerRecordWritePermissions,
                             /*shouldRecordAccessLog*/ false,
                             callingDdpId);
         }
@@ -216,7 +216,7 @@ public final class FitnessRecordDeleteHelper {
     private int deleteByIdFilter(
             String callingPackageName,
             DeleteUsingFiltersRequestParcel request,
-            Set<String> grantedGranularWritePermissions,
+            Set<String> grantedPerRecordWritePermissions,
             boolean enforceSelfDelete,
             boolean shouldRecordAccessLog,
             long callingDdpId) {
@@ -245,7 +245,7 @@ public final class FitnessRecordDeleteHelper {
                 (recordHelper, uuids) -> {
                     deleteTableRequests.add(
                             recordHelper.getDeleteTableRequest(
-                                    uuids, grantedGranularWritePermissions, callingDdpId));
+                                    uuids, grantedPerRecordWritePermissions, callingDdpId));
                     recordTypeIds.add(recordHelper.getRecordIdentifier());
                 });
 
@@ -262,7 +262,7 @@ public final class FitnessRecordDeleteHelper {
     public int deleteByNonIdFilter(
             String callingPackageName,
             DeleteUsingFiltersRequestParcel request,
-            Set<String> grantedGranularWritePermissions,
+            Set<String> grantedPerRecordWritePermissions,
             boolean shouldRecordAccessLog,
             long callingDdpId) {
         List<RecordDeleteTableRequest> deleteTableRequests =
@@ -290,7 +290,7 @@ public final class FitnessRecordDeleteHelper {
                                     request.getEndTime(),
                                     request.isLocalTimeFilter(),
                                     callingDdpId,
-                                    grantedGranularWritePermissions,
+                                    grantedPerRecordWritePermissions,
                                     mAppInfoHelper));
 
                     recordTypeIds.add(recordHelper.getRecordIdentifier());

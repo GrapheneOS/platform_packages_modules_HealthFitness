@@ -98,7 +98,7 @@ public class FitnessRecordUpsertHelperTest {
                 List.of(
                         RecordInternalFactory.buildStepsRecord(500, 750, 100)
                                 .setPackageName(TEST_PACKAGE_NAME)),
-                /* grantedExtraWritePermissions= */ Set.of(),
+                /* grantedPerRecordWritePermissions */ Set.of(),
                 /* shouldGenerateAccessLogs= */ true);
 
         assertThat(mTransactionManager.count(new ReadTableRequest(ChangeLogsHelper.TABLE_NAME)))
@@ -114,7 +114,7 @@ public class FitnessRecordUpsertHelperTest {
                 List.of(
                         RecordInternalFactory.buildStepsRecord(500, 750, 100)
                                 .setPackageName(TEST_PACKAGE_NAME)),
-                /* grantedExtraWritePermissions= */ Set.of(),
+                /* grantedPerRecordWritePermissions */ Set.of(),
                 /* shouldGenerateAccessLogs= */ false);
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
@@ -149,7 +149,7 @@ public class FitnessRecordUpsertHelperTest {
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
                                 List.of(symptomRecordInternal),
-                                /* grantedExtraWritePermissions= */ Set.of(),
+                                /* grantedPerRecordWritePermissions */ Set.of(),
                                 /* shouldGenerateAccessLogs= */ true)
                         .get(0);
 
@@ -167,7 +167,7 @@ public class FitnessRecordUpsertHelperTest {
                                                 new SymptomRecordInternal()
                                                         .setSymptomType(
                                                                 SymptomRecord.SYMPTOM_TYPE_ACNE)),
-                                        /* grantedExtraWritePermissions= */ Set.of(),
+                                        /* grantedPerRecordWritePermissions */ Set.of(),
                                         /* shouldGenerateAccessLogs= */ true));
 
         assertThat(thrown).hasMessageThat().isEqualTo("Updating Symptom type is not allowed.");
@@ -186,7 +186,7 @@ public class FitnessRecordUpsertHelperTest {
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
                                 List.of(symptomRecordInternal),
-                                /* grantedExtraWritePermissions= */ Set.of(),
+                                /* grantedPerRecordWritePermissions */ Set.of(),
                                 /* shouldGenerateAccessLogs= */ true)
                         .get(0);
 
@@ -200,7 +200,7 @@ public class FitnessRecordUpsertHelperTest {
                                 symptomRecordInternal,
                                 new SymptomRecordInternal()
                                         .setSymptomType(SymptomRecord.SYMPTOM_TYPE_ACNE)),
-                        /* grantedExtraWritePermissions= */ Set.of(),
+                        /* grantedPerRecordWritePermissions */ Set.of(),
                         /* shouldGenerateAccessLogs= */ true);
 
         assertThat(uuids).contains(uuid);
@@ -219,7 +219,7 @@ public class FitnessRecordUpsertHelperTest {
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
                                 List.of(symptomRecordInternal),
-                                /* grantedExtraWritePermissions= */ Set.of(),
+                                /* grantedPerRecordWritePermissions */ Set.of(),
                                 /* shouldGenerateAccessLogs= */ true)
                         .get(0);
 
@@ -233,7 +233,7 @@ public class FitnessRecordUpsertHelperTest {
                                 mFitnessRecordUpsertHelper.updateRecords(
                                         TEST_PACKAGE_NAME,
                                         List.of(symptomRecordInternal),
-                                        /* grantedExtraWritePermissions= */ Set.of(),
+                                        /* grantedPerRecordWritePermissions */ Set.of(),
                                         /* shouldGenerateAccessLogs= */ true));
 
         assertThat(thrown).hasMessageThat().isEqualTo("Updating Symptom type is not allowed.");
@@ -252,7 +252,7 @@ public class FitnessRecordUpsertHelperTest {
                         .insertRecords(
                                 TEST_PACKAGE_NAME,
                                 List.of(symptomRecordInternal),
-                                /* grantedExtraWritePermissions= */ Set.of(),
+                                /* grantedPerRecordWritePermissions */ Set.of(),
                                 /* shouldGenerateAccessLogs= */ true)
                         .get(0);
 
@@ -263,7 +263,7 @@ public class FitnessRecordUpsertHelperTest {
                 mFitnessRecordUpsertHelper.updateRecords(
                         TEST_PACKAGE_NAME,
                         List.of(symptomRecordInternal),
-                        /* grantedExtraWritePermissions= */ Set.of(),
+                        /* grantedPerRecordWritePermissions */ Set.of(),
                         /* shouldGenerateAccessLogs= */ true);
 
         assertThat(uuids).containsExactly(uuid);

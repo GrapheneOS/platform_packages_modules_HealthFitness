@@ -26,6 +26,7 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.os.Parcel;
+import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -166,7 +167,8 @@ public class MatchmakingRequestTest {
     }
 
     @Test
-    public void parcelable_writeToParcelAndCreateFromParcel_success() {
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void parcelable_writeToParcelAndCreateFromParcel_ddpFlagOff_success() {
         Set<Class<? extends Record>> recordTypes =
                 Set.of(ActiveCaloriesBurnedRecord.class, BasalMetabolicRateRecord.class);
 
@@ -184,7 +186,45 @@ public class MatchmakingRequestTest {
     }
 
     @Test
-    public void parcelable_withCallingPackageName() {
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void parcelable_writeToParcelAndCreateFromParcel_ddpFlagOn_success() {
+        Set<Class<? extends Record>> recordTypes =
+                Set.of(ActiveCaloriesBurnedRecord.class, BasalMetabolicRateRecord.class);
+
+        MatchmakingRequest originalRequest =
+                new MatchmakingRequest.Builder().addRecordTypes(recordTypes).build();
+        Parcel parcel = Parcel.obtain();
+        originalRequest.writeToParcel(parcel, 0);
+
+        parcel.setDataPosition(0);
+
+        MatchmakingRequest parceledRequest = MatchmakingRequest.CREATOR.createFromParcel(parcel);
+
+        assertThat(parceledRequest.getRecordTypes()).isEqualTo(originalRequest.getRecordTypes());
+        parcel.recycle();
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void parcelable_ddpFlagOff_withCallingPackageName() {
+        MatchmakingRequest originalRequest =
+                new MatchmakingRequest.Builder()
+                        .addRecordType(StepsRecord.class)
+                        .setCallingPackageName(TEST_PACKAGE_NAME)
+                        .build();
+
+        Parcel parcel = Parcel.obtain();
+        originalRequest.writeToParcel(parcel, 0);
+        parcel.setDataPosition(0);
+        MatchmakingRequest newRequest = MatchmakingRequest.CREATOR.createFromParcel(parcel);
+        parcel.recycle();
+
+        assertThat(newRequest).isEqualTo(originalRequest);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    public void parcelable_ddpFlagOn_withCallingPackageName() {
         MatchmakingRequest originalRequest =
                 new MatchmakingRequest.Builder()
                         .addRecordType(StepsRecord.class)

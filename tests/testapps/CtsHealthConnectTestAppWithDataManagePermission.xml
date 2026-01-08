@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +15,11 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="android.healthconnect.cts.testapp.data.manage.permissions"
-          android:versionCode="1"
-          android:versionName="1.0">
+    package="android.healthconnect.cts.testapp.data.manage.permissions" android:versionCode="1"
+    android:versionName="1.0">
 
-    <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA_PERMISSIONS"/>
+    <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA_PERMISSIONS" />
 
 
-    <application android:label="CtsHealthConnectTestAppWithDataManagePermission"/>
+    <application android:label="CtsHealthConnectTestAppWithDataManagePermission" />
 </manifest>

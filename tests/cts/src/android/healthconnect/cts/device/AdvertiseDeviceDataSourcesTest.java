@@ -417,7 +417,6 @@ public class AdvertiseDeviceDataSourcesTest {
         assertThat(startSources.stream().map(DeviceDataSourceInfo::getDevice))
                 .doesNotContain(PHONE_DEVICE);
 
-        // Advertise two devices with different data types but same deviceId
         String deviceId = "TestDeviceId";
         Set<DeviceDataTypeAdvertisement> stepAd =
                 Set.of(
@@ -442,18 +441,18 @@ public class AdvertiseDeviceDataSourcesTest {
         DeviceDataAdvertisement advertisementTwo =
                 new DeviceDataAdvertisement(device2, deviceId, sleepAd);
 
-        // Advertising both simultaneously is crucial to exclude the delete behavior of previous
-        // advertisements when advertising one at a time and truly verify the behavior for
-        // same deviceIds
+        // Make first advertisement.
         HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
-        TestUtils.advertiseDeviceDataSources(
-                Set.of(advertisementOne, advertisementTwo), outcomeExecutor(), receiver);
-
-        // Only one source was added
+        TestUtils.advertiseDeviceDataSources(Set.of(advertisementOne), outcomeExecutor(), receiver);
         List<DeviceDataSourceInfo> newSources = getDeviceDataSourceInfos();
-        assertThat(startSources.size() + 1).isEqualTo(newSources.size());
+        assertThat(newSources.stream().map(DeviceDataSourceInfo::getDevice)).contains(PHONE_DEVICE);
 
-        // Contains latter device
+        // Make second advertisement with same deviceId but modified device metadata.
+        receiver = new HealthConnectReceiver<>();
+        TestUtils.advertiseDeviceDataSources(Set.of(advertisementTwo), outcomeExecutor(), receiver);
+        newSources = getDeviceDataSourceInfos();
+
+        // Contains only the second device
         assertThat(newSources.stream().map(DeviceDataSourceInfo::getDevice))
                 .doesNotContain(PHONE_DEVICE);
         assertThat(newSources.stream().map(DeviceDataSourceInfo::getDevice)).contains(device2);

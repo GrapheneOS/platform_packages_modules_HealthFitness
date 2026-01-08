@@ -80,7 +80,7 @@ public final class SymptomRecordHelper extends IntervalRecordHelper<SymptomRecor
     }
 
     @Override
-    public Set<String> getAllGranularWritePermissionsForHelper() {
+    public Set<String> getAllPerRecordWritePermissions() {
         return SymptomTypePermissionMapper.getSymptomTypes().stream()
                 .map(SymptomTypePermissionMapper::getWritePermission)
                 .collect(Collectors.toSet());

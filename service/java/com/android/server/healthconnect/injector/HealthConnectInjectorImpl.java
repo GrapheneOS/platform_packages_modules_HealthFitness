@@ -529,7 +529,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         ? new NativeStepsNotificationSender(
                                 context, resourcesContext, mNativeStepsNotificationStateManager)
                         : builder.mNativeStepsNotificationSender;
-        mDeviceRecordHelper = new DeviceRecordHelper(mFitnessRecordUpsertHelper);
+        mDeviceRecordHelper =
+                new DeviceRecordHelper(mFitnessRecordUpsertHelper, mInternalHealthConnectMappings);
         mTrackerManager =
                 builder.mTrackerManager == null
                         ? new TrackerManagerImpl(

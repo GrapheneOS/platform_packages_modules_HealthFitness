@@ -44,7 +44,6 @@ import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
-import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -54,11 +53,8 @@ import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import com.google.common.collect.ImmutableList;
 
-import org.mockito.MockitoAnnotations;
-
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -78,6 +74,7 @@ public final class FitnessTestUtils {
     private final FitnessRecordReadHelper mFitnessRecordReadHelper;
     private final FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
     private final AppInfoHelper mAppInfoHelper;
+    private final InternalHealthConnectMappings mInternalHealthConnectMappings;
 
     public FitnessTestUtils(HealthConnectInjector injector) {
         mTransactionManager = injector.getTransactionManager();
@@ -85,7 +82,7 @@ public final class FitnessTestUtils {
         mFitnessRecordReadHelper = injector.getFitnessRecordReadHelper();
         mFitnessRecordDeleteHelper = injector.getFitnessRecordDeleteHelper();
         mAppInfoHelper = injector.getAppInfoHelper();
-        MockitoAnnotations.initMocks(this);
+        mInternalHealthConnectMappings = injector.getInternalHealthConnectMappings();
     }
 
     /**
@@ -121,11 +118,11 @@ public final class FitnessTestUtils {
 
     /** Inserts records attributed to the given package. */
     public List<String> insertRecords(String packageName, List<RecordInternal<?>> records) {
-        // Treat all extra permissions as granted to pass any per-record checks.
-        Set<String> grantedExtraWritePermissions =
-                mFitnessRecordUpsertHelper.getAllExtraWritePermissions();
+        // Treat all permissions as granted to pass any per-record checks.
+        Set<String> grantedPerRecordWritePermissions =
+                mInternalHealthConnectMappings.getAllPerRecordWritePermissions();
         return mFitnessRecordUpsertHelper.insertRecords(
-                packageName, records, grantedExtraWritePermissions, true);
+                packageName, records, grantedPerRecordWritePermissions, true);
     }
 
     /** Inserts records where the UUID and the package name need to be provided. */
@@ -141,46 +138,43 @@ public final class FitnessTestUtils {
 
     /** Inserts records attributed to the given package. */
     public void updateRecords(String packageName, List<RecordInternal<?>> records) {
-        // Treat all extra permissions as granted to pass any per-record checks.
-        Set<String> grantedExtraWritePermissions =
-                mFitnessRecordUpsertHelper.getAllExtraWritePermissions();
+        // Treat all permissions as granted to pass any per-record checks.
+        Set<String> grantedPerRecordWritePermissions =
+                mInternalHealthConnectMappings.getAllPerRecordWritePermissions();
         mFitnessRecordUpsertHelper.updateRecords(
                 packageName,
                 records,
-                /* grantedExtraWritePermissions= */ grantedExtraWritePermissions,
+                grantedPerRecordWritePermissions,
                 /* shouldGenerateAccessLogs= */ true);
     }
 
     /** Deletes records with the given IDs from storage. */
     public void deleteRecords(String packageName, RecordIdFilter... recordIdFilters) {
-        Set<String> grantedGranularWritePermissions = new HashSet<>();
-        for (RecordHelper<?> recordHelper :
-                InternalHealthConnectMappings.getInstance().getRecordHelpers()) {
-            grantedGranularWritePermissions.addAll(
-                    recordHelper.getAllGranularWritePermissionsForHelper());
-        }
-        deleteRecords(packageName, List.of(recordIdFilters), grantedGranularWritePermissions);
+        // Treat all permissions as granted to pass any per-record checks.
+        Set<String> grantedPerRecordWritePermissions =
+                mInternalHealthConnectMappings.getAllPerRecordWritePermissions();
+        deleteRecords(packageName, List.of(recordIdFilters), grantedPerRecordWritePermissions);
     }
 
     /** Deletes records with the given IDs from storage while enforcing extra permissions. */
     public void deleteRecords(
             String packageName,
-            Set<String> grantedGranularWritePermissions,
+            Set<String> grantedPerRecordWritePermissions,
             RecordIdFilter... recordIdFilters) {
-        deleteRecords(packageName, List.of(recordIdFilters), grantedGranularWritePermissions);
+        deleteRecords(packageName, List.of(recordIdFilters), grantedPerRecordWritePermissions);
     }
 
     private void deleteRecords(
             String packageName,
             List<RecordIdFilter> recordIdFilters,
-            Set<String> grantedGranularWritePermissions) {
+            Set<String> grantedPerRecordWritePermissions) {
         DeleteUsingFiltersRequestParcel parcel =
                 new DeleteUsingFiltersRequestParcel(
                         new RecordIdFiltersParcel(recordIdFilters), packageName);
         mFitnessRecordDeleteHelper.deleteRecords(
                 packageName,
                 parcel,
-                grantedGranularWritePermissions,
+                grantedPerRecordWritePermissions,
                 /* enforceSelfDelete= */ false,
                 /* shouldRecordAccessLog= */ false);
     }
