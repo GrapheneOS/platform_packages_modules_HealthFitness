@@ -348,12 +348,12 @@ public final class ExerciseSessionRecordHelper
 
     /** Returns extra permissions required to write given record. */
     @Override
-    public List<String> getRequiredExtraWritePermissions(RecordInternal<?> recordInternal) {
+    public Set<String> getPerRecordWritePermissions(RecordInternal<?> recordInternal) {
         ExerciseSessionRecordInternal session = (ExerciseSessionRecordInternal) recordInternal;
         if (session.getRoute() != null) {
-            return Collections.singletonList(WRITE_EXERCISE_ROUTE);
+            return Set.of(WRITE_EXERCISE_ROUTE);
         }
-        return Collections.emptyList();
+        return Set.of();
     }
 
     /** Returns permissions required to read extra record data. */
