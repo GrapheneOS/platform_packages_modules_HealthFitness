@@ -71,7 +71,7 @@ public class ExportImportNotificationFactoryTest {
     private static final String HEALTH_CONNECT_RESTART_EXPORT_SETUP =
             "android.health.connect.action.START_EXPORT_SETUP";
     private static final String HEALTH_CONNECT_UPDATE_ACTION =
-            "android.settings.SYSTEM_UPDATE_SETTINGS";
+            "android.settings.MODULE_UPDATE_SETTINGS";
 
     private ExportImportNotificationFactory mFactory;
 

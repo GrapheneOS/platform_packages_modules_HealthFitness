@@ -62,6 +62,7 @@ import com.android.healthconnect.controller.shared.preference.HealthPreferenceFr
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
+import com.android.healthconnect.controller.utils.SettingsTransitionHelper.createMainlineServiceUpdateSettingsIntent
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.formatRecentAccessTime
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
@@ -576,7 +577,8 @@ class HomeFragment : Hilt_HomeFragment() {
                     text = getString(R.string.data_restore_pending_banner_button),
                     logName = DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON,
                 ) {
-                    findNavController().navigate(R.id.action_homeFragment_to_systemUpdateActivity)
+                    val intent = requireContext().createMainlineServiceUpdateSettingsIntent()
+                    startActivity(intent)
                 }
 
                 banner.icon =

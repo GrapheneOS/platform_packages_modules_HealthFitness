@@ -66,9 +66,6 @@
         android:id="@+id/migrationModuleUpdateNeededFragment"
         android:name="com.android.healthconnect.controller.migration.ModuleUpdateRequiredFragment">
         <action
-            android:id="@+id/action_migrationModuleUpdateNeededFragment_to_systemUpdateActivity"
-            app:destination="@id/systemUpdateActivity"/>
-        <action
             android:id="@+id/action_migrationModuleUpdateNeededFragment_to_homeScreen"
             app:popUpToInclusive="true"
             app:destination="@id/healthConnectHomeActivity"/>
@@ -90,11 +87,6 @@
         android:id="@+id/migrationApk"
         app:action="android.health.connect.action.SHOW_MIGRATION_INFO"
         android:label="migrationApk"/>
-
-    <activity
-        android:id="@+id/systemUpdateActivity"
-        app:action="android.settings.SYSTEM_UPDATE_SETTINGS"
-        android:label="systemUpdateActivity"/>
 
     <activity
         android:id="@+id/updateAppActivity"

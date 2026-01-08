@@ -41,6 +41,7 @@ import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.newHome.HomeFragment
@@ -68,6 +69,7 @@ import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
+import com.android.healthconnect.controller.utils.SettingsTransitionHelper.createMainlineServiceUpdateSettingsIntent
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HomePageElement
@@ -86,6 +88,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.eq
@@ -98,6 +101,7 @@ import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @UninstallModules(DeviceInfoUtilsModule::class)
+@RunWith(AndroidJUnit4::class)
 class HomeFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
@@ -746,8 +750,7 @@ class HomeFragmentTest {
             onIdle()
             verify(healthConnectLogger)
                 .logInteraction(DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON)
-            assertThat(navHostController.currentDestination?.id)
-                .isEqualTo(R.id.systemUpdateActivity)
+            intended(hasAction(context.createMainlineServiceUpdateSettingsIntent().action))
         }
     }
 
