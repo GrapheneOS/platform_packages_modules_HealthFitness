@@ -202,7 +202,7 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
 
     @Test
     public void testGetChangeLogs_noPermissions_expectError() throws Exception {
-        mTestAppRule.revokeAllHealthPermissions();
+        // TODO(b/474285205): Revoke all permissions once we have a non-flaky way of doing that.
         List<Pair<String, Class<? extends Record>>> permissionAndRecordClassPairs =
                 List.of(
                         new Pair<>(READ_STEPS, StepsRecord.class),
@@ -215,11 +215,10 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
         for (var permissionAndRecordClass : permissionAndRecordClassPairs) {
             String permission = permissionAndRecordClass.first;
             Class<? extends Record> recordClass = permissionAndRecordClass.second;
-            mTestAppRule.grantHealthPermission(permission);
             String token =
                     mTestApp.getChangeLogToken(
                             new ChangeLogTokenRequest.Builder().addRecordType(recordClass).build());
-            mTestAppRule.revokeAllHealthPermissions();
+            mTestAppRule.revokeHealthPermission(permission);
 
             try {
                 mTestApp.getChangeLogs(new ChangeLogsRequest.Builder(token).build());
@@ -231,6 +230,8 @@ public class HealthConnectManagerNoPermissionsGrantedTest {
             } catch (HealthConnectException healthConnectException) {
                 assertThat(healthConnectException.getErrorCode())
                         .isEqualTo(HealthConnectException.ERROR_SECURITY);
+            } finally {
+                mTestAppRule.grantHealthPermission(permission);
             }
         }
     }
