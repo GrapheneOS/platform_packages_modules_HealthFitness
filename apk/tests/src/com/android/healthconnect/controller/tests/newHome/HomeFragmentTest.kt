@@ -718,8 +718,8 @@ class HomeFragmentTest {
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
         launchFragmentWithNavigation().use {
             checkTextIsDisplayed("Update needed")
-            checkTextIsDisplayed("Before continuing restoring your data, update your phone system.")
-            checkTextIsDisplayed("Update now")
+            checkTextIsDisplayed("To continue restoring your data, update your device system.")
+            checkTextIsDisplayed("Check for updates")
             verify(healthConnectLogger).logImpression(DataRestoreElement.RESTORE_PENDING_BANNER)
             verify(healthConnectLogger)
                 .logImpression(DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON)
@@ -727,7 +727,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    fun dataRestoreBanner_whenClickOnUpdateNow_navigatesToSystemUpdateActivity() {
+    fun dataRestoreBanner_whenClickOnCheckForUpdates_navigatesToSystemUpdateActivity() {
         val stateFlow =
             MutableStateFlow<HomeViewModel.HomeFragmentState>(
                 HomeViewModel.HomeFragmentState.WithData(
@@ -741,8 +741,8 @@ class HomeFragmentTest {
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
         launchFragmentWithNavigation().use {
             checkTextIsDisplayed("Update needed")
-            checkTextIsDisplayed("Before continuing restoring your data, update your phone system.")
-            onView(withText("Update now")).perform(click())
+            checkTextIsDisplayed("To continue restoring your data, update your device system.")
+            onView(withText("Check for updates")).perform(click())
             onIdle()
             verify(healthConnectLogger)
                 .logInteraction(DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON)
