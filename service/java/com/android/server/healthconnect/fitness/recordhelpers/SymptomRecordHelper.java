@@ -65,7 +65,7 @@ public final class SymptomRecordHelper extends IntervalRecordHelper<SymptomRecor
     }
 
     @Override
-    public Set<String> getGranularWritePermissions(RecordInternal<?> record) {
+    public Set<String> getPerRecordWritePermissions(RecordInternal<?> record) {
         SymptomRecordInternal symptomsRecord = (SymptomRecordInternal) record;
         String requiredPermission =
                 SymptomTypePermissionMapper.getWritePermission(symptomsRecord.getSymptomType());

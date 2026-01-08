@@ -124,12 +124,10 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     /**
-     * Returns a collection of granular write permissions required for this record. The default
-     * implementation returns an empty collection, assuming category-level checks are sufficient.
-     *
-     * @param record The specific record being written.
+     * Returns the set of per-record permissions required to write the specified record. The default
+     * implementation returns an empty set, assuming category-level checks are sufficient.
      */
-    public Set<String> getGranularWritePermissions(RecordInternal<?> record) {
+    public Set<String> getPerRecordWritePermissions(RecordInternal<?> record) {
         return Collections.emptySet();
     }
 
@@ -1122,11 +1120,6 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
     /** Returns permissions required to read extra record data. */
     public List<String> getExtraReadPermissions() {
-        return Collections.emptyList();
-    }
-
-    /** Returns extra permissions required to write given record. */
-    public List<String> getRequiredExtraWritePermissions(RecordInternal<?> recordInternal) {
         return Collections.emptyList();
     }
 

@@ -482,7 +482,7 @@ public class DataPermissionEnforcerTest {
 
     @Test(expected = SecurityException.class)
     public void
-            testEnforceRecordsWritePermissions_extraPermissionGranted_throwsSecurityException() {
+            testEnforceRecordsWritePermissions_perRecordPermissionGranted_throwsSecurityException() {
         when(mPermissionManager.checkPermissionForDataDelivery(
                         WRITE_EXERCISE, mAttributionSource, null))
                 .thenReturn(PERMISSION_HARD_DENIED);
@@ -503,21 +503,21 @@ public class DataPermissionEnforcerTest {
                         WRITE_EXERCISE_ROUTE, mAttributionSource, null))
                 .thenReturn(PERMISSION_GRANTED);
         when(mPermissionManager.checkPermissionForDataDelivery(
-                        eq("GRANULAR_PERMISSION"), any(), any()))
+                        eq("PER_RECORD_PERMISSION"), any(), any()))
                 .thenReturn(PERMISSION_GRANTED);
         doReturn(mRecordHelper).when(mSpyInternalHealthConnectMappings).getRecordHelper(anyInt());
-        when(mRecordHelper.getGranularWritePermissions(any()))
-                .thenReturn(Set.of("GRANULAR_PERMISSION"));
+        when(mRecordHelper.getPerRecordWritePermissions(any()))
+                .thenReturn(Set.of("PER_RECORD_PERMISSION"));
 
         ExerciseSessionRecordInternal record = new ExerciseSessionRecordInternal();
         mDataPermissionEnforcer.enforceRecordsWritePermissions(List.of(record), mAttributionSource);
 
-        verify(mRecordHelper).getGranularWritePermissions(record);
+        verify(mRecordHelper).getPerRecordWritePermissions(record);
     }
 
     @Test
     public void
-            testEnforceRecordsWritePermissions_granularPermissionDenied_throwsSecurityException() {
+            testEnforceRecordsWritePermissions_perRecordPermissionDenied_throwsSecurityException() {
         when(mPermissionManager.checkPermissionForDataDelivery(
                         WRITE_EXERCISE, mAttributionSource, null))
                 .thenReturn(PERMISSION_GRANTED);
@@ -525,11 +525,11 @@ public class DataPermissionEnforcerTest {
                         WRITE_EXERCISE_ROUTE, mAttributionSource, null))
                 .thenReturn(PERMISSION_GRANTED);
         when(mPermissionManager.checkPermissionForDataDelivery(
-                        eq("GRANULAR_PERMISSION"), any(), any()))
+                        eq("PER_RECORD_PERMISSION"), any(), any()))
                 .thenReturn(PERMISSION_DENIED);
         doReturn(mRecordHelper).when(mSpyInternalHealthConnectMappings).getRecordHelper(anyInt());
-        when(mRecordHelper.getGranularWritePermissions(any()))
-                .thenReturn(Set.of("GRANULAR_PERMISSION"));
+        when(mRecordHelper.getPerRecordWritePermissions(any()))
+                .thenReturn(Set.of("PER_RECORD_PERMISSION"));
 
         ExerciseSessionRecordInternal record = new ExerciseSessionRecordInternal();
         assertThrows(
