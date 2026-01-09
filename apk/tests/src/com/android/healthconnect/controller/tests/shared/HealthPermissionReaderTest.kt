@@ -8,6 +8,7 @@ import android.health.connect.HealthPermissions
 import android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS
 import android.health.connect.HealthPermissions.READ_PLANNED_EXERCISE
 import android.health.connect.HealthPermissions.READ_SKIN_TEMPERATURE
+import android.health.connect.HealthPermissions.WRITE_DEVICE_UDI
 import android.health.connect.HealthPermissions.WRITE_PLANNED_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_SKIN_TEMPERATURE
 import android.os.Build
@@ -549,6 +550,11 @@ class HealthPermissionReaderTest {
 
         assertThat(permissionReader.shouldHidePermission(READ_PLANNED_EXERCISE)).isFalse()
         assertThat(permissionReader.shouldHidePermission(WRITE_PLANNED_EXERCISE)).isFalse()
+    }
+
+    @Test
+    fun shouldHidePermission_deviceUdi_returnsTrue() = runTest {
+        assertThat(permissionReader.shouldHidePermission(WRITE_DEVICE_UDI)).isTrue()
     }
 
     @Test
