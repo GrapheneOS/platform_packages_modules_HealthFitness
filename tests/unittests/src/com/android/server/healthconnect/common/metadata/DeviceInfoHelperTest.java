@@ -279,7 +279,8 @@ public class DeviceInfoHelperTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_UDI,
-        Flags.FLAG_DEVICE_UDI_DB
+        Flags.FLAG_DEVICE_UDI_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getDeviceInfoId_deviceInfoInCache_returnsCorrectId() {
         DeviceInfoHelper.DeviceInfo existingDeviceInfo =
@@ -314,7 +315,8 @@ public class DeviceInfoHelperTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_UDI,
-        Flags.FLAG_DEVICE_UDI_DB
+        Flags.FLAG_DEVICE_UDI_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
     })
     public void getDeviceInfo_deviceIdInCache_returnsCorrectDeviceInfo() {
         DeviceInfoHelper.DeviceInfo deviceInfoWithId =
