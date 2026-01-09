@@ -73,7 +73,7 @@ import java.util.List;
 public class HealthConnectServiceStatsTests extends BaseHostJUnit4Test implements IBuildReceiver {
     @Rule
     public final CheckFlagsRule mCheckFlagsRule =
-            HostFlagsValueProvider.createCheckFlagsRule(this::getDevice);
+            HostFlagsValueProvider.createCheckFlagsRule(this::getDevice, this.getClass());
 
     private IBuildInfo mCtsBuild;
     private Instant mTestStartTime;
