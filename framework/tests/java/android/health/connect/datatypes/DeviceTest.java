@@ -132,4 +132,88 @@ public class DeviceTest {
                         .build();
         assertThat(device.getDisplayName()).isNull();
     }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_UDI)
+    public void testEqualsHashcode_udiEnabled() {
+        new EqualsTester()
+                .addEqualityGroup(
+                        new Device.Builder()
+                                .setManufacturer("BrandA")
+                                .setModel("ModelX")
+                                .setType(Device.DEVICE_TYPE_PHONE)
+                                .setUdi("My Test Udi")
+                                .build(),
+                        new Device.Builder()
+                                .setManufacturer("BrandA")
+                                .setModel("ModelX")
+                                .setType(Device.DEVICE_TYPE_PHONE)
+                                .setUdi("My Test Udi")
+                                .build())
+                .addEqualityGroup(
+                        new Device.Builder()
+                                .setManufacturer("BrandB")
+                                .setModel("ModelY")
+                                .setType(Device.DEVICE_TYPE_WATCH)
+                                .setUdi("My Test Udi 2")
+                                .build())
+                .addEqualityGroup(
+                        new Device.Builder()
+                                .setManufacturer("BrandA")
+                                .setModel("ModelX")
+                                .setType(Device.DEVICE_TYPE_PHONE)
+                                .build())
+                .testEquals();
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_UDI)
+    public void testEqualsHashcode_udiDisabled() {
+        new EqualsTester()
+                .addEqualityGroup(
+                        new Device.Builder()
+                                .setManufacturer("BrandA")
+                                .setModel("ModelX")
+                                .setType(Device.DEVICE_TYPE_PHONE)
+                                .setUdi("My Test Udi")
+                                .build(),
+                        new Device.Builder()
+                                .setManufacturer("BrandA")
+                                .setModel("ModelX")
+                                .setType(Device.DEVICE_TYPE_PHONE)
+                                .setUdi("My Test Udi 2")
+                                .build(),
+                        new Device.Builder()
+                                .setManufacturer("BrandA")
+                                .setModel("ModelX")
+                                .setType(Device.DEVICE_TYPE_PHONE)
+                                .build())
+                .testEquals();
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_UDI)
+    public void testBuilderWithUdi_udiEnabled() {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("BrandA")
+                        .setModel("ModelX")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setUdi("My Test Udi")
+                        .build();
+        assertThat(device.getUdi()).isEqualTo("My Test Udi");
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_UDI)
+    public void testBuilderWithUdi_udiDisabled() {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("BrandA")
+                        .setModel("ModelX")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setUdi("My Test Udi")
+                        .build();
+        assertThat(device.getUdi()).isNull();
+    }
 }

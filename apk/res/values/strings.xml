@@ -1628,8 +1628,8 @@
     <string name="data_restore_in_progress_dialog_title" description="Title of dialog shown when data restore is in progress">Health&#160;Connect restore in progress</string>
     <string name="data_restore_in_progress_dialog_button" description="Button of dialog shown when data restore is in progress">Got it</string>
     <string name="data_restore_pending_banner_title" description="Title of banner shown when data restore is pending">Update needed</string>
-    <string name="data_restore_pending_banner_content" description="Content of banner shown when data restore is pending">Before continuing restoring your data, update your phone system.</string>
-    <string name="data_restore_pending_banner_button" description="Button for banner shown when data restore is pending">Update now</string>
+    <string name="data_restore_pending_banner_content" description="Content of banner shown when data restore is pending">To continue restoring your data, update your device system.</string>
+    <string name="data_restore_pending_banner_button" description="Button for banner shown when data restore is pending">Check for updates</string>
     <!--  endregion -->
 
     <!-- region Data sources -->

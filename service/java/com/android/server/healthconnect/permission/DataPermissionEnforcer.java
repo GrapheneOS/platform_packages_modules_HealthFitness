@@ -31,16 +31,14 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.UserHandle;
 import android.permission.PermissionManager;
-import android.util.ArrayMap;
-import android.util.ArraySet;
 
 import com.android.modules.utils.build.SdkLevel;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -166,34 +164,23 @@ public class DataPermissionEnforcer {
      */
     public void enforceRecordsWritePermissions(
             List<RecordInternal<?>> recordInternals, AttributionSource attributionSource) {
-        Map<Integer, Set<String>> recordTypeIdToExtraPerms = new ArrayMap<>();
+        // First enforce category-level permissions.
+        Set<Integer> recordTypeIds =
+                recordInternals.stream().map(RecordInternal::getRecordType).collect(toSet());
+        enforceWritePermissions(recordTypeIds, attributionSource);
 
+        // Then enforce per-record permissions.
+        Set<String> grantedPerRecordPermissions = new HashSet<>();
         for (RecordInternal<?> recordInternal : recordInternals) {
             int recordTypeId = recordInternal.getRecordType();
             RecordHelper<?> recordHelper =
                     mInternalHealthConnectMappings.getRecordHelper(recordTypeId);
-
-            // Enforce granular permissions
-            for (String permission : recordHelper.getGranularWritePermissions(recordInternal)) {
+            for (String permission : recordHelper.getPerRecordWritePermissions(recordInternal)) {
+                if (grantedPerRecordPermissions.contains(permission)) {
+                    continue;
+                }
                 enforceWritePermission(permission, attributionSource, recordTypeId);
-            }
-
-            if (!recordTypeIdToExtraPerms.containsKey(recordTypeId)) {
-                recordTypeIdToExtraPerms.put(recordTypeId, new ArraySet<>());
-            }
-
-            recordTypeIdToExtraPerms
-                    .get(recordTypeId)
-                    .addAll(recordHelper.getRequiredExtraWritePermissions(recordInternal));
-        }
-
-        // Check main write permissions for given recordTypeIds
-        enforceWritePermissions(recordTypeIdToExtraPerms.keySet(), attributionSource);
-
-        // Check extra write permissions for given records
-        for (Integer recordTypeId : recordTypeIdToExtraPerms.keySet()) {
-            for (String permissionName : recordTypeIdToExtraPerms.get(recordTypeId)) {
-                enforceWritePermission(permissionName, attributionSource, recordTypeId);
+                grantedPerRecordPermissions.add(permission);
             }
         }
     }

@@ -95,6 +95,7 @@ import com.android.healthconnect.controller.tests.utils.setPreferenceSeen
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.NavigationUtils
+import com.android.healthconnect.controller.utils.SettingsTransitionHelper.createMainlineServiceUpdateSettingsIntent
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HomePageElement
@@ -602,17 +603,16 @@ class HomeFragmentTest {
             }
             .use {
                 onView(withText("Update needed")).check(matches(isDisplayed()))
-                onView(withText("Before continuing restoring your data, update your phone system."))
+                onView(withText("To continue restoring your data, update your device system."))
                     .check(matches(isDisplayed()))
-                onView(withText("Update now")).check(matches(isDisplayed()))
+                onView(withText("Check for updates")).check(matches(isDisplayed()))
                 verify(healthConnectLogger).logImpression(DataRestoreElement.RESTORE_PENDING_BANNER)
                 verify(healthConnectLogger)
                     .logImpression(DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON)
 
-                onView(withText("Update now")).perform(click())
+                onView(withText("Check for updates")).perform(click())
 
-                assertThat(navHostController.currentDestination?.id)
-                    .isEqualTo(R.id.systemUpdateActivity)
+                intended(hasAction(context.createMainlineServiceUpdateSettingsIntent().action))
                 verify(healthConnectLogger)
                     .logInteraction(DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON)
             }
@@ -649,9 +649,9 @@ class HomeFragmentTest {
             }
             .use {
                 onView(withText("Update needed")).check(doesNotExist())
-                onView(withText("Before continuing restoring your data, update your phone system."))
+                onView(withText("To continue restoring your data, update your device system."))
                     .check(doesNotExist())
-                onView(withText("Update now")).check(doesNotExist())
+                onView(withText("Check for updates")).check(doesNotExist())
             }
     }
 

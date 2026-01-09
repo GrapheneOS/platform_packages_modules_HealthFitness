@@ -41,6 +41,7 @@ import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.newHome.HomeFragment
@@ -68,6 +69,7 @@ import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
+import com.android.healthconnect.controller.utils.SettingsTransitionHelper.createMainlineServiceUpdateSettingsIntent
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HomePageElement
@@ -86,6 +88,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.eq
@@ -98,6 +101,7 @@ import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @UninstallModules(DeviceInfoUtilsModule::class)
+@RunWith(AndroidJUnit4::class)
 class HomeFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
@@ -718,8 +722,8 @@ class HomeFragmentTest {
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
         launchFragmentWithNavigation().use {
             checkTextIsDisplayed("Update needed")
-            checkTextIsDisplayed("Before continuing restoring your data, update your phone system.")
-            checkTextIsDisplayed("Update now")
+            checkTextIsDisplayed("To continue restoring your data, update your device system.")
+            checkTextIsDisplayed("Check for updates")
             verify(healthConnectLogger).logImpression(DataRestoreElement.RESTORE_PENDING_BANNER)
             verify(healthConnectLogger)
                 .logImpression(DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON)
@@ -727,7 +731,7 @@ class HomeFragmentTest {
     }
 
     @Test
-    fun dataRestoreBanner_whenClickOnUpdateNow_navigatesToSystemUpdateActivity() {
+    fun dataRestoreBanner_whenClickOnCheckForUpdates_navigatesToSystemUpdateActivity() {
         val stateFlow =
             MutableStateFlow<HomeViewModel.HomeFragmentState>(
                 HomeViewModel.HomeFragmentState.WithData(
@@ -741,13 +745,12 @@ class HomeFragmentTest {
         whenever(homeViewModel.homeFragmentState).thenReturn(stateFlow)
         launchFragmentWithNavigation().use {
             checkTextIsDisplayed("Update needed")
-            checkTextIsDisplayed("Before continuing restoring your data, update your phone system.")
-            onView(withText("Update now")).perform(click())
+            checkTextIsDisplayed("To continue restoring your data, update your device system.")
+            onView(withText("Check for updates")).perform(click())
             onIdle()
             verify(healthConnectLogger)
                 .logInteraction(DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON)
-            assertThat(navHostController.currentDestination?.id)
-                .isEqualTo(R.id.systemUpdateActivity)
+            intended(hasAction(context.createMainlineServiceUpdateSettingsIntent().action))
         }
     }
 

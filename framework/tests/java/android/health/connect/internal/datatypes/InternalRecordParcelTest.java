@@ -16,13 +16,19 @@
 
 package android.health.connect.internal.datatypes;
 
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
+
 import static com.google.common.truth.Truth.assertThat;
+
+import static org.junit.Assert.assertThrows;
 
 import android.annotation.SuppressLint;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.healthconnect.testing.shared.recordfactory.RecordFactory;
 import android.os.Parcel;
+import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
@@ -130,5 +136,30 @@ public class InternalRecordParcelTest {
                     .that(recordCopy)
                     .isEqualTo(record);
         }
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVICE_UDI, Flags.FLAG_DEVICE_UDI_DB})
+    public void udi_isParceledAndUnparceled() {
+        RecordInternal<StepsRecord> originalRecord = buildStepsRecord(1L, 2L, 3);
+        originalRecord.setUdi("my-test-udi");
+
+        Parcel parcel = Parcel.obtain();
+        originalRecord.writeToParcel(parcel);
+        parcel.setDataPosition(0);
+
+        StepsRecordInternal restoredRecord = new StepsRecordInternal(parcel);
+        parcel.recycle();
+
+        assertThat(restoredRecord.getUdi()).isEqualTo("my-test-udi");
+    }
+
+    @Test
+    @DisableFlags({Flags.FLAG_DEVICE_UDI, Flags.FLAG_DEVICE_UDI_DB})
+    public void udiApi_flagOff_throwsUnsupportedOperationException() {
+        RecordInternal<StepsRecord> recordInternal = buildStepsRecord(1L, 2L, 3);
+
+        assertThrows(UnsupportedOperationException.class, () -> recordInternal.setUdi("test-udi"));
+        assertThrows(UnsupportedOperationException.class, recordInternal::getUdi);
     }
 }

@@ -58,6 +58,7 @@ import com.android.healthconnect.controller.shared.preference.HealthPreferenceNo
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
+import com.android.healthconnect.controller.utils.SettingsTransitionHelper.createMainlineServiceUpdateSettingsIntent
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.ToastManager
 import com.android.healthconnect.controller.utils.logging.BackupAndRestoreElement
@@ -351,10 +352,7 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
                     getString(R.string.import_version_mismatch_error_banner_button),
                     BackupAndRestoreElement.IMPORT_VERSION_MISMATCH_ERROR_BANNER_BUTTON,
                 ) {
-                    findNavController()
-                        .navigate(
-                            R.id.action_backupAndRestoreSettingsFragment_to_systemUpdateActivity
-                        )
+                    startActivity(requireContext().createMainlineServiceUpdateSettingsIntent())
                 }
                 banner.title = getString(R.string.import_error_banner_title)
                 banner.key = IMPORT_ERROR_BANNER_KEY

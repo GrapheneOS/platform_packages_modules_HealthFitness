@@ -47,12 +47,10 @@ public final class Device {
      */
     public static final class Builder {
         @Nullable private String mManufacturer;
-
         @Nullable private String mModel;
-
         @DeviceType private int mType = DEVICE_TYPE_UNKNOWN;
-
         @Nullable private String mDisplayName;
+        @Nullable private String mUdi;
 
         /** Sets an optional client supplied manufacturer of the device */
         @NonNull
@@ -83,13 +81,28 @@ public final class Device {
             return this;
         }
 
+        /**
+         * Sets an optional client supplied UDI of the device
+         *
+         * @hide
+         */
+        // TODO(b/472306214): unhide this API
+        @FlaggedApi(Flags.FLAG_DEVICE_UDI)
+        @NonNull
+        public Builder setUdi(@Nullable String udi) {
+            mUdi = udi;
+            return this;
+        }
+
         /** Build and return {@link Device} object */
         @NonNull
         public Device build() {
-            if (Flags.deviceDataProvidersApi()) {
-                return new Device(mManufacturer, mModel, mType, mDisplayName);
-            }
-            return new Device(mManufacturer, mModel, mType, null);
+            return new Device(
+                    mManufacturer,
+                    mModel,
+                    mType,
+                    Flags.deviceDataProvidersApi() ? mDisplayName : null,
+                    Flags.deviceUdi() ? mUdi : null);
         }
     }
 
@@ -203,8 +216,8 @@ public final class Device {
     @Nullable private final String mManufacturer;
     @Nullable private final String mModel;
     @DeviceType private final int mType;
-
     @Nullable private final String mDisplayName;
+    @Nullable private final String mUdi;
 
     /**
      * @param manufacturer An optional client supplied manufacturer of the device
@@ -215,12 +228,14 @@ public final class Device {
             @Nullable String manufacturer,
             @Nullable String model,
             @DeviceType int type,
-            @Nullable String displayName) {
+            @Nullable String displayName,
+            @Nullable String udi) {
         validateIntDefValue(type, Device.VALID_TYPES, DeviceType.class.getSimpleName());
         mManufacturer = manufacturer;
         mModel = model;
         mType = type;
         mDisplayName = displayName;
+        mUdi = udi;
     }
 
     /**
@@ -257,6 +272,17 @@ public final class Device {
     }
 
     /**
+     * @return The device udi if set, null otherwise
+     * @hide
+     */
+    // TODO(b/472306214): unhide this API
+    @FlaggedApi(Flags.FLAG_DEVICE_UDI)
+    @Nullable
+    public String getUdi() {
+        return mUdi;
+    }
+
+    /**
      * Indicates whether some other object is "equal to" this one.
      *
      * @param object the reference object with which to compare.
@@ -265,18 +291,19 @@ public final class Device {
     @Override
     public boolean equals(@Nullable Object object) {
         if (this == object) return true;
-        if (object instanceof Device other) {
-            if (Flags.deviceDataProvidersApi()) {
-                return this.getType() == other.getType()
-                        && Objects.equals(this.getManufacturer(), other.getManufacturer())
-                        && Objects.equals(this.getModel(), other.getModel())
-                        && Objects.equals(this.getDisplayName(), other.getDisplayName());
-            }
-            return this.getType() == other.getType()
-                    && Objects.equals(this.getManufacturer(), other.getManufacturer())
-                    && Objects.equals(this.getModel(), other.getModel());
+        if (!(object instanceof Device other)) return false;
+
+        if (Flags.deviceDataProvidersApi()
+                && !Objects.equals(this.getDisplayName(), other.getDisplayName())) {
+            return false;
         }
-        return false;
+
+        if (Flags.deviceUdi() && !Objects.equals(this.getUdi(), other.getUdi())) {
+            return false;
+        }
+        return this.getType() == other.getType()
+                && Objects.equals(this.getManufacturer(), other.getManufacturer())
+                && Objects.equals(this.getModel(), other.getModel());
     }
 
     /**
@@ -286,11 +313,12 @@ public final class Device {
      */
     @Override
     public int hashCode() {
-        if (Flags.deviceDataProvidersApi()) {
-            return Objects.hash(
-                    this.getManufacturer(), this.getModel(), this.getType(), this.getDisplayName());
-        }
-        return Objects.hash(this.getManufacturer(), this.getModel(), this.getType());
+        return Objects.hash(
+                this.getManufacturer(),
+                this.getModel(),
+                this.getType(),
+                Flags.deviceDataProvidersApi() ? this.getDisplayName() : null,
+                Flags.deviceUdi() ? this.getUdi() : null);
     }
 
     /**

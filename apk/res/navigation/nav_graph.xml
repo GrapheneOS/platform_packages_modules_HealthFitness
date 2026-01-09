@@ -82,9 +82,6 @@
         <action
             android:id="@+id/action_newHomeFragment_to_migrationActivity"
             app:destination="@id/migrationActivity" />
-        <action
-            android:id="@+id/action_newHomeFragment_to_systemUpdateActivity"
-            app:destination="@id/systemUpdateActivity" />
     </fragment>
 
     <fragment
@@ -119,9 +116,6 @@
             android:id="@+id/action_homeFragment_to_manageDataFragment"
             app:destination="@+id/manageDataFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_systemUpdateActivity"
-            app:destination="@id/systemUpdateActivity" />
-        <action
             android:id="@+id/action_homeFragment_to_exportSetupActivity"
             app:destination="@id/exportSetupActivity" />
         <action
@@ -150,18 +144,10 @@
         android:name="com.android.healthconnect.controller.exportimport.ImportFlowActivity"
         app:action="android.health.connect.action.START_IMPORT_FLOW" />
 
-    <activity
-        android:id="@+id/systemUpdateActivity"
-        app:action="android.settings.SYSTEM_UPDATE_SETTINGS"
-        android:label="systemUpdateActivity" />
-
     <fragment
         android:id="@+id/backupAndRestoreSettingsFragment"
         android:name="com.android.healthconnect.controller.backuprestore.BackupAndRestoreSettingsFragment"
         android:label="@string/backup_and_restore_settings_screen_title">
-        <action
-            android:id="@+id/action_backupAndRestoreSettingsFragment_to_systemUpdateActivity"
-            app:destination="@id/systemUpdateActivity" />
         <action
             android:id="@+id/action_backupAndRestoreSettingsFragment_to_scheduledExportFragment"
             app:destination="@id/scheduledExportFragment" />

@@ -93,9 +93,7 @@ public final class DevelopmentDatabaseHelper {
         dropAndCreateDevelopmentSettingsTable(db, CURRENT_VERSION);
 
         // Code for under development schema changes goes in this method but below this comment
-        if (Flags.deviceUdiDb()) {
-            applyDeviceUdiDatabaseUpgrade(db);
-        }
+        applyDeviceUdiDatabaseUpgrade(db);
     }
 
     private static void applyDeviceUdiDatabaseUpgrade(SQLiteDatabase db) {

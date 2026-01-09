@@ -54,7 +54,7 @@ public class MigrationNotificationFactory {
 
     private static final String SHOW_MIGRATION_INFO_ACTION =
             "android.health.connect.action.SHOW_MIGRATION_INFO";
-    private static final String SYSTEM_UPDATE_ACTION = "android.settings.SYSTEM_UPDATE_SETTINGS";
+    private static final String MODULE_UPDATE_ACTION = "android.settings.MODULE_UPDATE_SETTINGS";
     private static final String SYSTEM_SETTINGS_FALLBACK_ACTION = "android.settings.SETTINGS";
     private static final Intent FALLBACK_INTENT = new Intent(SYSTEM_SETTINGS_FALLBACK_ACTION);
 
@@ -157,7 +157,7 @@ public class MigrationNotificationFactory {
 
     @Nullable
     private PendingIntent getSystemUpdatePendingIntent() {
-        Intent intent = new Intent(SYSTEM_UPDATE_ACTION);
+        Intent intent = new Intent(MODULE_UPDATE_ACTION);
         ResolveInfo result = mContext.getPackageManager().resolveActivity(intent, 0);
         if (result == null) {
             return getPendingIntent(FALLBACK_INTENT);
