@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Upravljajte kojim podacima o zdravlju pristupaju aplikacije"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Upravljajte kojim podacima o zdravlju mogu pristupati vaše aplikacije"</string>
     <string name="health_connect_notification_channel_name" msgid="5189243942800749782">"Novosti i upozorenja"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Dopuštenja i podaci"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Upravljajte podacima o zdravlju i fitnessu na uređaju i odredite koje im aplikacije mogu pristupati"</string>
@@ -1276,6 +1276,8 @@
     <string name="write_access" msgid="571547306854732263">"Pristup s dopuštenjem za pisanje"</string>
     <string name="read_access" msgid="3317759826769372785">"Pristup s dopuštenjem za čitanje"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
+    <skip />
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"Aplikacije s dopuštenjem: <xliff:g id="NUMBER_0">%1$d</xliff:g> od <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>

@@ -389,7 +389,7 @@
     <string name="symptom_unknown" msgid="5796719193136239306">"Haijulikani"</string>
     <string name="symptom_severity_mild" msgid="2689415474774489874">"Kiasi"</string>
     <string name="symptom_severity_moderate" msgid="8388787027751900668">"Wastani"</string>
-    <string name="symptom_severity_severe" msgid="4675732713898596705">"Hatari"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"Kali"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>⁠"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Ruhusu “<xliff:g id="APP_NAME">%1$s</xliff:g>” isome"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Ruhusu “<xliff:g id="APP_NAME">%1$s</xliff:g>” iandike"</string>
@@ -1276,6 +1276,8 @@
     <string name="write_access" msgid="571547306854732263">"Idhini ya Kuandika"</string>
     <string name="read_access" msgid="3317759826769372785">"Idhini ya Kusoma"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
+    <skip />
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"Programu <xliff:g id="NUMBER_0">%1$d</xliff:g> kati ya <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> zinaruhusiwa"</string>

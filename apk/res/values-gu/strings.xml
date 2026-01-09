@@ -1276,6 +1276,8 @@
     <string name="write_access" msgid="571547306854732263">"લખવાનો ઍક્સેસ"</string>
     <string name="read_access" msgid="3317759826769372785">"વાંચવાનો ઍક્સેસ"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
+    <skip />
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g>માંથી <xliff:g id="NUMBER_0">%1$d</xliff:g> ઍપને મંજૂરી છે"</string>

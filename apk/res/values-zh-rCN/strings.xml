@@ -334,8 +334,8 @@
     <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"所有医疗记录"</string>
     <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"所有医疗记录"</string>
     <string name="all_medical_data_content_description" msgid="3454355551506537094">"写入所有医疗记录"</string>
-    <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"过敏反应"</string>
-    <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"过敏反应"</string>
+    <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"过敏"</string>
+    <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"过敏"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"读取过敏反应数据"</string>
     <string name="conditions_uppercase_label" msgid="5260404343402770877">"病症"</string>
     <string name="conditions_lowercase_label" msgid="2678248918552246997">"病症"</string>
@@ -417,8 +417,8 @@
     <string name="request_permissions_rationale" msgid="2642076968583316986">"您可以参阅“<xliff:g id="APP_NAME">%1$s</xliff:g>”的<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>，了解该应用如何处理您的数据"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"隐私权政策"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"要允许“<xliff:g id="APP_NAME">%1$s</xliff:g>”访问您的医疗记录吗？"</string>
-    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"如果您授予访问权限，此应用将可以读取和写入过敏反应、化验结果、疫苗接种等数据\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"如果您授予访问权限，此应用将可以读取过敏反应、化验结果、疫苗接种等数据\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
+    <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"如果您授予访问权限，此应用将可以读取和写入过敏、化验结果、疫苗接种等数据\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
+    <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"如果您授予访问权限，此应用将可以读取过敏、化验结果、疫苗接种等数据\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"关于医疗记录"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"要分享的数据包括"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"如果您允许，“<xliff:g id="APP_NAME">%1$s</xliff:g>”将可以与“健康数据共享”分享您的医疗记录。"</string>
@@ -1276,6 +1276,8 @@
     <string name="write_access" msgid="571547306854732263">"写入权限"</string>
     <string name="read_access" msgid="3317759826769372785">"读取权限"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>，<xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>，<xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
+    <skip />
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"已允许 <xliff:g id="NUMBER_0">%1$d</xliff:g> 个应用（共 <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> 个）"</string>
