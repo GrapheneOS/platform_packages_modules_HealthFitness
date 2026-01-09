@@ -72,6 +72,7 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.health.connect.internal.datatypes.SymptomRecordInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
+import android.healthconnect.testing.unittest.mocks.AndroidPackageMocker;
 import android.os.Build;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -150,6 +151,7 @@ public class DeviceDataProviderManagerTest {
     public void setUp() throws Exception {
         Context applicationContext = ApplicationProvider.getApplicationContext();
         mContext = spy(applicationContext);
+        AndroidPackageMocker.addToContext(mContext);
         doReturn(mContext).when(mContext).getApplicationContext();
         doReturn(mContext).when(mContext).createContextAsUser(any(), anyInt());
         HealthConnectInjector healthConnectInjector =
