@@ -37,6 +37,7 @@ import static java.util.Map.entry;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -111,13 +112,13 @@ public class SyntheticPackageNameMatcher {
         // {32}        - Exactly 32 times
         // $           - End of the string
         String containsSpnRegex =
-                "%s\\.(%s)\\.(%s|%s)[0-9a-f]{%d}"
-                        .formatted(
-                                PACKAGE_PREFIX,
-                                typesRegexSegment,
-                                CANONICAL_UUID_SEGMENT_PREFIX,
-                                MASKED_UUID_SEGMENT_PREFIX,
-                                UUID_HEX_LENGTH);
+                String.format(
+                        Locale.US,
+                        "%s\\.(%s)\\.(%s|%s)[0-9a-f]{32}",
+                        PACKAGE_PREFIX,
+                        typesRegexSegment,
+                        CANONICAL_UUID_SEGMENT_PREFIX,
+                        MASKED_UUID_SEGMENT_PREFIX);
         CONTAINS_SPN_PATTERN = Pattern.compile(containsSpnRegex);
 
         String isSpnRegex = "^" + containsSpnRegex + "$";
