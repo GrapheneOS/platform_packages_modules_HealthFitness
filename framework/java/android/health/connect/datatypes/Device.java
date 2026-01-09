@@ -82,11 +82,13 @@ public final class Device {
         }
 
         /**
-         * Sets an optional client supplied UDI of the device
+         * Sets an optional client supplied UDI (Unique Device Identifier), a unique numeric or
+         * alphanumeric code assigned to a medical device, for this {@link Device} instance.
          *
-         * @hide
+         * <p>The calling package needs to declare {@link HealthPermissions#WRITE_DEVICE_UDI} in
+         * manifest to be able to set UDI for any record. {@link SecurityException} is thrown when
+         * upserting a record with UDI without the permission.
          */
-        // TODO(b/472306214): unhide this API
         @FlaggedApi(Flags.FLAG_DEVICE_UDI)
         @NonNull
         public Builder setUdi(@Nullable String udi) {
@@ -272,10 +274,11 @@ public final class Device {
     }
 
     /**
-     * @return The device udi if set, null otherwise
-     * @hide
+     * Returns the UDI (Unique Device Identifier), a unique numeric or alphanumeric code assigned to
+     * a medical device, of this {@link Device} instance.
+     *
+     * @return The device Unique Device Identifier (UDI) if set, null otherwise.
      */
-    // TODO(b/472306214): unhide this API
     @FlaggedApi(Flags.FLAG_DEVICE_UDI)
     @Nullable
     public String getUdi() {

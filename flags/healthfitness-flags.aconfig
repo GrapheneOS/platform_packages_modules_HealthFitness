@@ -608,7 +608,7 @@ flag {
     namespace: "health_fitness_aconfig"
     description: "Flag for Device UDI API changes."
     bug: "467999349"
-    # TODO(b/472306214): export this flag after API review
+    is_exported: true
 }
 
 flag {
