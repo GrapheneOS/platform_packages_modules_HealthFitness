@@ -5097,7 +5097,7 @@ public class HealthConnectServiceImplTest {
             throws Exception {
         IDeviceDataSourceCapabilitiesCallback.Stub callback =
                 mock(IDeviceDataSourceCapabilitiesCallback.Stub.class);
-        when(mDeviceDataSourcesHelper.getAllAdvertisedRecordTypes()).thenReturn(Set.of());
+        doReturn(Set.of()).when(mDeviceDataSourcesHelper).getAllAdvertisedRecordTypes();
 
         mHealthConnectService.getDeviceDataSourceCapabilities(mAttributionSource, callback);
         awaitAllExecutorsIdle();
@@ -5116,8 +5116,9 @@ public class HealthConnectServiceImplTest {
         IDeviceDataSourceCapabilitiesCallback.Stub callback =
                 mock(IDeviceDataSourceCapabilitiesCallback.Stub.class);
 
-        when(mDeviceDataSourcesHelper.getAllAdvertisedRecordTypes())
-                .thenReturn(Set.of(RECORD_TYPE_HEART_RATE, RECORD_TYPE_STEPS));
+        doReturn(Set.of(RECORD_TYPE_HEART_RATE, RECORD_TYPE_STEPS))
+                .when(mDeviceDataSourcesHelper)
+                .getAllAdvertisedRecordTypes();
 
         mHealthConnectService.getDeviceDataSourceCapabilities(mAttributionSource, callback);
         awaitAllExecutorsIdle();

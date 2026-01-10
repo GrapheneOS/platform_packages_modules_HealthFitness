@@ -43,7 +43,7 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
 
     @Rule
     val mCheckFlagsRule: CheckFlagsRule =
-        HostFlagsValueProvider.createCheckFlagsRule { this.getDevice() }
+        HostFlagsValueProvider.createCheckFlagsRule({ this.getDevice() }, this.javaClass)
 
     companion object {
         private const val TAG = "HomeFragmentHostTest"

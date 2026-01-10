@@ -383,13 +383,13 @@
     <string name="alcohol_consumption_read_content_description" msgid="2130228931470781094">"Ler os datos de consumo de alcohol"</string>
     <string name="alcohol_consumption_write_content_description" msgid="766171743899162838">"Escribir os datos de consumo de alcohol"</string>
     <string name="symptom_cough_uppercase_label" msgid="3600429984629423943">"Tose"</string>
-    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"tose"</string>
+    <string name="symptom_cough_lowercase_label" msgid="3028827340410016573">"Tose"</string>
     <string name="symptom_cough_read_content_description" msgid="398516421189288025">"Ler síntomas"</string>
     <string name="symptom_cough_write_content_description" msgid="8535398571528036989">"Escribir síntomas"</string>
     <string name="symptom_unknown" msgid="5796719193136239306">"Descoñecido"</string>
     <string name="symptom_severity_mild" msgid="2689415474774489874">"Leve"</string>
-    <string name="symptom_severity_moderate" msgid="8388787027751900668">"Moderada"</string>
-    <string name="symptom_severity_severe" msgid="4675732713898596705">"Grave"</string>
+    <string name="symptom_severity_moderate" msgid="8388787027751900668">"de intensidade moderada"</string>
+    <string name="symptom_severity_severe" msgid="4675732713898596705">"grave"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="TYPE">%2$s</xliff:g> <xliff:g id="SEVERITY">%1$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> lea"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> escriba"</string>
@@ -1276,6 +1276,8 @@
     <string name="write_access" msgid="571547306854732263">"Acceso de escritura"</string>
     <string name="read_access" msgid="3317759826769372785">"Acceso de lectura"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
+    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
+    <skip />
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> de <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplicacións con permiso"</string>
@@ -1567,7 +1569,7 @@
     <string name="sneezing_uppercase_label" msgid="3559089195823390830">"Espirros"</string>
     <string name="sneezing_lowercase_label" msgid="4614496100578986753">"espirros"</string>
     <string name="snore_uppercase_label" msgid="5408933698329003980">"Ronquido"</string>
-    <string name="snore_lowercase_label" msgid="4813706716393000341">"ronquido"</string>
+    <string name="snore_lowercase_label" msgid="4813706716393000341">"Ronquido"</string>
     <string name="sore_throat_uppercase_label" msgid="7652461264264564339">"Dor de gorxa"</string>
     <string name="sore_throat_lowercase_label" msgid="2671417552726018944">"dor de gorxa"</string>
     <string name="stomach_ache_uppercase_label" msgid="8450868632465837793">"Dor de estómago"</string>

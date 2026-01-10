@@ -30,6 +30,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_EXERCISE_SESSION;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_STEPS;
+import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 import static android.permission.PermissionManager.PERMISSION_GRANTED;
 import static android.permission.PermissionManager.PERMISSION_HARD_DENIED;
 
@@ -53,18 +54,22 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.health.connect.HealthPermissions;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.internal.datatypes.ExerciseRouteInternal;
 import android.health.connect.internal.datatypes.ExerciseSessionRecordInternal;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Build;
 import android.os.UserHandle;
 import android.permission.PermissionManager;
+import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SdkSuppress;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
@@ -477,6 +482,51 @@ public class DataPermissionEnforcerTest {
         ExerciseRouteInternal route = new ExerciseRouteInternal(List.of(locationInternal));
         ExerciseSessionRecordInternal record = new ExerciseSessionRecordInternal().setRoute(route);
 
+        mDataPermissionEnforcer.enforceRecordsWritePermissions(List.of(record), mAttributionSource);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVICE_UDI, Flags.FLAG_DEVICE_UDI_DB})
+    public void testEnforceRecordsWritePermissions_deviceUdiGranted_doesNotThrow() {
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        WRITE_STEPS, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        HealthPermissions.WRITE_DEVICE_UDI, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+
+        RecordInternal<StepsRecord> record = buildStepsRecord(1000, 2000, 123).setUdi("test_udi");
+        mDataPermissionEnforcer.enforceRecordsWritePermissions(List.of(record), mAttributionSource);
+    }
+
+    @Test(expected = SecurityException.class)
+    @EnableFlags({Flags.FLAG_DEVICE_UDI_DB, Flags.FLAG_DEVICE_UDI})
+    public void testEnforceRecordsWritePermissions_deviceUdiDenied_throwsSecurityException() {
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        WRITE_STEPS, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        HealthPermissions.WRITE_DEVICE_UDI, mAttributionSource, null))
+                .thenReturn(PERMISSION_HARD_DENIED);
+
+        RecordInternal<StepsRecord> recordWithUdi =
+                buildStepsRecord(1000, 2000, 123).setUdi("test_udi");
+        RecordInternal<StepsRecord> recordWithoutUdi = buildStepsRecord(1000, 2000, 123);
+        mDataPermissionEnforcer.enforceRecordsWritePermissions(
+                List.of(recordWithUdi, recordWithoutUdi), mAttributionSource);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVICE_UDI, Flags.FLAG_DEVICE_UDI_DB})
+    public void testEnforceRecordsWritePermissions_deviceUdiDenied_noUdiSet_doesNotThrow() {
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        WRITE_STEPS, mAttributionSource, null))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mPermissionManager.checkPermissionForDataDelivery(
+                        HealthPermissions.WRITE_DEVICE_UDI, mAttributionSource, null))
+                .thenReturn(PERMISSION_HARD_DENIED);
+
+        RecordInternal<StepsRecord> record = buildStepsRecord(1000, 2000, 123);
         mDataPermissionEnforcer.enforceRecordsWritePermissions(List.of(record), mAttributionSource);
     }
 
