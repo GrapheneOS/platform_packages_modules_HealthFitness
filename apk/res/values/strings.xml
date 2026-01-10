@@ -217,7 +217,6 @@
     <!-- Additional permissions manifest descriptions -->
     <string name="historic_access_description" description="Description for permission to access past health data. [CHAR_LIMIT=NONE]">Allow this app to access all past Health&#160;Connect data</string>
     <string name="background_read_description" description="Description for permission to access past health data. [CHAR_LIMIT=NONE]">Allow this app to access Health&#160;Connect data when you\'re not using the app</string>
-    <string name="write_device_udi_content_description" description="Description for permission to write device UDI. [CHAR_LIMIT=NONE]">Allow this app to write Device UDI to Health&#160;Connect data</string>
     <!--endregion-->
 
     <!-- region Activity data types -->

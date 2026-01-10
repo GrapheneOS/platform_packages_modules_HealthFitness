@@ -30,12 +30,6 @@
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH" />
 
-    <permission
-        android:name="android.permission.health.WRITE_DEVICE_UDI"
-        android:label="@string/write_device_udi_content_description"
-        android:protectionLevel="normal"
-        android:permissionGroup="android.permission-group.HEALTH" />
-
     <!-- Read permissions for activities -->
     <!-- Allows an application to read calories burnt.
          <p>Protection level: dangerous

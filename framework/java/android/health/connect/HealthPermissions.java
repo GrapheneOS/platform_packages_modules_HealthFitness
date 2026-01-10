@@ -22,7 +22,6 @@ import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API;
 import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES_FLAG;
-import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_UDI;
 import static com.android.healthfitness.flags.Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY;
 import static com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS;
 import static com.android.healthfitness.flags.Flags.FLAG_PERSONAL_HEALTH_RECORD;
@@ -110,17 +109,6 @@ public final class HealthPermissions {
     @FlaggedApi(FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API)
     public static final String START_BACKUP_RESTORE_SETTINGS_PERMISSION =
             "android.permission.health.START_BACKUP_RESTORE_SETTINGS";
-
-    /**
-     * Allows an application to write the device's unique device identifier (UDI).
-     *
-     * <p>Protection level: normal.
-     *
-     * @hide
-     */
-    // TODO(b/472306214): unhide this API
-    @FlaggedApi(FLAG_DEVICE_UDI)
-    public static final String WRITE_DEVICE_UDI = "android.permission.health.WRITE_DEVICE_UDI";
 
     /**
      * Used for runtime permissions which grant access to Health Connect data.
