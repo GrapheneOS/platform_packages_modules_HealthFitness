@@ -170,6 +170,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -209,7 +210,10 @@ public final class TestUtils {
         String typesRegexSegment = String.join("|", DEVICE_TYPE_TO_DISPLAY_NAME.values());
 
         String regex =
-                "^com.android.healthconnect\\.(%s)\\.j[0-9a-f]{32}$".formatted(typesRegexSegment);
+                String.format(
+                        Locale.US,
+                        "^com.android.healthconnect\\.(%s)\\.j[0-9a-f]{32}$",
+                        typesRegexSegment);
 
         MASKED_SPN_PATTERN = Pattern.compile(regex);
     }
@@ -220,7 +224,10 @@ public final class TestUtils {
         String typesRegexSegment = String.join("|", DEVICE_TYPE_TO_DISPLAY_NAME.values());
 
         String regex =
-                "^com.android.healthconnect\\.(%s)\\.d[0-9a-f]{32}$".formatted(typesRegexSegment);
+                String.format(
+                        Locale.US,
+                        "^com.android.healthconnect\\.(%s)\\.d[0-9a-f]{32}$",
+                        typesRegexSegment);
 
         CANONICAL_SPN_PATTERN = Pattern.compile(regex);
     }
