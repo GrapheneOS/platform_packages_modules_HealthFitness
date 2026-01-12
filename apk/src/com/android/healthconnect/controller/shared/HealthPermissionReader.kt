@@ -526,6 +526,7 @@ constructor(
                 !AconfigFlagHelper.isActivityIntensityEnabled()
             HealthPermissions.READ_NICOTINE_INTAKE,
             HealthPermissions.WRITE_NICOTINE_INTAKE -> !AconfigFlagHelper.isNicotineIntakeEnabled()
+            HealthPermissions.WRITE_DEVICE_UDI -> true // We do not show this permission in UI
             else -> !isPermissionEnabled(permission)
         }
     }
