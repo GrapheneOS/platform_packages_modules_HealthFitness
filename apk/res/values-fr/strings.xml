@@ -1180,8 +1180,10 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Santé Connect : restauration en cours"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"OK"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Mise à jour requise"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Avant de poursuivre la restauration de vos données, mettez à jour votre système de téléphonie."</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Mettre à jour"</string>
+    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
+    <skip />
+    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
+    <skip />
     <string name="data_totals_header" msgid="8316977153276216025">"Totaux de données"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Sources de données"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Ajoutez des sources de données à la liste pour voir les totaux de données changer. Supprimer une source de données de cette liste l\'empêchera de contribuer aux totaux, mais elle disposera toujours d\'autorisations d\'écriture."</string>
@@ -1276,14 +1278,13 @@
     <string name="write_access" msgid="571547306854732263">"Accès en écriture"</string>
     <string name="read_access" msgid="3317759826769372785">"Accès en lecture"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> application(s) autorisée(s) sur <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Demandée par aucune appli"</string>
-    <string name="allowed" msgid="4158456017482263737">"Autorisée"</string>
-    <string name="not_allowed" msgid="6092523505093372147">"Non autorisée"</string>
+    <string name="allowed" msgid="4158456017482263737">"Autorisations accordées"</string>
+    <string name="not_allowed" msgid="6092523505093372147">"Autorisations non accordées"</string>
     <string name="access_sensor_note" msgid="7949933977197789634">"Les applis disposant de cette autorisation peuvent accéder aux données de <xliff:g id="DATA_TYPE">%s</xliff:g> provenant des capteurs de votre appareil."</string>
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"Supprimer l\'accès aux données de <xliff:g id="DATA_TYPE">%s</xliff:g> pour toutes les applis sur votre montre ?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"Coche"</string>
@@ -1588,5 +1589,5 @@
     <string name="water_retention_lowercase_label" msgid="3738721149186742861">"rétention d\'eau"</string>
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Respiration sifflante"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"respiration sifflante"</string>
-    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> sélectionnée(s) sur <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> sur <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
 </resources>

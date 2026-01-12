@@ -406,7 +406,7 @@
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"இந்தச் சாதனத்திலுள்ள பிற ஆப்ஸின் தரவை Health Connect மூலம் படிக்க <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸை அனுமதியுங்கள். நீங்கள் அணுகல் வழங்கும் பிற ஆப்ஸாலும் இந்தத் தரவைப் படிக்க முடியும்."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"இந்தத் தரவை ஒத்திசைக்கக்கூடிய ஆப்ஸ்"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"உங்கள் தரவை <xliff:g id="APP_NAME">%1$s</xliff:g> எப்படிப் பயன்படுத்துகிறது என்பதை அதன் "<a href="%2$s">"தனியுரிமைக் கொள்கையில்"</a>" தெரிந்துகொள்ளுங்கள்."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"உங்கள் ஆரோக்கியம் மற்றும் ஃபிட்னஸ் தொடர்பான தரவை Health Connect மூலம் பல்வேறு ஆப்ஸுக்கிடையே பகிரலாம். இது உங்கள் தரவைப் பாதுகாப்பாக வைத்திருப்பதோடு, நீங்கள் புள்ளிவிவரங்களையும் அனுபவங்களையும் பெற உதவுகிறது."</string>
+    <string name="matchmaking_screen_footer" msgid="128363859074109442">"உங்கள் ஆரோக்கியம் மற்றும் ஃபிட்னஸ் தரவை Health Connect மூலம் பல்வேறு ஆப்ஸுக்கிடையே பகிரலாம். இது உங்கள் தரவைப் பாதுகாப்பாக வைத்திருப்பதோடு, நீங்கள் புள்ளிவிவரங்களையும் அனுபவங்களையும் பெற உதவுகிறது."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect பற்றிய கூடுதல் தகவல்கள்"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"விரிவாக்கும்"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"சுருக்கும்"</string>
@@ -1180,8 +1180,10 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect மீட்டெடுக்கும் செயல்பாட்டில் உள்ளது"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"சரி"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"புதுப்பிப்பு தேவை"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"தரவை மீட்டெடுப்பதைத் தொடருவதற்கு முன்பு, உங்கள் மொபைல் சிஸ்டத்தைப் புதுப்பியுங்கள்."</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"இப்போதே புதுப்பி"</string>
+    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
+    <skip />
+    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
+    <skip />
     <string name="data_totals_header" msgid="8316977153276216025">"மொத்தத் தரவு"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"தரவு மூலங்கள்"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"தரவின் மொத்த மதிப்புகள் எப்படி மாறலாம் என்பதைப் பார்க்க பட்டியலில் தரவு ஆதாரங்களைச் சேருங்கள். இந்தப் பட்டியலிலிருந்து ஒரு தரவு ஆதாரத்தை அகற்றினால் மொத்த மதிப்புகளுக்கான அதன் பங்களிப்பு நிறுத்தப்படும், ஆனால் எழுதுவதற்கான அனுமதிகள் அதனிடம் தொடர்ந்து இருக்கும்."</string>
@@ -1276,8 +1278,7 @@
     <string name="write_access" msgid="571547306854732263">"எழுதுவதற்கான அணுகல்"</string>
     <string name="read_access" msgid="3317759826769372785">"படிப்பதற்கான அணுகல்"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>."</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"அனுமதிக்கப்பட்ட ஆப்ஸ்: <xliff:g id="NUMBER_0">%1$d</xliff:g>/<xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>
@@ -1339,7 +1340,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"உங்கள் ஆரோக்கிய ஆப்ஸ்"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"உங்கள் ஆரோக்கியம் தொடர்பான தரவு"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"விருப்பத்தேர்வுகள்"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"உங்கள் ஆரோக்கியம் மற்றும் ஃபிட்னஸ் தொடர்பான தரவை Health Connect மூலம் பல்வேறு ஆப்ஸுக்கிடையே பகிரலாம். இது உங்கள் தரவைப் பாதுகாப்பாக வைத்திருப்பதோடு, நீங்கள் புள்ளிவிவரங்களையும் அனுபவங்களையும் பெற உதவுகிறது."</string>
+    <string name="home_screen_footer" msgid="7572797414754117707">"உங்கள் ஆரோக்கியம் மற்றும் ஃபிட்னஸ் தரவை Health Connect மூலம் பல்வேறு ஆப்ஸுக்கிடையே பகிரலாம். இது உங்கள் தரவைப் பாதுகாப்பாக வைத்திருப்பதோடு, நீங்கள் புள்ளிவிவரங்களையும் அனுபவங்களையும் பெற உதவுகிறது."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect பற்றிய கூடுதல் தகவல்கள்"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"உங்கள் தரவு மற்றும் அதை அணுகக்கூடிய ஆப்ஸ்"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"சமீபத்தில் உங்கள் தரவைப் பயன்படுத்திய ஆப்ஸ்"</string>

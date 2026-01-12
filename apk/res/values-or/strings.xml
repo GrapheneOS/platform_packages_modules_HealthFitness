@@ -1180,8 +1180,10 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect ରିଷ୍ଟୋର ଚାଲିଛି"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"ବୁଝିଗଲି"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"ଅପଡେଟ ଆବଶ୍ୟକ"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"ଆପଣଙ୍କ ଡାଟା ରିଷ୍ଟୋର କରିବା ଜାରି ରଖିବା ପୂର୍ବରୁ, ଆପଣଙ୍କ ଫୋନ ସିଷ୍ଟମକୁ ଅପଡେଟ କରନ୍ତୁ।"</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"ଏବେ ଅପଡେଟ କରନ୍ତୁ"</string>
+    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
+    <skip />
+    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
+    <skip />
     <string name="data_totals_header" msgid="8316977153276216025">"ଡାଟା ଟୋଟାଲ୍ସ"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"ଡାଟା ସୋର୍ସ"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"ଡାଟା ଟୋଟାଲ୍ସ କିପରି ପରିବର୍ତ୍ତନ ହୋଇପାରିବ ତାହା ଦେଖିବାକୁ ତାଲିକାରେ ଡାଟା ସୋର୍ସଗୁଡ଼ିକୁ ଯୋଗ କରନ୍ତୁ। ଏହି ତାଲିକାରୁ ଏକ ଡାଟା ସୋର୍ସକୁ କାଢ଼ି ଦେବା ଫଳରେ ଏହା ଟୋଟାଲ୍ସରେ କଣ୍ଟ୍ରିବ୍ୟୁଟ କରିବାରୁ ଏହାକୁ ବନ୍ଦ କରିବ, କିନ୍ତୁ ଏହାର ଏବେ ବି ଲେଖିବା ଅନୁମତି ରହିବ।"</string>
@@ -1276,8 +1278,7 @@
     <string name="write_access" msgid="571547306854732263">"ଲେଖିବାର ଆକ୍ସେସ"</string>
     <string name="read_access" msgid="3317759826769372785">"ପଢ଼ିବାର ଆକ୍ସେସ"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>। <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>। <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>। <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>। <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> ଆପ୍ସରୁ <xliff:g id="NUMBER_0">%1$d</xliff:g>କୁ ଅନୁମତି ଦିଆଯାଇଛି"</string>

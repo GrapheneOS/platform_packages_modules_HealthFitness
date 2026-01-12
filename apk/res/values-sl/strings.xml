@@ -1180,8 +1180,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Poteka obnavljanje aplikacije Health Connect"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Razumem"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Potrebna je posodobitev"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Pred nadaljevanjem obnavljanja podatkov posodobite sistem telefona."</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Posodobi zdaj"</string>
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Če želite nadaljevati obnavljanje podatkov, posodobite sistem v napravi."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Preveri, ali so na voljo posodobitve"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Skupne količine podatkov"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Podatkovni viri"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Dodajte podatkovne vire na seznam, da boste videli, kako se skupne količine podatkov lahko spreminjajo. Če podatkovni vir odstranite s seznama, ne bo več prispeval k skupnim količinam podatkov, vendar bo še naprej imel dovoljenja za zapisovanje."</string>
@@ -1276,8 +1276,7 @@
     <string name="write_access" msgid="571547306854732263">"Dostop za pisanje"</string>
     <string name="read_access" msgid="3317759826769372785">"Dostop za branje"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"Dovoljene aplikacije: <xliff:g id="NUMBER_0">%1$d</xliff:g> od <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>

@@ -1180,8 +1180,10 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"የጤና አገናኝን ወደነበረበት መመለስ በሂደት ላይ"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"ገባኝ"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"ዝማኔ ያስፈልጋል"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"ውሂብዎን ወደነበረበት ለመመለስ ከመቀጠልዎ በፊት የስልክዎን ሥርዓት ያዘምኑ።"</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"አሁን አዘምን"</string>
+    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
+    <skip />
+    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
+    <skip />
     <string name="data_totals_header" msgid="8316977153276216025">"የውሂብ ጠቅላላ"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"የውሂብ ምንጮች"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"እንዴት የውሂብ ጠቅላላዎች ሊለወጡ እንደሚችሉ ለመመልከት የውሂብ ምንጮችን ወደ ዝርዝሩ ያክሉ። የውሂብ ምንጭን ከዚህ ዝርዝር ማስወገድ ለጠቅላላዎች አስተዋጽዖ ከማድረግ ያቆመዋል፣ ነገር ግን አሁንም የመፃፍ ፈቃዶች ይኖሩታል።"</string>
@@ -1276,8 +1278,7 @@
     <string name="write_access" msgid="571547306854732263">"የመጻፍ መዳረሻ"</string>
     <string name="read_access" msgid="3317759826769372785">"የማንበብ መዳረሻ"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>። <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>። <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>። <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>። <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> ከ<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> መተግበሪያዎች ተፈቅዶላቸዋል"</string>

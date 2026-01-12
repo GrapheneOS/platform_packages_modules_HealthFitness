@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_label" msgid="4768580772453324183">"Salud conectada"</string>
-    <string name="health_connect_summary" msgid="6401520186678972547">"Gestiona el acceso de las apps a tus datos de salud"</string>
+    <string name="health_connect_summary" msgid="6401520186678972547">"Gestiona el acceso de las aplicaciones a tus datos de salud"</string>
     <string name="health_connect_notification_channel_name" msgid="5189243942800749782">"Novedades y alertas"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Permisos y datos"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Gestiona los datos de salud y actividad física en tu dispositivo y controla qué apps pueden acceder a ellos"</string>
@@ -506,7 +506,7 @@
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"Entendido"</string>
     <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"Configurar"</string>
     <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"No se han podido exportar los datos"</string>
-    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Ha habido un problema con la exportación del <xliff:g id="DATE">%1$s</xliff:g>. Configura una nueva exportación programada e inténtalo de nuevo."</string>
+    <string name="export_file_access_error_banner_summary" msgid="1226999878868505503">"Ha habido un problema con la exportación del <xliff:g id="DATE">%1$s</xliff:g>. Programa una nueva exportación e inténtalo de nuevo."</string>
     <string name="next_export_time" msgid="3138247220014510213">"Siguiente exportación: <xliff:g id="DATE">%1$s</xliff:g>"</string>
     <string name="next_export_text" msgid="6726252793571403846">"La próxima exportación empezará pronto"</string>
     <string name="cloud_backup_option" msgid="2602990573804189525">"Crear copia de seguridad"</string>
@@ -590,7 +590,7 @@
     <string name="onboarding_description_health_records" msgid="4356538767594073978">"Salud conectada almacena y sincroniza tus datos de salud y actividad física de diferentes aplicaciones.\n\n"<b>"Datos de actividad física y bienestar,"</b>" como sesiones de ejercicio, pasos, nutrición y sueño, entre otras cosas\n\n"<b>"Historias clínicas,"</b>" como vacunas y resultados de pruebas, entre otras cosas"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Con Salud conectada, puedes:"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Compartir datos con tus apps"</b>\n"Elige los datos que cada app puede leer o escribir en Salud conectada"</string>
-    <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Gestionar tus ajustes y tu privacidad"</b>\n"Cambia los permisos de las apps y gestiona tus datos en cualquier momento"</string>
+    <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Gestionar tus ajustes y tu privacidad"</b>\n"Cambia los permisos de las aplicaciones y gestiona tus datos en cualquier momento"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Atrás"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Empezar"</string>
     <string name="delete_button_content_description" msgid="9125115327455379618">"Eliminar datos"</string>
@@ -1180,8 +1180,10 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Restauración de Salud conectada en curso"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Entendido"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Necesita actualizarse"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Antes de seguir restaurando tus datos, actualiza el sistema de tu teléfono."</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Actualizar ahora"</string>
+    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
+    <skip />
+    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
+    <skip />
     <string name="data_totals_header" msgid="8316977153276216025">"Resultados totales"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Fuentes de datos"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Añade fuentes de datos a la lista para ver cómo pueden cambiar los totales de datos. Si eliminas una fuente de datos de esta lista, dejará de contribuir a los totales, pero seguirá teniendo permisos de escritura."</string>
@@ -1276,8 +1278,7 @@
     <string name="write_access" msgid="571547306854732263">"Acceso de escritura"</string>
     <string name="read_access" msgid="3317759826769372785">"Acceso de lectura"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>."</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> de <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> apps permitidas"</string>

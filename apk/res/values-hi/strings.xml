@@ -1180,8 +1180,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect की, डेटा वापस लाने की प्रोसेस जारी है"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"ठीक है"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"अपडेट करना ज़रूरी है"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"डेटा वापस लाने की प्रोसेस जारी रखने के लिए, फ़ोन का सिस्टम सॉफ़्टवेयर अपडेट करें."</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"अभी अपडेट करें"</string>
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"डेटा रीस्टोर करने की प्रोसेस जारी रखने के लिए, अपने डिवाइस का सिस्टम अपडेट करें."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"अपडेट देखें"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"कुल डेटा"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"डेटा सोर्स"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"सूची में डेटा सोर्स जोड़ें, ताकि यह देखा जा सके कि कुल डेटा कैसे बदल सकता है. सूची से किसी भी डेटा सोर्स को हटाने पर उसका डेटा, कुल डेटा में जुड़ना बंद हो जाएगा. हालांकि, उस सोर्स के पास डेटा सेव करने और उसमें बदलाव करने की अनुमति अब भी होगी."</string>
@@ -1276,8 +1276,7 @@
     <string name="write_access" msgid="571547306854732263">"बदलाव करने का ऐक्सेस"</string>
     <string name="read_access" msgid="3317759826769372785">"देखने का ऐक्सेस"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> में से <xliff:g id="NUMBER_0">%1$d</xliff:g> ऐप्लिकेशन को अनुमति है"</string>

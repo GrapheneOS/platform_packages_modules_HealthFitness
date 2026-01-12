@@ -414,7 +414,7 @@
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Jika Anda memberikan akses baca, aplikasi dapat membaca data baru dan data lama"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Izinkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses Health Connect?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Izinkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses data kebugaran dan kesehatan?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"Anda dapat mempelajari cara <xliff:g id="APP_NAME">%1$s</xliff:g> menangani data Anda di <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> aplikasi tersebut"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"Baca <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> <xliff:g id="APP_NAME">%1$s</xliff:g> untuk memahami caranya menangani data Anda"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"kebijakan privasi"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"Izinkan <xliff:g id="APP_NAME">%1$s</xliff:g> mengakses rekam medis Anda?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Jika Anda memberikan akses, aplikasi dapat membaca dan menulis data seperti alergi, hasil lab, vaksin, dan lainnya\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -1180,8 +1180,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Pemulihan Health Connect sedang dalam proses"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Oke"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Diperlukan update"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Sebelum melanjutkan pemulihan data, update sistem ponsel Anda."</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Update sekarang"</string>
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Untuk melanjutkan pemulihan data, update sistem perangkat Anda."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Periksa update"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Total data"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Sumber data"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Tambahkan sumber data ke daftar ini untuk melihat perubahan total data. Sumber data yang dihapus dari daftar ini akan berhenti berkontribusi pada total data, tetapi tetap memiliki izin tulis."</string>
@@ -1276,8 +1276,7 @@
     <string name="write_access" msgid="571547306854732263">"Akses Tulis"</string>
     <string name="read_access" msgid="3317759826769372785">"Akses Baca"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> dari <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplikasi diizinkan"</string>

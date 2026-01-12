@@ -1180,8 +1180,10 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect రీస్టోర్ ప్రోగ్రెస్‌లో ఉంది"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"సరే"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"అప్‌డేట్ చేయడం అవసరం"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"మీ డేటాను రీస్టోర్ చేయడాన్ని కొనసాగించే ముందు, మీ ఫోన్ సిస్టమ్‌ను అప్‌డేట్ చేయండి."</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"ఇప్పుడే అప్‌డేట్ చేయండి"</string>
+    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
+    <skip />
+    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
+    <skip />
     <string name="data_totals_header" msgid="8316977153276216025">"డేటా మొత్తాలు"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"డేటా సోర్స్‌లు"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"డేటా టోటల్స్ (మొత్తాలు) ఎలా మారుతాయో చూడటానికి ఈ లిస్ట్‌కు డేటా సోర్స్‌లను జోడించండి. ఈ లిస్ట్‌ నుండి ఒక డేటా సోర్స్‌ను తీసివేస్తే, దాన్నుండి టోటల్స్‌కు కంట్రిబ్యూషన్ ఆగిపోతుంది. అయితే దానికి ఇప్పటికీ రైట్ చేయడానికి అనుమతి ఉంటుంది."</string>
@@ -1276,8 +1278,7 @@
     <string name="write_access" msgid="571547306854732263">"రైట్ యాక్సెస్"</string>
     <string name="read_access" msgid="3317759826769372785">"రీడ్ యాక్సెస్"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g>‌లో <xliff:g id="NUMBER_0">%1$d</xliff:g> యాప్‌లు అనుమతించబడ్డాయి"</string>
