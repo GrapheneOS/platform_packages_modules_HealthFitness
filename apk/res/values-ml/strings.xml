@@ -1180,8 +1180,10 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect പുനഃസ്ഥാപിക്കൽ പുരോഗമിക്കുന്നു"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"മനസ്സിലായി"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"അപ്‌ഡേറ്റ് ആവശ്യമാണ്"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"നിങ്ങളുടെ ഡാറ്റ പുനഃസ്ഥാപിക്കുന്നത് തുടരുന്നതിന് മുമ്പ്, നിങ്ങളുടെ ഫോൺ സിസ്റ്റം അപ്ഡേറ്റ് ചെയ്യുക."</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"ഇപ്പോൾ അപ്ഡേറ്റ് ചെയ്യുക"</string>
+    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
+    <skip />
+    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
+    <skip />
     <string name="data_totals_header" msgid="8316977153276216025">"ഡാറ്റയുടെ ആകെത്തുക"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"ഡാറ്റാ ഉറവിടങ്ങൾ"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"ഡാറ്റാ ടോട്ടലുകൾ എങ്ങനെ മാറുമെന്ന് കാണാൻ ലിസ്റ്റിലേക്ക് ഡാറ്റാ ഉറവിടങ്ങൾ ചേർക്കുക. ഈ ലിസ്റ്റിൽ നിന്ന് ഒരു ഡാറ്റാ ഉറവിടം നീക്കം ചെയ്യുന്നത്, ഡാറ്റാ ടോട്ടലിലേക്ക് സംഭാവന ചെയ്യുന്നതിൽ നിന്ന് അതിനെ തടയും, എന്നാൽ അതിന് തുടർന്നും റൈറ്റ് അനുമതികൾ ഉണ്ടായിരിക്കും."</string>
@@ -1276,8 +1278,7 @@
     <string name="write_access" msgid="571547306854732263">"എഴുതാനുള്ള ആക്‌സസ്"</string>
     <string name="read_access" msgid="3317759826769372785">"വായനാ ആക്‌സസ്"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> / <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> ആപ്പുകൾ അനുവദനീയം"</string>

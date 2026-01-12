@@ -1180,8 +1180,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect tiklash jarayoni davom etmoqda"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"OK"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Yangilash zarur"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Maʼlumotlarni tiklashda davom etishdan oldin telefon tizimini yangilang."</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Hoziroq yangilash"</string>
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Maʼlumotlarni tiklashda davom etish uchun qurilma tizimini yangilang."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Yangilanish mavjudligini tekshiring"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Axborotlar sarhisobi"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Axborot manbalari"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Axborotlar sarhisobi qanday oʻzgarishini koʻrish uchun roʻyxatga axborot manbalarini kiriting. Axborot manbasi roʻyxatdan olib tashlansa, sarhisobga taʼsir qilishi tugatiladi, lekin ilovaning axborot yozish ruxsati saqlanib qoladi."</string>
@@ -1276,8 +1276,7 @@
     <string name="write_access" msgid="571547306854732263">"Yozish ruxsati"</string>
     <string name="read_access" msgid="3317759826769372785">"Oʻqish ruxsati"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"Ruxsat berilgan ilovalar: <xliff:g id="NUMBER_0">%1$d</xliff:g> / <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>"</string>

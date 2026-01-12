@@ -1180,8 +1180,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect restore in progress"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Got it"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Update needed"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Before continuing restoring your data, update your phone system."</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Update now"</string>
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"To continue restoring your data, update your device system."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Check for updates"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Data totals"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Data sources"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Add data sources to the list to see how the data totals can change. Removing a data source from this list will stop it from contributing to totals, but it will still have write permissions."</string>

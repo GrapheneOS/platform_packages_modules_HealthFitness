@@ -93,7 +93,7 @@
     <string name="app_priority_button" msgid="3126133977893705098">"ಆ್ಯಪ್ ಆದ್ಯತೆ"</string>
     <string name="delete_category_data_button" msgid="2324773398768267043">"<xliff:g id="CATEGORY">%s</xliff:g> ಡೇಟಾವನ್ನು ಅಳಿಸಿ"</string>
     <string name="select_all_apps_title" msgid="884487568464305913">"ಎಲ್ಲಾ ಆ್ಯಪ್‌ಗಳು"</string>
-    <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ಅನ್ನು ಓದಬಹುದು"</string>
+    <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ಓದಬಹುದು"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ಅನ್ನು ಬರೆಯಬಹುದು"</string>
     <string name="inactive_apps" msgid="8956546286760797760">"ನಿಷ್ಕ್ರಿಯ ಆ್ಯಪ್‌ಗಳು"</string>
     <string name="inactive_apps_message" msgid="8335803540719022910">"ಈ ಆ್ಯಪ್‌ಗಳಿಗೆ ಇನ್ನು ಮುಂದೆ <xliff:g id="DATA_TYPE">%s</xliff:g> ಅನ್ನು ಓದಲು ಅಥವಾ ಬರೆಯಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ, ಆದರೆ ಅವು Health Connect ನಲ್ಲಿ ಈಗಲೂ ಡೇಟಾವನ್ನು ಸಂಗ್ರಹಿಸಿಡುತ್ತವೆ"</string>
@@ -1180,8 +1180,10 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect ಮರುಸ್ಥಾಪನೆ ಪ್ರಗತಿಯಲ್ಲಿದೆ"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"ಅರ್ಥವಾಯಿತು"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"ಅಪ್‌ಡೇಟ್‌ನ ಅಗತ್ಯವಿದೆ"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"ನಿಮ್ಮ ಡೇಟಾ ಮರುಸ್ಥಾಪನೆಯನ್ನು ಮುಂದುವರಿಸುವ ಮೊದಲು, ನಿಮ್ಮ ಫೋನ್ ಸಿಸ್ಟಮ್ ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಿ."</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"ಈಗಲೇ ಅಪ್‌ಡೇಟ್ ಮಾಡಿ"</string>
+    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
+    <skip />
+    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
+    <skip />
     <string name="data_totals_header" msgid="8316977153276216025">"ಡೇಟಾ ಟೋಟಲ್‌ಗಳು"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"ಡೇಟಾ ಮೂಲಗಳು"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"ಡೇಟಾ ಟೋಟಲ್‌ಗಳು ಹೇಗೆ ಬದಲಾಗಬಲ್ಲವು ಎಂಬುದನ್ನು ನೋಡಲು ಡೇಟಾ ಮೂಲಗಳನ್ನು ಪಟ್ಟಿಗೆ ಸೇರಿಸಿ. ಡೇಟಾ ಮೂಲವನ್ನು ಈ ಪಟ್ಟಿಯಿಂದ ತೆಗೆದುಹಾಕುವುದರಿಂದ ಅದು ಟೋಟಲ್‌ಗಳಿಗೆ ಕೊಡುಗೆ ನೀಡುವುದು ನಿಂತುಹೋಗುತ್ತದೆ, ಆದರೆ ಅದು ಈಗಲೂ ರೈಟ್ ಅನುಮತಿಗಳನ್ನು ಹೊಂದಿರುತ್ತದೆ."</string>
@@ -1276,8 +1278,7 @@
     <string name="write_access" msgid="571547306854732263">"ಬರೆಯಲು ಆ್ಯಕ್ಸೆಸ್"</string>
     <string name="read_access" msgid="3317759826769372785">"ಓದಲು ಆ್ಯಕ್ಸೆಸ್"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="OTHER_NUMBER">%2$d</xliff:g> ರಲ್ಲಿ <xliff:g id="NUMBER_0">%1$d</xliff:g> ಆ್ಯಪ್‌ಗಳನ್ನು ಅನುಮತಿಸಲಾಗಿದೆ"</string>
@@ -1351,7 +1352,7 @@
     <string name="connect_app_button_content_description" msgid="296796277841527165">"ಈ ಆ್ಯಪ್ ಅನ್ನು Health Connect ಗೆ ಕನೆಕ್ಟ್ ಮಾಡಲು ಕ್ಲಿಕ್ ಮಾಡಿ"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"ಈಗ ಬೇಡ"</string>
     <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"ಎಲ್ಲಾ ಸಿಂಪ್ಟಮ್‌ಗಳು"</string>
-    <string name="symptoms_lowercase_label" msgid="767123038349492995">"ಸಿಂಪ್ಟಮ್‌ಗಳು"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"ರೋಗ ಲಕ್ಷಣಗಳನ್ನು"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"ಮೊಡವೆಯ ಡೇಟಾವನ್ನು ಓದಿ"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"ಮೊಡವೆಯ ಡೇಟಾವನ್ನು ಬರೆಯಿರಿ"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"ಸುಲಭವಾಗಿ ಮುರಿಯುವ ಉಗುರುಗಳ ಡೇಟಾವನ್ನು ಓದಿ"</string>

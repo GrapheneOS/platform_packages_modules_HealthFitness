@@ -358,8 +358,8 @@
     <string name="pregnancy_uppercase_label" msgid="5979925175194337864">"怀孕情况"</string>
     <string name="pregnancy_lowercase_label" msgid="810439290131044517">"怀孕情况"</string>
     <string name="pregnancy_content_description" msgid="3436773729243586287">"读取怀孕情况"</string>
-    <string name="procedures_uppercase_label" msgid="9176087520132593261">"医疗程序"</string>
-    <string name="procedures_lowercase_label" msgid="5320804313946273234">"医疗程序"</string>
+    <string name="procedures_uppercase_label" msgid="9176087520132593261">"手术与诊疗处置"</string>
+    <string name="procedures_lowercase_label" msgid="5320804313946273234">"手术与诊疗处置"</string>
     <string name="procedures_content_description" msgid="1086900373141440005">"读取医疗程序"</string>
     <string name="social_history_uppercase_label" msgid="4119611299449533999">"个人生活史"</string>
     <string name="social_history_lowercase_label" msgid="9027541979445736412">"社交记录"</string>
@@ -1180,8 +1180,10 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"健康数据共享功能正在恢复数据"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"知道了"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"需要更新"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"继续恢复数据之前，请先更新您的手机系统。"</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"立即更新"</string>
+    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
+    <skip />
+    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
+    <skip />
     <string name="data_totals_header" msgid="8316977153276216025">"数据总值"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"数据源"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"您可以将数据源添加到列表中，查看数据总值的变化。从列表中删除某个数据源后，来自该数据源的数据将不再计入数据总值，但该数据源仍具有写入权限。"</string>
@@ -1276,8 +1278,7 @@
     <string name="write_access" msgid="571547306854732263">"写入权限"</string>
     <string name="read_access" msgid="3317759826769372785">"读取权限"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>，<xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>，<xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>，<xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>，<xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"已允许 <xliff:g id="NUMBER_0">%1$d</xliff:g> 个应用（共 <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> 个）"</string>
@@ -1314,7 +1315,7 @@
     <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"开始在您的应用之间共享健身与健康数据"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"设置"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"关联第二个应用"</string>
-    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"设置另一个应用，以便其能够开始共享健身与健康数据"</string>
+    <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"设置另一个应用，共享其中的健身与健康数据"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"继续"</string>
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"查看来自各个应用的个人健康数据"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"借助“健康数据共享”，您可以在应用之间共享健身和身心状态数据。立即查看可以关联哪些应用。"</string>

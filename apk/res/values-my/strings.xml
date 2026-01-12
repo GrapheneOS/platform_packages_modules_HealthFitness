@@ -1180,8 +1180,10 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect ပြန်လည်ရယူနေဆဲ"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"နားလည်ပြီ"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"အပ်ဒိတ်လုပ်ရန် လိုအပ်သည်"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"သင့်ဒေတာကို ပြန်လည်ရယူရန် ဆက်လက်မလုပ်ဆောင်မီ သင့်ဖုန်းစနစ်ကို အပ်ဒိတ်လုပ်ရန်လိုအပ်ပါသည်။"</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"ယခု အပ်ဒိတ်လုပ်ရန်"</string>
+    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
+    <skip />
+    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
+    <skip />
     <string name="data_totals_header" msgid="8316977153276216025">"ဒေတာစုစုပေါင်း"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"ဒေတာရင်းမြစ်များ"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"ဒေတာစုစုပေါင်း မည်သို့ပြောင်းလဲနိုင်ကြောင်း မြင်ရရန် ဒေတာရင်းမြစ်များကို စာရင်းတွင် ထည့်နိုင်သည်။ ဒေတာရင်းမြစ်ကို ဤစာရင်းမှဖယ်ရှားခြင်းသည် စုစုပေါင်းတွင် ၎င်းပံ့ပိုးပါဝင်နေသည်ကို ရပ်လိုက်မည်ဖြစ်သော်လည်း ရေးခွင့်များရှိပါဦးမည်။"</string>
@@ -1276,8 +1278,7 @@
     <string name="write_access" msgid="571547306854732263">"ရေးသားခွင့်"</string>
     <string name="read_access" msgid="3317759826769372785">"ဖတ်ရှုခွင့်"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>။ <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>။ <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>။ <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>။ <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"အက်ပ် <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> ခုအနက် <xliff:g id="NUMBER_0">%1$d</xliff:g> ခု ခွင့်ပြုထားသည်"</string>

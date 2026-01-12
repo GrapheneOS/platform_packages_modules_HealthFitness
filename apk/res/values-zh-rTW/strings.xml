@@ -1180,8 +1180,10 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"「健康資料同步」還原作業進行中"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"我知道了"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"需要更新"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"必須先更新手機系統，才能繼續還原資料。"</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"立即更新"</string>
+    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
+    <skip />
+    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
+    <skip />
     <string name="data_totals_header" msgid="8316977153276216025">"資料總覽"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"資料來源"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"你可以將資料來源加入此處的清單，查看資料總數的變化。如果從清單移除資料來源，該來源仍會具有寫入權限，但其資料就不會再計入總數。"</string>
@@ -1276,8 +1278,7 @@
     <string name="write_access" msgid="571547306854732263">"寫入權限"</string>
     <string name="read_access" msgid="3317759826769372785">"讀取權限"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>，<xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>，<xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>，<xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>，<xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"已授權給 <xliff:g id="NUMBER_0">%1$d</xliff:g> 個應用程式 (共 <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> 個)"</string>
