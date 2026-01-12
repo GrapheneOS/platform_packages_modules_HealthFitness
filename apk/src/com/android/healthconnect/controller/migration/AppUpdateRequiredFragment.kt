@@ -21,13 +21,13 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.Constants.APP_UPDATE_NEEDED_SEEN
 import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
 import com.android.healthconnect.controller.shared.preference.HealthSetupFragment
 import com.android.healthconnect.controller.shared.preference.HealthSetupHeaderPreference
 import com.android.healthconnect.controller.utils.AppStoreUtils
-import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -40,7 +40,6 @@ class AppUpdateRequiredFragment : Hilt_AppUpdateRequiredFragment() {
 
     @Inject lateinit var logger: HealthConnectLogger
     @Inject lateinit var appStoreUtils: AppStoreUtils
-    @Inject lateinit var navigationUtils: NavigationUtils
 
     private val header: HealthSetupHeaderPreference by pref(HEADER)
 
@@ -77,7 +76,7 @@ class AppUpdateRequiredFragment : Hilt_AppUpdateRequiredFragment() {
                 val packageName =
                     getString(resources.getIdentifier(HC_PACKAGE_NAME_CONFIG_NAME, null, null))
                 val intent = appStoreUtils.getAppStoreLink(packageName)
-                navigationUtils.startActivity(this, intent!!)
+                startActivity(intent!!)
             } catch (exception: Exception) {
                 Log.e(TAG, "App store activity does not exist", exception)
                 Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
@@ -94,10 +93,8 @@ class AppUpdateRequiredFragment : Hilt_AppUpdateRequiredFragment() {
                     putBoolean(APP_UPDATE_NEEDED_SEEN, true)
                     apply()
                 }
-                navigationUtils.navigate(
-                    this,
-                    R.id.action_migrationAppUpdateNeededFragment_to_homeScreen,
-                )
+                findNavController()
+                    .navigate(R.id.action_migrationAppUpdateNeededFragment_to_homeScreen)
             }
             requireActivity().finish()
         }

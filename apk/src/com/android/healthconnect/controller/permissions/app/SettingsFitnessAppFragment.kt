@@ -24,6 +24,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import androidx.preference.PreferenceScreen
@@ -56,7 +57,6 @@ import com.android.healthconnect.controller.shared.preference.HealthToggleExpand
 import com.android.healthconnect.controller.shared.preference.addIntroOrAppHeaderPreference
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.LocaleSorter.sortByLocale
-import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.logging.AppAccessElement.ADDITIONAL_ACCESS_BUTTON
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -83,7 +83,6 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
     }
 
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
-    @Inject lateinit var navigationUtils: NavigationUtils
 
     private lateinit var packageName: String
     private var isSystemApp: Boolean = false
@@ -264,11 +263,11 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
                         it.setOnPreferenceClickListener { _ ->
                             val extras =
                                 Bundle().apply { putString(EXTRA_PACKAGE_NAME, packageName) }
-                            navigationUtils.navigate(
-                                fragment = this,
-                                action = R.id.action_settingsFitnessApp_to_additionalAccessFragment,
-                                bundle = extras,
-                            )
+                            findNavController()
+                                .navigate(
+                                    R.id.action_settingsFitnessApp_to_additionalAccessFragment,
+                                    extras,
+                                )
                             true
                         }
                     }

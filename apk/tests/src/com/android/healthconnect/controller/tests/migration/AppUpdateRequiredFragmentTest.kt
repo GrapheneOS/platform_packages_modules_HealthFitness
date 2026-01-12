@@ -3,6 +3,9 @@ package com.android.healthconnect.controller.tests.migration
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.navigation.Navigation
+import androidx.navigation.testing.TestNavHostController
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -14,10 +17,11 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasPackage
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.AppUpdateRequiredFragment
+import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.utils.AppStoreUtils
-import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -34,11 +38,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
-import org.mockito.Mockito.doNothing
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.never
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -49,15 +51,16 @@ class AppUpdateRequiredFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @BindValue val appStoreUtils: AppStoreUtils = Mockito.mock(AppStoreUtils::class.java)
-    @BindValue val navigationUtils: NavigationUtils = Mockito.mock(NavigationUtils::class.java)
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
 
     @Inject @ApplicationContext lateinit var applicationContext: Context
+    private lateinit var navHostController: TestNavHostController
 
     @Before
     fun setup() {
         hiltRule.inject()
         Intents.init()
+        navHostController = TestNavHostController(applicationContext)
     }
 
     @After
@@ -68,7 +71,7 @@ class AppUpdateRequiredFragmentTest {
 
     @Test
     fun appUpdateRequiredFragment_displaysCorrectly() {
-        launchFragment<AppUpdateRequiredFragment>(Bundle()).use {
+        launchFragmentWithNavigation().use {
             onView(withText("Update needed")).check(matches(isDisplayed()))
             onView(
                     withText(
@@ -96,8 +99,7 @@ class AppUpdateRequiredFragmentTest {
             .thenReturn(
                 Intent(Intent.ACTION_SHOW_APP_INFO).also { it.setPackage("installer.package.name") }
             )
-        whenever(navigationUtils.startActivity(any(), any())).thenCallRealMethod()
-        launchFragment<AppUpdateRequiredFragment>(Bundle()).use {
+        launchFragmentWithNavigation().use {
             onView(withText("Update")).check(matches(isDisplayed()))
             onView(withText("Update")).perform(click())
 
@@ -113,7 +115,7 @@ class AppUpdateRequiredFragmentTest {
     fun appUpdateRequiredFragment_ifAppStoreDoesNotExist_doesNotNavigateToAppStore() {
         whenever(appStoreUtils.getAppStoreLink(any())).thenReturn(null)
 
-        launchFragment<AppUpdateRequiredFragment>(Bundle()).use {
+        launchFragmentWithNavigation().use {
             onView(withText("Update")).check(matches(isDisplayed()))
             onView(withText("Update")).perform(click())
 
@@ -127,7 +129,6 @@ class AppUpdateRequiredFragmentTest {
                 )
                 .check(matches(isDisplayed()))
 
-            verify(navigationUtils, never()).startActivity(any(), any())
             verify(healthConnectLogger)
                 .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_UPDATE_BUTTON)
         }
@@ -135,8 +136,7 @@ class AppUpdateRequiredFragmentTest {
 
     @Test
     fun appUpdateRequiredFragment_whenCancelButtonPressed_setsSharedPreferences() {
-        doNothing().whenever(navigationUtils).navigate(any(), any())
-        launchFragment<AppUpdateRequiredFragment>(Bundle()).use {
+        launchFragmentWithNavigation().use {
             onView(withText("Cancel")).check(matches(isDisplayed()))
             onView(withText("Cancel")).perform(click())
 
@@ -149,8 +149,17 @@ class AppUpdateRequiredFragmentTest {
                     )
                 assertThat(preferences.getBoolean("App Update Seen", false)).isTrue()
             }
+            assertThat(navHostController.currentDestination?.id)
+                .isEqualTo(R.id.healthConnectHomeActivity)
             verify(healthConnectLogger)
                 .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)
         }
     }
+
+    private fun launchFragmentWithNavigation(): ActivityScenario<TestActivity> =
+        launchFragment<AppUpdateRequiredFragment>(Bundle()) {
+            navHostController.setGraph(R.navigation.migration_nav_graph)
+            navHostController.setCurrentDestination(R.id.migrationAppUpdateNeededFragment)
+            Navigation.setViewNavController(this.requireView(), navHostController)
+        }
 }
