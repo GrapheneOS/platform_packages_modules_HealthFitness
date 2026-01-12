@@ -848,7 +848,7 @@ public class HealthConnectServiceImplTest {
                 mMigrationCallback);
         awaitAllExecutorsIdle();
         verify(mMigrationStateManager).validateWriteMigrationData();
-        verify(mMigrationCallback).onSuccess();
+        verify(mMigrationCallback, timeout(TIMEOUT_MILLIS)).onSuccess();
     }
 
     @Test
@@ -873,7 +873,7 @@ public class HealthConnectServiceImplTest {
                 MigrationTestUtils.MOCK_CONFIGURED_PACKAGE, 0, mMigrationCallback);
         awaitAllExecutorsIdle();
         verify(mMigrationStateManager).validateSetMinSdkVersion();
-        verify(mMigrationCallback).onSuccess();
+        verify(mMigrationCallback, timeout(TIMEOUT_MILLIS)).onSuccess();
     }
 
     @Test
