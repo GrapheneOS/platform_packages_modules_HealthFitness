@@ -128,3 +128,14 @@ android_test_helper_app {
     min_sdk_version: "34",
     target_sdk_version: "34",
 }
+
+android_test_helper_app {
+    name: "HealthConnectOverlayTestApp",
+    manifest: "AndroidManifest_overlay.xml",
+    resource_dirs: [
+        "src/android/healthconnect/testing/overlay/res",
+    ],
+    sdk_version: "test_current",
+    min_sdk_version: "34",
+    target_sdk_version: "34",
+}

@@ -318,7 +318,9 @@ public class HealthConnectManagerService extends SystemService {
                     () -> {
                         try {
                             OnboardingNotificationJob.scheduleJobIfNotScheduled(
-                                    mContext, mCurrentForegroundUser);
+                                    mContext,
+                                    mCurrentForegroundUser,
+                                    mHealthConnectInjector.getResourcesContext());
                         } catch (Exception e) {
                             Slog.e(TAG, "Failed to schedule onboarding notification job.", e);
                         }

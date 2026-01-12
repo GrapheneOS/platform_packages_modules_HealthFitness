@@ -194,6 +194,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final DeviceDataProviderManager mDeviceDataProviderManager;
     private final SyntheticPackageNameCreator mSyntheticPackageNameCreator;
     private final DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
+    private final HealthConnectResourcesContext mResourcesContext;
 
     public HealthConnectInjectorImpl(Context context) {
         this(new Builder(context));
@@ -226,7 +227,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         userHandle,
                         /* databaseDirName= */ null,
                         mEnvironmentDataDirectory);
-        HealthConnectResourcesContext resourcesContext =
+        mResourcesContext =
                 builder.mResourcesContext == null
                         ? new HealthConnectResourcesContext(context)
                         : builder.mResourcesContext;
@@ -254,7 +255,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         : builder.mMigrationEntityHelper;
         mExportImportNotificationSender =
                 builder.mExportImportNotificationSender == null
-                        ? ExportImportNotificationSender.createSender(context, resourcesContext)
+                        ? ExportImportNotificationSender.createSender(context, mResourcesContext)
                         : builder.mExportImportNotificationSender;
 
         mTransactionManager =
@@ -305,7 +306,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         mExportImportNotificationFactory =
                 builder.mExportImportNotificationFactory == null
                         ? new ExportImportNotificationFactory(
-                                context, resourcesContext, Constants.NOTIFICATION_CHANNEL_ID)
+                                context, mResourcesContext, Constants.NOTIFICATION_CHANNEL_ID)
                         : builder.mExportImportNotificationFactory;
         mExportManager =
                 builder.mExportManager == null
@@ -472,7 +473,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 context,
                                 userHandle,
                                 mMigrationStateManager,
-                                new MigrationNotificationSender(context, resourcesContext))
+                                new MigrationNotificationSender(context, mResourcesContext))
                         : builder.mMigrationUiStateManager;
         mBackupRestore =
                 new BackupRestore(
@@ -516,7 +517,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mOnboardingNotificationSender == null
                         ? new OnboardingNotificationSender(
                                 context,
-                                resourcesContext,
+                                mResourcesContext,
                                 mOnboardingNotificationStateManager,
                                 mNotificationStatsLogger)
                         : builder.mOnboardingNotificationSender;
@@ -527,7 +528,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         mNativeStepsNotificationSender =
                 builder.mNativeStepsNotificationSender == null
                         ? new NativeStepsNotificationSender(
-                                context, resourcesContext, mNativeStepsNotificationStateManager)
+                                context, mResourcesContext, mNativeStepsNotificationStateManager)
                         : builder.mNativeStepsNotificationSender;
         mDeviceRecordHelper =
                 new DeviceRecordHelper(mFitnessRecordUpsertHelper, mInternalHealthConnectMappings);
@@ -1041,6 +1042,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Override
     public DeviceDataProviderMetadataHelper getDeviceDataProviderMetadataHelper() {
         return mDeviceDataProviderMetadataHelper;
+    }
+
+    @Override
+    public HealthConnectResourcesContext getResourcesContext() {
+        return mResourcesContext;
     }
 
     /**

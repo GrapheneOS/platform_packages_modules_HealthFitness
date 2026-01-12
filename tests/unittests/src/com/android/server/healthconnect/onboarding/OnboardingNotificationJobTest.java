@@ -44,6 +44,7 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.UserHandle;
 import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
@@ -53,6 +54,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.HealthConnectDailyService;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
+import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 
 import org.junit.After;
 import org.junit.Before;
@@ -66,6 +68,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.util.List;
+import java.util.Optional;
 
 @RunWith(AndroidJUnit4.class)
 public class OnboardingNotificationJobTest {
@@ -79,6 +82,8 @@ public class OnboardingNotificationJobTest {
     @Mock private OnboardingNotificationSender mOnboardingNotificationSender;
     @Mock private OnboardingNotificationStateManager mOnboardingNotificationStateManager;
     @Mock private UserHandle mUserHandle;
+    @Mock private PackageManager mPackageManager;
+    @Mock private HealthConnectResourcesContext mResourcesContext;
     @Captor ArgumentCaptor<JobInfo> mJobInfoArgumentCaptor;
     private static final int USER_ID_INT = (int) (Math.random() * 100);
 
@@ -87,8 +92,10 @@ public class OnboardingNotificationJobTest {
         when(mUserHandle.getIdentifier()).thenReturn(USER_ID_INT);
         when(mContext.getSystemService(JobScheduler.class)).thenReturn(mMainJobScheduler);
         when(mContext.getUser()).thenReturn(mUserHandle);
+        when(mContext.getPackageManager()).thenReturn(mPackageManager);
         when(mMainJobScheduler.forNamespace(ONBOARDING_NOTIFICATION_JOB_NAMESPACE))
                 .thenReturn(mOnboardingNotificationJobScheduler);
+        when(mResourcesContext.getBoolByName(any())).thenReturn(Optional.of(true));
     }
 
     @After
@@ -102,7 +109,8 @@ public class OnboardingNotificationJobTest {
     public void scheduleJobIfNotScheduled_noExistingJob_scheduled() {
         when(mOnboardingNotificationJobScheduler.getAllPendingJobs()).thenReturn(List.of());
 
-        OnboardingNotificationJob.scheduleJobIfNotScheduled(mContext, mUserHandle);
+        OnboardingNotificationJob.scheduleJobIfNotScheduled(
+                mContext, mUserHandle, mResourcesContext);
         verify(mOnboardingNotificationJobScheduler).schedule(mJobInfoArgumentCaptor.capture());
 
         JobInfo jobInfo = mJobInfoArgumentCaptor.getValue();
@@ -120,7 +128,21 @@ public class OnboardingNotificationJobTest {
                         .build();
         when(mOnboardingNotificationJobScheduler.getAllPendingJobs()).thenReturn(List.of(dummyJob));
 
-        OnboardingNotificationJob.scheduleJobIfNotScheduled(mContext, mUserHandle);
+        OnboardingNotificationJob.scheduleJobIfNotScheduled(
+                mContext, mUserHandle, mResourcesContext);
+        verify(mOnboardingNotificationJobScheduler, never()).schedule(any());
+    }
+
+    @Test
+    @EnableFlags(FLAG_ONBOARDING)
+    public void scheduleJobIfNotScheduled_discoveryDisabled_notScheduled() {
+        when(mOnboardingNotificationJobScheduler.getAllPendingJobs()).thenReturn(List.of());
+        when(mResourcesContext.getBoolByName(OnboardingNotificationJob.CONFIG_ENABLE_DISCOVERY))
+                .thenReturn(Optional.of(false));
+
+        OnboardingNotificationJob.scheduleJobIfNotScheduled(
+                mContext, mUserHandle, mResourcesContext);
+
         verify(mOnboardingNotificationJobScheduler, never()).schedule(any());
     }
 
@@ -144,7 +166,29 @@ public class OnboardingNotificationJobTest {
                 mOnboardingStateManager,
                 mOnboardingNotificationSender,
                 mOnboardingNotificationStateManager,
-                mUserHandle);
+                mUserHandle,
+                mResourcesContext);
+
+        verifyNoNotificationSent();
+    }
+
+    @Test
+    @EnableFlags(FLAG_ONBOARDING)
+    public void executeOnboardingNotificationJob_discoveryDisabled_noOp() {
+        when(mOnboardingStateManager.updateAndGetOnboardingState())
+                .thenReturn(ONBOARDING_BANNER_STATE_ZERO_APPS_CONNECTED);
+        when(mOnboardingNotificationStateManager.getOnboardingNotificationState())
+                .thenReturn(SHOULD_SHOW_ALL_NOTIFICATIONS);
+        when(mResourcesContext.getBoolByName(OnboardingNotificationJob.CONFIG_ENABLE_DISCOVERY))
+                .thenReturn(Optional.of(false));
+
+        executeOnboardingNotificationJob(
+                mContext,
+                mOnboardingStateManager,
+                mOnboardingNotificationSender,
+                mOnboardingNotificationStateManager,
+                mUserHandle,
+                mResourcesContext);
 
         verifyNoNotificationSent();
     }
@@ -157,7 +201,8 @@ public class OnboardingNotificationJobTest {
                 mOnboardingStateManager,
                 mOnboardingNotificationSender,
                 mOnboardingNotificationStateManager,
-                mUserHandle);
+                mUserHandle,
+                mResourcesContext);
         verify(mOnboardingStateManager).updateAndGetOnboardingState();
         verify(mOnboardingStateManager, never())
                 .updateAndGetOnboardingState(/* bypassInstallTime= */ true);
@@ -176,7 +221,8 @@ public class OnboardingNotificationJobTest {
                 mOnboardingStateManager,
                 mOnboardingNotificationSender,
                 mOnboardingNotificationStateManager,
-                mUserHandle);
+                mUserHandle,
+                mResourcesContext);
 
         verify(mOnboardingNotificationSender).sendNoAppConnectedNotification(eq(mUserHandle));
         verifyNoMoreInteractions(mOnboardingNotificationSender);
@@ -197,7 +243,8 @@ public class OnboardingNotificationJobTest {
                 mOnboardingStateManager,
                 mOnboardingNotificationSender,
                 mOnboardingNotificationStateManager,
-                mUserHandle);
+                mUserHandle,
+                mResourcesContext);
 
         verifyNoNotificationSent();
     }
@@ -215,7 +262,8 @@ public class OnboardingNotificationJobTest {
                 mOnboardingStateManager,
                 mOnboardingNotificationSender,
                 mOnboardingNotificationStateManager,
-                mUserHandle);
+                mUserHandle,
+                mResourcesContext);
 
         verify(mOnboardingNotificationSender).sendOneAppConnectedNotification(eq(mUserHandle));
         verifyNoMoreInteractions(mOnboardingNotificationSender);
@@ -236,7 +284,8 @@ public class OnboardingNotificationJobTest {
                 mOnboardingStateManager,
                 mOnboardingNotificationSender,
                 mOnboardingNotificationStateManager,
-                mUserHandle);
+                mUserHandle,
+                mResourcesContext);
 
         verifyNoNotificationSent();
     }
@@ -252,7 +301,8 @@ public class OnboardingNotificationJobTest {
                 mOnboardingStateManager,
                 mOnboardingNotificationSender,
                 mOnboardingNotificationStateManager,
-                mUserHandle);
+                mUserHandle,
+                mResourcesContext);
 
         verifyNoNotificationSent();
     }
@@ -268,7 +318,8 @@ public class OnboardingNotificationJobTest {
                 mOnboardingStateManager,
                 mOnboardingNotificationSender,
                 mOnboardingNotificationStateManager,
-                mUserHandle);
+                mUserHandle,
+                mResourcesContext);
 
         verifyNoNotificationSent();
         verify(mOnboardingNotificationJobScheduler).cancelAll();

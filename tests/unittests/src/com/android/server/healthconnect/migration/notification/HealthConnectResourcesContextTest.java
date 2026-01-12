@@ -24,6 +24,7 @@ import android.content.Context;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.server.healthconnect.exportimport.ExportImportNotificationFactory;
+import com.android.server.healthconnect.onboarding.OnboardingNotificationJob;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -74,5 +75,13 @@ public class HealthConnectResourcesContextTest {
             String failMessage = "String resource with name " + s + " cannot be found.";
             assertWithMessage(failMessage).that(fetched).isNotNull();
         }
+    }
+
+    @Test
+    public void testOnboardingNotificationEnabledExists() {
+        assertThat(
+                        mResourcesContext.getBoolByName(
+                                OnboardingNotificationJob.CONFIG_ENABLE_DISCOVERY))
+                .isPresent();
     }
 }
