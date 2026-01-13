@@ -601,6 +601,7 @@ flag {
     namespace: "health_fitness_aconfig"
     description: "Flag for moving temporal field from individual records to base Record Helper."
     bug: "463324870"
+    is_exported: true
 }
 
 flag {
