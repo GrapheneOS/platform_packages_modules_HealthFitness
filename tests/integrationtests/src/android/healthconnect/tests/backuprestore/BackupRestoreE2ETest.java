@@ -16,18 +16,23 @@
 
 package android.healthconnect.tests.backuprestore;
 
+import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 import static android.health.connect.datatypes.AlcoholConsumptionRecord.ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_BEER;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
 import static android.health.connect.datatypes.ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING;
 import static android.healthconnect.testing.cts.PermissionUtils.grantHealthPermission;
 import static android.healthconnect.testing.cts.PermissionUtils.revokeAllHealthPermissions;
+import static android.healthconnect.testing.cts.TestUtils.advertiseDevice;
 import static android.healthconnect.testing.cts.TestUtils.countAllRecords;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.getHealthConnectDataRestoreState;
+import static android.healthconnect.testing.cts.TestUtils.insertDeviceRecords;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.readAllRecords;
 import static android.healthconnect.testing.cts.TestUtils.readRecords;
 import static android.healthconnect.testing.cts.TestUtils.verifyDeleteRecords;
+import static android.healthconnect.testing.cts.TestUtils.verifyGetDeviceDataSourcesWithPermission;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 
 import static com.android.compatibility.common.util.BackupUtils.LOCAL_TRANSPORT_TOKEN;
@@ -40,12 +45,14 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assume.assumeTrue;
 
 import static java.time.temporal.ChronoUnit.HOURS;
+import static java.time.temporal.ChronoUnit.MILLIS;
 import static java.util.Objects.requireNonNull;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.health.connect.DeleteUsingFiltersRequest;
+import android.health.connect.DeviceDataSource;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.datatypes.ActiveCaloriesBurnedRecord;
@@ -63,13 +70,18 @@ import android.health.connect.datatypes.MenstrualCyclePhaseRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.PlannedExerciseSessionRecord;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.units.Energy;
 import android.health.connect.datatypes.units.Percentage;
 import android.health.connect.datatypes.units.Volume;
+import android.health.connect.device.DeviceDataTypeAdvertisement;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 import android.healthconnect.testing.cts.PhrCtsTestUtils;
 import android.healthconnect.testing.cts.testapphelpers.TestAppConstants;
 import android.healthconnect.testing.shared.DataFactory;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
+import android.healthconnect.testing.shared.recordfactory.RecordFactory;
+import android.healthconnect.testing.shared.recordfactory.StepsRecordFactory;
 import android.os.ParcelFileDescriptor;
 import android.os.UserHandle;
 import android.platform.test.annotations.AppModeFull;
@@ -97,7 +109,10 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
 @AppModeFull
@@ -431,6 +446,63 @@ public class BackupRestoreE2ETest {
     }
 
     @Test
+    @RequiresFlagsEnabled({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
+    })
+    public void testBackupThenRestore_ddpAdvertisements_expectDataIsRestoredCorrectly()
+            throws Exception {
+        assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
+
+        String deviceId = "test_adv_device_id";
+        String manufacturer = "Fabphone";
+        String model = "X7";
+        Device device =
+                new Device.Builder()
+                        .setManufacturer(manufacturer)
+                        .setModel(model)
+                        .setType(DEVICE_TYPE_PHONE)
+                        .build();
+
+        advertiseDevice(
+                deviceId,
+                device,
+                Set.of(new DeviceDataTypeAdvertisement.Builder(StepsRecord.class).build()));
+
+        Function<List<DeviceDataSource>, Void> verifier =
+                dataSources -> {
+                    assertThat(
+                                    dataSources.stream()
+                                            .map(DeviceDataSource::getDevice)
+                                            .collect(Collectors.toList()))
+                            .contains(device);
+                    return null;
+                };
+        verifyGetDeviceDataSourcesWithPermission(MANAGE_HEALTH_DATA_PERMISSION, verifier::apply);
+
+        mBackupUtils.backupNowAndAssertSuccessForUser(
+                mBackupRestoreApkPackageName, UserHandle.myUserId());
+
+        deleteAllDataFromHealthConnect();
+
+        mBackupUtils.restoreAndAssertSuccessForUser(
+                LOCAL_TRANSPORT_TOKEN, mBackupRestoreApkPackageName, UserHandle.myUserId());
+
+        eventually(
+                () -> {
+                    advertiseDevice(
+                            deviceId,
+                            device,
+                            Set.of(
+                                    new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                            .build()));
+                    verifyGetDeviceDataSourcesWithPermission(
+                            MANAGE_HEALTH_DATA_PERMISSION, verifier::apply);
+                },
+                ASSERT_TIMEOUT_MILLIS);
+    }
+
+    @Test
     public void testPermissionRestoredBeforeHCRestore_expectGrantTimeIsRestoredCorrectly()
             throws Exception {
         // revoke all permissions for both test apps to remove all stored grant time as setup step
@@ -539,6 +611,102 @@ public class BackupRestoreE2ETest {
                         assertThat(getHealthDataHistoricalAccessStartDate(TEST_APP_1_PACKAGE_NAME))
                                 .isEqualTo(historicAccessStartDate),
                 ASSERT_TIMEOUT_MILLIS);
+    }
+
+    @Test
+    @RequiresFlagsEnabled({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
+    })
+    public void testBackupThenRestore_ddpRecords_expectDataIsRestoredCorrectly() throws Exception {
+        assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
+
+        StepsRecordFactory stepsRecordFactory =
+                (StepsRecordFactory) RecordFactory.forDataType(StepsRecord.class);
+
+        String sourceDeviceId = "source_ddp_device_id";
+        Device sourceDevice =
+                new Device.Builder()
+                        .setManufacturer("Source Manufacturer")
+                        .setModel("Source Model")
+                        .setType(DEVICE_TYPE_PHONE)
+                        .build();
+
+        advertiseDevice(
+                sourceDeviceId,
+                sourceDevice,
+                Set.of(new DeviceDataTypeAdvertisement.Builder(StepsRecord.class).build()));
+
+        int numOfRecords = 10;
+        List<Record> recordsToInsert = new ArrayList<>();
+        Instant now = Instant.now().truncatedTo(MILLIS);
+        for (int i = 0; i < numOfRecords; i++) {
+            Metadata metadata =
+                    RecordFactory.newEmptyMetadataWithClientId(
+                            "DDPClientRecordId" + UUID.randomUUID());
+            recordsToInsert.add(
+                    stepsRecordFactory.newEmptyRecord(
+                            metadata, now.minusMillis(i * 1000 + 1000), now.minusMillis(i * 1000)));
+        }
+
+        List<Record> insertedRecords = insertDeviceRecords(sourceDeviceId, recordsToInsert);
+        assertThat(insertedRecords).hasSize(numOfRecords);
+        Set<String> originalSpns =
+                insertedRecords.stream()
+                        .map(Record::getMetadata)
+                        .map(Metadata::getDataOrigin)
+                        .map(DataOrigin::getPackageName)
+                        .collect(Collectors.toSet());
+
+        mBackupUtils.backupNowAndAssertSuccessForUser(
+                mBackupRestoreApkPackageName, UserHandle.myUserId());
+
+        deleteAllDataFromHealthConnect();
+        readAndAssertRecordsNotExistUsingIds(insertedRecords);
+
+        // Pre-insert a distinct device in the target DB
+        String targetDeviceId = "target_ddp_device_id";
+        Device targetDevice =
+                new Device.Builder()
+                        .setManufacturer("Target Manufacturer")
+                        .setModel("Target Model")
+                        .setType(DEVICE_TYPE_PHONE)
+                        .build();
+        advertiseDevice(
+                targetDeviceId,
+                targetDevice,
+                Set.of(new DeviceDataTypeAdvertisement.Builder(StepsRecord.class).build()));
+
+        mBackupUtils.restoreAndAssertSuccessForUser(
+                LOCAL_TRANSPORT_TOKEN, mBackupRestoreApkPackageName, UserHandle.myUserId());
+
+        List<? extends Record> restoredRecords =
+                getEventually(
+                        () -> {
+                            List<? extends Record> records = readRecordsUsingIds(insertedRecords);
+                            assertThat(records).hasSize(numOfRecords);
+                            return records;
+                        },
+                        ASSERT_TIMEOUT_MILLIS);
+
+        // Verify restored device records have SPNs and correct device info.
+        for (Record record : restoredRecords) {
+            assertThat(
+                            SyntheticPackageNameMatcher.matchesMasked(
+                                    record.getMetadata().getDataOrigin().getPackageName()))
+                    .isTrue();
+            assertThat(record.getMetadata().getDevice().getManufacturer())
+                    .isEqualTo("Source Manufacturer");
+            assertThat(record.getMetadata().getDevice().getModel()).isEqualTo("Source Model");
+        }
+        Set<String> regeneratedSpns =
+                restoredRecords.stream()
+                        .map(Record::getMetadata)
+                        .map(Metadata::getDataOrigin)
+                        .map(DataOrigin::getPackageName)
+                        .collect(Collectors.toSet());
+        // Verify restored records have regenerated SPNs that don't match originals.
+        assertThat(regeneratedSpns).containsNoneIn(originalSpns);
     }
 
     @Test

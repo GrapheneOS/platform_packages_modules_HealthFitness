@@ -33,6 +33,7 @@ import android.health.connect.HealthDataCategory;
 import android.net.Uri;
 import android.os.Process;
 import android.os.UserHandle;
+import android.os.UserManager;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -59,21 +60,27 @@ public class PermissionPackageChangesOrchestratorTest {
 
     private int mCurrentUid;
     private PermissionPackageChangesOrchestrator mOrchestrator;
-    private Context mContext;
 
     @Mock private HealthConnectPermissionHelper mHelper;
     @Mock private HealthPermissionIntentAppsTracker mTracker;
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     @Mock private TrackerManager mTrackerManager;
-    @Mock private UserHandle mUserHandle;
+    private UserHandle mUserHandle = CURRENT_USER;
+    @Mock private UserManager mUserManager;
+    @Mock private Context mContext;
     @Mock private HealthConnectThreadScheduler mThreadScheduler;
 
     @Mock private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
 
     @Before
     public void setUp() throws PackageManager.NameNotFoundException {
-        mContext = ApplicationProvider.getApplicationContext();
-        mCurrentUid = mContext.getPackageManager().getPackageUid(SELF_PACKAGE_NAME, 0);
+        Context context = ApplicationProvider.getApplicationContext();
+        mCurrentUid = context.getPackageManager().getPackageUid(SELF_PACKAGE_NAME, 0);
+
+        when(mContext.getPackageManager()).thenReturn(context.getPackageManager());
+        when(mContext.getSystemService(UserManager.class)).thenReturn(mUserManager);
+        when(mUserManager.isUserUnlocked(any())).thenReturn(true);
+
         mOrchestrator =
                 new PermissionPackageChangesOrchestrator(
                         mTracker,

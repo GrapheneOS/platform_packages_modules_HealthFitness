@@ -35,7 +35,6 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 
 import static java.util.Objects.requireNonNull;
 
-import android.annotation.Nullable;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -44,6 +43,7 @@ import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.datatypes.MedicalDataSource;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 import android.health.connect.internal.datatypes.PlannedExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
@@ -51,12 +51,16 @@ import android.util.ArrayMap;
 import android.util.Pair;
 import android.util.Slog;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
+import com.android.healthfitness.flags.DatabaseVersions;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.RecordDeleteTableRequest;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
@@ -90,6 +94,9 @@ public final class DatabaseMerger {
     private final FitnessRecordUpsertHelper mFitnessRecordUpsertHelper;
     private final FitnessRecordReadHelper mFitnessRecordReadHelper;
     private final AppInfoHelper mAppInfoHelper;
+    private final DeviceInfoHelper mDeviceInfoHelper;
+    private final DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
+    private final SyntheticPackageNameCreator mSyntheticPackageNameCreator;
     private final HealthConnectMappings mHealthConnectMappings;
     private final InternalHealthConnectMappings mInternalHealthConnectMappings;
     private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
@@ -116,6 +123,8 @@ public final class DatabaseMerger {
     public DatabaseMerger(
             AppInfoHelper appInfoHelper,
             DeviceInfoHelper deviceInfoHelper,
+            DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
+            SyntheticPackageNameCreator syntheticPackageNameCreator,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             TransactionManager transactionManager,
             FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
@@ -124,6 +133,9 @@ public final class DatabaseMerger {
         mFitnessRecordUpsertHelper = fitnessRecordUpsertHelper;
         mFitnessRecordReadHelper = fitnessRecordReadHelper;
         mAppInfoHelper = appInfoHelper;
+        mDeviceInfoHelper = deviceInfoHelper;
+        mDeviceDataProviderMetadataHelper = deviceDataProviderMetadataHelper;
+        mSyntheticPackageNameCreator = syntheticPackageNameCreator;
         mHealthConnectMappings = HealthConnectMappings.getInstance();
         mInternalHealthConnectMappings = InternalHealthConnectMappings.getInstance();
         mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
@@ -134,42 +146,36 @@ public final class DatabaseMerger {
         TransactionManager stagedTransactionManager =
                 TransactionManager.forStagedDatabase(stagedDatabase);
 
-        Slog.i(TAG, "Merging app info");
+        // For entities independently created on both DBs (e.g. app infos for a package active on
+        // both devices), this maps the staged entity to the entity on the current HC database.
+        // This is necessary as auto generated IDs may not match.
+        TranslationMaps translationMaps = new TranslationMaps();
 
-        Map<Long, String> stagedPackageNamesByAppIds = new ArrayMap<>();
-        try (Cursor cursor = read(stagedDatabase, new ReadTableRequest(AppInfoHelper.TABLE_NAME))) {
-            while (cursor.moveToNext()) {
-                long rowId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
-                String packageName = getCursorString(cursor, AppInfoHelper.PACKAGE_COLUMN_NAME);
-                String appName = getCursorString(cursor, AppInfoHelper.APPLICATION_COLUMN_NAME);
-                stagedPackageNamesByAppIds.put(rowId, packageName);
+        Slog.i(TAG, "Merging device info...");
+        mergeDeviceInfo(stagedDatabase, translationMaps);
 
-                // If this package is not installed on the target device and is not present in the
-                // health db, then fill the health db with the info from source db. According to the
-                // security review b/341253579, we should not parse the imported icon.
-                mAppInfoHelper.addAppInfoIfNoAppInfoEntryExists(packageName, appName);
-            }
+        Slog.i(TAG, "Merging DDP metadata...");
+        if (canMergeDdpData(stagedDatabase)) {
+            // Note: we only merge the DDP metadata. We don't merge advertisements (rows in
+            // device_data_sources_table). If these are available on the current device, they
+            // will be advertised by the DDP at startup.
+            mergeDdpMetadata(stagedDatabase, translationMaps);
         }
 
-        Slog.i(TAG, "Reading device info");
-        Map<Long, DeviceInfoHelper.DeviceInfo> stagedDeviceInfoMap = null;
-        try {
-            stagedDeviceInfoMap = readDeviceInfo(stagedDatabase.getReadableDatabase());
-        } catch (Exception e) {
-            Slog.e(TAG, "Failed to read device info, using null", e);
-        }
+        Slog.i(TAG, "Merging app info...");
+        mergeAppInfo(stagedDatabase, translationMaps);
 
         // Similar to current HC behaviour, we honour what is on the target device. This means
         // that if a MedicalResource or MedicalDataSource of the same unique ids as the
         // stagedDatabase exists on the targetDatabase, we ignore the one in stagedDatabase.
-        Slog.i(TAG, "Merging PHR data");
+        Slog.i(TAG, "Merging PHR data...");
         try {
             mergePhrContent(stagedDatabase.getReadableDatabase());
         } catch (Exception e) {
             Slog.e(TAG, "Failed to transfer PHR data from staged database", e);
         }
 
-        Slog.i(TAG, "Merging records");
+        Slog.i(TAG, "Merging fitness data...");
 
         // Determine the order in which we should migrate data types. This involves first
         // migrating data types according to the specified ordering overrides. Remaining
@@ -187,8 +193,7 @@ public final class DatabaseMerger {
                 mergeRecordsOfType(
                         stagedTransactionManager,
                         stagedDatabase,
-                        stagedPackageNamesByAppIds,
-                        stagedDeviceInfoMap,
+                        translationMaps,
                         recordTypeToMigrate);
             }
             // Delete records within a group together, once all records within that group
@@ -201,42 +206,145 @@ public final class DatabaseMerger {
         // Migrate remaining record types in no particular order.
         for (Integer recordTypeToMigrate : recordTypesWithoutOrderingOverrides) {
             mergeRecordsOfType(
-                    stagedTransactionManager,
-                    stagedDatabase,
-                    stagedPackageNamesByAppIds,
-                    stagedDeviceInfoMap,
-                    recordTypeToMigrate);
+                    stagedTransactionManager, stagedDatabase, translationMaps, recordTypeToMigrate);
             deleteRecordsOfType(stagedDatabase, recordTypeToMigrate);
         }
 
-        Slog.i(TAG, "Syncing app info records after restored data merge");
+        Slog.i(TAG, "Syncing app info records after restored data merge...");
         mAppInfoHelper.syncAppInfoRecordTypesUsed();
 
-        Slog.i(TAG, "Merging priority list");
-        mergePriorityList(stagedDatabase, stagedPackageNamesByAppIds);
+        Slog.i(TAG, "Merging priority list...");
+        mergePriorityList(stagedDatabase, translationMaps.mStagedAppIdsToTargetPackageNames);
 
         Slog.i(TAG, "Merging done");
     }
 
-    private Map<Long, DeviceInfoHelper.DeviceInfo> readDeviceInfo(SQLiteDatabase stagedDatabase) {
-        Map<Long, DeviceInfoHelper.DeviceInfo> deviceInfoMap = new HashMap<>();
+    private void mergeDeviceInfo(HealthConnectDatabase stagedDatabase, TranslationMaps maps) {
+        boolean canMergeDdpData = canMergeDdpData(stagedDatabase);
+        boolean canMergeUdiData =
+                stagedDatabase.getReadableDatabase().getVersion()
+                                >= DatabaseVersions.DB_VERSION_DEVICE_UDI
+                        && AconfigFlagHelper.isDeviceUdiEnabled();
+
         try (Cursor cursor =
-                read(
-                        stagedDatabase,
-                        new ReadTableRequest(DeviceInfoHelper.TABLE_NAME).getReadCommand())) {
+                read(stagedDatabase, new ReadTableRequest(DeviceInfoHelper.TABLE_NAME))) {
             while (cursor.moveToNext()) {
-                long rowId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
+                long stagedId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
                 String manufacturer =
                         getCursorString(cursor, DeviceInfoHelper.MANUFACTURER_COLUMN_NAME);
                 String model = getCursorString(cursor, DeviceInfoHelper.MODEL_COLUMN_NAME);
                 int deviceType = getCursorInt(cursor, DeviceInfoHelper.DEVICE_TYPE_COLUMN_NAME);
-                DeviceInfoHelper.DeviceInfo info =
+                // These columns are nullable/optional.
+                String deviceId = null;
+                String displayName = null;
+                if (canMergeDdpData) {
+                    deviceId = getCursorString(cursor, DeviceInfoHelper.DEVICE_ID_COLUMN_NAME);
+                    displayName =
+                            getCursorString(cursor, DeviceInfoHelper.DISPLAY_NAME_COLUMN_NAME);
+                    maps.mStagedDeviceInfoIdToSpnInputs.put(
+                            stagedId,
+                            new TranslationMaps.StagedDeviceSpnInputs(deviceType, deviceId));
+                }
+                String udi = null;
+                if (canMergeUdiData) {
+                    udi = getCursorString(cursor, DeviceInfoHelper.UDI_COLUMN_NAME);
+                }
+
+                DeviceInfoHelper.DeviceInfo stagedDeviceInfo =
                         new DeviceInfoHelper.DeviceInfo(
-                                manufacturer, model, deviceType, null, null);
-                deviceInfoMap.put(rowId, info);
+                                manufacturer, model, deviceType, deviceId, displayName, udi);
+                maps.mStagedDeviceInfoMap.put(stagedId, stagedDeviceInfo);
+
+                // If the DDP flag is off, we avoid merging device info here as it is handled in
+                // the record insertion method (which uses the staged device info map populated
+                // above).
+                if (canMergeDdpData) {
+                    long targetId = mDeviceInfoHelper.insertIfNotPresent(stagedDeviceInfo);
+                    maps.mDeviceInfoIdMap.put(stagedId, targetId);
+                }
             }
         }
-        return deviceInfoMap;
+    }
+
+    private void mergeDdpMetadata(HealthConnectDatabase stagedDatabase, TranslationMaps maps) {
+        if (!checkTableExists(
+                stagedDatabase.getReadableDatabase(),
+                DeviceDataProviderMetadataHelper.TABLE_NAME)) {
+            return;
+        }
+        try (Cursor cursor =
+                read(
+                        stagedDatabase,
+                        new ReadTableRequest(DeviceDataProviderMetadataHelper.TABLE_NAME))) {
+            while (cursor.moveToNext()) {
+                long stagedId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
+                String packageName =
+                        getCursorString(
+                                cursor,
+                                DeviceDataProviderMetadataHelper.SOURCE_PACKAGE_COLUMN_NAME);
+
+                long targetId =
+                        mDeviceDataProviderMetadataHelper.getDeviceDataProviderMetadataId(
+                                packageName);
+                if (targetId == DEFAULT_LONG) {
+                    // This particular DDP does not exist on current device, so we insert it first.
+                    mDeviceDataProviderMetadataHelper.insertIfNotPresent(packageName);
+                    targetId =
+                            mDeviceDataProviderMetadataHelper.getDeviceDataProviderMetadataId(
+                                    packageName);
+                }
+                maps.mDdpIdMap.put(stagedId, targetId);
+            }
+        }
+    }
+
+    private void mergeAppInfo(HealthConnectDatabase stagedDatabase, TranslationMaps maps) {
+        boolean canMergeDdpData = canMergeDdpData(stagedDatabase);
+        try (Cursor cursor = read(stagedDatabase, new ReadTableRequest(AppInfoHelper.TABLE_NAME))) {
+            while (cursor.moveToNext()) {
+                long stagedId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
+                String stagedPackageName =
+                        getCursorString(cursor, AppInfoHelper.PACKAGE_COLUMN_NAME);
+                maps.mStagedAppIdsToPackageNames.put(stagedId, stagedPackageName);
+
+                String targetPackageName;
+                long targetAppId;
+
+                if (canMergeDdpData && SyntheticPackageNameMatcher.matches(stagedPackageName)) {
+                    // DDP devices (which are entries in the app info table) have a device info ID.
+                    long stagedDeviceInfoId =
+                            getCursorLong(cursor, AppInfoHelper.DEVICE_INFO_ID_COLUMN_NAME);
+                    TranslationMaps.StagedDeviceSpnInputs stagedDeviceSpnInputs =
+                            requireNonNull(
+                                    maps.mStagedDeviceInfoIdToSpnInputs.get(stagedDeviceInfoId));
+
+                    // The (synthetic) package names used to represent DDP devices are generated
+                    // using a salt which differs from device to device. This means we need to
+                    // recompute these SPNs for the current device, using the current salt. In other
+                    // words, *without* doing this, the same DDP device (same type and ID) would end
+                    // up present *twice* in the DB after merger, as two different salts were used
+                    // to generate two different SPNs.
+                    targetPackageName =
+                            mSyntheticPackageNameCreator.createCanonical(
+                                    stagedDeviceSpnInputs.deviceType(),
+                                    stagedDeviceSpnInputs.deviceId());
+
+                    long targetDeviceInfoId =
+                            requireNonNull(maps.mDeviceInfoIdMap.get(stagedDeviceInfoId));
+                    targetAppId =
+                            mAppInfoHelper.insertOrUpdateDeviceDataSource(
+                                    targetPackageName, targetDeviceInfoId);
+                } else {
+                    targetPackageName = stagedPackageName;
+                    String appName = getCursorString(cursor, AppInfoHelper.APPLICATION_COLUMN_NAME);
+                    mAppInfoHelper.addAppInfoIfNoAppInfoEntryExists(targetPackageName, appName);
+                    targetAppId = mAppInfoHelper.getAppInfoId(targetPackageName);
+                }
+
+                maps.mAppInfoIdMap.put(stagedId, targetAppId);
+                maps.mStagedAppIdsToTargetPackageNames.put(stagedId, targetPackageName);
+            }
+        }
     }
 
     private void mergePhrContent(SQLiteDatabase stagedDatabase) {
@@ -430,14 +538,14 @@ public final class DatabaseMerger {
     private void mergeRecordsOfType(
             TransactionManager stagedTransactionManager,
             HealthConnectDatabase stagedDatabase,
-            Map<Long, String> stagedPackageNamesByAppIds,
-            @Nullable Map<Long, DeviceInfoHelper.DeviceInfo> stagedDeviceInfoMap,
+            TranslationMaps translationMaps,
             int recordType) {
         RecordHelper<?> recordHelper = mInternalHealthConnectMappings.getRecordHelper(recordType);
         if (!checkTableExists(
                 stagedDatabase.getReadableDatabase(), recordHelper.getMainTableName())) {
             return;
         }
+        boolean canMergeDdpData = canMergeDdpData(stagedDatabase);
 
         Class<? extends Record> recordTypeClass =
                 mHealthConnectMappings.getRecordIdToExternalRecordClassMap().get(recordType);
@@ -448,8 +556,7 @@ public final class DatabaseMerger {
             var recordsToMergeAndToken =
                     getRecordsToMerge(
                             stagedTransactionManager,
-                            stagedPackageNamesByAppIds,
-                            stagedDeviceInfoMap,
+                            translationMaps,
                             requireNonNull(recordTypeClass),
                             currentToken,
                             getPageSize(recordType));
@@ -460,6 +567,33 @@ public final class DatabaseMerger {
                 break;
             }
             Slog.d(TAG, "Found records to merge: " + recordTypeClass);
+
+            for (RecordInternal<?> record : records) {
+                if (canMergeDdpData) {
+                    long stagedAppId = record.getAppInfoId();
+                    String targetPackageName =
+                            translationMaps.mStagedAppIdsToTargetPackageNames.get(stagedAppId);
+                    record.setPackageName(targetPackageName);
+                }
+
+                // For regular records this is present if the writer specified device metadata
+                // For DDP records this is always present and points to the DDP device.
+                if (record.getDeviceInfoId() != DEFAULT_LONG) {
+                    Long targetDeviceId =
+                            translationMaps.mDeviceInfoIdMap.get(record.getDeviceInfoId());
+
+                    record.setDeviceInfoId(targetDeviceId != null ? targetDeviceId : DEFAULT_LONG);
+                }
+
+                if (canMergeDdpData && record.getDeviceDataProviderId() != DEFAULT_LONG) {
+                    Long targetDdpId =
+                            translationMaps.mDdpIdMap.get(record.getDeviceDataProviderId());
+
+                    record.setDeviceDataProviderId(
+                            targetDdpId != null ? targetDdpId : DEFAULT_LONG);
+                }
+            }
+
             if (recordType == RECORD_TYPE_PLANNED_EXERCISE_SESSION) {
                 // For training plans we nullify any autogenerated references to exercise sessions.
                 // When the corresponding exercise sessions get migrated, these references will be
@@ -531,8 +665,7 @@ public final class DatabaseMerger {
 
     private Pair<List<RecordInternal<?>>, PageTokenWrapper> getRecordsToMerge(
             TransactionManager stagedTransactionManager,
-            Map<Long, String> stagedPackageNamesByAppIds,
-            @Nullable Map<Long, DeviceInfoHelper.DeviceInfo> stagedDeviceInfoMap,
+            TranslationMaps translationMaps,
             Class<? extends Record> recordTypeClass,
             PageTokenWrapper requestToken,
             int pageSize) {
@@ -545,8 +678,8 @@ public final class DatabaseMerger {
         return mFitnessRecordReadHelper.readRecordsUnrestricted(
                 stagedTransactionManager,
                 readRecordsRequest.toReadRecordsRequestParcel(),
-                stagedPackageNamesByAppIds,
-                stagedDeviceInfoMap);
+                translationMaps.mStagedAppIdsToPackageNames,
+                translationMaps.mStagedDeviceInfoMap);
     }
 
     private synchronized Cursor read(
@@ -578,5 +711,31 @@ public final class DatabaseMerger {
                     packageNames.add(packageName);
                 });
         return packageNames;
+    }
+
+    private static class TranslationMaps {
+        final Map<Long, Long> mAppInfoIdMap = new ArrayMap<>();
+        // Maps a staged (device) app info ID to the package name in current DB.
+        final Map<Long, String> mStagedAppIdsToPackageNames = new ArrayMap<>();
+        final Map<Long, String> mStagedAppIdsToTargetPackageNames = new ArrayMap<>();
+        // Maps a DDP device ID in the staged DB to a preexisting device ID in the current DB.
+        final Map<Long, Long> mDeviceInfoIdMap = new ArrayMap<>();
+        // Maps a DDP ID in the staged DB to the DDP ID in the current db.
+        final Map<Long, Long> mDdpIdMap = new ArrayMap<>();
+
+        // Staged device metadata needed to regenerate SPNs.
+        final Map<Long, StagedDeviceSpnInputs> mStagedDeviceInfoIdToSpnInputs = new ArrayMap<>();
+
+        // Map to store stagedId -> DeviceInfo mapping for populating records correctly.
+        final Map<Long, DeviceInfoHelper.DeviceInfo> mStagedDeviceInfoMap = new ArrayMap<>();
+
+        // These values are used to regenerate SPNs on the current device with the current salt.
+        record StagedDeviceSpnInputs(int deviceType, String deviceId) {}
+    }
+
+    private static boolean canMergeDdpData(HealthConnectDatabase stagedDatabase) {
+        return stagedDatabase.getReadableDatabase().getVersion()
+                        >= DatabaseVersions.DB_VERSION_DEVICE_DATA_PROVIDERS
+                && AconfigFlagHelper.isDeviceDataProvidersEnabled();
     }
 }

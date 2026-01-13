@@ -19,6 +19,7 @@ package com.android.server.healthconnect.backuprestore;
 import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 import static android.healthconnect.testing.unittest.StorageUtils.queryNumEntries;
 
+import static com.android.healthfitness.flags.AconfigFlagHelper.isDeviceDataProvidersEnabled;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.GRANT_TIME_FILE_NAME;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.STAGED_DATABASE_DIR;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.STAGED_DATABASE_NAME;
@@ -46,6 +47,9 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.device.DeviceDataProviderManager;
+import com.android.server.healthconnect.device.FakeSerialDeviceDataProviderManager;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -96,13 +100,46 @@ public class BackupRestoreWithoutMocksTest {
     @Before
     public void setUp() throws Exception {
         mContext = ApplicationProvider.getApplicationContext();
-        HealthConnectInjector healthConnectInjector =
+        HealthConnectInjector healthConnectInjectorTemp =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setPreferenceHelper(new FakePreferenceHelper())
                         .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .build();
+
+        DeviceDataProviderManager fakeDeviceDataProviderManager =
+                new FakeSerialDeviceDataProviderManager(
+                        mContext,
+                        healthConnectInjectorTemp.getDeviceInfoHelper(),
+                        healthConnectInjectorTemp.getAppInfoHelper(),
+                        healthConnectInjectorTemp.getDeviceDataSourceHelper(),
+                        healthConnectInjectorTemp.getDeviceDataSourcesHelper(),
+                        healthConnectInjectorTemp.getDeviceDataProviderMetadataHelper(),
+                        healthConnectInjectorTemp.getFitnessRecordUpsertHelper(),
+                        healthConnectInjectorTemp.getFitnessRecordReadHelper(),
+                        healthConnectInjectorTemp.getFitnessRecordDeleteHelper(),
+                        healthConnectInjectorTemp.getSyntheticPackageNameCreator(),
+                        healthConnectInjectorTemp.getPreferenceHelper(),
+                        healthConnectInjectorTemp.getHealthDataCategoryPriorityHelper(),
+                        InternalHealthConnectMappings.getInstance(),
+                        true);
+
+        HealthConnectInjector healthConnectInjector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setPreferenceHelper(new FakePreferenceHelper())
+                        .setHealthPermissionIntentAppsTracker(mPermissionIntentAppsTracker)
+                        .setFirstGrantTimeManager(mFirstGrantTimeManager)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
+                        .setDeviceDataProviderManager(fakeDeviceDataProviderManager)
+                        .build();
+
+        if (isDeviceDataProvidersEnabled()) {
+            healthConnectInjector
+                    .getDeviceDataProviderManager()
+                    .initializeOrRefreshCurrentDeviceIds();
+        }
+
         mStorageUtils = new StorageUtils(healthConnectInjector);
         mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
@@ -121,6 +158,8 @@ public class BackupRestoreWithoutMocksTest {
                         healthConnectInjector.getFitnessRecordReadHelper(),
                         mContext,
                         healthConnectInjector.getDeviceInfoHelper(),
+                        healthConnectInjector.getDeviceDataProviderMetadataHelper(),
+                        healthConnectInjector.getSyntheticPackageNameCreator(),
                         healthConnectInjector.getHealthDataCategoryPriorityHelper(),
                         healthConnectInjector.getThreadScheduler(),
                         healthConnectInjector.getEnvironmentDataDirectory(),
