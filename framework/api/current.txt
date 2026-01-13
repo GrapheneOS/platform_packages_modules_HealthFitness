@@ -711,9 +711,9 @@ package android.health.connect.datatypes {
     field public static final int ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_VODKA = 3; // 0x3
     field public static final int ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WHISKEY = 5; // 0x5
     field public static final int ALCOHOL_CONSUMPTION_BEVERAGE_TYPE_WINE = 2; // 0x2
-    field public static final int RECORD_TEMPORAL_TYPE_INSTANT = 0; // 0x0
-    field public static final int RECORD_TEMPORAL_TYPE_INTERVAL = 1; // 0x1
-    field public static final int RECORD_TEMPORAL_TYPE_LOCAL_DATE = 2; // 0x2
+    field @Deprecated @FlaggedApi("com.android.healthfitness.flags.temporal_field_api") public static final int RECORD_TEMPORAL_TYPE_INSTANT = 0; // 0x0
+    field @Deprecated @FlaggedApi("com.android.healthfitness.flags.temporal_field_api") public static final int RECORD_TEMPORAL_TYPE_INTERVAL = 1; // 0x1
+    field @Deprecated @FlaggedApi("com.android.healthfitness.flags.temporal_field_api") public static final int RECORD_TEMPORAL_TYPE_LOCAL_DATE = 2; // 0x2
   }
 
   public static final class AlcoholConsumptionRecord.Builder {
@@ -1932,6 +1932,9 @@ package android.health.connect.datatypes {
 
   public abstract class Record {
     method @NonNull public android.health.connect.datatypes.Metadata getMetadata();
+    field @FlaggedApi("com.android.healthfitness.flags.temporal_field_api") public static final int RECORD_TEMPORAL_TYPE_INSTANT = 0; // 0x0
+    field @FlaggedApi("com.android.healthfitness.flags.temporal_field_api") public static final int RECORD_TEMPORAL_TYPE_INTERVAL = 1; // 0x1
+    field @FlaggedApi("com.android.healthfitness.flags.temporal_field_api") public static final int RECORD_TEMPORAL_TYPE_LOCAL_DATE = 2; // 0x2
   }
 
   public final class RespiratoryRateRecord extends android.health.connect.datatypes.InstantRecord {
@@ -2109,9 +2112,9 @@ package android.health.connect.datatypes {
     method public int getSeverity();
     method public int getSymptomType();
     method public int getTemporalType();
-    field public static final int RECORD_TEMPORAL_TYPE_INSTANT = 0; // 0x0
-    field public static final int RECORD_TEMPORAL_TYPE_INTERVAL = 1; // 0x1
-    field public static final int RECORD_TEMPORAL_TYPE_LOCAL_DATE = 2; // 0x2
+    field @Deprecated @FlaggedApi("com.android.healthfitness.flags.temporal_field_api") public static final int RECORD_TEMPORAL_TYPE_INSTANT = 0; // 0x0
+    field @Deprecated @FlaggedApi("com.android.healthfitness.flags.temporal_field_api") public static final int RECORD_TEMPORAL_TYPE_INTERVAL = 1; // 0x1
+    field @Deprecated @FlaggedApi("com.android.healthfitness.flags.temporal_field_api") public static final int RECORD_TEMPORAL_TYPE_LOCAL_DATE = 2; // 0x2
     field public static final int SEVERITY_MILD = 1; // 0x1
     field public static final int SEVERITY_MODERATE = 2; // 0x2
     field public static final int SEVERITY_SEVERE = 3; // 0x3

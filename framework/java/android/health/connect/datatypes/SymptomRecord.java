@@ -18,6 +18,7 @@ package android.health.connect.datatypes;
 import static android.health.connect.datatypes.validation.ValidationUtils.validateIntDefValue;
 
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
+import static com.android.healthfitness.flags.Flags.FLAG_TEMPORAL_FIELD_API;
 
 import android.annotation.FlaggedApi;
 import android.annotation.IntDef;
@@ -531,22 +532,44 @@ public final class SymptomRecord extends IntervalRecord {
     /** Severe severity. */
     public static final int SEVERITY_SEVERE = 3;
 
-    /** @hide */
+    /**
+     * @hide
+     * @deprecated use {@link Record.RecordTemporalType} instead
+     */
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({
         RECORD_TEMPORAL_TYPE_INSTANT,
         RECORD_TEMPORAL_TYPE_INTERVAL,
         RECORD_TEMPORAL_TYPE_LOCAL_DATE
     })
+    @Deprecated
     public @interface SymptomRecordTemporalType {}
 
-    /** The record represents an instantaneous event. */
+    /**
+     * The record represents an instantaneous event.
+     *
+     * @deprecated use {@link Record#RECORD_TEMPORAL_TYPE_INSTANT} instead
+     */
+    @FlaggedApi(FLAG_TEMPORAL_FIELD_API)
+    @Deprecated
     public static final int RECORD_TEMPORAL_TYPE_INSTANT = 0;
 
-    /** The record represents an event over an interval. */
+    /**
+     * The record represents an event over an interval.
+     *
+     * @deprecated use {@link Record#RECORD_TEMPORAL_TYPE_INTERVAL} instead
+     */
+    @FlaggedApi(FLAG_TEMPORAL_FIELD_API)
+    @Deprecated
     public static final int RECORD_TEMPORAL_TYPE_INTERVAL = 1;
 
-    /** The record represents an event that occurred on a specific date. */
+    /**
+     * The record represents an event that occurred on a specific date.
+     *
+     * @deprecated use {@link Record#RECORD_TEMPORAL_TYPE_LOCAL_DATE} instead
+     */
+    @FlaggedApi(FLAG_TEMPORAL_FIELD_API)
+    @Deprecated
     public static final int RECORD_TEMPORAL_TYPE_LOCAL_DATE = 2;
 
     /** Builder class for {@link SymptomRecord}. */
