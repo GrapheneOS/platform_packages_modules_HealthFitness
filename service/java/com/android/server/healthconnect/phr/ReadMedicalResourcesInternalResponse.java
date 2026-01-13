@@ -21,6 +21,7 @@ import android.health.connect.ReadMedicalResourcesResponse;
 import android.health.connect.datatypes.MedicalResource;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -40,6 +41,7 @@ public final class ReadMedicalResourcesInternalResponse {
         if (pageToken == null && remainingCount > 0) {
             throw new IllegalArgumentException(
                     String.format(
+                            Locale.ROOT,
                             "Remaining count must be 0 to have a null next page token, but was %d",
                             remainingCount));
         }

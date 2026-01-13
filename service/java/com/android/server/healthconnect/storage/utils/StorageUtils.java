@@ -53,6 +53,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -446,7 +447,7 @@ public final class StorageUtils {
 
         final StringBuilder builder = new StringBuilder("x'");
         for (byte b : value) {
-            builder.append(String.format("%02x", b));
+            builder.append(String.format(Locale.ROOT, "%02x", b));
         }
         builder.append("'");
 

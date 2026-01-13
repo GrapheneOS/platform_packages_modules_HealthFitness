@@ -26,6 +26,7 @@ import android.annotation.NonNull;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -153,7 +154,7 @@ public final class FhirVersion implements Parcelable {
 
     /** Returns the string representation of the FHIR version. */
     public String toString() {
-        return String.format("%d.%d.%d", mMajor, mMinor, mPatch);
+        return String.format(Locale.ROOT, "%d.%d.%d", mMajor, mMinor, mPatch);
     }
 
     /** Returns {@code true} if the {@link FhirVersion} is supported by Health Connect. */
