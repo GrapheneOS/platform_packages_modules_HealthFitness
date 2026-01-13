@@ -31,6 +31,7 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 /** A read response for {@link HealthConnectManager#readMedicalResources}. */
@@ -57,6 +58,7 @@ public final class ReadMedicalResourcesResponse implements Parcelable {
         if (nextPageToken == null && remainingCount > 0) {
             throw new IllegalArgumentException(
                     String.format(
+                            Locale.ROOT,
                             "Remaining count must be 0 to have a null next page token, but was %d",
                             remainingCount));
         }

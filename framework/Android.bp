@@ -91,6 +91,7 @@ java_sdk_library {
         ],
         javacflags: [
             "-XepExcludedPaths:.*/out/soong/.*",
+            "-Xep:DefaultLocale:ERROR",
             "-Xep:NullAway:ERROR",
             "-XepOpt:NullAway:AnnotatedPackages=android.health.connect",
         ],
