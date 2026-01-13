@@ -225,30 +225,6 @@ public class AdvertiseDeviceDataSourcesTest {
     }
 
     @Test
-    public void advertiseWithDisplayName() throws InterruptedException {
-        Device device =
-                new Device.Builder()
-                        .setManufacturer("TestManufacturer")
-                        .setModel("TestModel")
-                        .setType(Device.DEVICE_TYPE_PHONE)
-                        .setDisplayName("TestDisplayName")
-                        .build();
-        String deviceId = "TestDeviceId";
-        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
-                Set.of(
-                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
-                                .setAvailable(true)
-                                .build());
-        DeviceDataAdvertisement advertisement =
-                new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);
-        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
-
-        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), receiver);
-
-        receiver.verifyNoExceptionOrThrow();
-    }
-
-    @Test
     public void advertiseWithSymptomType() throws InterruptedException {
         Device device =
                 new Device.Builder()
@@ -479,5 +455,164 @@ public class AdvertiseDeviceDataSourcesTest {
                         .iterator()
                         .next();
         assertThat(newAd.getDataType()).isEqualTo(SleepSessionRecord.class);
+    }
+
+    @Test
+    public void advertiseDevice_hasDisplayName() throws InterruptedException {
+        String deviceId = "TestDeviceId";
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("OriginalDisplayName")
+                        .build();
+
+        advertiseDevice(deviceId, device, StepsRecord.class);
+        List<DeviceDataSourceInfo> sources = getDeviceDataSourceInfos();
+
+        assertThat(
+                        sources.stream()
+                                .filter(s -> s.getDevice().equals(device))
+                                .findFirst()
+                                .get()
+                                .getDevice()
+                                .getDisplayName())
+                .isEqualTo("OriginalDisplayName");
+    }
+
+    @Test
+    public void advertiseDevice_updateDisplayName_updatesSuccessfully()
+            throws InterruptedException {
+        String deviceId = "TestDeviceId";
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("OriginalDisplayName")
+                        .build();
+        advertiseDevice(deviceId, device1, StepsRecord.class);
+        List<DeviceDataSourceInfo> sources1 = getDeviceDataSourceInfos();
+        assertThat(
+                        sources1.stream()
+                                .filter(s -> s.getDevice().equals(device1))
+                                .findFirst()
+                                .get()
+                                .getDevice()
+                                .getDisplayName())
+                .isEqualTo("OriginalDisplayName");
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("UpdatedDisplayName")
+                        .build();
+
+        advertiseDevice(deviceId, device2, StepsRecord.class);
+        List<DeviceDataSourceInfo> sources2 = getDeviceDataSourceInfos();
+
+        assertThat(
+                        sources2.stream()
+                                .filter(s -> s.getDevice().equals(device2))
+                                .findFirst()
+                                .get()
+                                .getDevice()
+                                .getDisplayName())
+                .isEqualTo("UpdatedDisplayName");
+    }
+
+    @Test
+    public void advertiseDevice_updateDisplayName_oldDeviceEntyRemoved()
+            throws InterruptedException {
+        String deviceId = "TestDeviceId";
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("OriginalDisplayName")
+                        .build();
+        advertiseDevice(deviceId, device1, StepsRecord.class);
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("UpdatedDisplayName")
+                        .build();
+
+        advertiseDevice(deviceId, device2, StepsRecord.class);
+        List<DeviceDataSourceInfo> sources = getDeviceDataSourceInfos();
+
+        assertThat(sources.stream().filter(s -> s.getDevice().equals(device1)).findAny().isEmpty())
+                .isTrue();
+    }
+
+    @Test
+    public void advertiseDevice_updateDisplayNameToNull_updatesSuccessfully()
+            throws InterruptedException {
+        String deviceId = "TestDeviceId";
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("OriginalDisplayName")
+                        .build();
+        advertiseDevice(deviceId, device1, StepsRecord.class);
+
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(null)
+                        .build();
+        advertiseDevice(deviceId, device2, StepsRecord.class);
+        List<DeviceDataSourceInfo> sources = getDeviceDataSourceInfos();
+
+        assertThat(
+                        sources.stream()
+                                .filter(s -> s.getDevice().equals(device2))
+                                .findFirst()
+                                .get()
+                                .getDevice()
+                                .getDisplayName())
+                .isNull();
+    }
+
+    @Test
+    public void advertiseDevice_updateDisplayNameToEmpty_updatesSuccessfully()
+            throws InterruptedException {
+        String deviceId = "TestDeviceId";
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("OriginalDisplayName")
+                        .build();
+        advertiseDevice(deviceId, device1, StepsRecord.class);
+
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("")
+                        .build();
+        advertiseDevice(deviceId, device2, StepsRecord.class);
+
+        List<DeviceDataSourceInfo> sources2 = getDeviceDataSourceInfos();
+        assertThat(
+                        sources2.stream()
+                                .filter(s -> s.getDevice().equals(device2))
+                                .findFirst()
+                                .get()
+                                .getDevice()
+                                .getDisplayName())
+                .isEqualTo("");
     }
 }
