@@ -225,6 +225,8 @@ public class CurrentDeviceDataSourceTest {
                     assertThat(dataSource.getDevice().getManufacturer())
                             .isEqualTo("TestManufacturer2");
                     assertThat(dataSource.getDevice().getModel()).isEqualTo("TestModel2");
+                    assertThat(dataSource.getDevice().getDisplayName())
+                            .isEqualTo("TestDisplayName2");
 
                     assertThat(dataSource.getDeviceDataTypeSources()).hasSize(1);
                     DeviceDataTypeSource typeSource =
@@ -268,5 +270,134 @@ public class CurrentDeviceDataSourceTest {
 
         assertThat(dataSources.getDeviceDataSources().size()).isEqualTo(1);
         assertThat(dataSources.getDeviceDataSources().get(0)).isEqualTo(currentDataSource);
+    }
+
+    @Test
+    public void getCurrentDeviceDataSource_usesDisplayName() throws InterruptedException {
+        String currentDeviceId = TestUtils.getCurrentDeviceId();
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("OriginalDisplayName")
+                        .build();
+        Set<DeviceDataTypeAdvertisement> ads =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .setUserEnabled(true)
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, currentDeviceId, ads);
+        HealthConnectReceiver<Void> adReceiver = new HealthConnectReceiver<>();
+        TestUtils.advertiseDeviceDataSources(Set.of(advertisement), outcomeExecutor(), adReceiver);
+        adReceiver.verifyNoExceptionOrThrow();
+
+        DeviceDataSource currentDataSource =
+                callAndGetResponseWithShellPermissionIdentity(
+                        (executor, currentDeviceReceiver) ->
+                                TestUtils.getHealthConnectManager()
+                                        .getCurrentDeviceDataSource(
+                                                executor, currentDeviceReceiver),
+                        HealthPermissions.READ_STEPS);
+
+        assertThat(currentDataSource.getDevice().getDisplayName()).isEqualTo("OriginalDisplayName");
+    }
+
+    @Test
+    public void getCurrentDeviceDataSource_afterDisplayNameUpdate_getsUpdatedDisplayName()
+            throws InterruptedException {
+        String currentDeviceId = TestUtils.getCurrentDeviceId();
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("OriginalDisplayName")
+                        .build();
+        Set<DeviceDataTypeAdvertisement> ads =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .setUserEnabled(true)
+                                .build());
+        DeviceDataAdvertisement advertisement1 =
+                new DeviceDataAdvertisement(device1, currentDeviceId, ads);
+        HealthConnectReceiver<Void> adReceiver1 = new HealthConnectReceiver<>();
+        TestUtils.advertiseDeviceDataSources(
+                Set.of(advertisement1), outcomeExecutor(), adReceiver1);
+        adReceiver1.verifyNoExceptionOrThrow();
+
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("UpdatedDisplayName")
+                        .build();
+        DeviceDataAdvertisement advertisement2 =
+                new DeviceDataAdvertisement(device2, currentDeviceId, ads);
+        HealthConnectReceiver<Void> adReceiver2 = new HealthConnectReceiver<>();
+        TestUtils.advertiseDeviceDataSources(
+                Set.of(advertisement2), outcomeExecutor(), adReceiver2);
+        adReceiver2.verifyNoExceptionOrThrow();
+
+        DeviceDataSource currentDataSource2 =
+                callAndGetResponseWithShellPermissionIdentity(
+                        (executor, currentDeviceReceiver) ->
+                                TestUtils.getHealthConnectManager()
+                                        .getCurrentDeviceDataSource(
+                                                executor, currentDeviceReceiver),
+                        HealthPermissions.READ_STEPS);
+        assertThat(currentDataSource2.getDevice().getDisplayName()).isEqualTo("UpdatedDisplayName");
+    }
+
+    @Test
+    public void getCurrentDeviceDataSource_canUpdateDisplayNameToNull()
+            throws InterruptedException {
+        String currentDeviceId = TestUtils.getCurrentDeviceId();
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("OriginalDisplayName")
+                        .build();
+        Set<DeviceDataTypeAdvertisement> ads =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .setUserEnabled(true)
+                                .build());
+        DeviceDataAdvertisement advertisement1 =
+                new DeviceDataAdvertisement(device1, currentDeviceId, ads);
+        HealthConnectReceiver<Void> adReceiver1 = new HealthConnectReceiver<>();
+        TestUtils.advertiseDeviceDataSources(
+                Set.of(advertisement1), outcomeExecutor(), adReceiver1);
+        adReceiver1.verifyNoExceptionOrThrow();
+
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(null)
+                        .build();
+        DeviceDataAdvertisement advertisement2 =
+                new DeviceDataAdvertisement(device2, currentDeviceId, ads);
+        HealthConnectReceiver<Void> adReceiver2 = new HealthConnectReceiver<>();
+        TestUtils.advertiseDeviceDataSources(
+                Set.of(advertisement2), outcomeExecutor(), adReceiver2);
+        adReceiver2.verifyNoExceptionOrThrow();
+
+        DeviceDataSource currentDataSource2 =
+                callAndGetResponseWithShellPermissionIdentity(
+                        (executor, currentDeviceReceiver) ->
+                                TestUtils.getHealthConnectManager()
+                                        .getCurrentDeviceDataSource(
+                                                executor, currentDeviceReceiver),
+                        HealthPermissions.READ_STEPS);
+        assertThat(currentDataSource2.getDevice().getDisplayName()).isEqualTo(null);
     }
 }

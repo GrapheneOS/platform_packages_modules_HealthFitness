@@ -375,4 +375,98 @@ public class ReadDeviceRecordsTest {
         assertThat(readRecords.get(0).getCount()).isEqualTo(111);
         assertThat(readRecords.get(1).getCount()).isEqualTo(222);
     }
+
+    @Test
+    public void readDeviceRecords_getsCorrectDisplayName() throws InterruptedException {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("OriginalDisplayName")
+                        .build();
+        advertiseDevice(mDeviceId, device, StepsRecord.class);
+
+        List<StepsRecord> records = List.of(getStepsRecord(123));
+        insertDeviceRecords(mDeviceId, records);
+
+        List<StepsRecord> readRecords =
+                readDeviceRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setDeviceId(mDeviceId)
+                                .build());
+        assertThat(readRecords).hasSize(1);
+        assertThat(readRecords.get(0).getMetadata().getDevice().getDisplayName())
+                .isEqualTo("OriginalDisplayName");
+    }
+
+    @Test
+    public void readDeviceRecords_afterDisplayNameUpdate_previousRecordsUseOldDisplayName()
+            throws InterruptedException {
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("OriginalDisplayName")
+                        .build();
+        advertiseDevice(mDeviceId, device1, StepsRecord.class);
+        List<StepsRecord> records1 = List.of(getStepsRecord(123));
+        insertDeviceRecords(mDeviceId, records1);
+
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("UpdatedDisplayName")
+                        .build();
+        advertiseDevice(mDeviceId, device2, StepsRecord.class);
+        List<StepsRecord> readRecords =
+                readDeviceRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setDeviceId(mDeviceId)
+                                .build());
+
+        assertThat(readRecords).hasSize(1);
+        assertThat(readRecords.get(0).getMetadata().getDevice().getDisplayName())
+                .isEqualTo("OriginalDisplayName");
+    }
+
+    @Test
+    public void readDeviceRecords_afterDisplayNameUpdate_newRecordGetsUpdatedDisplayName()
+            throws InterruptedException {
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("OriginalDisplayName")
+                        .build();
+        advertiseDevice(mDeviceId, device1, StepsRecord.class);
+        List<StepsRecord> records1 = List.of(getStepsRecord(123));
+        insertDeviceRecords(mDeviceId, records1);
+
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("UpdatedDisplayName")
+                        .build();
+        advertiseDevice(mDeviceId, device2, StepsRecord.class);
+        List<StepsRecord> records2 = List.of(getStepsRecord(456));
+        insertDeviceRecords(mDeviceId, records2);
+        List<StepsRecord> readRecords =
+                readDeviceRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setDeviceId(mDeviceId)
+                                .build());
+
+        assertThat(readRecords).hasSize(2);
+        assertThat(readRecords.get(0).getMetadata().getDevice().getDisplayName())
+                .isEqualTo("OriginalDisplayName");
+        assertThat(readRecords.get(1).getMetadata().getDevice().getDisplayName())
+                .isEqualTo("UpdatedDisplayName");
+    }
 }
