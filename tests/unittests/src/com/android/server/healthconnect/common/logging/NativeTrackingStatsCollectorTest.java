@@ -34,8 +34,8 @@ import android.content.pm.PackageManager;
 import android.health.connect.HealthPermissions;
 import android.os.UserHandle;
 
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.runner.AndroidJUnit4;
 
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
