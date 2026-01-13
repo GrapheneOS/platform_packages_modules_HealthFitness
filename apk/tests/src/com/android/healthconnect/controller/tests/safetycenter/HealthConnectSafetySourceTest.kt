@@ -37,6 +37,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
+import org.mockito.kotlin.any
 import org.mockito.kotlin.whenever
 
 @RunWith(AndroidJUnit4::class)
@@ -95,10 +96,6 @@ class HealthConnectSafetySourceTest {
                 expectedData,
                 EVENT_SOURCE_STATE_CHANGED,
             )
-    }
-
-    private fun <T> any(): T {
-        return org.mockito.ArgumentMatchers.any()
     }
 
     companion object {

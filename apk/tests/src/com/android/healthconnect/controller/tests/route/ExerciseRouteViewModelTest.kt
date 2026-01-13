@@ -58,11 +58,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -98,7 +98,8 @@ class ExerciseRouteViewModelTest {
                 GetHealthPermissionsFlagsUseCase(healthPermissionManager),
                 GrantHealthPermissionUseCase(healthPermissionManager),
                 LoadAccessDateUseCase(healthPermissionManager),
-                appInfoReader)
+                appInfoReader,
+            )
     }
 
     @After
@@ -110,7 +111,7 @@ class ExerciseRouteViewModelTest {
     fun loadExerciseRoute_noSession() = runTest {
         doAnswer(prepareAnswer(listOf()))
             .`when`(manager)
-            .readRecords(any(ReadRecordsRequestUsingIds::class.java), any(), any())
+            .readRecords(any<ReadRecordsRequestUsingIds<ExerciseSessionRecord>>(), any(), any())
 
         val testObserver = TestObserver<ExerciseRouteViewModel.SessionWithAttribution?>()
         viewModel.exerciseSession.observeForever(testObserver)
@@ -131,10 +132,14 @@ class ExerciseRouteViewModelTest {
                                 getMetaData(),
                                 start,
                                 end,
-                                ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
-                            .build())))
+                                ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING,
+                            )
+                            .build()
+                    )
+                )
+            )
             .`when`(manager)
-            .readRecords(any(ReadRecordsRequestUsingIds::class.java), any(), any())
+            .readRecords(any<ReadRecordsRequestUsingIds<ExerciseSessionRecord>>(), any(), any())
 
         val testObserver = TestObserver<ExerciseRouteViewModel.SessionWithAttribution?>()
         viewModel.exerciseSession.observeForever(testObserver)
@@ -150,20 +155,33 @@ class ExerciseRouteViewModelTest {
         val end = start.plusMillis(123456)
         val expectedSession =
             ExerciseSessionRecord.Builder(
-                    getMetaData(), start, end, ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING)
+                    getMetaData(),
+                    start,
+                    end,
+                    ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING,
+                )
                 .setRoute(
                     ExerciseRoute(
                         listOf(
                             ExerciseRoute.Location.Builder(
-                                    start.plusSeconds(12), 52.26019, 21.02268)
+                                    start.plusSeconds(12),
+                                    52.26019,
+                                    21.02268,
+                                )
                                 .build(),
                             ExerciseRoute.Location.Builder(
-                                    start.plusSeconds(40), 52.26000, 21.02360)
-                                .build())))
+                                    start.plusSeconds(40),
+                                    52.26000,
+                                    21.02360,
+                                )
+                                .build(),
+                        )
+                    )
+                )
                 .build()
         doAnswer(prepareAnswer(listOf(expectedSession)))
             .`when`(manager)
-            .readRecords(any(ReadRecordsRequestUsingIds::class.java), any(), any())
+            .readRecords(any<ReadRecordsRequestUsingIds<ExerciseSessionRecord>>(), any(), any())
 
         val testObserver = TestObserver<ExerciseRouteViewModel.SessionWithAttribution?>()
         viewModel.exerciseSession.observeForever(testObserver)

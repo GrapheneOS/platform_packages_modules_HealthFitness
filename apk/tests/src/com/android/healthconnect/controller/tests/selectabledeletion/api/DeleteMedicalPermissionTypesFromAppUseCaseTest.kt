@@ -37,12 +37,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Captor
 import org.mockito.Mockito
 import org.mockito.Mockito.doAnswer
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -70,10 +70,10 @@ class DeleteMedicalPermissionTypesFromAppUseCaseTest {
     fun invoke_deletePermissionTypes_callsHealthManager() = runTest {
         doAnswer(prepareAnswer())
             .`when`(manager)
-            .deleteMedicalResources(any(DeleteMedicalResourcesRequest::class.java), any(), any())
+            .deleteMedicalResources(any<DeleteMedicalResourcesRequest>(), any(), any())
         doAnswer(prepareAnswer(listOf(TEST_MEDICAL_DATA_SOURCE)))
             .`when`(manager)
-            .getMedicalDataSources(any(GetMedicalDataSourcesRequest::class.java), any(), any())
+            .getMedicalDataSources(any<GetMedicalDataSourcesRequest>(), any(), any())
 
         val deletePermissionTypes =
             setOf(MedicalPermissionType.ALLERGIES_INTOLERANCES, MedicalPermissionType.VACCINES)

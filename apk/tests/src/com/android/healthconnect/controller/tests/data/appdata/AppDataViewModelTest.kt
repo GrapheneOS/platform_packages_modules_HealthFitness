@@ -20,7 +20,6 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissionCategory
 import android.health.connect.MedicalResourceTypeInfo
-import android.health.connect.ReadRecordsRequestUsingFilters
 import android.health.connect.ReadRecordsResponse
 import android.health.connect.RecordTypeInfoResponse
 import android.health.connect.datatypes.HeartRateRecord
@@ -74,11 +73,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -114,7 +113,7 @@ class AppDataViewModelTest {
                 null
             }
             .`when`(manager)
-            .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
+            .readRecords<Record>(any(), any(), any())
     }
 
     @After

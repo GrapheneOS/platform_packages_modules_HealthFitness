@@ -42,10 +42,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -78,7 +78,7 @@ class LoadMedicalTypeContributorAppsUseCaseTest {
     fun whenNoData_returnsEmptyMap() = runTest {
         Mockito.doAnswer(prepareAnswer(listOf()))
             .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
         val result = loadMedicalTypeContributorAppsUseCase.invoke(MedicalPermissionType.VACCINES)
         val expected = listOf<AppMetadata>()
         assertThat(result).isEqualTo(expected)
@@ -99,7 +99,7 @@ class LoadMedicalTypeContributorAppsUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(medicalResourceTypeInfos))
             .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
         val result = loadMedicalTypeContributorAppsUseCase.invoke(MedicalPermissionType.VACCINES)
         assertThat(result.size).isEqualTo(1)
         assertThat(result[0].packageName).isEqualTo(TEST_APP_PACKAGE_NAME)
@@ -120,7 +120,7 @@ class LoadMedicalTypeContributorAppsUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(medicalResourceTypeInfos))
             .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
         val result = loadMedicalTypeContributorAppsUseCase.invoke(MedicalPermissionType.MEDICATIONS)
         assertThat(result.size).isEqualTo(2)
         assertThat(result[0].packageName).isEqualTo(TEST_APP_PACKAGE_NAME)

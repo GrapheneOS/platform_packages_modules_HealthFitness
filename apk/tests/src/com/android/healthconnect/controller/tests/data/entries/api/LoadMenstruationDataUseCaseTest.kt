@@ -58,10 +58,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
 
 @HiltAndroidTest
 @UninstallModules(HealthManagerModule::class)
@@ -95,19 +96,11 @@ class LoadMenstruationDataUseCaseTest {
     fun invoke_noData_returnsEmptyList() = runTest {
         Mockito.doAnswer(prepareRecordsAnswer(listOf()))
             .`when`(healthConnectManager)
-            .readRecords<MenstruationFlowRecord>(
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .readRecords<MenstruationFlowRecord>(any(), any(), any())
 
         Mockito.doAnswer(prepareRecordsAnswer(listOf()))
             .`when`(healthConnectManager)
-            .readRecords<MenstruationPeriodRecord>(
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .readRecords<MenstruationPeriodRecord>(any(), any(), any())
 
         val input =
             LoadMenstruationDataInput(
@@ -146,20 +139,20 @@ class LoadMenstruationDataUseCaseTest {
         Mockito.doAnswer(prepareRecordsAnswer(menstruationPeriodRecords))
             .`when`(healthConnectManager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.forDataType(dataType = MenstruationPeriodRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
         Mockito.doAnswer(prepareRecordsAnswer(menstruationFlowRecords))
             .`when`(healthConnectManager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.forDataType(dataType = MenstruationFlowRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
 
         val input =
@@ -238,20 +231,20 @@ class LoadMenstruationDataUseCaseTest {
         Mockito.doAnswer(prepareRecordsAnswer(menstruationPeriodRecords))
             .`when`(healthConnectManager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.forDataType(dataType = MenstruationPeriodRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
         Mockito.doAnswer(prepareRecordsAnswer(menstruationFlowRecords))
             .`when`(healthConnectManager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.forDataType(dataType = MenstruationFlowRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
 
         val input =
@@ -346,20 +339,20 @@ class LoadMenstruationDataUseCaseTest {
         Mockito.doAnswer(prepareRecordsAnswer(menstruationPeriodRecords))
             .`when`(healthConnectManager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.forDataType(dataType = MenstruationPeriodRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
         Mockito.doAnswer(prepareRecordsAnswer(menstruationFlowRecords))
             .`when`(healthConnectManager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.forDataType(dataType = MenstruationFlowRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
 
         val input =

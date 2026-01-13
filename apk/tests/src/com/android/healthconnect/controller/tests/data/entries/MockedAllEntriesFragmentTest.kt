@@ -80,9 +80,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @UninstallModules(HealthManagerModule::class, DispatcherModule::class)
@@ -365,26 +366,26 @@ class MockedAllEntriesFragmentTest {
         Mockito.doAnswer(prepareRecordsAnswer(stepsRecordsList))
             .`when`(manager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.forDataType(dataType = StepsRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
 
         Mockito.doAnswer(prepareRecordsAnswer(listOf(getStepsCadence(listOf(10.3, 20.1)))))
             .`when`(manager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.forDataType(dataType = StepsCadenceRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
 
         Mockito.doAnswer(prepareStepsAggregationAnswer())
             .`when`(manager)
-            .aggregate<Long>(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any())
+            .aggregate<Long>(any(), any(), any())
     }
 
     private fun prepareRecordsAnswer(records: List<Record>): (InvocationOnMock) -> Nothing? {

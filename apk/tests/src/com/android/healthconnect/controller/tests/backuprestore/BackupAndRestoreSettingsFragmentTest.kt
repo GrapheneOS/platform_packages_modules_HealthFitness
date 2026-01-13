@@ -101,8 +101,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers
 import org.mockito.MockitoAnnotations
+import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.firstValue
@@ -563,14 +563,8 @@ class BackupAndRestoreSettingsFragmentTest {
             verify(importFlowViewModel).triggerImportOfSelectedFile(Uri.parse(TEST_LAST_IMPORT_URI))
 
             scenario.onActivity { activity: TestActivity ->
-                verify(toastManager)
-                    .showToast(
-                        eq(activity),
-                        eq(expectedInProgressMessage),
-                        ArgumentMatchers.anyInt(),
-                    )
-                verify(toastManager)
-                    .showToast(eq(activity), eq(expectedCompleteMessage), ArgumentMatchers.anyInt())
+                verify(toastManager).showToast(eq(activity), eq(expectedInProgressMessage), any())
+                verify(toastManager).showToast(eq(activity), eq(expectedCompleteMessage), any())
             }
         }
     }
@@ -597,8 +591,7 @@ class BackupAndRestoreSettingsFragmentTest {
 
             verify(importFlowViewModel).triggerImportOfSelectedFile(Uri.parse(TEST_LAST_IMPORT_URI))
             scenario.onActivity { activity: TestActivity ->
-                verify(toastManager, never())
-                    .showToast(eq(activity), eq(completeMessage), ArgumentMatchers.anyInt())
+                verify(toastManager, never()).showToast(eq(activity), eq(completeMessage), any())
             }
         }
     }
@@ -688,8 +681,7 @@ class BackupAndRestoreSettingsFragmentTest {
             intended(hasComponent(ExportSetupActivity::class.java.name))
 
             scenario.onActivity { activity: TestActivity ->
-                verify(toastManager)
-                    .showToast(eq(activity), eq(expectedMessage), ArgumentMatchers.anyInt())
+                verify(toastManager).showToast(eq(activity), eq(expectedMessage), any())
             }
         }
     }
@@ -1083,7 +1075,7 @@ class BackupAndRestoreSettingsFragmentTest {
         if (permission.isEmpty()) {
             whenever(
                     mockPackageManagerLocal.checkPermission(
-                        ArgumentMatchers.anyString(),
+                        any(),
                         eq(receiverComponent.packageName),
                     )
                 )

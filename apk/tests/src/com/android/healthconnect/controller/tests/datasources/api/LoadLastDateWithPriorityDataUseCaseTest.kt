@@ -71,10 +71,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verifyNoMoreInteractions
 
@@ -563,13 +563,13 @@ class LoadLastDateWithPriorityDataUseCaseTest {
             Mockito.doAnswer(prepareRecordsAnswer(records))
                 .`when`(healthConnectManager)
                 .readRecords(
-                    ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                         request.fromDataSource(packageName) &&
                             request.fromTimeRange(timeFilterRange) &&
                             request.forDataType(dataType)
                     },
-                    ArgumentMatchers.any(),
-                    ArgumentMatchers.any(),
+                    any(),
+                    any(),
                 )
         }
     }
@@ -577,21 +577,13 @@ class LoadLastDateWithPriorityDataUseCaseTest {
     private fun mockQueryActivityDatesAnswer(datesList: List<LocalDate>) {
         Mockito.doAnswer(prepareActivityDatesAnswer(datesList))
             .`when`(healthConnectManager)
-            .queryActivityDates(
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .queryActivityDates(any(), any(), any())
     }
 
     private fun mockQueryActivityDatesError() {
         Mockito.doAnswer(prepareFailureAnswer())
             .`when`(healthConnectManager)
-            .queryActivityDates(
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .queryActivityDates(any(), any(), any())
     }
 
     private fun prepareActivityDatesAnswer(

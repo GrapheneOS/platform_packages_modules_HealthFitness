@@ -28,10 +28,10 @@ import androidx.test.core.app.ApplicationProvider
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.atLeast
 import org.mockito.Mockito.mock
+import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.verify
 
 class DatePickerDialogTest {

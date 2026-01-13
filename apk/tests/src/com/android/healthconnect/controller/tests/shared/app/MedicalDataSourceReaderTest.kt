@@ -36,11 +36,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -68,7 +67,7 @@ class MedicalDataSourceReaderTest {
 
         Mockito.doAnswer(prepareAnswer(readMedicalDataSourcesResponse))
             .`when`(healthConnectManager)
-            .getMedicalDataSources(any(GetMedicalDataSourcesRequest::class.java), any(), any())
+            .getMedicalDataSources(any<GetMedicalDataSourcesRequest>(), any(), any())
 
         val result = medicalDataSourceReader.fromPackageName(packageName)
         assertThat(result).isEmpty()
@@ -80,7 +79,7 @@ class MedicalDataSourceReaderTest {
 
         Mockito.doAnswer(prepareAnswer(expectedDataSources))
             .`when`(healthConnectManager)
-            .getMedicalDataSources(any(GetMedicalDataSourcesRequest::class.java), any(), any())
+            .getMedicalDataSources(any<GetMedicalDataSourcesRequest>(), any(), any())
 
         val result = medicalDataSourceReader.fromPackageName(TEST_APP_PACKAGE_NAME)
         assertThat(result).containsExactlyElementsIn(expectedDataSources)
@@ -93,7 +92,7 @@ class MedicalDataSourceReaderTest {
 
         Mockito.doAnswer(prepareAnswer(readMedicalDataSourcesResponse))
             .`when`(healthConnectManager)
-            .getMedicalDataSources(ArgumentMatchers.any<List<String>>(), any(), any())
+            .getMedicalDataSources(any<List<String>>(), any(), any())
 
         val result = medicalDataSourceReader.fromDataSourceId(dataSourceId)
         assertThat(result).isEmpty()
@@ -106,7 +105,7 @@ class MedicalDataSourceReaderTest {
 
         Mockito.doAnswer(prepareAnswer(expectedDataSources))
             .`when`(healthConnectManager)
-            .getMedicalDataSources(ArgumentMatchers.any<List<String>>(), any(), any())
+            .getMedicalDataSources(any<List<String>>(), any(), any())
 
         val result = medicalDataSourceReader.fromDataSourceId(dataSourceId)
         assertThat(result).containsExactlyElementsIn(expectedDataSources)

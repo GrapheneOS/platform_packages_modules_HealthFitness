@@ -20,7 +20,6 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissionCategory
 import android.health.connect.MedicalResourceTypeInfo
-import android.health.connect.ReadRecordsRequestUsingFilters
 import android.health.connect.ReadRecordsResponse
 import android.health.connect.RecordTypeInfoResponse
 import android.health.connect.datatypes.MedicalDataSource
@@ -103,8 +102,8 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.any
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.mock
@@ -144,7 +143,7 @@ class AllDataFragmentTest {
                 null
             }
             .`when`(manager)
-            .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
+            .readRecords<Record>(any(), any(), any())
 
         mockData(listOf())
         mockData(listOf(), setOf())
