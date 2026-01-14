@@ -358,7 +358,7 @@ public class ExportManager {
             throws IOException {
         Slog.i(TAG, "Export to URI started.");
         try (OutputStream outputStream =
-                dbContext.getContentResolver().openOutputStream(destination)) {
+                dbContext.getContentResolver().openOutputStream(destination, "wt")) {
             if (outputStream == null) {
                 throw new IOException("Unable to copy data to URI for export.");
             }
