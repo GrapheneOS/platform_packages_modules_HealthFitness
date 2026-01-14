@@ -128,6 +128,7 @@ import static android.health.connect.HealthPermissions.WRITE_BODY_TEMPERATURE;
 import static android.health.connect.HealthPermissions.WRITE_BODY_WATER_MASS;
 import static android.health.connect.HealthPermissions.WRITE_BONE_MASS;
 import static android.health.connect.HealthPermissions.WRITE_CERVICAL_MUCUS;
+import static android.health.connect.HealthPermissions.WRITE_DEVICE_UDI;
 import static android.health.connect.HealthPermissions.WRITE_DISTANCE;
 import static android.health.connect.HealthPermissions.WRITE_ELEVATION_GAINED;
 import static android.health.connect.HealthPermissions.WRITE_EXERCISE;
@@ -219,10 +220,12 @@ import static android.health.connect.HealthPermissions.WRITE_WHEELCHAIR_PUSHES;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION;
 import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES_FLAG;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_UDI;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -247,18 +250,14 @@ import java.util.Set;
  * Configuration test to check that all health permissions are defined.
  */
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled(
-        value = {FLAG_SYMPTOMS, FLAG_SMOKING, FLAG_ALCOHOL_CONSUMPTION, FLAG_CYCLE_PHASES_FLAG})
 public class HealthPermissionsPresenceTest {
 
     @Rule
     public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
-    // TODO(b/472306214): add WRITE_DEVICE_UDI to the list after unhide API
     private static final Set<String> HEALTH_PERMISSIONS =
             Set.of(
                     READ_ACTIVE_CALORIES_BURNED,
-                    READ_ALCOHOL_CONSUMPTION,
                     READ_BASAL_BODY_TEMPERATURE,
                     READ_BASAL_METABOLIC_RATE,
                     READ_BLOOD_GLUCOSE,
@@ -280,9 +279,7 @@ public class HealthPermissionsPresenceTest {
                     READ_HYDRATION,
                     READ_INTERMENSTRUAL_BLEEDING,
                     READ_LEAN_BODY_MASS,
-                    READ_MENSTRUAL_CYCLE_PHASE,
                     READ_MENSTRUATION,
-                    READ_NICOTINE_INTAKE,
                     READ_NUTRITION,
                     READ_OVULATION_TEST,
                     READ_OXYGEN_SATURATION,
@@ -294,6 +291,49 @@ public class HealthPermissionsPresenceTest {
                     READ_SLEEP,
                     READ_SPEED,
                     READ_STEPS,
+                    READ_TOTAL_CALORIES_BURNED,
+                    READ_VO2_MAX,
+                    READ_WEIGHT,
+                    READ_WHEELCHAIR_PUSHES,
+                    WRITE_ACTIVE_CALORIES_BURNED,
+                    WRITE_BASAL_BODY_TEMPERATURE,
+                    WRITE_BASAL_METABOLIC_RATE,
+                    WRITE_BLOOD_GLUCOSE,
+                    WRITE_BLOOD_PRESSURE,
+                    WRITE_BODY_FAT,
+                    WRITE_BODY_TEMPERATURE,
+                    WRITE_BODY_WATER_MASS,
+                    WRITE_BONE_MASS,
+                    WRITE_CERVICAL_MUCUS,
+                    WRITE_DISTANCE,
+                    WRITE_ELEVATION_GAINED,
+                    WRITE_EXERCISE,
+                    WRITE_EXERCISE_ROUTE,
+                    WRITE_FLOORS_CLIMBED,
+                    WRITE_HEART_RATE,
+                    WRITE_HEART_RATE_VARIABILITY,
+                    WRITE_HEIGHT,
+                    WRITE_HYDRATION,
+                    WRITE_INTERMENSTRUAL_BLEEDING,
+                    WRITE_LEAN_BODY_MASS,
+                    WRITE_MENSTRUATION,
+                    WRITE_NUTRITION,
+                    WRITE_OVULATION_TEST,
+                    WRITE_OXYGEN_SATURATION,
+                    WRITE_POWER,
+                    WRITE_RESPIRATORY_RATE,
+                    WRITE_RESTING_HEART_RATE,
+                    WRITE_SEXUAL_ACTIVITY,
+                    WRITE_SKIN_TEMPERATURE,
+                    WRITE_SLEEP,
+                    WRITE_SPEED,
+                    WRITE_STEPS,
+                    WRITE_TOTAL_CALORIES_BURNED,
+                    WRITE_VO2_MAX,
+                    WRITE_WEIGHT,
+                    WRITE_WHEELCHAIR_PUSHES);
+    private static final Set<String> SYMPTOMS_PERMISSIONS =
+            Set.of(
                     READ_SYMPTOM_ABDOMINAL_PAIN,
                     READ_SYMPTOM_ACNE,
                     READ_SYMPTOM_BACK_PAIN,
@@ -353,46 +393,6 @@ public class HealthPermissionsPresenceTest {
                     READ_SYMPTOM_VOMITING,
                     READ_SYMPTOM_WATER_RETENTION,
                     READ_SYMPTOM_WHEEZING,
-                    READ_TOTAL_CALORIES_BURNED,
-                    READ_VO2_MAX,
-                    READ_WEIGHT,
-                    READ_WHEELCHAIR_PUSHES,
-                    WRITE_ACTIVE_CALORIES_BURNED,
-                    WRITE_ALCOHOL_CONSUMPTION,
-                    WRITE_BASAL_BODY_TEMPERATURE,
-                    WRITE_BASAL_METABOLIC_RATE,
-                    WRITE_BLOOD_GLUCOSE,
-                    WRITE_BLOOD_PRESSURE,
-                    WRITE_BODY_FAT,
-                    WRITE_BODY_TEMPERATURE,
-                    WRITE_BODY_WATER_MASS,
-                    WRITE_BONE_MASS,
-                    WRITE_CERVICAL_MUCUS,
-                    WRITE_DISTANCE,
-                    WRITE_ELEVATION_GAINED,
-                    WRITE_EXERCISE,
-                    WRITE_EXERCISE_ROUTE,
-                    WRITE_FLOORS_CLIMBED,
-                    WRITE_HEART_RATE,
-                    WRITE_HEART_RATE_VARIABILITY,
-                    WRITE_HEIGHT,
-                    WRITE_HYDRATION,
-                    WRITE_INTERMENSTRUAL_BLEEDING,
-                    WRITE_LEAN_BODY_MASS,
-                    WRITE_MENSTRUAL_CYCLE_PHASE,
-                    WRITE_MENSTRUATION,
-                    WRITE_NICOTINE_INTAKE,
-                    WRITE_NUTRITION,
-                    WRITE_OVULATION_TEST,
-                    WRITE_OXYGEN_SATURATION,
-                    WRITE_POWER,
-                    WRITE_RESPIRATORY_RATE,
-                    WRITE_RESTING_HEART_RATE,
-                    WRITE_SEXUAL_ACTIVITY,
-                    WRITE_SKIN_TEMPERATURE,
-                    WRITE_SLEEP,
-                    WRITE_SPEED,
-                    WRITE_STEPS,
                     WRITE_SYMPTOM_ABDOMINAL_PAIN,
                     WRITE_SYMPTOM_ACNE,
                     WRITE_SYMPTOM_BACK_PAIN,
@@ -451,11 +451,14 @@ public class HealthPermissionsPresenceTest {
                     WRITE_SYMPTOM_VAGINAL_ITCHINESS,
                     WRITE_SYMPTOM_VOMITING,
                     WRITE_SYMPTOM_WATER_RETENTION,
-                    WRITE_SYMPTOM_WHEEZING,
-                    WRITE_TOTAL_CALORIES_BURNED,
-                    WRITE_VO2_MAX,
-                    WRITE_WEIGHT,
-                    WRITE_WHEELCHAIR_PUSHES);
+                    WRITE_SYMPTOM_WHEEZING);
+    private static final Set<String> SMOKING_PERMISSIONS =
+            Set.of(READ_NICOTINE_INTAKE, WRITE_NICOTINE_INTAKE);
+    private static final Set<String> ALCOHOL_PERMISSIONS =
+            Set.of(READ_ALCOHOL_CONSUMPTION, WRITE_ALCOHOL_CONSUMPTION);
+    private static final Set<String> CYCLE_PHASES_PERMISSIONS =
+            Set.of(READ_MENSTRUAL_CYCLE_PHASE, WRITE_MENSTRUAL_CYCLE_PHASE);
+    private static final Set<String> DEVICE_UDI_PERMISSIONS = Set.of(WRITE_DEVICE_UDI);
 
     private PackageManager mPackageManager;
 
@@ -473,23 +476,95 @@ public class HealthPermissionsPresenceTest {
 
     @Test
     public void testHealthPermissions_isDefined() throws Exception {
-        for (String permissionName : HEALTH_PERMISSIONS) {
-            assertHealthPermissionIsDefined(permissionName);
-        }
+        assertPermissionsAreDefined(HEALTH_PERMISSIONS, PermissionInfo.PROTECTION_DANGEROUS);
     }
 
     @Test
-    public void testGetHealthPermissions_returns_allHealthPermissions() throws Exception {
+    @RequiresFlagsEnabled(FLAG_SYMPTOMS)
+    public void testHealthPermissions_symptoms_isDefined() throws Exception {
+        assertPermissionsAreDefined(SYMPTOMS_PERMISSIONS, PermissionInfo.PROTECTION_DANGEROUS);
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_SMOKING)
+    public void testHealthPermissions_smoking_isDefined() throws Exception {
+        assertPermissionsAreDefined(SMOKING_PERMISSIONS, PermissionInfo.PROTECTION_DANGEROUS);
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_ALCOHOL_CONSUMPTION)
+    public void testHealthPermissions_alcohol_isDefined() throws Exception {
+        assertPermissionsAreDefined(ALCOHOL_PERMISSIONS, PermissionInfo.PROTECTION_DANGEROUS);
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_CYCLE_PHASES_FLAG)
+    public void testHealthPermissions_cyclePhases_isDefined() throws Exception {
+        assertPermissionsAreDefined(CYCLE_PHASES_PERMISSIONS, PermissionInfo.PROTECTION_DANGEROUS);
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_DEVICE_UDI)
+    public void testHealthPermissions_deviceUdi_isDefined() throws Exception {
+        assertPermissionsAreDefined(DEVICE_UDI_PERMISSIONS, PermissionInfo.PROTECTION_NORMAL);
+    }
+
+    @Test
+    public void testGetHealthPermissions_returns_noFlagPermissions() {
+        assertGetHealthPermissionsReturnsPermissions(HEALTH_PERMISSIONS);
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_SYMPTOMS)
+    public void testGetHealthPermissions_returns_symptomsPermissions() {
+        assertGetHealthPermissionsReturnsPermissions(SYMPTOMS_PERMISSIONS);
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_SMOKING)
+    public void testGetHealthPermissions_returns_smokingPermissions() {
+        assertGetHealthPermissionsReturnsPermissions(SMOKING_PERMISSIONS);
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_ALCOHOL_CONSUMPTION)
+    public void testGetHealthPermissions_returns_alcoholPermissions() {
+        assertGetHealthPermissionsReturnsPermissions(ALCOHOL_PERMISSIONS);
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_CYCLE_PHASES_FLAG)
+    public void testGetHealthPermissions_returns_cyclePhasesPermissions() {
+        assertGetHealthPermissionsReturnsPermissions(CYCLE_PHASES_PERMISSIONS);
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_DEVICE_UDI)
+    public void testGetHealthPermissions_returns_deviceUdiPermissions() {
+        assertGetHealthPermissionsReturnsPermissions(DEVICE_UDI_PERMISSIONS);
+    }
+
+    private void assertGetHealthPermissionsReturnsPermissions(Set<String> expectedPermissions) {
         Context context = InstrumentationRegistry.getTargetContext();
         Set<String> healthPermissions = HealthConnectManager.getHealthPermissions(context);
-        for (String permission : HEALTH_PERMISSIONS) {
-            assertThat(healthPermissions.contains(permission)).isTrue();
+        for (String permission : expectedPermissions) {
+            assertWithMessage("Missing permission " + permission)
+                    .that(healthPermissions.contains(permission))
+                    .isTrue();
         }
     }
 
-    private void assertHealthPermissionIsDefined(String permissionName) throws Exception {
-        PermissionInfo info =
-                mPackageManager.getPermissionInfo(permissionName, PackageManager.GET_META_DATA);
-        assertThat(info.getProtection()).isEqualTo(PermissionInfo.PROTECTION_DANGEROUS);
+    private void assertPermissionsAreDefined(Set<String> permissions, int protectLevel)
+            throws Exception {
+        for (String permissionName : permissions) {
+            PermissionInfo info =
+                    mPackageManager.getPermissionInfo(permissionName, PackageManager.GET_META_DATA);
+            assertWithMessage(
+                            permissionName
+                                    + " doesn't have the required protection level "
+                                    + protectLevel)
+                    .that(info.getProtection())
+                    .isEqualTo(protectLevel);
+        }
     }
 }

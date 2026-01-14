@@ -115,10 +115,7 @@ public final class HealthPermissions {
      * Allows an application to write the device's unique device identifier (UDI).
      *
      * <p>Protection level: normal.
-     *
-     * @hide
      */
-    // TODO(b/472306214): unhide this API
     @FlaggedApi(FLAG_DEVICE_UDI)
     public static final String WRITE_DEVICE_UDI = "android.permission.health.WRITE_DEVICE_UDI";
 
@@ -2311,6 +2308,7 @@ public final class HealthPermissions {
             case READ_MEDICAL_DATA_DEVICES -> Flags.deviceResource();
             case READ_MENSTRUAL_CYCLE_PHASE, WRITE_MENSTRUAL_CYCLE_PHASE ->
                     AconfigFlagHelper.isCyclePhasesEnabled();
+            case WRITE_DEVICE_UDI -> Flags.deviceUdi();
             default -> true;
         };
     }
