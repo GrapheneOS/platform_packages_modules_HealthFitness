@@ -23,6 +23,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceGroup
 import androidx.preference.TwoStatePreference
 import com.android.healthconnect.controller.R
@@ -43,7 +44,6 @@ import com.android.healthconnect.controller.shared.preference.HealthPreferenceFr
 import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference
 import com.android.healthconnect.controller.shared.preference.addIntroOrAppHeaderPreference
 import com.android.healthconnect.controller.utils.LocaleSorter.sortByLocale
-import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.logging.AppAccessElement.ADDITIONAL_ACCESS_BUTTON
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -69,7 +69,6 @@ class SettingsMedicalAppFragment : Hilt_SettingsMedicalAppFragment() {
     }
 
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
-    @Inject lateinit var navigationUtils: NavigationUtils
 
     private lateinit var packageName: String
     private var appName: String = ""
@@ -228,11 +227,11 @@ class SettingsMedicalAppFragment : Hilt_SettingsMedicalAppFragment() {
                         it.setOnPreferenceClickListener { _ ->
                             val extras =
                                 Bundle().apply { putString(EXTRA_PACKAGE_NAME, packageName) }
-                            navigationUtils.navigate(
-                                fragment = this,
-                                action = R.id.action_settingsMedicalApp_to_additionalAccessFragment,
-                                bundle = extras,
-                            )
+                            findNavController()
+                                .navigate(
+                                    R.id.action_settingsMedicalApp_to_additionalAccessFragment,
+                                    extras,
+                                )
                             true
                         }
                     }

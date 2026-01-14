@@ -28,6 +28,8 @@ import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.navigation.Navigation
+import androidx.navigation.testing.TestNavHostController
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
@@ -78,7 +80,6 @@ import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.scrollToBottomOfPreferenceScreen
 import com.android.healthconnect.controller.tests.utils.scrollToText
 import com.android.healthconnect.controller.tests.utils.setLocale
-import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
@@ -102,9 +103,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
-import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
@@ -119,10 +118,11 @@ class SettingsFitnessAppFragmentTest {
     @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @BindValue val viewModel: AppPermissionViewModel = mock()
-    @BindValue val navigationUtils: NavigationUtils = mock()
     @BindValue val migrationViewModel: MigrationViewModel = mock()
     @BindValue val additionalAccessViewModel: AdditionalAccessViewModel = mock()
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
+
+    private lateinit var navHostController: TestNavHostController
 
     @Before
     fun setup() {
@@ -130,6 +130,7 @@ class SettingsFitnessAppFragmentTest {
         context.setLocale(Locale.US)
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
         hiltRule.inject()
+        navHostController = TestNavHostController(context)
 
         whenever(viewModel.revokeAllHealthPermissionsState).then {
             MutableLiveData(RevokeAllState.NotStarted)
@@ -612,16 +613,16 @@ class SettingsFitnessAppFragmentTest {
 
         launchFragment<SettingsFitnessAppFragment>(
                 Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
-            )
+            ) {
+                navHostController.setGraph(R.navigation.settings_nav_graph)
+                navHostController.setCurrentDestination(R.id.settingsFitnessAppFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
             .use {
                 onView(withText(R.string.additional_access_label)).perform(click())
 
-                verify(navigationUtils)
-                    .navigate(
-                        fragment = any(),
-                        action = eq(R.id.action_settingsFitnessApp_to_additionalAccessFragment),
-                        bundle = any(),
-                    )
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.additionalAccessFragment)
             }
     }
 

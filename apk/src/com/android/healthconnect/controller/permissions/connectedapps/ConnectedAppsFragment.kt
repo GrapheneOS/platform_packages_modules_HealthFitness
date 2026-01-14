@@ -60,7 +60,6 @@ import com.android.healthconnect.controller.shared.preference.HealthPreferenceFr
 import com.android.healthconnect.controller.utils.AppStoreUtils
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
-import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
 import com.android.healthconnect.controller.utils.logging.DisconnectAllAppsDialogElement
@@ -104,7 +103,6 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
     @Inject lateinit var logger: HealthConnectLogger
     @Inject lateinit var appStoreUtils: AppStoreUtils
     @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
-    @Inject lateinit var navigationUtils: NavigationUtils
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
     private val viewModel: ConnectedAppsViewModel by activityViewModels()
@@ -301,7 +299,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                     )
                 } else {
                     needUpdateAppsCategory.addPreference(
-                        getAppPreference(app) { navigationUtils.startActivity(this, intent) }
+                        getAppPreference(app) { startActivity(intent) }
                     )
                 }
             }

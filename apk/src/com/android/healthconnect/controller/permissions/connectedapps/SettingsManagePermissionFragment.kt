@@ -37,8 +37,8 @@ import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.StringRes
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
@@ -58,7 +58,6 @@ import com.android.healthconnect.controller.shared.app.ConnectedAppStatus.DENIED
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.shared.preference.addIntroOrPermissionHeaderPreference
 import com.android.healthconnect.controller.utils.AttributeResolver
-import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -85,7 +84,6 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
         this.setPageName(PageName.SETTINGS_MANAGE_PERMISSIONS_PAGE)
     }
 
-    @Inject lateinit var navigationUtils: NavigationUtils
     @Inject lateinit var logger: HealthConnectLogger
 
     private val allowedAppsGroup: PreferenceGroup by pref(ALLOWED_APPS_GROUP)
@@ -228,15 +226,14 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
                 AppPermissionsType.COMBINED_PERMISSIONS ->
                     R.id.action_settingsManagePermission_to_settingsCombinedPermissions
             }
-        navigationUtils.navigate(
-            fragment = this,
-            action = navigationId,
-            bundle =
-                bundleOf(
-                    EXTRA_PACKAGE_NAME to app.appMetadata.packageName,
-                    EXTRA_APP_NAME to app.appMetadata.appName,
-                    EXTRA_IS_SYSTEM_APP to app.isSystem,
-                ),
-        )
+        findNavController()
+            .navigate(
+                navigationId,
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, app.appMetadata.packageName)
+                    putString(EXTRA_APP_NAME, app.appMetadata.appName)
+                    putBoolean(EXTRA_IS_SYSTEM_APP, app.isSystem)
+                },
+            )
     }
 }

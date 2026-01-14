@@ -5,20 +5,17 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
 import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
-import com.android.healthconnect.controller.utils.NavigationUtils
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 @AndroidEntryPoint(HealthPreferenceFragment::class)
 class MigrationNavigationFragment : Hilt_MigrationNavigationFragment() {
-
-    @Inject lateinit var navigationUtils: NavigationUtils
 
     private val migrationViewModel: MigrationViewModel by viewModels()
     private lateinit var sharedPreference: SharedPreferences
@@ -54,8 +51,10 @@ class MigrationNavigationFragment : Hilt_MigrationNavigationFragment() {
 
         if (dataRestoreUiState == DataRestoreUiState.IN_PROGRESS) {
             showDataRestoreInProgressFragment()
-        } else if (migrationUiState in
-            listOf(MigrationUiState.ALLOWED_NOT_STARTED, MigrationUiState.ALLOWED_PAUSED)) {
+        } else if (
+            migrationUiState in
+                listOf(MigrationUiState.ALLOWED_NOT_STARTED, MigrationUiState.ALLOWED_PAUSED)
+        ) {
             showMigrationPausedFragment()
         } else if (migrationUiState == MigrationUiState.APP_UPGRADE_REQUIRED) {
             showAppUpdateRequiredFragment()
@@ -69,31 +68,33 @@ class MigrationNavigationFragment : Hilt_MigrationNavigationFragment() {
     }
 
     private fun showDataRestoreInProgressFragment() {
-        navigationUtils.navigate(
-            this, R.id.action_migrationNavigationFragment_to_dataRestoreInProgressFragment)
+        findNavController()
+            .navigate(R.id.action_migrationNavigationFragment_to_dataRestoreInProgressFragment)
     }
 
     private fun showMigrationInProgressFragment() {
-        navigationUtils.navigate(
-            this, R.id.action_migrationNavigationFragment_to_migrationInProgressFragment)
+        findNavController()
+            .navigate(R.id.action_migrationNavigationFragment_to_migrationInProgressFragment)
     }
 
     private fun showAppUpdateRequiredFragment() {
-        navigationUtils.navigate(
-            this, R.id.action_migrationNavigationFragment_to_migrationAppUpdateNeededFragment)
+        findNavController()
+            .navigate(R.id.action_migrationNavigationFragment_to_migrationAppUpdateNeededFragment)
     }
 
     private fun showModuleUpdateRequiredFragment() {
-        navigationUtils.navigate(
-            this, R.id.action_migrationNavigationFragment_to_migrationModuleUpdateNeededFragment)
+        findNavController()
+            .navigate(
+                R.id.action_migrationNavigationFragment_to_migrationModuleUpdateNeededFragment
+            )
     }
 
     private fun showMigrationPausedFragment() {
-        navigationUtils.navigate(
-            this, R.id.action_migrationNavigationFragment_to_migrationPausedFragment)
+        findNavController()
+            .navigate(R.id.action_migrationNavigationFragment_to_migrationPausedFragment)
     }
 
     private fun navigateToHomeFragment() {
-        navigationUtils.navigate(this, R.id.action_migrationNavigationFragment_to_homeFragment)
+        findNavController().navigate(R.id.action_migrationNavigationFragment_to_homeFragment)
     }
 }
