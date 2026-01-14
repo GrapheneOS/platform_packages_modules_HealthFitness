@@ -1180,8 +1180,10 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"헬스 커넥트 복원 진행 중"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"확인"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"업데이트 필요"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"데이터 복원을 계속하기 전에 휴대전화 시스템을 업데이트하세요."</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"지금 업데이트"</string>
+    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
+    <skip />
+    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
+    <skip />
     <string name="data_totals_header" msgid="8316977153276216025">"데이터 총계"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"데이터 소스"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"데이터 총계가 어떻게 변하는지 확인하려면 데이터 소스를 목록에 추가하세요. 목록에서 데이터 소스를 삭제하면 해당 데이터 소스는 더 이상 총계에 포함되지 않지만 쓰기 권한은 계속 유지됩니다."</string>
@@ -1276,8 +1278,7 @@
     <string name="write_access" msgid="571547306854732263">"쓰기 액세스"</string>
     <string name="read_access" msgid="3317759826769372785">"읽기 액세스"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"앱 <xliff:g id="OTHER_NUMBER">%2$d</xliff:g>개 중 <xliff:g id="NUMBER_0">%1$d</xliff:g>개 허용됨"</string>

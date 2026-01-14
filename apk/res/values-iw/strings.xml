@@ -391,7 +391,7 @@
     <string name="symptom_severity_moderate" msgid="8388787027751900668">"בינונית"</string>
     <string name="symptom_severity_severe" msgid="4675732713898596705">"חמורה"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>⁠"</string>
-    <string name="read_permission_category" msgid="6002099618259628632">"מתן הרשאה לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> לקרוא נתונים"</string>
+    <string name="read_permission_category" msgid="6002099618259628632">"האפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> תוכל לקרוא נתונים של"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"מתן הרשאה לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> לכתוב נתונים"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"אישור"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"אישור של כל ההרשאות"</string>
@@ -414,7 +414,7 @@
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"אם תינתן הרשאת קריאה, האפליקציה תוכל לקרוא נתונים חדשים ונתונים קודמים"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"לתת לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> הרשאת גישה אל Health Connect?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"לתת לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> הרשאת גישה לנתוני כושר ובריאות?"</string>
-    <string name="request_permissions_rationale" msgid="2642076968583316986">"אפשר לקרוא איך אפליקציית <xliff:g id="APP_NAME">%1$s</xliff:g> מטפלת בנתונים ב<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> של האפליקציה"</string>
+    <string name="request_permissions_rationale" msgid="2642076968583316986">"ב<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g> של האפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> מפורט איך היא מטפלת בנתונים שלך"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"מדיניות הפרטיות"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"לתת לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> גישה לתיק הרפואי?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"אם הגישה תאושר, האפליקציה תוכל לקרוא ולכתוב נתונים כמו אלרגיות, תוצאות של בדיקות מעבדה, חיסונים ועוד\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
@@ -1098,7 +1098,7 @@
     <string name="action_drag_label_move_bottom" msgid="3117764196696569512">"העברה לתחתית הרשימה"</string>
     <string name="reorder_button_content_description" msgid="2685032520710743533">"כפתור לגרירה וסידור מחדש של <xliff:g id="SELECTED_APP">%s</xliff:g> ברשימת העדיפויות של האפליקציות"</string>
     <string name="remove_button_content_description" msgid="6170490900032612048">"כפתור להסרת <xliff:g id="SELECTED_APP">%s</xliff:g> מרשימת העדיפויות של האפליקציות"</string>
-    <string name="see_actions_button_content_description" msgid="2004104767369363475">"כפתור לשינוי המיקום או להסרה של <xliff:g id="SELECTED_APP">%s</xliff:g> מרשימת המקורות לאפליקציות"</string>
+    <string name="see_actions_button_content_description" msgid="2004104767369363475">"כפתור לשנות את המיקום או להסיר את <xliff:g id="SELECTED_APP">%s</xliff:g> מרשימת המקורות לאפליקציות"</string>
     <string name="reorder_button_action_description" msgid="5197462036756192214">"כדי לשנות את הסדר, לוחצים לחיצה כפולה וגוררים"</string>
     <string name="priority_list_item_content_description" msgid="8792727829749801217">"מקום <xliff:g id="POSITION">%1$s</xliff:g> ברשימה \"<xliff:g id="SELECTED_APP">%2$s</xliff:g>\""</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"כושר גופני, איכות חיים"</string>
@@ -1180,8 +1180,10 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"השחזור של Health Connect מתבצע"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"הבנתי"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"נדרש עדכון"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"לפני המשך שחזור הנתונים, עליך לעדכן את המערכת של הטלפון."</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"לעדכון"</string>
+    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
+    <skip />
+    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
+    <skip />
     <string name="data_totals_header" msgid="8316977153276216025">"סכומי נתונים"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"מקורות נתונים"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"אפשר להוסיף מקורות נתונים לרשימה כדי לראות איך סכומי הנתונים משתנים. מקור נתונים שיוסר מהרשימה הזו לא ישתקלל בסכומים, אבל עדיין יהיו לו הרשאות כתיבה."</string>
@@ -1191,8 +1193,8 @@
     <string name="data_sources_add_app" msgid="275066335106036460">"הוספת מקור נתונים"</string>
     <string name="edit_data_sources" msgid="5389744157074260179">"עריכת מקורות הנתונים"</string>
     <string name="default_app_summary" msgid="6183876151011837062">"ברירת המחדל של המכשיר"</string>
-    <string name="move_up" msgid="9136155291380319606">"העברה למעלה"</string>
-    <string name="move_down" msgid="4404970288236170693">"העברה למטה"</string>
+    <string name="move_up" msgid="9136155291380319606">"הזזה למעלה"</string>
+    <string name="move_down" msgid="4404970288236170693">"הזזה למטה"</string>
     <string name="remove" msgid="1340423400489007362">"הסרה"</string>
     <string name="app_data_title" msgid="6499967982291000837">"נתוני האפליקציה"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"כאן יופיעו נתונים מהאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
@@ -1276,8 +1278,7 @@
     <string name="write_access" msgid="571547306854732263">"הרשאת כתיבה"</string>
     <string name="read_access" msgid="3317759826769372785">"הרשאת קריאה"</string>
     <string name="health_switch_content_description" msgid="1297823949479201621">"‫<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. ‏<xliff:g id="SWITCH_FUNCTION">%2$s</xliff:g>. <xliff:g id="SWITCH_STATE">%3$s</xliff:g>"</string>
-    <!-- no translation found for health_permission_grouping_switch_content_description (2328008720245815655) -->
-    <skip />
+    <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
     <string name="allowed_apps_count" msgid="2289260267605628310">"‫<xliff:g id="NUMBER_0">%1$d</xliff:g> מתוך <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> אפליקציות קיבלו הרשאה"</string>

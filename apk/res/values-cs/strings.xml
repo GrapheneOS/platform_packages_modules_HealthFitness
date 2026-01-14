@@ -1180,8 +1180,10 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect se obnovuje"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Rozumím"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Je nutná aktualizace"</string>
-    <string name="data_restore_pending_banner_content" msgid="7631240781262092142">"Než budete pokračovat v obnovování dat, aktualizujte systém telefonu."</string>
-    <string name="data_restore_pending_banner_button" msgid="2150345659341456815">"Aktualizovat"</string>
+    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
+    <skip />
+    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
+    <skip />
     <string name="data_totals_header" msgid="8316977153276216025">"Celková data"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Zdroje dat"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Pokud chcete mít přehled o tom, jak se můžou měnit celková data, přidejte zdroje dat do seznamu. Když zdroj dat z tohoto seznamu odstraníte, přestane přispívat k celkovým datům, ale bude mít dál oprávnění k zápisu."</string>

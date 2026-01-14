@@ -282,6 +282,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -3926,6 +3927,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         // Storage Dump
         pw.println("Health Connect Storage Status");
         pw.printf(
+                Locale.ROOT,
                 "Database Version : %d, Database Size : %d kb \n\n",
                 mTransactionManager.getDatabaseVersion(),
                 mTransactionManager.getDatabaseSize() / 1024);
@@ -3933,8 +3935,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         // B&R State
         pw.println("Health Connect Backup Status");
         pw.printf(
+                Locale.ROOT,
                 "Data Restore State : %d, Data Restore Error : %d \n\n",
-                mBackupRestore.getDataRestoreState(), mBackupRestore.getDataRestoreError());
+                mBackupRestore.getDataRestoreState(),
+                mBackupRestore.getDataRestoreError());
     }
 
     public boolean hasUserEnabledTracking(
