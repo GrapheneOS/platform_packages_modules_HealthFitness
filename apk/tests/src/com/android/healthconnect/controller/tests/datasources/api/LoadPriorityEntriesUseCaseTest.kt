@@ -69,11 +69,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.times
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -416,13 +416,13 @@ class LoadPriorityEntriesUseCaseTest {
             Mockito.doAnswer(prepareRecordsAnswer(records))
                 .`when`(healthConnectManager)
                 .readRecords(
-                    ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                         request.fromDataSource(packageName) &&
                             request.fromTimeRange(timeFilterRange) &&
                             request.forDataType(dataType)
                     },
-                    ArgumentMatchers.any(),
-                    ArgumentMatchers.any(),
+                    any(),
+                    any(),
                 )
         }
     }

@@ -53,10 +53,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -108,21 +109,21 @@ class LoadDataEntriesUseCaseTest {
         Mockito.doAnswer(prepareRecordsAnswer(listOf(stepsRecord)))
             .`when`(healthConnectManager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.forDataType(dataType = StepsRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
 
         Mockito.doAnswer(prepareRecordsAnswer(listOf()))
             .`when`(healthConnectManager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.forDataType(dataType = StepsCadenceRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
 
         val expectedFormattedEntry =
@@ -139,11 +140,7 @@ class LoadDataEntriesUseCaseTest {
 
         Mockito.doAnswer(prepareFailureAnswer())
             .`when`(healthConnectManager)
-            .readRecords<StepsRecord>(
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .readRecords<StepsRecord>(any(), any(), any())
 
         val input =
             LoadDataEntriesInput(

@@ -60,7 +60,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.Mockito.doAnswer
 import org.mockito.invocation.InvocationOnMock
@@ -113,7 +112,7 @@ class HomeViewModelTest {
     fun isAnyMedicalData_noMedicalData_returnsFalse() = runTest {
         doAnswer(prepareAnswer(emptyList()))
             .`when`(manager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
 
         val testObserver = TestObserver<Boolean>()
         viewModel.hasAnyMedicalData.observeForever(testObserver)
@@ -134,7 +133,7 @@ class HomeViewModelTest {
             )
         doAnswer(prepareAnswer(medicalResourceTypeResources))
             .`when`(manager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
 
         val testObserver = TestObserver<Boolean>()
         viewModel.hasAnyMedicalData.observeForever(testObserver)
@@ -522,7 +521,7 @@ class HomeViewModelTest {
             )
         doAnswer(prepareAnswer(recordTypeInfoMap))
             .`when`(manager)
-            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllRecordTypesInfo(any(), any())
     }
 
     private fun mockMedicalData() {
@@ -535,7 +534,7 @@ class HomeViewModelTest {
             )
         doAnswer(prepareAnswer(medicalResourceTypeResources))
             .`when`(manager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
     }
 
     private fun setLockScreenBannerSeenFitness(seen: Boolean) {

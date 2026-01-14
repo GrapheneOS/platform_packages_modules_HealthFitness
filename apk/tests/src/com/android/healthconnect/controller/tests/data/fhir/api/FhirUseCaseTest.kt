@@ -47,10 +47,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations.initMocks
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
 import org.mockito.kotlin.doAnswer
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -87,11 +87,7 @@ class FhirUseCaseTest {
     fun emptyList_returnsFailedUseCaseResult() = runTest {
         doAnswer(prepareAnswer(listOf()))
             .`when`(manager)
-            .readMedicalResources(
-                ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .readMedicalResources(any<MutableList<MedicalResourceId>>(), any(), any())
 
         val result = mFhirUseCase.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
 
@@ -106,11 +102,7 @@ class FhirUseCaseTest {
     fun error_returnsFailedUseCaseResult() = runTest {
         doAnswer(prepareFailureAnswer())
             .`when`(manager)
-            .readMedicalResources(
-                ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .readMedicalResources(any<MutableList<MedicalResourceId>>(), any(), any())
 
         val result = mFhirUseCase.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
 
@@ -124,11 +116,7 @@ class FhirUseCaseTest {
         val medicalResources: List<MedicalResource> = listOf(TEST_MEDICAL_RESOURCE_IMMUNIZATION)
         doAnswer(prepareAnswer(medicalResources))
             .`when`(manager)
-            .readMedicalResources(
-                ArgumentMatchers.any<MutableList<MedicalResourceId>>(),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .readMedicalResources(any<MutableList<MedicalResourceId>>(), any(), any())
 
         val result = mFhirUseCase.loadFhirResource(TEST_MEDICAL_RESOURCE_IMMUNIZATION.id)
 

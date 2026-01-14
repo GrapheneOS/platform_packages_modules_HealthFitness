@@ -21,7 +21,6 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissionCategory
 import android.health.connect.MedicalResourceTypeInfo
-import android.health.connect.ReadRecordsRequestUsingFilters
 import android.health.connect.ReadRecordsResponse
 import android.health.connect.RecordTypeInfoResponse
 import android.health.connect.datatypes.Record
@@ -40,7 +39,6 @@ import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -90,7 +88,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
@@ -132,11 +129,7 @@ class AppDataFragmentTest {
                 null
             }
             .`when`(manager)
-            .readRecords(
-                ArgumentMatchers.any(ReadRecordsRequestUsingFilters::class.java),
-                any(),
-                ArgumentMatchers.any(),
-            )
+            .readRecords<Record>(any(), any(), any())
     }
 
     @After

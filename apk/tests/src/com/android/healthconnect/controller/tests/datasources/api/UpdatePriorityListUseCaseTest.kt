@@ -34,7 +34,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Captor
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
@@ -42,6 +41,7 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
@@ -65,11 +65,7 @@ class UpdatePriorityListUseCaseTest {
     fun invoke_callsHealthConnectManager() = runTest {
         doAnswer(prepareAnswer())
             .`when`(healthConnectManager)
-            .updateDataOriginPriorityOrder(
-                any(UpdateDataOriginPriorityOrderRequest::class.java),
-                any(),
-                any(),
-            )
+            .updateDataOriginPriorityOrder(any(), any(), any())
 
         val priorityList = listOf(TEST_APP_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_3)
         useCase.invoke(priorityList = priorityList, category = HealthDataCategory.ACTIVITY)

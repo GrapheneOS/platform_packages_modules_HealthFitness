@@ -120,12 +120,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Captor
 import org.mockito.Mockito
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.junit.MockitoJUnit
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.mock
 import org.mockito.stubbing.Stubber
 
@@ -311,7 +311,7 @@ class LoadEntriesHelperUseCaseTest {
             Mockito.doAnswer(prepareStepsAnswer(listOf(stepRecord1, stepRecord2)))
                 .`when`(healthConnectManager)
                 .readRecords(
-                    ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                         request.forDataType(dataType = StepsRecord::class.java)
                     },
                     any(),
@@ -323,7 +323,7 @@ class LoadEntriesHelperUseCaseTest {
                 )
                 .`when`(healthConnectManager)
                 .readRecords(
-                    ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                         request.forDataType(dataType = StepsCadenceRecord::class.java)
                     },
                     any(),
@@ -999,9 +999,7 @@ class LoadEntriesHelperUseCaseTest {
                     )
             }
 
-        mockitoStubber
-            .`when`(healthConnectManager)
-            .readRecords(any(ReadRecordsRequestUsingFilters::class.java), any(), any())
+        mockitoStubber.`when`(healthConnectManager).readRecords<Record>(any(), any(), any())
 
         return Pair(input, timeRangeFilter)
     }
@@ -1047,7 +1045,7 @@ class LoadEntriesHelperUseCaseTest {
 
         mockitoStubber
             .`when`(healthConnectManager)
-            .readMedicalResources(any(ReadMedicalResourcesInitialRequest::class.java), any(), any())
+            .readMedicalResources(any<ReadMedicalResourcesInitialRequest>(), any(), any())
 
         return input
     }
