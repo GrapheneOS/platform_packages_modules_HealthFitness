@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect;
 
+import static com.android.healthfitness.flags.Flags.FLAG_ENABLE_HARDWARE_SUPPORT_CHECK;
 import static com.android.healthfitness.flags.Flags.FLAG_LATENCY_METRICS_FLAG;
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.BackupRestoreJobService.BACKUP_RESTORE_JOBS_NAMESPACE;
@@ -50,13 +51,16 @@ import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.modules.utils.build.SdkLevel;
 import com.android.server.SystemService;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigrationStateChangeJob;
+import com.android.server.healthconnect.permission.PermissionPackageChangesOrchestrator;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -217,11 +221,235 @@ public class HealthConnectManagerServiceTest {
         verify(mockTrackerManager, times(1)).clearTracker();
     }
 
+    @Test
+    @EnableFlags({FLAG_ENABLE_HARDWARE_SUPPORT_CHECK})
+    public void onStart_flagOn_deviceNotSupported_doesNotStartListeners() {
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)).thenReturn(true);
+        HealthConnectInjector injector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+        HealthConnectInjector spiedInjector = Mockito.spy(injector);
+        PermissionPackageChangesOrchestrator orchestrator =
+                Mockito.mock(PermissionPackageChangesOrchestrator.class);
+        Mockito.doReturn(orchestrator)
+                .when(spiedInjector)
+                .getPermissionPackageChangesOrchestrator();
+
+        HealthConnectManagerService service = makeServiceWithSpy(mContext, spiedInjector);
+        service.onStart();
+
+        verify(orchestrator, never()).registerBroadcastReceiver(any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_ENABLE_HARDWARE_SUPPORT_CHECK})
+    public void onStart_flagOn_deviceSupported_startsListeners() {
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)).thenReturn(false);
+
+        HealthConnectInjector injector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+        HealthConnectInjector spiedInjector = Mockito.spy(injector);
+        PermissionPackageChangesOrchestrator orchestrator =
+                Mockito.mock(PermissionPackageChangesOrchestrator.class);
+        Mockito.doReturn(orchestrator)
+                .when(spiedInjector)
+                .getPermissionPackageChangesOrchestrator();
+
+        HealthConnectManagerService service = makeServiceWithSpy(mContext, spiedInjector);
+        service.onStart();
+
+        verify(orchestrator).registerBroadcastReceiver(mContext);
+    }
+
+    @Test
+    @DisableFlags({FLAG_ENABLE_HARDWARE_SUPPORT_CHECK})
+    public void onStart_flagOff_deviceNotSupported_stillStartsListeners() {
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE))
+                .thenReturn(true); // Device NOT supported
+
+        HealthConnectInjector injector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+        HealthConnectInjector spiedInjector = Mockito.spy(injector);
+        PermissionPackageChangesOrchestrator orchestrator =
+                Mockito.mock(PermissionPackageChangesOrchestrator.class);
+        Mockito.doReturn(orchestrator)
+                .when(spiedInjector)
+                .getPermissionPackageChangesOrchestrator();
+
+        HealthConnectManagerService service = makeServiceWithSpy(mContext, spiedInjector);
+        service.onStart();
+
+        // Verification: Listeners SHOULD start because the flag is OFF
+        verify(orchestrator).registerBroadcastReceiver(mContext);
+    }
+
+    @Test
+    @DisableFlags({FLAG_ENABLE_HARDWARE_SUPPORT_CHECK})
+    public void onStart_flagOff_deviceSupported_startsListeners() {
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE))
+                .thenReturn(false); // Device supported
+
+        HealthConnectInjector injector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+        HealthConnectInjector spiedInjector = Mockito.spy(injector);
+        PermissionPackageChangesOrchestrator orchestrator =
+                Mockito.mock(PermissionPackageChangesOrchestrator.class);
+        Mockito.doReturn(orchestrator)
+                .when(spiedInjector)
+                .getPermissionPackageChangesOrchestrator();
+
+        HealthConnectManagerService service = makeServiceWithSpy(mContext, spiedInjector);
+        service.onStart();
+
+        // Verification: Listeners SHOULD start because the flag is OFF
+        verify(orchestrator).registerBroadcastReceiver(mContext);
+    }
+
+    @Test
+    @EnableFlags({FLAG_ENABLE_HARDWARE_SUPPORT_CHECK})
+    public void onUserUnlocked_flagOn_deviceNotSupported_noOps() {
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)).thenReturn(true);
+        HealthConnectManagerService service = makeServiceWithTemporaryDir();
+
+        service.onUserUnlocked(mMockTargetUser);
+
+        verify(mDailyJobScheduler, never()).schedule(any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_ENABLE_HARDWARE_SUPPORT_CHECK})
+    public void onUserSwitching_flagOn_deviceNotSupported_noOps() {
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)).thenReturn(true);
+        HealthConnectManagerService service = makeServiceWithTemporaryDir();
+
+        service.onUserSwitching(mMockTargetUser, mMockTargetUser);
+
+        verify(mDailyJobScheduler, never()).cancelAll();
+    }
+
+    @Test
+    @EnableFlags({FLAG_ENABLE_HARDWARE_SUPPORT_CHECK})
+    public void onStart_flagOn_watch_permissionGranted_startsListeners() throws Exception {
+        Assume.assumeTrue(SdkLevel.isAtLeastB());
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)).thenReturn(true);
+        // Assuming SdkLevel.isAtLeastB() is true in this environment.
+        when(mContext.checkSelfPermission(
+                        android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS))
+                .thenReturn(PackageManager.PERMISSION_GRANTED);
+        // Override the default mock which throws NameNotFoundException
+        when(mPackageManager.getPermissionGroupInfo(
+                        eq(android.health.connect.HealthPermissions.HEALTH_PERMISSION_GROUP),
+                        eq(0)))
+                .thenReturn(new PermissionGroupInfo());
+
+        HealthConnectInjector injector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+        HealthConnectInjector spiedInjector = Mockito.spy(injector);
+        PermissionPackageChangesOrchestrator orchestrator =
+                Mockito.mock(PermissionPackageChangesOrchestrator.class);
+        Mockito.doReturn(orchestrator)
+                .when(spiedInjector)
+                .getPermissionPackageChangesOrchestrator();
+
+        HealthConnectManagerService service = makeServiceWithSpy(mContext, spiedInjector);
+        service.onStart();
+
+        verify(orchestrator).registerBroadcastReceiver(mContext);
+    }
+
+    @Test
+    @EnableFlags({FLAG_ENABLE_HARDWARE_SUPPORT_CHECK})
+    public void onStart_flagOn_watch_permissionDenied_doesNotStartListeners() {
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)).thenReturn(true);
+        when(mContext.checkSelfPermission(
+                        android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS))
+                .thenReturn(PackageManager.PERMISSION_DENIED);
+
+        HealthConnectInjector injector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+        HealthConnectInjector spiedInjector = Mockito.spy(injector);
+        PermissionPackageChangesOrchestrator orchestrator =
+                Mockito.mock(PermissionPackageChangesOrchestrator.class);
+        Mockito.doReturn(orchestrator)
+                .when(spiedInjector)
+                .getPermissionPackageChangesOrchestrator();
+
+        HealthConnectManagerService service = makeServiceWithSpy(mContext, spiedInjector);
+        service.onStart();
+
+        verify(orchestrator, never()).registerBroadcastReceiver(mContext);
+    }
+
+    @Test
+    @EnableFlags({FLAG_ENABLE_HARDWARE_SUPPORT_CHECK})
+    public void onStart_flagOn_embedded_doesNotStartListeners() {
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_EMBEDDED)).thenReturn(true);
+
+        HealthConnectInjector injector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+        HealthConnectInjector spiedInjector = Mockito.spy(injector);
+        PermissionPackageChangesOrchestrator orchestrator =
+                Mockito.mock(PermissionPackageChangesOrchestrator.class);
+        Mockito.doReturn(orchestrator)
+                .when(spiedInjector)
+                .getPermissionPackageChangesOrchestrator();
+
+        HealthConnectManagerService service = makeServiceWithSpy(mContext, spiedInjector);
+        service.onStart();
+
+        verify(orchestrator, never()).registerBroadcastReceiver(any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_ENABLE_HARDWARE_SUPPORT_CHECK})
+    public void onStart_flagOn_leanback_doesNotStartListeners() {
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)).thenReturn(true);
+
+        HealthConnectInjector injector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+        HealthConnectInjector spiedInjector = Mockito.spy(injector);
+        PermissionPackageChangesOrchestrator orchestrator =
+                Mockito.mock(PermissionPackageChangesOrchestrator.class);
+        Mockito.doReturn(orchestrator)
+                .when(spiedInjector)
+                .getPermissionPackageChangesOrchestrator();
+
+        HealthConnectManagerService service = makeServiceWithSpy(mContext, spiedInjector);
+        service.onStart();
+
+        verify(orchestrator, never()).registerBroadcastReceiver(any());
+    }
+
     private HealthConnectManagerService makeServiceWithTemporaryDir() {
         HealthConnectInjector injector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
         return new HealthConnectManagerService(mContext, injector);
+    }
+
+    private HealthConnectManagerService makeServiceWithSpy(
+            Context context, HealthConnectInjector injector) {
+        return new HealthConnectManagerService(context, injector) {
+            @Override
+            public void publishService(String name, android.os.IBinder service) {
+                // Do nothing
+            }
+        };
     }
 }
