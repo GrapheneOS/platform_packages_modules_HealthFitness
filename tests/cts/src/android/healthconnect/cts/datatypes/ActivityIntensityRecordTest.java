@@ -22,9 +22,6 @@ import static android.health.connect.datatypes.Device.DEVICE_TYPE_FITNESS_BAND;
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_MANUAL_ENTRY;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVITY_INTENSITY;
 
-import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
-import static com.android.healthfitness.flags.Flags.FLAG_HEALTH_CONNECT_MAPPINGS;
-
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
@@ -37,9 +34,6 @@ import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.platform.test.annotations.AppModeFull;
-import android.platform.test.annotations.RequiresFlagsEnabled;
-import android.platform.test.flag.junit.CheckFlagsRule;
-import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -54,11 +48,7 @@ import java.time.ZoneOffset;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({FLAG_ACTIVITY_INTENSITY, FLAG_HEALTH_CONNECT_MAPPINGS})
 public class ActivityIntensityRecordTest {
-
-    @Rule
-    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
     @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =

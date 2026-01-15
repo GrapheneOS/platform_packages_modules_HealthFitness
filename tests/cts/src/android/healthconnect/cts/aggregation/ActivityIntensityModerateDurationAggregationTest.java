@@ -25,8 +25,6 @@ import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.setupAggregation;
 import static android.healthconnect.testing.shared.recordfactory.RecordFactory.YESTERDAY_11AM;
 
-import static com.android.healthfitness.flags.Flags.FLAG_HEALTH_CONNECT_MAPPINGS;
-
 import static com.google.common.truth.Truth.assertThat;
 
 import static java.time.Duration.ofMinutes;
@@ -38,7 +36,6 @@ import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.ActivityIntensityRecord;
 import android.health.connect.datatypes.DataOrigin;
 import android.healthconnect.testing.shared.recordfactory.ActivityIntensityRecordFactory;
-import android.platform.test.annotations.RequiresFlagsEnabled;
 
 import androidx.annotation.Nullable;
 
@@ -51,7 +48,6 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.List;
 
-@RequiresFlagsEnabled({FLAG_HEALTH_CONNECT_MAPPINGS})
 @ApiTest(
         apis = {"android.health.connect.datatypes.ActivityIntensityRecord#MODERATE_DURATION_TOTAL"})
 public class ActivityIntensityModerateDurationAggregationTest

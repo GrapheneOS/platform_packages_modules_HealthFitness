@@ -32,7 +32,6 @@ import org.junit.runner.RunWith;
 @RequiresFlagsEnabled({
     Flags.FLAG_ALCOHOL_CONSUMPTION,
     Flags.FLAG_ALCOHOL_CONSUMPTION_DB,
-    Flags.FLAG_HEALTH_CONNECT_MAPPINGS,
     Flags.FLAG_SMOKING_DB,
     Flags.FLAG_SYMPTOMS_DB,
 })

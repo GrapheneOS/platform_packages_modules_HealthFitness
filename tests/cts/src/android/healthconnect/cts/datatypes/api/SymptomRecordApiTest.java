@@ -47,7 +47,6 @@ import java.util.List;
 @RequiresFlagsEnabled({
     Flags.FLAG_SYMPTOMS,
     Flags.FLAG_SYMPTOMS_DB,
-    Flags.FLAG_HEALTH_CONNECT_MAPPINGS,
 })
 public class SymptomRecordApiTest extends BaseApiTest<SymptomRecord> {
     public SymptomRecordApiTest() {
