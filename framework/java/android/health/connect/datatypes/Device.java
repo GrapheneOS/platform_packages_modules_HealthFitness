@@ -85,6 +85,18 @@ public final class Device {
          * Sets an optional client supplied UDI (Unique Device Identifier), a unique numeric or
          * alphanumeric code assigned to a medical device, for this {@link Device} instance.
          *
+         * <p>A device receives a UDI from an accredited issuing agency (e.g. from GS1) which is
+         * then registered in multiple regulatory databases (e.g. FDA). The UDI is a unique,
+         * globally recognized identifier assigned to a specific device model. An accredited issuing
+         * agency, like GS1, provides the global standards used to create the UDI codes. The
+         * manufacturers must submit the UDI provided by GS1 to the relevant regulatory databases
+         * for each market they operate in.
+         *
+         * <ul>
+         *   <li>In the US, this is the FDA’s Global Unique Device Identification Database (GUDID).
+         *   <li>In the EU, it is the European Database on Medical Devices (EUDAMED).
+         * </ul>
+         *
          * <p>The calling package needs to declare {@link HealthPermissions#WRITE_DEVICE_UDI} in
          * manifest to be able to set UDI for any record. {@link SecurityException} is thrown when
          * upserting a record with UDI without the permission.
@@ -276,6 +288,14 @@ public final class Device {
     /**
      * Returns the UDI (Unique Device Identifier), a unique numeric or alphanumeric code assigned to
      * a medical device, of this {@link Device} instance.
+     *
+     * <p>The identifier is entirely "self-declared" by the device or app writing the data. Health
+     * Connect acts as a passive data store; it does not cross-reference this ID against the FDA's
+     * GUDID database or any other regulatory registry to ensure the device is legitimate. The
+     * presence of a UDI indicates that the data source is a Registered Medical Device. However, it
+     * does not guarantee specific FDA Clearance or Approval. Data Readers should use the UDI to
+     * query the GUDID database if they need to filter by Regulatory Class (I, II, or III) or
+     * intended use.
      *
      * @return The device Unique Device Identifier (UDI) if set, null otherwise.
      */
