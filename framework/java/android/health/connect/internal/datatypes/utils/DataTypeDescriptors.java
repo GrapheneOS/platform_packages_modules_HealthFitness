@@ -390,21 +390,17 @@ public class DataTypeDescriptors {
                                         READ_ACTIVE_CALORIES_BURNED,
                                         WRITE_ACTIVE_CALORIES_BURNED)
                                 .build(),
-                        // Redundantly explicitly checking the flag to satisfy the linter.
-                        Flags.activityIntensity() && AconfigFlagHelper.isActivityIntensityEnabled()
-                                ? DataTypeDescriptor.builder()
-                                        .setRecordTypeIdentifier(RECORD_TYPE_ACTIVITY_INTENSITY)
-                                        .setDataCategory(HealthDataCategory.ACTIVITY)
-                                        .setRecordClass(ActivityIntensityRecord.class)
-                                        .setRecordInternalClass(
-                                                ActivityIntensityRecordInternal.class)
-                                        .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
-                                        .addPermissionCategory(
-                                                HealthPermissionCategory.ACTIVITY_INTENSITY,
-                                                READ_ACTIVITY_INTENSITY,
-                                                WRITE_ACTIVITY_INTENSITY)
-                                        .build()
-                                : null,
+                        DataTypeDescriptor.builder()
+                                .setRecordTypeIdentifier(RECORD_TYPE_ACTIVITY_INTENSITY)
+                                .setDataCategory(HealthDataCategory.ACTIVITY)
+                                .setRecordClass(ActivityIntensityRecord.class)
+                                .setRecordInternalClass(ActivityIntensityRecordInternal.class)
+                                .setRecordTypeSensitivity(RecordTypeSensitivity.INSENSITIVE)
+                                .addPermissionCategory(
+                                        HealthPermissionCategory.ACTIVITY_INTENSITY,
+                                        READ_ACTIVITY_INTENSITY,
+                                        WRITE_ACTIVITY_INTENSITY)
+                                .build(),
                         Flags.alcoholConsumption()
                                         && AconfigFlagHelper.isAlcoholConsumptionEnabled()
                                 ? DataTypeDescriptor.builder()

@@ -144,6 +144,7 @@ public class HealthPermissionsTest {
                                     HealthPermissions.READ_MEDICAL_DATA_VACCINES,
                                     HealthPermissions.READ_MEDICAL_DATA_VISITS,
                                     HealthPermissions.READ_MEDICAL_DATA_VITAL_SIGNS,
+                                    HealthPermissions.READ_ACTIVITY_INTENSITY,
                                     HealthPermissions.WRITE_ACTIVE_CALORIES_BURNED,
                                     HealthPermissions.WRITE_DISTANCE,
                                     HealthPermissions.WRITE_ELEVATION_GAINED,
@@ -183,7 +184,8 @@ public class HealthPermissionsTest {
                                     HealthPermissions.WRITE_RESTING_HEART_RATE,
                                     HealthPermissions.WRITE_SKIN_TEMPERATURE,
                                     HealthPermissions.WRITE_MINDFULNESS,
-                                    HealthPermissions.WRITE_MEDICAL_DATA),
+                                    HealthPermissions.WRITE_MEDICAL_DATA,
+                                    HealthPermissions.WRITE_ACTIVITY_INTENSITY),
                             isDeviceUdiEnabled()
                                     ? Stream.of(HealthPermissions.WRITE_DEVICE_UDI)
                                     : Stream.of(),
@@ -313,11 +315,6 @@ public class HealthPermissionsTest {
                                             HealthPermissions.WRITE_SYMPTOM_WATER_RETENTION,
                                             HealthPermissions.READ_SYMPTOM_WHEEZING,
                                             HealthPermissions.WRITE_SYMPTOM_WHEEZING)
-                                    : Stream.of(),
-                            Flags.activityIntensity()
-                                    ? Stream.of(
-                                            HealthPermissions.READ_ACTIVITY_INTENSITY,
-                                            HealthPermissions.WRITE_ACTIVITY_INTENSITY)
                                     : Stream.of(),
                             Flags.alcoholConsumption()
                                     ? Stream.of(

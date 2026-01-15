@@ -239,7 +239,6 @@ public class HealthConnectMappingsTest {
 
     @RequiresFlagsEnabled({
         Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP,
-        Flags.FLAG_ACTIVITY_INTENSITY,
         Flags.FLAG_SMOKING,
         Flags.FLAG_SMOKING_DB
     })
@@ -260,11 +259,7 @@ public class HealthConnectMappingsTest {
     }
 
     @RequiresFlagsDisabled(Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP)
-    @RequiresFlagsEnabled({
-        Flags.FLAG_ACTIVITY_INTENSITY,
-        Flags.FLAG_SMOKING,
-        Flags.FLAG_SMOKING_DB
-    })
+    @RequiresFlagsEnabled({Flags.FLAG_SMOKING, Flags.FLAG_SMOKING_DB})
     @Test
     public void getHealthDataCategoryForWritePermission_flagDisabled_doesNotSupportNewDataTypes() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -432,22 +427,12 @@ public class HealthConnectMappingsTest {
                                 .collect(Collectors.toSet()));
     }
 
-    @RequiresFlagsEnabled({Flags.FLAG_ACTIVITY_INTENSITY})
     @Test
     public void activityIntensityFlagsEnabled_containsActivityIntensity() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
 
         assertThat(healthConnectMappings.getAllRecordTypeIdentifiers())
                 .contains(RECORD_TYPE_ACTIVITY_INTENSITY);
-    }
-
-    @RequiresFlagsDisabled(Flags.FLAG_ACTIVITY_INTENSITY)
-    @Test
-    public void activityIntensityFlagDisabled_doesNotContainsActivityIntensity() {
-        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
-
-        assertThat(healthConnectMappings.getAllRecordTypeIdentifiers())
-                .doesNotContain(RECORD_TYPE_ACTIVITY_INTENSITY);
     }
 
     @RequiresFlagsEnabled({

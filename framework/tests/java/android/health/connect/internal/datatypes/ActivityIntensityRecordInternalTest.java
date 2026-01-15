@@ -25,8 +25,6 @@ import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_MANUAL_
 import static android.health.connect.datatypes.Metadata.RECORDING_METHOD_UNKNOWN;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_ACTIVITY_INTENSITY;
 
-import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
-
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.datatypes.ActivityIntensityRecord;
@@ -35,14 +33,10 @@ import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Parcel;
-import android.platform.test.annotations.RequiresFlagsEnabled;
-import android.platform.test.flag.junit.CheckFlagsRule;
-import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -53,11 +47,7 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({FLAG_ACTIVITY_INTENSITY})
 public class ActivityIntensityRecordInternalTest {
-
-    @Rule
-    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
 
     @Before
     public void setUp() {
