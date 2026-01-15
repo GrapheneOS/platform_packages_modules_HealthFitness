@@ -33,6 +33,7 @@ import static com.google.common.truth.Truth.assertThat;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.ReadRecordsRequestUsingFilters;
+import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
@@ -251,5 +252,68 @@ public class UpdateDeviceRecordsTest {
 
         assertThat(readRecordsTwo.size()).isEqualTo(1);
         assertThat(readRecordsTwo.get(0).getCount()).isEqualTo(50);
+    }
+
+    @Test
+    public void updateDeviceRecords_getsCorrectDisplayName() throws InterruptedException {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("OriginalDisplayName")
+                        .build();
+        advertiseDevice(mDeviceId, device, StepsRecord.class);
+        List<StepsRecord> records = List.of(getStepsRecord(123));
+        String uuid = insertDeviceRecords(mDeviceId, records).get(0).getMetadata().getId();
+        StepsRecord updateRecord = getStepsRecord(50, new Metadata.Builder().setId(uuid).build());
+
+        updateDeviceRecords(mDeviceId, List.of(updateRecord));
+        List<StepsRecord> readRecords =
+                readDeviceRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setDeviceId(mDeviceId)
+                                .build());
+
+        assertThat(readRecords).hasSize(1);
+        assertThat(readRecords.get(0).getCount()).isEqualTo(50);
+        assertThat(readRecords.get(0).getMetadata().getDevice().getDisplayName())
+                .isEqualTo("OriginalDisplayName");
+    }
+
+    @Test
+    public void updateDeviceRecords_afterDisplayNameUpdate_getsUpdatedDisplayName()
+            throws InterruptedException {
+        Device device1 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("OriginalDisplayName")
+                        .build();
+        advertiseDevice(mDeviceId, device1, StepsRecord.class);
+        List<StepsRecord> records = List.of(getStepsRecord(123));
+        String uuid = insertDeviceRecords(mDeviceId, records).get(0).getMetadata().getId();
+        Device device2 =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("UpdatedDisplayName")
+                        .build();
+        advertiseDevice(mDeviceId, device2, StepsRecord.class);
+
+        StepsRecord updateRecord = getStepsRecord(50, new Metadata.Builder().setId(uuid).build());
+        updateDeviceRecords(mDeviceId, List.of(updateRecord));
+        List<StepsRecord> readRecords =
+                readDeviceRecords(
+                        new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class)
+                                .setDeviceId(mDeviceId)
+                                .build());
+
+        assertThat(readRecords).hasSize(1);
+        assertThat(readRecords.get(0).getCount()).isEqualTo(50);
+        assertThat(readRecords.get(0).getMetadata().getDevice().getDisplayName())
+                .isEqualTo("UpdatedDisplayName");
     }
 }

@@ -19,7 +19,6 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.ModuleUpdateRequiredFragment
 import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.launchFragment
-import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.SettingsTransitionHelper.createMainlineServiceUpdateSettingsIntent
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
@@ -46,7 +45,6 @@ import org.mockito.kotlin.verify
 class ModuleUpdateRequiredFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @BindValue val navigationUtils: NavigationUtils = mock()
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
 
     @Inject @ApplicationContext lateinit var applicationContext: Context

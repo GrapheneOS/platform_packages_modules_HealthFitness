@@ -35,13 +35,12 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.Captor
-import org.mockito.ArgumentMatchers.any
-import org.mockito.ArgumentMatchers.anyList
 import org.mockito.Mockito.doAnswer
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -64,7 +63,7 @@ class DeleteEntryUseCaseTest {
     fun invoke_deleteEntries_callsHealthManager() = runTest {
         doAnswer(prepareAnswer())
             .`when`(manager)
-            .deleteRecords(anyList(), any(), any())
+            .deleteRecords(any<List<RecordIdFilter>>(), any(), any())
 
         useCase.invoke(
             DeleteEntries(

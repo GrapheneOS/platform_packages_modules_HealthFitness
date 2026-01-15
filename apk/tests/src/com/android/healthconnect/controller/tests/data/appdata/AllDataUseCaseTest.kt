@@ -21,7 +21,6 @@ import android.health.connect.HealthDataCategory
 import android.health.connect.HealthDataCategory.SYMPTOMS
 import android.health.connect.HealthPermissionCategory
 import android.health.connect.MedicalResourceTypeInfo
-import android.health.connect.ReadRecordsRequestUsingFilters
 import android.health.connect.ReadRecordsResponse
 import android.health.connect.RecordTypeInfoResponse
 import android.health.connect.datatypes.HeartRateRecord
@@ -61,10 +60,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -92,11 +91,7 @@ class AllDataUseCaseTest {
                 null
             }
             .`when`(healthConnectManager)
-            .readRecords(
-                ArgumentMatchers.any(ReadRecordsRequestUsingFilters::class.java),
-                org.mockito.kotlin.any(),
-                ArgumentMatchers.any(),
-            )
+            .readRecords<Record>(any(), any(), any())
     }
 
     @Test
@@ -128,7 +123,7 @@ class AllDataUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
             .`when`(healthConnectManager)
-            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllRecordTypesInfo(any(), any())
 
         val expected =
             Success(
@@ -181,7 +176,7 @@ class AllDataUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
             .`when`(healthConnectManager)
-            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllRecordTypesInfo(any(), any())
 
         val expected =
             Success(
@@ -233,7 +228,7 @@ class AllDataUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
             .`when`(healthConnectManager)
-            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllRecordTypesInfo(any(), any())
 
         val expected =
             Success(
@@ -289,7 +284,7 @@ class AllDataUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
             .`when`(healthConnectManager)
-            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllRecordTypesInfo(any(), any())
 
         val expected =
             Success(
@@ -322,7 +317,7 @@ class AllDataUseCaseTest {
         // no data.
         Mockito.doAnswer(prepareAnswer(listOf()))
             .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
 
         val actual = allDataUseCase.loadMedicalAppData(TEST_APP_PACKAGE_NAME)
         assertThat(actual).isEqualTo(Success(listOf<PermissionTypesPerCategory>()))
@@ -334,7 +329,7 @@ class AllDataUseCaseTest {
             listOf(MedicalResourceTypeInfo(MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES, setOf()))
         Mockito.doAnswer(prepareAnswer(medicalResourceTypeResources))
             .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
 
         val actual = allDataUseCase.loadMedicalAppData(TEST_APP_PACKAGE_NAME)
         assertThat(actual).isEqualTo(Success(listOf<PermissionTypesPerCategory>()))
@@ -351,7 +346,7 @@ class AllDataUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(medicalResourceTypeResources))
             .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
 
         val actual = allDataUseCase.loadMedicalAppData(TEST_APP_PACKAGE_NAME)
         val expected =
@@ -374,7 +369,7 @@ class AllDataUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(medicalResourceTypeResources))
             .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
 
         val actual = allDataUseCase.loadMedicalAppData(TEST_APP_PACKAGE_NAME)
         val expected =
@@ -393,7 +388,7 @@ class AllDataUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(medicalResourceTypeResources))
             .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
 
         val actual = allDataUseCase.loadMedicalAppData(TEST_APP_PACKAGE_NAME)
         assertThat(actual).isEqualTo(Success(listOf<PermissionTypesPerCategory>()))
@@ -406,7 +401,7 @@ class AllDataUseCaseTest {
         // no data.
         Mockito.doAnswer(prepareAnswer(listOf()))
             .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
 
         val actual = allDataUseCase.loadAllMedicalData()
         assertThat(actual).isEqualTo(Success(listOf<MedicalPermissionType>()))
@@ -418,7 +413,7 @@ class AllDataUseCaseTest {
             listOf(MedicalResourceTypeInfo(MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES, setOf()))
         Mockito.doAnswer(prepareAnswer(medicalResourceTypeResources))
             .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
 
         val actual = allDataUseCase.loadAllMedicalData()
         assertThat(actual).isEqualTo(Success(listOf<MedicalPermissionType>()))
@@ -435,7 +430,7 @@ class AllDataUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(medicalResourceTypeResources))
             .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
 
         val actual = allDataUseCase.loadAllMedicalData()
         val expected =
@@ -458,7 +453,7 @@ class AllDataUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(medicalResourceTypeResources))
             .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
 
         val actual = allDataUseCase.loadAllMedicalData()
         val expected =
@@ -485,7 +480,7 @@ class AllDataUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
             .`when`(healthConnectManager)
-            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllRecordTypesInfo(any(), any())
 
         assertThat(allDataUseCase.loadHasAnyFitnessData()).isEqualTo(Success(false))
     }
@@ -509,7 +504,7 @@ class AllDataUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
             .`when`(healthConnectManager)
-            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllRecordTypesInfo(any(), any())
 
         assertThat(allDataUseCase.loadHasAnyFitnessData()).isEqualTo(Success(true))
     }
@@ -520,7 +515,7 @@ class AllDataUseCaseTest {
             listOf(MedicalResourceTypeInfo(MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES, setOf()))
         Mockito.doAnswer(prepareAnswer(medicalResourceTypeResources))
             .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
 
         val actual = allDataUseCase.loadHasAnyMedicalData()
         assertThat(actual).isEqualTo(Success(false))
@@ -537,7 +532,7 @@ class AllDataUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(medicalResourceTypeResources))
             .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllMedicalResourceTypeInfos(any(), any())
 
         val actual = allDataUseCase.loadHasAnyMedicalData()
 
@@ -558,7 +553,7 @@ class AllDataUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
             .`when`(healthConnectManager)
-            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllRecordTypesInfo(any(), any())
 
         Mockito.doAnswer { invocation ->
                 val receiver =
@@ -567,11 +562,7 @@ class AllDataUseCaseTest {
                 null
             }
             .`when`(healthConnectManager)
-            .readRecords(
-                ArgumentMatchers.any(ReadRecordsRequestUsingFilters::class.java),
-                org.mockito.kotlin.any(),
-                ArgumentMatchers.any(),
-            )
+            .readRecords<Record>(any(), any(), any())
 
         val result = allDataUseCase.loadAllFitnessData()
 
@@ -599,8 +590,7 @@ class AllDataUseCaseTest {
                 )
             Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
                 .`when`(healthConnectManager)
-                .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
-
+                .queryAllRecordTypesInfo(any(), any())
             val result = allDataUseCase.loadAllFitnessData()
             assertThat(result).isInstanceOf(Success::class.java)
             val categories = (result as Success).data
@@ -648,7 +638,7 @@ class AllDataUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
             .`when`(healthConnectManager)
-            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllRecordTypesInfo(any(), any())
 
         val result = allDataUseCase.loadFitnessAppData(TEST_APP_PACKAGE_NAME)
         assertThat(result).isInstanceOf(Success::class.java)
@@ -673,11 +663,10 @@ class AllDataUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
             .`when`(healthConnectManager)
-            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllRecordTypesInfo(any(), any())
 
         allDataUseCase.loadAllFitnessData()
 
-        Mockito.verify(healthConnectManager)
-            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+        Mockito.verify(healthConnectManager).queryAllRecordTypesInfo(any(), any())
     }
 }

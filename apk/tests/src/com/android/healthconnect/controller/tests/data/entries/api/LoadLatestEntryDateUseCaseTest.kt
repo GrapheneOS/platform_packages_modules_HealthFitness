@@ -61,8 +61,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.mock
 
@@ -112,21 +113,21 @@ class LoadLatestEntryDateUseCaseTest {
         doAnswer(prepareRecordsAnswer(listOf(stepsRecordOld, stepsRecordNew)))
             .`when`(healthConnectManager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.forDataType(dataType = StepsRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
 
         doAnswer(prepareRecordsAnswer(listOf()))
             .`when`(healthConnectManager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.forDataType(dataType = StepsCadenceRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
 
         val result = loadLatestEntryDateUseCase.invoke(input)
@@ -161,33 +162,33 @@ class LoadLatestEntryDateUseCaseTest {
         doAnswer(prepareRecordsAnswer(listOf(stepsRecordA)))
             .`when`(healthConnectManager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.fromDataSource(DEVICE_DATA_PROVIDER_PACKAGE_NAME) &&
                         request.forDataType(dataType = StepsRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
 
         doAnswer(prepareRecordsAnswer(listOf(stepsRecordA, stepsRecordB)))
             .`when`(healthConnectManager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.dataOrigins?.size == 0 &&
                         request.forDataType(dataType = StepsRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
 
         doAnswer(prepareRecordsAnswer(listOf()))
             .`when`(healthConnectManager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.forDataType(dataType = StepsCadenceRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
 
         val result = loadLatestEntryDateUseCase.invoke(input)
@@ -206,21 +207,21 @@ class LoadLatestEntryDateUseCaseTest {
         doAnswer(prepareRecordsAnswer(listOf()))
             .`when`(healthConnectManager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.forDataType(dataType = StepsRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
 
         doAnswer(prepareRecordsAnswer(listOf()))
             .`when`(healthConnectManager)
             .readRecords(
-                ArgumentMatchers.argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
                     request.forDataType(dataType = StepsCadenceRecord::class.java)
                 },
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
+                any(),
+                any(),
             )
 
         val result = loadLatestEntryDateUseCase.invoke(input)
@@ -234,11 +235,7 @@ class LoadLatestEntryDateUseCaseTest {
 
         doAnswer(prepareFailureAnswer())
             .`when`(healthConnectManager)
-            .readRecords<StepsRecord>(
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .readRecords<StepsRecord>(any(), any(), any())
 
         val input =
             LoadLatestEntryDateInput(

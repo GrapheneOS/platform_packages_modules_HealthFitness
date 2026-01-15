@@ -94,7 +94,6 @@ import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.tests.utils.setPreferenceSeen
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
-import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.SettingsTransitionHelper.createMainlineServiceUpdateSettingsIntent
 import com.android.healthconnect.controller.utils.logging.DataRestoreElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -119,7 +118,6 @@ import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.eq
@@ -156,7 +154,6 @@ class HomeFragmentTest {
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
 
     private lateinit var navHostController: TestNavHostController
-    @BindValue val navigationUtils: NavigationUtils = mock()
 
     companion object {
         private const val TEST_EXPORT_FREQUENCY_IN_DAYS = 1
@@ -523,7 +520,6 @@ class HomeFragmentTest {
     // region Migration tests
     @Test
     fun whenMigrationStatePending_showsMigrationBanner() {
-        Mockito.doNothing().whenever(navigationUtils).navigate(any(), any())
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 WithData(
@@ -574,7 +570,6 @@ class HomeFragmentTest {
 
     @Test
     fun whenDataRestoreStatePending_andErrorVersionDiff_showsRestoreBanner() {
-        Mockito.doNothing().whenever(navigationUtils).navigate(any(), any())
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 WithData(
@@ -620,7 +615,6 @@ class HomeFragmentTest {
 
     @Test
     fun whenDataRestoreStatePending_noError_doesNotShowRestoreBanner() {
-        Mockito.doNothing().whenever(navigationUtils).navigate(any(), any())
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 WithData(

@@ -23,6 +23,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeShowMigrationDialog
@@ -41,7 +42,6 @@ import com.android.healthconnect.controller.shared.children
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.shared.preference.addIntroOrAppHeaderPreference
-import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.logging.AppAccessElement
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -67,7 +67,6 @@ class SettingsCombinedPermissionsFragment : Hilt_SettingsCombinedPermissionsFrag
     }
 
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
-    @Inject lateinit var navigationUtils: NavigationUtils
 
     private lateinit var packageName: String
     private var appName: String = ""
@@ -161,15 +160,15 @@ class SettingsCombinedPermissionsFragment : Hilt_SettingsCombinedPermissionsFrag
                 it.title = getString(R.string.fitness_permissions)
                 it.summary = getString(R.string.fitness_permissions_summary)
                 it.setOnPreferenceClickListener {
-                    navigationUtils.navigate(
-                        this,
-                        R.id.action_settingsCombinedPermissions_to_FitnessAppFragment,
-                        Bundle().apply {
-                            putString(EXTRA_PACKAGE_NAME, packageName)
-                            putString(Constants.EXTRA_APP_NAME, appName)
-                            putBoolean(SHOW_MANAGE_APP_SECTION, false)
-                        },
-                    )
+                    findNavController()
+                        .navigate(
+                            R.id.action_settingsCombinedPermissions_to_FitnessAppFragment,
+                            Bundle().apply {
+                                putString(EXTRA_PACKAGE_NAME, packageName)
+                                putString(Constants.EXTRA_APP_NAME, appName)
+                                putBoolean(SHOW_MANAGE_APP_SECTION, false)
+                            },
+                        )
                     true
                 }
             }
@@ -180,15 +179,15 @@ class SettingsCombinedPermissionsFragment : Hilt_SettingsCombinedPermissionsFrag
                 it.title = getString(R.string.medical_permissions)
                 it.summary = getString(R.string.medical_permissions_summary)
                 it.setOnPreferenceClickListener {
-                    navigationUtils.navigate(
-                        this,
-                        R.id.action_settingsCombinedPermissions_to_MedicalAppFragment,
-                        Bundle().apply {
-                            putString(EXTRA_PACKAGE_NAME, packageName)
-                            putString(Constants.EXTRA_APP_NAME, appName)
-                            putBoolean(SHOW_MANAGE_APP_SECTION, false)
-                        },
-                    )
+                    findNavController()
+                        .navigate(
+                            R.id.action_settingsCombinedPermissions_to_MedicalAppFragment,
+                            Bundle().apply {
+                                putString(EXTRA_PACKAGE_NAME, packageName)
+                                putString(Constants.EXTRA_APP_NAME, appName)
+                                putBoolean(SHOW_MANAGE_APP_SECTION, false)
+                            },
+                        )
                     true
                 }
             }
@@ -206,11 +205,12 @@ class SettingsCombinedPermissionsFragment : Hilt_SettingsCombinedPermissionsFrag
                         it.setOnPreferenceClickListener { _ ->
                             val extras =
                                 Bundle().apply { putString(EXTRA_PACKAGE_NAME, packageName) }
-                            navigationUtils.navigate(
-                                this,
-                                R.id.action_settingsCombinedPermissions_to_additionalAccessFragment,
-                                extras,
-                            )
+                            findNavController()
+                                .navigate(
+                                    R.id
+                                        .action_settingsCombinedPermissions_to_additionalAccessFragment,
+                                    extras,
+                                )
                             true
                         }
                     }

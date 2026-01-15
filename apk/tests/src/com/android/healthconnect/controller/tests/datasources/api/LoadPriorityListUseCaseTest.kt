@@ -40,9 +40,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 
 @ExperimentalCoroutinesApi
@@ -77,11 +77,7 @@ class LoadPriorityListUseCaseTest {
 
         Mockito.doAnswer(prepareAnswer(dataOriginsPriorityOrderResponse))
             .`when`(manager)
-            .fetchDataOriginsPriorityOrder(
-                eq(HealthDataCategory.ACTIVITY),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .fetchDataOriginsPriorityOrder(eq(HealthDataCategory.ACTIVITY), any(), any())
 
         val loadedAppsPriorityList = usecase.execute(HealthDataCategory.ACTIVITY)
 

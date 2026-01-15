@@ -46,10 +46,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -72,14 +72,17 @@ class LoadFitnessTypeContributorAppsUseCaseTest {
         hiltRule.inject()
         loadFitnessTypeContributorAppsUseCase =
             LoadFitnessTypeContributorAppsUseCase(
-                appInfoReader, healthConnectManager, Dispatchers.Main)
+                appInfoReader,
+                healthConnectManager,
+                Dispatchers.Main,
+            )
     }
 
     @Test
     fun loadPermissionTypeContributorAppsUseCase_noRecordsStored_returnsEmptyMap() = runTest {
         Mockito.doAnswer(prepareAnswer(mapOf()))
             .`when`(healthConnectManager)
-            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllRecordTypesInfo(any(), any())
 
         val result = loadFitnessTypeContributorAppsUseCase.invoke(FitnessPermissionType.STEPS)
         val expected = listOf<AppMetadata>()
@@ -96,20 +99,25 @@ class LoadFitnessTypeContributorAppsUseCaseTest {
                         HealthDataCategory.ACTIVITY,
                         listOf(
                             getDataOrigin(TEST_APP_PACKAGE_NAME),
-                            getDataOrigin(TEST_APP_PACKAGE_NAME_2))),
+                            getDataOrigin(TEST_APP_PACKAGE_NAME_2),
+                        ),
+                    ),
                 WeightRecord::class.java to
                     RecordTypeInfoResponse(
                         HealthPermissionCategory.WEIGHT,
                         HealthDataCategory.BODY_MEASUREMENTS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME_2)))),
+                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME_2))),
+                    ),
                 HeartRateRecord::class.java to
                     RecordTypeInfoResponse(
                         HealthPermissionCategory.HEART_RATE,
                         HealthDataCategory.VITALS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME_3)))))
+                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME_3))),
+                    ),
+            )
         Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
             .`when`(healthConnectManager)
-            .queryAllRecordTypesInfo(ArgumentMatchers.any(), ArgumentMatchers.any())
+            .queryAllRecordTypesInfo(any(), any())
 
         val result = loadFitnessTypeContributorAppsUseCase.invoke(FitnessPermissionType.STEPS)
         assertThat(result.size).isEqualTo(2)

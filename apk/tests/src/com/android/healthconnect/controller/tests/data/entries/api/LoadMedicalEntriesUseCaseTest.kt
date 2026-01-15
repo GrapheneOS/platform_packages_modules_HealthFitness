@@ -47,10 +47,10 @@ import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -102,11 +102,7 @@ class LoadMedicalEntriesUseCaseTest {
             ReadMedicalResourcesResponse(emptyList(), "nextPageToken", 1)
         Mockito.doAnswer(prepareAnswer(readMedicalResourcesResponse))
             .`when`(healthConnectManager)
-            .readMedicalResources(
-                ArgumentMatchers.any(ReadMedicalResourcesInitialRequest::class.java),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .readMedicalResources(any<ReadMedicalResourcesInitialRequest>(), any(), any())
 
         val result = loadMedicalEntriesUseCase.invoke(input)
         assertThat(result is UseCaseResults.Success).isTrue()
@@ -130,11 +126,7 @@ class LoadMedicalEntriesUseCaseTest {
             )
         Mockito.doAnswer(prepareAnswer(readMedicalResourcesResponse))
             .`when`(healthConnectManager)
-            .readMedicalResources(
-                ArgumentMatchers.any(ReadMedicalResourcesInitialRequest::class.java),
-                ArgumentMatchers.any(),
-                ArgumentMatchers.any(),
-            )
+            .readMedicalResources(any<ReadMedicalResourcesInitialRequest>(), any(), any())
 
         val result = loadMedicalEntriesUseCase.invoke(input)
         assertThat(result is UseCaseResults.Success).isTrue()

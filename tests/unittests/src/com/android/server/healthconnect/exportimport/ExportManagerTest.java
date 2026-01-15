@@ -45,9 +45,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Icon;
+import android.health.connect.RecordIdFilter;
 import android.health.connect.datatypes.MedicalDataSource;
+import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.exportimport.ScheduledExportStatus;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.healthconnect.testing.shared.phr.PhrDataFactory;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.PhrTestUtils;
@@ -88,7 +91,9 @@ import java.nio.file.attribute.PosixFilePermissions;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneId;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
 public class ExportManagerTest {
@@ -530,6 +535,51 @@ public class ExportManagerTest {
         assertThat(mExportImportSettingsStorage.getLastExportError())
                 .isEqualTo(DATA_EXPORT_ERROR_UNSPECIFIED);
         assertThat(mExportImportSettingsStorage.getExportRepeatErrorOnRetryCount()).isEqualTo(0);
+    }
+
+    @Test
+    public void runExport_overwritesAndTruncatesFile() throws Exception {
+        // Insert many records to ensure a large initial export
+        for (int i = 0; i < 100; i++) {
+            mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(i, i + 1, i));
+        }
+        assertThat(mStorageUtils.queryNumEntries("steps_record_table")).isEqualTo(100);
+
+        // First export to the configured URI
+        assertThat(mExportManager.runExport(mContext.getUser())).isTrue();
+        File exportedZip = mExportedDbContext.getDatabasePath(REMOTE_EXPORT_ZIP_FILE_NAME);
+        long initialSize = exportedZip.length();
+        assertThat(initialSize).isGreaterThan(0);
+
+        // Delete most records to ensure the next export is smaller
+        List<RecordInternal<?>> recordsToDelete =
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+        List<RecordIdFilter> idFilters =
+                recordsToDelete.stream()
+                        .map(
+                                (record) ->
+                                        RecordIdFilter.fromId(
+                                                StepsRecord.class, record.getUuid().toString()))
+                        .collect(Collectors.toList());
+        mFitnessTestUtils.deleteRecords(
+                TEST_PACKAGE_NAME, idFilters.toArray(new RecordIdFilter[0]));
+        mFitnessTestUtils.insertRecords(TEST_PACKAGE_NAME, buildStepsRecord(0, 1, 1));
+        assertThat(mStorageUtils.queryNumEntries("steps_record_table")).isEqualTo(1);
+
+        // Second export to the same URI
+        assertThat(mExportManager.runExport(mContext.getUser())).isTrue();
+
+        // Verify the file was truncated
+        long finalSize = exportedZip.length();
+        assertThat(finalSize).isGreaterThan(0);
+        assertThat(finalSize).isLessThan(initialSize);
+
+        // Verify the content of the final, smaller zip file
+        decompressExportedZip();
+        try (HealthConnectDatabase decompressedDatabase =
+                new HealthConnectDatabase(mExportedDbContext, REMOTE_EXPORT_DATABASE_FILE_NAME)) {
+            assertThat(queryNumEntries(decompressedDatabase, "steps_record_table")).isEqualTo(1);
+        }
     }
 
     private void configureExportUri() {

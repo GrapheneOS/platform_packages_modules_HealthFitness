@@ -92,7 +92,6 @@ class MigrationPausedFragmentTest {
 
     @Test
     fun migrationPausedFragment_whenCancelButtonPressed_setsSharedPreferences() {
-        //        Mockito.doNothing().whenever(navigationUtils).navigate(any(), any())
         launchFragment<MigrationPausedFragment>(Bundle()) {
                 navHostController.setGraph(R.navigation.migration_nav_graph)
                 navHostController.setCurrentDestination(R.id.migrationPausedFragment)
@@ -118,7 +117,6 @@ class MigrationPausedFragmentTest {
 
     @Test
     fun migrationPausedFragment_whenResumeButtonPressed_navigatesToMigratorApk() {
-        //        Mockito.doNothing().whenever(navigationUtils).navigate(any(), any())
         launchFragment<MigrationPausedFragment>(Bundle()) {
                 navHostController.setGraph(R.navigation.migration_nav_graph)
                 navHostController.setCurrentDestination(R.id.migrationPausedFragment)
@@ -136,8 +134,6 @@ class MigrationPausedFragmentTest {
 
     @Test
     fun migrationPausedFragment_whenNavigateToMigratorApkFails_displaysCorrectly() {
-        //        whenever(navigationUtils.navigate(any(),
-        // any())).thenThrow(RuntimeException("Exception"))
         launchFragment<MigrationPausedFragment>(Bundle()).use {
             onView(withText("Resume")).check(matches(isDisplayed()))
             onView(withText("Resume")).perform(ViewActions.click())

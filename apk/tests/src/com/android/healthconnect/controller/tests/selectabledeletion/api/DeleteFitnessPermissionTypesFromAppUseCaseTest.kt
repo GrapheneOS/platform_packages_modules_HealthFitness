@@ -39,12 +39,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Captor
 import org.mockito.Mockito
 import org.mockito.Mockito.doAnswer
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
+import org.mockito.kotlin.any
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -67,7 +67,7 @@ class DeleteFitnessPermissionTypesFromAppUseCaseTest {
     fun invoke_deletePermissionTypesFromApp_callsHealthManager() = runTest {
         doAnswer(prepareAnswer())
             .`when`(manager)
-            .deleteRecords(any(DeleteUsingFiltersRequest::class.java), any(), any())
+            .deleteRecords(any<DeleteUsingFiltersRequest>(), any(), any())
 
         val deletePermissionTypes =
             setOf(

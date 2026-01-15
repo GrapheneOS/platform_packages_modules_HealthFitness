@@ -609,7 +609,7 @@ flag {
     namespace: "health_fitness_aconfig"
     description: "Flag for Device UDI API changes."
     bug: "467999349"
-    # TODO(b/472306214): export this flag after API review
+    is_exported: true
 }
 
 flag {
@@ -617,4 +617,11 @@ flag {
     namespace: "health_fitness_aconfig"
     description: "Enables DB changes to support device UDI API changes."
     bug: "467999349"
+}
+
+flag {
+  name: "enable_hardware_support_check"
+  namespace: "health_fitness_aconfig"
+  description: "Enables the check for hardware support before initializing Health Connect services."
+  bug: "454305097"
 }

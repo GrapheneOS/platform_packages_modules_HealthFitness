@@ -302,6 +302,7 @@ package android.health.connect {
     field public static final String WRITE_BODY_WATER_MASS = "android.permission.health.WRITE_BODY_WATER_MASS";
     field public static final String WRITE_BONE_MASS = "android.permission.health.WRITE_BONE_MASS";
     field public static final String WRITE_CERVICAL_MUCUS = "android.permission.health.WRITE_CERVICAL_MUCUS";
+    field @FlaggedApi("com.android.healthfitness.flags.device_udi") public static final String WRITE_DEVICE_UDI = "android.permission.health.WRITE_DEVICE_UDI";
     field public static final String WRITE_DISTANCE = "android.permission.health.WRITE_DISTANCE";
     field public static final String WRITE_ELEVATION_GAINED = "android.permission.health.WRITE_ELEVATION_GAINED";
     field public static final String WRITE_EXERCISE = "android.permission.health.WRITE_EXERCISE";
@@ -954,6 +955,7 @@ package android.health.connect.datatypes {
     method @Nullable public String getManufacturer();
     method @Nullable public String getModel();
     method public int getType();
+    method @FlaggedApi("com.android.healthfitness.flags.device_udi") @Nullable public String getUdi();
     field public static final int DEVICE_TYPE_CHEST_STRAP = 7; // 0x7
     field @FlaggedApi("com.android.healthfitness.flags.new_device_types") public static final int DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE = 9; // 0x9
     field public static final int DEVICE_TYPE_FITNESS_BAND = 6; // 0x6
@@ -979,6 +981,7 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.Device.Builder setManufacturer(@Nullable String);
     method @NonNull public android.health.connect.datatypes.Device.Builder setModel(@Nullable String);
     method @NonNull public android.health.connect.datatypes.Device.Builder setType(int);
+    method @FlaggedApi("com.android.healthfitness.flags.device_udi") @NonNull public android.health.connect.datatypes.Device.Builder setUdi(@Nullable String);
   }
 
   public final class DistanceRecord extends android.health.connect.datatypes.IntervalRecord {

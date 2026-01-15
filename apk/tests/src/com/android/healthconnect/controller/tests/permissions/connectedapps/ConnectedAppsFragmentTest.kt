@@ -73,7 +73,6 @@ import com.android.healthconnect.controller.tests.utils.isAbove
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
-import com.android.healthconnect.controller.utils.NavigationUtils
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
@@ -92,7 +91,6 @@ import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
 import org.mockito.kotlin.eq
@@ -115,7 +113,6 @@ class ConnectedAppsFragmentTest {
     @BindValue val healthPermissionReader: HealthPermissionReader = mock()
 
     @BindValue val deviceInfoUtils: DeviceInfoUtils = FakeDeviceInfoUtils()
-    @BindValue val navigationUtils: NavigationUtils = mock()
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
     private lateinit var navHostController: TestNavHostController
     private lateinit var context: Context
@@ -761,8 +758,6 @@ class ConnectedAppsFragmentTest {
 
     @Test
     fun appNeedsUpdateBanner_navigatesToPlayStoreWhenAvailable() {
-        Mockito.doNothing().whenever(navigationUtils).navigate(any(), any())
-
         val connectApp =
             listOf(
                 ConnectedAppMetadata(TEST_APP, status = ALLOWED),

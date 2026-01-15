@@ -69,6 +69,7 @@ android_robolectric_test {
         "services.core",
         "platform-parametric-runner-lib",
         "guava-android-testlib", // For EqualsTester
+        "modules-utils-build",
     ],
     java_resources: [
         ":generate-fhir-spec-r4-binarypb",
