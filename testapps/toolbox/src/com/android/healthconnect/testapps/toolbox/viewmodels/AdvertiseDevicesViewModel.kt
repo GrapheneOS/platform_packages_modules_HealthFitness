@@ -62,6 +62,14 @@ class AdvertiseDevicesViewModel : ViewModel() {
         )
     val deviceConfigs: LiveData<MutableList<DeviceAdvertisementConfig>> = _deviceConfigs
 
+    private var _isReAdvertiseMode: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
+    val isReAdvertiseMode: LiveData<Boolean> = _isReAdvertiseMode
+
+    fun initializeReAdvertiseMode(newConfigs: List<DeviceAdvertisementConfig>) {
+        _deviceConfigs.value = newConfigs.toMutableList()
+        _isReAdvertiseMode.value = true
+    }
+
     fun addDevice() {
         val newList = _deviceConfigs.value ?: mutableListOf()
         newList.add(

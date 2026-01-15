@@ -27,6 +27,7 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.HealthConnectManager.ACTION_SHOW_ONBOARDING
 import android.health.connect.HealthPermissions
 import android.health.connect.HealthPermissions.isPermissionEnabled
+import android.health.connect.datatypes.Record
 import android.os.Process
 import androidx.annotation.VisibleForTesting
 import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
@@ -529,22 +530,85 @@ constructor(
     }
 
     fun getOnboardingActivityIntent(context: Context, packageName: String): Intent? {
-        if (!Flags.launchOnboardingActivity()) {
+        return getActivityIntentIfExported(
+            { Flags.launchOnboardingActivity() },
+            context,
+            ACTION_SHOW_ONBOARDING,
+            HealthPermissions.START_ONBOARDING,
+            packageName,
+        )
+    }
+
+    fun getDeviceOnboardingActivityIntent(
+        context: Context,
+        packageName: String,
+        deviceId: String,
+        recordTypes: ArrayList<Class<out Record>> = arrayListOf(),
+    ): Intent? {
+        return getActivityIntentIfExported(
+            { AconfigFlagHelper.isDeviceDataProvidersEnabled() },
+            context,
+            HealthConnectManager.ACTION_SHOW_DEVICE_ONBOARDING,
+            HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION,
+            packageName,
+            HealthConnectManager.EXTRA_DEVICE_ID to deviceId,
+            HealthConnectManager.EXTRA_DEVICE_RECORD_TYPES to
+                recordTypes.map { recordType -> recordType.name },
+        )
+    }
+
+    fun getDeviceManagementActivityIntent(
+        context: Context,
+        packageName: String,
+        deviceId: String,
+        recordTypes: ArrayList<Class<out Record>> = arrayListOf(),
+    ): Intent? {
+        return getActivityIntentIfExported(
+            { AconfigFlagHelper.isDeviceDataProvidersEnabled() },
+            context,
+            HealthConnectManager.ACTION_SHOW_DEVICE_MANAGEMENT,
+            HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION,
+            packageName,
+            HealthConnectManager.EXTRA_DEVICE_ID to deviceId,
+            HealthConnectManager.EXTRA_DEVICE_RECORD_TYPES to
+                recordTypes.map { recordType -> recordType.name },
+        )
+    }
+
+    private fun getActivityIntentIfExported(
+        isApiAvailable: () -> Boolean,
+        context: Context,
+        intentAction: String,
+        requiredPermission: String,
+        packageName: String,
+        vararg extras: Pair<String, Any?>,
+    ): Intent? {
+        if (!isApiAvailable()) {
             return null
         }
-        val intent = Intent(ACTION_SHOW_ONBOARDING)
+        val intent = Intent(intentAction)
         intent.setPackage(packageName)
+
+        extras.forEach { (key, value) ->
+            if (value is String) {
+                intent.putExtra(key, value)
+            } else if (value is ArrayList<*>) {
+                val stringArrayList = ArrayList(value.filterIsInstance<String>())
+                intent.putStringArrayListExtra(key, stringArrayList)
+            }
+        }
+
         val resolveInfoList =
-            context.getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_ALL)
+            context.packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
         resolveInfoList
             .find { resolveInfo ->
                 resolveInfo.activityInfo != null &&
                     resolveInfo.activityInfo.exported
                     // We verify that the activity is guarded by this permission. This essentially
                     // forces developers to guard it with this permission (otherwise we wouldn't
-                    // launch it), ensuring other apps can't launch the onboarding activity.
+                    // launch it), ensuring other apps can't launch the activity.
                     &&
-                    resolveInfo.activityInfo.permission == HealthPermissions.START_ONBOARDING
+                    resolveInfo.activityInfo.permission == requiredPermission
             }
             ?.let {
                 intent.setClassName(packageName, it.activityInfo.name)
@@ -557,7 +621,7 @@ constructor(
                 resetPermissionFlags(packageName)
                 return intent
             }
-        // Application hasn't exported an onboarding activity.
+        // Application hasn't exported the activity.
         return null
     }
 

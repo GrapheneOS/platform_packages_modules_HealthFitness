@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.utils
 
 import android.app.Activity
+import android.health.connect.datatypes.Record
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -36,6 +37,7 @@ import com.android.healthconnect.controller.shared.dialog.ProgressDialogFragment
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.ToolbarElement
+import com.android.healthfitness.flags.AconfigFlagHelper
 import com.android.healthfitness.flags.Flags.launchOnboardingActivity
 import dagger.hilt.android.EntryPointAccessors
 
@@ -147,6 +149,64 @@ fun Fragment.tryLaunchAppOnboardingActivity(
             return true
         }
     }
+    return false
+}
+
+/**
+ * If `packageName` has exported a device onboarding activity, the device onboarding activity will
+ * be launched.
+ *
+ * @return `true` if the activity was successfully launched. Otherwise, `false`.
+ */
+fun Fragment.tryLaunchDeviceOnboardingActivity(
+    healthPermissionReader: HealthPermissionReader,
+    packageName: String,
+    deviceId: String,
+    recordTypes: ArrayList<Class<out Record>> = arrayListOf(),
+): Boolean {
+    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) return false
+
+    val maybeOnboardingIntent =
+        healthPermissionReader.getDeviceOnboardingActivityIntent(
+            requireContext(),
+            packageName,
+            deviceId,
+            recordTypes,
+        )
+    if (maybeOnboardingIntent != null) {
+        activity?.startActivity(maybeOnboardingIntent)
+        return true
+    }
+
+    return false
+}
+
+/**
+ * If `packageName` has exported a device management activity, the device management activity will
+ * be launched.
+ *
+ * @return `true` if the activity was successfully launched. Otherwise, `false`.
+ */
+fun Fragment.tryLaunchDeviceManagementActivity(
+    healthPermissionReader: HealthPermissionReader,
+    packageName: String,
+    deviceId: String,
+    recordTypes: ArrayList<Class<out Record>> = arrayListOf(),
+): Boolean {
+    if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) return false
+
+    val maybeManagementIntent =
+        healthPermissionReader.getDeviceManagementActivityIntent(
+            requireContext(),
+            packageName,
+            deviceId,
+            recordTypes,
+        )
+    if (maybeManagementIntent != null) {
+        activity?.startActivity(maybeManagementIntent)
+        return true
+    }
+
     return false
 }
 
