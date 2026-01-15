@@ -187,7 +187,8 @@ public final class AppInfoHelper extends DatabaseHelper {
         AppInfoInternal appInfo = getAppInfoMap().get(packageName);
 
         if (appInfo == null) {
-            if (SyntheticPackageNameMatcher.matchesCanonical(packageName)) {
+            if (AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                    && SyntheticPackageNameMatcher.matchesCanonical(packageName)) {
                 Slog.e(
                         TAG,
                         "Synthetic package name "
