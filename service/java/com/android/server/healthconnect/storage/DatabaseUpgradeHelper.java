@@ -23,6 +23,7 @@ import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ACTIVI
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ALCOHOL_CONSUMPTION;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_DEVICE_DATA_PROVIDERS;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_DEVICE_UDI;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ECOSYSTEM_METRICS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_GENERATED_LOCAL_TIME;
@@ -133,6 +134,9 @@ final class DatabaseUpgradeHelper {
     private static final Upgrader UPGRADE_TO_DEVICE_DATA_PROVIDERS =
             DatabaseUpgradeHelper::applyDeviceDataProvidersDatabaseUpgrade;
 
+    private static final Upgrader UPGRADE_TO_DEVICE_UDI =
+            DatabaseUpgradeHelper::applyDeviceUdiDatabaseUpgrade;
+
     /**
      * A list of db version -> Upgrader to upgrade the db from the previous version to the version.
      * The upgrades must be executed one by one in the numeric order of db versions, hence TreeMap.
@@ -166,7 +170,8 @@ final class DatabaseUpgradeHelper {
                                     UPGRADE_TO_MENSTRUAL_CYCLE_PHASE),
                             entry(
                                     DB_VERSION_DEVICE_DATA_PROVIDERS,
-                                    UPGRADE_TO_DEVICE_DATA_PROVIDERS)));
+                                    UPGRADE_TO_DEVICE_DATA_PROVIDERS),
+                            entry(DB_VERSION_DEVICE_UDI, UPGRADE_TO_DEVICE_UDI)));
 
     /**
      * Applies db upgrades to bring the current schema to the latest supported version.
@@ -363,6 +368,15 @@ final class DatabaseUpgradeHelper {
         }
 
         createTable(db, DeviceDataSourcesHelper.getCreateTableRequest());
+    }
+
+    private static void applyDeviceUdiDatabaseUpgrade(SQLiteDatabase db) {
+        if (checkColumnExists(db, DeviceInfoHelper.TABLE_NAME, DeviceInfoHelper.UDI_COLUMN_NAME)) {
+            // Upgrade has already been applied. Return early.
+            return;
+        }
+        executeSqlStatements(
+                db, DeviceInfoHelper.getAlterTableRequestForUdiColumn().getAddColumnsCommands());
     }
 
     /** Executes a list of SQL statements one after another, in a transaction. */

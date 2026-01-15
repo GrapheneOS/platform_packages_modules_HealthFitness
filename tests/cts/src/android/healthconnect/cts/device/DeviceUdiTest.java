@@ -45,7 +45,7 @@ import java.time.Instant;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({Flags.FLAG_DEVICE_UDI})
+@RequiresFlagsEnabled({Flags.FLAG_DEVICE_UDI, Flags.FLAG_DEVICE_UDI_DB})
 public class DeviceUdiTest {
 
     @Rule

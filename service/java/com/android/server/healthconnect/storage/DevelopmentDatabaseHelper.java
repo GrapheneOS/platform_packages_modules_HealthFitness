@@ -16,8 +16,8 @@
 
 package com.android.server.healthconnect.storage;
 
-import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.executeSqlStatements;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.checkColumnExists;
+
+
 
 import android.database.Cursor;
 import android.database.SQLException;
@@ -26,7 +26,6 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 
 /**
  * Code to manage development features of the Health Connect database before they are ready for
@@ -93,16 +92,7 @@ public final class DevelopmentDatabaseHelper {
         dropAndCreateDevelopmentSettingsTable(db, CURRENT_VERSION);
 
         // Code for under development schema changes goes in this method but below this comment
-        applyDeviceUdiDatabaseUpgrade(db);
-    }
 
-    private static void applyDeviceUdiDatabaseUpgrade(SQLiteDatabase db) {
-        if (checkColumnExists(db, DeviceInfoHelper.TABLE_NAME, DeviceInfoHelper.UDI_COLUMN_NAME)) {
-            // Upgrade has already been applied. Return early.
-            return;
-        }
-        executeSqlStatements(
-                db, DeviceInfoHelper.getAlterTableRequestForUdiColumn().getAddColumnsCommands());
     }
 
     @VisibleForTesting

@@ -202,17 +202,27 @@ public class AconfigFlagHelperTest {
         assertThat(isCyclePhasesEnabled()).isFalse();
     }
 
-    // TODO(b/472307622): Also consider db flag
     @Test
-    @EnableFlags(Flags.FLAG_DEVICE_UDI)
-    public void isDeviceUdiEnabled_featureFlagTrue_expectTrue() {
+    @EnableFlags({
+        Flags.FLAG_DEVICE_UDI,
+        Flags.FLAG_DEVICE_UDI_DB,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
+    })
+    public void isDeviceUdiEnabled_featureFlagTrue_dbFlagTrue_expectTrue() {
         assertThat(isDeviceUdiEnabled()).isTrue();
     }
 
-    // TODO(b/472307622): Also consider db flag
+    @Test
+    @EnableFlags({Flags.FLAG_DEVICE_UDI, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    @DisableFlags(Flags.FLAG_DEVICE_UDI_DB)
+    public void isDeviceUdiEnabled_featureFlagTrue_dbFlagFalse_expectFalse() {
+        assertThat(isDeviceUdiEnabled()).isFalse();
+    }
+
     @Test
     @DisableFlags(Flags.FLAG_DEVICE_UDI)
-    public void isDeviceUdiEnabled_featureFlagFalse_expectFalse() {
+    @EnableFlags({Flags.FLAG_DEVICE_UDI_DB, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void isDeviceUdiEnabled_featureFlagFalse_dbFlagTrue_expectFalse() {
         assertThat(isDeviceUdiEnabled()).isFalse();
     }
 }

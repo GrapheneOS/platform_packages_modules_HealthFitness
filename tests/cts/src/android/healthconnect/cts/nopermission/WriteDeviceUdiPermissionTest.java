@@ -50,7 +50,7 @@ import java.util.List;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({Flags.FLAG_DEVICE_UDI})
+@RequiresFlagsEnabled({Flags.FLAG_DEVICE_UDI, Flags.FLAG_DEVICE_UDI_DB})
 public class WriteDeviceUdiPermissionTest {
     private static final String TEST_UDI = "test_udi_123";
 

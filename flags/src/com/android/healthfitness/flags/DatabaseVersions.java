@@ -51,6 +51,7 @@ public final class DatabaseVersions {
     // skip version 24, which introduced legacy table name of "cycle_phases_record_table"
     public static final int DB_VERSION_MENSTRUAL_CYCLE_PHASE = 25;
     public static final int DB_VERSION_DEVICE_DATA_PROVIDERS = 26;
+    public static final int DB_VERSION_DEVICE_UDI = 27;
 
     // For historical reasons, we do not support versions below this
     // See go/hc-mainline-dev/trunk_stable/db-and-aconfig#a-bit-of-history
