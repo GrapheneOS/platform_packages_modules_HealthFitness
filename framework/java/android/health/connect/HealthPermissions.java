@@ -2183,7 +2183,6 @@ public final class HealthPermissions {
     // TODO(b/377285620): flag the permissions in the Manifest when fully supported.
     public static boolean isPermissionEnabled(@NonNull String permission) {
         return switch (permission) {
-            case READ_ACTIVITY_INTENSITY, WRITE_ACTIVITY_INTENSITY -> Flags.activityIntensity();
             case READ_ALCOHOL_CONSUMPTION, WRITE_ALCOHOL_CONSUMPTION -> Flags.alcoholConsumption();
             case READ_NICOTINE_INTAKE, WRITE_NICOTINE_INTAKE -> Flags.smoking();
             case READ_SYMPTOM_ABDOMINAL_PAIN,

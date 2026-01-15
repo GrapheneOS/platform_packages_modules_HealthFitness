@@ -120,9 +120,6 @@ import android.health.connect.datatypes.units.Velocity;
 import android.health.connect.datatypes.units.Volume;
 import android.os.Parcel;
 
-import com.android.healthfitness.flags.AconfigFlagHelper;
-import com.android.healthfitness.flags.Flags;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -166,13 +163,10 @@ public final class AggregationTypeIdMapper {
                                 MINDFULNESS_DURATION_TOTAL));
         List<AggregationType<?>> durationAggregations = new ArrayList<>();
 
-        // Redundantly explicitly checking the flag to satisfy the linter.
-        if (Flags.activityIntensity() && AconfigFlagHelper.isActivityIntensityEnabled()) {
-            durationAggregations.add(MODERATE_DURATION_TOTAL);
-            durationAggregations.add(VIGOROUS_DURATION_TOTAL);
-            durationAggregations.add(DURATION_TOTAL);
-            longAggregations.add(INTENSITY_MINUTES_TOTAL);
-        }
+        durationAggregations.add(MODERATE_DURATION_TOTAL);
+        durationAggregations.add(VIGOROUS_DURATION_TOTAL);
+        durationAggregations.add(DURATION_TOTAL);
+        longAggregations.add(INTENSITY_MINUTES_TOTAL);
 
         addLongIdsToAggregateResultMap(longAggregations);
         addDoubleIdsToAggregateResultMap(
