@@ -66,6 +66,7 @@ import com.android.server.healthconnect.migration.MigrationEntityHelper;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
+import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.notifications.NotificationStatsLogger;
 import com.android.server.healthconnect.onboarding.OnboardingNotificationSender;
@@ -482,6 +483,12 @@ public abstract class HealthConnectInjector {
      * Connect Injector.
      */
     public abstract DeviceDataProviderMetadataHelper getDeviceDataProviderMetadataHelper();
+
+    /**
+     * Getter for {@link HealthConnectResourcesContext} instance inialised by the Health Connect
+     * Injector.
+     */
+    public abstract HealthConnectResourcesContext getResourcesContext();
 
     /** Used to initialize the Injector. */
     public static void setInstance(HealthConnectInjector healthConnectInjector) {

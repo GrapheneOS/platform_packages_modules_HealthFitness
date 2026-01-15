@@ -33,6 +33,7 @@ import androidx.annotation.StringRes;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Utility context that fetches (string) resources from the Health Connect APK.
@@ -285,5 +286,26 @@ public final class HealthConnectResourcesContext extends ContextWrapper {
             Slog.w(TAG, "Drawable resource " + drawableResName + " not found");
         }
         return null;
+    }
+
+    /** Returns a bool value by resource name. */
+    public Optional<Boolean> getBoolByName(String boolResName) {
+        String resourceApkPkgName = getResourcesApkPkgName();
+        String resourcePkgName = getResourceLoadPackageName();
+        if (resourceApkPkgName == null) {
+            return Optional.empty();
+        }
+
+        Resources resources = getResources();
+        if (resources == null) {
+            return Optional.empty();
+        }
+
+        int resId = resources.getIdentifier(boolResName, "bool", resourcePkgName);
+        if (resId == Resources.ID_NULL) {
+            return Optional.empty();
+        }
+
+        return Optional.of(resources.getBoolean(resId));
     }
 }
