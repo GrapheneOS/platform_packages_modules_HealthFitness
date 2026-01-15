@@ -120,7 +120,8 @@ public final class HealthConnectDailyService extends JobService {
                                 healthConnectInjector.getTransactionManager(),
                                 healthConnectInjector.getAppInfoHelper(),
                                 healthConnectInjector.getTrackerManager(),
-                                healthConnectInjector.getHealthConnectPermissionHelper());
+                                healthConnectInjector.getHealthConnectPermissionHelper(),
+                                healthConnectInjector.getDeviceDataProviderManager());
                 threadScheduler.scheduleInternalTask(
                         () -> {
                             HealthConnectDailyJobs.execute(

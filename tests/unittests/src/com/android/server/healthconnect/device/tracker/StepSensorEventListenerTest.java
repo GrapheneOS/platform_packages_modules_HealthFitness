@@ -15,6 +15,9 @@
  */
 package com.android.server.healthconnect.device.tracker;
 
+import static android.health.connect.Constants.DEFAULT_LONG;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
+
 import static com.android.server.healthconnect.device.tracker.StepSensorEventListener.MIN_STEPS_PER_MINUTE;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -37,17 +40,20 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.mocks.AndroidPackageMocker;
+import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.device.DeviceDataSourceHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
+import com.android.server.healthconnect.device.FakeSerialDeviceDataProviderManager;
 import com.android.server.healthconnect.device.FakeSerialDeviceDataSourceHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
@@ -96,6 +102,7 @@ public class StepSensorEventListenerTest {
     private HealthConnectThreadScheduler mThreadScheduler;
     private FitnessTestUtils mFitnessTestUtils;
     private StepSensorEventListener mStepSensorEventListener;
+    private FakeSerialDeviceDataProviderManager mDeviceDataProviderManager;
     private CountDownLatch mCountDownLatch = new CountDownLatch(0);
 
     @Before
@@ -116,13 +123,35 @@ public class StepSensorEventListenerTest {
         mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
 
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
+
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            mDeviceDataProviderManager =
+                    spy(
+                            new FakeSerialDeviceDataProviderManager(
+                                    mContext,
+                                    healthConnectInjector.getDeviceInfoHelper(),
+                                    healthConnectInjector.getAppInfoHelper(),
+                                    healthConnectInjector.getDeviceDataSourceHelper(),
+                                    healthConnectInjector.getDeviceDataSourcesHelper(),
+                                    healthConnectInjector.getDeviceDataProviderMetadataHelper(),
+                                    healthConnectInjector.getFitnessRecordUpsertHelper(),
+                                    healthConnectInjector.getFitnessRecordReadHelper(),
+                                    healthConnectInjector.getFitnessRecordDeleteHelper(),
+                                    healthConnectInjector.getSyntheticPackageNameCreator(),
+                                    healthConnectInjector.getPreferenceHelper(),
+                                    true));
+
+            mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+        }
+
         mStepSensorEventListener =
                 spy(
                         new StepSensorEventListener(
                                 mContext,
                                 mThreadScheduler,
                                 mDeviceRecordHelper,
-                                deviceDataSourceHelper));
+                                deviceDataSourceHelper,
+                                mDeviceDataProviderManager));
 
         mStepSensorEventListener.setWriteCompleteCallbackForTest(this::latchCountDown);
         // Reduce the batching delay to speed up the tests
@@ -135,6 +164,47 @@ public class StepSensorEventListenerTest {
     public void onSensorChanged_doesNotThrow() throws Exception {
         mStepSensorEventListener.onSensorChanged(
                 createStepSensorEvent(/* value= */ 1, /* timestamp= */ 1234567890));
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void writeSteps_withDdpFlags_hasDdpSource() throws Exception {
+        int stepCount = 100;
+        long endTimestampNanos = MINUTES.toNanos(2);
+
+        setBaselineStepCount(0);
+        triggerStepEvent(stepCount, endTimestampNanos);
+        awaitPassiveSensorTasksComplete(2);
+        List<RecordInternal<?>> records =
+                mFitnessTestUtils.readAllRecordsOfType(
+                        mDeviceDataProviderManager.getStableCurrentDeviceId(), StepsRecord.class);
+
+        assertThat(records).hasSize(1);
+        assertThat(records.get(0).getPackageName())
+                .isEqualTo(mDeviceDataProviderManager.getStableCurrentDeviceId());
+        assertThat(records.get(0).getDeviceInfoId()).isEqualTo(DEFAULT_LONG);
+        assertThat(records.get(0).getDeviceType()).isEqualTo(DEVICE_TYPE_PHONE);
+        assertThat(records.get(0).getDeviceDataProviderId()).isEqualTo(1L);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_STEP_TRACKING_ENABLED_DB})
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void writeSteps_withStepFlags_hasLegacySource() throws Exception {
+        int stepCount = 100;
+        long endTimestampNanos = MINUTES.toNanos(2);
+
+        setBaselineStepCount(0);
+        triggerStepEvent(stepCount, endTimestampNanos);
+        awaitPassiveSensorTasksComplete(2);
+        List<RecordInternal<?>> records =
+                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
+
+        assertThat(records).hasSize(1);
+        assertThat(records.get(0).getPackageName())
+                .isEqualTo(DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE);
+        assertThat(records.get(0).getDeviceInfoId()).isEqualTo(DEFAULT_LONG);
+        assertThat(records.get(0).getDeviceDataProviderId()).isEqualTo(DEFAULT_LONG);
     }
 
     @Test

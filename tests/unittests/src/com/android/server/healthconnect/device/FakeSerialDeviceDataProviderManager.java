@@ -35,8 +35,8 @@ import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
  * <p>This is designed to be used in testing, so that {@link android.os.Build#getSerial} doesn't
  * need to be called in a context where the permission is not present.
  *
- * <p>Optionally, {@code ignoresActionConfiguration} can be set in the ctor to false to bypass
- * action configurations checks when advertising.
+ * <p>Optionally, {@code ignoresActionConfiguration} can be set in the ctor to true to bypass action
+ * configurations checks when advertising.
  */
 public class FakeSerialDeviceDataProviderManager extends DeviceDataProviderManager {
     /** The string that will be returned as the serial number. */

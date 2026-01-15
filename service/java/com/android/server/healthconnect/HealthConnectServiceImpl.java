@@ -1863,7 +1863,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             }
             if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                 requireNonNull(mDeviceDataProviderManager);
-                mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
                 mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
             }
         } finally {

@@ -23,7 +23,6 @@ import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_NATIVE_TRACKIN
 import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
@@ -33,11 +32,17 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.health.connect.HealthPermissions;
 import android.os.UserHandle;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.runner.AndroidJUnit4;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.device.DeviceDataProviderManager;
+import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
@@ -57,15 +62,24 @@ import java.util.List;
 public class NativeTrackingStatsCollectorTest {
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Mock private PackageInfoUtils mPackageInfoUtils;
     @Mock private Context mContext;
     @Mock private TransactionManager mTransactionManager;
     @Mock private AppInfoHelper mAppInfoHelper;
     @Mock private TrackerManager mTrackerManager;
     @Mock private HealthConnectPermissionHelper mHealthConnectPermissionsHelper;
-
+    @Mock private DeviceDataProviderManager mDeviceDataProviderManager;
     private static final String TEST_PACKAGE_NAME_1 = "test.app.1";
     private static final String TEST_PACKAGE_NAME_2 = "test.app.2";
+    private static final String TEST_DEVICE_SPN =
+            "com.android.healthconnect.phone.d59341472a9253c16b986840a324ec594";
+    private static final int STEPS_ACTIVE =
+            HEALTH_CONNECT_NATIVE_TRACKING_STATS_REPORTED__NATIVE_DATA_TYPES_ACTIVE__NATIVE_TRACKING_DATA_TYPE_STEPS;
+    private static final int STEPS_DISABLED =
+            HEALTH_CONNECT_NATIVE_TRACKING_STATS_REPORTED__NATIVE_DATA_TYPES_DISABLED__NATIVE_TRACKING_DATA_TYPE_STEPS;
+    private static final int ERROR_UNSPECIFIED =
+            HEALTH_CONNECT_NATIVE_TRACKING_STATS_REPORTED__LAST_ERROR_CODE__NATIVE_TRACKING_ERROR_CODE_UNSPECIFIED;
     private NativeTrackingStatsCollector mNativeTrackingStatsCollector;
 
     @Before
@@ -73,6 +87,7 @@ public class NativeTrackingStatsCollectorTest {
         mContext = spy(InstrumentationRegistry.getInstrumentation().getContext());
         PackageManager packageManager = mContext.getPackageManager();
         when(mContext.getPackageManager()).thenReturn(packageManager);
+        when(mDeviceDataProviderManager.getStableCurrentDeviceId()).thenReturn(TEST_DEVICE_SPN);
         mNativeTrackingStatsCollector =
                 new NativeTrackingStatsCollector(
                         mPackageInfoUtils,
@@ -81,11 +96,13 @@ public class NativeTrackingStatsCollectorTest {
                         mTransactionManager,
                         mAppInfoHelper,
                         mTrackerManager,
-                        mHealthConnectPermissionsHelper);
+                        mHealthConnectPermissionsHelper,
+                        mDeviceDataProviderManager);
     }
 
     @Test
-    public void processStats_stepTrackingActive_logsCorrectly() {
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void processStats_withDdpFlags_stepTrackingActive_logsCorrectly() {
         when(mTrackerManager.isStepTrackingActive()).thenReturn(true);
         when(mTrackerManager.isStepTrackingExplicitlyDisabled()).thenReturn(false);
         PackageInfo packageInfo1 = new PackageInfo();
@@ -100,15 +117,14 @@ public class NativeTrackingStatsCollectorTest {
         when(mHealthConnectPermissionsHelper.getGrantedHealthPermissions(
                         eq(packageInfo2.packageName), any()))
                 .thenReturn(List.of(HealthPermissions.WRITE_STEPS));
-        when(mAppInfoHelper.getAppInfoId(anyString())).thenReturn(1L);
+        when(mAppInfoHelper.getAppInfoId(eq(TEST_DEVICE_SPN))).thenReturn(1L);
         when(mTransactionManager.count(any())).thenReturn(10);
 
         mNativeTrackingStatsCollector.processStats();
 
         assertThat(mNativeTrackingStatsCollector.getNativeDataTypesActive())
                 .asList()
-                .containsExactly(
-                        HEALTH_CONNECT_NATIVE_TRACKING_STATS_REPORTED__NATIVE_DATA_TYPES_ACTIVE__NATIVE_TRACKING_DATA_TYPE_STEPS);
+                .containsExactly(STEPS_ACTIVE);
         assertThat(mNativeTrackingStatsCollector.getNativeDataTypesDisabled()).isEmpty();
         assertThat(mNativeTrackingStatsCollector.getStepsReadersCount()).isEqualTo(1);
         assertThat(mNativeTrackingStatsCollector.getStepsWritersCount()).isEqualTo(1);
@@ -116,12 +132,13 @@ public class NativeTrackingStatsCollectorTest {
     }
 
     @Test
-    public void processStats_stepTrackingDisabled_logsCorrectly() {
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void processStats_withDdpFlags_stepTrackingDisabled_logsCorrectly() {
         when(mTrackerManager.isStepTrackingActive()).thenReturn(false);
         when(mTrackerManager.isStepTrackingExplicitlyDisabled()).thenReturn(true);
         when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
                 .thenReturn(List.of());
-        when(mAppInfoHelper.getAppInfoId(anyString())).thenReturn(1L);
+        when(mAppInfoHelper.getAppInfoId(eq(TEST_DEVICE_SPN))).thenReturn(1L);
         when(mTransactionManager.count(any())).thenReturn(0);
 
         mNativeTrackingStatsCollector.processStats();
@@ -129,20 +146,20 @@ public class NativeTrackingStatsCollectorTest {
         assertThat(mNativeTrackingStatsCollector.getNativeDataTypesActive()).isEmpty();
         assertThat(mNativeTrackingStatsCollector.getNativeDataTypesDisabled())
                 .asList()
-                .containsExactly(
-                        HEALTH_CONNECT_NATIVE_TRACKING_STATS_REPORTED__NATIVE_DATA_TYPES_DISABLED__NATIVE_TRACKING_DATA_TYPE_STEPS);
+                .containsExactly(STEPS_DISABLED);
         assertThat(mNativeTrackingStatsCollector.getStepsReadersCount()).isEqualTo(0);
         assertThat(mNativeTrackingStatsCollector.getStepsWritersCount()).isEqualTo(0);
         assertThat(mNativeTrackingStatsCollector.getNumberOfWrites()).isEqualTo(0);
     }
 
     @Test
-    public void processStats_noPermissions_logsZeroCounts() {
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void processStats_withDdpFlags_noPermissions_logsZeroCounts() {
         when(mTrackerManager.isStepTrackingActive()).thenReturn(false);
         when(mTrackerManager.isStepTrackingExplicitlyDisabled()).thenReturn(false);
         when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
                 .thenReturn(List.of());
-        when(mAppInfoHelper.getAppInfoId(anyString())).thenReturn(1L);
+        when(mAppInfoHelper.getAppInfoId(eq(TEST_DEVICE_SPN))).thenReturn(1L);
         when(mTransactionManager.count(any())).thenReturn(0);
 
         mNativeTrackingStatsCollector.processStats();
@@ -155,19 +172,108 @@ public class NativeTrackingStatsCollectorTest {
     }
 
     @Test
-    public void processStats_logsErrorUnspecifiedAsPlaceholder() {
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void processStats_withDdpFlags_logsErrorUnspecifiedAsPlaceholder() {
         // TODO(b438130821): track and log the last error code.
         when(mTrackerManager.isStepTrackingActive()).thenReturn(false);
         when(mTrackerManager.isStepTrackingExplicitlyDisabled()).thenReturn(false);
         when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
                 .thenReturn(List.of());
-        when(mAppInfoHelper.getAppInfoId(anyString())).thenReturn(1L);
+        when(mAppInfoHelper.getAppInfoId(eq(TEST_DEVICE_SPN))).thenReturn(1L);
         when(mTransactionManager.count(any())).thenReturn(0);
 
         mNativeTrackingStatsCollector.processStats();
 
-        assertThat(mNativeTrackingStatsCollector.getLastError())
-                .isEqualTo(
-                        HEALTH_CONNECT_NATIVE_TRACKING_STATS_REPORTED__LAST_ERROR_CODE__NATIVE_TRACKING_ERROR_CODE_UNSPECIFIED);
+        assertThat(mNativeTrackingStatsCollector.getLastError()).isEqualTo(ERROR_UNSPECIFIED);
+    }
+
+    @Test
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void processStats_withLegacyPackage_stepTrackingActive_logsCorrectly() {
+        when(mTrackerManager.isStepTrackingActive()).thenReturn(true);
+        when(mTrackerManager.isStepTrackingExplicitlyDisabled()).thenReturn(false);
+        PackageInfo packageInfo1 = new PackageInfo();
+        packageInfo1.packageName = TEST_PACKAGE_NAME_1;
+        PackageInfo packageInfo2 = new PackageInfo();
+        packageInfo2.packageName = TEST_PACKAGE_NAME_2;
+        when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
+                .thenReturn(List.of(packageInfo1, packageInfo2));
+        when(mHealthConnectPermissionsHelper.getGrantedHealthPermissions(
+                        eq(packageInfo1.packageName), any()))
+                .thenReturn(List.of(HealthPermissions.READ_STEPS));
+        when(mHealthConnectPermissionsHelper.getGrantedHealthPermissions(
+                        eq(packageInfo2.packageName), any()))
+                .thenReturn(List.of(HealthPermissions.WRITE_STEPS));
+        when(mAppInfoHelper.getAppInfoId(eq(DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE)))
+                .thenReturn(1L);
+        when(mTransactionManager.count(any())).thenReturn(10);
+
+        mNativeTrackingStatsCollector.processStats();
+
+        assertThat(mNativeTrackingStatsCollector.getNativeDataTypesActive())
+                .asList()
+                .containsExactly(STEPS_ACTIVE);
+        assertThat(mNativeTrackingStatsCollector.getNativeDataTypesDisabled()).isEmpty();
+        assertThat(mNativeTrackingStatsCollector.getStepsReadersCount()).isEqualTo(1);
+        assertThat(mNativeTrackingStatsCollector.getStepsWritersCount()).isEqualTo(1);
+        assertThat(mNativeTrackingStatsCollector.getNumberOfWrites()).isEqualTo(10);
+    }
+
+    @Test
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void processStats_withLegacyPackage_stepTrackingDisabled_logsCorrectly() {
+        when(mTrackerManager.isStepTrackingActive()).thenReturn(false);
+        when(mTrackerManager.isStepTrackingExplicitlyDisabled()).thenReturn(true);
+        when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
+                .thenReturn(List.of());
+        when(mAppInfoHelper.getAppInfoId(eq(DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE)))
+                .thenReturn(1L);
+        when(mTransactionManager.count(any())).thenReturn(0);
+
+        mNativeTrackingStatsCollector.processStats();
+
+        assertThat(mNativeTrackingStatsCollector.getNativeDataTypesActive()).isEmpty();
+        assertThat(mNativeTrackingStatsCollector.getNativeDataTypesDisabled())
+                .asList()
+                .containsExactly(STEPS_DISABLED);
+        assertThat(mNativeTrackingStatsCollector.getStepsReadersCount()).isEqualTo(0);
+        assertThat(mNativeTrackingStatsCollector.getStepsWritersCount()).isEqualTo(0);
+        assertThat(mNativeTrackingStatsCollector.getNumberOfWrites()).isEqualTo(0);
+    }
+
+    @Test
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void processStats_withLegacyPackage_noPermissions_logsZeroCounts() {
+        when(mTrackerManager.isStepTrackingActive()).thenReturn(false);
+        when(mTrackerManager.isStepTrackingExplicitlyDisabled()).thenReturn(false);
+        when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
+                .thenReturn(List.of());
+        when(mAppInfoHelper.getAppInfoId(eq(DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE)))
+                .thenReturn(1L);
+        when(mTransactionManager.count(any())).thenReturn(0);
+
+        mNativeTrackingStatsCollector.processStats();
+
+        assertThat(mNativeTrackingStatsCollector.getNativeDataTypesActive()).isEmpty();
+        assertThat(mNativeTrackingStatsCollector.getNativeDataTypesDisabled()).isEmpty();
+        assertThat(mNativeTrackingStatsCollector.getStepsReadersCount()).isEqualTo(0);
+        assertThat(mNativeTrackingStatsCollector.getStepsWritersCount()).isEqualTo(0);
+        assertThat(mNativeTrackingStatsCollector.getNumberOfWrites()).isEqualTo(0);
+    }
+
+    @Test
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void processStats_withLegacyPackage_logsErrorUnspecifiedAsPlaceholder() {
+        // TODO(b438130821): track and log the last error code.
+        when(mTrackerManager.isStepTrackingActive()).thenReturn(false);
+        when(mTrackerManager.isStepTrackingExplicitlyDisabled()).thenReturn(false);
+        when(mPackageInfoUtils.getPackagesHoldingHealthPermissions(any(), any()))
+                .thenReturn(List.of());
+        when(mAppInfoHelper.getAppInfoId(eq(DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE)))
+                .thenReturn(1L);
+        when(mTransactionManager.count(any())).thenReturn(0);
+
+        mNativeTrackingStatsCollector.processStats();
+        assertThat(mNativeTrackingStatsCollector.getLastError()).isEqualTo(ERROR_UNSPECIFIED);
     }
 }
