@@ -22,6 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -44,6 +45,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -64,6 +66,7 @@ public class PermissionPackageChangesOrchestratorTest {
     @Mock private FirstGrantTimeManager mFirstGrantTimeManager;
     @Mock private TrackerManager mTrackerManager;
     @Mock private UserHandle mUserHandle;
+    @Mock private HealthConnectThreadScheduler mThreadScheduler;
 
     @Mock private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
 
@@ -79,7 +82,7 @@ public class PermissionPackageChangesOrchestratorTest {
                         mHelper,
                         mUserHandle,
                         mHealthDataCategoryPriorityHelper,
-                        new HealthConnectThreadScheduler());
+                        mThreadScheduler);
         setIntentIsPresent(/* isIntentPresent= */ true);
         setShouldEnforcePermissionUsageIntent(/* shouldEnforce= */ true);
     }
@@ -122,10 +125,25 @@ public class PermissionPackageChangesOrchestratorTest {
 
     @Test
     public void testPackageRemoved_refreshesPassiveTracker() {
+        ArgumentCaptor<Runnable> taskCaptor = ArgumentCaptor.forClass(Runnable.class);
         mOrchestrator.onReceive(
                 mContext,
                 buildPackageIntent(Intent.ACTION_PACKAGE_REMOVED, /* isReplaced= */ false));
+        // One call is to refresh passive tracking and one call is to update Priority List
+        verify(mThreadScheduler, times(2)).scheduleInternalTask(taskCaptor.capture());
+        taskCaptor.getAllValues().get(0).run();
+
         verify(mTrackerManager).initializeOrRefresh();
+    }
+
+    @Test
+    public void testPackageRemoved_passiveTracker_scheduledOnBackgroundThread() {
+        mOrchestrator.onReceive(
+                mContext,
+                buildPackageIntent(Intent.ACTION_PACKAGE_REMOVED, /* isReplaced= */ false));
+
+        // One call is to refresh passive tracking and one call is to update Priority List
+        verify(mThreadScheduler, times(2)).scheduleInternalTask(any());
     }
 
     @Test
@@ -155,7 +173,7 @@ public class PermissionPackageChangesOrchestratorTest {
         mOrchestrator.onReceive(
                 mContext,
                 buildPackageIntent(Intent.ACTION_PACKAGE_REMOVED, /* isReplaced= */ true));
-        verify(mTrackerManager, never()).initializeOrRefresh();
+        verify(mThreadScheduler, never()).scheduleInternalTask(any());
     }
 
     @Test
