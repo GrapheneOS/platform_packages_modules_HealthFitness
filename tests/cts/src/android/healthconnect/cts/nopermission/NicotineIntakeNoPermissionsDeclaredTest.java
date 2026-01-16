@@ -32,7 +32,6 @@ import org.junit.runner.RunWith;
 @RequiresFlagsEnabled({
     Flags.FLAG_SMOKING,
     Flags.FLAG_SMOKING_DB,
-    Flags.FLAG_HEALTH_CONNECT_MAPPINGS,
 })
 public class NicotineIntakeNoPermissionsDeclaredTest
         extends BaseNoPermissionsDeclaredTest<NicotineIntakeRecord> {

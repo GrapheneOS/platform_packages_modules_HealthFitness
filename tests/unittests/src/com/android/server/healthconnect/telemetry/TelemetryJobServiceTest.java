@@ -36,7 +36,7 @@ import android.os.PersistableBundle;
 import android.os.UserHandle;
 import android.platform.test.flag.junit.SetFlagsRule;
 
-import androidx.test.runner.AndroidJUnit4;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;

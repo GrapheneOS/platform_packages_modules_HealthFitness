@@ -28,12 +28,10 @@ import static com.google.common.truth.Truth.assertWithMessage;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 
 import org.junit.Rule;
@@ -44,7 +42,6 @@ import java.util.Collection;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
-@EnableFlags({Flags.FLAG_HEALTH_CONNECT_MAPPINGS})
 public class InternalHealthConnectMappingsTest {
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();

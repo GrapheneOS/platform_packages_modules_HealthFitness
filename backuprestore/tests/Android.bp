@@ -34,6 +34,7 @@ android_test {
     static_libs: [
         "HealthConnectBackupRestoreLibrary",
         "androidx.test.core",
+        "androidx.test.ext.junit",
         "androidx.test.runner",
         "mockito-target-minus-junit4",
         "truth",

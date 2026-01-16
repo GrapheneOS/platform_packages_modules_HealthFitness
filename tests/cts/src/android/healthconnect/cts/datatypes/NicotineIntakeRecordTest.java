@@ -21,7 +21,6 @@ import static android.health.connect.datatypes.NicotineIntakeRecord.NICOTINE_INT
 import static android.health.connect.datatypes.NicotineIntakeRecord.NICOTINE_INTAKE_TYPE_VAPE;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_NICOTINE_INTAKE;
 
-import static com.android.healthfitness.flags.Flags.FLAG_HEALTH_CONNECT_MAPPINGS;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING_DB;
 
@@ -52,7 +51,7 @@ import java.time.ZoneOffset;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({FLAG_SMOKING, FLAG_SMOKING_DB, FLAG_HEALTH_CONNECT_MAPPINGS})
+@RequiresFlagsEnabled({FLAG_SMOKING, FLAG_SMOKING_DB})
 public class NicotineIntakeRecordTest {
 
     @Rule

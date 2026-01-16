@@ -243,14 +243,12 @@ public class InternalDataTypeDescriptors {
                                 HEALTH_CONNECT_API_INVOKED__DATA_TYPE_ONE__ACTIVE_CALORIES_BURNED)
                         .setSupportGranularityLogging()
                         .build(),
-                AconfigFlagHelper.isActivityIntensityEnabled()
-                        ? InternalDataTypeDescriptor.builder()
-                                .setRecordTypeIdentifier(RECORD_TYPE_ACTIVITY_INTENSITY)
-                                .setRecordHelper(new ActivityIntensityRecordHelper())
-                                .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_ACTIVITY_INTENSITY)
-                                .setLoggingEnum(LOGGING_ENUM_ACTIVITY_INTENSITY)
-                                .build()
-                        : null,
+                InternalDataTypeDescriptor.builder()
+                        .setRecordTypeIdentifier(RECORD_TYPE_ACTIVITY_INTENSITY)
+                        .setRecordHelper(new ActivityIntensityRecordHelper())
+                        .setRecordTypeIdForUuid(RECORD_TYPE_ID_FOR_UUID_ACTIVITY_INTENSITY)
+                        .setLoggingEnum(LOGGING_ENUM_ACTIVITY_INTENSITY)
+                        .build(),
                 AconfigFlagHelper.isAlcoholConsumptionEnabled()
                         ? InternalDataTypeDescriptor.builder()
                                 .setRecordTypeIdentifier(RECORD_TYPE_ALCOHOL_CONSUMPTION)

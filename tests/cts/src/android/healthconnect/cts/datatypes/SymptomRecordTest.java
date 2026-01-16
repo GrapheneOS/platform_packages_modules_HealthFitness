@@ -21,7 +21,6 @@ import static android.health.connect.datatypes.SymptomRecord.SEVERITY_MILD;
 import static android.health.connect.datatypes.SymptomRecord.SEVERITY_MODERATE;
 import static android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_COUGH;
 
-import static com.android.healthfitness.flags.Flags.FLAG_HEALTH_CONNECT_MAPPINGS;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS_DB;
 
@@ -52,7 +51,7 @@ import java.time.ZoneOffset;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
 @RunWith(AndroidJUnit4.class)
-@RequiresFlagsEnabled({FLAG_SYMPTOMS, FLAG_SYMPTOMS_DB, FLAG_HEALTH_CONNECT_MAPPINGS})
+@RequiresFlagsEnabled({FLAG_SYMPTOMS, FLAG_SYMPTOMS_DB})
 public class SymptomRecordTest {
 
     @Rule
@@ -234,8 +233,7 @@ public class SymptomRecordTest {
     public void instantBuilder_setCount_throws() {
         Instant time = Instant.now();
         Metadata metadata = new Metadata.Builder().build();
-        new SymptomRecord.Builder(SYMPTOM_TYPE_COUGH, time, metadata)
-                .setCount(5);
+        new SymptomRecord.Builder(SYMPTOM_TYPE_COUGH, time, metadata).setCount(5);
     }
 
     @Test(expected = IllegalStateException.class)

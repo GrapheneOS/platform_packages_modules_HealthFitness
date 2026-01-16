@@ -20,9 +20,6 @@ package com.android.healthconnect.controller.tests.data.formatters
 
 import android.health.connect.datatypes.ActivityIntensityRecord
 import android.health.connect.datatypes.Metadata
-import android.platform.test.annotations.RequiresFlagsEnabled
-import android.platform.test.flag.junit.CheckFlagsRule
-import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
@@ -30,7 +27,6 @@ import com.android.healthconnect.controller.data.formatters.ActivityIntensityFor
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
-import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -47,12 +43,9 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@RequiresFlagsEnabled(Flags.FLAG_ACTIVITY_INTENSITY, Flags.FLAG_HEALTH_CONNECT_MAPPINGS)
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class ActivityIntensityFormatterTest {
-    @get:Rule val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
-
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @Inject lateinit var formatter: ActivityIntensityFormatter
