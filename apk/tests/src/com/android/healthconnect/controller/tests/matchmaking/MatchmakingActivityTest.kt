@@ -40,8 +40,8 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.matchmaking.MatchmakingActivity
-import com.android.healthconnect.controller.matchmaking.MatchmakingAppData
 import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel
+import com.android.healthconnect.controller.matchmaking.api.MatchmakingAppData
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.shared.BottomSheetIdlingResource
@@ -85,6 +85,7 @@ class MatchmakingActivityTest {
     private val allPermissionsGranted = MutableLiveData(false)
     private val grantedPermissions =
         MutableLiveData<Map<String, List<FitnessPermission>>>(emptyMap())
+    private val matchingAppsCount = MutableLiveData(0)
     private lateinit var context: Context
     private var bottomSheetIdlingResource: BottomSheetIdlingResource? = null
 
@@ -97,6 +98,7 @@ class MatchmakingActivityTest {
         whenever(viewModel.atLeastOnePermissionGranted).thenReturn(atLeastOnePermissionGranted)
         whenever(viewModel.allPermissionsGranted).thenReturn(allPermissionsGranted)
         whenever(viewModel.grantedPermissions).thenReturn(grantedPermissions)
+        whenever(viewModel.matchingAppsCount).thenReturn(matchingAppsCount)
         setUpMatchingApps()
     }
 
@@ -115,8 +117,10 @@ class MatchmakingActivityTest {
             MatchmakingViewModel.MatchmakingState.WithData(
                 AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
                 apps,
+                emptyList(), // Add an empty list for matchingDevices
             )
         )
+        matchingAppsCount.postValue(apps.size)
     }
 
     @After
@@ -142,8 +146,10 @@ class MatchmakingActivityTest {
             MatchmakingViewModel.MatchmakingState.WithData(
                 AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
                 emptyList(),
+                emptyList(),
             )
         )
+        matchingAppsCount.postValue(0)
         launchMatchmakingActivity().use { scenario ->
             assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED)
         }
@@ -154,7 +160,7 @@ class MatchmakingActivityTest {
     fun matchmakingActivity_nullRecordTypes_loadsAppsWithNull() {
         val intent = Intent(context, MatchmakingActivity::class.java)
         launchActivityForResult<MatchmakingActivity>(intent).use {
-            verify(viewModel).loadMatchmakingApps(any(), eq(null))
+            verify(viewModel).loadMatchmakingData(any(), eq(null))
         }
     }
 
@@ -166,7 +172,7 @@ class MatchmakingActivityTest {
                 putExtra(HealthConnectManager.EXTRA_RECORD_TYPES, arrayOf("invalid.record.type"))
             }
         launchActivityForResult<MatchmakingActivity>(intent).use {
-            verify(viewModel).loadMatchmakingApps(any(), eq(arrayOf("invalid.record.type")))
+            verify(viewModel).loadMatchmakingData(any(), eq(arrayOf("invalid.record.type")))
         }
     }
 
@@ -182,7 +188,7 @@ class MatchmakingActivityTest {
             }
         launchActivityForResult<MatchmakingActivity>(intent).use {
             verify(viewModel)
-                .loadMatchmakingApps(
+                .loadMatchmakingData(
                     any(),
                     eq(arrayOf(HeartRateRecord::class.java.name, StepsRecord::class.java.name)),
                 )
@@ -201,7 +207,7 @@ class MatchmakingActivityTest {
             }
         launchActivityForResult<MatchmakingActivity>(intent).use {
             verify(viewModel)
-                .loadMatchmakingApps(
+                .loadMatchmakingData(
                     any(),
                     eq(arrayOf(HeartRateRecord::class.java.name, "invalid.record.type")),
                 )
@@ -215,7 +221,7 @@ class MatchmakingActivityTest {
             registerBottomSheetIdlingResource(scenario)
             atLeastOnePermissionGranted.postValue(true)
 
-            onView(withText("Don't allow")).inRoot(isDialog()).perform(click())
+            onView(withText("Don\u0027t allow")).inRoot(isDialog()).perform(click())
 
             assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED)
         }

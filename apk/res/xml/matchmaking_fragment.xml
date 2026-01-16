@@ -28,6 +28,10 @@
         android:defaultValue="false"/>
 
     <PreferenceCategory
+        android:key="matchmaking_devices_category"
+        android:title="@string/matchmaking_screen_devices_category_title"/>
+
+    <PreferenceCategory
         android:key="matchmaking_apps_category"
         android:title="@string/matchmaking_screen_apps_category_title"/>
 

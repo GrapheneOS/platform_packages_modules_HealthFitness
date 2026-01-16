@@ -16,7 +16,9 @@
 
 package com.android.healthconnect.controller.tests.matchmaking.api
 
+import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
+import android.os.OutcomeReceiver
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.matchmaking.api.RecordMatchmakingDenialUseCase
 import com.android.healthconnect.controller.matchmaking.api.RecordMatchmakingDenialUseCase.RecordMatchmakingDenialInput
@@ -33,6 +35,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -57,6 +60,13 @@ class RecordMatchmakingDenialUseCaseTest {
 
     @Test
     fun invoke_callsMatchmakingManager() = runTest {
+        whenever(healthConnectManager.recordMatchmakingDenial(any(), any(), any(), any())) doAnswer
+            { invocation ->
+                val receiver =
+                    invocation.getArgument<OutcomeReceiver<Void, HealthConnectException>>(3)
+                receiver.onResult(null)
+                null
+            }
         val permissions = listOf("permission1", "permission2")
         useCase.invoke(
             RecordMatchmakingDenialInput(

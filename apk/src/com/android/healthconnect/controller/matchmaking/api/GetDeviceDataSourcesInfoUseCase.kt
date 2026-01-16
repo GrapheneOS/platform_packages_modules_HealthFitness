@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 The Android Open Source Project
+ * Copyright (C) 2026 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.android.healthconnect.controller.matchmaking.api
 
+import android.health.connect.DeviceDataSourceInfo
 import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.os.OutcomeReceiver
-import com.android.healthconnect.controller.matchmaking.api.RecordMatchmakingDenialUseCase.RecordMatchmakingDenialInput
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import java.util.concurrent.Executor
@@ -29,23 +28,21 @@ import kotlin.coroutines.resumeWithException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
 
-/** Use case to record a matchmaking denial. */
-class RecordMatchmakingDenialUseCase
+/** Use case to get device data sources info. */
+class GetDeviceDataSourcesInfoUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
-    @IoDispatcher dispatcher: CoroutineDispatcher,
-) : BaseUseCase<RecordMatchmakingDenialInput, Unit>(dispatcher) {
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+) : BaseUseCase<Unit, Set<DeviceDataSourceInfo>>(ioDispatcher) {
 
-    override suspend fun execute(input: RecordMatchmakingDenialInput) {
-        suspendCancellableCoroutine<Unit> { continuation ->
-            healthConnectManager.recordMatchmakingDenial(
-                input.callingPackageName,
-                input.deniedDataSources,
+    override suspend fun execute(input: Unit): Set<DeviceDataSourceInfo> {
+        return suspendCancellableCoroutine { continuation ->
+            healthConnectManager.getDeviceDataSourceInfos(
                 Executor { it.run() },
-                object : OutcomeReceiver<Void, HealthConnectException> {
-                    override fun onResult(result: Void?) {
-                        continuation.resume(Unit)
+                object : OutcomeReceiver<List<DeviceDataSourceInfo>, HealthConnectException> {
+                    override fun onResult(result: List<DeviceDataSourceInfo>) {
+                        continuation.resume(result.toSet())
                     }
 
                     override fun onError(error: HealthConnectException) {
@@ -55,9 +52,4 @@ constructor(
             )
         }
     }
-
-    data class RecordMatchmakingDenialInput(
-        val callingPackageName: String,
-        val deniedDataSources: Map<String, List<String>>,
-    )
 }
