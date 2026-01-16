@@ -1112,6 +1112,13 @@ public final class TestUtils {
         return DeviceSupportUtils.isHealthConnectFullySupported(context) || isWatchEnabled;
     }
 
+    /** returns true if the current device has hardware to count steps. */
+    public static boolean hasPedometer() {
+        Context context = ApplicationProvider.getApplicationContext();
+        PackageManager pm = context.getPackageManager();
+        return pm.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_COUNTER);
+    }
+
     /** Gets the priority list after getting the MANAGE_HEALTH_DATA permission. */
     public static FetchDataOriginsPriorityOrderResponse getPriorityWithManageHealthDataPermission(
             int permissionCategory) throws InterruptedException {

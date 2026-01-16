@@ -22,6 +22,7 @@ import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
 import static android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_UNKNOWN;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 import static android.healthconnect.testing.cts.TestUtils.getCurrentDeviceId;
+import static android.healthconnect.testing.cts.TestUtils.hasPedometer;
 
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
@@ -102,7 +103,7 @@ public class DeviceDataSourceTest {
     }
 
     @Test
-    public void getDeviceDataSources_noCallerAdvertisements_returnsCurrentDevice()
+    public void getDeviceDataSources_noCallerAdvertisements_returnsCurrentDeviceIfCapable()
             throws InterruptedException {
         List<DeviceDataSource> dataSources =
                 HealthConnectReceiver.<GetDeviceDataSourcesResponse>callAndGetResponse(
@@ -119,7 +120,7 @@ public class DeviceDataSourceTest {
 
         DeviceDataTypeSource currentDeviceTypeSource =
                 currentDeviceSource.getDeviceDataTypeSources().iterator().next();
-        assertThat(currentDeviceTypeSource.isAvailable()).isTrue();
+        assertThat(currentDeviceTypeSource.isAvailable()).isEqualTo(hasPedometer());
         assertThat(currentDeviceTypeSource.getSymptomType()).isEqualTo(SYMPTOM_TYPE_UNKNOWN);
         assertThat(currentDeviceTypeSource.getDataType()).isEqualTo(StepsRecord.class);
 
@@ -158,7 +159,7 @@ public class DeviceDataSourceTest {
                     DeviceDataTypeSource typeSource =
                             dataSource.getDeviceDataTypeSources().iterator().next();
                     assertThat(typeSource.getDataType()).isEqualTo(StepsRecord.class);
-                    assertThat(typeSource.isAvailable()).isTrue();
+                    assertThat(typeSource.isAvailable()).isEqualTo(true);
                     assertThat(typeSource.isUserEnabled()).isTrue();
                 });
     }

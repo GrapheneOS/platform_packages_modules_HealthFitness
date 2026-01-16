@@ -29,6 +29,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.health.connect.DeviceDataProviderInfo;
 import android.health.connect.DeviceDataSourceInfo;
 import android.health.connect.HealthConnectManager;
@@ -680,15 +682,16 @@ public class DeviceDataProviderManager {
                         .setDisplayName(currentDeviceSource.getDisplayName())
                         .build();
 
-        // TODO(b/468339751): Have one shared source for all native capability types
+        // TODO(b/468339751): Have one shared public source for all native capability types
         Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
                 Set.of(
                         new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
-                                .setAvailable(true)
+                                .setAvailable(hasPedometer())
                                 // TODO(b/468250208): Set to preference
                                 .setUserEnabled(true)
                                 // TODO(b/469717403): Decide Matchmaking behavior
                                 .build());
+
         DeviceDataAdvertisement advertisement =
                 new DeviceDataAdvertisement(
                         currentDevice, getStableCurrentDeviceId(), deviceDataTypeAdvertisements);
@@ -808,5 +811,14 @@ public class DeviceDataProviderManager {
                             + " must be exported and permission guarded by "
                             + HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION);
         }
+    }
+
+    private boolean hasPedometer() {
+        SensorManager sensorManager = mContext.getSystemService(SensorManager.class);
+        if (sensorManager == null) {
+            return false;
+        }
+
+        return !Objects.isNull(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER));
     }
 }

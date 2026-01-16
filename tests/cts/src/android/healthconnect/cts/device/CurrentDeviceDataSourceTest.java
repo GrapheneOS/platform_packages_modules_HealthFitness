@@ -91,8 +91,7 @@ public class CurrentDeviceDataSourceTest {
     }
 
     @Test
-    public void noCallerAdvertisements_returnsCurrentDeviceWitSystemDataTypeSources()
-            throws InterruptedException {
+    public void noCallerAdvertisements_returnsCapableDataTypeSources() throws InterruptedException {
         String currentDeviceId = TestUtils.getCurrentDeviceId();
         TestUtils.verifyGetCurrentDeviceDataSourceWithPermission(
                 dataSource -> {
@@ -100,7 +99,7 @@ public class CurrentDeviceDataSourceTest {
                     DeviceDataTypeSource currentTypeSource =
                             dataSource.getDeviceDataTypeSources().iterator().next();
 
-                    assertThat(currentTypeSource.isAvailable()).isTrue();
+                    assertThat(currentTypeSource.isAvailable()).isEqualTo(TestUtils.hasPedometer());
                     assertThat(currentTypeSource.getSymptomType()).isEqualTo(SYMPTOM_TYPE_UNKNOWN);
                     assertThat(currentTypeSource.getDataType()).isEqualTo(StepsRecord.class);
 
@@ -119,6 +118,7 @@ public class CurrentDeviceDataSourceTest {
     @Test
     public void withReadPermission_returnsDevice() throws InterruptedException {
         String currentDeviceId = TestUtils.getCurrentDeviceId();
+
         TestUtils.verifyGetCurrentDeviceDataSourceWithPermission(
                 dataSource -> {
                     assertThat(dataSource.getDeviceDataOrigin().getPackageName())
@@ -133,7 +133,7 @@ public class CurrentDeviceDataSourceTest {
                     DeviceDataTypeSource typeSource =
                             dataSource.getDeviceDataTypeSources().iterator().next();
                     assertThat(typeSource.getDataType()).isEqualTo(StepsRecord.class);
-                    assertThat(typeSource.isAvailable()).isTrue();
+                    assertThat(typeSource.isAvailable()).isEqualTo(TestUtils.hasPedometer());
                     assertThat(typeSource.isUserEnabled()).isTrue();
                 },
                 READ_STEPS);

@@ -5484,8 +5484,10 @@ public class HealthConnectServiceImplTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
     })
-    // TODO(b/467694681): Check if we want to block this behaviour.
-    public void advertiseCurrentDeviceId_watchDevice_isSupported() throws RemoteException {
+    public void advertiseCurrentDeviceId_noPriorAdvertisements_watchDevice_isSupported()
+            throws RemoteException {
+        // As the system advertises the current device on startup, this is a hypothetical scenario
+        // only possible in unit tests
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
         String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
@@ -5508,6 +5510,44 @@ public class HealthConnectServiceImplTest {
         String spn = result.get(0).getDeviceDataOrigin().getPackageName();
         assertTrue(SyntheticPackageNameMatcher.matchesMasked(spn));
         assertTrue(result.get(0).isCurrentDevice());
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+    })
+    public void advertiseCurrentDeviceId_currentDeviceAdvertisedBefore_watchDevice_isNotSupported()
+            throws RemoteException {
+        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+        setDataManagementPermission(PackageManager.PERMISSION_GRANTED);
+        String clientExposedId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel")
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, clientExposedId, deviceDataTypeAdvertisements);
+        mHealthConnectService.advertiseDeviceDataSources(
+                mAttributionSource, List.of(advertisement), mEmptyResponseCallback);
+
+        verify(mEmptyResponseCallback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
+
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
+                .isEqualTo(ERROR_INVALID_ARGUMENT);
+        assertThat(mErrorCaptor.getValue().getHealthConnectException().getMessage())
+                .isEqualTo(
+                        "java.lang.IllegalArgumentException: The device with id"
+                                + " com.android.healthconnect.phone has already been used for a"
+                                + " different device type.");
     }
 
     @Test

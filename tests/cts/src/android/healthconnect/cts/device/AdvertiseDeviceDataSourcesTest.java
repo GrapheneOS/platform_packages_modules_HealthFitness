@@ -18,6 +18,7 @@ package android.healthconnect.cts.device;
 import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_HEART_RATE;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 import static android.healthconnect.testing.cts.TestUtils.advertiseDevice;
+import static android.healthconnect.testing.cts.TestUtils.getCurrentDeviceDataSource;
 import static android.healthconnect.testing.cts.TestUtils.getDeviceDataSourceInfos;
 import static android.healthconnect.testing.shared.DataFactory.getHeartRateRecord;
 
@@ -29,6 +30,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
+import android.health.connect.DeviceDataSource;
 import android.health.connect.DeviceDataSourceInfo;
 import android.health.connect.HealthConnectException;
 import android.health.connect.datatypes.Device;
@@ -614,5 +616,37 @@ public class AdvertiseDeviceDataSourcesTest {
                                 .getDevice()
                                 .getDisplayName())
                 .isEqualTo("");
+    }
+
+    @Test
+    public void withCurrentDeviceId_differentDeviceType_advertise_throws()
+            throws InterruptedException {
+        HealthConnectReceiver<DeviceDataSource> dataSourceReceiver = new HealthConnectReceiver<>();
+        getCurrentDeviceDataSource(outcomeExecutor(), dataSourceReceiver);
+        dataSourceReceiver.verifyNoExceptionOrThrow();
+
+        DeviceDataSource currentDeviceDataSource = dataSourceReceiver.getResponse();
+        Device currentDeviceWithDifferentType =
+                new Device.Builder()
+                        .setManufacturer(currentDeviceDataSource.getDevice().getManufacturer())
+                        .setModel(currentDeviceDataSource.getDevice().getModel())
+                        .setType(Device.DEVICE_TYPE_CHEST_STRAP)
+                        .setDisplayName(currentDeviceDataSource.getDevice().getDisplayName())
+                        .build();
+        String currentDeviceId = TestUtils.getCurrentDeviceId();
+
+        HealthConnectException exception =
+                assertThrows(
+                        HealthConnectException.class,
+                        () ->
+                                advertiseDevice(
+                                        currentDeviceId,
+                                        currentDeviceWithDifferentType,
+                                        SleepSessionRecord.class));
+
+        assertThat(exception.getMessage())
+                .contains(
+                        "The device with id com.android.healthconnect.phone"
+                                + " has already been used for a different device type.");
     }
 }
