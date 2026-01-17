@@ -16,7 +16,6 @@
 
 package com.android.healthconnect.controller.matchmaking
 
-import android.app.Activity.RESULT_CANCELED
 import android.health.connect.HealthConnectManager.EXTRA_RECORD_TYPES
 import android.os.Bundle
 import android.util.Log
@@ -98,7 +97,7 @@ class MatchmakingActivity :
 
         if (savedInstanceState == null) {
             val recordTypeNames = intent.getStringArrayExtra(EXTRA_RECORD_TYPES)
-            viewModel.loadMatchmakingApps(callingPackage, recordTypeNames)
+            viewModel.loadMatchmakingData(callingPackage, recordTypeNames)
         }
 
         viewModel.matchmakingState.observe(this) { state ->
@@ -117,7 +116,7 @@ class MatchmakingActivity :
                 is MatchmakingViewModel.MatchmakingState.WithData -> {
                     loadingView?.isVisible = false
                     errorView?.isVisible = false
-                    if (state.matchingApps.isEmpty()) {
+                    if (state.matchingApps.isEmpty() && state.matchingDevices.isEmpty()) {
                         finishWithCancelResult()
                     } else {
                         if (savedInstanceState == null) {
@@ -135,7 +134,10 @@ class MatchmakingActivity :
     }
 
     override fun onDialogCanceled() {
-        viewModel.removeAllPermissionsFromGrantedList()
+        val callingPackage = callingPackage
+        if (callingPackage != null) {
+            viewModel.removeAllPermissionsFromGrantedList(callingPackage)
+        }
         finishWithCancelResult()
     }
 

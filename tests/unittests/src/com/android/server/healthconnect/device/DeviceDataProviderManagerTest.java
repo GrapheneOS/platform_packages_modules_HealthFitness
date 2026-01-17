@@ -35,13 +35,17 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assume.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.DeviceDataProviderInfo;
 import android.health.connect.DeviceDataSourceInfo;
@@ -146,6 +150,8 @@ public class DeviceDataProviderManagerTest {
     private FakeSerialDeviceDataSourceHelper mDataSourceHelper;
 
     @Mock private AppOpLogsHelper mAppOpLogsHelper;
+    @Mock private SensorManager mSensorManager;
+    @Mock private Sensor mSensor;
 
     @Before
     public void setUp() throws Exception {
@@ -2289,8 +2295,11 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
-    public void advertiseCurrentDeviceNativeCapabilities_advertisesCurrentDeviceCapabilities() {
+    public void advertiseCurrentDeviceNativeCapabilities_withPedometer_advertisementsAreCorrect() {
         String stableId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+        when(mContext.getSystemService(eq(SensorManager.class))).thenReturn(mSensorManager);
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(mSensor);
+
         mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
 
         long expectedDeviceInfoId = 1;
@@ -2318,12 +2327,13 @@ public class DeviceDataProviderManagerTest {
         // Health Connect has been added to ddp metadata
         assertThat(metadataInternalMap).hasSize(1);
         assertThat(metadataInternalMap).containsKey(1L);
-        assertThat(metadataInternalMap.get(1L).sourcePackageName()).isEqualTo("android");
+        assertThat(metadataInternalMap.get(1L).sourcePackageName())
+                .isEqualTo(DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE);
 
         // Combination available as key in device data sources
         DeviceDataSourcesHelper.DeviceDataProviderKey key =
                 new DeviceDataSourcesHelper.DeviceDataProviderKey(
-                        "android",
+                        DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE,
                         expectedDeviceInfoId,
                         RECORD_TYPE_STEPS,
                         SymptomRecord.SYMPTOM_TYPE_UNKNOWN);
@@ -2338,8 +2348,10 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
-    public void advertiseCurrentDeviceNativeCapabilities_addsStepsToDeviceDataSourceInfos() {
+    public void advertiseCurrentDeviceNativeCapabilities_withPedometer_addsSteps() {
         String stableDeviceId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+        when(mContext.getSystemService(eq(SensorManager.class))).thenReturn(mSensorManager);
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(mSensor);
 
         List<DeviceDataSourceInfo> initialSourceInfos =
                 mDeviceDataProviderManager.getDeviceDataSourceInfos();
@@ -2368,7 +2380,8 @@ public class DeviceDataProviderManagerTest {
         assertThat(currentDeviceSource.getDeviceDataProviderInfos()).hasSize(1);
         DeviceDataProviderInfo currentDeviceProvider =
                 currentDeviceSource.getDeviceDataProviderInfos().get(0);
-        assertThat(currentDeviceProvider.getPackageName()).isEqualTo("android");
+        assertThat(currentDeviceProvider.getPackageName())
+                .isEqualTo(DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE);
         assertThat(currentDeviceProvider.getDeviceId()).isEqualTo(stableDeviceId);
         assertThat(currentDeviceProvider.getOnboardingActivityLabel()).isEqualTo("");
         assertThat(currentDeviceProvider.getManagementActivityLabel()).isEqualTo("");
@@ -2387,8 +2400,97 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
+    public void advertiseCurrentDeviceNativeCapabilities_noPedometer_addsDisabledStepsAd() {
+        String stableDeviceId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+        when(mContext.getSystemService(eq(SensorManager.class))).thenReturn(mSensorManager);
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(null);
+
+        List<DeviceDataSourceInfo> initialSourceInfos =
+                mDeviceDataProviderManager.getDeviceDataSourceInfos();
+        assertThat(initialSourceInfos).isEmpty();
+
+        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+        List<DeviceDataSourceInfo> newSourceInfos =
+                mDeviceDataProviderManager.getDeviceDataSourceInfos();
+
+        assertThat(newSourceInfos).hasSize(1);
+        DeviceDataSourceInfo currentDeviceSource = newSourceInfos.get(0);
+        assertThat(currentDeviceSource.getDeviceDataOrigin().getPackageName())
+                .isEqualTo(stableDeviceId);
+        assertThat(currentDeviceSource.isCurrentDevice()).isTrue();
+
+        DeviceDataSource expectedDeviceSource = mDataSourceHelper.getCurrentDevice(mContext);
+        Device expectedDevice =
+                new Device.Builder()
+                        .setDisplayName(expectedDeviceSource.getDisplayName())
+                        .setManufacturer(expectedDeviceSource.getManufacturer())
+                        .setModel(expectedDeviceSource.getModel())
+                        .setType(expectedDeviceSource.getDeviceType())
+                        .build();
+        assertThat(currentDeviceSource.getDevice()).isEqualTo(expectedDevice);
+
+        assertThat(currentDeviceSource.getDeviceDataProviderInfos()).hasSize(1);
+        DeviceDataProviderInfo currentDeviceProvider =
+                currentDeviceSource.getDeviceDataProviderInfos().get(0);
+        assertThat(currentDeviceProvider.getPackageName())
+                .isEqualTo(DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE);
+        assertThat(currentDeviceProvider.getDeviceId()).isEqualTo(stableDeviceId);
+        assertThat(currentDeviceProvider.getOnboardingActivityLabel()).isEqualTo("");
+        assertThat(currentDeviceProvider.getManagementActivityLabel()).isEqualTo("");
+
+        assertThat(currentDeviceProvider.getDeviceDataTypeAdvertisements()).hasSize(1);
+        DeviceDataTypeAdvertisement expectedAd =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setAvailable(false)
+                        // TODO(b/468250208): Set to preference
+                        .setUserEnabled(true)
+                        // TODO(b/469717403): Decide Matchmaking behavior
+                        .setVisibleByDefaultInMatchmaking(true)
+                        .build();
+        assertThat(currentDeviceProvider.getDeviceDataTypeAdvertisements().iterator().next())
+                .isEqualTo(expectedAd);
+    }
+
+    @Test
+    public void
+            advertiseCurrentDeviceNativeCapabilities_noPedometer_throwsForAdsWithNewDeviceTypes() {
+        String stableDeviceId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+        when(mContext.getSystemService(eq(SensorManager.class))).thenReturn(mSensorManager);
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(null);
+
+        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+
+        DeviceDataSource currentDevice = mDataSourceHelper.getCurrentDevice(mContext);
+        Device otherDevice =
+                new Device.Builder()
+                        .setManufacturer(currentDevice.getManufacturer())
+                        .setModel(currentDevice.getModel())
+                        .setType(currentDevice.getDeviceType() + 1)
+                        .setDisplayName(currentDevice.getDisplayName())
+                        .build();
+
+        DeviceDataTypeAdvertisement deviceDataTypeAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(SleepSessionRecord.class)
+                        .setAvailable(true)
+                        .build();
+
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(
+                        otherDevice, stableDeviceId, Set.of(deviceDataTypeAdvertisement));
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mDeviceDataProviderManager.handleAdvertisement(
+                                Set.of(advertisement), "some.other.app"));
+    }
+
+    @Test
     public void withCurrentDevice_insertDeviceRecords_needsOwnAdvertisement() {
         String currentDeviceId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+        when(mContext.getSystemService(eq(SensorManager.class))).thenReturn(mSensorManager);
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(mSensor);
+
         List<RecordInternal<?>> records =
                 List.of(
                         buildStepsRecord(

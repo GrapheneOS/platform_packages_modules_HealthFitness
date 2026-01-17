@@ -157,6 +157,7 @@ import android.os.RemoteException;
 import android.os.UserHandle;
 import android.util.Log;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 
@@ -1490,6 +1491,15 @@ public class HealthConnectManager {
         Objects.requireNonNull(request);
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            if (request instanceof ReadRecordsRequestUsingFilters<?> filteredReq
+                    && Objects.nonNull(filteredReq.getDeviceId())) {
+                throw new IllegalArgumentException(
+                        "Field validation failed: 'deviceId' is forbidden in this context. "
+                                + "Use the dedicated readDeviceRecords API for this operation.");
+            }
+        }
+
         try {
             mService.readRecords(
                     mContext.getAttributionSource(),

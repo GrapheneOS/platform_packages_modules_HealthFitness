@@ -32,6 +32,8 @@ import androidx.preference.PreferenceCategory
 import androidx.preference.PreferenceGroupAdapter
 import androidx.preference.PreferenceScreen
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.matchmaking.api.MatchmakingAppData
+import com.android.healthconnect.controller.matchmaking.api.MatchmakingDeviceData
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionStrings
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
@@ -50,6 +52,8 @@ import com.android.healthconnect.controller.utils.logging.MatchmakingElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import com.android.healthconnect.controller.utils.pref
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
+import com.android.healthfitness.flags.Flags.deviceDataProvidersUiMatchmakingScreen
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -66,6 +70,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
         private const val HEADER = "matchmaking_header"
         private const val ALLOW_ALL_PREFERENCE = "allow_all_preference"
         private const val MATCHMAKING_APPS_CATEGORY = "matchmaking_apps_category"
+        private const val MATCHMAKING_DEVICES_CATEGORY = "matchmaking_devices_category"
         private const val FOOTER = "matchmaking_footer"
         private const val TAG = "Matchmaking"
     }
@@ -76,6 +81,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     private val header: MatchmakingHeaderPreference by pref(HEADER)
     private val allowAllPreference: HealthMainSwitchPreference by pref(ALLOW_ALL_PREFERENCE)
     private val matchmakingAppsCategory: PreferenceCategory by pref(MATCHMAKING_APPS_CATEGORY)
+    private val matchmakingDevicesCategory: PreferenceCategory by pref(MATCHMAKING_DEVICES_CATEGORY)
     private val footerPref: FooterPreference by pref(FOOTER)
 
     @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
@@ -129,8 +135,8 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                 }
                 is MatchmakingViewModel.MatchmakingState.WithData -> {
                     setLoading(false)
-                    bindHeader(state.callingAppMetaData, state.matchingApps)
-                    buildAppList(state.matchingApps)
+                    bindHeader(state.callingAppMetaData, state.matchingApps, state.matchingDevices)
+                    buildDataSourcesList(state.matchingApps, state.matchingDevices)
                     bindFooter()
                     setupButtons(view)
                 }
@@ -153,11 +159,121 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
         loadingIndicator?.isVisible = isLoading
     }
 
+    private fun buildDataSourcesList(
+        apps: List<MatchmakingAppData>,
+        devices: List<MatchmakingDeviceData>,
+    ) {
+        customStyledPrefs.clear()
+        matchmakingAppsCategory.removeAll()
+        matchmakingDevicesCategory.removeAll()
+
+        matchmakingAppsCategory.isVisible = apps.isNotEmpty()
+        apps.forEach { appData -> addAppPreference(appData) }
+        if (
+            deviceDataProvidersApi() &&
+                deviceDataProvidersUiMatchmakingScreen() &&
+                devices.isNotEmpty()
+        ) {
+            matchmakingDevicesCategory.isVisible = true
+            devices.forEach { deviceData -> addDevicePreference(deviceData) }
+        } else {
+            matchmakingDevicesCategory.isVisible = false
+        }
+    }
+
+    private fun addDevicePreference(deviceData: MatchmakingDeviceData) {
+        val expandablePreference = createExpandablePreference(deviceData)
+        matchmakingDevicesCategory.addPreference(expandablePreference)
+        customStyledPrefs.add(expandablePreference)
+
+        expandablePreference.setOnSwitchChangeListener { isChecked ->
+            if (isChecked) {
+                viewModel.addDevicePermissionToGrantedList(expandablePreference.key)
+            } else {
+                viewModel.removeAllPermissionsFromGrantedList(expandablePreference.key)
+            }
+        }
+    }
+
+    private fun addAppPreference(appData: MatchmakingAppData) {
+        val expandablePreference = createExpandablePreference(appData)
+        matchmakingAppsCategory.addPreference(expandablePreference)
+        customStyledPrefs.add(expandablePreference)
+
+        if (appData.permissions.isNotEmpty()) {
+            addPermissionSwitches(appData, expandablePreference)
+            addPrivacyPolicyFooter(appData, expandablePreference)
+        }
+
+        viewModel.grantedPermissions.observe(viewLifecycleOwner) { grantedPermissionsMap ->
+            val granted = grantedPermissionsMap[appData.metadata.packageName]?.size ?: 0
+            val total = appData.permissions.size
+            expandablePreference.summary =
+                requireContext().getString(R.string.app_permissions_granted_summary, granted, total)
+
+            expandablePreference.isChecked = granted > 0
+        }
+
+        expandablePreference.setOnSwitchChangeListener { isChecked ->
+            if (isChecked) {
+                viewModel.addAllPermissionsToGrantedList(appData.metadata.packageName)
+            } else {
+                viewModel.removeAllPermissionsFromGrantedList(appData.metadata.packageName)
+            }
+        }
+    }
+
+    private fun createExpandablePreference(data: Any): HealthExpandablePreference {
+        return HealthExpandablePreference(requireContext(), null).apply {
+            when (data) {
+                is MatchmakingAppData -> {
+                    title =
+                        context.getString(
+                            R.string.matchmaking_screen_data_from_app,
+                            data.metadata.appName,
+                        )
+                    icon =
+                        data.metadata.icon
+                            ?: ContextCompat.getDrawable(requireContext(), R.drawable.ic_apps)
+                    key = data.metadata.packageName
+                    logName = MatchmakingElement.MATCHMAKING_EXPANDABLE_PREFERENCE
+                    setExpanded(
+                        isInitiallyExpanded(
+                            data.metadata.packageName,
+                            viewModel.matchingAppsCount.value ?: 0,
+                        )
+                    )
+                    setOnExpandChangeListener { isExpanded ->
+                        viewModel.updateExpandedPreferenceKey(key, isExpanded)
+                    }
+                }
+                is MatchmakingDeviceData -> {
+                    if (deviceDataProvidersApi() && deviceDataProvidersUiMatchmakingScreen()) {
+                        title = data.deviceDataSourceInfo.device.manufacturer
+                        icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_apps)
+                        key = data.deviceDataSourceInfo.deviceDataOrigin.packageName
+                        setExpanded(false)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun isInitiallyExpanded(packageName: String, listSize: Int): Boolean {
+        val state =
+            viewModel.matchmakingState.value as? MatchmakingViewModel.MatchmakingState.WithData
+        val totalDataSources =
+            (state?.matchingApps?.size ?: 0) + (state?.matchingDevices?.size ?: 0)
+        return totalDataSources == 1 ||
+            viewModel.expandedPreferenceKeys.value?.contains(packageName) == true
+    }
+
     private fun bindHeader(
         callingAppMetaData: AppMetadata,
         matchingApps: List<MatchmakingAppData>,
+        matchingDevices: List<MatchmakingDeviceData>,
     ) {
-        if (matchingApps.isEmpty()) {
+        if (matchingApps.isEmpty() && matchingDevices.isEmpty()) {
             header.isIconViewVisible = false
         }
         logger.logImpression(MatchmakingElement.MATCHMAKING_SCREEN_HEADER)
@@ -166,63 +282,15 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
         header.headerSummary =
             getString(R.string.matchmaking_screen_summary, callingAppMetaData.appName)
         header.requestingAppIcon = callingAppMetaData.icon
-        header.matchedAppIcons = matchingApps.mapNotNull { it.metadata.icon }
-    }
-
-    private fun buildAppList(apps: List<MatchmakingAppData>) {
-        customStyledPrefs.clear()
-        matchmakingAppsCategory.removeAll()
-        apps.forEach { appData -> addAppPreference(appData, apps.size) }
-    }
-
-    private fun addAppPreference(appData: MatchmakingAppData, appListSize: Int) {
-        val expandablePreference = createExpandablePreference(appData, appListSize)
-        matchmakingAppsCategory.addPreference(expandablePreference)
-        customStyledPrefs.add(expandablePreference)
-        addPermissionSwitches(appData, expandablePreference)
-        addPrivacyPolicyFooter(appData, expandablePreference)
-
-        viewModel.grantedPermissions.observe(viewLifecycleOwner) { grantedPermissionsMap ->
-            val granted = grantedPermissionsMap[appData.metadata.packageName]?.size ?: 0
-            val total = appData.permissions.size
-            expandablePreference.summary =
-                requireContext().getString(R.string.app_permissions_granted_summary, granted, total)
-
-            expandablePreference.isChecked = granted == total
-        }
-
-        expandablePreference.setOnSwitchChangeListener { isChecked ->
-            if (isChecked) {
-                viewModel.addAppPermissionsToGrantedList(appData.metadata.packageName)
+        header.matchedAppIcons =
+            if (deviceDataProvidersApi() && deviceDataProvidersUiMatchmakingScreen()) {
+                matchingApps.mapNotNull { it.metadata.icon } +
+                    matchingDevices.mapNotNull {
+                        ContextCompat.getDrawable(requireContext(), R.drawable.ic_apps)
+                    }
             } else {
-                viewModel.removeAppPermissionsFromGrantedList(appData.metadata.packageName)
+                matchingApps.mapNotNull { it.metadata.icon }
             }
-        }
-    }
-
-    private fun createExpandablePreference(
-        appData: MatchmakingAppData,
-        appListSize: Int,
-    ): HealthExpandablePreference {
-        return HealthExpandablePreference(requireContext(), null).apply {
-            title =
-                context.getString(
-                    R.string.matchmaking_screen_data_from_app,
-                    appData.metadata.appName,
-                )
-            icon = appData.metadata.icon
-            key = appData.metadata.packageName
-            logName = MatchmakingElement.MATCHMAKING_EXPANDABLE_PREFERENCE
-            setExpanded(isInitiallyExpanded(appData, appListSize))
-            setOnExpandChangeListener { isExpanded ->
-                viewModel.updateExpandedPreferenceKey(key, isExpanded)
-            }
-        }
-    }
-
-    private fun isInitiallyExpanded(appData: MatchmakingAppData, appListSize: Int): Boolean {
-        return appListSize == 1 ||
-            viewModel.expandedPreferenceKeys.value?.contains(appData.metadata.packageName) == true
     }
 
     private fun addPermissionSwitches(
@@ -249,7 +317,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                     it.permission = permission
                     it.setOnPreferenceChangeListener { _, newValue ->
                         if (newValue as? Boolean == true) {
-                            viewModel.addPermissionToGrantedList(
+                            viewModel.addAppPermissionToGrantedList(
                                 appData.metadata.packageName,
                                 permission,
                             )
@@ -341,10 +409,22 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     }
 
     private fun toggleAllMatchmakingPermissions(isChecked: Boolean) {
-        if (isChecked) {
-            viewModel.addAllPermissionsToGrantedList()
-        } else {
-            viewModel.removeAllPermissionsFromGrantedList()
+        val categories = mutableListOf(matchmakingAppsCategory)
+        if (deviceDataProvidersUiMatchmakingScreen()) {
+            categories.add(matchmakingDevicesCategory)
+        }
+        categories.forEach { category ->
+            category.children.forEach { preference ->
+                if (preference is HealthExpandablePreference) {
+                    val packageName = preference.key
+                    preference.isChecked = isChecked
+                    if (isChecked) {
+                        viewModel.addAllPermissionsToGrantedList(packageName)
+                    } else {
+                        viewModel.removeAllPermissionsFromGrantedList(packageName)
+                    }
+                }
+            }
         }
         // Notify the adapter that the data has changed to force a redraw of the visible items.
         // This is crucial because PreferenceFragmentCompat uses a RecyclerView.
@@ -386,7 +466,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                     ?.callingAppMetaData
                     ?.packageName
             if (callingPackageName != null) {
-                viewModel.removeAllPermissionsFromGrantedList()
+                viewModel.removeAllPermissionsFromGrantedList(callingPackageName)
             }
             activity?.setResult(RESULT_CANCELED)
             activity?.finish()

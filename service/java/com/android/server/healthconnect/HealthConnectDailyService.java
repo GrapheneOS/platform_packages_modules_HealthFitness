@@ -181,7 +181,8 @@ public final class HealthConnectDailyService extends JobService {
                                         healthConnectInjector.getOnboardingNotificationSender(),
                                         healthConnectInjector
                                                 .getOnboardingNotificationStateManager(),
-                                        requireNonNull(sUserHandle));
+                                        requireNonNull(sUserHandle),
+                                        healthConnectInjector.getResourcesContext());
                                 jobFinished(params, /* wantsReschedule= */ false);
                             });
                 } else {

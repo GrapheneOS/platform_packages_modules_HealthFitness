@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2021 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2021 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -15,55 +14,56 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="android.healthconnect.controller.test.app">
+    package="android.healthconnect.controller.test.app">
 
     <!-- Health-related permissions. -->
-    <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"/>
-    <uses-permission android:name="android.permission.health.WRITE_ACTIVE_CALORIES_BURNED"/>
-    <uses-permission android:name="android.permission.health.READ_EXERCISE"/>
-    <uses-permission android:name="android.permission.health.WRITE_EXERCISE"/>
-    <uses-permission android:name="android.permission.health.READ_SLEEP"/>
-    <uses-permission android:name="android.permission.health.WRITE_SLEEP"/>
-    <uses-permission android:name="android.permission.health.READ_EXERCISE_ROUTES"/>
-    <uses-permission android:name="android.permission.health.WRITE_EXERCISE_ROUTE"/>
-    <uses-permission android:name="android.permission.health.READ_SKIN_TEMPERATURE"/>
-    <uses-permission android:name="android.permission.health.WRITE_SKIN_TEMPERATURE"/>
-    <uses-permission android:name="android.permission.health.READ_PLANNED_EXERCISE"/>
-    <uses-permission android:name="android.permission.health.WRITE_PLANNED_EXERCISE"/>
-    <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"/>
-    <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_HISTORY"/>
-    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES"/>
-    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_CONDITIONS"/>
-    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_LABORATORY_RESULTS"/>
-    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_MEDICATIONS"/>
-    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_PERSONAL_DETAILS"/>
-    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_PRACTITIONER_DETAILS"/>
-    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_PREGNANCY"/>
-    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_PROCEDURES"/>
-    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_SOCIAL_HISTORY"/>
-    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_VACCINES"/>
-    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_VISITS"/>
-    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_VITAL_SIGNS"/>
-    <uses-permission android:name="android.permission.health.WRITE_MEDICAL_DATA"/>
-    <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA"/>
-    <uses-permission android:name="android.permission-group.HEALTH"/>
+    <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED" />
+    <uses-permission android:name="android.permission.health.WRITE_ACTIVE_CALORIES_BURNED" />
+    <uses-permission android:name="android.permission.health.READ_EXERCISE" />
+    <uses-permission android:name="android.permission.health.WRITE_EXERCISE" />
+    <uses-permission android:name="android.permission.health.READ_SLEEP" />
+    <uses-permission android:name="android.permission.health.WRITE_SLEEP" />
+    <uses-permission android:name="android.permission.health.READ_EXERCISE_ROUTES" />
+    <uses-permission android:name="android.permission.health.WRITE_EXERCISE_ROUTE" />
+    <uses-permission android:name="android.permission.health.READ_SKIN_TEMPERATURE" />
+    <uses-permission android:name="android.permission.health.WRITE_SKIN_TEMPERATURE" />
+    <uses-permission android:name="android.permission.health.READ_PLANNED_EXERCISE" />
+    <uses-permission android:name="android.permission.health.WRITE_PLANNED_EXERCISE" />
+    <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND" />
+    <uses-permission android:name="android.permission.health.READ_HEALTH_DATA_HISTORY" />
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES" />
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_CONDITIONS" />
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_LABORATORY_RESULTS" />
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_MEDICATIONS" />
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_PERSONAL_DETAILS" />
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_PRACTITIONER_DETAILS" />
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_PREGNANCY" />
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_PROCEDURES" />
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_SOCIAL_HISTORY" />
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_VACCINES" />
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_VISITS" />
+    <uses-permission android:name="android.permission.health.READ_MEDICAL_DATA_VITAL_SIGNS" />
+    <uses-permission android:name="android.permission.health.WRITE_MEDICAL_DATA" />
+    <uses-permission android:name="android.permission.MANAGE_HEALTH_DATA" />
+    <uses-permission android:name="android.permission-group.HEALTH" />
 
-    <application
-        android:label="Health Connect test app">
-        <uses-library android:name="android.test.runner"/>
+    <application android:label="Health Connect test app">
+        <uses-library android:name="android.test.runner" />
 
-        <activity android:name=".MainActivity"
-                  android:label="MainActivity"
-                  android:exported="true">
+        <activity
+            android:name=".MainActivity"
+            android:label="MainActivity"
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.FRAMEWORK_INSTRUMENTATION_TEST"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.FRAMEWORK_INSTRUMENTATION_TEST" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
                 <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
             </intent-filter>
         </activity>
+
         <activity-alias
             android:name="OnboardingActivity"
             android:exported="true"
@@ -71,6 +71,24 @@
             android:permission="android.permission.health.START_ONBOARDING">
             <intent-filter>
                 <action android:name="android.health.connect.action.ACTION_SHOW_ONBOARDING" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name="DeviceOnboardingActivity"
+            android:exported="true"
+            android:targetActivity=".MainActivity"
+            android:permission="android.permission.MANAGE_HEALTH_DATA">
+            <intent-filter>
+                <action android:name="android.health.connect.action.SHOW_DEVICE_ONBOARDING" />
+            </intent-filter>
+        </activity-alias>
+        <activity-alias
+            android:name="DeviceManagementActivity"
+            android:exported="true"
+            android:targetActivity=".MainActivity"
+            android:permission="android.permission.MANAGE_HEALTH_DATA">
+            <intent-filter>
+                <action android:name="android.health.connect.action.SHOW_DEVICE_MANAGEMENT" />
             </intent-filter>
         </activity-alias>
     </application>

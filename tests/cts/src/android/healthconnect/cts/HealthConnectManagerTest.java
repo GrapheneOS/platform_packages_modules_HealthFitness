@@ -35,6 +35,7 @@ import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGetResponseWithShellPermissionIdentity;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 import static android.healthconnect.testing.cts.TestUtils.finishMigrationWithShellPermissionIdentity;
+import static android.healthconnect.testing.cts.TestUtils.getCurrentDeviceId;
 import static android.healthconnect.testing.cts.TestUtils.getRecordById;
 import static android.healthconnect.testing.cts.TestUtils.insertRecords;
 import static android.healthconnect.testing.cts.TestUtils.startMigrationWithShellPermissionIdentity;
@@ -70,7 +71,9 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.LocalTimeRangeFilter;
+import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
+import android.health.connect.ReadRecordsResponse;
 import android.health.connect.RecordTypeInfoResponse;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.changelog.ChangeLogTokenRequest;
@@ -84,6 +87,7 @@ import android.health.connect.datatypes.HydrationRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.NutritionRecord;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.datatypes.units.Mass;
 import android.health.connect.datatypes.units.Power;
@@ -1513,6 +1517,27 @@ public class HealthConnectManagerTest {
         assertThat(deviceDataSourceCapabilities).isNotNull();
         assertThat(deviceDataSourceCapabilities.getRecordTypes())
                 .containsExactly(StepsRecord.class);
+    }
+
+    @Test
+    @RequiresFlagsEnabled({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
+    })
+    public void testReadRecords_withDeviceId_throws() {
+        TestOutcomeReceiver<ReadRecordsResponse<SleepSessionRecord>, HealthConnectException>
+                receiver = new TestOutcomeReceiver<>();
+
+        assertThrows(
+                IllegalArgumentException.class,
+                () ->
+                        mManager.readRecords(
+                                new ReadRecordsRequestUsingFilters.Builder<>(
+                                                SleepSessionRecord.class)
+                                        .setDeviceId(getCurrentDeviceId())
+                                        .build(),
+                                Executors.newSingleThreadExecutor(),
+                                receiver));
     }
 
     private boolean isEmptyContributingPackagesForAll(

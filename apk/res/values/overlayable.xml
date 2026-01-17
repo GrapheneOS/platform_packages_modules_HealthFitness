@@ -134,4 +134,9 @@
             <!-- END REGION -->
         </policy>
     </overlayable>
+    <overlayable name="HealthConnectConfig">
+        <policy type="product|system|vendor|odm|oem">
+            <item type="bool" name="config_enableDiscovery"/>
+        </policy>
+    </overlayable>
 </resources>

@@ -38,7 +38,9 @@ import android.os.UserHandle;
 import android.util.Slog;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectDailyService;
+import com.android.server.healthconnect.migration.notification.HealthConnectResourcesContext;
 
 import java.time.Duration;
 
@@ -51,12 +53,20 @@ public final class OnboardingNotificationJob {
     public static final String ONBOARDING_NOTIFICATION_JOB_NAME = "onboarding_notification_job";
     public static final String ONBOARDING_NOTIFICATION_JOB_NAMESPACE =
             "HEALTH_CONNECT_ONBOARDING_NOTIFICATION_JOB";
+
+    /** Name of bool resource that can be overridden to disable discovery features. */
+    @VisibleForTesting
+    public static final String CONFIG_ENABLE_DISCOVERY = "config_enableDiscovery";
+
     private static final int MIN_JOB_ID = OnboardingNotificationJob.class.hashCode();
     private static final String TAG = "OnboardingNotificationJob";
 
     /** Schedule the onboarding notification job if it's not yet scheduled. */
-    public static void scheduleJobIfNotScheduled(Context context, UserHandle userHandle) {
-        if (!Flags.onboarding()) {
+    public static void scheduleJobIfNotScheduled(
+            Context context,
+            UserHandle userHandle,
+            HealthConnectResourcesContext resourcesContext) {
+        if (!isOnboardingNotificationEnabled(resourcesContext)) {
             return;
         }
         if (!requireNonNull(context.getSystemService(JobScheduler.class))
@@ -77,9 +87,6 @@ public final class OnboardingNotificationJob {
 
     /** Schedule the onboarding notification job. */
     private static void scheduleOnboardingNotificationJob(UserHandle userHandle, Context context) {
-        if (!Flags.onboarding()) {
-            return;
-        }
         ComponentName componentName = new ComponentName(context, HealthConnectDailyService.class);
         final PersistableBundle extras = new PersistableBundle();
         extras.putInt(EXTRA_USER_ID, userHandle.getIdentifier());
@@ -104,8 +111,9 @@ public final class OnboardingNotificationJob {
             OnboardingStateManager onboardingStateManager,
             OnboardingNotificationSender notificationSender,
             OnboardingNotificationStateManager notificationShownStateManager,
-            UserHandle userHandle) {
-        if (!Flags.onboarding()) {
+            UserHandle userHandle,
+            HealthConnectResourcesContext resourcesContext) {
+        if (!isOnboardingNotificationEnabled(resourcesContext)) {
             Slog.d(TAG, "Onboarding flag is disabled");
             return;
         }
@@ -138,5 +146,17 @@ public final class OnboardingNotificationJob {
             default:
                 // fall out
         }
+    }
+
+    private static boolean isOnboardingNotificationEnabled(
+            HealthConnectResourcesContext resourcesContext) {
+        if (!Flags.onboarding()) {
+            return false;
+        }
+        boolean enabled = resourcesContext.getBoolByName(CONFIG_ENABLE_DISCOVERY).orElse(true);
+        if (!enabled) {
+            Slog.d(TAG, "Onboarding notification disabled by config");
+        }
+        return enabled;
     }
 }

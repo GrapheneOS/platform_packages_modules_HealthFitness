@@ -22,4 +22,5 @@
         @string/import_notification_*,
         @string/health_connect_notification_channel_name,
         @string/*_onboarding_notification*,
+        @bool/config_enableDiscovery,
     " />

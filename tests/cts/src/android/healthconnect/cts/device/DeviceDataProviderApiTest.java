@@ -195,7 +195,8 @@ public class DeviceDataProviderApiTest {
     }
 
     @Test
-    public void onStartup_advertisesCurrentDeviceCapabilities() throws InterruptedException {
+    public void onStartup_advertisesCurrentDeviceCapabilitiesWithSteps()
+            throws InterruptedException {
         List<DeviceDataSourceInfo> response = getDeviceDataSourceInfos();
         String currentDeviceId = getCurrentDeviceId();
 
@@ -216,7 +217,7 @@ public class DeviceDataProviderApiTest {
         assertThat(deviceDataProviderInfo.getDeviceDataTypeAdvertisements()).hasSize(1);
         DeviceDataTypeAdvertisement expectedAd =
                 new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
-                        .setAvailable(true)
+                        .setAvailable(TestUtils.hasPedometer())
                         // TODO(b/468250208): Set to preference
                         .setUserEnabled(true)
                         // TODO(b/469717403): Decide Matchmaking behavior

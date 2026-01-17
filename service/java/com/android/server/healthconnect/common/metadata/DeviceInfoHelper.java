@@ -95,7 +95,8 @@ public class DeviceInfoHelper extends DatabaseHelper {
 
     /** Populates record with deviceInfoId */
     public void populateDeviceInfoId(RecordInternal<?> recordInternal) {
-        if (recordInternal.getPackageName() != null
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                && recordInternal.getPackageName() != null
                 && SyntheticPackageNameMatcher.matches(recordInternal.getPackageName())
                 && recordInternal.getDeviceInfoId() != DEFAULT_LONG) {
             // DDP APIs will have already set the deviceInfoId and packageName. Return early as the

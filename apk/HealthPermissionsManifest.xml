@@ -22,13 +22,15 @@
         android:name="android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
         android:label="@string/background_read_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_HEALTH_DATA_HISTORY"
         android:label="@string/historic_access_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.WRITE_DEVICE_UDI"
@@ -44,61 +46,70 @@
         android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED"
         android:label="@string/active_calories_burned_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_ACTIVITY_INTENSITY"
         android:label="@string/activity_intensity_read_content_description"
         android:protectionLevel="dangerous"
         android:permissionGroup="android.permission-group.HEALTH"
-    />
+    android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_DISTANCE"
         android:label="@string/distance_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_ELEVATION_GAINED"
         android:label="@string/elevation_gained_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_EXERCISE"
         android:label="@string/exercise_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_EXERCISE_ROUTES"
         android:label="@string/exercise_routes_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_EXERCISE_ROUTE"
         android:label="@string/exercise_route_read_content_description"
-        android:protectionLevel="signature" />
+        android:protectionLevel="signature"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_FLOORS_CLIMBED"
         android:label="@string/floors_climbed_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_STEPS"
         android:label="@string/steps_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_TOTAL_CALORIES_BURNED"
         android:label="@string/total_calories_burned_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_VO2_MAX"
@@ -107,145 +118,168 @@
         android:backgroundPermission=
             "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
         android:featureFlag="com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_VO2_MAX"
         android:label="@string/vo2_max_read_content_description"
         android:protectionLevel="dangerous"
         android:featureFlag="!com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_WHEELCHAIR_PUSHES"
         android:label="@string/wheelchair_pushes_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_POWER"
         android:label="@string/power_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_SPEED"
         android:label="@string/speed_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <!-- Read permissions for measurements -->
     <permission
         android:name="android.permission.health.READ_BASAL_METABOLIC_RATE"
         android:label="@string/basal_metabolic_rate_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_BODY_FAT"
         android:label="@string/body_fat_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_BODY_WATER_MASS"
         android:label="@string/body_water_mass_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_BONE_MASS"
         android:label="@string/bone_mass_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_HEIGHT"
         android:label="@string/height_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_LEAN_BODY_MASS"
         android:label="@string/lean_body_mass_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_WEIGHT"
         android:label="@string/weight_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <!-- Read permissions for cycle tracking -->
     <permission
         android:name="android.permission.health.READ_CERVICAL_MUCUS"
         android:label="@string/cervical_mucus_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_INTERMENSTRUAL_BLEEDING"
         android:label="@string/intermenstrual_bleeding_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_MENSTRUATION"
         android:label="@string/menstruation_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_OVULATION_TEST"
         android:label="@string/ovulation_test_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_SEXUAL_ACTIVITY"
         android:label="@string/sexual_activity_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_MENSTRUAL_CYCLE_PHASE"
         android:label="@string/menstrual_cycle_phase_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <!-- Read permissions for nutrition -->
     <permission
         android:name="android.permission.health.READ_HYDRATION"
         android:label="@string/hydration_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_NUTRITION"
         android:label="@string/nutrition_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <!-- Read permissions for sleep -->
     <permission
         android:name="android.permission.health.READ_SLEEP"
         android:label="@string/sleep_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <!-- Read permissions for vitals -->
     <permission
         android:name="android.permission.health.READ_BASAL_BODY_TEMPERATURE"
         android:label="@string/basal_body_temperature_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_BLOOD_GLUCOSE"
         android:label="@string/blood_glucose_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_BLOOD_PRESSURE"
@@ -254,20 +288,23 @@
         android:backgroundPermission=
             "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
         android:featureFlag="com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_BLOOD_PRESSURE"
         android:label="@string/blood_pressure_read_content_description"
         android:protectionLevel="dangerous"
         android:featureFlag="!com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_BODY_TEMPERATURE"
         android:label="@string/body_temperature_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_HEART_RATE"
@@ -275,7 +312,8 @@
         android:protectionLevel="dangerous"
         android:backgroundPermission=
             "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_HEART_RATE_VARIABILITY"
@@ -284,14 +322,16 @@
         android:backgroundPermission=
             "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
         android:featureFlag="com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_HEART_RATE_VARIABILITY"
         android:label="@string/heart_rate_variability_read_content_description"
         android:protectionLevel="dangerous"
         android:featureFlag="!com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_OXYGEN_SATURATION"
@@ -299,7 +339,8 @@
         android:protectionLevel="dangerous"
         android:backgroundPermission=
             "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_RESPIRATORY_RATE"
@@ -308,20 +349,23 @@
         android:backgroundPermission=
             "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
         android:featureFlag="com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_RESPIRATORY_RATE"
         android:label="@string/respiratory_rate_read_content_description"
         android:protectionLevel="dangerous"
         android:featureFlag="!com.android.healthfitness.flags.granular_health_permissions_phase_two_enabled"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_RESTING_HEART_RATE"
         android:label="@string/resting_heart_rate_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_SKIN_TEMPERATURE"
@@ -329,372 +373,445 @@
         android:protectionLevel="dangerous"
         android:backgroundPermission=
             "android.permission.health.READ_HEALTH_DATA_IN_BACKGROUND"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_PLANNED_EXERCISE"
         android:label="@string/planned_exercise_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <!-- Read permissions for personal medical records -->
     <permission
         android:name="android.permission.health.READ_MEDICAL_DATA_ALLERGIES_INTOLERANCES"
         android:label="@string/allergies_intolerances_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_MEDICAL_DATA_CONDITIONS"
         android:label="@string/conditions_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_MEDICAL_DATA_LABORATORY_RESULTS"
         android:label="@string/laboratory_results_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_MEDICAL_DATA_MEDICATIONS"
         android:label="@string/laboratory_results_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_MEDICAL_DATA_PERSONAL_DETAILS"
         android:label="@string/personal_details_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_MEDICAL_DATA_PRACTITIONER_DETAILS"
         android:label="@string/practitioner_details_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_MEDICAL_DATA_PREGNANCY"
         android:label="@string/pregnancy_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_MEDICAL_DATA_PROCEDURES"
         android:label="@string/procedures_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_MEDICAL_DATA_SOCIAL_HISTORY"
         android:label="@string/social_history_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_MEDICAL_DATA_VACCINES"
         android:label="@string/vaccines_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_MEDICAL_DATA_VISITS"
         android:label="@string/visits_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_MEDICAL_DATA_VITAL_SIGNS"
         android:label="@string/vital_signs_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <!-- Read permissions for symptoms -->
     <permission
         android:name="android.permission.health.READ_SYMPTOM_ABDOMINAL_PAIN"
         android:label="@string/abdominal_pain_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_ACNE"
         android:label="@string/acne_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_BACK_PAIN"
         android:label="@string/back_pain_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_BLOATING"
         android:label="@string/bloating_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_BRAIN_FOG"
         android:label="@string/brain_fog_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_BREAST_TENDERNESS"
         android:label="@string/breast_tenderness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_BRITTLE_NAILS"
         android:label="@string/brittle_nails_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_BURNING_MOUTH"
         android:label="@string/burning_mouth_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_CHEST_PAIN"
         android:label="@string/chest_pain_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_CHEST_TIGHTNESS"
         android:label="@string/chest_tightness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_CHILLS"
         android:label="@string/chills_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_CONSTIPATION"
         android:label="@string/constipation_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_COUGH"
         android:label="@string/symptom_cough_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_CRAMPS"
         android:label="@string/cramps_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_CRAVINGS"
         android:label="@string/cravings_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_DEHYDRATION"
         android:label="@string/dehydration_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_DIARRHEA"
         android:label="@string/diarrhea_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_DIFFICULTY_SWALLOWING"
         android:label="@string/difficulty_swallowing_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_DIZZINESS"
         android:label="@string/dizziness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_DRY_SKIN"
         android:label="@string/dry_skin_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_EARACHES"
         android:label="@string/earaches_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_FATIGUE"
         android:label="@string/fatigue_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_FEVER"
         android:label="@string/fever_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_GENERALIZED_BODY_ACHE"
         android:label="@string/generalized_body_ache_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_HAIR_LOSS"
         android:label="@string/hair_loss_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_HEADACHE"
         android:label="@string/headache_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_HEARTBURN"
         android:label="@string/heartburn_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_HEART_PALPITATIONS"
         android:label="@string/heart_palpitations_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_HOT_FLASHES"
         android:label="@string/hot_flashes_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_INSOMNIA"
         android:label="@string/insomnia_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_JOINT_PAIN"
         android:label="@string/joint_pain_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_JOINT_STIFFNESS"
         android:label="@string/joint_stiffness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_LOSS_OF_APPETITE"
         android:label="@string/loss_of_appetite_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_LOSS_OF_CONSCIOUSNESS"
         android:label="@string/loss_of_consciousness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_LOWER_BACK_PAIN"
         android:label="@string/lower_back_pain_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_MEMORY_LAPSE"
         android:label="@string/memory_lapse_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_MOOD_CHANGE"
         android:label="@string/mood_change_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_MUSCLE_PAIN"
         android:label="@string/muscle_pain_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_NAUSEA"
         android:label="@string/nausea_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_NIGHT_SWEATS"
         android:label="@string/night_sweats_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_PELVIC_PAIN"
         android:label="@string/pelvic_pain_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT"
         android:label="@string/rapid_pounding_or_fluttering_heartbeat_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE"
         android:label="@string/reduced_capacity_for_exercise_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_RUNNY_NOSE"
         android:label="@string/runny_nose_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_SHORTNESS_OF_BREATH"
         android:label="@string/shortness_of_breath_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_SKIPPED_HEARTBEAT"
         android:label="@string/skipped_heartbeat_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_SLEEPINESS"
         android:label="@string/sleepiness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_SLEEP_CHANGES"
         android:label="@string/sleep_changes_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_SNEEZING"
         android:label="@string/sneezing_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_SNORE"
         android:label="@string/snore_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_SORE_THROAT"
         android:label="@string/sore_throat_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_STOMACH_ACHE"
         android:label="@string/stomach_ache_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_STUFFY_NOSE"
         android:label="@string/stuffy_nose_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES"
         android:label="@string/unexplained_weight_changes_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_VAGINAL_DRYNESS"
         android:label="@string/vaginal_dryness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_VAGINAL_ITCHINESS"
         android:label="@string/vaginal_itchiness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_VOMITING"
         android:label="@string/vomiting_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_WATER_RETENTION"
         android:label="@string/water_retention_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_WHEEZING"
         android:label="@string/wheezing_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
 
     <!-- Read permissions for wellness -->
@@ -702,19 +819,22 @@
         android:name="android.permission.health.READ_MINDFULNESS"
         android:label="@string/mindfulness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_NICOTINE_INTAKE"
         android:label="@string/nicotine_intake_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <permission
         android:name="android.permission.health.READ_ALCOHOL_CONSUMPTION"
         android:label="@string/alcohol_consumption_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <!-- Write permissions -->
     <!-- Write permissions for activities -->
@@ -988,297 +1108,356 @@
         android:name="android.permission.health.READ_SYMPTOM_ABDOMINAL_PAIN"
         android:label="@string/abdominal_pain_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_ACNE"
         android:label="@string/acne_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_BACK_PAIN"
         android:label="@string/back_pain_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_BLOATING"
         android:label="@string/bloating_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_BRAIN_FOG"
         android:label="@string/brain_fog_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_BREAST_TENDERNESS"
         android:label="@string/breast_tenderness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_BRITTLE_NAILS"
         android:label="@string/brittle_nails_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_BURNING_MOUTH"
         android:label="@string/burning_mouth_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_CHEST_PAIN"
         android:label="@string/chest_pain_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_CHEST_TIGHTNESS"
         android:label="@string/chest_tightness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_CHILLS"
         android:label="@string/chills_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_CONSTIPATION"
         android:label="@string/constipation_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_COUGH"
         android:label="@string/symptom_cough_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_CRAMPS"
         android:label="@string/cramps_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_CRAVINGS"
         android:label="@string/cravings_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_DEHYDRATION"
         android:label="@string/dehydration_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_DIARRHEA"
         android:label="@string/diarrhea_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_DIFFICULTY_SWALLOWING"
         android:label="@string/difficulty_swallowing_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_DIZZINESS"
         android:label="@string/dizziness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_DRY_SKIN"
         android:label="@string/dry_skin_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_EARACHES"
         android:label="@string/earaches_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_FATIGUE"
         android:label="@string/fatigue_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_FEVER"
         android:label="@string/fever_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_GENERALIZED_BODY_ACHE"
         android:label="@string/generalized_body_ache_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_HAIR_LOSS"
         android:label="@string/hair_loss_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_HEADACHE"
         android:label="@string/headache_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_HEARTBURN"
         android:label="@string/heartburn_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_HEART_PALPITATIONS"
         android:label="@string/heart_palpitations_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_HOT_FLASHES"
         android:label="@string/hot_flashes_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_INSOMNIA"
         android:label="@string/insomnia_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_JOINT_PAIN"
         android:label="@string/joint_pain_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_JOINT_STIFFNESS"
         android:label="@string/joint_stiffness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_LOSS_OF_APPETITE"
         android:label="@string/loss_of_appetite_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_LOSS_OF_CONSCIOUSNESS"
         android:label="@string/loss_of_consciousness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_LOWER_BACK_PAIN"
         android:label="@string/lower_back_pain_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_MEMORY_LAPSE"
         android:label="@string/memory_lapse_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_MOOD_CHANGE"
         android:label="@string/mood_change_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_MUSCLE_PAIN"
         android:label="@string/muscle_pain_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_NAUSEA"
         android:label="@string/nausea_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_NIGHT_SWEATS"
         android:label="@string/night_sweats_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_PELVIC_PAIN"
         android:label="@string/pelvic_pain_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_RAPID_POUNDING_OR_FLUTTERING_HEARTBEAT"
         android:label="@string/rapid_pounding_or_fluttering_heartbeat_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_REDUCED_CAPACITY_FOR_EXERCISE"
         android:label="@string/reduced_capacity_for_exercise_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_RUNNY_NOSE"
         android:label="@string/runny_nose_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_SHORTNESS_OF_BREATH"
         android:label="@string/shortness_of_breath_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_SKIPPED_HEARTBEAT"
         android:label="@string/skipped_heartbeat_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_SLEEPINESS"
         android:label="@string/sleepiness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_SLEEP_CHANGES"
         android:label="@string/sleep_changes_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_SNEEZING"
         android:label="@string/sneezing_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_SNORE"
         android:label="@string/snore_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_SORE_THROAT"
         android:label="@string/sore_throat_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_STOMACH_ACHE"
         android:label="@string/stomach_ache_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_STUFFY_NOSE"
         android:label="@string/stuffy_nose_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_UNEXPLAINED_WEIGHT_CHANGES"
         android:label="@string/unexplained_weight_changes_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_VAGINAL_DRYNESS"
         android:label="@string/vaginal_dryness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_VAGINAL_ITCHINESS"
         android:label="@string/vaginal_itchiness_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_VOMITING"
         android:label="@string/vomiting_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_WATER_RETENTION"
         android:label="@string/water_retention_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
     <permission
         android:name="android.permission.health.READ_SYMPTOM_WHEEZING"
         android:label="@string/wheezing_read_content_description"
         android:protectionLevel="dangerous"
-        android:permissionGroup="android.permission-group.HEALTH" />
+        android:permissionGroup="android.permission-group.HEALTH"
+        android:permissionFlags="allowedInPrivateComputeCore" />
 
     <!-- Write permissions for symptoms -->
     <permission
