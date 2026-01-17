@@ -28,6 +28,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.bytesT
 import static com.android.server.healthconnect.storage.utils.StorageUtils.checkColumnExists;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.generateMedicalResourceUUID;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getDedupeByteBuffer;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getHexString;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getNormalisedString;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getSingleByteArray;
 
@@ -43,6 +44,8 @@ import com.android.server.healthconnect.storage.HealthConnectDatabase;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
 
 import org.json.JSONException;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -50,10 +53,23 @@ import java.nio.ByteBuffer;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
 public class StorageUtilsTest {
+    private Locale mDefaultLocale;
+
+    @Before
+    public void setUp() {
+        mDefaultLocale = Locale.getDefault();
+    }
+
+    @After
+    public void tearDown() {
+        Locale.setDefault(mDefaultLocale);
+    }
+
     @Test
     public void uuidToBytesAndBack_emptyList() {
         byte[] bytes = getSingleByteArray(List.of());
@@ -200,5 +216,54 @@ public class StorageUtilsTest {
 
             assertThat(checkColumnExists(db, "non_existent_table", "columnName")).isFalse();
         }
+    }
+
+    @Test
+    public void getHexString_fromByteArray_returnsCorrectString() {
+        // Verifies correct hex string conversion for a sample byte array.
+        byte[] bytes = new byte[] {(byte) 0xDE, (byte) 0xAD, (byte) 0xBE, (byte) 0xEF};
+        assertThat(getHexString(bytes)).isEqualTo("x'deadbeef'");
+    }
+
+    @Test
+    public void getHexString_fromUuid_returnsCorrectString() {
+        // Verifies correct hex string conversion for a UUID.
+        UUID uuid = UUID.fromString("00112233-4455-6677-8899-aabbccddeeff");
+        assertThat(getHexString(uuid)).isEqualTo("x'00112233445566778899aabbccddeeff'");
+    }
+
+    @Test
+    public void getHexString_nullInput_returnsEmptyString() {
+        // Verifies that a null input results in an empty string.
+        assertThat(getHexString((byte[]) null)).isEqualTo("");
+    }
+
+    @Test
+    public void getHexString_emptyByteArray_returnsEmptyHexString() {
+        // Verifies that an empty byte array is handled correctly.
+        assertThat(getHexString(new byte[0])).isEqualTo("x''");
+    }
+
+    @Test
+    public void getHexString_fromByteArray_isLocaleIndependent() {
+        // Verifies that the hex string formatting is not affected by the default locale.
+        // Set a locale that might have different formatting for numbers.
+        Locale.setDefault(new Locale("ar"));
+
+        // Use a byte array with digits to test against locale-specific number formatting.
+        byte[] bytes = new byte[] {(byte) 0x1A, (byte) 0x2B, (byte) 0x3C, (byte) 0x4D};
+        // The output should be standard hex, not influenced by the Arabic locale.
+        // Using Locale.ROOT in the implementation ensures this.
+        assertThat(getHexString(bytes)).isEqualTo("x'1a2b3c4d'");
+    }
+
+    @Test
+    public void getHexString_fromUuid_isLocaleIndependent() {
+        // Verifies that the hex string formatting is not affected by the default locale.
+        // Set a locale that might have different formatting for numbers.
+        Locale.setDefault(new Locale("ar"));
+
+        UUID uuid = UUID.fromString("00112233-4455-6677-8899-aabbccddeeff");
+        assertThat(getHexString(uuid)).isEqualTo("x'00112233445566778899aabbccddeeff'");
     }
 }
