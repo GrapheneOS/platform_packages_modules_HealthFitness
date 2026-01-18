@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Omogućite bar jednu dozvolu za čitanje da biste za ovu aplikaciju uključili pristup ranijim podacima"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Dozvolite ovoj aplikaciji da pristupa svim ranijim podacima Povezivanja zdravlja"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Dozvolite ovoj aplikaciji da pristupa podacima Povezivanja zdravlja kada je ne koristite"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Dozvolite ovoj aplikaciji da upisuje UDI uređaja u podatke Povezivanja zdravlja"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Utrošene aktivne kalorije"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"utrošene aktivne kalorije"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Čitanje potrošenih aktivnih kalorija"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Podaci iz: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Dozvolite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da pomoću Povezivanja zdravlja čita podatke iz drugih aplikacija na ovom uređaju. Ove podatke mogu da čitaju i druge aplikacije kojima omogućite pristup."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikacije koje mogu da sinhronizuju ove podatke"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Da biste saznali kako aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> koristi vaše podatke, pogledajte njenu "<a href="%2$s">"politiku privatnosti"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Povezivanje zdravlja vam omogućava da delite podatke o zdravlju i fitnesu između više aplikacija. To vam pomaže da otkrijete uvide i doživljaje, a da podaci pritom ostanu bezbedni."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Više o Povezivanju zdravlja"</string>

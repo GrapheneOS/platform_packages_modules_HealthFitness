@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Активирайте поне едно разрешение за четене, за да предоставите на това приложение достъп до предишните данни"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Разрешете на това приложение да осъществява достъп до всички минали данни в Health Connect"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Разрешете на това приложение да осъществява достъп до данните в Health Connect, когато не го използвате"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Разрешете на това приложение да записва UDI на устройството в данните в Health Connect"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Изгорени калории от активност"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"изгорени калории от активност"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Четене на изгорените калории от активност"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Данни от <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Разрешете на приложението <xliff:g id="APP_NAME">%1$s</xliff:g> да чете данни от други приложения на това устройство чрез Health Connect. Тези данни могат да се четат и от други приложения, на които предоставите достъп."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Приложения, които могат да синхронизират тези данни"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Научете как <xliff:g id="APP_NAME">%1$s</xliff:g> използва данните ви в "<a href="%2$s">"декларацията за поверителност на приложението"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ви дава възможност да споделяте данните за здравето и физическата си активност между няколко приложения. Това ви помага да отключвате статистика и нови възможности, като същевременно запазва безопасността на данните ви."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Още за Health Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Възстановяването на Health Connect е в ход"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Разбрах"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Необходима е актуализация"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"За да продължите с възстановяването на данните си, актуализирайте системата на устройството си."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Проверка за актуализации"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Общи данни"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Източници на данни"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Добавете източници на данни към списъка, за да видите как може да се променят общите данни. Ако премахнете източник от този списък, данните от него вече няма да се включват в общите, но той още ще има разрешение за писане."</string>
@@ -1264,7 +1265,7 @@
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Разреш. на избраните"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"При употреба на приложението"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Отказване на всички"</string>
-    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Да се разреши ли на <xliff:g id="APP_NAME">%1$s</xliff:g> достъп до данните за физическата активност и благосъстоянието?"</string>
+    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Да се разреши ли на <xliff:g id="APP_NAME">%1$s</xliff:g> достъп до данните за физическата активност и уелнеса?"</string>
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"<xliff:g id="APP_NAME">%1$s</xliff:g> иска достъп до <xliff:g id="DATA_TYPES">%2$s</xliff:g>.\n\nМожете да изберете да разрешите всички или да ги контролирате поотделно."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Да се разреши ли на <xliff:g id="APP_NAME">%1$s</xliff:g> достъп до <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Физическа активност и уелнес"</string>

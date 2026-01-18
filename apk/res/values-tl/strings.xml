@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Mag-enable ng kahit man lang isang read permission para ma-on ang access sa dating data para sa app na ito"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Payagan ang app na ito na i-access ang lahat ng nakaraang data ng Health Connect"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Payagan ang app na ito na i-access ang data ng Health Connect kapag hindi mo ginagamit ang app"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Payagan ang app na ito na mag-write ng UDI ng Device sa data ng Health Connect"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Mga calorie na na-burn habang aktibo"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"mga calorie na na-burn habang aktibo"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"I-read ang mga calorie na na-burn habang aktibo"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data mula sa <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Payagan ang <xliff:g id="APP_NAME">%1$s</xliff:g> app na mag-read ng data mula sa iba pang app sa device na ito gamit ang Health Connect. Puwede ring ma-read ng iba pang app na bibigyan mo ng access ang data na ito."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Mga app na nakakapag-sync ng data na ito"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Alamin kung paano ginagamit ng <xliff:g id="APP_NAME">%1$s</xliff:g> ang iyong data sa kanilang "<a href="%2$s">"patakaran sa privacy"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Nagbibigay-daan sa iyo ang Health Connect na i-share ang iyong data sa kalusugan at fitness sa pagitan ng maraming app. Nakakatulong ito sa iyong mag-unlock ng mga insight at experience habang pinapanatiling secure ang data mo."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Higit pa tungkol sa Health Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Kasalukuyang isinasagawa ng Health Connect ang pag-restore"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"OK"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Kailangang i-update"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Para patuloy na ma-restore ang iyong data, i-update ang system ng device mo."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Tingnan kung may mga update"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Mga kabuuan ng data"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Mga data source"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Magdagdag ng mga data source sa listahan para makita kung paano posibleng magbago ang mga kabuuan ng data. Kapag naalis ang isang data source sa listahang ito, mapipigilan ito sa pag-ambag sa mga kabuuan, pero magkakaroon pa rin ito ng mga write permission."</string>

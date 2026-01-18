@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Cần cấp ít nhất một quyền đọc để bật quyền truy cập vào dữ liệu trước đây của ứng dụng"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Cho phép ứng dụng này truy cập vào mọi dữ liệu trước đây trên Health Connect"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Cho phép ứng dụng này truy cập vào dữ liệu trên Health Connect khi bạn không dùng ứng dụng"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Cho phép ứng dụng này ghi UDI của thiết bị vào dữ liệu trên Health Connect"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Lượng calo đã đốt cháy khi vận động"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"lượng calo đã đốt cháy khi vận động"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Đọc dữ liệu về lượng calo hoạt động đã đốt cháy"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dữ liệu của <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Cho phép ứng dụng <xliff:g id="APP_NAME">%1$s</xliff:g> đọc dữ liệu của các ứng dụng khác trên thiết bị này thông qua Health Connect. Các ứng dụng khác mà bạn cấp quyền truy cập cũng có thể đọc dữ liệu này."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Các ứng dụng có thể đồng bộ hoá dữ liệu này"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Tìm hiểu cách <xliff:g id="APP_NAME">%1$s</xliff:g> dùng dữ liệu của bạn trong "<a href="%2$s">"chính sách quyền riêng tư"</a>" của họ."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Với Health Connect, bạn có thể chia sẻ dữ liệu về sức khoẻ và hoạt động thể dục giữa nhiều ứng dụng. Nhờ đó, bạn sẽ có thêm những thông tin chuyên sâu và trải nghiệm hữu ích, trong khi vẫn đảm bảo an toàn cho dữ liệu của mình."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Tìm hiểu thêm về Health Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Đang khôi phục Health Connect"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Tôi hiểu"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Cần cập nhật"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Để tiếp tục khôi phục dữ liệu, hãy cập nhật hệ thống thiết bị của bạn."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Kiểm tra để tìm bản cập nhật"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Dữ liệu tổng"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Nguồn dữ liệu"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Thêm các nguồn dữ liệu vào danh sách để theo dõi sự thay đổi của dữ liệu tổng. Nếu bạn xoá một nguồn dữ liệu khỏi danh sách này, nguồn dữ liệu đó tuy không còn ảnh hưởng đến dữ liệu tổng nữa nhưng vẫn còn quyền ghi."</string>

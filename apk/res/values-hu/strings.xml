@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Engedélyezzen legalább egy olvasási engedélyt az alkalmazáshoz való korábbi adathozzáférés bekapcsolásához"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Engedélyezheti, hogy ez az alkalmazás hozzáférjen az összes korábbi Health Connect-adathoz."</string>
     <string name="background_read_description" msgid="3203594555849969283">"Annak engedélyezése, hogy ez az alkalmazás hozzáférjen a Health Connect-adatokhoz, amikor Ön nem használja az appot."</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Annak engedélyezése, hogy ez az alkalmazás eszköz-UDI-t írjon a Health Connect-adatokba"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Aktívan elégetett kalória"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"aktívan elégetett kalória"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Aktívan elégetett kalóriára vonatkozó adatok olvasása"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Adatok forrása: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Annak engedélyezése, hogy a(z) <xliff:g id="APP_NAME">%1$s</xliff:g> alkalmazás a Health Connect használatával beolvassa a más alkalmazásokból származó adatokat ezen az eszközön. Ezeket az adatokat más alkalmazások is olvashatják, amelyeknek hozzáférést ad."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Azok az alkalmazások, amelyek szinkronizálhatják ezeket az adatokat"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"A(z) <xliff:g id="APP_NAME">%1$s</xliff:g> "<a href="%2$s">"adatvédelmi irányelveiben"</a>" tájékozódhat arról, hogy az alkalmazás hogyan használja fel az Ön adatait."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"A Health Connect segítségével több alkalmazás között is megoszthatja egészségügyi és fitneszadatait. Ezzel statisztikákhoz és élményekhez juthat hozzá, és közben adatai is biztonságban maradnak."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"További információ a Health Connectről"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Folyamatban van a Health Connect visszaállítása"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Értem"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Frissítés szükséges"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Az adatok visszaállításának folytatásához frissítse az eszköz rendszerét."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Frissítések keresése"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Adatösszesítések"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Adatforrások"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Adjon adatforrásokat a listához annak megtekintéséhez, hogy miként változhatnak az adatösszesítések. Ha eltávolít egy adatforrást erről a listáról, akkor a továbbiakban az adott adatforrás adatai már nem szerepelnek az összesítésekben, de az adatforrás írási engedélye megmarad."</string>

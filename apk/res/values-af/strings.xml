@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Aktiveer ten minste een leestoestemming om vorige datatoegang vir hierdie app aan te skakel"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Laat hierdie app toe om toegang tot vorige Health Connect-data te kry"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Laat hierdie app toe om toegang tot Health Connect-data te kry wanneer jy nie die app gebruik nie"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Laat hierdie app toe om Toestel-UTI na Health Connect-data te skryf"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Aktiewe kalorieë verbrand"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"aktiewe kalorieë verbrand"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Lees aktiewe kalorieë verbrand"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data uit <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Laat die <xliff:g id="APP_NAME">%1$s</xliff:g>-app toe om data vanaf ander apps op hierdie toestel te lees met Health Connect. Hierdie data kan ook gelees word deur ander apps vir wie jy toegang gee."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps wat hierdie data kan sinkroniseer"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Vind uit hoe <xliff:g id="APP_NAME">%1$s</xliff:g> jou data gebruik in hul "<a href="%2$s">"privaatheidsbeleid"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Met Health Connect kan jy jou gesondheid- en fiksheiddata oor veelvuldige apps deel. Dit help jou om insigte en ervarings te ontsluit terwyl jou data veilig gehou word."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Meer oor Health Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect-terugstelling is aan die gang"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Het dit"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Opdatering is nodig"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Dateer jou toestelstelsel op om aan te hou om jou data terug te stel."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Kyk vir opdaterings"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Datatotale"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Databronne"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Voeg databronne by die lys om te sien hoe die datatotale kan verander. ’n Databron sal ophou om tot die totale by te dra wanneer dit van hierdie lys af verwyder word, maar dit sal steeds skryftoestemmings hê."</string>

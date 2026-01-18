@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Kubali angalau ruhusa moja ya kusoma ili uwashe kipengele cha ufikiaji wa data ya awali katika programu hii"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Ruhusu programu hii ifikie data yote ya awali ya Health Connect"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Ruhusu programu hii ifikie data ya Health Connect wakati hutumii programu"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Ruhusu programu hii iandike UDI ya Kifaa kwenye data ya Health Connect"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Kalori ulizotumia"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"kalori ulizotumia"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Isome data ya kalori ulizotumia"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data kutoka <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Ruhusu programu ya <xliff:g id="APP_NAME">%1$s</xliff:g> isome data kutoka kwenye programu nyingine katika kifaa hiki kwa kutumia Health Connect. Data hii pia inaweza kusomwa na programu nyingine unazoruhusu ziifikie."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Programu zinazoweza kusawazisha data hii"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Pata maelezo kuhusu jinsi <xliff:g id="APP_NAME">%1$s</xliff:g> inavyotumia data yako kwenye "<a href="%2$s">"sera yao ya faragha"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect hukuwezesha kutuma data yako ya afya na siha kati ya programu mbalimbali. Hatua hii hukusaidia kupata maarifa na hali za utumiaji huku ukidumisha usalama wa data yako."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Maelezo zaidi kuhusu Health Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Programu ya Health Connect inaendelea kurejesha data"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Nimeelewa"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Unahitaji kusasisha"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Sasisha mfumo wa kifaa chako ili uendelee kurejesha data yako."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Angalia masasisho"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Jumla ya data"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Vyanzo vya data"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Weka vyanzo vya data kwenye orodha ili uone jinsi jumla ya data inavyoweza kubadilika. Ukiondoa chanzo cha data kwenye orodha hii, kitaacha kuchangia kwenye jumla ya data, lakini bado kitakuwa na ruhusa za kuandika."</string>

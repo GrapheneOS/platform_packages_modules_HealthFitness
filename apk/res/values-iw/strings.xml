@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"צריך לתת הרשאת קריאה אחת לפחות כדי לאפשר לאפליקציה הזו גישה לנתונים קודמים"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"האפליקציה הזו יכולה לגשת לכל הנתונים הקודמים של Health Connect"</string>
     <string name="background_read_description" msgid="3203594555849969283">"האפליקציה הזו תוכל לגשת לנתונים של Health Connect גם כשהיא לא תהיה בשימוש"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"אם תינתן הרשאה, האפליקציה הזו תוכל לכתוב את ה-UDI של המכשיר אל אפליקציית Health Connect"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"קלוריות שנשרפו בזמן פעילות"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"קלוריות שנשרפו בזמן פעילות"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"קריאה של נתוני הקלוריות שנשרפו בזמן פעילות"</string>
@@ -392,19 +393,21 @@
     <string name="symptom_severity_severe" msgid="4675732713898596705">"חמורה"</string>
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>⁠"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"האפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> תוכל לקרוא נתונים של"</string>
-    <string name="write_permission_category" msgid="1529702804865008111">"מתן הרשאה לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> לכתוב נתונים"</string>
+    <string name="write_permission_category" msgid="1529702804865008111">"מתן הרשאה לאפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> לכתוב נתונים של"</string>
     <string name="request_permissions_allow" msgid="4201324235711040631">"אישור"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"אישור של כל ההרשאות"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"אין אישור"</string>
-    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"צריך לבחור את הנתונים שהאפליקציה הזו תקרא מאפליקציית Health Connect או תכתוב אליה"</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"צריך לבחור את הנתונים שהאפליקציה הזו תקרא ותכתוב ב-Health Connect"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"יש לבחור את הנתונים שהאפליקציה הזו תקרא מ-Health Connect"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"יש לבחור את הנתונים שהאפליקציה הזו תכתוב אל Health Connect"</string>
-    <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"צריך לבחור את הנתונים שהאפליקציה הזו תקרא מאפליקציית Health Connect או תכתוב אליה"</string>
+    <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"צריך לבחור את הנתונים שהאפליקציה הזו תקרא ותכתוב ב-Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"יש לבחור את הנתונים שהאפליקציה הזו תקרא מ-Health Connect"</string>
     <string name="matchmaking_screen_title" msgid="7839701301617377279">"שיתוף נתונים בין אפליקציות"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"מקור הנתונים: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"אם האפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> תקבל ממך הרשאה, היא תוכל לקרוא נתונים מאפליקציות אחרות במכשיר הזה באמצעות Health Connect. אפליקציות אחרות שנתת להן גישה גם יכולות לקרוא את הנתונים האלה."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"אפליקציות שיכולות לסנכרן את הנתונים האלה"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ב"<a href="%2$s">"מדיניות הפרטיות"</a>" של <xliff:g id="APP_NAME">%1$s</xliff:g> מוסבר איך האפליקציה משתמשת בנתונים שלך."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"רוצה לקבל תובנות ולשפר את חוויית השימוש? עם Health Connect אפשר לשתף את נתוני הבריאות והכושר בין אפליקציות בצורה מאובטחת."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"מידע נוסף על Health Connect"</string>
@@ -422,7 +425,7 @@
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"מידע על תיקים רפואיים"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"הנתונים שישותפו כוללים"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"אם תינתן הרשאה, האפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> תוכל לשתף את התיק הרפואי שלך עם Health Connect."</string>
-    <string name="medical_request_footer" msgid="157243861031258933">"אפשר לסנכרן את התיק הרפואי שלך מהאפליקציות ומהמקורות השונים כדי לשמור אותם במקום אחד"</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"אפשר לסנכרן את התיק הרפואי מהאפליקציות ומהמקורות השונים כדי לשמור אותם במקום אחד"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"להסיר את כל ההרשאות?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"הסרת כל ההרשאות"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"אפליקציית <xliff:g id="APP_NAME">%1$s</xliff:g> לא תוכל יותר לקרוא או לכתוב נתונים ב-Health Connect‏.\n\nהשינוי לא משפיע על הרשאות אחרות שעשויות להיות לאפליקציה הזו, כמו המצלמה, המיקרופון או הרשאות המיקום."</string>
@@ -483,7 +486,7 @@
     <string name="manage_permissions_rationale" msgid="2780008055185441703">"במדיניות הפרטיות של המפתח מוסבר איך האפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> מטפלת בנתונים שלך"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"כדי לנהל הרשאות אחרות ב-Android שהאפליקציה הזו יכולה לגשת אליהן, עוברים ל\"הגדרות\" ולוחצים על \"אפליקציות\""</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"לעיון במדיניות הפרטיות"</string>
-    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"הייתה גישה ב-24 השעות האחרונות"</string>
+    <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"האפליקציה ניגשה לנתונים ב-24 השעות האחרונות"</string>
     <string name="app_access_title" msgid="7137018424885371763">"הנתונים שהאפליקציה יכולה לגשת אליהם"</string>
     <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"לא מותקנות אפליקציות תואמות"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"הרשאות גישה נוספות"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"השחזור של Health Connect מתבצע"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"הבנתי"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"נדרש עדכון"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"כדי להמשיך בשחזור הנתונים, צריך לעדכן את מערכת המכשיר."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"חיפוש עדכונים"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"סכומי נתונים"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"מקורות נתונים"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"אפשר להוסיף מקורות נתונים לרשימה כדי לראות איך סכומי הנתונים משתנים. מקור נתונים שיוסר מהרשימה הזו לא ישתקלל בסכומים, אבל עדיין יהיו לו הרשאות כתיבה."</string>

@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"你至少要啟用一項讀取的權限，這個應用程式才能存取過去的資料"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"允許這個應用程式存取過去所有的「健康資料同步」資料"</string>
     <string name="background_read_description" msgid="3203594555849969283">"允許這個應用程式在你未使用時，存取「健康資料同步」的資料"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"允許此應用程式將裝置 UDI 寫入健康資料同步資料"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"活動卡路里燃燒量"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"活動卡路里燃燒量"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"讀取活動卡路里燃燒量資料"</string>
@@ -401,10 +402,12 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"選擇這個應用程式可寫入「健康資料同步」的資料"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"選擇這個應用程式可讀取或寫入「健康資料同步」的資料"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"選擇這個應用程式可從「健康資料同步」讀取的資料"</string>
-    <string name="matchmaking_screen_title" msgid="7839701301617377279">"在應用程式之間共用資料"</string>
+    <string name="matchmaking_screen_title" msgid="7839701301617377279">"跨應用程式共用資料"</string>
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"來自「<xliff:g id="APP_NAME">%1$s</xliff:g>」的資料"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」應用程式透過「健康資料同步」功能讀取這部裝置上其他應用程式的資料。你授予存取權的其他應用程式也能讀取這類資料。"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"可同步處理這類資料的應用程式"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"如要瞭解「<xliff:g id="APP_NAME">%1$s</xliff:g>」如何使用你的資料，請參閱對方的"<a href="%2$s">"隱私權政策"</a>"。"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"你可以透過「健康資料同步」在多個應用程式間共用健康與健身資料。這有助於發掘洞察資料及提供優質體驗，同時確保資料安全無虞。"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"進一步瞭解「健康資料同步」"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"「健康資料同步」還原作業進行中"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"我知道了"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"需要更新"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"必須更新裝置系統，才能繼續還原資料。"</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"檢查更新"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"資料總覽"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"資料來源"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"你可以將資料來源加入此處的清單，查看資料總數的變化。如果從清單移除資料來源，該來源仍會具有寫入權限，但其資料就不會再計入總數。"</string>

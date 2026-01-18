@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"ఈ యాప్‌నకు సంబంధించిన గతంలోని డేటాకు యాక్సెస్‌ను ఆన్ చేయడానికి కనీసం ఒక రీడ్ అనుమతిని ఎనేబుల్ చేయండి"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"గతంలోని Health Connect డేటా మొత్తాన్ని యాక్సెస్ చేయడానికి ఈ యాప్‌నకు అనుమతినివ్వండి"</string>
     <string name="background_read_description" msgid="3203594555849969283">"మీరు యాప్‌ను ఉపయోగించనప్పుడు Health Connect డేటాను యాక్సెస్ చేయడానికి ఈ యాప్‌ను అనుమతించండి"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Health Connect డేటాకు డివైజ్ UDIని రాయడానికి ఈ యాప్‌ను అనుమతించండి"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"ఖర్చు అయిన యాక్టివ్ కేలరీల డేటా"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"ఖర్చు అయిన యాక్టివ్ కేలరీల డేటా"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"ఖర్చు అయిన యాక్టివ్ కేలరీల డేటాను చదువుతుంది"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> నుండి డేటా"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Health Connectను ఉపయోగించి, ఈ డివైజ్‌లోని ఇతర యాప్‌ల నుండి డేటాను యాక్సెస్ చేయడానికి, <xliff:g id="APP_NAME">%1$s</xliff:g> యాప్‌ను అనుమతించండి. మీరు యాక్సెస్ ఇచ్చిన ఇతర యాప్‌లు కూడా ఈ డేటాను చదవగలవు."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ఈ డేటాను సింక్ చేయగల యాప్‌లు"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g>, మీ డేటాను వారి "<a href="%2$s">"గోప్యతా పాలసీ"</a>"లో ఎలా ఉపయోగిస్తారో తెలుసుకోండి."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ద్వారా మీ హెల్త్ &amp; ఫిట్‌నెస్ డేటాను మల్టిపుల్ యాప్‌ల‌ మధ్య షేర్ చేయవచ్చు. ఇది మీ డేటాను సురక్షితంగా ఉంచుతూనే, ఇన్‌సైట్స్‌ను (లోతైన విశ్లేషణలను/గ‌ణాంకాల‌ను), పర్సనలైజ్డ్‌ ఎక్స్‌పీరియెన్స్‌ల‌ను (మీకు తగిన సలహాలను, సూచనలను) అన్‌లాక్ చేయ‌డంలో సాయ‌ప‌డుతుంది."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect గురించిన మరింత సమాచారం"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect రీస్టోర్ ప్రోగ్రెస్‌లో ఉంది"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"సరే"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"అప్‌డేట్ చేయడం అవసరం"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"మీ డేటాను రీస్టోర్ చేయడాన్ని కొనసాగించడానికి, మీ డివైజ్ సిస్టమ్‌ను అప్‌డేట్ చేయండి."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"అప్‌డేట్‌ల కోసం చెక్ చేయండి"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"డేటా మొత్తాలు"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"డేటా సోర్స్‌లు"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"డేటా టోటల్స్ (మొత్తాలు) ఎలా మారుతాయో చూడటానికి ఈ లిస్ట్‌కు డేటా సోర్స్‌లను జోడించండి. ఈ లిస్ట్‌ నుండి ఒక డేటా సోర్స్‌ను తీసివేస్తే, దాన్నుండి టోటల్స్‌కు కంట్రిబ్యూషన్ ఆగిపోతుంది. అయితే దానికి ఇప్పటికీ రైట్ చేయడానికి అనుమతి ఉంటుంది."</string>

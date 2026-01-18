@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"اس ایپ کے لیے ماضی کے ڈیٹا تک رسائی کو آن کرنے کے لیے کم از کم ایک پڑھنے کی اجازت کو فعال کریں"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"اس ایپ کو تمام گزشتہ Health Connect ڈیٹا تک رسائی کی اجازت دیں"</string>
     <string name="background_read_description" msgid="3203594555849969283">"اس ایپ کو Health Connect ڈیٹا تک رسائی کی اجازت دیں جب آپ ایپ استعمال نہیں کر رہے ہوں"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"اس ایپ کو Health Connect ڈیٹا میں آلہ UDI لکھنے کی اجازت دیں"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"برن کی گئی فعال کیلوریز کا ڈیٹا"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"برن کی گئی فعال کیلوریز کا ڈیٹا"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"برن کی گئی فعال کیلوریز کا ڈیٹا پڑھیں"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> کا ڈیٹا"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"‫Health Connect کا استعمال کر کے <xliff:g id="APP_NAME">%1$s</xliff:g> ایپ کو اس آلہ پر موجود دیگر ایپس کا ڈیٹا پڑھنے کی اجازت دیں۔ یہ ڈیٹا ان دیگر ایپس کے ذریعے بھی پڑھا جا سکتا ہے جنہیں آپ رسائی فراہم کرتے ہیں۔"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"وہ ایپس جو اس ڈیٹا کو مطابقت پذیر بنا سکتی ہیں"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"‫<xliff:g id="APP_NAME">%1$s</xliff:g> کی "<a href="%2$s">"رازداری کی پالیسی"</a>" میں جانیں کہ وہ آپ کا ڈیٹا کیسے استعمال کرتا ہے۔"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"‫Health Connect آپ کو اپنی صحت اور تندرستی کا ڈیٹا متعدد ایپس کے درمیان اشتراک کرنے دیتا ہے۔ یہ آپ کے ڈیٹا کو محفوظ رکھتے ہوئے بصیرتوں اور تجربات کو غیر مقفل کرنے میں مدد کرتا ہے۔"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"‫Health Connect سے متعلق مزید"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect کی بحالی پیشرفت میں ہے"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"سمجھ آ گئی"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"اپ ڈیٹ درکار ہے"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"اپنا ڈیٹا بحال کرنا جاری رکھنے کیلئے، اپنے آلے کے سسٹم کو اپ ڈیٹ کریں۔"</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"اپ ڈیٹس چیک کریں"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ڈیٹا کی کل تعداد"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"ڈیٹا کے ماخذات"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"ڈیٹا کے ماخذات کو فہرست میں شامل کریں یہ دیکھنے کے لیے کہ ڈیٹا کا کل کیسے تبدیل ہو سکتا ہے۔ اس فہرست سے کسی ڈیٹا کے ماخذ کو ہٹانے سے وہ کل میں تعاون کرنے سے روک دے گا لیکن اس کے پاس تحریر کرنے کی اجازتیں ابھی بھی ہوں گی۔"</string>

@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"ଏହି ଆପ ପାଇଁ ପୂର୍ବର ଡାଟା ଆକ୍ସେସ ଚାଲୁ କରିବା ପାଇଁ ଅତି କମରେ ଗୋଟିଏ ପଢ଼ିବାର ଅନୁମତିକୁ ସକ୍ଷମ କରନ୍ତୁ"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"ଅତୀତର ସମସ୍ତ Health Connect ଡାଟାକୁ ଆକ୍ସେସ କରିବା ପାଇଁ ଏହି ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ"</string>
     <string name="background_read_description" msgid="3203594555849969283">"ଆପଣ ଆପ ବ୍ୟବହାର କରୁନଥିବା ସମୟରେ Health Connect ଡାଟାକୁ ଆକ୍ସେସ କରିବା ପାଇଁ ଏହି ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Health Connect ଡାଟାରେ ଡିଭାଇସ UDI ଲେଖିବା ପାଇଁ ଏହି ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"ଖର୍ଚ୍ଚ ହୋଇଥିବା ସକ୍ରିୟ କେଲୋରୀ"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"ଖର୍ଚ୍ଚ ହୋଇଥିବା ସକ୍ରିୟ କେଲୋରୀ"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"ଖର୍ଚ୍ଚ ହୋଇଥିବା ସକ୍ରିୟ କେଲୋରୀର ଡାଟା ପଢ଼ନ୍ତୁ"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g>ରୁ ଡାଟା"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Health Connectକୁ ବ୍ୟବହାର କରି ଏହି ଡିଭାଇସରେ ଥିବା ଅନ୍ୟ ଆପ୍ସରୁ ଡାଟା ପଢ଼ିବାକୁ <xliff:g id="APP_NAME">%1$s</xliff:g> ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ। ଆପଣ ଆକ୍ସେସ ଦେଇଥିବା ଅନ୍ୟ ଆପ୍ସ ଦ୍ୱାରା ମଧ୍ୟ ଏହି ଡାଟାକୁ ପଢ଼ାଯାଇପାରିବ।"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ଏହି ଡାଟାକୁ ସିଙ୍କ କରିପାରୁଥିବା ଆପ୍ସ"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> ଆପଣଙ୍କ ଡାଟାକୁ କିପରି ଏହାର "<a href="%2$s">"ଗୋପନୀୟତା ନୀତି"</a>"ରେ ବ୍ୟବହାର କରେ ତାହା ଜାଣନ୍ତୁ।"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ଆପଣଙ୍କୁ ଆପଣଙ୍କର ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଫିଟନେସ ଡାଟାକୁ ଏକାଧିକ ଆପ୍ସ ମଧ୍ୟରେ ସେୟାର କରିବାକୁ ଦିଏ। ଏହା ଆପଣଙ୍କ ଡାଟାକୁ ସୁରକ୍ଷିତ ରଖିବା ସମୟରେ ଇନସାଇଟ ଏବଂ ଅନୁଭୂତିଗୁଡ଼ିକୁ ଅନଲକ କରିବାରେ ସାହାଯ୍ୟ କରେ।"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect ବିଷୟରେ ଅଧିକ ସୂଚନା"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect ରିଷ୍ଟୋର ଚାଲିଛି"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"ବୁଝିଗଲି"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"ଅପଡେଟ ଆବଶ୍ୟକ"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"ଆପଣଙ୍କ ଡାଟା ରିଷ୍ଟୋର କରିବା ଜାରି ରଖିବା ପାଇଁ ଆପଣଙ୍କ ଡିଭାଇସ ସିଷ୍ଟମକୁ ଅପଡେଟ କରନ୍ତୁ।"</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"ଅପଡେଟଗୁଡ଼ିକ ପାଇଁ ଯାଞ୍ଚ କରନ୍ତୁ"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ଡାଟା ଟୋଟାଲ୍ସ"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"ଡାଟା ସୋର୍ସ"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"ଡାଟା ଟୋଟାଲ୍ସ କିପରି ପରିବର୍ତ୍ତନ ହୋଇପାରିବ ତାହା ଦେଖିବାକୁ ତାଲିକାରେ ଡାଟା ସୋର୍ସଗୁଡ଼ିକୁ ଯୋଗ କରନ୍ତୁ। ଏହି ତାଲିକାରୁ ଏକ ଡାଟା ସୋର୍ସକୁ କାଢ଼ି ଦେବା ଫଳରେ ଏହା ଟୋଟାଲ୍ସରେ କଣ୍ଟ୍ରିବ୍ୟୁଟ କରିବାରୁ ଏହାକୁ ବନ୍ଦ କରିବ, କିନ୍ତୁ ଏହାର ଏବେ ବି ଲେଖିବା ଅନୁମତି ରହିବ।"</string>
