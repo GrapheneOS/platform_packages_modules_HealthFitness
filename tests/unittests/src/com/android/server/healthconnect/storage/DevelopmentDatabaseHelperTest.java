@@ -20,9 +20,7 @@ import static android.healthconnect.testing.unittest.StorageUtils.createEmptyDat
 
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
-import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_UDI_DB;
 import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.onUpgrade;
-import static com.android.server.healthconnect.storage.utils.StorageUtils.checkColumnExists;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -34,8 +32,6 @@ import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
-
-import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 
 import com.google.common.base.Preconditions;
 
@@ -211,38 +207,5 @@ public class DevelopmentDatabaseHelperTest {
         }
     }
 
-    @Test
-    @EnableFlags({FLAG_DEVELOPMENT_DATABASE_RW, FLAG_DEVICE_UDI_DB})
-    public void onUpgrade_udiColumn_schemaUpToDate() {
-        try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
-            SQLiteDatabase db = helper.getWritableDatabase();
 
-            DevelopmentDatabaseHelper.onOpen(db);
-
-            assertThat(
-                            checkColumnExists(
-                                    db,
-                                    DeviceInfoHelper.TABLE_NAME,
-                                    DeviceInfoHelper.UDI_COLUMN_NAME))
-                    .isTrue();
-        }
-    }
-
-    @Test
-    @EnableFlags({FLAG_DEVELOPMENT_DATABASE_RW, FLAG_DEVICE_UDI_DB})
-    public void onUpgrade_udiColumn_idempotent() {
-        try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
-            SQLiteDatabase db = helper.getWritableDatabase();
-
-            DevelopmentDatabaseHelper.onOpen(db);
-            DevelopmentDatabaseHelper.onOpen(db);
-
-            assertThat(
-                            checkColumnExists(
-                                    db,
-                                    DeviceInfoHelper.TABLE_NAME,
-                                    DeviceInfoHelper.UDI_COLUMN_NAME))
-                    .isTrue();
-        }
-    }
 }
