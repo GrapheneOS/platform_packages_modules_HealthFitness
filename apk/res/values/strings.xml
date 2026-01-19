@@ -1892,6 +1892,32 @@
     <string name="connect_app_button_content_description" description="Content description for icon displayed on a preference for connecting an app to Health Connect">Click to connect this app to Health Connect</string>
     <!-- endregion -->
 
+    <!-- region new Device Data Provider System -->
+    <string name="devices_screen_description" description="Description text for overview of user's connected devices, displayed at the top. [CHAR_LIMIT=NONE]">Control which devices can sync data to Health Connect</string>
+    <string name="devices_screen_enabled_devices_header" description="Title shown for the section of enabled devices [CHAR_LIMIT=NONE]">Enabled</string>
+    <string name="devices_screen_not_enabled_devices_header" description="Title shown for the section of devices that are not enabled [CHAR_LIMIT=NONE]">Not enabled</string>
+    <string name="devices_this_phone" description="Preference summary text that indicates that the specified device is the current device (phone) rather than a peripheral device such as a watch. [CHAR_LIMIT=40]">This phone</string>
+
+    <string name="device_type_unknown" description="A unknown device.">Unknown</string>
+    <string name="device_type_watch" description="A smartwatch device. ">Watch</string>
+    <string name="device_type_phone" description="A phone device. ">Phone</string>
+    <string name="device_type_scale" description="A smart scale. ">Scale</string>
+    <string name="device_type_ring" description="A smart ring. ">Ring</string>
+    <string name="device_type_head_mounted" description="Head mounted device, e.g., for virtual or augmented reality. ">Head mounted</string>
+    <string name="device_type_fitness_band" description="Fitness band device. ">Fitness band</string>
+    <string name="device_type_chest_strap" description="Chest strap device. ">Chest strap</string>
+    <string name="device_type_smart_display" description="Smart display. ">Smart display</string>
+    <string name="device_type_consumer_medical_device" description="Consumer medical device. ">Consumer medical device</string>
+    <string name="device_type_glasses" description="Smart glasses device. ">Glasses</string>
+    <string name="device_type_hearable" description="Hearable device. ">Hearable</string>
+    <string name="device_type_fitness_machine" description="Fitness machine. ">Fitness machine</string>
+    <string name="device_type_fitness_equipment" description="Fitness equipment. ">Fitness equipment</string>
+    <string name="device_type_portable_computer" description="Portable computer. ">Portable computer</string>
+    <string name="device_type_meter" description="Meter device. ">Meter</string>
+
+    <!-- endregion -->
+
+
     <string name="banner_default_dismiss_button" description="Default button to dismiss a banner in Health Connect [CHAR_LIMIT=NONE]">Not now</string>
 
     <!-- region Symptoms data types -->

@@ -1,5 +1,6 @@
 package com.android.healthconnect.controller.tests.datasources
 
+import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.data.entries.FormattedEntry
@@ -9,6 +10,7 @@ import com.android.healthconnect.controller.datasources.DataSourcesViewModel.Agg
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.DataSourcesAndAggregationsInfo
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PotentialAppSourcesState
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PriorityListState
+import com.android.healthconnect.controller.matchmaking.api.GetDeviceDataSourcesInfoUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
@@ -38,6 +40,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.mock
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
@@ -62,7 +65,10 @@ class DataSourcesViewModelTest {
     @BindValue lateinit var appInfoReader: AppInfoReader
 
     private lateinit var viewModel: DataSourcesViewModel
+    private lateinit var getDeviceDataSourcesInfoUseCase: GetDeviceDataSourcesInfoUseCase
+
     private val loadMostRecentAggregationsUseCase = FakeLoadMostRecentAggregationsUseCase()
+    private val healthConnectManager: HealthConnectManager = mock()
     private val loadPotentialAppSourcesUseCase = FakeLoadPotentialPriorityListUseCase()
     private val loadPriorityListUseCase = FakeLoadPriorityListUseCase()
     private val updatePriorityListUseCase = FakeUpdatePriorityListUseCase()
@@ -72,12 +78,15 @@ class DataSourcesViewModelTest {
         appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
+        getDeviceDataSourcesInfoUseCase =
+            GetDeviceDataSourcesInfoUseCase(healthConnectManager, Dispatchers.Main)
         viewModel =
             DataSourcesViewModel(
                 loadMostRecentAggregationsUseCase,
                 loadPotentialAppSourcesUseCase,
                 loadPriorityListUseCase,
                 updatePriorityListUseCase,
+                getDeviceDataSourcesInfoUseCase,
                 appInfoReader,
             )
     }

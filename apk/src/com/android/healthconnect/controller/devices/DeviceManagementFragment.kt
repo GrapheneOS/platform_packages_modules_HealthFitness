@@ -81,7 +81,6 @@ class DeviceManagementFragment : Hilt_DeviceManagementFragment() {
                 true
             }
             deviceDataButton.setOnPreferenceClickListener {
-                // TODO(b/433942442) Replace with actual device data source
                 findNavController()
                     .navigate(
                         R.id.action_deviceManagementFragment_to_appData,

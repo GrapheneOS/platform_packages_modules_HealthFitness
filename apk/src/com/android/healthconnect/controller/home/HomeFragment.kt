@@ -73,6 +73,7 @@ import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.RecentAccessElement
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import com.android.healthfitness.flags.Flags.stepTrackingEnabled
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -166,7 +167,10 @@ class HomeFragment : Hilt_HomeFragment() {
 
         // TODO(b/429618933): add logging for devices section
         devicesPreference.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_connectedDevicesFragment)
+            val action =
+                if (deviceDataProvidersApi()) R.id.action_homeFragment_to_newDevicesFragment
+                else R.id.action_homeFragment_to_connectedDevicesFragment
+            findNavController().navigate(action)
             true
         }
         devicesPreference.summary = getString(R.string.devices_summary)

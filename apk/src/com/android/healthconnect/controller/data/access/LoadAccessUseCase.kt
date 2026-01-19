@@ -22,12 +22,12 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission.Me
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
-import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.utils.isDevicePackage
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -77,12 +77,14 @@ constructor(
                     }
                 }
                 // Apps that are inactive: can no longer READ or WRITE, but still have data in
-                // Health Connect.
+                // Health Connect. Excludes devices, as permissions are irrelevant to them.
+                // However, devices are seen as inactive if all their providers have disabled all of
+                // their data types.
+                // TODO(b/478259450): Check disabled devices
                 contributingApps.forEach { app ->
                     if (
                         !readOrWriteAppPackageNameSet.contains(app.packageName) &&
-                            // Permissions are irrelevant to the device data provider package.
-                            app.packageName != Constants.DEVICE_DATA_PROVIDER_PACKAGE
+                            !isDevicePackage(app.packageName)
                     ) {
                         // Inactive apps don't navigate to appInfoScreen hence no need to specify
                         // appPermissionsType.
