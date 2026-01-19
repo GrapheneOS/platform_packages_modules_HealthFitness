@@ -123,7 +123,7 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
 
             // Refresh passive tracking in case an app previously eligible for tracking is
             // uninstalled
-            mTrackerManager.initializeOrRefresh();
+            mThreadScheduler.scheduleInternalTask(mTrackerManager::initializeOrRefresh);
 
             // Call remove app from Priority list only if userHandle equals the
             // current foreground user and current foreground user is in unlocked state
