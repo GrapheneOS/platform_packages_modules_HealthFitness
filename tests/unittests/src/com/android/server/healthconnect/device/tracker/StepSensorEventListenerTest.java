@@ -70,6 +70,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -95,6 +96,7 @@ public class StepSensorEventListenerTest {
     private HealthConnectThreadScheduler mThreadScheduler;
     private FitnessTestUtils mFitnessTestUtils;
     private StepSensorEventListener mStepSensorEventListener;
+    private CountDownLatch mCountDownLatch = new CountDownLatch(0);
 
     @Before
     public void setup() throws PackageManager.NameNotFoundException {
@@ -122,6 +124,7 @@ public class StepSensorEventListenerTest {
                                 mDeviceRecordHelper,
                                 deviceDataSourceHelper));
 
+        mStepSensorEventListener.setWriteCompleteCallbackForTest(this::latchCountDown);
         // Reduce the batching delay to speed up the tests
         when(mStepSensorEventListener.getBatchingDurationMillis()).thenReturn(500L);
         when(mStepSensorEventListener.computeBootTime()).thenReturn(TEST_BOOT_TIME);
@@ -143,7 +146,7 @@ public class StepSensorEventListenerTest {
 
         setBaselineStepCount(0);
         triggerStepEvent(stepCount, endTimestampNanos);
-        awaitPassiveSensorTasksComplete();
+        awaitPassiveSensorTasksComplete(2);
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
@@ -161,7 +164,7 @@ public class StepSensorEventListenerTest {
 
         setBaselineStepCount(0);
         triggerStepEvent(stepCount, endTimestampNanos);
-        awaitPassiveSensorTasksComplete();
+        awaitPassiveSensorTasksComplete(2);
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
@@ -176,7 +179,6 @@ public class StepSensorEventListenerTest {
         long endTimestampNanos = MINUTES.toNanos(2);
 
         triggerStepEvent(stepCount, endTimestampNanos);
-        awaitPassiveSensorTasksComplete();
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
@@ -188,7 +190,7 @@ public class StepSensorEventListenerTest {
     public void afterBaselineEvent_savesBaselineData() throws Exception {
         setBaselineStepCount(5);
 
-        awaitPassiveSensorTasksComplete();
+        sleep(MILLISECONDS.toNanos(100));
 
         assertThat(mStepSensorEventListener.mLastSavedData.sensorValue()).isEqualTo(5);
         assertThat(mStepSensorEventListener.mLastSavedData.sensorTimestampNanos()).isEqualTo(0);
@@ -205,7 +207,7 @@ public class StepSensorEventListenerTest {
 
         triggerStepEvent(baselineStepCount, baselineStepCountTimestampNanos);
         triggerStepEvent(firstStepCount, firstStepCountEndTimestampNanos);
-        awaitPassiveSensorTasksComplete();
+        awaitPassiveSensorTasksComplete(2);
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
@@ -233,9 +235,8 @@ public class StepSensorEventListenerTest {
 
         setBaselineStepCount(0);
         triggerStepEvent(firstStepCount, firstEndTimestampNanos);
-        sleep(secondTimestampDelayNanos);
         triggerStepEvent(secondStepCount, secondEndTimestampNanos);
-        awaitPassiveSensorTasksComplete();
+        awaitPassiveSensorTasksComplete(3);
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
@@ -272,11 +273,9 @@ public class StepSensorEventListenerTest {
 
         setBaselineStepCount(0);
         triggerStepEvent(firstStepCount, firstEndTimestampNanos);
-        sleep(secondTimestampDelayNanos);
         triggerStepEvent(secondStepCount, secondEndTimestampNanos);
-        sleep(thirdTimestampDelayNanos);
         triggerStepEvent(thirdStepCount, thirdEndTimestampNanos);
-        awaitPassiveSensorTasksComplete();
+        awaitPassiveSensorTasksComplete(3);
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
@@ -306,9 +305,8 @@ public class StepSensorEventListenerTest {
 
         setBaselineStepCount(0);
         triggerStepEvent(firstStepCount, firstEndTimestampNanos);
-        sleep(secondTimestampDelayNanos);
         triggerStepEvent(firstStepCount, secondEndTimestampNanos);
-        awaitPassiveSensorTasksComplete();
+        awaitPassiveSensorTasksComplete(2);
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
@@ -333,9 +331,8 @@ public class StepSensorEventListenerTest {
 
         setBaselineStepCount(0);
         triggerStepEvent(firstStepCount, firstEndTimestampNanos);
-        sleep(secondTimestampDelayNanos);
         triggerStepEvent(secondStepCount, secondEndTimestampNanos);
-        awaitPassiveSensorTasksComplete();
+        awaitPassiveSensorTasksComplete(2);
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
@@ -356,13 +353,11 @@ public class StepSensorEventListenerTest {
         long expectedFirstStartTimestampNanos =
                 firstEndTimestampNanos - getDurationNanosForSteps(firstStepCount);
         int secondStepCount = firstStepCount + 5;
-        long secondTimestampDelayNanos = MILLISECONDS.toNanos(100);
 
         setBaselineStepCount(0);
         triggerStepEvent(firstStepCount, firstEndTimestampNanos);
-        sleep(secondTimestampDelayNanos);
         triggerStepEvent(secondStepCount, firstEndTimestampNanos);
-        awaitPassiveSensorTasksComplete();
+        awaitPassiveSensorTasksComplete(2);
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
@@ -387,9 +382,8 @@ public class StepSensorEventListenerTest {
 
         setBaselineStepCount(0);
         triggerStepEvent(firstStepCount, firstEndTimestampNanos);
-        sleep(secondTimestampDelayNanos);
         triggerStepEvent(secondStepCount, secondEndTimestampNanos);
-        awaitPassiveSensorTasksComplete();
+        awaitPassiveSensorTasksComplete(2);
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
@@ -410,7 +404,7 @@ public class StepSensorEventListenerTest {
 
         setBaselineStepCount(0);
         triggerStepEvent(stepCount, endTimestampNanos);
-        awaitPassiveSensorTasksComplete();
+        awaitPassiveSensorTasksComplete(2);
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
@@ -568,7 +562,7 @@ public class StepSensorEventListenerTest {
 
         when(mStepSensorEventListener.computeBootTime()).thenReturn(futureBootTime);
         triggerStepEvent(secondStepCount, secondEndTimestampNanos);
-        awaitPassiveSensorTasksComplete();
+        awaitPassiveSensorTasksComplete(2);
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
@@ -599,7 +593,7 @@ public class StepSensorEventListenerTest {
 
         when(mStepSensorEventListener.computeBootTime()).thenReturn(pastBootTime);
         triggerStepEvent(secondStepCount, secondEndTimestampNanos);
-        awaitPassiveSensorTasksComplete();
+        awaitPassiveSensorTasksComplete(2);
         List<RecordInternal<?>> records =
                 mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
 
@@ -681,14 +675,15 @@ public class StepSensorEventListenerTest {
      *
      * <p>This should only be called once in a test, after all step events have been transmitted.
      */
-    // TODO(b/417975987): Consider improving this method with a CountDownLatch.
-    private void awaitPassiveSensorTasksComplete() throws InterruptedException {
-        // Wait for twice as long as the batching duration because, if an event occurs during a
-        // scheduled future, we need to wait for that one to finish and the no-op one that will
-        // occur afterwards
-        Thread.sleep(mStepSensorEventListener.getBatchingDurationMillis() * 2);
+    private void awaitPassiveSensorTasksComplete(int expectedTasks) throws InterruptedException {
 
         ScheduledThreadPoolExecutor passiveExecutor = mThreadScheduler.mPassiveTrackerExecutor;
+        mCountDownLatch = new CountDownLatch(expectedTasks);
+        if (!mCountDownLatch.await(10, TimeUnit.SECONDS)) {
+            throw new AssertionError(
+                    "Timed out while waiting for the expected number of step event writes.");
+        }
+        assertThat(passiveExecutor.getQueue().size()).isEqualTo(0);
         // Beware that no new tasks are executed once #shutdown is called so any tasks after this
         // and before #resetThreadPools may be lost.
         passiveExecutor.shutdown();
@@ -720,5 +715,9 @@ public class StepSensorEventListenerTest {
     private long getDurationNanosForSteps(int stepCount) {
         double minutesPerStep = (1 / MIN_STEPS_PER_MINUTE);
         return (long) (stepCount * minutesPerStep * MINUTES.toNanos(1));
+    }
+
+    private void latchCountDown() {
+        mCountDownLatch.countDown();
     }
 }
