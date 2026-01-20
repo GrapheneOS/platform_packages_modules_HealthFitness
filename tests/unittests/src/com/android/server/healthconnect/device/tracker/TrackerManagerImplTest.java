@@ -53,6 +53,7 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.device.DeviceDataSourceHelper;
@@ -101,6 +102,7 @@ public class TrackerManagerImplTest {
     private HealthConnectInjector mHealthConnectInjector;
     private NativeStepsNotificationStateManager mNativeStepsNotificationStateManager;
     @Mock private NativeStepsNotificationSender mNativeStepsNotificationSender;
+    @Mock private HealthConnectThreadScheduler mThreadScheduler;
 
     @Before
     public void setup() throws Exception {
@@ -122,6 +124,7 @@ public class TrackerManagerImplTest {
                                 mock(HealthPermissionIntentAppsTracker.class))
                         .setAppOpLogsHelper(mock(AppOpLogsHelper.class))
                         .setUserManager(mUserManager)
+                        .setThreadScheduler(mThreadScheduler)
                         .setNativeStepsNotificationSender(mNativeStepsNotificationSender)
                         .setDeviceDataSourceHelper(deviceDataSourceHelper)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
@@ -494,11 +497,14 @@ public class TrackerManagerImplTest {
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
         ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
                 ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
+        ArgumentCaptor<Runnable> taskCaptor = ArgumentCaptor.forClass(Runnable.class);
         manager.initializeOrRefresh();
         verify(mPackageManager).addOnPermissionsChangeListener(permissionsListenerCaptor.capture());
 
         grantAppStepsPermission(TEST_PACKAGE_NAME);
         permissionsListenerCaptor.getValue().onPermissionsChanged(/* uid= */ 0);
+        verify(mThreadScheduler).scheduleInternalTask(taskCaptor.capture());
+        taskCaptor.getValue().run();
 
         verify(mSensorManager)
                 .registerListener(
@@ -537,6 +543,7 @@ public class TrackerManagerImplTest {
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
         ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
                 ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
+        ArgumentCaptor<Runnable> taskCaptor = ArgumentCaptor.forClass(Runnable.class);
         manager.initializeOrRefresh();
         verify(mPackageManager).addOnPermissionsChangeListener(permissionsListenerCaptor.capture());
         verify(mSensorManager)
@@ -545,6 +552,8 @@ public class TrackerManagerImplTest {
 
         revokeStepsPermissionForAllApps();
         permissionsListenerCaptor.getValue().onPermissionsChanged(/* uid= */ 0);
+        verify(mThreadScheduler).scheduleInternalTask(taskCaptor.capture());
+        taskCaptor.getValue().run();
 
         verify(mSensorManager).unregisterListener(any(StepSensorEventListener.class));
     }
@@ -582,6 +591,7 @@ public class TrackerManagerImplTest {
         manager.mListener = listenerMock;
         ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
                 ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
+        ArgumentCaptor<Runnable> taskCaptor = ArgumentCaptor.forClass(Runnable.class);
         manager.initializeOrRefresh();
         verify(mPackageManager).addOnPermissionsChangeListener(permissionsListenerCaptor.capture());
         verify(mSensorManager)
@@ -590,6 +600,8 @@ public class TrackerManagerImplTest {
 
         revokeStepsPermissionForAllApps();
         permissionsListenerCaptor.getValue().onPermissionsChanged(/* uid= */ 0);
+        verify(mThreadScheduler).scheduleInternalTask(taskCaptor.capture());
+        taskCaptor.getValue().run();
 
         verify(listenerMock).reset();
     }
@@ -632,6 +644,7 @@ public class TrackerManagerImplTest {
         TrackerManager manager = mHealthConnectInjector.getTrackerManager();
         ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
                 ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
+        ArgumentCaptor<Runnable> taskCaptor = ArgumentCaptor.forClass(Runnable.class);
         grantAppStepsPermission(TEST_PACKAGE_NAME);
         manager.initializeOrRefresh();
         verify(mPackageManager).addOnPermissionsChangeListener(permissionsListenerCaptor.capture());
@@ -639,6 +652,8 @@ public class TrackerManagerImplTest {
         when(mPackageManager.getPermissionFlags(any(), any(), any()))
                 .thenThrow(new RuntimeException("Something went wrong"));
         permissionsListenerCaptor.getValue().onPermissionsChanged(/* uid= */ 0);
+        verify(mThreadScheduler).scheduleInternalTask(taskCaptor.capture());
+        taskCaptor.getValue().run();
 
         // Verify that the method which we forced to throw was actually called.
         verify(mPackageManager, times(2)).getPermissionFlags(any(), any(), any());
@@ -775,6 +790,21 @@ public class TrackerManagerImplTest {
         verify(mPackageManager)
                 .removeOnPermissionsChangeListener(
                         any(PackageManager.OnPermissionsChangedListener.class));
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void onAppPermissionGranted_listenerTriggered_scheduledOnBackgroundThread() {
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
+                ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
+        manager.initializeOrRefresh();
+        verify(mPackageManager).addOnPermissionsChangeListener(permissionsListenerCaptor.capture());
+
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+        permissionsListenerCaptor.getValue().onPermissionsChanged(/* uid= */ 0);
+
+        verify(mThreadScheduler, times(1)).scheduleInternalTask(any());
     }
 
     private void grantAppStepsPermission(String packageName) {

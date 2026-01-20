@@ -82,6 +82,7 @@ public class TrackerManagerImpl implements TrackerManager {
     private NativeStepsNotificationStateManager mNativeStepsNotificationStateManager;
 
     private UserHandle mUserHandle;
+    private HealthConnectThreadScheduler mThreadScheduler;
 
     @VisibleForTesting StepSensorEventListener mListener;
 
@@ -107,6 +108,7 @@ public class TrackerManagerImpl implements TrackerManager {
         mNativeStepsNotificationSender = nativeStepsNotificationSender;
         mNativeStepsNotificationStateManager = nativeStepsNotificationStateManager;
         mUserHandle = userHandle;
+        mThreadScheduler = threadScheduler;
     }
 
     @SuppressLint("MissingPermission")
@@ -363,17 +365,20 @@ public class TrackerManagerImpl implements TrackerManager {
     }
 
     private void onPermissionsChanged(int uid) {
-        try {
-            if (android.health.connect.Constants.DEBUG) {
-                Slog.d(TAG, "Permissions changed, refreshing tracker status");
-            }
-            // If tracking wasn't enabled and an app gets the READ_STEPS permission,
-            // we'll start tracking. If tracking was enabled and READ_STEPS was revoked
-            // for all apps, we'll disable tracking.
-            refreshTrackerStatus();
-        } catch (RuntimeException e) {
-            Slog.e(TAG, "Unhandled failure in permissions change listener", e);
-        }
+        mThreadScheduler.scheduleInternalTask(
+                () -> {
+                    try {
+                        if (android.health.connect.Constants.DEBUG) {
+                            Slog.d(TAG, "Permissions changed, refreshing tracker status");
+                        }
+                        // If tracking wasn't enabled and an app gets the READ_STEPS permission,
+                        // we'll start tracking. If tracking was enabled and READ_STEPS was revoked
+                        // for all apps, we'll disable tracking.
+                        refreshTrackerStatus();
+                    } catch (RuntimeException e) {
+                        Slog.e(TAG, "Unhandled failure in permissions change listener", e);
+                    }
+                });
     }
 
     private void unregisterPermissionListener() {
