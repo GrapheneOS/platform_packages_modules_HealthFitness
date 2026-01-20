@@ -27,7 +27,6 @@ import android.health.connect.datatypes.AggregationType;
 import android.health.connect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.util.ArrayMap;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
@@ -179,6 +178,7 @@ public final class FitnessRecordAggregateHelper {
         return mTransactionManager.runWithoutTransaction(
                 db -> {
                     List<AggregateResult<?>> aggregateResults;
+                    List<String> contributingPackages;
                     try (Cursor cursor =
                                     db.rawQuery(
                                             aggregateRecordRequest.getAggregationCommand(), null);
@@ -187,22 +187,20 @@ public final class FitnessRecordAggregateHelper {
                                             aggregateRecordRequest
                                                     .getCommandToFetchAggregateMetadata(),
                                             null)) {
-                        List<String> contributingPackages =
+                        contributingPackages =
                                 aggregateRecordRequest.getDataOriginPackageNames(metaDataCursor);
                         aggregateResults =
                                 aggregateRecordRequest.processResults(cursor, contributingPackages);
-                        if (shouldRecordAccessLog) {
-                            mReadAccessLogsHelper.recordAccessLogForAggregationReads(
-                                    db,
-                                    callingPackageName,
-                                    /* readTimeStamp= */ requestTime,
-                                    aggregateRecordRequest.getRecordTypeId(),
-                                    /* endTimeStamp= */ TimeRangeFilterHelper
-                                            .getFilterEndTimeMillis(timeRangeFilter),
-                                    contributingPackages);
-                        }
                     }
                     if (shouldRecordAccessLog) {
+                        mReadAccessLogsHelper.recordAccessLogForAggregationReads(
+                                db,
+                                callingPackageName,
+                                /* readTimeStamp= */ requestTime,
+                                aggregateRecordRequest.getRecordTypeId(),
+                                /* endTimeStamp= */ TimeRangeFilterHelper.getFilterEndTimeMillis(
+                                        timeRangeFilter),
+                                contributingPackages);
                         mAccessLogsHelper.recordReadAccessLog(
                                 db, callingPackageName, recordTypeIds);
                     }
