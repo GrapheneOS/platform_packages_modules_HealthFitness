@@ -374,7 +374,7 @@ public class TrackerManagerImpl implements TrackerManager {
                         // If tracking wasn't enabled and an app gets the READ_STEPS permission,
                         // we'll start tracking. If tracking was enabled and READ_STEPS was revoked
                         // for all apps, we'll disable tracking.
-                        refreshTrackerStatus();
+                        initializeOrRefresh();
                     } catch (RuntimeException e) {
                         Slog.e(TAG, "Unhandled failure in permissions change listener", e);
                     }
