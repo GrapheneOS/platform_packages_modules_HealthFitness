@@ -3675,6 +3675,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     mPreferenceHelper.insertOrReplacePreference(
                             dataTypePrefKey, String.valueOf(enabled));
                     mTrackerManager.initializeOrRefresh();
+
+                    if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+                        Objects.requireNonNull(mDeviceDataProviderManager);
+                        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+                    }
+
                     callback.onResult();
                 },
                 errorCallback);

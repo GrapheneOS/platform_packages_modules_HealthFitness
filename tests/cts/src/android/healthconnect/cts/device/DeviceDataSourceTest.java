@@ -124,7 +124,6 @@ public class DeviceDataSourceTest {
         assertThat(currentDeviceTypeSource.getSymptomType()).isEqualTo(SYMPTOM_TYPE_UNKNOWN);
         assertThat(currentDeviceTypeSource.getDataType()).isEqualTo(StepsRecord.class);
 
-        // TODO(b/468250208): Set to preference
         assertThat(currentDeviceTypeSource.isUserEnabled()).isTrue();
     }
 

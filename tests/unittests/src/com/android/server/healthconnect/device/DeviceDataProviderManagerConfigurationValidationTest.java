@@ -96,6 +96,7 @@ public class DeviceDataProviderManagerConfigurationValidationTest {
                         healthConnectInjector.getFitnessRecordReadHelper(),
                         healthConnectInjector.getFitnessRecordDeleteHelper(),
                         healthConnectInjector.getSyntheticPackageNameCreator(),
+                        healthConnectInjector.getPreferenceHelper(),
                         false);
 
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();

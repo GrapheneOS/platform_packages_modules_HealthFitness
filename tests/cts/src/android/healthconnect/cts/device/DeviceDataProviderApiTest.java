@@ -218,7 +218,6 @@ public class DeviceDataProviderApiTest {
         DeviceDataTypeAdvertisement expectedAd =
                 new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                         .setAvailable(TestUtils.hasPedometer())
-                        // TODO(b/468250208): Set to preference
                         .setUserEnabled(true)
                         // TODO(b/469717403): Decide Matchmaking behavior
                         .setVisibleByDefaultInMatchmaking(true)
