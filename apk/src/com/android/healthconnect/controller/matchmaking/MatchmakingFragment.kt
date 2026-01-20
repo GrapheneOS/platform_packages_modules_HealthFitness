@@ -193,6 +193,10 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                 viewModel.removeAllPermissionsFromGrantedList(expandablePreference.key)
             }
         }
+
+        viewModel.enabledDevicePackages.observe(viewLifecycleOwner) { enabledDevices ->
+            expandablePreference.isChecked = enabledDevices.contains(expandablePreference.key)
+        }
     }
 
     private fun addAppPreference(appData: MatchmakingAppData) {

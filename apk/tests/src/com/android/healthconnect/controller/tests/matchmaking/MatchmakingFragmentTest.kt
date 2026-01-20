@@ -44,6 +44,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
 import androidx.test.espresso.matcher.ViewMatchers.Visibility.GONE
 import androidx.test.espresso.matcher.ViewMatchers.Visibility.VISIBLE
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
+import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -133,6 +134,7 @@ class MatchmakingFragmentTest {
         whenever(viewModel.grantedPermissions).thenReturn(grantedPermissions)
         whenever(viewModel.matchingAppsCount).thenReturn(matchingAppsCount)
         whenever(deviceInfoUtils.isHealthConnectAvailable(any())).thenReturn(true)
+        whenever(viewModel.enabledDevicePackages).thenReturn(MutableLiveData(emptySet()))
     }
 
     @After
@@ -863,6 +865,7 @@ class MatchmakingFragmentTest {
                     emptyList(),
                 )
             )
+
         matchmakingState.postValue(
             MatchmakingViewModel.MatchmakingState.WithData(
                 AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
@@ -889,6 +892,69 @@ class MatchmakingFragmentTest {
 
                 onView(withText(R.string.matchmaking_screen_devices_category_title))
                     .check(matches(withEffectiveVisibility(VISIBLE)))
+            }
+    }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_MATCHMAKING,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun deviceSwitch_statePreservedOnRotation() {
+        val devices =
+            listOf(
+                MatchmakingDeviceData(
+                    DeviceDataSourceInfo(
+                        DataOrigin.Builder().setPackageName("com.example.watchdevice").build(),
+                        Device.Builder()
+                            .setManufacturer("Google")
+                            .setModel("Pixel Watch")
+                            .setType(2)
+                            .build(),
+                        false,
+                        listOf(
+                            DeviceDataProviderInfo(
+                                "com.google.android.apps.fitness",
+                                "MyFit",
+                                "",
+                                "",
+                                emptySet(),
+                            )
+                        ),
+                    ),
+                    emptyList(),
+                )
+            )
+        whenever(viewModel.enabledDevicePackages)
+            .thenReturn(MutableLiveData(setOf("com.example.watchdevice")))
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                emptyList(),
+                devices,
+            )
+        )
+
+        ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, MatchmakingFragment())
+                        .commitNow()
+                }
+
+                scenario.recreate()
+
+                onView(allOf(withId(R.id.switch_widget), isDisplayed())).check(matches(isChecked()))
             }
     }
 }
