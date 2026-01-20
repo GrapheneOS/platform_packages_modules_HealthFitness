@@ -3941,6 +3941,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mBackupRestore.getDataRestoreError());
     }
 
+    @Override
     public boolean hasUserEnabledTracking(
             AttributionSource attributionSource, String recordTypePrefKey) {
         checkParamsNonNull(attributionSource);
