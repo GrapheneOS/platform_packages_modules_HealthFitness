@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Dayakan sekurang-kurangnya satu kebenaran baca untuk menghidupkan akses data yang terdahulu bagi apl ini"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Benarkan apl ini mengakses semua data Health Connect yang lalu"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Benarkan apl ini mengakses data Health Connect apabila anda tidak menggunakan apl"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Benarkan apl ini menulis UDI Peranti pada data Health Connect"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Kalori aktif yang dibakar"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"kalori aktif yang dibakar"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Baca kalori aktif yang dibakar"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data daripada <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Benarkan apl <xliff:g id="APP_NAME">%1$s</xliff:g> membaca data daripada apl lain pada peranti ini menggunakan Health Connect. Data ini juga boleh dibaca oleh apl lain yang anda berikan akses."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apl yang boleh menyegerakkan data ini"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Ketahui cara <xliff:g id="APP_NAME">%1$s</xliff:g> menggunakan data anda dalam "<a href="%2$s">"dasar privasi"</a>" mereka."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect membolehkan anda berkongsi data kesihatan dan kecergasan anda antara berbilang apl. Ciri ini membantu anda membuka kunci cerapan dan pengalaman sambil memastikan data anda selamat."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Maklumat lanjut tentang Health Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Pemulihan Health Connect dalam proses"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"OK"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Kemaskinian diperlukan"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Untuk meneruskan pemulihan data anda, kemas kinikan sistem peranti anda."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Semak kemaskinian"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Jumlah data"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Sumber data"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Tambahkan sumber data pada senarai untuk melihat perubahan jumlah data. Sumber data yang dikeluarkan daripada senarai akan berhenti menyumbang pada jumlah data tetapi tetap memiliki kebenaran tulis."</string>

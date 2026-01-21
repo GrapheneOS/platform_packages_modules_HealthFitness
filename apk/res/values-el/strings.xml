@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Ενεργοποιήστε τουλάχιστον μία άδεια ανάγνωσης ώστε να ενεργοποιηθεί η πρόσβαση σε παλαιότερα δεδομένα για αυτή την εφαρμογή"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Επιτρέψτε σε αυτή την εφαρμογή να έχει πρόσβαση σε όλα τα παλαιότερα δεδομένα του Health Connect"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Επιτρέψτε σε αυτή την εφαρμογή να έχει πρόσβαση στα δεδομένα του Health Connect όταν δεν χρησιμοποιείτε την εφαρμογή"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Επιτρέψτε σε αυτή την εφαρμογή να εγγράφει UDI συσκευής στα δεδομένα του Health Connect"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Ενεργές θερμίδες που έχετε κάψει"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"ενεργές θερμίδες που έχετε κάψει"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Ανάγνωση ενεργών θερμίδων που έχετε κάψει"</string>
@@ -393,7 +394,7 @@
     <string name="symptom_entry_title" msgid="3927744074055963604">"<xliff:g id="SEVERITY">%1$s</xliff:g> <xliff:g id="TYPE">%2$s</xliff:g>"</string>
     <string name="read_permission_category" msgid="6002099618259628632">"Να επιτρέπεται η ανάγνωση στην εφαρμογή “<xliff:g id="APP_NAME">%1$s</xliff:g>”"</string>
     <string name="write_permission_category" msgid="1529702804865008111">"Να επιτρέπεται η εγγραφή στην εφαρμογή “<xliff:g id="APP_NAME">%1$s</xliff:g>”"</string>
-    <string name="request_permissions_allow" msgid="4201324235711040631">"Αποδοχή"</string>
+    <string name="request_permissions_allow" msgid="4201324235711040631">"Να επιτρέπεται"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Αποδοχή όλων"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Να μην επιτρέπεται"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Επιλέξτε τα δεδομένα που θέλετε να διαβάζει ή να γράφει αυτή η εφαρμογή στο Health Connect"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Δεδομένα από την εφαρμογή <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Επιτρέψτε στην εφαρμογή <xliff:g id="APP_NAME">%1$s</xliff:g> να διαβάζει δεδομένα από άλλες εφαρμογές σε αυτή τη συσκευή χρησιμοποιώντας το Health Connect. Αυτά τα δεδομένα μπορούν επίσης να διαβαστούν από άλλες εφαρμογές στις οποίες παραχωρείτε πρόσβαση."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Εφαρμογές που μπορούν να συγχρονίσουν αυτά τα δεδομένα"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Μάθετε πώς η εφαρμογή <xliff:g id="APP_NAME">%1$s</xliff:g> χρησιμοποιεί τα δεδομένα σας στην "<a href="%2$s">"πολιτική απορρήτου"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Το Health Connect σας επιτρέπει να μοιράζεστε τα δεδομένα υγείας και φυσικής κατάστασης μεταξύ πολλών εφαρμογών. Με αυτόν τον τρόπο, μπορείτε να αποκτήσετε πρόσβαση σε insight και εμπειρίες, διατηρώντας τα δεδομένα σας ασφαλή."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Περισσότερα σχετικά με το Health Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Επαναφορά Health Connect σε εξέλιξη"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Το κατάλαβα"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Απαιτείται ενημέρωση"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Για να συνεχίσετε την επαναφορά των δεδομένων σας, ενημερώστε το σύστημα της συσκευής σας."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Έλεγχος για ενημερώσεις"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Σύνολα δεδομένων"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Πηγές δεδομένων"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Προσθέστε πηγές δεδομένων στη λίστα για να δείτε πώς μπορούν να αλλάξουν τα σύνολα δεδομένων. Εάν καταργήσετε μια πηγή δεδομένων από αυτή τη λίστα, η εφαρμογή θα σταματήσει να συνεισφέρει στα σύνολα, αλλά θα εξακολουθεί να έχει άδειες εγγραφής."</string>

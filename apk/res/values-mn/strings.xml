@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Энэ аппад хуучин өгөгдлийн хандалтыг асаахын тулд дор хаяж нэг унших зөвшөөрлийг идэвхжүүлнэ үү"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Энэ аппад Health Connect-н өнгөрсөн цагийн бүх өгөгдөлд хандахыг зөвшөөрөх"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Та аппыг ашиглаагүй үедээ энэ аппад Health Connect-н өгөгдөлд хандахыг зөвшөөрөх"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Энэ аппад төхөөрөмжийн UDI-г Health Connect-н өгөгдөлд бичихийг зөвшөөрнө үү"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Идэвхтэй үед шатаасан калори"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"идэвхтэй үед шатаасан калори"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Идэвхтэй үед шатаасан калорийг унших"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g>-н өгөгдөл"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> аппад Health Connect-г ашиглан энэ төхөөрөмж дээрх бусад аппаас өгөгдөл уншихыг зөвшөөрнө үү. Энэ өгөгдлийг мөн таны хандах эрх өгсөн бусад апп унших боломжтой."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Энэ өгөгдлийг синк хийх боломжтой аппууд"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> таны өгөгдлийг хэрхэн ашигладгийг "<a href="%2$s">"нууцлалын бодлогоос"</a>" нь мэдэж аваарай."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect танд олон аппын хооронд эрүүл мэнд, фитнесийн өгөгдлөө хуваалцах боломжийг олгодог. Энэ нь таны өгөгдлийг аюулгүй байлгахын зэрэгцээ статистик, хэрэглээний түгжээг тайлахад тусалдаг."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect-н тухай нэмэлт мэдээлэл"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect өгөгдлийг сэргээж байна"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Ойлголоо"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Шинэчлэх шаардлагатай"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Өгөгдлөө үргэлжлүүлэн сэргээх бол төхөөрөмжийнхөө системийг шинэчилнэ үү."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Шинэчлэлт байгаа эсэхийг шалгах"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Өгөгдлийн нийт дүн"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Өгөгдлийн сурвалж"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Өгөгдлийн нийт дүн хэрхэн өөрчлөгдөж болохыг харахын тулд өгөгдлийн сурвалжийг жагсаалтад нэмнэ үү. Энэ жагсаалтаас өгөгдлийн сурвалжийг хасах нь үүнийг нийт дүнд хувь нэмэр оруулахыг зогсоох ч бичих зөвшөөрөлтэй хэвээр байх болно."</string>

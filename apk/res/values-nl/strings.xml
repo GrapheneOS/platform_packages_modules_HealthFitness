@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Zet ten minste één toestemming voor lezen aan om toegang tot eerdere gegevens voor deze app aan te zetten"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Geef deze app toegang tot alle eerdere Health Connect-gegevens"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Geef deze app toegang tot Health Connect-gegevens als je de app niet gebruikt"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Geef deze app toestemming om de UDI van het apparaat naar Health Connect-gegevens te schrijven"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Verbrande actieve calorieën"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"verbrande actieve calorieën"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Gegevens over verbrande actieve calorieën lezen"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Gegevens van <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Geef de app <xliff:g id="APP_NAME">%1$s</xliff:g> toestemming om gegevens van andere apps op dit apparaat te lezen via Health Connect. Deze gegevens kunnen ook worden gelezen door andere apps waaraan je toegang geeft."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps die deze gegevens kunnen synchroniseren"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Meer informatie over hoe <xliff:g id="APP_NAME">%1$s</xliff:g> je gegevens gebruikt, vind je in hun "<a href="%2$s">"privacybeleid"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Met Health Connect kun je je gezondheids- en fitnessgegevens delen tussen meerdere apps. Zo kun je inzichten en ervaringen mogelijk maken terwijl je gegevens beveiligd blijven."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Meer informatie over Health Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect-herstel is bezig"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"OK"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Update vereist"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Update je apparaatsysteem om door te gaan met het herstellen van je gegevens."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Checken op updates"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Gegevenstotalen"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Gegevensbronnen"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Voeg gegevensbronnen aan de lijst toe om te zien hoe de gegevenstotalen kunnen veranderen. Als je een gegevensbron uit deze lijst verwijdert, draagt die niet meer bij aan de totalen. De app heeft nog wel schrijfrechten."</string>

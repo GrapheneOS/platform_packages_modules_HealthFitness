@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Accordez au moins une autorisation de lecture afin d\'activer l\'accès aux données déjà enregistrées pour cette appli"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Autoriser cette appli à accéder à toutes les anciennes données de Santé Connect"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Autoriser cette appli à accéder aux données de Santé Connect lorsque vous ne l\'utilisez pas"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Autoriser cette appli à écrire l\'UDI de l\'appareil dans les données de Santé Connect"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Calories brûlées en activité"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"calories brûlées en activité"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Lire les calories brûlées en activité"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Données provenant de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Autorisez l\'appli <xliff:g id="APP_NAME">%1$s</xliff:g> à lire les données d\'autres applis sur cet appareil en passant par Santé Connect. Ces données peuvent aussi être lues par d\'autres applis auxquelles vous accordez l\'accès."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Applis pouvant synchroniser ces données"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Découvrez comment <xliff:g id="APP_NAME">%1$s</xliff:g> utilise vos données dans ses "<a href="%2$s">"règles de confidentialité"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Santé Connect vous permet de partager vos données de santé et de remise en forme entre plusieurs applis. Vous pouvez ainsi accéder à des informations et à des expériences tout en garantissant la sécurité de vos données."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"En savoir plus sur Santé Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Santé Connect : restauration en cours"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"OK"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Mise à jour requise"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Pour poursuivre la restauration de vos données, mettez à jour le système de votre appareil."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Rechercher les mises à jour"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Totaux de données"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Sources de données"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Ajoutez des sources de données à la liste pour voir les totaux de données changer. Supprimer une source de données de cette liste l\'empêchera de contribuer aux totaux, mais elle disposera toujours d\'autorisations d\'écriture."</string>

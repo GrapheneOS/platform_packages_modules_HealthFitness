@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"이 앱의 과거 데이터 액세스를 사용 설정하려면 읽기 권한을 1개 이상 사용 설정하세요."</string>
     <string name="historic_access_description" msgid="3309195636349468633">"이 앱에서 모든 이전 헬스 커넥트 데이터에 액세스하도록 허용"</string>
     <string name="background_read_description" msgid="3203594555849969283">"이 앱을 사용하지 않을 때 앱에서 헬스 커넥트 데이터에 액세스하도록 허용"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"이 앱에서 헬스 커넥트 데이터에 기기 UDI를 쓰도록 허용합니다."</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"활동 칼로리 소모량"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"활동 칼로리 소모량"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"활동 칼로리 소모량 읽기"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g>의 데이터"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> 앱에서 헬스 커넥트를 사용하여 이 기기의 다른 앱에서 데이터를 읽도록 허용합니다. 액세스 권한을 부여한 다른 앱에서도 이 데이터를 읽을 수 있습니다."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"이 데이터를 동기화할 수 있는 앱"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g>에서 사용자 데이터를 사용하는 방식을 "<a href="%2$s">"개인정보처리방침"</a>"에서 확인하세요."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"헬스 커넥트를 사용하면 여러 앱 간에 건강 및 피트니스 데이터를 공유할 수 있습니다. 이를 통해 데이터를 안전하게 보호하면서 유용한 정보와 경험 데이터를 모을 수 있습니다."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"헬스 커넥트에 관해 자세히 알아보기"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"헬스 커넥트 복원 진행 중"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"확인"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"업데이트 필요"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"데이터 복원을 계속 진행하려면 기기 시스템을 업데이트하세요."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"업데이트 확인"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"데이터 총계"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"데이터 소스"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"데이터 총계가 어떻게 변하는지 확인하려면 데이터 소스를 목록에 추가하세요. 목록에서 데이터 소스를 삭제하면 해당 데이터 소스는 더 이상 총계에 포함되지 않지만 쓰기 권한은 계속 유지됩니다."</string>

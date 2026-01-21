@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Activează cel puțin o permisiune de citire ca să activezi accesul la datele anterioare pentru această aplicație"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Permite accesul aplicației la toate datele Health Connect anterioare"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Permite accesul aplicației la datele Health Connect atunci când nu o folosești"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Permite ca aplicația să scrie UDI-ul dispozitivului în datele Health Connect"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Calorii active arse"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"calorii active arse"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Să citească date despre caloriile active arse"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Date de la <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Permite ca aplicația <xliff:g id="APP_NAME">%1$s</xliff:g> să citească date din alte aplicații de pe acest dispozitiv folosind Health Connect. Aceste date pot fi citite și de alte aplicații cărora le acorzi acces."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplicații care pot sincroniza aceste date"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Află cum îți folosește <xliff:g id="APP_NAME">%1$s</xliff:g> datele, în "<a href="%2$s">"politica de confidențialitate"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Cu Health Connect, poți să trimiți date despre sănătate și fitness între mai multe aplicații. Astfel, poți să descoperi statistici și experiențe, păstrându-ți datele în siguranță."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Mai multe despre Health Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Se restabilesc datele în Health Connect"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"OK"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Este necesară actualizarea"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Pentru a continua restabilirea datelor, actualizează sistemul dispozitivului."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Caută actualizări"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Valori totale ale datelor"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Surse de date"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Adaugă surse de date în listă ca să vezi cum se pot schimba valorile totale ale datelor. Dacă elimini o sursă de date din listă, aceasta nu va mai contribui la valorile totale, dar va avea în continuare permisiuni de scriere."</string>
@@ -1281,7 +1282,7 @@
     <string name="health_permission_grouping_switch_content_description" msgid="2328008720245815655">"<xliff:g id="SWITCH_TITLE">%1$s</xliff:g>. <xliff:g id="SWITCH_SUMMARY">%2$s</xliff:g>. <xliff:g id="SWITCH_FUNCTION">%3$s</xliff:g>"</string>
     <!-- no translation found for health_data_category_expandable_preference_title (2436468245802747438) -->
     <skip />
-    <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> din <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplicație(i) are(au) această permisiune"</string>
+    <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> din <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplicații au această permisiune"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Nicio aplicație care solicită"</string>
     <string name="allowed" msgid="4158456017482263737">"Permisă"</string>
     <string name="not_allowed" msgid="6092523505093372147">"Nepermisă"</string>

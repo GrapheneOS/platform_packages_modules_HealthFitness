@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Gi minst én lesetillatelse for å slå på tilgang til tidligere data for denne appen"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"La denne appen bruke alle tidligere Health Connect-data"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Gi denne appen tilgang til Health Connect-data når du ikke bruker appen"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"La denne appen skrive UDI for enheten til Health Connect-data"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Aktive forbrente kalorier"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"aktive forbrente kalorier"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Les aktive forbrente kalorier"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data fra <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"La appen <xliff:g id="APP_NAME">%1$s</xliff:g> lese data fra andre apper på denne enheten via Health Connect. Disse dataene kan også leses av andre apper du gir tilgang."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apper som kan synkronisere disse dataene"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Finn ut hvordan <xliff:g id="APP_NAME">%1$s</xliff:g> bruker dataene dine, i "<a href="%2$s">"personvernreglene deres"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Med Health Connect kan du dele helse- og treningsdata mellom flere apper. Dette hjelper deg med å få innsikt og opplevelser samtidig som dataene dine holdes sikre."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Mer om Health Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"En Health Connect-gjenoppretting pågår"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Greit"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"En oppdatering er nødvendig"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Oppdater enhetssystemet for å fortsette å gjenopprette dataene."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Se etter oppdateringer"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Totale dataverdier"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Datakilder"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Legg til datakilder på listen for å se hvordan de totale dataverdiene kan endres. Hvis du fjerner en datakilde fra denne listen, telles den ikke med i totalverdiene lenger, men den har fortsatt skrivetillatelse."</string>

@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"यो एपका हकमा पुरानो डेटा एक्सेस अन गर्न रिड गर्नेसम्बन्धी कम्तीमा एउटा अनुमति अन गर्नुहोस्"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"यो एपलाई Health Connect का सबै पुराना जानकारी एक्सेस गर्न दिनुहोस्"</string>
     <string name="background_read_description" msgid="3203594555849969283">"तपाईंले यो एप प्रयोग नगरिरहेका बेला पनि यो एपलाई Health Connect मा भएका डेटा एक्सेस गर्न दिनुहोस्"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"यो एपलाई Health Connect मा भएको डेटामा डिभाइस UDI राइट गर्ने अनुमति दिनुहोस्"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"सक्रिय हुँदा खपत गरिएको क्यालोरी"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"सक्रिय हुँदा खपत गरिएको क्यालोरी"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"सक्रिय हुँदा खपत गरिएको क्यालोरी रिड गर्ने अनुमति दिनुहोस्"</string>
@@ -405,6 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> मा भएको डेटा"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> एपलाई Health Connect प्रयोग गरी यो डिभाइसका अन्य एपमा भएको डेटा रिड गर्ने अनुमति दिनुहोस्। तपाईंले एक्सेस दिएका अन्य एपहरूले पनि यो डेटा रिड गर्न सक्छन्।"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"यो डेटा सिंक गर्न सक्ने एपहरू"</string>
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"यो डेटा सिंक गर्न सक्ने डिभाइसहरू"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> को "<a href="%2$s">"गोपनीयता नीति"</a>" पढेर यस एपले तपाईंको डेटा कसरी प्रयोग गर्छ भन्ने कुरा थाहा पाउनुहोस्।"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"तपाईं Health Connect प्रयोग गरी एकभन्दा बढी एपहरूका बिचमा आफ्नो स्वास्थ्य र व्यायामसम्बन्धी डेटा सेयर गर्न सक्नुहुन्छ। तपाईं यसका सहायताले आफ्नो डेटा सुरक्षित राखेर विश्लेषणात्मक डेटा र सुविधाहरू प्राप्त गर्न सक्नुहुन्छ।"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect का बारेमा थप जानकारी"</string>
@@ -1180,10 +1182,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect रिस्टोर हुँदै छ"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"बुझेँ"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"अपडेट गर्नु पर्ने हुन्छ"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"आफ्नो जानकारी रिस्टोर गर्ने प्रक्रिया जारी राख्न आफ्नो डिभाइसको सिस्टम अपडेट गर्नुहोस्।"</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"अपडेटहरू उपलब्ध छन् वा छैनन् जाँच्नुहोस्"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"कुल डेटा"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"डेटाका स्रोतहरू"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"कुल डेटा कसरी परिवर्तन हुन सक्छ भन्ने कुरा हेर्न सूचीमा डेटाका स्रोतहरू हाल्नुहोस्। तपाईंले यो सूचीबाट डेटाको स्रोत हटाउनुभयो भने यसले कुल डेटामा योगदान गर्न छाड्ने छ तर यो एपसँग राइट गर्ने अनुमति भने अझै पनि रहिरहने छ।"</string>

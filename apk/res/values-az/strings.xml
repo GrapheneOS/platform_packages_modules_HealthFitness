@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Bu tətbiq üçün keçmiş dataya girişi yandırmaq məqsədilə ən az bir oxumaq icazəsini aktivləşdirin"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Bu tətbiqin bütün keçmiş Health Connect datasına girişinə icazə verin"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Bu tətbiqə istifadə edilmədiyi zaman Health Connect datasına giriş icazəsi verin"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Bu tətbiqin Cihaz UDI-ni Health Connect datasına yazmasına icazə verin"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Sərf edilmiş aktiv kalori"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"sərf edilmiş aktiv kalori"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Sərf edilmiş aktiv kalorini oxumaq"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data mənbəyi: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinin Health Connect-dən istifadə edərək bu cihazdakı digər tətbiqlərdən data oxumasına icazə verin. Bu data giriş icazəsi verdiyiniz digər tətbiqlər tərəfindən də oxuna bilər."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Bu datanı sinxronlaşdıra bilən tətbiqlər"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinin datanızı "<a href="%2$s">"məxfilik siyasətində"</a>" necə istifadə etdiyini öyrənin."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect sağlamlıq və fitnes datanızı çoxsaylı tətbiqlər arasında paylaşmağa imkan verir. Bu, datanızı təhlükəsiz saxlayaraq sizə yeni statistik məlumat və təcrübələrin kilidini açmağa kömək edir."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect haqqında ətraflı məlumat"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect-in bərpası davam edir"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Anladım"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Güncəlləmək lazımdır"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Datanı bərpa etməyə davam etmək üçün cihaz sistemini güncəlləyin."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Güncəllənmələri yoxlayın"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Data məcmuları"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Data mənbələri"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Data məcmusu dəyişikliyinə baxmaq üçün data mənbələrini siyahıya əlavə edin. Data mənbəyini bu siyahıdan sildikdə onun məcmuya töhfə verməsi dayanacaq, lakin yazı icazələri qalacaq."</string>

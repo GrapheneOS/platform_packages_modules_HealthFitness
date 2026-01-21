@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"ለዚህ መተግበሪያ ያለፈ መዳረሻን ለማብራት ቢያንስ አንድ የአንብብ ፍቃድ ያንቁ"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"ይህ መተግበሪያ ሁሉንም ያለፈ የጤና አገናኝ ውሂብ እንዲደርስ ይፍቀዱ"</string>
     <string name="background_read_description" msgid="3203594555849969283">"ይህን መተግበሪያ በማይጠቀሙበት ጊዜ መተግበሪያው የጤና አገናኝ ውሂብን እንዲደርስ ይፍቀዱለት"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"ይህ መተግበሪያ የመሣሪያ UDIን ወደ የጤና አገናኝ ውሂብ እንዲጽፍ ይፍቀዱ"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"የተቃጠሉ ገቢር ካሎሪዎች"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"የተቃጠሉ ገቢር ካሎሪዎች"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"የተቃጠሉ ገቢር ካሎሪዎችን ያነባል"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"ውሂብ ከ<xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"የጤና አገናኝን በመጠቀም የ<xliff:g id="APP_NAME">%1$s</xliff:g> መተግበሪያ በዚህ መሣሪያ ላይ የሌሎች መተግበሪያዎችን ውሂብ እንዲያነብ ይፍቀዱ። እንዲሁም ይህ ውሂብ መዳረሻ በሰጧቸው ሌሎች መተግበሪያዎች ሊነበብ ይችላል።"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ይህን ውሂብ ማስመር የሚችሉ መተግበሪያዎች"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"እንዴት <xliff:g id="APP_NAME">%1$s</xliff:g> ውሂብዎን በእነሱ "<a href="%2$s">"የግላዊነት መመሪያ"</a>" ውስጥ እንደሚጠቀም ይወቁ።"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"የጤና አገናኝ የጤና እና የአካል ብቃት ውሂብዎን በበርካታ መተግበሪያዎች መካከል እንዲያጋሩ ያስችልዎታል። ይህ የውሂብዎ ደህንነት ተጠብቆ ሳለ ግንዛቤዎችን እና ተሞክሮዎችን ለመክፈት ያግዝዎታል።"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"ስለ የጤና አገናኝ ተጨማሪ"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"የጤና አገናኝን ወደነበረበት መመለስ በሂደት ላይ"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"ገባኝ"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"ዝማኔ ያስፈልጋል"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"ውሂብዎን ወደነበረበት መመለስ ለመቀጠል የመሣሪያዎን ሥርዓት ያዘምኑ።"</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"ዝማኔዎችን ፈትሽ"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"የውሂብ ጠቅላላ"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"የውሂብ ምንጮች"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"እንዴት የውሂብ ጠቅላላዎች ሊለወጡ እንደሚችሉ ለመመልከት የውሂብ ምንጮችን ወደ ዝርዝሩ ያክሉ። የውሂብ ምንጭን ከዚህ ዝርዝር ማስወገድ ለጠቅላላዎች አስተዋጽዖ ከማድረግ ያቆመዋል፣ ነገር ግን አሁንም የመፃፍ ፈቃዶች ይኖሩታል።"</string>
