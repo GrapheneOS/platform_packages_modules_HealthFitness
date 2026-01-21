@@ -13,8 +13,6 @@ import android.health.connect.HealthPermissions.WRITE_PLANNED_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_SKIN_TEMPERATURE
 import android.os.Build
 import android.os.Process
-import android.platform.test.annotations.DisableFlags
-import android.platform.test.annotations.EnableFlags
 import android.platform.test.annotations.RequiresFlagsDisabled
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
@@ -179,7 +177,7 @@ class HealthPermissionReaderTest {
             )
     }
 
-    @EnableFlags(
+    @RequiresFlagsEnabled(
         Flags.FLAG_CYCLE_PHASES_FLAG,
         Flags.FLAG_CYCLE_PHASES_DB,
         Flags.FLAG_SMOKING_DB,
@@ -199,8 +197,8 @@ class HealthPermissionReaderTest {
             )
     }
 
-    @DisableFlags(Flags.FLAG_CYCLE_PHASES_FLAG)
-    @EnableFlags(
+    @RequiresFlagsDisabled(Flags.FLAG_CYCLE_PHASES_FLAG)
+    @RequiresFlagsEnabled(
         Flags.FLAG_CYCLE_PHASES_DB,
         Flags.FLAG_SMOKING_DB,
         Flags.FLAG_SYMPTOMS_DB,
