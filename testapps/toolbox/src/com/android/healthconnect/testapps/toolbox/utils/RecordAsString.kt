@@ -22,23 +22,22 @@ import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsRecord
 
 /**
- * Returns a string representation of the [Record].
- * Workaround for the missing toString implementations in records.
+ * Returns a string representation of the [Record]. Workaround for the missing toString
+ * implementations in records.
  */
-internal fun Record.asString(): String =
-    buildString {
-        append(this@asString.javaClass.simpleName)
-        append('(')
-        append(metadata.asString())
-        append(", ")
-        append(timesAsString())
-        append(", ")
-        append(dataAsString())
-        append(')')
-    }
+internal fun Record.asString(): String = buildString {
+    append(this@asString.javaClass.simpleName)
+    append('(')
+    append(metadata.asString())
+    append(", ")
+    append(timesAsString())
+    append(", ")
+    append(dataAsString())
+    append(')')
+}
 
 private fun Metadata.asString(): String =
-    "packageName=${dataOrigin.packageName}}"
+    "packageName=${dataOrigin.packageName}, deviceUdi=${device.udi}}"
 
 private fun Record.timesAsString(): String =
     when (this) {

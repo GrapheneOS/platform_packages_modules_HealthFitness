@@ -88,12 +88,13 @@ class GeneralUtils {
                 ),
             )
 
-        fun getMetaData(context: Context, recordUuid: String): Metadata {
+        fun getMetaData(context: Context, recordUuid: String, udi: String? = null): Metadata {
             val device: Device =
                 Device.Builder()
                     .setManufacturer(MANUFACTURER)
                     .setModel(MODEL)
                     .setType(DEVICE_TYPE_WATCH)
+                    .setUdi(udi)
                     .build()
             val dataOrigin = DataOrigin.Builder().setPackageName(context.packageName).build()
             return Metadata.Builder()
@@ -103,12 +104,13 @@ class GeneralUtils {
                 .build()
         }
 
-        fun getMetaData(context: Context): Metadata {
+        fun getMetaData(context: Context, udi: String? = null): Metadata {
             val device: Device =
                 Device.Builder()
                     .setManufacturer(MANUFACTURER)
                     .setModel(MODEL)
                     .setType(DEVICE_TYPE_WATCH)
+                    .setUdi(udi)
                     .build()
             val dataOrigin = DataOrigin.Builder().setPackageName(context.packageName).build()
             return Metadata.Builder().setDevice(device).setDataOrigin(dataOrigin).build()

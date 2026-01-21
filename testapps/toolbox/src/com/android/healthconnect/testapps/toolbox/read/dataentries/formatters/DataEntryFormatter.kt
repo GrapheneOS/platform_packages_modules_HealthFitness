@@ -125,72 +125,116 @@ class DataEntryFormatter(
 ) {
 
     fun format(record: Record, context: Context): FormattedEntry {
-        return when (record) {
+        val entry =
+            when (record) {
 
-            // ACTIVITY
-            is ActiveCaloriesBurnedRecord -> activeCaloriesBurnedFormatter.format(record, context)
-            is ActivityIntensityRecord -> activityIntensityFormatter.format(record, context)
-            is DistanceRecord -> distanceFormatter.format(record, context)
-            is ElevationGainedRecord -> elevationGainedFormatter.format(record, context)
-            is FloorsClimbedRecord -> floorsClimbedFormatter.format(record, context)
-            is StepsRecord -> stepsFormatter.format(record, context)
-            is StepsCadenceRecord -> stepsCadenceFormatter.format(record, context)
-            is TotalCaloriesBurnedRecord -> totalCaloriesBurnedFormatter.format(record, context)
-            is Vo2MaxRecord -> vo2MaxFormatter.format(record, context)
-            is WheelchairPushesRecord -> wheelchairPushesFormatter.format(record, context)
-            is PowerRecord -> powerFormatter.format(record, context)
-            is SpeedRecord -> speedFormatter.format(record, context)
-            is CyclingPedalingCadenceRecord ->
-                cyclingPedalingCadenceFormatter.format(record, context)
-            is ExerciseSessionRecord -> exerciseSessionFormatter.format(record, context)
-            is PlannedExerciseSessionRecord ->
-                plannedExerciseSessionFormatter.format(record, context)
+                // ACTIVITY
+                is ActiveCaloriesBurnedRecord ->
+                    activeCaloriesBurnedFormatter.format(record, context)
+                is ActivityIntensityRecord -> activityIntensityFormatter.format(record, context)
+                is DistanceRecord -> distanceFormatter.format(record, context)
+                is ElevationGainedRecord -> elevationGainedFormatter.format(record, context)
+                is FloorsClimbedRecord -> floorsClimbedFormatter.format(record, context)
+                is StepsRecord -> stepsFormatter.format(record, context)
+                is StepsCadenceRecord -> stepsCadenceFormatter.format(record, context)
+                is TotalCaloriesBurnedRecord -> totalCaloriesBurnedFormatter.format(record, context)
+                is Vo2MaxRecord -> vo2MaxFormatter.format(record, context)
+                is WheelchairPushesRecord -> wheelchairPushesFormatter.format(record, context)
+                is PowerRecord -> powerFormatter.format(record, context)
+                is SpeedRecord -> speedFormatter.format(record, context)
+                is CyclingPedalingCadenceRecord ->
+                    cyclingPedalingCadenceFormatter.format(record, context)
+                is ExerciseSessionRecord -> exerciseSessionFormatter.format(record, context)
+                is PlannedExerciseSessionRecord ->
+                    plannedExerciseSessionFormatter.format(record, context)
 
-            // BODY_MEASUREMENTS
-            is BasalMetabolicRateRecord -> basalMetabolicRateFormatter.format(record, context)
-            is BodyFatRecord -> bodyFatFormatter.format(record)
-            is BodyWaterMassRecord -> bodyWaterMassFormatter.format(record, context)
-            is BoneMassRecord -> boneMassFormatter.format(record, context)
-            is HeightRecord -> heightFormatter.format(record, context)
-            is LeanBodyMassRecord -> leanBodyMassFormatter.format(record, context)
-            is WeightRecord -> weightFormatter.format(record, context)
+                // BODY_MEASUREMENTS
+                is BasalMetabolicRateRecord -> basalMetabolicRateFormatter.format(record, context)
+                is BodyFatRecord -> bodyFatFormatter.format(record)
+                is BodyWaterMassRecord -> bodyWaterMassFormatter.format(record, context)
+                is BoneMassRecord -> boneMassFormatter.format(record, context)
+                is HeightRecord -> heightFormatter.format(record, context)
+                is LeanBodyMassRecord -> leanBodyMassFormatter.format(record, context)
+                is WeightRecord -> weightFormatter.format(record, context)
 
-            // CYCLE_TRACKING
-            is CervicalMucusRecord -> cervicalMucusFormatter.format(record, context)
-            is MenstrualCyclePhaseRecord -> menstrualCyclePhaseFormatter.format(record, context)
-            is MenstruationFlowRecord -> menstruationFlowFormatter.format(record, context)
-            is MenstruationPeriodRecord -> menstruationPeriodFormatter.format(record, context)
-            is OvulationTestRecord -> ovulationTestFormatter.format(record, context)
-            is SexualActivityRecord -> sexualActivityFormatter.format(record, context)
-            is IntermenstrualBleedingRecord ->
-                intermenstrualBleedingFormatter.format(record, context)
+                // CYCLE_TRACKING
+                is CervicalMucusRecord -> cervicalMucusFormatter.format(record, context)
+                is MenstrualCyclePhaseRecord -> menstrualCyclePhaseFormatter.format(record, context)
+                is MenstruationFlowRecord -> menstruationFlowFormatter.format(record, context)
+                is MenstruationPeriodRecord -> menstruationPeriodFormatter.format(record, context)
+                is OvulationTestRecord -> ovulationTestFormatter.format(record, context)
+                is SexualActivityRecord -> sexualActivityFormatter.format(record, context)
+                is IntermenstrualBleedingRecord ->
+                    intermenstrualBleedingFormatter.format(record, context)
 
-            // NUTRITION
-            is HydrationRecord -> hydrationFormatter.format(record, context)
-            is NutritionRecord -> nutritionFormatter.format(record, context)
+                // NUTRITION
+                is HydrationRecord -> hydrationFormatter.format(record, context)
+                is NutritionRecord -> nutritionFormatter.format(record, context)
 
-            // SLEEP
-            is SleepSessionRecord -> sleepSessionFormatter.format(record, context)
+                // SLEEP
+                is SleepSessionRecord -> sleepSessionFormatter.format(record, context)
 
-            // VITALS
-            is BasalBodyTemperatureRecord -> basalBodyTemperatureFormatter.format(record, context)
-            is BloodGlucoseRecord -> bloodGlucoseFormatter.format(record, context)
-            is BloodPressureRecord -> bloodPressureFormatter.format(record, context)
-            is BodyTemperatureRecord -> bodyTemperatureFormatter.format(record, context)
-            is HeartRateRecord -> heartRateFormatter.format(record, context)
-            is HeartRateVariabilityRmssdRecord ->
-                heartRateVariabilityRmssdFormatter.format(record, context)
-            is OxygenSaturationRecord -> oxygenSaturationFormatter.format(record)
-            is RespiratoryRateRecord -> respiratoryRateFormatter.format(record, context)
-            is RestingHeartRateRecord -> restingHeartRateFormatter.format(record, context)
-            is SkinTemperatureRecord -> skinTemperatureFormatter.format(record, context)
+                // VITALS
+                is BasalBodyTemperatureRecord ->
+                    basalBodyTemperatureFormatter.format(record, context)
+                is BloodGlucoseRecord -> bloodGlucoseFormatter.format(record, context)
+                is BloodPressureRecord -> bloodPressureFormatter.format(record, context)
+                is BodyTemperatureRecord -> bodyTemperatureFormatter.format(record, context)
+                is HeartRateRecord -> heartRateFormatter.format(record, context)
+                is HeartRateVariabilityRmssdRecord ->
+                    heartRateVariabilityRmssdFormatter.format(record, context)
+                is OxygenSaturationRecord -> oxygenSaturationFormatter.format(record)
+                is RespiratoryRateRecord -> respiratoryRateFormatter.format(record, context)
+                is RestingHeartRateRecord -> restingHeartRateFormatter.format(record, context)
+                is SkinTemperatureRecord -> skinTemperatureFormatter.format(record, context)
 
-            // WELLNESS
-            is MindfulnessSessionRecord -> mindfulnessSessionFormatter.format(record, context)
-            is NicotineIntakeRecord -> nicotineIntakeFormatter.format(record, context)
-            is SymptomRecord -> symptomFormatter.format(record, context)
+                // WELLNESS
+                is MindfulnessSessionRecord -> mindfulnessSessionFormatter.format(record, context)
+                is NicotineIntakeRecord -> nicotineIntakeFormatter.format(record, context)
+                is SymptomRecord -> symptomFormatter.format(record, context)
 
-            else -> throw IllegalArgumentException("Unsupported data type")
+                else -> throw IllegalArgumentException("Unsupported data type")
+            }
+        return addMetadataDetails(entry, record)
+    }
+
+    private fun addMetadataDetails(entry: FormattedEntry, record: Record): FormattedEntry {
+        val device = record.metadata.device
+        android.util.Log.d(
+            "DataEntryFormatter",
+            "Formatting metadata for device: Mfr=${device.manufacturer}, Model=${device.model}, UDI=${device.udi}",
+        )
+        val metadataDetails = mutableListOf<FormattedEntry>()
+
+        if (!device.manufacturer.isNullOrBlank()) {
+            metadataDetails.add(
+                FormattedEntry.FormattedDataEntry("Manufacturer", device.manufacturer!!)
+            )
+        }
+        if (!device.model.isNullOrBlank()) {
+            metadataDetails.add(FormattedEntry.FormattedDataEntry("Model", device.model!!))
+        }
+        if (!device.udi.isNullOrBlank()) {
+            metadataDetails.add(FormattedEntry.FormattedDataEntry("Device UDI", device.udi!!))
+        }
+
+        if (metadataDetails.isEmpty()) {
+            return entry
+        }
+
+        return when (entry) {
+            is FormattedEntry.FormattedDataDetails -> {
+                val newDetails = entry.dataDetails.toMutableList()
+                newDetails.addAll(metadataDetails)
+                entry.copy(dataDetails = newDetails)
+            }
+            is FormattedEntry.FormattedDataEntry -> {
+                FormattedEntry.FormattedDataDetails(
+                    dataEntry = entry,
+                    dataDetails = metadataDetails,
+                )
+            }
+            else -> entry
         }
     }
 }

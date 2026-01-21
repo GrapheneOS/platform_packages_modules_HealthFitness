@@ -86,6 +86,11 @@ class PermissionsRepository(context: Context) {
                                     nameId = R.string.background_read_permission,
                                     permissions = listOf(READ_HEALTH_DATA_IN_BACKGROUND),
                                 ),
+                                TreeNode(
+                                    nameId = R.string.write_device_udi_permission,
+                                    permissions =
+                                        listOf("android.permission.health.WRITE_DEVICE_UDI"),
+                                ),
                             ),
                     ),
                 ),

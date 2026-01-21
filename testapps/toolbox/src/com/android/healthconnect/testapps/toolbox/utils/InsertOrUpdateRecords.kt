@@ -164,10 +164,14 @@ class InsertOrUpdateRecords {
             context: Context,
             recordUuid: String,
         ): Record {
+            val udi =
+                mFieldNameToFieldInput["metadata_udi"]?.getFieldValue()?.toString()?.takeIf {
+                    it.isNotBlank()
+                }
             return createRecordObjectHelper(
                 recordClass,
                 mFieldNameToFieldInput,
-                getMetaData(context, recordUuid),
+                getMetaData(context, recordUuid, udi),
             )
         }
 
@@ -176,10 +180,14 @@ class InsertOrUpdateRecords {
             mFieldNameToFieldInput: HashMap<String, InputFieldView>,
             context: Context,
         ): Record {
+            val udi =
+                mFieldNameToFieldInput["metadata_udi"]?.getFieldValue()?.toString()?.takeIf {
+                    it.isNotBlank()
+                }
             return createRecordObjectHelper(
                 recordClass,
                 mFieldNameToFieldInput,
-                getMetaData(context),
+                getMetaData(context, udi),
             )
         }
 
