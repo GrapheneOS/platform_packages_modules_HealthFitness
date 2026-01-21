@@ -17,25 +17,34 @@
 package com.android.server.healthconnect.common.logging;
 
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__ADVERTISE_DEVICE_DATA_SOURCES;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__CAN_CONNECT_MATCHING_APPS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__CREATE_MEDICAL_DATA_SOURCE;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__DELETE_DATA;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__DELETE_DEVICE_RECORDS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__DELETE_MEDICAL_DATA_SOURCE_WITH_DATA;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__DELETE_MEDICAL_RESOURCES_BY_IDS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__DELETE_MEDICAL_RESOURCES_BY_REQUESTS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__GET_CHANGES;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__GET_CHANGES_TOKEN;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__GET_CURRENT_DEVICE_DATA_SOURCE;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__GET_DEVICE_DATA_SOURCES;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__GET_DEVICE_DATA_SOURCE_CAPABILITIES;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__GET_GRANTED_PERMISSIONS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__GET_MEDICAL_DATA_SOURCES_BY_IDS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__GET_MEDICAL_DATA_SOURCES_BY_REQUESTS;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__HAS_USER_ENABLED_TRACKING;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__INSERT_DATA;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__INSERT_DEVICE_RECORDS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__READ_AGGREGATED_DATA;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__READ_DATA;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__READ_DEVICE_RECORDS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__READ_MEDICAL_RESOURCES_BY_IDS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__READ_MEDICAL_RESOURCES_BY_REQUESTS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__REVOKE_ALL_PERMISSIONS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__UPDATE_DATA;
+import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__UPDATE_DEVICE_RECORDS;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_METHOD__UPSERT_MEDICAL_RESOURCES;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN;
@@ -169,19 +178,37 @@ public final class HealthConnectServiceLogger {
 
         public static final int API_METHOD_UNKNOWN =
                 HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN;
+        public static final int ADVERTISE_DEVICE_DATA_SOURCES =
+                HEALTH_CONNECT_API_CALLED__API_METHOD__ADVERTISE_DEVICE_DATA_SOURCES;
         public static final int DELETE_DATA = HEALTH_CONNECT_API_CALLED__API_METHOD__DELETE_DATA;
+        public static final int DELETE_DEVICE_RECORDS =
+                HEALTH_CONNECT_API_CALLED__API_METHOD__DELETE_DEVICE_RECORDS;
         public static final int GET_CHANGES = HEALTH_CONNECT_API_CALLED__API_METHOD__GET_CHANGES;
         public static final int GET_CHANGES_TOKEN =
                 HEALTH_CONNECT_API_CALLED__API_METHOD__GET_CHANGES_TOKEN;
+        public static final int GET_CURRENT_DEVICE_DATA_SOURCE =
+                HEALTH_CONNECT_API_CALLED__API_METHOD__GET_CURRENT_DEVICE_DATA_SOURCE;
+        public static final int GET_DEVICE_DATA_SOURCES =
+                HEALTH_CONNECT_API_CALLED__API_METHOD__GET_DEVICE_DATA_SOURCES;
+        public static final int GET_DEVICE_DATA_SOURCE_CAPABILITIES =
+                HEALTH_CONNECT_API_CALLED__API_METHOD__GET_DEVICE_DATA_SOURCE_CAPABILITIES;
         public static final int GET_GRANTED_PERMISSIONS =
                 HEALTH_CONNECT_API_CALLED__API_METHOD__GET_GRANTED_PERMISSIONS;
+        public static final int HAS_USER_ENABLED_TRACKING =
+                HEALTH_CONNECT_API_CALLED__API_METHOD__HAS_USER_ENABLED_TRACKING;
         public static final int INSERT_DATA = HEALTH_CONNECT_API_CALLED__API_METHOD__INSERT_DATA;
+        public static final int INSERT_DEVICE_RECORDS =
+                HEALTH_CONNECT_API_CALLED__API_METHOD__INSERT_DEVICE_RECORDS;
         public static final int READ_AGGREGATED_DATA =
                 HEALTH_CONNECT_API_CALLED__API_METHOD__READ_AGGREGATED_DATA;
         public static final int READ_DATA = HEALTH_CONNECT_API_CALLED__API_METHOD__READ_DATA;
+        public static final int READ_DEVICE_RECORDS =
+                HEALTH_CONNECT_API_CALLED__API_METHOD__READ_DEVICE_RECORDS;
         public static final int REVOKE_ALL_PERMISSIONS =
                 HEALTH_CONNECT_API_CALLED__API_METHOD__REVOKE_ALL_PERMISSIONS;
         public static final int UPDATE_DATA = HEALTH_CONNECT_API_CALLED__API_METHOD__UPDATE_DATA;
+        public static final int UPDATE_DEVICE_RECORDS =
+                HEALTH_CONNECT_API_CALLED__API_METHOD__UPDATE_DEVICE_RECORDS;
         // PHR data source APIs
         public static final int CREATE_MEDICAL_DATA_SOURCE =
                 HEALTH_CONNECT_API_CALLED__API_METHOD__CREATE_MEDICAL_DATA_SOURCE;
@@ -208,15 +235,24 @@ public final class HealthConnectServiceLogger {
 
         @IntDef({
             API_METHOD_UNKNOWN,
+            ADVERTISE_DEVICE_DATA_SOURCES,
             DELETE_DATA,
+            DELETE_DEVICE_RECORDS,
             GET_CHANGES,
             GET_CHANGES_TOKEN,
+            GET_CURRENT_DEVICE_DATA_SOURCE,
+            GET_DEVICE_DATA_SOURCES,
+            GET_DEVICE_DATA_SOURCE_CAPABILITIES,
             GET_GRANTED_PERMISSIONS,
+            HAS_USER_ENABLED_TRACKING,
             INSERT_DATA,
+            INSERT_DEVICE_RECORDS,
             READ_AGGREGATED_DATA,
             READ_DATA,
+            READ_DEVICE_RECORDS,
             REVOKE_ALL_PERMISSIONS,
             UPDATE_DATA,
+            UPDATE_DEVICE_RECORDS,
             // PHR data source APIs
             CREATE_MEDICAL_DATA_SOURCE,
             GET_MEDICAL_DATA_SOURCES_BY_IDS,
