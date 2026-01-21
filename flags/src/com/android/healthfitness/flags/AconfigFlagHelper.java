@@ -18,6 +18,7 @@ package com.android.healthfitness.flags;
 
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ALCOHOL_CONSUMPTION;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_DEVICE_DATA_PROVIDERS;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_DEVICE_UDI;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MENSTRUAL_CYCLE_PHASE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_NICOTINE_INTAKE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_SYMPTOMS;
@@ -111,6 +112,7 @@ public final class AconfigFlagHelper {
         map.put(DB_VERSION_ALCOHOL_CONSUMPTION, Flags::alcoholConsumptionDb);
         map.put(DB_VERSION_MENSTRUAL_CYCLE_PHASE, Flags::cyclePhasesDb);
         map.put(DB_VERSION_DEVICE_DATA_PROVIDERS, Flags::deviceDataProvidersDb);
+        map.put(DB_VERSION_DEVICE_UDI, Flags::deviceUdiDb);
 
         return map;
     }
@@ -162,6 +164,6 @@ public final class AconfigFlagHelper {
 
     /** Returns a boolean indicating whether Cycle Phases data type is enabled. */
     public static boolean isDeviceUdiEnabled() {
-        return Flags.deviceUdi(); // TODO(b/472307622): use device_udi_db flag here after impl done
+        return Flags.deviceUdi() && isDbFlagEnabled(DB_VERSION_DEVICE_UDI);
     }
 }

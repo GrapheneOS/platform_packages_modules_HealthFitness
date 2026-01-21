@@ -625,3 +625,17 @@ flag {
   description: "Enables the check for hardware support before initializing Health Connect services."
   bug: "454305097"
 }
+
+flag {
+    name: "change_logs_granular_permissions_handling"
+    namespace: "health_fitness_aconfig"
+    description: "Enables changes to support granular permissions in change logs."
+    bug: "475815635"
+}
+
+flag {
+    name: "change_logs_granular_permissions_handling_db"
+    namespace: "health_fitness_aconfig"
+    description: "Enables DB changes to support granular permissions in change logs."
+    bug: "475815635"
+}

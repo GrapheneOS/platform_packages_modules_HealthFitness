@@ -69,6 +69,7 @@ class StepSensorEventListener implements SensorEventListener {
     @VisibleForTesting @Nullable SensorData mPendingData = null;
 
     @VisibleForTesting Optional<ScheduledFuture<?>> mPendingBatchWriteFuture = Optional.empty();
+    @VisibleForTesting Optional<Runnable> mWriteCompleteCallbackForTest = Optional.empty();
 
     StepSensorEventListener(
             Context context,
@@ -111,6 +112,7 @@ class StepSensorEventListener implements SensorEventListener {
 
     private void processSensorEvent(SensorEvent event) {
         if (event.sensor.getType() != Sensor.TYPE_STEP_COUNTER) {
+            mWriteCompleteCallbackForTest.ifPresent(Runnable::run);
             Slog.e(TAG, "Not expecting sensor type: " + event.sensor.getName());
             return;
         }
@@ -122,6 +124,7 @@ class StepSensorEventListener implements SensorEventListener {
         mThreadScheduler.schedulePassiveTrackerTask(
                 () -> {
                     if (isOldOrInvalidValue(sensorValueCumulative, sensorEventTimestampNanos)) {
+                        mWriteCompleteCallbackForTest.ifPresent(Runnable::run);
                         return;
                     }
                     if (mLastSavedData == null) {
@@ -134,6 +137,7 @@ class StepSensorEventListener implements SensorEventListener {
                         mLastSavedData =
                                 new SensorData(sensorValueCumulative, sensorEventTimestampNanos);
 
+                        mWriteCompleteCallbackForTest.ifPresent(Runnable::run);
                         return;
                     }
 
@@ -195,6 +199,7 @@ class StepSensorEventListener implements SensorEventListener {
     private void writeBatchAndScheduleNextWrite(boolean isDelayedTask) {
         if (mLastSavedData == null || mPendingData == null) {
             Slog.w(TAG, "Last saved or pending data is null, aborting");
+            mWriteCompleteCallbackForTest.ifPresent(Runnable::run);
             return;
         }
 
@@ -205,6 +210,7 @@ class StepSensorEventListener implements SensorEventListener {
 
         if (stepDelta == 0) {
             mPendingBatchWriteFuture = Optional.empty();
+            mWriteCompleteCallbackForTest.ifPresent(Runnable::run);
             // Don't execute or schedule another write as there have not been any changes
             return;
         }
@@ -230,6 +236,7 @@ class StepSensorEventListener implements SensorEventListener {
         if (mPendingBatchWriteFuture.isEmpty()) {
             Slog.e(TAG, "Failed to schedule a write");
         }
+        mWriteCompleteCallbackForTest.ifPresent(Runnable::run);
     }
 
     /**
@@ -340,5 +347,10 @@ class StepSensorEventListener implements SensorEventListener {
             Instant bootTime, long eventTimestampNanosSinceBoot) {
         // TODO(b/397400522): Add validation to ensure this is a valid timestamp.
         return bootTime.plusNanos(eventTimestampNanosSinceBoot);
+    }
+
+    @VisibleForTesting
+    public void setWriteCompleteCallbackForTest(Runnable countDownLatch) {
+        mWriteCompleteCallbackForTest = Optional.of(countDownLatch);
     }
 }

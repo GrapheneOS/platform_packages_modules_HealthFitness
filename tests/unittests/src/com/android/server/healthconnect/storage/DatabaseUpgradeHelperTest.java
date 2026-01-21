@@ -24,6 +24,7 @@ import static android.healthconnect.testing.unittest.StorageUtils.createEmptyDat
 
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_ALCOHOL_CONSUMPTION;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_DEVICE_DATA_PROVIDERS;
+import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_DEVICE_UDI;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_EXERCISE_SEGMENT_IMPROVEMENTS;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MENSTRUAL_CYCLE_PHASE;
 import static com.android.healthfitness.flags.DatabaseVersions.DB_VERSION_MINDFULNESS_SESSION;
@@ -34,6 +35,7 @@ import static com.android.healthfitness.flags.DatabaseVersions.MIN_SUPPORTED_DB_
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_CYCLE_PHASES_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_UDI_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING;
 import static com.android.healthfitness.flags.Flags.FLAG_SMOKING_DB;
@@ -87,7 +89,7 @@ public class DatabaseUpgradeHelperTest {
     private static final int NUM_OF_TABLES_AT_MENSTRUAL_CYCLE_PHASE = 74;
     private static final int NUM_OF_TABLES_AT_DEVICE_DATA_PROVIDERS = 76;
     private static final int NUM_OF_TABLES_IN_STAGING = NUM_OF_TABLES_AT_DEVICE_DATA_PROVIDERS;
-    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_DEVICE_DATA_PROVIDERS;
+    private static final int LATEST_DB_VERSION_IN_STAGING = DB_VERSION_DEVICE_UDI;
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
@@ -343,6 +345,19 @@ public class DatabaseUpgradeHelperTest {
                             List.of(RecordHelper.DDP_ID_COLUMN_NAME));
                 }
             }
+        }
+    }
+
+    @Test
+    @EnableFlags({FLAG_DEVICE_DATA_PROVIDERS_DB, FLAG_DEVICE_UDI_DB})
+    public void onUpgrade_udiColumn_schemaUpToDate() {
+        try (var db = createEmptyDatabase()) {
+            onUpgrade(db, 0, DB_VERSION_DEVICE_UDI);
+
+            assertNumberOfTables(db, NUM_OF_TABLES_IN_STAGING);
+
+            assertColumnsExist(
+                    db, DeviceInfoHelper.TABLE_NAME, List.of(DeviceInfoHelper.UDI_COLUMN_NAME));
         }
     }
 
