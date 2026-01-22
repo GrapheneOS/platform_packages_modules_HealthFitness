@@ -34,6 +34,7 @@ import com.android.healthconnect.controller.permissions.api.GrantHealthPermissio
 import com.android.healthconnect.controller.permissions.api.LoadAccessDateUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.SetHealthPermissionsUserFixedFlagValueUseCase
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -80,6 +81,7 @@ class AdditionalAccessViewModelTest {
     private val loadAccessDateUseCase: LoadAccessDateUseCase = mock()
     private val loadDeclaredHealthPermissionUseCase: LoadDeclaredHealthPermissionUseCase = mock()
     private val getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase = mock()
+    private val healthPermissionReader: HealthPermissionReader = mock()
 
     @BindValue lateinit var appInfoReader: AppInfoReader
 
@@ -101,6 +103,7 @@ class AdditionalAccessViewModelTest {
         additionalAccessViewModel =
             AdditionalAccessViewModel(
                 appInfoReader,
+                healthPermissionReader,
                 loadExerciseRoutePermissionUseCase,
                 grantHealthPermissionUseCase,
                 revokeHealthPermissionUseCase,
@@ -567,6 +570,31 @@ class AdditionalAccessViewModelTest {
         advanceUntilIdle()
 
         assertThat(showEnableExerciseEventObserver.getLastValue().shouldShowDialog).isFalse()
+    }
+
+    @Test
+    fun loadAdditionalAccessPreferences_filtersHiddenPermissions() = runTest {
+        val hiddenPermission = "android.permission.health.READ_STEPS"
+        whenever(loadDeclaredHealthPermissionUseCase.invoke(TEST_APP_PACKAGE_NAME))
+            .thenReturn(listOf(hiddenPermission, READ_HEALTH_DATA_HISTORY))
+        whenever(getGrantedHealthPermissionsUseCase.invoke(TEST_APP_PACKAGE_NAME))
+            .thenReturn(listOf(hiddenPermission))
+        whenever(healthPermissionReader.shouldHidePermission(hiddenPermission)).thenReturn(true)
+        whenever(getAdditionalPermissionUseCase.invoke(TEST_APP_PACKAGE_NAME))
+            .thenReturn(listOf(READ_HEALTH_DATA_HISTORY))
+
+        val screenStateObserver = TestObserver<AdditionalAccessViewModel.ScreenState>()
+        additionalAccessViewModel.screenState.observeForever(screenStateObserver)
+
+        additionalAccessViewModel.loadAdditionalAccessPreferences(TEST_APP_PACKAGE_NAME)
+        advanceUntilIdle()
+
+        val screenStateResult = screenStateObserver.getLastValue()
+        // isAnyHealthReadPermissionGranted should be false because the only granted permission is
+        // hidden
+        assertThat(screenStateResult.appHasGrantedFitnessReadPermission).isFalse()
+        // historyReadUIState.isEnabled should be false
+        assertThat(screenStateResult.state.historyReadUIState.isEnabled).isFalse()
     }
 
     @Test

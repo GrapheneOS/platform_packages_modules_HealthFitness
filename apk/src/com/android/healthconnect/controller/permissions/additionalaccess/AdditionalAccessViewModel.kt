@@ -38,6 +38,7 @@ import com.android.healthconnect.controller.permissions.api.SetHealthPermissions
 import com.android.healthconnect.controller.permissions.data.HealthPermission.Companion.isFitnessReadPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.Companion.isMedicalPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.Companion.isMedicalReadPermission
+import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
@@ -51,6 +52,7 @@ class AdditionalAccessViewModel
 @Inject
 constructor(
     private val appInfoReader: AppInfoReader,
+    private val healthPermissionReader: HealthPermissionReader,
     private val loadExerciseRoutePermissionUseCase: LoadExerciseRoutePermissionUseCase,
     private val grantHealthPermissionUseCase: GrantHealthPermissionUseCase,
     private val revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase,
@@ -118,7 +120,10 @@ constructor(
                 }
 
             val additionalPermissions = getAdditionalPermissionUseCase(packageName)
-            val grantedPermissions = getGrantedHealthPermissionsUseCase.invoke(packageName)
+            val grantedPermissions =
+                getGrantedHealthPermissionsUseCase.invoke(packageName).filter {
+                    !healthPermissionReader.shouldHidePermission(it)
+                }
             val declaredPermissions = loadDeclaredHealthPermissionUseCase.invoke(packageName)
 
             val isAnyHealthReadPermissionGranted =
