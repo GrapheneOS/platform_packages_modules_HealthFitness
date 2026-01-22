@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"បើកការអនុញ្ញាតឱ្យ​អានយ៉ាងតិចមួយ ដើម្បីបើកការចូលប្រើទិន្នន័យពីមុនសម្រាប់កម្មវិធីនេះ"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"អនុញ្ញាតឱ្យកម្មវិធីនេះចូលប្រើទិន្នន័យ Health Connect ពីមុនទាំងអស់"</string>
     <string name="background_read_description" msgid="3203594555849969283">"អនុញ្ញាតឱ្យកម្មវិធីនេះចូលប្រើទិន្នន័យ Health Connect នៅពេលអ្នកមិនកំពុងប្រើកម្មវិធីនេះ"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"អនុញ្ញាតឱ្យកម្មវិធីនេះសរសេរ UDI ឧបករណ៍ទៅទិន្នន័យ Health Connect"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"កាឡូរីសកម្មដែលបានដុត"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"កាឡូរីសកម្មដែលបានដុត"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"អានកាឡូរីសកម្មដែលបានដុត"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"ទិន្នន័យពី <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"អនុញ្ញាតឱ្យកម្មវិធី <xliff:g id="APP_NAME">%1$s</xliff:g> អានទិន្នន័យពីកម្មវិធីផ្សេងទៀតនៅលើឧបករណ៍នេះដោយប្រើ Health Connect។ កម្មវិធីផ្សេងទៀតដែលអ្នកផ្ដល់សិទ្ធិចូលប្រើក៏អាចអានទិន្នន័យនេះបានផងដែរ។"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"កម្មវិធីដែលអាចធ្វើ​សម​កាល​កម្មទិន្នន័យនេះ"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ស្វែងយល់អំពីរបៀប<xliff:g id="APP_NAME">%1$s</xliff:g>ប្រើប្រាស់ទិន្នន័យរបស់អ្នកនៅក្នុង"<a href="%2$s">"គោលការណ៍​ឯកជនភាព"</a>"របស់កម្មវិធី។"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect អនុញ្ញាតឱ្យអ្នកចែករំលែកទិន្នន័យសុខភាព និង​សម្បទារបស់អ្នករវាងកម្មវិធីជាច្រើន។ ការធ្វើបែបនេះជួយឱ្យអ្នកទទួលបានព័ត៌មានស៊ីជម្រៅ និងបទពិសោធប្រើប្រាស់ ដោយរក្សាទិន្នន័យរបស់អ្នកឱ្យមានសុវត្ថិភាព។"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"ព័ត៌មានបន្ថែម​អំពី Health Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"ការស្ដារ Health Connect កំពុងដំណើរការ"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"យល់ហើយ"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"ចាំបាច់ត្រូវធ្វើបច្ចុប្បន្នភាព"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"ដើម្បីបន្តស្ដារទិន្នន័យរបស់អ្នក សូមធ្វើបច្ចុប្បន្នភាពប្រព័ន្ធឧបករណ៍របស់អ្នក។"</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"រក​មើល​បច្ចុប្បន្នភាព"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ចំនួនទិន្នន័យសរុប"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"ប្រភពទិន្នន័យ"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"បញ្ចូល​ប្រភពទិន្នន័យ​ទៅក្នុងបញ្ជី ដើម្បីមើលឃើញថាតើចំនួនទិន្នន័យសរុប​អាចផ្លាស់ប្ដូរបែបណា។ ការដក​ប្រភពទិន្នន័យណាមួយចេញពី​បញ្ជីនេះនឹង​បញ្ឈប់វាមិនឱ្យចូលរួមចំណែកក្នុងចំនួនសរុប ប៉ុន្តែវា​នឹងនៅតែមាន​ការអនុញ្ញាតឱ្យសរសេរដដែល។"</string>

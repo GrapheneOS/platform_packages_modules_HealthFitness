@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Каб уключыць доступ да мінулых даных для гэтай праграмы, дайце хаця б адзін дазвол на чытанне"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Дазволіць праграме доступ да ўсіх мінулых даных платформы \"Здароўе і спорт\""</string>
     <string name="background_read_description" msgid="3203594555849969283">"Дазволіць праграме доступ да даных сэрвісу \"Здароўе і спорт\", калі вы яе не выкарыстоўваеце"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Дазволіць праграме запісваць унікальны ідэнтыфікатар прылады (UDI) у даныя платформы \"Здароўе і спорт\""</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Зрасходаваныя актыўныя калорыі"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"зрасходаваныя актыўныя калорыі"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Счытваць даныя пра зрасходаваныя актыўныя калорыі"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Крыніца даных: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Дазвольце праграме \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" счытваць даныя з іншых праграм на гэтай прыладзе з дапамогай сэрвісу \"Здароўе і спорт\". Гэтыя даныя таксама могуць счытваць іншыя праграмы, якім вы далі доступ."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Праграмы, якія могуць сінхранізаваць гэтыя даныя"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Каб даведацца, як праграма \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" выкарыстоўвае вашы даныя, азнаёмцеся з яе "<a href="%2$s">"палітыкай прыватнасці"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Сэрвіс \"Здароўе і спорт\" дазваляе абагульваць вашы даныя пра фізічную актыўнасць і здароўе паміж рознымі праграмамі. Гэта дапамагае бяспечна атрымліваць статыстычныя даныя і карыстацца дадатковымі магчымасцямі."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Падрабязней пра сэрвіс \"Здароўе і спорт\""</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Праграма \"Здароўе і спорт\" аднаўляе даныя"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Зразумела"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Патрабуецца абнаўленне"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Каб працягнуць аднаўленне даных, абнавіце сістэму прылады."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Праверыць наяўнасць абнаўленняў"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Сумарныя паказчыкі"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Крыніцы даных"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Дадайце крыніцы даных у спіс, каб пабачыць, як зменяцца сумарныя паказчыкі. Калі выдаліць крыніцу з гэтага спіса, даныя з яе не будуць брацца пад увагу пры разліку сумарных паказчыкаў, але дадзеныя ёй дазволы на запіс застануцца."</string>

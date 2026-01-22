@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Activa almenys un permís de lectura per poder activar l\'accés a les dades anteriors d\'aquesta aplicació"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Permet que aquesta aplicació accedeixi a les dades anteriors de Salut connectada"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Permet que aquesta aplicació accedeixi a les dades de Salut connectada quan no l\'estiguis utilitzant"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Permet que aquesta aplicació escrigui l\'UDI del dispositiu a les dades de Salut connectada"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Calories actives cremades"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"calories actives cremades"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Llegir calories actives cremades"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dades de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Permet que l\'aplicació <xliff:g id="APP_NAME">%1$s</xliff:g> llegeixi dades d\'altres aplicacions en aquest dispositiu mitjançant Salut connectada. Altres aplicacions a les quals donis accés també podran llegir aquestes dades."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplicacions que poden sincronitzar aquestes dades"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Obtén informació sobre com <xliff:g id="APP_NAME">%1$s</xliff:g> utilitza les teves dades a la seva "<a href="%2$s">"política de privadesa"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Salut connectada et permet compartir les teves dades de salut i fitnes entre diverses aplicacions. Això t\'ajuda a descobrir informació detallada i experiències alhora que mantens les teves dades protegides."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Més informació sobre Salut connectada"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Restauració de Salut connectada en curs"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Entesos"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Actualització necessària"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Per continuar restaurant les dades, actualitza el sistema del dispositiu."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Cerca actualitzacions"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Totals de dades"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Fonts de dades"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Afegeix fonts de dades a la llista per veure com poden canviar els totals de les dades. Si suprimeixes una font de dades d\'aquesta llista, deixarà de contribuir als totals, però continuarà tenint permisos d\'escriptura."</string>

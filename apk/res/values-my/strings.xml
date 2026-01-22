@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"ဤအက်ပ်အတွက် ယခင်ဒေတာသုံးခွင့် ဖွင့်ရန် အနည်းဆုံး ဖတ်ခွင့်တစ်ခု ပေးပါ"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"ယခင် Health Connect ဒေတာအားလုံးကို ဤအက်ပ်အား သုံးခွင့်ပြုနိုင်သည်"</string>
     <string name="background_read_description" msgid="3203594555849969283">"ဤအက်ပ်ကို အသုံးမပြုချိန်တွင် ၎င်းအား Health Connect ဒေတာ သုံးခွင့်ပြုနိုင်သည်"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"ဤအက်ပ်အား ‘စက်ပစ္စည်း UDI’ ကို Health Connect ဒေတာတွင် ရေးခွင့်ပြုပါ"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"လောင်ကျွမ်းသည့် လှုပ်ရှားကယ်လိုရီ"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"လောင်ကျွမ်းသည့် လှုပ်ရှားကယ်လိုရီ"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"လောင်ကျွမ်းသည့် လှုပ်ရှားကယ်လိုရီကို ဖတ်ရန်"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> ထံမှ ဒေတာ"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Health Connect သုံးနေသော ဤစက်ပစ္စည်းရှိ အခြားအက်ပ်များမှ ဒေတာကို ဖတ်ရန် <xliff:g id="APP_NAME">%1$s</xliff:g> အက်ပ်အား ခွင့်ပြုနိုင်သည်။ ဤဒေတာကို သင်သုံးခွင့်ပြုသော အခြားအက်ပ်များကလည်း ဖတ်နိုင်သည်။"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ဤဒေတာကို စင့်ခ်လုပ်နိုင်သော အက်ပ်များ"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> က သင့်ဒေတာ အသုံးပြုပုံကို ၎င်း၏ "<a href="%2$s">"ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒ"</a>" တွင် လေ့လာနိုင်သည်။"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect က သင့်ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးဒေတာကို အက်ပ်များအကြား မျှဝေခွင့်ပြုသည်။ သင်က သိကောင်းစရာနှင့် အသုံးပြုနိုင်များကို ရယူနေချိန်တွင် သင့်ဒေတာကို လုံခြုံအောင်ထားပေးသည်။"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect အကြောင်း ပိုလေ့လာရန်"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect ပြန်လည်ရယူနေဆဲ"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"နားလည်ပြီ"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"အပ်ဒိတ်လုပ်ရန် လိုအပ်သည်"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"သင့်ဒေတာကို ဆက်လက်၍ ပြန်ယူရန်အတွက် စက်စနစ်ကို အပ်ဒိတ်လုပ်ပါ။"</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"အပ်ဒိတ်များ ရှာရန်"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ဒေတာစုစုပေါင်း"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"ဒေတာရင်းမြစ်များ"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"ဒေတာစုစုပေါင်း မည်သို့ပြောင်းလဲနိုင်ကြောင်း မြင်ရရန် ဒေတာရင်းမြစ်များကို စာရင်းတွင် ထည့်နိုင်သည်။ ဒေတာရင်းမြစ်ကို ဤစာရင်းမှဖယ်ရှားခြင်းသည် စုစုပေါင်းတွင် ၎င်းပံ့ပိုးပါဝင်နေသည်ကို ရပ်လိုက်မည်ဖြစ်သော်လည်း ရေးခွင့်များရှိပါဦးမည်။"</string>

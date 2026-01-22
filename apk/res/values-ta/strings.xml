@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"இந்த ஆப்ஸுக்கான கடந்தகாலத் தரவு அணுகலை இயக்க, குறைந்தபட்சம் \'படிப்பதற்கான அனுமதி\' ஒன்றை இயக்கவும்"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"முந்தைய Health Connect தரவு அனைத்தையும் அணுக இந்த ஆப்ஸை அனுமதிக்கும்"</string>
     <string name="background_read_description" msgid="3203594555849969283">"நீங்கள் ஆப்ஸைப் பயன்படுத்தாதபோது, Health Connect தரவை அணுக இந்த ஆப்ஸை அனுமதிக்கும்"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Health Connect தரவில் சாதன UDIயை எழுத இந்த ஆப்ஸை அனுமதிக்கும்"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"செயல்பாட்டின்போது எரிக்கப்பட்ட கலோரிகள்"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"செயல்பாட்டின் மூலம் எரிக்கப்பட்ட கலோரிகள்"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"செயல்பாட்டின்போது எரிக்கப்பட்ட கலோரிகள் தொடர்பான தரவை வாசிக்கும்"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> வழங்கும் தரவு"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"இந்தச் சாதனத்திலுள்ள பிற ஆப்ஸின் தரவை Health Connect மூலம் படிக்க <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸை அனுமதியுங்கள். நீங்கள் அணுகல் வழங்கும் பிற ஆப்ஸாலும் இந்தத் தரவைப் படிக்க முடியும்."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"இந்தத் தரவை ஒத்திசைக்கக்கூடிய ஆப்ஸ்"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"உங்கள் தரவை <xliff:g id="APP_NAME">%1$s</xliff:g> எப்படிப் பயன்படுத்துகிறது என்பதை அதன் "<a href="%2$s">"தனியுரிமைக் கொள்கையில்"</a>" தெரிந்துகொள்ளுங்கள்."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"உங்கள் ஆரோக்கியம் மற்றும் ஃபிட்னஸ் தரவை Health Connect மூலம் பல்வேறு ஆப்ஸுக்கிடையே பகிரலாம். இது உங்கள் தரவைப் பாதுகாப்பாக வைத்திருப்பதோடு, நீங்கள் புள்ளிவிவரங்களையும் அனுபவங்களையும் பெற உதவுகிறது."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect பற்றிய கூடுதல் தகவல்கள்"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect மீட்டெடுக்கும் செயல்பாட்டில் உள்ளது"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"சரி"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"புதுப்பிப்பு தேவை"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"தொடர்ந்து உங்கள் தரவை மீட்டெடுக்க, உங்கள் சாதன சிஸ்டத்தைப் புதுப்பியுங்கள்."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"புதுப்பிப்புகள் உள்ளனவா எனப் பாருங்கள்"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"மொத்தத் தரவு"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"தரவு மூலங்கள்"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"தரவின் மொத்த மதிப்புகள் எப்படி மாறலாம் என்பதைப் பார்க்க பட்டியலில் தரவு ஆதாரங்களைச் சேருங்கள். இந்தப் பட்டியலிலிருந்து ஒரு தரவு ஆதாரத்தை அகற்றினால் மொத்த மதிப்புகளுக்கான அதன் பங்களிப்பு நிறுத்தப்படும், ஆனால் எழுதுவதற்கான அனுமதிகள் அதனிடம் தொடர்ந்து இருக்கும்."</string>

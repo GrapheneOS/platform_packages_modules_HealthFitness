@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"ഈ ആപ്പിന്റെ മുമ്പത്തെ ഡാറ്റാ ആക്‌സസ് ഓണാക്കാൻ വായിക്കാനുള്ള അനുമതിയിൽ കുറഞ്ഞത് ഒരെണ്ണമെങ്കിലും പ്രവർത്തനക്ഷമമാക്കുക"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"മുമ്പത്തെ എല്ലാ Health Connect ഡാറ്റയും ആക്‌സസ് ചെയ്യാൻ ഈ ആപ്പിനെ അനുവദിക്കുക"</string>
     <string name="background_read_description" msgid="3203594555849969283">"നിങ്ങൾ ആപ്പ് ഉപയോഗിക്കാത്തപ്പോൾ Health Connect ഡാറ്റ ആക്‌സസ് ചെയ്യാൻ ഈ ആപ്പിനെ അനുവദിക്കുക"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Health Connect ഡാറ്റയിലേക്ക് ഉപകരണ UDI എഴുതാൻ ഈ ആപ്പിനെ അനുവദിക്കുക"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"സജീവമായിരിക്കുമ്പോൾ കത്തിച്ചുകളഞ്ഞ കലോറി"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"സജീവമായിരിക്കുമ്പോൾ കത്തിച്ചുകളഞ്ഞ കലോറി"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"സജീവമായിരിക്കുമ്പോൾ കത്തിച്ചുകളഞ്ഞ കലോറി സംബന്ധിച്ച ഡാറ്റ റീഡ് ചെയ്യുക"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> എന്ന ആപ്പിൽ നിന്നുള്ള ഡാറ്റ"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Health Connect ഉപയോഗിച്ച് ഈ ഉപകരണത്തിലെ മറ്റ് ആപ്പുകളിൽ നിന്ന് ഡാറ്റ വായിക്കാൻ <xliff:g id="APP_NAME">%1$s</xliff:g> ആപ്പിനെ അനുവദിക്കുക. നിങ്ങൾ ആക്‌സസ് നൽകുന്ന മറ്റ് ആപ്പുകൾക്കും ഈ ഡാറ്റ വായിക്കാനാകും."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ഈ ഡാറ്റ സമന്വയിപ്പിക്കാനാകുന്ന ആപ്പുകൾ"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> നിങ്ങളുടെ ഡാറ്റ ഉപയോഗിക്കുന്ന രീതി അവരുടെ "<a href="%2$s">"സ്വകാര്യതാ നയത്തിൽ"</a>" അറിയൂ."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"ഒന്നിലധികം ആപ്പുകൾ തമ്മിൽ നിങ്ങളുടെ ആരോഗ്യവും ഫിറ്റ്‍നസും സംബന്ധിച്ച ഡാറ്റ പങ്കിടാൻ Health Connect അനുവദിക്കുന്നു. ഡാറ്റ സുരക്ഷിതമാക്കിക്കൊണ്ട് സ്ഥിതിവിവരക്കണക്കുകളും അനുഭവങ്ങളും അൺലോക്ക് ചെയ്യാൻ ഇത് നിങ്ങളെ സഹായിക്കുന്നു."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect-നെ കുറിച്ച് കൂടുതൽ"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect പുനഃസ്ഥാപിക്കൽ പുരോഗമിക്കുന്നു"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"മനസ്സിലായി"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"അപ്‌ഡേറ്റ് ആവശ്യമാണ്"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"നിങ്ങളുടെ ഡാറ്റ പുനഃസ്ഥാപിക്കുന്നത് തുടരാൻ, നിങ്ങളുടെ ഉപകരണ സിസ്റ്റം അപ്ഡേറ്റ് ചെയ്യുക."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"അപ്‌ഡേറ്റുകൾ പരിശോധിക്കുക"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ഡാറ്റയുടെ ആകെത്തുക"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"ഡാറ്റാ ഉറവിടങ്ങൾ"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"ഡാറ്റാ ടോട്ടലുകൾ എങ്ങനെ മാറുമെന്ന് കാണാൻ ലിസ്റ്റിലേക്ക് ഡാറ്റാ ഉറവിടങ്ങൾ ചേർക്കുക. ഈ ലിസ്റ്റിൽ നിന്ന് ഒരു ഡാറ്റാ ഉറവിടം നീക്കം ചെയ്യുന്നത്, ഡാറ്റാ ടോട്ടലിലേക്ക് സംഭാവന ചെയ്യുന്നതിൽ നിന്ന് അതിനെ തടയും, എന്നാൽ അതിന് തുടർന്നും റൈറ്റ് അനുമതികൾ ഉണ്ടായിരിക്കും."</string>

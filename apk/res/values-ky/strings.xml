@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Бул колдонмого мурунку дайындарды колдонууга уруксат берүү үчүн кеминде бир уруксатты окууну иштетиңиз"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Бул колдонмого Health Connect платформасына буга чейин сакталган бардык нерселер жеткиликтүү болот"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Уруксат берсеңиз, бул колдонмо иштебей турса да, ага Health Connect платформасындагы нерселер жеткиликтүү болот"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Бул колдонмого Health Connect маалыматына Түзмөктүн UDI кодун жазууга уруксат берүү"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Кыймылдаганда күйгөн калориялар"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"кыймылдаганда күйгөн калориялар"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Кыймылдаганда күйгөн калорияларды окуу"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосунан алынган маалымат"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосуна Health Connect аркылуу бул түзмөктөгү башка колдонмолордогу нерселерди окууга уруксат бересиз. Алар сиз уруксат берген башка колдонмолорго да жеткиликтүү болот."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Бул маалыматты шайкештире алган колдонмолор"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосу маалыматтарыңызды кантип колдонорун "<a href="%2$s">"купуялык эрежелеринен"</a>" караңыз."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect платформасы аркылуу ар кайсы колдонмолордун ортосунда ден соолук жана кыймылдуулук тууралуу маалымат алмашууга болот. Ушуну менен, пайдалуу статистикалык маалымат аласыз жана маалыматтарыңыз коопсуз сакталат."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect жөнүндө кеңири маалымат"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect калыбына келтирүүдө"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Түшүндүм"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Жаңыртуу талап кылынат"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Маалыматты андан ары да калыбына келтирүү үчүн түзмөктүн тутумун жаңыртыңыз."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Жаңыртууларды карап көрүү"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Жалпы көрсөткүчтөр"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Маалыматтын булагы"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Жалпы көрсөткүчтөр кандайча өзгөрө турганын көрүү үчүн тизмеге маалыматты кошуңуз. Бул тизмеден булакты өчүрсөңүз, ал маалымат кошо албай калат, бирок жаза берет."</string>

@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"เปิดใช้สิทธิ์อ่านอย่างน้อย 1 รายการเพื่อเปิดใช้การเข้าถึงข้อมูลในอดีตสำหรับแอปนี้"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"อนุญาตให้แอปนี้เข้าถึงข้อมูล Health Connect ที่ผ่านมาทั้งหมด"</string>
     <string name="background_read_description" msgid="3203594555849969283">"อนุญาตให้แอปนี้เข้าถึงข้อมูล Health Connect เมื่อคุณไม่ได้ใช้แอป"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"อนุญาตให้แอปนี้เขียน UDI อุปกรณ์ลงในข้อมูลของ Health Connect"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"แคลอรี่ที่ใช้ไปในการเคลื่อนไหวร่างกาย"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"แคลอรี่ที่ใช้ไปในการเคลื่อนไหวร่างกาย"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"อ่านข้อมูลแคลอรี่ที่ใช้ไปในการเคลื่อนไหวร่างกาย"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"ข้อมูลจาก <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"อนุญาตให้แอป <xliff:g id="APP_NAME">%1$s</xliff:g> อ่านข้อมูลจากแอปอื่นๆ ในอุปกรณ์เครื่องนี้โดยใช้ Health Connect แอปอื่นๆ ที่คุณให้สิทธิ์เข้าถึงจะอ่านข้อมูลนี้ได้เช่นกัน"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"แอปที่ซิงค์ข้อมูลนี้ได้"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ดูวิธีที่ <xliff:g id="APP_NAME">%1$s</xliff:g> ใช้ข้อมูลของคุณใน"<a href="%2$s">"นโยบายความเป็นส่วนตัว"</a></string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ให้คุณแชร์ข้อมูลสุขภาพและการออกกำลังกายระหว่างแอปต่างๆ ได้ ซึ่งจะช่วยให้คุณปลดล็อกข้อมูลเชิงลึกและประสบการณ์การใช้งานต่างๆ พร้อมกับรักษาข้อมูลให้ปลอดภัย"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"ข้อมูลเพิ่มเติมเกี่ยวกับ Health Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect กำลังดำเนินการกู้คืน"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"รับทราบ"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"ต้องมีการอัปเดต"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"โปรดอัปเดตระบบอุปกรณ์เพื่อกู้คืนข้อมูลต่อ"</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"ตรวจหาการอัปเดต"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ผลรวมของข้อมูล"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"แหล่งข้อมูล"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"เพิ่มแหล่งข้อมูลในรายการเพื่อดูว่าผลรวมของข้อมูลจะเปลี่ยนแปลงไปอย่างไร การนำแหล่งข้อมูลออกจากรายการนี้จะทำให้แหล่งข้อมูลนั้นไม่มีส่วนในผลรวม แต่จะยังมีสิทธิ์เขียนอยู่"</string>

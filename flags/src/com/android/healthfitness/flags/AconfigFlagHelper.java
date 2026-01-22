@@ -117,11 +117,6 @@ public final class AconfigFlagHelper {
         return map;
     }
 
-    /** Returns a boolean indicating whether Activity Intensity data type is enabled. */
-    public static boolean isActivityIntensityEnabled() {
-        return Flags.activityIntensity();
-    }
-
     /** Returns a boolean indicating whether cloud backup & restore is enabled. */
     public static boolean isCloudBackupRestoreEnabled() {
         return Flags.cloudBackupAndRestore();

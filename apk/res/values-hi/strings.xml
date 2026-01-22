@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"इस ऐप्लिकेशन में पहले से मौजूद डेटा ऐक्सेस करने की सुविधा चालू करने के लिए, पढ़ने की कम से कम एक अनुमति दें"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"इस ऐप्लिकेशन को, Health Connect का सारा पुराना डेटा ऐक्सेस करने की अनुमति दें"</string>
     <string name="background_read_description" msgid="3203594555849969283">"ऐप्लिकेशन को अनुमति दें कि जब उसका इस्तेमाल न किया जा रहा हो, तब भी वह Health Connect का डेटा ऐक्सेस कर पाए"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"इस ऐप्लिकेशन को Health Connect के डेटा में डिवाइस का यूडीआई सेव करने की अनुमति दें"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"शारीरिक गतिविधि के दौरान खर्च हुई कैलोरी का डेटा"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"शारीरिक गतिविधि के दौरान खर्च हुई कैलोरी का डेटा"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"शारीरिक गतिविधि के दौरान खर्च हुई कैलोरी का डेटा पढ़ने की अनुमति दें"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> से डेटा"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> ऐप्लिकेशन को Health Connect का इस्तेमाल करके, इस डिवाइस पर मौजूद अन्य ऐप्लिकेशन का डेटा देखने की अनुमति दें. इस डेटा को वे ऐप्लिकेशन भी देख सकते है जिन्हें आपने अनुमति दी है."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"इस डेटा को सिंक करने वाले ऐप्लिकेशन"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"जानें कि <xliff:g id="APP_NAME">%1$s</xliff:g>, अपनी "<a href="%2$s">"निजता नीति"</a>" के तहत आपके डेटा का इस्तेमाल कैसे करता है."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect की मदद से, अपनी सेहत और फ़िटनेस का डेटा कई ऐप्लिकेशन के बीच शेयर किया जा सकता है. इससे आपको अहम जानकारी और अनुभव पाने में मदद मिलती है. साथ ही, आपका डेटा सुरक्षित रहता है."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect के बारे में ज़्यादा जानकारी"</string>
@@ -1180,7 +1183,7 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect की, डेटा वापस लाने की प्रोसेस जारी है"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"ठीक है"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"अपडेट करना ज़रूरी है"</string>
-    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"डेटा रीस्टोर करने की प्रोसेस जारी रखने के लिए, अपने डिवाइस का सिस्टम अपडेट करें."</string>
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"डेटा वापस पाने की प्रोसेस जारी रखने के लिए, अपने डिवाइस का सिस्टम अपडेट करें."</string>
     <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"अपडेट देखें"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"कुल डेटा"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"डेटा सोर्स"</string>

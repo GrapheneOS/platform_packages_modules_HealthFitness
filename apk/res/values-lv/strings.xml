@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Lai šai lietotnei ieslēgtu piekļuvi iepriekšējiem datiem, iespējojiet vismaz vienu lasīšanas atļauju."</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Atļaut šai lietotnei piekļūt visiem iepriekšējiem Health Connect datiem"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Atļaut šai lietotnei piekļūt Health Connect datiem, kad neizmantojat lietotni"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Atļaujiet šai lietotnei Health Connect datos rakstīt ierīces UII."</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Aktivitātēs patērētās kalorijas"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"aktivitātēs patērētās kalorijas"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Lasīt aktivitātēs patērēto kaloriju datus"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dati no lietotnes <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Atļaujiet lietotnei <xliff:g id="APP_NAME">%1$s</xliff:g> lasīt datus no citām lietotnēm šajā ierīcē, izmantojot Health Connect. Šos datus var lasīt arī citas lietotnes, kurām piešķirat piekļuvi."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Lietotnes, kas var sinhronizēt šos datus"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Lai uzzinātu, kā lietotne <xliff:g id="APP_NAME">%1$s</xliff:g> izmanto jūsu datus, skatiet tās "<a href="%2$s">"konfidencialitātes politiku"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Izmantojot Health Connect, varat kopīgot veselības un fitnesa datus starp vairākām lietotnēm. Tādējādi varat gūt ieskatus un izmantot dažādas iespējas, vienlaikus aizsargājot savus datus."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Plašāka informācija par Health Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Notiek Health Connect datu atjaunošana"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Labi"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Nepieciešama atjaunināšana"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Lai turpinātu datu atjaunošanu, atjauniniet ierīces sistēmu."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Pārbaudīt atjauninājumu pieejamību"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Datu kopsummas"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Datu avoti"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Pievienojiet sarakstam datu avotus, lai novērotu, kā datu kopsummas var mainīties. Ja noņemsiet kādu datu avotu no šī saraksta, tā dati vairs netiks ieskaitīti kopsummās, taču tam joprojām būs rakstīšanas atļaujas."</string>

@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"এই অ্যাপে পুরনো ডেটা অ্যাক্সেস করার সুবিধা চালু করতে কমপক্ষে একটি রিড পার্মিশন চালু করুন"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"এই অ্যাপকে পুরনো সব Health Connect ডেটা অ্যাক্সেস করার অনুমতি দিন"</string>
     <string name="background_read_description" msgid="3203594555849969283">"আপনি অ্যাপটি ব্যবহার না করার সময় এই অ্যাপকে Health Connect ডেটা অ্যাক্সেস করার অনুমতি দিন"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"এই অ্যাপকে Health Connect ডেটায় ডিভাইস UDI লেখার অনুমতি দিন"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"অ্যাক্টিভিটির সময় খরচ হওয়া ক্যালোরি সংক্রান্ত ডেটা"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"অ্যাক্টিভিটির সময় খরচ হওয়া ক্যালোরি সংক্রান্ত ডেটা"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"অ্যাক্টিভিটির সময় কতটা ক্যালোরি খরচ হয়েছে সেই সংক্রান্ত ডেটা দেখার অনুমতি দিন"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> থেকে পাওয়া ডেটা"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> অ্যাপকে, Health Connect ব্যবহার করে এই ডিভাইসে অন্যান্য অ্যাপ থেকে ডেটা পড়ার অনুমতি দিন। এছাড়াও, আপনি অ্যাক্সেস দিয়েছেন এমন অন্যান্য অ্যাপ এই ডেটা পড়তে পারবে।"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"যেসব অ্যাপ এই ডেটা সিঙ্ক করতে পারে"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> কীভাবে আপনার ডেটা ব্যবহার করে সেই সম্পর্কে এটির "<a href="%2$s">"গোপনীয়তা নীতি"</a>" থেকে জানুন।"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect আপনাকে বিভিন্ন অ্যাপের মধ্যে নিজের স্বাস্থ্য ও ফিটনেস ডেটা শেয়ার করতে দেয়। এটি আপনার ডেটা সুরক্ষিত রাখার পাশাপাশি আপনাকে ইনসাইট ও অভিজ্ঞতা পেতে সাহায্য করে।"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect সম্পর্কে আরও তথ্য"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect-এর ডেটা ফিরিয়ে আনার প্রসেস চলছে"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"বুঝেছি"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"আপডেট করতে হবে"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"আপনার ডেটা ফিরিয়ে আনা চালিয়ে যেতে, আপনার ডিভাইস সিস্টেম আপডেট করুন।"</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"কোনও আপডেট আছে কিনা তা চেক করুন"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"ডেটা টোটাল"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"ডেটা সোর্স"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"সামগ্রিক ডেটা কীভাবে পরিবর্তন হয় তা দেখতে তালিকায় ডেটা সোর্স যোগ করুন। তালিকা থেকে কোনও ডেটা সোর্স সরিয়ে দিলে সামগ্রিক ডেটা সেটে কোনও ডেটা যোগ হয় না, তবে এটির রাইট পার্মিশন থাকবে।"</string>

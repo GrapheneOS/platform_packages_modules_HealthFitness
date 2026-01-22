@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Omogućite barem jedno dopuštenje za čitanje da biste uključili pristup prethodnim podacima za ovu aplikaciju"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Dopustite ovoj aplikaciji da pristupa svim prethodnim podacima Health Connecta"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Dopustite aplikaciji da pristupa podacima Health Connecta kad ne upotrebljavate aplikaciju"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Dopustite aplikaciji da zapisuje UDI uređaja u podatke iz aplikacije Health Connect"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Aktivna potrošnja kalorija"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"aktivna potrošnja kalorija"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Očitavanje aktivne potrošnje kalorija"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Podaci iz aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Dopustite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da čita podatke iz drugih aplikacija na ovom uređaju pomoću Health Connecta. Te podatke mogu čitati i druge aplikacije kojima odobrite pristup."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikacije koje mogu sinkronizirati te podatke"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Saznajte kako aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> upotrebljava vaše podatke u svojim "<a href="%2$s">"pravilima o privatnosti"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect omogućuje vam dijeljenje podataka o zdravlju i fitnessu s više aplikacija. Na taj način dobivate pristup uvidima i doživljajima, a vaši su podaci sigurni."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Više o Health Connectu"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Vraćanje Health Connecta je u tijeku"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Shvaćam"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Potrebno je ažuriranje"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Da biste nastavili s vraćanjem podataka, ažurirajte sustav uređaja."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Provjeri ima li ažuriranja"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Ukupne vrijednosti podataka"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Izvori podataka"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Dodajte izvore podataka na popis da biste vidjeli kako se ukupne vrijednosti podataka mogu promijeniti. Ako s tog popisa uklonite izvor podataka, on više neće doprinositi ukupnim vrijednostima, no i dalje će imati dopuštenja za pisanje."</string>
@@ -1352,7 +1353,7 @@
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Kliknite da biste ovu aplikaciju povezali s Health Connectom"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Ne sad"</string>
     <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Svi simptomi"</string>
-    <string name="symptoms_lowercase_label" msgid="767123038349492995">"simptomi"</string>
+    <string name="symptoms_lowercase_label" msgid="767123038349492995">"simptome"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"Čitaj podatke o aknama"</string>
     <string name="acne_write_content_description" msgid="9221785868351412493">"Upiši podatke o aknama"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Čitaj podatke o lomljivim noktima"</string>

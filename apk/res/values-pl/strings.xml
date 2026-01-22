@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Aby przyznać tej aplikacji dostęp do wcześniejszych danych, włącz co najmniej 1 uprawnienie do odczytu"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Zezwól tej aplikacji na dostęp do wszystkich wcześniejszych danych z Health Connect"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Zezwól tej aplikacji na dostęp do danych z Health Connect, gdy jej nie używasz"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Zezwól tej aplikacji na zapisywanie identyfikatora UDI urządzenia w danych z Health Connect"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Kalorie spalone podczas aktywności"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"kalorie spalone podczas aktywności"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Odczytuj informacje o kaloriach spalonych podczas aktywności"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dane z aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Zezwalaj aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g> na odczytywanie danych z innych aplikacji na tym urządzeniu za pomocą Health Connect. Te dane będą też mogły odczytywać inne aplikacje, którym przyznasz dostęp."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikacje, które mogą synchronizować te dane"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"O tym, jak aplikacja <xliff:g id="APP_NAME">%1$s</xliff:g> wykorzystuje Twoje dane, dowiesz się z jej "<a href="%2$s">"polityki prywatności"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect pozwala udostępniać dane o zdrowiu i aktywności fizycznej między wieloma aplikacjami. Dzięki temu możesz przeglądać statystyki i odkrywać nowe funkcje, zachowując bezpieczeństwo danych."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Więcej informacji o Health Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Trwa przywracanie Health Connect"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"OK"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Wymagana aktualizacja"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Aby kontynuować przywracanie danych, zaktualizuj system urządzenia."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Sprawdź dostępność aktualizacji"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Suma danych"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Źródła danych"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Dodawaj źródła danych do listy, aby widzieć, jak zmieniają się sumy danych. Po usunięciu źródła z tej listy nie będzie ono uwzględniane w sumach, ale nadal będzie mieć uprawnienia do zapisu."</string>

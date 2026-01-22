@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Надайте принаймні один дозвіл на перегляд, щоб увімкнути для цього додатка доступ до минулих даних"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Дозволити цьому додатку доступ до всіх минулих даних Health Connect"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Дозволити цьому додатку доступ до даних Health Connect, коли ви не користуєтеся ним"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Дозволити цьому додатку записувати ідентифікатор UDI пристрою в дані Health Connect"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Спалені калорії під час активності"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"кількість спалених активних калорій"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Зчитувати кількість спалених активних калорій"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Джерело даних: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Дозвольте додатку <xliff:g id="APP_NAME">%1$s</xliff:g> зчитувати дані з інших додатків на цьому пристрої за допомогою Health Connect. Їх також можуть переглядати інші додатки, яким ви надали доступ."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Додатки, які можуть синхронізувати ці дані"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Ознайомтеся з інформацією про те, як додаток <xliff:g id="APP_NAME">%1$s</xliff:g> використовує ваші дані, у його "<a href="%2$s">"політиці конфіденційності"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"За допомогою сервісу Health Connect ви можете обмінюватися даними про стан здоров’я і фізичну активність між кількома додатками. Це допоможе вам отримувати статистику й користуватися різними функціями, не турбуючись про безпеку своїх даних."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Докладніше про Health Connect"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Триває відновлення даних Health Connect"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"OK"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Потрібне оновлення"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Щоб продовжити відновлення даних, оновіть систему пристрою."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Перевірити наявність оновлень"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Підсумок даних"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Джерела даних"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Включіть до списку джерела даних, щоб побачити, як це вплине на підсумкові дані. Якщо видалити джерело даних із цього списку, його дані більше не включатимуться до підсумку, однак він і надалі матиме дозвіл на запис."</string>

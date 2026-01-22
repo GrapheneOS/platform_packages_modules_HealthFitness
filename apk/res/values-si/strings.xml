@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"මෙම යෙදුම සඳහා අතීත දත්ත ප්‍රවේශය ක්‍රියාත්මක කිරීමට අවම වශයෙන් එක් කියවීම් අවසරයක්වත් සබල කරන්න"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"පසුගිය Health Connect දත්ත සියල්ල වෙත ප්‍රවේශ වීමට මෙම යෙදුමට ඉඩ දෙන්න"</string>
     <string name="background_read_description" msgid="3203594555849969283">"ඔබ යෙදුම භාවිත නොකරන විට Health Connect දත්ත වෙත ප්‍රවේශ වීමට මෙම යෙදුමට ඉඩ දෙන්න"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"උපාංග UDI Health Connect දත්ත වෙත ලිවීමට මෙම යෙදුමට ඉඩ දෙන්න"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"දහනය කළ ක්‍රීයාකාරී කැලරි"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"දහනය කළ ක්‍රීයාකාරී කැලරි"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"දහනය කළ ක්‍රියාකාරී කැලරි කියවන්න"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> වෙතින් දත්ත"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Health Connect භාවිතයෙන් මෙම උපාංගයේ අනෙකුත් යෙදුම්වලින් දත්ත කියවීමට <xliff:g id="APP_NAME">%1$s</xliff:g> යෙදුමට ඉඩ දෙන්න. මෙම දත්ත ඔබ ප්‍රවේශය ලබා දෙන වෙනත් යෙදුම් මගින් ද කියවිය හැක."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"මෙම දත්ත සමමුහුර්ත කළ හැකි යෙදුම්"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> ඔවුන්ගේ "<a href="%2$s">"පෞද්ගලිකත්ව ප්‍රතිපත්තියේ"</a>" ඔබේ දත්ත භාවිතා කරන ආකාරය දැන ගන්න."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect මඟින් ඔබේ සෞඛ්‍ය සහ යෝග්‍යතා දත්ත බහු යෙදුම් අතර බෙදා ගැනීමට ඔබට ඉඩ දෙයි. මෙය ඔබේ දත්ත සුරක්ෂිතව තබා ගනිමින් ඇතුළාන්තයන් සහ අත්දැකීම් අගුළු හැරීමට ඔබට උදවු වේ."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect පිළිබඳ වැඩිදුර"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Health Connect ප්‍රතිසාධනය සිදු වෙමින් පවතී"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"තේරුණා"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"යාවත්කාලීන කිරීමක් අවශ්‍යයි"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"ඔබේ දත්ත ප්‍රතිසාධනය කරගෙන යාමට, ඔබේ උපාංග පද්ධතිය යාවත්කාලීන කරන්න."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"යාවත්කාලීන සඳහා පරීක්ෂා කරන්න"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"දත්ත එකතු"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"දත්ත මූලාශ්‍ර"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"දත්ත එකතුව වෙනස් විය හැකි ආකාරය බැලීමට ලැයිස්තුවට දත්ත මූලාශ්‍ර එක් කරන්න. මෙම ලැයිස්තුවෙන් දත්ත මූලාශ්‍රයක් ඉවත් කිරීමෙන් එය එකතුවට දායක වීම නවත්වනු ඇත, නමුත් එයට තවමත් ලිවීමේ අවසර ඇත."</string>

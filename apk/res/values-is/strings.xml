@@ -157,6 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Leyfðu að minnsta kosti eina lestrarheimild til þess að kveikja á aðgangi að eldri gögnum fyrir þetta forrit"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"Veita þessu forriti aðgang að öllum eldri gögnum Heilsutengingar"</string>
     <string name="background_read_description" msgid="3203594555849969283">"Gefa þessu forriti aðgang að gögnum úr Heilsutengingu þegar þú ert ekki að nota forritið"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Leyfa þessu forriti að skrifa einkvæmt tækjaauðkenni (UDI) tækis í gögn „Heilsutenging“"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Brennsla hitaeininga við hreyfingu"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"brennsla hitaeininga við hreyfingu"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Lesa brennslu hitaeininga við hreyfingu"</string>
@@ -405,6 +406,8 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Gögn úr <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Leyfa <xliff:g id="APP_NAME">%1$s</xliff:g>-forritinu að lesa gögn úr öðrum forritum í þessu tæki með Heilsutengingu Önnur forrit sem þú veitir aðgang geta einnig lesið þessi gögn."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Forrit sem geta samstillt þessi gögn"</string>
+    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Kynntu þér hvernig <xliff:g id="APP_NAME">%1$s</xliff:g> notar gögnin þín í "<a href="%2$s">"persónuverndarstefnu"</a>" forritsins."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Með Heilsutengingu geturðu deilt heilsu- og hreystigögnunum þínum á milli margra forrita. Þannig öðlastu aukna innsýn og bætir upplifun þína en heldur gögnunum áfram öruggum."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Nánar um Heilsutengingu"</string>
@@ -1180,10 +1183,8 @@
     <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Endurheimt Heilsutengingar í gangi"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Ég skil"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Uppfærslu er krafist"</string>
-    <!-- no translation found for data_restore_pending_banner_content (2464779762242296738) -->
-    <skip />
-    <!-- no translation found for data_restore_pending_banner_button (3726053567182194123) -->
-    <skip />
+    <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Uppfærðu kerfi tækisins til að halda áfram að endurheimta gögnin þín."</string>
+    <string name="data_restore_pending_banner_button" msgid="3726053567182194123">"Leita að uppfærslum"</string>
     <string name="data_totals_header" msgid="8316977153276216025">"Gagnasamtölur"</string>
     <string name="app_sources_header" msgid="3776247928235433963">"Gagnauppsprettur"</string>
     <string name="data_sources_footer" msgid="2271085147058181039">"Bættu gagnauppsprettum á listann til að sýna hvernig gagnasamtölur breytast. Þegar gagnauppspretta er fjarlægð af listanum er hún ekki lengur tekin með í samtölum en hefur samt sem áður áfram skrifheimildir."</string>
