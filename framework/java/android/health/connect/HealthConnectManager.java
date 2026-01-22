@@ -509,6 +509,10 @@ public class HealthConnectManager {
      * <p>Input: {@link #EXTRA_DEVICE_RECORD_TYPES} optional string arraylist extra. When present,
      * the user is requesting to manage the specified data types.
      *
+     * <p>Input: {@link #EXTRA_DEVICE_SYMPTOM_TYPES} optional integer arraylist extra. When present,
+     * the user is requesting to manage the specified symptom subtypes, e.g. {@link
+     * android.health.connect.datatypes.SymptomRecord#SYMPTOM_TYPE_COUGH}.
+     *
      * @hide
      */
     @SystemApi
@@ -534,6 +538,10 @@ public class HealthConnectManager {
      *
      * <p>Input: {@link #EXTRA_DEVICE_RECORD_TYPES} optional string arraylist extra. When present,
      * the user is requesting to manage the specified data types.
+     *
+     * <p>Input: {@link #EXTRA_DEVICE_SYMPTOM_TYPES} optional integer arraylist extra. When present,
+     * the user is requesting to manage the specified symptom subtypes, e.g. {@link
+     * android.health.connect.datatypes.SymptomRecord#SYMPTOM_TYPE_COUGH}.
      *
      * @hide
      */
@@ -596,6 +604,18 @@ public class HealthConnectManager {
     @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
     public static final String EXTRA_DEVICE_RECORD_TYPES =
             "android.health.connect.extra.DEVICE_RECORD_TYPES";
+
+    /**
+     * An integer array of symptom types to be used with {@link #ACTION_SHOW_DEVICE_ONBOARDING} and
+     * {@link #ACTION_SHOW_DEVICE_MANAGEMENT}, e.g. {@link
+     * android.health.connect.datatypes.SymptomRecord#SYMPTOM_TYPE_COUGH}.
+     *
+     * @hide
+     */
+    @SystemApi
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public static final String EXTRA_DEVICE_SYMPTOM_TYPES =
+            "android.health.connect.extra.DEVICE_SYMPTOM_TYPES";
 
     private static final String TAG = "HealthConnectManager";
     private static final String HEALTH_PERMISSION_PREFIX = "android.permission.health.";
