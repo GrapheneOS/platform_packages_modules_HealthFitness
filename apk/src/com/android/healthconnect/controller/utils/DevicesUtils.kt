@@ -65,9 +65,29 @@ fun DeviceDataSourceInfo.asAppMetadata(context: Context) =
     AppMetadata(
         packageName = this.deviceDataOrigin.packageName,
         appName = this.device.displayName ?: this.device.type.toDeviceTypeString(context),
-        // TODO(b/476419449): Replace with icon determined by device type
-        icon = AttributeResolver.getDrawable(context, R.attr.devicePhoneIcon),
+        icon = AttributeResolver.getDrawable(context, this.device.type.toDeviceIconAttr()),
     )
+
+fun Int.toDeviceIconAttr(): Int {
+    return when (this) {
+        DEVICE_TYPE_WATCH -> R.attr.deviceWatchIcon
+        DEVICE_TYPE_PHONE -> R.attr.devicePhoneIcon
+        DEVICE_TYPE_SCALE -> R.attr.deviceScaleIcon
+        DEVICE_TYPE_RING -> R.attr.deviceGenericIcon
+        DEVICE_TYPE_HEAD_MOUNTED -> R.attr.deviceGenericIcon
+        DEVICE_TYPE_FITNESS_BAND -> R.attr.deviceFitnessBandIcon
+        DEVICE_TYPE_CHEST_STRAP -> R.attr.deviceGenericIcon
+        DEVICE_TYPE_SMART_DISPLAY -> R.attr.devicePortableComputerIcon
+        DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE -> R.attr.deviceConsumerMedicalDeviceIcon
+        DEVICE_TYPE_GLASSES -> R.attr.deviceGenericIcon
+        DEVICE_TYPE_HEARABLE -> R.attr.deviceHearableIcon
+        DEVICE_TYPE_FITNESS_MACHINE -> R.attr.deviceGenericIcon
+        DEVICE_TYPE_FITNESS_EQUIPMENT -> R.attr.deviceFitnessEquipmentIcon
+        DEVICE_TYPE_PORTABLE_COMPUTER -> R.attr.devicePortableComputerIcon
+        DEVICE_TYPE_METER -> R.attr.deviceGenericIcon
+        else -> R.attr.deviceGenericIcon
+    }
+}
 
 fun Int.toDeviceTypeString(context: Context): String {
     val resId =
