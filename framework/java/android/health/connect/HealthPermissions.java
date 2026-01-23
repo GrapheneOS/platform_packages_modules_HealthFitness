@@ -16,7 +16,6 @@
 
 package android.health.connect;
 
-import static android.health.connect.Constants.DEFAULT_INT;
 
 import static com.android.healthfitness.flags.Flags.FLAG_ACTIVITY_INTENSITY;
 import static com.android.healthfitness.flags.Flags.FLAG_ALCOHOL_CONSUMPTION;
@@ -31,21 +30,17 @@ import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
 
 import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
-import android.annotation.Nullable;
 import android.annotation.SystemApi;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PermissionInfo;
 import android.health.connect.datatypes.ExerciseRoute;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
-import android.util.ArrayMap;
 import android.util.ArraySet;
 
-import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 // TODO(b/255340973): consider generate this class.
@@ -2030,76 +2025,7 @@ public final class HealthPermissions {
     @FlaggedApi(FLAG_PERSONAL_HEALTH_RECORD)
     public static final String WRITE_MEDICAL_DATA = "android.permission.health.WRITE_MEDICAL_DATA";
 
-    private static final Set<String> sWritePermissionsSet =
-            new ArraySet<>(
-                    Set.of(
-                            WRITE_ACTIVE_CALORIES_BURNED,
-                            WRITE_DISTANCE,
-                            WRITE_ELEVATION_GAINED,
-                            WRITE_EXERCISE,
-                            WRITE_FLOORS_CLIMBED,
-                            WRITE_STEPS,
-                            WRITE_TOTAL_CALORIES_BURNED,
-                            WRITE_VO2_MAX,
-                            WRITE_WHEELCHAIR_PUSHES,
-                            WRITE_POWER,
-                            WRITE_SPEED,
-                            WRITE_BASAL_METABOLIC_RATE,
-                            WRITE_BODY_FAT,
-                            WRITE_BODY_WATER_MASS,
-                            WRITE_BONE_MASS,
-                            WRITE_HEIGHT,
-                            WRITE_LEAN_BODY_MASS,
-                            WRITE_WEIGHT,
-                            WRITE_CERVICAL_MUCUS,
-                            WRITE_MENSTRUAL_CYCLE_PHASE,
-                            WRITE_MENSTRUATION,
-                            WRITE_INTERMENSTRUAL_BLEEDING,
-                            WRITE_OVULATION_TEST,
-                            WRITE_SEXUAL_ACTIVITY,
-                            WRITE_HYDRATION,
-                            WRITE_NUTRITION,
-                            WRITE_SLEEP,
-                            WRITE_BASAL_BODY_TEMPERATURE,
-                            WRITE_BLOOD_GLUCOSE,
-                            WRITE_BLOOD_PRESSURE,
-                            WRITE_BODY_TEMPERATURE,
-                            WRITE_HEART_RATE,
-                            WRITE_HEART_RATE_VARIABILITY,
-                            WRITE_OXYGEN_SATURATION,
-                            WRITE_RESPIRATORY_RATE,
-                            WRITE_RESTING_HEART_RATE,
-                            WRITE_SKIN_TEMPERATURE,
-                            WRITE_PLANNED_EXERCISE,
-                            WRITE_MINDFULNESS));
-
-    private static final Map<String, Integer> sWriteHealthPermissionToHealthDataCategoryMap =
-            new ArrayMap<>();
-    private static final Map<Integer, String> sHealthCategoryToReadPermissionMap = new ArrayMap<>();
-    private static final Map<Integer, String> sHealthCategoryToWritePermissionMap =
-            new ArrayMap<>();
-
-    private static final Map<Integer, String[]> sDataCategoryToWritePermissionsMap =
-            new ArrayMap<>();
-
     private HealthPermissions() {}
-
-    /**
-     * @deprecated Use {@link HealthConnectMappings#getHealthDataCategoryForWritePermission(String)}
-     * @return {@link HealthDataCategory} for a WRITE {@code permissionName}. -1 if permission
-     *     category for {@code permissionName} is not found (or if {@code permissionName} is READ)
-     * @hide
-     */
-    @Deprecated
-    @HealthDataCategory.Type
-    public static int getHealthDataCategoryForWritePermission(@Nullable String permissionName) {
-        if (sWriteHealthPermissionToHealthDataCategoryMap.isEmpty()) {
-            populateWriteHealthPermissionToHealthDataCategoryMap();
-        }
-
-        return sWriteHealthPermissionToHealthDataCategoryMap.getOrDefault(
-                permissionName, DEFAULT_INT);
-    }
 
     /**
      * Returns all medical permissions (read and write).
@@ -2198,179 +2124,5 @@ public final class HealthPermissions {
             case WRITE_DEVICE_UDI -> Flags.deviceUdi();
             default -> false;
         };
-    }
-
-    private static synchronized void populateWriteHealthPermissionToHealthDataCategoryMap() {
-        if (Flags.healthConnectMappingsFollowUp()) {
-            return;
-        }
-
-        if (!sWriteHealthPermissionToHealthDataCategoryMap.isEmpty()) {
-            return;
-        }
-
-        // Write permissions
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_ACTIVE_CALORIES_BURNED, HealthDataCategory.ACTIVITY);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_DISTANCE, HealthDataCategory.ACTIVITY);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_ELEVATION_GAINED, HealthDataCategory.ACTIVITY);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_EXERCISE, HealthDataCategory.ACTIVITY);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_PLANNED_EXERCISE, HealthDataCategory.ACTIVITY);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_FLOORS_CLIMBED, HealthDataCategory.ACTIVITY);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_STEPS, HealthDataCategory.ACTIVITY);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_TOTAL_CALORIES_BURNED, HealthDataCategory.ACTIVITY);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_VO2_MAX, HealthDataCategory.ACTIVITY);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_WHEELCHAIR_PUSHES, HealthDataCategory.ACTIVITY);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_POWER, HealthDataCategory.ACTIVITY);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_SPEED, HealthDataCategory.ACTIVITY);
-
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_BASAL_METABOLIC_RATE, HealthDataCategory.BODY_MEASUREMENTS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_BODY_FAT, HealthDataCategory.BODY_MEASUREMENTS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_BODY_WATER_MASS, HealthDataCategory.BODY_MEASUREMENTS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_BONE_MASS, HealthDataCategory.BODY_MEASUREMENTS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_HEIGHT, HealthDataCategory.BODY_MEASUREMENTS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_LEAN_BODY_MASS, HealthDataCategory.BODY_MEASUREMENTS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_WEIGHT, HealthDataCategory.BODY_MEASUREMENTS);
-
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_CERVICAL_MUCUS, HealthDataCategory.CYCLE_TRACKING);
-        if (AconfigFlagHelper.isCyclePhasesEnabled()) {
-            sWriteHealthPermissionToHealthDataCategoryMap.put(
-                    WRITE_MENSTRUAL_CYCLE_PHASE, HealthDataCategory.CYCLE_TRACKING);
-        }
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_MENSTRUATION, HealthDataCategory.CYCLE_TRACKING);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_OVULATION_TEST, HealthDataCategory.CYCLE_TRACKING);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_SEXUAL_ACTIVITY, HealthDataCategory.CYCLE_TRACKING);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_INTERMENSTRUAL_BLEEDING, HealthDataCategory.CYCLE_TRACKING);
-
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_HYDRATION, HealthDataCategory.NUTRITION);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_NUTRITION, HealthDataCategory.NUTRITION);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(WRITE_SLEEP, HealthDataCategory.SLEEP);
-
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_BASAL_BODY_TEMPERATURE, HealthDataCategory.VITALS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_SKIN_TEMPERATURE, HealthDataCategory.VITALS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_BLOOD_GLUCOSE, HealthDataCategory.VITALS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_BLOOD_PRESSURE, HealthDataCategory.VITALS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_BODY_TEMPERATURE, HealthDataCategory.VITALS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_HEART_RATE, HealthDataCategory.VITALS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_HEART_RATE_VARIABILITY, HealthDataCategory.VITALS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_OXYGEN_SATURATION, HealthDataCategory.VITALS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_RESPIRATORY_RATE, HealthDataCategory.VITALS);
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_RESTING_HEART_RATE, HealthDataCategory.VITALS);
-
-        sWriteHealthPermissionToHealthDataCategoryMap.put(
-                WRITE_MINDFULNESS, HealthDataCategory.WELLNESS);
-
-        // TODO(b/438675118): Add WRITE_SYMPTOMS to the SYMPTOMS category as part of controller / UI
-        // changes.
-
-        sDataCategoryToWritePermissionsMap.put(
-                HealthDataCategory.ACTIVITY,
-                new String[] {
-                    WRITE_ACTIVE_CALORIES_BURNED,
-                    WRITE_DISTANCE,
-                    WRITE_ELEVATION_GAINED,
-                    WRITE_EXERCISE,
-                    WRITE_PLANNED_EXERCISE,
-                    WRITE_FLOORS_CLIMBED,
-                    WRITE_STEPS,
-                    WRITE_TOTAL_CALORIES_BURNED,
-                    WRITE_VO2_MAX,
-                    WRITE_WHEELCHAIR_PUSHES,
-                    WRITE_POWER,
-                    WRITE_SPEED
-                });
-
-        sDataCategoryToWritePermissionsMap.put(
-                HealthDataCategory.BODY_MEASUREMENTS,
-                new String[] {
-                    WRITE_BASAL_METABOLIC_RATE,
-                    WRITE_BODY_FAT,
-                    WRITE_BODY_WATER_MASS,
-                    WRITE_BONE_MASS,
-                    WRITE_HEIGHT,
-                    WRITE_LEAN_BODY_MASS,
-                    WRITE_WEIGHT
-                });
-
-        if (AconfigFlagHelper.isCyclePhasesEnabled()) {
-            sDataCategoryToWritePermissionsMap.put(
-                    HealthDataCategory.CYCLE_TRACKING,
-                    new String[] {
-                        WRITE_CERVICAL_MUCUS,
-                        WRITE_MENSTRUAL_CYCLE_PHASE,
-                        WRITE_MENSTRUATION,
-                        WRITE_OVULATION_TEST,
-                        WRITE_SEXUAL_ACTIVITY,
-                        WRITE_INTERMENSTRUAL_BLEEDING
-                    });
-        } else {
-            sDataCategoryToWritePermissionsMap.put(
-                    HealthDataCategory.CYCLE_TRACKING,
-                    new String[] {
-                        WRITE_CERVICAL_MUCUS,
-                        WRITE_MENSTRUATION,
-                        WRITE_OVULATION_TEST,
-                        WRITE_SEXUAL_ACTIVITY,
-                        WRITE_INTERMENSTRUAL_BLEEDING
-                    });
-        }
-
-        sDataCategoryToWritePermissionsMap.put(
-                HealthDataCategory.NUTRITION, new String[] {WRITE_HYDRATION, WRITE_NUTRITION});
-
-        sDataCategoryToWritePermissionsMap.put(
-                HealthDataCategory.SLEEP, new String[] {WRITE_SLEEP});
-
-        sDataCategoryToWritePermissionsMap.put(
-                HealthDataCategory.VITALS,
-                new String[] {
-                    WRITE_BASAL_BODY_TEMPERATURE,
-                    WRITE_BLOOD_GLUCOSE,
-                    WRITE_BLOOD_PRESSURE,
-                    WRITE_BODY_TEMPERATURE,
-                    WRITE_HEART_RATE,
-                    WRITE_HEART_RATE_VARIABILITY,
-                    WRITE_OXYGEN_SATURATION,
-                    WRITE_RESPIRATORY_RATE,
-                    WRITE_RESTING_HEART_RATE,
-                    WRITE_SKIN_TEMPERATURE
-                });
-
-        if (Flags.mindfulness()) {
-            sDataCategoryToWritePermissionsMap.put(
-                    HealthDataCategory.WELLNESS, new String[] {WRITE_MINDFULNESS});
-        }
     }
 }
