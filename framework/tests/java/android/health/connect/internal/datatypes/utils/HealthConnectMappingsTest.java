@@ -168,7 +168,6 @@ public class HealthConnectMappingsTest {
         }
     }
 
-    @RequiresFlagsEnabled({Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP})
     @Test
     public void getHealthDataCategoryForWritePermission() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
@@ -219,31 +218,9 @@ public class HealthConnectMappingsTest {
                 .isEqualTo(DEFAULT_INT);
     }
 
-    @RequiresFlagsDisabled(Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP)
+    @RequiresFlagsEnabled({Flags.FLAG_SMOKING, Flags.FLAG_SMOKING_DB})
     @Test
-    public void getHealthDataCategoryForWritePermission_flagDisabled_equalsToLegacy() {
-        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
-        for (DataTypeDescriptor descriptor : getAllDataTypeDescriptors()) {
-            for (DataTypeDescriptor.PermissionCategory category :
-                    descriptor.getPermissionCategories()) {
-                assertWithMessage(category.writePermission())
-                        .that(
-                                healthConnectMappings.getHealthDataCategoryForWritePermission(
-                                        category.writePermission()))
-                        .isEqualTo(
-                                HealthPermissions.getHealthDataCategoryForWritePermission(
-                                        category.writePermission()));
-            }
-        }
-    }
-
-    @RequiresFlagsEnabled({
-        Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP,
-        Flags.FLAG_SMOKING,
-        Flags.FLAG_SMOKING_DB
-    })
-    @Test
-    public void getHealthDataCategoryForWritePermission_flagEnabled_supportsNewDataTypes() {
+    public void getHealthDataCategoryForWritePermission_supportsNewDataTypes() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
         assertThat(healthConnectMappings.getAllRecordTypeIdentifiers())
                 .containsAtLeast(RECORD_TYPE_ACTIVITY_INTENSITY, RECORD_TYPE_NICOTINE_INTAKE);
@@ -256,24 +233,6 @@ public class HealthConnectMappingsTest {
                         healthConnectMappings.getHealthDataCategoryForWritePermission(
                                 WRITE_NICOTINE_INTAKE))
                 .isEqualTo(HealthDataCategory.WELLNESS);
-    }
-
-    @RequiresFlagsDisabled(Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP)
-    @RequiresFlagsEnabled({Flags.FLAG_SMOKING, Flags.FLAG_SMOKING_DB})
-    @Test
-    public void getHealthDataCategoryForWritePermission_flagDisabled_doesNotSupportNewDataTypes() {
-        HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
-        assertThat(healthConnectMappings.getAllRecordTypeIdentifiers())
-                .containsAtLeast(RECORD_TYPE_ACTIVITY_INTENSITY, RECORD_TYPE_NICOTINE_INTAKE);
-
-        assertThat(
-                        healthConnectMappings.getHealthDataCategoryForWritePermission(
-                                WRITE_ACTIVITY_INTENSITY))
-                .isEqualTo(-1);
-        assertThat(
-                        healthConnectMappings.getHealthDataCategoryForWritePermission(
-                                WRITE_NICOTINE_INTAKE))
-                .isEqualTo(-1);
     }
 
     @Test
@@ -329,7 +288,6 @@ public class HealthConnectMappingsTest {
         assertThat(healthConnectMappings.getWritePermissionForReadPermission(WRITE_STEPS)).isNull();
     }
 
-    @RequiresFlagsEnabled(Flags.FLAG_HEALTH_CONNECT_MAPPINGS_FOLLOW_UP)
     @Test
     public void getWriteHealthPermissionsFor() {
         HealthConnectMappings healthConnectMappings = new HealthConnectMappings();
