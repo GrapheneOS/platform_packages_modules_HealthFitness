@@ -927,6 +927,8 @@ public class HealthConnectManagerTest {
                 .isEqualTo("android.health.connect.extra.DEVICE_ID");
         assertThat(HealthConnectManager.EXTRA_DEVICE_RECORD_TYPES)
                 .isEqualTo("android.health.connect.extra.DEVICE_RECORD_TYPES");
+        assertThat(HealthConnectManager.EXTRA_DEVICE_SYMPTOM_TYPES)
+                .isEqualTo("android.health.connect.extra.DEVICE_SYMPTOM_TYPES");
     }
 
     /**

@@ -170,6 +170,10 @@ class InsertRecordFragment : Fragment() {
         view.requireViewById<TextView>(R.id.title).setText(permissionType.title)
         mLinearLayout = view.requireViewById(R.id.record_input_linear_layout)
 
+        val udiField = EditableTextView(requireContext(), "Device UDI", INPUT_TYPE_TEXT)
+        mLinearLayout.addView(udiField)
+        mFieldNameToFieldInput["metadata_udi"] = udiField
+
         setupDdpFields()
 
         when (mRecordClass.java.superclass) {

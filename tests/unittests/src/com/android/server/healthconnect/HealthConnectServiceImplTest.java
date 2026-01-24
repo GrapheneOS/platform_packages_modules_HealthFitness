@@ -88,17 +88,23 @@ import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_RESTORE_STATE_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_STAGING_DONE;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.INTERNAL_RESTORE_STATE_STAGING_IN_PROGRESS;
+import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.ADVERTISE_DEVICE_DATA_SOURCES;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.CREATE_MEDICAL_DATA_SOURCE;
+import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.DELETE_DEVICE_RECORDS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.DELETE_MEDICAL_DATA_SOURCE_WITH_DATA;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.DELETE_MEDICAL_RESOURCES_BY_IDS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.DELETE_MEDICAL_RESOURCES_BY_REQUESTS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_CHANGES;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_CHANGES_TOKEN;
+import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_CURRENT_DEVICE_DATA_SOURCE;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MATCHING_DATA_SOURCES;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MEDICAL_DATA_SOURCES_BY_IDS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MEDICAL_DATA_SOURCES_BY_REQUESTS;
+import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.INSERT_DEVICE_RECORDS;
+import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.READ_DEVICE_RECORDS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.READ_MEDICAL_RESOURCES_BY_IDS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.READ_MEDICAL_RESOURCES_BY_REQUESTS;
+import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.UPDATE_DEVICE_RECORDS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.UPSERT_MEDICAL_RESOURCES;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.MEDICAL_RESOURCE_TYPE_NOT_ASSIGNED_DEFAULT_VALUE;
 import static com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator.SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY;
@@ -4351,6 +4357,17 @@ public class HealthConnectServiceImplTest {
         verify(mEmptyResponseCallback, timeout(5000).times(1)).onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(ADVERTISE_DEVICE_DATA_SOURCES),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -4375,6 +4392,17 @@ public class HealthConnectServiceImplTest {
                 mAttributionSource, List.of(advertisement), mEmptyResponseCallback);
 
         verify(mEmptyResponseCallback, timeout(5000).times(1)).onResult();
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(ADVERTISE_DEVICE_DATA_SOURCES),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -4436,6 +4464,17 @@ public class HealthConnectServiceImplTest {
                         "java.lang.IllegalArgumentException: appInfoId not found for calling"
                                 + " package com.android.healthconnect.unittests, ensure an"
                                 + " advertisement has been made");
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(INSERT_DEVICE_RECORDS),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -4506,6 +4545,17 @@ public class HealthConnectServiceImplTest {
         verify(callback, timeout(TIMEOUT_MILLIS)).onResult(mInsertResultCaptor.capture());
         assertThat(mInsertResultCaptor.getValue().getUids()).hasSize(1);
         assertThat(mInsertResultCaptor.getValue().getUids().get(0)).isNotNull();
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(INSERT_DEVICE_RECORDS),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -4553,6 +4603,17 @@ public class HealthConnectServiceImplTest {
 
         verify(updateCallback, timeout(TIMEOUT_MILLIS)).onResult();
         verify(updateCallback, never()).onError(any());
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(UPDATE_DEVICE_RECORDS),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -4646,6 +4707,17 @@ public class HealthConnectServiceImplTest {
                 .startsWith(
                         "java.lang.IllegalArgumentException: No record found for the following"
                                 + " input : uuid : ");
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(UPDATE_DEVICE_RECORDS),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -4881,6 +4953,17 @@ public class HealthConnectServiceImplTest {
                 .onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(READ_DEVICE_RECORDS),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -4919,6 +5002,17 @@ public class HealthConnectServiceImplTest {
                 .onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_INVALID_ARGUMENT);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(READ_DEVICE_RECORDS),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -4944,6 +5038,17 @@ public class HealthConnectServiceImplTest {
         ReadRecordsResponseParcel actualResponse = responseCaptor.getValue();
         assertThat(actualResponse.getRecordsParcel().getRecords().size()).isEqualTo(0);
         verifyNoMoreInteractions(mReadRecordsResponseCallback);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(READ_DEVICE_RECORDS),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -4987,6 +5092,17 @@ public class HealthConnectServiceImplTest {
         verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(DELETE_DEVICE_RECORDS),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -5004,6 +5120,17 @@ public class HealthConnectServiceImplTest {
         verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_SECURITY);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(DELETE_DEVICE_RECORDS),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -5021,6 +5148,17 @@ public class HealthConnectServiceImplTest {
         verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onError(mErrorCaptor.capture());
         assertThat(mErrorCaptor.getValue().getHealthConnectException().getErrorCode())
                 .isEqualTo(ERROR_INVALID_ARGUMENT);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(DELETE_DEVICE_RECORDS),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -5057,6 +5195,28 @@ public class HealthConnectServiceImplTest {
                 mEmptyResponseCallback);
 
         verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(ADVERTISE_DEVICE_DATA_SOURCES),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
+        verify(mHealthFitnessStatsLog, timeout(TIMEOUT_MILLIS).times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(DELETE_DEVICE_RECORDS),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -5726,6 +5886,17 @@ public class HealthConnectServiceImplTest {
                 .onError(mErrorCaptor.capture());
         HealthConnectException exception = mErrorCaptor.getValue().getHealthConnectException();
         assertThat(exception.getErrorCode()).isEqualTo(ERROR_UNSUPPORTED_OPERATION);
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(GET_CURRENT_DEVICE_DATA_SOURCE),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test
@@ -5761,6 +5932,17 @@ public class HealthConnectServiceImplTest {
         assertThat(result.getDeviceDataTypeSources()).hasSize(1);
         assertThat(Iterables.getOnlyElement(result.getDeviceDataTypeSources()))
                 .isEqualTo(DeviceDataTypeSource.ofDataType(StepsRecord.class, true, false));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(GET_CURRENT_DEVICE_DATA_SOURCE),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test

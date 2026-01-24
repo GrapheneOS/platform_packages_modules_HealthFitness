@@ -120,6 +120,7 @@ package android.health.connect {
     field public static final int DATA_DOWNLOAD_STATE_UNKNOWN = 0; // 0x0
     field @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public static final String EXTRA_DEVICE_ID = "android.health.connect.extra.DEVICE_ID";
     field @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public static final String EXTRA_DEVICE_RECORD_TYPES = "android.health.connect.extra.DEVICE_RECORD_TYPES";
+    field @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public static final String EXTRA_DEVICE_SYMPTOM_TYPES = "android.health.connect.extra.DEVICE_SYMPTOM_TYPES";
   }
 
   public class HealthDataCategory {

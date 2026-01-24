@@ -117,7 +117,6 @@ constructor(
                     }
 
                     potentialFitnessApps.sortWith(
-                        // TODO (b/416744614) additional sorting criteria for apps
                         // Show connected apps first
                         compareBy<ConnectedFitnessAppMetadata> { if (it.isConnected) 0 else 1 }
                             .thenBy { it.appMetadata.appName }
