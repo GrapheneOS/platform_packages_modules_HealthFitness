@@ -529,6 +529,36 @@ public class TrackerManagerImplTest {
 
     @Test
     @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
+    public void onAppPermissionGranted_sensorBecomesUnavailable_doesNotSubscribe() {
+        TrackerManager manager = mHealthConnectInjector.getTrackerManager();
+        ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
+                ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
+        ArgumentCaptor<Runnable> taskCaptor = ArgumentCaptor.forClass(Runnable.class);
+        // Initial state: no apps have permission, so not subscribed yet.
+        // Listener should be added.
+        manager.initializeOrRefresh();
+        verify(mPackageManager).addOnPermissionsChangeListener(permissionsListenerCaptor.capture());
+        verify(mSensorManager, never())
+                .registerListener(
+                        any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+
+        // State change: sensor becomes unavailable
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(null);
+        grantAppStepsPermission(TEST_PACKAGE_NAME);
+
+        // Trigger listener
+        permissionsListenerCaptor.getValue().onPermissionsChanged(/* uid= */ 0);
+        verify(mThreadScheduler).scheduleInternalTask(taskCaptor.capture());
+        taskCaptor.getValue().run();
+
+        // Verify we don't subscribe because sensor is unavailable
+        verify(mSensorManager, never())
+                .registerListener(
+                        any(StepSensorEventListener.class), any(Sensor.class), anyInt(), anyInt());
+    }
+
+    @Test
+    @EnableFlags({FLAG_STEP_TRACKING_ENABLED})
     public void noApps_doesNotSendNotification_disablesFutureNotifications() {
         mTrackerManager.initializeOrRefresh();
         verify(mNativeStepsNotificationSender, never()).sendNotification(any());
