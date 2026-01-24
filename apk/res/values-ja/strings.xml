@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> のデータ"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> アプリに、ヘルスコネクトを使用してこのデバイス上の他のアプリからデータを読み取ることを許可します。このデータは、アクセスを許可した他のアプリでも読み取ることができます。"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"このデータを同期できるアプリ"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"このデータを同期できるデバイス"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> がユーザーデータをどのように使用するかについては、"<a href="%2$s">"プライバシー ポリシー"</a>"をご覧ください。"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"ヘルスコネクトを使用すると、健康とフィットネスに関するデータを複数のアプリ間で共有できます。これにより、データの安全を保ちながら、分析情報やエクスペリエンスを活用できます。"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"ヘルスコネクトの詳細"</string>

@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> నుండి డేటా"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Health Connectను ఉపయోగించి, ఈ డివైజ్‌లోని ఇతర యాప్‌ల నుండి డేటాను యాక్సెస్ చేయడానికి, <xliff:g id="APP_NAME">%1$s</xliff:g> యాప్‌ను అనుమతించండి. మీరు యాక్సెస్ ఇచ్చిన ఇతర యాప్‌లు కూడా ఈ డేటాను చదవగలవు."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ఈ డేటాను సింక్ చేయగల యాప్‌లు"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"ఈ డేటాను సింక్ చేయగల డివైజ్‌లు"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g>, మీ డేటాను వారి "<a href="%2$s">"గోప్యతా పాలసీ"</a>"లో ఎలా ఉపయోగిస్తారో తెలుసుకోండి."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ద్వారా మీ హెల్త్ &amp; ఫిట్‌నెస్ డేటాను మల్టిపుల్ యాప్‌ల‌ మధ్య షేర్ చేయవచ్చు. ఇది మీ డేటాను సురక్షితంగా ఉంచుతూనే, ఇన్‌సైట్స్‌ను (లోతైన విశ్లేషణలను/గ‌ణాంకాల‌ను), పర్సనలైజ్డ్‌ ఎక్స్‌పీరియెన్స్‌ల‌ను (మీకు తగిన సలహాలను, సూచనలను) అన్‌లాక్ చేయ‌డంలో సాయ‌ప‌డుతుంది."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect గురించిన మరింత సమాచారం"</string>

@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Джерело даних: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Дозвольте додатку <xliff:g id="APP_NAME">%1$s</xliff:g> зчитувати дані з інших додатків на цьому пристрої за допомогою Health Connect. Їх також можуть переглядати інші додатки, яким ви надали доступ."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Додатки, які можуть синхронізувати ці дані"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Пристрої, які можуть синхронізувати ці дані"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Ознайомтеся з інформацією про те, як додаток <xliff:g id="APP_NAME">%1$s</xliff:g> використовує ваші дані, у його "<a href="%2$s">"політиці конфіденційності"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"За допомогою сервісу Health Connect ви можете обмінюватися даними про стан здоров’я і фізичну активність між кількома додатками. Це допоможе вам отримувати статистику й користуватися різними функціями, не турбуючись про безпеку своїх даних."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Докладніше про Health Connect"</string>

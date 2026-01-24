@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Údaje z aplikácie <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Povoľte aplikácii <xliff:g id="APP_NAME">%1$s</xliff:g> čítať údaje z iných aplikácií v tomto zariadení pomocou Dát o zdraví. Tieto údaje budú môcť čítať aj iné aplikácie, ktorým udelíte prístup."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikácie, ktoré môžu synchronizovať tieto údaje"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Zariadenia, ktoré môžu synchronizovať tieto údaje"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Prečítajte si, ako <xliff:g id="APP_NAME">%1$s</xliff:g> používa vaše údaje, v jej "<a href="%2$s">"pravidlách ochrany súkromia"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Dáta o zdraví umožňujú zdieľať údaje o zdraví a kondícii medzi viacerými aplikáciami. Pomôže vám to získať štatistiky aj prostredia a zároveň zachovať zabezpečenie údajov."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Ďalšie informácie o Dátach o zdraví"</string>

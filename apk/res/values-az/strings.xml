@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data mənbəyi: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinin Health Connect-dən istifadə edərək bu cihazdakı digər tətbiqlərdən data oxumasına icazə verin. Bu data giriş icazəsi verdiyiniz digər tətbiqlər tərəfindən də oxuna bilər."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Bu datanı sinxronlaşdıra bilən tətbiqlər"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Bu datanı sinxronlaşdıra bilən cihazlar"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinin datanızı "<a href="%2$s">"məxfilik siyasətində"</a>" necə istifadə etdiyini öyrənin."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect sağlamlıq və fitnes datanızı çoxsaylı tətbiqlər arasında paylaşmağa imkan verir. Bu, datanızı təhlükəsiz saxlayaraq sizə yeni statistik məlumat və təcrübələrin kilidini açmağa kömək edir."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect haqqında ətraflı məlumat"</string>

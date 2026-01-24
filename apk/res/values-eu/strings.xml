@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Datu-iturburua: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Eman Health Connect bidez gailu honetako beste aplikazioetako datuak irakurtzeko baimena <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioari. Sarbidea duten beste aplikazioek ere irakur ditzateke datuok."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Datu hauek sinkroniza ditzaketen aplikazioak"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Datu hauek sinkroniza ditzaketen gailuak"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Lortu <xliff:g id="APP_NAME">%1$s</xliff:g> aplikazioak zure datuak erabiltzeko duen moduari buruzko informazio gehiago "<a href="%2$s">"pribatutasun-gidalerroetan"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect-ek osasunari eta fitnessari buruzko datuak aplikazio batekin baino gehiagorekin partekatzeko aukera ematen dizu. Horri esker, estatistikak eta eginbideak desblokea ditzakezu datuak seguru mantendu bitartean."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect-i buruzko informazio gehiago"</string>

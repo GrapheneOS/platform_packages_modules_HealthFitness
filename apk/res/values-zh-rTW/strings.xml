@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"來自「<xliff:g id="APP_NAME">%1$s</xliff:g>」的資料"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」應用程式透過「健康資料同步」功能讀取這部裝置上其他應用程式的資料。你授予存取權的其他應用程式也能讀取這類資料。"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"可同步處理這類資料的應用程式"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"可同步處理這類資料的裝置"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"如要瞭解「<xliff:g id="APP_NAME">%1$s</xliff:g>」如何使用你的資料，請參閱對方的"<a href="%2$s">"隱私權政策"</a>"。"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"你可以透過「健康資料同步」在多個應用程式間共用健康與健身資料。這有助於發掘洞察資料及提供優質體驗，同時確保資料安全無虞。"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"進一步瞭解「健康資料同步」"</string>

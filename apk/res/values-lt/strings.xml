@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Duomenys iš „<xliff:g id="APP_NAME">%1$s</xliff:g>“"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Leisti programai „<xliff:g id="APP_NAME">%1$s</xliff:g>“ skaityti duomenis iš kitų programų šiame įrenginyje naudojant „Health Connect“ Šiuos duomenis taip pat gali skaityti kitos programos, kurioms suteikiate prieigą."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Programos, kurios gali sinchronizuoti šiuos duomenis"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Įrenginiai, kurie gali sinchronizuoti šiuos duomenis"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Sužinokite, kaip „<xliff:g id="APP_NAME">%1$s</xliff:g>“ naudoja jūsų duomenis, jos "<a href="%2$s">"privatumo politikoje"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Naudodami „Health Connect“ galite bendrinti sveikatos ir kūno rengybos duomenis tarp kelių programų. Tai padeda gauti įžvalgų ir funkcijų, o jūsų duomenys lieka saugūs."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Daugiau apie „Health Connect“"</string>

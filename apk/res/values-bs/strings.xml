@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Podaci iz aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Dozvolite aplikaciji <xliff:g id="APP_NAME">%1$s</xliff:g> da čita podatke iz drugih aplikacija na ovom uređaju koristeći Health Connect. Ove podatke mogu čitati i druge aplikacije kojima date pristup."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikacije koje mogu sinhronizirati ove podatke"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Uređaji koji mogu sinhronizirati ove podatke"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Saznajte kako aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> koristi vaše podatke u njenim "<a href="%2$s">"pravilima privatnosti"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect vam omogućava dijeljenje podataka o zdravlju i fitnesu između više aplikacija. Ovo vam pomaže da otključate uvide i iskustva štiteći pritom svoje podatke."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Više o Health Connectu"</string>

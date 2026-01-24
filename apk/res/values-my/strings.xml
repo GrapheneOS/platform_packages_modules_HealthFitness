@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> ထံမှ ဒေတာ"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Health Connect သုံးနေသော ဤစက်ပစ္စည်းရှိ အခြားအက်ပ်များမှ ဒေတာကို ဖတ်ရန် <xliff:g id="APP_NAME">%1$s</xliff:g> အက်ပ်အား ခွင့်ပြုနိုင်သည်။ ဤဒေတာကို သင်သုံးခွင့်ပြုသော အခြားအက်ပ်များကလည်း ဖတ်နိုင်သည်။"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ဤဒေတာကို စင့်ခ်လုပ်နိုင်သော အက်ပ်များ"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"ဤဒေတာကို စင့်ခ်လုပ်နိုင်သော စက်များ"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> က သင့်ဒေတာ အသုံးပြုပုံကို ၎င်း၏ "<a href="%2$s">"ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒ"</a>" တွင် လေ့လာနိုင်သည်။"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect က သင့်ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးဒေတာကို အက်ပ်များအကြား မျှဝေခွင့်ပြုသည်။ သင်က သိကောင်းစရာနှင့် အသုံးပြုနိုင်များကို ရယူနေချိန်တွင် သင့်ဒေတာကို လုံခြုံအောင်ထားပေးသည်။"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect အကြောင်း ပိုလေ့လာရန်"</string>
@@ -1133,7 +1132,7 @@
     <string name="exercise_permission_dialog_enabled_summary" msgid="3404390796688813585">"<xliff:g id="APP_NAME">%1$s</xliff:g> သည် ဖွင့်ထားမည့် လေ့ကျင့်ခန်းလမ်းကြောင်းများအတိုင်း လေ့ကျင့်ရန် ဖတ်ခွင့်လိုအပ်သည်"</string>
     <string name="exercise_permission_dialog_disable_summary" msgid="397599718182778347">"<xliff:g id="APP_NAME">%1$s</xliff:g> သည် လေ့ကျင့်ခန်းလမ်းကြောင်းများ ဖွင့်ရန် လေ့ကျင့်ခန်း သုံးခွင့် လိုအပ်သည်"</string>
     <string name="exercise_permission_dialog_positive_button" msgid="4545939654888655556">"Yes"</string>
-    <string name="exercise_permission_dialog_negative_button" msgid="7433304732406274998">"မလုပ်ပါ"</string>
+    <string name="exercise_permission_dialog_negative_button" msgid="7433304732406274998">"No"</string>
     <string name="back_button" msgid="780519527385993407">"နောက်သို့"</string>
     <string name="loading" msgid="2526615755685950317">"ဖွင့်နေသည်…"</string>
     <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"ပေါင်းစည်းနေဆဲဖြစ်သည်"</string>

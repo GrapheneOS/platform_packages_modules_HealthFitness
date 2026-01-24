@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g>ৰ পোৱা ডেটা"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> এপ্‌টোক এই ডিভাইচটোত Health Connect ব্যৱহাৰ কৰি অন্য এপৰ ডেটা পঢ়িবলৈ দিয়ক। আপুনি এক্সেছ প্ৰদান কৰা অন্য এপ্‌সমূহেও এই ডেটাখিনি পঢ়িব পাৰে।"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"এই ডেটাখিনি ছিংক কৰা এপ্"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"এই ডেটা ছিংক কৰিব পৰা ডিভাইচ"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g>এ নিজৰ "<a href="%2$s">"গোপনীয়তাৰ নীতি"</a>"ত আপোনাৰ ডেটা কেনেকৈ ব্যৱহাৰ কৰে সেয়া জানক।"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connectএ আপোনাক নিজৰ স্বাস্থ্য আৰু শৰীৰচৰ্চা সম্পৰ্কীয় ডেটা একাধিক এপৰ মাজত শ্বেয়াৰ কৰিবলৈ দিয়ে। এইটোৱে আপোনাক নিজৰ ডেটা সুৰক্ষিত ৰাখি ইনছাইট আৰু অভিজ্ঞতাসমূহ আনলক কৰাত সহায় কৰে।"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connectৰ বিষয়ে অধিক"</string>

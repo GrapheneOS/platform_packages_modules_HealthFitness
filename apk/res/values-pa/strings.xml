@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> ਤੋਂ ਡਾਟਾ"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> ਐਪ ਨੂੰ Health Connect ਦੀ ਵਰਤੋਂ ਕਰ ਕੇ ਇਸ ਡੀਵਾਈਸ \'ਤੇ ਹੋਰ ਐਪਾਂ ਤੋਂ ਡਾਟਾ ਪੜ੍ਹਨ ਦੀ ਆਗਿਆ ਦਿਓ। ਇਸ ਡਾਟੇ ਨੂੰ ਉਨ੍ਹਾਂ ਹੋਰ ਐਪਾਂ ਵੱਲੋਂ ਵੀ ਪੜ੍ਹਿਆ ਜਾ ਸਕਦਾ ਹੈ, ਜਿਨ੍ਹਾਂ ਨੂੰ ਤੁਸੀਂ ਪਹੁੰਚ ਦਿੱਤੀ ਹੈ।"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ਇਸ ਡਾਟੇ ਨੂੰ ਸਿੰਕ ਕਰ ਸਕਣ ਵਾਲੀਆਂ ਐਪਾਂ"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"ਇਸ ਡਾਟੇ ਨੂੰ ਸਿੰਕ ਕਰ ਸਕਣ ਵਾਲੇ ਡੀਵਾਈਸ"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> ਵੱਲੋਂ ਤੁਹਾਡੇ ਡਾਟਾ ਦੀ ਵਰਤੋਂ ਕਰਨ ਦੇ ਤਰੀਕੇ ਬਾਰੇ ਜਾਣਨ ਲਈ, ਇਸਦੀ "<a href="%2$s">"ਪਰਦੇਦਾਰੀ ਨੀਤੀ"</a>" ਪੜ੍ਹੋ।"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ਨਾਲ ਤੁਸੀਂ ਆਪਣਾ ਸਿਹਤ ਅਤੇ ਫਿੱਟਨੈੱਸ ਡਾਟਾ ਕਈ ਐਪਾਂ ਵਿਚਕਾਰ ਸਾਂਝਾ ਕਰ ਸਕਦੇ ਹੋ। ਇਸ ਨਾਲ ਤੁਹਾਨੂੰ ਆਪਣੇ ਡਾਟੇ ਨੂੰ ਸੁਰੱਖਿਅਤ ਰੱਖਦੇ ਹੋਏ, ਅੰਦਰੂਨੀ-ਝਾਤਾਂ ਅਤੇ ਅਨੁਭਵਾਂ ਨੂੰ ਅਣਲਾਕ ਕਰਨ ਵਿੱਚ ਮਦਦ ਮਿਲਦੀ ਹੈ।"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect ਬਾਰੇ ਹੋਰ ਜਾਣਕਾਰੀ"</string>
