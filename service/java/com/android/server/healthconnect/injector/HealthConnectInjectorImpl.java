@@ -638,7 +638,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mFitnessRecordUpsertHelper,
                                 mFitnessRecordReadHelper,
                                 mFitnessRecordDeleteHelper,
-                                mSyntheticPackageNameCreator)
+                                mSyntheticPackageNameCreator,
+                                mPreferenceHelper)
                         : builder.mDeviceDataProviderManager;
         mSyntheticPackageNameResolver =
                 builder.mSyntheticPackageNameResolver == null

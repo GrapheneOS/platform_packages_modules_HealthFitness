@@ -511,6 +511,8 @@ public class HealthConnectServiceImplTest {
                 .thenReturn(mPermissionManager);
         when(mPreferenceHelper.getPreference(eq(SYNTHETIC_PACKAGE_NAME_SALT_PREFERENCE_KEY)))
                 .thenReturn(UUID.randomUUID().toString());
+        when(mPreferenceHelper.getPreference(eq("TRACKING_PREF_1")))
+                .thenReturn(String.valueOf(true));
         setUpHealthPermissions();
 
         mFakeTimeSource = new FakeTimeSource(mNow);
@@ -572,6 +574,7 @@ public class HealthConnectServiceImplTest {
                                     healthConnectInjector.getFitnessRecordReadHelper(),
                                     healthConnectInjector.getFitnessRecordDeleteHelper(),
                                     healthConnectInjector.getSyntheticPackageNameCreator(),
+                                    mPreferenceHelper,
                                     true));
 
             mDeviceDataSourcesHelper = spy(healthConnectInjector.getDeviceDataSourcesHelper());
@@ -4314,6 +4317,53 @@ public class HealthConnectServiceImplTest {
     }
 
     @Test
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void setTrackingEnabled_withFlags_refreshesSystemAdvertisement() throws Exception {
+        when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(
+                        eq(mTestPackageName), any()))
+                .thenReturn(List.of(READ_STEPS));
+        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+
+        verifyCurrentDeviceStepsEnabled(true);
+
+        clearInvocations(mDeviceDataProviderManager);
+        clearInvocations(mGetCurrentDeviceDataSourceCallback);
+        when(mPreferenceHelper.getPreference(eq("TRACKING_PREF_1")))
+                .thenReturn(String.valueOf(false));
+
+        mHealthConnectService.setTrackingEnabled("TRACKING_PREF_1", false, mEmptyResponseCallback);
+        awaitAllExecutorsIdle();
+
+        verify(mPreferenceHelper).insertOrReplacePreference("TRACKING_PREF_1", "false");
+        verify(mDeviceDataProviderManager).advertiseCurrentDeviceNativeCapabilities();
+
+        verifyCurrentDeviceStepsEnabled(false);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void setTrackingEnabled_withTwoSubsequentUpdates_updatesUserEnabled() throws Exception {
+        when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(
+                        eq(mTestPackageName), any()))
+                .thenReturn(List.of(READ_STEPS));
+        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+
+        verifyCurrentDeviceStepsEnabled(true);
+
+        when(mPreferenceHelper.getPreference(eq("TRACKING_PREF_1")))
+                .thenReturn(String.valueOf(false));
+        mHealthConnectService.setTrackingEnabled("TRACKING_PREF_1", false, mEmptyResponseCallback);
+        awaitAllExecutorsIdle();
+
+        when(mPreferenceHelper.getPreference(eq("TRACKING_PREF_1")))
+                .thenReturn(String.valueOf(true));
+        mHealthConnectService.setTrackingEnabled("TRACKING_PREF_1", true, mEmptyResponseCallback);
+        awaitAllExecutorsIdle();
+
+        verifyCurrentDeviceStepsEnabled(true);
+    }
+
+    @Test
     public void isTrackingEnabled_noPermissions_throwsSecurityException() {
         doThrow(SecurityException.class)
                 .when(mServiceContext)
@@ -6295,5 +6345,23 @@ public class HealthConnectServiceImplTest {
         RecordsParcel restoredRecordsParcel = RecordsParcel.CREATOR.createFromParcel(parcel);
         parcel.recycle();
         return restoredRecordsParcel;
+    }
+
+    private void verifyCurrentDeviceStepsEnabled(boolean expected)
+            throws RemoteException, InterruptedException {
+        clearInvocations(mGetCurrentDeviceDataSourceCallback);
+
+        mHealthConnectService.getCurrentDeviceDataSource(
+                mAttributionSource, mGetCurrentDeviceDataSourceCallback);
+        awaitAllExecutorsIdle();
+
+        verify(mGetCurrentDeviceDataSourceCallback, timeout(5000)).onResult(any());
+        ArgumentCaptor<DeviceDataSource> captor = ArgumentCaptor.forClass(DeviceDataSource.class);
+        verify(mGetCurrentDeviceDataSourceCallback).onResult(captor.capture());
+        DeviceDataSource result = captor.getValue();
+        assertThat(result.getDeviceDataTypeSources()).hasSize(1);
+        DeviceDataTypeSource source = Iterables.getOnlyElement(result.getDeviceDataTypeSources());
+        assertThat(source.getDataType()).isEqualTo(StepsRecord.class);
+        assertThat(source.isUserEnabled()).isEqualTo(expected);
     }
 }

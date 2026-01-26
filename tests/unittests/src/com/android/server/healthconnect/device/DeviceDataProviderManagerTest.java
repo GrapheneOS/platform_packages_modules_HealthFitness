@@ -189,8 +189,12 @@ public class DeviceDataProviderManagerTest {
                         mFitnessRecordReadHelper,
                         healthConnectInjector.getFitnessRecordDeleteHelper(),
                         healthConnectInjector.getSyntheticPackageNameCreator(),
+                        mPreferenceHelper,
                         true);
         mPreferenceHelper.insertOrReplacePreference(PREFERENCE_KEY, "Some Salt");
+        mPreferenceHelper.insertOrReplacePreference(
+                DeviceDataProviderManager.getNativeTrackingPrefKey(StepsRecord.class),
+                String.valueOf(true));
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
     }
 
@@ -449,6 +453,7 @@ public class DeviceDataProviderManagerTest {
                         healthConnectInjector.getFitnessRecordReadHelper(),
                         healthConnectInjector.getFitnessRecordDeleteHelper(),
                         healthConnectInjector.getSyntheticPackageNameCreator(),
+                        healthConnectInjector.getPreferenceHelper(),
                         true);
 
         assertThrows(IllegalStateException.class, newManager::getStableCurrentDeviceId);
@@ -552,6 +557,7 @@ public class DeviceDataProviderManagerTest {
                         healthConnectInjector.getFitnessRecordReadHelper(),
                         healthConnectInjector.getFitnessRecordDeleteHelper(),
                         healthConnectInjector.getSyntheticPackageNameCreator(),
+                        healthConnectInjector.getPreferenceHelper(),
                         true);
         assertThrows(IllegalStateException.class, () -> newManager.getCurrentDeviceId());
     }
@@ -2340,7 +2346,6 @@ public class DeviceDataProviderManagerTest {
         assertThat(mDeviceDataSourcesHelper.getDdpMap()).hasSize(1);
         assertThat(mDeviceDataSourcesHelper.getDdpMap()).containsKey(key);
         assertThat(mDeviceDataSourcesHelper.getDdpMap().get(key).isAvailable()).isEqualTo(true);
-        // TODO(b/468250208): Set to preference
         assertThat(mDeviceDataSourcesHelper.getDdpMap().get(key).isUserEnabled()).isEqualTo(true);
         // TODO(b/469717403): Decide Matchmaking behavior
         assertThat(mDeviceDataSourcesHelper.getDdpMap().get(key).isVisibleByDefaultInMatchmaking())
@@ -2390,7 +2395,6 @@ public class DeviceDataProviderManagerTest {
         DeviceDataTypeAdvertisement expectedAd =
                 new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                         .setAvailable(true)
-                        // TODO(b/468250208): Set to preference
                         .setUserEnabled(true)
                         // TODO(b/469717403): Decide Matchmaking behavior
                         .setVisibleByDefaultInMatchmaking(true)
@@ -2442,13 +2446,79 @@ public class DeviceDataProviderManagerTest {
         DeviceDataTypeAdvertisement expectedAd =
                 new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                         .setAvailable(false)
-                        // TODO(b/468250208): Set to preference
                         .setUserEnabled(true)
                         // TODO(b/469717403): Decide Matchmaking behavior
                         .setVisibleByDefaultInMatchmaking(true)
                         .build();
         assertThat(currentDeviceProvider.getDeviceDataTypeAdvertisements().iterator().next())
                 .isEqualTo(expectedAd);
+    }
+
+    @Test
+    public void advertiseCurrentDeviceNativeCapabilities_preferenceIsFalse_enabledSetToFalse() {
+        when(mContext.getSystemService(eq(SensorManager.class))).thenReturn(mSensorManager);
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(null);
+        mPreferenceHelper.insertOrReplacePreference(
+                DeviceDataProviderManager.getNativeTrackingPrefKey(StepsRecord.class),
+                String.valueOf(false));
+
+        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+        List<DeviceDataSourceInfo> firstSourceInfos =
+                mDeviceDataProviderManager.getDeviceDataSourceInfos();
+
+        DeviceDataProviderInfo currentDeviceProvider =
+                firstSourceInfos.get(0).getDeviceDataProviderInfos().get(0);
+
+        assertThat(
+                        currentDeviceProvider
+                                .getDeviceDataTypeAdvertisements()
+                                .iterator()
+                                .next()
+                                .isUserEnabled())
+                .isFalse();
+    }
+
+    @Test
+    public void advertiseCurrentDeviceNativeCapabilities_preferenceChanged_updatedAdvertisement() {
+        when(mContext.getSystemService(eq(SensorManager.class))).thenReturn(mSensorManager);
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(null);
+        mPreferenceHelper.insertOrReplacePreference(
+                DeviceDataProviderManager.getNativeTrackingPrefKey(StepsRecord.class),
+                String.valueOf(true));
+
+        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+        List<DeviceDataSourceInfo> firstSourceInfos =
+                mDeviceDataProviderManager.getDeviceDataSourceInfos();
+
+        DeviceDataProviderInfo currentDeviceProvider =
+                firstSourceInfos.get(0).getDeviceDataProviderInfos().get(0);
+
+        assertThat(
+                        currentDeviceProvider
+                                .getDeviceDataTypeAdvertisements()
+                                .iterator()
+                                .next()
+                                .isUserEnabled())
+                .isTrue();
+
+        mPreferenceHelper.insertOrReplacePreference(
+                DeviceDataProviderManager.getNativeTrackingPrefKey(StepsRecord.class),
+                String.valueOf(false));
+
+        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+        List<DeviceDataSourceInfo> updatedSourceInfos =
+                mDeviceDataProviderManager.getDeviceDataSourceInfos();
+
+        DeviceDataProviderInfo newCurrentDeviceProvider =
+                updatedSourceInfos.get(0).getDeviceDataProviderInfos().get(0);
+
+        assertThat(
+                        newCurrentDeviceProvider
+                                .getDeviceDataTypeAdvertisements()
+                                .iterator()
+                                .next()
+                                .isUserEnabled())
+                .isFalse();
     }
 
     @Test
