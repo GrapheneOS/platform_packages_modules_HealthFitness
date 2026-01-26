@@ -23,8 +23,10 @@ import android.health.connect.DeviceDataProviderInfo;
 import android.health.connect.DeviceDataSourceInfo;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Record;
+import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
+import android.health.connect.internal.datatypes.utils.SymptomTypePermissionMapper;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.internal.annotations.GuardedBy;
@@ -34,6 +36,7 @@ import com.android.server.healthconnect.permission.PackageInfoUtils;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -420,16 +423,33 @@ public final class MatchmakingManager {
 
     private Set<String> getMatchingWritePermissionsForDDP(
             DeviceDataProviderInfo ddp, Set<String> requestedWritePermissions) {
-        Set<Class<? extends Record>> availableDataTypes =
+        // Partition the advertisements to symptom and non-symptom
+        Map<Boolean, List<DeviceDataTypeAdvertisement>> partitionedAds =
                 ddp.getDeviceDataTypeAdvertisements().stream()
                         .filter(Predicate.not(DeviceDataTypeAdvertisement::isUserEnabled))
-                        // TODO (b/466983701) filter out data types not visible by default
-                        // if device not in include filter
+                        .collect(
+                                Collectors.partitioningBy(
+                                        ad -> ad.getDataType().equals(SymptomRecord.class)));
+
+        // Process non-symptoms
+        Set<Class<? extends Record>> nonSymptomClasses =
+                partitionedAds.getOrDefault(false, List.of()).stream()
                         .map(DeviceDataTypeAdvertisement::getDataType)
                         .collect(Collectors.toSet());
+        // Transform the non-symptom Class<? extends Record> to write permissions
+        Set<String> availableWriteConfigs =
+                new HashSet<>(getWritePermissionsFromRecordTypes(nonSymptomClasses));
 
-        // Transform Class<? extends Record> to write permissions
-        Set<String> availableWriteConfigs = getWritePermissionsFromRecordTypes(availableDataTypes);
+        // Process symptoms
+        partitionedAds
+                .getOrDefault(true, List.of())
+                .forEach(
+                        ad -> {
+                            int type = ad.getSymptomType();
+                            String symptomPermission =
+                                    SymptomTypePermissionMapper.getWritePermission(type);
+                            availableWriteConfigs.add(symptomPermission);
+                        });
 
         // Return only those configs that match the request
         return availableWriteConfigs.stream()
@@ -439,7 +459,6 @@ public final class MatchmakingManager {
 
     private Set<String> getWritePermissionsFromRecordTypes(
             Set<Class<? extends Record>> recordTypes) {
-        // TODO (b/462180668) check specifically for Symptoms records
         return recordTypes.stream()
                 .map(mHealthConnectMappings::getRecordType)
                 .flatMap(
