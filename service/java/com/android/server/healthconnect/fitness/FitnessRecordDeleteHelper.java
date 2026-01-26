@@ -320,6 +320,11 @@ public final class FitnessRecordDeleteHelper {
             Objects.requireNonNull(callingPackageName);
         }
 
+        final long callingAppInfoId =
+                enforceSelfDelete && callingPackageName != null
+                        ? mAppInfoHelper.getAppInfoId(callingPackageName)
+                        : DEFAULT_LONG;
+
         var currentTime = Instant.now();
         var deletionChangeLogs = ChangeLogsTableRequests.ofDeletion(currentTime);
         var modificationChangeLogs = ChangeLogsTableRequests.ofUpsertion(currentTime);
@@ -348,10 +353,12 @@ public final class FitnessRecordDeleteHelper {
                                         StorageUtils.getCursorUUID(cursor, idColumnName);
 
                                 if (enforceSelfDelete) {
-                                    enforcePackageCheck(
-                                            deletedRecordUuid,
-                                            readDataAppInfoId,
-                                            Objects.requireNonNull(callingPackageName));
+                                    if (callingAppInfoId != readDataAppInfoId) {
+                                        throw new IllegalArgumentException(
+                                                callingAppInfoId
+                                                        + " is not the owner for "
+                                                        + deletedRecordUuid);
+                                    }
                                 }
                                 deletionChangeLogs.addRecordInfo(
                                         deleteTableRequest.getRecordType(),
@@ -420,12 +427,5 @@ public final class FitnessRecordDeleteHelper {
                 /* recordTypeIds= */ null,
                 /* shouldRecordAccessLog= */ false,
                 /* enforceSelfDelete= */ false);
-    }
-
-    private void enforcePackageCheck(UUID uuid, long readDataAppInfoId, String callingPackageName) {
-        long callingAppInfoId = mAppInfoHelper.getAppInfoId(callingPackageName);
-        if (callingAppInfoId != readDataAppInfoId) {
-            throw new IllegalArgumentException(callingAppInfoId + " is not the owner for " + uuid);
-        }
     }
 }
