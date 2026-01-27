@@ -16,6 +16,8 @@
 
 package com.android.healthconnect.controller.matchmaking
 
+import android.health.connect.HealthConnectManager.EXTRA_EXCLUDED_DATA_SOURCES
+import android.health.connect.HealthConnectManager.EXTRA_INCLUDED_DATA_SOURCES
 import android.health.connect.HealthConnectManager.EXTRA_RECORD_TYPES
 import android.os.Bundle
 import android.util.Log
@@ -28,6 +30,8 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.dialog.HealthConnectBottomSheetDialogFragment
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
+import com.android.healthfitness.flags.Flags.deviceDataProvidersUiMatchmakingScreen
 import com.android.healthfitness.flags.Flags.matchmaking
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -91,13 +95,33 @@ class MatchmakingActivity :
             return
         }
 
+        val recordTypeNames = intent.getStringArrayExtra(EXTRA_RECORD_TYPES)
+
+        var includedDataSources: Array<String>? = null
+        var excludedDataSources: Array<String>? = null
+
+        if (deviceDataProvidersApi() && deviceDataProvidersUiMatchmakingScreen()) {
+            includedDataSources = intent.getStringArrayExtra(EXTRA_INCLUDED_DATA_SOURCES)
+            excludedDataSources = intent.getStringArrayExtra(EXTRA_EXCLUDED_DATA_SOURCES)
+
+            // Fail if both are non-empty.
+            if (!includedDataSources.isNullOrEmpty() && !excludedDataSources.isNullOrEmpty()) {
+                finishWithCancelResult()
+                return
+            }
+        }
+
         setContentView(R.layout.activity_matchmaking)
         loadingView = findViewById(R.id.loading)
         errorView = findViewById(R.id.error_view)
 
         if (savedInstanceState == null) {
-            val recordTypeNames = intent.getStringArrayExtra(EXTRA_RECORD_TYPES)
-            viewModel.loadMatchmakingData(callingPackage, recordTypeNames)
+            viewModel.loadMatchmakingData(
+                callingPackage,
+                recordTypeNames,
+                includedDataSources,
+                excludedDataSources,
+            )
         }
 
         viewModel.matchmakingState.observe(this) { state ->

@@ -16,6 +16,8 @@
 
 package com.android.healthconnect.controller.tests.matchmaking
 
+import android.app.Activity
+import android.app.Instrumentation
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -24,6 +26,7 @@ import android.graphics.drawable.Drawable
 import android.health.connect.DeviceDataProviderInfo
 import android.health.connect.DeviceDataSourceInfo
 import android.health.connect.HealthConnectManager
+import android.health.connect.HealthConnectManager.ACTION_SHOW_DEVICE_ONBOARDING
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Device
 import android.health.connect.datatypes.StepsRecord
@@ -31,6 +34,7 @@ import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.MutableLiveData
+import androidx.preference.PreferenceCategory
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -41,10 +45,15 @@ import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
+import androidx.test.espresso.intent.Intents
+import androidx.test.espresso.intent.Intents.intended
+import androidx.test.espresso.intent.Intents.intending
+import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.ViewMatchers.Visibility.GONE
 import androidx.test.espresso.matcher.ViewMatchers.Visibility.VISIBLE
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isChecked
+import androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -118,6 +127,12 @@ class MatchmakingFragmentTest {
     private val context: Context = ApplicationProvider.getApplicationContext()
     private val atLeastOnePermissionGranted = MutableLiveData(false)
     private val allPermissionsGranted = MutableLiveData(false)
+    private val hasSelectedDevice = MutableLiveData(false)
+    private val hasSelectedApp = MutableLiveData(false)
+    private val ddpOnboardingState =
+        MutableLiveData<MatchmakingViewModel.DdpOnboardingState>(
+            MatchmakingViewModel.DdpOnboardingState.Setup
+        )
     private val grantedPermissions =
         MutableLiveData<Map<String, List<FitnessPermission>>>(emptyMap())
 
@@ -133,6 +148,9 @@ class MatchmakingFragmentTest {
         whenever(viewModel.allPermissionsGranted).thenReturn(allPermissionsGranted)
         whenever(viewModel.grantedPermissions).thenReturn(grantedPermissions)
         whenever(viewModel.matchingAppsCount).thenReturn(matchingAppsCount)
+        whenever(viewModel.hasSelectedDevice).thenReturn(hasSelectedDevice)
+        whenever(viewModel.hasSelectedApp).thenReturn(hasSelectedApp)
+        whenever(viewModel.ddpOnboardingState).thenReturn(ddpOnboardingState)
         whenever(deviceInfoUtils.isHealthConnectAvailable(any())).thenReturn(true)
         whenever(viewModel.enabledDevicePackages).thenReturn(MutableLiveData(emptySet()))
     }
@@ -189,20 +207,27 @@ class MatchmakingFragmentTest {
                         .commitNow()
                 }
 
-                onView(withText("Share data between apps"))
+                onView(withText(context.getString(R.string.matchmaking_screen_title)))
                     .perform(scrollTo())
                     .check(matches(isDisplayed()))
-                onView(withText("Share data between apps"))
+                onView(withText(context.getString(R.string.matchmaking_screen_title)))
                     .perform(scrollTo())
                     .check(matches(isDisplayed()))
                 onView(
                         withText(
-                            "Allow the Calling App app to read data from other apps on this device using Health\u00A0Connect. This data can also be read by other apps you give access to."
+                            context.getString(R.string.matchmaking_screen_summary, CALLING_APP_NAME)
                         )
                     )
                     .perform(scrollTo())
                     .check(matches(isDisplayed()))
-                onView(withText("Data from $TEST_APP_NAME"))
+                onView(
+                        withText(
+                            context.getString(
+                                R.string.matchmaking_screen_data_from_app,
+                                TEST_APP_NAME,
+                            )
+                        )
+                    )
                     .perform(scrollTo())
                     .check(matches(isDisplayed()))
                 onView(withText("1 of 2 selected"))
@@ -398,7 +423,8 @@ class MatchmakingFragmentTest {
 
                 scrollToTextAndClick("Data from $TEST_APP_NAME")
                 scrollToTextAndClick("Exercise")
-                onView(withText("Allow")).perform(click())
+                onView(allOf(withText("Allow"), isDescendantOfA(withId(R.id.action_container))))
+                    .perform(click())
 
                 verify(viewModel).grantPermissions()
                 verify(logger).logInteraction(MatchmakingElement.MATCHMAKING_EXPANDABLE_PREFERENCE)
@@ -433,7 +459,7 @@ class MatchmakingFragmentTest {
             )
         )
 
-        ActivityScenario.launch<TestActivity>(
+        ActivityScenario.launchActivityForResult<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     putExtra(
                         HealthConnectManager.EXTRA_RECORD_TYPES,
@@ -450,7 +476,13 @@ class MatchmakingFragmentTest {
                         .commitNow()
                 }
 
-                onView(withText("Don\u0027t allow")).perform(click())
+                onView(
+                        allOf(
+                            withText("Don\u0027t allow"),
+                            isDescendantOfA(withId(R.id.action_container)),
+                        )
+                    )
+                    .perform(click())
 
                 verify(viewModel).removeAllPermissionsFromGrantedList(CALLING_PACKAGE_NAME)
                 verify(logger).logInteraction(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
@@ -479,7 +511,7 @@ class MatchmakingFragmentTest {
         )
         expandedKeys.postValue(emptySet())
 
-        ActivityScenario.launch<TestActivity>(
+        ActivityScenario.launchActivityForResult<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     putExtra(
                         HealthConnectManager.EXTRA_RECORD_TYPES,
@@ -670,15 +702,8 @@ class MatchmakingFragmentTest {
                 ),
             )
         val apps = listOf(appWithMultiplePermissions)
-        matchmakingState.postValue(
-            MatchmakingViewModel.MatchmakingState.WithData(
-                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
-                apps,
-                emptyList(),
-            )
-        )
 
-        ActivityScenario.launch<TestActivity>(
+        ActivityScenario.launchActivityForResult<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     putExtra(
                         HealthConnectManager.EXTRA_RECORD_TYPES,
@@ -688,6 +713,12 @@ class MatchmakingFragmentTest {
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
+                    matchmakingState.value =
+                        MatchmakingViewModel.MatchmakingState.WithData(
+                            AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                            apps,
+                            emptyList(),
+                        )
                     val fragment = MatchmakingFragment()
                     activity.supportFragmentManager
                         .beginTransaction()
@@ -696,7 +727,13 @@ class MatchmakingFragmentTest {
                 }
 
                 scrollToText("Data from $TEST_APP_NAME")
-                onView(allOf(withId(R.id.switch_widget))).perform(click())
+                onView(
+                        allOf(
+                            withId(R.id.switch_widget),
+                            isDescendantOfA(hasDescendant(withText("Data from $TEST_APP_NAME"))),
+                        )
+                    )
+                    .perform(click())
 
                 verify(viewModel, times(1)).addAllPermissionsToGrantedList(TEST_APP_PACKAGE_NAME)
             }
@@ -714,22 +751,13 @@ class MatchmakingFragmentTest {
                 ),
             )
         val apps = listOf(appWithMultiplePermissions)
-        matchmakingState.postValue(
-            MatchmakingViewModel.MatchmakingState.WithData(
-                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
-                apps,
-                emptyList(),
-            )
-        )
-        // Initially grant all permissions for this app so we can toggle them off
-        whenever(viewModel.grantedPermissions)
-            .thenReturn(
-                MutableLiveData(
-                    mapOf(TEST_APP_PACKAGE_NAME to appWithMultiplePermissions.permissions)
-                )
-            )
 
-        ActivityScenario.launch<TestActivity>(
+        // Initially grant all permissions for this app so we can toggle them off
+        grantedPermissions.postValue(
+            mapOf(TEST_APP_PACKAGE_NAME to appWithMultiplePermissions.permissions)
+        )
+
+        ActivityScenario.launchActivityForResult<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
                     putExtra(
                         HealthConnectManager.EXTRA_RECORD_TYPES,
@@ -739,6 +767,12 @@ class MatchmakingFragmentTest {
             )
             .use { scenario ->
                 scenario.onActivity { activity ->
+                    matchmakingState.value =
+                        MatchmakingViewModel.MatchmakingState.WithData(
+                            AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                            apps,
+                            emptyList(),
+                        )
                     val fragment = MatchmakingFragment()
                     activity.supportFragmentManager
                         .beginTransaction()
@@ -747,7 +781,13 @@ class MatchmakingFragmentTest {
                 }
 
                 scrollToText("Data from $TEST_APP_NAME")
-                onView(allOf(withId(R.id.switch_widget))).perform(click())
+                onView(
+                        allOf(
+                            withId(R.id.switch_widget),
+                            isDescendantOfA(hasDescendant(withText("Data from $TEST_APP_NAME"))),
+                        )
+                    )
+                    .perform(click())
 
                 verify(viewModel, times(1))
                     .removeAllPermissionsFromGrantedList(TEST_APP_PACKAGE_NAME)
@@ -866,6 +906,7 @@ class MatchmakingFragmentTest {
                 )
             )
 
+        whenever(viewModel.enabledDevicePackages).thenReturn(MutableLiveData(emptySet()))
         matchmakingState.postValue(
             MatchmakingViewModel.MatchmakingState.WithData(
                 AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
@@ -955,6 +996,353 @@ class MatchmakingFragmentTest {
                 scenario.recreate()
 
                 onView(allOf(withId(R.id.switch_widget), isDisplayed())).check(matches(isChecked()))
+            }
+    }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_MATCHMAKING,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun matchmakingFragment_allowAndContinuePermissionsClicked_interactionIsLogged() {
+
+        val selectedDevice =
+            MatchmakingDeviceData(
+                DeviceDataSourceInfo(
+                    DataOrigin.Builder().setPackageName("com.example.watchdevice").build(),
+                    Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel Watch")
+                        .setType(2)
+                        .build(),
+                    false,
+                    listOf(
+                        DeviceDataProviderInfo(
+                            "com.google.android.apps.fitness",
+                            "MyFit",
+                            "",
+                            "",
+                            emptySet(),
+                        )
+                    ),
+                ),
+                emptyList(),
+            )
+        val app =
+            MatchmakingAppData(
+                AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                listOf(FitnessPermission(FitnessPermissionType.EXERCISE, READ)),
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                listOf(app),
+                listOf(selectedDevice),
+            )
+        )
+        hasSelectedApp.postValue(true)
+        hasSelectedDevice.postValue(true)
+        atLeastOnePermissionGranted.postValue(true)
+
+        ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = MatchmakingFragment()
+
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, fragment)
+                        .commitNow()
+                }
+
+                onView(withText("Allow and continue")).perform(click())
+                verify(viewModel).grantPermissions()
+                verify(logger).logInteraction(PermissionsElement.ALLOW_PERMISSIONS_BUTTON)
+            }
+    }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_MATCHMAKING,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun matchmakingFragment_ddpIntentResult_notifiesViewModel() {
+        val ddpIntent = Intent(ACTION_SHOW_DEVICE_ONBOARDING)
+        ddpIntent.setPackage("com.example.provider")
+
+        Intents.init()
+        try {
+            val result = Instrumentation.ActivityResult(Activity.RESULT_OK, Intent())
+            intending(hasAction(ACTION_SHOW_DEVICE_ONBOARDING)).respondWith(result)
+
+            ActivityScenario.launch<TestActivity>(
+                    Intent(context, TestActivity::class.java).apply {
+                        putExtra(
+                            HealthConnectManager.EXTRA_RECORD_TYPES,
+                            arrayOf(StepsRecord::class.java.name),
+                        )
+                    }
+                )
+                .use { scenario ->
+                    scenario.onActivity { activity ->
+                        activity.supportFragmentManager
+                            .beginTransaction()
+                            .add(android.R.id.content, MatchmakingFragment())
+                            .commitNow()
+                    }
+
+                    // Trigger the intent launch via ViewModel state
+                    scenario.onActivity {
+                        ddpOnboardingState.value =
+                            MatchmakingViewModel.DdpOnboardingState.Onboarding(ddpIntent)
+                    }
+                    // Verify intent was launched
+                    intended(
+                        hasAction(
+                            android.health.connect.HealthConnectManager
+                                .ACTION_SHOW_DEVICE_ONBOARDING
+                        )
+                    )
+                    // Verify the onboarding event was consumed
+                    verify(viewModel).consumeDdpOnboardingEvent()
+                    // Verify ViewModel was notified of the result
+                    verify(viewModel).onDdpIntentFinished(Activity.RESULT_OK)
+                }
+        } finally {
+            Intents.release()
+        }
+    }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_MATCHMAKING,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun matchmakingFragment_ddpFlowFinished_finishesActivity() {
+        ActivityScenario.launchActivityForResult<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, MatchmakingFragment())
+                        .commitNow()
+                }
+
+                // Trigger the flow finished state
+                scenario.onActivity {
+                    ddpOnboardingState.value =
+                        MatchmakingViewModel.DdpOnboardingState.Finished(Activity.RESULT_OK)
+                }
+
+                // Verify the finished event was consumed
+                verify(viewModel).consumeDdpOnboardingEvent()
+                // Verify the activity is finished (Scenario.getResult() will provide the result
+                // once finished)
+                assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
+            }
+    }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_MATCHMAKING,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun matchmakingFragment_buttonText_updatesCorrectly() {
+        val app =
+            MatchmakingAppData(
+                AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                listOf(FitnessPermission(FitnessPermissionType.EXERCISE, READ)),
+            )
+        val device =
+            MatchmakingDeviceData(
+                DeviceDataSourceInfo(
+                    DataOrigin.Builder().setPackageName("com.example.watchdevice").build(),
+                    Device.Builder().setManufacturer("Google").setModel("Watch").setType(2).build(),
+                    false,
+                    emptyList(),
+                ),
+                emptyList(),
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                listOf(app),
+                listOf(device),
+            )
+        )
+
+        ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, MatchmakingFragment())
+                        .commitNow()
+                }
+
+                // Initial state: nothing selected, Allow button disabled
+                onView(withId(R.id.primary_button_outline))
+                    .check(matches(withText(R.string.request_permissions_allow)))
+
+                // Select App only
+                hasSelectedApp.postValue(true)
+                hasSelectedDevice.postValue(false)
+                onView(withId(R.id.primary_button_outline))
+                    .check(matches(withText(R.string.request_permissions_allow)))
+
+                // Select Device only
+                hasSelectedApp.postValue(false)
+                hasSelectedDevice.postValue(true)
+                onView(withId(R.id.primary_button_outline))
+                    .check(
+                        matches(
+                            withText(R.string.migration_pending_permissions_dialog_button_continue)
+                        )
+                    )
+
+                // Select Both
+                hasSelectedApp.postValue(true)
+                hasSelectedDevice.postValue(true)
+                onView(withId(R.id.primary_button_outline))
+                    .check(matches(withText(R.string.allow_and_continue)))
+            }
+    }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_MATCHMAKING,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun matchmakingFragment_withOneDeviceAndZeroApps_hidesAllowAll() {
+        val selectedDevice =
+            MatchmakingDeviceData(
+                DeviceDataSourceInfo(
+                    DataOrigin.Builder().setPackageName("com.example.watchdevice").build(),
+                    Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel Watch")
+                        .setType(2)
+                        .build(),
+                    false,
+                    listOf(
+                        DeviceDataProviderInfo(
+                            "com.google.android.apps.fitness",
+                            "MyFit",
+                            "",
+                            "",
+                            emptySet(),
+                        )
+                    ),
+                ),
+                emptyList(),
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                emptyList(),
+                listOf(selectedDevice),
+            )
+        )
+
+        ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, MatchmakingFragment())
+                        .commitNow()
+                }
+
+                onView(withText("Allow all")).check(doesNotExist())
+            }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun grantedPermissionsUpdate_appNotFound_doesNotCrash() {
+        val apps =
+            listOf(
+                MatchmakingAppData(
+                    AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                    listOf(FitnessPermission(FitnessPermissionType.EXERCISE, READ)),
+                )
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                apps,
+                emptyList(),
+            )
+        )
+
+        ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = MatchmakingFragment()
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, fragment)
+                        .commitNow()
+
+                    // Manually add a preference with a key that is not in the apps list
+                    val category =
+                        fragment.findPreference<PreferenceCategory>("matchmaking_apps_category")
+                    val fakePreference = HealthExpandablePreference(context, null)
+                    fakePreference.key = "fake.package"
+                    category?.addPreference(fakePreference)
+                }
+
+                // Update granted permissions for the fake package - should not crash
+                grantedPermissions.postValue(
+                    mapOf(
+                        "fake.package" to
+                            listOf(FitnessPermission(FitnessPermissionType.EXERCISE, READ))
+                    )
+                )
+
+                onView(withText(context.getString(R.string.matchmaking_screen_title)))
+                    .check(matches(isDisplayed()))
             }
     }
 }

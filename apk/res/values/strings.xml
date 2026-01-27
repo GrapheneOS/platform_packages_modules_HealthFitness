@@ -542,6 +542,7 @@
     <string name="request_permissions_allow" description="Label for button to allow an app to have the selected permissions for the user's data [CHAR_LIMIT=20]">Allow</string>
     <string name="request_permissions_allow_all" description="Label for button to allow an app to have the selected permissions for the user's data [CHAR_LIMIT=20]">Allow all</string>
     <string name="request_permissions_dont_allow" description="Label for button to allow an app to have the selected permissions for the user's data [CHAR_LIMIT=20]">Don\'t allow</string>
+    <string name="allow_and_continue" description="Label for button to allow and continue, used when selecting device preferences [CHAR_LIMIT=30]">Allow and continue</string>
     <string name="request_fitness_permissions_data_access_type_read_write" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose data you want this app to read or write to Health&#160;Connect</string>
     <string name="request_fitness_permissions_data_access_type_read" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose data you want this app to read from Health&#160;Connect</string>
     <string name="request_fitness_permissions_data_access_type_write" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose data you want this app to write to Health&#160;Connect</string>
