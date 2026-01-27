@@ -40,6 +40,8 @@ import android.health.connect.aidl.DeleteUsingFiltersRequestParcel;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
+import android.health.connect.datatypes.Identifier;
+import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
@@ -54,6 +56,7 @@ import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper.DeviceInfo;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
+import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
@@ -79,6 +82,7 @@ import java.util.Set;
 public class DeviceDataProviderManager {
 
     private static final String TAG = "DeviceDataProviderManager";
+    private static final String TRACKING_PREFERENCE_PREFIX = "TRACKING_PREF_";
 
     private final Context mContext;
     private final DeviceInfoHelper mDeviceInfoHelper;
@@ -90,6 +94,7 @@ public class DeviceDataProviderManager {
     private final FitnessRecordReadHelper mFitnessRecordReadHelper;
     private final FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
     private final SyntheticPackageNameCreator mSyntheticPackageNameCreator;
+    private final PreferenceHelper mPreferenceHelper;
 
     @Nullable private String mStableCurrentDeviceId;
 
@@ -106,7 +111,8 @@ public class DeviceDataProviderManager {
             @NonNull FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             @NonNull FitnessRecordReadHelper fitnessRecordReadHelper,
             @NonNull FitnessRecordDeleteHelper fitnessRecordDeleteHelper,
-            @NonNull SyntheticPackageNameCreator syntheticPackageNameCreator) {
+            @NonNull SyntheticPackageNameCreator syntheticPackageNameCreator,
+            @NonNull PreferenceHelper preferenceHelper) {
         mContext = requireNonNull(context);
         mDeviceInfoHelper = requireNonNull(deviceInfoHelper);
         mAppInfoHelper = requireNonNull(appInfoHelper);
@@ -117,6 +123,7 @@ public class DeviceDataProviderManager {
         mFitnessRecordReadHelper = fitnessRecordReadHelper;
         mFitnessRecordDeleteHelper = Objects.requireNonNull(fitnessRecordDeleteHelper);
         mSyntheticPackageNameCreator = requireNonNull(syntheticPackageNameCreator);
+        mPreferenceHelper = requireNonNull(preferenceHelper);
     }
 
     /**
@@ -667,9 +674,9 @@ public class DeviceDataProviderManager {
     }
 
     /**
-     * Advertises all native tracking capabilities of this device on behalf of the system.
-     *
-     * <p>This method should be called at device startup only.
+     * Advertises all native tracking capabilities of this device on behalf of the system with the
+     * enablement of each native capability corresponding to its native tracking preference prefixed
+     * with "TRACKING_PREF_".
      */
     public void advertiseCurrentDeviceNativeCapabilities() {
         DeviceDataSource currentDeviceSource = mDeviceDataSourceHelper.getCurrentDevice(mContext);
@@ -683,12 +690,17 @@ public class DeviceDataProviderManager {
                         .build();
 
         // TODO(b/468339751): Have one shared public source for all native capability types
+        String stepsTrackingEnabledPref =
+                mPreferenceHelper.getPreference(getNativeTrackingPrefKey(StepsRecord.class));
+        boolean stepsTrackingEnabled =
+                Objects.isNull(stepsTrackingEnabledPref)
+                        || Boolean.parseBoolean(stepsTrackingEnabledPref);
+
         Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
                 Set.of(
                         new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
                                 .setAvailable(hasPedometer())
-                                // TODO(b/468250208): Set to preference
-                                .setUserEnabled(true)
+                                .setUserEnabled(stepsTrackingEnabled)
                                 // TODO(b/469717403): Decide Matchmaking behavior
                                 .build());
 
@@ -820,5 +832,18 @@ public class DeviceDataProviderManager {
         }
 
         return !Objects.isNull(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER));
+    }
+
+    /**
+     * Constructs the preference key which saves if users have enabled or disabled native tracking
+     * for {@code dataType}.
+     *
+     * <p>This constant is from the prefix {@code HealthConnectManager#TRACKING_PREFERENCE_PREFIX}
+     * and suffix from the {@code RecordTypeIdentifier} for {@code dataType}.
+     */
+    @VisibleForTesting
+    public static String getNativeTrackingPrefKey(@NonNull Class<? extends Record> dataType) {
+        return TRACKING_PREFERENCE_PREFIX
+                + dataType.getAnnotation(Identifier.class).recordIdentifier();
     }
 }

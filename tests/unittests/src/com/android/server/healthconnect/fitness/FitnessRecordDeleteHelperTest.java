@@ -126,6 +126,7 @@ public class FitnessRecordDeleteHelperTest {
                             injector.getFitnessRecordReadHelper(),
                             injector.getFitnessRecordDeleteHelper(),
                             injector.getSyntheticPackageNameCreator(),
+                            injector.getPreferenceHelper(),
                             true);
             mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         }
