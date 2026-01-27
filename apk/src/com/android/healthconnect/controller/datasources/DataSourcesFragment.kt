@@ -44,6 +44,7 @@ import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.logging.DataSourcesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsSpinnerAdapter
@@ -226,7 +227,8 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
                 order = 5,
                 listener = {
                     findNavController()
-                        .navigate(
+                        .navigateSafe(
+                            R.id.dataSourcesFragment,
                             R.id.action_dataSourcesFragment_to_addAnAppFragment,
                             Bundle().apply { putInt(CATEGORY_KEY, currentCategorySelection) },
                         )

@@ -61,6 +61,7 @@ import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.logging.AppAccessElement.ADDITIONAL_ACCESS_BUTTON
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.showLoadingDialog
 import com.android.healthfitness.flags.Flags.permissionsGroupingSettingsFitnessAppScreen
@@ -264,7 +265,8 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
                             val extras =
                                 Bundle().apply { putString(EXTRA_PACKAGE_NAME, packageName) }
                             findNavController()
-                                .navigate(
+                                .navigateSafe(
+                                    R.id.settingsFitnessAppFragment,
                                     R.id.action_settingsFitnessApp_to_additionalAccessFragment,
                                     extras,
                                 )

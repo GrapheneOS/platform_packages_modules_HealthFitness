@@ -43,6 +43,7 @@ import com.android.healthconnect.controller.utils.logging.ConnectTwoAppsOnboardi
 import com.android.healthconnect.controller.utils.logging.ElementName
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
 import com.android.settingslib.widget.FooterPreference
@@ -324,7 +325,8 @@ class ConnectAppsOnboardingFragment : Hilt_ConnectAppsOnboardingFragment() {
                     )
                 if (!onboardingLaunched) {
                     findNavController()
-                        .navigate(
+                        .navigateSafe(
+                            R.id.connectAppsOnboardingFragment,
                             R.id
                                 .action_connectAppsOnboardingFragment_to_fitnessAppOnboardingFragment,
                             Bundle().apply {

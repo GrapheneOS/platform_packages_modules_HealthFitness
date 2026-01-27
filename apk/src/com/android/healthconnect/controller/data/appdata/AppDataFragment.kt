@@ -53,6 +53,7 @@ import com.android.healthconnect.controller.utils.logging.AppDataElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.ToolbarElement
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupMenu
@@ -259,7 +260,8 @@ open class AppDataFragment : Hilt_AppDataFragment() {
             DeletionPermissionTypesPreference(requireContext(), viewModel) { _ ->
                 logger.logInteraction(AppDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
                 findNavController()
-                    .navigate(
+                    .navigateSafe(
+                        R.id.appDataFragment,
                         R.id.action_appData_to_appEntries,
                         Bundle().apply {
                             putString(EXTRA_PACKAGE_NAME, packageName)
@@ -378,7 +380,8 @@ open class AppDataFragment : Hilt_AppDataFragment() {
         val pref =
             DeletionPermissionTypesPreference(requireContext(), viewModel) {
                 findNavController()
-                    .navigate(
+                    .navigateSafe(
+                        R.id.appDataFragment,
                         R.id.action_appData_to_appEntries,
                         Bundle().apply {
                             putString(EXTRA_PACKAGE_NAME, packageName)

@@ -48,6 +48,7 @@ import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.logging.AppAccessElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.showLoadingDialog
 import com.android.settingslib.widget.FooterPreference
@@ -215,7 +216,8 @@ class MedicalAppFragment : Hilt_MedicalAppFragment() {
                             val extras =
                                 Bundle().apply { putString(EXTRA_PACKAGE_NAME, packageName) }
                             findNavController()
-                                .navigate(
+                                .navigateSafe(
+                                    R.id.medicalAppFragment,
                                     R.id.action_medicalAppFragment_to_additionalAccessFragment,
                                     extras,
                                 )
@@ -233,7 +235,8 @@ class MedicalAppFragment : Hilt_MedicalAppFragment() {
                 it.title = getString(R.string.see_app_data)
                 it.setOnPreferenceClickListener {
                     findNavController()
-                        .navigate(
+                        .navigateSafe(
+                            R.id.medicalAppFragment,
                             R.id.action_medicalApp_to_appData,
                             Bundle().apply {
                                 putString(EXTRA_PACKAGE_NAME, packageName)

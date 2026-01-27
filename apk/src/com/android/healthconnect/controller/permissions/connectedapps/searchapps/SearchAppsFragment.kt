@@ -48,6 +48,7 @@ import com.android.healthconnect.controller.shared.preference.HealthPreferenceFr
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.settingslib.widget.SettingsThemeHelper
 import com.android.settingslib.widget.TopIntroPreference
@@ -256,7 +257,8 @@ class SearchAppsFragment : Hilt_SearchAppsFragment() {
                     R.id.action_searchApps_to_combinedPermissions
             }
         findNavController()
-            .navigate(
+            .navigateSafe(
+                R.id.searchConnectedApps,
                 navigationId,
                 Bundle().apply {
                     putString(EXTRA_PACKAGE_NAME, app.appMetadata.packageName)

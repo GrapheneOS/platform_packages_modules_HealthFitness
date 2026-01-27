@@ -35,6 +35,7 @@ import com.android.healthconnect.controller.shared.preference.HealthSwitchPrefer
 import com.android.healthconnect.controller.shared.preference.WarningPreference
 import com.android.healthconnect.controller.shared.preference.addIntroOrPermissionHeaderPreference
 import com.android.healthconnect.controller.utils.AttributeResolver
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -82,7 +83,8 @@ class DeviceManagementFragment : Hilt_DeviceManagementFragment() {
             }
             deviceDataButton.setOnPreferenceClickListener {
                 findNavController()
-                    .navigate(
+                    .navigateSafe(
+                        R.id.deviceManagementFragment,
                         R.id.action_deviceManagementFragment_to_appData,
                         Bundle().apply {
                             putString(EXTRA_PACKAGE_NAME, DEVICE_DATA_PROVIDER_PACKAGE)

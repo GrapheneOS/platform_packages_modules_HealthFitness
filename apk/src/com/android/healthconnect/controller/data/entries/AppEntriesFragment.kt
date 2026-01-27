@@ -45,6 +45,7 @@ import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.ToolbarElement
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.setupSharedMenu
@@ -86,7 +87,8 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
         object : OnClickEntryListener {
             override fun onItemClicked(id: String, index: Int) {
                 findNavController()
-                    .navigate(
+                    .navigateSafe(
+                        R.id.appEntriesFragment,
                         R.id.action_appEntriesFragment_to_dataEntryDetailsFragment,
                         DataEntryDetailsFragment.createBundle(
                             permissionType as FitnessPermissionType,
@@ -104,7 +106,8 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
 
             override fun onItemClicked(id: MedicalResourceId, index: Int) {
                 findNavController()
-                    .navigate(
+                    .navigateSafe(
+                        R.id.appEntriesFragment,
                         R.id.action_appEntriesFragment_to_rawFhirFragment,
                         Bundle().apply {
                             putParcelable(RawFhirFragment.MEDICAL_RESOURCE_ID_KEY, id)
@@ -118,7 +121,8 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
             ) {
 
                 findNavController()
-                    .navigate(
+                    .navigateSafe(
+                        R.id.appEntriesFragment,
                         R.id.action_appEntriesFragment_to_prettyFhirFragment,
                         PrettyFhirFragment.createBundle(
                             header = dataEntry.header,
@@ -218,7 +222,11 @@ class AppEntriesFragment : Hilt_AppEntriesFragment() {
 
             R.id.menu_open_units -> {
                 logger.logInteraction(ToolbarElement.TOOLBAR_UNITS_BUTTON)
-                findNavController().navigate(R.id.action_appEntriesFragment_to_setUnitsFragment)
+                findNavController()
+                    .navigateSafe(
+                        R.id.appEntriesFragment,
+                        R.id.action_appEntriesFragment_to_setUnitsFragment,
+                    )
                 true
             }
 
