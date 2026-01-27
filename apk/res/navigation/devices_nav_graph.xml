@@ -29,6 +29,10 @@
         <action
             android:id="@+id/action_newDevicesFragment_to_currentDeviceManagementFragment"
             app:destination="@id/currentDeviceManagementFragment" />
+
+        <action
+            android:id="@+id/action_newDevicesFragment_to_deviceDataProviderFragment"
+            app:destination="@id/deviceDataProviderFragment" />
     </fragment>
 
     <fragment
@@ -41,6 +45,21 @@
         <action
             android:id="@+id/action_currentDeviceManagementFragment_to_appData"
             app:destination="@id/app_data_nav_graph" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/deviceDataProviderFragment"
+        android:name="com.android.healthconnect.controller.newDevices.DeviceDataProviderFragment"
+        android:label="@string/device_data_provider_screen_title">
+        <argument
+            android:name="android.intent.extra.PACKAGE_NAME"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_deviceDataProviderFragment_to_appData"
+            app:destination="@id/app_data_nav_graph" />
+        <action
+            android:id="@+id/action_deviceDataProviderFragment_to_currentDeviceManagementFragment"
+            app:destination="@id/currentDeviceManagementFragment" />
     </fragment>
 
 </navigation>

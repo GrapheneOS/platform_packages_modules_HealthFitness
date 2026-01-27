@@ -1897,6 +1897,10 @@
     <string name="devices_screen_enabled_devices_header" description="Title shown for the section of enabled devices [CHAR_LIMIT=NONE]">Enabled</string>
     <string name="devices_screen_not_enabled_devices_header" description="Title shown for the section of devices that are not enabled [CHAR_LIMIT=NONE]">Not enabled</string>
     <string name="devices_this_phone" description="Preference summary text that indicates that the specified device is the current device (phone) rather than a peripheral device such as a watch. [CHAR_LIMIT=40]">This phone</string>
+    <string name="device_data_provider_screen_title" description="Title for the device data provider screen, displaying device settings for each provider. [CHAR_LIMIT=40]">Device access</string>
+    <string name="manage_device_settings" description="Label for the button in which users can go to a device data provider's settings, or a device's settings [CHAR_LIMIT=40]"><xliff:g id="ddp_name" example="Health Connect">%1$s</xliff:g> settings</string>
+    <string name="device_data_provider_enabled_types" description="Subheader for the button in which users can go to a device data provider's settings, or a device's settings that displays how many of the available data types are enabled [CHAR_LIMIT=40]"><xliff:g id="enabled_types" example="0">%1$d</xliff:g> of <xliff:g id="all_types" example="3">%2$d</xliff:g> enabled</string>
+
 
     <string name="device_type_unknown" description="A unknown device.">Unknown</string>
     <string name="device_type_watch" description="A smartwatch device. ">Watch</string>

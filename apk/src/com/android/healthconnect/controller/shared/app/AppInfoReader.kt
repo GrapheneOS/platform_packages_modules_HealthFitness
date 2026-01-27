@@ -21,8 +21,11 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.ApplicationInfoFlags
+import android.health.connect.device.SyntheticPackageNameMatcher
 import android.provider.Settings
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
+import com.android.healthconnect.controller.utils.isDevicePackage
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -44,12 +47,12 @@ constructor(
             if (packageName == DEVICE_DATA_PROVIDER_PACKAGE) {
                 return getWithCurrentDeviceName(it)
             }
-
             return it
         }
-        // Always read the DDP package directly from the service - package manager will return
-        // something like "Android System" which we don't want to display.
-        if (packageName != DEVICE_DATA_PROVIDER_PACKAGE) {
+
+        // Always read device packages directly from the service, as these are either unknown
+        // or non-sensical from the package manager
+        if (!isDevicePackage(packageName)) {
             try {
                 val app =
                     AppMetadata(
@@ -67,8 +70,14 @@ constructor(
             }
         }
         val contributorApps = applicationsInfoUseCase.invoke()
-        // TODO(b/422986550): Do not cache DDP packages
-        cache.putAll(contributorApps)
+
+        // Devices can change their display name. Exclude them from the cache
+        cache.putAll(
+            contributorApps.filterNot {
+                !deviceDataProvidersApi() || SyntheticPackageNameMatcher.matches(it.key)
+            }
+        )
+
         return if (contributorApps.containsKey(packageName)) {
             contributorApps[packageName]!!
         } else {

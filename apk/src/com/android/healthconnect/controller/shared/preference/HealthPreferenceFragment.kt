@@ -105,10 +105,18 @@ abstract class HealthPreferenceFragment : SettingsBasePreferenceFragment() {
         return adapter
     }
 
+    /**
+     * Sets the loading state. This method also updates the error state visibility. Only use this or
+     * [setError] when updating the state.
+     */
     protected fun setLoading(isLoading: Boolean, animate: Boolean = true) {
         setLoading(isLoading, animate, false)
     }
 
+    /**
+     * Sets the error state. This method also updates the loading state visibility. Only use this or
+     * [setLoading] when updating the state.
+     */
     protected fun setError(hasError: Boolean, @StringRes errorText: Int = R.string.default_error) {
         if (this.hasError != hasError) {
             this.hasError = hasError
