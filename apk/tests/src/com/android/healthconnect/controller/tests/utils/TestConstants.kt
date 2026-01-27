@@ -15,8 +15,6 @@
  */
 package com.android.healthconnect.controller.tests.utils
 
-import android.health.connect.DeviceDataProviderInfo
-import android.health.connect.DeviceDataSourceInfo
 import android.health.connect.datatypes.BasalMetabolicRateRecord
 import android.health.connect.datatypes.BodyTemperatureMeasurementLocation
 import android.health.connect.datatypes.BodyTemperatureRecord
@@ -57,7 +55,6 @@ import android.health.connect.datatypes.units.Power
 import android.health.connect.datatypes.units.Temperature
 import android.health.connect.datatypes.units.Velocity
 import android.health.connect.datatypes.units.Volume
-import android.health.connect.device.DeviceDataTypeAdvertisement
 import android.net.Uri
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedMedicalDataEntry
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
@@ -573,65 +570,6 @@ val OLD_TEST_APP =
         packageName = OLD_PERMISSIONS_TEST_APP_PACKAGE_NAME,
         appName = OLD_APP_NAME,
         icon = null,
-    )
-// endregion
-
-// region devices
-const val TEST_PHONE_SPN = "com.android.healthconnect.phone.jd5bdd37e1a8d3667a05d0abebfc4a89e"
-const val TEST_WATCH_SPN = "com.android.healthconnect.watch.jc45bd741a7123764b514e2c27df9fe41"
-const val TEST_PHONE_APP_NAME = "A phone"
-val TEST_PHONE_APP =
-    AppMetadata(packageName = TEST_PHONE_SPN, appName = TEST_PHONE_APP_NAME, icon = null)
-val TEST_DEVICE_DATA_SOURCES_INFO =
-    setOf(
-        DeviceDataSourceInfo(
-            DataOrigin.Builder().setPackageName(TEST_WATCH_SPN).build(),
-            Device.Builder()
-                .setDisplayName("Some watch")
-                .setModel("Some model")
-                .setManufacturer("Some manufacturer")
-                .setType(Device.DEVICE_TYPE_WATCH)
-                .build(),
-            false,
-            listOf(
-                DeviceDataProviderInfo(
-                    "testDdp",
-                    "deviceId",
-                    "",
-                    "",
-                    setOf(
-                        DeviceDataTypeAdvertisement.Builder(SleepSessionRecord::class.java)
-                            .setAvailable(true)
-                            .setUserEnabled(true)
-                            .build()
-                    ),
-                )
-            ),
-        ),
-        DeviceDataSourceInfo(
-            DataOrigin.Builder().setPackageName(TEST_PHONE_SPN).build(),
-            Device.Builder()
-                .setDisplayName("Some phone")
-                .setModel("Some model")
-                .setManufacturer("Some manufacturer")
-                .setType(Device.DEVICE_TYPE_PHONE)
-                .build(),
-            true,
-            listOf(
-                DeviceDataProviderInfo(
-                    Constants.DEVICE_DATA_PROVIDER_PACKAGE,
-                    "phoneId",
-                    "",
-                    "",
-                    setOf(
-                        DeviceDataTypeAdvertisement.Builder(StepsRecord::class.java)
-                            .setAvailable(true)
-                            .setUserEnabled(true)
-                            .build()
-                    ),
-                )
-            ),
-        ),
     )
 // endregion
 

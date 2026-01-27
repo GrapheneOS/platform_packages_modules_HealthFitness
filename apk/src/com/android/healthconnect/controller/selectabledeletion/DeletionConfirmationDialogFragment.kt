@@ -28,12 +28,12 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.selectabledeletion.DeletionConstants.CONFIRMATION_KEY
 import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteAllSymptomsDataFromInactiveApp
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.formatDateTimeForTimePeriod
-import com.android.healthconnect.controller.utils.isDevicePackage
 import com.android.healthconnect.controller.utils.logging.DeletionDialogConfirmationElement
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -93,10 +93,9 @@ class DeletionConfirmationDialogFragment : Hilt_DeletionConfirmationDialogFragme
     private fun setupCheckbox(checkBox: CheckBox) {
         val deletionType = viewModel.getDeletionType()
         if (deletionType is DeletionType.DeleteHealthPermissionTypesFromApp) {
-            // TODO(b/478785827): Suggest to remove native tracking capabilities for current device
             if (
                 deletionType.healthPermissionTypes.size == deletionType.totalPermissionTypes &&
-                    !isDevicePackage(deletionType.packageName)
+                    deletionType.packageName != DEVICE_DATA_PROVIDER_PACKAGE
             ) {
                 checkBox.visibility = View.VISIBLE
             } else {

@@ -25,13 +25,13 @@ import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPer
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
+import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.healthPermissionTypes
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.utils.isDevicePackage
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -103,11 +103,8 @@ constructor(
         contributingApps.forEach { app ->
             if (
                 // Permissions are irrelevant to the device data provider package.
-                // However, devices are seen as inactive if all their providers have disabled all of
-                // their data types.
-                // TODO(b/478259450): Check disabled devices
                 !readOrWriteAppPackageNameSet.contains(app.packageName) &&
-                    !isDevicePackage(app.packageName)
+                    app.packageName != Constants.DEVICE_DATA_PROVIDER_PACKAGE
             ) {
                 // Inactive apps don't navigate to appInfoScreen hence no need to specify
                 // appPermissionsType.

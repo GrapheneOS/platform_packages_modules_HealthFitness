@@ -13,7 +13,6 @@
  */
 package com.android.healthconnect.controller.datasources
 
-import android.health.connect.DeviceDataSourceInfo
 import android.health.connect.HealthDataCategory
 import android.util.Log
 import androidx.lifecycle.LiveData
@@ -25,12 +24,10 @@ import com.android.healthconnect.controller.datasources.api.ILoadMostRecentAggre
 import com.android.healthconnect.controller.datasources.api.ILoadPotentialPriorityListUseCase
 import com.android.healthconnect.controller.datasources.api.ILoadPriorityListUseCase
 import com.android.healthconnect.controller.datasources.api.IUpdatePriorityListUseCase
-import com.android.healthconnect.controller.matchmaking.api.GetDeviceDataSourcesInfoUseCase
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
-import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.async
@@ -45,7 +42,6 @@ constructor(
     private val loadPotentialAppSourcesUseCase: ILoadPotentialPriorityListUseCase,
     private val loadPriorityListUseCase: ILoadPriorityListUseCase,
     private val updatePriorityListUseCase: IUpdatePriorityListUseCase,
-    private val getDeviceDataSourcesInfoUseCase: GetDeviceDataSourcesInfoUseCase,
     private val appInfoReader: AppInfoReader,
 ) : ViewModel() {
 
@@ -72,8 +68,6 @@ constructor(
         get() = _shouldShowAddAnAppButton
 
     private val _priorityListState = MutableLiveData<PriorityListState>()
-
-    private val _deviceDataSourcesInfo = MutableLiveData<DeviceDataSourcesState>()
 
     private val _dataSourcesAndAggregationsInfo = MediatorLiveData<DataSourcesAndAggregationsInfo>()
     val dataSourcesAndAggregationsInfo: LiveData<DataSourcesAndAggregationsInfo>
@@ -124,7 +118,6 @@ constructor(
                 DataSourcesInfo(
                     priorityListState = priorityListState,
                     potentialAppSourcesState = _potentialAppSources.value,
-                    deviceDataSourcesState = _deviceDataSourcesInfo.value,
                 )
         }
 
@@ -133,19 +126,7 @@ constructor(
                 DataSourcesInfo(
                     priorityListState = _priorityListState.value,
                     potentialAppSourcesState = potentialAppSourcesState,
-                    deviceDataSourcesState = _deviceDataSourcesInfo.value,
                 )
-        }
-
-        if (deviceDataProvidersApi()) {
-            _dataSourcesInfo.addSource(_deviceDataSourcesInfo) { deviceDataSourcesState ->
-                _dataSourcesInfo.value =
-                    DataSourcesInfo(
-                        priorityListState = _priorityListState.value,
-                        potentialAppSourcesState = _potentialAppSources.value,
-                        deviceDataSourcesState = deviceDataSourcesState,
-                    )
-            }
         }
     }
 
@@ -161,9 +142,6 @@ constructor(
         loadMostRecentAggregations(category)
         loadCurrentPriorityList(category)
         loadPotentialAppSources(category)
-        if (deviceDataProvidersApi()) {
-            loadDeviceDataSourcesInfo()
-        }
     }
 
     private fun loadMostRecentAggregations(category: @HealthDataCategoryInt Int) {
@@ -248,20 +226,6 @@ constructor(
         }
     }
 
-    private fun loadDeviceDataSourcesInfo() {
-        _deviceDataSourcesInfo.postValue(DeviceDataSourcesState.Loading())
-        viewModelScope.launch {
-            when (val result = getDeviceDataSourcesInfoUseCase.invoke(Unit)) {
-                is UseCaseResults.Success ->
-                    _deviceDataSourcesInfo.postValue(DeviceDataSourcesState.WithData(result.data))
-                is UseCaseResults.Failed -> {
-                    Log.e(TAG, "Load error ", result.exception)
-                    _deviceDataSourcesInfo.postValue(DeviceDataSourcesState.LoadingFailed())
-                }
-            }
-        }
-    }
-
     private fun updateMostRecentAggregations(category: @HealthDataCategoryInt Int) {
         _aggregationCardsData.postValue(AggregationCardsState.Loading(false))
         _updatedAggregationCardsData.postValue(AggregationCardsState.Loading(true))
@@ -333,39 +297,23 @@ constructor(
         ) : PriorityListState(shouldObserve)
     }
 
-    sealed class DeviceDataSourcesState {
-        class Loading : DeviceDataSourcesState()
-
-        class LoadingFailed : DeviceDataSourcesState()
-
-        data class WithData(val deviceDataSourcesInfo: Set<DeviceDataSourceInfo>) :
-            DeviceDataSourcesState()
-    }
-
     class DataSourcesInfo(
         val priorityListState: PriorityListState?,
         val potentialAppSourcesState: PotentialAppSourcesState?,
-        val deviceDataSourcesState: DeviceDataSourcesState?,
     ) {
         fun isLoading(): Boolean {
             return priorityListState is PriorityListState.Loading ||
-                potentialAppSourcesState is PotentialAppSourcesState.Loading ||
-                (deviceDataProvidersApi() &&
-                    deviceDataSourcesState is DeviceDataSourcesState.Loading)
+                potentialAppSourcesState is PotentialAppSourcesState.Loading
         }
 
         fun isLoadingFailed(): Boolean {
             return priorityListState is PriorityListState.LoadingFailed ||
-                potentialAppSourcesState is PotentialAppSourcesState.LoadingFailed ||
-                (deviceDataProvidersApi() &&
-                    deviceDataSourcesState is DeviceDataSourcesState.LoadingFailed)
+                potentialAppSourcesState is PotentialAppSourcesState.LoadingFailed
         }
 
         fun isWithData(): Boolean {
             return priorityListState is PriorityListState.WithData &&
-                potentialAppSourcesState is PotentialAppSourcesState.WithData &&
-                (!deviceDataProvidersApi() ||
-                    deviceDataSourcesState is DeviceDataSourcesState.WithData)
+                potentialAppSourcesState is PotentialAppSourcesState.WithData
         }
     }
 

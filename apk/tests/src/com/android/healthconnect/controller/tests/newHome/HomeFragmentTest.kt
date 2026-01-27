@@ -525,23 +525,11 @@ class HomeFragmentTest {
 
     @Test
     @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
-    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
-    fun devices_ddpFlagOff_navigatesToConnectedDevices() {
+    fun devices_navigatesToConnectedDevices() {
         setupFragmentForNavigation().use {
             scrollToTextAndClick("Devices")
             assertThat(navHostController.currentDestination?.id)
                 .isEqualTo(R.id.connectedDevicesFragment)
-            verify(healthConnectLogger).logImpression(NewHomePageElement.DEVICES_BUTTON)
-            verify(healthConnectLogger).logInteraction(NewHomePageElement.DEVICES_BUTTON)
-        }
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
-    fun devices_ddpFlagOn_navigatesToDeviceSources() {
-        setupFragmentForNavigation().use {
-            scrollToTextAndClick("Devices")
-            assertThat(navHostController.currentDestination?.id).isEqualTo(R.id.newDevicesFragment)
             verify(healthConnectLogger).logImpression(NewHomePageElement.DEVICES_BUTTON)
             verify(healthConnectLogger).logInteraction(NewHomePageElement.DEVICES_BUTTON)
         }
