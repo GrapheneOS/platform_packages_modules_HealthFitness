@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Të dhënat nga <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Lejo që aplikacioni <xliff:g id="APP_NAME">%1$s</xliff:g> të lexojë të dhënat nga aplikacionet e tjera në këtë pajisje duke përdorur Health Connect. Këto të dhëna mund të lexohen gjithashtu nga aplikacionet e tjera të cilave u jep qasje."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikacionet që mund të sinkronizojnë këto të dhëna"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Pajisjet që mund të sinkronizojnë këto të dhëna"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Mëso se si <xliff:g id="APP_NAME">%1$s</xliff:g> i përdor të dhënat e tua në "<a href="%2$s">"politikën e vet të privatësisë"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect të lejon të ndash të dhënat e tua të shëndetit dhe fitnesit midis disa aplikacioneve. Kjo të ndihmon të shkyçësh statistikat dhe përvojat ndërkohë që i mban të dhënat të sigurta."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Më shumë rreth Health Connect"</string>
@@ -778,7 +777,7 @@
     <string name="sailing" msgid="4924304145770903145">"Lundrim"</string>
     <string name="scuba_diving" msgid="4548778216122159229">"Zhytje"</string>
     <string name="skating" msgid="7320438805566302784">"Patinazh"</string>
-    <string name="skiing" msgid="6773127614153771204">"Ski"</string>
+    <string name="skiing" msgid="6773127614153771204">"Skijim"</string>
     <string name="snowboarding" msgid="890584874325367973">"Rrëshqitje në borë"</string>
     <string name="snowshoeing" msgid="8932096199095096139">"Ecje në dëborë"</string>
     <string name="soccer" msgid="2631723269673549642">"Futboll"</string>

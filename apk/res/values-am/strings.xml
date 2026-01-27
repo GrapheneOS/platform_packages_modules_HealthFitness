@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"ውሂብ ከ<xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"የጤና አገናኝን በመጠቀም የ<xliff:g id="APP_NAME">%1$s</xliff:g> መተግበሪያ በዚህ መሣሪያ ላይ የሌሎች መተግበሪያዎችን ውሂብ እንዲያነብ ይፍቀዱ። እንዲሁም ይህ ውሂብ መዳረሻ በሰጧቸው ሌሎች መተግበሪያዎች ሊነበብ ይችላል።"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ይህን ውሂብ ማስመር የሚችሉ መተግበሪያዎች"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"ይህን ውሂብ ማሥመር የሚችሉ መሣሪያዎች"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"እንዴት <xliff:g id="APP_NAME">%1$s</xliff:g> ውሂብዎን በእነሱ "<a href="%2$s">"የግላዊነት መመሪያ"</a>" ውስጥ እንደሚጠቀም ይወቁ።"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"የጤና አገናኝ የጤና እና የአካል ብቃት ውሂብዎን በበርካታ መተግበሪያዎች መካከል እንዲያጋሩ ያስችልዎታል። ይህ የውሂብዎ ደህንነት ተጠብቆ ሳለ ግንዛቤዎችን እና ተሞክሮዎችን ለመክፈት ያግዝዎታል።"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"ስለ የጤና አገናኝ ተጨማሪ"</string>

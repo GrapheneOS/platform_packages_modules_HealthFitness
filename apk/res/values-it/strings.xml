@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dati da <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Consenti all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di leggere i dati da altre app su questo dispositivo utilizzando Connessione Salute. Questi dati possono essere letti anche da altre app a cui concedi l\'accesso."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"App che possono sincronizzare questi dati"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Dispositivi che possono sincronizzare questi dati"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Leggi le "<a href="%2$s">"norme sulla privacy"</a>" di <xliff:g id="APP_NAME">%1$s</xliff:g> per scoprire in che modo vengono utilizzati i tuoi dati."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Connessione Salute ti consente di condividere i tuoi dati relativi alla salute e all\'attività fisica tra più app. In questo modo, potrai accedere ad approfondimenti ed esperienze senza compromettere la sicurezza dei dati."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Scopri di più su Connessione Salute"</string>

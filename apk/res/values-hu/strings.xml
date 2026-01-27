@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Adatok forrása: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Annak engedélyezése, hogy a(z) <xliff:g id="APP_NAME">%1$s</xliff:g> alkalmazás a Health Connect használatával beolvassa a más alkalmazásokból származó adatokat ezen az eszközön. Ezeket az adatokat más alkalmazások is olvashatják, amelyeknek hozzáférést ad."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Azok az alkalmazások, amelyek szinkronizálhatják ezeket az adatokat"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Eszközök, amelyek szinkronizálhatják ezeket az adatokat"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"A(z) <xliff:g id="APP_NAME">%1$s</xliff:g> "<a href="%2$s">"adatvédelmi irányelveiben"</a>" tájékozódhat arról, hogy az alkalmazás hogyan használja fel az Ön adatait."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"A Health Connect segítségével több alkalmazás között is megoszthatja egészségügyi és fitneszadatait. Ezzel statisztikákhoz és élményekhez juthat hozzá, és közben adatai is biztonságban maradnak."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"További információ a Health Connectről"</string>

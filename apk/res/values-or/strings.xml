@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g>ରୁ ଡାଟା"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Health Connectକୁ ବ୍ୟବହାର କରି ଏହି ଡିଭାଇସରେ ଥିବା ଅନ୍ୟ ଆପ୍ସରୁ ଡାଟା ପଢ଼ିବାକୁ <xliff:g id="APP_NAME">%1$s</xliff:g> ଆପକୁ ଅନୁମତି ଦିଅନ୍ତୁ। ଆପଣ ଆକ୍ସେସ ଦେଇଥିବା ଅନ୍ୟ ଆପ୍ସ ଦ୍ୱାରା ମଧ୍ୟ ଏହି ଡାଟାକୁ ପଢ଼ାଯାଇପାରିବ।"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ଏହି ଡାଟାକୁ ସିଙ୍କ କରିପାରୁଥିବା ଆପ୍ସ"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"ଏହି ଡାଟାକୁ ସିଙ୍କ କରିପାରୁଥିବା ଡିଭାଇସ"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> ଆପଣଙ୍କ ଡାଟାକୁ କିପରି ଏହାର "<a href="%2$s">"ଗୋପନୀୟତା ନୀତି"</a>"ରେ ବ୍ୟବହାର କରେ ତାହା ଜାଣନ୍ତୁ।"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ଆପଣଙ୍କୁ ଆପଣଙ୍କର ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଫିଟନେସ ଡାଟାକୁ ଏକାଧିକ ଆପ୍ସ ମଧ୍ୟରେ ସେୟାର କରିବାକୁ ଦିଏ। ଏହା ଆପଣଙ୍କ ଡାଟାକୁ ସୁରକ୍ଷିତ ରଖିବା ସମୟରେ ଇନସାଇଟ ଏବଂ ଅନୁଭୂତିଗୁଡ଼ିକୁ ଅନଲକ କରିବାରେ ସାହାଯ୍ୟ କରେ।"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect ବିଷୟରେ ଅଧିକ ସୂଚନା"</string>

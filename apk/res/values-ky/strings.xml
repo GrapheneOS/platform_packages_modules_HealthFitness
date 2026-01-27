@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосунан алынган маалымат"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосуна Health Connect аркылуу бул түзмөктөгү башка колдонмолордогу нерселерди окууга уруксат бересиз. Алар сиз уруксат берген башка колдонмолорго да жеткиликтүү болот."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Бул маалыматты шайкештире алган колдонмолор"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Бул маалыматты шайкештире алган түзмөктөр"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> колдонмосу маалыматтарыңызды кантип колдонорун "<a href="%2$s">"купуялык эрежелеринен"</a>" караңыз."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect платформасы аркылуу ар кайсы колдонмолордун ортосунда ден соолук жана кыймылдуулук тууралуу маалымат алмашууга болот. Ушуну менен, пайдалуу статистикалык маалымат аласыз жана маалыматтарыңыз коопсуз сакталат."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect жөнүндө кеңири маалымат"</string>

@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> வழங்கும் தரவு"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"இந்தச் சாதனத்திலுள்ள பிற ஆப்ஸின் தரவை Health Connect மூலம் படிக்க <xliff:g id="APP_NAME">%1$s</xliff:g> ஆப்ஸை அனுமதியுங்கள். நீங்கள் அணுகல் வழங்கும் பிற ஆப்ஸாலும் இந்தத் தரவைப் படிக்க முடியும்."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"இந்தத் தரவை ஒத்திசைக்கக்கூடிய ஆப்ஸ்"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"இந்தத் தரவை ஒத்திசைக்கக்கூடிய சாதனங்கள்"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"உங்கள் தரவை <xliff:g id="APP_NAME">%1$s</xliff:g> எப்படிப் பயன்படுத்துகிறது என்பதை அதன் "<a href="%2$s">"தனியுரிமைக் கொள்கையில்"</a>" தெரிந்துகொள்ளுங்கள்."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"உங்கள் ஆரோக்கியம் மற்றும் ஃபிட்னஸ் தரவை Health Connect மூலம் பல்வேறு ஆப்ஸுக்கிடையே பகிரலாம். இது உங்கள் தரவைப் பாதுகாப்பாக வைத்திருப்பதோடு, நீங்கள் புள்ளிவிவரங்களையும் அனுபவங்களையும் பெற உதவுகிறது."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect பற்றிய கூடுதல் தகவல்கள்"</string>

@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"البيانات من \"<xliff:g id="APP_NAME">%1$s</xliff:g>\""</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"يمكنك السماح لتطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" بقراءة البيانات من تطبيقات أخرى على هذا الجهاز باستخدام Health Connect. ويمكن أيضًا للتطبيقات الأخرى قراءة هذه البيانات إذا حصلت على إذن بذلك."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"التطبيقات التي يمكنها مزامنة هذه البيانات"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"الأجهزة التي يمكنها مزامنة هذه البيانات"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"يمكنك الاطّلاع على "<a href="%2$s">"سياسة الخصوصية"</a>" لمعرفة طريقة استخدام \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" لبياناتك"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"يتيح لك تطبيق Health Connect مشاركة بيانات الصحة واللياقة البدنية بين تطبيقات متعددة، وبالتالي جمع الإحصاءات واكتشاف تجارب جديدة مع الحفاظ على أمان بياناتك."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"مزيد من المعلومات حول Health Connect"</string>

@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"ទិន្នន័យពី <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"អនុញ្ញាតឱ្យកម្មវិធី <xliff:g id="APP_NAME">%1$s</xliff:g> អានទិន្នន័យពីកម្មវិធីផ្សេងទៀតនៅលើឧបករណ៍នេះដោយប្រើ Health Connect។ កម្មវិធីផ្សេងទៀតដែលអ្នកផ្ដល់សិទ្ធិចូលប្រើក៏អាចអានទិន្នន័យនេះបានផងដែរ។"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"កម្មវិធីដែលអាចធ្វើ​សម​កាល​កម្មទិន្នន័យនេះ"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"ឧបករណ៍ដែលអាចធ្វើ​សម​កាល​កម្មទិន្នន័យនេះ"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ស្វែងយល់អំពីរបៀប<xliff:g id="APP_NAME">%1$s</xliff:g>ប្រើប្រាស់ទិន្នន័យរបស់អ្នកនៅក្នុង"<a href="%2$s">"គោលការណ៍​ឯកជនភាព"</a>"របស់កម្មវិធី។"</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect អនុញ្ញាតឱ្យអ្នកចែករំលែកទិន្នន័យសុខភាព និង​សម្បទារបស់អ្នករវាងកម្មវិធីជាច្រើន។ ការធ្វើបែបនេះជួយឱ្យអ្នកទទួលបានព័ត៌មានស៊ីជម្រៅ និងបទពិសោធប្រើប្រាស់ ដោយរក្សាទិន្នន័យរបស់អ្នកឱ្យមានសុវត្ថិភាព។"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"ព័ត៌មានបន្ថែម​អំពី Health Connect"</string>
