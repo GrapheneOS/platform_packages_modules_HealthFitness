@@ -27,6 +27,8 @@ import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 
 /**
  * A {@link DeviceDataProviderManager} that overrides the serial number of the device to a fake
@@ -56,6 +58,8 @@ public class FakeSerialDeviceDataProviderManager extends DeviceDataProviderManag
             @NonNull FitnessRecordDeleteHelper fitnessRecordDeleteHelper,
             @NonNull SyntheticPackageNameCreator syntheticPackageNameCreator,
             @NonNull PreferenceHelper preferenceHelper,
+            @NonNull HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
+            @NonNull InternalHealthConnectMappings internalHealthConnectMappings,
             boolean ignoresActionConfiguration) {
         super(
                 context,
@@ -68,7 +72,9 @@ public class FakeSerialDeviceDataProviderManager extends DeviceDataProviderManag
                 fitnessRecordReadHelper,
                 fitnessRecordDeleteHelper,
                 syntheticPackageNameCreator,
-                preferenceHelper);
+                preferenceHelper,
+                healthDataCategoryPriorityHelper,
+                internalHealthConnectMappings);
         mIgnoresActionConfiguration = ignoresActionConfiguration;
     }
 

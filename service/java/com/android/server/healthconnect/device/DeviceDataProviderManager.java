@@ -62,6 +62,7 @@ import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.TransactionManager;
 
@@ -72,6 +73,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Manages device data providers, handling advertisements and updating device, app, and DDP info in
@@ -95,6 +97,8 @@ public class DeviceDataProviderManager {
     private final FitnessRecordDeleteHelper mFitnessRecordDeleteHelper;
     private final SyntheticPackageNameCreator mSyntheticPackageNameCreator;
     private final PreferenceHelper mPreferenceHelper;
+    private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
+    private final InternalHealthConnectMappings mInternalHealthConnectMappings;
 
     @Nullable private String mStableCurrentDeviceId;
 
@@ -112,7 +116,9 @@ public class DeviceDataProviderManager {
             @NonNull FitnessRecordReadHelper fitnessRecordReadHelper,
             @NonNull FitnessRecordDeleteHelper fitnessRecordDeleteHelper,
             @NonNull SyntheticPackageNameCreator syntheticPackageNameCreator,
-            @NonNull PreferenceHelper preferenceHelper) {
+            @NonNull PreferenceHelper preferenceHelper,
+            @NonNull HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
+            @NonNull InternalHealthConnectMappings internalHealthConnectMappings) {
         mContext = requireNonNull(context);
         mDeviceInfoHelper = requireNonNull(deviceInfoHelper);
         mAppInfoHelper = requireNonNull(appInfoHelper);
@@ -124,6 +130,8 @@ public class DeviceDataProviderManager {
         mFitnessRecordDeleteHelper = Objects.requireNonNull(fitnessRecordDeleteHelper);
         mSyntheticPackageNameCreator = requireNonNull(syntheticPackageNameCreator);
         mPreferenceHelper = requireNonNull(preferenceHelper);
+        mHealthDataCategoryPriorityHelper = requireNonNull(healthDataCategoryPriorityHelper);
+        mInternalHealthConnectMappings = requireNonNull(internalHealthConnectMappings);
     }
 
     /**
@@ -298,6 +306,8 @@ public class DeviceDataProviderManager {
         populateOrThrowRecords(
                 callingDdpPackageName, deviceId, records, syntheticPackageName, appInfoId);
 
+        addDeviceToPriorityList(syntheticPackageName, getCategories(records));
+
         // Treat all permissions as granted to pass any per-record checks.
         Set<String> grantedPerRecordWritePermissions = getAllPerRecordWritePermissions();
         return mFitnessRecordUpsertHelper.insertRecords(
@@ -389,6 +399,8 @@ public class DeviceDataProviderManager {
         String syntheticPackageName = getOrThrowSyntheticPackageName(appInfoId);
         populateOrThrowRecords(
                 callingDdpPackageName, deviceId, records, syntheticPackageName, appInfoId);
+
+        addDeviceToPriorityList(syntheticPackageName, getCategories(records));
 
         // Treat all permissions as granted to pass any per-record checks.
         Set<String> grantedPerRecordWritePermissions = getAllPerRecordWritePermissions();
@@ -834,6 +846,24 @@ public class DeviceDataProviderManager {
         }
 
         return !Objects.isNull(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER));
+    }
+
+    private void addDeviceToPriorityList(String spn, Set<Integer> categories) {
+        for (int category : categories) {
+            mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                    spn, category, mContext.getUser());
+        }
+    }
+
+    private Set<Integer> getCategories(List<RecordInternal<?>> records) {
+        return records.stream()
+                .map(RecordInternal::getRecordType)
+                .map(
+                        (recordType) ->
+                                mInternalHealthConnectMappings
+                                        .getExternalMappings()
+                                        .getRecordCategoryForRecordType(recordType))
+                .collect(Collectors.toSet());
     }
 
     /**

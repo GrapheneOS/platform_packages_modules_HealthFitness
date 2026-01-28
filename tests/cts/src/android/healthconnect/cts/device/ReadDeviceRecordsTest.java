@@ -16,6 +16,7 @@
 package android.healthconnect.cts.device;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
+import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 import static android.healthconnect.testing.cts.TestUtils.advertiseDevice;
 import static android.healthconnect.testing.cts.TestUtils.advertiseDeviceDataSources;
@@ -32,11 +33,14 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.junit.Assert.assertThrows;
 
+import android.health.connect.AggregateRecordsRequest;
+import android.health.connect.AggregateRecordsResponse;
 import android.health.connect.HealthConnectException;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.ReadRecordsResponse;
+import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.datatypes.DataOrigin;
 import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.SleepSessionRecord;
@@ -61,6 +65,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -468,5 +474,30 @@ public class ReadDeviceRecordsTest {
                 .isEqualTo("OriginalDisplayName");
         assertThat(readRecords.get(1).getMetadata().getDevice().getDisplayName())
                 .isEqualTo("UpdatedDisplayName");
+    }
+
+    @Test
+    public void aggregateDeviceRecords_returnsCorrectSum() throws Exception {
+        advertiseDevice(mDeviceId, StepsRecord.class);
+        Instant start = Instant.now().minus(1, ChronoUnit.HOURS).truncatedTo(ChronoUnit.MILLIS);
+        insertDeviceRecords(
+                mDeviceId, List.of(DataFactory.getStepsRecord(123, start, start.plusSeconds(60))));
+        insertDeviceRecords(
+                mDeviceId,
+                List.of(
+                        DataFactory.getStepsRecord(
+                                456, start.plusSeconds(120), start.plusSeconds(180))));
+
+        AggregateRecordsRequest<Long> request =
+                new AggregateRecordsRequest.Builder<Long>(
+                                new TimeInstantRangeFilter.Builder()
+                                        .setStartTime(start.minusSeconds(10))
+                                        .setEndTime(start.plusSeconds(300))
+                                        .build())
+                        .addAggregationType(STEPS_COUNT_TOTAL)
+                        .build();
+        AggregateRecordsResponse<Long> response = TestUtils.getAggregateResponse(request);
+
+        assertThat(response.get(STEPS_COUNT_TOTAL)).isEqualTo(579);
     }
 }
