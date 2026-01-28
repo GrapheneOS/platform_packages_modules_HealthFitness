@@ -121,6 +121,9 @@ package android.health.connect {
     field @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public static final String EXTRA_DEVICE_ID = "android.health.connect.extra.DEVICE_ID";
     field @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public static final String EXTRA_DEVICE_RECORD_TYPES = "android.health.connect.extra.DEVICE_RECORD_TYPES";
     field @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public static final String EXTRA_DEVICE_SYMPTOM_TYPES = "android.health.connect.extra.DEVICE_SYMPTOM_TYPES";
+    field @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public static final int RESULT_DEVICE_ONBOARDING_ABORTED = 3; // 0x3
+    field @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public static final int RESULT_DEVICE_ONBOARDING_ALLOWED = 1; // 0x1
+    field @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public static final int RESULT_DEVICE_ONBOARDING_DENIED = 2; // 0x2
   }
 
   public class HealthDataCategory {

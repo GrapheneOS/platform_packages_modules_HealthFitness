@@ -514,6 +514,17 @@ public class HealthConnectManager {
      * the user is requesting to manage the specified symptom subtypes, e.g. {@link
      * android.health.connect.datatypes.SymptomRecord#SYMPTOM_TYPE_COUGH}.
      *
+     * <p>Result: The activity should return one of the following result codes:
+     *
+     * <ul>
+     *   <li>{@link #RESULT_DEVICE_ONBOARDING_ALLOWED}
+     *   <li>{@link #RESULT_DEVICE_ONBOARDING_DENIED}
+     *   <li>{@link #RESULT_DEVICE_ONBOARDING_ABORTED}
+     * </ul>
+     *
+     * <p>Returning any other result code including {@link android.app.Activity#RESULT_OK} will be
+     * treated as {@link #RESULT_DEVICE_ONBOARDING_ABORTED}.
+     *
      * @hide
      */
     @SystemApi
@@ -522,6 +533,49 @@ public class HealthConnectManager {
     @RequiresPermission(MANAGE_HEALTH_DATA_PERMISSION)
     public static final String ACTION_SHOW_DEVICE_ONBOARDING =
             "android.health.connect.action.SHOW_DEVICE_ONBOARDING";
+
+    /**
+     * Activity result code: The user has granted access to at least one requested data type.
+     *
+     * <p>This result code is returned by the activity launched with {@link
+     * #ACTION_SHOW_DEVICE_ONBOARDING}.
+     *
+     * @hide
+     */
+    @SystemApi
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public static final int RESULT_DEVICE_ONBOARDING_ALLOWED =
+            android.app.Activity.RESULT_FIRST_USER;
+
+    /**
+     * Activity result code: The user has denied access to all requested data types.
+     *
+     * <p>This result code is returned by the activity launched with {@link
+     * #ACTION_SHOW_DEVICE_ONBOARDING}.
+     *
+     * @hide
+     */
+    @SystemApi
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public static final int RESULT_DEVICE_ONBOARDING_DENIED =
+            android.app.Activity.RESULT_FIRST_USER + 1;
+
+    /**
+     * Activity result code: The user has aborted the onboarding flow.
+     *
+     * <p>This result code is returned by the activity launched with {@link
+     * #ACTION_SHOW_DEVICE_ONBOARDING}.
+     *
+     * <p>Note: this result code must be returned when the user attempts to navigate <i>back</i> out
+     * of the activity. This requires overriding the default activity behavior which is to return
+     * {@link android.app.Activity#RESULT_CANCELED} upon back navigation.
+     *
+     * @hide
+     */
+    @SystemApi
+    @FlaggedApi(FLAG_DEVICE_DATA_PROVIDERS_API)
+    public static final int RESULT_DEVICE_ONBOARDING_ABORTED =
+            android.app.Activity.RESULT_FIRST_USER + 2;
 
     /**
      * Activity action: Launch UI to manage devices offered by a DDP. This intent will be launched
