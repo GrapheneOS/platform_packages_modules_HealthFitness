@@ -24,6 +24,7 @@
     <include app:graph="@navigation/data_sources_nav_graph" />
     <include app:graph="@navigation/medical_data_nav_graph" />
     <include app:graph="@navigation/connected_apps_nav_graph" />
+    <include app:graph="@navigation/devices_nav_graph" />
     <include app:graph="@navigation/device_management_nav_graph" />
 
     <fragment
@@ -51,7 +52,7 @@
         android:label="@string/app_label">
         <action
             android:id="@+id/action_newHomeFragment_to_dataAndAccess"
-            app:destination="@id/data_activity"  />
+            app:destination="@id/data_activity" />
         <action
             android:id="@+id/action_newHomeFragment_to_recentAccess"
             app:destination="@+id/recentAccessFragment" />
@@ -62,8 +63,11 @@
             android:id="@+id/action_newHomeFragment_to_connectedDevicesFragment"
             app:destination="@+id/device_management_nav_graph" />
         <action
+            android:id="@+id/action_newHomeFragment_to_newDevicesFragment"
+            app:destination="@+id/devices_nav_graph" />
+        <action
             android:id="@+id/action_newHomeFragment_to_playStoreActivity"
-            app:destination="@+id/playstore_activity"/>
+            app:destination="@+id/playstore_activity" />
         <action
             android:id="@+id/action_newHomeFragment_to_connectedAppsFragment"
             app:destination="@id/connected_apps_nav_graph" />
@@ -124,6 +128,9 @@
         <action
             android:id="@+id/action_homeFragment_to_connectedDevicesFragment"
             app:destination="@id/device_management_nav_graph" />
+        <action
+            android:id="@+id/action_homeFragment_to_newDevicesFragment"
+            app:destination="@id/devices_nav_graph" />
     </fragment>
 
     <activity

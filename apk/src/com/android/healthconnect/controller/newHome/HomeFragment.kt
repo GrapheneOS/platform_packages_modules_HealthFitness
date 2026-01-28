@@ -50,6 +50,7 @@ import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import com.android.healthfitness.flags.Flags.stepTrackingEnabled
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.FooterPreference
@@ -130,12 +131,14 @@ class HomeFragment : Hilt_HomeFragment() {
             true
         }
 
-        if (stepTrackingEnabled()) {
+        if (stepTrackingEnabled() || deviceDataProvidersApi()) {
             devicesPreference.isVisible = true
             devicesPreference.logName = NewHomePageElement.DEVICES_BUTTON
             devicesPreference.setOnPreferenceClickListener {
-                findNavController()
-                    .navigate(R.id.action_newHomeFragment_to_connectedDevicesFragment)
+                val action =
+                    if (deviceDataProvidersApi()) R.id.action_newHomeFragment_to_newDevicesFragment
+                    else R.id.action_newHomeFragment_to_connectedDevicesFragment
+                findNavController().navigate(action)
                 true
             }
         } else {
