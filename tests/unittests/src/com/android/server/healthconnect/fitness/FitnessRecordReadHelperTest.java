@@ -168,8 +168,7 @@ public class FitnessRecordReadHelperTest {
                                 /* startDateAccessMillis= */ 0,
                                 /* isInForeground= */ false,
                                 /* shouldRecordAccessLogs= */ false,
-                                /* enforceSelfRead */ false,
-                                /* packageNamesByAppIds= */ null)
+                                /* enforceSelfRead */ false)
                         .first;
         assertThat(records).hasSize(1);
         assertThat(records.get(0).getUuid()).isEqualTo(UUID.fromString(uuid));
@@ -201,8 +200,7 @@ public class FitnessRecordReadHelperTest {
                                 /* startDateAccessMillis= */ 0,
                                 /* isInForeground= */ false,
                                 /* shouldRecordAccessLogs= */ false,
-                                /* enforceSelfRead */ false,
-                                /* packageNamesByAppIds= */ null)
+                                /* enforceSelfRead */ false)
                         .first;
         assertThat(records).hasSize(1);
         ExerciseSessionRecordInternal readRecord = (ExerciseSessionRecordInternal) records.get(0);
@@ -237,8 +235,7 @@ public class FitnessRecordReadHelperTest {
                                 /* startDateAccessMillis= */ 0,
                                 /* isInForeground= */ false,
                                 /* shouldRecordAccessLogs= */ false,
-                                /* enforceSelfRead */ false,
-                                /* packageNamesByAppIds= */ null)
+                                /* enforceSelfRead */ false)
                         .first;
         assertThat(records).hasSize(1);
         assertThat(records.get(0).getUuid()).isEqualTo(UUID.fromString(uuid));
@@ -259,8 +256,7 @@ public class FitnessRecordReadHelperTest {
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ false,
                 /* shouldRecordAccessLogs= */ true,
-                /* enforceSelfRead */ false,
-                /* packageNamesByAppIds= */ null);
+                /* enforceSelfRead */ false);
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
         assertThat(result).hasSize(1);
@@ -301,8 +297,7 @@ public class FitnessRecordReadHelperTest {
                         /* startDateAccessMillis= */ 0,
                         /* isInForeground= */ false,
                         /* shouldRecordAccessLogs= */ true,
-                        /* enforceSelfRead */ false,
-                        /* packageNamesByAppIds= */ null);
+                        /* enforceSelfRead */ false);
 
         List<RecordInternal<?>> records = result.first;
         assertThat(records).hasSize(1);
@@ -324,8 +319,7 @@ public class FitnessRecordReadHelperTest {
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ false,
                 /* shouldRecordAccessLogs= */ true,
-                /* enforceSelfRead */ false,
-                /* packageNamesByAppIds= */ null);
+                /* enforceSelfRead */ false);
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
         assertThat(result).hasSize(1);
@@ -351,8 +345,7 @@ public class FitnessRecordReadHelperTest {
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ false,
                 /* shouldRecordAccessLogs= */ true,
-                /* enforceSelfRead */ false,
-                /* packageNamesByAppIds= */ null);
+                /* enforceSelfRead */ false);
 
         List<AccessLog> result = mAccessLogsHelper.queryAccessLogs(mUserHandle);
         assertThat(result).hasSize(1);
@@ -489,8 +482,7 @@ public class FitnessRecordReadHelperTest {
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ true,
                 /* shouldRecordAccessLogs */ true,
-                /* enforceSelfRead= */ false,
-                /* packageNamesByAppIds= */ null);
+                /* enforceSelfRead= */ false);
 
         verify(mReadAccessLogsHelper, times(0))
                 .recordAccessLogForNonAggregationReads(any(), any(), anyLong(), any());
@@ -560,8 +552,7 @@ public class FitnessRecordReadHelperTest {
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ true,
                 /* shouldRecordAccessLogs */ true,
-                /* enforceSelfRead= */ false,
-                /* packageNamesByAppIds= */ null);
+                /* enforceSelfRead= */ false);
 
         List<ReadAccessLogsHelper.ReadAccessLog> readAccessLogs =
                 mReadAccessLogsHelper.queryReadAccessLogs(0).getReadAccessLogs();
@@ -602,8 +593,7 @@ public class FitnessRecordReadHelperTest {
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ true,
                 /* shouldRecordAccessLogs */ false,
-                /* enforceSelfRead= */ false,
-                /* packageNamesByAppIds= */ null);
+                /* enforceSelfRead= */ false);
 
         verify(mReadAccessLogsHelper, times(0))
                 .recordAccessLogForNonAggregationReads(any(), any(), anyLong(), any());
@@ -635,8 +625,7 @@ public class FitnessRecordReadHelperTest {
                 /* startDateAccessMillis= */ 0,
                 /* isInForeground= */ true,
                 /* shouldRecordAccessLogs */ true,
-                /* enforceSelfRead= */ false,
-                /* packageNamesByAppIds= */ null);
+                /* enforceSelfRead= */ false);
 
         verify(mReadAccessLogsHelper, times(0))
                 .recordAccessLogForNonAggregationReads(any(), any(), anyLong(), any());
@@ -786,8 +775,7 @@ public class FitnessRecordReadHelperTest {
                                 /* startDateAccessMillis= */ 0,
                                 /* isInForeground= */ true,
                                 /* shouldRecordAccessLogs */ false,
-                                /* enforceSelfRead= */ false,
-                                /* packageNamesByAppIds= */ null)
+                                /* enforceSelfRead= */ false)
                         .first;
 
         Map<String, ExerciseSessionRecordInternal> idToSessionMap =
@@ -830,8 +818,7 @@ public class FitnessRecordReadHelperTest {
                                 /* startDateAccessMillis= */ 0,
                                 /* isInForeground= */ true,
                                 /* shouldRecordAccessLogs */ false,
-                                /* enforceSelfRead= */ false,
-                                /* packageNamesByAppIds= */ null)
+                                /* enforceSelfRead= */ false)
                         .first;
 
         assertThat(returnedRecords).hasSize(1);
@@ -866,8 +853,7 @@ public class FitnessRecordReadHelperTest {
                                 /* startDateAccessMillis= */ 0,
                                 /* isInForeground= */ false,
                                 /* shouldRecordAccessLogs */ false,
-                                /* enforceSelfRead= */ false,
-                                /* packageNamesByAppIds= */ null)
+                                /* enforceSelfRead= */ false)
                         .first;
 
         assertThat(returnedRecords).hasSize(1);
@@ -911,8 +897,7 @@ public class FitnessRecordReadHelperTest {
                         /* startDateAccessMillis= */ 0,
                         /* isInForeground= */ true,
                         /* shouldRecordAccessLogs */ false,
-                        /* enforceSelfRead= */ false,
-                        /* packageNamesByAppIds= */ null);
+                        /* enforceSelfRead= */ false);
 
         assertThat(result.first).hasSize(1);
         SymptomRecordInternal returnedRecord = (SymptomRecordInternal) result.first.get(0);
@@ -943,7 +928,8 @@ public class FitnessRecordReadHelperTest {
                 mFitnessRecordReadHelper.readRecordsUnrestricted(
                                 mTransactionManager,
                                 request.toReadRecordsRequestParcel(),
-                                /* packageNamesByAppIds= */ null)
+                                /* appIdToPackageNameMap= */ null,
+                                /* deviceIdToDeviceInfoMap= */ null)
                         .first;
 
         assertThat(result).hasSize(2);

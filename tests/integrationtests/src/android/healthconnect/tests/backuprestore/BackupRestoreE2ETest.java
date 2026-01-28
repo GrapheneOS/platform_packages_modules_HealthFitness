@@ -541,6 +541,73 @@ public class BackupRestoreE2ETest {
                 ASSERT_TIMEOUT_MILLIS);
     }
 
+    @Test
+    public void testBackupRestore_withMultipleDevices_expectDataIsRestoredCorrectly()
+            throws Exception {
+        assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
+
+        Device deviceA =
+                new Device.Builder().setManufacturer("ManA").setModel("ModA").setType(1).build();
+        Device deviceB =
+                new Device.Builder().setManufacturer("ManB").setModel("ModB").setType(1).build();
+        Device deviceC =
+                new Device.Builder().setManufacturer("ManC").setModel("ModC").setType(1).build();
+        Device deviceD =
+                new Device.Builder().setManufacturer("ManD").setModel("ModD").setType(1).build();
+
+        // Inserting 3 records, all with different device Ids.
+        // Inserting a 4th record with no device.
+        Record recordA = createActiveCaloriesBurnedRecordWithDevice(deviceA, 1000);
+        Record recordB = createActiveCaloriesBurnedRecordWithDevice(deviceB, 2000);
+        Record recordC = createActiveCaloriesBurnedRecordWithDevice(deviceC, 3000);
+        Record recordNoDevice = createActiveCaloriesBurnedRecordWithDevice(deviceC, 3000);
+        List<Record> insertedRecordsBeforeRestore =
+                insertRecords(List.of(recordA, recordB, recordC, recordNoDevice));
+        readAndAssertRecordsExistUsingIds(insertedRecordsBeforeRestore);
+
+        mBackupUtils.backupNowAndAssertSuccessForUser(
+                mBackupRestoreApkPackageName, UserHandle.myUserId());
+
+        // Simulate new device state (clean then added data)
+        deleteAllDataFromHealthConnect();
+
+        // Inserting 2 records after backup, one with a new device, and one common as before backup.
+        // This ensures that there were more device ids in the backed up data then now.
+        Record recordB2 = createActiveCaloriesBurnedRecordWithDevice(deviceB, 4000);
+        Record recordD = createActiveCaloriesBurnedRecordWithDevice(deviceD, 5000);
+        List<Record> insertedRecordsAfterRestore = insertRecords(List.of(recordB2, recordD));
+
+        mBackupUtils.restoreAndAssertSuccessForUser(
+                LOCAL_TRANSPORT_TOKEN, mBackupRestoreApkPackageName, UserHandle.myUserId());
+
+        // Verify original backed up records are restored
+        eventually(
+                () -> readAndAssertRecordsExistUsingIds(insertedRecordsBeforeRestore),
+                ASSERT_TIMEOUT_MILLIS);
+        // Verify records inserted after backup are not changed.
+        readAndAssertRecordsExistUsingIds(insertedRecordsAfterRestore);
+    }
+
+    private ActiveCaloriesBurnedRecord createActiveCaloriesBurnedRecordWithDevice(
+            Device device, long offsetMillis) {
+        DataOrigin dataOrigin = DataFactory.getDataOrigin(mContext.getPackageName());
+        Metadata.Builder metadataBuilder = new Metadata.Builder();
+        metadataBuilder.setDevice(device).setDataOrigin(dataOrigin);
+        metadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
+        metadataBuilder.setClientRecordId("ClientRecordId" + UUID.randomUUID());
+
+        Instant now = Instant.now().minusMillis(offsetMillis);
+        ZoneOffset zoneOffset = ZoneOffset.systemDefault().getRules().getOffset(now);
+        return new ActiveCaloriesBurnedRecord.Builder(
+                        metadataBuilder.build(),
+                        now,
+                        now.plusMillis(1000),
+                        Energy.fromCalories(10.0))
+                .setStartZoneOffset(zoneOffset)
+                .setEndZoneOffset(zoneOffset)
+                .build();
+    }
+
     private ActiveCaloriesBurnedRecord getCompleteActiveCaloriesBurnedRecord(long i) {
         Device device =
                 new Device.Builder()

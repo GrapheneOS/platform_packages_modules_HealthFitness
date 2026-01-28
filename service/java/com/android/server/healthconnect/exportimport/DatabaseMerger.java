@@ -29,11 +29,13 @@ import static com.android.server.healthconnect.fitness.helpers.HealthDataCategor
 import static com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper.getReadQueryForDataSourcesUsingUniqueIds;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.DELIMITER;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.checkTableExists;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 
 import static java.util.Objects.requireNonNull;
 
+import android.annotation.Nullable;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -149,6 +151,14 @@ public final class DatabaseMerger {
             }
         }
 
+        Slog.i(TAG, "Reading device info");
+        Map<Long, DeviceInfoHelper.DeviceInfo> stagedDeviceInfoMap = null;
+        try {
+            stagedDeviceInfoMap = readDeviceInfo(stagedDatabase.getReadableDatabase());
+        } catch (Exception e) {
+            Slog.e(TAG, "Failed to read device info, using null", e);
+        }
+
         // Similar to current HC behaviour, we honour what is on the target device. This means
         // that if a MedicalResource or MedicalDataSource of the same unique ids as the
         // stagedDatabase exists on the targetDatabase, we ignore the one in stagedDatabase.
@@ -178,6 +188,7 @@ public final class DatabaseMerger {
                         stagedTransactionManager,
                         stagedDatabase,
                         stagedPackageNamesByAppIds,
+                        stagedDeviceInfoMap,
                         recordTypeToMigrate);
             }
             // Delete records within a group together, once all records within that group
@@ -193,6 +204,7 @@ public final class DatabaseMerger {
                     stagedTransactionManager,
                     stagedDatabase,
                     stagedPackageNamesByAppIds,
+                    stagedDeviceInfoMap,
                     recordTypeToMigrate);
             deleteRecordsOfType(stagedDatabase, recordTypeToMigrate);
         }
@@ -204,6 +216,27 @@ public final class DatabaseMerger {
         mergePriorityList(stagedDatabase, stagedPackageNamesByAppIds);
 
         Slog.i(TAG, "Merging done");
+    }
+
+    private Map<Long, DeviceInfoHelper.DeviceInfo> readDeviceInfo(SQLiteDatabase stagedDatabase) {
+        Map<Long, DeviceInfoHelper.DeviceInfo> deviceInfoMap = new HashMap<>();
+        try (Cursor cursor =
+                read(
+                        stagedDatabase,
+                        new ReadTableRequest(DeviceInfoHelper.TABLE_NAME).getReadCommand())) {
+            while (cursor.moveToNext()) {
+                long rowId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
+                String manufacturer =
+                        getCursorString(cursor, DeviceInfoHelper.MANUFACTURER_COLUMN_NAME);
+                String model = getCursorString(cursor, DeviceInfoHelper.MODEL_COLUMN_NAME);
+                int deviceType = getCursorInt(cursor, DeviceInfoHelper.DEVICE_TYPE_COLUMN_NAME);
+                DeviceInfoHelper.DeviceInfo info =
+                        new DeviceInfoHelper.DeviceInfo(
+                                manufacturer, model, deviceType, null, null);
+                deviceInfoMap.put(rowId, info);
+            }
+        }
+        return deviceInfoMap;
     }
 
     private void mergePhrContent(SQLiteDatabase stagedDatabase) {
@@ -398,6 +431,7 @@ public final class DatabaseMerger {
             TransactionManager stagedTransactionManager,
             HealthConnectDatabase stagedDatabase,
             Map<Long, String> stagedPackageNamesByAppIds,
+            @Nullable Map<Long, DeviceInfoHelper.DeviceInfo> stagedDeviceInfoMap,
             int recordType) {
         RecordHelper<?> recordHelper = mInternalHealthConnectMappings.getRecordHelper(recordType);
         if (!checkTableExists(
@@ -415,6 +449,7 @@ public final class DatabaseMerger {
                     getRecordsToMerge(
                             stagedTransactionManager,
                             stagedPackageNamesByAppIds,
+                            stagedDeviceInfoMap,
                             requireNonNull(recordTypeClass),
                             currentToken,
                             getPageSize(recordType));
@@ -497,6 +532,7 @@ public final class DatabaseMerger {
     private Pair<List<RecordInternal<?>>, PageTokenWrapper> getRecordsToMerge(
             TransactionManager stagedTransactionManager,
             Map<Long, String> stagedPackageNamesByAppIds,
+            @Nullable Map<Long, DeviceInfoHelper.DeviceInfo> stagedDeviceInfoMap,
             Class<? extends Record> recordTypeClass,
             PageTokenWrapper requestToken,
             int pageSize) {
@@ -509,7 +545,8 @@ public final class DatabaseMerger {
         return mFitnessRecordReadHelper.readRecordsUnrestricted(
                 stagedTransactionManager,
                 readRecordsRequest.toReadRecordsRequestParcel(),
-                stagedPackageNamesByAppIds);
+                stagedPackageNamesByAppIds,
+                stagedDeviceInfoMap);
     }
 
     private synchronized Cursor read(

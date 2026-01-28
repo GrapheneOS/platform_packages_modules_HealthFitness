@@ -192,7 +192,8 @@ public class CloudBackupDatabaseHelper {
                         mFitnessRecordReadHelper.readRecordsUnrestricted(
                                 mTransactionManager,
                                 readRecordsRequest.toReadRecordsRequestParcel(),
-                                /* packageNamesByAppIds= */ null);
+                                /* appIdToPackageNameMap= */ null,
+                                /* deviceIdToDeviceInfoMap= */ null);
                 backupChanges.addAll(convertRecordsToBackupChange(readResult.first));
                 nextDataTablePageToken = readResult.second.encode();
                 pageSize = DEFAULT_PAGE_SIZE - backupChanges.size();

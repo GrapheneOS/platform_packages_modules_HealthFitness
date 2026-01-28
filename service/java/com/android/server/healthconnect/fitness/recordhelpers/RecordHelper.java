@@ -623,7 +623,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             recordInternalList.add(
                     getRecord(
                             cursor,
-                            /* packageNamesByAppIds= */ null,
+                            /* appIdToPackageNameMap= */ null,
+                            /* deviceIdToDeviceInfoMap= */ null,
                             deviceInfoHelper,
                             appInfoHelper));
         }
@@ -647,7 +648,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                 cursor,
                 requestSize,
                 pageToken,
-                /* packageNamesByAppIds= */ null,
+                /* appIdToPackageNameMap= */ null,
+                /* deviceIdToDeviceInfoMap= */ null,
                 appInfoHelper);
     }
 
@@ -678,7 +680,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
             Cursor cursor,
             int requestSize,
             PageTokenWrapper prevPageToken,
-            @Nullable Map<Long, String> packageNamesByAppIds,
+            @Nullable Map<Long, String> appIdToPackageNameMap,
+            @Nullable Map<Long, DeviceInfoHelper.DeviceInfo> deviceIdToDeviceInfoMap,
             AppInfoHelper appInfoHelper) {
         Slog.d("HealthConnectRecordHelper", "requestSize = " + requestSize);
         // Ignore <offset> records of the same start time, because it was returned in previous
@@ -716,7 +719,13 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                         PageTokenWrapper.of(prevPageToken.isAscending(), currentStartTime, offset);
                 break;
             } else {
-                T record = getRecord(cursor, packageNamesByAppIds, deviceInfoHelper, appInfoHelper);
+                T record =
+                        getRecord(
+                                cursor,
+                                appIdToPackageNameMap,
+                                deviceIdToDeviceInfoMap,
+                                deviceInfoHelper,
+                                appInfoHelper);
                 recordInternalList.add(record);
                 offset++;
             }
@@ -726,7 +735,8 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
 
     private T getRecord(
             Cursor cursor,
-            @Nullable Map<Long, String> packageNamesByAppIds,
+            @Nullable Map<Long, String> appIdToPackageNameMap,
+            @Nullable Map<Long, DeviceInfoHelper.DeviceInfo> deviceIdToDeviceInfoMap,
             DeviceInfoHelper deviceInfoHelper,
             AppInfoHelper appInfoHelper) {
         T record = populateRecordValue(cursor);
@@ -737,12 +747,19 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         record.setRecordingMethod(getCursorInt(cursor, RECORDING_METHOD_COLUMN_NAME));
         record.setRowId(getCursorInt(cursor, PRIMARY_COLUMN_NAME));
         long deviceInfoId = getCursorLong(cursor, DEVICE_INFO_ID_COLUMN_NAME);
-        deviceInfoHelper.populateRecordWithValue(deviceInfoId, record);
+        if (deviceIdToDeviceInfoMap != null) {
+            if (deviceIdToDeviceInfoMap.containsKey(deviceInfoId)) {
+                DeviceInfoHelper.populateRecordWithDeviceInfo(
+                        deviceIdToDeviceInfoMap.get(deviceInfoId), record);
+            }
+        } else {
+            deviceInfoHelper.populateRecordWithValue(deviceInfoId, record);
+        }
         long appInfoId = getCursorLong(cursor, APP_INFO_ID_COLUMN_NAME);
         try {
             String packageName =
-                    packageNamesByAppIds != null
-                            ? packageNamesByAppIds.get(appInfoId)
+                    appIdToPackageNameMap != null
+                            ? appIdToPackageNameMap.get(appInfoId)
                             : appInfoHelper.getPackageName(appInfoId);
             record.setPackageName(packageName);
         } catch (PackageManager.NameNotFoundException exception) {

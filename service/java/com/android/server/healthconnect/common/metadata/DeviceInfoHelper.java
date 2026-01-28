@@ -137,15 +137,21 @@ public class DeviceInfoHelper extends DatabaseHelper {
     public void populateRecordWithValue(long deviceInfoId, RecordInternal<?> record) {
         DeviceInfo deviceInfo = getIdDeviceInfoMap().get(deviceInfoId);
         if (deviceInfo != null) {
-            record.setDeviceType(deviceInfo.mDeviceType);
-            record.setManufacturer(deviceInfo.mManufacturer);
-            record.setModel(deviceInfo.mModel);
-            if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
-                record.setDisplayName(deviceInfo.mDisplayName);
-            }
-            if (isDeviceUdiEnabled()) {
-                record.setUdi(deviceInfo.mUdi);
-            }
+            populateRecordWithDeviceInfo(deviceInfo, record);
+        }
+    }
+
+    /** Populates record with values from DeviceInfo. */
+    public static void populateRecordWithDeviceInfo(
+            DeviceInfo deviceInfo, RecordInternal<?> record) {
+        record.setDeviceType(deviceInfo.mDeviceType);
+        record.setManufacturer(deviceInfo.mManufacturer);
+        record.setModel(deviceInfo.mModel);
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            record.setDisplayName(deviceInfo.mDisplayName);
+        }
+        if (isDeviceUdiEnabled()) {
+            record.setUdi(deviceInfo.mUdi);
         }
     }
 

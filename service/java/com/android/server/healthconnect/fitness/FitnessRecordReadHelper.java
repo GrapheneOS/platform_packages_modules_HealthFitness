@@ -62,7 +62,7 @@ public class FitnessRecordReadHelper {
     private final ReadAccessLogsHelper mReadAccessLogsHelper;
     private final InternalHealthConnectMappings mInternalHealthConnectMappings;
 
-    // TODO(b/399825886): Inject transactionManager once this bug is fixed.
+    // TODO(b/479508495): Inject transactionManager once this bug is fixed.
     public FitnessRecordReadHelper(
             DeviceInfoHelper deviceInfoHelper,
             AppInfoHelper appInfoHelper,
@@ -94,12 +94,8 @@ public class FitnessRecordReadHelper {
      * @param shouldRecordAccessLog If access logs should be recorded for this call.
      * @param enforceSelfRead Whether returned data should be filtered for data written by the
      *     calling app.
-     * @param packageNamesByAppIds Map of package names to app Ids. If this is not present, app info
-     *     is read using AppInfoHelper.
      * @return A pair containing the list of records for this request, along with the page token.
      */
-    // TODO(b/399825886): packageNamesByAppIds is not consistently used and should be removed once
-    // this bug is fixed.
     public Pair<List<RecordInternal<?>>, PageTokenWrapper> readRecords(
             TransactionManager transactionManager,
             String callingPackageName,
@@ -109,8 +105,33 @@ public class FitnessRecordReadHelper {
             long startDateAccessMillis,
             boolean isInForeground,
             boolean shouldRecordAccessLog,
+            boolean enforceSelfRead) {
+        return readRecords(
+                transactionManager,
+                callingPackageName,
+                request,
+                grantedExtraReadPermissions,
+                grantedGranularPermissions,
+                startDateAccessMillis,
+                isInForeground,
+                shouldRecordAccessLog,
+                enforceSelfRead,
+                null,
+                null);
+    }
+
+    private Pair<List<RecordInternal<?>>, PageTokenWrapper> readRecords(
+            TransactionManager transactionManager,
+            String callingPackageName,
+            ReadRecordsRequestParcel request,
+            Set<String> grantedExtraReadPermissions,
+            Set<String> grantedGranularPermissions,
+            long startDateAccessMillis,
+            boolean isInForeground,
+            boolean shouldRecordAccessLog,
             boolean enforceSelfRead,
-            @Nullable Map<Long, String> packageNamesByAppIds) {
+            @Nullable Map<Long, String> appIdToPackageNameMap,
+            @Nullable Map<Long, DeviceInfoHelper.DeviceInfo> deviceIdToDeviceInfoMap) {
         int recordTypeId = request.getRecordType();
         RecordHelper<?> recordHelper = mInternalHealthConnectMappings.getRecordHelper(recordTypeId);
         RecordReadTableRequest readTableRequest =
@@ -147,7 +168,8 @@ public class FitnessRecordReadHelper {
                             cursor,
                             pageSize,
                             pageToken,
-                            packageNamesByAppIds,
+                            appIdToPackageNameMap,
+                            deviceIdToDeviceInfoMap,
                             mAppInfoHelper);
             populateInternalRecordsWithExtraData(
                     transactionManager, readResult.first, readTableRequest);
@@ -168,11 +190,18 @@ public class FitnessRecordReadHelper {
      *
      * <p>This method is used for internal use cases, and aims to remove any possible checks to
      * maximise the data read.
+     *
+     * @param appIdToPackageNameMap Map of app info id to package name. If this is not present,
+     *     package name is read using AppInfoHelper.
+     * @param deviceIdToDeviceInfoMap Map of device id to device info. If this is not present,
+     *     device info is read using DeviceInfoHelper.
      */
+    // TODO(b/479508495): the maps are not consistently used and should be removed.
     public Pair<List<RecordInternal<?>>, PageTokenWrapper> readRecordsUnrestricted(
             TransactionManager transactionManager,
             ReadRecordsRequestParcel request,
-            @Nullable Map<Long, String> packageNamesByAppIds) {
+            @Nullable Map<Long, String> appIdToPackageNameMap,
+            @Nullable Map<Long, DeviceInfoHelper.DeviceInfo> deviceIdToDeviceInfoMap) {
         // Passing in empty package name is a hacky solution here.
         // This method uses the package name to read extra data based on
         // grantedExtraReadPermissions. Since the extra read permissions contains all permissions,
@@ -203,7 +232,8 @@ public class FitnessRecordReadHelper {
                 // Don't record access logs for internal reads.
                 /* shouldRecordAccessLog= */ false,
                 /* enforceSelfRead= */ false,
-                packageNamesByAppIds);
+                appIdToPackageNameMap,
+                deviceIdToDeviceInfoMap);
     }
 
     /**

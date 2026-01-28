@@ -226,8 +226,7 @@ public final class FitnessTestUtils {
                         /* startDateAccessMillis= */ 0,
                         /* isInForeground= */ true,
                         /* shouldRecordAccessLogs= */ false,
-                        /* enforceSelfRead */ false,
-                        /* packageNamesByAppIds= */ null)
+                        /* enforceSelfRead */ false)
                 .first;
     }
 
