@@ -929,6 +929,13 @@ public class HealthConnectManagerTest {
                 .isEqualTo("android.health.connect.extra.DEVICE_RECORD_TYPES");
         assertThat(HealthConnectManager.EXTRA_DEVICE_SYMPTOM_TYPES)
                 .isEqualTo("android.health.connect.extra.DEVICE_SYMPTOM_TYPES");
+
+        assertThat(HealthConnectManager.RESULT_DEVICE_ONBOARDING_ALLOWED)
+                .isEqualTo(android.app.Activity.RESULT_FIRST_USER);
+        assertThat(HealthConnectManager.RESULT_DEVICE_ONBOARDING_DENIED)
+                .isEqualTo(android.app.Activity.RESULT_FIRST_USER + 1);
+        assertThat(HealthConnectManager.RESULT_DEVICE_ONBOARDING_ABORTED)
+                .isEqualTo(android.app.Activity.RESULT_FIRST_USER + 2);
     }
 
     /**
