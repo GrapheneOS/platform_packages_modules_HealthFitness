@@ -45,7 +45,6 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @hide
  */
-// TODO(b/303023796): Make this final.
 public class PreferenceHelper extends DatabaseHelper {
     private static final String TAG = "PreferenceHelper";
     private static final String TABLE_NAME = "preference_table";
