@@ -161,4 +161,15 @@ public final class AconfigFlagHelper {
     public static boolean isDeviceUdiEnabled() {
         return Flags.deviceUdi() && isDbFlagEnabled(DB_VERSION_DEVICE_UDI);
     }
+
+    /**
+     * Returns a boolean indicating whether the schema update for change logs granular permissions
+     * handling is enabled. TODO(b/481325624) Remove development db flag when moved to prod db
+     * upgrader.
+     */
+    public static boolean isChangeLogsSchemaUpdateEnabled() {
+        return Flags.changeLogsGranularPermissionsHandling()
+                && Flags.changeLogsGranularPermissionsHandlingDb()
+                && Flags.developmentDatabaseRw();
+    }
 }

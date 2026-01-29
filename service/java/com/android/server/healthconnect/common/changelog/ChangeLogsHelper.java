@@ -89,6 +89,9 @@ public final class ChangeLogsHelper extends DatabaseHelper {
     @VisibleForTesting public static final String OPERATION_TYPE_COLUMN_NAME = "operation_type";
     @VisibleForTesting public static final String TIME_COLUMN_NAME = "time";
 
+    @VisibleForTesting
+    public static final String PER_RECORD_PERMISSION_COLUMN_NAME = "per_record_permission";
+
     private final TransactionManager mTransactionManager;
 
     public ChangeLogsHelper(
@@ -571,5 +574,11 @@ public final class ChangeLogsHelper extends DatabaseHelper {
         } catch (Exception e) {
             throw new IllegalArgumentException(e);
         }
+    }
+
+    /** Returns alter table request for changelogs schema update */
+    public static AlterTableRequest getAlterTableRequestForChangeLogs() {
+        var columns = List.of(new Pair<>(PER_RECORD_PERMISSION_COLUMN_NAME, INTEGER));
+        return new AlterTableRequest(TABLE_NAME, columns);
     }
 }
