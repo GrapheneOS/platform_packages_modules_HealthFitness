@@ -15,54 +15,54 @@
   -->
 <resources>
     <!-- REGION ICONS -->
-    <attr name="healthConnectIcon" format="reference"/>
+    <attr name="healthConnectIcon" format="reference" />
 
     <!-- Home page -->
-    <attr name="appPermissionsIcon" format="reference"/>
-    <attr name="dataAndAccessIcon" format="reference"/>
-    <attr name="seeAllIcon" format="reference"/>
+    <attr name="appPermissionsIcon" format="reference" />
+    <attr name="dataAndAccessIcon" format="reference" />
+    <attr name="seeAllIcon" format="reference" />
     <attr name="recentAccessTimelineDividerDrawable" format="reference" />
-    <attr name="manageDataIcon" format="reference"/>
-    <attr name="optionsIcon" format="reference"/>
-    <attr name="collapseIcon" format="reference"/>
-    <attr name="notConnectedAppTitleColor" format="reference"/>
+    <attr name="manageDataIcon" format="reference" />
+    <attr name="optionsIcon" format="reference" />
+    <attr name="collapseIcon" format="reference" />
+    <attr name="notConnectedAppTitleColor" format="reference" />
 
     <!-- App permissions page -->
-    <attr name="removeAccessForAllAppsIcon" format="reference"/>
-    <attr name="helpAndFeedbackIcon" format="reference"/>
-    <attr name="checkForUpdatesIcon" format="reference"/>
-    <attr name="seeAllCompatibleAppsIcon" format="reference"/>
-    <attr name="sendFeedbackIcon" format="reference"/>
-    <attr name="searchIcon" format="reference"/>
-    <attr name="emptySearchIcon" format="reference"/>
+    <attr name="removeAccessForAllAppsIcon" format="reference" />
+    <attr name="helpAndFeedbackIcon" format="reference" />
+    <attr name="checkForUpdatesIcon" format="reference" />
+    <attr name="seeAllCompatibleAppsIcon" format="reference" />
+    <attr name="sendFeedbackIcon" format="reference" />
+    <attr name="searchIcon" format="reference" />
+    <attr name="emptySearchIcon" format="reference" />
 
     <!-- Categories page -->
-    <attr name="autoDeleteIcon" format="reference"/>
-    <attr name="autoDeleteOffIcon" format="reference"/>
+    <attr name="autoDeleteIcon" format="reference" />
+    <attr name="autoDeleteOffIcon" format="reference" />
     <attr name="deleteIcon" format="reference" />
-    <attr name="activityCategoryIcon" format="reference"/>
-    <attr name="bodyMeasurementsCategoryIcon" format="reference"/>
-    <attr name="cycleTrackingCategoryIcon" format="reference"/>
-    <attr name="nutritionCategoryIcon" format="reference"/>
-    <attr name="sleepCategoryIcon" format="reference"/>
-    <attr name="vitalsCategoryIcon" format="reference"/>
-    <attr name="wellnessCategoryIcon" format="reference"/>
-    <attr name="symptomsCategoryIcon" format="reference"/>
+    <attr name="activityCategoryIcon" format="reference" />
+    <attr name="bodyMeasurementsCategoryIcon" format="reference" />
+    <attr name="cycleTrackingCategoryIcon" format="reference" />
+    <attr name="nutritionCategoryIcon" format="reference" />
+    <attr name="sleepCategoryIcon" format="reference" />
+    <attr name="vitalsCategoryIcon" format="reference" />
+    <attr name="wellnessCategoryIcon" format="reference" />
+    <attr name="symptomsCategoryIcon" format="reference" />
     <attr name="databaseIcon" format="reference" />
 
     <!-- Permission types page -->
-    <attr name="appPriorityIcon" format="reference"/>
+    <attr name="appPriorityIcon" format="reference" />
     <attr name="checkIcon" format="reference" />
 
     <!-- Data access page -->
-    <attr name="seeAllEntriesIcon" format="reference"/>
-    <attr name="deleteForeverIcon" format="reference"/>
-    <attr name="checkboxUncheckedIcon" format="reference"/>
-    <attr name="checkboxCheckedIcon" format="reference"/>
+    <attr name="seeAllEntriesIcon" format="reference" />
+    <attr name="deleteForeverIcon" format="reference" />
+    <attr name="checkboxUncheckedIcon" format="reference" />
+    <attr name="checkboxCheckedIcon" format="reference" />
 
     <!-- Data entries page -->
-    <attr name="nextDayIcon" format="reference"/>
-    <attr name="previousDayIcon" format="reference"/>
+    <attr name="nextDayIcon" format="reference" />
+    <attr name="previousDayIcon" format="reference" />
 
     <!-- Dialogs -->
     <attr name="deletionSettingsIcon" format="reference" />
@@ -77,54 +77,62 @@
     <attr name="chooseDataIcon" format="reference" />
     <attr name="accessHistoryIcon" format="reference" />
     <attr name="privacyPolicyIcon" format="reference" />
-    <attr name="manageSettingsIcon" format="reference"/>
-    <attr name="syncIcon" format="reference"/>
+    <attr name="manageSettingsIcon" format="reference" />
+    <attr name="syncIcon" format="reference" />
 
     <!-- Migration -->
-    <attr name="moreSpaceNeededIcon" format="reference"/>
-    <attr name="updateNeededIcon" format="reference"/>
-    <attr name="settingsAlertIcon" format="reference"/>
+    <attr name="moreSpaceNeededIcon" format="reference" />
+    <attr name="updateNeededIcon" format="reference" />
+    <attr name="settingsAlertIcon" format="reference" />
 
     <!-- Data sources & priority -->
-    <attr name="devicePhoneIcon" format="reference"/>
-    <attr name="addIcon" format="reference"/>
-    <attr name="editIcon" format="reference"/>
-    <attr name="closeIcon" format="reference"/>
-    <attr name="appsIcon" format="reference"/>
-    <attr name="moreVertIcon" format="reference"/>
+    <attr name="devicePhoneIcon" format="reference" />
+    <attr name="deviceWatchIcon" format="reference" />
+    <attr name="deviceConsumerMedicalDeviceIcon" format="reference" />
+    <attr name="deviceHearableIcon" format="reference" />
+    <attr name="deviceFitnessEquipmentIcon" format="reference" />
+    <attr name="deviceFitnessBandIcon" format="reference" />
+    <attr name="deviceScaleIcon" format="reference" />
+    <attr name="devicePortableComputerIcon" format="reference" />
+    <attr name="deviceGenericIcon" format="reference" />
+    <attr name="addIcon" format="reference" />
+    <attr name="editIcon" format="reference" />
+    <attr name="closeIcon" format="reference" />
+    <attr name="appsIcon" format="reference" />
+    <attr name="moreVertIcon" format="reference" />
 
     <!-- Backup and restore -->
-    <attr name="uploadIcon" format="reference"/>
-    <attr name="repeatIcon" format="reference"/>
+    <attr name="uploadIcon" format="reference" />
+    <attr name="repeatIcon" format="reference" />
     <attr name="importIcon" format="reference" />
     <attr name="importDataIcon" format="reference" />
 
-    <attr name="warningIcon" format="reference"/>
-    <attr name="infoIcon" format="reference"/>
+    <attr name="warningIcon" format="reference" />
+    <attr name="infoIcon" format="reference" />
 
     <!-- Medical data -->
-    <attr name="allergiesIcon" format="reference"/>
+    <attr name="allergiesIcon" format="reference" />
     <attr name="conditionsIcon" format="reference" />
-    <attr name="immunizationIcon" format="reference"/>
+    <attr name="immunizationIcon" format="reference" />
     <attr name="labResultsIcon" format="reference" />
-    <attr name="medicalServicesIcon" format="reference"/>
+    <attr name="medicalServicesIcon" format="reference" />
     <attr name="medicationsIcon" format="reference" />
     <attr name="pastVisitsIcon" format="reference" />
     <attr name="patientInfoIcon" format="reference" />
     <attr name="pregnancyIcon" format="reference" />
-    <attr name="practitionerDetailsIcon" format="reference"/>
-    <attr name="proceduresIcon" format="reference"/>
-    <attr name="vitalsIcon" format="reference"/>
-    <attr name="socialHistoryIcon" format="reference"/>
+    <attr name="practitionerDetailsIcon" format="reference" />
+    <attr name="proceduresIcon" format="reference" />
+    <attr name="vitalsIcon" format="reference" />
+    <attr name="socialHistoryIcon" format="reference" />
 
     <!-- Onboarding -->
-    <attr name="checkmarkIcon" format="reference"/>
+    <attr name="checkmarkIcon" format="reference" />
 
     <!-- Lock screen banner -->
     <attr name="lockIcon" format="reference" />
 
     <!-- New home screen -->
-    <attr name="connectButton" format="reference"/>
+    <attr name="connectButton" format="reference" />
 
     <!-- END REGION -->
 
@@ -140,42 +148,42 @@
     <!-- REGION STYLES -->
     <!-- Typography   -->
     <attr name="textAppearanceSummary" format="reference" />
-    <attr name="textAppearanceSummaryLarge" format="reference"/>
-    <attr name="textAppearanceLabel" format="reference"/>
-    <attr name="textAppearanceLabelCompact" format="reference"/>
-    <attr name="textAppearanceHeadline6" format="reference"/>
+    <attr name="textAppearanceSummaryLarge" format="reference" />
+    <attr name="textAppearanceLabel" format="reference" />
+    <attr name="textAppearanceLabelCompact" format="reference" />
+    <attr name="textAppearanceHeadline6" format="reference" />
     <attr name="textAppearanceItem" format="reference" />
     <attr name="textAppearanceHeadline4" format="reference" />
     <attr name="textAppearanceHeadline3" format="reference" />
     <attr name="textAppearanceHeadline2" format="reference" />
-    <attr name="textAppearanceLabelSmall" format="reference"/>
-    <attr name="textAppearanceSubheader" format="reference"/>
-    <attr name="textAppearanceSubheader2" format="reference"/>
-    <attr name="textAppearanceSubheader3" format="reference"/>
-    <attr name="textAppearanceExpressiveDialogTitle" format="reference"/>
-    <attr name="textAppearanceExpressiveDialogMessage" format="reference"/>
-    <attr name="textAppearanceExpressiveRadioButton" format="reference"/>
-    <attr name="textAppearanceRouteRequest" format="reference"/>
-    <attr name="textAppearancePreferenceCategory" format="reference"/>
-    <attr name="textAppearanceErrorMessage" format="reference"/>
-    <attr name="permissionHeaderTitle" format="reference"/>
-    <attr name="headerTitle" format="reference"/>
-    <attr name="headerSummary" format="reference"/>
-    <attr name="headerDetails" format="reference"/>
+    <attr name="textAppearanceLabelSmall" format="reference" />
+    <attr name="textAppearanceSubheader" format="reference" />
+    <attr name="textAppearanceSubheader2" format="reference" />
+    <attr name="textAppearanceSubheader3" format="reference" />
+    <attr name="textAppearanceExpressiveDialogTitle" format="reference" />
+    <attr name="textAppearanceExpressiveDialogMessage" format="reference" />
+    <attr name="textAppearanceExpressiveRadioButton" format="reference" />
+    <attr name="textAppearanceRouteRequest" format="reference" />
+    <attr name="textAppearancePreferenceCategory" format="reference" />
+    <attr name="textAppearanceErrorMessage" format="reference" />
+    <attr name="permissionHeaderTitle" format="reference" />
+    <attr name="headerTitle" format="reference" />
+    <attr name="headerSummary" format="reference" />
+    <attr name="headerDetails" format="reference" />
 
     <!-- Buttons -->
-    <attr name="dialogButtonFull" format="reference"/>
-    <attr name="dialogButtonOutline" format="reference"/>
-    <attr name="baseButton" format="reference"/>
-    <attr name="buttonBorderLess" format="reference"/>
-    <attr name="permissionGrantButtonList" format="reference"/>
-    <attr name="permissionGrantButtonTop" format="reference"/>
-    <attr name="permissionGrantButtonBottom" format="reference"/>
+    <attr name="dialogButtonFull" format="reference" />
+    <attr name="dialogButtonOutline" format="reference" />
+    <attr name="baseButton" format="reference" />
+    <attr name="buttonBorderLess" format="reference" />
+    <attr name="permissionGrantButtonList" format="reference" />
+    <attr name="permissionGrantButtonTop" format="reference" />
+    <attr name="permissionGrantButtonBottom" format="reference" />
     <attr name="disabledSpinner" format="reference" />
 
     <!-- Dialogs -->
-    <attr name="alertDialogTheme" format="reference"/>
-    <attr name="dialogButtonBar" format="reference"/>
+    <attr name="alertDialogTheme" format="reference" />
+    <attr name="dialogButtonBar" format="reference" />
 
     <attr name="outlinedButton" format="reference" />
     <attr name="chipStyle" format="reference" />

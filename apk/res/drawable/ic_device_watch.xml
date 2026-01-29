@@ -1,0 +1,29 @@
+<!--
+     Copyright (C) 2026 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+    <group>
+        <path
+            android:pathData="M20,0L20,0A20,20 0,0 1,40 20L40,20A20,20 0,0 1,20 40L20,40A20,20 0,0 1,0 20L0,20A20,20 0,0 1,20 0z"
+            android:fillColor="@color/devices_icon_background_yellow" />
+        <path
+            android:pathData="M17,30 L15.65,25.45 C14.85,24.8167 14.2083,24.025 13.725,23.075 C13.2417,22.125 13,21.1 13,20 C13,18.9 13.2417,17.875 13.725,16.925 C14.2083,15.975 14.85,15.1833 15.65,14.55 L17,10 H23 L24.35,14.55 C25.15,15.1833 25.7917,15.975 26.275,16.925 C26.7583,17.875 27,18.9 27,20 C27,21.1 26.7583,22.125 26.275,23.075 C25.7917,24.025 25.15,24.8167 24.35,25.45 L23,30 H17 Z M20,25 C21.3833,25 22.5583,24.5167 23.525,23.55 C24.5083,22.5667 25,21.3833 25,20 C25,18.6167 24.5083,17.4417 23.525,16.475 C22.5583,15.4917 21.3833,15 20,15 C18.6167,15 17.4333,15.4917 16.45,16.475 C15.4833,17.4417 15,18.6167 15,20 C15,21.3833 15.4833,22.5667 16.45,23.55 C17.4333,24.5167 18.6167,25 20,25 Z"
+            android:fillColor="@color/devices_icon_foreground_yellow" />
+    </group>
+</vector>
