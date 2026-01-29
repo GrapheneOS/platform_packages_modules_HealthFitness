@@ -330,7 +330,7 @@ public class HealthConnectManagerService extends SystemService {
                     }
                 });
 
-        if (Flags.stepTrackingEnabled()) {
+        if (Flags.stepTrackingEnabled() && !AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
             threadScheduler.scheduleInternalTask(
                     () -> {
                         try {
@@ -354,7 +354,7 @@ public class HealthConnectManagerService extends SystemService {
                     });
         }
 
-        if (Flags.deviceDataProvidersApi()) {
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
             threadScheduler.scheduleInternalTask(
                     () -> {
                         try {
@@ -364,29 +364,23 @@ public class HealthConnectManagerService extends SystemService {
                         } catch (Exception e) {
                             Slog.e(TAG, "Failed to initialize salt for synthetic package names", e);
                         }
-                    });
-        }
 
-        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
-            threadScheduler.scheduleInternalTask(
-                    () -> {
-                        try {
-                            mHealthConnectInjector
-                                    .getDeviceDataProviderManager()
-                                    .initializeOrRefreshCurrentDeviceIds();
-                        } catch (Exception e) {
-                            Slog.e(TAG, "Failed to initialize current device id.", e);
-                        }
-                    });
-
-            threadScheduler.scheduleInternalTask(
-                    () -> {
                         try {
                             mHealthConnectInjector
                                     .getDeviceDataProviderManager()
                                     .advertiseCurrentDeviceNativeCapabilities();
                         } catch (Exception e) {
                             Slog.e(TAG, "Failed to advertise current device capabilities.", e);
+                        }
+
+                        // The steps tracker may want to write steps at startup for which it
+                        // requires the current device to have been advertised beforehand.
+                        if (Flags.stepTrackingEnabled()) {
+                            try {
+                                mHealthConnectInjector.getTrackerManager().initializeOrRefresh();
+                            } catch (Exception e) {
+                                Slog.e(TAG, "Failed to initialize steps tracker.", e);
+                            }
                         }
                     });
         }
@@ -420,5 +414,4 @@ public class HealthConnectManagerService extends SystemService {
             return context.createContextAsUser(user, 0);
         }
     }
-
 }

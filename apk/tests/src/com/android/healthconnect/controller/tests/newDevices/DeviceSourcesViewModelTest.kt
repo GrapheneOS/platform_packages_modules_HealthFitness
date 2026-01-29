@@ -18,6 +18,8 @@ package com.android.healthconnect.controller.tests.newDevices
 
 import android.health.connect.DeviceDataSourceInfo
 import android.health.connect.HealthConnectException
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.matchmaking.api.GetDeviceDataSourcesInfoUseCase
 import com.android.healthconnect.controller.matchmaking.api.SetTrackingEnabledUseCase
@@ -26,8 +28,9 @@ import com.android.healthconnect.controller.newDevices.DeviceSourcesViewModel.De
 import com.android.healthconnect.controller.newDevices.DeviceSourcesViewModel.SelectedDeviceSourceInfoState
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
-import com.android.healthconnect.controller.tests.utils.TEST_DEVICE_DATA_SOURCES_INFO
 import com.android.healthconnect.controller.tests.utils.TEST_PHONE_SPN
+import com.android.healthconnect.controller.tests.utils.getDeviceDataSourcesInfo
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
@@ -51,9 +54,11 @@ import org.mockito.kotlin.whenever
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
+@EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
 class DeviceSourcesViewModelTest {
 
-    @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule(order = 0) val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule(order = 1) val setFlagsRule = SetFlagsRule()
 
     private val getDeviceDataSourcesInfoUseCase: GetDeviceDataSourcesInfoUseCase = mock()
     private val setTrackingEnabledUseCase: SetTrackingEnabledUseCase = mock()
@@ -72,10 +77,10 @@ class DeviceSourcesViewModelTest {
 
     @Test
     fun loadDeviceSourcesInfos_success_updatesState() = runTest {
-        val state = loadSuccessfulDeviceSourcesState(TEST_DEVICE_DATA_SOURCES_INFO)
+        val state = loadSuccessfulDeviceSourcesState(getDeviceDataSourcesInfo())
         assertThat(state).isInstanceOf(DeviceSourcesState.WithData::class.java)
         val dataState = state as DeviceSourcesState.WithData
-        assertThat(dataState.deviceSourcesInfos).isEqualTo(TEST_DEVICE_DATA_SOURCES_INFO)
+        assertThat(dataState.deviceSourcesInfos).isEqualTo(getDeviceDataSourcesInfo())
     }
 
     @Test
@@ -86,12 +91,12 @@ class DeviceSourcesViewModelTest {
 
     @Test
     fun loadSelectedDeviceSourceInfo_success_updatesState() = runTest {
-        val state = loadSelectedDeviceSourceInfoState(TEST_DEVICE_DATA_SOURCES_INFO, TEST_PHONE_SPN)
+        val state = loadSelectedDeviceSourceInfoState(getDeviceDataSourcesInfo(), TEST_PHONE_SPN)
         assertThat(state).isInstanceOf(SelectedDeviceSourceInfoState.WithData::class.java)
         val dataState = state as SelectedDeviceSourceInfoState.WithData
         assertThat(dataState.selectedDeviceSourceInfo)
             .isEqualTo(
-                TEST_DEVICE_DATA_SOURCES_INFO.find {
+                getDeviceDataSourcesInfo().find {
                     it.deviceDataOrigin.packageName == TEST_PHONE_SPN
                 }
             )
@@ -99,7 +104,7 @@ class DeviceSourcesViewModelTest {
 
     @Test
     fun loadSelectedDeviceSourceInfo_noMatchingDevice_updatesState() = runTest {
-        val state = loadSelectedDeviceSourceInfoState(TEST_DEVICE_DATA_SOURCES_INFO, "some.package")
+        val state = loadSelectedDeviceSourceInfoState(getDeviceDataSourcesInfo(), "some.package")
         assertThat(state).isEqualTo(SelectedDeviceSourceInfoState.Error)
     }
 

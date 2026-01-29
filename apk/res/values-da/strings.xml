@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data fra <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Giv appen <xliff:g id="APP_NAME">%1$s</xliff:g> tilladelse til at læse data fra andre apps på denne enhed via Health Connect. Disse data kan også læses af andre apps, du giver adgang til."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps, der kan synkronisere disse data"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Enheder, der kan synkronisere disse data"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Få flere oplysninger om, hvordan <xliff:g id="APP_NAME">%1$s</xliff:g> bruger dine data, i "<a href="%2$s">"privatlivspolitikken"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect giver dig mulighed for at dele dine sundheds- og træningsdata mellem flere apps. Det hjælper dig med at få indsigt og oplevelser, samtidig med at dine data beskyttes."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Mere om Health Connect"</string>

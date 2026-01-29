@@ -25,6 +25,8 @@ import android.health.connect.datatypes.Device
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.device.DeviceDataTypeAdvertisement
 import android.os.Bundle
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.preference.PreferenceCategory
@@ -43,10 +45,11 @@ import com.android.healthconnect.controller.newDevices.DeviceSourcesViewModel.De
 import com.android.healthconnect.controller.newDevices.DevicesFragment
 import com.android.healthconnect.controller.shared.children
 import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PACKAGE_NAME
-import com.android.healthconnect.controller.tests.utils.TEST_DEVICE_DATA_SOURCES_INFO
 import com.android.healthconnect.controller.tests.utils.TEST_PHONE_SPN
 import com.android.healthconnect.controller.tests.utils.TEST_WATCH_SPN
+import com.android.healthconnect.controller.tests.utils.getDeviceDataSourcesInfo
 import com.android.healthconnect.controller.tests.utils.launchFragment
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -61,23 +64,27 @@ import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
+@EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
 class DevicesFragmentTest {
 
-    @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule(order = 0) val hiltRule = HiltAndroidRule(this)
+    @get:Rule(order = 1) val setFlagsRule = SetFlagsRule()
+
     @BindValue val viewModel: DeviceSourcesViewModel = mock()
 
     private lateinit var navHostController: TestNavHostController
     private lateinit var context: Context
-    private val deviceSourcesState =
-        MutableStateFlow<DeviceSourcesState>(
-            DeviceSourcesState.WithData(TEST_DEVICE_DATA_SOURCES_INFO)
-        )
+    private lateinit var deviceSourcesState: MutableStateFlow<DeviceSourcesState>
 
     @Before
     fun setup() {
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().context
         navHostController = TestNavHostController(context)
+        deviceSourcesState =
+            MutableStateFlow<DeviceSourcesState>(
+                DeviceSourcesState.WithData(getDeviceDataSourcesInfo())
+            )
         whenever(viewModel.deviceSourcesState).thenReturn(deviceSourcesState)
     }
 
@@ -130,7 +137,7 @@ class DevicesFragmentTest {
 
     @Test
     fun currentDevice_includesSummaryText() {
-        val currentDeviceInfo = TEST_DEVICE_DATA_SOURCES_INFO.filter { it.isCurrentDevice }.toSet()
+        val currentDeviceInfo = getDeviceDataSourcesInfo().filter { it.isCurrentDevice }.toSet()
         deviceSourcesState.value = DeviceSourcesState.WithData(currentDeviceInfo)
 
         launchFragment<DevicesFragment>(Bundle()).use {
@@ -140,8 +147,7 @@ class DevicesFragmentTest {
 
     @Test
     fun notCurrentDevice_ignoresSummaryText() {
-        val notCurrentDeviceInfo =
-            TEST_DEVICE_DATA_SOURCES_INFO.filter { !it.isCurrentDevice }.toSet()
+        val notCurrentDeviceInfo = getDeviceDataSourcesInfo().filter { !it.isCurrentDevice }.toSet()
         deviceSourcesState.value = DeviceSourcesState.WithData(notCurrentDeviceInfo)
 
         launchFragment<DevicesFragment>(Bundle()).use {

@@ -52,10 +52,10 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_3
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_3
-import com.android.healthconnect.controller.tests.utils.TEST_DEVICE_DATA_SOURCES_INFO
 import com.android.healthconnect.controller.tests.utils.TEST_PHONE_APP
 import com.android.healthconnect.controller.tests.utils.TEST_PHONE_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_WATCH_SPN
+import com.android.healthconnect.controller.tests.utils.getDeviceDataSourcesInfo
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.utils.logging.AddAnAppElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -113,7 +113,7 @@ class AddAnAppFragmentTest {
                             listOf(TEST_APP, TEST_APP_2, TEST_APP_3),
                         ),
                     deviceDataSourcesState =
-                        DeviceDataSourcesState.WithData(TEST_DEVICE_DATA_SOURCES_INFO),
+                        DeviceDataSourcesState.WithData(getDeviceDataSourcesInfo()),
                 )
             )
         }
@@ -146,7 +146,7 @@ class AddAnAppFragmentTest {
                             listOf(TEST_APP, TEST_APP_2, TEST_APP_3, TEST_PHONE_APP),
                         ),
                     deviceDataSourcesState =
-                        DeviceDataSourcesState.WithData(TEST_DEVICE_DATA_SOURCES_INFO),
+                        DeviceDataSourcesState.WithData(getDeviceDataSourcesInfo()),
                 )
             )
         }
@@ -156,7 +156,7 @@ class AddAnAppFragmentTest {
             )
             .use {
                 val phoneInfo =
-                    TEST_DEVICE_DATA_SOURCES_INFO.find {
+                    getDeviceDataSourcesInfo().find {
                         it.deviceDataOrigin.packageName == TEST_PHONE_APP.packageName
                     }
                 onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
@@ -249,7 +249,7 @@ class AddAnAppFragmentTest {
                             listOf(TEST_APP, TEST_APP_2, DEVICE_DATA_PROVIDER_APP, TEST_PHONE_APP),
                         ),
                     deviceDataSourcesState =
-                        DeviceDataSourcesState.WithData(TEST_DEVICE_DATA_SOURCES_INFO),
+                        DeviceDataSourcesState.WithData(getDeviceDataSourcesInfo()),
                 )
             )
         }
@@ -282,7 +282,7 @@ class AddAnAppFragmentTest {
                             listOf(TEST_APP, TEST_APP_2, TEST_PHONE_APP),
                         ),
                     deviceDataSourcesState =
-                        DeviceDataSourcesState.WithData(TEST_DEVICE_DATA_SOURCES_INFO),
+                        DeviceDataSourcesState.WithData(getDeviceDataSourcesInfo()),
                 )
             )
         }
@@ -292,7 +292,7 @@ class AddAnAppFragmentTest {
             )
             .use {
                 val phoneInfo =
-                    TEST_DEVICE_DATA_SOURCES_INFO.find {
+                    getDeviceDataSourcesInfo().find {
                         it.deviceDataOrigin.packageName == TEST_PHONE_APP.packageName
                     }
                 onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
@@ -318,7 +318,7 @@ class AddAnAppFragmentTest {
                             listOf(TEST_APP, TEST_APP_2, watchApp),
                         ),
                     deviceDataSourcesState =
-                        DeviceDataSourcesState.WithData(TEST_DEVICE_DATA_SOURCES_INFO),
+                        DeviceDataSourcesState.WithData(getDeviceDataSourcesInfo()),
                 )
             )
         }
@@ -328,7 +328,7 @@ class AddAnAppFragmentTest {
             )
             .use {
                 val watchInfo =
-                    TEST_DEVICE_DATA_SOURCES_INFO.find {
+                    getDeviceDataSourcesInfo().find {
                         it.deviceDataOrigin.packageName == TEST_WATCH_SPN
                     }
                 onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
@@ -354,7 +354,7 @@ class AddAnAppFragmentTest {
                     deviceDataSourcesState =
                         // Device sources without a current device
                         DeviceDataSourcesState.WithData(
-                            TEST_DEVICE_DATA_SOURCES_INFO.filterNot { it.isCurrentDevice }.toSet()
+                            getDeviceDataSourcesInfo().filterNot { it.isCurrentDevice }.toSet()
                         ),
                 )
             )
@@ -385,7 +385,7 @@ class AddAnAppFragmentTest {
                             listOf(TEST_APP, TEST_APP_2, DEVICE_DATA_PROVIDER_APP, TEST_PHONE_APP),
                         ),
                     deviceDataSourcesState =
-                        DeviceDataSourcesState.WithData(TEST_DEVICE_DATA_SOURCES_INFO),
+                        DeviceDataSourcesState.WithData(getDeviceDataSourcesInfo()),
                 )
             )
         }
@@ -395,7 +395,7 @@ class AddAnAppFragmentTest {
             )
             .use {
                 val phoneInfo =
-                    TEST_DEVICE_DATA_SOURCES_INFO.find {
+                    getDeviceDataSourcesInfo().find {
                         it.deviceDataOrigin.packageName == TEST_PHONE_APP.packageName
                     }
                 onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
@@ -451,7 +451,7 @@ class AddAnAppFragmentTest {
                             listOf(TEST_APP, TEST_APP_2, DEVICE_DATA_PROVIDER_APP),
                         ),
                     deviceDataSourcesState =
-                        DeviceDataSourcesState.WithData(TEST_DEVICE_DATA_SOURCES_INFO),
+                        DeviceDataSourcesState.WithData(getDeviceDataSourcesInfo()),
                 )
             )
         }
@@ -508,7 +508,7 @@ class AddAnAppFragmentTest {
                             listOf(TEST_APP, TEST_APP_2, DEVICE_DATA_PROVIDER_APP, TEST_PHONE_APP),
                         ),
                     deviceDataSourcesState =
-                        DeviceDataSourcesState.WithData(TEST_DEVICE_DATA_SOURCES_INFO),
+                        DeviceDataSourcesState.WithData(getDeviceDataSourcesInfo()),
                 )
             )
         }
@@ -518,7 +518,7 @@ class AddAnAppFragmentTest {
             )
             .use {
                 val phoneInfo =
-                    TEST_DEVICE_DATA_SOURCES_INFO.find {
+                    getDeviceDataSourcesInfo().find {
                         it.deviceDataOrigin.packageName == TEST_PHONE_APP.packageName
                     }
 

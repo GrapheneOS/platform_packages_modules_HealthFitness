@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.device.tracker;
 
+import android.annotation.Nullable;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -28,10 +29,12 @@ import android.os.UserHandle;
 import android.os.UserManager;
 import android.util.Slog;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
+import com.android.server.healthconnect.device.DeviceDataProviderManager;
 import com.android.server.healthconnect.device.DeviceDataSourceHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.device.notification.NativeStepsNotificationSender;
@@ -39,6 +42,7 @@ import com.android.server.healthconnect.device.notification.NativeStepsNotificat
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -67,6 +71,9 @@ public class TrackerManagerImpl implements TrackerManager {
     static final String HAS_DEVICE_PACKAGE_BEEN_APPENDED_TO_PRIORITY_LIST_KEY =
             "has_device_package_been_appended_to_priority_list_key";
 
+    static final String HAS_CURRENT_DEVICE_SPN_BEEN_APPENDED_TO_PRIORITY_LIST_KEY =
+            "has_current_device_spn_been_appended_to_priority_list_key";
+
     private final Context mContext;
     private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     private final UserManager mUserManager;
@@ -85,12 +92,14 @@ public class TrackerManagerImpl implements TrackerManager {
     private HealthConnectThreadScheduler mThreadScheduler;
 
     @VisibleForTesting StepSensorEventListener mListener;
+    @Nullable private final DeviceDataProviderManager mDeviceDataProviderManager;
 
     public TrackerManagerImpl(
             Context context,
             HealthConnectThreadScheduler threadScheduler,
             DeviceRecordHelper deviceRecordHelper,
             DeviceDataSourceHelper deviceDataSourceHelper,
+            @Nullable DeviceDataProviderManager deviceDataProviderManager,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             UserManager userManager,
             PreferenceHelper preferenceHelper,
@@ -99,9 +108,14 @@ public class TrackerManagerImpl implements TrackerManager {
             NativeStepsNotificationSender nativeStepsNotificationSender) {
         mContext = context;
         mHealthDataCategoryPriorityHelper = healthDataCategoryPriorityHelper;
+        mDeviceDataProviderManager = deviceDataProviderManager;
         mListener =
                 new StepSensorEventListener(
-                        mContext, threadScheduler, deviceRecordHelper, deviceDataSourceHelper);
+                        mContext,
+                        threadScheduler,
+                        deviceRecordHelper,
+                        deviceDataSourceHelper,
+                        mDeviceDataProviderManager);
         mUserManager = userManager;
         mPackageManager = context.getPackageManager();
         mPreferenceHelper = preferenceHelper;
@@ -206,18 +220,40 @@ public class TrackerManagerImpl implements TrackerManager {
 
             return;
         }
-        if (!Boolean.parseBoolean(
-                mPreferenceHelper.getPreference(
-                        HAS_DEVICE_PACKAGE_BEEN_APPENDED_TO_PRIORITY_LIST_KEY))) {
-            // Normally, this is carried out whenever an app is granted permissions. Since no
-            // permissions are involved for step tracking, we need to do it here.
-            // This also has the effect of adding the "android" package to the app info table.
-            // Note: this is idempotent and can be called for every initialization.
-            Slog.d(TAG, "Adding device data provider package to app priority list.");
+
+        // Normally, this is carried out whenever an app is granted permissions. Since no
+        // permissions are involved for step tracking, we need to do it here.
+        // This also has the effect of adding the respective package to the app info table.
+        // Note: this is idempotent and can be called for every initialization.
+
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                && !Boolean.parseBoolean(
+                        mPreferenceHelper.getPreference(
+                                HAS_CURRENT_DEVICE_SPN_BEEN_APPENDED_TO_PRIORITY_LIST_KEY))) {
+            Objects.requireNonNull(mDeviceDataProviderManager);
+
+            Slog.d(TAG, "Adding current device spn to app priority list.");
+            mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                    mDeviceDataProviderManager.getStableCurrentDeviceId(),
+                    HealthDataCategory.ACTIVITY,
+                    mContext.getUser());
+
+            mPreferenceHelper.insertOrReplacePreference(
+                    HAS_CURRENT_DEVICE_SPN_BEEN_APPENDED_TO_PRIORITY_LIST_KEY,
+                    Boolean.toString(true));
+        }
+
+        if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                && !Boolean.parseBoolean(
+                        mPreferenceHelper.getPreference(
+                                HAS_DEVICE_PACKAGE_BEEN_APPENDED_TO_PRIORITY_LIST_KEY))) {
+
+            Slog.d(TAG, "Adding legacy device data provider package to app priority list.");
             mHealthDataCategoryPriorityHelper.appendToPriorityList(
                     DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE,
                     HealthDataCategory.ACTIVITY,
                     mContext.getUser());
+
             mPreferenceHelper.insertOrReplacePreference(
                     HAS_DEVICE_PACKAGE_BEEN_APPENDED_TO_PRIORITY_LIST_KEY, Boolean.toString(true));
         }

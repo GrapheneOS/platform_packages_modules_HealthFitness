@@ -25,13 +25,16 @@ import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelpe
 import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
+import android.annotation.Nullable;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.health.connect.HealthPermissions;
 import android.os.SystemClock;
 import android.os.UserHandle;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.device.DeviceDataProviderManager;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.fitness.recordhelpers.IntervalRecordHelper;
 import com.android.server.healthconnect.fitness.recordhelpers.StepsRecordHelper;
@@ -43,6 +46,7 @@ import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Class to collect native tracking metrics.
@@ -63,6 +67,7 @@ public class NativeTrackingStatsCollector {
     private int mStepsWritersCount;
     private final TransactionManager mTransactionManager;
     private final AppInfoHelper mAppInfoHelper;
+    @Nullable private final DeviceDataProviderManager mDeviceDataProviderManager;
 
     public NativeTrackingStatsCollector(
             PackageInfoUtils packageInfoUtils,
@@ -71,7 +76,8 @@ public class NativeTrackingStatsCollector {
             TransactionManager transactionManager,
             AppInfoHelper appInfoHelper,
             TrackerManager trackerManager,
-            HealthConnectPermissionHelper healthConnectPermissionHelper) {
+            HealthConnectPermissionHelper healthConnectPermissionHelper,
+            @Nullable DeviceDataProviderManager deviceDataProviderManager) {
         mPackageInfoUtils = packageInfoUtils;
         mContext = context;
         mTransactionManager = transactionManager;
@@ -79,6 +85,7 @@ public class NativeTrackingStatsCollector {
         mUser = user;
         mTrackerManager = trackerManager;
         mHealthConnectPermissionHelper = healthConnectPermissionHelper;
+        mDeviceDataProviderManager = deviceDataProviderManager;
         mNativeDataTypesActive = new int[0];
         mNativeDataTypesDisabled = new int[0];
         mStepsReadersCount = 0;
@@ -98,7 +105,17 @@ public class NativeTrackingStatsCollector {
                 mStepsWritersCount++;
             }
         }
+
+        // Native steps were first saved under the "android" package until migrated to use
+        // the current device's synthetic package name which was introduced afterward
         long ddpAppInfoId = mAppInfoHelper.getAppInfoId(DEVICE_DATA_PROVIDER_PACKAGE);
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            Objects.requireNonNull(mDeviceDataProviderManager);
+            ddpAppInfoId =
+                    mAppInfoHelper.getAppInfoId(
+                            mDeviceDataProviderManager.getStableCurrentDeviceId());
+        }
+
         ReadTableRequest stepRecordsCountSinceBootRequest =
                 new ReadTableRequest(StepsRecordHelper.STEPS_TABLE_NAME);
         stepRecordsCountSinceBootRequest.setJoinClause(getJoinClauseWithAppInfoTable());

@@ -52,6 +52,7 @@ import android.platform.test.flag.junit.SetFlagsRule;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
@@ -83,7 +84,8 @@ public class HealthDataCategoryPriorityHelperTest {
     private static final String APP_PACKAGE_NAME_3 = "android.healthconnect.mocked.app3";
     private static final String APP_PACKAGE_NAME_4 = "android.healthconnect.mocked.app4";
     private static final String APP_PACKAGE_NAME_5 = "android.healthconnect.mocked.app5";
-
+    private static final String WATCH_SPN =
+            "com.android.healthconnect.watch.dae97b731dde83745b62b9111deee3456";
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
@@ -99,7 +101,7 @@ public class HealthDataCategoryPriorityHelperTest {
     private long mAppPackageId3;
     private long mAppPackageId4;
     private long mDeviceDataProviderId;
-
+    private long mWatchId;
     private AppInfoHelper mAppInfoHelper;
     private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     private HealthConnectThreadScheduler mThreadScheduler;
@@ -136,14 +138,14 @@ public class HealthDataCategoryPriorityHelperTest {
         fitnessTestUtils.insertApp(APP_PACKAGE_NAME_3);
         fitnessTestUtils.insertApp(APP_PACKAGE_NAME_4);
         fitnessTestUtils.insertApp(DEVICE_DATA_PROVIDER_PACKAGE);
-
+        fitnessTestUtils.insertApp(WATCH_SPN);
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mAppPackageId = mAppInfoHelper.getAppInfoId(APP_PACKAGE_NAME);
         mAppPackageId2 = mAppInfoHelper.getAppInfoId(APP_PACKAGE_NAME_2);
         mAppPackageId3 = mAppInfoHelper.getAppInfoId(APP_PACKAGE_NAME_3);
         mAppPackageId4 = mAppInfoHelper.getAppInfoId(APP_PACKAGE_NAME_4);
         mDeviceDataProviderId = mAppInfoHelper.getAppInfoId(DEVICE_DATA_PROVIDER_PACKAGE);
-
+        mWatchId = mAppInfoHelper.getAppInfoId(WATCH_SPN);
         mHealthDataCategoryPriorityHelper =
                 healthConnectInjector.getHealthDataCategoryPriorityHelper();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
@@ -366,8 +368,9 @@ public class HealthDataCategoryPriorityHelperTest {
 
     @Test
     @EnableFlags(FLAG_STEP_TRACKING_ENABLED)
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void
-            maybeRemoveAppWithoutWritePermissionsFromPriorityList_ddpPackage_doesNotRemoveApp() {
+            maybeRemoveAppWithoutWritePermissionsFromPriorityList_legacyPackage_doesNotRemoveApp() {
         mHealthDataCategoryPriorityHelper.appendToPriorityList(
                 DEVICE_DATA_PROVIDER_PACKAGE, HealthDataCategory.ACTIVITY, mContext.getUser());
 
@@ -381,6 +384,65 @@ public class HealthDataCategoryPriorityHelperTest {
         // DDP package is still present.
         assertAppIdPriorityOrderIsEqualTo(
                 HealthDataCategory.ACTIVITY, List.of(mDeviceDataProviderId));
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void
+            maybeRemoveAppWithoutWritePermissionsFromPriorityList_devicePackage_doesNotRemoveApp() {
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                WATCH_SPN, HealthDataCategory.ACTIVITY, mContext.getUser());
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.appHasDataInCategory(
+                                WATCH_SPN, HealthDataCategory.ACTIVITY))
+                .isFalse();
+
+        mHealthDataCategoryPriorityHelper.maybeRemoveAppWithoutWritePermissionsFromPriorityList(
+                WATCH_SPN);
+
+        // Watch package is still present.
+        assertAppIdPriorityOrderIsEqualTo(HealthDataCategory.ACTIVITY, List.of(mWatchId));
+    }
+
+    @Test
+    @EnableFlags({
+        FLAG_STEP_TRACKING_ENABLED,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
+    })
+    public void maybeRemoveAppWithoutWritePermissionsFromPriorityList_legacyInNew_doesNotRemove() {
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                DEVICE_DATA_PROVIDER_PACKAGE, HealthDataCategory.ACTIVITY, mContext.getUser());
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.appHasDataInCategory(
+                                DEVICE_DATA_PROVIDER_PACKAGE, HealthDataCategory.ACTIVITY))
+                .isFalse();
+
+        mHealthDataCategoryPriorityHelper.maybeRemoveAppWithoutWritePermissionsFromPriorityList(
+                DEVICE_DATA_PROVIDER_PACKAGE);
+
+        // DDP package is still present.
+        assertAppIdPriorityOrderIsEqualTo(
+                HealthDataCategory.ACTIVITY, List.of(mDeviceDataProviderId));
+    }
+
+    @Test
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void maybeRemoveAppWithoutWritePermissionsFromPriorityList_flagsDisabled_removesWatch() {
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                WATCH_SPN, HealthDataCategory.ACTIVITY, mContext.getUser());
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.appHasDataInCategory(
+                                WATCH_SPN, HealthDataCategory.ACTIVITY))
+                .isFalse();
+
+        mHealthDataCategoryPriorityHelper.maybeRemoveAppWithoutWritePermissionsFromPriorityList(
+                WATCH_SPN);
+
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .isEmpty();
     }
 
     @Test
@@ -1331,7 +1393,8 @@ public class HealthDataCategoryPriorityHelperTest {
 
     @Test
     @EnableFlags(FLAG_STEP_TRACKING_ENABLED)
-    public void testGetAllInactiveApps_doesNotConsiderDdpPackageInactive() {
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void testGetAllInactiveApps_doesNotConsiderLegacyDdpPackageInactive() {
         // Include DDP package, but don't grant any permissions.
         mHealthDataCategoryPriorityHelper.appendToPriorityList(
                 DEVICE_DATA_PROVIDER_PACKAGE, HealthDataCategory.ACTIVITY, mContext.getUser());
@@ -1344,8 +1407,40 @@ public class HealthDataCategoryPriorityHelperTest {
     }
 
     @Test
+    @EnableFlags({
+        FLAG_STEP_TRACKING_ENABLED,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
+    })
+    public void testGetAllInactiveApps_legacyInNewSystem_doesNotConsiderLegacyDdpPackageInactive() {
+        // Include DDP package, but don't grant any permissions.
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                DEVICE_DATA_PROVIDER_PACKAGE, HealthDataCategory.ACTIVITY, mContext.getUser());
+
+        assertThat(mHealthDataCategoryPriorityHelper.getAllInactiveApps()).isEmpty();
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .containsExactly(mDeviceDataProviderId);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void testGetAllInactiveApps_doesNotConsiderDdpPackageInactive() {
+        // Include watch package, but don't grant any permissions.
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                WATCH_SPN, HealthDataCategory.ACTIVITY, mContext.getUser());
+
+        assertThat(mHealthDataCategoryPriorityHelper.getAllInactiveApps()).isEmpty();
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .containsExactly(mWatchId);
+    }
+
+    @Test
     @DisableFlags(FLAG_STEP_TRACKING_ENABLED)
-    public void ddpPackagePreviouslyAdded_flagDisabled_removesFromPriorityOnResync() {
+    public void ddpLegacyPackagePreviouslyAdded_flagDisabled_removesFromPriorityOnResync() {
         mHealthDataCategoryPriorityHelper.appendToPriorityList(
                 DEVICE_DATA_PROVIDER_PACKAGE, HealthDataCategory.ACTIVITY, mContext.getUser());
 
@@ -1358,8 +1453,23 @@ public class HealthDataCategoryPriorityHelperTest {
     }
 
     @Test
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void watchPackagePreviouslyAdded_flagDisabled_removesFromPriorityOnResync() {
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                WATCH_SPN, HealthDataCategory.ACTIVITY, mContext.getUser());
+        mHealthDataCategoryPriorityHelper.reSyncHealthDataPriorityTable();
+
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .isEmpty();
+    }
+
+    @Test
     @EnableFlags(FLAG_STEP_TRACKING_ENABLED)
-    public void ddpPackagePreviouslyAdded_setPriorityOrderWithoutDdpPackage_removesDdpPackage() {
+    @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void
+            ddpLegacyPackagePreviouslyAdded_setPriorityOrderWithoutDdpPackage_removesDdpPackage() {
         mAppInfoHelper.updateAppInfoRecordTypesUsedOnInsert(
                 Set.of(
                         RecordTypeIdentifier.RECORD_TYPE_STEPS,
@@ -1385,10 +1495,49 @@ public class HealthDataCategoryPriorityHelperTest {
                         mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
                                 HealthDataCategory.ACTIVITY))
                 .hasSize(2);
+        mHealthDataCategoryPriorityHelper.setPriorityOrder(
+                HealthDataCategory.ACTIVITY, List.of(APP_PACKAGE_NAME));
+        mHealthDataCategoryPriorityHelper.reSyncHealthDataPriorityTable();
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .containsExactly(mAppPackageId);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void
+            watchPackagePreviouslyAdded_setPriorityOrderWithoutWatchPackage_removesWatchPackage() {
+        mAppInfoHelper.updateAppInfoRecordTypesUsedOnInsert(
+                Set.of(
+                        RecordTypeIdentifier.RECORD_TYPE_STEPS,
+                        RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
+                APP_PACKAGE_NAME);
+
+        setupPackageInfoWithWritePermissionGranted();
+
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                WATCH_SPN, HealthDataCategory.ACTIVITY, mContext.getUser());
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                APP_PACKAGE_NAME, HealthDataCategory.ACTIVITY, mContext.getUser());
+
+        mHealthDataCategoryPriorityHelper.reSyncHealthDataPriorityTable();
+
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .contains(mWatchId);
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .contains(mAppPackageId);
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .hasSize(2);
 
         mHealthDataCategoryPriorityHelper.setPriorityOrder(
                 HealthDataCategory.ACTIVITY, List.of(APP_PACKAGE_NAME));
-
         mHealthDataCategoryPriorityHelper.reSyncHealthDataPriorityTable();
 
         assertThat(

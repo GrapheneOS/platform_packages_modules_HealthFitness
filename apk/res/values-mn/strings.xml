@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g>-н өгөгдөл"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> аппад Health Connect-г ашиглан энэ төхөөрөмж дээрх бусад аппаас өгөгдөл уншихыг зөвшөөрнө үү. Энэ өгөгдлийг мөн таны хандах эрх өгсөн бусад апп унших боломжтой."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Энэ өгөгдлийг синк хийх боломжтой аппууд"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Энэ өгөгдлийг синк хийх боломжтой төхөөрөмжүүд"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> таны өгөгдлийг хэрхэн ашигладгийг "<a href="%2$s">"нууцлалын бодлогоос"</a>" нь мэдэж аваарай."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect танд олон аппын хооронд эрүүл мэнд, фитнесийн өгөгдлөө хуваалцах боломжийг олгодог. Энэ нь таны өгөгдлийг аюулгүй байлгахын зэрэгцээ статистик, хэрэглээний түгжээг тайлахад тусалдаг."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect-н тухай нэмэлт мэдээлэл"</string>

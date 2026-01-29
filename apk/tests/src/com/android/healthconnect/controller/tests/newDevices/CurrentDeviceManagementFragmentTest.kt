@@ -28,6 +28,7 @@ import android.health.connect.datatypes.TotalCaloriesBurnedRecord
 import android.health.connect.device.DeviceDataTypeAdvertisement
 import android.os.Bundle
 import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ActivityScenario
@@ -55,8 +56,8 @@ import com.android.healthconnect.controller.newDevices.DeviceSourcesViewModel.Se
 import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference
 import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PACKAGE_NAME
-import com.android.healthconnect.controller.tests.utils.TEST_DEVICE_DATA_SOURCES_INFO
 import com.android.healthconnect.controller.tests.utils.TEST_PHONE_SPN
+import com.android.healthconnect.controller.tests.utils.getDeviceDataSourcesInfo
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.utils.ToastManager
 import com.android.healthconnect.controller.utils.ToastManagerModule
@@ -84,29 +85,32 @@ import org.mockito.kotlin.whenever
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 @UninstallModules(ToastManagerModule::class)
-@EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+@EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
 class CurrentDeviceManagementFragmentTest {
 
-    @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule(order = 0) val hiltRule = HiltAndroidRule(this)
+    @get:Rule(order = 1) val setFlagsRule = SetFlagsRule()
+
     @BindValue val viewModel: DeviceSourcesViewModel = mock()
 
     @BindValue var toastManager: ToastManager = mock()
 
-    private val phoneDevice =
-        TEST_DEVICE_DATA_SOURCES_INFO.first { it.device.type == Device.DEVICE_TYPE_PHONE }
-
+    private lateinit var phoneDevice: DeviceDataSourceInfo
     private lateinit var navHostController: TestNavHostController
     private lateinit var context: Context
-    private val selectedDeviceSourceState =
-        MutableStateFlow<SelectedDeviceSourceInfoState>(
-            SelectedDeviceSourceInfoState.WithData(phoneDevice)
-        )
+    private lateinit var selectedDeviceSourceState: MutableStateFlow<SelectedDeviceSourceInfoState>
 
     @Before
     fun setup() {
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().context
         navHostController = TestNavHostController(context)
+        phoneDevice =
+            getDeviceDataSourcesInfo().first { it.device.type == Device.DEVICE_TYPE_PHONE }
+        selectedDeviceSourceState =
+            MutableStateFlow<SelectedDeviceSourceInfoState>(
+                SelectedDeviceSourceInfoState.WithData(phoneDevice)
+            )
         whenever(viewModel.selectedDeviceSourceInfoState).thenReturn(selectedDeviceSourceState)
     }
 
@@ -114,7 +118,7 @@ class CurrentDeviceManagementFragmentTest {
     fun loadingState_showsLoading() {
         selectedDeviceSourceState.value = SelectedDeviceSourceInfoState.Loading
 
-        launchCurrentDeviceManagementFragment().use {
+        launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(withId(R.id.progress_indicator)).check(matches(isDisplayed()))
         }
     }
@@ -123,7 +127,7 @@ class CurrentDeviceManagementFragmentTest {
     fun errorState_showsError() {
         selectedDeviceSourceState.value = SelectedDeviceSourceInfoState.Error
 
-        launchCurrentDeviceManagementFragment().use {
+        launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(withId(R.id.error_view)).check(matches(isDisplayed()))
         }
     }
@@ -141,7 +145,7 @@ class CurrentDeviceManagementFragmentTest {
 
     @Test
     fun noPedometerBanner_hasSensor_isNotDisplayed() {
-        launchCurrentDeviceManagementFragment().use {
+        launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(withText("This device doesn't track steps")).check(doesNotExist())
         }
     }
@@ -158,14 +162,14 @@ class CurrentDeviceManagementFragmentTest {
 
     @Test
     fun header_isDisplayed() {
-        launchCurrentDeviceManagementFragment().use {
+        launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(withText("Some phone")).check(matches(isDisplayed()))
         }
     }
 
     @Test
     fun stepTrackingSwitch_hasSensor_isDisplayedAndEnabled() {
-        launchCurrentDeviceManagementFragment().use {
+        launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(withText("Steps")).check(matches(isDisplayed()))
             onView(withText("Steps")).check(matches(isEnabled()))
         }
@@ -186,7 +190,7 @@ class CurrentDeviceManagementFragmentTest {
     fun stepTrackingSwitch_whenClicked_callsViewModel() {
         runBlocking { doReturn(true).whenever(viewModel).setNativeTrackingEnabled(any(), any()) }
 
-        launchCurrentDeviceManagementFragment().use {
+        launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(withText("Steps")).perform(click())
             verifyBlocking(viewModel) { setNativeTrackingEnabled(StepsRecord::class.java, false) }
         }
@@ -196,7 +200,7 @@ class CurrentDeviceManagementFragmentTest {
     fun stepTrackingSwitch_whenClickedAndSuccess_changesToggle() {
         runBlocking { doReturn(true).whenever(viewModel).setNativeTrackingEnabled(any(), any()) }
 
-        launchCurrentDeviceManagementFragment().use {
+        launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(withText("Steps")).perform(click())
 
             verifyBlocking(viewModel) { setNativeTrackingEnabled(StepsRecord::class.java, false) }
@@ -230,7 +234,7 @@ class CurrentDeviceManagementFragmentTest {
     fun stepTrackingSwitch_whenClickedAndFailed_doesNotToggle() {
         runBlocking { doReturn(false).whenever(viewModel).setNativeTrackingEnabled(any(), any()) }
 
-        launchCurrentDeviceManagementFragment().use {
+        launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(withText("Steps")).perform(click())
 
             verifyBlocking(viewModel) { setNativeTrackingEnabled(StepsRecord::class.java, false) }
@@ -251,7 +255,7 @@ class CurrentDeviceManagementFragmentTest {
     fun stepTrackingSwitch_whenClickedAndFails_displaysToast() {
         runBlocking { doReturn(false).whenever(viewModel).setNativeTrackingEnabled(any(), any()) }
 
-        launchCurrentDeviceManagementFragment().use {
+        launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(withText("Steps")).perform(click())
             verifyBlocking(viewModel) { setNativeTrackingEnabled(StepsRecord::class.java, false) }
             it.onActivity { activity: TestActivity ->
@@ -301,7 +305,7 @@ class CurrentDeviceManagementFragmentTest {
 
     @Test
     fun seeDeviceData_isDisplayed() {
-        launchCurrentDeviceManagementFragment().use {
+        launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(withText("See device data")).check(matches(isDisplayed()))
         }
     }
@@ -325,7 +329,7 @@ class CurrentDeviceManagementFragmentTest {
 
     @Test
     fun footer_hasSensor_displaysCorrectText() {
-        launchCurrentDeviceManagementFragment().use {
+        launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(
                     withText(
                         "Data collected by this device will be stored in Health Connect, where connected" +
@@ -441,7 +445,7 @@ class CurrentDeviceManagementFragmentTest {
     }
 
     private fun launchCurrentDeviceManagementFragment(
-        deviceDataSourceInfo: DeviceDataSourceInfo = phoneDevice
+        deviceDataSourceInfo: DeviceDataSourceInfo
     ): ActivityScenario<TestActivity> {
         return launchFragment<CurrentDeviceManagementFragment>(
             Bundle().apply {

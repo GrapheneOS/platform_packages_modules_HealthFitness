@@ -582,7 +582,8 @@ const val TEST_WATCH_SPN = "com.android.healthconnect.watch.jc45bd741a7123764b51
 const val TEST_PHONE_APP_NAME = "A phone"
 val TEST_PHONE_APP =
     AppMetadata(packageName = TEST_PHONE_SPN, appName = TEST_PHONE_APP_NAME, icon = null)
-val TEST_DEVICE_DATA_SOURCES_INFO =
+
+fun getDeviceDataSourcesInfo() =
     setOf(
         DeviceDataSourceInfo(
             DataOrigin.Builder().setPackageName(TEST_WATCH_SPN).build(),
@@ -633,6 +634,7 @@ val TEST_DEVICE_DATA_SOURCES_INFO =
             ),
         ),
     )
+
 // endregion
 
 // PHR

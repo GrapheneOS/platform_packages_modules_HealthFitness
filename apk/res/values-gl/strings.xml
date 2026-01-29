@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Datos de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Permite que a aplicación <xliff:g id="APP_NAME">%1$s</xliff:g> lea os datos doutras aplicacións neste dispositivo por medio de Saúde conectada. Tamén poderán lelos outras aplicacións ás que lles deas acceso."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplicacións que poden sincronizar estes datos"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Dispositivos que poden sincronizar estes datos"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Infórmate sobre como <xliff:g id="APP_NAME">%1$s</xliff:g> utiliza os teus datos na súa "<a href="%2$s">"política de privacidade"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Saúde conectada permíteche compartir os teus datos de saúde e actividade física en varias aplicacións. Deste xeito, podes acceder a estatísticas e experiencias ao mesmo tempo que mantés seguros os datos."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Máis información sobre Saúde conectada"</string>

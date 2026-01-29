@@ -532,6 +532,35 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                         : builder.mNativeStepsNotificationSender;
         mDeviceRecordHelper =
                 new DeviceRecordHelper(mFitnessRecordUpsertHelper, mInternalHealthConnectMappings);
+        mDeviceDataSourcesHelper =
+                builder.mDeviceDataSourcesHelper == null
+                        ? new DeviceDataSourcesHelper(
+                                mDatabaseHelpers, mTransactionManager, mHealthConnectMappings)
+                        : builder.mDeviceDataSourcesHelper;
+        mSyntheticPackageNameCreator =
+                builder.mSyntheticPackageNameCreator == null
+                        ? new SyntheticPackageNameCreator(mPreferenceHelper)
+                        : builder.mSyntheticPackageNameCreator;
+        mDeviceDataProviderMetadataHelper =
+                builder.mDeviceDataProviderMetadataHelper == null
+                        ? new DeviceDataProviderMetadataHelper(
+                                mDatabaseHelpers, mTransactionManager)
+                        : builder.mDeviceDataProviderMetadataHelper;
+        mDeviceDataProviderManager =
+                builder.mDeviceDataProviderManager == null
+                        ? new DeviceDataProviderManager(
+                                hcContext,
+                                mDeviceInfoHelper,
+                                mAppInfoHelper,
+                                mDeviceDataSourceHelper,
+                                mDeviceDataSourcesHelper,
+                                mDeviceDataProviderMetadataHelper,
+                                mFitnessRecordUpsertHelper,
+                                mFitnessRecordReadHelper,
+                                mFitnessRecordDeleteHelper,
+                                mSyntheticPackageNameCreator,
+                                mPreferenceHelper)
+                        : builder.mDeviceDataProviderManager;
         mTrackerManager =
                 builder.mTrackerManager == null
                         ? new TrackerManagerImpl(
@@ -539,6 +568,7 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mThreadScheduler,
                                 mDeviceRecordHelper,
                                 mDeviceDataSourceHelper,
+                                mDeviceDataProviderManager,
                                 mHealthDataCategoryPriorityHelper,
                                 mUserManager,
                                 mPreferenceHelper,
@@ -612,35 +642,6 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mMatchmakingDenialStateManager == null
                         ? new MatchmakingDenialStateManager(hcContext, mPreferenceHelper)
                         : builder.mMatchmakingDenialStateManager;
-        mDeviceDataSourcesHelper =
-                builder.mDeviceDataSourcesHelper == null
-                        ? new DeviceDataSourcesHelper(
-                                mDatabaseHelpers, mTransactionManager, mHealthConnectMappings)
-                        : builder.mDeviceDataSourcesHelper;
-        mSyntheticPackageNameCreator =
-                builder.mSyntheticPackageNameCreator == null
-                        ? new SyntheticPackageNameCreator(mPreferenceHelper)
-                        : builder.mSyntheticPackageNameCreator;
-        mDeviceDataProviderMetadataHelper =
-                builder.mDeviceDataProviderMetadataHelper == null
-                        ? new DeviceDataProviderMetadataHelper(
-                                mDatabaseHelpers, mTransactionManager)
-                        : builder.mDeviceDataProviderMetadataHelper;
-        mDeviceDataProviderManager =
-                builder.mDeviceDataProviderManager == null
-                        ? new DeviceDataProviderManager(
-                                hcContext,
-                                mDeviceInfoHelper,
-                                mAppInfoHelper,
-                                mDeviceDataSourceHelper,
-                                mDeviceDataSourcesHelper,
-                                mDeviceDataProviderMetadataHelper,
-                                mFitnessRecordUpsertHelper,
-                                mFitnessRecordReadHelper,
-                                mFitnessRecordDeleteHelper,
-                                mSyntheticPackageNameCreator,
-                                mPreferenceHelper)
-                        : builder.mDeviceDataProviderManager;
         mSyntheticPackageNameResolver =
                 builder.mSyntheticPackageNameResolver == null
                         ? new SyntheticPackageNameResolver(

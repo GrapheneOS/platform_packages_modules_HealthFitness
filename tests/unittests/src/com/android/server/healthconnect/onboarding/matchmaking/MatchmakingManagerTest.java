@@ -28,6 +28,8 @@ import static android.health.connect.HealthPermissions.READ_DISTANCE;
 import static android.health.connect.HealthPermissions.READ_HEART_RATE;
 import static android.health.connect.HealthPermissions.READ_SLEEP;
 import static android.health.connect.HealthPermissions.READ_STEPS;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_ACNE;
+import static android.health.connect.HealthPermissions.READ_SYMPTOM_FATIGUE;
 import static android.health.connect.HealthPermissions.WRITE_DISTANCE;
 import static android.health.connect.HealthPermissions.WRITE_EXERCISE;
 import static android.health.connect.HealthPermissions.WRITE_HEART_RATE;
@@ -35,6 +37,10 @@ import static android.health.connect.HealthPermissions.WRITE_MENSTRUATION;
 import static android.health.connect.HealthPermissions.WRITE_NUTRITION;
 import static android.health.connect.HealthPermissions.WRITE_SLEEP;
 import static android.health.connect.HealthPermissions.WRITE_STEPS;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_ACNE;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_FATIGUE;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_HEADACHE;
+import static android.health.connect.HealthPermissions.WRITE_SYMPTOM_NAUSEA;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -61,6 +67,7 @@ import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SkinTemperatureRecord;
 import android.health.connect.datatypes.SleepSessionRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.platform.test.annotations.DisableFlags;
@@ -270,6 +277,109 @@ public class MatchmakingManagerTest {
                 mMatchmakingManager.fetchMatchingApps(Collections.emptySet(), PACKAGE_NAME);
 
         assertThat(result).containsExactly(PACKAGE_NAME_2, ImmutableSet.of(WRITE_STEPS));
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB})
+    public void
+            fetchMatchingApps_querySymptomsRecordType_noMatchForSymptomPermission_returnsEmpty() {
+        // Calling app can read READ_SYMPTOM_ACNE, READ_SYMPTOM_FATIGUE
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_SYMPTOM_ACNE, READ_SYMPTOM_FATIGUE));
+        // Writing app can write SYMPTOM_HEADACHE and SYMPTOM_NAUSEA
+        PackageInfo matchingApp =
+                createPackageInfo(
+                        PACKAGE_NAME_2,
+                        new String[] {WRITE_SYMPTOM_HEADACHE, WRITE_SYMPTOM_NAUSEA});
+        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp));
+        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_SYMPTOM_HEADACHE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_SYMPTOM_HEADACHE, 0);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_SYMPTOM_NAUSEA, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_SYMPTOM_NAUSEA, 0);
+
+        // SYMPTOMS requested.
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingApps(Set.of(SymptomRecord.class), PACKAGE_NAME);
+
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB})
+    public void fetchMatchingApps_querySymptomsRecordType_matchExists_returnMatchingApp() {
+        // Calling app can read READ_SYMPTOM_ACNE, READ_SYMPTOM_FATIGUE
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_SYMPTOM_ACNE, READ_SYMPTOM_FATIGUE));
+        // Writing app 1 can write SYMPTOM_HEADACHE and SYMPTOM_NAUSEA
+        PackageInfo matchingApp =
+                createPackageInfo(
+                        PACKAGE_NAME_2,
+                        new String[] {WRITE_SYMPTOM_HEADACHE, WRITE_SYMPTOM_NAUSEA});
+        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_SYMPTOM_HEADACHE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_SYMPTOM_HEADACHE, 0);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_SYMPTOM_NAUSEA, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_SYMPTOM_NAUSEA, 0);
+
+        // Writing app 2 can write SYMPTOM_ACNE and SYMPTOM_FATIGUE
+        PackageInfo matchingApp2 =
+                createPackageInfo(
+                        PACKAGE_NAME_3, new String[] {WRITE_SYMPTOM_ACNE, WRITE_SYMPTOM_FATIGUE});
+        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp, matchingApp2));
+        mockAppSystemStatus(PACKAGE_NAME_3, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_3, WRITE_SYMPTOM_ACNE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_3, WRITE_SYMPTOM_ACNE, 0);
+        mockPermissionCheckResult(PACKAGE_NAME_3, WRITE_SYMPTOM_FATIGUE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_3, WRITE_SYMPTOM_FATIGUE, 0);
+
+        // SYMPTOMS requested.
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingApps(Set.of(SymptomRecord.class), PACKAGE_NAME);
+
+        assertThat(result)
+                .containsExactly(
+                        PACKAGE_NAME_3, ImmutableSet.of(WRITE_SYMPTOM_ACNE, WRITE_SYMPTOM_FATIGUE));
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB})
+    public void fetchMatchingApps_queryMixedRecordTypes_matchExists_returnMatchingApp() {
+        // Calling app can read READ_SYMPTOM_ACNE, READ_SYMPTOM_FATIGUE, READ_SLEEP
+        mockReadingApp(
+                PACKAGE_NAME,
+                ImmutableList.of(READ_SYMPTOM_ACNE, READ_SYMPTOM_FATIGUE, READ_SLEEP));
+        // Writing app 1 can write SYMPTOM_HEADACHE and SYMPTOM_NAUSEA and SLEEP
+        PackageInfo matchingApp =
+                createPackageInfo(
+                        PACKAGE_NAME_2,
+                        new String[] {WRITE_SYMPTOM_HEADACHE, WRITE_SYMPTOM_NAUSEA, WRITE_SLEEP});
+        mockAppSystemStatus(PACKAGE_NAME_2, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_SYMPTOM_HEADACHE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_SYMPTOM_HEADACHE, 0);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_SYMPTOM_NAUSEA, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_SYMPTOM_NAUSEA, 0);
+        mockPermissionCheckResult(PACKAGE_NAME_2, WRITE_SLEEP, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_2, WRITE_SLEEP, 0);
+
+        // Writing app 2 can write SYMPTOM_ACNE and SYMPTOM_FATIGUE
+        PackageInfo matchingApp2 =
+                createPackageInfo(
+                        PACKAGE_NAME_3, new String[] {WRITE_SYMPTOM_ACNE, WRITE_SYMPTOM_FATIGUE});
+        mockCompatibleHealthConnectApps(ImmutableList.of(matchingApp, matchingApp2));
+        mockAppSystemStatus(PACKAGE_NAME_3, /* isSystemApp= */ false);
+        mockPermissionCheckResult(PACKAGE_NAME_3, WRITE_SYMPTOM_ACNE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_3, WRITE_SYMPTOM_ACNE, 0);
+        mockPermissionCheckResult(PACKAGE_NAME_3, WRITE_SYMPTOM_FATIGUE, PERMISSION_DENIED);
+        mockHealthPermissionFlags(PACKAGE_NAME_3, WRITE_SYMPTOM_FATIGUE, 0);
+
+        // SYMPTOMS and SLEEP requested.
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingApps(
+                        Set.of(SymptomRecord.class, SleepSessionRecord.class), PACKAGE_NAME);
+
+        assertThat(result)
+                .containsExactly(
+                        PACKAGE_NAME_2, ImmutableSet.of(WRITE_SLEEP),
+                        PACKAGE_NAME_3, ImmutableSet.of(WRITE_SYMPTOM_ACNE, WRITE_SYMPTOM_FATIGUE));
     }
 
     @Test
@@ -1100,6 +1210,203 @@ public class MatchmakingManagerTest {
                         Set.of(WRITE_DISTANCE),
                         DEVICE_PACKAGE_NAME_2,
                         Set.of(WRITE_DISTANCE));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
+        Flags.FLAG_SYMPTOMS,
+        Flags.FLAG_SYMPTOMS_DB
+    })
+    public void
+            fetchMatchingDevices_querySymptomsRecordType_noMatchForSymptomPermission_returnsEmpty() {
+        // Calling app can read READ_SYMPTOM_ACNE, READ_SYMPTOM_FATIGUE
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_SYMPTOM_ACNE, READ_SYMPTOM_FATIGUE));
+        // Writing device can write SYMPTOM_HEADACHE and SYMPTOM_NAUSEA
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement symptomHeadacheAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                        .setUserEnabled(false)
+                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_HEADACHE)
+                        .build();
+        DeviceDataTypeAdvertisement symptomNauseaAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                        .setUserEnabled(false)
+                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_NAUSEA)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(symptomHeadacheAdvertisement, symptomNauseaAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(origin1, device1, true, List.of(providerInfo1));
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo1));
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Set.of(SymptomRecord.class), PACKAGE_NAME, Set.of(), Set.of());
+        assertThat(result).isEmpty();
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
+        Flags.FLAG_SYMPTOMS,
+        Flags.FLAG_SYMPTOMS_DB
+    })
+    public void fetchMatchingDevices_querySymptomRecordType_matchExists_returnMatchingDevice() {
+        // Calling app can read READ_SYMPTOM_ACNE, READ_SYMPTOM_FATIGUE
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_SYMPTOM_ACNE, READ_SYMPTOM_FATIGUE));
+        // Writing device 1 can write SYMPTOM_HEADACHE and SYMPTOM_NAUSEA and STEPS
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement symptomHeadacheAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                        .setUserEnabled(false)
+                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_HEADACHE)
+                        .build();
+        DeviceDataTypeAdvertisement symptomNauseaAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                        .setUserEnabled(false)
+                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_NAUSEA)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(symptomHeadacheAdvertisement, symptomNauseaAdvertisement));
+
+        Device device2 = new Device.Builder().setManufacturer("Man2").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build();
+
+        DeviceDataTypeAdvertisement symptomAcneAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                        .setUserEnabled(false)
+                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_ACNE)
+                        .build();
+        DeviceDataTypeAdvertisement symptomFatigueAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                        .setUserEnabled(false)
+                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_FATIGUE)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo2 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_2,
+                        DEVICE_ID_2,
+                        "",
+                        "",
+                        ImmutableSet.of(symptomAcneAdvertisement, symptomFatigueAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(origin1, device1, true, List.of(providerInfo1));
+        DeviceDataSourceInfo matchingDeviceInfo2 =
+                new DeviceDataSourceInfo(origin2, device2, true, List.of(providerInfo2));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo1, matchingDeviceInfo2));
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Set.of(SymptomRecord.class), PACKAGE_NAME, Set.of(), Set.of());
+        assertThat(result)
+                .containsExactly(
+                        DEVICE_PACKAGE_NAME_2, Set.of(WRITE_SYMPTOM_ACNE, WRITE_SYMPTOM_FATIGUE));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW,
+        Flags.FLAG_SYMPTOMS,
+        Flags.FLAG_SYMPTOMS_DB
+    })
+    public void fetchMatchingDevices_queryMixedRecordType_matchExists_returnMatchingDevices() {
+        // Calling app can read READ_SYMPTOM_ACNE, READ_SYMPTOM_FATIGUE, READ_STEPS
+        mockReadingApp(
+                PACKAGE_NAME,
+                ImmutableList.of(READ_SYMPTOM_ACNE, READ_SYMPTOM_FATIGUE, READ_STEPS));
+        // Writing device 1 can write SYMPTOM_HEADACHE and SYMPTOM_NAUSEA and STEPS
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement symptomHeadacheAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                        .setUserEnabled(false)
+                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_HEADACHE)
+                        .build();
+        DeviceDataTypeAdvertisement symptomNauseaAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                        .setUserEnabled(false)
+                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_NAUSEA)
+                        .build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(false)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(
+                                symptomHeadacheAdvertisement,
+                                symptomNauseaAdvertisement,
+                                stepsAdvertisement));
+
+        Device device2 = new Device.Builder().setManufacturer("Man2").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build();
+
+        DeviceDataTypeAdvertisement symptomAcneAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                        .setUserEnabled(false)
+                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_ACNE)
+                        .build();
+        DeviceDataTypeAdvertisement symptomFatigueAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(SymptomRecord.class)
+                        .setUserEnabled(false)
+                        .setSymptomType(SymptomRecord.SYMPTOM_TYPE_FATIGUE)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo2 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_2,
+                        DEVICE_ID_2,
+                        "",
+                        "",
+                        ImmutableSet.of(symptomAcneAdvertisement, symptomFatigueAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(origin1, device1, true, List.of(providerInfo1));
+        DeviceDataSourceInfo matchingDeviceInfo2 =
+                new DeviceDataSourceInfo(origin2, device2, true, List.of(providerInfo2));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo1, matchingDeviceInfo2));
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Set.of(SymptomRecord.class, StepsRecord.class),
+                        PACKAGE_NAME,
+                        Set.of(),
+                        Set.of());
+        assertThat(result)
+                .containsExactly(
+                        DEVICE_PACKAGE_NAME, Set.of(WRITE_STEPS),
+                        DEVICE_PACKAGE_NAME_2, Set.of(WRITE_SYMPTOM_ACNE, WRITE_SYMPTOM_FATIGUE));
     }
 
     @Test

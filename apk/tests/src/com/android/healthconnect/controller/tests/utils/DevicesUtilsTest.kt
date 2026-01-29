@@ -16,7 +16,6 @@
 
 package com.android.healthconnect.controller.tests.utils
 
-import android.content.Context
 import android.health.connect.DeviceDataProviderInfo
 import android.health.connect.DeviceDataSourceInfo
 import android.health.connect.datatypes.DataOrigin
@@ -26,7 +25,6 @@ import android.health.connect.device.DeviceDataTypeAdvertisement
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.utils.findCurrentDeviceId
@@ -42,12 +40,10 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class DevicesUtilsTest {
-
     @get:Rule val mSetFlagsRule = SetFlagsRule()
 
-    private val context: Context = ApplicationProvider.getApplicationContext()
-
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun isDevicePackage_matchesConstant() {
         assertThat(isDevicePackage(DEVICE_DATA_PROVIDER_PACKAGE)).isTrue()
     }
@@ -65,17 +61,20 @@ class DevicesUtilsTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun isDevicePackage_doesNotMatchRandom() {
         assertThat(isDevicePackage("com.example.app")).isFalse()
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun findCurrentDeviceId_returnsCurrentDeviceId() {
-        val currentDeviceId = TEST_DEVICE_DATA_SOURCES_INFO.findCurrentDeviceId()
+        val currentDeviceId = getDeviceDataSourcesInfo().findCurrentDeviceId()
         assertThat(currentDeviceId).isEqualTo(TEST_PHONE_SPN)
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun findCurrentDeviceId_noCurrentDevice_returnsNull() {
         val info =
             DeviceDataSourceInfo(
@@ -88,11 +87,10 @@ class DevicesUtilsTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun findSystemInfo_returnsSystemProviderInfo() {
         val phoneInfo =
-            TEST_DEVICE_DATA_SOURCES_INFO.find {
-                it.deviceDataOrigin.packageName == TEST_PHONE_SPN
-            }!!
+            getDeviceDataSourcesInfo().find { it.deviceDataOrigin.packageName == TEST_PHONE_SPN }!!
         val systemInfo = phoneInfo.findSystemInfo()
 
         assertThat(systemInfo).isNotNull()
@@ -100,12 +98,11 @@ class DevicesUtilsTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun findSystemInfo_noSystemProvider_returnsNull() {
         val watchInfo =
-            TEST_DEVICE_DATA_SOURCES_INFO.find {
-                it.deviceDataOrigin.packageName == TEST_WATCH_SPN
-            }!!
-        // The watch info in TEST_DEVICE_DATA_SOURCES_INFO has a provider "testDdp", not the system
+            getDeviceDataSourcesInfo().find { it.deviceDataOrigin.packageName == TEST_WATCH_SPN }!!
+        // The watch info in getDeviceDataSourcesInfo() has a provider "testDdp", not the system
         // one.
         val systemInfo = watchInfo.findSystemInfo()
 
@@ -113,36 +110,34 @@ class DevicesUtilsTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun providesNativeSteps_trueIfAvailable() {
         val phoneInfo =
-            TEST_DEVICE_DATA_SOURCES_INFO.find {
-                it.deviceDataOrigin.packageName == TEST_PHONE_SPN
-            }!!
+            getDeviceDataSourcesInfo().find { it.deviceDataOrigin.packageName == TEST_PHONE_SPN }!!
         // The phone info has the system that advertises StepsRecord as available.
         assertThat(phoneInfo.providesNativeSteps()).isTrue()
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun providesNativeSteps_falseIfNotAvailable() {
         val watchInfo =
-            TEST_DEVICE_DATA_SOURCES_INFO.find {
-                it.deviceDataOrigin.packageName == TEST_WATCH_SPN
-            }!!
+            getDeviceDataSourcesInfo().find { it.deviceDataOrigin.packageName == TEST_WATCH_SPN }!!
         // Watch info doesn't have system provider
         assertThat(watchInfo.providesNativeSteps()).isFalse()
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun isDisabledByAllProviders_falseWhenEnabled() {
         val phoneInfo =
-            TEST_DEVICE_DATA_SOURCES_INFO.find {
-                it.deviceDataOrigin.packageName == TEST_PHONE_SPN
-            }!!
+            getDeviceDataSourcesInfo().find { it.deviceDataOrigin.packageName == TEST_PHONE_SPN }!!
         // Phone info has userEnabled = true for StepsRecord
         assertThat(phoneInfo.isDisabledByAllProviders()).isFalse()
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun isDisabledByAllProviders_trueWhenAllDisabled() {
         // Create a custom info with disabled provider
         val disabledProvider =

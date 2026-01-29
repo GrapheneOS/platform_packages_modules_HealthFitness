@@ -29,14 +29,17 @@ import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.os.SystemClock;
 import android.util.Slog;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
+import com.android.server.healthconnect.device.DeviceDataProviderManager;
 import com.android.server.healthconnect.device.DeviceDataSourceHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ScheduledFuture;
 
@@ -57,6 +60,7 @@ class StepSensorEventListener implements SensorEventListener {
 
     // TODO(b/413650602): Check if we ever want to cache the current device.
     private final DeviceDataSourceHelper mDeviceDataSourceHelper;
+    @Nullable final DeviceDataProviderManager mDeviceDataProviderManager;
 
     /** Class to hold a cumulative step data point and associated timestamp since boot time. */
     @VisibleForTesting
@@ -75,11 +79,13 @@ class StepSensorEventListener implements SensorEventListener {
             Context context,
             HealthConnectThreadScheduler threadScheduler,
             DeviceRecordHelper deviceRecordHelper,
-            DeviceDataSourceHelper deviceDataSourceHelper) {
+            DeviceDataSourceHelper deviceDataSourceHelper,
+            @Nullable DeviceDataProviderManager deviceDataProviderManager) {
         this.mContext = context;
         this.mThreadScheduler = threadScheduler;
         this.mDeviceRecordHelper = deviceRecordHelper;
         this.mDeviceDataSourceHelper = deviceDataSourceHelper;
+        this.mDeviceDataProviderManager = deviceDataProviderManager;
     }
 
     @Override
@@ -334,8 +340,17 @@ class StepSensorEventListener implements SensorEventListener {
 
         // Records are written into the DB on the internal background executor in
         // FitnessRecordUpsertHelper#insertRecords.
-        mDeviceRecordHelper.insertRecords(
-                mDeviceDataSourceHelper.getCurrentDevice(mContext), List.of(stepsRecordInternal));
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            Objects.requireNonNull(mDeviceDataProviderManager);
+            mDeviceDataProviderManager.insertDeviceRecords(
+                    DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE,
+                    mDeviceDataProviderManager.getStableCurrentDeviceId(),
+                    List.of(stepsRecordInternal));
+        } else {
+            mDeviceRecordHelper.insertRecords(
+                    mDeviceDataSourceHelper.getCurrentDevice(mContext),
+                    List.of(stepsRecordInternal));
+        }
     }
 
     @VisibleForTesting

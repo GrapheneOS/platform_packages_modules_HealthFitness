@@ -32,6 +32,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.health.connect.HealthDataCategory;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.UserHandle;
 import android.os.UserManager;
@@ -40,6 +41,7 @@ import android.util.Slog;
 
 import androidx.annotation.Nullable;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
@@ -242,9 +244,9 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
      */
     public synchronized void maybeRemoveAppFromPriorityList(
             String packageName, @HealthDataCategory.Type int dataCategory) {
-        if (Flags.stepTrackingEnabled() && DEVICE_DATA_PROVIDER_PACKAGE.equals(packageName)) {
-            // The DDP package doesn't hold conventional permissions, so we shouldn't
-            // treat it as inactive on this basis alone.
+        if (isDevicePackage(packageName)) {
+            // Devices don't hold conventional permissions, so we shouldn't treat them as inactive
+            // on this basis alone.
             return;
         }
         PackageInfo packageInfo =
@@ -458,9 +460,8 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
      */
     private synchronized void removeAppFromPriorityListIfNoDataExists(
             @HealthDataCategory.Type int dataCategory, String packageName) {
-        if (Flags.stepTrackingEnabled() && DEVICE_DATA_PROVIDER_PACKAGE.equals(packageName)) {
-            // Once we've appended the device data provider to the priority list it should remain
-            // there.
+        if (isDevicePackage(packageName)) {
+            // Once we've appended devices to the priority list they should remain there.
             return;
         }
         boolean dataExistsForPackageName = appHasDataInCategory(packageName, dataCategory);
@@ -626,10 +627,9 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
             Set<String> contributorApps = entry.getValue();
 
             for (String packageName : contributorApps) {
-                if (Flags.stepTrackingEnabled()
-                        && DEVICE_DATA_PROVIDER_PACKAGE.equals(packageName)) {
-                    // The DDP package doesn't hold conventional permissions, so we shouldn't
-                    // treat it as inactive on this basis alone.
+                if (isDevicePackage(packageName)) {
+                    // Devices don't hold conventional permissions, so we shouldn't treat them as
+                    // inactive on this basis alone.
                     continue;
                 }
                 PackageInfo packageInfo =
@@ -648,5 +648,11 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
         }
 
         return inactiveApps;
+    }
+
+    private boolean isDevicePackage(String packageName) {
+        return (Flags.stepTrackingEnabled() && DEVICE_DATA_PROVIDER_PACKAGE.equals(packageName))
+                || (AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                        && SyntheticPackageNameMatcher.matches(packageName));
     }
 }

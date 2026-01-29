@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Данни от <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Разрешете на приложението <xliff:g id="APP_NAME">%1$s</xliff:g> да чете данни от други приложения на това устройство чрез Health Connect. Тези данни могат да се четат и от други приложения, на които предоставите достъп."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Приложения, които могат да синхронизират тези данни"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Устройства, които могат да синхронизират тези данни"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Научете как <xliff:g id="APP_NAME">%1$s</xliff:g> използва данните ви в "<a href="%2$s">"декларацията за поверителност на приложението"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ви дава възможност да споделяте данните за здравето и физическата си активност между няколко приложения. Това ви помага да отключвате статистика и нови възможности, като същевременно запазва безопасността на данните ви."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Още за Health Connect"</string>

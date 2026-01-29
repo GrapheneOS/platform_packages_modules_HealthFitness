@@ -406,8 +406,7 @@
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dados da app <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Permita que a app <xliff:g id="APP_NAME">%1$s</xliff:g> leia dados de outras apps neste dispositivo através da Saúde Connect. Estes dados também podem ser lidos por outras apps às quais dê acesso."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps que podem sincronizar estes dados"</string>
-    <!-- no translation found for matchmaking_screen_devices_category_title (1866041904661763630) -->
-    <skip />
+    <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Dispositivos que podem sincronizar estes dados"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Saiba como a app <xliff:g id="APP_NAME">%1$s</xliff:g> usa os seus dados na respetiva "<a href="%2$s">"Política de Privacidade"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="128363859074109442">"A Saúde Connect permite-lhe partilhar os seus dados de saúde e fitness entre várias apps. Isto ajuda a desbloquear estatísticas e experiências, mantendo os seus dados seguros."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Mais sobre a Saúde Connect"</string>

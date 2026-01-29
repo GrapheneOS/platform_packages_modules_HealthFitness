@@ -20,11 +20,13 @@ import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.StepsRecord
 import android.os.OutcomeReceiver
+import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.matchmaking.api.SetTrackingEnabledInput
 import com.android.healthconnect.controller.matchmaking.api.SetTrackingEnabledUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
@@ -39,7 +41,9 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @RunWith(AndroidJUnit4::class)
+@EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
 class SetTrackingEnabledUseCaseTest {
+
     @get:Rule val setFlagsRule = SetFlagsRule()
 
     private lateinit var setTrackingEnabledUseCase: SetTrackingEnabledUseCase
