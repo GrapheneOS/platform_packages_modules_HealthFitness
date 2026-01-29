@@ -40,12 +40,14 @@ import com.android.healthconnect.controller.data.entries.datenavigation.toPeriod
 import com.android.healthconnect.controller.data.formatters.MenstruationPeriodFormatter
 import com.android.healthconnect.controller.data.formatters.shared.HealthDataEntryFormatter
 import com.android.healthconnect.controller.permissions.data.toMedicalResourceType
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.SystemTimeSource
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.toLocalDate
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Duration
 import java.time.Instant
@@ -398,6 +400,16 @@ constructor(
                 .setTimeRangeFilter(timeFilterRange)
         if (packageName != null) {
             filter.addDataOrigins(DataOrigin.Builder().setPackageName(packageName).build()).build()
+        }
+        if (deviceDataProvidersApi() && packageName == healthConnectManager.currentDeviceId) {
+            filter.addDataOrigins(
+                DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build()
+            )
+        }
+        if (deviceDataProvidersApi() && packageName == DEVICE_DATA_PROVIDER_PACKAGE) {
+            filter.addDataOrigins(
+                DataOrigin.Builder().setPackageName(healthConnectManager.currentDeviceId).build()
+            )
         }
         return filter.build()
     }

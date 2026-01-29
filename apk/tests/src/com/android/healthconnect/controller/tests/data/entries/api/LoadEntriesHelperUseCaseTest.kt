@@ -25,6 +25,7 @@ import android.health.connect.datatypes.ActiveCaloriesBurnedRecord
 import android.health.connect.datatypes.BodyTemperatureMeasurementLocation
 import android.health.connect.datatypes.BodyTemperatureRecord
 import android.health.connect.datatypes.BodyWaterMassRecord
+import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.FloorsClimbedRecord
 import android.health.connect.datatypes.HydrationRecord
@@ -42,6 +43,9 @@ import android.health.connect.datatypes.TotalCaloriesBurnedRecord
 import android.health.connect.datatypes.WeightRecord
 import android.health.connect.datatypes.units.Temperature
 import android.os.OutcomeReceiver
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
@@ -55,6 +59,7 @@ import com.android.healthconnect.controller.data.formatters.shared.HealthDataEnt
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.service.HealthManagerModule
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
 import com.android.healthconnect.controller.tests.utils.BODYTEMPERATURE_MONTH
@@ -102,6 +107,7 @@ import com.android.healthconnect.controller.tests.utils.verifySleepSessionListsE
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.atStartOfDay
 import com.android.healthconnect.controller.utils.toInstant
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -127,6 +133,7 @@ import org.mockito.junit.MockitoJUnit
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 import org.mockito.stubbing.Stubber
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -137,6 +144,7 @@ class LoadEntriesHelperUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val mockitoRule = MockitoJUnit.rule()
+    @get:Rule val checkFlagsRule = SetFlagsRule()
     @BindValue @JvmField val timeSource = TestTimeSource
 
     private val defaultStartTime: Instant = START_TIME
@@ -198,6 +206,171 @@ class LoadEntriesHelperUseCaseTest {
     @After
     fun teardown() {
         timeSource.reset()
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun readRecords_withCurrentDevicePackage_addsAndroidPackageToFilter() = runTest {
+        val deviceId = "test_device_id"
+        whenever(healthConnectManager.currentDeviceId).thenReturn(deviceId)
+
+        val input =
+            LoadDataEntriesInput(
+                displayedStartTime = NOW.atStartOfDay(),
+                packageName = deviceId,
+                period = DateNavigationPeriod.PERIOD_DAY,
+                showDataOrigin = true,
+                permissionType = FitnessPermissionType.STEPS,
+            )
+
+        Mockito.doAnswer(prepareStepsAnswer(emptyList()))
+            .`when`(healthConnectManager)
+            .readRecords(
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                    request.dataOrigins.contains(
+                        DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build()
+                    ) &&
+                        request.dataOrigins.contains(
+                            DataOrigin.Builder().setPackageName(deviceId).build()
+                        )
+                },
+                any(),
+                any(),
+            )
+
+        loadEntriesHelper.readRecords(input)
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun readRecords_flagsOff_withCurrentDevicePackage_doesNotAddAndroidPackage() = runTest {
+        val deviceId = "test_device_id"
+        whenever(healthConnectManager.currentDeviceId).thenReturn(deviceId)
+
+        val input =
+            LoadDataEntriesInput(
+                displayedStartTime = NOW.atStartOfDay(),
+                packageName = deviceId,
+                period = DateNavigationPeriod.PERIOD_DAY,
+                showDataOrigin = true,
+                permissionType = FitnessPermissionType.STEPS,
+            )
+
+        Mockito.doAnswer(prepareStepsAnswer(emptyList()))
+            .`when`(healthConnectManager)
+            .readRecords(
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                    !request.dataOrigins.contains(
+                        DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build()
+                    ) &&
+                        request.dataOrigins.contains(
+                            DataOrigin.Builder().setPackageName(deviceId).build()
+                        )
+                },
+                any(),
+                any(),
+            )
+
+        loadEntriesHelper.readRecords(input)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun readRecords_withDevicePackage_doesNotAddAndroidPackage() = runTest {
+        val deviceId = "test_device_id"
+        whenever(healthConnectManager.currentDeviceId).thenReturn("not_test_device_id")
+
+        val input =
+            LoadDataEntriesInput(
+                displayedStartTime = NOW.atStartOfDay(),
+                packageName = deviceId,
+                period = DateNavigationPeriod.PERIOD_DAY,
+                showDataOrigin = true,
+                permissionType = FitnessPermissionType.STEPS,
+            )
+
+        Mockito.doAnswer(prepareStepsAnswer(emptyList()))
+            .`when`(healthConnectManager)
+            .readRecords(
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                    !request.dataOrigins.contains(
+                        DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build()
+                    ) &&
+                        request.dataOrigins.contains(
+                            DataOrigin.Builder().setPackageName(deviceId).build()
+                        )
+                },
+                any(),
+                any(),
+            )
+
+        loadEntriesHelper.readRecords(input)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun readRecords_withAndroid_addsCurrentDeviceToFilter() = runTest {
+        val currentDeviceId = "test_device_id"
+        whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+
+        val input =
+            LoadDataEntriesInput(
+                displayedStartTime = NOW.atStartOfDay(),
+                packageName = DEVICE_DATA_PROVIDER_PACKAGE,
+                period = DateNavigationPeriod.PERIOD_DAY,
+                showDataOrigin = true,
+                permissionType = FitnessPermissionType.STEPS,
+            )
+
+        Mockito.doAnswer(prepareStepsAnswer(emptyList()))
+            .`when`(healthConnectManager)
+            .readRecords(
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                    request.dataOrigins.contains(
+                        DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build()
+                    ) &&
+                        request.dataOrigins.contains(
+                            DataOrigin.Builder().setPackageName(currentDeviceId).build()
+                        )
+                },
+                any(),
+                any(),
+            )
+
+        loadEntriesHelper.readRecords(input)
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun readRecords_flagsOff_withAndroid_doesNotAddCurrentDevicePackage() = runTest {
+        val currentDeviceId = "test_device_id"
+        whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+
+        val input =
+            LoadDataEntriesInput(
+                displayedStartTime = NOW.atStartOfDay(),
+                packageName = DEVICE_DATA_PROVIDER_PACKAGE,
+                period = DateNavigationPeriod.PERIOD_DAY,
+                showDataOrigin = true,
+                permissionType = FitnessPermissionType.STEPS,
+            )
+
+        Mockito.doAnswer(prepareStepsAnswer(emptyList()))
+            .`when`(healthConnectManager)
+            .readRecords(
+                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                    request.dataOrigins.contains(
+                        DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build()
+                    ) &&
+                        !request.dataOrigins.contains(
+                            DataOrigin.Builder().setPackageName(currentDeviceId).build()
+                        )
+                },
+                any(),
+                any(),
+            )
+
+        loadEntriesHelper.readRecords(input)
     }
 
     @Test
