@@ -123,6 +123,15 @@
 
         <!-- Connected devices -->
         <item name="devicePhoneIcon">@drawable/ic_device_phone</item>
+        <item name="deviceWatchIcon">@drawable/ic_device_watch</item>
+        <item name="deviceHearableIcon">@drawable/ic_device_hearable</item>
+        <item name="deviceConsumerMedicalDeviceIcon">@drawable/ic_device_consumer_medical_device
+        </item>
+        <item name="deviceFitnessEquipmentIcon">@drawable/ic_device_fitness_equipment</item>
+        <item name="deviceFitnessBandIcon">@drawable/ic_device_fitness_band</item>
+        <item name="devicePortableComputerIcon">@drawable/ic_device_portable_computer</item>
+        <item name="deviceScaleIcon">@drawable/ic_device_scale</item>
+        <item name="deviceGenericIcon">@drawable/ic_device_generic</item>
 
         <!-- New home screen -->
         <item name="connectButton">@drawable/ic_connect</item>
@@ -139,10 +148,13 @@
 
         <!-- REGION STYLES -->
         <!-- Typography-->
-        <item name="textAppearanceSummary">@style/TextAppearance.PreferenceSummary.SettingsLib</item>
-        <item name="textAppearanceSummaryLarge">@style/TextAppearance.HealthConnect.SummaryLarge</item>
+        <item name="textAppearanceSummary">@style/TextAppearance.PreferenceSummary.SettingsLib
+        </item>
+        <item name="textAppearanceSummaryLarge">@style/TextAppearance.HealthConnect.SummaryLarge
+        </item>
         <item name="textAppearanceLabel">@style/TextAppearance.HealthConnect.Label</item>
-        <item name="textAppearanceLabelCompact">@style/TextAppearance.HealthConnect.Label.Compact</item>
+        <item name="textAppearanceLabelCompact">@style/TextAppearance.HealthConnect.Label.Compact
+        </item>
         <item name="textAppearanceHeadline6">@style/TextAppearance.HealthConnect.Headline6</item>
         <item name="textAppearanceItem">@style/TextAppearance.PreferenceTitle.SettingsLib</item>
         <item name="textAppearanceHeadline4">@style/TextAppearance.HealthConnect.Headline4</item>
@@ -152,12 +164,22 @@
         <item name="textAppearanceSubheader">@style/TextAppearance.HealthConnect.Subheader</item>
         <item name="textAppearanceSubheader2">@style/TextAppearance.HealthConnect.Subheader2</item>
         <item name="textAppearanceSubheader3">@style/TextAppearance.HealthConnect.Subheader3</item>
-        <item name="textAppearanceExpressiveDialogTitle">@style/TextAppearance.HealthConnect.Expressive.DialogTitle</item>
-        <item name="textAppearanceExpressiveDialogMessage">@style/TextAppearance.HealthConnect.Expressive.DialogMessage</item>
-        <item name="textAppearanceExpressiveRadioButton">@style/TextAppearance.HealthConnect.Expressive.RadioButton</item>
-        <item name="textAppearanceRouteRequest">@style/TextAppearance.HealthConnect.RouteRequest</item>
-        <item name="textAppearancePreferenceCategory">@style/TextAppearance.HealthConnect.CategoryTitle</item>
-        <item name="textAppearanceErrorMessage">@style/TextAppearance.HealthConnect.ErrorMessage</item>
+        <item name="textAppearanceExpressiveDialogTitle">
+            @style/TextAppearance.HealthConnect.Expressive.DialogTitle
+        </item>
+        <item name="textAppearanceExpressiveDialogMessage">
+            @style/TextAppearance.HealthConnect.Expressive.DialogMessage
+        </item>
+        <item name="textAppearanceExpressiveRadioButton">
+            @style/TextAppearance.HealthConnect.Expressive.RadioButton
+        </item>
+        <item name="textAppearanceRouteRequest">@style/TextAppearance.HealthConnect.RouteRequest
+        </item>
+        <item name="textAppearancePreferenceCategory">
+            @style/TextAppearance.HealthConnect.CategoryTitle
+        </item>
+        <item name="textAppearanceErrorMessage">@style/TextAppearance.HealthConnect.ErrorMessage
+        </item>
         <item name="permissionHeaderTitle">@style/TextAppearance.HealthConnect.Headline4</item>
         <item name="headerTitle">@style/TextAppearance.HealthConnect.Headline2</item>
         <item name="headerSummary">@style/TextAppearance.HealthConnect.SummaryLarge</item>
@@ -203,7 +225,9 @@
         <item name="android:clipChildren">true</item>
         <!-- END REGION -->
 
-        <item name="notConnectedAppTitleColor">@color/settingslib_text_color_preference_category_title</item>
+        <item name="notConnectedAppTitleColor">
+            @color/settingslib_text_color_preference_category_title
+        </item>
     </style>
 
     <style name="Theme.HealthConnect" parent="Base.Theme.HealthConnect" />

@@ -26,12 +26,14 @@ import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.utils.findCurrentDeviceId
 import com.android.healthconnect.controller.utils.findSystemInfo
 import com.android.healthconnect.controller.utils.isDevicePackage
 import com.android.healthconnect.controller.utils.isDisabledByAllProviders
 import com.android.healthconnect.controller.utils.providesNativeSteps
+import com.android.healthconnect.controller.utils.toDeviceIconAttr
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
@@ -162,5 +164,101 @@ class DevicesUtilsTest {
             )
 
         assertThat(info.isDisabledByAllProviders()).isTrue()
+    }
+
+    @Test
+    fun toDeviceIconAttr_unknown_returnsGenericIcon() {
+        val attr = Device.DEVICE_TYPE_UNKNOWN.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.deviceGenericIcon)
+    }
+
+    @Test
+    fun toDeviceIconAttr_watch_returnsWatchIcon() {
+        val attr = Device.DEVICE_TYPE_WATCH.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.deviceWatchIcon)
+    }
+
+    @Test
+    fun toDeviceIconAttr_phone_returnsPhoneIcon() {
+        val attr = Device.DEVICE_TYPE_PHONE.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.devicePhoneIcon)
+    }
+
+    @Test
+    fun toDeviceIconAttr_scale_returnsScaleIcon() {
+        val attr = Device.DEVICE_TYPE_SCALE.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.deviceScaleIcon)
+    }
+
+    @Test
+    fun toDeviceIconAttr_ring_returnsGenericIcon() {
+        val attr = Device.DEVICE_TYPE_RING.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.deviceGenericIcon)
+    }
+
+    @Test
+    fun toDeviceIconAttr_headMounted_returnsGenericIcon() {
+        val attr = Device.DEVICE_TYPE_HEAD_MOUNTED.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.deviceGenericIcon)
+    }
+
+    @Test
+    fun toDeviceIconAttr_fitnessBand_returnsFitnessBandIcon() {
+        val attr = Device.DEVICE_TYPE_FITNESS_BAND.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.deviceFitnessBandIcon)
+    }
+
+    @Test
+    fun toDeviceIconAttr_chestStrap_returnsGenericIcon() {
+        val attr = Device.DEVICE_TYPE_CHEST_STRAP.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.deviceGenericIcon)
+    }
+
+    @Test
+    fun toDeviceIconAttr_smartDisplay_returnsSmartDisplayIcon() {
+        val attr = Device.DEVICE_TYPE_SMART_DISPLAY.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.devicePortableComputerIcon)
+    }
+
+    @Test
+    fun toDeviceIconAttr_consumerMedicalDevice_returnsConsumerMedicalDeviceIcon() {
+        val attr = Device.DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.deviceConsumerMedicalDeviceIcon)
+    }
+
+    @Test
+    fun toDeviceIconAttr_glasses_returnsGenericIcon() {
+        val attr = Device.DEVICE_TYPE_GLASSES.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.deviceGenericIcon)
+    }
+
+    @Test
+    fun toDeviceIconAttr_hearable_returnsHearableIcon() {
+        val attr = Device.DEVICE_TYPE_HEARABLE.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.deviceHearableIcon)
+    }
+
+    @Test
+    fun toDeviceIconAttr_fitnessMachine_returnsGenericIcon() {
+        val attr = Device.DEVICE_TYPE_FITNESS_MACHINE.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.deviceGenericIcon)
+    }
+
+    @Test
+    fun toDeviceIconAttr_fitnessEquipment_returnsFitnessEquipmentIcon() {
+        val attr = Device.DEVICE_TYPE_FITNESS_EQUIPMENT.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.deviceFitnessEquipmentIcon)
+    }
+
+    @Test
+    fun toDeviceIconAttr_portableComputer_returnsPortableComputerIcon() {
+        val attr = Device.DEVICE_TYPE_PORTABLE_COMPUTER.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.devicePortableComputerIcon)
+    }
+
+    @Test
+    fun toDeviceIconAttr_meter_returnsGenericIcon() {
+        val attr = Device.DEVICE_TYPE_METER.toDeviceIconAttr()
+        assertThat(attr).isEqualTo(R.attr.deviceGenericIcon)
     }
 }

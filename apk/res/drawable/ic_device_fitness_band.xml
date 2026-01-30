@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2026 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="40dp"
+    android:height="40dp"
+    android:viewportWidth="40"
+    android:viewportHeight="40">
+    <group>
+        <path
+            android:pathData="M20,0L20,0A20,20 0,0 1,40 20L40,20A20,20 0,0 1,20 40L20,40A20,20 0,0 1,0 20L0,20A20,20 0,0 1,20 0z"
+            android:fillColor="@color/devices_icon_background_purple" />
+        <path
+            android:pathData="M17,30 L15.8,26.025 c-0.25,-0.2667 -0.45,-0.575 -0.6,-0.925 c-0.1333,-0.35 -0.2,-0.7167 -0.2,-1.1 V16 c0,-0.4 0.0667,-0.775 0.2,-1.125 c0.15,-0.35 0.35,-0.6583 0.6,-0.925 L17,10 H23 L24.15,13.925 c0.2667,0.2833 0.475,0.6 0.625,0.95 c0.15,0.35 0.225,0.725 0.225,1.125 v8 c0,0.4 -0.075,0.775 -0.225,1.125 c-0.1333,0.35 -0.3333,0.6667 -0.6,0.95 L23,30 H17 Z M18,25 h4 c0.2833,0 0.5167,-0.0917 0.7,-0.275 c0.2,-0.2 0.3,-0.4417 0.3,-0.725 V16 c0,-0.2833 -0.1,-0.5167 -0.3,-0.7 c-0.1833,-0.2 -0.4167,-0.3 -0.7,-0.3 h-4 c-0.2833,0 -0.525,0.1 -0.725,0.3 c-0.1833,0.1833 -0.275,0.4167 -0.275,0.7 v8 c0,0.2833 0.0917,0.525 0.275,0.725 c0.2,0.1833 0.4417,0.275 0.7,0.275 Z"
+            android:fillColor="@color/devices_icon_foreground_purple" />
+    </group>
+</vector>

@@ -21,6 +21,18 @@
     <color name="filter_chip_outline_color">?android:attr/textColorPrimary</color>
     <color name="filter_chip_selected_text_color">@color/filter_chip_text_color</color>
     <color name="filter_chip_selected_icon_color">?android:attr/textColorPrimary</color>
-    <color name="devices_icon_background">@color/m3_ref_palette_blue_variant90</color>
-    <color name="devices_icon_foreground">@color/m3_ref_palette_blue_variant30</color>
+    <color name="devices_icon_background_blue">@color/m3_ref_palette_blue_variant90</color>
+    <color name="devices_icon_foreground_blue">@color/m3_ref_palette_blue_variant30</color>
+    <color name="devices_icon_background_yellow">@color/m3_ref_palette_yellow95</color>
+    <color name="devices_icon_foreground_yellow">@color/m3_ref_palette_yellow50</color>
+    <color name="devices_icon_background_green">@color/m3_ref_palette_green95</color>
+    <color name="devices_icon_foreground_green">@color/m3_ref_palette_green40</color>
+    <color name="devices_icon_background_purple">@color/m3_ref_palette_purple90</color>
+    <color name="devices_icon_foreground_purple">@color/m3_ref_palette_purple40</color>
+    <color name="devices_icon_background_orange">@color/m3_ref_palette_orange90</color>
+    <color name="devices_icon_foreground_orange">@color/m3_ref_palette_orange40</color>
+    <color name="devices_icon_background_pink">@color/m3_ref_palette_pink90</color>
+    <color name="devices_icon_foreground_pink">@color/m3_ref_palette_pink40</color>
+    <color name="devices_icon_background_red">@color/m3_ref_palette_red90</color>
+    <color name="devices_icon_foreground_red">@color/m3_ref_palette_red40</color>
 </resources>
