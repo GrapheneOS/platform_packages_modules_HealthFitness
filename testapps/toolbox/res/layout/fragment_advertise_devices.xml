@@ -23,14 +23,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Configure Devices to Advertise"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
+
 
         <LinearLayout
             android:id="@+id/devices_list"
@@ -46,7 +39,7 @@
             android:layout_marginTop="16dp" />
 
         <Button
-            android:id="@+id/advertise_button"
+            android:id="@+id/advertise_or_enable_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Advertise Enabled Devices"

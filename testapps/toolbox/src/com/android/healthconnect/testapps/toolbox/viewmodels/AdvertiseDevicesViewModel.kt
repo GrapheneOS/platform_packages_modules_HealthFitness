@@ -62,6 +62,15 @@ class AdvertiseDevicesViewModel : ViewModel() {
         )
     val deviceConfigs: LiveData<MutableList<DeviceAdvertisementConfig>> = _deviceConfigs
 
+    private val _selectedDeviceDataSourceInfo =
+        MutableLiveData<android.health.connect.DeviceDataSourceInfo?>(null)
+    val selectedDeviceDataSourceInfo: LiveData<android.health.connect.DeviceDataSourceInfo?> =
+        _selectedDeviceDataSourceInfo
+
+    fun setSelectedDeviceDataSourceInfo(info: android.health.connect.DeviceDataSourceInfo?) {
+        _selectedDeviceDataSourceInfo.value = info
+    }
+
     private var _isReAdvertiseMode: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
     val isReAdvertiseMode: LiveData<Boolean> = _isReAdvertiseMode
 
