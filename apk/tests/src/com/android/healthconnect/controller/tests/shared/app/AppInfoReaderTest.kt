@@ -22,6 +22,8 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.ApplicationInfoFlags
 import android.content.pm.PackageManager.NameNotFoundException
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import android.provider.Settings
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -29,9 +31,11 @@ import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.di.FakeGetContributorAppInfoUseCase
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
@@ -48,9 +52,13 @@ private const val PACKAGE_NAME = "com.example.test"
 private const val STORED_LABEL = "Stored label"
 private const val PACKAGE_MANAGER_LABEL = "PackageManager label"
 private const val DEVICE_DATA_PROVIDER_LABEL = "Device data provider label"
+private const val TEST_SYNTHETIC_PACKAGE =
+    "com.android.healthconnect.watch.jae97b731dde83745b62b9111deee3456"
 
 @RunWith(AndroidJUnit4::class)
 class AppInfoReaderTest {
+
+    @get:Rule val setFlagsRule = SetFlagsRule()
 
     private val mockPackageManager = mock<PackageManager>()
     private val mockContext =
@@ -74,8 +82,44 @@ class AppInfoReaderTest {
                         appName = DEVICE_DATA_PROVIDER_LABEL,
                         icon = null,
                     ),
+                TEST_SYNTHETIC_PACKAGE to
+                    AppMetadata(
+                        packageName = TEST_SYNTHETIC_PACKAGE,
+                        appName = "Some device",
+                        icon = null,
+                    ),
             )
         )
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun getAppMetadata_syntheticPackage_notCached() = runBlocking {
+        val oldMetaData = appInfoReader.getAppMetadata(TEST_SYNTHETIC_PACKAGE)
+        assertThat(oldMetaData.appName).isEqualTo("Some device")
+
+        getContributorAppInfoUseCase.setAppInfo(
+            mapOf(
+                TEST_SYNTHETIC_PACKAGE to
+                    AppMetadata(
+                        packageName = TEST_SYNTHETIC_PACKAGE,
+                        appName = "My fancy device",
+                        icon = null,
+                    )
+            )
+        )
+
+        val newMetaData = appInfoReader.getAppMetadata(TEST_SYNTHETIC_PACKAGE)
+        assertThat(newMetaData.appName).isEqualTo("My fancy device")
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun getAppMetadata_syntheticPackage_packageManagerNotCalled(): Unit = runBlocking {
+        val oldMetaData = appInfoReader.getAppMetadata(TEST_SYNTHETIC_PACKAGE)
+        assertThat(oldMetaData.appName).isEqualTo("Some device")
+
+        verify(mockPackageManager, never()).getApplicationInfo(any(), any<ApplicationInfoFlags>())
     }
 
     @Test

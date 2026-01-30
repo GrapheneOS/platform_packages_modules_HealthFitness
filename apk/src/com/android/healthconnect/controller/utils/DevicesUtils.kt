@@ -37,6 +37,7 @@ import android.health.connect.datatypes.Device.DEVICE_TYPE_UNKNOWN
 import android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.device.SyntheticPackageNameMatcher
+import androidx.appcompat.content.res.AppCompatResources
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.AppMetadata
@@ -65,7 +66,19 @@ fun DeviceDataSourceInfo.asAppMetadata(context: Context) =
     AppMetadata(
         packageName = this.deviceDataOrigin.packageName,
         appName = this.device.displayName ?: this.device.type.toDeviceTypeString(context),
-        icon = AttributeResolver.getDrawable(context, this.device.type.toDeviceIconAttr()),
+        icon =
+            try {
+                AttributeResolver.getDrawable(context, this.device.type.toDeviceIconAttr())
+            } catch (e: Exception) {
+                // If the context is not that of a fragment's (e.g. AppInfoReader), the
+                // AttributeResolver will fail.
+                // TODO(b/433184152): Return with unknown icon once we can ensure that the
+                // passed context is always that of a fragment
+
+                // Manual resolving is sup-optimal in terms of theming, but as device icons
+                // are static, this is acceptable for now.
+                AppCompatResources.getDrawable(context, this.device.type.toDeviceIconRes())
+            },
     )
 
 fun Int.toDeviceIconAttr(): Int {
@@ -86,6 +99,27 @@ fun Int.toDeviceIconAttr(): Int {
         DEVICE_TYPE_PORTABLE_COMPUTER -> R.attr.devicePortableComputerIcon
         DEVICE_TYPE_METER -> R.attr.deviceGenericIcon
         else -> R.attr.deviceGenericIcon
+    }
+}
+
+fun Int.toDeviceIconRes(): Int {
+    return when (this) {
+        DEVICE_TYPE_WATCH -> R.drawable.ic_device_watch
+        DEVICE_TYPE_PHONE -> R.drawable.ic_device_phone
+        DEVICE_TYPE_SCALE -> R.drawable.ic_device_scale
+        DEVICE_TYPE_RING -> R.drawable.ic_device_generic
+        DEVICE_TYPE_HEAD_MOUNTED -> R.drawable.ic_device_generic
+        DEVICE_TYPE_FITNESS_BAND -> R.drawable.ic_device_fitness_band
+        DEVICE_TYPE_CHEST_STRAP -> R.drawable.ic_device_generic
+        DEVICE_TYPE_SMART_DISPLAY -> R.drawable.ic_device_portable_computer
+        DEVICE_TYPE_CONSUMER_MEDICAL_DEVICE -> R.drawable.ic_device_consumer_medical_device
+        DEVICE_TYPE_GLASSES -> R.drawable.ic_device_generic
+        DEVICE_TYPE_HEARABLE -> R.drawable.ic_device_hearable
+        DEVICE_TYPE_FITNESS_MACHINE -> R.drawable.ic_device_generic
+        DEVICE_TYPE_FITNESS_EQUIPMENT -> R.drawable.ic_device_fitness_equipment
+        DEVICE_TYPE_PORTABLE_COMPUTER -> R.drawable.ic_device_portable_computer
+        DEVICE_TYPE_METER -> R.drawable.ic_device_generic
+        else -> R.drawable.ic_device_generic
     }
 }
 
@@ -118,3 +152,6 @@ fun DeviceDataSourceInfo.isDisabledByAllProviders() =
     this.deviceDataProviderInfos.all { providerInfo ->
         providerInfo.deviceDataTypeAdvertisements.none { typeAd -> typeAd.isUserEnabled }
     }
+
+fun DeviceDataProviderInfo.enabledAdsCount() =
+    this.deviceDataTypeAdvertisements.count { typeAd -> typeAd.isUserEnabled }

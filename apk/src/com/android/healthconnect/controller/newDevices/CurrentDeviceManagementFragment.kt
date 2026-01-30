@@ -23,7 +23,7 @@ import android.health.connect.device.DeviceDataTypeAdvertisement
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -72,7 +72,7 @@ class CurrentDeviceManagementFragment : Hilt_CurrentDeviceManagementFragment() {
 
     @Inject lateinit var toastManager: ToastManager
 
-    private val deviceSourcesViewModel: DeviceSourcesViewModel by activityViewModels()
+    private val deviceSourcesViewModel: DeviceSourcesViewModel by viewModels()
 
     private val headerGroup: PreferenceCategory by pref(HEADER_KEY)
     private val deviceWriteCategory: PreferenceCategory by pref(DEVICE_WRITE_CATEGORY)
@@ -108,19 +108,15 @@ class CurrentDeviceManagementFragment : Hilt_CurrentDeviceManagementFragment() {
                     when (state) {
                         is DeviceSourcesViewModel.SelectedDeviceSourceInfoState.Loading -> {
                             setLoading(true)
-                            setError(false)
                         }
                         is DeviceSourcesViewModel.SelectedDeviceSourceInfoState.Error -> {
-                            setLoading(false)
                             setError(true)
                         }
                         is DeviceSourcesViewModel.SelectedDeviceSourceInfoState.WithData -> {
                             if (state.selectedDeviceSourceInfo.findSystemInfo() == null) {
-                                setLoading(false)
                                 setError(true)
                             } else {
                                 setLoading(false)
-                                setError(false)
                                 updateScreen(state.selectedDeviceSourceInfo)
                             }
                         }

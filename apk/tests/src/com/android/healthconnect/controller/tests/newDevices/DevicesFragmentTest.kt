@@ -32,6 +32,7 @@ import androidx.navigation.testing.TestNavHostController
 import androidx.preference.PreferenceCategory
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.scrollTo
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -43,6 +44,7 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.newDevices.DeviceSourcesViewModel
 import com.android.healthconnect.controller.newDevices.DeviceSourcesViewModel.DeviceSourcesState
 import com.android.healthconnect.controller.newDevices.DevicesFragment
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.children
 import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_PHONE_SPN
@@ -177,6 +179,78 @@ class DevicesFragmentTest {
     }
 
     @Test
+    fun clickCurrentDevice_multipleProvidersIncludingSystem_navigatesToDeviceDataProviderFragment() {
+        val deviceDataSourceInfo = createCurrentDeviceWithMultipleProviders(true)
+        deviceSourcesState.value = DeviceSourcesState.WithData(setOf(deviceDataSourceInfo))
+
+        launchFragment<DevicesFragment>(Bundle()) {
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.newDevicesFragment)
+                Navigation.setViewNavController(requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Some phone")).perform(click())
+
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.deviceDataProviderFragment)
+
+                val arguments = navHostController.currentBackStackEntry?.arguments
+                assertThat(arguments).isNotNull()
+
+                assertThat(arguments?.getString(Intent.EXTRA_PACKAGE_NAME))
+                    .isEqualTo(TEST_PHONE_SPN)
+            }
+    }
+
+    @Test
+    fun clickCurrentDevice_multipleProvidersWithoutSystem_navigatesToDeviceDataProviderFragment() {
+        val deviceDataSourceInfo = createCurrentDeviceWithMultipleProviders(false)
+        deviceSourcesState.value = DeviceSourcesState.WithData(setOf(deviceDataSourceInfo))
+
+        launchFragment<DevicesFragment>(Bundle()) {
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.newDevicesFragment)
+                Navigation.setViewNavController(requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Some phone")).perform(click())
+
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.deviceDataProviderFragment)
+
+                val arguments = navHostController.currentBackStackEntry?.arguments
+                assertThat(arguments).isNotNull()
+
+                assertThat(arguments?.getString(Intent.EXTRA_PACKAGE_NAME))
+                    .isEqualTo(TEST_PHONE_SPN)
+            }
+    }
+
+    @Test
+    fun clickNotCurrentDevice_navigatesToDeviceDataProviderFragment() {
+        val deviceDataSourceInfo = createDisabledDevice()
+        deviceSourcesState.value = DeviceSourcesState.WithData(setOf(deviceDataSourceInfo))
+
+        launchFragment<DevicesFragment>(Bundle()) {
+                navHostController.setGraph(R.navigation.nav_graph)
+                navHostController.setCurrentDestination(R.id.newDevicesFragment)
+                Navigation.setViewNavController(requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Disabled Device")).perform(scrollTo(), click())
+
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.deviceDataProviderFragment)
+
+                val arguments = navHostController.currentBackStackEntry?.arguments
+                assertThat(arguments).isNotNull()
+
+                assertThat(arguments?.getString(Intent.EXTRA_PACKAGE_NAME))
+                    .isEqualTo(TEST_WATCH_SPN)
+            }
+    }
+
+    @Test
     fun disabledDevice_showsInNotEnabledCategory() {
         deviceSourcesState.value =
             DeviceSourcesState.WithData(setOf(createCurrentDevice(), createDisabledDevice()))
@@ -230,6 +304,68 @@ class DevicesFragmentTest {
                     ),
                 )
             ),
+        )
+    }
+
+    private fun createCurrentDeviceWithMultipleProviders(
+        includeSystemProvider: Boolean
+    ): DeviceDataSourceInfo {
+        val providers = mutableListOf<DeviceDataProviderInfo>()
+        providers.add(
+            DeviceDataProviderInfo(
+                "com.example.provider1",
+                "id1",
+                "",
+                "",
+                setOf(
+                    DeviceDataTypeAdvertisement.Builder(StepsRecord::class.java)
+                        .setAvailable(true)
+                        .setUserEnabled(true)
+                        .build()
+                ),
+            )
+        )
+        if (includeSystemProvider) {
+            providers.add(
+                DeviceDataProviderInfo(
+                    DEVICE_DATA_PROVIDER_PACKAGE,
+                    "phoneId",
+                    "",
+                    "",
+                    setOf(
+                        DeviceDataTypeAdvertisement.Builder(StepsRecord::class.java)
+                            .setAvailable(true)
+                            .setUserEnabled(true)
+                            .build()
+                    ),
+                )
+            )
+        } else {
+            providers.add(
+                DeviceDataProviderInfo(
+                    "com.example.provider2",
+                    "id2",
+                    "",
+                    "",
+                    setOf(
+                        DeviceDataTypeAdvertisement.Builder(StepsRecord::class.java)
+                            .setAvailable(true)
+                            .setUserEnabled(true)
+                            .build()
+                    ),
+                )
+            )
+        }
+        return DeviceDataSourceInfo(
+            DataOrigin.Builder().setPackageName(TEST_PHONE_SPN).build(),
+            Device.Builder()
+                .setDisplayName("Some phone")
+                .setModel("Some model")
+                .setManufacturer("Some manufacturer")
+                .setType(Device.DEVICE_TYPE_PHONE)
+                .build(),
+            true,
+            providers,
         )
     }
 
