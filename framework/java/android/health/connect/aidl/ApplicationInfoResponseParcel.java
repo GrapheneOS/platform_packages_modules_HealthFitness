@@ -17,16 +17,12 @@
 package android.health.connect.aidl;
 
 import android.annotation.NonNull;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.datatypes.AppInfo;
 import android.health.connect.internal.PackageNameMasker;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -41,7 +37,6 @@ public class ApplicationInfoResponseParcel
         implements Parcelable, PackageNameMasker<ApplicationInfoResponseParcel> {
 
     private final List<AppInfo> mAppInfoList;
-    private static final int COMPRESS_FACTOR = 100;
 
     public ApplicationInfoResponseParcel(@NonNull List<AppInfo> appInfoList) {
         Objects.requireNonNull(appInfoList);
@@ -69,9 +64,7 @@ public class ApplicationInfoResponseParcel
             String packageName = in.readString();
             String name = in.readString();
             byte[] icon = in.createByteArray();
-            Bitmap bitmap =
-                    icon != null ? BitmapFactory.decodeByteArray(icon, 0, icon.length) : null;
-            mAppInfoList.add(new AppInfo.Builder(packageName, name, bitmap).build());
+            mAppInfoList.add(new AppInfo.Builder(packageName).setName(name).setIcon(icon).build());
         }
     }
 
@@ -99,17 +92,7 @@ public class ApplicationInfoResponseParcel
                 (appInfo -> {
                     dest.writeString(appInfo.getPackageName());
                     dest.writeString(appInfo.getName());
-                    Bitmap bitmap = appInfo.getIcon();
-                    byte[] bitmapData = null;
-                    if (bitmap != null) {
-                        try (ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
-                            bitmap.compress(Bitmap.CompressFormat.PNG, COMPRESS_FACTOR, stream);
-                            bitmapData = stream.toByteArray();
-                        } catch (IOException exception) {
-                            throw new IllegalArgumentException(exception);
-                        }
-                    }
-                    dest.writeByteArray(bitmapData);
+                    dest.writeByteArray(appInfo.getIconBytes());
                 }));
     }
 

@@ -19,6 +19,7 @@ package android.health.connect.datatypes;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import java.util.Objects;
 import java.util.function.Function;
@@ -28,8 +29,8 @@ public final class AppInfo {
     /** Application name/label */
     @Nullable private final String mName;
 
-    /** Application icon as bitmap */
-    @Nullable private final Bitmap mIcon;
+    /** Application icon as bytes */
+    @Nullable private final byte[] mIconBytes;
 
     /** Application package name */
     private final String mPackageName;
@@ -41,19 +42,27 @@ public final class AppInfo {
      */
     public static final class Builder {
         private final String mPackageName;
-        @Nullable private final String mName;
-        @Nullable private final Bitmap mIcon;
+        @Nullable private String mName;
+        @Nullable private byte[] mIconBytes;
 
         /**
          * @param packageName package name of the application
-         * @param name name/label of the application. Optional
-         * @param icon icon of the application. Optional.
          */
-        public Builder(@NonNull String packageName, @Nullable String name, @Nullable Bitmap icon) {
+        public Builder(@NonNull String packageName) {
             Objects.requireNonNull(packageName);
             mPackageName = packageName;
+        }
+
+        /** Sets the application name */
+        public Builder setName(@Nullable String name) {
             mName = name;
-            mIcon = icon;
+            return this;
+        }
+
+        /** Sets the application icon */
+        public Builder setIcon(@Nullable byte[] icon) {
+            mIconBytes = icon;
+            return this;
         }
 
         /**
@@ -61,15 +70,16 @@ public final class AppInfo {
          */
         @NonNull
         public AppInfo build() {
-            return new AppInfo(mPackageName, mName, mIcon);
+            return new AppInfo(mPackageName, mName, mIconBytes);
         }
     }
 
-    private AppInfo(@NonNull String packageName, @Nullable String name, @Nullable Bitmap icon) {
+    private AppInfo(
+            @NonNull String packageName, @Nullable String name, @Nullable byte[] iconBytes) {
         Objects.requireNonNull(packageName);
         mPackageName = packageName;
         mName = name;
-        mIcon = icon;
+        mIconBytes = iconBytes;
     }
 
     /** Returns the application package name */
@@ -81,7 +91,16 @@ public final class AppInfo {
     /** Returns the application icon as bitmap */
     @Nullable
     public Bitmap getIcon() {
-        return mIcon;
+        if (mIconBytes == null) {
+            return null;
+        }
+        return BitmapFactory.decodeByteArray(mIconBytes, 0, mIconBytes.length);
+    }
+
+    /** @hide */
+    @Nullable
+    public byte[] getIconBytes() {
+        return mIconBytes;
     }
 
     /** Returns the application name/label */
@@ -93,6 +112,6 @@ public final class AppInfo {
     /** @hide */
     @NonNull
     public AppInfo toMasked(@NonNull Function<String, String> packageMasker) {
-        return new AppInfo(packageMasker.apply(mPackageName), mName, mIcon);
+        return new AppInfo(packageMasker.apply(mPackageName), mName, mIconBytes);
     }
 }

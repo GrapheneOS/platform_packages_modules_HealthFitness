@@ -33,8 +33,8 @@ public class ApplicationInfoResponseParcelTest {
 
     @Test
     public void toMasked_masksPackageNames() {
-        AppInfo appInfo1 = new AppInfo.Builder("com.example.app1", "App 1", null).build();
-        AppInfo appInfo2 = new AppInfo.Builder("com.example.app2", "App 2", null).build();
+        AppInfo appInfo1 = new AppInfo.Builder("com.example.app1").setName("App 1").build();
+        AppInfo appInfo2 = new AppInfo.Builder("com.example.app2").setName("App 2").build();
         ApplicationInfoResponseParcel parcel =
                 new ApplicationInfoResponseParcel(List.of(appInfo1, appInfo2));
 

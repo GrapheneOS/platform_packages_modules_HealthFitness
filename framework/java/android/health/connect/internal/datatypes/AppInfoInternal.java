@@ -17,8 +17,6 @@ package android.health.connect.internal.datatypes;
 
 import android.annotation.NonNull;
 import android.annotation.Nullable;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.health.connect.datatypes.AppInfo;
 
 import java.util.Set;
@@ -95,8 +93,6 @@ public final class AppInfoInternal {
     /** returns a new {@link AppInfo} object from this object */
     @NonNull
     public AppInfo toExternal() {
-        Bitmap bitmap =
-                mIcon == null ? null : BitmapFactory.decodeByteArray(mIcon, 0, mIcon.length);
-        return new AppInfo.Builder(getPackageName(), getName(), bitmap).build();
+        return new AppInfo.Builder(getPackageName()).setName(getName()).setIcon(mIcon).build();
     }
 }
