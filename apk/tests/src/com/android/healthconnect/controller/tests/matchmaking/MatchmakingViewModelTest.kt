@@ -18,6 +18,9 @@ package com.android.healthconnect.controller.tests.matchmaking
 
 import android.health.connect.DeviceDataProviderInfo
 import android.health.connect.DeviceDataSourceInfo
+import android.health.connect.HealthConnectManager.RESULT_DEVICE_ONBOARDING_ABORTED
+import android.health.connect.HealthConnectManager.RESULT_DEVICE_ONBOARDING_ALLOWED
+import android.health.connect.HealthConnectManager.RESULT_DEVICE_ONBOARDING_DENIED
 import android.health.connect.HealthPermissions.WRITE_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_SLEEP
 import android.health.connect.HealthPermissions.WRITE_STEPS
@@ -71,6 +74,7 @@ import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
+import org.mockito.kotlin.reset
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -205,6 +209,30 @@ class MatchmakingViewModelTest {
         assertThat(data.matchingApps).isEqualTo(getExpectedApps())
         assertThat(data.matchingDevices).isEmpty()
     }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun loadMatchmakingData_withIncludedAndExcludedSources_callsUseCaseWithCorrectOrigins() =
+        runTest {
+            val packageName = TEST_APP_PACKAGE_NAME
+            val recordTypeNames = arrayOf(StepsRecord::class.java.name)
+            val included = arrayOf("inc.pkg")
+            val excluded = arrayOf("exc.pkg")
+
+            stubGetMatchingDataSourcesUseCase(emptyList(), emptyList())
+            val captor = argumentCaptor<GetMatchingDataSourcesInput>()
+            whenever(getMatchingDataSourcesUseCase.invoke(captor.capture()))
+                .doReturn(UseCaseResults.Success(MatchingDataSources(emptyList(), emptyList())))
+
+            viewModel.loadMatchmakingData(packageName, recordTypeNames, included, excluded)
+
+            val input = captor.firstValue
+            assertThat(input.includedDataOrigins.map { it.packageName }).containsExactly("inc.pkg")
+            assertThat(input.excludedDataOrigins.map { it.packageName }).containsExactly("exc.pkg")
+        }
 
     @Test
     fun loadMatchmakingData_withError_updatesStateToLoadingFailed() = runTest {
@@ -542,6 +570,294 @@ class MatchmakingViewModelTest {
             verify(recordMatchmakingDenialUseCase)
                 .invoke(RecordMatchmakingDenialInput(TEST_APP_PACKAGE_NAME_3, expectedDenied))
         }
+
+    @Test
+    fun grantPermissions_withMultipleDevices_postsIntentsToQueue() = runTest {
+        setupWithData()
+        viewModel.addDevicePermissionToGrantedList(TEST_WATCH_DEVICE_PACKAGE_NAME)
+
+        viewModel.grantPermissions()
+
+        assertThat(viewModel.ddpIntentQueue.value).hasSize(1)
+        assertThat(viewModel.ddpOnboardingState.value)
+            .isInstanceOf(MatchmakingViewModel.DdpOnboardingState.Onboarding::class.java)
+    }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun grantPermissions_withNoPermissionsGranted_recordsDenialForAllAppsAndDevices() = runTest {
+        setupWithData()
+        val captor = argumentCaptor<RecordMatchmakingDenialInput>()
+
+        viewModel.grantPermissions()
+
+        verify(recordMatchmakingDenialUseCase).invoke(captor.capture())
+        assertThat(captor.firstValue.callingPackageName).isEqualTo(TEST_APP_PACKAGE_NAME_3)
+
+        val deniedSources = captor.firstValue.deniedDataSources
+        // Verify apps are denied
+        assertThat(deniedSources).containsKey(TEST_APP_PACKAGE_NAME)
+        assertThat(deniedSources).containsKey(TEST_APP_PACKAGE_NAME_2)
+        // Verify devices are denied
+        assertThat(deniedSources).containsKey("com.example.watchdevice")
+    }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun recordMatchmakingDenial_withNoSelections_recordsDenialForAllAppsAndDevices() = runTest {
+        setupWithData()
+        val captor = argumentCaptor<RecordMatchmakingDenialInput>()
+
+        viewModel.recordMatchmakingDenial()
+
+        verify(recordMatchmakingDenialUseCase).invoke(captor.capture())
+        val deniedSources = captor.firstValue.deniedDataSources
+        assertThat(deniedSources).containsKey(TEST_APP_PACKAGE_NAME)
+        assertThat(deniedSources).containsKey(TEST_APP_PACKAGE_NAME_2)
+        assertThat(deniedSources).containsKey("com.example.watchdevice")
+    }
+
+    @Test
+    fun onDdpIntentFinished_withResultAllowed_setsAtLeastOneGrantSucceededAndPostsNextIntent() =
+        runTest {
+            setupWithData()
+            viewModel.addDevicePermissionToGrantedList("com.example.watchdevice")
+            viewModel.grantPermissions()
+
+            viewModel.onDdpIntentFinished(RESULT_DEVICE_ONBOARDING_ALLOWED)
+
+            assertThat(viewModel.ddpIntentQueue.value).isEmpty()
+            assertThat(viewModel.ddpOnboardingState.value)
+                .isEqualTo(
+                    MatchmakingViewModel.DdpOnboardingState.Finished(android.app.Activity.RESULT_OK)
+                )
+        }
+
+    @Test
+    fun onDdpIntentFinished_withResultAborted_recordsDenialAndFinishesWithPreviousResult() =
+        runTest {
+            setupWithData()
+            viewModel.addDevicePermissionToGrantedList("com.example.watchdevice")
+            viewModel.grantPermissions()
+
+            // Reset mock to ignore the denial recorded for apps during grantPermissions
+            reset(recordMatchmakingDenialUseCase)
+
+            viewModel.onDdpIntentFinished(RESULT_DEVICE_ONBOARDING_ABORTED)
+
+            // Verify denial recorded for the aborted device
+            verify(recordMatchmakingDenialUseCase, times(1)).invoke(any())
+            assertThat(viewModel.ddpIntentQueue.value).isEmpty()
+            // In this case, app grants weren't done, so it should be RESULT_CANCELED
+            assertThat(viewModel.ddpOnboardingState.value)
+                .isEqualTo(
+                    MatchmakingViewModel.DdpOnboardingState.Finished(
+                        android.app.Activity.RESULT_CANCELED
+                    )
+                )
+        }
+
+    @Test
+    fun onDdpIntentFinished_withResultDenied_recordsDenialAndPostsNextIntent() = runTest {
+        setupWithData()
+        viewModel.addDevicePermissionToGrantedList("com.example.watchdevice")
+        viewModel.grantPermissions()
+
+        reset(recordMatchmakingDenialUseCase)
+
+        viewModel.onDdpIntentFinished(RESULT_DEVICE_ONBOARDING_DENIED)
+
+        // Verify denial recorded for the denied device
+        verify(recordMatchmakingDenialUseCase, times(1)).invoke(any())
+        assertThat(viewModel.ddpIntentQueue.value).isEmpty()
+        assertThat(viewModel.ddpOnboardingState.value)
+            .isEqualTo(
+                MatchmakingViewModel.DdpOnboardingState.Finished(
+                    android.app.Activity.RESULT_CANCELED
+                )
+            )
+    }
+
+    @Test
+    fun onDdpIntentFinished_withResultAborted_withPreviousGrants_returnsResultOk() = runTest {
+        setupWithData()
+        // Grant all app permissions so no app denial is recorded during grantPermissions
+        viewModel.addAllPermissionsToGrantedList(TEST_APP_PACKAGE_NAME)
+        viewModel.addAllPermissionsToGrantedList(TEST_APP_PACKAGE_NAME_2)
+        viewModel.addDevicePermissionToGrantedList("com.example.watchdevice")
+        viewModel.grantPermissions()
+
+        reset(recordMatchmakingDenialUseCase)
+
+        viewModel.onDdpIntentFinished(RESULT_DEVICE_ONBOARDING_ABORTED)
+
+        // Verify denial recorded for the aborted device
+        verify(recordMatchmakingDenialUseCase, times(1)).invoke(any())
+        assertThat(viewModel.ddpOnboardingState.value)
+            .isEqualTo(
+                MatchmakingViewModel.DdpOnboardingState.Finished(android.app.Activity.RESULT_OK)
+            )
+    }
+
+    @Test
+    fun onDdpIntentFinished_withResultCanceled_withPreviousGrants_returnsResultOk() = runTest {
+        setupWithData()
+        // Grant an app permission to set _atLeastOneGrantSucceeded to true
+        viewModel.addAllPermissionsToGrantedList(TEST_APP_PACKAGE_NAME)
+        viewModel.addDevicePermissionToGrantedList(TEST_WATCH_DEVICE_PACKAGE_NAME)
+        viewModel.grantPermissions()
+
+        viewModel.onDdpIntentFinished(android.app.Activity.RESULT_CANCELED)
+
+        assertThat(viewModel.ddpIntentQueue.value).isEmpty()
+        // Should be OK because we granted app permissions before starting DDP flow
+        assertThat(viewModel.ddpOnboardingState.value)
+            .isEqualTo(
+                MatchmakingViewModel.DdpOnboardingState.Finished(android.app.Activity.RESULT_OK)
+            )
+    }
+
+    @Test
+    fun onDdpIntentFinished_withResultCanceled_noPreviousGrants_returnsResultCanceled() = runTest {
+        // Setup with zero matched apps but with a device
+        val packageName = TEST_APP_PACKAGE_NAME_3
+        val recordTypeNames = arrayOf(StepsRecord::class.java.name)
+        stubGetMatchingDataSourcesUseCase(emptyList(), getExpectedDevices())
+        viewModel.loadMatchmakingData(packageName, recordTypeNames)
+
+        // Select device and "Allow" (triggers DDP flow but no app grants)
+        viewModel.addDevicePermissionToGrantedList(TEST_WATCH_DEVICE_PACKAGE_NAME)
+        viewModel.grantPermissions()
+
+        // Simulate DDP cancellation
+        viewModel.onDdpIntentFinished(android.app.Activity.RESULT_CANCELED)
+
+        assertThat(viewModel.ddpOnboardingState.value)
+            .isEqualTo(
+                MatchmakingViewModel.DdpOnboardingState.Finished(
+                    android.app.Activity.RESULT_CANCELED
+                )
+            )
+    }
+
+    @Test
+    fun onDdpIntentFinished_withResultOkAndEmptyQueue_postsNullAndOkToFinishedEvent() = runTest {
+        setupWithData()
+        viewModel.addDevicePermissionToGrantedList(TEST_WATCH_DEVICE_PACKAGE_NAME)
+        viewModel.grantPermissions()
+
+        viewModel.onDdpIntentFinished(android.app.Activity.RESULT_OK)
+
+        assertThat(viewModel.ddpIntentQueue.value).isEmpty()
+        assertThat(viewModel.ddpOnboardingState.value)
+            .isEqualTo(
+                MatchmakingViewModel.DdpOnboardingState.Finished(android.app.Activity.RESULT_OK)
+            )
+    }
+
+    @Test
+    fun grantPermissions_deviceSelected_postsOkToFinishedEvent() = runTest {
+        viewModel.addDevicePermissionToGrantedList(TEST_WATCH_DEVICE_PACKAGE_NAME)
+
+        viewModel.grantPermissions()
+
+        assertThat(viewModel.ddpOnboardingState.value)
+            .isEqualTo(
+                MatchmakingViewModel.DdpOnboardingState.Finished(android.app.Activity.RESULT_OK)
+            )
+    }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun onDdpIntentFinished_withMultipleIntents_progressesThroughQueueCorrectly() = runTest {
+        // Setup with 2 providers for one device
+        val packageName = TEST_APP_PACKAGE_NAME_3
+        val devices = getExpectedDevicesWithMultipleProviders()
+        stubGetMatchingDataSourcesUseCase(emptyList(), devices)
+        viewModel.loadMatchmakingData(packageName, arrayOf(StepsRecord::class.java.name))
+
+        viewModel.addDevicePermissionToGrantedList("com.example.watchdevice")
+        viewModel.grantPermissions()
+
+        assertThat(viewModel.ddpIntentQueue.value).hasSize(2)
+        val firstState =
+            viewModel.ddpOnboardingState.value as MatchmakingViewModel.DdpOnboardingState.Onboarding
+        assertThat(firstState.intent.`package`).isEqualTo("com.google.android.apps.fitness")
+
+        // Finish first intent
+        viewModel.onDdpIntentFinished(android.app.Activity.RESULT_OK)
+
+        assertThat(viewModel.ddpIntentQueue.value).hasSize(1)
+        val secondState =
+            viewModel.ddpOnboardingState.value as MatchmakingViewModel.DdpOnboardingState.Onboarding
+        assertThat(secondState.intent.`package`).isEqualTo("com.google.android.apps.fitness2")
+
+        // Finish second intent
+        viewModel.onDdpIntentFinished(android.app.Activity.RESULT_OK)
+
+        assertThat(viewModel.ddpIntentQueue.value).isEmpty()
+        assertThat(viewModel.ddpOnboardingState.value)
+            .isEqualTo(
+                MatchmakingViewModel.DdpOnboardingState.Finished(android.app.Activity.RESULT_OK)
+            )
+    }
+
+    @Test
+    fun consumeDdpOnboardingEvent_resetsStateToSetup() = runTest {
+        setupWithData()
+        viewModel.addDevicePermissionToGrantedList(TEST_WATCH_DEVICE_PACKAGE_NAME)
+        viewModel.grantPermissions()
+
+        assertThat(viewModel.ddpOnboardingState.value)
+            .isInstanceOf(MatchmakingViewModel.DdpOnboardingState.Onboarding::class.java)
+
+        viewModel.consumeDdpOnboardingEvent()
+
+        assertThat(viewModel.ddpOnboardingState.value)
+            .isEqualTo(MatchmakingViewModel.DdpOnboardingState.Setup)
+    }
+
+    private fun getExpectedDevicesWithMultipleProviders(): List<MatchmakingDeviceData> {
+        return listOf(
+            MatchmakingDeviceData(
+                DeviceDataSourceInfo(
+                    DataOrigin.Builder().setPackageName("com.example.watchdevice").build(),
+                    android.health.connect.datatypes.Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel Watch")
+                        .setType(2)
+                        .build(),
+                    false,
+                    listOf(
+                        DeviceDataProviderInfo(
+                            "com.google.android.apps.fitness",
+                            "MyFit",
+                            "",
+                            "",
+                            emptySet(),
+                        ),
+                        DeviceDataProviderInfo(
+                            "com.google.android.apps.fitness2",
+                            "MyFit2",
+                            "",
+                            "",
+                            emptySet(),
+                        ),
+                    ),
+                ),
+                emptyList(),
+            )
+        )
+    }
 
     private suspend fun setupWithData() {
         val packageName = TEST_APP_PACKAGE_NAME_3

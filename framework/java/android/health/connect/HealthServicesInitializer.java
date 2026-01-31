@@ -20,11 +20,7 @@ import android.annotation.SystemApi;
 import android.app.SystemServiceRegistry;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.health.connect.HealthPermissions;
 import android.health.connect.aidl.IHealthConnectService;
-
-import com.android.healthfitness.flags.Flags;
-import com.android.modules.utils.build.SdkLevel;
 
 /**
  * Class for performing registration for Health services.
@@ -59,17 +55,9 @@ public class HealthServicesInitializer {
 
     private static boolean shouldReturnHealthConnectManager(Context context) {
         PackageManager pm = context.getPackageManager();
-        // Not available on embedded/tv/auto.
-        if (pm.hasSystemFeature(PackageManager.FEATURE_EMBEDDED)
-                || pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
-                || pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)) {
+        // Not available on auto.
+        if (pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)) {
             return false;
-        }
-        // Only available on Wear for permission management.
-        if (pm.hasSystemFeature(PackageManager.FEATURE_WATCH)) {
-            return SdkLevel.isAtLeastB()
-                    && context.checkSelfPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
-                            == PackageManager.PERMISSION_GRANTED;
         }
         // Supported everywhere else.
         return true;

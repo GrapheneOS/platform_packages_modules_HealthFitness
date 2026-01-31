@@ -77,12 +77,16 @@ constructor(
                 val loading = flows[1] as Boolean
                 val error = flows[2] as Boolean
 
-                if (error || selectedInfo == null) {
+                if (error) {
                     SelectedDeviceSourceInfoState.Error
                 } else if (loading) {
                     SelectedDeviceSourceInfoState.Loading
                 } else {
-                    SelectedDeviceSourceInfoState.WithData(selectedInfo)
+                    if (selectedInfo == null) {
+                        SelectedDeviceSourceInfoState.Error
+                    } else {
+                        SelectedDeviceSourceInfoState.WithData(selectedInfo)
+                    }
                 }
             }
             .stateIn(

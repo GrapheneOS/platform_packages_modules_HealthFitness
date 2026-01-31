@@ -17,13 +17,15 @@
 package com.android.healthconnect.controller.matchmaking
 
 import android.app.Activity.RESULT_CANCELED
-import android.app.Activity.RESULT_OK
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -78,6 +80,8 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     private val viewModel: MatchmakingViewModel by activityViewModels()
     private var loadingIndicator: View? = null
 
+    private lateinit var ddpActivityResultLauncher: ActivityResultLauncher<Intent>
+
     private val header: MatchmakingHeaderPreference by pref(HEADER)
     private val allowAllPreference: HealthMainSwitchPreference by pref(ALLOW_ALL_PREFERENCE)
     private val matchmakingAppsCategory: PreferenceCategory by pref(MATCHMAKING_APPS_CATEGORY)
@@ -88,10 +92,20 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
     @Inject lateinit var logger: HealthConnectLogger
 
+    private var observersRegistered = false
     private val customStyledPrefs = mutableListOf<Preference>()
 
     init {
         this.setPageName(PageName.MATCHMAKING_PAGE)
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        observersRegistered = false
+        ddpActivityResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                viewModel.onDdpIntentFinished(result.resultCode)
+            }
     }
 
     override fun onCreateView(
@@ -138,9 +152,102 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                     bindHeader(state.callingAppMetaData, state.matchingApps, state.matchingDevices)
                     buildDataSourcesList(state.matchingApps, state.matchingDevices)
                     bindFooter()
-                    setupButtons(view)
+                    registerDataObservers()
+
+                    // Hide "Allow all" if only 1 device and 0 apps
+                    if (state.matchingApps.isEmpty() && state.matchingDevices.size == 1) {
+                        allowAllPreference.isVisible = false
+                    } else {
+                        allowAllPreference.isVisible = true
+                    }
                 }
             }
+        }
+
+        viewModel.ddpOnboardingState.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is MatchmakingViewModel.DdpOnboardingState.Onboarding -> {
+                    ddpActivityResultLauncher.launch(state.intent)
+                    viewModel.consumeDdpOnboardingEvent()
+                }
+
+                is MatchmakingViewModel.DdpOnboardingState.Finished -> {
+                    viewModel.consumeDdpOnboardingEvent()
+                    activity?.setResult(state.resultCode)
+                    activity?.finish()
+                }
+                else -> {
+                    /* Idle in Setup state */
+                }
+            }
+        }
+
+        setupButtons(view)
+    }
+
+    private fun registerDataObservers() {
+        if (observersRegistered) return
+
+        viewModel.grantedPermissions.observe(viewLifecycleOwner) { grantedPermissionsMap ->
+            matchmakingAppsCategory.children.forEach { preference ->
+                if (preference is HealthExpandablePreference) {
+                    val packageName = preference.key
+                    val grantedPermissions = grantedPermissionsMap[packageName] ?: emptySet()
+
+                    // Update parent summary and checked state
+                    val appData =
+                        (viewModel.matchmakingState.value
+                                as? MatchmakingViewModel.MatchmakingState.WithData)
+                            ?.matchingApps
+                            ?.firstOrNull { it.metadata.packageName == packageName }
+
+                    if (appData != null) {
+                        val granted = grantedPermissions.size
+                        val total = appData.permissions.size
+                        preference.summary =
+                            requireContext()
+                                .getString(R.string.app_permissions_granted_summary, granted, total)
+                    }
+                    preference.isChecked = grantedPermissions.isNotEmpty()
+
+                    // Update child switch states
+                    preference.children.forEach { child ->
+                        if (child is HealthSwitchPreference) {
+                            child.isChecked =
+                                grantedPermissions.any {
+                                    getPermissionKey(packageName, it.toString()) == child.key
+                                }
+                        }
+                    }
+                }
+            }
+        }
+
+        viewModel.enabledDevicePackages.observe(viewLifecycleOwner) { enabledDevices ->
+            matchmakingDevicesCategory.children.forEach { preference ->
+                if (preference is HealthExpandablePreference) {
+                    preference.isChecked = enabledDevices.contains(preference.key)
+                }
+            }
+        }
+
+        viewModel.hasSelectedDevice.observe(viewLifecycleOwner) { updateAllowButtonText() }
+        viewModel.hasSelectedApp.observe(viewLifecycleOwner) { updateAllowButtonText() }
+
+        observersRegistered = true
+    }
+
+    private fun updateAllowButtonText() {
+        val allowButton = view?.findViewById<Button>(R.id.primary_button_outline) ?: return
+        val hasSelectedApp = viewModel.hasSelectedApp.value ?: false
+        val hasSelectedDevice = viewModel.hasSelectedDevice.value ?: false
+
+        if (hasSelectedApp && hasSelectedDevice) {
+            allowButton.setText(R.string.allow_and_continue)
+        } else if (hasSelectedDevice) {
+            allowButton.setText(R.string.migration_pending_permissions_dialog_button_continue)
+        } else {
+            allowButton.setText(R.string.request_permissions_allow)
         }
     }
 
@@ -193,10 +300,6 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                 viewModel.removeAllPermissionsFromGrantedList(expandablePreference.key)
             }
         }
-
-        viewModel.enabledDevicePackages.observe(viewLifecycleOwner) { enabledDevices ->
-            expandablePreference.isChecked = enabledDevices.contains(expandablePreference.key)
-        }
     }
 
     private fun addAppPreference(appData: MatchmakingAppData) {
@@ -207,15 +310,6 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
         if (appData.permissions.isNotEmpty()) {
             addPermissionSwitches(appData, expandablePreference)
             addPrivacyPolicyFooter(appData, expandablePreference)
-        }
-
-        viewModel.grantedPermissions.observe(viewLifecycleOwner) { grantedPermissionsMap ->
-            val granted = grantedPermissionsMap[appData.metadata.packageName]?.size ?: 0
-            val total = appData.permissions.size
-            expandablePreference.summary =
-                requireContext().getString(R.string.app_permissions_granted_summary, granted, total)
-
-            expandablePreference.isChecked = granted > 0
         }
 
         expandablePreference.setOnSwitchChangeListener { isChecked ->
@@ -375,23 +469,6 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     private fun setupButtons(view: View) {
         setupAllowAll()
         setupActionButtons(view)
-
-        viewModel.grantedPermissions.observe(viewLifecycleOwner) { grantedPermissionsMap ->
-            matchmakingAppsCategory.children.forEach { preference ->
-                if (preference is HealthExpandablePreference) {
-                    val packageName = preference.key
-                    val grantedPermissions = grantedPermissionsMap[packageName] ?: emptySet()
-                    preference.children.forEach { child ->
-                        if (child is HealthSwitchPreference) {
-                            child.isChecked =
-                                grantedPermissions.any {
-                                    getPermissionKey(packageName, it.toString()) == child.key
-                                }
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private fun setupAllowAll() {
@@ -456,13 +533,15 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
 
         allowButton.setOnClickListener {
             logger.logInteraction(PermissionsElement.ALLOW_PERMISSIONS_BUTTON)
+            allowButton.isEnabled = false
+            dontAllowButton.isEnabled = false
             viewModel.grantPermissions()
-            activity?.setResult(RESULT_OK)
-            activity?.finish()
         }
 
         dontAllowButton.setOnClickListener {
             logger.logInteraction(PermissionsElement.CANCEL_PERMISSIONS_BUTTON)
+            allowButton.isEnabled = false
+            dontAllowButton.isEnabled = false
             viewModel.recordMatchmakingDenial()
             val callingPackageName =
                 (viewModel.matchmakingState.value

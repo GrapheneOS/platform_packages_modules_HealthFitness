@@ -16,28 +16,12 @@
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:title="@string/device_management_screen_title">
+    android:title="@string/device_data_provider_screen_title">
 
     <PreferenceCategory
         android:key="device_header_category"/>
 
     <PreferenceCategory
-        android:key="device_write_category"
-        android:title="@string/device_settings_label">
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="device_data_category"
-        android:title="@string/device_data_label">
-
-        <com.android.healthconnect.controller.shared.preference.HealthPreference
-            android:key="device_data_button"
-            android:title="@string/device_data_button"
-            app:persistent="false" />
-
-    </PreferenceCategory>
-
-    <com.android.settingslib.widget.FooterPreference android:key="connected_app_footer" />
+        android:key="manage_device_category"/>
 
 </PreferenceScreen>

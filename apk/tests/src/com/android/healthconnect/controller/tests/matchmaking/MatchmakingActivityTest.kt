@@ -85,6 +85,13 @@ class MatchmakingActivityTest {
     private val allPermissionsGranted = MutableLiveData(false)
     private val grantedPermissions =
         MutableLiveData<Map<String, List<FitnessPermission>>>(emptyMap())
+    private val enabledDevicePackages = MutableLiveData<Set<String>>(emptySet())
+    private val hasSelectedDevice = MutableLiveData(false)
+    private val hasSelectedApp = MutableLiveData(false)
+    private val ddpOnboardingState =
+        MutableLiveData<MatchmakingViewModel.DdpOnboardingState>(
+            MatchmakingViewModel.DdpOnboardingState.Setup
+        )
     private val matchingAppsCount = MutableLiveData(0)
     private lateinit var context: Context
     private var bottomSheetIdlingResource: BottomSheetIdlingResource? = null
@@ -99,6 +106,10 @@ class MatchmakingActivityTest {
         whenever(viewModel.allPermissionsGranted).thenReturn(allPermissionsGranted)
         whenever(viewModel.grantedPermissions).thenReturn(grantedPermissions)
         whenever(viewModel.matchingAppsCount).thenReturn(matchingAppsCount)
+        whenever(viewModel.enabledDevicePackages).thenReturn(enabledDevicePackages)
+        whenever(viewModel.hasSelectedDevice).thenReturn(hasSelectedDevice)
+        whenever(viewModel.hasSelectedApp).thenReturn(hasSelectedApp)
+        whenever(viewModel.ddpOnboardingState).thenReturn(ddpOnboardingState)
         setUpMatchingApps()
     }
 
@@ -160,7 +171,7 @@ class MatchmakingActivityTest {
     fun matchmakingActivity_nullRecordTypes_loadsAppsWithNull() {
         val intent = Intent(context, MatchmakingActivity::class.java)
         launchActivityForResult<MatchmakingActivity>(intent).use {
-            verify(viewModel).loadMatchmakingData(any(), eq(null))
+            verify(viewModel).loadMatchmakingData(any(), eq(null), eq(null), eq(null))
         }
     }
 
@@ -172,7 +183,8 @@ class MatchmakingActivityTest {
                 putExtra(HealthConnectManager.EXTRA_RECORD_TYPES, arrayOf("invalid.record.type"))
             }
         launchActivityForResult<MatchmakingActivity>(intent).use {
-            verify(viewModel).loadMatchmakingData(any(), eq(arrayOf("invalid.record.type")))
+            verify(viewModel)
+                .loadMatchmakingData(any(), eq(arrayOf("invalid.record.type")), eq(null), eq(null))
         }
     }
 
@@ -191,6 +203,8 @@ class MatchmakingActivityTest {
                 .loadMatchmakingData(
                     any(),
                     eq(arrayOf(HeartRateRecord::class.java.name, StepsRecord::class.java.name)),
+                    eq(null),
+                    eq(null),
                 )
         }
     }
@@ -210,7 +224,22 @@ class MatchmakingActivityTest {
                 .loadMatchmakingData(
                     any(),
                     eq(arrayOf(HeartRateRecord::class.java.name, "invalid.record.type")),
+                    eq(null),
+                    eq(null),
                 )
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingActivity_bothIncludedAndExcludedSources_finishesWithCanceledResult() {
+        val intent =
+            Intent(context, MatchmakingActivity::class.java).apply {
+                putExtra(HealthConnectManager.EXTRA_INCLUDED_DATA_SOURCES, arrayOf("pkg1"))
+                putExtra(HealthConnectManager.EXTRA_EXCLUDED_DATA_SOURCES, arrayOf("pkg2"))
+            }
+        launchActivityForResult<MatchmakingActivity>(intent).use { scenario ->
+            assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_CANCELED)
         }
     }
 

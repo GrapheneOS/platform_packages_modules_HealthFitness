@@ -899,8 +899,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                                         startDateAccessEpochMilli,
                                         isInForeground,
                                         shouldRecordAccessLog,
-                                        enforceSelfRead,
-                                        /* packageNamesByAppIds= */ null);
+                                        enforceSelfRead);
                         List<RecordInternal<?>> records = readRecordsResponse.first;
                         long pageToken = readRecordsResponse.second.encode();
 

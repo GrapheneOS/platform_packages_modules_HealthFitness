@@ -22,14 +22,18 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.health.connect.ApplicationInfoResponse
+import android.health.connect.DeviceDataSourceInfo
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.AppInfo
+import android.health.connect.device.SyntheticPackageNameMatcher
 import android.util.Log
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.utils.asAppMetadata
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -60,7 +64,26 @@ constructor(
                             )
                         }
                         .applicationInfoList
-                appInfoList.associate { it.packageName to toAppMetadata(it) }
+
+                if (!deviceDataProvidersApi()) {
+                    return@withContext appInfoList.associate { it.packageName to toAppMetadata(it) }
+                }
+
+                val deviceDataSources =
+                    suspendCancellableCoroutine<List<DeviceDataSourceInfo>> { continuation ->
+                        healthConnectManager.getDeviceDataSourceInfos(
+                            Runnable::run,
+                            continuation.asOutcomeReceiver(),
+                        )
+                    }
+
+                deviceDataSources
+                    .associate { it.deviceDataOrigin.packageName to it.asAppMetadata(context) }
+                    .plus(
+                        appInfoList
+                            .filterNot { SyntheticPackageNameMatcher.matches(it.packageName) }
+                            .associate { it.packageName to toAppMetadata(it) }
+                    )
             } catch (e: Exception) {
                 Log.e(TAG, "GetContributorApplicationsInfoUseCase", e)
                 emptyMap()

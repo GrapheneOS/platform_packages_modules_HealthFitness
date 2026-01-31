@@ -21,7 +21,6 @@ import static java.util.Objects.requireNonNull;
 import android.annotation.Nullable;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.health.connect.HealthPermissions;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.os.Process;
 import android.os.UserHandle;
@@ -31,7 +30,6 @@ import android.util.Slog;
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.modules.utils.build.SdkLevel;
 import com.android.server.SystemService;
 import com.android.server.healthconnect.common.jobs.HealthConnectDailyJobs;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
@@ -391,17 +389,9 @@ public class HealthConnectManagerService extends SystemService {
             return true;
         }
         PackageManager pm = context.getPackageManager();
-        // Not available on embedded/tv/auto.
-        if (pm.hasSystemFeature(PackageManager.FEATURE_EMBEDDED)
-                || pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
-                || pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)) {
+        // Not available on auto.
+        if (pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)) {
             return false;
-        }
-        // Only available on Wear for permission management.
-        if (pm.hasSystemFeature(PackageManager.FEATURE_WATCH)) {
-            return SdkLevel.isAtLeastB()
-                    && context.checkSelfPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
-                            == PackageManager.PERMISSION_GRANTED;
         }
         // Supported everywhere else.
         return true;

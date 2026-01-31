@@ -346,8 +346,7 @@ public class DeviceDataProviderManager {
                         DEFAULT_LONG,
                         /* isForeground= */ true,
                         /* shouldRecordAccessLog= */ false,
-                        /* enforceSelfRead= */ !request.getPackageFilters().isEmpty(),
-                        /* packageNamesByAppIds= */ null);
+                        /* enforceSelfRead= */ !request.getPackageFilters().isEmpty());
 
         // As multiple DDPs can contribute to the same device, i.e., the same SPN, filter for
         // the records that were actually contributed by the calling DDP

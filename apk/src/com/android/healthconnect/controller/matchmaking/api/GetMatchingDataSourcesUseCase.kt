@@ -24,6 +24,7 @@ import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Record
 import android.os.OutcomeReceiver
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingDataSourcesUseCase.GetMatchingDataSourcesInput
+import com.android.healthconnect.controller.matchmaking.api.GetMatchingDataSourcesUseCase.MatchingDataSources
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
@@ -46,11 +47,7 @@ constructor(
     private val appInfoReader: AppInfoReader,
     private val getMatchingDeviceDataSourcesUseCase: GetMatchingDeviceDataSourcesUseCase,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-) :
-    BaseUseCase<
-        GetMatchingDataSourcesUseCase.GetMatchingDataSourcesInput,
-        GetMatchingDataSourcesUseCase.MatchingDataSources,
-    >(ioDispatcher) {
+) : BaseUseCase<GetMatchingDataSourcesInput, MatchingDataSources>(ioDispatcher) {
 
     override suspend fun execute(input: GetMatchingDataSourcesInput): MatchingDataSources {
         val requestBuilder =
