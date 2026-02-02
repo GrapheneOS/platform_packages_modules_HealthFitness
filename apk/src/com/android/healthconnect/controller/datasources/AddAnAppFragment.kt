@@ -15,7 +15,6 @@
  */
 package com.android.healthconnect.controller.datasources
 
-import android.health.connect.DeviceDataSourceInfo
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -25,11 +24,10 @@ import com.android.healthconnect.controller.datasources.DataSourcesViewModel.Pot
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PriorityListState
 import com.android.healthconnect.controller.navigation.CATEGORY_KEY
 import com.android.healthconnect.controller.permissions.connectedapps.HealthAppPreference
-import com.android.healthconnect.controller.shared.Constants
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
-import com.android.healthconnect.controller.utils.asAppMetadata
 import com.android.healthconnect.controller.utils.findCurrentDeviceId
 import com.android.healthconnect.controller.utils.logging.AddAnAppElement
 import com.android.healthconnect.controller.utils.logging.PageName
@@ -75,34 +73,23 @@ class AddAnAppFragment : Hilt_AddAnAppFragment() {
                     (dataSourcesInfoState.potentialAppSourcesState
                             as PotentialAppSourcesState.WithData)
                         .appSources
-                val deviceDataSourcesInfo =
+                val currentDeviceId =
                     if (deviceDataProvidersApi())
                         (dataSourcesInfoState.deviceDataSourcesState
                                 as DataSourcesViewModel.DeviceDataSourcesState.WithData)
                             .deviceDataSourcesInfo
-                    else emptySet()
+                            .findCurrentDeviceId()
+                    else null
                 currentPriorityList.let { currentPriority = it }
-                updateAppsList(potentialAppSources, deviceDataSourcesInfo)
+                updateAppsList(potentialAppSources, currentDeviceId)
             }
         }
     }
 
-    private fun updateAppsList(
-        appSources: List<AppMetadata>,
-        deviceDataSourcesInfo: Set<DeviceDataSourceInfo>,
-    ) {
+    private fun updateAppsList(appSources: List<AppMetadata>, currentDeviceId: String?) {
         preferenceScreen.removeAll()
         appSources
             .sortedBy { it.appName }
-            .map { appMetadata ->
-                if (!deviceDataProvidersApi()) return@map appMetadata
-
-                val deviceInfo =
-                    deviceDataSourcesInfo.find {
-                        it.deviceDataOrigin.packageName == appMetadata.packageName
-                    }
-                deviceInfo?.asAppMetadata(requireContext()) ?: appMetadata
-            }
             .forEach { appMetadata ->
                 preferenceScreen.addPreference(
                     HealthAppPreference(requireContext(), appMetadata).also { preference ->
@@ -121,17 +108,13 @@ class AddAnAppFragment : Hilt_AddAnAppFragment() {
                             findNavController().popBackStack()
                             true
                         }
-                        // TODO(b/477226135): Handle two sources for current device
-                        if (appMetadata.packageName == Constants.DEVICE_DATA_PROVIDER_PACKAGE) {
+                        if (appMetadata.packageName == DEVICE_DATA_PROVIDER_PACKAGE) {
                             preference.summary = getString(R.string.devices_current_device)
                         }
-                        if (deviceDataProvidersApi()) {
-                            val currentDevicePackageName =
-                                deviceDataSourcesInfo.findCurrentDeviceId()
-                                    ?: Constants.DEVICE_DATA_PROVIDER_PACKAGE
-                            if (appMetadata.packageName == currentDevicePackageName) {
-                                preference.summary = getString(R.string.devices_this_phone)
-                            }
+                        if (
+                            deviceDataProvidersApi() && appMetadata.packageName == currentDeviceId
+                        ) {
+                            preference.summary = getString(R.string.devices_this_phone)
                         }
                     }
                 )
