@@ -32,11 +32,15 @@ import android.platform.test.annotations.DisableFlags;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsCollector.LatencyMetricsData;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -44,9 +48,14 @@ import org.mockito.junit.MockitoRule;
 import java.time.Duration;
 import java.util.List;
 
+@RunWith(AndroidJUnit4.class)
 public class LatencyMetricsLoggerTest {
-    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    private static final String TEST_SPN_PACKAGE_CANONICAL =
+            "com.android.healthconnect.phone.d59341472a9253c16b986840a324ec594";
+    private static final String TEST_SPN_PACKAGE = "com.android.healthconnect.phone";
+
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
+    @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private HealthFitnessStatsLog mStatsLog;
     @Mock private LatencyMetricsCollector mLatencyMetricsCollector;
@@ -105,6 +114,43 @@ public class LatencyMetricsLoggerTest {
                 .write(
                         eq(HealthFitnessStatsLog.HEALTH_CONNECT_LATENCY_STATS),
                         eq("package.c"),
+                        eq(
+                                HealthFitnessStatsLog
+                                        .HEALTH_CONNECT_LATENCY_STATS__SESSION_DATA_TYPE__SESSION_DATA_TYPE_SLEEP),
+                        eq(30L));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_LATENCY_METRICS_FLAG,
+    })
+    public void logsLatencyMetrics_logsCanonicalSpn() {
+        when(mLatencyMetricsCollector.readLastWeekExerciseSessions())
+                .thenReturn(
+                        List.of(
+                                new LatencyMetricsData(
+                                        TEST_SPN_PACKAGE_CANONICAL, Duration.ofMillis(10))));
+        when(mLatencyMetricsCollector.readLastWeekSleepSessions())
+                .thenReturn(
+                        List.of(
+                                new LatencyMetricsData(
+                                        TEST_SPN_PACKAGE_CANONICAL, Duration.ofMillis(30))));
+
+        mLatencyMetricsLogger.log();
+
+        verify(mStatsLog, times(1))
+                .write(
+                        eq(HealthFitnessStatsLog.HEALTH_CONNECT_LATENCY_STATS),
+                        eq(TEST_SPN_PACKAGE),
+                        eq(
+                                HealthFitnessStatsLog
+                                        .HEALTH_CONNECT_LATENCY_STATS__SESSION_DATA_TYPE__SESSION_DATA_TYPE_EXERCISE),
+                        eq(10L));
+
+        verify(mStatsLog)
+                .write(
+                        eq(HealthFitnessStatsLog.HEALTH_CONNECT_LATENCY_STATS),
+                        eq(TEST_SPN_PACKAGE),
                         eq(
                                 HealthFitnessStatsLog
                                         .HEALTH_CONNECT_LATENCY_STATS__SESSION_DATA_TYPE__SESSION_DATA_TYPE_SLEEP),

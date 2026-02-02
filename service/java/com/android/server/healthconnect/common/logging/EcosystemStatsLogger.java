@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.common.logging;
 
 import android.health.HealthFitnessStatsLog;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 
@@ -64,8 +65,8 @@ class EcosystemStatsLogger {
             for (String readerPackageName : directionalAppPairing.getValue()) {
                 mStatsLog.write(
                         HealthFitnessStatsLog.HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS,
-                        writerPackageName,
-                        readerPackageName,
+                        SyntheticPackageNameMatcher.replaceAllCanonicalIn(writerPackageName),
+                        SyntheticPackageNameMatcher.replaceAllCanonicalIn(readerPackageName),
                         HealthFitnessStatsLog
                                 .HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__DATA_TYPE__DATA_TYPE_UNKNOWN,
                         HealthFitnessStatsLog
@@ -92,8 +93,8 @@ class EcosystemStatsLogger {
                 for (String readerPackageName : dataTypeToReaderPackageName.getValue()) {
                     mStatsLog.write(
                             HealthFitnessStatsLog.HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS,
-                            writerPackageName,
-                            readerPackageName,
+                            SyntheticPackageNameMatcher.replaceAllCanonicalIn(writerPackageName),
+                            SyntheticPackageNameMatcher.replaceAllCanonicalIn(readerPackageName),
                             dataType,
                             HealthFitnessStatsLog
                                     .HEALTH_CONNECT_RESTRICTED_ECOSYSTEM_STATS__METRIC_TYPE__METRIC_TYPE_DIRECTIONAL_PAIRING_PER_DATA_TYPE);

@@ -126,9 +126,11 @@ import static com.android.server.healthconnect.common.logging.HealthConnectServi
 import android.annotation.IntDef;
 import android.health.HealthFitnessStatsLog;
 import android.health.connect.datatypes.MedicalResource;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.ratelimiter.RateLimiter;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 
@@ -654,7 +656,9 @@ public final class HealthConnectServiceLogger {
                 mNumberOfRecords,
                 mRateLimit,
                 mCallerForegroundState,
-                mPackageName);
+                AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                        ? SyntheticPackageNameMatcher.replaceAllCanonicalIn(mPackageName)
+                        : mPackageName);
 
         boolean isPhrApi = PHR_APIS.contains(mHealthDataServiceApiMethod);
         if (isPhrApi || !mMedicalResourceTypes.isEmpty()) {
@@ -669,7 +673,7 @@ public final class HealthConnectServiceLogger {
                     mHealthDataServiceApiStatus,
                     mErrorCode,
                     mDuration,
-                    mPackageName,
+                    SyntheticPackageNameMatcher.replaceAllCanonicalIn(mPackageName),
                     getRecordTypeEnumToLog(mRecordTypes, 0),
                     getRecordTypeEnumToLog(mRecordTypes, 1),
                     getRecordTypeEnumToLog(mRecordTypes, 2),
@@ -695,7 +699,7 @@ public final class HealthConnectServiceLogger {
                 HEALTH_CONNECT_PHR_API_INVOKED,
                 mHealthDataServiceApiMethod,
                 mHealthDataServiceApiStatus,
-                mPackageName,
+                SyntheticPackageNameMatcher.replaceAllCanonicalIn(mPackageName),
                 medicalResourceTypeLoggingEnum);
     }
 

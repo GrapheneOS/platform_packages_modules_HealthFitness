@@ -88,6 +88,9 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class DataGranularityStatsLoggerTest {
     private static final String TEST_PACKAGE = "test.package";
+    private static final String TEST_SPN_PACKAGE_CANONICAL =
+            "com.android.healthconnect.phone.d59341472a9253c16b986840a324ec594";
+    private static final String TEST_SPN_PACKAGE = "com.android.healthconnect.phone";
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -111,7 +114,9 @@ public class DataGranularityStatsLoggerTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_LATENCY_METRICS_FLAG)
+    @EnableFlags({
+        Flags.FLAG_LATENCY_METRICS_FLAG,
+    })
     public void logGranularityStats_flagEnabled_logged() {
         when(mDataGranularityStatsCollector.getAllGranularityStatsForLastWeek())
                 .thenReturn(
@@ -232,6 +237,13 @@ public class DataGranularityStatsLoggerTest {
                         HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_OXYGEN_SATURATION,
                         /* granularity= */ 16000L,
                         HEALTH_CONNECT_DATA_GRANULARITY_STATS__DATA_STATE__DATA_STATE_ACTIVE);
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS,
+                        TEST_SPN_PACKAGE,
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_OXYGEN_SATURATION,
+                        /* granularity= */ 16000L,
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS__DATA_STATE__DATA_STATE_ACTIVE);
 
         // Passive stats
         verify(mHealthFitnessStatsLog)
@@ -245,6 +257,13 @@ public class DataGranularityStatsLoggerTest {
                 .write(
                         HEALTH_CONNECT_DATA_GRANULARITY_STATS,
                         TEST_PACKAGE,
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_DISTANCE,
+                        /* granularity= */ 200L,
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS__DATA_STATE__DATA_STATE_PASSIVE);
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        HEALTH_CONNECT_DATA_GRANULARITY_STATS,
+                        TEST_SPN_PACKAGE,
                         HEALTH_CONNECT_DATA_GRANULARITY_STATS__GRANULARITY_DATA_TYPE__GRANULARITY_DATA_TYPE_DISTANCE,
                         /* granularity= */ 200L,
                         HEALTH_CONNECT_DATA_GRANULARITY_STATS__DATA_STATE__DATA_STATE_PASSIVE);
@@ -328,10 +347,14 @@ public class DataGranularityStatsLoggerTest {
         stats.add(
                 new DataGranularityStatsCollector.GranularityStats(
                         TEST_PACKAGE, RECORD_TYPE_OXYGEN_SATURATION, /* granularity= */ 16000));
+        stats.add(
+                new DataGranularityStatsCollector.GranularityStats(
+                        TEST_SPN_PACKAGE_CANONICAL,
+                        RECORD_TYPE_OXYGEN_SATURATION,
+                        /* granularity= */ 16000));
         return stats;
     }
 
-    @NonNull
     private static List<DataGranularityStatsCollector.GranularityStats>
             getPassiveGranularityStats() {
         List<DataGranularityStatsCollector.GranularityStats> stats = new ArrayList<>();
@@ -341,6 +364,9 @@ public class DataGranularityStatsLoggerTest {
         stats.add(
                 new DataGranularityStatsCollector.GranularityStats(
                         TEST_PACKAGE, RECORD_TYPE_DISTANCE, /* granularity= */ 200));
+        stats.add(
+                new DataGranularityStatsCollector.GranularityStats(
+                        TEST_SPN_PACKAGE_CANONICAL, RECORD_TYPE_DISTANCE, /* granularity= */ 200));
         return stats;
     }
 }
