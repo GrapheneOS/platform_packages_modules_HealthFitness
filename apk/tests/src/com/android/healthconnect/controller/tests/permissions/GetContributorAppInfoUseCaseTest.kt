@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.tests.permissions
 
 import android.content.Context
 import android.content.ContextWrapper
+import android.graphics.Bitmap
 import android.health.connect.ApplicationInfoResponse
 import android.health.connect.DeviceDataSourceInfo
 import android.health.connect.HealthConnectManager
@@ -43,6 +44,7 @@ import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import java.io.ByteArrayOutputStream
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -94,8 +96,14 @@ class GetContributorAppInfoUseCaseTest {
             AppCompatResources.getDrawable(context, R.drawable.health_connect_logo)!!.toBitmap()
         val appInfo =
             listOf(
-                AppInfo.Builder(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, bitmap).build(),
-                AppInfo.Builder(TEST_APP_PACKAGE_NAME_2, TEST_APP_NAME_2, bitmap).build(),
+                AppInfo.Builder(TEST_APP_PACKAGE_NAME)
+                    .setName(TEST_APP_NAME)
+                    .setIcon(bitmap.toByteArray())
+                    .build(),
+                AppInfo.Builder(TEST_APP_PACKAGE_NAME_2)
+                    .setName(TEST_APP_NAME_2)
+                    .setIcon(bitmap.toByteArray())
+                    .build(),
             )
 
         Mockito.doAnswer(prepareAppInfoAnswer(appInfo))
@@ -120,7 +128,9 @@ class GetContributorAppInfoUseCaseTest {
             AppCompatResources.getDrawable(context, R.drawable.ic_device_phone)!!.toBitmap()
         val appInfo =
             listOf(
-                AppInfo.Builder(DEVICE_DATA_PROVIDER_PACKAGE, "Pixel 9a", managerDeviceBitmap)
+                AppInfo.Builder(DEVICE_DATA_PROVIDER_PACKAGE)
+                    .setName("Pixel 9a")
+                    .setIcon(managerDeviceBitmap.toByteArray())
                     .build()
             )
 
@@ -140,7 +150,7 @@ class GetContributorAppInfoUseCaseTest {
     fun invoke_ddpFlagsOn_syntheticPackageName_returnsDeviceInfo() = runTest {
         context = spy(object : ContextWrapper(context) {})
 
-        val appInfo = listOf(AppInfo.Builder(TEST_PHONE_SPN, null, null).build())
+        val appInfo = listOf(AppInfo.Builder(TEST_PHONE_SPN).build())
         val deviceInfo =
             getDeviceDataSourcesInfo().find { it.deviceDataOrigin.packageName == TEST_PHONE_SPN }
 
@@ -164,7 +174,7 @@ class GetContributorAppInfoUseCaseTest {
     @Test
     @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun invoke_ddpFlagsOff_syntheticPackageName_returnsOnlyAppInfo() = runTest {
-        val appInfo = listOf(AppInfo.Builder(TEST_PHONE_SPN, null, null).build())
+        val appInfo = listOf(AppInfo.Builder(TEST_PHONE_SPN).build())
         val deviceInfo =
             getDeviceDataSourcesInfo().find { it.deviceDataOrigin.packageName == TEST_PHONE_SPN }
 
@@ -193,8 +203,8 @@ class GetContributorAppInfoUseCaseTest {
 
         val appInfo =
             listOf(
-                AppInfo.Builder(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null).build(),
-                AppInfo.Builder(TEST_PHONE_SPN, null, null).build(),
+                AppInfo.Builder(TEST_APP_PACKAGE_NAME).setName(TEST_APP_NAME).build(),
+                AppInfo.Builder(TEST_PHONE_SPN).build(),
             )
         val deviceInfo =
             getDeviceDataSourcesInfo().find { it.deviceDataOrigin.packageName == TEST_PHONE_SPN }
@@ -233,5 +243,11 @@ class GetContributorAppInfoUseCaseTest {
             null
         }
         return answer
+    }
+
+    private fun Bitmap.toByteArray(): ByteArray {
+        val stream = ByteArrayOutputStream()
+        this.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        return stream.toByteArray()
     }
 }
