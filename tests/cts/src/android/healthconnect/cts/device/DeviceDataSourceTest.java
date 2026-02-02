@@ -24,6 +24,7 @@ import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecu
 import static android.healthconnect.testing.cts.TestUtils.getCurrentDeviceId;
 import static android.healthconnect.testing.cts.TestUtils.hasPedometer;
 
+import static com.android.compatibility.common.util.SystemUtil.eventually;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_SYMPTOMS;
@@ -287,6 +288,69 @@ public class DeviceDataSourceTest {
                     assertThat(hasSteps).isTrue();
                     assertThat(hasDistance).isTrue();
                 });
+    }
+
+    @Test
+    public void getDeviceDataSources_deviceNoLongerAdvertisedButHasData_returnsDevice()
+            throws Exception {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("TestDisplayName")
+                        .build();
+        String deviceId = "TestDeviceId";
+        DeviceDataTypeAdvertisement stepsAd =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setAvailable(true)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements = Set.of(stepsAd);
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);
+
+        // 1. Advertise DEVICE_1
+        HealthConnectReceiver<Void> advertiseReceiver = new HealthConnectReceiver<>();
+        TestUtils.advertiseDeviceDataSources(
+                Set.of(advertisement), outcomeExecutor(), advertiseReceiver);
+        advertiseReceiver.verifyNoExceptionOrThrow();
+
+        // 2. Insert data for DEVICE_1
+        StepsRecord record =
+                new StepsRecord.Builder(
+                                new android.health.connect.datatypes.Metadata.Builder().build(),
+                                java.time.Instant.now().minusSeconds(100),
+                                java.time.Instant.now(),
+                                100)
+                        .build();
+        TestUtils.insertDeviceRecords(deviceId, List.of(record));
+
+        // 3. Stop advertising DEVICE_1
+        advertiseReceiver = new HealthConnectReceiver<>();
+        TestUtils.advertiseDeviceDataSources(Set.of(), outcomeExecutor(), advertiseReceiver);
+        advertiseReceiver.verifyNoExceptionOrThrow();
+
+        // 4. Verify it's STILL in getDeviceDataSources
+        eventually(
+                () ->
+                        TestUtils.verifyGetDeviceDataSourcesWithPermission(
+                                READ_STEPS,
+                                dataSources -> {
+                                    assertThat(dataSources.size()).isAtLeast(2);
+                                    boolean found = false;
+                                    for (DeviceDataSource ds : dataSources) {
+                                        if (ds.getDevice()
+                                                        .getManufacturer()
+                                                        .equals("TestManufacturer")
+                                                && ds.getDevice().getModel().equals("TestModel")) {
+                                            found = true;
+                                            // When not advertised, data types should be empty
+                                            assertThat(ds.getDeviceDataTypeSources()).isEmpty();
+                                            break;
+                                        }
+                                    }
+                                    assertThat(found).isTrue();
+                                }));
     }
 
     // TODO(b/464300453) ensure native step tracker is included even when no advertisements made.
