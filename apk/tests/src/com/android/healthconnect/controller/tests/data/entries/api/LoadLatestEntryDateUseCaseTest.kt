@@ -46,6 +46,7 @@ import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.toInstant
 import com.android.healthconnect.controller.utils.toInstantAtStartOfDay
 import com.android.healthconnect.controller.utils.toLocalDate
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -66,6 +67,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -96,6 +98,9 @@ class LoadLatestEntryDateUseCaseTest {
                 dataSourceReader,
             )
         loadLatestEntryDateUseCase = LoadLatestEntryDateUseCase(Dispatchers.Main, loadEntriesHelper)
+        if (deviceDataProvidersApi()) {
+            whenever(healthConnectManager.currentDeviceId).thenReturn("deviceId")
+        }
     }
 
     @Test

@@ -45,10 +45,12 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.SLEEP
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.STEPS
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.TOTAL_CALORIES_BURNED
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -156,6 +158,16 @@ constructor(
         if (packageName != null) {
             request.addDataOriginsFilter(DataOrigin.Builder().setPackageName(packageName).build())
         }
+        if (deviceDataProvidersApi() && packageName == healthConnectManager.currentDeviceId) {
+            request.addDataOriginsFilter(
+                DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build()
+            )
+        }
+        if (deviceDataProvidersApi() && packageName == DEVICE_DATA_PROVIDER_PACKAGE) {
+            request.addDataOriginsFilter(
+                DataOrigin.Builder().setPackageName(healthConnectManager.currentDeviceId).build()
+            )
+        }
 
         val response =
             suspendCancellableCoroutine<AggregateRecordsResponse<T>> { continuation ->
@@ -233,6 +245,7 @@ constructor(
         }
         return apps
             .map { origin -> appInfoReader.getAppMetadata(origin.packageName) }
+            .distinct()
             .joinToString(", ") { it.appName }
     }
 }
