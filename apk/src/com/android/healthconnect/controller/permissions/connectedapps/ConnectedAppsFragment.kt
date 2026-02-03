@@ -67,6 +67,7 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.ToolbarElement
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.showLoadingDialog
@@ -136,7 +137,11 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
             R.id.menu_search -> {
                 searchMenuItem = menuItem
                 logger.logInteraction(AppPermissionsElement.SEARCH_BUTTON)
-                findNavController().navigate(R.id.action_connectedApps_to_searchApps)
+                findNavController()
+                    .navigateSafe(
+                        R.id.connectedAppsFragment,
+                        R.id.action_connectedApps_to_searchApps,
+                    )
                 true
             }
             R.id.menu_show_hide_system -> {
@@ -364,7 +369,8 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
             return
         }
         findNavController()
-            .navigate(
+            .navigateSafe(
+                R.id.connectedAppsFragment,
                 navigationId,
                 Bundle().apply {
                     putString(EXTRA_PACKAGE_NAME, app.appMetadata.packageName)
@@ -414,7 +420,11 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
             it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.helpAndFeedbackIcon)
             it.logName = AppPermissionsElement.HELP_AND_FEEDBACK_BUTTON
             it.setOnPreferenceClickListener {
-                findNavController().navigate(R.id.action_connectedApps_to_helpAndFeedback)
+                findNavController()
+                    .navigateSafe(
+                        R.id.connectedAppsFragment,
+                        R.id.action_connectedApps_to_helpAndFeedback,
+                    )
                 true
             }
         }
@@ -427,7 +437,11 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
             it.summary = resources.getString(R.string.check_for_updates_description)
             it.logName = AppPermissionsElement.CHECK_FOR_UPDATES_BUTTON
             it.setOnPreferenceClickListener {
-                findNavController().navigate(R.id.action_connected_apps_to_updated_apps)
+                findNavController()
+                    .navigateSafe(
+                        R.id.connectedAppsFragment,
+                        R.id.action_connected_apps_to_updated_apps,
+                    )
                 true
             }
         }
@@ -441,7 +455,11 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
             it.summary = resources.getString(R.string.see_all_compatible_apps_description)
             it.logName = AppPermissionsElement.SEE_ALL_COMPATIBLE_APPS_BUTTON
             it.setOnPreferenceClickListener {
-                findNavController().navigate(R.id.action_connected_apps_to_play_store)
+                findNavController()
+                    .navigateSafe(
+                        R.id.connectedAppsFragment,
+                        R.id.action_connected_apps_to_play_store,
+                    )
                 true
             }
         }
@@ -475,7 +493,11 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                         resources.getString(R.string.app_update_needed_banner_button),
                         MigrationElement.MIGRATION_APP_UPDATE_BUTTON,
                     ) {
-                        findNavController().navigate(R.id.action_connected_apps_to_updated_apps)
+                        findNavController()
+                            .navigateSafe(
+                                R.id.connectedAppsFragment,
+                                R.id.action_connected_apps_to_updated_apps,
+                            )
                     }
                 }
 

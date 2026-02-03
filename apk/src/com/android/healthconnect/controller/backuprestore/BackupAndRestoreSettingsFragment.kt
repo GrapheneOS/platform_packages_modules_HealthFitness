@@ -63,6 +63,7 @@ import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.ToastManager
 import com.android.healthconnect.controller.utils.logging.BackupAndRestoreElement
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.toInstant
 import com.android.healthconnect.controller.utils.withinOneDayAfter
@@ -205,9 +206,10 @@ class BackupAndRestoreSettingsFragment : Hilt_BackupAndRestoreSettingsFragment()
                     } else {
                         scheduledExportPreference.setOnPreferenceClickListener {
                             findNavController()
-                                .navigate(
+                                .navigateSafe(
+                                    R.id.backupAndRestoreSettingsFragment,
                                     R.id
-                                        .action_backupAndRestoreSettingsFragment_to_scheduledExportFragment
+                                        .action_backupAndRestoreSettingsFragment_to_scheduledExportFragment,
                                 )
                             true
                         }

@@ -38,6 +38,7 @@ import com.android.healthconnect.controller.data.fhir.raw.RawFhirFragment
 import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewAdapter
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -197,7 +198,8 @@ class PrettyFhirFragment : Hilt_PrettyFhirFragment() {
 
     private fun onClickViewSourceDataListener() {
         findNavController()
-            .navigate(
+            .navigateSafe(
+                R.id.prettyFhirFragment,
                 R.id.action_prettyFhirFragment_to_rawFhirFragment,
                 Bundle().apply {
                     putParcelable(RawFhirFragment.MEDICAL_RESOURCE_ID_KEY, medicalResourceId)

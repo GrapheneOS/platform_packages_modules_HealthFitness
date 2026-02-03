@@ -71,6 +71,7 @@ import com.android.healthconnect.controller.utils.logging.HomePageElement
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.RecentAccessElement
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
 import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
@@ -156,12 +157,17 @@ class HomeFragment : Hilt_HomeFragment() {
         dataAndAccessPreference.logName = HomePageElement.DATA_AND_ACCESS_BUTTON
         dataAndAccessPreference.summary = getString(R.string.browse_data_subtitle)
         dataAndAccessPreference.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_healthDataCategoriesFragment)
+            findNavController()
+                .navigateSafe(
+                    R.id.homeFragment,
+                    R.id.action_homeFragment_to_healthDataCategoriesFragment,
+                )
             true
         }
         appPermissionsPreference.logName = HomePageElement.APP_PERMISSIONS_BUTTON
         appPermissionsPreference.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_connectedAppsFragment)
+            findNavController()
+                .navigateSafe(R.id.homeFragment, R.id.action_homeFragment_to_connectedAppsFragment)
             true
         }
 
@@ -170,14 +176,15 @@ class HomeFragment : Hilt_HomeFragment() {
             val action =
                 if (deviceDataProvidersApi()) R.id.action_homeFragment_to_newDevicesFragment
                 else R.id.action_homeFragment_to_connectedDevicesFragment
-            findNavController().navigate(action)
+            findNavController().navigateSafe(R.id.homeFragment, action)
             true
         }
         devicesPreference.summary = getString(R.string.devices_summary)
 
         manageDataPreference.logName = HomePageElement.MANAGE_DATA_BUTTON
         manageDataPreference.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_manageDataFragment)
+            findNavController()
+                .navigateSafe(R.id.homeFragment, R.id.action_homeFragment_to_manageDataFragment)
             true
         }
         manageDataPreference.summary = getString(R.string.manage_data_summary)
@@ -307,7 +314,11 @@ class HomeFragment : Hilt_HomeFragment() {
                 logName = HomePageElement.NATIVE_STEPS_BANNER_REVIEW_BUTTON,
             ) {
                 // TODO(b/435354542): Navigate directly to device management
-                findNavController().navigate(R.id.action_homeFragment_to_connectedDevicesFragment)
+                findNavController()
+                    .navigateSafe(
+                        R.id.homeFragment,
+                        R.id.action_homeFragment_to_connectedDevicesFragment,
+                    )
                 dismissBanner(Constants.NATIVE_STEPS_BANNER_SEEN, NATIVE_STEPS_BANNER_KEY)
                 nativeStepsNotificationViewModel.loadWasSeen()
             }
@@ -427,7 +438,8 @@ class HomeFragment : Hilt_HomeFragment() {
                 it.logName = HomePageElement.BROWSE_HEALTH_RECORDS_BUTTON
                 it.setOnPreferenceClickListener {
                     findNavController()
-                        .navigate(
+                        .navigateSafe(
+                            R.id.homeFragment,
                             R.id.action_homeFragment_to_medicalDataFragment,
                             Bundle().apply { putBoolean(IS_BROWSE_MEDICAL_DATA_SCREEN, true) },
                         )
@@ -538,7 +550,11 @@ class HomeFragment : Hilt_HomeFragment() {
                 text = getString(R.string.export_file_access_error_banner_button),
                 logName = HomePageElement.EXPORT_ERROR_BANNER_BUTTON,
             ) {
-                findNavController().navigate(R.id.action_homeFragment_to_exportSetupActivity)
+                findNavController()
+                    .navigateSafe(
+                        R.id.homeFragment,
+                        R.id.action_homeFragment_to_exportSetupActivity,
+                    )
             }
 
             banner.title = getString(R.string.export_file_access_error_banner_title)
@@ -560,7 +576,11 @@ class HomeFragment : Hilt_HomeFragment() {
                     text = getString(R.string.resume_migration_banner_button),
                     logName = MigrationElement.MIGRATION_RESUME_BANNER_BUTTON,
                 ) {
-                    findNavController().navigate(R.id.action_homeFragment_to_migrationActivity)
+                    findNavController()
+                        .navigateSafe(
+                            R.id.homeFragment,
+                            R.id.action_homeFragment_to_migrationActivity,
+                        )
                 }
 
                 banner.icon =
@@ -722,7 +742,10 @@ class HomeFragment : Hilt_HomeFragment() {
                     it.logName = HomePageElement.SEE_ALL_RECENT_ACCESS_BUTTON
                     it.setOnClickListener {
                         findNavController()
-                            .navigate(R.id.action_homeFragment_to_recentAccessFragment)
+                            .navigateSafe(
+                                R.id.homeFragment,
+                                R.id.action_homeFragment_to_recentAccessFragment,
+                            )
                     }
                 }
             } else {
@@ -732,7 +755,10 @@ class HomeFragment : Hilt_HomeFragment() {
                     it.logName = HomePageElement.SEE_ALL_RECENT_ACCESS_BUTTON
                     it.setOnPreferenceClickListener {
                         findNavController()
-                            .navigate(R.id.action_homeFragment_to_recentAccessFragment)
+                            .navigateSafe(
+                                R.id.homeFragment,
+                                R.id.action_homeFragment_to_recentAccessFragment,
+                            )
                         true
                     }
                 }
@@ -796,7 +822,8 @@ class HomeFragment : Hilt_HomeFragment() {
             return
         }
         findNavController()
-            .navigate(
+            .navigateSafe(
+                R.id.homeFragment,
                 navigationId,
                 Bundle().apply {
                     putString(Intent.EXTRA_PACKAGE_NAME, recentApp.metadata.packageName)

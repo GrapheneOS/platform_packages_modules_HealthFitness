@@ -17,9 +17,12 @@ package com.android.healthconnect.controller.utils
 
 import android.app.Activity
 import android.health.connect.datatypes.Record
+import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.annotation.IdRes
 import androidx.annotation.MenuRes
 import androidx.annotation.StringRes
 import androidx.core.view.MenuHost
@@ -29,6 +32,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
+import androidx.navigation.NavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.android.healthconnect.controller.R
@@ -235,5 +239,21 @@ inline fun <reified T : DialogFragment> FragmentManager.showDialogIfNotExists(
     if (this.findFragmentByTag(tag) == null) {
         val dialog = dialogProvider()
         dialog.show(this, tag)
+    }
+}
+
+fun NavController.navigateSafe(
+    @IdRes fromDestinationId: Int,
+    @IdRes actionId: Int,
+    args: Bundle? = null,
+) {
+    if (currentDestination?.id == fromDestinationId) {
+        try {
+            navigate(actionId, args)
+        } catch (e: IllegalArgumentException) {
+            Log.e("HCNavigation", "Navigation failed despite source check", e)
+        }
+    } else {
+        Log.e("HCNavigation", "Unexpected source destination, navigation cancelled.")
     }
 }

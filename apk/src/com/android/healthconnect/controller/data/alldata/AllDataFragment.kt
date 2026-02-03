@@ -56,6 +56,7 @@ import com.android.healthconnect.controller.utils.logging.AllDataElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.ToolbarElement
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.setupSharedMenu
@@ -110,7 +111,11 @@ open class AllDataFragment : Hilt_AllDataFragment() {
         when (menuItem.itemId) {
             R.id.menu_data_sources -> {
                 logger.logInteraction(ToolbarElement.TOOLBAR_DATA_SOURCES_BUTTON)
-                findNavController().navigate(R.id.action_allDataFragment_to_dataSourcesFragment)
+                findNavController()
+                    .navigateSafe(
+                        R.id.allDataFragment,
+                        R.id.action_allDataFragment_to_dataSourcesFragment,
+                    )
                 true
             }
 
@@ -123,7 +128,11 @@ open class AllDataFragment : Hilt_AllDataFragment() {
         when (menuItem.itemId) {
             R.id.menu_data_sources -> {
                 logger.logInteraction(ToolbarElement.TOOLBAR_DATA_SOURCES_BUTTON)
-                findNavController().navigate(R.id.action_allDataFragment_to_dataSourcesFragment)
+                findNavController()
+                    .navigateSafe(
+                        R.id.allDataFragment,
+                        R.id.action_allDataFragment_to_dataSourcesFragment,
+                    )
                 true
             }
 
@@ -368,7 +377,8 @@ open class AllDataFragment : Hilt_AllDataFragment() {
         val pref =
             DeletionPermissionTypesPreference(requireContext(), viewModel) { _ ->
                 findNavController()
-                    .navigate(
+                    .navigateSafe(
+                        R.id.allDataFragment,
                         R.id.action_allData_to_entriesAndAccess,
                         Bundle().apply {
                             putString(
@@ -528,7 +538,8 @@ open class AllDataFragment : Hilt_AllDataFragment() {
         val pref =
             DeletionPermissionTypesPreference(requireContext(), viewModel) {
                 findNavController()
-                    .navigate(
+                    .navigateSafe(
+                        R.id.allDataFragment,
                         navigationDestination(permissionType),
                         Bundle().apply { putString(PERMISSION_TYPE_NAME_KEY, permissionType.name) },
                     )

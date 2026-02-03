@@ -62,6 +62,7 @@ import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.showLoadingDialog
@@ -227,7 +228,8 @@ class SettingsManagePermissionFragment : Hilt_SettingsManagePermissionFragment()
                     R.id.action_settingsManagePermission_to_settingsCombinedPermissions
             }
         findNavController()
-            .navigate(
+            .navigateSafe(
+                R.id.settingsManagePermissionFragment,
                 navigationId,
                 Bundle().apply {
                     putString(EXTRA_PACKAGE_NAME, app.appMetadata.packageName)

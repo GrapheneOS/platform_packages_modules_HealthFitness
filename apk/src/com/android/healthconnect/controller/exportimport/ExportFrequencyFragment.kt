@@ -30,6 +30,7 @@ import com.android.healthconnect.controller.shared.preference.RadioButtonPrefere
 import com.android.healthconnect.controller.utils.logging.ExportFrequencyElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.settingslib.widget.SelectorWithWidgetPreference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -94,7 +95,10 @@ class ExportFrequencyFragment : Hilt_ExportFrequencyFragment() {
             }
             logger.logInteraction(ExportFrequencyElement.EXPORT_FREQUENCY_NEXT_BUTTON)
             findNavController()
-                .navigate(R.id.action_exportFrequencyFragment_to_exportDestinationFragment)
+                .navigateSafe(
+                    R.id.exportFrequencyFragment,
+                    R.id.action_exportFrequencyFragment_to_exportDestinationFragment,
+                )
         }
     }
 

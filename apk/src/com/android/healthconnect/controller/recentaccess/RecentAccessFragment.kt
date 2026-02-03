@@ -40,6 +40,7 @@ import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.RecentAccessElement
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -207,10 +208,11 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
 
             fab.setOnClickListener {
                 logger.logInteraction(RecentAccessElement.MANAGE_PERMISSIONS_FAB)
-                if (findNavController().currentDestination?.id == R.id.recentAccessFragment) {
-                    findNavController()
-                        .navigate(R.id.action_recentAccessFragment_to_connectedAppsFragment)
-                }
+                findNavController()
+                    .navigateSafe(
+                        R.id.recentAccessFragment,
+                        R.id.action_recentAccessFragment_to_connectedAppsFragment,
+                    )
             }
 
             recentAppsList.forEachIndexed { index, recentApp ->
@@ -283,7 +285,8 @@ class RecentAccessFragment : Hilt_RecentAccessFragment() {
             return
         }
         findNavController()
-            .navigate(
+            .navigateSafe(
+                R.id.recentAccessFragment,
                 navigationId,
                 Bundle().apply {
                     putString(Intent.EXTRA_PACKAGE_NAME, recentApp.metadata.packageName)

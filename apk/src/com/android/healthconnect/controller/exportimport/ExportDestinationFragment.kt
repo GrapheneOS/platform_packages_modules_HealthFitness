@@ -44,6 +44,7 @@ import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.logging.ExportDestinationElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthfitness.flags.Flags.exportImportNiceToHave
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -127,7 +128,10 @@ class ExportDestinationFragment : Hilt_ExportDestinationFragment() {
 
                     documentHelper.setupFooter(providers.providers) {
                         findNavController()
-                            .navigate(R.id.action_exportDestinationFragment_to_playStore)
+                            .navigateSafe(
+                                R.id.exportDestinationFragment,
+                                R.id.action_exportDestinationFragment_to_playStore,
+                            )
                     }
                 }
             }

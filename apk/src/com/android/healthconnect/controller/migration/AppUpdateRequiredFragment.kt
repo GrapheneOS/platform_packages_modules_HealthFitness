@@ -31,6 +31,7 @@ import com.android.healthconnect.controller.utils.AppStoreUtils
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -94,7 +95,10 @@ class AppUpdateRequiredFragment : Hilt_AppUpdateRequiredFragment() {
                     apply()
                 }
                 findNavController()
-                    .navigate(R.id.action_migrationAppUpdateNeededFragment_to_homeScreen)
+                    .navigateSafe(
+                        R.id.migrationAppUpdateNeededFragment,
+                        R.id.action_migrationAppUpdateNeededFragment_to_homeScreen,
+                    )
             }
             requireActivity().finish()
         }

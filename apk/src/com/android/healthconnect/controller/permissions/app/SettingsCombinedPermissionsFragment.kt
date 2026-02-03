@@ -45,6 +45,7 @@ import com.android.healthconnect.controller.shared.preference.addIntroOrAppHeade
 import com.android.healthconnect.controller.utils.dismissLoadingDialog
 import com.android.healthconnect.controller.utils.logging.AppAccessElement
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.showLoadingDialog
 import com.android.settingslib.widget.FooterPreference
@@ -161,7 +162,8 @@ class SettingsCombinedPermissionsFragment : Hilt_SettingsCombinedPermissionsFrag
                 it.summary = getString(R.string.fitness_permissions_summary)
                 it.setOnPreferenceClickListener {
                     findNavController()
-                        .navigate(
+                        .navigateSafe(
+                            R.id.settingsCombinedPermissionsFragment,
                             R.id.action_settingsCombinedPermissions_to_FitnessAppFragment,
                             Bundle().apply {
                                 putString(EXTRA_PACKAGE_NAME, packageName)
@@ -180,7 +182,8 @@ class SettingsCombinedPermissionsFragment : Hilt_SettingsCombinedPermissionsFrag
                 it.summary = getString(R.string.medical_permissions_summary)
                 it.setOnPreferenceClickListener {
                     findNavController()
-                        .navigate(
+                        .navigateSafe(
+                            R.id.settingsCombinedPermissionsFragment,
                             R.id.action_settingsCombinedPermissions_to_MedicalAppFragment,
                             Bundle().apply {
                                 putString(EXTRA_PACKAGE_NAME, packageName)
@@ -206,7 +209,8 @@ class SettingsCombinedPermissionsFragment : Hilt_SettingsCombinedPermissionsFrag
                             val extras =
                                 Bundle().apply { putString(EXTRA_PACKAGE_NAME, packageName) }
                             findNavController()
-                                .navigate(
+                                .navigateSafe(
+                                    R.id.settingsCombinedPermissionsFragment,
                                     R.id
                                         .action_settingsCombinedPermissions_to_additionalAccessFragment,
                                     extras,

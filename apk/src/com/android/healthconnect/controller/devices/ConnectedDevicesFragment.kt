@@ -27,6 +27,7 @@ import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -79,9 +80,10 @@ class ConnectedDevicesFragment : Hilt_ConnectedDevicesFragment() {
                                 setOnPreferenceClickListener {
                                     viewModel.setSelectedDevice(device)
                                     findNavController()
-                                        .navigate(
+                                        .navigateSafe(
+                                            R.id.connectedDevicesFragment,
                                             R.id
-                                                .action_connectedDevicesFragment_to_deviceManagementFragment
+                                                .action_connectedDevicesFragment_to_deviceManagementFragment,
                                         )
                                     true
                                 }

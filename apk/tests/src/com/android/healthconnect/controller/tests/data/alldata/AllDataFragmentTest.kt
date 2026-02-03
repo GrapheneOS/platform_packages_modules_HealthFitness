@@ -370,7 +370,7 @@ class AllDataFragmentTest {
         mockData(listOf(VACCINES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
         launchFragment<AllDataFragment> {
-                navHostController.setGraph(R.navigation.medical_data_nav_graph)
+                navHostController.setGraph(R.navigation.data_nav_graph_new_ia)
                 Navigation.setViewNavController(this.requireView(), navHostController)
             }
             .use {

@@ -12,6 +12,7 @@ import com.android.healthconnect.controller.migration.api.MigrationRestoreState.
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
 import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.utils.navigateSafe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint(HealthPreferenceFragment::class)
@@ -69,32 +70,49 @@ class MigrationNavigationFragment : Hilt_MigrationNavigationFragment() {
 
     private fun showDataRestoreInProgressFragment() {
         findNavController()
-            .navigate(R.id.action_migrationNavigationFragment_to_dataRestoreInProgressFragment)
+            .navigateSafe(
+                R.id.migrationNavigationFragment,
+                R.id.action_migrationNavigationFragment_to_dataRestoreInProgressFragment,
+            )
     }
 
     private fun showMigrationInProgressFragment() {
         findNavController()
-            .navigate(R.id.action_migrationNavigationFragment_to_migrationInProgressFragment)
+            .navigateSafe(
+                R.id.migrationNavigationFragment,
+                R.id.action_migrationNavigationFragment_to_migrationInProgressFragment,
+            )
     }
 
     private fun showAppUpdateRequiredFragment() {
         findNavController()
-            .navigate(R.id.action_migrationNavigationFragment_to_migrationAppUpdateNeededFragment)
+            .navigateSafe(
+                R.id.migrationNavigationFragment,
+                R.id.action_migrationNavigationFragment_to_migrationAppUpdateNeededFragment,
+            )
     }
 
     private fun showModuleUpdateRequiredFragment() {
         findNavController()
-            .navigate(
-                R.id.action_migrationNavigationFragment_to_migrationModuleUpdateNeededFragment
+            .navigateSafe(
+                R.id.migrationNavigationFragment,
+                R.id.action_migrationNavigationFragment_to_migrationModuleUpdateNeededFragment,
             )
     }
 
     private fun showMigrationPausedFragment() {
         findNavController()
-            .navigate(R.id.action_migrationNavigationFragment_to_migrationPausedFragment)
+            .navigateSafe(
+                R.id.migrationNavigationFragment,
+                R.id.action_migrationNavigationFragment_to_migrationPausedFragment,
+            )
     }
 
     private fun navigateToHomeFragment() {
-        findNavController().navigate(R.id.action_migrationNavigationFragment_to_homeFragment)
+        findNavController()
+            .navigateSafe(
+                R.id.migrationNavigationFragment,
+                R.id.action_migrationNavigationFragment_to_homeFragment,
+            )
     }
 }

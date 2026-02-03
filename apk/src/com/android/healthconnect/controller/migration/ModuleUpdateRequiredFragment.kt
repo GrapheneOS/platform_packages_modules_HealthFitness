@@ -31,6 +31,7 @@ import com.android.healthconnect.controller.utils.SettingsTransitionHelper.creat
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.settingslib.widget.FooterPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -101,7 +102,10 @@ class ModuleUpdateRequiredFragment : Hilt_ModuleUpdateRequiredFragment() {
                     apply()
                 }
                 findNavController()
-                    .navigate(R.id.action_migrationModuleUpdateNeededFragment_to_homeScreen)
+                    .navigateSafe(
+                        R.id.migrationModuleUpdateNeededFragment,
+                        R.id.action_migrationModuleUpdateNeededFragment_to_homeScreen,
+                    )
             }
 
             requireActivity().finish()

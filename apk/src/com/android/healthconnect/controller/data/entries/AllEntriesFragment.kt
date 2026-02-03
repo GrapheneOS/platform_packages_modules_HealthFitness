@@ -56,6 +56,7 @@ import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.ToolbarElement
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.setTitle
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.setupSharedMenu
@@ -95,7 +96,8 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
         object : OnClickEntryListener {
             override fun onItemClicked(id: String, index: Int) {
                 findNavController()
-                    .navigate(
+                    .navigateSafe(
+                        R.id.entriesAndAccessFragment,
                         R.id.action_entriesAndAccessFragment_to_dataEntryDetailsFragment,
                         DataEntryDetailsFragment.createBundle(
                             permissionType as FitnessPermissionType,
@@ -113,7 +115,8 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
 
             override fun onItemClicked(id: MedicalResourceId, index: Int) {
                 findNavController()
-                    .navigate(
+                    .navigateSafe(
+                        R.id.entriesAndAccessFragment,
                         R.id.action_entriesAndAccessFragment_to_rawFhirFragment,
                         bundleOf(MEDICAL_RESOURCE_ID_KEY to id),
                     )
@@ -124,7 +127,8 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
                 index: Int,
             ) {
                 findNavController()
-                    .navigate(
+                    .navigateSafe(
+                        R.id.entriesAndAccessFragment,
                         R.id.action_entriesAndAccessFragment_to_prettyFhirFragment,
                         PrettyFhirFragment.createBundle(
                             header = dataEntry.header,
@@ -225,7 +229,11 @@ class AllEntriesFragment : Hilt_AllEntriesFragment() {
             }
             R.id.menu_open_units -> {
                 logger.logInteraction(ToolbarElement.TOOLBAR_UNITS_BUTTON)
-                findNavController().navigate(R.id.action_entriesAndAccess_to_setUnitsFragment)
+                findNavController()
+                    .navigateSafe(
+                        R.id.entriesAndAccessFragment,
+                        R.id.action_entriesAndAccess_to_setUnitsFragment,
+                    )
                 true
             }
             else -> false
