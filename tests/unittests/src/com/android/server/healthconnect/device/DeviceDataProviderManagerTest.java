@@ -37,18 +37,22 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.health.connect.DeleteUsingFiltersRequest;
 import android.health.connect.DeviceDataProviderInfo;
 import android.health.connect.DeviceDataSourceInfo;
+import android.health.connect.HealthDataCategory;
 import android.health.connect.HealthPermissions;
 import android.health.connect.PageTokenWrapper;
 import android.health.connect.ReadRecordsRequestUsingFilters;
@@ -78,6 +82,7 @@ import android.health.connect.internal.datatypes.SymptomRecordInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.mocks.AndroidPackageMocker;
 import android.os.Build;
+import android.os.UserManager;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 import android.util.Pair;
@@ -96,6 +101,7 @@ import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
+import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.storage.TransactionManager;
@@ -112,6 +118,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -140,6 +147,7 @@ public class DeviceDataProviderManagerTest {
     private Context mContext;
     private DeviceDataSourcesHelper mDeviceDataSourcesHelper;
     private DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
+    private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     private DeviceInfoHelper mDeviceInfoHelper;
     private AppInfoHelper mAppInfoHelper;
     private FitnessRecordReadHelper mFitnessRecordReadHelper;
@@ -148,8 +156,10 @@ public class DeviceDataProviderManagerTest {
     private FitnessTestUtils mFitnessTestUtils;
     private AccessLogsHelper mAccessLogsHelper;
     private FakeSerialDeviceDataSourceHelper mDataSourceHelper;
+    private SyntheticPackageNameCreator mSyntheticPackageNameCreator;
 
     @Mock private AppOpLogsHelper mAppOpLogsHelper;
+    @Mock private UserManager mUserManager;
     @Mock private SensorManager mSensorManager;
     @Mock private Sensor mSensor;
 
@@ -160,9 +170,11 @@ public class DeviceDataProviderManagerTest {
         AndroidPackageMocker.addToContext(mContext);
         doReturn(mContext).when(mContext).getApplicationContext();
         doReturn(mContext).when(mContext).createContextAsUser(any(), anyInt());
+        when(mUserManager.isUserUnlocked(any())).thenReturn(true);
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setAppOpLogsHelper(mAppOpLogsHelper)
+                        .setUserManager(mUserManager)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
 
@@ -171,12 +183,15 @@ public class DeviceDataProviderManagerTest {
         mDeviceDataSourcesHelper = healthConnectInjector.getDeviceDataSourcesHelper();
         mDeviceDataProviderMetadataHelper =
                 healthConnectInjector.getDeviceDataProviderMetadataHelper();
+        mHealthDataCategoryPriorityHelper =
+                spy(healthConnectInjector.getHealthDataCategoryPriorityHelper());
         mPreferenceHelper = healthConnectInjector.getPreferenceHelper();
         mFitnessRecordReadHelper = healthConnectInjector.getFitnessRecordReadHelper();
         mTransactionManager = healthConnectInjector.getTransactionManager();
         mAccessLogsHelper = healthConnectInjector.getAccessLogsHelper();
         mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
         mDataSourceHelper = new FakeSerialDeviceDataSourceHelper();
+        mSyntheticPackageNameCreator = healthConnectInjector.getSyntheticPackageNameCreator();
         mDeviceDataProviderManager =
                 new FakeSerialDeviceDataProviderManager(
                         mContext,
@@ -190,6 +205,8 @@ public class DeviceDataProviderManagerTest {
                         healthConnectInjector.getFitnessRecordDeleteHelper(),
                         healthConnectInjector.getSyntheticPackageNameCreator(),
                         mPreferenceHelper,
+                        mHealthDataCategoryPriorityHelper,
+                        healthConnectInjector.getInternalHealthConnectMappings(),
                         true);
         mPreferenceHelper.insertOrReplacePreference(PREFERENCE_KEY, "Some Salt");
         mPreferenceHelper.insertOrReplacePreference(
@@ -244,7 +261,7 @@ public class DeviceDataProviderManagerTest {
                 .isEqualTo(DISPLAY_NAME);
 
         assertThat(appInfoInternalMap.size()).isEqualTo(1);
-        String appInfoKey = "com.android.healthconnect.phone.d917cfe4687a83c6da4ecca162a5ba400";
+        String appInfoKey = mSyntheticPackageNameCreator.createCanonical(DEVICE_TYPE, DEVICE_ID);
         assertThat(appInfoInternalMap).containsKey(appInfoKey);
         assertThat(appInfoInternalMap.get(appInfoKey).getDeviceInfoId())
                 .isEqualTo(expectedDeviceInfoId);
@@ -454,6 +471,8 @@ public class DeviceDataProviderManagerTest {
                         healthConnectInjector.getFitnessRecordDeleteHelper(),
                         healthConnectInjector.getSyntheticPackageNameCreator(),
                         healthConnectInjector.getPreferenceHelper(),
+                        healthConnectInjector.getHealthDataCategoryPriorityHelper(),
+                        healthConnectInjector.getInternalHealthConnectMappings(),
                         true);
 
         assertThrows(IllegalStateException.class, newManager::getStableCurrentDeviceId);
@@ -558,6 +577,8 @@ public class DeviceDataProviderManagerTest {
                         healthConnectInjector.getFitnessRecordDeleteHelper(),
                         healthConnectInjector.getSyntheticPackageNameCreator(),
                         healthConnectInjector.getPreferenceHelper(),
+                        healthConnectInjector.getHealthDataCategoryPriorityHelper(),
+                        healthConnectInjector.getInternalHealthConnectMappings(),
                         true);
         assertThrows(IllegalStateException.class, () -> newManager.getCurrentDeviceId());
     }
@@ -2589,6 +2610,86 @@ public class DeviceDataProviderManagerTest {
         // PACKAGE_NAME is allowed to insert after advertisement
         mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, currentDeviceId, records);
         assertThatDdpHasRecordsSizeEqualTo(PACKAGE_NAME, currentDeviceId, 1, StepsRecord.class);
+    }
+
+    @Test
+    public void insertDeviceRecords_updatesPriorityList() {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
+
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
+        String appInfoKey = mSyntheticPackageNameCreator.createCanonical(DEVICE_TYPE, DEVICE_ID);
+        List<Long> priorityList =
+                mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                        HealthDataCategory.ACTIVITY);
+        assertThat(priorityList).isEmpty();
+        mDeviceDataProviderManager.insertDeviceRecords(
+                PACKAGE_NAME, DEVICE_ID, List.of(buildStepsRecord(100, 200, 100)));
+
+        priorityList =
+                mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                        HealthDataCategory.ACTIVITY);
+        long appInfoId = mAppInfoHelper.getAppInfoId(appInfoKey);
+        assertThat(priorityList).contains(appInfoId);
+    }
+
+    @Test
+    public void insertDeviceRecords_subsequentCalls_isIdempotent() throws Exception {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, DEVICE_ID, deviceDataTypeAdvertisements);
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
+        mDeviceDataProviderManager.insertDeviceRecords(
+                PACKAGE_NAME, DEVICE_ID, List.of(buildStepsRecord(100, 200, 100)));
+
+        // Manually add another app to the priority list to check order preservation
+        String otherApp = "other.app";
+        PackageManager packageManager = mContext.getPackageManager();
+        ApplicationInfo otherAppInfo = new ApplicationInfo();
+        otherAppInfo.packageName = otherApp;
+        when(packageManager.getApplicationInfo(eq(otherApp), any())).thenReturn(otherAppInfo);
+        when(packageManager.getApplicationLabel(otherAppInfo)).thenReturn("Other App");
+        Drawable mockDrawable = mock(Drawable.class);
+        when(mockDrawable.getIntrinsicWidth()).thenReturn(200);
+        when(mockDrawable.getIntrinsicHeight()).thenReturn(200);
+        when(packageManager.getApplicationIcon(otherAppInfo)).thenReturn(mockDrawable);
+        mHealthDataCategoryPriorityHelper.appendToPriorityList(
+                otherApp, HealthDataCategory.ACTIVITY, false);
+        List<Long> priorityListBefore =
+                new ArrayList<>(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY));
+        // Second insertion for the same device
+        mDeviceDataProviderManager.insertDeviceRecords(
+                PACKAGE_NAME, DEVICE_ID, List.of(buildStepsRecord(300, 400, 100)));
+        List<Long> priorityListAfter =
+                mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                        HealthDataCategory.ACTIVITY);
+
+        assertThat(priorityListAfter).isEqualTo(priorityListBefore);
     }
 
     private void advertiseDevice(

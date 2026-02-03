@@ -575,6 +575,8 @@ public class HealthConnectServiceImplTest {
                                     healthConnectInjector.getFitnessRecordDeleteHelper(),
                                     healthConnectInjector.getSyntheticPackageNameCreator(),
                                     mPreferenceHelper,
+                                    healthConnectInjector.getHealthDataCategoryPriorityHelper(),
+                                    healthConnectInjector.getInternalHealthConnectMappings(),
                                     true));
 
             mDeviceDataSourcesHelper = spy(healthConnectInjector.getDeviceDataSourcesHelper());

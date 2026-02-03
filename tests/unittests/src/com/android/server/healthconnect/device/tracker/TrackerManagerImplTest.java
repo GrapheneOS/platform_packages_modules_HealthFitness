@@ -156,6 +156,8 @@ public class TrackerManagerImplTest {
                             mHealthConnectInjector.getFitnessRecordDeleteHelper(),
                             mHealthConnectInjector.getSyntheticPackageNameCreator(),
                             mHealthConnectInjector.getPreferenceHelper(),
+                            mHealthConnectInjector.getHealthDataCategoryPriorityHelper(),
+                            mHealthConnectInjector.getInternalHealthConnectMappings(),
                             true);
             mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
             mTrackerManager =
