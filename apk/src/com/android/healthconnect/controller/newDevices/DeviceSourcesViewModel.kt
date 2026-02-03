@@ -62,7 +62,13 @@ constructor(
                 } else if (loading) {
                     DeviceSourcesState.Loading
                 } else {
-                    DeviceSourcesState.WithData(deviceSourcesInfos)
+                    // An empty source list implies an internal HC error, as the
+                    // current device should always be included.
+                    if (deviceSourcesInfos.isEmpty()) {
+                        DeviceSourcesState.Error
+                    } else {
+                        DeviceSourcesState.WithData(deviceSourcesInfos)
+                    }
                 }
             }
             .stateIn(

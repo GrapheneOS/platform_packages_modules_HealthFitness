@@ -117,6 +117,7 @@ class DevicesFragment : Hilt_DevicesFragment() {
             }
         }
 
+        enabledDevicesCategory.isVisible = enabledDevicesCategory.preferenceCount > 0
         notEnabledDevicesCategory.isVisible = notEnabledDevicesCategory.preferenceCount > 0
     }
 
