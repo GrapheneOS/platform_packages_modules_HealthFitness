@@ -28,6 +28,7 @@ import static com.android.server.healthconnect.storage.utils.WhereClauses.Logica
 import android.annotation.Nullable;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteConstraintException;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.SymptomRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
@@ -313,8 +314,28 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
      */
     private synchronized void insertOrUpdate(DeviceDataProviderInfo ddpInfo) {
         getDdpMap().remove(ddpInfo.key);
-        mTransactionManager.insertOrReplaceOnConflict(
-                new UpsertTableRequest(TABLE_NAME, getContentValues(ddpInfo), UNIQUE_COLUMN_INFO));
+
+        // We do not use the TransactionManager's convenience method
+        // insertOrReplaceOnConflict here because it assumes that the unique columns
+        // are OR-ed together (e.g. uuid OR client_id).
+        // Here we have a composite key, so we need to AND the columns together.
+        UpsertTableRequest request =
+                new UpsertTableRequest(TABLE_NAME, getContentValues(ddpInfo), UNIQUE_COLUMN_INFO);
+        try {
+            mTransactionManager.insertOrThrowOnConflict(request);
+        } catch (SQLiteConstraintException e) {
+            request.setUpdateWhereClauses(
+                    new WhereClauses(AND)
+                            .addWhereEqualsClause(
+                                    SOURCE_PACKAGE_NAME, ddpInfo.key.sourcePackageName)
+                            .addWhereEqualsClause(
+                                    APP_INFO_ID_COLUMN_NAME, String.valueOf(ddpInfo.key.appInfoId))
+                            .addWhereEqualsClause(DATA_TYPE, String.valueOf(ddpInfo.key.dataType))
+                            .addWhereEqualsClause(
+                                    DATA_SUBTYPE, String.valueOf(ddpInfo.key.dataSubtype)));
+            mTransactionManager.update(request);
+        }
+
         getDdpMap().put(ddpInfo.key, ddpInfo);
     }
 

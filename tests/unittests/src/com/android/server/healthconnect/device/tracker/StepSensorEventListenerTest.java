@@ -141,6 +141,7 @@ public class StepSensorEventListenerTest {
                                     healthConnectInjector.getPreferenceHelper(),
                                     true));
 
+            mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
             mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
         }
 

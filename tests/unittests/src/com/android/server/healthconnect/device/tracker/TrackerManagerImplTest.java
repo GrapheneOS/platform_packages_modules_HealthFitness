@@ -157,6 +157,7 @@ public class TrackerManagerImplTest {
                             mHealthConnectInjector.getSyntheticPackageNameCreator(),
                             mHealthConnectInjector.getPreferenceHelper(),
                             true);
+            mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
             mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
             mTrackerManager =
                     new TrackerManagerImpl(

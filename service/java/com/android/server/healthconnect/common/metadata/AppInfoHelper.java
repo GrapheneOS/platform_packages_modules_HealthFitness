@@ -814,7 +814,7 @@ public final class AppInfoHelper extends DatabaseHelper {
                         syntheticPackageName,
                         /* name= */ null,
                         /* icon= */ null,
-                        /* recordTypesUsed= */ null,
+                        /* recordTypesUsed= */ existingAppInfo.getRecordTypesUsed(),
                         deviceInfoId);
         updateIfPresent(syntheticPackageName, updatedAppInfo);
         return updatedAppInfo.getId();
