@@ -812,6 +812,10 @@ class MatchmakingViewModelTest {
     }
 
     @Test
+    @EnableFlags(
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
     fun consumeDdpOnboardingEvent_resetsStateToSetup() = runTest {
         setupWithData()
         viewModel.addDevicePermissionToGrantedList(TEST_WATCH_DEVICE_PACKAGE_NAME)
