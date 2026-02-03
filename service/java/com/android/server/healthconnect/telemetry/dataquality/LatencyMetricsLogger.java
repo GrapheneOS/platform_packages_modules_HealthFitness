@@ -19,6 +19,7 @@ package com.android.server.healthconnect.telemetry.dataquality;
 import static android.health.HealthFitnessStatsLog.HEALTH_CONNECT_LATENCY_STATS__SESSION_DATA_TYPE__SESSION_DATA_TYPE_EXERCISE;
 
 import android.health.HealthFitnessStatsLog;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.telemetry.dataquality.LatencyMetricsCollector.LatencyMetricsData;
@@ -64,7 +65,8 @@ public final class LatencyMetricsLogger {
         for (LatencyMetricsData latencyMetricsData : latencyMetricsDataList) {
             mStatsLog.write(
                     HealthFitnessStatsLog.HEALTH_CONNECT_LATENCY_STATS,
-                    latencyMetricsData.packageName(),
+                    SyntheticPackageNameMatcher.replaceAllCanonicalIn(
+                            latencyMetricsData.packageName()),
                     recordTypeForLogging,
                     latencyMetricsData.latency().toMillis());
         }

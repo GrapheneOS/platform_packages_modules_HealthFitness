@@ -40,6 +40,7 @@ import static com.android.healthfitness.flags.Flags.latencyMetricsFlag;
 
 import android.health.HealthFitnessStatsLog;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 
 /**
  * Logs Health Connect data granularity stats.
@@ -92,7 +93,7 @@ public final class DataGranularityStatsLogger {
                         : HEALTH_CONNECT_DATA_GRANULARITY_STATS__DATA_STATE__DATA_STATE_PASSIVE;
         mHealthFitnessStatsLog.write(
                 HEALTH_CONNECT_DATA_GRANULARITY_STATS,
-                packageName,
+                SyntheticPackageNameMatcher.replaceAllCanonicalIn(packageName),
                 mapDataTypeToLoggingEnum(recordTypeId),
                 granularity,
                 dataState);

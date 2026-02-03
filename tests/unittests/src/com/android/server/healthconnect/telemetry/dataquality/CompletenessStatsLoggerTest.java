@@ -62,6 +62,9 @@ import java.util.Set;
 @RunWith(AndroidJUnit4.class)
 public class CompletenessStatsLoggerTest {
     private static final String TEST_PACKAGE = "test.package";
+    private static final String TEST_SPN_PACKAGE_CANONICAL =
+            "com.android.healthconnect.phone.d59341472a9253c16b986840a324ec594";
+    private static final String TEST_SPN_PACKAGE = "com.android.healthconnect.phone";
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -182,6 +185,66 @@ public class CompletenessStatsLoggerTest {
                         anyBoolean(),
                         anyBoolean(),
                         anyBoolean());
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_LATENCY_METRICS_FLAG,
+    })
+    public void logDeviceInfoStats_logsCanonicalSpn() {
+        Set<CompletenessStatsCollector.DeviceInfoStat> stats = new HashSet<>();
+        stats.add(
+                new CompletenessStatsCollector.DeviceInfoStat(
+                        TEST_PACKAGE, RECORD_TYPE_STEPS, true, true, false));
+        stats.add(
+                new CompletenessStatsCollector.DeviceInfoStat(
+                        TEST_SPN_PACKAGE_CANONICAL, RECORD_TYPE_DISTANCE, true, false, true));
+
+        mCompletenessStatsLogger.logDeviceInfoStats(stats);
+
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        HEALTH_CONNECT_DEVICE_INFO_STATS,
+                        TEST_PACKAGE,
+                        getLoggedRecordTypeId(RECORD_TYPE_STEPS),
+                        true,
+                        true,
+                        false);
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        HEALTH_CONNECT_DEVICE_INFO_STATS,
+                        TEST_SPN_PACKAGE,
+                        getLoggedRecordTypeId(RECORD_TYPE_DISTANCE),
+                        true,
+                        false,
+                        true);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_LATENCY_METRICS_FLAG,
+    })
+    public void logRecordingMethodStats_logsCanonicalSpn() {
+        List<CompletenessStatsCollector.RecordingMethodStat> stats = new ArrayList<>();
+        for (DataTypeDescriptor descriptor : DataTypeDescriptors.getAllDataTypeDescriptors()) {
+            @RecordTypeIdentifier.RecordType int recordType = descriptor.getRecordTypeIdentifier();
+            for (int recordingMethod : Metadata.VALID_TYPES) {
+                stats.add(
+                        new CompletenessStatsCollector.RecordingMethodStat(
+                                TEST_SPN_PACKAGE_CANONICAL, recordType, recordingMethod));
+            }
+        }
+
+        mCompletenessStatsLogger.logRecordingMethodStats(stats);
+
+        for (CompletenessStatsCollector.RecordingMethodStat stat : stats) {
+            verify(mHealthFitnessStatsLog)
+                    .write(
+                            HEALTH_CONNECT_RECORDING_METHOD_STATS,
+                            TEST_SPN_PACKAGE,
+                            getLoggedRecordTypeId(stat.recordTypeId()),
+                            stat.recordingMethod());
+        }
     }
 
     private int getLoggedRecordTypeId(int recordTypeId) {

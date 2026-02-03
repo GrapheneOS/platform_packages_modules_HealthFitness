@@ -178,12 +178,13 @@ class HomeFragment : Fragment() {
 
     private fun setUpMatchmaking(view: View) {
         val matchmakingButton = view.requireViewById<Button>(R.id.matchmaking_button)
-        homeFragmentViewModel.loadMatchmakingStatus(manager)
-        homeFragmentViewModel.isMatchmakingPossible.observe(viewLifecycleOwner) {
-            isMatchmakingPossible ->
-            matchmakingButton.isVisible = isMatchmakingPossible
-        }
-
+        // TODO: Uncomment after removing MANAGE_HEALTH_DATA from Toolbox's manifest file
+        //        homeFragmentViewModel.loadMatchmakingStatus(manager)
+        //        homeFragmentViewModel.isMatchmakingPossible.observe(viewLifecycleOwner) {
+        //            isMatchmakingPossible ->
+        //
+        //        }
+        matchmakingButton.isVisible = true
         val matchingAppsIntent = homeFragmentViewModel.createMatchmakingIntent(manager)
         matchmakingButton.setOnClickListener {
             matchmakingActivityResultLauncher.launch(matchingAppsIntent)

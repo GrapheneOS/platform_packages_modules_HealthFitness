@@ -24,6 +24,7 @@ import static com.android.healthfitness.flags.Flags.latencyMetricsFlag;
 import android.health.HealthFitnessStatsLog;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.device.SyntheticPackageNameMatcher;
 
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 
@@ -74,7 +75,7 @@ public final class CompletenessStatsLogger {
             @Metadata.RecordingMethod int recordingMethod) {
         mHealthFitnessStatsLog.write(
                 HEALTH_CONNECT_RECORDING_METHOD_STATS,
-                packageName,
+                SyntheticPackageNameMatcher.replaceAllCanonicalIn(packageName),
                 HEALTH_CONNECT_MAPPINGS.getLoggingEnumForRecordTypeId(recordTypeId),
                 recordingMethod);
     }
@@ -87,7 +88,7 @@ public final class CompletenessStatsLogger {
             boolean hasType) {
         mHealthFitnessStatsLog.write(
                 HEALTH_CONNECT_DEVICE_INFO_STATS,
-                packageName,
+                SyntheticPackageNameMatcher.replaceAllCanonicalIn(packageName),
                 HEALTH_CONNECT_MAPPINGS.getLoggingEnumForRecordTypeId(recordTypeId),
                 hasManufacturer,
                 hasModel,

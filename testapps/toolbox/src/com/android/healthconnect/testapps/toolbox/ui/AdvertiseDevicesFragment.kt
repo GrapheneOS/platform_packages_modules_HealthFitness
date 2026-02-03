@@ -32,7 +32,6 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
@@ -123,7 +122,7 @@ class AdvertiseDevicesFragment : Fragment() {
             viewModel.addDevice()
         }
 
-        view.requireViewById<Button>(R.id.advertise_button).setOnClickListener {
+        view.requireViewById<Button>(R.id.advertise_or_enable_button).setOnClickListener {
             advertiseDevices()
         }
     }
@@ -135,7 +134,6 @@ class AdvertiseDevicesFragment : Fragment() {
     ) {
         // Simple update logic for now.
         // We might want to optimize this to avoid re-inflating everything if possible.
-        view.requireViewById<TextView>(R.id.title).isVisible = !isReAdvertise
         devicesListContainer.removeAllViews()
         configs.forEachIndexed { index, config ->
             val itemView =

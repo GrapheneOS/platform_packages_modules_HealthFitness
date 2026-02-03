@@ -23,16 +23,15 @@ import android.os.OutcomeReceiver
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.android.healthconnect.testapps.toolbox.ui.AdvertiseDevicesFragment
+import com.android.healthconnect.testapps.toolbox.ui.DdpOnboardingFragment
 import com.android.healthconnect.testapps.toolbox.viewmodels.AdvertiseDevicesViewModel
 import com.android.healthconnect.testapps.toolbox.viewmodels.AdvertiseDevicesViewModel.DataTypeConfig
-import com.android.healthconnect.testapps.toolbox.viewmodels.AdvertiseDevicesViewModel.DeviceAdvertisementConfig
 import java.util.concurrent.Executors
 
 class DeviceOnboardingActivity : AppCompatActivity() {
 
     companion object {
-        const val TOOLBOX_APP_NAME = "com.android.healthconnect.testapps.toolbox"
+        const val TOOLBOX_APP_NAME = "com.android.healthconnect.testapps.toolboxcombined"
     }
 
     private val healthConnectManager by lazy {
@@ -94,6 +93,7 @@ class DeviceOnboardingActivity : AppCompatActivity() {
 
     private fun setupFragment(info: DeviceDataSourceInfo, deviceId: String) {
         val viewModel = ViewModelProvider(this)[AdvertiseDevicesViewModel::class.java]
+        viewModel.setSelectedDeviceDataSourceInfo(info)
 
         val toolboxProviderInfo =
             info.deviceDataProviderInfos.find { it.packageName == TOOLBOX_APP_NAME }!!
@@ -118,22 +118,9 @@ class DeviceOnboardingActivity : AppCompatActivity() {
                 )
             }
 
-        val deviceConfig =
-            DeviceAdvertisementConfig(
-                manufacturer = info.device.manufacturer,
-                model = info.device.model,
-                type = info.device.type,
-                displayName = info.device.displayName,
-                deviceId = deviceId,
-                advertisedDataTypes = advertisedDataTypes,
-                isEnabled = true,
-            )
-
-        viewModel.initializeReAdvertiseMode(listOf(deviceConfig))
-
         supportFragmentManager
             .beginTransaction()
-            .replace(R.id.fragment_container, AdvertiseDevicesFragment())
+            .replace(R.id.fragment_container, DdpOnboardingFragment())
             .commit()
     }
 }

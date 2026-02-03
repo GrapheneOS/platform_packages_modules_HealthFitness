@@ -62,6 +62,9 @@ import org.mockito.junit.MockitoRule;
 
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectServiceLoggerTest {
+    private static final String TEST_SPN_PACKAGE_CANONICAL =
+            "com.android.healthconnect.phone.d59341472a9253c16b986840a324ec594";
+    private static final String TEST_SPN_PACKAGE = "com.android.healthconnect.phone";
 
     private static final int CALLER_FOREGROUND_STATE_UNSPECIFIED =
             HEALTH_CONNECT_API_CALLED__CALLER_FOREGROUND_STATE__UNSPECIFIED;
@@ -480,6 +483,29 @@ public class HealthConnectServiceLoggerTest {
                         eq(RateLimitingRanges.NOT_USED),
                         eq(CALLER_FOREGROUND_STATE_BACKGROUND),
                         eq(TEST_APP_PACKAGE_NAME));
+    }
+
+    @Test
+    public void logsApiMetrics_logsCanonicalSpn() {
+        new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
+                .setHealthFitnessStatsLog(mHealthFitnessStatsLog)
+                .setCallerForegroundState(false)
+                .setPackageName(TEST_SPN_PACKAGE_CANONICAL)
+                .build()
+                .log();
+
+        // then
+        verify(mHealthFitnessStatsLog)
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HEALTH_CONNECT_API_CALLED__API_METHOD__API_METHOD_UNKNOWN),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__STATUS_UNKNOWN),
+                        eq(0),
+                        anyLong(),
+                        eq(0),
+                        eq(RateLimitingRanges.NOT_USED),
+                        eq(CALLER_FOREGROUND_STATE_BACKGROUND),
+                        eq(TEST_SPN_PACKAGE));
     }
 
     private static final class RateLimitingRanges {
