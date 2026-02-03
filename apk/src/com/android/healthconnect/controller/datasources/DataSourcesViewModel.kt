@@ -26,6 +26,7 @@ import com.android.healthconnect.controller.datasources.api.ILoadPotentialPriori
 import com.android.healthconnect.controller.datasources.api.ILoadPriorityListUseCase
 import com.android.healthconnect.controller.datasources.api.IUpdatePriorityListUseCase
 import com.android.healthconnect.controller.matchmaking.api.GetDeviceDataSourcesInfoUseCase
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
@@ -33,6 +34,8 @@ import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlin.collections.filterNot
+import kotlin.collections.find
 import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -197,7 +200,13 @@ constructor(
             when (val appSourcesResult = loadPotentialAppSourcesUseCase.invoke(category)) {
                 is UseCaseResults.Success -> {
                     _potentialAppSources.postValue(
-                        PotentialAppSourcesState.WithData(shouldObserve, appSourcesResult.data)
+                        PotentialAppSourcesState.WithData(
+                            shouldObserve,
+                            appSourcesResult.data.filter {
+                                !deviceDataProvidersApi() ||
+                                    it.packageName != DEVICE_DATA_PROVIDER_PACKAGE
+                            },
+                        )
                     )
                 }
                 is UseCaseResults.Failed -> {
@@ -226,7 +235,13 @@ constructor(
                         if (result.data.isEmpty()) {
                             PriorityListState.WithData(shouldObserve, listOf())
                         } else {
-                            PriorityListState.WithData(shouldObserve, result.data)
+                            PriorityListState.WithData(
+                                shouldObserve,
+                                result.data.filter {
+                                    !deviceDataProvidersApi() ||
+                                        it.packageName != DEVICE_DATA_PROVIDER_PACKAGE
+                                },
+                            )
                         }
                     )
                 is UseCaseResults.Failed -> {
@@ -240,11 +255,45 @@ constructor(
     fun updatePriorityList(newPriorityList: List<String>, category: @HealthDataCategoryInt Int) {
         _priorityListState.postValue(PriorityListState.Loading(false))
         viewModelScope.launch {
-            updatePriorityListUseCase.invoke(newPriorityList, category)
+            val mergedPriorityList = mergedCurrentDevicePriorityList(newPriorityList)
+            updatePriorityListUseCase.invoke(mergedPriorityList, category)
             updateMostRecentAggregations(category)
             val appMetadataList: List<AppMetadata> =
-                newPriorityList.map { appInfoReader.getAppMetadata(it) }
+                mergedPriorityList.map { appInfoReader.getAppMetadata(it) }
             _priorityListState.postValue(PriorityListState.WithData(false, appMetadataList))
+        }
+    }
+
+    /**
+     * Handles the transition from the legacy "android" package name to the current device's unique
+     * identifier.
+     *
+     * Originally, all local records were labeled under the "android" package. With the move to
+     * multi-device support, the local device now uses a unique synthetic package name. This method
+     * ensures that records from both the old ("android") and new (synthetic package) packages are
+     * grouped together during aggregation to maintain data consistency for long-time users.
+     *
+     * The anchor is the package with the new synthetic package name, as the "android" device will
+     * be hidden from the UI.
+     */
+    private fun mergedCurrentDevicePriorityList(newPriorityList: List<String>): List<String> {
+        // TODO(b/435165781): Remove method when "android" is migrated
+        if (!deviceDataProvidersApi()) {
+            return newPriorityList
+        }
+
+        val currentDeviceInfo = getCurrentDeviceInfo()
+        if (currentDeviceInfo == null) {
+            return newPriorityList
+        }
+
+        val currentDeviceSpn = currentDeviceInfo.deviceDataOrigin.packageName
+        return if (!newPriorityList.contains(currentDeviceSpn)) {
+            newPriorityList.filterNot { it == DEVICE_DATA_PROVIDER_PACKAGE }
+        } else {
+            newPriorityList.toMutableList().apply {
+                add(indexOf(currentDeviceSpn), DEVICE_DATA_PROVIDER_PACKAGE)
+            }
         }
     }
 
@@ -293,6 +342,13 @@ constructor(
         when (val list = _priorityListState.value) {
             is PriorityListState.WithData -> list.priorityList
             else -> emptyList()
+        }
+
+    fun getCurrentDeviceInfo(): DeviceDataSourceInfo? =
+        when (val sourceInfos = _deviceDataSourcesInfo.value) {
+            is DeviceDataSourcesState.WithData ->
+                sourceInfos.deviceDataSourcesInfo.find { it.isCurrentDevice }
+            else -> null
         }
 
     sealed class AggregationCardsState(open val shouldObserve: Boolean) {

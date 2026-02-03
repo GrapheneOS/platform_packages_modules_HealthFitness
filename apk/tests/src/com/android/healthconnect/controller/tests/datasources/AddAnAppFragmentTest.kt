@@ -155,14 +155,10 @@ class AddAnAppFragmentTest {
                 Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
             )
             .use {
-                val phoneInfo =
-                    getDeviceDataSourcesInfo().find {
-                        it.deviceDataOrigin.packageName == TEST_PHONE_APP.packageName
-                    }
                 onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
                 onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
                 onView(withText(TEST_APP_NAME_3)).check(matches(isDisplayed()))
-                onView(withText(phoneInfo?.device?.displayName)).check(matches(isDisplayed()))
+                onView(withText(TEST_PHONE_APP_NAME)).check(matches(isDisplayed()))
 
                 verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ADD_AN_APP_PAGE)
                 verify(healthConnectLogger).logPageImpression()
@@ -291,14 +287,10 @@ class AddAnAppFragmentTest {
                 Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
             )
             .use {
-                val phoneInfo =
-                    getDeviceDataSourcesInfo().find {
-                        it.deviceDataOrigin.packageName == TEST_PHONE_APP.packageName
-                    }
                 onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
                 onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
 
-                onView(withText(phoneInfo?.device?.displayName)).check(matches(isDisplayed()))
+                onView(withText(TEST_PHONE_APP_NAME)).check(matches(isDisplayed()))
                 onView(withText(R.string.devices_this_phone)).check(matches(isDisplayed()))
             }
     }
@@ -327,14 +319,10 @@ class AddAnAppFragmentTest {
                 Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
             )
             .use {
-                val watchInfo =
-                    getDeviceDataSourcesInfo().find {
-                        it.deviceDataOrigin.packageName == TEST_WATCH_SPN
-                    }
                 onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
                 onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
 
-                onView(withText(watchInfo?.device?.displayName)).check(matches(isDisplayed()))
+                onView(withText(watchApp.appName)).check(matches(isDisplayed()))
                 onView(withText(R.string.devices_this_phone)).check(doesNotExist())
             }
     }
@@ -368,7 +356,7 @@ class AddAnAppFragmentTest {
                 onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
 
                 onView(withText(DEVICE_DATA_PROVIDER_APP_NAME)).check(matches(isDisplayed()))
-                onView(withText(R.string.devices_this_phone)).check(matches(isDisplayed()))
+                onView(withText(R.string.devices_current_device)).check(matches(isDisplayed()))
             }
     }
 
@@ -394,138 +382,14 @@ class AddAnAppFragmentTest {
                 Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
             )
             .use {
-                val phoneInfo =
-                    getDeviceDataSourcesInfo().find {
-                        it.deviceDataOrigin.packageName == TEST_PHONE_APP.packageName
-                    }
                 onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
                 onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
 
                 onView(withText(DEVICE_DATA_PROVIDER_APP_NAME)).check(matches(isDisplayed()))
                 onView(withText(R.string.devices_current_device)).check(matches(isDisplayed()))
 
-                onView(withText(phoneInfo?.device?.displayName)).check(matches(isDisplayed()))
+                onView(withText(TEST_PHONE_APP_NAME)).check(matches(isDisplayed()))
                 onView(withText(R.string.devices_this_phone)).check(matches(isDisplayed()))
-            }
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
-    fun withDdpFlagOff_updateAppsList_appSources_areNotTransformed() {
-        whenever(dataSourcesViewModel.dataSourcesInfo).then {
-            MutableLiveData(
-                DataSourcesInfo(
-                    priorityListState = PriorityListState.WithData(true, listOf()),
-                    potentialAppSourcesState =
-                        PotentialAppSourcesState.WithData(
-                            true,
-                            listOf(TEST_APP, TEST_APP_2, DEVICE_DATA_PROVIDER_APP, TEST_PHONE_APP),
-                        ),
-                    deviceDataSourcesState =
-                        DeviceDataSourcesState.WithData(setOf<DeviceDataSourceInfo>()),
-                )
-            )
-        }
-
-        launchFragment<AddAnAppFragment>(
-                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
-            )
-            .use {
-                onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-                onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
-                onView(withText(DEVICE_DATA_PROVIDER_APP_NAME)).check(matches(isDisplayed()))
-                onView(withText(TEST_PHONE_APP_NAME)).check(matches(isDisplayed()))
-            }
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
-    fun withDdpFlagOn_updateAppsList_nonDeviceAppSources_areNotTransformed() {
-        whenever(dataSourcesViewModel.dataSourcesInfo).then {
-            MutableLiveData(
-                DataSourcesInfo(
-                    priorityListState = PriorityListState.WithData(true, listOf()),
-                    potentialAppSourcesState =
-                        PotentialAppSourcesState.WithData(
-                            true,
-                            listOf(TEST_APP, TEST_APP_2, DEVICE_DATA_PROVIDER_APP),
-                        ),
-                    deviceDataSourcesState =
-                        DeviceDataSourcesState.WithData(getDeviceDataSourcesInfo()),
-                )
-            )
-        }
-
-        launchFragment<AddAnAppFragment>(
-                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
-            )
-            .use {
-                onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-                onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
-                onView(withText(DEVICE_DATA_PROVIDER_APP_NAME)).check(matches(isDisplayed()))
-            }
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
-    fun withDdpFlagOn_updateAppsList_withDeviceAppSources_emptyDeviceSourceData_notTransformed() {
-        whenever(dataSourcesViewModel.dataSourcesInfo).then {
-            MutableLiveData(
-                DataSourcesInfo(
-                    priorityListState = PriorityListState.WithData(true, listOf()),
-                    potentialAppSourcesState =
-                        PotentialAppSourcesState.WithData(
-                            true,
-                            listOf(TEST_APP, TEST_APP_2, DEVICE_DATA_PROVIDER_APP, TEST_PHONE_APP),
-                        ),
-                    deviceDataSourcesState =
-                        DeviceDataSourcesState.WithData(setOf<DeviceDataSourceInfo>()),
-                )
-            )
-        }
-
-        launchFragment<AddAnAppFragment>(
-                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
-            )
-            .use {
-                onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-                onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
-                onView(withText(DEVICE_DATA_PROVIDER_APP_NAME)).check(matches(isDisplayed()))
-                onView(withText(TEST_PHONE_APP_NAME)).check(matches(isDisplayed()))
-            }
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
-    fun withDdpFlagOn_updateAppsList_withDeviceAppSources_matchInDeviceSourceData_transformed() {
-        whenever(dataSourcesViewModel.dataSourcesInfo).then {
-            MutableLiveData(
-                DataSourcesInfo(
-                    priorityListState = PriorityListState.WithData(true, listOf()),
-                    potentialAppSourcesState =
-                        PotentialAppSourcesState.WithData(
-                            true,
-                            listOf(TEST_APP, TEST_APP_2, DEVICE_DATA_PROVIDER_APP, TEST_PHONE_APP),
-                        ),
-                    deviceDataSourcesState =
-                        DeviceDataSourcesState.WithData(getDeviceDataSourcesInfo()),
-                )
-            )
-        }
-
-        launchFragment<AddAnAppFragment>(
-                Bundle().apply { putInt(CATEGORY_KEY, HealthDataCategory.ACTIVITY) }
-            )
-            .use {
-                val phoneInfo =
-                    getDeviceDataSourcesInfo().find {
-                        it.deviceDataOrigin.packageName == TEST_PHONE_APP.packageName
-                    }
-
-                onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-                onView(withText(TEST_APP_NAME_2)).check(matches(isDisplayed()))
-                onView(withText(DEVICE_DATA_PROVIDER_APP_NAME)).check(matches(isDisplayed()))
-                onView(withText(phoneInfo?.device?.displayName)).check(matches(isDisplayed()))
             }
     }
 
