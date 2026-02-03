@@ -397,6 +397,7 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"ಅನುಮತಿಸಿ"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"ಎಲ್ಲವನ್ನೂ ಅನುಮತಿಸಿ"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"ಅನುಮತಿಸಬೇಡಿ"</string>
+    <string name="allow_and_continue" msgid="4523565115589395706">"ಅನುಮತಿ ನೀಡಿ ಮತ್ತು ಮುಂದುವರಿಸಿ"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Health Connect ಗೆ ಈ ಆ್ಯಪ್ ಓದಬೇಕು ಅಥವಾ ಬರೆಯಬೇಕು ಎಂದು ನೀವು ಬಯಸುವ ಡೇಟಾವನ್ನು ಆಯ್ಕೆಮಾಡಿ"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Health Connect ನಿಂದ ಈ ಆ್ಯಪ್ ಓದಬೇಕು ಎಂದು ನೀವು ಬಯಸುವ ಡೇಟಾವನ್ನು ಆಯ್ಕೆಮಾಡಿ"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connect ಗೆ ಈ ಆ್ಯಪ್ ಬರೆಯಬೇಕು ಎಂದು ನೀವು ಬಯಸುವ ಡೇಟಾವನ್ನು ಆಯ್ಕೆಮಾಡಿ"</string>
@@ -1350,6 +1351,32 @@
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"ಇನ್ನಷ್ಟು ಹೆಲ್ತ್ ಆ್ಯಪ್‌ಗಳನ್ನು ನೋಡಿ"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"ಕನೆಕ್ಟ್ ಆಗಿಲ್ಲ"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"ಈ ಆ್ಯಪ್ ಅನ್ನು Health Connect ಗೆ ಕನೆಕ್ಟ್ ಮಾಡಲು ಕ್ಲಿಕ್ ಮಾಡಿ"</string>
+    <string name="devices_screen_description" msgid="8171826001441781372">"ಯಾವ ಸಾಧನಗಳು Health Connect ಗೆ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಬಹುದು ಎಂಬುದನ್ನು ನಿಯಂತ್ರಿಸಿ"</string>
+    <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"</string>
+    <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿಲ್ಲ"</string>
+    <string name="devices_this_phone" msgid="2739727630674436885">"ಈ ಫೋನ್"</string>
+    <!-- no translation found for device_data_provider_screen_title (5410814335680943850) -->
+    <skip />
+    <!-- no translation found for manage_device_settings (5021760675216854323) -->
+    <skip />
+    <!-- no translation found for device_data_provider_enabled_types (4146093570756356467) -->
+    <skip />
+    <string name="device_type_unknown" msgid="3897304904166713087">"ಅಪರಿಚಿತ"</string>
+    <string name="device_type_watch" msgid="8118463935553631704">"ವಾಚ್"</string>
+    <string name="device_type_phone" msgid="7916371544302291906">"ಫೋನ್"</string>
+    <string name="device_type_scale" msgid="7764152136397378795">"ಸ್ಕೇಲ್"</string>
+    <string name="device_type_ring" msgid="2528444249876048468">"ರಿಂಗ್"</string>
+    <string name="device_type_head_mounted" msgid="3968068420976829123">"ತಲೆಗೆ ಅಳವಡಿಸಲಾಗಿರುವುದು"</string>
+    <string name="device_type_fitness_band" msgid="6516937392955240647">"ಫಿಟ್‌ನೆಸ್ ಬ್ಯಾಂಡ್"</string>
+    <string name="device_type_chest_strap" msgid="7278831272805269282">"ಎದೆಯ ಸ್ಟ್ರ್ಯಾಪ್"</string>
+    <string name="device_type_smart_display" msgid="1675362583797329596">"ಸ್ಮಾರ್ಟ್ ಡಿಸ್‌ಪ್ಲೇ"</string>
+    <string name="device_type_consumer_medical_device" msgid="935607930814394009">"ಗ್ರಾಹಕರ ವೈದ್ಯಕೀಯ ಸಾಧನ"</string>
+    <string name="device_type_glasses" msgid="8479316844380873535">"ಕನ್ನಡಕಗಳು"</string>
+    <string name="device_type_hearable" msgid="9068385110951052438">"ಕೇಳಬಹುದಾದ"</string>
+    <string name="device_type_fitness_machine" msgid="5005606659749314561">"ಫಿಟ್‌ನೆಸ್ ಮಷಿನ್"</string>
+    <string name="device_type_fitness_equipment" msgid="4702700814093068235">"ಫಿಟ್‌ನೆಸ್ ಸಲಕರಣೆ"</string>
+    <string name="device_type_portable_computer" msgid="9003721967778945730">"ಪೋರ್ಟಬಲ್ ಕಂಪ್ಯೂಟರ್"</string>
+    <string name="device_type_meter" msgid="3409050593674148325">"ಮೀಟರ್"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"ಈಗ ಬೇಡ"</string>
     <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"ಎಲ್ಲಾ ಸಿಂಪ್ಟಮ್‌ಗಳು"</string>
     <string name="symptoms_lowercase_label" msgid="767123038349492995">"ರೋಗ ಲಕ್ಷಣಗಳನ್ನು"</string>

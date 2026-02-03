@@ -397,6 +397,8 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"Dopusti"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Dopusti sve"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Ne dopuštaj"</string>
+    <!-- no translation found for allow_and_continue (4523565115589395706) -->
+    <skip />
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Odaberite podatke za koje želite da ih ova aplikacija čita iz Health Connecta ili bilježi u Health Connect"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Odaberite podatke za koje želite da ih ova aplikacija čita iz Health Connecta"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Odaberite podatke za koje želite da ih ova aplikacija bilježi u Health Connect"</string>
@@ -1311,13 +1313,13 @@
     <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Sad otvorite te aplikacije da biste dovršili postavljanje i počeli dijeliti podatke ili nastavite povezivati dostupne aplikacije"</string>
     <string name="almost_done_connected_apps" msgid="7278779868120518202">"Povezane aplikacije"</string>
     <string name="almost_done_available_to_connect" msgid="8127248100268494160">"Dostupne aplikacije za povezivanje"</string>
-    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Pogledajte svoje podatke o zdravlju u aplikacijama"</string>
+    <string name="zero_apps_onboarding_banner_title" msgid="280885921481737546">"Vaša zdravstvena evidencija u drugim aplikacijama"</string>
     <string name="zero_apps_onboarding_banner_summary" msgid="5058666025564192436">"Započnite s dijeljenjem podataka o kondiciji i općem stanju između aplikacija"</string>
     <string name="zero_apps_onboarding_banner_button" msgid="126646934243245089">"Postavite"</string>
     <string name="one_app_onboarding_banner_title" msgid="8807871827449709985">"Povežite drugu aplikaciju"</string>
     <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Postavite drugu aplikaciju da bi mogla početi dijeliti podatke o kondiciji i općem stanju"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Nastavi"</string>
-    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Pogledajte svoje podatke o zdravlju u aplikacijama"</string>
+    <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Vaša zdravstvena evidencija u drugim aplikacijama"</string>
     <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect omogućuje vam dijeljenje podataka o kondiciji i općem stanju između aplikacija. Pogledajte koje aplikacije možete odmah povezati."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Povežite drugu aplikaciju"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Postavite drugu aplikaciju s Health Connectom da bi mogla početi dijeliti podatke o kondiciji i općem stanju"</string>
@@ -1350,6 +1352,32 @@
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Prikaži više aplikacija za zdravlje"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Nije povezano"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Kliknite da biste ovu aplikaciju povezali s Health Connectom"</string>
+    <string name="devices_screen_description" msgid="8171826001441781372">"Odredite koji uređaji mogu sinkronizirati podatke s Health Connectom"</string>
+    <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Omogućeno"</string>
+    <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Nije omogućeno"</string>
+    <string name="devices_this_phone" msgid="2739727630674436885">"Ovaj telefon"</string>
+    <!-- no translation found for device_data_provider_screen_title (5410814335680943850) -->
+    <skip />
+    <!-- no translation found for manage_device_settings (5021760675216854323) -->
+    <skip />
+    <!-- no translation found for device_data_provider_enabled_types (4146093570756356467) -->
+    <skip />
+    <string name="device_type_unknown" msgid="3897304904166713087">"Nepoznato"</string>
+    <string name="device_type_watch" msgid="8118463935553631704">"Sat"</string>
+    <string name="device_type_phone" msgid="7916371544302291906">"Telefon"</string>
+    <string name="device_type_scale" msgid="7764152136397378795">"Vaga"</string>
+    <string name="device_type_ring" msgid="2528444249876048468">"Prsten"</string>
+    <string name="device_type_head_mounted" msgid="3968068420976829123">"Naglavni uređaj"</string>
+    <string name="device_type_fitness_band" msgid="6516937392955240647">"Uređaj za praćenje kondicije s remenom"</string>
+    <string name="device_type_chest_strap" msgid="7278831272805269282">"Traka za prsa"</string>
+    <string name="device_type_smart_display" msgid="1675362583797329596">"Pametni zaslon"</string>
+    <string name="device_type_consumer_medical_device" msgid="935607930814394009">"Potrošački medicinski uređaj"</string>
+    <string name="device_type_glasses" msgid="8479316844380873535">"Naočale"</string>
+    <string name="device_type_hearable" msgid="9068385110951052438">"Uređaj za slušanje"</string>
+    <string name="device_type_fitness_machine" msgid="5005606659749314561">"Sprava za vježbanje"</string>
+    <string name="device_type_fitness_equipment" msgid="4702700814093068235">"Oprema za vježbanje"</string>
+    <string name="device_type_portable_computer" msgid="9003721967778945730">"Prijenosno računalo"</string>
+    <string name="device_type_meter" msgid="3409050593674148325">"Mjerač"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Ne sad"</string>
     <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Svi simptomi"</string>
     <string name="symptoms_lowercase_label" msgid="767123038349492995">"simptome"</string>

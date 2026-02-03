@@ -397,6 +397,8 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"Dozvoli"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Dozvoli sve"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Nemoj dozvoliti"</string>
+    <!-- no translation found for allow_and_continue (4523565115589395706) -->
+    <skip />
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Odaberite koje podatke želite da ova aplikacija čita ili zapisuje u Health Connectu"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Odaberite koje podatke želite da ova aplikacija čita iz Health Connecta"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Odaberite koje podatke želite da ova aplikacija zapisuje u Health Connectu"</string>
@@ -1350,6 +1352,32 @@
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Pogledajte više aplikacija za zdravlje"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Nije povezano"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Povezivanje aplikacije s Health Connectom klikom"</string>
+    <string name="devices_screen_description" msgid="8171826001441781372">"Upravljajte time koji uređaji mogu sinhronizirati podatke s Health Connectom"</string>
+    <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Omogućeno"</string>
+    <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Nije omogućeno"</string>
+    <string name="devices_this_phone" msgid="2739727630674436885">"Ovaj telefon"</string>
+    <!-- no translation found for device_data_provider_screen_title (5410814335680943850) -->
+    <skip />
+    <!-- no translation found for manage_device_settings (5021760675216854323) -->
+    <skip />
+    <!-- no translation found for device_data_provider_enabled_types (4146093570756356467) -->
+    <skip />
+    <string name="device_type_unknown" msgid="3897304904166713087">"Nepoznato"</string>
+    <string name="device_type_watch" msgid="8118463935553631704">"Sat"</string>
+    <string name="device_type_phone" msgid="7916371544302291906">"Telefon"</string>
+    <string name="device_type_scale" msgid="7764152136397378795">"Vaga"</string>
+    <string name="device_type_ring" msgid="2528444249876048468">"Prsten"</string>
+    <string name="device_type_head_mounted" msgid="3968068420976829123">"Postavlja se na glavu"</string>
+    <string name="device_type_fitness_band" msgid="6516937392955240647">"Narukvica za fitnes"</string>
+    <string name="device_type_chest_strap" msgid="7278831272805269282">"Traka za grudi"</string>
+    <string name="device_type_smart_display" msgid="1675362583797329596">"Pametni ekran"</string>
+    <string name="device_type_consumer_medical_device" msgid="935607930814394009">"Medicinski uređaj za potrošače"</string>
+    <string name="device_type_glasses" msgid="8479316844380873535">"Naočale"</string>
+    <string name="device_type_hearable" msgid="9068385110951052438">"Uređaj za slušanje"</string>
+    <string name="device_type_fitness_machine" msgid="5005606659749314561">"Sprava za fitnes"</string>
+    <string name="device_type_fitness_equipment" msgid="4702700814093068235">"Oprema za fitnes"</string>
+    <string name="device_type_portable_computer" msgid="9003721967778945730">"Prenosivi računar"</string>
+    <string name="device_type_meter" msgid="3409050593674148325">"Mjerač"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Ne sada"</string>
     <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Svi simptomi"</string>
     <string name="symptoms_lowercase_label" msgid="767123038349492995">"simptomi"</string>

@@ -359,7 +359,7 @@
     <string name="pregnancy_uppercase_label" msgid="5979925175194337864">"Schwangerschaft"</string>
     <string name="pregnancy_lowercase_label" msgid="810439290131044517">"Schwangerschaft"</string>
     <string name="pregnancy_content_description" msgid="3436773729243586287">"Daten zur Schwangerschaft lesen"</string>
-    <string name="procedures_uppercase_label" msgid="9176087520132593261">"Medizinische Behandlungen"</string>
+    <string name="procedures_uppercase_label" msgid="9176087520132593261">"Medizinische Maßnahmen"</string>
     <string name="procedures_lowercase_label" msgid="5320804313946273234">"medizinische Behandlungen"</string>
     <string name="procedures_content_description" msgid="1086900373141440005">"Daten zu medizinischen Behandlungen lesen"</string>
     <string name="social_history_uppercase_label" msgid="4119611299449533999">"Sozialanamnese"</string>
@@ -397,6 +397,8 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"Erlauben"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Alle erlauben"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Nicht erlauben"</string>
+    <!-- no translation found for allow_and_continue (4523565115589395706) -->
+    <skip />
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Lege fest, welche Daten diese App in Health Connect lesen und schreiben darf"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Lege fest, welche Daten diese App in Health Connect lesen darf"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Lege fest, welche Daten diese App in Health Connect schreiben darf"</string>
@@ -1350,6 +1352,32 @@
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Weitere Gesundheits-Apps ansehen"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Nicht verbunden"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Klicke hier, um diese App mit Health Connect zu verbinden"</string>
+    <string name="devices_screen_description" msgid="8171826001441781372">"Du kannst festlegen, welche Geräte Daten mit Health Connect synchronisieren dürfen"</string>
+    <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Aktiviert"</string>
+    <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Nicht aktiviert"</string>
+    <string name="devices_this_phone" msgid="2739727630674436885">"Dieses Smartphone"</string>
+    <!-- no translation found for device_data_provider_screen_title (5410814335680943850) -->
+    <skip />
+    <!-- no translation found for manage_device_settings (5021760675216854323) -->
+    <skip />
+    <!-- no translation found for device_data_provider_enabled_types (4146093570756356467) -->
+    <skip />
+    <string name="device_type_unknown" msgid="3897304904166713087">"Unbekannt"</string>
+    <string name="device_type_watch" msgid="8118463935553631704">"Smartwatch"</string>
+    <string name="device_type_phone" msgid="7916371544302291906">"Smartphone"</string>
+    <string name="device_type_scale" msgid="7764152136397378795">"Waage"</string>
+    <string name="device_type_ring" msgid="2528444249876048468">"Ring"</string>
+    <string name="device_type_head_mounted" msgid="3968068420976829123">"Am Kopf befestigt"</string>
+    <string name="device_type_fitness_band" msgid="6516937392955240647">"Fitnessarmband"</string>
+    <string name="device_type_chest_strap" msgid="7278831272805269282">"Brustgurt"</string>
+    <string name="device_type_smart_display" msgid="1675362583797329596">"Smart Display"</string>
+    <string name="device_type_consumer_medical_device" msgid="935607930814394009">"Medizinprodukt für Verbraucher"</string>
+    <string name="device_type_glasses" msgid="8479316844380873535">"Datenbrillen"</string>
+    <string name="device_type_hearable" msgid="9068385110951052438">"Hearable"</string>
+    <string name="device_type_fitness_machine" msgid="5005606659749314561">"Fitnessgerät"</string>
+    <string name="device_type_fitness_equipment" msgid="4702700814093068235">"Fitnessausrüstung"</string>
+    <string name="device_type_portable_computer" msgid="9003721967778945730">"Tragbarer Computer"</string>
+    <string name="device_type_meter" msgid="3409050593674148325">"Messgerät"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Nicht jetzt"</string>
     <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Alle Symptome"</string>
     <string name="symptoms_lowercase_label" msgid="767123038349492995">"Symptome"</string>

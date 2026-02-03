@@ -157,7 +157,7 @@
     <string name="additional_access_history_footer" msgid="5326814559930548467">"请至少启用一项读取权限，以便为此应用开启过往数据访问权"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"允许此应用访问所有过往的“健康数据共享”数据"</string>
     <string name="background_read_description" msgid="3203594555849969283">"允许此应用在后台访问“健康数据共享”数据"</string>
-    <string name="write_device_udi_content_description" msgid="3345237277637293502">"允许此应用将设备 UDI 写入“健康数据共享”应用数据"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"允许此应用将设备 UDI 写入“健康数据共享”数据"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"运动消耗的卡路里"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"运动消耗的卡路里"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"读取运动消耗的卡路里数据"</string>
@@ -361,7 +361,7 @@
     <string name="pregnancy_content_description" msgid="3436773729243586287">"读取怀孕情况"</string>
     <string name="procedures_uppercase_label" msgid="9176087520132593261">"手术与诊疗处置"</string>
     <string name="procedures_lowercase_label" msgid="5320804313946273234">"手术与诊疗处置"</string>
-    <string name="procedures_content_description" msgid="1086900373141440005">"读取医疗程序"</string>
+    <string name="procedures_content_description" msgid="1086900373141440005">"读取手术与诊疗处置数据"</string>
     <string name="social_history_uppercase_label" msgid="4119611299449533999">"个人生活史"</string>
     <string name="social_history_lowercase_label" msgid="9027541979445736412">"社交记录"</string>
     <string name="social_history_content_description" msgid="7187059309389849831">"读取社交记录"</string>
@@ -397,6 +397,8 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"允许"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"全部允许"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"不允许"</string>
+    <!-- no translation found for allow_and_continue (4523565115589395706) -->
+    <skip />
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"选择此应用可从“健康数据共享”读取或向其中写入的数据"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"选择您希望允许此应用从“健康数据共享”读取的数据"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"选择您希望允许此应用写入到“健康数据共享”的数据"</string>
@@ -1218,7 +1220,7 @@
     <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"通过“健康数据共享”查找更多要与<xliff:g id="APP_NAME">%s</xliff:g>同步的应用"</string>
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"在应用商店中查看"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"设置屏锁"</string>
-    <string name="lock_screen_banner_content" msgid="3392527073622152481">"为了提高健康数据的安全性，请为此设备设置 PIN 码、解锁图案或密码"</string>
+    <string name="lock_screen_banner_content" msgid="3392527073622152481">"为了提高健康数据的安全性，请为此设备设置解锁图案、数字密码或混合密码"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"设置屏锁"</string>
     <string name="select_all" msgid="837499881590001166">"全选"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"关联的应用将无法再通过“健康数据共享”读取相应数据"</string>
@@ -1350,6 +1352,32 @@
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"查看更多健康类应用"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"未连接"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"点击即可将此应用关联到“健康数据共享”"</string>
+    <string name="devices_screen_description" msgid="8171826001441781372">"控制哪些设备可以将数据同步到“健康数据共享”"</string>
+    <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"已启用"</string>
+    <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"未启用"</string>
+    <string name="devices_this_phone" msgid="2739727630674436885">"本机"</string>
+    <!-- no translation found for device_data_provider_screen_title (5410814335680943850) -->
+    <skip />
+    <!-- no translation found for manage_device_settings (5021760675216854323) -->
+    <skip />
+    <!-- no translation found for device_data_provider_enabled_types (4146093570756356467) -->
+    <skip />
+    <string name="device_type_unknown" msgid="3897304904166713087">"未知设备"</string>
+    <string name="device_type_watch" msgid="8118463935553631704">"智能手表"</string>
+    <string name="device_type_phone" msgid="7916371544302291906">"手机"</string>
+    <string name="device_type_scale" msgid="7764152136397378795">"智能称"</string>
+    <string name="device_type_ring" msgid="2528444249876048468">"智能戒指"</string>
+    <string name="device_type_head_mounted" msgid="3968068420976829123">"头戴式设备"</string>
+    <string name="device_type_fitness_band" msgid="6516937392955240647">"健身手环"</string>
+    <string name="device_type_chest_strap" msgid="7278831272805269282">"胸带式设备"</string>
+    <string name="device_type_smart_display" msgid="1675362583797329596">"智能显示屏"</string>
+    <string name="device_type_consumer_medical_device" msgid="935607930814394009">"消费类医疗设备"</string>
+    <string name="device_type_glasses" msgid="8479316844380873535">"眼镜"</string>
+    <string name="device_type_hearable" msgid="9068385110951052438">"耳戴设备"</string>
+    <string name="device_type_fitness_machine" msgid="5005606659749314561">"健身器械"</string>
+    <string name="device_type_fitness_equipment" msgid="4702700814093068235">"健身器材"</string>
+    <string name="device_type_portable_computer" msgid="9003721967778945730">"便携式电脑"</string>
+    <string name="device_type_meter" msgid="3409050593674148325">"测量设备"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"以后再说"</string>
     <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"所有症状"</string>
     <string name="symptoms_lowercase_label" msgid="767123038349492995">"症状"</string>
