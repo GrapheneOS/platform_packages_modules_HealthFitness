@@ -146,12 +146,15 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
      * Update the database with the provided device data source information.
      *
      * <p>Any data types no longer being advertised are removed from the database.
+     *
+     * @return A list of record types that were removed from the advertisements.
      */
-    public synchronized void insertOrUpdateAdvertisement(
+    public synchronized List<Integer> insertOrUpdateAdvertisement(
             String sourcePackageName,
             long appInfoId,
             DeviceDataAdvertisement deviceDataAdvertisement) {
-        deleteObsoleteAdvertisements(sourcePackageName, appInfoId, deviceDataAdvertisement);
+        List<Integer> removedRecordTypes =
+                deleteObsoleteAdvertisements(sourcePackageName, appInfoId, deviceDataAdvertisement);
 
         for (DeviceDataTypeAdvertisement state :
                 deviceDataAdvertisement.getDeviceDataTypeAdvertisements()) {
@@ -170,6 +173,7 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
                 insertOrUpdate(ddpInfo);
             }
         }
+        return removedRecordTypes;
     }
 
     /** Returns a map of appInfoId -> (sourcePackageName -> list of DeviceDataTypeAdvertisement). */
@@ -239,26 +243,45 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
         return appInfoIds;
     }
 
-    /** Removes all advertisements for the given {@code sourcePackageName} and {@code appInfoId}. */
-    public synchronized void deleteAdvertisements(String sourcePackageName, long appInfoId) {
+    /** Returns a set of categories advertised for the given {@code appInfoId}. */
+    public synchronized Set<Integer> getAdvertisedCategories(long appInfoId) {
+        return getDdpMap().keySet().stream()
+                .filter(key -> key.appInfoId == appInfoId)
+                .map(key -> mHealthConnectMappings.getRecordCategoryForRecordType(key.dataType))
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * Removes all advertisements for the given {@code sourcePackageName} and {@code appInfoId}.
+     *
+     * @return A list of record types that were removed from the advertisements.
+     */
+    public synchronized List<Integer> deleteAdvertisements(
+            String sourcePackageName, long appInfoId) {
         List<DeviceDataProviderKey> keysToDelete =
                 getExistingAdvertisements(sourcePackageName, appInfoId);
+        List<Integer> removedRecordTypes = new ArrayList<>();
 
         for (DeviceDataProviderKey key : keysToDelete) {
+            removedRecordTypes.add(key.dataType);
             delete(key);
         }
+        return removedRecordTypes;
     }
 
     /**
      * Delete advertisements from the database for data types no longer present for the {@code
      * sourcePackageName} and {@code appInfoId}.
+     *
+     * @return A list of record types that were removed from the advertisements.
      */
-    private synchronized void deleteObsoleteAdvertisements(
+    private synchronized List<Integer> deleteObsoleteAdvertisements(
             String sourcePackageName,
             long appInfoId,
             DeviceDataAdvertisement latestDeviceDataAdvertisement) {
         List<DeviceDataProviderKey> existingAdvertisements =
                 getExistingAdvertisements(sourcePackageName, appInfoId);
+        List<Integer> removedRecordTypes = new ArrayList<>();
 
         Set<Pair<Integer, Integer>> latestTypeSubtypes = new HashSet<>();
         for (DeviceDataTypeAdvertisement state :
@@ -273,9 +296,11 @@ public class DeviceDataSourcesHelper extends DatabaseHelper {
             if (!latestTypeSubtypes.contains(
                     new Pair<>(
                             existingAdvertisement.dataType, existingAdvertisement.dataSubtype))) {
+                removedRecordTypes.add(existingAdvertisement.dataType);
                 delete(existingAdvertisement);
             }
         }
+        return removedRecordTypes;
     }
 
     private List<DeviceDataProviderKey> getExistingAdvertisements(

@@ -279,6 +279,11 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mPreferenceHelper == null
                         ? new PreferenceHelper(mTransactionManager, mDatabaseHelpers)
                         : builder.mPreferenceHelper;
+        mDeviceDataSourcesHelper =
+                builder.mDeviceDataSourcesHelper == null
+                        ? new DeviceDataSourcesHelper(
+                                mDatabaseHelpers, mTransactionManager, mHealthConnectMappings)
+                        : builder.mDeviceDataSourcesHelper;
         mHealthDataCategoryPriorityHelper =
                 builder.mHealthDataCategoryPriorityHelper == null
                         ? new HealthDataCategoryPriorityHelper(
@@ -290,7 +295,8 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthConnectMappings,
                                 mDatabaseHelpers,
                                 mThreadScheduler,
-                                mUserManager)
+                                mUserManager,
+                                mDeviceDataSourcesHelper)
                         : builder.mHealthDataCategoryPriorityHelper;
         mPriorityMigrationHelper =
                 builder.mPriorityMigrationHelper == null
@@ -479,11 +485,6 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                 builder.mMatchmakingDenialStateManager == null
                         ? new MatchmakingDenialStateManager(hcContext, mPreferenceHelper)
                         : builder.mMatchmakingDenialStateManager;
-        mDeviceDataSourcesHelper =
-                builder.mDeviceDataSourcesHelper == null
-                        ? new DeviceDataSourcesHelper(
-                                mDatabaseHelpers, mTransactionManager, mHealthConnectMappings)
-                        : builder.mDeviceDataSourcesHelper;
         mSyntheticPackageNameCreator =
                 builder.mSyntheticPackageNameCreator == null
                         ? new SyntheticPackageNameCreator(mPreferenceHelper)

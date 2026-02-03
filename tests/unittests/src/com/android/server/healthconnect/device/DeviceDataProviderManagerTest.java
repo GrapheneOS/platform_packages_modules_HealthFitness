@@ -198,6 +198,7 @@ public class DeviceDataProviderManagerTest {
         mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
         mDataSourceHelper = new FakeSerialDeviceDataSourceHelper();
         mSyntheticPackageNameCreator = healthConnectInjector.getSyntheticPackageNameCreator();
+        mThreadScheduler = healthConnectInjector.getThreadScheduler();
         mDeviceDataProviderManager =
                 new FakeSerialDeviceDataProviderManager(
                         mContext,
@@ -1995,6 +1996,202 @@ public class DeviceDataProviderManagerTest {
 
         assertThat(actualTwo.size()).isEqualTo(1);
         assertThat(actualTwo.get(0).getUuid()).isEqualTo(UUID.fromString(uuidTwo));
+    }
+
+    @Test
+    public void handleAdvertisement_removeDevice_ifNoData_removesFromPriorityList()
+            throws Exception {
+        // 1. Advertise device and insert data to get it into priority list
+        advertiseDevice(DEVICE_ID);
+        List<RecordInternal<?>> records = List.of(buildStepsRecord(100, 200, 50));
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+
+        long appInfoId = mDeviceDataProviderManager.getOrThrowAppInfoId(PACKAGE_NAME, DEVICE_ID);
+        String spn = mDeviceDataProviderManager.getOrThrowSyntheticPackageName(appInfoId);
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .contains(mAppInfoHelper.getAppInfoId(spn));
+
+        // 2. Delete the records so it has no data
+        mDeviceDataProviderManager.deleteDeviceRecords(
+                PACKAGE_NAME,
+                DEVICE_ID,
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder()
+                                .addRecordType(StepsRecord.class)
+                                .build()));
+        mAppInfoHelper.syncAppInfoRecordTypesUsed();
+        TaskUtils.waitForAllScheduledTasksToComplete(mThreadScheduler);
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.appHasDataInCategory(
+                                spn, HealthDataCategory.ACTIVITY))
+                .isFalse();
+
+        // 3. Advertise empty set (device removed)
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(), PACKAGE_NAME);
+
+        // 4. Verify it's removed from priority list
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .doesNotContain(mAppInfoHelper.getAppInfoId(spn));
+    }
+
+    @Test
+    public void handleAdvertisement_removeDevice_ifDataExists_doesNotRemoveFromPriorityList() {
+        // 1. Advertise device and insert data to get it into priority list
+        advertiseDevice(DEVICE_ID);
+        List<RecordInternal<?>> records = List.of(buildStepsRecord(100, 200, 50));
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+
+        long appInfoId = mDeviceDataProviderManager.getOrThrowAppInfoId(PACKAGE_NAME, DEVICE_ID);
+        String spn = mDeviceDataProviderManager.getOrThrowSyntheticPackageName(appInfoId);
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .contains(mAppInfoHelper.getAppInfoId(spn));
+
+        // 2. Advertise empty set (device removed) - but records still exist
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(), PACKAGE_NAME);
+
+        // 3. Verify it's STILL in the priority list
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .contains(mAppInfoHelper.getAppInfoId(spn));
+    }
+
+    @Test
+    public void handleAdvertisement_removeDataType_ifNoData_removesFromPriorityList()
+            throws Exception {
+        // 1. Advertise device with two data types in different categories
+        Device device =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(DEVICE_TYPE)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> ads =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .build(),
+                        new DeviceDataTypeAdvertisement.Builder(SleepSessionRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement advertisement = new DeviceDataAdvertisement(device, DEVICE_ID, ads);
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(advertisement), PACKAGE_NAME);
+
+        // 2. Insert data for both to get into priority lists
+        mDeviceDataProviderManager.insertDeviceRecords(
+                PACKAGE_NAME, DEVICE_ID, List.of(buildStepsRecord(100, 200, 50)));
+        mDeviceDataProviderManager.insertDeviceRecords(
+                PACKAGE_NAME, DEVICE_ID, List.of(buildSleepSessionInternal()));
+
+        long appInfoId = mDeviceDataProviderManager.getOrThrowAppInfoId(PACKAGE_NAME, DEVICE_ID);
+        String spn = mDeviceDataProviderManager.getOrThrowSyntheticPackageName(appInfoId);
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .contains(mAppInfoHelper.getAppInfoId(spn));
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.SLEEP))
+                .contains(mAppInfoHelper.getAppInfoId(spn));
+
+        // 3. Delete records for ACTIVITY but keep SLEEP
+        mDeviceDataProviderManager.deleteDeviceRecords(
+                PACKAGE_NAME,
+                DEVICE_ID,
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder()
+                                .addRecordType(StepsRecord.class)
+                                .build()));
+        mAppInfoHelper.syncAppInfoRecordTypesUsed();
+        TaskUtils.waitForAllScheduledTasksToComplete(mThreadScheduler);
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.appHasDataInCategory(
+                                spn, HealthDataCategory.ACTIVITY))
+                .isFalse();
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.appHasDataInCategory(
+                                spn, HealthDataCategory.SLEEP))
+                .isTrue();
+
+        // 4. Update advertisement to remove StepsRecord
+        Set<DeviceDataTypeAdvertisement> newAds =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(SleepSessionRecord.class)
+                                .setAvailable(true)
+                                .build());
+        DeviceDataAdvertisement newAdvertisement =
+                new DeviceDataAdvertisement(device, DEVICE_ID, newAds);
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(newAdvertisement), PACKAGE_NAME);
+
+        // 5. Verify ACTIVITY category is removed but SLEEP remains
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .doesNotContain(mAppInfoHelper.getAppInfoId(spn));
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.SLEEP))
+                .contains(mAppInfoHelper.getAppInfoId(spn));
+    }
+
+    @Test
+    public void removeDataType_stillAdvertisedByOtherDdp_notRemoveDFromPriorityList()
+            throws Exception {
+        String otherPackage = "com.other.ddp";
+        mFitnessTestUtils.insertApp(otherPackage);
+
+        // 1. Advertise same device from two DDPs
+        advertiseDevice(DEVICE_ID, PACKAGE_NAME, StepsRecord.class);
+        advertiseDevice(DEVICE_ID, otherPackage, StepsRecord.class);
+
+        // 2. Insert data to get into priority list
+        mDeviceDataProviderManager.insertDeviceRecords(
+                PACKAGE_NAME, DEVICE_ID, List.of(buildStepsRecord(100, 200, 50)));
+
+        long appInfoId = mDeviceDataProviderManager.getOrThrowAppInfoId(PACKAGE_NAME, DEVICE_ID);
+        String spn = mDeviceDataProviderManager.getOrThrowSyntheticPackageName(appInfoId);
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .contains(mAppInfoHelper.getAppInfoId(spn));
+
+        // 3. Delete records so no data exists
+        mDeviceDataProviderManager.deleteDeviceRecords(
+                PACKAGE_NAME,
+                DEVICE_ID,
+                new DeleteUsingFiltersRequestParcel(
+                        new DeleteUsingFiltersRequest.Builder().build()));
+        mAppInfoHelper.syncAppInfoRecordTypesUsed();
+        TaskUtils.waitForAllScheduledTasksToComplete(mThreadScheduler);
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.appHasDataInCategory(
+                                spn, HealthDataCategory.ACTIVITY))
+                .isFalse();
+
+        // 4. Update advertisement for PACKAGE_NAME to remove StepsRecord
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(), PACKAGE_NAME);
+
+        // 5. Verify it's STILL in the priority list because otherPackage still advertises it
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .contains(mAppInfoHelper.getAppInfoId(spn));
+
+        // 6. Now remove advertisement for otherPackage
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(), otherPackage);
+
+        // 7. Verify it's now removed
+        assertThat(
+                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
+                                HealthDataCategory.ACTIVITY))
+                .doesNotContain(mAppInfoHelper.getAppInfoId(spn));
     }
 
     @Test
