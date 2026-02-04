@@ -59,6 +59,7 @@ import com.android.healthconnect.controller.exportimport.api.ExportFrequency
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
 import com.android.healthconnect.controller.service.HealthDataExportManagerModule
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
+import com.android.healthconnect.controller.tests.utils.UseCaseIdlingResourceRule
 import com.android.healthconnect.controller.tests.utils.checkBoxOf
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthDataExportManager
@@ -128,6 +129,7 @@ class ExportDestinationFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val setFlagsRule = SetFlagsRule()
+    @get:Rule val idlingResourceRule = UseCaseIdlingResourceRule()
 
     @BindValue val healthDataExportManager: HealthDataExportManager = FakeHealthDataExportManager()
     private val fakeHealthDataExportManager = healthDataExportManager as FakeHealthDataExportManager
