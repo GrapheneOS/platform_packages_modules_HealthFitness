@@ -99,13 +99,6 @@ class DataManagementActivityTest {
 
     @Test
     fun showsAllDataFragment() {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IDLE,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 MigrationViewModel.MigrationFragmentState.WithData(
@@ -127,13 +120,6 @@ class DataManagementActivityTest {
 
     @Test
     fun manageDataIntent_migrationInProgress_redirectsToMigrationInProgress() = runTest {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IN_PROGRESS,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 MigrationViewModel.MigrationFragmentState.WithData(
@@ -155,13 +141,6 @@ class DataManagementActivityTest {
 
     @Test
     fun manageDataIntent_dataRestoreInProgress_redirectsToDataRestoreInProgress() = runTest {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IDLE,
-                dataRestoreState = DataRestoreUiState.IN_PROGRESS,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 MigrationViewModel.MigrationFragmentState.WithData(
@@ -183,13 +162,6 @@ class DataManagementActivityTest {
 
     @Test
     fun manageDataIntent_migrationComplete_showsDialog() = runTest {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.COMPLETE,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 MigrationViewModel.MigrationFragmentState.WithData(

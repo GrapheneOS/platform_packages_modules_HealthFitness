@@ -32,7 +32,6 @@ import androidx.test.core.app.ActivityScenario.launchActivityForResult
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.scrollTo
-import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -487,13 +486,6 @@ class RouteRequestActivityTest {
 
     @Test
     fun intent_migrationInProgress_shoesMigrationInProgressDialog() = runTest {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IN_PROGRESS,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 WithData(
@@ -538,13 +530,6 @@ class RouteRequestActivityTest {
 
     @Test
     fun intent_restoreInProgress_showsRestoreInProgressDialog() = runTest {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IDLE,
-                dataRestoreState = DataRestoreUiState.IN_PROGRESS,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 WithData(
@@ -591,13 +576,6 @@ class RouteRequestActivityTest {
 
     @Test
     fun intent_migrationPending_showsMigrationPendingDialog() = runTest {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 WithData(

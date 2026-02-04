@@ -124,13 +124,6 @@ class TrampolineActivityTest {
         (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(true)
 
         // Disable migration to show MainActivity and DataManagementActivity
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IDLE,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 WithData(

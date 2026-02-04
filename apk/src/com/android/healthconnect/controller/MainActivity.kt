@@ -52,10 +52,10 @@ class MainActivity : Hilt_MainActivity() {
 
         setTitle(R.string.app_label)
 
-        val currentMigrationState = migrationViewModel.getCurrentMigrationUiState()
-
-        if (maybeRedirectToMigrationActivity(this, currentMigrationState)) {
-            return
+        migrationViewModel.migrationState.observe(this) { migrationState ->
+            if (migrationState is MigrationViewModel.MigrationFragmentState.WithData) {
+                maybeRedirectToMigrationActivity(this, migrationState.migrationRestoreState)
+            }
         }
     }
 
@@ -84,11 +84,7 @@ class MainActivity : Hilt_MainActivity() {
 
     override fun onResume() {
         super.onResume()
-        val currentMigrationState = migrationViewModel.getCurrentMigrationUiState()
-
-        if (maybeRedirectToMigrationActivity(this, currentMigrationState)) {
-            return
-        }
+        migrationViewModel.loadHealthConnectMigrationUiState()
     }
 
     override fun onBackPressed() {
