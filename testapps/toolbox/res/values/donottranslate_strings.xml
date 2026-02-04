@@ -57,7 +57,7 @@
     <string name="access_log_button">Seed Access Logs</string>
     <string name="advertise_devices">Advertise Devices</string>
     <string name="insert_via_ddp_apis">Insert via DDP APIs</string>
-    <string name="select_device_data_source">Select device data source</string>
+    <string name="select_device_data_source">Select device data source that advertise type</string>
 
 
     <!-- Data Categories -->
