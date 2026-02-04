@@ -521,6 +521,7 @@ class FitnessAppOnboardingFragmentTest {
                 Navigation.setViewNavController(this.requireView(), navHostController)
             }
             .use {
+                onIdle()
                 onView(withText("Back")).perform(click())
                 verify(viewModel, never()).done()
                 verify(healthConnectLogger)

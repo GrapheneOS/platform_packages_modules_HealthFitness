@@ -47,6 +47,7 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.NewHomePageElement
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
@@ -101,11 +102,12 @@ class HomeFragment : Hilt_HomeFragment() {
 
     private fun handleBannerAction(action: BannerAction) {
         when (action) {
-            is BannerAction.Navigate -> findNavController().navigate(action.destinationId)
+            is BannerAction.Navigate ->
+                findNavController().navigateSafe(R.id.newHomeFragment, action.destinationId)
             is BannerAction.StartActivity -> startActivity(action.intent)
             is BannerAction.Dismiss -> homeViewModel.onDismissBanner(action.banner)
             is BannerAction.NavigateAndDismiss -> {
-                findNavController().navigate(action.destinationId)
+                findNavController().navigateSafe(R.id.newHomeFragment, action.destinationId)
                 homeViewModel.onDismissBanner(action.banner)
             }
             is BannerAction.StartActivityAndDismiss -> {
@@ -121,13 +123,15 @@ class HomeFragment : Hilt_HomeFragment() {
 
         dataAndAccessPreference.logName = NewHomePageElement.DATA_AND_ACCESS_BUTTON
         dataAndAccessPreference.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_newHomeFragment_to_dataAndAccess)
+            findNavController()
+                .navigateSafe(R.id.newHomeFragment, R.id.action_newHomeFragment_to_dataAndAccess)
             true
         }
 
         recentAccessPreference.logName = NewHomePageElement.RECENT_ACCESS_BUTTON
         recentAccessPreference.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_newHomeFragment_to_recentAccess)
+            findNavController()
+                .navigateSafe(R.id.newHomeFragment, R.id.action_newHomeFragment_to_recentAccess)
             true
         }
 
@@ -138,7 +142,7 @@ class HomeFragment : Hilt_HomeFragment() {
                 val action =
                     if (deviceDataProvidersApi()) R.id.action_newHomeFragment_to_newDevicesFragment
                     else R.id.action_newHomeFragment_to_connectedDevicesFragment
-                findNavController().navigate(action)
+                findNavController().navigateSafe(R.id.newHomeFragment, action)
                 true
             }
         } else {
@@ -147,7 +151,8 @@ class HomeFragment : Hilt_HomeFragment() {
 
         manageDataPreference.logName = NewHomePageElement.MANAGE_DATA_BUTTON
         manageDataPreference.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_newHomeFragment_to_manageData)
+            findNavController()
+                .navigateSafe(R.id.newHomeFragment, R.id.action_newHomeFragment_to_manageData)
             true
         }
 
@@ -315,7 +320,11 @@ class HomeFragment : Hilt_HomeFragment() {
             if (deviceInfoUtils.isPlayStoreAvailable(requireContext())) {
                 it.setLearnMoreText(getString(R.string.empty_apps_section_link))
                 it.setLearnMoreAction {
-                    findNavController().navigate(R.id.action_newHomeFragment_to_playStoreActivity)
+                    findNavController()
+                        .navigateSafe(
+                            R.id.newHomeFragment,
+                            R.id.action_newHomeFragment_to_playStoreActivity,
+                        )
                     true
                 }
             }
@@ -334,7 +343,10 @@ class HomeFragment : Hilt_HomeFragment() {
                     it.setIcon(AttributeResolver.getResource(requireContext(), R.attr.optionsIcon))
                     it.setOnClickListener {
                         findNavController()
-                            .navigate(R.id.action_newHomeFragment_to_connectedAppsFragment)
+                            .navigateSafe(
+                                R.id.newHomeFragment,
+                                R.id.action_newHomeFragment_to_connectedAppsFragment,
+                            )
                     }
                     it.logName = NewHomePageElement.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON
                 }
@@ -345,7 +357,10 @@ class HomeFragment : Hilt_HomeFragment() {
                     it.logName = NewHomePageElement.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON
                     it.setOnPreferenceClickListener {
                         findNavController()
-                            .navigate(R.id.action_newHomeFragment_to_connectedAppsFragment)
+                            .navigateSafe(
+                                R.id.newHomeFragment,
+                                R.id.action_newHomeFragment_to_connectedAppsFragment,
+                            )
                         true
                     }
                 }
@@ -375,7 +390,8 @@ class HomeFragment : Hilt_HomeFragment() {
             return
         }
         findNavController()
-            .navigate(
+            .navigateSafe(
+                R.id.newHomeFragment,
                 navigationId,
                 bundleOf(
                     Intent.EXTRA_PACKAGE_NAME to app.appMetadata.packageName,

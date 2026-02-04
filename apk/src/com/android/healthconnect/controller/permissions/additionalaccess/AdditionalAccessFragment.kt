@@ -46,6 +46,7 @@ import com.android.healthconnect.controller.utils.logging.AdditionalAccessElemen
 import com.android.healthconnect.controller.utils.logging.AdditionalAccessElement.HISTORY_READ_BUTTON
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.settingslib.widget.FooterPreference
 import dagger.hilt.android.AndroidEntryPoint
@@ -157,7 +158,8 @@ class AdditionalAccessFragment : Hilt_AdditionalAccessFragment() {
             )
             footerPref.setLearnMoreAction {
                 findNavController()
-                    .navigate(
+                    .navigateSafe(
+                        R.id.additionalAccessFragment,
                         R.id.action_additionalAccess_to_medicalApp,
                         Bundle().apply {
                             putString(EXTRA_PACKAGE_NAME, packageName)

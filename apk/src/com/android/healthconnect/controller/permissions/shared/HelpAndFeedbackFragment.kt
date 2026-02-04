@@ -40,6 +40,7 @@ import com.android.healthconnect.controller.shared.preference.HealthPreferenceFr
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.logging.AppPermissionsElement
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -77,13 +78,21 @@ class HelpAndFeedbackFragment : Hilt_HelpAndFeedbackFragment() {
 
         mCheckForUpdates.logName = AppPermissionsElement.CHECK_FOR_UPDATES_BUTTON
         mCheckForUpdates.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_cant_see_all_apps_to_updated_apps)
+            findNavController()
+                .navigateSafe(
+                    R.id.helpAndFeedbackFragment,
+                    R.id.action_cant_see_all_apps_to_updated_apps,
+                )
             true
         }
 
         mSeeAllCompatibleApps.logName = AppPermissionsElement.SEE_ALL_COMPATIBLE_APPS_BUTTON
         mSeeAllCompatibleApps.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_cant_see_all_apps_to_play_store)
+            findNavController()
+                .navigateSafe(
+                    R.id.helpAndFeedbackFragment,
+                    R.id.action_cant_see_all_apps_to_play_store,
+                )
             true
         }
 

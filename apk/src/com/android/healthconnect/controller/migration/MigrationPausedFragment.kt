@@ -30,6 +30,7 @@ import com.android.healthconnect.controller.shared.preference.HealthSetupHeaderP
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -71,7 +72,11 @@ class MigrationPausedFragment : Hilt_MigrationPausedFragment() {
         resumeButton.setOnClickListener {
             logger.logInteraction(MigrationElement.MIGRATION_PAUSED_CONTINUE_BUTTON)
             try {
-                findNavController().navigate(R.id.action_migrationPausedFragment_to_migrationApk)
+                findNavController()
+                    .navigateSafe(
+                        R.id.migrationPausedFragment,
+                        R.id.action_migrationPausedFragment_to_migrationApk,
+                    )
             } catch (exception: Exception) {
                 Log.e(TAG, "Migration APK does not exist", exception)
                 Toast.makeText(requireContext(), R.string.default_error, Toast.LENGTH_SHORT).show()
@@ -89,7 +94,11 @@ class MigrationPausedFragment : Hilt_MigrationPausedFragment() {
                     putBoolean(INTEGRATION_PAUSED_SEEN_KEY, true)
                     apply()
                 }
-                findNavController().navigate(R.id.action_migrationPausedFragment_to_homeScreen)
+                findNavController()
+                    .navigateSafe(
+                        R.id.migrationPausedFragment,
+                        R.id.action_migrationPausedFragment_to_homeScreen,
+                    )
             }
             requireActivity().finish()
         }

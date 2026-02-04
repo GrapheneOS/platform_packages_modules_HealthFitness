@@ -114,19 +114,6 @@ class DevicesFragmentTest {
     }
 
     @Test
-    fun emptyState_displaysNothingWhenDataSourcesIsEmpty() {
-        deviceSourcesState.value = DeviceSourcesState.WithData(emptySet())
-
-        launchFragment<DevicesFragment>(Bundle()).use {
-            onView(withText("Some watch")).check(doesNotExist())
-            onView(withText("Some phone")).check(doesNotExist())
-
-            onView(withText("Enabled")).check(matches(isDisplayed()))
-            onView(withText("Not enabled")).check(doesNotExist())
-        }
-    }
-
-    @Test
     fun withDevices_showsAllDevices() {
         launchFragment<DevicesFragment>(Bundle()).use {
             onView(withText("Some watch")).check(matches(isDisplayed()))
@@ -134,6 +121,18 @@ class DevicesFragmentTest {
 
             onView(withText("Enabled")).check(matches(isDisplayed()))
             onView(withText("Not enabled")).check(doesNotExist())
+        }
+    }
+
+    @Test
+    fun withOnlyDisabledDevices_hidesEnabledSection() {
+        deviceSourcesState.value = DeviceSourcesState.WithData(setOf(createDisabledDevice()))
+
+        launchFragment<DevicesFragment>(Bundle()).use {
+            onView(withText("Disabled Device")).check(matches(isDisplayed()))
+
+            onView(withText("Enabled")).check(doesNotExist())
+            onView(withText("Not enabled")).check(matches(isDisplayed()))
         }
     }
 

@@ -40,6 +40,7 @@ import com.android.healthconnect.controller.shared.preference.NoDataPreference
 import com.android.healthconnect.controller.utils.logging.DataAccessElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setTitle
 import dagger.hilt.android.AndroidEntryPoint
@@ -238,7 +239,8 @@ class AccessFragment : Hilt_AccessFragment() {
                     R.id.action_entriesAndAccessFragment_to_combinedPermissions
             }
         findNavController()
-            .navigate(
+            .navigateSafe(
+                R.id.entriesAndAccessFragment,
                 navigationId,
                 Bundle().apply {
                     putString(EXTRA_PACKAGE_NAME, appAccessMetadata.appMetadata.packageName)

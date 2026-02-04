@@ -214,6 +214,10 @@
     <!-- Onboarding Screen -->
     <string name="onboarding_title">3P Onboarding screen / flow</string>
     <string name="onboarding_message">Please allow fitness permissions for testing.</string>
+    <string name="ddp_onboarding_title">Sync your device</string>
+    <string name="ddp_onboarding_subtitle">Choose which data types to sync with Health Connect from this device.</string>
+    <string name="ddp_onboarding_device_details">DEVICE DETAILS</string>
+    <string name="ddp_onboarding_requested_access">REQUESTED ACCESS</string>
     <string name="continue_string">Continue</string>
     <!-- endregion -->
 

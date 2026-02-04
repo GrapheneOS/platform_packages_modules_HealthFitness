@@ -23,12 +23,14 @@ import android.health.connect.device.DeviceDataAdvertisement
 import android.health.connect.device.DeviceDataTypeAdvertisement
 import android.os.Bundle
 import android.os.OutcomeReceiver
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.android.healthconnect.testapps.toolbox.DeviceOnboardingActivity.Companion.TOOLBOX_APP_NAME
@@ -51,6 +53,7 @@ class DdpOnboardingFragment : Fragment() {
     }
 
     private val viewModel: AdvertiseDevicesViewModel by activityViewModels()
+    private val typeToggles = mutableMapOf<String, SwitchCompat>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,21 +78,54 @@ class DdpOnboardingFragment : Fragment() {
 
         val intent = activity?.intent
         val currentDeviceId = intent?.getStringExtra(HealthConnectManager.EXTRA_DEVICE_ID)
+        val recordTypeNames =
+            intent?.getStringArrayExtra(EXTRA_DEVICE_RECORD_TYPES)
+                ?: intent?.getStringArrayListExtra(EXTRA_DEVICE_RECORD_TYPES)?.toTypedArray()
 
         val info = viewModel.selectedDeviceDataSourceInfo.value
         if (info != null) {
             deviceNameView.text = info.device.displayName ?: info.device.model ?: currentDeviceId
             deviceInfoView.text = "${info.device.manufacturer} • ${info.device.model}"
+
             dataTypesContainer.removeAllViews()
+            typeToggles.clear()
+
             val toolboxProvider =
                 info.deviceDataProviderInfos.find { it.packageName == TOOLBOX_APP_NAME }
+
             toolboxProvider?.deviceDataTypeAdvertisements?.forEach { ad ->
+                // Only show toggles for record types that were matched in the session
+                val isMatched = recordTypeNames == null || ad.dataType.name in recordTypeNames
+                if (!isMatched) {
+                    return@forEach
+                }
+
                 val itemPadding = (8 * resources.displayMetrics.density).toInt()
-                val textView = TextView(requireContext())
-                textView.text = "• ${ad.dataType.simpleName}"
-                textView.textSize = 18f
-                textView.setPadding(0, itemPadding, 0, itemPadding)
-                dataTypesContainer.addView(textView)
+
+                val row =
+                    LinearLayout(requireContext()).apply {
+                        orientation = LinearLayout.HORIZONTAL
+                        gravity = Gravity.CENTER_VERTICAL
+                        setPadding(0, itemPadding, 0, itemPadding)
+                    }
+
+                val label =
+                    TextView(requireContext()).apply {
+                        text = ad.dataType.simpleName
+                        textSize = 18f
+                        layoutParams =
+                            LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+                    }
+
+                val toggle =
+                    SwitchCompat(requireContext()).apply {
+                        isChecked = true // Default to enabled for requested matched types
+                    }
+
+                typeToggles[ad.dataType.name] = toggle
+                row.addView(label)
+                row.addView(toggle)
+                dataTypesContainer.addView(row)
             }
         } else {
             deviceNameView.text = currentDeviceId ?: "Generic Watch"
@@ -107,10 +143,6 @@ class DdpOnboardingFragment : Fragment() {
         }
 
         confirmButton.setOnClickListener {
-            val recordTypeNames =
-                intent?.getStringArrayExtra(EXTRA_DEVICE_RECORD_TYPES)
-                    ?: intent?.getStringArrayListExtra(EXTRA_DEVICE_RECORD_TYPES)?.toTypedArray()
-
             // 1. Get all current devices for the Toolbox from Health Connect
             healthConnectManager.getDeviceDataSourceInfos(
                 Executors.newSingleThreadExecutor(),
@@ -127,13 +159,14 @@ class DdpOnboardingFragment : Fragment() {
                                 val adSet =
                                     providerInfo.deviceDataTypeAdvertisements
                                         .map { ad ->
-                                            val isMatchedType =
-                                                recordTypeNames == null ||
-                                                    ad.dataType.name in recordTypeNames
-                                            val shouldEnableNow = isCurrentDevice && isMatchedType
+                                            val toggle = typeToggles[ad.dataType.name]
 
+                                            // Final state is toggled state for the current device
+                                            // and matched types,
+                                            // or the current system state for everything else.
                                             val finalEnabledState =
-                                                ad.isUserEnabled || shouldEnableNow
+                                                (if (isCurrentDevice) toggle?.isChecked else null)
+                                                    ?: ad.isUserEnabled
 
                                             DeviceDataTypeAdvertisement.Builder(ad.dataType)
                                                 .setAvailable(ad.isAvailable)

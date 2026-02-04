@@ -41,6 +41,7 @@ import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.ImportSourceLocationElement
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -121,7 +122,10 @@ class ImportSourceLocationFragment : Hilt_ImportSourceLocationFragment() {
 
                     documentHelper.setupFooter(providers.providers) {
                         findNavController()
-                            .navigate(R.id.action_importSourceLocationFragment_to_playStore)
+                            .navigateSafe(
+                                R.id.importSourceLocationFragment,
+                                R.id.action_importSourceLocationFragment_to_playStore,
+                            )
                     }
                 }
             }

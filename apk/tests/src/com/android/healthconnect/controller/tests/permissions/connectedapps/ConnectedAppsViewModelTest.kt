@@ -15,6 +15,8 @@
  */
 package com.android.healthconnect.controller.tests.permissions.connectedapps
 
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ConnectedAppsViewModel
@@ -28,8 +30,10 @@ import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.OLD_TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
+import com.android.healthconnect.controller.tests.utils.TEST_WATCH_SPN
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionAppsUseCase
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -62,6 +66,7 @@ class ConnectedAppsViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule val setFlagsRule = SetFlagsRule()
     private val testDispatcher = UnconfinedTestDispatcher()
 
     private val loadHealthPermissionApps: ILoadHealthPermissionApps =
@@ -294,6 +299,59 @@ class ConnectedAppsViewModelTest {
                 NORMAL_APP,
                 ConnectedAppMetadata(
                     NORMAL_APP_INFO.copy(packageName = "android"),
+                    status = ConnectedAppStatus.ALLOWED,
+                ),
+            )
+        )
+
+        val testObserver = TestObserver<List<ConnectedAppMetadata>>()
+        viewModel.connectedApps.observeForever(testObserver)
+        advanceUntilIdle()
+
+        viewModel.searchConnectedApps("a")
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual).containsExactly(NORMAL_APP)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadConnectedApps_filtersOutSyntheticPackage() = runTest {
+        (loadHealthPermissionApps as FakeHealthPermissionAppsUseCase).updateList(
+            listOf(
+                ConnectedAppMetadata(TEST_APP, status = ConnectedAppStatus.ALLOWED),
+                ConnectedAppMetadata(
+                    TEST_APP_2.copy(packageName = TEST_WATCH_SPN),
+                    status = ConnectedAppStatus.DENIED,
+                ),
+                ConnectedAppMetadata(OLD_TEST_APP, status = ConnectedAppStatus.NEEDS_UPDATE),
+            )
+        )
+        val testObserver = TestObserver<List<ConnectedAppMetadata>>()
+        viewModel.connectedApps.observeForever(testObserver)
+        viewModel.loadConnectedApps()
+        advanceUntilIdle()
+
+        val actual = testObserver.getLastValue()
+        assertThat(actual)
+            .containsExactlyElementsIn(
+                listOf(
+                    ConnectedAppMetadata(TEST_APP, status = ConnectedAppStatus.ALLOWED),
+                    ConnectedAppMetadata(OLD_TEST_APP, status = ConnectedAppStatus.NEEDS_UPDATE),
+                )
+            )
+        assertThat(actual.any { it.appMetadata.packageName == TEST_WATCH_SPN }).isFalse()
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun searchConnectedApps_filtersOutSyntheticPackage() = runTest {
+        (loadHealthPermissionApps as FakeHealthPermissionAppsUseCase).updateList(
+            listOf(
+                NORMAL_APP,
+                ConnectedAppMetadata(
+                    NORMAL_APP_INFO.copy(packageName = TEST_WATCH_SPN),
                     status = ConnectedAppStatus.ALLOWED,
                 ),
             )

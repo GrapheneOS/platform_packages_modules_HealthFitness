@@ -23,10 +23,10 @@ import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.searchapps.SearchHealthPermissionApps
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteAllDataUseCase
-import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.utils.isDevicePackage
 import com.android.healthconnect.controller.utils.postValueIfUpdated
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -155,7 +155,7 @@ constructor(
     }
 
     private fun List<ConnectedAppMetadata>.filterDevices(): List<ConnectedAppMetadata> {
-        return this.filterNot { it.appMetadata.packageName == DEVICE_DATA_PROVIDER_PACKAGE }
+        return this.filterNot { isDevicePackage(it.appMetadata.packageName) }
     }
 
     sealed class DisconnectAllState {

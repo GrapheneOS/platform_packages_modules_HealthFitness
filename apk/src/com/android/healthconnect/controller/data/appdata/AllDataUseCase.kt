@@ -28,6 +28,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.data.fromHealthPermissionCategory
 import com.android.healthconnect.controller.permissions.data.fromMedicalResourceType
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.FITNESS_DATA_CATEGORIES
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.MEDICAL
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.healthPermissionTypes
@@ -35,6 +36,7 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthfitness.flags.Flags
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -221,6 +223,13 @@ constructor(
             permissionTypes.filter {
                 if (packageName == null) {
                     hasData(it, recordTypeInfoMap)
+                } else if (
+                    deviceDataProvidersApi() &&
+                        (packageName == healthConnectManager.currentDeviceId ||
+                            packageName == DEVICE_DATA_PROVIDER_PACKAGE)
+                ) {
+                    hasDataByApp(it, recordTypeInfoMap, healthConnectManager.currentDeviceId) ||
+                        hasDataByApp(it, recordTypeInfoMap, DEVICE_DATA_PROVIDER_PACKAGE)
                 } else {
                     hasDataByApp(it, recordTypeInfoMap, packageName)
                 }

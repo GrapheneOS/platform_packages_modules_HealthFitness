@@ -572,6 +572,10 @@ class MatchmakingViewModelTest {
         }
 
     @Test
+    @EnableFlags(
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
     fun grantPermissions_withMultipleDevices_postsIntentsToQueue() = runTest {
         setupWithData()
         viewModel.addDevicePermissionToGrantedList(TEST_WATCH_DEVICE_PACKAGE_NAME)
@@ -624,6 +628,10 @@ class MatchmakingViewModelTest {
     }
 
     @Test
+    @EnableFlags(
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
     fun onDdpIntentFinished_withResultAllowed_setsAtLeastOneGrantSucceededAndPostsNextIntent() =
         runTest {
             setupWithData()
@@ -640,6 +648,10 @@ class MatchmakingViewModelTest {
         }
 
     @Test
+    @EnableFlags(
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
     fun onDdpIntentFinished_withResultAborted_recordsDenialAndFinishesWithPreviousResult() =
         runTest {
             setupWithData()
@@ -664,6 +676,10 @@ class MatchmakingViewModelTest {
         }
 
     @Test
+    @EnableFlags(
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
     fun onDdpIntentFinished_withResultDenied_recordsDenialAndPostsNextIntent() = runTest {
         setupWithData()
         viewModel.addDevicePermissionToGrantedList("com.example.watchdevice")
@@ -685,6 +701,10 @@ class MatchmakingViewModelTest {
     }
 
     @Test
+    @EnableFlags(
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
     fun onDdpIntentFinished_withResultAborted_withPreviousGrants_returnsResultOk() = runTest {
         setupWithData()
         // Grant all app permissions so no app denial is recorded during grantPermissions
@@ -706,6 +726,10 @@ class MatchmakingViewModelTest {
     }
 
     @Test
+    @EnableFlags(
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
     fun onDdpIntentFinished_withResultCanceled_withPreviousGrants_returnsResultOk() = runTest {
         setupWithData()
         // Grant an app permission to set _atLeastOneGrantSucceeded to true
@@ -747,6 +771,10 @@ class MatchmakingViewModelTest {
     }
 
     @Test
+    @EnableFlags(
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
     fun onDdpIntentFinished_withResultOkAndEmptyQueue_postsNullAndOkToFinishedEvent() = runTest {
         setupWithData()
         viewModel.addDevicePermissionToGrantedList(TEST_WATCH_DEVICE_PACKAGE_NAME)
@@ -812,6 +840,10 @@ class MatchmakingViewModelTest {
     }
 
     @Test
+    @EnableFlags(
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
     fun consumeDdpOnboardingEvent_resetsStateToSetup() = runTest {
         setupWithData()
         viewModel.addDevicePermissionToGrantedList(TEST_WATCH_DEVICE_PACKAGE_NAME)

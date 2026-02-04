@@ -30,15 +30,19 @@ import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.SymptomRecord
 import android.health.connect.datatypes.WeightRecord
 import android.os.OutcomeReceiver
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
 import android.platform.test.annotations.RequiresFlagsDisabled
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.appdata.AllDataUseCase
 import com.android.healthconnect.controller.data.appdata.PermissionTypesPerCategory
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.MEDICAL
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults.Success
@@ -47,6 +51,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE_2
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE_DIFFERENT_APP
+import com.android.healthconnect.controller.tests.utils.TEST_WATCH_SPN
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.android.healthfitness.flags.Flags
@@ -64,6 +69,7 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
+import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -71,6 +77,7 @@ class AllDataUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
+    @get:Rule val setFlagsRule = SetFlagsRule()
 
     @BindValue lateinit var appInfoReader: AppInfoReader
     private lateinit var context: Context
@@ -92,6 +99,232 @@ class AllDataUseCaseTest {
             }
             .`when`(healthConnectManager)
             .readRecords<Record>(any(), any(), any())
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadFitnessAppData_ddpFlagsOn_currentDevicePackageName_includesLegacySourceInCategories() =
+        runTest {
+            val deviceId = "test_device_id"
+            whenever(healthConnectManager.currentDeviceId).thenReturn(deviceId)
+
+            val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+                mapOf(
+                    StepsRecord::class.java to
+                        RecordTypeInfoResponse(
+                            setOf(HealthPermissionCategory.STEPS),
+                            HealthDataCategory.ACTIVITY,
+                            listOf(getDataOrigin(DEVICE_DATA_PROVIDER_PACKAGE)),
+                        )
+                )
+
+            Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
+                .`when`(healthConnectManager)
+                .queryAllRecordTypesInfo(any(), any())
+
+            val expected =
+                Success(
+                    listOf(
+                        PermissionTypesPerCategory(
+                            HealthDataCategory.ACTIVITY,
+                            listOf(FitnessPermissionType.STEPS),
+                        ),
+                        PermissionTypesPerCategory(HealthDataCategory.BODY_MEASUREMENTS, listOf()),
+                        PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
+                        PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
+                        PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
+                        PermissionTypesPerCategory(HealthDataCategory.VITALS, listOf()),
+                        PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                        PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
+                    )
+                )
+            assertThat(allDataUseCase.loadFitnessAppData(deviceId)).isEqualTo(expected)
+        }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadFitnessAppData_ddpFlagsOn_randomDevice_ignoresLegacySourceInCategories() = runTest {
+        val deviceId = TEST_WATCH_SPN
+        whenever(healthConnectManager.currentDeviceId).thenReturn("NotDeviceId")
+
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+            mapOf(
+                StepsRecord::class.java to
+                    RecordTypeInfoResponse(
+                        setOf(HealthPermissionCategory.STEPS),
+                        HealthDataCategory.ACTIVITY,
+                        listOf(getDataOrigin(DEVICE_DATA_PROVIDER_PACKAGE)),
+                    )
+            )
+
+        Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
+            .`when`(healthConnectManager)
+            .queryAllRecordTypesInfo(any(), any())
+
+        val expected =
+            Success(
+                listOf(
+                    PermissionTypesPerCategory(HealthDataCategory.ACTIVITY, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.BODY_MEASUREMENTS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.VITALS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
+                )
+            )
+        assertThat(allDataUseCase.loadFitnessAppData(deviceId)).isEqualTo(expected)
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadFitnessAppData_ddpFlagsOff_currentDevicePackageName_ignoresLegacySourceInCategories() =
+        runTest {
+            val deviceId = "test_device_id"
+            whenever(healthConnectManager.currentDeviceId).thenReturn(deviceId)
+
+            val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+                mapOf(
+                    StepsRecord::class.java to
+                        RecordTypeInfoResponse(
+                            HealthPermissionCategory.STEPS,
+                            HealthDataCategory.ACTIVITY,
+                            listOf(getDataOrigin(DEVICE_DATA_PROVIDER_PACKAGE)),
+                        )
+                )
+
+            Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
+                .`when`(healthConnectManager)
+                .queryAllRecordTypesInfo(any(), any())
+
+            val expected =
+                Success(
+                    listOf(
+                        PermissionTypesPerCategory(HealthDataCategory.ACTIVITY, listOf()),
+                        PermissionTypesPerCategory(HealthDataCategory.BODY_MEASUREMENTS, listOf()),
+                        PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
+                        PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
+                        PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
+                        PermissionTypesPerCategory(HealthDataCategory.VITALS, listOf()),
+                        PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                        PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
+                    )
+                )
+            assertThat(allDataUseCase.loadFitnessAppData(deviceId)).isEqualTo(expected)
+        }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadFitnessAppData_ddpFlagsOn_android_includesCurrentDeviceInCategories() = runTest {
+        val currentDeviceId = "test_device_id"
+        whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+            mapOf(
+                StepsRecord::class.java to
+                    RecordTypeInfoResponse(
+                        setOf(HealthPermissionCategory.STEPS),
+                        HealthDataCategory.ACTIVITY,
+                        listOf(getDataOrigin(currentDeviceId)),
+                    )
+            )
+
+        Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
+            .`when`(healthConnectManager)
+            .queryAllRecordTypesInfo(any(), any())
+
+        val expected =
+            Success(
+                listOf(
+                    PermissionTypesPerCategory(
+                        HealthDataCategory.ACTIVITY,
+                        listOf(FitnessPermissionType.STEPS),
+                    ),
+                    PermissionTypesPerCategory(HealthDataCategory.BODY_MEASUREMENTS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.VITALS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
+                )
+            )
+        assertThat(allDataUseCase.loadFitnessAppData(DEVICE_DATA_PROVIDER_PACKAGE))
+            .isEqualTo(expected)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadFitnessAppData_ddpFlagsOn_android_ignoresRandomDeviceHasDataInCategories() = runTest {
+        whenever(healthConnectManager.currentDeviceId).thenReturn("NotDeviceId")
+
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+            mapOf(
+                StepsRecord::class.java to
+                    RecordTypeInfoResponse(
+                        setOf(HealthPermissionCategory.STEPS),
+                        HealthDataCategory.ACTIVITY,
+                        listOf(getDataOrigin(TEST_WATCH_SPN)),
+                    )
+            )
+
+        Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
+            .`when`(healthConnectManager)
+            .queryAllRecordTypesInfo(any(), any())
+
+        val expected =
+            Success(
+                listOf(
+                    PermissionTypesPerCategory(HealthDataCategory.ACTIVITY, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.BODY_MEASUREMENTS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.VITALS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
+                )
+            )
+        assertThat(allDataUseCase.loadFitnessAppData(DEVICE_DATA_PROVIDER_PACKAGE))
+            .isEqualTo(expected)
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadFitnessAppData_ddpFlagsOff_android_ignoresCurrentDeviceInCategories() = runTest {
+        val currentDeviceId = "test_device_id"
+        whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
+            mapOf(
+                StepsRecord::class.java to
+                    RecordTypeInfoResponse(
+                        setOf(HealthPermissionCategory.STEPS),
+                        HealthDataCategory.ACTIVITY,
+                        listOf(getDataOrigin(currentDeviceId)),
+                    )
+            )
+
+        Mockito.doAnswer(prepareAnswer(recordTypeInfoMap))
+            .`when`(healthConnectManager)
+            .queryAllRecordTypesInfo(any(), any())
+
+        val expected =
+            Success(
+                listOf(
+                    PermissionTypesPerCategory(HealthDataCategory.ACTIVITY, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.BODY_MEASUREMENTS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.VITALS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
+                    PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
+                )
+            )
+        assertThat(allDataUseCase.loadFitnessAppData(DEVICE_DATA_PROVIDER_PACKAGE))
+            .isEqualTo(expected)
     }
 
     @Test

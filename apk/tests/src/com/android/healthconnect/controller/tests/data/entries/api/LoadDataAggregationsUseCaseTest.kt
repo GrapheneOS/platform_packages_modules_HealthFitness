@@ -16,13 +16,18 @@
 package com.android.healthconnect.controller.tests.data.entries.api
 
 import android.content.Context
+import android.health.connect.AggregateRecordsRequest
 import android.health.connect.AggregateRecordsResponse
 import android.health.connect.AggregateResult
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.AggregationType
+import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.units.Energy
 import android.health.connect.datatypes.units.Length
 import android.os.OutcomeReceiver
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
@@ -37,12 +42,14 @@ import com.android.healthconnect.controller.data.formatters.StepsFormatter
 import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.service.HealthManagerModule
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.setLocale
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -63,7 +70,9 @@ import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -73,7 +82,7 @@ import org.mockito.kotlin.whenever
 class LoadDataAggregationsUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-
+    @get:Rule val checkFlagsRule = SetFlagsRule()
     private lateinit var context: Context
     @BindValue lateinit var appInfoReader: AppInfoReader
     @BindValue
@@ -110,6 +119,151 @@ class LoadDataAggregationsUseCaseTest {
                 healthConnectManager,
                 appInfoReader,
                 Dispatchers.Main,
+            )
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadDataAggregationsUseCase_flagsOn_withCurrentDevicePackage_addsAndroidPackageToFilter() =
+        runTest {
+            val deviceId = "test_device_id"
+            whenever(healthConnectManager.currentDeviceId).thenReturn(deviceId)
+            doAnswer(prepareStepsAggregationAnswer())
+                .whenever(healthConnectManager)
+                .aggregate<Long>(any(), any(), any())
+
+            val input =
+                LoadAggregationInput.PeriodAggregation(
+                    FitnessPermissionType.STEPS,
+                    deviceId,
+                    displayedStartTime = Instant.now(),
+                    period = DateNavigationPeriod.PERIOD_DAY,
+                    showDataOrigin = true,
+                )
+
+            loadDataAggregationsUseCase.invoke(input)
+            val captor = argumentCaptor<AggregateRecordsRequest<Long>>()
+            verify(healthConnectManager).aggregate<Long>(captor.capture(), any(), any())
+
+            val request = captor.firstValue
+            assertThat(request.dataOriginsFilters)
+                .containsExactly(
+                    DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build(),
+                    DataOrigin.Builder().setPackageName(deviceId).build(),
+                )
+        }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadDataAggregationsUseCase_flagsOff_withCurrentDevicePackage_doesNotAddAndroidPackage() =
+        runTest {
+            val deviceId = "test_device_id"
+            whenever(healthConnectManager.currentDeviceId).thenReturn(deviceId)
+            doAnswer(prepareStepsAggregationAnswer())
+                .whenever(healthConnectManager)
+                .aggregate<Long>(any(), any(), any())
+
+            val input =
+                LoadAggregationInput.PeriodAggregation(
+                    FitnessPermissionType.STEPS,
+                    deviceId,
+                    displayedStartTime = Instant.now(),
+                    period = DateNavigationPeriod.PERIOD_DAY,
+                    showDataOrigin = true,
+                )
+
+            loadDataAggregationsUseCase.invoke(input)
+            val captor = argumentCaptor<AggregateRecordsRequest<Long>>()
+            verify(healthConnectManager).aggregate<Long>(captor.capture(), any(), any())
+
+            val request = captor.firstValue
+            assertThat(request.dataOriginsFilters)
+                .containsExactly(DataOrigin.Builder().setPackageName(deviceId).build())
+        }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadDataAggregationsUseCase_withRandomDevice_doesNotAddAndroidPackageToFilter() = runTest {
+        val deviceId = "test_device_id"
+        whenever(healthConnectManager.currentDeviceId).thenReturn("not_test_device_id")
+        doAnswer(prepareStepsAggregationAnswer())
+            .whenever(healthConnectManager)
+            .aggregate<Long>(any(), any(), any())
+
+        val input =
+            LoadAggregationInput.PeriodAggregation(
+                FitnessPermissionType.STEPS,
+                deviceId,
+                displayedStartTime = Instant.now(),
+                period = DateNavigationPeriod.PERIOD_DAY,
+                showDataOrigin = true,
+            )
+
+        loadDataAggregationsUseCase.invoke(input)
+        val captor = argumentCaptor<AggregateRecordsRequest<Long>>()
+        verify(healthConnectManager).aggregate<Long>(captor.capture(), any(), any())
+
+        val request = captor.firstValue
+        assertThat(request.dataOriginsFilters)
+            .containsExactly(DataOrigin.Builder().setPackageName(deviceId).build())
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadDataAggregationsUseCase_flagsOn_withAndroid_addsCurrentDeviceToFilter() = runTest {
+        val currentDeviceId = "test_device_id"
+        whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+        doAnswer(prepareStepsAggregationAnswer())
+            .whenever(healthConnectManager)
+            .aggregate<Long>(any(), any(), any())
+
+        val input =
+            LoadAggregationInput.PeriodAggregation(
+                FitnessPermissionType.STEPS,
+                DEVICE_DATA_PROVIDER_PACKAGE,
+                displayedStartTime = Instant.now(),
+                period = DateNavigationPeriod.PERIOD_DAY,
+                showDataOrigin = true,
+            )
+
+        loadDataAggregationsUseCase.invoke(input)
+        val captor = argumentCaptor<AggregateRecordsRequest<Long>>()
+        verify(healthConnectManager).aggregate<Long>(captor.capture(), any(), any())
+
+        val request = captor.firstValue
+        assertThat(request.dataOriginsFilters)
+            .containsExactly(
+                DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build(),
+                DataOrigin.Builder().setPackageName(currentDeviceId).build(),
+            )
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadDataAggregationsUseCase_flagsOff_withAndroid_doesNotAddCurrentDevice() = runTest {
+        val currentDeviceId = "test_device_id"
+        whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+        doAnswer(prepareStepsAggregationAnswer())
+            .whenever(healthConnectManager)
+            .aggregate<Long>(any(), any(), any())
+
+        val input =
+            LoadAggregationInput.PeriodAggregation(
+                FitnessPermissionType.STEPS,
+                DEVICE_DATA_PROVIDER_PACKAGE,
+                displayedStartTime = Instant.now(),
+                period = DateNavigationPeriod.PERIOD_DAY,
+                showDataOrigin = true,
+            )
+
+        loadDataAggregationsUseCase.invoke(input)
+        val captor = argumentCaptor<AggregateRecordsRequest<Long>>()
+        verify(healthConnectManager).aggregate<Long>(captor.capture(), any(), any())
+
+        val request = captor.firstValue
+        assertThat(request.dataOriginsFilters)
+            .containsExactly(
+                DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build()
             )
     }
 

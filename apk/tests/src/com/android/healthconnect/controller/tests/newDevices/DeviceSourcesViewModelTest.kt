@@ -84,6 +84,12 @@ class DeviceSourcesViewModelTest {
     }
 
     @Test
+    fun loadDeviceSourcesInfos_successButEmpty_updatesStateToError() = runTest {
+        val state = loadSuccessfulDeviceSourcesState(setOf())
+        assertThat(state).isEqualTo(DeviceSourcesState.Error)
+    }
+
+    @Test
     fun loadDeviceSourcesInfos_error_updatesState() = runTest {
         val state = loadFailedDeviceSourcesState()
         assertThat(state).isEqualTo(DeviceSourcesState.Error)

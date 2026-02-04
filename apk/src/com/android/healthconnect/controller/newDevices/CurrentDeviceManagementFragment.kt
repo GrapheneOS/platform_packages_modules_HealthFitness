@@ -234,7 +234,6 @@ class CurrentDeviceManagementFragment : Hilt_CurrentDeviceManagementFragment() {
 
     private fun updateDeviceDataButton(deviceAppMetadata: AppMetadata) {
         deviceDataButton.setOnPreferenceClickListener {
-            // TODO(b/477202157): Include legacy "android" app data when browsing current device
             findNavController()
                 .navigate(
                     R.id.action_currentDeviceManagementFragment_to_appData,

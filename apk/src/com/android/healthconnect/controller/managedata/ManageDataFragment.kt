@@ -12,6 +12,7 @@ import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.logging.ManageDataElement
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -47,25 +48,29 @@ class ManageDataFragment : Hilt_ManageDataFragment() {
 
         mAutoDeletePreference.logName = ManageDataElement.AUTO_DELETE_BUTTON
         mAutoDeletePreference.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_manageData_to_autoDelete)
+            findNavController()
+                .navigateSafe(R.id.manageDataFragment, R.id.action_manageData_to_autoDelete)
             true
         }
 
         mDataSourcesPreference.logName = ManageDataElement.DATA_SOURCES_AND_PRIORITY_BUTTON
         mDataSourcesPreference.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_manageData_to_dataSources)
+            findNavController()
+                .navigateSafe(R.id.manageDataFragment, R.id.action_manageData_to_dataSources)
             true
         }
 
         mSetUnitsPreference.logName = ManageDataElement.SET_UNITS_BUTTON
         mSetUnitsPreference.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_manageData_to_setUnits)
+            findNavController()
+                .navigateSafe(R.id.manageDataFragment, R.id.action_manageData_to_setUnits)
             true
         }
 
         backupAndRestorePreference.logName = ManageDataElement.BACKUP_AND_RESTORE_BUTTON
         backupAndRestorePreference.setOnPreferenceClickListener {
-            findNavController().navigate(R.id.action_manageData_to_backupAndRestore)
+            findNavController()
+                .navigateSafe(R.id.manageDataFragment, R.id.action_manageData_to_backupAndRestore)
             true
         }
     }
