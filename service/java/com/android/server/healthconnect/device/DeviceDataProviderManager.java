@@ -73,6 +73,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -157,6 +158,7 @@ public class DeviceDataProviderManager {
         requireNonNull(callingDdpPackageName);
 
         validateDdpConfiguration(callingDdpPackageName);
+        validateDeviceIdsAreUnique(advertisements);
 
         List<Long> existingAppInfoIds =
                 mDeviceDataSourcesHelper.getAppInfoIds(callingDdpPackageName);
@@ -497,6 +499,31 @@ public class DeviceDataProviderManager {
                     "The device with id "
                             + deviceId
                             + " has already been used for a different device type.";
+            Slog.e(TAG, message);
+            throw new IllegalArgumentException(message);
+        }
+    }
+
+    private void validateDeviceIdsAreUnique(Set<DeviceDataAdvertisement> advertisements) {
+        Map<String, Long> counts =
+                advertisements.stream()
+                        .map(DeviceDataAdvertisement::getDeviceId)
+                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        List<String> duplicates =
+                counts.entrySet().stream()
+                        .filter(entry -> entry.getValue() > 1)
+                        .map(Map.Entry::getKey)
+                        .collect(Collectors.toList());
+
+        if (!duplicates.isEmpty()) {
+            String message =
+                    String.format(
+                            "Duplicate Device IDs found: %s. Device IDs must be unique across"
+                                + " advertisements in a single request. To combine multiple devices"
+                                + " into one source, use a single DeviceDataAdvertisement with all"
+                                + " required data types.",
+                            duplicates);
             Slog.e(TAG, message);
             throw new IllegalArgumentException(message);
         }
