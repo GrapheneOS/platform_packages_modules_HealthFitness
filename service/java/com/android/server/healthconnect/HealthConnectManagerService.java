@@ -368,6 +368,14 @@ public class HealthConnectManagerService extends SystemService {
                         try {
                             mHealthConnectInjector
                                     .getDeviceDataProviderManager()
+                                    .initializeOrRefreshCurrentDeviceIds();
+                        } catch (Exception e) {
+                            Slog.e(TAG, "Failed to initialize current device IDs", e);
+                        }
+
+                        try {
+                            mHealthConnectInjector
+                                    .getDeviceDataProviderManager()
                                     .advertiseCurrentDeviceNativeCapabilities();
                         } catch (Exception e) {
                             Slog.e(TAG, "Failed to advertise current device capabilities.", e);

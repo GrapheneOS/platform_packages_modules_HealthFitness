@@ -29,6 +29,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
@@ -319,6 +320,68 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
+    public void updateDeviceAdvertisement_recordTypesUsedAreTheSame()
+            throws PackageManager.NameNotFoundException {
+        Device originalDevice =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName(DISPLAY_NAME)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> enabledTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .setUserEnabled(true)
+                                .build());
+        DeviceDataAdvertisement firstAdvertisement =
+                new DeviceDataAdvertisement(originalDevice, DEVICE_ID, enabledTypeAdvertisements);
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(firstAdvertisement), PACKAGE_NAME);
+
+        // Insert a record so that recordTypesUsed is not null
+        List<RecordInternal<?>> record =
+                List.of(
+                        buildStepsRecord(
+                                /* startTimeMillis= */ 1000,
+                                /* endTimeMillis= */ 2000,
+                                /* stepsCount= */ 100));
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, record);
+
+        mAppInfoHelper.syncAppInfoRecordTypesUsed();
+        Set<Integer> originalRecordTypesUsed =
+                mAppInfoHelper
+                        .getAppInfoMap()
+                        .get(mAppInfoHelper.getPackageName(1L))
+                        .getRecordTypesUsed();
+        assertNotNull(originalRecordTypesUsed);
+
+        Device updatedDevice =
+                new Device.Builder()
+                        .setManufacturer(MANUFACTURER)
+                        .setModel(MODEL)
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("My fancy device")
+                        .build();
+        Set<DeviceDataTypeAdvertisement> disabledTypeAdvertisements =
+                Set.of(
+                        new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                .setAvailable(true)
+                                .setUserEnabled(false)
+                                .build());
+        DeviceDataAdvertisement updatedAdvertisement =
+                new DeviceDataAdvertisement(updatedDevice, DEVICE_ID, disabledTypeAdvertisements);
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(updatedAdvertisement), PACKAGE_NAME);
+
+        Set<Integer> updatedRecordTypesUsed =
+                mAppInfoHelper
+                        .getAppInfoMap()
+                        .get(mAppInfoHelper.getPackageName(1L))
+                        .getRecordTypesUsed();
+        assertThat(updatedRecordTypesUsed).containsExactlyElementsIn(originalRecordTypesUsed);
+    }
+
+    @Test
     public void handleAdvertisement_deviceIdUsedForDifferentDeviceType_throwsException() {
         Device device1 =
                 new Device.Builder()
@@ -504,14 +567,23 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
-    public void withMultipleCallsAndSoftRefresh_getStableCurrentDeviceId_returnsSameDeviceId() {
-
+    public void withMultipleCallsAndSoftRefresh_getStableCurrentDeviceId_returnsSameId() {
         String firstId = mDeviceDataProviderManager.getStableCurrentDeviceId();
 
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         String secondId = mDeviceDataProviderManager.getStableCurrentDeviceId();
 
         assertEquals(firstId, secondId);
+    }
+
+    @Test
+    public void withMultipleCallsAndSoftRefresh_getCurrentDeviceId_returnsDifferentIds() {
+        String firstId = mDeviceDataProviderManager.getCurrentDeviceId();
+
+        mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
+        String secondId = mDeviceDataProviderManager.getCurrentDeviceId();
+
+        assertNotEquals(firstId, secondId);
     }
 
     @Test
@@ -2319,6 +2391,24 @@ public class DeviceDataProviderManagerTest {
 
         assertThatDdpHasRecordsSizeEqualTo(packageOne, DEVICE_ID, 0, StepsRecord.class);
         assertThatDdpHasRecordsSizeEqualTo(packageTwo, DEVICE_ID, 2, StepsRecord.class);
+    }
+
+    @Test
+    public void advertiseCurrentDeviceNativeCapabilities_deviceIdsRemainSame() {
+        String initialStableId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+        String initialRuntimeId = mDeviceDataProviderManager.getCurrentDeviceId();
+
+        when(mContext.getSystemService(eq(SensorManager.class))).thenReturn(mSensorManager);
+        when(mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER)).thenReturn(mSensor);
+
+        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+
+        String updatedStableId = mDeviceDataProviderManager.getStableCurrentDeviceId();
+        String updatedRuntimeId = mDeviceDataProviderManager.getCurrentDeviceId();
+
+        assertThat(updatedStableId).isEqualTo(initialStableId);
+        assertThat(updatedRuntimeId).isEqualTo(initialRuntimeId);
     }
 
     @Test

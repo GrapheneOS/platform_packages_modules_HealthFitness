@@ -17,6 +17,7 @@
 package com.android.server.healthconnect.fitness.helpers;
 
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
+import static android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorLong;
@@ -492,6 +493,94 @@ public class DeviceDataSourcesHelperTest {
                 mTransactionManager.read(
                         new ReadTableRequest(DeviceDataSourcesHelper.TABLE_NAME))) {
             assertThat(cursor.getCount()).isEqualTo(2);
+        }
+    }
+
+    @Test
+    public void
+            insertOrUpdateAdvertisement_twoDevicesWithOverlappingKeyAttribute_updatesCorrectOne() {
+        long phoneDeviceInfoId = insertDeviceInfo();
+        String phoneSpn =
+                mSyntheticPackageNameCreator.createCanonical(DEVICE_TYPE_PHONE, DEVICE_ID);
+        long phoneAppInfoId =
+                mAppInfoHelper.insertOrUpdateDeviceDataSource(phoneSpn, phoneDeviceInfoId);
+
+        Device watch =
+                new Device.Builder()
+                        .setManufacturer("Some Manufacturer")
+                        .setModel("Some Model")
+                        .setType(DEVICE_TYPE_WATCH)
+                        .setDisplayName("Some Display Name")
+                        .build();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(DeviceInfoHelper.MANUFACTURER_COLUMN_NAME, "Some Manufacturer");
+        contentValues.put(DeviceInfoHelper.MODEL_COLUMN_NAME, "Some Model");
+        contentValues.put(DeviceInfoHelper.DEVICE_TYPE_COLUMN_NAME, DEVICE_TYPE_WATCH);
+        long watchDeviceInfoId =
+                mTransactionManager.insertOrThrowOnConflict(
+                        new UpsertTableRequest(DeviceInfoHelper.TABLE_NAME, contentValues));
+        String watchSpn =
+                mSyntheticPackageNameCreator.createCanonical(DEVICE_TYPE_WATCH, "some.other.id");
+        long watchAppInfoId =
+                mAppInfoHelper.insertOrUpdateDeviceDataSource(watchSpn, watchDeviceInfoId);
+
+        mDeviceDataSourcesHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                phoneAppInfoId,
+                new DeviceDataAdvertisement(
+                        mDevice,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build())));
+
+        mDeviceDataSourcesHelper.insertOrUpdateAdvertisement(
+                "some.package",
+                watchAppInfoId,
+                new DeviceDataAdvertisement(
+                        watch,
+                        "some.other.id",
+                        Set.of(
+                                new DeviceDataTypeAdvertisement.Builder(
+                                                StepsRecord.class) // overlapping key attribute
+                                        .setAvailable(true)
+                                        .setUserEnabled(true)
+                                        .build())));
+
+        mDeviceDataSourcesHelper.insertOrUpdateAdvertisement(
+                TEST_APP_PACKAGE,
+                phoneAppInfoId,
+                new DeviceDataAdvertisement(
+                        mDevice,
+                        DEVICE_ID,
+                        Set.of(
+                                new DeviceDataTypeAdvertisement.Builder(
+                                                StepsRecord.class) // still overlapping
+                                        .setAvailable(true)
+                                        .setUserEnabled(false) // Changed
+                                        .build())));
+
+        try (Cursor cursor =
+                mTransactionManager.read(
+                        new ReadTableRequest(DeviceDataSourcesHelper.TABLE_NAME))) {
+            assertThat(cursor.getCount()).isEqualTo(2);
+
+            while (cursor.moveToNext()) {
+                String packageName =
+                        getCursorString(cursor, DeviceDataSourcesHelper.SOURCE_PACKAGE_NAME);
+                boolean isEnabled =
+                        getIntegerAndConvertToBoolean(
+                                cursor, DeviceDataSourcesHelper.IS_USER_ENABLED);
+
+                if (packageName.equals(TEST_APP_PACKAGE)) {
+                    assertThat(isEnabled).isFalse(); // Should be updated to false
+                } else if (packageName.equals("some.package")) {
+                    assertThat(isEnabled).isTrue(); // Should remain true
+                }
+            }
         }
     }
 

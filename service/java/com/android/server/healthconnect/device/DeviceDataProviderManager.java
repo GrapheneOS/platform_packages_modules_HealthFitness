@@ -184,7 +184,6 @@ public class DeviceDataProviderManager {
      * <p>This method is called at device startup, as the generated ID is required by {@link
      * #getCurrentDeviceId}.
      */
-    @VisibleForTesting
     public void initializeOrRefreshCurrentDeviceIds() {
         mStableCurrentDeviceId =
                 mSyntheticPackageNameCreator.createCanonical(Device.DEVICE_TYPE_PHONE, getSerial());
@@ -691,8 +690,6 @@ public class DeviceDataProviderManager {
      * with "TRACKING_PREF_".
      */
     public void advertiseCurrentDeviceNativeCapabilities() {
-        initializeOrRefreshCurrentDeviceIds();
-
         DeviceDataSource currentDeviceSource = mDeviceDataSourceHelper.getCurrentDevice(mContext);
 
         Device currentDevice =

@@ -143,6 +143,7 @@ public class StepSensorEventListenerTest {
                                     healthConnectInjector.getInternalHealthConnectMappings(),
                                     true));
 
+            mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
             mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
         }
 
