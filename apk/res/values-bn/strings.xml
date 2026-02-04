@@ -397,6 +397,8 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"অনুমতি দিন"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"সব অনুমতি দিন"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"অনুমতি দেবেন না"</string>
+    <!-- no translation found for allow_and_continue (4523565115589395706) -->
+    <skip />
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Health Connect-এর কোন কোন ডেটা এই অ্যাপকে রিড বা রাইট করতে দিতে চান তা বেছে নিন"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Health Connect থেকে কোন কোন ডেটা এই অ্যাপকে রিড করতে দিতে চান তা বেছে নিন"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connect-এর কোন কোন ডেটা এই অ্যাপকে রাইট করতে দিতে চান তা বেছে নিন"</string>
@@ -1350,6 +1352,32 @@
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"আরও হেল্থ অ্যাপ দেখুন"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"কানেক্ট করা নেই"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Health Connect-এর সাথে এই অ্যাপ কানেক্ট করতে ক্লিক করুন"</string>
+    <string name="devices_screen_description" msgid="8171826001441781372">"কোন কোন ডিভাইস Health Connect-এ ডেটা সিঙ্ক করতে পারবে নিয়ন্ত্রণ করুন"</string>
+    <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"চালু করা আছে"</string>
+    <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"চালু করা নেই"</string>
+    <string name="devices_this_phone" msgid="2739727630674436885">"এই ফোনটি"</string>
+    <!-- no translation found for device_data_provider_screen_title (5410814335680943850) -->
+    <skip />
+    <!-- no translation found for manage_device_settings (5021760675216854323) -->
+    <skip />
+    <!-- no translation found for device_data_provider_enabled_types (4146093570756356467) -->
+    <skip />
+    <string name="device_type_unknown" msgid="3897304904166713087">"অজানা"</string>
+    <string name="device_type_watch" msgid="8118463935553631704">"ঘড়ি"</string>
+    <string name="device_type_phone" msgid="7916371544302291906">"ফোন"</string>
+    <string name="device_type_scale" msgid="7764152136397378795">"স্কেল"</string>
+    <string name="device_type_ring" msgid="2528444249876048468">"রিং"</string>
+    <string name="device_type_head_mounted" msgid="3968068420976829123">"হেড মাউন্ট করা"</string>
+    <string name="device_type_fitness_band" msgid="6516937392955240647">"ফিটনেস ব্যান্ড"</string>
+    <string name="device_type_chest_strap" msgid="7278831272805269282">"চেস্ট স্ট্র্যাপ"</string>
+    <string name="device_type_smart_display" msgid="1675362583797329596">"স্মার্ট ডিসপ্লে"</string>
+    <string name="device_type_consumer_medical_device" msgid="935607930814394009">"গ্রাহকের জন্য মেডিকেল ডিভাইস"</string>
+    <string name="device_type_glasses" msgid="8479316844380873535">"গ্লাস"</string>
+    <string name="device_type_hearable" msgid="9068385110951052438">"শোনা যায় এমন"</string>
+    <string name="device_type_fitness_machine" msgid="5005606659749314561">"ফিটনেস মেশিন"</string>
+    <string name="device_type_fitness_equipment" msgid="4702700814093068235">"ফিটনেস সরঞ্জাম"</string>
+    <string name="device_type_portable_computer" msgid="9003721967778945730">"পোর্টেবল কম্পিউটার"</string>
+    <string name="device_type_meter" msgid="3409050593674148325">"মিটার"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"এখন নয়"</string>
     <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"সব উপসর্গ"</string>
     <string name="symptoms_lowercase_label" msgid="767123038349492995">"উপসর্গ"</string>

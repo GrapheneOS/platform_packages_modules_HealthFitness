@@ -397,6 +397,8 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"អនុញ្ញាត"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"អនុញ្ញាតទាំងអស់"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"កុំអនុញ្ញាត"</string>
+    <!-- no translation found for allow_and_continue (4523565115589395706) -->
+    <skip />
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"ជ្រើសរើសទិន្នន័យដែលអ្នកចង់ឱ្យកម្មវិធីនេះអាន ឬសរសេរទៅ Health Connect"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"ជ្រើសរើសទិន្នន័យដែលអ្នកចង់ឱ្យកម្មវិធីនេះអានពី Health Connect"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"ជ្រើសរើសទិន្នន័យដែលអ្នកចង់ឱ្យកម្មវិធីនេះសរសេរទៅ Health Connect"</string>
@@ -1350,6 +1352,32 @@
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"មើលកម្មវិធីសុខភាពច្រើនទៀត"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"មិន​បាន​ភ្ជាប់"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"ចុចដើម្បីភ្ជាប់កម្មវិធីនេះទៅ Health Connect"</string>
+    <string name="devices_screen_description" msgid="8171826001441781372">"គ្រប់គ្រងឧបករណ៍ដែលអាចធ្វើសមកាលកម្មទិន្នន័យទៅ Health Connect"</string>
+    <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"បាន​បើក"</string>
+    <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"មិន​បាន​បើក"</string>
+    <string name="devices_this_phone" msgid="2739727630674436885">"ទូរសព្ទនេះ"</string>
+    <!-- no translation found for device_data_provider_screen_title (5410814335680943850) -->
+    <skip />
+    <!-- no translation found for manage_device_settings (5021760675216854323) -->
+    <skip />
+    <!-- no translation found for device_data_provider_enabled_types (4146093570756356467) -->
+    <skip />
+    <string name="device_type_unknown" msgid="3897304904166713087">"មិនស្គាល់"</string>
+    <string name="device_type_watch" msgid="8118463935553631704">"នាឡិកា"</string>
+    <string name="device_type_phone" msgid="7916371544302291906">"ទូរសព្ទ"</string>
+    <string name="device_type_scale" msgid="7764152136397378795">"មាត្រដ្ឋាន"</string>
+    <string name="device_type_ring" msgid="2528444249876048468">"រោទ៍"</string>
+    <string name="device_type_head_mounted" msgid="3968068420976829123">"ពាក់ជាប់ក្បាល"</string>
+    <string name="device_type_fitness_band" msgid="6516937392955240647">"ខ្សែដៃហាត់ប្រាណ"</string>
+    <string name="device_type_chest_strap" msgid="7278831272805269282">"ខ្សែពាក់ទ្រូង"</string>
+    <string name="device_type_smart_display" msgid="1675362583797329596">"អេក្រង់​ឆ្លាតវៃ"</string>
+    <string name="device_type_consumer_medical_device" msgid="935607930814394009">"ឧបករណ៍វេជ្ជសាស្ត្រសម្រាប់អ្នកប្រើប្រាស់"</string>
+    <string name="device_type_glasses" msgid="8479316844380873535">"វ៉ែនតា"</string>
+    <string name="device_type_hearable" msgid="9068385110951052438">"ឧបករណ៍ស្ដាប់"</string>
+    <string name="device_type_fitness_machine" msgid="5005606659749314561">"ម៉ាស៊ីនហាត់ប្រាណ"</string>
+    <string name="device_type_fitness_equipment" msgid="4702700814093068235">"ឧបករណ៍ហាត់ប្រាណ"</string>
+    <string name="device_type_portable_computer" msgid="9003721967778945730">"កុំព្យូទ័រចល័ត"</string>
+    <string name="device_type_meter" msgid="3409050593674148325">"ម៉ែត្រ"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"កុំទាន់"</string>
     <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"រោគសញ្ញាទាំងអស់"</string>
     <string name="symptoms_lowercase_label" msgid="767123038349492995">"រោគ​សញ្ញា"</string>
