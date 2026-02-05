@@ -76,13 +76,6 @@ class MainActivityTest {
             .getUiAutomation()
             .adoptShellPermissionIdentity(Manifest.permission.READ_DEVICE_CONFIG)
         context = InstrumentationRegistry.getInstrumentation().context
-        whenever(viewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IDLE,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(viewModel.migrationState).then {
             MutableLiveData(
                 WithData(
@@ -178,13 +171,6 @@ class MainActivityTest {
     @Test
     fun homeSettingsIntent_migrationInProgress_redirectsToMigrationInProgress() = runTest {
         showNativeSteps(context, false)
-        whenever(viewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IN_PROGRESS,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(viewModel.migrationState).then {
             MutableLiveData(
                 WithData(
@@ -209,13 +195,6 @@ class MainActivityTest {
     @Test
     fun homeSettingsIntent_dataRestoreInProgress_redirectsToRestoreInProgress() = runTest {
         showNativeSteps(context, false)
-        whenever(viewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IDLE,
-                dataRestoreState = DataRestoreUiState.IN_PROGRESS,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(viewModel.migrationState).then {
             MutableLiveData(
                 WithData(
@@ -242,13 +221,6 @@ class MainActivityTest {
     fun homeSettingsIntent_migrationPending_moduleUpdateSeen_launchesMainActivity() = runTest {
         showNativeSteps(context, false)
         setPreferenceSeen(context, Constants.MODULE_UPDATE_NEEDED_SEEN, true)
-        whenever(viewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.MODULE_UPGRADE_REQUIRED,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(viewModel.migrationState).then {
             MutableLiveData(
                 WithData(
@@ -282,13 +254,6 @@ class MainActivityTest {
         runTest {
             showNativeSteps(context, false)
             setPreferenceSeen(context, Constants.MODULE_UPDATE_NEEDED_SEEN, true)
-            whenever(viewModel.getCurrentMigrationUiState()).then {
-                MigrationRestoreState(
-                    migrationUiState = MigrationUiState.MODULE_UPGRADE_REQUIRED,
-                    dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
-                )
-            }
             whenever(viewModel.migrationState).then {
                 MutableLiveData(
                     WithData(
@@ -328,13 +293,6 @@ class MainActivityTest {
     fun homeSettingsIntent_migrationPending_appUpgradeSeen_launchesMainActivity() = runTest {
         showNativeSteps(context, false)
         setPreferenceSeen(context, Constants.APP_UPDATE_NEEDED_SEEN, true)
-        whenever(viewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(viewModel.migrationState).then {
             MutableLiveData(
                 WithData(
@@ -368,13 +326,6 @@ class MainActivityTest {
         runTest {
             showNativeSteps(context, false)
             setPreferenceSeen(context, Constants.APP_UPDATE_NEEDED_SEEN, true)
-            whenever(viewModel.getCurrentMigrationUiState()).then {
-                MigrationRestoreState(
-                    migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
-                    dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
-                )
-            }
             whenever(viewModel.migrationState).then {
                 MutableLiveData(
                     WithData(
@@ -414,13 +365,6 @@ class MainActivityTest {
     fun homeSettingsIntent_migrationPending_integrationPausedSeen_launchesMainActivity() = runTest {
         showNativeSteps(context, false)
         setPreferenceSeen(context, Constants.INTEGRATION_PAUSED_SEEN_KEY, true)
-        whenever(viewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.ALLOWED_PAUSED,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(viewModel.migrationState).then {
             MutableLiveData(
                 WithData(
@@ -455,13 +399,6 @@ class MainActivityTest {
         runTest {
             showNativeSteps(context, false)
             setPreferenceSeen(context, Constants.INTEGRATION_PAUSED_SEEN_KEY, true)
-            whenever(viewModel.getCurrentMigrationUiState()).then {
-                MigrationRestoreState(
-                    migrationUiState = MigrationUiState.ALLOWED_PAUSED,
-                    dataRestoreState = DataRestoreUiState.IDLE,
-                    dataRestoreError = DataRestoreUiError.ERROR_NONE,
-                )
-            }
             whenever(viewModel.migrationState).then {
                 MutableLiveData(
                     WithData(

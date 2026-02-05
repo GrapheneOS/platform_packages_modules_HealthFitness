@@ -963,13 +963,6 @@ class MockedPermissionsActivityTest {
     @Test
     @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
     fun whenMigrationInProgress_showsMigrationInProgressDialog() {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IN_PROGRESS,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 WithData(
@@ -1044,13 +1037,6 @@ class MockedPermissionsActivityTest {
                     dataRestoreError = DataRestoreUiError.ERROR_NONE,
                 )
             )
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IN_PROGRESS,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).thenReturn(migrationStateLiveData)
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowFitness)
@@ -1111,13 +1097,6 @@ class MockedPermissionsActivityTest {
     @Test
     @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
     fun whenRestoreInProgress_showsRestoreInProgressDialog() {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IDLE,
-                dataRestoreState = DataRestoreUiState.IN_PROGRESS,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 WithData(
@@ -1191,9 +1170,6 @@ class MockedPermissionsActivityTest {
                     dataRestoreError = DataRestoreUiError.ERROR_NONE,
                 )
             )
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            restoreInProgressState.migrationRestoreState
-        }
         whenever(migrationViewModel.migrationState).thenReturn(migrationStateLiveData)
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowFitness)
@@ -1253,13 +1229,6 @@ class MockedPermissionsActivityTest {
     @Test
     @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
     fun whenMigrationPending_showsMigrationPendingDialog() {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 WithData(
@@ -1330,9 +1299,6 @@ class MockedPermissionsActivityTest {
                     dataRestoreError = DataRestoreUiError.ERROR_NONE,
                 )
             )
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            migrationPendingState.migrationRestoreState
-        }
         whenever(migrationViewModel.migrationState).thenReturn(migrationStateLiveData)
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.ShowFitness)

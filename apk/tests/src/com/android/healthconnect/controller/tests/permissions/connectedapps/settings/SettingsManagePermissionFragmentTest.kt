@@ -86,13 +86,6 @@ class SettingsManagePermissionFragmentTest {
     fun setup() {
         hiltRule.inject()
         whenever(viewModel.disconnectAllState).then { MutableLiveData(NotStarted) }
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IDLE,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 MigrationViewModel.MigrationFragmentState.WithData(
@@ -192,13 +185,6 @@ class SettingsManagePermissionFragmentTest {
 
     @Test
     fun whenMigrationInProgress_showsMigrationInProgressDialog() {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IN_PROGRESS,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 MigrationViewModel.MigrationFragmentState.WithData(
@@ -243,13 +229,6 @@ class SettingsManagePermissionFragmentTest {
 
     @Test
     fun whenRestoreInProgress_showsRestoreInProgressDialog() {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IDLE,
-                dataRestoreState = DataRestoreUiState.IN_PROGRESS,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 MigrationViewModel.MigrationFragmentState.WithData(

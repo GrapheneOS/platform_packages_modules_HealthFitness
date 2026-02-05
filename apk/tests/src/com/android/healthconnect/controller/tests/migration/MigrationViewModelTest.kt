@@ -16,7 +16,6 @@
 package com.android.healthconnect.controller.tests.migration
 
 import com.android.healthconnect.controller.migration.MigrationViewModel
-import com.android.healthconnect.controller.migration.api.DEFAULT_MIGRATION_RESTORE_STATE
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiError
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
@@ -95,33 +94,5 @@ class MigrationViewModelTest {
 
         val result = testObserver.getLastValue()
         assertThat(result).isInstanceOf(MigrationViewModel.MigrationFragmentState.Error::class.java)
-    }
-
-    @Test
-    fun getCurrentMigrationUiState_useCaseSuccess_returnsState() = runTest {
-        val expectedState =
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.COMPLETE,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        loadMigrationRestoreStateUseCase.setMigrationState(expectedState)
-
-        viewModel = MigrationViewModel(loadMigrationRestoreStateUseCase)
-
-        val result = viewModel.getCurrentMigrationUiState()
-
-        assertThat(result).isEqualTo(expectedState)
-    }
-
-    @Test
-    fun getCurrentMigrationUiState_useCaseFails_returnsDefaultState() = runTest {
-        loadMigrationRestoreStateUseCase.setForceFail(true)
-
-        viewModel = MigrationViewModel(loadMigrationRestoreStateUseCase)
-
-        val result = viewModel.getCurrentMigrationUiState()
-
-        assertThat(result).isEqualTo(DEFAULT_MIGRATION_RESTORE_STATE)
     }
 }
