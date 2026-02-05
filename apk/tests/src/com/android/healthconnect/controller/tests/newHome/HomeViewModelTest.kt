@@ -535,6 +535,74 @@ class HomeViewModelTest {
                 .isInstanceOf(HomeViewModel.MigrationDialog.NoMigrationDialog::class.java)
         }
 
+    @Test
+    fun onDismissBanner_migrationBanner_doesNotSetAnyPreference() = runTest {
+        // Setup to show migration banner
+        loadMigrationRestoreStateUseCase.setMigrationState(
+            MigrationRestoreState(
+                migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
+                dataRestoreState = MigrationRestoreState.DataRestoreUiState.IDLE,
+                dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_NONE,
+            )
+        )
+        val state = loadBannerState()
+        assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+        assertThat((state as HomeBannerState.ShowBanners).banners)
+            .contains(BannerData.MigrationBanner)
+
+        val preferences =
+            context.getSharedPreferences(Constants.USER_ACTIVITY_TRACKER, MODE_PRIVATE)
+        val preferencesBefore = preferences.all
+
+        // Dismiss banner
+        viewModel.onDismissBanner(BannerData.MigrationBanner)
+        advanceUntilIdle()
+
+        // Assert banner is removed from UI
+        val stateAfter =
+            (viewModel.homeFragmentState.value as HomeViewModel.HomeFragmentState.WithData)
+                .bannerState
+        assertThat(stateAfter).isInstanceOf(HomeBannerState.NoBanner::class.java)
+
+        // Assert no preferences have changed
+        val preferencesAfter = preferences.all
+        assertThat(preferencesAfter).isEqualTo(preferencesBefore)
+    }
+
+    @Test
+    fun onDismissBanner_dataRestorePendingBanner_doesNotSetAnyPreference() = runTest {
+        // Setup to show data restore banner
+        loadMigrationRestoreStateUseCase.setMigrationState(
+            MigrationRestoreState(
+                migrationUiState = MigrationUiState.IDLE,
+                dataRestoreState = MigrationRestoreState.DataRestoreUiState.PENDING,
+                dataRestoreError = MigrationRestoreState.DataRestoreUiError.ERROR_VERSION_DIFF,
+            )
+        )
+        val state = loadBannerState()
+        assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+        assertThat((state as HomeBannerState.ShowBanners).banners)
+            .contains(BannerData.DataRestorePendingBanner)
+
+        val preferences =
+            context.getSharedPreferences(Constants.USER_ACTIVITY_TRACKER, MODE_PRIVATE)
+        val preferencesBefore = preferences.all
+
+        // Dismiss banner
+        viewModel.onDismissBanner(BannerData.DataRestorePendingBanner)
+        advanceUntilIdle()
+
+        // Assert banner is removed from UI
+        val stateAfter =
+            (viewModel.homeFragmentState.value as HomeViewModel.HomeFragmentState.WithData)
+                .bannerState
+        assertThat(stateAfter).isInstanceOf(HomeBannerState.NoBanner::class.java)
+
+        // Assert no preferences have changed
+        val preferencesAfter = preferences.all
+        assertThat(preferencesAfter).isEqualTo(preferencesBefore)
+    }
+
     // endregion
 
     // region Export banner
@@ -572,6 +640,41 @@ class HomeViewModelTest {
         )
         val state = loadBannerState()
         assertThat(state).isInstanceOf(HomeBannerState.NoBanner::class.java)
+    }
+
+    @Test
+    fun onDismissBanner_exportErrorBanner_doesNotSetAnyPreference() = runTest {
+        // Setup to show export error banner
+        loadScheduledExportStatusUseCase.updateExportStatus(
+            ScheduledExportUiState(
+                dataExportError =
+                    ScheduledExportUiState.DataExportError.DATA_EXPORT_LOST_FILE_ACCESS,
+                periodInDays = 3,
+                lastFailedExportTime = NOW,
+            )
+        )
+        val state = loadBannerState()
+        assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+        assertThat((state as HomeBannerState.ShowBanners).banners)
+            .contains(BannerData.ExportErrorBanner(NOW))
+
+        val preferences =
+            context.getSharedPreferences(Constants.USER_ACTIVITY_TRACKER, MODE_PRIVATE)
+        val preferencesBefore = preferences.all
+
+        // Dismiss banner
+        viewModel.onDismissBanner(BannerData.ExportErrorBanner(NOW))
+        advanceUntilIdle()
+
+        // Assert banner is removed from UI
+        val stateAfter =
+            (viewModel.homeFragmentState.value as HomeViewModel.HomeFragmentState.WithData)
+                .bannerState
+        assertThat(stateAfter).isInstanceOf(HomeBannerState.NoBanner::class.java)
+
+        // Assert no preferences have changed
+        val preferencesAfter = preferences.all
+        assertThat(preferencesAfter).isEqualTo(preferencesBefore)
     }
 
     // endregion
@@ -768,6 +871,29 @@ class HomeViewModelTest {
             BannerData.LockScreenBanner(hasAnyFitnessData = false, hasAnyMedicalData = true)
         )
         advanceUntilIdle()
+        assertPreferenceSeen(context, Constants.LOCK_SCREEN_BANNER_SEEN_MEDICAL)
+    }
+
+    @Test
+    fun onDismissBanner_combinedLockScreenBanner_setsBothSharedPreferenceSeen() = runTest {
+        whenever(keyguardManagerUtil.isDeviceSecure(any())).thenReturn(false)
+        setPreferenceSeen(context, Constants.LOCK_SCREEN_BANNER_SEEN_FITNESS, false)
+        setPreferenceSeen(context, Constants.LOCK_SCREEN_BANNER_SEEN_MEDICAL, false)
+        mockLoadAllDataUseCase(
+            medicalResourceTypeInfo = mockMedicalData,
+            recordTypeInfoMap = mockFitnessData,
+        )
+        val state = loadBannerState()
+        assertThat(state).isInstanceOf(HomeBannerState.ShowBanners::class.java)
+        assertThat((state as HomeBannerState.ShowBanners).banners)
+            .contains(
+                BannerData.LockScreenBanner(hasAnyFitnessData = true, hasAnyMedicalData = true)
+            )
+        viewModel.onDismissBanner(
+            BannerData.LockScreenBanner(hasAnyFitnessData = true, hasAnyMedicalData = true)
+        )
+        advanceUntilIdle()
+        assertPreferenceSeen(context, Constants.LOCK_SCREEN_BANNER_SEEN_FITNESS)
         assertPreferenceSeen(context, Constants.LOCK_SCREEN_BANNER_SEEN_MEDICAL)
     }
 

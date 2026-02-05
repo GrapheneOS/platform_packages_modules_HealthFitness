@@ -559,7 +559,9 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mFitnessRecordReadHelper,
                                 mFitnessRecordDeleteHelper,
                                 mSyntheticPackageNameCreator,
-                                mPreferenceHelper)
+                                mPreferenceHelper,
+                                mHealthDataCategoryPriorityHelper,
+                                mInternalHealthConnectMappings)
                         : builder.mDeviceDataProviderManager;
         mTrackerManager =
                 builder.mTrackerManager == null

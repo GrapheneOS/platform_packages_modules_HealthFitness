@@ -139,6 +139,8 @@ public class StepSensorEventListenerTest {
                                     healthConnectInjector.getFitnessRecordDeleteHelper(),
                                     healthConnectInjector.getSyntheticPackageNameCreator(),
                                     healthConnectInjector.getPreferenceHelper(),
+                                    healthConnectInjector.getHealthDataCategoryPriorityHelper(),
+                                    healthConnectInjector.getInternalHealthConnectMappings(),
                                     true));
 
             mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
