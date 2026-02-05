@@ -22,6 +22,7 @@
         android:id="@+id/switch_widget"
         android:theme="@style/Theme.Material3.DynamicColors.DayNight"
         android:filterTouchesWhenObscured="false"
+        android:focusable="true"
         style="?expressiveSwitchStyle"/>
 
 </LinearLayout>
