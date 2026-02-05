@@ -19,8 +19,11 @@ package com.android.server.healthconnect.storage;
 import static android.healthconnect.testing.unittest.StorageUtils.createEmptyDatabase;
 
 import static com.android.healthfitness.flags.DatabaseVersions.LAST_ROLLED_OUT_DB_VERSION;
+import static com.android.healthfitness.flags.Flags.FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING;
+import static com.android.healthfitness.flags.Flags.FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
 import static com.android.server.healthconnect.storage.DatabaseUpgradeHelper.onUpgrade;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.checkColumnExists;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -32,6 +35,8 @@ import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
+
+import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 
 import com.google.common.base.Preconditions;
 
@@ -207,5 +212,42 @@ public class DevelopmentDatabaseHelperTest {
         }
     }
 
+    @Test
+    @EnableFlags({
+        FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING_DB,
+        FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING,
+        FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void onUpgrade_perRecordPermissionColumn_flagEnabled_columnAdded() {
+        try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
+            SQLiteDatabase db = helper.getWritableDatabase();
 
+            DevelopmentDatabaseHelper.onOpen(db);
+
+            assertThat(
+                            checkColumnExists(
+                                    db,
+                                    ChangeLogsHelper.TABLE_NAME,
+                                    ChangeLogsHelper.PER_RECORD_PERMISSION_COLUMN_NAME))
+                    .isTrue();
+        }
+    }
+
+    @Test
+    @EnableFlags({FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING, FLAG_DEVELOPMENT_DATABASE_RW})
+    @DisableFlags(FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING_DB)
+    public void onUpgrade_perRecordPermissionColumn_flagDisabled_columnNotAdded() {
+        try (HealthConnectDatabase helper = new HealthConnectDatabase(mHcContext)) {
+            SQLiteDatabase db = helper.getWritableDatabase();
+
+            DevelopmentDatabaseHelper.onOpen(db);
+
+            assertThat(
+                            checkColumnExists(
+                                    db,
+                                    ChangeLogsHelper.TABLE_NAME,
+                                    ChangeLogsHelper.PER_RECORD_PERMISSION_COLUMN_NAME))
+                    .isFalse();
+        }
+    }
 }
