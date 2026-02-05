@@ -38,6 +38,7 @@ import android.util.Pair;
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
+import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
@@ -141,6 +142,40 @@ public class ExerciseSegmentRecordHelper {
                     EXERCISE_SEGMENT_RATE_OF_PERCEIVED_EXERTION,
                     segment.getRateOfPerceivedExertion());
         }
+    }
+
+    static ExerciseSegmentInternal populateSegment(Cursor cursor) {
+        ExerciseSegmentInternal segment =
+                new ExerciseSegmentInternal()
+                        .setStartTime(getCursorLong(cursor, EXERCISE_SEGMENT_START_TIME))
+                        .setEndTime(getCursorLong(cursor, EXERCISE_SEGMENT_END_TIME))
+                        .setSegmentType(getCursorInt(cursor, EXERCISE_SEGMENT_TYPE))
+                        .setRepetitionsCount(
+                                getCursorInt(cursor, EXERCISE_SEGMENT_REPETITIONS_COUNT));
+        if (AconfigFlagHelper.isExerciseSegmentImprovementsEnabled()) {
+            if (!isNullValue(cursor, EXERCISE_SEGMENT_WEIGHT_GRAMS)) {
+                segment.setWeightGrams(getCursorDouble(cursor, EXERCISE_SEGMENT_WEIGHT_GRAMS));
+            }
+            if (!isNullValue(cursor, EXERCISE_SEGMENT_SET_INDEX)) {
+                segment.setSetIndex(getCursorInt(cursor, EXERCISE_SEGMENT_SET_INDEX));
+            }
+            if (!isNullValue(cursor, EXERCISE_SEGMENT_RATE_OF_PERCEIVED_EXERTION)) {
+                segment.setRateOfPerceivedExertion(
+                        (float)
+                                getCursorDouble(
+                                        cursor, EXERCISE_SEGMENT_RATE_OF_PERCEIVED_EXERTION));
+            }
+        }
+        return segment;
+    }
+
+    static ReadTableRequest getReadRequest(ReadTableRequest sessionIdsRequest) {
+        ReadTableRequest readTableRequest =
+                new ReadTableRequest(EXERCISE_SEGMENT_RECORD_TABLE_NAME);
+        WhereClauses inClause = new WhereClauses(AND);
+        inClause.addWhereInSQLRequestClause(PARENT_KEY_COLUMN_NAME, sessionIdsRequest);
+        readTableRequest.setWhereClause(inClause);
+        return readTableRequest;
     }
 
     static SqlJoin getJoinReadRequest(String parentTableName) {

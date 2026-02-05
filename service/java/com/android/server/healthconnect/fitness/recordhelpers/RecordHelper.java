@@ -932,8 +932,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         return Collections.emptyList();
     }
 
-    @SuppressWarnings("NullAway")
-    // TODO(b/317029272): fix this suppression
+    @Nullable
     SqlJoin getJoinForReadRequest() {
         return null;
     }
