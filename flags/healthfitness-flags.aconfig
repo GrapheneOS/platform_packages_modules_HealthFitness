@@ -627,3 +627,10 @@ flag {
     description: "Enables DB changes to support granular permissions in change logs."
     bug: "475815635"
 }
+
+flag {
+    name: "optimize_child_reads"
+    namespace: "health_fitness_aconfig"
+    description: "Enables optimization for reading child tables by using separate read requests instead of joins."
+    bug: "408987104"
+}
