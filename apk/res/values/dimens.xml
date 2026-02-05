@@ -35,6 +35,8 @@
     <dimen name="category_icon_size">24dp</dimen>
     <dimen name="category_header_icon_size">48dp</dimen>
     <dimen name="round_map_size">60dp</dimen>
+    <dimen name="device_viewport_size">40</dimen>
+    <dimen name="device_icon_size">40dp</dimen>
 
     <dimen name="banner_corner_radius">28dp</dimen>
     <dimen name="banner_alpha" type="float">0.05</dimen>
