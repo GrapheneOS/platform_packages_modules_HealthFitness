@@ -74,7 +74,7 @@ constructor(
         // Devices can change their display name. Exclude them from the cache
         cache.putAll(
             contributorApps.filterNot {
-                !deviceDataProvidersApi() || SyntheticPackageNameMatcher.matches(it.key)
+                deviceDataProvidersApi() && SyntheticPackageNameMatcher.matches(it.key)
             }
         )
 
