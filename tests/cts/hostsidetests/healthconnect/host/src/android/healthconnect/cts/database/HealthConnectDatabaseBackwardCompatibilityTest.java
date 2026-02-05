@@ -29,6 +29,8 @@ import static android.healthconnect.cts.database.DatabaseTestUtils.isFilePresent
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.healthconnect.cts.HostSideTestUtil;
+
 import com.android.tradefed.device.DeviceNotAvailableException;
 import com.android.tradefed.device.ITestDevice;
 import com.android.tradefed.testtype.DeviceJUnit4ClassRunner;
@@ -64,6 +66,7 @@ public class HealthConnectDatabaseBackwardCompatibilityTest extends BaseHostJUni
         /** check for device availability. */
         ITestDevice device = getDevice();
         assertThat(device).isNotNull();
+        Assume.assumeTrue(HostSideTestUtil.isHardwareSupported(device));
         Assume.assumeTrue(rebootAndEnableRoot());
 
         /**
