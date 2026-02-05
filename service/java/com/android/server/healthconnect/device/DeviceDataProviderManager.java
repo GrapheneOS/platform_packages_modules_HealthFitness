@@ -656,7 +656,6 @@ public class DeviceDataProviderManager {
 
     /** Retrieves the list of all device data sources and their provider info. */
     public List<DeviceDataSourceInfo> getDeviceDataSourceInfos() {
-        mAppInfoHelper.syncAppInfoRecordTypesUsed();
         Map<Long, Map<String, List<DeviceDataTypeAdvertisement>>> appInfoIdToDdpAds =
                 mDeviceDataSourcesHelper.getDeviceDataTypeAdvertisements();
 
