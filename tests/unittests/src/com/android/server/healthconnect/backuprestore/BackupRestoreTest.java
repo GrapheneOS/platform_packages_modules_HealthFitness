@@ -93,6 +93,7 @@ import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
 import com.android.server.healthconnect.permission.UserGrantTimeState;
+import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
 import com.android.server.healthconnect.utils.FilesUtil;
 
@@ -191,10 +192,12 @@ public class BackupRestoreTest {
                         .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .setAppInfoHelper(mAppInfoHelper)
                         .build();
-
+        HealthConnectContext hcContext =
+                HealthConnectContext.create(
+                        mContext, mUserHandle, null, mEnvironmentDataDirectory.getRoot());
         DeviceDataProviderManager fakeDeviceDataProviderManager =
                 new FakeSerialDeviceDataProviderManager(
-                        mContext,
+                        hcContext,
                         injectorTemp.getDeviceInfoHelper(),
                         injectorTemp.getAppInfoHelper(),
                         injectorTemp.getDeviceDataSourceHelper(),

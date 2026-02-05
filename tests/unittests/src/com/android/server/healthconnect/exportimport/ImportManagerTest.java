@@ -148,10 +148,12 @@ public class ImportManagerTest {
                         .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .setExportImportNotificationFactory(mNotificationFactory)
                         .build();
-
+        HealthConnectContext hcContext =
+                HealthConnectContext.create(
+                        mContext, mContext.getUser(), null, mEnvironmentDataDirectory.getRoot());
         DeviceDataProviderManager fakeDeviceDataProviderManager =
                 new FakeSerialDeviceDataProviderManager(
-                        mContext,
+                        hcContext,
                         healthConnectInjectorTemp.getDeviceInfoHelper(),
                         healthConnectInjectorTemp.getAppInfoHelper(),
                         healthConnectInjectorTemp.getDeviceDataSourceHelper(),

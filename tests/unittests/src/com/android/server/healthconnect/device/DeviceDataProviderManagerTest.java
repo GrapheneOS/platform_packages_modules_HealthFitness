@@ -107,6 +107,7 @@ import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
+import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
 
 import com.google.common.collect.ImmutableMap;
@@ -149,6 +150,7 @@ public class DeviceDataProviderManagerTest {
 
     private PreferenceHelper mPreferenceHelper;
     private Context mContext;
+    private HealthConnectContext mHcContext;
     private DeviceDataSourcesHelper mDeviceDataSourcesHelper;
     private DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
     private HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
@@ -199,9 +201,15 @@ public class DeviceDataProviderManagerTest {
         mDataSourceHelper = new FakeSerialDeviceDataSourceHelper();
         mSyntheticPackageNameCreator = healthConnectInjector.getSyntheticPackageNameCreator();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
+        mHcContext =
+                HealthConnectContext.create(
+                        mContext,
+                        mContext.getUser(),
+                        /* databaseDirName= */ null,
+                        mEnvironmentDataDir.getRoot());
         mDeviceDataProviderManager =
                 new FakeSerialDeviceDataProviderManager(
-                        mContext,
+                        mHcContext,
                         mDeviceInfoHelper,
                         mAppInfoHelper,
                         mDataSourceHelper,
@@ -574,7 +582,7 @@ public class DeviceDataProviderManagerTest {
 
         FakeSerialDeviceDataProviderManager newManager =
                 new FakeSerialDeviceDataProviderManager(
-                        mContext,
+                        mHcContext,
                         healthConnectInjector.getDeviceInfoHelper(),
                         healthConnectInjector.getAppInfoHelper(),
                         new FakeSerialDeviceDataSourceHelper(),
@@ -689,7 +697,7 @@ public class DeviceDataProviderManagerTest {
 
         FakeSerialDeviceDataProviderManager newManager =
                 new FakeSerialDeviceDataProviderManager(
-                        mContext,
+                        mHcContext,
                         healthConnectInjector.getDeviceInfoHelper(),
                         healthConnectInjector.getAppInfoHelper(),
                         new FakeSerialDeviceDataSourceHelper(),

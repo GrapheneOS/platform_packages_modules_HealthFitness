@@ -278,6 +278,7 @@ import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
+import com.android.server.healthconnect.storage.HealthConnectContext;
 
 import com.google.common.collect.Iterables;
 
@@ -482,6 +483,7 @@ public class HealthConnectServiceImplTest {
     @Captor private ArgumentCaptor<HealthConnectOnboardingState> mOnboardingStateCaptor;
     private FakeTimeSource mFakeTimeSource;
     private Context mContext;
+    private HealthConnectContext mHcContext;
     private AttributionSource mAttributionSource;
     private HealthConnectServiceImpl mHealthConnectService;
     private UserHandle mUserHandle;
@@ -527,6 +529,10 @@ public class HealthConnectServiceImplTest {
         when(mPackageManager.getApplicationIcon(anyString()))
                 .thenThrow(new PackageManager.NameNotFoundException());
         when(mPackageManager.getDefaultActivityIcon()).thenReturn(mDrawable);
+
+        mHcContext =
+                HealthConnectContext.create(
+                        mServiceContext, mUserHandle, null, mEnvironmentDataDir.getRoot());
         DeviceDataSourceHelper deviceDataSourceHelper = new FakeSerialDeviceDataSourceHelper();
 
         HealthConnectInjector healthConnectInjector =
@@ -564,7 +570,7 @@ public class HealthConnectServiceImplTest {
             mDeviceDataProviderManager =
                     spy(
                             new FakeSerialDeviceDataProviderManager(
-                                    mServiceContext,
+                                    mHcContext,
                                     healthConnectInjector.getDeviceInfoHelper(),
                                     healthConnectInjector.getAppInfoHelper(),
                                     healthConnectInjector.getDeviceDataSourceHelper(),
