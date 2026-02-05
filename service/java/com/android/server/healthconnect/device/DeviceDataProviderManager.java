@@ -68,6 +68,7 @@ import com.android.server.healthconnect.storage.TransactionManager;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -655,51 +656,27 @@ public class DeviceDataProviderManager {
 
     /** Retrieves the list of all device data sources and their provider info. */
     public List<DeviceDataSourceInfo> getDeviceDataSourceInfos() {
+        mAppInfoHelper.syncAppInfoRecordTypesUsed();
         Map<Long, Map<String, List<DeviceDataTypeAdvertisement>>> appInfoIdToDdpAds =
                 mDeviceDataSourcesHelper.getDeviceDataTypeAdvertisements();
 
         List<DeviceDataSourceInfo> result = new ArrayList<>();
+        for (AppInfoInternal appInfo : mAppInfoHelper.getAppInfoMap().values()) {
+            Long deviceInfoId = appInfo.getDeviceInfoId();
+            if (deviceInfoId == null) {
+                continue;
+            }
 
-        for (Map.Entry<Long, Map<String, List<DeviceDataTypeAdvertisement>>> entry :
-                appInfoIdToDdpAds.entrySet()) {
-            long appInfoId = entry.getKey();
-            Map<String, List<DeviceDataTypeAdvertisement>> ddpPackageToAdvertisements =
-                    entry.getValue();
+            if (!appInfoIdToDdpAds.containsKey(appInfo.getId())
+                    && (appInfo.getRecordTypesUsed() == null
+                            || appInfo.getRecordTypesUsed().isEmpty())) {
+                continue;
+            }
 
             try {
-                String syntheticPackageName = getOrThrowSyntheticPackageName(appInfoId);
-                AppInfoInternal appInfo = getOrThrowAppInfo(syntheticPackageName);
-
-                long deviceInfoId = requireNonNull(appInfo.getDeviceInfoId());
-                DeviceInfoHelper.DeviceInfo deviceInfo =
-                        requireNonNull(mDeviceInfoHelper.getDeviceInfo(deviceInfoId));
-
-                DataOrigin dataOrigin =
-                        new DataOrigin.Builder().setPackageName(syntheticPackageName).build();
-
-                Device device =
-                        new Device.Builder()
-                                .setManufacturer(deviceInfo.getManufacturer())
-                                .setModel(deviceInfo.getModel())
-                                .setType(deviceInfo.getDeviceType())
-                                .setDisplayName(deviceInfo.getDisplayName())
-                                .build();
-
-                String deviceId = deviceInfo.getDeviceId();
-                if (deviceId == null) {
-                    throw new IllegalStateException(
-                            "DDP device encountered with unexpected null device ID");
-                }
-
-                boolean isCurrentDevice = deviceId.equals(getStableCurrentDeviceId());
-
-                List<DeviceDataProviderInfo> providerInfos =
-                        getDeviceDataProviderInfos(ddpPackageToAdvertisements, deviceId);
-
-                result.add(
-                        new DeviceDataSourceInfo(
-                                dataOrigin, device, isCurrentDevice, providerInfos));
-
+                DeviceDataSourceInfo info =
+                        createDeviceDataSourceInfo(deviceInfoId, appInfo, appInfoIdToDdpAds);
+                result.add(info);
             } catch (PackageManager.NameNotFoundException e) {
                 // Log error and skip.
                 Slog.e(TAG, "Device data provider package was unexpectedly not found", e);
@@ -708,7 +685,63 @@ public class DeviceDataProviderManager {
                 Slog.e(TAG, "Failed to retrieve device data source info", e);
             }
         }
+
+        sortDeviceDataSourceInfos(result);
+
         return result;
+    }
+
+    private DeviceDataSourceInfo createDeviceDataSourceInfo(
+            long deviceInfoId,
+            AppInfoInternal appInfo,
+            Map<Long, Map<String, List<DeviceDataTypeAdvertisement>>> appInfoIdToDdpAds)
+            throws PackageManager.NameNotFoundException {
+        long appInfoId = appInfo.getId();
+        Map<String, List<DeviceDataTypeAdvertisement>> ddpPackageToAdvertisements =
+                appInfoIdToDdpAds.getOrDefault(appInfoId, Map.of());
+
+        String syntheticPackageName = appInfo.getPackageName();
+
+        DeviceInfoHelper.DeviceInfo deviceInfo =
+                requireNonNull(mDeviceInfoHelper.getDeviceInfo(deviceInfoId));
+
+        DataOrigin dataOrigin =
+                new DataOrigin.Builder().setPackageName(syntheticPackageName).build();
+
+        Device device =
+                new Device.Builder()
+                        .setManufacturer(deviceInfo.getManufacturer())
+                        .setModel(deviceInfo.getModel())
+                        .setType(deviceInfo.getDeviceType())
+                        .setDisplayName(deviceInfo.getDisplayName())
+                        .build();
+
+        String deviceId = deviceInfo.getDeviceId();
+        if (deviceId == null) {
+            throw new IllegalStateException(
+                    "DDP device encountered with unexpected null device ID");
+        }
+
+        boolean isCurrentDevice = deviceId.equals(getStableCurrentDeviceId());
+
+        List<DeviceDataProviderInfo> providerInfos =
+                getDeviceDataProviderInfos(ddpPackageToAdvertisements, deviceId);
+
+        return new DeviceDataSourceInfo(dataOrigin, device, isCurrentDevice, providerInfos);
+    }
+
+    private void sortDeviceDataSourceInfos(List<DeviceDataSourceInfo> result) {
+        result.sort(
+                Comparator.comparing(DeviceDataSourceInfo::isCurrentDevice)
+                        .reversed() // Puts true (current device) first
+                        .thenComparing(
+                                info -> {
+                                    Device device = info.getDevice();
+                                    return device.getDisplayName() != null
+                                            ? device.getDisplayName()
+                                            : device.getModel();
+                                },
+                                Comparator.nullsLast(Comparator.naturalOrder())));
     }
 
     /**

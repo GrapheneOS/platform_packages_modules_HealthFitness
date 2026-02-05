@@ -81,6 +81,7 @@ import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.StepsRecordInternal;
 import android.health.connect.internal.datatypes.SymptomRecordInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
+import android.healthconnect.testing.unittest.TaskUtils;
 import android.healthconnect.testing.unittest.mocks.AndroidPackageMocker;
 import android.os.Build;
 import android.os.UserManager;
@@ -93,6 +94,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SdkSuppress;
 
 import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
@@ -125,6 +127,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 @RunWith(AndroidJUnit4.class)
@@ -158,6 +161,7 @@ public class DeviceDataProviderManagerTest {
     private AccessLogsHelper mAccessLogsHelper;
     private FakeSerialDeviceDataSourceHelper mDataSourceHelper;
     private SyntheticPackageNameCreator mSyntheticPackageNameCreator;
+    private HealthConnectThreadScheduler mThreadScheduler;
 
     @Mock private AppOpLogsHelper mAppOpLogsHelper;
     @Mock private UserManager mUserManager;
@@ -179,6 +183,7 @@ public class DeviceDataProviderManagerTest {
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .build();
 
+        mThreadScheduler = healthConnectInjector.getThreadScheduler();
         mDeviceInfoHelper = healthConnectInjector.getDeviceInfoHelper();
         mAppInfoHelper = healthConnectInjector.getAppInfoHelper();
         mDeviceDataSourcesHelper = healthConnectInjector.getDeviceDataSourcesHelper();
@@ -2825,6 +2830,115 @@ public class DeviceDataProviderManagerTest {
                         HealthDataCategory.ACTIVITY);
 
         assertThat(priorityListAfter).isEqualTo(priorityListBefore);
+    }
+
+    @Test
+    public void getDeviceDataSourceInfos_unadvertisedAndNoData_omitted() {
+        // 1. Advertise device
+        advertiseDevice(DEVICE_ID);
+        assertThat(mDeviceDataProviderManager.getDeviceDataSourceInfos()).hasSize(1);
+
+        // 2. Stop advertisement (no data was inserted)
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(), PACKAGE_NAME);
+
+        // 3. Verify it's omitted
+        assertThat(mDeviceDataProviderManager.getDeviceDataSourceInfos()).isEmpty();
+    }
+
+    @Test
+    public void getDeviceDataSourceInfos_unadvertisedButHasData_included() throws TimeoutException {
+        // 1. Advertise device.
+        advertiseDevice(DEVICE_ID);
+        assertThat(mDeviceDataProviderManager.getDeviceDataSourceInfos()).hasSize(1);
+
+        // 2. Insert data for the device.
+        List<RecordInternal<?>> records = List.of(buildStepsRecord(100, 200, 100));
+        mDeviceDataProviderManager.insertDeviceRecords(PACKAGE_NAME, DEVICE_ID, records);
+
+        // Wait for post-insert background tasks (like updating AppInfo) to complete
+        TaskUtils.waitForAllScheduledTasksToComplete(mThreadScheduler);
+
+        // 3. Stop advertisement.
+        mDeviceDataProviderManager.handleAdvertisement(Set.of(), PACKAGE_NAME);
+
+        // 4. Verify it's STILL included due to historical data.
+        List<DeviceDataSourceInfo> infos = mDeviceDataProviderManager.getDeviceDataSourceInfos();
+        assertThat(infos).hasSize(1);
+        assertThat(infos.get(0).getDevice().getManufacturer()).isEqualTo(MANUFACTURER);
+        assertThat(infos.get(0).getDevice().getModel()).isEqualTo(MODEL);
+        // Provider info list should be empty because no current DDP advertises it.
+        assertThat(infos.get(0).getDeviceDataProviderInfos()).isEmpty();
+    }
+
+    @Test
+    public void getDeviceDataSourceInfos_isDeterministic() {
+        // 1. Setup multiple devices
+        // Current device (handled by initializeOrRefreshCurrentDeviceIds in setUp)
+        // Add native advertisements so it appears in the list
+        when(mContext.getSystemService(eq(android.hardware.SensorManager.class)))
+                .thenReturn(mSensorManager);
+        when(mSensorManager.getDefaultSensor(android.hardware.Sensor.TYPE_STEP_COUNTER))
+                .thenReturn(mSensor);
+        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+
+        // Remote device A (Display Name: "Apple")
+        Device deviceA =
+                new Device.Builder()
+                        .setManufacturer("ManA")
+                        .setModel("ModA")
+                        .setDisplayName("Apple")
+                        .build();
+        DeviceDataTypeAdvertisement stepsAdA =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setAvailable(true)
+                        .build();
+        mDeviceDataProviderManager.handleAdvertisement(
+                Set.of(new DeviceDataAdvertisement(deviceA, "idA", Set.of(stepsAdA))), "pkgA");
+
+        // Remote device C (Display Name: "Cherry")
+        Device deviceC =
+                new Device.Builder()
+                        .setManufacturer("ManC")
+                        .setModel("ModC")
+                        .setDisplayName("Cherry")
+                        .build();
+        DeviceDataTypeAdvertisement stepsAdC =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setAvailable(true)
+                        .build();
+        mDeviceDataProviderManager.handleAdvertisement(
+                Set.of(new DeviceDataAdvertisement(deviceC, "idC", Set.of(stepsAdC))), "pkgC");
+
+        // Remote device B (No Display Name, Model: "Banana")
+        Device deviceB =
+                new Device.Builder()
+                        .setManufacturer("ManB")
+                        .setModel("Banana")
+                        .setDisplayName(null)
+                        .build();
+        DeviceDataTypeAdvertisement stepsAdB =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setAvailable(true)
+                        .build();
+        mDeviceDataProviderManager.handleAdvertisement(
+                Set.of(new DeviceDataAdvertisement(deviceB, "idB", Set.of(stepsAdB))), "pkgB");
+
+        // 2. Retrieve and verify order
+        List<DeviceDataSourceInfo> result = mDeviceDataProviderManager.getDeviceDataSourceInfos();
+
+        assertThat(result).hasSize(4);
+        // Index 0: Current Device
+        assertThat(result.get(0).isCurrentDevice()).isTrue();
+
+        // Index 1: Apple
+        assertThat(result.get(1).getDevice().getDisplayName()).isEqualTo("Apple");
+
+        // Index 2: Banana (sorted by model since display name is null)
+        assertThat(result.get(2).getDevice().getDisplayName()).isNull();
+        assertThat(result.get(2).getDevice().getModel()).isEqualTo("Banana");
+
+        // Index 3: Cherry
+        assertThat(result.get(3).getDevice().getDisplayName()).isEqualTo("Cherry");
     }
 
     private void advertiseDevice(
