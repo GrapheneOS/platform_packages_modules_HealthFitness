@@ -656,7 +656,7 @@ class MockedPermissionsActivityTest {
                 .check(matches(isDisplayed()))
             onView(
                     withText(
-                        "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                        "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more about how your data is accessed"
                     )
                 )
                 .check(matches(isDisplayed()))
@@ -716,7 +716,7 @@ class MockedPermissionsActivityTest {
                 .check(matches(isDisplayed()))
             onView(
                     withText(
-                        "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                        "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more about how your data is accessed"
                     )
                 )
                 .inRoot(isDialog())
