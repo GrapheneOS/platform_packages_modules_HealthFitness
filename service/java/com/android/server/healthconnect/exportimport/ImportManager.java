@@ -43,8 +43,10 @@ import android.util.Slog;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.storage.HealthConnectContext;
@@ -89,6 +91,8 @@ public class ImportManager {
             FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             FitnessRecordReadHelper fitnessRecordReadHelper,
             DeviceInfoHelper deviceInfoHelper,
+            DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
+            SyntheticPackageNameCreator syntheticPackageNameCreator,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             @Nullable Clock clock,
             HealthConnectNotificationSender notificationSender,
@@ -103,6 +107,8 @@ public class ImportManager {
                 fitnessRecordUpsertHelper,
                 fitnessRecordReadHelper,
                 deviceInfoHelper,
+                deviceDataProviderMetadataHelper,
+                syntheticPackageNameCreator,
                 healthDataCategoryPriorityHelper,
                 clock,
                 notificationSender,
@@ -121,6 +127,8 @@ public class ImportManager {
             FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
             FitnessRecordReadHelper fitnessRecordReadHelper,
             DeviceInfoHelper deviceInfoHelper,
+            DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
+            SyntheticPackageNameCreator syntheticPackageNameCreator,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             @Nullable Clock clock,
             HealthConnectNotificationSender notificationSender,
@@ -133,6 +141,8 @@ public class ImportManager {
                 new DatabaseMerger(
                         appInfoHelper,
                         deviceInfoHelper,
+                        deviceDataProviderMetadataHelper,
+                        syntheticPackageNameCreator,
                         healthDataCategoryPriorityHelper,
                         transactionManager,
                         fitnessRecordUpsertHelper,

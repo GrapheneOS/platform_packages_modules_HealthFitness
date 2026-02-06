@@ -27,6 +27,8 @@ import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
 
+import java.util.function.Supplier;
+
 /**
  * Utility methods related to {@link com.android.server.healthconnect.device.DeviceDataSource}.
  *
@@ -35,6 +37,17 @@ import com.android.internal.annotations.VisibleForTesting;
 public class DeviceDataSourceHelper {
     private static final String TAG = "DeviceDataSourceHelper";
     @VisibleForTesting static final int DISPLAY_NAME_MAX_LENGTH = 128;
+
+    private final Supplier<String> mSerialSupplier;
+
+    public DeviceDataSourceHelper() {
+        this(DeviceDataSourceHelper::getBuildSerial);
+    }
+
+    @VisibleForTesting
+    public DeviceDataSourceHelper(Supplier<String> serialSupplier) {
+        mSerialSupplier = serialSupplier;
+    }
 
     /**
      * Populates {@link com.android.server.healthconnect.device.DeviceDataSource} with details of
@@ -64,13 +77,14 @@ public class DeviceDataSourceHelper {
      * <p>Note: the device ID for the current device is a sensitive value and should not be shared
      * outside of this module. Normally, reading this identifier requires {@code
      * android.permission.READ_PRIVILEGED_PHONE_STATE}.
-     *
-     * <p>This is extracted to a separate method to allow it to be easily overridden in test cases,
-     * and should not be used directly.
      */
-    @SuppressLint("MissingPermission")
     @VisibleForTesting
     String getSerial() {
+        return mSerialSupplier.get();
+    }
+
+    @SuppressLint("MissingPermission")
+    private static String getBuildSerial() {
         return Build.getSerial();
     }
 

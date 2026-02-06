@@ -747,6 +747,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
         record.setRecordingMethod(getCursorInt(cursor, RECORDING_METHOD_COLUMN_NAME));
         record.setRowId(getCursorInt(cursor, PRIMARY_COLUMN_NAME));
         long deviceInfoId = getCursorLong(cursor, DEVICE_INFO_ID_COLUMN_NAME);
+        record.setDeviceInfoId(deviceInfoId);
         if (deviceIdToDeviceInfoMap != null) {
             if (deviceIdToDeviceInfoMap.containsKey(deviceInfoId)) {
                 DeviceInfoHelper.populateRecordWithDeviceInfo(

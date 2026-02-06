@@ -635,7 +635,9 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getMatchingAppsManager(),
                         mSyntheticPackageNameResolver,
                         mDeviceDataSourcesHelper,
-                        mDeviceDataProviderManager);
+                        mDeviceDataProviderManager,
+                        healthConnectInjector.getDeviceDataProviderMetadataHelper(),
+                        healthConnectInjector.getSyntheticPackageNameCreator());
     }
 
     @After

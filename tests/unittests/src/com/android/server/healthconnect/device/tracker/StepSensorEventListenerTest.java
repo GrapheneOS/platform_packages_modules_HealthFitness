@@ -185,7 +185,6 @@ public class StepSensorEventListenerTest {
         assertThat(records).hasSize(1);
         assertThat(records.get(0).getPackageName())
                 .isEqualTo(mDeviceDataProviderManager.getStableCurrentDeviceId());
-        assertThat(records.get(0).getDeviceInfoId()).isEqualTo(DEFAULT_LONG);
         assertThat(records.get(0).getDeviceType()).isEqualTo(DEVICE_TYPE_PHONE);
         assertThat(records.get(0).getDeviceDataProviderId()).isEqualTo(1L);
     }

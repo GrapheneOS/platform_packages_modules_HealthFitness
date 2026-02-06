@@ -227,6 +227,7 @@ import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper
 import com.android.server.healthconnect.common.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
@@ -243,6 +244,7 @@ import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
 import com.android.server.healthconnect.fitness.aggregation.FitnessRecordAggregateHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.helpers.RecordDateHelper;
@@ -378,6 +380,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final SyntheticPackageNameResolver mSyntheticPackageNameResolver;
     private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
     private final DeviceDataProviderManager mDeviceDataProviderManager;
+    private final DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
+    private final SyntheticPackageNameCreator mSyntheticPackageNameCreator;
 
     private volatile UserHandle mCurrentForegroundUser;
 
@@ -428,7 +432,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             MatchmakingManager matchmakingManager,
             SyntheticPackageNameResolver syntheticPackageNameResolver,
             DeviceDataSourcesHelper deviceDataSourcesHelper,
-            DeviceDataProviderManager deviceDataProviderManager) {
+            DeviceDataProviderManager deviceDataProviderManager,
+            DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
+            SyntheticPackageNameCreator syntheticPackageNameCreator) {
         mContext = context;
         mCurrentForegroundUser = context.getUser();
         mTimeSource = timeSource;
@@ -473,6 +479,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mPreferencesManager = preferencesManager;
         mThreadScheduler = threadScheduler;
         mRateLimiter = rateLimiter;
+        mDeviceDataProviderMetadataHelper = deviceDataProviderMetadataHelper;
+        mSyntheticPackageNameCreator = syntheticPackageNameCreator;
 
         mPermissionManager = mContext.getSystemService(PermissionManager.class);
         mAppOpsManagerLocal = appOpsManagerLocal;
@@ -490,6 +498,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         mFitnessRecordUpsertHelper,
                         mFitnessRecordReadHelper,
                         mDeviceInfoHelper,
+                        mDeviceDataProviderMetadataHelper,
+                        mSyntheticPackageNameCreator,
                         mHealthDataCategoryPriorityHelper,
                         clockForLogging,
                         exportImportNotificationSender,
