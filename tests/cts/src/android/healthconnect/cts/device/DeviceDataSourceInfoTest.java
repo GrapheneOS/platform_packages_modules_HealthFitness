@@ -50,6 +50,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Set;
 
@@ -252,8 +253,137 @@ public class DeviceDataSourceInfoTest {
     }
 
     @Test
-    @Ignore("b/460757169 - skip this test until we support device removal from advertisements")
-    public void getDeviceDataSourceInfos_ddpRemovesDevice() throws Exception {
+    public void getDeviceDataSourceInfos_deviceNoLongerAdvertisedButHasData_returnsDevice()
+            throws Exception {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("TestManufacturer")
+                        .setModel("TestModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("TestDisplayName")
+                        .build();
+        String deviceId = "TestDeviceId";
+        DeviceDataTypeAdvertisement stepsAd =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setAvailable(true)
+                        .build();
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements = Set.of(stepsAd);
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);
+
+        // 1. Advertise DEVICE_1
+        HealthConnectReceiver<Void> advertiseReceiver = new HealthConnectReceiver<>();
+        TestUtils.advertiseDeviceDataSources(
+                Set.of(advertisement), outcomeExecutor(), advertiseReceiver);
+        advertiseReceiver.verifyNoExceptionOrThrow();
+
+        // 2. Insert data for DEVICE_1
+        StepsRecord record =
+                new StepsRecord.Builder(
+                                new android.health.connect.datatypes.Metadata.Builder().build(),
+                                Instant.now().minusSeconds(100),
+                                Instant.now(),
+                                100)
+                        .build();
+        TestUtils.insertDeviceRecords(deviceId, List.of(record));
+
+        // 3. Verify it's in getDeviceDataSourceInfos
+        List<DeviceDataSourceInfo> infosBefore = TestUtils.getDeviceDataSourceInfos();
+        assertThat(infosBefore.size()).isAtLeast(2);
+        assertThat(
+                        infosBefore.stream()
+                                .anyMatch(
+                                        info ->
+                                                info.getDevice()
+                                                                .getManufacturer()
+                                                                .equals("TestManufacturer")
+                                                        && info.getDevice()
+                                                                .getModel()
+                                                                .equals("TestModel")))
+                .isTrue();
+
+        // 4. Stop advertising DEVICE_1
+        advertiseReceiver = new HealthConnectReceiver<>();
+        TestUtils.advertiseDeviceDataSources(Set.of(), outcomeExecutor(), advertiseReceiver);
+        advertiseReceiver.verifyNoExceptionOrThrow();
+
+        // 5. Verify it's STILL in getDeviceDataSourceInfos
+        List<DeviceDataSourceInfo> infosAfter = TestUtils.getDeviceDataSourceInfos();
+        assertThat(infosAfter.size()).isAtLeast(2);
+        assertThat(
+                        infosAfter.stream()
+                                .anyMatch(
+                                        info ->
+                                                info.getDevice()
+                                                                .getManufacturer()
+                                                                .equals("TestManufacturer")
+                                                        && info.getDevice()
+                                                                .getModel()
+                                                                .equals("TestModel")))
+                .isTrue();
+    }
+
+    @Test
+    public void getDeviceDataSourceInfos_deviceNoLongerAdvertisedAndNoData_deviceRemoved()
+            throws Exception {
+        Device device =
+                new Device.Builder()
+                        .setManufacturer("NoDataManufacturer")
+                        .setModel("NoDataModel")
+                        .setType(Device.DEVICE_TYPE_PHONE)
+                        .setDisplayName("NoDataDisplayName")
+                        .build();
+        String deviceId = "NoDataDeviceId";
+        DeviceDataTypeAdvertisement stepsAd =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setAvailable(true)
+                        .build();
+        DeviceDataAdvertisement advertisement =
+                new DeviceDataAdvertisement(device, deviceId, Set.of(stepsAd));
+
+        // 1. Advertise DEVICE_2
+        HealthConnectReceiver<Void> advertiseReceiver = new HealthConnectReceiver<>();
+        TestUtils.advertiseDeviceDataSources(
+                Set.of(advertisement), outcomeExecutor(), advertiseReceiver);
+        advertiseReceiver.verifyNoExceptionOrThrow();
+
+        // 2. Verify it's in getDeviceDataSourceInfos
+        List<DeviceDataSourceInfo> infosBefore = TestUtils.getDeviceDataSourceInfos();
+        assertThat(
+                        infosBefore.stream()
+                                .anyMatch(
+                                        info ->
+                                                info.getDevice()
+                                                                .getManufacturer()
+                                                                .equals("NoDataManufacturer")
+                                                        && info.getDevice()
+                                                                .getModel()
+                                                                .equals("NoDataModel")))
+                .isTrue();
+
+        // 3. Stop advertising DEVICE_2 (WITHOUT inserting any data)
+        advertiseReceiver = new HealthConnectReceiver<>();
+        TestUtils.advertiseDeviceDataSources(Set.of(), outcomeExecutor(), advertiseReceiver);
+        advertiseReceiver.verifyNoExceptionOrThrow();
+
+        // 4. Verify it's REMOVED from getDeviceDataSourceInfos
+        List<DeviceDataSourceInfo> infosAfter = TestUtils.getDeviceDataSourceInfos();
+        assertThat(
+                        infosAfter.stream()
+                                .anyMatch(
+                                        info ->
+                                                info.getDevice()
+                                                                .getManufacturer()
+                                                                .equals("NoDataManufacturer")
+                                                        && info.getDevice()
+                                                                .getModel()
+                                                                .equals("NoDataModel")))
+                .isFalse();
+    }
+
+    @Test
+    public void getDeviceDataSourceInfos_ddpRemovesDeviceButHasData_returnsDevice()
+            throws Exception {
         Device device =
                 new Device.Builder()
                         .setManufacturer("Man1")
@@ -275,22 +405,31 @@ public class DeviceDataSourceInfoTest {
                 Set.of(advertisement), outcomeExecutor(), advertiseReceiver);
         advertiseReceiver.verifyNoExceptionOrThrow();
 
+        // 2. Insert data for the device so it persists as a historical source
+        StepsRecord record =
+                new StepsRecord.Builder(
+                                new android.health.connect.datatypes.Metadata.Builder().build(),
+                                java.time.Instant.now().minusSeconds(100),
+                                java.time.Instant.now(),
+                                100)
+                        .build();
+        TestUtils.insertDeviceRecords(deviceId, List.of(record));
+
         // Verify it exists
         List<DeviceDataSourceInfo> result = TestUtils.getDeviceDataSourceInfos();
-        assertThat(result).hasSize(1);
-        assertThat(result.get(0).getDeviceDataProviderInfos()).hasSize(1);
+        assertThat(result).hasSize(2);
+        assertThat(result.stream().anyMatch(info -> info.getDevice().equals(device))).isTrue();
 
-        // 2. Advertise EMPTY set (removes the device from this DDP)
+        // 3. Advertise EMPTY set (removes the advertisement)
         advertiseReceiver = new HealthConnectReceiver<>();
         TestUtils.advertiseDeviceDataSources(Set.of(), outcomeExecutor(), advertiseReceiver);
         advertiseReceiver.verifyNoExceptionOrThrow();
 
-        // 3. Verify the device data source info still exists (because the device itself persists),
-        // but the provider info list is empty for that device (since this DDP no longer claims it).
-
+        // 4. Verify the device still exists (due to data), but provider info is empty.
         result = TestUtils.getDeviceDataSourceInfos();
-        assertThat(result).hasSize(1);
-        DeviceDataSourceInfo info = result.get(0);
+        assertThat(result).hasSize(2);
+        DeviceDataSourceInfo info =
+                result.stream().filter(i -> i.getDevice().equals(device)).findFirst().orElseThrow();
         assertThat(info.getDevice()).isEqualTo(device);
         // The list of providers should be empty now
         assertThat(info.getDeviceDataProviderInfos()).isEmpty();

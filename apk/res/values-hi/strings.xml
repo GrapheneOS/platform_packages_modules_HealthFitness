@@ -397,6 +397,7 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"अनुमति दें"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"सभी के लिए अनुमति दें"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"अनुमति न दें"</string>
+    <string name="allow_and_continue" msgid="4523565115589395706">"अनुमति दें और जारी रखें"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"चुनें कि इस ऐप्लिकेशन को, Health Connect में मौजूद कौनसा डेटा पढ़ने या सेव करने की अनुमति देनी है"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"चुनें कि इस ऐप्लिकेशन को, Health Connect में कौनसा डेटा देखने की अनुमति देनी है"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"चुनें कि इस ऐप्लिकेशन को, Health Connect में कौनसा डेटा सेव करने की अनुमति देनी है"</string>
@@ -1350,6 +1351,32 @@
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"सेहत से जुड़े और ऐप्लिकेशन देखें"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"कनेक्ट नहीं है"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"इस ऐप्लिकेशन को Health Connect से कनेक्ट करने के लिए क्लिक करें"</string>
+    <string name="devices_screen_description" msgid="8171826001441781372">"यह कंट्रोल करें कि कौनसे डिवाइसों का डेटा Health Connect के साथ सिंक हो सकता है"</string>
+    <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"चालू है"</string>
+    <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"चालू नहीं है"</string>
+    <string name="devices_this_phone" msgid="2739727630674436885">"यह फ़ोन"</string>
+    <!-- no translation found for device_data_provider_screen_title (5410814335680943850) -->
+    <skip />
+    <!-- no translation found for manage_device_settings (5021760675216854323) -->
+    <skip />
+    <!-- no translation found for device_data_provider_enabled_types (4146093570756356467) -->
+    <skip />
+    <string name="device_type_unknown" msgid="3897304904166713087">"अनजान डिवाइस"</string>
+    <string name="device_type_watch" msgid="8118463935553631704">"स्मार्टवॉच"</string>
+    <string name="device_type_phone" msgid="7916371544302291906">"फ़ोन"</string>
+    <string name="device_type_scale" msgid="7764152136397378795">"स्मार्ट स्केल"</string>
+    <string name="device_type_ring" msgid="2528444249876048468">"स्मार्ट रिंग"</string>
+    <string name="device_type_head_mounted" msgid="3968068420976829123">"सिर पर पहनने वाला स्मार्ट डिवाइस"</string>
+    <string name="device_type_fitness_band" msgid="6516937392955240647">"फ़िटनेस बैंड"</string>
+    <string name="device_type_chest_strap" msgid="7278831272805269282">"चेस्ट स्ट्रैप"</string>
+    <string name="device_type_smart_display" msgid="1675362583797329596">"स्मार्ट डिसप्ले"</string>
+    <string name="device_type_consumer_medical_device" msgid="935607930814394009">"उपभोक्ता के लिए मेडिकल डिवाइस"</string>
+    <string name="device_type_glasses" msgid="8479316844380873535">"स्मार्ट ग्लास"</string>
+    <string name="device_type_hearable" msgid="9068385110951052438">"कान में पहनने वाला स्मार्ट डिवाइस"</string>
+    <string name="device_type_fitness_machine" msgid="5005606659749314561">"फ़िटनेस मशीन"</string>
+    <string name="device_type_fitness_equipment" msgid="4702700814093068235">"फ़िटनेस से जुड़े उपकरण"</string>
+    <string name="device_type_portable_computer" msgid="9003721967778945730">"पोर्टेबल कंप्यूटर"</string>
+    <string name="device_type_meter" msgid="3409050593674148325">"मीटर"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"अभी नहीं"</string>
     <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"सभी लक्षण"</string>
     <string name="symptoms_lowercase_label" msgid="767123038349492995">"लक्षण"</string>

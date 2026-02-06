@@ -224,7 +224,10 @@ class InsertRecordFragment : Fragment() {
             spinnerContainer.requireViewById<AutoCompleteTextView>(R.id.enum_auto_complete_textview)
 
         val deviceConfigs =
-            mAdvertiseDevicesViewModel.deviceConfigs.value?.filter { it.isEnabled } ?: listOf()
+            mAdvertiseDevicesViewModel.deviceConfigs.value?.filter {
+                it.isEnabled &&
+                    it.advertisedDataTypes.any { it.advertisedDataType == mRecordClass.java }
+            } ?: listOf()
         val deviceDisplayNames = deviceConfigs.map { it.displayName ?: it.deviceId }
         val adapter =
             ArrayAdapter(requireContext(), R.layout.simple_spinner_item, deviceDisplayNames)

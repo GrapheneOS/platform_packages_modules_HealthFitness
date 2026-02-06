@@ -19,6 +19,7 @@ import static android.health.connect.HealthPermissions.READ_BLOOD_GLUCOSE;
 import static android.health.connect.HealthPermissions.READ_OVULATION_TEST;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 import static android.healthconnect.testing.cts.TestUtils.advertiseDevice;
+import static android.healthconnect.testing.cts.TestUtils.advertiseDeviceDataSources;
 import static android.healthconnect.testing.cts.TestUtils.deleteDeviceRecords;
 import static android.healthconnect.testing.cts.TestUtils.getCurrentDeviceId;
 import static android.healthconnect.testing.cts.TestUtils.getDeviceDataSourceInfos;
@@ -38,6 +39,8 @@ import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_D
 
 import static com.google.common.truth.Truth.assertThat;
 
+import static org.junit.Assert.assertThrows;
+
 import static java.time.temporal.ChronoUnit.HOURS;
 import static java.time.temporal.ChronoUnit.MINUTES;
 
@@ -45,16 +48,19 @@ import android.app.UiAutomation;
 import android.health.connect.DeviceDataProviderInfo;
 import android.health.connect.DeviceDataSourceCapabilities;
 import android.health.connect.DeviceDataSourceInfo;
+import android.health.connect.HealthConnectException;
 import android.health.connect.ReadRecordsRequestUsingFilters;
 import android.health.connect.RecordIdFilter;
 import android.health.connect.TimeInstantRangeFilter;
 import android.health.connect.accesslog.AccessLog;
 import android.health.connect.datatypes.BasalBodyTemperatureRecord;
 import android.health.connect.datatypes.BloodGlucoseRecord;
+import android.health.connect.datatypes.Device;
 import android.health.connect.datatypes.HydrationRecord;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.OvulationTestRecord;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.healthconnect.testing.cts.HealthConnectReceiver;
 import android.healthconnect.testing.cts.TestUtils;
@@ -152,6 +158,29 @@ public class DeviceDataProviderApiTest {
                                                                 log.getPackageName()))
                                 .findAny())
                 .isEmpty();
+    }
+
+    @Test
+    public void advertiseDevice_duplicateDeviceIds_throwsException() {
+        Device device1 = buildDevice();
+        Device device2 = new Device.Builder().setType(Device.DEVICE_TYPE_PHONE).build();
+
+        Set<DeviceDataTypeAdvertisement> deviceDataTypeAdvertisements =
+                Set.of(new DeviceDataTypeAdvertisement.Builder(StepsRecord.class).build());
+
+        DeviceDataAdvertisement advertisement1 =
+                new DeviceDataAdvertisement(device1, mDeviceId, deviceDataTypeAdvertisements);
+        DeviceDataAdvertisement advertisement2 =
+                new DeviceDataAdvertisement(device2, mDeviceId, deviceDataTypeAdvertisements);
+
+        HealthConnectReceiver<Void> receiver = new HealthConnectReceiver<>();
+        assertThrows(
+                HealthConnectException.class,
+                () ->
+                        advertiseDeviceDataSources(
+                                Set.of(advertisement1, advertisement2),
+                                outcomeExecutor(),
+                                receiver));
     }
 
     @Test

@@ -161,13 +161,6 @@ class SettingsFitnessAppFragmentTest {
             MutableLiveData(AdditionalAccessViewModel.State())
         }
 
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IDLE,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 MigrationViewModel.MigrationFragmentState.WithData(
@@ -628,13 +621,6 @@ class SettingsFitnessAppFragmentTest {
 
     @Test
     fun whenMigrationPending_showsMigrationPendingDialog() {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.APP_UPGRADE_REQUIRED,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 MigrationViewModel.MigrationFragmentState.WithData(
@@ -689,13 +675,6 @@ class SettingsFitnessAppFragmentTest {
 
     @Test
     fun whenMigrationInProgress_showsMigrationInProgressDialog() {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IN_PROGRESS,
-                dataRestoreState = DataRestoreUiState.IDLE,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 MigrationViewModel.MigrationFragmentState.WithData(
@@ -748,13 +727,6 @@ class SettingsFitnessAppFragmentTest {
 
     @Test
     fun whenRestoreInProgress_showsRestoreInProgressDialog() {
-        whenever(migrationViewModel.getCurrentMigrationUiState()).then {
-            MigrationRestoreState(
-                migrationUiState = MigrationUiState.IDLE,
-                dataRestoreState = DataRestoreUiState.IN_PROGRESS,
-                dataRestoreError = DataRestoreUiError.ERROR_NONE,
-            )
-        }
         whenever(migrationViewModel.migrationState).then {
             MutableLiveData(
                 MigrationViewModel.MigrationFragmentState.WithData(

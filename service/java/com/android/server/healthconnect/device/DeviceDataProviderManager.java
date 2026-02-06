@@ -68,11 +68,13 @@ import com.android.server.healthconnect.storage.TransactionManager;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -157,6 +159,7 @@ public class DeviceDataProviderManager {
         requireNonNull(callingDdpPackageName);
 
         validateDdpConfiguration(callingDdpPackageName);
+        validateDeviceIdsAreUnique(advertisements);
 
         List<Long> existingAppInfoIds =
                 mDeviceDataSourcesHelper.getAppInfoIds(callingDdpPackageName);
@@ -184,7 +187,6 @@ public class DeviceDataProviderManager {
      * <p>This method is called at device startup, as the generated ID is required by {@link
      * #getCurrentDeviceId}.
      */
-    @VisibleForTesting
     public void initializeOrRefreshCurrentDeviceIds() {
         mStableCurrentDeviceId =
                 mSyntheticPackageNameCreator.createCanonical(Device.DEVICE_TYPE_PHONE, getSerial());
@@ -503,6 +505,31 @@ public class DeviceDataProviderManager {
         }
     }
 
+    private void validateDeviceIdsAreUnique(Set<DeviceDataAdvertisement> advertisements) {
+        Map<String, Long> counts =
+                advertisements.stream()
+                        .map(DeviceDataAdvertisement::getDeviceId)
+                        .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
+
+        List<String> duplicates =
+                counts.entrySet().stream()
+                        .filter(entry -> entry.getValue() > 1)
+                        .map(Map.Entry::getKey)
+                        .collect(Collectors.toList());
+
+        if (!duplicates.isEmpty()) {
+            String message =
+                    String.format(
+                            "Duplicate Device IDs found: %s. Device IDs must be unique across"
+                                + " advertisements in a single request. To combine multiple devices"
+                                + " into one source, use a single DeviceDataAdvertisement with all"
+                                + " required data types.",
+                            duplicates);
+            Slog.e(TAG, message);
+            throw new IllegalArgumentException(message);
+        }
+    }
+
     private void populateOrThrowRecords(
             String callingDdpPackageName,
             String deviceId,
@@ -633,47 +660,22 @@ public class DeviceDataProviderManager {
                 mDeviceDataSourcesHelper.getDeviceDataTypeAdvertisements();
 
         List<DeviceDataSourceInfo> result = new ArrayList<>();
+        for (AppInfoInternal appInfo : mAppInfoHelper.getAppInfoMap().values()) {
+            Long deviceInfoId = appInfo.getDeviceInfoId();
+            if (deviceInfoId == null) {
+                continue;
+            }
 
-        for (Map.Entry<Long, Map<String, List<DeviceDataTypeAdvertisement>>> entry :
-                appInfoIdToDdpAds.entrySet()) {
-            long appInfoId = entry.getKey();
-            Map<String, List<DeviceDataTypeAdvertisement>> ddpPackageToAdvertisements =
-                    entry.getValue();
+            if (!appInfoIdToDdpAds.containsKey(appInfo.getId())
+                    && (appInfo.getRecordTypesUsed() == null
+                            || appInfo.getRecordTypesUsed().isEmpty())) {
+                continue;
+            }
 
             try {
-                String syntheticPackageName = getOrThrowSyntheticPackageName(appInfoId);
-                AppInfoInternal appInfo = getOrThrowAppInfo(syntheticPackageName);
-
-                long deviceInfoId = requireNonNull(appInfo.getDeviceInfoId());
-                DeviceInfoHelper.DeviceInfo deviceInfo =
-                        requireNonNull(mDeviceInfoHelper.getDeviceInfo(deviceInfoId));
-
-                DataOrigin dataOrigin =
-                        new DataOrigin.Builder().setPackageName(syntheticPackageName).build();
-
-                Device device =
-                        new Device.Builder()
-                                .setManufacturer(deviceInfo.getManufacturer())
-                                .setModel(deviceInfo.getModel())
-                                .setType(deviceInfo.getDeviceType())
-                                .setDisplayName(deviceInfo.getDisplayName())
-                                .build();
-
-                String deviceId = deviceInfo.getDeviceId();
-                if (deviceId == null) {
-                    throw new IllegalStateException(
-                            "DDP device encountered with unexpected null device ID");
-                }
-
-                boolean isCurrentDevice = deviceId.equals(getStableCurrentDeviceId());
-
-                List<DeviceDataProviderInfo> providerInfos =
-                        getDeviceDataProviderInfos(ddpPackageToAdvertisements, deviceId);
-
-                result.add(
-                        new DeviceDataSourceInfo(
-                                dataOrigin, device, isCurrentDevice, providerInfos));
-
+                DeviceDataSourceInfo info =
+                        createDeviceDataSourceInfo(deviceInfoId, appInfo, appInfoIdToDdpAds);
+                result.add(info);
             } catch (PackageManager.NameNotFoundException e) {
                 // Log error and skip.
                 Slog.e(TAG, "Device data provider package was unexpectedly not found", e);
@@ -682,7 +684,63 @@ public class DeviceDataProviderManager {
                 Slog.e(TAG, "Failed to retrieve device data source info", e);
             }
         }
+
+        sortDeviceDataSourceInfos(result);
+
         return result;
+    }
+
+    private DeviceDataSourceInfo createDeviceDataSourceInfo(
+            long deviceInfoId,
+            AppInfoInternal appInfo,
+            Map<Long, Map<String, List<DeviceDataTypeAdvertisement>>> appInfoIdToDdpAds)
+            throws PackageManager.NameNotFoundException {
+        long appInfoId = appInfo.getId();
+        Map<String, List<DeviceDataTypeAdvertisement>> ddpPackageToAdvertisements =
+                appInfoIdToDdpAds.getOrDefault(appInfoId, Map.of());
+
+        String syntheticPackageName = appInfo.getPackageName();
+
+        DeviceInfoHelper.DeviceInfo deviceInfo =
+                requireNonNull(mDeviceInfoHelper.getDeviceInfo(deviceInfoId));
+
+        DataOrigin dataOrigin =
+                new DataOrigin.Builder().setPackageName(syntheticPackageName).build();
+
+        Device device =
+                new Device.Builder()
+                        .setManufacturer(deviceInfo.getManufacturer())
+                        .setModel(deviceInfo.getModel())
+                        .setType(deviceInfo.getDeviceType())
+                        .setDisplayName(deviceInfo.getDisplayName())
+                        .build();
+
+        String deviceId = deviceInfo.getDeviceId();
+        if (deviceId == null) {
+            throw new IllegalStateException(
+                    "DDP device encountered with unexpected null device ID");
+        }
+
+        boolean isCurrentDevice = deviceId.equals(getStableCurrentDeviceId());
+
+        List<DeviceDataProviderInfo> providerInfos =
+                getDeviceDataProviderInfos(ddpPackageToAdvertisements, deviceId);
+
+        return new DeviceDataSourceInfo(dataOrigin, device, isCurrentDevice, providerInfos);
+    }
+
+    private void sortDeviceDataSourceInfos(List<DeviceDataSourceInfo> result) {
+        result.sort(
+                Comparator.comparing(DeviceDataSourceInfo::isCurrentDevice)
+                        .reversed() // Puts true (current device) first
+                        .thenComparing(
+                                info -> {
+                                    Device device = info.getDevice();
+                                    return device.getDisplayName() != null
+                                            ? device.getDisplayName()
+                                            : device.getModel();
+                                },
+                                Comparator.nullsLast(Comparator.naturalOrder())));
     }
 
     /**
@@ -691,8 +749,6 @@ public class DeviceDataProviderManager {
      * with "TRACKING_PREF_".
      */
     public void advertiseCurrentDeviceNativeCapabilities() {
-        initializeOrRefreshCurrentDeviceIds();
-
         DeviceDataSource currentDeviceSource = mDeviceDataSourceHelper.getCurrentDevice(mContext);
 
         Device currentDevice =

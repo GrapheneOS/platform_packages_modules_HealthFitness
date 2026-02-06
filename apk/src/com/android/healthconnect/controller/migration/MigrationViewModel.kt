@@ -19,14 +19,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.migration.api.DEFAULT_MIGRATION_RESTORE_STATE
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 @HiltViewModel
 class MigrationViewModel
@@ -43,7 +41,7 @@ constructor(
         loadHealthConnectMigrationUiState()
     }
 
-    private fun loadHealthConnectMigrationUiState() {
+    fun loadHealthConnectMigrationUiState() {
         viewModelScope.launch {
             _migrationState.postValue(
                 when (val result = loadMigrationRestoreStateUseCase.invoke(Unit)) {
@@ -55,16 +53,6 @@ constructor(
                     }
                 }
             )
-        }
-    }
-
-    fun getCurrentMigrationUiState(): MigrationRestoreState {
-        return runBlocking {
-            val result = loadMigrationRestoreStateUseCase.invoke(Unit)
-            when (result) {
-                is UseCaseResults.Success -> result.data
-                is UseCaseResults.Failed -> DEFAULT_MIGRATION_RESTORE_STATE
-            }
         }
     }
 

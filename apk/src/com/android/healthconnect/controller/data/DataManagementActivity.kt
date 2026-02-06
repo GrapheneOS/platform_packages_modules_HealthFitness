@@ -48,14 +48,14 @@ class DataManagementActivity : Hilt_DataManagementActivity() {
 
         setContentView(R.layout.activity_data_management)
 
-        val currentMigrationState = migrationViewModel.getCurrentMigrationUiState()
-        if (maybeRedirectToMigrationActivity(this, currentMigrationState)) {
-            return
-        }
-
         migrationViewModel.migrationState.observe(this) { migrationState ->
             when (migrationState) {
                 is MigrationFragmentState.WithData -> {
+                    if (
+                        maybeRedirectToMigrationActivity(this, migrationState.migrationRestoreState)
+                    ) {
+                        return@observe
+                    }
                     if (
                         migrationState.migrationRestoreState.migrationUiState ==
                             MigrationUiState.COMPLETE
@@ -78,11 +78,7 @@ class DataManagementActivity : Hilt_DataManagementActivity() {
 
     override fun onResume() {
         super.onResume()
-        val currentMigrationState = migrationViewModel.getCurrentMigrationUiState()
-
-        if (maybeRedirectToMigrationActivity(this, currentMigrationState)) {
-            return
-        }
+        migrationViewModel.loadHealthConnectMigrationUiState()
     }
 
     override fun onBackPressed() {

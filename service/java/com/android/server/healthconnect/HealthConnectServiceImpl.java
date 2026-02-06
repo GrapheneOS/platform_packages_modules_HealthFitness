@@ -185,6 +185,7 @@ import android.health.connect.exportimport.IScheduledExportStatusCallback;
 import android.health.connect.exportimport.ImportStatus;
 import android.health.connect.exportimport.ScheduledExportSettings;
 import android.health.connect.exportimport.ScheduledExportStatus;
+import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.utils.AggregationTypeIdMapper;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
@@ -1862,6 +1863,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             }
             if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                 requireNonNull(mDeviceDataProviderManager);
+                mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
                 mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
             }
         } finally {
@@ -2264,6 +2266,26 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             }
 
             deviceDataTypeSources.add(createDeviceDataTypeSource(dataType, symptomType, ads));
+        }
+
+        // This is needed when the DDP device is no longer advertised. We check the record types
+        // used to determine if the source is visible to the caller.
+        if (!skipPermissionChecks && !hasAtLeastOnePermission) {
+            String spn = info.getDeviceDataOrigin().getPackageName();
+            AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(spn);
+            if (appInfo != null && appInfo.getRecordTypesUsed() != null) {
+                for (int recordType : appInfo.getRecordTypesUsed()) {
+                    Class<? extends Record> dataType =
+                            mHealthConnectMappings
+                                    .getRecordIdToExternalRecordClassMap()
+                                    .get(recordType);
+                    if (dataType != null
+                            && hasReadPermissionForDataType(dataType, grantedPermissions)) {
+                        hasAtLeastOnePermission = true;
+                        break;
+                    }
+                }
+            }
         }
 
         if (hasAtLeastOnePermission || skipPermissionChecks) {

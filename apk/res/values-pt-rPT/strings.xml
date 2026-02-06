@@ -397,6 +397,7 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"Permitir"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Permitir tudo"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Não permitir"</string>
+    <string name="allow_and_continue" msgid="4523565115589395706">"Permitir e continuar"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Escolha os dados que quer que esta app leia ou escreva na Saúde Connect"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Escolha os dados que quer que esta app leia da Saúde Connect"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Escolha os dados que quer que esta app escreva na Saúde Connect"</string>
@@ -1350,6 +1351,29 @@
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Ver mais apps de saúde"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Não associada"</string>
     <string name="connect_app_button_content_description" msgid="296796277841527165">"Clique para associar esta app à Saúde Connect"</string>
+    <string name="devices_screen_description" msgid="8171826001441781372">"Controle que dispositivos podem sincronizar dados com a Saúde Connect"</string>
+    <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Ativados"</string>
+    <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Não ativados"</string>
+    <string name="devices_this_phone" msgid="2739727630674436885">"Este telemóvel"</string>
+    <string name="device_data_provider_screen_title" msgid="5410814335680943850">"Acesso a dispositivos"</string>
+    <string name="manage_device_settings" msgid="5021760675216854323">"Definições de <xliff:g id="DDP_NAME">%1$s</xliff:g>"</string>
+    <string name="device_data_provider_enabled_types" msgid="4146093570756356467">"<xliff:g id="ENABLED_TYPES">%1$d</xliff:g> de <xliff:g id="ALL_TYPES">%2$d</xliff:g> ativado(s)"</string>
+    <string name="device_type_unknown" msgid="3897304904166713087">"Desconhecido"</string>
+    <string name="device_type_watch" msgid="8118463935553631704">"Relógio"</string>
+    <string name="device_type_phone" msgid="7916371544302291906">"Telemóvel"</string>
+    <string name="device_type_scale" msgid="7764152136397378795">"Balança"</string>
+    <string name="device_type_ring" msgid="2528444249876048468">"Anel"</string>
+    <string name="device_type_head_mounted" msgid="3968068420976829123">"Montagem na cabeça"</string>
+    <string name="device_type_fitness_band" msgid="6516937392955240647">"Bracelete de fitness"</string>
+    <string name="device_type_chest_strap" msgid="7278831272805269282">"Banda de peito"</string>
+    <string name="device_type_smart_display" msgid="1675362583797329596">"Smart Display"</string>
+    <string name="device_type_consumer_medical_device" msgid="935607930814394009">"Dispositivo médico de consumo"</string>
+    <string name="device_type_glasses" msgid="8479316844380873535">"Óculos"</string>
+    <string name="device_type_hearable" msgid="9068385110951052438">"Audível"</string>
+    <string name="device_type_fitness_machine" msgid="5005606659749314561">"Máquina de fitness"</string>
+    <string name="device_type_fitness_equipment" msgid="4702700814093068235">"Equipamento de fitness"</string>
+    <string name="device_type_portable_computer" msgid="9003721967778945730">"Computador portátil"</string>
+    <string name="device_type_meter" msgid="3409050593674148325">"Contador"</string>
     <string name="banner_default_dismiss_button" msgid="3193723491836994371">"Agora não"</string>
     <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"Todos os sintomas"</string>
     <string name="symptoms_lowercase_label" msgid="767123038349492995">"sintomas"</string>
