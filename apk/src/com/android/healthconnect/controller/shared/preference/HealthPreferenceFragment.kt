@@ -132,6 +132,7 @@ abstract class HealthPreferenceFragment : SettingsBasePreferenceFragment() {
     private fun setLoading(loading: Boolean, animate: Boolean, force: Boolean) {
         if (isLoading != loading || force) {
             isLoading = loading
+            hasError = false
             // If there is no created view, there is no reason to animate.
             val canAnimate = animate && view != null
             setViewShown(preferenceContainer, !loading, canAnimate)
