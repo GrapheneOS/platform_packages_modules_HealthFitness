@@ -1325,6 +1325,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     enforceIsForegroundUser(requestContext.getCallingUser());
                     verifyPackageNameFromUid(uid, attributionSource);
                     throwExceptionIfDataSyncInProgress();
+                    DeleteUsingFiltersRequestParcel unmaskedRequest = request;
                     List<Integer> recordTypeIdsToDelete =
                             (!request.getRecordTypeFilters().isEmpty())
                                     ? request.getRecordTypeFilters()
@@ -1348,12 +1349,21 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     } else {
                         grantedPerRecordWritePermissions =
                                 mInternalHealthConnectMappings.getAllPerRecordWritePermissions();
+                        // While we restrict normal apps from deleting device data when they
+                        // don't explicitly use record IDs, apps holding the data management
+                        // permission (like the controller) get a pass to delete data across
+                        // device data providers
+                        unmaskedRequest =
+                                request.toUnmasked(
+                                        getUnmaskingFunction(
+                                                requireNonNull(
+                                                        attributionSource.getPackageName())));
                     }
 
                     int numberOfRecordsDeleted =
                             mFitnessRecordDeleteHelper.deleteRecords(
                                     requireNonNull(attributionSource.getPackageName()),
-                                    request,
+                                    unmaskedRequest,
                                     grantedPerRecordWritePermissions,
                                     /* enforceSelfDelete= */ !holdsDataManagementPermission,
                                     /* shouldRecordAccessLog= */ !holdsDataManagementPermission);

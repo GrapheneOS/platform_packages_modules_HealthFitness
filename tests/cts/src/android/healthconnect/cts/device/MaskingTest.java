@@ -324,9 +324,15 @@ public class MaskingTest {
                 .isEqualTo(maskedOrigin);
     }
 
-    // Reason: Only the deleteDeviceRecords API is allowed to delete device data
+    // Reason: Only the deleteDeviceRecords API is allowed to delete device data when called
+    // by regular apps. Apps holding MANAGE_HEALTH_DATA_PERMISSION are allowed to delete data
+    // across all sources. We enforce this enforcement by only unmasking calls by apps with the
+    // MANAGE_HEALTH_DATA_PERMISSION. See {@link
+    // HealthConnectServiceImplTest.
+    // deleteUsingFilters_syntheticPackage_canDeleteOnlyWithManageHealthDataPermission} for the
+    // behavior for regular apps.
     @Test
-    public void deleteRecords_usingPackageNameFilters_doesNotUnmask_doesNotDelete()
+    public void deleteRecords_usingNonIdFilters_controller_unmasks_deletes()
             throws InterruptedException {
         DataOrigin maskedOrigin =
                 new DataOrigin.Builder().setPackageName(mMaskedDeviceName).build();
@@ -338,7 +344,7 @@ public class MaskingTest {
 
         verifyDeleteRecords(request);
 
-        assertThat(readAllRecords(StepsRecord.class)).hasSize(1);
+        assertThat(readAllRecords(StepsRecord.class)).isEmpty();
     }
 
     // Reason: Only the deleteDeviceRecords API is allowed to delete device data
