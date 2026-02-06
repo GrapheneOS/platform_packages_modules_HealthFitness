@@ -17,6 +17,7 @@ package android.healthconnect.cts.device;
 
 import static android.health.connect.HealthPermissions.READ_BLOOD_GLUCOSE;
 import static android.health.connect.HealthPermissions.READ_OVULATION_TEST;
+import static android.health.connect.HealthPermissions.READ_STEPS;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 import static android.healthconnect.testing.cts.TestUtils.advertiseDevice;
 import static android.healthconnect.testing.cts.TestUtils.advertiseDeviceDataSources;
@@ -31,6 +32,7 @@ import static android.healthconnect.testing.cts.TestUtils.isMaskedSyntheticPacka
 import static android.healthconnect.testing.cts.TestUtils.queryAccessLogs;
 import static android.healthconnect.testing.cts.TestUtils.readDeviceRecords;
 import static android.healthconnect.testing.cts.TestUtils.updateDeviceRecords;
+import static android.healthconnect.testing.cts.TestUtils.verifyGetDeviceDataSourcesWithPermission;
 import static android.healthconnect.testing.shared.DataFactory.buildDevice;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 
@@ -46,6 +48,7 @@ import static java.time.temporal.ChronoUnit.MINUTES;
 
 import android.app.UiAutomation;
 import android.health.connect.DeviceDataProviderInfo;
+import android.health.connect.DeviceDataSource;
 import android.health.connect.DeviceDataSourceCapabilities;
 import android.health.connect.DeviceDataSourceInfo;
 import android.health.connect.HealthConnectException;
@@ -181,6 +184,108 @@ public class DeviceDataProviderApiTest {
                                 Set.of(advertisement1, advertisement2),
                                 outcomeExecutor(),
                                 receiver));
+    }
+
+    @Test
+    public void advertiseDevice_noDataTypes_noData_notIncludedInDeviceSourceInfos()
+            throws InterruptedException {
+        List<DeviceDataSourceInfo> initialResponse = getDeviceDataSourceInfos();
+        String currentDeviceId = getCurrentDeviceId();
+
+        assertThat(initialResponse).hasSize(1);
+        DeviceDataSourceInfo initialSourceInfo = initialResponse.get(0);
+        assertThat(initialSourceInfo.getDeviceDataOrigin().getPackageName())
+                .isEqualTo(currentDeviceId);
+
+        TestUtils.advertiseDevice(mDeviceId, buildDevice(), Set.of());
+
+        List<DeviceDataSourceInfo> updatedResponse = getDeviceDataSourceInfos();
+        assertThat(updatedResponse).hasSize(1);
+        DeviceDataSourceInfo updatedSourceInfo = updatedResponse.get(0);
+        assertThat(updatedSourceInfo.getDeviceDataOrigin().getPackageName())
+                .isEqualTo(currentDeviceId);
+    }
+
+    @Test
+    public void advertiseDevice_noDataTypes_withData_includedInDeviceSourceInfos()
+            throws InterruptedException {
+        List<DeviceDataSourceInfo> initialResponse = getDeviceDataSourceInfos();
+        String currentDeviceId = getCurrentDeviceId();
+        Device secondDevice = buildDevice();
+
+        assertThat(initialResponse).hasSize(1);
+        DeviceDataSourceInfo initialSourceInfo = initialResponse.get(0);
+        assertThat(initialSourceInfo.getDeviceDataOrigin().getPackageName())
+                .isEqualTo(currentDeviceId);
+
+        TestUtils.advertiseDevice(mDeviceId, secondDevice, StepsRecord.class);
+        TestUtils.insertDeviceRecords(mDeviceId, List.of(getStepsRecord()));
+
+        TestUtils.advertiseDevice(mDeviceId, secondDevice, Set.of());
+
+        List<DeviceDataSourceInfo> updatedResponse = getDeviceDataSourceInfos();
+        assertThat(updatedResponse).hasSize(2);
+        assertThat(updatedResponse.get(0).getDeviceDataOrigin().getPackageName())
+                .isEqualTo(currentDeviceId);
+        assertThat(updatedResponse.get(1).getDevice()).isEqualTo(secondDevice);
+        assertThat(updatedResponse.get(1).getDeviceDataProviderInfos().size()).isEqualTo(0);
+    }
+
+    @Test
+    public void advertiseDevice_noDataTypes_noData_notIncludedInDeviceSources()
+            throws InterruptedException {
+        String currentDeviceId = getCurrentDeviceId();
+        Device secondDevice = buildDevice();
+
+        verifyGetDeviceDataSourcesWithPermission(
+                READ_STEPS,
+                dataSources -> {
+                    assertThat(dataSources).hasSize(1);
+                    assertThat(dataSources.get(0).getDeviceDataOrigin().getPackageName())
+                            .isEqualTo(currentDeviceId);
+                });
+
+        TestUtils.advertiseDevice(mDeviceId, secondDevice, Set.of());
+
+        verifyGetDeviceDataSourcesWithPermission(
+                READ_STEPS,
+                dataSources -> {
+                    assertThat(dataSources).hasSize(1);
+                    assertThat(dataSources.get(0).getDeviceDataOrigin().getPackageName())
+                            .isEqualTo(currentDeviceId);
+                });
+    }
+
+    @Test
+    public void advertiseDevice_noDataTypes_withData_includedInDeviceSources()
+            throws InterruptedException {
+        String currentDeviceId = getCurrentDeviceId();
+        Device secondDevice = buildDevice();
+
+        verifyGetDeviceDataSourcesWithPermission(
+                READ_STEPS,
+                dataSources -> {
+                    assertThat(dataSources).hasSize(1);
+                    assertThat(dataSources.get(0).getDeviceDataOrigin().getPackageName())
+                            .isEqualTo(currentDeviceId);
+                });
+
+        TestUtils.advertiseDevice(mDeviceId, secondDevice, StepsRecord.class);
+        TestUtils.insertDeviceRecords(mDeviceId, List.of(getStepsRecord()));
+
+        TestUtils.advertiseDevice(mDeviceId, secondDevice, Set.of());
+
+        verifyGetDeviceDataSourcesWithPermission(
+                READ_STEPS,
+                dataSources -> {
+                    assertThat(dataSources).hasSize(2);
+                    assertThat(dataSources.get(0).getDeviceDataOrigin().getPackageName())
+                            .isEqualTo(currentDeviceId);
+                    DeviceDataSource dataSource = dataSources.get(1);
+                    assertThat(dataSource.getDevice()).isEqualTo(secondDevice);
+
+                    assertThat(dataSource.getDeviceDataTypeSources()).hasSize(0);
+                });
     }
 
     @Test
