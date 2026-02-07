@@ -66,6 +66,8 @@ import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.device.DeviceDataProviderManager;
+import com.android.server.healthconnect.device.FakeSerialDeviceDataProviderManager;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
@@ -140,11 +142,36 @@ public class ImportManagerTest {
     @Before
     public void setUp() throws Exception {
         mContext = ApplicationProvider.getApplicationContext();
+        HealthConnectInjector healthConnectInjectorTemp =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setPreferenceHelper(new FakePreferenceHelper())
+                        .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
+                        .setExportImportNotificationFactory(mNotificationFactory)
+                        .build();
+
+        DeviceDataProviderManager fakeDeviceDataProviderManager =
+                new FakeSerialDeviceDataProviderManager(
+                        mContext,
+                        healthConnectInjectorTemp.getDeviceInfoHelper(),
+                        healthConnectInjectorTemp.getAppInfoHelper(),
+                        healthConnectInjectorTemp.getDeviceDataSourceHelper(),
+                        healthConnectInjectorTemp.getDeviceDataSourcesHelper(),
+                        healthConnectInjectorTemp.getDeviceDataProviderMetadataHelper(),
+                        healthConnectInjectorTemp.getFitnessRecordUpsertHelper(),
+                        healthConnectInjectorTemp.getFitnessRecordReadHelper(),
+                        healthConnectInjectorTemp.getFitnessRecordDeleteHelper(),
+                        healthConnectInjectorTemp.getSyntheticPackageNameCreator(),
+                        healthConnectInjectorTemp.getPreferenceHelper(),
+                        healthConnectInjectorTemp.getHealthDataCategoryPriorityHelper(),
+                        InternalHealthConnectMappings.getInstance(),
+                        true);
+
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setPreferenceHelper(new FakePreferenceHelper())
                         .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .setExportImportNotificationFactory(mNotificationFactory)
+                        .setDeviceDataProviderManager(fakeDeviceDataProviderManager)
                         .build();
         mTransactionManager = healthConnectInjector.getTransactionManager();
         mDatabaseHelpers = healthConnectInjector.getDatabaseHelpers();
@@ -165,6 +192,12 @@ public class ImportManagerTest {
         mPriorityHelper = healthConnectInjector.getHealthDataCategoryPriorityHelper();
         mPriorityHelper.setPriorityOrder(HealthDataCategory.ACTIVITY, List.of(TEST_PACKAGE_NAME));
 
+        if (healthConnectInjector.getDeviceDataProviderManager() != null) {
+            healthConnectInjector
+                    .getDeviceDataProviderManager()
+                    .initializeOrRefreshCurrentDeviceIds();
+        }
+
         Instant timeStamp = Instant.parse("2024-06-04T16:39:12Z");
         Clock fakeClock = Clock.fixed(timeStamp, ZoneId.of("UTC"));
 
@@ -177,6 +210,8 @@ public class ImportManagerTest {
                         healthConnectInjector.getFitnessRecordUpsertHelper(),
                         healthConnectInjector.getFitnessRecordReadHelper(),
                         deviceInfoHelper,
+                        healthConnectInjector.getDeviceDataProviderMetadataHelper(),
+                        healthConnectInjector.getSyntheticPackageNameCreator(),
                         mPriorityHelper,
                         fakeClock,
                         mNotificationSender,

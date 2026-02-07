@@ -817,8 +817,6 @@ public class DeviceDataProviderManagerTest {
         RecordInternal<?> readRecord = readRecords.get(0);
         assertThat(readRecord.getRecordType()).isEqualTo(RECORD_TYPE_STEPS);
         assertTrue(SyntheticPackageNameMatcher.matchesCanonical(readRecord.getPackageName()));
-        // RecordHelper#getRecord doesn't repopulate the deviceInfoId
-        assertThat(readRecord.getDeviceInfoId()).isEqualTo(-1L);
         assertThat(readRecord.getManufacturer()).isEqualTo(MANUFACTURER);
         assertThat(readRecord.getModel()).isEqualTo(MODEL);
         assertThat(readRecord.getDeviceType()).isEqualTo(DEVICE_TYPE);

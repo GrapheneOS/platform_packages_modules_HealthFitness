@@ -64,10 +64,12 @@ import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
+import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.exportimport.DatabaseMerger;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
+import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
@@ -207,6 +209,8 @@ public final class BackupRestore {
             FitnessRecordReadHelper fitnessRecordReadHelper,
             Context context,
             DeviceInfoHelper deviceInfoHelper,
+            DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
+            SyntheticPackageNameCreator syntheticPackageNameCreator,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             HealthConnectThreadScheduler threadScheduler,
             File environmentDataDirectory,
@@ -221,6 +225,8 @@ public final class BackupRestore {
                 fitnessRecordReadHelper,
                 context,
                 deviceInfoHelper,
+                deviceDataProviderMetadataHelper,
+                syntheticPackageNameCreator,
                 healthDataCategoryPriorityHelper,
                 threadScheduler,
                 environmentDataDirectory,
@@ -239,6 +245,8 @@ public final class BackupRestore {
             FitnessRecordReadHelper fitnessRecordReadHelper,
             Context context,
             DeviceInfoHelper deviceInfoHelper,
+            DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
+            SyntheticPackageNameCreator syntheticPackageNameCreator,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             HealthConnectThreadScheduler threadScheduler,
             File environmentDataDirectory,
@@ -252,6 +260,8 @@ public final class BackupRestore {
                 new DatabaseMerger(
                         appInfoHelper,
                         deviceInfoHelper,
+                        deviceDataProviderMetadataHelper,
+                        syntheticPackageNameCreator,
                         healthDataCategoryPriorityHelper,
                         transactionManager,
                         fitnessRecordUpsertHelper,

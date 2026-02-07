@@ -25,6 +25,7 @@ import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_FAILED;
 import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_RETRY;
 import static android.health.connect.HealthConnectManager.DATA_DOWNLOAD_STARTED;
 
+import static com.android.healthfitness.flags.AconfigFlagHelper.isDeviceDataProvidersEnabled;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.BackupRestoreJobService.BACKUP_RESTORE_JOBS_NAMESPACE;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.BackupRestoreJobService.EXTRA_JOB_NAME_KEY;
 import static com.android.server.healthconnect.backuprestore.BackupRestore.DATA_DOWNLOAD_STATE_KEY;
@@ -83,6 +84,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
+import com.android.server.healthconnect.device.DeviceDataProviderManager;
+import com.android.server.healthconnect.device.FakeSerialDeviceDataProviderManager;
+import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.migration.MigrationStateManager;
@@ -154,14 +158,14 @@ public class BackupRestoreTest {
         when(mServiceContext.getPackageName()).thenReturn("packageName");
         when(mTransactionManager.read(any(), any())).thenReturn(mCursor);
         when(mTransactionManager.read(any())).thenReturn(mCursor);
-        HealthConnectInjector healthConnectInjector =
-                HealthConnectInjectorImpl.newBuilderForTest(mContext)
-                        .setPreferenceHelper(mFakePreferenceHelper)
-                        .setMigrationStateManager(mMockMigrationStateManager)
-                        .setFirstGrantTimeManager(mFirstGrantTimeManager)
-                        .setTransactionManager(mTransactionManager)
-                        .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
-                        .build();
+
+        HealthConnectInjector healthConnectInjector = createHealthConnectInjector();
+
+        if (isDeviceDataProvidersEnabled()) {
+            healthConnectInjector
+                    .getDeviceDataProviderManager()
+                    .initializeOrRefreshCurrentDeviceIds();
+        }
 
         mBackupRestore =
                 new BackupRestore(
@@ -174,11 +178,50 @@ public class BackupRestoreTest {
                         healthConnectInjector.getFitnessRecordReadHelper(),
                         mServiceContext,
                         healthConnectInjector.getDeviceInfoHelper(),
+                        healthConnectInjector.getDeviceDataProviderMetadataHelper(),
+                        healthConnectInjector.getSyntheticPackageNameCreator(),
                         healthConnectInjector.getHealthDataCategoryPriorityHelper(),
                         healthConnectInjector.getThreadScheduler(),
                         healthConnectInjector.getEnvironmentDataDirectory(),
                         mGrantTimeXmlHelper,
                         mBackupRestoreJobScheduler);
+    }
+
+    private HealthConnectInjector createHealthConnectInjector() {
+        HealthConnectInjector injectorTemp =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setPreferenceHelper(mFakePreferenceHelper)
+                        .setMigrationStateManager(mMockMigrationStateManager)
+                        .setFirstGrantTimeManager(mFirstGrantTimeManager)
+                        .setTransactionManager(mTransactionManager)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
+                        .build();
+
+        DeviceDataProviderManager fakeDeviceDataProviderManager =
+                new FakeSerialDeviceDataProviderManager(
+                        mContext,
+                        injectorTemp.getDeviceInfoHelper(),
+                        injectorTemp.getAppInfoHelper(),
+                        injectorTemp.getDeviceDataSourceHelper(),
+                        injectorTemp.getDeviceDataSourcesHelper(),
+                        injectorTemp.getDeviceDataProviderMetadataHelper(),
+                        injectorTemp.getFitnessRecordUpsertHelper(),
+                        injectorTemp.getFitnessRecordReadHelper(),
+                        injectorTemp.getFitnessRecordDeleteHelper(),
+                        injectorTemp.getSyntheticPackageNameCreator(),
+                        injectorTemp.getPreferenceHelper(),
+                        injectorTemp.getHealthDataCategoryPriorityHelper(),
+                        InternalHealthConnectMappings.getInstance(),
+                        true);
+
+        return HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                .setPreferenceHelper(mFakePreferenceHelper)
+                .setMigrationStateManager(mMockMigrationStateManager)
+                .setFirstGrantTimeManager(mFirstGrantTimeManager)
+                .setTransactionManager(mTransactionManager)
+                .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
+                .setDeviceDataProviderManager(fakeDeviceDataProviderManager)
+                .build();
     }
 
     @After
