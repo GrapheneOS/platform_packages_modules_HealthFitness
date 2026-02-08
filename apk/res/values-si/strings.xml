@@ -397,8 +397,7 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"ඉඩ දෙන්න"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"සියල්ලට ඉඩ දෙන්න"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"ඉඩ නොදෙන්න"</string>
-    <!-- no translation found for allow_and_continue (4523565115589395706) -->
-    <skip />
+    <string name="allow_and_continue" msgid="4523565115589395706">"ඉඩ දී ඉදිරියට යන්න"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"ඔබට මෙම යෙදුම Health Connect වෙත කියවීමට හෝ ලිවීමට අවශ්‍ය දත්ත තෝරන්න"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Health Connect වෙතින් ඔබට මෙම යෙදුම කියවීමට අවශ්‍ය දත්ත තෝරා ගන්න"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"ඔබට මෙම යෙදුම Health Connect වෙත ලිවීමට අවශ්‍ය දත්ත තෝරා ගන්න"</string>
@@ -1356,12 +1355,9 @@
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"සබලයි"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"සබල කර නැත"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"මෙම දුරකථනය"</string>
-    <!-- no translation found for device_data_provider_screen_title (5410814335680943850) -->
-    <skip />
-    <!-- no translation found for manage_device_settings (5021760675216854323) -->
-    <skip />
-    <!-- no translation found for device_data_provider_enabled_types (4146093570756356467) -->
-    <skip />
+    <string name="device_data_provider_screen_title" msgid="5410814335680943850">"උපාංග ප්‍රවේශය"</string>
+    <string name="manage_device_settings" msgid="5021760675216854323">"<xliff:g id="DDP_NAME">%1$s</xliff:g> සැකසීම්"</string>
+    <string name="device_data_provider_enabled_types" msgid="4146093570756356467">"<xliff:g id="ALL_TYPES">%2$d</xliff:g>න් <xliff:g id="ENABLED_TYPES">%1$d</xliff:g>ක් සබල කර ඇත"</string>
     <string name="device_type_unknown" msgid="3897304904166713087">"නොදනී"</string>
     <string name="device_type_watch" msgid="8118463935553631704">"ඔරලෝසුව"</string>
     <string name="device_type_phone" msgid="7916371544302291906">"දුරකථනය"</string>

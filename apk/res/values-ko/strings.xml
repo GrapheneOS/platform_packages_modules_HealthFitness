@@ -397,8 +397,7 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"허용"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"모두 허용"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"허용 안함"</string>
-    <!-- no translation found for allow_and_continue (4523565115589395706) -->
-    <skip />
+    <string name="allow_and_continue" msgid="4523565115589395706">"허용하고 계속하기"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"앱이 헬스 커넥트에서 읽거나 쓸 수 있도록 허용할 데이터를 선택하세요."</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"앱이 헬스 커넥트에서 읽을 수 있도록 허용할 데이터를 선택하세요."</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"앱이 헬스 커넥트에 쓸 수 있도록 허용할 데이터를 선택하세요."</string>
@@ -1356,12 +1355,9 @@
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"사용 설정됨"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"사용 설정되지 않음"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"이 휴대전화"</string>
-    <!-- no translation found for device_data_provider_screen_title (5410814335680943850) -->
-    <skip />
-    <!-- no translation found for manage_device_settings (5021760675216854323) -->
-    <skip />
-    <!-- no translation found for device_data_provider_enabled_types (4146093570756356467) -->
-    <skip />
+    <string name="device_data_provider_screen_title" msgid="5410814335680943850">"기기 액세스"</string>
+    <string name="manage_device_settings" msgid="5021760675216854323">"<xliff:g id="DDP_NAME">%1$s</xliff:g> 설정"</string>
+    <string name="device_data_provider_enabled_types" msgid="4146093570756356467">"<xliff:g id="ALL_TYPES">%2$d</xliff:g>개 중 <xliff:g id="ENABLED_TYPES">%1$d</xliff:g>개 사용 설정됨"</string>
     <string name="device_type_unknown" msgid="3897304904166713087">"알 수 없음"</string>
     <string name="device_type_watch" msgid="8118463935553631704">"워치"</string>
     <string name="device_type_phone" msgid="7916371544302291906">"휴대전화"</string>

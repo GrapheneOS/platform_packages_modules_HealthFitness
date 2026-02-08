@@ -397,8 +397,7 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"允許"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"全部允許"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"不允許"</string>
-    <!-- no translation found for allow_and_continue (4523565115589395706) -->
-    <skip />
+    <string name="allow_and_continue" msgid="4523565115589395706">"允許並繼續"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"選擇這個應用程式可讀取或寫入「健康資料同步」的資料"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"選擇這個應用程式可從「健康資料同步」讀取的資料"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"選擇這個應用程式可寫入「健康資料同步」的資料"</string>
@@ -1356,12 +1355,9 @@
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"已啟用"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"尚未啟用"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"這支手機"</string>
-    <!-- no translation found for device_data_provider_screen_title (5410814335680943850) -->
-    <skip />
-    <!-- no translation found for manage_device_settings (5021760675216854323) -->
-    <skip />
-    <!-- no translation found for device_data_provider_enabled_types (4146093570756356467) -->
-    <skip />
+    <string name="device_data_provider_screen_title" msgid="5410814335680943850">"裝置存取權限"</string>
+    <string name="manage_device_settings" msgid="5021760675216854323">"「<xliff:g id="DDP_NAME">%1$s</xliff:g>」設定"</string>
+    <string name="device_data_provider_enabled_types" msgid="4146093570756356467">"已啟用 <xliff:g id="ENABLED_TYPES">%1$d</xliff:g> 項 (共 <xliff:g id="ALL_TYPES">%2$d</xliff:g> 項)"</string>
     <string name="device_type_unknown" msgid="3897304904166713087">"不明"</string>
     <string name="device_type_watch" msgid="8118463935553631704">"觀看"</string>
     <string name="device_type_phone" msgid="7916371544302291906">"電話"</string>

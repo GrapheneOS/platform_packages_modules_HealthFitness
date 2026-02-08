@@ -1362,14 +1362,14 @@
     <string name="device_type_watch" msgid="8118463935553631704">"Sat"</string>
     <string name="device_type_phone" msgid="7916371544302291906">"Telefon"</string>
     <string name="device_type_scale" msgid="7764152136397378795">"Vaga"</string>
-    <string name="device_type_ring" msgid="2528444249876048468">"Zvono"</string>
-    <string name="device_type_head_mounted" msgid="3968068420976829123">"Montira se na glavu"</string>
+    <string name="device_type_ring" msgid="2528444249876048468">"Prsten"</string>
+    <string name="device_type_head_mounted" msgid="3968068420976829123">"Uređaj koji se nosi na glavi"</string>
     <string name="device_type_fitness_band" msgid="6516937392955240647">"Fitnes narukvica"</string>
     <string name="device_type_chest_strap" msgid="7278831272805269282">"Traka za grudi"</string>
     <string name="device_type_smart_display" msgid="1675362583797329596">"Pametan ekran"</string>
     <string name="device_type_consumer_medical_device" msgid="935607930814394009">"Potrošačko medicinsko sredstvo"</string>
     <string name="device_type_glasses" msgid="8479316844380873535">"Naočare"</string>
-    <string name="device_type_hearable" msgid="9068385110951052438">"Čuje se"</string>
+    <string name="device_type_hearable" msgid="9068385110951052438">"Uređaj za slušanje"</string>
     <string name="device_type_fitness_machine" msgid="5005606659749314561">"Sprava za fitnes"</string>
     <string name="device_type_fitness_equipment" msgid="4702700814093068235">"Oprema za fitnes"</string>
     <string name="device_type_portable_computer" msgid="9003721967778945730">"Prenosivi računar"</string>
