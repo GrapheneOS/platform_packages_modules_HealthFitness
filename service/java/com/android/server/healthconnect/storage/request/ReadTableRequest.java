@@ -97,7 +97,7 @@ public class ReadTableRequest {
     }
 
     /** Used to set Join Clause for the read query */
-    public ReadTableRequest setJoinClause(SqlJoin joinClause) {
+    public ReadTableRequest setJoinClause(@Nullable SqlJoin joinClause) {
         mJoinClause = joinClause;
         return this;
     }
