@@ -173,8 +173,13 @@ public final class MatchmakingManager {
             if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
                 return Map.of();
             }
+            boolean recordTypesExplicitlyRequested = !recordTypes.isEmpty();
             return getAllAvailableWritingDevicesMap(
-                    writePermissions, packageName, includeDataSources, excludeDataSources);
+                    writePermissions,
+                    packageName,
+                    includeDataSources,
+                    excludeDataSources,
+                    recordTypesExplicitlyRequested);
         }
     }
 
@@ -366,7 +371,8 @@ public final class MatchmakingManager {
             Set<String> writePermissions,
             String readingAppPackageName,
             Set<DataOrigin> includeDataSources,
-            Set<DataOrigin> excludeDataSources) {
+            Set<DataOrigin> excludeDataSources,
+            boolean recordTypesExplicitlyRequested) {
         if (writePermissions.isEmpty()) {
             return Map.of();
         }
@@ -384,7 +390,9 @@ public final class MatchmakingManager {
                         deviceDataSourceInfo -> {
                             Set<String> writePermissionsForDevice =
                                     getMatchingWritePermissionsForDevice(
-                                            deviceDataSourceInfo, writePermissions);
+                                            deviceDataSourceInfo,
+                                            writePermissions,
+                                            recordTypesExplicitlyRequested);
 
                             Set<String> unpausedWritePermissionsForDevice =
                                     getUnpausedWritePermissionsForDevice(
@@ -406,27 +414,45 @@ public final class MatchmakingManager {
      *
      * @param deviceDataSourceInfo The {@link DeviceDataSourceInfo} for the device.
      * @param writePermissions A {@link Set} of requested write permissions ({@link String}).
+     * @param recordTypesExplicitlyRequested A boolean representing whether the record types were
+     *     explicitly requested for Matchmaking, or whether Matchmaking was launched with an empty,
+     *     catch-all set of records
      * @return The union of all matching write config ({@link String}) across all DDPs associated
      *     with this device.
      */
     private Set<String> getMatchingWritePermissionsForDevice(
-            DeviceDataSourceInfo deviceDataSourceInfo, Set<String> writePermissions) {
+            DeviceDataSourceInfo deviceDataSourceInfo,
+            Set<String> writePermissions,
+            boolean recordTypesExplicitlyRequested) {
 
         return deviceDataSourceInfo.getDeviceDataProviderInfos().stream()
                 .flatMap(
                         deviceDataProviderInfo ->
                                 getMatchingWritePermissionsForDDP(
-                                        deviceDataProviderInfo, writePermissions)
+                                        deviceDataProviderInfo,
+                                        writePermissions,
+                                        recordTypesExplicitlyRequested)
                                         .stream())
                 .collect(Collectors.toSet());
     }
 
     private Set<String> getMatchingWritePermissionsForDDP(
-            DeviceDataProviderInfo ddp, Set<String> requestedWritePermissions) {
+            DeviceDataProviderInfo ddp,
+            Set<String> requestedWritePermissions,
+            boolean recordTypesExplicitlyRequested) {
         // Partition the advertisements to symptom and non-symptom
         Map<Boolean, List<DeviceDataTypeAdvertisement>> partitionedAds =
                 ddp.getDeviceDataTypeAdvertisements().stream()
                         .filter(Predicate.not(DeviceDataTypeAdvertisement::isUserEnabled))
+                        // Do not match this advertisement if this record type was not specifically
+                        // requested
+                        .filter(
+                                deviceAdv -> {
+                                    if (!recordTypesExplicitlyRequested) {
+                                        return deviceAdv.isVisibleByDefaultInMatchmaking();
+                                    }
+                                    return true;
+                                })
                         .collect(
                                 Collectors.partitioningBy(
                                         ad -> ad.getDataType().equals(SymptomRecord.class)));

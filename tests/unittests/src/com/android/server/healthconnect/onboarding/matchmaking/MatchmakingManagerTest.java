@@ -1330,6 +1330,127 @@ public class MatchmakingManagerTest {
     @EnableFlags({
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void
+            fetchMatchingDevices_queryAllRecordTypes_filtersOutAdvertisementsNotVisibleByDefault() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_DISTANCE, READ_STEPS));
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(false)
+                        .setVisibleByDefaultInMatchmaking(false)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(false)
+                        .setVisibleByDefaultInMatchmaking(true)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        Device device2 = new Device.Builder().setManufacturer("Man2").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build();
+
+        DeviceDataProviderInfo providerInfo2 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_2,
+                        DEVICE_ID_2,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(origin1, device1, true, List.of(providerInfo1));
+        DeviceDataSourceInfo matchingDeviceInfo2 =
+                new DeviceDataSourceInfo(origin2, device2, true, List.of(providerInfo2));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo1, matchingDeviceInfo2));
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Collections.emptySet(), PACKAGE_NAME, Set.of(), Set.of());
+        assertThat(result)
+                .containsExactly(
+                        DEVICE_PACKAGE_NAME,
+                        Set.of(WRITE_DISTANCE),
+                        DEVICE_PACKAGE_NAME_2,
+                        Set.of(WRITE_DISTANCE));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+        Flags.FLAG_DEVELOPMENT_DATABASE_RW
+    })
+    public void
+            fetchMatchingDevices_querySpecificRecordTypes_includesAdvertisementsNotVisibleByDefault() {
+        mockReadingApp(PACKAGE_NAME, ImmutableList.of(READ_DISTANCE, READ_STEPS));
+        Device device1 = new Device.Builder().setManufacturer("Man1").build();
+        DataOrigin origin1 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME).build();
+        DeviceDataTypeAdvertisement stepsAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(StepsRecord.class)
+                        .setUserEnabled(false)
+                        .setVisibleByDefaultInMatchmaking(false)
+                        .build();
+        DeviceDataTypeAdvertisement distanceAdvertisement =
+                new DeviceDataTypeAdvertisement.Builder(DistanceRecord.class)
+                        .setUserEnabled(false)
+                        .setVisibleByDefaultInMatchmaking(true)
+                        .build();
+
+        DeviceDataProviderInfo providerInfo1 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                        DEVICE_ID,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        Device device2 = new Device.Builder().setManufacturer("Man2").build();
+        DataOrigin origin2 = new DataOrigin.Builder().setPackageName(DEVICE_PACKAGE_NAME_2).build();
+
+        DeviceDataProviderInfo providerInfo2 =
+                new DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE_NAME_2,
+                        DEVICE_ID_2,
+                        "",
+                        "",
+                        ImmutableSet.of(stepsAdvertisement, distanceAdvertisement));
+
+        DeviceDataSourceInfo matchingDeviceInfo1 =
+                new DeviceDataSourceInfo(origin1, device1, true, List.of(providerInfo1));
+        DeviceDataSourceInfo matchingDeviceInfo2 =
+                new DeviceDataSourceInfo(origin2, device2, true, List.of(providerInfo2));
+
+        mockCompatibleDevices(ImmutableList.of(matchingDeviceInfo1, matchingDeviceInfo2));
+
+        Map<String, Set<String>> result =
+                mMatchmakingManager.fetchMatchingDevices(
+                        Set.of(StepsRecord.class, DistanceRecord.class),
+                        PACKAGE_NAME,
+                        Set.of(),
+                        Set.of());
+        assertThat(result)
+                .containsExactly(
+                        DEVICE_PACKAGE_NAME,
+                        Set.of(WRITE_DISTANCE, WRITE_STEPS),
+                        DEVICE_PACKAGE_NAME_2,
+                        Set.of(WRITE_DISTANCE, WRITE_STEPS));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
         Flags.FLAG_DEVELOPMENT_DATABASE_RW,
         Flags.FLAG_SYMPTOMS,
         Flags.FLAG_SYMPTOMS_DB
