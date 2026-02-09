@@ -23,8 +23,10 @@ import android.health.connect.DeviceDataProviderInfo
 import android.health.connect.DeviceDataSourceInfo
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Device
+import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsRecord
+import android.health.connect.datatypes.SymptomRecord
 import android.health.connect.device.DeviceDataTypeAdvertisement
 import android.os.Bundle
 import android.platform.test.annotations.EnableFlags
@@ -64,6 +66,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argThat
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
@@ -231,7 +234,8 @@ class DeviceDataProviderFragmentTest {
                     any(),
                     eq("com.example.provider1"),
                     eq("id1"),
-                    any(),
+                    eq(ArrayList(setOf<Class<out Record>>(StepsRecord::class.java))),
+                    eq(ArrayList(setOf<Int>())),
                 )
             )
             .thenReturn(expectedIntent)
@@ -241,6 +245,51 @@ class DeviceDataProviderFragmentTest {
             )
             .use {
                 onView(withText("Provider 1 Settings")).perform(click())
+
+                Intents.intended(hasPackage("com.example.provider1"))
+            }
+    }
+
+    @Test
+    fun clickSettingsButton_withSymptomsAdvertised_startsIntentWithCorrectExtras() {
+        val device = createDeviceWithSymptoms()
+        selectedDeviceSourceState.value = SelectedDeviceSourceInfoState.WithData(device)
+        val expectedIntent = Intent("android.intent.action.VIEW")
+        expectedIntent.setPackage("com.example.provider1")
+
+        whenever(
+                healthPermissionReader.getDeviceManagementActivityIntent(
+                    any(),
+                    eq("com.example.provider1"),
+                    eq("id1"),
+                    argThat { list: ArrayList<Class<out Record>> ->
+                        list.containsAll(
+                            setOf(
+                                StepsRecord::class.java,
+                                SymptomRecord::class.java,
+                                SymptomRecord::class.java,
+                                SymptomRecord::class.java,
+                            )
+                        ) && list.size == 4
+                    },
+                    argThat { list: ArrayList<Int> ->
+                        list.containsAll(
+                            setOf(
+                                SymptomRecord.SYMPTOM_TYPE_LOWER_BACK_PAIN,
+                                SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN,
+                                SymptomRecord.SYMPTOM_TYPE_FATIGUE,
+                            )
+                        ) && list.size == 3
+                    },
+                )
+            )
+            .thenReturn(expectedIntent)
+
+        launchFragment<DeviceDataProviderFragment>(
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_WATCH_SPN) }
+            )
+            .use {
+                onView(withText("My Device settings")).perform(click())
 
                 Intents.intended(hasPackage("com.example.provider1"))
             }
@@ -314,6 +363,48 @@ class DeviceDataProviderFragmentTest {
                             .setAvailable(true)
                             .setUserEnabled(true)
                             .build()
+                    ),
+                )
+            ),
+        )
+    }
+
+    private fun createDeviceWithSymptoms(): DeviceDataSourceInfo {
+        return DeviceDataSourceInfo(
+            DataOrigin.Builder().setPackageName(TEST_WATCH_SPN).build(),
+            Device.Builder()
+                .setDisplayName("My Device")
+                .setModel("Model")
+                .setManufacturer("Some Manufacturer")
+                .setType(Device.DEVICE_TYPE_WATCH)
+                .build(),
+            true,
+            listOf(
+                DeviceDataProviderInfo(
+                    "com.example.provider1",
+                    "id1",
+                    "Provider 1 Onboarding",
+                    "Provider 1 Settings",
+                    setOf(
+                        DeviceDataTypeAdvertisement.Builder(StepsRecord::class.java)
+                            .setAvailable(true)
+                            .setUserEnabled(true)
+                            .build(),
+                        DeviceDataTypeAdvertisement.Builder(SymptomRecord::class.java)
+                            .setAvailable(true)
+                            .setUserEnabled(true)
+                            .setSymptomType(SymptomRecord.SYMPTOM_TYPE_LOWER_BACK_PAIN)
+                            .build(),
+                        DeviceDataTypeAdvertisement.Builder(SymptomRecord::class.java)
+                            .setAvailable(true)
+                            .setUserEnabled(true)
+                            .setSymptomType(SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN)
+                            .build(),
+                        DeviceDataTypeAdvertisement.Builder(SymptomRecord::class.java)
+                            .setAvailable(true)
+                            .setUserEnabled(true)
+                            .setSymptomType(SymptomRecord.SYMPTOM_TYPE_FATIGUE)
+                            .build(),
                     ),
                 )
             ),

@@ -28,6 +28,7 @@ import android.health.connect.HealthConnectManager.ACTION_SHOW_ONBOARDING
 import android.health.connect.HealthPermissions
 import android.health.connect.HealthPermissions.isPermissionEnabled
 import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.SymptomRecord
 import android.os.Process
 import androidx.annotation.VisibleForTesting
 import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
@@ -542,6 +543,7 @@ constructor(
         packageName: String,
         deviceId: String,
         recordTypes: ArrayList<Class<out Record>> = arrayListOf(),
+        @SymptomRecord.SymptomType symptomTypes: ArrayList<Int> = arrayListOf(),
     ): Intent? {
         return getActivityIntentIfExported(
             { AconfigFlagHelper.isDeviceDataProvidersEnabled() },
@@ -552,6 +554,7 @@ constructor(
             HealthConnectManager.EXTRA_DEVICE_ID to deviceId,
             HealthConnectManager.EXTRA_DEVICE_RECORD_TYPES to
                 recordTypes.map { recordType -> recordType.name },
+            HealthConnectManager.EXTRA_DEVICE_SYMPTOM_TYPES to symptomTypes,
         )
     }
 
@@ -560,6 +563,7 @@ constructor(
         packageName: String,
         deviceId: String,
         recordTypes: ArrayList<Class<out Record>> = arrayListOf(),
+        @SymptomRecord.SymptomType symptomTypes: ArrayList<Int> = arrayListOf(),
     ): Intent? {
         return getActivityIntentIfExported(
             { AconfigFlagHelper.isDeviceDataProvidersEnabled() },
@@ -570,6 +574,7 @@ constructor(
             HealthConnectManager.EXTRA_DEVICE_ID to deviceId,
             HealthConnectManager.EXTRA_DEVICE_RECORD_TYPES to
                 recordTypes.map { recordType -> recordType.name },
+            HealthConnectManager.EXTRA_DEVICE_SYMPTOM_TYPES to symptomTypes,
         )
     }
 
@@ -588,11 +593,14 @@ constructor(
         intent.setPackage(packageName)
 
         extras.forEach { (key, value) ->
-            if (value is String) {
-                intent.putExtra(key, value)
-            } else if (value is ArrayList<*>) {
+            if (value is List<*> && key == HealthConnectManager.EXTRA_DEVICE_RECORD_TYPES) {
                 val stringArrayList = ArrayList(value.filterIsInstance<String>())
                 intent.putStringArrayListExtra(key, stringArrayList)
+            } else if (value is List<*> && key == HealthConnectManager.EXTRA_DEVICE_SYMPTOM_TYPES) {
+                val intArrayList = ArrayList(value.filterIsInstance<Int>())
+                intent.putIntegerArrayListExtra(key, intArrayList)
+            } else if (value is String) {
+                intent.putExtra(key, value)
             }
         }
 

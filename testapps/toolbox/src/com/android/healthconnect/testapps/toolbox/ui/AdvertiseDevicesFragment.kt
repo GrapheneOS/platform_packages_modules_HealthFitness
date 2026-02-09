@@ -19,6 +19,8 @@ import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.Device
 import android.health.connect.datatypes.SymptomRecord
+import android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN
+import android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_UNKNOWN
 import android.health.connect.device.DeviceDataAdvertisement
 import android.health.connect.device.DeviceDataTypeAdvertisement
 import android.os.Bundle
@@ -55,7 +57,6 @@ class AdvertiseDevicesFragment : Fragment() {
 
     private val symptomTypesMap =
         mapOf(
-            "Unknown" to SymptomRecord.SYMPTOM_TYPE_UNKNOWN,
             "Abdominal Pain" to SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN,
             "Acne" to SymptomRecord.SYMPTOM_TYPE_ACNE,
             "Back Pain" to SymptomRecord.SYMPTOM_TYPE_BACK_PAIN,
@@ -101,8 +102,22 @@ class AdvertiseDevicesFragment : Fragment() {
                                     dataTypeView?.findViewById<AutoCompleteTextView>(
                                         R.id.data_type_auto_complete
                                     )
-                                autoComplete?.text?.toString() !=
-                                    configs[i].advertisedDataTypes[j].advertisedDataType.simpleName
+                                val symptomLayout =
+                                    dataTypeView?.findViewById<View>(R.id.symptom_type_layout)
+                                val isSymptom =
+                                    SymptomRecord::class
+                                        .java
+                                        .isAssignableFrom(
+                                            configs[i].advertisedDataTypes[j].advertisedDataType
+                                        )
+                                val textMismatch =
+                                    autoComplete?.text?.toString() !=
+                                        configs[i]
+                                            .advertisedDataTypes[j]
+                                            .advertisedDataType
+                                            .simpleName
+                                val visibilityMismatch = symptomLayout?.isVisible != isSymptom
+                                textMismatch || visibilityMismatch
                             }
                         }
                     }
@@ -277,12 +292,18 @@ class AdvertiseDevicesFragment : Fragment() {
             ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_dropdown_item_1line,
-                dataTypes.keys.toList(),
+                dataTypes.keys.toList().sorted(),
             )
         dataTypeAutoComplete.setAdapter(dataAdapter)
         dataTypeAutoComplete.setOnItemClickListener { _, _, position, _ ->
             val selectedName = dataAdapter.getItem(position)
             config.advertisedDataType = dataTypes[selectedName] ?: SymptomRecord::class.java
+            if (config.advertisedDataType == SymptomRecord::class.java) {
+                // A specific symptom type must be set for SymptomRecord advertisements
+                config.symptomType = SYMPTOM_TYPE_ABDOMINAL_PAIN
+            } else {
+                config.symptomType = SYMPTOM_TYPE_UNKNOWN
+            }
             viewModel.updateDevice(deviceIndex, viewModel.deviceConfigs.value!![deviceIndex])
         }
         dataTypeAutoComplete.isEnabled = !isReAdvertise
@@ -299,7 +320,7 @@ class AdvertiseDevicesFragment : Fragment() {
                 ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_dropdown_item_1line,
-                    symptomTypesMap.keys.toList(),
+                    symptomTypesMap.keys.toList().sorted(),
                 )
             symptomTypeAutoComplete.setAdapter(symptomTypeAdapter)
             symptomTypeAutoComplete.setText(
@@ -309,7 +330,7 @@ class AdvertiseDevicesFragment : Fragment() {
             symptomTypeAutoComplete.setOnItemClickListener { _, _, position, _ ->
                 val selectedSymptom = symptomTypeAdapter.getItem(position)
                 config.symptomType =
-                    symptomTypesMap[selectedSymptom] ?: SymptomRecord.SYMPTOM_TYPE_UNKNOWN
+                    symptomTypesMap[selectedSymptom] ?: SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN
                 viewModel.updateDevice(deviceIndex, viewModel.deviceConfigs.value!![deviceIndex])
             }
             symptomTypeAutoComplete.isEnabled = !isReAdvertise
