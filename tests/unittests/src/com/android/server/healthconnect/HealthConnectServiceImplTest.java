@@ -5295,6 +5295,107 @@ public class HealthConnectServiceImplTest {
                 .deleteDeviceRecords(any(), eq(internalDeviceId), any());
     }
 
+    @Test
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void deleteUsingFilters_syntheticPackage_noManageHealthDataPermission_noDeletion()
+            throws RemoteException {
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
+        String currentDeviceId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        advertiseStepsDeviceDataSource(currentDeviceId, buildDevice());
+
+        // Insert device record
+        IInsertRecordsResponseCallback.Stub callback =
+                mock(IInsertRecordsResponseCallback.Stub.class);
+        mHealthConnectService.insertDeviceRecords(
+                mAttributionSource,
+                currentDeviceId,
+                getRestoredStepsRecordsParcel(getStepsRecord()),
+                callback);
+        verify(callback, timeout(TIMEOUT_MILLIS)).onResult(any());
+        assertThat(getDeviceRecordsCount(currentDeviceId, StepsRecord.class)).isEqualTo(1);
+
+        // Take away privileged MANAGE_HEALTH_DATA_PERMISSION permission
+        when(mServiceContext.checkPermission(eq(WRITE_STEPS), anyInt(), anyInt()))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mServiceContext.checkPermission(eq(READ_STEPS), anyInt(), anyInt()))
+                .thenReturn(PERMISSION_GRANTED);
+        when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
+                .thenReturn(PERMISSION_DENIED);
+
+        // Attempt to delete as regular app
+        DeleteUsingFiltersRequest deleteRequest =
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(
+                                new DataOrigin.Builder().setPackageName(currentDeviceId).build())
+                        .addRecordType(StepsRecord.class)
+                        .build();
+        mHealthConnectService.deleteUsingFilters(
+                mAttributionSource,
+                new DeleteUsingFiltersRequestParcel(deleteRequest),
+                mEmptyResponseCallback);
+        verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
+
+        // Verify that device record was not deleted
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
+        assertThat(getDeviceRecordsCount(currentDeviceId, StepsRecord.class)).isEqualTo(1);
+    }
+
+    @Test
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
+    public void deleteUsingFilters_syntheticPackage_manageHealthDataPermission_deletes()
+            throws RemoteException {
+        setDeviceDataProviderPermission(PERMISSION_GRANTED);
+        mDeviceDataProviderManager.advertiseCurrentDeviceNativeCapabilities();
+        String currentDeviceId = mHealthConnectService.getCurrentDeviceId(mAttributionSource);
+        advertiseStepsDeviceDataSource(currentDeviceId, buildDevice());
+
+        // Insert device record
+        IInsertRecordsResponseCallback.Stub callback =
+                mock(IInsertRecordsResponseCallback.Stub.class);
+        mHealthConnectService.insertDeviceRecords(
+                mAttributionSource,
+                currentDeviceId,
+                getRestoredStepsRecordsParcel(getStepsRecord()),
+                callback);
+        verify(callback, timeout(TIMEOUT_MILLIS)).onResult(any());
+        assertThat(getDeviceRecordsCount(currentDeviceId, StepsRecord.class)).isEqualTo(1);
+
+        // Attempt to delete
+        DeleteUsingFiltersRequest deleteRequest =
+                new DeleteUsingFiltersRequest.Builder()
+                        .addDataOrigin(
+                                new DataOrigin.Builder().setPackageName(currentDeviceId).build())
+                        .addRecordType(StepsRecord.class)
+                        .build();
+        mHealthConnectService.deleteUsingFilters(
+                mAttributionSource,
+                new DeleteUsingFiltersRequestParcel(deleteRequest),
+                mEmptyResponseCallback);
+        verify(mEmptyResponseCallback, timeout(TIMEOUT_MILLIS)).onResult();
+
+        // App with MANAGE_HEALTH_DATA_PERMISSION succeeds
+        assertThat(getDeviceRecordsCount(currentDeviceId, StepsRecord.class)).isEqualTo(0);
+    }
+
+    private int getDeviceRecordsCount(String deviceId, Class<? extends Record> dataType)
+            throws RemoteException {
+        clearInvocations(mReadRecordsResponseCallback);
+        mHealthConnectService.readDeviceRecords(
+                mAttributionSource,
+                new ReadRecordsRequestUsingFilters.Builder<>(dataType)
+                        .setDeviceId(deviceId)
+                        .build()
+                        .toReadRecordsRequestParcel(),
+                mReadRecordsResponseCallback);
+
+        ArgumentCaptor<ReadRecordsResponseParcel> responseCaptor =
+                ArgumentCaptor.forClass(ReadRecordsResponseParcel.class);
+        verify(mReadRecordsResponseCallback, timeout(TIMEOUT_MILLIS))
+                .onResult(responseCaptor.capture());
+        ReadRecordsResponseParcel actualResponse = responseCaptor.getValue();
+        return actualResponse.getRecordsParcel().getRecords().size();
+    }
+
     private void setDeviceDataProviderPermission(int result) {
         when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
                 .thenReturn(result);
