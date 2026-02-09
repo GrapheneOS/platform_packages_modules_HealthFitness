@@ -62,15 +62,8 @@ import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
-import com.android.server.healthconnect.common.metadata.AppInfoHelper;
-import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
-import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.exportimport.DatabaseMerger;
-import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
-import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
-import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
-import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
@@ -200,72 +193,45 @@ public final class BackupRestore {
     private final GrantTimeXmlHelper mGrantTimeXmlHelper;
 
     public BackupRestore(
-            AppInfoHelper appInfoHelper,
             FirstGrantTimeManager firstGrantTimeManager,
             MigrationStateManager migrationStateManager,
             PreferenceHelper preferenceHelper,
             TransactionManager transactionManager,
-            FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
-            FitnessRecordReadHelper fitnessRecordReadHelper,
             Context context,
-            DeviceInfoHelper deviceInfoHelper,
-            DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
-            SyntheticPackageNameCreator syntheticPackageNameCreator,
-            HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             HealthConnectThreadScheduler threadScheduler,
             File environmentDataDirectory,
-            GrantTimeXmlHelper grantTimeXmlHelper) {
+            GrantTimeXmlHelper grantTimeXmlHelper,
+            DatabaseMerger databaseMerger) {
         this(
-                appInfoHelper,
                 firstGrantTimeManager,
                 migrationStateManager,
                 preferenceHelper,
                 transactionManager,
-                fitnessRecordUpsertHelper,
-                fitnessRecordReadHelper,
                 context,
-                deviceInfoHelper,
-                deviceDataProviderMetadataHelper,
-                syntheticPackageNameCreator,
-                healthDataCategoryPriorityHelper,
                 threadScheduler,
                 environmentDataDirectory,
                 grantTimeXmlHelper,
-                new BackupRestoreJobScheduler());
+                new BackupRestoreJobScheduler(),
+                databaseMerger);
     }
 
     @VisibleForTesting
     BackupRestore(
-            AppInfoHelper appInfoHelper,
             FirstGrantTimeManager firstGrantTimeManager,
             MigrationStateManager migrationStateManager,
             PreferenceHelper preferenceHelper,
             TransactionManager transactionManager,
-            FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
-            FitnessRecordReadHelper fitnessRecordReadHelper,
             Context context,
-            DeviceInfoHelper deviceInfoHelper,
-            DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
-            SyntheticPackageNameCreator syntheticPackageNameCreator,
-            HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             HealthConnectThreadScheduler threadScheduler,
             File environmentDataDirectory,
             GrantTimeXmlHelper grantTimeXmlHelper,
-            BackupRestoreJobScheduler jobScheduler) {
+            BackupRestoreJobScheduler jobScheduler,
+            DatabaseMerger databaseMerger) {
         mFirstGrantTimeManager = firstGrantTimeManager;
         mMigrationStateManager = migrationStateManager;
         mContext = context;
         mCurrentForegroundUser = mContext.getUser();
-        mDatabaseMerger =
-                new DatabaseMerger(
-                        appInfoHelper,
-                        deviceInfoHelper,
-                        deviceDataProviderMetadataHelper,
-                        syntheticPackageNameCreator,
-                        healthDataCategoryPriorityHelper,
-                        transactionManager,
-                        fitnessRecordUpsertHelper,
-                        fitnessRecordReadHelper);
+        mDatabaseMerger = databaseMerger;
         mPreferenceHelper = preferenceHelper;
         mTransactionManager = transactionManager;
         mThreadScheduler = threadScheduler;

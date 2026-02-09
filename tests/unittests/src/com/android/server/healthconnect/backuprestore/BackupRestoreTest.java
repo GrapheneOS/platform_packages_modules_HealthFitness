@@ -169,22 +169,16 @@ public class BackupRestoreTest {
 
         mBackupRestore =
                 new BackupRestore(
-                        mAppInfoHelper,
                         mFirstGrantTimeManager,
                         healthConnectInjector.getMigrationStateManager(),
                         healthConnectInjector.getPreferenceHelper(),
                         healthConnectInjector.getTransactionManager(),
-                        healthConnectInjector.getFitnessRecordUpsertHelper(),
-                        healthConnectInjector.getFitnessRecordReadHelper(),
                         mServiceContext,
-                        healthConnectInjector.getDeviceInfoHelper(),
-                        healthConnectInjector.getDeviceDataProviderMetadataHelper(),
-                        healthConnectInjector.getSyntheticPackageNameCreator(),
-                        healthConnectInjector.getHealthDataCategoryPriorityHelper(),
                         healthConnectInjector.getThreadScheduler(),
                         healthConnectInjector.getEnvironmentDataDirectory(),
                         mGrantTimeXmlHelper,
-                        mBackupRestoreJobScheduler);
+                        mBackupRestoreJobScheduler,
+                        healthConnectInjector.getDatabaseMerger());
     }
 
     private HealthConnectInjector createHealthConnectInjector() {
@@ -195,6 +189,7 @@ public class BackupRestoreTest {
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setTransactionManager(mTransactionManager)
                         .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
+                        .setAppInfoHelper(mAppInfoHelper)
                         .build();
 
         DeviceDataProviderManager fakeDeviceDataProviderManager =
@@ -220,6 +215,7 @@ public class BackupRestoreTest {
                 .setFirstGrantTimeManager(mFirstGrantTimeManager)
                 .setTransactionManager(mTransactionManager)
                 .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
+                .setAppInfoHelper(mAppInfoHelper)
                 .setDeviceDataProviderManager(fakeDeviceDataProviderManager)
                 .build();
     }
