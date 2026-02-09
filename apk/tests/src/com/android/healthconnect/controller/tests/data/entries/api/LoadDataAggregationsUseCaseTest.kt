@@ -44,6 +44,7 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
@@ -268,6 +269,142 @@ class LoadDataAggregationsUseCaseTest {
     }
 
     @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadDataAggregationsUseCase_ddpFlagsOff_withAndroidAndCurrentDevice_doesNotFilterAndroid() =
+        runTest {
+            val currentDeviceId = "test_device_id"
+            whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+            whenever(appInfoReader.getAppMetadata(DEVICE_DATA_PROVIDER_PACKAGE))
+                .thenReturn(AppMetadata(DEVICE_DATA_PROVIDER_PACKAGE, "My Device", null))
+            whenever(appInfoReader.getAppMetadata(currentDeviceId))
+                .thenReturn(AppMetadata(currentDeviceId, "My Device", null))
+
+            doAnswer(
+                    prepareStepsAggregationAnswer(
+                        listOf(DEVICE_DATA_PROVIDER_PACKAGE, currentDeviceId)
+                    )
+                )
+                .whenever(healthConnectManager)
+                .aggregate<Long>(any(), any(), any())
+
+            val input =
+                LoadAggregationInput.PeriodAggregation(
+                    FitnessPermissionType.STEPS,
+                    null,
+                    displayedStartTime = Instant.now(),
+                    period = DateNavigationPeriod.PERIOD_DAY,
+                    showDataOrigin = true,
+                )
+
+            val result = loadDataAggregationsUseCase.invoke(input)
+            assertThat(result is UseCaseResults.Success).isTrue()
+            val contributors = (result as UseCaseResults.Success).data.contributingApps
+            assertThat(contributors).isEqualTo("My Device, My Device")
+        }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadDataAggregationsUseCase_ddpFlagsOn_withAndroidButNoCurrentDevice_doesNotFilterAndroid() =
+        runTest {
+            val currentDeviceId = "test_device_id"
+            whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+            whenever(appInfoReader.getAppMetadata(DEVICE_DATA_PROVIDER_PACKAGE))
+                .thenReturn(AppMetadata(DEVICE_DATA_PROVIDER_PACKAGE, "My Device", null))
+            whenever(appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME))
+                .thenReturn(AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null))
+
+            doAnswer(
+                    prepareStepsAggregationAnswer(
+                        listOf(DEVICE_DATA_PROVIDER_PACKAGE, TEST_APP_PACKAGE_NAME)
+                    )
+                )
+                .whenever(healthConnectManager)
+                .aggregate<Long>(any(), any(), any())
+
+            val input =
+                LoadAggregationInput.PeriodAggregation(
+                    FitnessPermissionType.STEPS,
+                    null,
+                    displayedStartTime = Instant.now(),
+                    period = DateNavigationPeriod.PERIOD_DAY,
+                    showDataOrigin = true,
+                )
+
+            val result = loadDataAggregationsUseCase.invoke(input)
+            assertThat(result is UseCaseResults.Success).isTrue()
+            // We cannot guarantee order so checking for contains
+            val actualApps = (result as UseCaseResults.Success).data.contributingApps
+            assertThat(actualApps).contains("My Device")
+            assertThat(actualApps).contains(TEST_APP_NAME)
+        }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadDataAggregationsUseCase_ddpFlagsOn_withAndroidAndCurrentDevice_filtersAndroid() =
+        runTest {
+            val currentDeviceId = "test_device_id"
+            whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+            whenever(appInfoReader.getAppMetadata(DEVICE_DATA_PROVIDER_PACKAGE))
+                .thenReturn(AppMetadata(DEVICE_DATA_PROVIDER_PACKAGE, "My Device", null))
+            whenever(appInfoReader.getAppMetadata(currentDeviceId))
+                .thenReturn(AppMetadata(currentDeviceId, "My Device", null))
+
+            doAnswer(
+                    prepareStepsAggregationAnswer(
+                        listOf(DEVICE_DATA_PROVIDER_PACKAGE, currentDeviceId)
+                    )
+                )
+                .whenever(healthConnectManager)
+                .aggregate<Long>(any(), any(), any())
+
+            val input =
+                LoadAggregationInput.PeriodAggregation(
+                    FitnessPermissionType.STEPS,
+                    null,
+                    displayedStartTime = Instant.now(),
+                    period = DateNavigationPeriod.PERIOD_DAY,
+                    showDataOrigin = true,
+                )
+
+            val result = loadDataAggregationsUseCase.invoke(input)
+            assertThat(result is UseCaseResults.Success).isTrue()
+            assertThat((result as UseCaseResults.Success).data.contributingApps)
+                .isEqualTo("My Device")
+        }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun loadDataAggregationsUseCase_ddpFlagsOn_withCurrentDeviceAndNoAndroid_doesNotFilterAnything() =
+        runTest {
+            val currentDeviceId = "test_device_id"
+            whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+            whenever(appInfoReader.getAppMetadata(currentDeviceId))
+                .thenReturn(AppMetadata(currentDeviceId, "My Device", null))
+            whenever(appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME))
+                .thenReturn(AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null))
+
+            doAnswer(prepareStepsAggregationAnswer(listOf(currentDeviceId, TEST_APP_PACKAGE_NAME)))
+                .whenever(healthConnectManager)
+                .aggregate<Long>(any(), any(), any())
+
+            val input =
+                LoadAggregationInput.PeriodAggregation(
+                    FitnessPermissionType.STEPS,
+                    null,
+                    displayedStartTime = Instant.now(),
+                    period = DateNavigationPeriod.PERIOD_DAY,
+                    showDataOrigin = true,
+                )
+
+            val result = loadDataAggregationsUseCase.invoke(input)
+            assertThat(result is UseCaseResults.Success).isTrue()
+            // We cannot guarantee order so checking for contains
+            val actualApps = (result as UseCaseResults.Success).data.contributingApps
+            assertThat(actualApps).contains("My Device")
+            assertThat(actualApps).contains(TEST_APP_NAME)
+        }
+
+    @Test
     fun loadDataAggregationsUseCase_withPeriodAggregationForSteps_returnsFormattedStepsAggregation() =
         runTest {
             doAnswer(prepareStepsAggregationAnswer())
@@ -391,10 +528,12 @@ class LoadDataAggregationsUseCaseTest {
             assertThat((result as UseCaseResults.Success).data).isEqualTo(expected)
         }
 
-    private fun prepareStepsAggregationAnswer(): (InvocationOnMock) -> Unit {
+    private fun prepareStepsAggregationAnswer(
+        packages: List<String> = listOf(TEST_APP_PACKAGE_NAME)
+    ): (InvocationOnMock) -> Unit {
         val answer = { args: InvocationOnMock ->
             val receiver = args.arguments[2] as OutcomeReceiver<AggregateRecordsResponse<Long>, *>
-            receiver.onResult(getStepsAggregationResponse())
+            receiver.onResult(getStepsAggregationResponse(packages))
         }
         return answer
     }
@@ -433,12 +572,14 @@ class LoadDataAggregationsUseCaseTest {
         return answer
     }
 
-    private fun getStepsAggregationResponse(): AggregateRecordsResponse<Long> {
+    private fun getStepsAggregationResponse(
+        packages: List<String> = listOf(TEST_APP_PACKAGE_NAME)
+    ): AggregateRecordsResponse<Long> {
         val aggregationResult =
             AggregateResult<Long>(
                 100,
                 /* zoneOffset = */ null,
-                AggregateResult.convertDataOrigins(listOf(TEST_APP_PACKAGE_NAME)),
+                AggregateResult.convertDataOrigins(packages),
             )
         return AggregateRecordsResponse<Long>(
             mapOf(
