@@ -33,6 +33,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.intent.Intents
 import androidx.test.espresso.intent.matcher.IntentMatchers.hasPackage
@@ -133,6 +134,20 @@ class DeviceDataProviderFragmentTest {
                 Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_WATCH_SPN) }
             )
             .use { onView(withText("See device data")).check(matches(isDisplayed())) }
+    }
+
+    @Test
+    fun withData_deviceWithNoMoreAdvertisements_onlyDeviceDataButtonDisplayed() {
+        val device = createDeviceNoLongerAdvertisedButWithData()
+        selectedDeviceSourceState.value = SelectedDeviceSourceInfoState.WithData(device)
+
+        launchFragment<DeviceDataProviderFragment>(
+                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_WATCH_SPN) }
+            )
+            .use {
+                onView(withText("My Device settings")).check(doesNotExist())
+                onView(withText("See device data")).check(matches(isDisplayed()))
+            }
     }
 
     @Test
@@ -262,6 +277,20 @@ class DeviceDataProviderFragmentTest {
                 Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_WATCH_SPN) }
             )
             .use { onView(withText("My Device settings")).check(matches(isDisplayed())) }
+    }
+
+    private fun createDeviceNoLongerAdvertisedButWithData(): DeviceDataSourceInfo {
+        return DeviceDataSourceInfo(
+            DataOrigin.Builder().setPackageName(TEST_WATCH_SPN).build(),
+            Device.Builder()
+                .setDisplayName("My Device")
+                .setModel("Model")
+                .setManufacturer("Some Manufacturer")
+                .setType(Device.DEVICE_TYPE_WATCH)
+                .build(),
+            true,
+            listOf(),
+        )
     }
 
     private fun createDeviceWithSingleProvider(): DeviceDataSourceInfo {
