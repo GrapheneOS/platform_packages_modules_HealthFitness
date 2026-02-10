@@ -231,7 +231,11 @@ class MatchmakingActivityTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    @EnableFlags(
+        Flags.FLAG_MATCHMAKING,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
     fun matchmakingActivity_bothIncludedAndExcludedSources_finishesWithCanceledResult() {
         val intent =
             Intent(context, MatchmakingActivity::class.java).apply {
