@@ -20,8 +20,10 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.DataOrigin
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.android.healthconnect.controller.selectabledeletion.DeletionType
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -64,8 +66,17 @@ constructor(
         }
     }
 
-    private fun deleteUsingFilterRequest(packageName: String): DeleteUsingFiltersRequest =
-        DeleteUsingFiltersRequest.Builder()
-            .addDataOrigin(DataOrigin.Builder().setPackageName(packageName).build())
-            .build()
+    private fun deleteUsingFilterRequest(packageName: String): DeleteUsingFiltersRequest {
+        val requestBuilder =
+            DeleteUsingFiltersRequest.Builder()
+                .addDataOrigin(DataOrigin.Builder().setPackageName(packageName).build())
+
+        if (deviceDataProvidersApi() && packageName == healthConnectManager.currentDeviceId) {
+            requestBuilder.addDataOrigin(
+                DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build()
+            )
+        }
+
+        return requestBuilder.build()
+    }
 }

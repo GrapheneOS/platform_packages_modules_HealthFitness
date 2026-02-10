@@ -26,9 +26,15 @@ import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsCadenceRecord
 import android.health.connect.datatypes.StepsRecord
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteFitnessPermissionTypesFromAppUseCase
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
+import com.android.healthconnect.controller.tests.utils.TEST_WATCH_SPN
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -51,6 +57,7 @@ import org.mockito.kotlin.any
 class DeleteFitnessPermissionTypesFromAppUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val setFlagsRule = SetFlagsRule()
 
     private lateinit var useCase: DeleteFitnessPermissionTypesFromAppUseCase
     var manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
@@ -96,6 +103,114 @@ class DeleteFitnessPermissionTypesFromAppUseCaseTest {
                 MenstruationFlowRecord::class.java,
                 MenstruationPeriodRecord::class.java,
                 CyclingPedalingCadenceRecord::class.java,
+            )
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun invoke_ddpFlagsOn_withCurrentDevicePackage_addsAndroidPackageToFilter() = runTest {
+        val currentDeviceId = "test_device_id"
+        Mockito.`when`(manager.currentDeviceId).thenReturn(currentDeviceId)
+        doAnswer(prepareAnswer())
+            .`when`(manager)
+            .deleteRecords(any<DeleteUsingFiltersRequest>(), any(), any())
+
+        val deletePermissionTypes = setOf(FitnessPermissionType.STEPS)
+
+        useCase.invoke(currentDeviceId, deletePermissionTypes)
+
+        Mockito.verify(manager, Mockito.times(1))
+            .deleteRecords(filtersCaptor.capture(), any(), any())
+
+        assertThat(filtersCaptor.value.dataOrigins)
+            .containsExactly(
+                DataOrigin.Builder().setPackageName(currentDeviceId).build(),
+                DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build(),
+            )
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun invoke_ddpFlagsOff_withCurrentDevicePackage_doesNotAddAndroidPackage() = runTest {
+        val currentDeviceId = "test_device_id"
+        Mockito.`when`(manager.currentDeviceId).thenReturn(currentDeviceId)
+        doAnswer(prepareAnswer())
+            .`when`(manager)
+            .deleteRecords(any<DeleteUsingFiltersRequest>(), any(), any())
+
+        val deletePermissionTypes = setOf(FitnessPermissionType.STEPS)
+
+        useCase.invoke(currentDeviceId, deletePermissionTypes)
+
+        Mockito.verify(manager, Mockito.times(1))
+            .deleteRecords(filtersCaptor.capture(), any(), any())
+
+        assertThat(filtersCaptor.value.dataOrigins)
+            .containsExactly(DataOrigin.Builder().setPackageName(currentDeviceId).build())
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun invoke_ddpFlagsOn_withRandomDevice_doesNotAddAndroidPackageToFilter() = runTest {
+        val deviceId = TEST_WATCH_SPN
+        Mockito.`when`(manager.currentDeviceId).thenReturn("other_device_id")
+        doAnswer(prepareAnswer())
+            .`when`(manager)
+            .deleteRecords(any<DeleteUsingFiltersRequest>(), any(), any())
+
+        val deletePermissionTypes = setOf(FitnessPermissionType.STEPS)
+
+        useCase.invoke(deviceId, deletePermissionTypes)
+
+        Mockito.verify(manager, Mockito.times(1))
+            .deleteRecords(filtersCaptor.capture(), any(), any())
+
+        assertThat(filtersCaptor.value.dataOrigins)
+            .containsExactly(DataOrigin.Builder().setPackageName(deviceId).build())
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun invoke_ddpFlagsOn_withAndroid_addsCurrentDeviceToFilter() = runTest {
+        val currentDeviceId = "test_device_id"
+        Mockito.`when`(manager.currentDeviceId).thenReturn(currentDeviceId)
+        doAnswer(prepareAnswer())
+            .`when`(manager)
+            .deleteRecords(any<DeleteUsingFiltersRequest>(), any(), any())
+
+        val deletePermissionTypes = setOf(FitnessPermissionType.STEPS)
+
+        useCase.invoke(DEVICE_DATA_PROVIDER_PACKAGE, deletePermissionTypes)
+
+        Mockito.verify(manager, Mockito.times(1))
+            .deleteRecords(filtersCaptor.capture(), any(), any())
+
+        assertThat(filtersCaptor.value.dataOrigins)
+            .containsExactly(
+                DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build(),
+                DataOrigin.Builder().setPackageName(currentDeviceId).build(),
+            )
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun invoke_ddpFlagsOff_withAndroid_doesNotAddCurrentDevice() = runTest {
+        val currentDeviceId = "test_device_id"
+        Mockito.`when`(manager.currentDeviceId).thenReturn(currentDeviceId)
+        doAnswer(prepareAnswer())
+            .`when`(manager)
+            .deleteRecords(any<DeleteUsingFiltersRequest>(), any(), any())
+
+        val deletePermissionTypes = setOf(FitnessPermissionType.STEPS)
+
+        useCase.invoke(DEVICE_DATA_PROVIDER_PACKAGE, deletePermissionTypes)
+
+        Mockito.verify(manager, Mockito.times(1))
+            .deleteRecords(filtersCaptor.capture(), any(), any())
+
+        assertThat(filtersCaptor.value.dataOrigins)
+            .containsExactly(
+                DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build()
             )
     }
 
