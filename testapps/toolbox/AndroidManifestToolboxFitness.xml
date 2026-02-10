@@ -17,5 +17,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.android.healthconnect.testapps.toolboxfitness" >
-  <application android:label="HC Toolbox Fitness" tools:replace="android:label"/>
+  <application android:label="HC Toolbox Fitness"
+               android:icon="@mipmap/ic_toolbox_fitness"
+               tools:replace="android:label,android:icon"/>
 </manifest>

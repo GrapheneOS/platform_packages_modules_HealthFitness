@@ -17,5 +17,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           package="com.android.healthconnect.testapps.toolboxcombined" >
-  <application android:label="HC Toolbox Combined 1" tools:replace="android:label"/>
+  <application android:label="HC Toolbox Combined 1"
+               android:icon="@mipmap/ic_toolbox_combined1"
+               tools:replace="android:label,android:icon"/>
 </manifest>

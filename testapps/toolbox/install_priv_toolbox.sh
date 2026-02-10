@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Configuration
-APP_TARGET="HealthConnectToolbox1"
-PACKAGE_NAME="com.android.healthconnect.testapps.toolboxcombined"
+APP_TARGET="HealthConnectToolboxDDP"
+PACKAGE_NAME="com.android.healthconnect.testapps.toolboxddp"
 PERM_FILE="privapp-permissions-hc-toolbox.xml"
 
 # Ensure we are at the root of the build environment

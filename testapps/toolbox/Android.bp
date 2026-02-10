@@ -184,3 +184,25 @@ android_app {
         "HealthConnectToolboxLibrary",
     ],
 }
+
+android_app {
+    name: "HealthConnectToolboxDDP",
+    sdk_version: "module_current",
+    min_sdk_version: "34",
+    rename_resources_package: false,
+    updatable: true,
+    package_name: "com.android.healthconnect.testapps.toolboxddp",
+    manifest: "AndroidManifestToolboxDDP.xml",
+    additional_manifests: [
+        "AndroidManifest.xml",
+        "AndroidManifestDDPPermissions.xml",
+        "AndroidManifestAdditionalPermissions.xml",
+        "AndroidManifestFitnessPermissions.xml",
+        "AndroidManifestMedicalPermissions.xml",
+        "AndroidManifestOnboardingActivity.xml",
+    ],
+    certificate: "platform",
+    static_libs: [
+        "HealthConnectToolboxLibrary",
+    ],
+}
