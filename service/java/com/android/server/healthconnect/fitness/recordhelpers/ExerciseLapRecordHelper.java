@@ -31,8 +31,10 @@ import android.util.ArraySet;
 import android.util.Pair;
 
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
+import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
+import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -89,6 +91,21 @@ public class ExerciseLapRecordHelper {
         contentValues.put(EXERCISE_LAPS_LENGTH, lap.getLength());
     }
 
+    static ExerciseLapInternal populateLap(Cursor cursor) {
+        return new ExerciseLapInternal()
+                .setStartTime(getCursorLong(cursor, EXERCISE_LAPS_START_TIME))
+                .setEndTime(getCursorLong(cursor, EXERCISE_LAPS_END_TIME))
+                .setLength(getCursorDouble(cursor, EXERCISE_LAPS_LENGTH));
+    }
+
+    static ReadTableRequest getReadRequest(ReadTableRequest sessionIdsRequest) {
+        ReadTableRequest readTableRequest = new ReadTableRequest(EXERCISE_LAPS_RECORD_TABLE_NAME);
+        WhereClauses inClause = new WhereClauses(WhereClauses.LogicalOperator.AND);
+        inClause.addWhereInSQLRequestClause(PARENT_KEY_COLUMN_NAME, sessionIdsRequest);
+        readTableRequest.setWhereClause(inClause);
+        return readTableRequest;
+    }
+
     static SqlJoin getJoinReadRequest(String parentTableName) {
         return new SqlJoin(
                         parentTableName,
@@ -105,5 +122,9 @@ public class ExerciseLapRecordHelper {
         columnInfo.add(new Pair<>(EXERCISE_LAPS_END_TIME, INTEGER_NOT_NULL));
         columnInfo.add(new Pair<>(EXERCISE_LAPS_LENGTH, REAL_NOT_NULL));
         return columnInfo;
+    }
+
+    public static String getStartTimeColumnName() {
+        return EXERCISE_LAPS_START_TIME;
     }
 }

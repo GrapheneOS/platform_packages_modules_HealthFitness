@@ -60,6 +60,7 @@ import android.util.Pair;
 import androidx.annotation.Nullable;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.logging.ExerciseRoutesLogger;
 import com.android.server.healthconnect.common.logging.ExerciseRoutesLogger.Operations;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
@@ -138,24 +139,26 @@ public final class ExerciseSessionRecordHelper
                     (float) getCursorDouble(cursor, RATE_OF_PERCEIVED_EXERTION_COLUMN_NAME));
         }
 
-        // The table might contain duplicates because of 2 left joins, use sets to remove them.
-        ArraySet<ExerciseLapInternal> lapsSet = new ArraySet<>();
-        ArraySet<ExerciseSegmentInternal> segmentsSet = new ArraySet<>();
-        do {
-            // Populate lap and segments from each row.
-            ExerciseLapRecordHelper.populateLapIfRecorded(cursor, lapsSet);
-            ExerciseSegmentRecordHelper.updateSetWithRecordedSegment(cursor, segmentsSet);
-        } while (cursor.moveToNext() && uuid.equals(getCursorUUID(cursor, UUID_COLUMN_NAME)));
-        // In case we hit another record, move the cursor back to read next record in outer
-        // RecordHelper#getInternalRecords loop.
-        cursor.moveToPrevious();
+        if (!Flags.optimizeChildReads()) {
+            // The table might contain duplicates because of 2 left joins, use sets to remove them.
+            ArraySet<ExerciseLapInternal> lapsSet = new ArraySet<>();
+            ArraySet<ExerciseSegmentInternal> segmentsSet = new ArraySet<>();
+            do {
+                // Populate lap and segments from each row.
+                ExerciseLapRecordHelper.populateLapIfRecorded(cursor, lapsSet);
+                ExerciseSegmentRecordHelper.updateSetWithRecordedSegment(cursor, segmentsSet);
+            } while (cursor.moveToNext() && uuid.equals(getCursorUUID(cursor, UUID_COLUMN_NAME)));
+            // In case we hit another record, move the cursor back to read next record in outer
+            // RecordHelper#getInternalRecords loop.
+            cursor.moveToPrevious();
 
-        if (!lapsSet.isEmpty()) {
-            exerciseSessionRecord.setExerciseLaps(lapsSet.stream().toList());
-        }
+            if (!lapsSet.isEmpty()) {
+                exerciseSessionRecord.setExerciseLaps(lapsSet.stream().toList());
+            }
 
-        if (!segmentsSet.isEmpty()) {
-            exerciseSessionRecord.setExerciseSegments(segmentsSet.stream().toList());
+            if (!segmentsSet.isEmpty()) {
+                exerciseSessionRecord.setExerciseSegments(segmentsSet.stream().toList());
+            }
         }
         return exerciseSessionRecord;
     }
@@ -304,7 +307,12 @@ public final class ExerciseSessionRecordHelper
     }
 
     @Override
+    @Nullable
     SqlJoin getJoinForReadRequest() {
+        if (Flags.optimizeChildReads()) {
+            return null;
+        }
+
         return ExerciseLapRecordHelper.getJoinReadRequest(getMainTableName())
                 .attachJoin(ExerciseSegmentRecordHelper.getJoinReadRequest(getMainTableName()));
     }
@@ -317,17 +325,36 @@ public final class ExerciseSessionRecordHelper
             Set<String> grantedExtraReadPermissions,
             boolean isInForeground,
             AppInfoHelper appInfoHelper) {
+        List<ReadTableRequest> extraRequests = new ArrayList<>();
+
+        if (Flags.optimizeChildReads()) {
+            WhereClauses sessionsWhereClause =
+                    getReadTableWhereClause(
+                            request,
+                            callingPackageName,
+                            /* enforceSelfRead= */ false,
+                            startDateAccessMillis,
+                            appInfoHelper);
+            ReadTableRequest sessionIdsRequest =
+                    getSessionIdsRequest(sessionsWhereClause)
+                            .setOrderBy(getOrderByClause(request))
+                            .setLimit(getLimitSize(request));
+
+            extraRequests.add(ExerciseLapRecordHelper.getReadRequest(sessionIdsRequest));
+            extraRequests.add(ExerciseSegmentRecordHelper.getReadRequest(sessionIdsRequest));
+        }
+
         int routeAccessType =
                 getExerciseRouteReadAccessType(grantedExtraReadPermissions, isInForeground);
 
         if (routeAccessType == ROUTE_READ_ACCESS_TYPE_NONE) {
-            return Collections.emptyList();
+            return extraRequests;
         }
 
         boolean enforceSelfRead = routeAccessType == ROUTE_READ_ACCESS_TYPE_OWN;
         if (enforceSelfRead && appInfoHelper.getAppInfoId(callingPackageName) == DEFAULT_LONG) {
             // Calling app hasn't written anything, so no need for additional queries.
-            return Collections.emptyList();
+            return extraRequests;
         }
 
         WhereClauses sessionsWithAccessibleRouteClause =
@@ -343,7 +370,8 @@ public final class ExerciseSessionRecordHelper
                         .setOrderBy(getOrderByClause(request))
                         .setLimit(getLimitSize(request));
 
-        return List.of(getRouteReadRequest(sessionIdsRequest));
+        extraRequests.add(getRouteReadRequest(sessionIdsRequest));
+        return extraRequests;
     }
 
     /** Returns extra permissions required to write given record. */
@@ -379,11 +407,25 @@ public final class ExerciseSessionRecordHelper
             Set<String> grantedExtraReadPermissions,
             boolean isInForeground,
             AppInfoHelper appInfoHelper) {
+        List<ReadTableRequest> extraRequests = new ArrayList<>();
+
+        if (Flags.optimizeChildReads()) {
+            WhereClauses sessionsWhereClause =
+                    new WhereClauses(AND)
+                            .addWhereInClauseWithoutQuotes(
+                                    UUID_COLUMN_NAME, StorageUtils.getListOfHexStrings(uuids))
+                            .addWhereLaterThanTimeClause(getStartTimeColumnName(), startDateAccess);
+            ReadTableRequest sessionIdsRequest = getSessionIdsRequest(sessionsWhereClause);
+
+            extraRequests.add(ExerciseLapRecordHelper.getReadRequest(sessionIdsRequest));
+            extraRequests.add(ExerciseSegmentRecordHelper.getReadRequest(sessionIdsRequest));
+        }
+
         int routeAccessType =
                 getExerciseRouteReadAccessType(grantedExtraReadPermissions, isInForeground);
 
         if (routeAccessType == ROUTE_READ_ACCESS_TYPE_NONE) {
-            return Collections.emptyList();
+            return extraRequests;
         }
 
         WhereClauses sessionsWithAccessibleRouteClause =
@@ -396,14 +438,15 @@ public final class ExerciseSessionRecordHelper
             long callingAppInfoId = appInfoHelper.getAppInfoId(callingPackageName);
             if (callingAppInfoId == DEFAULT_LONG) {
                 // Calling app hasn't written anything, so no need for additional queries.
-                return Collections.emptyList();
+                return extraRequests;
             }
             sessionsWithAccessibleRouteClause.addWhereInLongsClause(
                     APP_INFO_ID_COLUMN_NAME, List.of(callingAppInfoId));
         }
 
-        return List.of(
+        extraRequests.add(
                 getRouteReadRequest(getSessionIdsRequest(sessionsWithAccessibleRouteClause)));
+        return extraRequests;
     }
 
     @Override
@@ -416,10 +459,34 @@ public final class ExerciseSessionRecordHelper
             rowIdToSessionMap.put(session.getRowId(), session);
         }
 
+        int lapTimeIndex =
+                cursorExtraData.getColumnIndex(ExerciseLapRecordHelper.getStartTimeColumnName());
+        int segmentTimeIndex =
+                cursorExtraData.getColumnIndex(
+                        ExerciseSegmentRecordHelper.getStartTimeColumnName());
+        int routeTimeIndex =
+                cursorExtraData.getColumnIndex(
+                        ExerciseRouteRecordHelper.ROUTE_LOCATION_TIME_IN_MILLIS_COLUMN_NAME);
+
         while (cursorExtraData.moveToNext()) {
             int rowId = getCursorInt(cursorExtraData, PARENT_KEY_COLUMN_NAME);
             var session = rowIdToSessionMap.get(rowId);
-            if (session != null) {
+            if (session == null) {
+                continue;
+            }
+
+            if (Flags.optimizeChildReads()) {
+                if (lapTimeIndex != -1 && !cursorExtraData.isNull(lapTimeIndex)) {
+                    session.addExerciseLap(ExerciseLapRecordHelper.populateLap(cursorExtraData));
+                }
+
+                if (segmentTimeIndex != -1 && !cursorExtraData.isNull(segmentTimeIndex)) {
+                    session.addExerciseSegment(
+                            ExerciseSegmentRecordHelper.populateSegment(cursorExtraData));
+                }
+            }
+
+            if (routeTimeIndex != -1 && !cursorExtraData.isNull(routeTimeIndex)) {
                 session.addRouteLocation(
                         ExerciseRouteRecordHelper.populateLocation(cursorExtraData));
             }

@@ -279,4 +279,20 @@ public final class ExerciseSessionRecordInternal
             mExerciseRoute.addLocation(location);
         }
     }
+
+    /** Add exercise lap to the session */
+    public void addExerciseLap(ExerciseLapInternal lap) {
+        if (mExerciseLaps == null) {
+            mExerciseLaps = new ArrayList<>();
+        }
+        mExerciseLaps.add(lap);
+    }
+
+    /** Add exercise segment to the session */
+    public void addExerciseSegment(ExerciseSegmentInternal segment) {
+        if (mExerciseSegments == null) {
+            mExerciseSegments = new ArrayList<>();
+        }
+        mExerciseSegments.add(segment);
+    }
 }
