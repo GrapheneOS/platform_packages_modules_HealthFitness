@@ -29,6 +29,7 @@ import com.android.healthconnect.controller.shared.map.MapView
 import com.android.healthconnect.controller.shared.recyclerview.DeletionViewBinder
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import com.android.healthconnect.controller.utils.setupAccessibilityDelegateForCheckbox
 import dagger.hilt.android.EntryPointAccessors
 
 /** ViewBinder for ExerciseSessionEntry. */
@@ -68,7 +69,6 @@ class ExerciseSessionItemViewBinder(
         val checkBox = view.findViewById<CheckBox>(R.id.item_checkbox_button)
 
         header.text = data.header
-        header.contentDescription = data.headerA11y
         notes.isVisible = !data.notes.isNullOrBlank()
         notes.text = data.notes
         divider.isVisible = false
@@ -82,7 +82,6 @@ class ExerciseSessionItemViewBinder(
             container.setOnClickListener {
                 onSelectEntryListener?.onSelectEntry(data.uuid, data.dataType, index)
                 checkBox.toggle()
-                title.contentDescription = data.titleA11y
                 logger.logInteraction(logNameWithCheckbox)
             }
         } else {
@@ -105,17 +104,21 @@ class ExerciseSessionItemViewBinder(
         checkBox.isChecked = isChecked
         checkBox.setOnClickListener {
             onSelectEntryListener?.onSelectEntry(data.uuid, data.dataType, index)
-            title.contentDescription = data.titleA11y
             logger.logInteraction(logNameWithCheckbox)
         }
+        checkBox.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        checkBox.isFocusable = false
+        checkBox.contentDescription = null
 
         title.text = data.title
-        title.contentDescription = data.titleA11y
-        checkBox.contentDescription =
-            view.context.getString(
-                R.string.a11y_checkbox_description,
-                data.headerA11y,
-                data.titleA11y,
-            )
+
+        container.contentDescription = "${data.headerA11y}, ${data.titleA11y}"
+        container.isFocusable = true
+        setupAccessibilityDelegateForCheckbox(
+            container,
+            isDeletionState,
+            isChecked,
+            container.context.getString(R.string.a11y_action_select),
+        )
     }
 }

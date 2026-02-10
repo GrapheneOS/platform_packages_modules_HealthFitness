@@ -25,6 +25,7 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry.Formatte
 import com.android.healthconnect.controller.shared.recyclerview.DeletionViewBinder
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import com.android.healthconnect.controller.utils.setupAccessibilityDelegateForCheckbox
 import dagger.hilt.android.EntryPointAccessors
 
 /** ViewBinder for FormattedDataEntry. */
@@ -62,7 +63,6 @@ class EntryItemViewBinder(private val onSelectEntryListener: OnSelectEntryListen
             container.setOnClickListener {
                 onSelectEntryListener?.onSelectEntry(data.uuid, data.dataType, index)
                 checkBox.toggle()
-                title.contentDescription = data.titleA11y
                 logger.logInteraction(logNameWithCheckbox)
             }
         } else {
@@ -78,20 +78,23 @@ class EntryItemViewBinder(private val onSelectEntryListener: OnSelectEntryListen
         checkBox.isChecked = isChecked
         checkBox.setOnClickListener {
             onSelectEntryListener?.onSelectEntry(data.uuid, data.dataType, index)
-            title.contentDescription = data.titleA11y
             logger.logInteraction(logNameWithCheckbox)
         }
         checkBox.tag = if (isDeletionState) "checkbox" else ""
+        checkBox.contentDescription = null
+        checkBox.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        checkBox.isFocusable = false
 
         title.text = data.title
-        title.contentDescription = data.titleA11y
         header.text = data.header
-        header.contentDescription = data.headerA11y
-        checkBox.contentDescription =
-            view.context.getString(
-                R.string.a11y_checkbox_description,
-                data.headerA11y,
-                data.titleA11y,
-            )
+
+        container.contentDescription = "${data.headerA11y}, ${data.titleA11y}"
+        container.isFocusable = true
+        setupAccessibilityDelegateForCheckbox(
+            container,
+            isDeletionState,
+            isChecked,
+            container.context.getString(R.string.a11y_action_select),
+        )
     }
 }
