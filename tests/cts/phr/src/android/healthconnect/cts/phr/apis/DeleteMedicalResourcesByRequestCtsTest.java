@@ -101,7 +101,7 @@ public class DeleteMedicalResourcesByRequestCtsTest {
         mManager = TestUtils.getHealthConnectManager();
         mUtil = new PhrCtsTestUtils(mManager);
         if (TestUtils.setLowerRateLimitsForTesting(true)) {
-            mUtil.mLimitsAdjustmentForTesting = 10;
+            mUtil.mLimitsAdjustmentForTesting = 40;
         }
     }
 

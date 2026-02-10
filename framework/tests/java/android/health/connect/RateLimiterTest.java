@@ -36,7 +36,7 @@ public class RateLimiterTest {
     private static final int UID = 1;
     private static final boolean IS_IN_FOREGROUND_TRUE = true;
     private static final boolean IS_IN_FOREGROUND_FALSE = false;
-    private static final int MAX_FOREGROUND_READ_CALL_15M = 2000;
+    private static final int MAX_FOREGROUND_READ_CALL_15M = 80000;
     private static final int MAX_BACKGROUND_CALL_15M = 1000;
     private static final Duration WINDOW_15M = Duration.ofMinutes(15);
     private static final int MEMORY_COST = 20000;

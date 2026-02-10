@@ -104,7 +104,7 @@ public class GetMedicalDataSourcesByIdsCtsTest {
         mUtil = new PhrCtsTestUtils(TestUtils.getHealthConnectManager());
         if (TestUtils.setLowerRateLimitsForTesting(true)) {
             // 10 comes from the setLowerRateLimitsForTesting method in RateLimiter.
-            mUtil.mLimitsAdjustmentForTesting = 10;
+            mUtil.mLimitsAdjustmentForTesting = 40;
         }
     }
 

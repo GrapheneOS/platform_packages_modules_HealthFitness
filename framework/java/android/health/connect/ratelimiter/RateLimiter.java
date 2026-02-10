@@ -44,8 +44,12 @@ public final class RateLimiter {
     public static final String RECORD_SIZE_LIMIT_IN_BYTES = "record_size_limit_in_bytes";
     private static final int DEFAULT_API_CALL_COST = 1;
 
-    public static final int QUOTA_BUCKET_READS_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE = 2000;
-    public static final int QUOTA_BUCKET_READS_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE = 16000;
+    // Foreground reads per 24h is set to an extremely high value (originally 16k) to allow clients
+    // to read huge amounts of data in the first sync. Foreground reads per 15m is set to match
+    // Foreground reads per 24h to allow read of a huge data set. 15m bucket could've been
+    // deprecated or removed but it was kept in-case it is needed to add it back in the future.
+    public static final int QUOTA_BUCKET_READS_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE = 80000;
+    public static final int QUOTA_BUCKET_READS_PER_24H_FOREGROUND_DEFAULT_FLAG_VALUE = 80000;
     public static final int QUOTA_BUCKET_READS_PER_15M_BACKGROUND_DEFAULT_FLAG_VALUE = 1000;
     public static final int QUOTA_BUCKET_READS_PER_24H_BACKGROUND_DEFAULT_FLAG_VALUE = 8000;
     public static final int QUOTA_BUCKET_WRITES_PER_15M_FOREGROUND_DEFAULT_FLAG_VALUE = 1000;
@@ -116,8 +120,8 @@ public final class RateLimiter {
         initQuotaBuckets();
 
         if (enabled) {
-            mQuotaBucketToMaxRollingQuota.replaceAll((k, v) -> v / 10);
-            mQuotaBucketToMaxMemoryQuota.replaceAll((k, v) -> v / 10);
+            mQuotaBucketToMaxRollingQuota.replaceAll((k, v) -> v / 40);
+            mQuotaBucketToMaxMemoryQuota.replaceAll((k, v) -> v / 40);
         }
     }
 
