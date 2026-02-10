@@ -400,56 +400,6 @@ public final class ExerciseSessionRecordHelper
     }
 
     @Override
-    List<ReadTableRequest> getExtraDataReadRequests(
-            String callingPackageName,
-            List<UUID> uuids,
-            long startDateAccess,
-            Set<String> grantedExtraReadPermissions,
-            boolean isInForeground,
-            AppInfoHelper appInfoHelper) {
-        List<ReadTableRequest> extraRequests = new ArrayList<>();
-
-        if (Flags.optimizeChildReads()) {
-            WhereClauses sessionsWhereClause =
-                    new WhereClauses(AND)
-                            .addWhereInClauseWithoutQuotes(
-                                    UUID_COLUMN_NAME, StorageUtils.getListOfHexStrings(uuids))
-                            .addWhereLaterThanTimeClause(getStartTimeColumnName(), startDateAccess);
-            ReadTableRequest sessionIdsRequest = getSessionIdsRequest(sessionsWhereClause);
-
-            extraRequests.add(ExerciseLapRecordHelper.getReadRequest(sessionIdsRequest));
-            extraRequests.add(ExerciseSegmentRecordHelper.getReadRequest(sessionIdsRequest));
-        }
-
-        int routeAccessType =
-                getExerciseRouteReadAccessType(grantedExtraReadPermissions, isInForeground);
-
-        if (routeAccessType == ROUTE_READ_ACCESS_TYPE_NONE) {
-            return extraRequests;
-        }
-
-        WhereClauses sessionsWithAccessibleRouteClause =
-                new WhereClauses(AND)
-                        .addWhereInClauseWithoutQuotes(
-                                UUID_COLUMN_NAME, StorageUtils.getListOfHexStrings(uuids))
-                        .addWhereLaterThanTimeClause(getStartTimeColumnName(), startDateAccess);
-
-        if (routeAccessType == ROUTE_READ_ACCESS_TYPE_OWN) {
-            long callingAppInfoId = appInfoHelper.getAppInfoId(callingPackageName);
-            if (callingAppInfoId == DEFAULT_LONG) {
-                // Calling app hasn't written anything, so no need for additional queries.
-                return extraRequests;
-            }
-            sessionsWithAccessibleRouteClause.addWhereInLongsClause(
-                    APP_INFO_ID_COLUMN_NAME, List.of(callingAppInfoId));
-        }
-
-        extraRequests.add(
-                getRouteReadRequest(getSessionIdsRequest(sessionsWithAccessibleRouteClause)));
-        return extraRequests;
-    }
-
-    @Override
     public void readExtraData(
             List<ExerciseSessionRecordInternal> internalRecords, Cursor cursorExtraData) {
         // For quick access to sessions by rowId

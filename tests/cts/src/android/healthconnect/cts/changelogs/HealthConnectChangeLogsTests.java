@@ -77,8 +77,10 @@ import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
+import android.healthconnect.testing.cts.PermissionUtils;
 import android.healthconnect.testing.cts.PhrCtsTestUtils;
 import android.healthconnect.testing.cts.TestUtils;
+import android.healthconnect.testing.cts.testapphelpers.TestAppProxy;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.platform.test.annotations.AppModeFull;
@@ -117,6 +119,9 @@ public class HealthConnectChangeLogsTests {
     private final String mPackageName = mContext.getPackageName();
 
     private PhrCtsTestUtils mPhrCtsTestUtils;
+
+    private static final TestAppProxy APP_A_WITH_READ_WRITE_PERMS =
+            TestAppProxy.forPackageName("android.healthconnect.cts.testapp.readWritePerms.A");
 
     private static final Correspondence<ChangeLogsResponse.DeletedLog, Record>
             DELETED_LOG_TO_RECORD_CORRESPONDENCE =
@@ -676,7 +681,7 @@ public class HealthConnectChangeLogsTests {
     }
 
     @Test
-    public void testChangeLogs_insertOldRecords_onlyReturnsUpsertedLogsAfterHistoricalAccess()
+    public void testChangeLogs_insertOldRecords_returnsAllUpsertedLogs_whenSelfRead()
             throws InterruptedException {
         ChangeLogTokenResponse tokenResponse =
                 getChangeLogToken(getChangeLogTokenRequestForTestRecordTypes().build());
@@ -693,6 +698,7 @@ public class HealthConnectChangeLogsTests {
         List<StepsRecord> expectedRecords =
                 readRecords(
                         new ReadRecordsRequestUsingIds.Builder<>(StepsRecord.class)
+                                .addId(insertedRecords.get(0).getMetadata().getId())
                                 .addId(insertedRecords.get(1).getMetadata().getId())
                                 .addId(insertedRecords.get(2).getMetadata().getId())
                                 .build());
@@ -703,6 +709,27 @@ public class HealthConnectChangeLogsTests {
             assertThat(response.getUpsertedMedicalResources()).isEmpty();
             assertThat(response.getDeletedMedicalResources()).isEmpty();
         }
+    }
+
+    @Test
+    public void testChangeLogs_otherAppInsertsOldRecords_doesNotReturnLogs() throws Exception {
+        PermissionUtils.grantAllHealthPermissions(APP_A_WITH_READ_WRITE_PERMS.getPackageName());
+        ChangeLogTokenResponse tokenResponse =
+                getChangeLogToken(getChangeLogTokenRequestForTestRecordTypes().build());
+        ChangeLogsRequest changeLogsRequest =
+                new ChangeLogsRequest.Builder(tokenResponse.getToken()).build();
+
+        StepsRecord stepsRecord45DaysAgo = getStepsRecord_minusDays(45);
+        StepsRecord stepsRecord5DaysAgo = getStepsRecord_minusDays(5);
+        List<String> insertedIds =
+                APP_A_WITH_READ_WRITE_PERMS.insertRecords(
+                        List.of(stepsRecord45DaysAgo, stepsRecord5DaysAgo));
+
+        ChangeLogsResponse response = getChangeLogs(changeLogsRequest);
+
+        assertThat(response.getUpsertedRecords()).hasSize(1);
+        assertThat(response.getUpsertedRecords().get(0).getMetadata().getId())
+                .isEqualTo(insertedIds.get(1));
     }
 
     @Test
