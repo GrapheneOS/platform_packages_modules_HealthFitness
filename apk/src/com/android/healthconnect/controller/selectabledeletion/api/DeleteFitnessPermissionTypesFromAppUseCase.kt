@@ -19,8 +19,10 @@ import android.health.connect.DeleteUsingFiltersRequest
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.DataOrigin
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -49,6 +51,17 @@ constructor(
         }
 
         deleteRequest.addDataOrigin(DataOrigin.Builder().setPackageName(packageName).build())
+
+        if (deviceDataProvidersApi() && packageName == healthConnectManager.currentDeviceId) {
+            deleteRequest.addDataOrigin(
+                DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build()
+            )
+        }
+        if (deviceDataProvidersApi() && packageName == DEVICE_DATA_PROVIDER_PACKAGE) {
+            deleteRequest.addDataOrigin(
+                DataOrigin.Builder().setPackageName(healthConnectManager.currentDeviceId).build()
+            )
+        }
 
         withContext(dispatcher) {
             healthConnectManager.deleteRecords(deleteRequest.build(), Runnable::run) {}
