@@ -3,7 +3,6 @@ package com.android.healthconnect.controller.tests.migration
 import android.content.Context
 import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
-import android.preference.PreferenceManager.getDefaultSharedPreferencesName
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.espresso.Espresso.onIdle
@@ -16,6 +15,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationPausedFragment
+import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MigrationElement
@@ -52,11 +52,8 @@ class MigrationPausedFragmentTest {
         val context = InstrumentationRegistry.getInstrumentation().context
         navHostController = TestNavHostController(context)
         val pref =
-            applicationContext.getSharedPreferences(
-                getDefaultSharedPreferencesName(context),
-                MODE_PRIVATE,
-            )
-        pref.edit().clear().apply()
+            applicationContext.getSharedPreferences(Constants.USER_ACTIVITY_TRACKER, MODE_PRIVATE)
+        pref.edit().clear().commit()
     }
 
     @After
@@ -105,10 +102,11 @@ class MigrationPausedFragmentTest {
                 onIdle {
                     val preferences =
                         applicationContext.getSharedPreferences(
-                            "USER_ACTIVITY_TRACKER",
+                            Constants.USER_ACTIVITY_TRACKER,
                             MODE_PRIVATE,
                         )
-                    assertThat(preferences.getBoolean("integration_paused_seen", false)).isTrue()
+                    assertThat(preferences.getBoolean(Constants.INTEGRATION_PAUSED_SEEN_KEY, false))
+                        .isTrue()
                 }
                 verify(healthConnectLogger)
                     .logInteraction(MigrationElement.MIGRATION_UPDATE_NEEDED_CANCEL_BUTTON)

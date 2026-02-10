@@ -90,10 +90,7 @@ class MigrationPausedFragment : Hilt_MigrationPausedFragment() {
             val integrationPausedSeen =
                 sharedPreferences.getBoolean(INTEGRATION_PAUSED_SEEN_KEY, false)
             if (!integrationPausedSeen) {
-                sharedPreferences.edit().apply {
-                    putBoolean(INTEGRATION_PAUSED_SEEN_KEY, true)
-                    apply()
-                }
+                sharedPreferences.edit().putBoolean(INTEGRATION_PAUSED_SEEN_KEY, true).apply()
                 findNavController()
                     .navigateSafe(
                         R.id.migrationPausedFragment,
