@@ -80,6 +80,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.scrollToText
 import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
+import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
@@ -1343,6 +1344,79 @@ class MatchmakingFragmentTest {
 
                 onView(withText(context.getString(R.string.matchmaking_screen_title)))
                     .check(matches(isDisplayed()))
+            }
+    }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_MATCHMAKING,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun matchmakingFragment_showsCorrectDeviceIcon() {
+        val watchPackageName = "com.example.watchdevice"
+        val deviceData =
+            MatchmakingDeviceData(
+                DeviceDataSourceInfo(
+                    DataOrigin.Builder().setPackageName(watchPackageName).build(),
+                    Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Pixel Watch")
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .build(),
+                    false,
+                    listOf(
+                        DeviceDataProviderInfo(
+                            "com.google.android.apps.fitness",
+                            "MyFit",
+                            "",
+                            "",
+                            emptySet(),
+                        )
+                    ),
+                ),
+                emptyList(),
+            )
+
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                emptyList(),
+                listOf(deviceData),
+            )
+        )
+
+        ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = MatchmakingFragment()
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, fragment)
+                        .commitNow()
+
+                    val expandablePreference =
+                        fragment.findPreference<HealthExpandablePreference>(watchPackageName)
+
+                    assertThat(expandablePreference?.icon).isNotNull()
+                    val expectedIconResId =
+                        AttributeResolver.getResource(activity, R.attr.deviceWatchIcon)
+                    assertThat(expectedIconResId).isEqualTo(R.drawable.ic_device_watch)
+                    val defaultAppIcon =
+                        androidx.appcompat.content.res.AppCompatResources.getDrawable(
+                            activity,
+                            R.drawable.ic_apps,
+                        )
+                    assertThat(expandablePreference?.icon?.constantState)
+                        .isNotEqualTo(defaultAppIcon?.constantState)
+                }
             }
     }
 }

@@ -48,6 +48,7 @@ import com.android.healthconnect.controller.shared.preference.HealthMainSwitchPr
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
+import com.android.healthconnect.controller.utils.asAppMetadata
 import com.android.healthconnect.controller.utils.increaseViewTouchTargetSize
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MatchmakingElement
@@ -348,7 +349,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                 is MatchmakingDeviceData -> {
                     if (deviceDataProvidersApi() && deviceDataProvidersUiMatchmakingScreen()) {
                         title = data.deviceDataSourceInfo.device.manufacturer
-                        icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_apps)
+                        icon = data.deviceDataSourceInfo.asAppMetadata(requireContext()).icon
                         key = data.deviceDataSourceInfo.deviceDataOrigin.packageName
                         setExpanded(false)
                     }
@@ -384,7 +385,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
             if (deviceDataProvidersApi() && deviceDataProvidersUiMatchmakingScreen()) {
                 matchingApps.mapNotNull { it.metadata.icon } +
                     matchingDevices.mapNotNull {
-                        ContextCompat.getDrawable(requireContext(), R.drawable.ic_apps)
+                        it.deviceDataSourceInfo.asAppMetadata(requireContext()).icon
                     }
             } else {
                 matchingApps.mapNotNull { it.metadata.icon }
