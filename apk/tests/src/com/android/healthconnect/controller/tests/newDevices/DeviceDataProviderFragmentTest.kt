@@ -70,7 +70,7 @@ import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-@EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+@EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
 class DeviceDataProviderFragmentTest {
 
     @get:Rule(order = 0) val hiltRule = HiltAndroidRule(this)
