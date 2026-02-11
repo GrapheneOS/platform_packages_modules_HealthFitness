@@ -243,9 +243,20 @@ constructor(
         if (!showDataOrigin) {
             return ""
         }
-        return apps
-            .map { origin -> appInfoReader.getAppMetadata(origin.packageName) }
-            .distinct()
+
+        val shouldFilterOutLegacyDevice =
+            deviceDataProvidersApi() &&
+                apps.any { it.packageName == healthConnectManager.currentDeviceId }
+
+        val appsToInclude =
+            if (shouldFilterOutLegacyDevice) {
+                apps.filterNot { it.packageName == DEVICE_DATA_PROVIDER_PACKAGE }
+            } else {
+                apps
+            }
+
+        return appsToInclude
+            .map { appInfoReader.getAppMetadata(it.packageName) }
             .joinToString(", ") { it.appName }
     }
 }

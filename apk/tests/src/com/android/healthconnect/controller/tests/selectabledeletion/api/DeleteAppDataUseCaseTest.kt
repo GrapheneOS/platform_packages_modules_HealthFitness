@@ -29,9 +29,12 @@ import com.android.healthconnect.controller.permissions.api.HealthPermissionMana
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.android.healthconnect.controller.selectabledeletion.DeletionType.DeleteAppData
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteAppDataUseCase
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE_2
+import com.android.healthconnect.controller.tests.utils.TEST_PHONE_SPN
+import com.android.healthconnect.controller.tests.utils.TEST_WATCH_SPN
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -98,6 +101,75 @@ class DeleteAppDataUseCaseTest {
             .deleteMedicalDataSourceWithData(dataSourceIdCaptor.capture(), any(), any())
         assertThat(dataSourceIdCaptor.value).isEqualTo(TEST_MEDICAL_DATA_SOURCE_2.id)
     }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun invoke_deleteAppData_ddpFlagsOn_withCurrentDevicePackage_addsAndroidPackageToFilter() =
+        runTest {
+            val currentDeviceId = TEST_WATCH_SPN
+            `when`(dataManager.currentDeviceId).thenReturn(currentDeviceId)
+            doAnswer(prepareAnswer())
+                .`when`(dataManager)
+                .deleteRecords(any(DeleteUsingFiltersRequest::class.java), any(), any())
+            doAnswer(prepareAnswer(listOf(TEST_MEDICAL_DATA_SOURCE, TEST_MEDICAL_DATA_SOURCE_2)))
+                .`when`(dataManager)
+                .getMedicalDataSources(any(GetMedicalDataSourcesRequest::class.java), any(), any())
+
+            val deleteAppData = DeleteAppData(packageName = currentDeviceId, appName = "App Name")
+
+            useCase.invoke(deleteAppData)
+
+            verify(dataManager).deleteRecords(filtersCaptor.capture(), any(), any())
+            assertThat(filtersCaptor.value.dataOrigins)
+                .containsExactly(
+                    DataOrigin.Builder().setPackageName(currentDeviceId).build(),
+                    DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build(),
+                )
+        }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun invoke_deleteAppData_ddpFlagsOff_withCurrentDevicePackage_doesNotAddAndroidPackage() =
+        runTest {
+            val currentDeviceId = TEST_WATCH_SPN
+            `when`(dataManager.currentDeviceId).thenReturn(currentDeviceId)
+            doAnswer(prepareAnswer())
+                .`when`(dataManager)
+                .deleteRecords(any(DeleteUsingFiltersRequest::class.java), any(), any())
+            doAnswer(prepareAnswer(listOf(TEST_MEDICAL_DATA_SOURCE, TEST_MEDICAL_DATA_SOURCE_2)))
+                .`when`(dataManager)
+                .getMedicalDataSources(any(GetMedicalDataSourcesRequest::class.java), any(), any())
+
+            val deleteAppData = DeleteAppData(packageName = currentDeviceId, appName = "App Name")
+
+            useCase.invoke(deleteAppData)
+
+            verify(dataManager).deleteRecords(filtersCaptor.capture(), any(), any())
+            assertThat(filtersCaptor.value.dataOrigins)
+                .containsExactly(DataOrigin.Builder().setPackageName(currentDeviceId).build())
+        }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun invoke_deleteAppData_ddpFlagsOn_withRandomDevice_doesNotAddAndroidPackageToFilter() =
+        runTest {
+            val deviceId = TEST_WATCH_SPN
+            `when`(dataManager.currentDeviceId).thenReturn(TEST_PHONE_SPN)
+            doAnswer(prepareAnswer())
+                .`when`(dataManager)
+                .deleteRecords(any(DeleteUsingFiltersRequest::class.java), any(), any())
+            doAnswer(prepareAnswer(listOf(TEST_MEDICAL_DATA_SOURCE, TEST_MEDICAL_DATA_SOURCE_2)))
+                .`when`(dataManager)
+                .getMedicalDataSources(any(GetMedicalDataSourcesRequest::class.java), any(), any())
+
+            val deleteAppData = DeleteAppData(packageName = deviceId, appName = "App Name")
+
+            useCase.invoke(deleteAppData)
+
+            verify(dataManager).deleteRecords(filtersCaptor.capture(), any(), any())
+            assertThat(filtersCaptor.value.dataOrigins)
+                .containsExactly(DataOrigin.Builder().setPackageName(deviceId).build())
+        }
 
     private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {
         val answer = { _: InvocationOnMock -> null }

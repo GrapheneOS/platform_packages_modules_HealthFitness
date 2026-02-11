@@ -25,6 +25,7 @@
         android:drawablePadding="@dimen/spacing_normal"
         android:drawableStart="?attr/chooseDataIcon"
         android:paddingBottom="@dimen/spacing_small"
+        android:focusable="true"
         style="?attr/textAppearanceSummaryLarge"/>
 
     <TextView
@@ -34,6 +35,7 @@
         android:drawablePadding="@dimen/spacing_normal"
         android:drawableStart="?attr/accessHistoryIcon"
         android:paddingBottom="@dimen/spacing_small"
+        android:focusable="true"
         style="?attr/textAppearanceSummaryLarge" />
 
     <TextView
@@ -43,5 +45,6 @@
         android:drawablePadding="@dimen/spacing_normal"
         android:drawableStart="?attr/privacyPolicyIcon"
         android:paddingBottom="@dimen/spacing_small"
+        android:focusable="true"
         style="?attr/textAppearanceSummaryLarge"/>
 </LinearLayout>

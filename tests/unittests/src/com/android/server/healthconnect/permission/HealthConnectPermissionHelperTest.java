@@ -2064,6 +2064,58 @@ public class HealthConnectPermissionHelperTest {
                         TEST_PACKAGE_NAME, CURRENT_USER, mContext));
     }
 
+    @Test
+    public void revokeAllHealthPermissions_skipsNormalPermissions()
+            throws PackageManager.NameNotFoundException {
+        String normalPermission = HealthPermissions.WRITE_DEVICE_UDI;
+        String dangerousPermission = HealthPermissions.READ_HEART_RATE;
+
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {
+                            normalPermission,
+                            dangerousPermission,
+                        },
+                        new int[] {
+                            PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                            PackageInfo.REQUESTED_PERMISSION_GRANTED,
+                        });
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+        .thenReturn(mockPackageInfo);
+
+        assertThat(mPermissionHelper.getGrantedHealthPermissions(TEST_PACKAGE_NAME, CURRENT_USER))
+                .containsAtLeast(normalPermission, dangerousPermission);
+        assertThat(
+                        mPermissionHelper.revokeAllHealthPermissions(
+                                TEST_PACKAGE_NAME, /* reason= */ null, CURRENT_USER))
+                .isTrue();
+
+        // Verify dangerous permission was revoked
+        verify(mPackageManager)
+                .revokeRuntimePermission(
+                        eq(TEST_PACKAGE_NAME), eq(dangerousPermission), eq(CURRENT_USER), any());
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(dangerousPermission),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+
+        // Verify normal permission was NOT revoked
+        verify(mPackageManager, never())
+                .revokeRuntimePermission(
+                        eq(TEST_PACKAGE_NAME), eq(normalPermission), eq(CURRENT_USER), any());
+        verify(mPackageManager, never())
+                .updatePermissionFlags(
+                        eq(normalPermission),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+    }
+
     private void setUpHealthPermissions() throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo = new PackageInfo();
         // For now add a few of the HealthPermissions just for the test.
@@ -2075,8 +2127,14 @@ public class HealthConnectPermissionHelperTest {
                     createPermissionInfo(HealthPermissions.READ_OXYGEN_SATURATION),
                     createPermissionInfo(HealthPermissions.READ_MEDICAL_DATA_VACCINES),
                     createPermissionInfo(HealthPermissions.READ_STEPS),
-                    createPermissionInfo(HealthPermissions.WRITE_BLOOD_PRESSURE)
+                    createPermissionInfo(HealthPermissions.WRITE_BLOOD_PRESSURE),
+                    createPermissionInfo(
+                        HealthPermissions.WRITE_DEVICE_UDI, PermissionInfo.PROTECTION_NORMAL),
                 };
+        for (PermissionInfo permissionInfo : mockPackageInfo.permissions) {
+            when(mPackageManager.getPermissionInfo(eq(permissionInfo.name), anyInt()))
+                    .thenReturn(permissionInfo);
+        }
         when(mPackageManager.getPackageInfo(eq(HC_PACKAGE_NAME), any()))
                 .thenReturn(mockPackageInfo);
     }
@@ -2101,9 +2159,14 @@ public class HealthConnectPermissionHelperTest {
     }
 
     private PermissionInfo createPermissionInfo(String permissionName) {
+        return createPermissionInfo(permissionName, PermissionInfo.PROTECTION_DANGEROUS);
+    }
+
+    private PermissionInfo createPermissionInfo(String permissionName, int protectionLevel) {
         PermissionInfo permissionInfo = new PermissionInfo();
         permissionInfo.name = permissionName;
         permissionInfo.group = HealthPermissions.HEALTH_PERMISSION_GROUP;
+        permissionInfo.protectionLevel = protectionLevel;
         return permissionInfo;
     }
 

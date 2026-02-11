@@ -25,11 +25,11 @@ java_test_host {
         "host/**/*.kt",
     ],
     test_suites: [
-        "cts",
+        // These tests are named CTS but are excluded from the standard CTS suite.
+        // They are incompatible with MCTS due to proto mismatches with Mainline updates
+        // (see b/358006651) and do not test core CTS requirements.
         "general-tests",
         "mts-healthfitness",
-        // TODO(b/358006651): Re-enable once the test is fixed.
-        // "mcts-healthfitness",
     ],
     libs: [
         "compatibility-host-util",

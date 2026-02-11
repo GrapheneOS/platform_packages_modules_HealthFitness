@@ -70,7 +70,7 @@ import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-@EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
+@EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
 class DeviceDataProviderFragmentTest {
 
     @get:Rule(order = 0) val hiltRule = HiltAndroidRule(this)
@@ -110,6 +110,25 @@ class DeviceDataProviderFragmentTest {
     fun errorState_showsError() {
         selectedDeviceSourceState.value = SelectedDeviceSourceInfoState.Error
         launchFragment<DeviceDataProviderFragment>(Bundle()).use {
+            onView(withId(R.id.error_view)).check(matches(isDisplayed()))
+        }
+    }
+
+    @Test
+    fun errorAfterLoadingState_showsError() {
+        // Regression test for b/481964580
+
+        // Start with Error state
+        selectedDeviceSourceState.value = SelectedDeviceSourceInfoState.Error
+        launchFragment<DeviceDataProviderFragment>(Bundle()).use {
+            // Transition to Loading state
+            selectedDeviceSourceState.value = SelectedDeviceSourceInfoState.Loading
+            InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+
+            // Transition back to Error state
+            selectedDeviceSourceState.value = SelectedDeviceSourceInfoState.Error
+            InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+
             onView(withId(R.id.error_view)).check(matches(isDisplayed()))
         }
     }

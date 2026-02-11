@@ -31,6 +31,7 @@
         android:layout_height="wrap_content"
         android:gravity="start"
         android:paddingVertical="@dimen/spacing_large"
+        android:focusable="true"
         style="?attr/headerTitle" />
 
     <TextView
@@ -39,5 +40,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?attr/headerSummary"
+        android:focusable="true"
         android:visibility="gone" />
 </LinearLayout>

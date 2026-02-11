@@ -47,9 +47,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import android.health.HealthFitnessStatsLog;
+import android.platform.test.annotations.EnableFlags;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.logging.HealthConnectServiceLogger;
 import com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods;
 
@@ -486,6 +488,7 @@ public class HealthConnectServiceLoggerTest {
     }
 
     @Test
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void logsApiMetrics_logsCanonicalSpn() {
         new HealthConnectServiceLogger.Builder(false, ApiMethods.API_METHOD_UNKNOWN)
                 .setHealthFitnessStatsLog(mHealthFitnessStatsLog)

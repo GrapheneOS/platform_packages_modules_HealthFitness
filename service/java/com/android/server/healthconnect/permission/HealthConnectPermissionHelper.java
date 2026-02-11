@@ -33,6 +33,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PermissionInfo;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissions;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
@@ -704,6 +705,17 @@ public final class HealthConnectPermissionHelper {
         List<String> grantedHealthPermissions =
                 PackageInfoUtils.getGrantedHealthPermissions(mContext, packageName, user);
         for (String perm : grantedHealthPermissions) {
+            PermissionInfo permissionInfo;
+            try {
+                permissionInfo = mPackageManager.getPermissionInfo(perm, 0);
+            } catch (PackageManager.NameNotFoundException e) {
+                Slog.w(TAG, "Permission " + perm + " not found for package " + packageName);
+                continue;
+            }
+            if ((permissionInfo.getProtection() & PermissionInfo.PROTECTION_MASK_BASE)
+                    == PermissionInfo.PROTECTION_NORMAL) {
+                continue;
+            }
             revokeRuntimePermission(packageName, user, perm, reason);
             mPackageManager.updatePermissionFlags(
                     perm,
