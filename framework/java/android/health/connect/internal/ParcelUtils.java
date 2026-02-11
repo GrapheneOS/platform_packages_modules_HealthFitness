@@ -24,7 +24,6 @@ import android.os.SharedMemory;
 import android.system.ErrnoException;
 import android.util.Log;
 
-import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 
 import java.nio.BufferOverflowException;
@@ -51,8 +50,7 @@ public final class ParcelUtils {
             try (SharedMemory memory = SharedMemory.CREATOR.createFromParcel(in)) {
                 Parcel dataParcel = Parcel.obtain();
                 ByteBuffer buffer = memory.mapReadOnly();
-                if (Flags.reduceParcelMarshallingCopies()
-                        && Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA
                         && Build.VERSION.SDK_INT_FULL >= Build.VERSION_CODES_FULL.BAKLAVA_1) {
                     dataParcel.unmarshall(buffer);
                 } else {
@@ -71,8 +69,7 @@ public final class ParcelUtils {
 
     public static SharedMemory getSharedMemoryForParcel(Parcel dataParcel) {
         try {
-            if (Flags.reduceParcelMarshallingCopies()
-                    && Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.BAKLAVA
                     && Build.VERSION.SDK_INT_FULL >= Build.VERSION_CODES_FULL.BAKLAVA_1) {
                 SharedMemory sharedMemory =
                         SharedMemory.create("RecordsParcelSharedMemory", dataParcel.dataSize());
