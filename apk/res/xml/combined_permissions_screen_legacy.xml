@@ -17,7 +17,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <com.android.settingslib.widget.IntroPreference
-        android:key="intro_preference" />
+        android:key="intro_preference"
+        style="@style/SettingsLibPreference.Intro.Expressive" />
     <PreferenceCategory
         android:key="manage_permissions"
         android:title="@string/permissions_header"

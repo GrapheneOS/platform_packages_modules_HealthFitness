@@ -123,10 +123,15 @@
             <item type="style" name="TextAppearance.HealthConnect.CategoryTitle" />
             <item type="style" name="TextAppearance.HealthConnect.ErrorMessage" />
 
-            <item type="style" name="Widget.HealthConnect.Button" />
-            <item type="style" name="Widget.HealthConnect.RadioButton.Chip" />
-            <item type="style" name="Widget.HealthConnect.CalendarSpinner" />
-            <item type="style" name="Widget.HealthConnect.TabLayout" />
+            <item type="style" name="Widget.HealthConnect.Button"/>
+            <item type="style" name="Widget.HealthConnect.RadioButton.Chip"/>
+            <item type="style" name="Widget.HealthConnect.CalendarSpinner"/>
+            <item type="style" name="Widget.HealthConnect.TabLayout"/>
+
+            <item type="style" name="SettingsLibEntityHeaderTitle"/>
+            <item type="style" name="TextAppearance.HealthConnect.Expressive.PermissionHeading"/>
+            <item type="style" name="TextAppearance.HealthConnect.Expressive.DetailedHeading"/>
+            <item type="style" name="TextAppearance.HealthConnect.Expressive.Heading"/>
             <!-- END REGION -->
 
             <!-- REGION DIMENSIONS -->
