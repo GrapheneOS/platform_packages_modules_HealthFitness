@@ -25,6 +25,7 @@ import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.Environment;
 import android.os.UserHandle;
 import android.os.UserManager;
+import android.permission.PermissionManager;
 
 import androidx.annotation.Nullable;
 
@@ -56,11 +57,13 @@ import com.android.server.healthconnect.device.notification.NativeStepsNotificat
 import com.android.server.healthconnect.device.notification.NativeStepsNotificationStateManager;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.device.tracker.TrackerManagerImpl;
+import com.android.server.healthconnect.exportimport.DatabaseMerger;
 import com.android.server.healthconnect.exportimport.ExportImportLogger;
 import com.android.server.healthconnect.exportimport.ExportImportNotificationFactory;
 import com.android.server.healthconnect.exportimport.ExportImportNotificationSender;
 import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
 import com.android.server.healthconnect.exportimport.ExportManager;
+import com.android.server.healthconnect.exportimport.ImportManager;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
@@ -86,12 +89,14 @@ import com.android.server.healthconnect.onboarding.OnboardingNotificationStateMa
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
 import com.android.server.healthconnect.onboarding.matchmaking.MatchmakingDenialStateManager;
 import com.android.server.healthconnect.onboarding.matchmaking.MatchmakingManager;
+import com.android.server.healthconnect.permission.DataPermissionEnforcer;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastoreXmlPersistence;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
+import com.android.server.healthconnect.permission.MedicalDataPermissionEnforcer;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
 import com.android.server.healthconnect.permission.PermissionPackageChangesOrchestrator;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
@@ -130,7 +135,12 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     private final PreferenceHelper mPreferenceHelper;
     private final ExportImportSettingsStorage mExportImportSettingsStorage;
     private final ExportManager mExportManager;
+    private final ImportManager mImportManager;
+    private final DatabaseMerger mDatabaseMerger;
+    private final DataPermissionEnforcer mDataPermissionEnforcer;
+    private final MedicalDataPermissionEnforcer mMedicalDataPermissionEnforcer;
     private final MigrationStateManager mMigrationStateManager;
+
     private final OnboardingStateManager mOnboardingStateManager;
     private final OnboardingNotificationStateManager mOnboardingNotificationStateManager;
     private final OnboardingNotificationSender mOnboardingNotificationSender;
@@ -510,23 +520,57 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
                                 mHealthDataCategoryPriorityHelper,
                                 mInternalHealthConnectMappings)
                         : builder.mDeviceDataProviderManager;
+
+        mDatabaseMerger =
+                builder.mDatabaseMerger == null
+                        ? new DatabaseMerger(
+                                mAppInfoHelper,
+                                mDeviceInfoHelper,
+                                mDeviceDataProviderMetadataHelper,
+                                mSyntheticPackageNameCreator,
+                                mHealthDataCategoryPriorityHelper,
+                                mTransactionManager,
+                                mFitnessRecordUpsertHelper,
+                                mFitnessRecordReadHelper)
+                        : builder.mDatabaseMerger;
+
+        mImportManager =
+                builder.mImportManager == null
+                        ? new ImportManager(
+                                context,
+                                mExportImportSettingsStorage,
+                                mTransactionManager,
+                                mClock,
+                                mExportImportNotificationSender,
+                                mEnvironmentDataDirectory,
+                                mExportImportLogger,
+                                mExportImportNotificationFactory,
+                                mDatabaseMerger)
+                        : builder.mImportManager;
+
+        PermissionManager permissionManager = context.getSystemService(PermissionManager.class);
+        mDataPermissionEnforcer =
+                builder.mDataPermissionEnforcer == null
+                        ? new DataPermissionEnforcer(
+                                permissionManager, context, mInternalHealthConnectMappings)
+                        : builder.mDataPermissionEnforcer;
+
+        mMedicalDataPermissionEnforcer =
+                builder.mMedicalDataPermissionEnforcer == null
+                        ? new MedicalDataPermissionEnforcer(permissionManager)
+                        : builder.mMedicalDataPermissionEnforcer;
+
         mBackupRestore =
                 new BackupRestore(
-                        mAppInfoHelper,
                         mFirstGrantTimeManager,
                         mMigrationStateManager,
                         mPreferenceHelper,
                         mTransactionManager,
-                        mFitnessRecordUpsertHelper,
-                        mFitnessRecordReadHelper,
                         context,
-                        mDeviceInfoHelper,
-                        mDeviceDataProviderMetadataHelper,
-                        mSyntheticPackageNameCreator,
-                        mHealthDataCategoryPriorityHelper,
                         mThreadScheduler,
                         mEnvironmentDataDirectory,
-                        mGrantTimeXmlHelper);
+                        mGrantTimeXmlHelper,
+                        mDatabaseMerger);
         mPreferencesManager =
                 builder.mPreferencesManager == null
                         ? new PreferencesManager(mPreferenceHelper)
@@ -697,6 +741,26 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
     @Override
     public ExportManager getExportManager() {
         return mExportManager;
+    }
+
+    @Override
+    public ImportManager getImportManager() {
+        return mImportManager;
+    }
+
+    @Override
+    public DatabaseMerger getDatabaseMerger() {
+        return mDatabaseMerger;
+    }
+
+    @Override
+    public DataPermissionEnforcer getDataPermissionEnforcer() {
+        return mDataPermissionEnforcer;
+    }
+
+    @Override
+    public MedicalDataPermissionEnforcer getMedicalDataPermissionEnforcer() {
+        return mMedicalDataPermissionEnforcer;
     }
 
     @Override
@@ -1083,6 +1147,10 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         @Nullable private PreferenceHelper mPreferenceHelper;
         @Nullable private ExportImportSettingsStorage mExportImportSettingsStorage;
         @Nullable private ExportManager mExportManager;
+        @Nullable private ImportManager mImportManager;
+        @Nullable private DatabaseMerger mDatabaseMerger;
+        @Nullable private DataPermissionEnforcer mDataPermissionEnforcer;
+        @Nullable private MedicalDataPermissionEnforcer mMedicalDataPermissionEnforcer;
         @Nullable private ExportImportNotificationFactory mExportImportNotificationFactory;
         @Nullable private MigrationStateManager mMigrationStateManager;
         @Nullable private DeviceInfoHelper mDeviceInfoHelper;
@@ -1198,6 +1266,35 @@ public class HealthConnectInjectorImpl extends HealthConnectInjector {
         public Builder setExportManager(ExportManager exportManager) {
             Objects.requireNonNull(exportManager);
             mExportManager = exportManager;
+            return this;
+        }
+
+        /** Set fake or custom {@link ImportManager} */
+        public Builder setImportManager(ImportManager importManager) {
+            Objects.requireNonNull(importManager);
+            mImportManager = importManager;
+            return this;
+        }
+
+        /** Set fake or custom {@link DatabaseMerger} */
+        public Builder setDatabaseMerger(DatabaseMerger databaseMerger) {
+            Objects.requireNonNull(databaseMerger);
+            mDatabaseMerger = databaseMerger;
+            return this;
+        }
+
+        /** Set fake or custom {@link DataPermissionEnforcer} */
+        public Builder setDataPermissionEnforcer(DataPermissionEnforcer dataPermissionEnforcer) {
+            Objects.requireNonNull(dataPermissionEnforcer);
+            mDataPermissionEnforcer = dataPermissionEnforcer;
+            return this;
+        }
+
+        /** Set fake or custom {@link MedicalDataPermissionEnforcer} */
+        public Builder setMedicalDataPermissionEnforcer(
+                MedicalDataPermissionEnforcer medicalDataPermissionEnforcer) {
+            Objects.requireNonNull(medicalDataPermissionEnforcer);
+            mMedicalDataPermissionEnforcer = medicalDataPermissionEnforcer;
             return this;
         }
 

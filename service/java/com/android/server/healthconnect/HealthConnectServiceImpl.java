@@ -235,8 +235,6 @@ import com.android.server.healthconnect.device.DeviceDataProviderManager;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.exportimport.DocumentProvidersManager;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
-import com.android.server.healthconnect.exportimport.ExportImportLogger;
-import com.android.server.healthconnect.exportimport.ExportImportNotificationFactory;
 import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
 import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.exportimport.ImportManager;
@@ -256,7 +254,6 @@ import com.android.server.healthconnect.migration.MigrationEntityHelper;
 import com.android.server.healthconnect.migration.MigrationStateManager;
 import com.android.server.healthconnect.migration.MigrationUiStateManager;
 import com.android.server.healthconnect.migration.PriorityMigrationHelper;
-import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
 import com.android.server.healthconnect.onboarding.matchmaking.MatchmakingManager;
 import com.android.server.healthconnect.permission.DataPermissionEnforcer;
@@ -278,13 +275,11 @@ import com.android.server.healthconnect.utils.TimeSource;
 
 import org.json.JSONException;
 
-import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.ref.WeakReference;
-import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -405,7 +400,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             MedicalDataSourceHelper medicalDataSourceHelper,
             ExportManager exportManager,
             ExportImportSettingsStorage exportImportSettingsStorage,
-            HealthConnectNotificationSender exportImportNotificationSender,
             BackupRestore backupRestore,
             AccessLogsHelper accessLogsHelper,
             HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
@@ -421,11 +415,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             AppOpsManagerLocal appOpsManagerLocal,
             HealthConnectThreadScheduler threadScheduler,
             RateLimiter rateLimiter,
-            File environmentDataDirectory,
-            ExportImportLogger exportImportLogger,
             HealthFitnessStatsLog statsLog,
             BackupRestoreLogger backupRestoreLogger,
-            ExportImportNotificationFactory exportImportNotificationFactory,
             TrackerManager trackerManager,
             CloudBackupManager cloudBackupManager,
             CloudRestoreManager cloudRestoreManager,
@@ -434,7 +425,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             DeviceDataSourcesHelper deviceDataSourcesHelper,
             DeviceDataProviderManager deviceDataProviderManager,
             DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
-            SyntheticPackageNameCreator syntheticPackageNameCreator) {
+            SyntheticPackageNameCreator syntheticPackageNameCreator,
+            ImportManager importManager,
+            DataPermissionEnforcer dataPermissionEnforcer,
+            MedicalDataPermissionEnforcer medicalDataPermissionEnforcer) {
         mContext = context;
         mCurrentForegroundUser = context.getUser();
         mTimeSource = timeSource;
@@ -484,28 +478,9 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
 
         mPermissionManager = mContext.getSystemService(PermissionManager.class);
         mAppOpsManagerLocal = appOpsManagerLocal;
-        mMedicalDataPermissionEnforcer = new MedicalDataPermissionEnforcer(mPermissionManager);
-        mDataPermissionEnforcer =
-                new DataPermissionEnforcer(
-                        mPermissionManager, mContext, internalHealthConnectMappings);
-        Clock clockForLogging = Clock.systemUTC();
-        mImportManager =
-                new ImportManager(
-                        mAppInfoHelper,
-                        mContext,
-                        mExportImportSettingsStorage,
-                        mTransactionManager,
-                        mFitnessRecordUpsertHelper,
-                        mFitnessRecordReadHelper,
-                        mDeviceInfoHelper,
-                        mDeviceDataProviderMetadataHelper,
-                        mSyntheticPackageNameCreator,
-                        mHealthDataCategoryPriorityHelper,
-                        clockForLogging,
-                        exportImportNotificationSender,
-                        environmentDataDirectory,
-                        exportImportLogger,
-                        exportImportNotificationFactory);
+        mMedicalDataPermissionEnforcer = medicalDataPermissionEnforcer;
+        mDataPermissionEnforcer = dataPermissionEnforcer;
+        mImportManager = importManager;
 
         mTrackerManager = trackerManager;
         mCloudBackupManager = cloudBackupManager;

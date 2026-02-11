@@ -608,7 +608,6 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getMedicalDataSourceHelper(),
                         healthConnectInjector.getExportManager(),
                         healthConnectInjector.getExportImportSettingsStorage(),
-                        healthConnectInjector.getExportImportNotificationSender(),
                         healthConnectInjector.getBackupRestore(),
                         healthConnectInjector.getAccessLogsHelper(),
                         healthConnectInjector.getHealthDataCategoryPriorityHelper(),
@@ -624,11 +623,8 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getAppOpsManagerLocal(),
                         healthConnectInjector.getThreadScheduler(),
                         mRateLimiter,
-                        healthConnectInjector.getEnvironmentDataDirectory(),
-                        healthConnectInjector.getExportImportLogger(),
                         healthConnectInjector.getHealthFitnessStatsLog(),
                         healthConnectInjector.getBackupRestoreLogger(),
-                        healthConnectInjector.getExportImportNotificationFactory(),
                         mTrackerManager,
                         healthConnectInjector.getCloudBackupManager(),
                         healthConnectInjector.getCloudRestoreManager(),
@@ -637,7 +633,10 @@ public class HealthConnectServiceImplTest {
                         mDeviceDataSourcesHelper,
                         mDeviceDataProviderManager,
                         healthConnectInjector.getDeviceDataProviderMetadataHelper(),
-                        healthConnectInjector.getSyntheticPackageNameCreator());
+                        healthConnectInjector.getSyntheticPackageNameCreator(),
+                        healthConnectInjector.getImportManager(),
+                        healthConnectInjector.getDataPermissionEnforcer(),
+                        healthConnectInjector.getMedicalDataPermissionEnforcer());
     }
 
     @After

@@ -46,7 +46,6 @@ import android.util.Pair;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.device.DeviceDataProviderManager;
 import com.android.server.healthconnect.device.FakeSerialDeviceDataProviderManager;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
@@ -144,28 +143,21 @@ public class BackupRestoreWithoutMocksTest {
         mFitnessTestUtils = new FitnessTestUtils(healthConnectInjector);
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
-        AppInfoHelper appInfoHelper = healthConnectInjector.getAppInfoHelper();
         TransactionManager transactionManager = healthConnectInjector.getTransactionManager();
         mGrantTimeXmlHelper = healthConnectInjector.getGrantTimeXmlHelper();
         mBackupRestore =
                 new BackupRestore(
-                        appInfoHelper,
                         mFirstGrantTimeManager,
                         healthConnectInjector.getMigrationStateManager(),
                         healthConnectInjector.getPreferenceHelper(),
                         transactionManager,
-                        healthConnectInjector.getFitnessRecordUpsertHelper(),
-                        healthConnectInjector.getFitnessRecordReadHelper(),
                         mContext,
-                        healthConnectInjector.getDeviceInfoHelper(),
-                        healthConnectInjector.getDeviceDataProviderMetadataHelper(),
-                        healthConnectInjector.getSyntheticPackageNameCreator(),
-                        healthConnectInjector.getHealthDataCategoryPriorityHelper(),
                         healthConnectInjector.getThreadScheduler(),
                         healthConnectInjector.getEnvironmentDataDirectory(),
                         mGrantTimeXmlHelper,
                         // Don't actually schedule jobs
-                        mock(BackupRestore.BackupRestoreJobScheduler.class));
+                        mock(BackupRestore.BackupRestoreJobScheduler.class),
+                        healthConnectInjector.getDatabaseMerger());
 
         mPhrTestUtils = new PhrTestUtils(healthConnectInjector);
     }

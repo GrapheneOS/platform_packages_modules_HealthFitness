@@ -41,13 +41,6 @@ import android.provider.OpenableColumns;
 import android.util.Slog;
 
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.server.healthconnect.common.metadata.AppInfoHelper;
-import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
-import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCreator;
-import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
-import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
-import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetadataHelper;
-import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.notifications.HealthConnectNotificationSender;
 import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.HealthConnectDatabase;
@@ -84,69 +77,42 @@ public class ImportManager {
     private final ExportImportNotificationFactory mNotificationFactory;
 
     public ImportManager(
-            AppInfoHelper appInfoHelper,
             Context context,
             ExportImportSettingsStorage exportImportSettingsStorage,
             TransactionManager transactionManager,
-            FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
-            FitnessRecordReadHelper fitnessRecordReadHelper,
-            DeviceInfoHelper deviceInfoHelper,
-            DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
-            SyntheticPackageNameCreator syntheticPackageNameCreator,
-            HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             @Nullable Clock clock,
             HealthConnectNotificationSender notificationSender,
             File environmentDataDirectory,
             ExportImportLogger exportImportLogger,
-            ExportImportNotificationFactory notificationFactory) {
+            ExportImportNotificationFactory notificationFactory,
+            DatabaseMerger databaseMerger) {
         this(
-                appInfoHelper,
                 context,
                 exportImportSettingsStorage,
                 transactionManager,
-                fitnessRecordUpsertHelper,
-                fitnessRecordReadHelper,
-                deviceInfoHelper,
-                deviceDataProviderMetadataHelper,
-                syntheticPackageNameCreator,
-                healthDataCategoryPriorityHelper,
                 clock,
                 notificationSender,
                 environmentDataDirectory,
                 exportImportLogger,
                 new Compressor(),
-                notificationFactory);
+                notificationFactory,
+                databaseMerger);
     }
 
     @VisibleForTesting
     ImportManager(
-            AppInfoHelper appInfoHelper,
             Context context,
             ExportImportSettingsStorage exportImportSettingsStorage,
             TransactionManager transactionManager,
-            FitnessRecordUpsertHelper fitnessRecordUpsertHelper,
-            FitnessRecordReadHelper fitnessRecordReadHelper,
-            DeviceInfoHelper deviceInfoHelper,
-            DeviceDataProviderMetadataHelper deviceDataProviderMetadataHelper,
-            SyntheticPackageNameCreator syntheticPackageNameCreator,
-            HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             @Nullable Clock clock,
             HealthConnectNotificationSender notificationSender,
             File environmentDataDirectory,
             ExportImportLogger exportImportLogger,
             Compressor compressor,
-            ExportImportNotificationFactory notificationFactory) {
+            ExportImportNotificationFactory notificationFactory,
+            DatabaseMerger databaseMerger) {
         mContext = context;
-        mDatabaseMerger =
-                new DatabaseMerger(
-                        appInfoHelper,
-                        deviceInfoHelper,
-                        deviceDataProviderMetadataHelper,
-                        syntheticPackageNameCreator,
-                        healthDataCategoryPriorityHelper,
-                        transactionManager,
-                        fitnessRecordUpsertHelper,
-                        fitnessRecordReadHelper);
+        mDatabaseMerger = databaseMerger;
         mTransactionManager = transactionManager;
         mExportImportSettingsStorage = exportImportSettingsStorage;
         mClock = clock;
