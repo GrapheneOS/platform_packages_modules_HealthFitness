@@ -553,8 +553,8 @@ constructor(
             packageName,
             HealthConnectManager.EXTRA_DEVICE_ID to deviceId,
             HealthConnectManager.EXTRA_DEVICE_RECORD_TYPES to
-                recordTypes.map { recordType -> recordType.name },
-            HealthConnectManager.EXTRA_DEVICE_SYMPTOM_TYPES to symptomTypes,
+                recordTypes.map { recordType -> recordType.name }.distinct(),
+            HealthConnectManager.EXTRA_DEVICE_SYMPTOM_TYPES to symptomTypes.distinct(),
         )
     }
 
@@ -573,8 +573,8 @@ constructor(
             packageName,
             HealthConnectManager.EXTRA_DEVICE_ID to deviceId,
             HealthConnectManager.EXTRA_DEVICE_RECORD_TYPES to
-                recordTypes.map { recordType -> recordType.name },
-            HealthConnectManager.EXTRA_DEVICE_SYMPTOM_TYPES to symptomTypes,
+                recordTypes.map { recordType -> recordType.name }.distinct(),
+            HealthConnectManager.EXTRA_DEVICE_SYMPTOM_TYPES to symptomTypes.distinct(),
         )
     }
 
