@@ -20,34 +20,16 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.os.IBinder;
 import android.os.Parcel;
-import android.platform.test.flag.junit.FlagsParameterization;
-import android.platform.test.flag.junit.SetFlagsRule;
 
-import com.android.healthfitness.flags.Flags;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import platform.test.runner.parameterized.ParameterizedAndroidJunit4;
-import platform.test.runner.parameterized.Parameters;
-
-import java.util.List;
 import java.util.stream.IntStream;
 
-@RunWith(ParameterizedAndroidJunit4.class)
+@RunWith(AndroidJUnit4.class)
 public class ParcelUtilsTest {
-
-    @Parameters(name = "{0}")
-    public static List<FlagsParameterization> getParams() {
-        return FlagsParameterization.allCombinationsOf(Flags.FLAG_REDUCE_PARCEL_MARSHALLING_COPIES);
-    }
-
-    @Rule public final SetFlagsRule mSetFlagsRule;
-
-    public ParcelUtilsTest(FlagsParameterization flags) {
-        mSetFlagsRule = new SetFlagsRule(flags);
-    }
 
     @Test
     public void roundTripViaSharedMemory() {
