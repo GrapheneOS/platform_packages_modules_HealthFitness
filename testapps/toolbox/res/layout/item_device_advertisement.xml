@@ -33,6 +33,12 @@
             android:layout_height="wrap_content"
             android:text="Enabled" />
 
+        <CheckBox
+            android:id="@+id/is_current_device_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Is current device" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/manufacturer_input_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
