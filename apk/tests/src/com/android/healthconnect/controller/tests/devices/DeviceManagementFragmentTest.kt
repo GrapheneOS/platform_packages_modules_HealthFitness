@@ -159,7 +159,7 @@ class DeviceManagementFragmentTest {
         launchFragment<DeviceManagementFragment>(Bundle()).use {
             onView(
                     withText(
-                        "Data collected by this device will be stored in Health Connect, where connected" +
+                        "Data collected by this device will be stored in Health\u00A0Connect, where connected" +
                             " apps will access it"
                     )
                 )
@@ -173,7 +173,7 @@ class DeviceManagementFragmentTest {
         launchFragment<DeviceManagementFragment>(Bundle()).use {
             onView(
                     withText(
-                        "This device doesn't support step tracking, but still has data stored in Health Connect"
+                        "This device doesn't support step tracking, but still has data stored in Health\u00A0Connect"
                     )
                 )
                 .check(matches(isDisplayed()))
