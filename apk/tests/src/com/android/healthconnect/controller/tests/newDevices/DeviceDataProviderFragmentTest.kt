@@ -253,8 +253,8 @@ class DeviceDataProviderFragmentTest {
                     any(),
                     eq("com.example.provider1"),
                     eq("id1"),
-                    eq(ArrayList(setOf<Class<out Record>>(StepsRecord::class.java))),
-                    eq(ArrayList(setOf<Int>())),
+                    eq(ArrayList(listOf(StepsRecord::class.java))),
+                    eq(ArrayList(listOf<Int>())),
                 )
             )
             .thenReturn(expectedIntent)
@@ -283,17 +283,12 @@ class DeviceDataProviderFragmentTest {
                     eq("id1"),
                     argThat { list: ArrayList<Class<out Record>> ->
                         list.containsAll(
-                            setOf(
-                                StepsRecord::class.java,
-                                SymptomRecord::class.java,
-                                SymptomRecord::class.java,
-                                SymptomRecord::class.java,
-                            )
-                        ) && list.size == 4
+                            listOf(StepsRecord::class.java, SymptomRecord::class.java)
+                        ) && list.size == 2
                     },
                     argThat { list: ArrayList<Int> ->
                         list.containsAll(
-                            setOf(
+                            listOf(
                                 SymptomRecord.SYMPTOM_TYPE_LOWER_BACK_PAIN,
                                 SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN,
                                 SymptomRecord.SYMPTOM_TYPE_FATIGUE,
@@ -418,6 +413,11 @@ class DeviceDataProviderFragmentTest {
                             .setAvailable(true)
                             .setUserEnabled(true)
                             .setSymptomType(SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN)
+                            .build(),
+                        DeviceDataTypeAdvertisement.Builder(SymptomRecord::class.java)
+                            .setAvailable(true)
+                            .setUserEnabled(true)
+                            .setSymptomType(SymptomRecord.SYMPTOM_TYPE_FATIGUE)
                             .build(),
                         DeviceDataTypeAdvertisement.Builder(SymptomRecord::class.java)
                             .setAvailable(true)

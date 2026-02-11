@@ -209,7 +209,9 @@ class DeviceDataProviderFragment : Hilt_DeviceDataProviderFragment() {
                             deviceProvider.packageName,
                             deviceProvider.deviceId,
                             ArrayList(
-                                deviceProvider.deviceDataTypeAdvertisements.map { it.dataType }
+                                deviceProvider.deviceDataTypeAdvertisements
+                                    .map { it.dataType }
+                                    .distinct()
                             ),
                             ArrayList(
                                 deviceProvider.deviceDataTypeAdvertisements
@@ -217,6 +219,7 @@ class DeviceDataProviderFragment : Hilt_DeviceDataProviderFragment() {
                                         SymptomRecord::class.java.isAssignableFrom(it.dataType)
                                     }
                                     .map { it.symptomType }
+                                    .distinct()
                             ),
                         )
                     activity?.startActivity(intent)
