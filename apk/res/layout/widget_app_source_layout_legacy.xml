@@ -54,6 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:textDirection="locale"
             android:ellipsize="end"
             android:maxLines="1"
             android:textAppearance="?attr/textAppearanceItem" />
@@ -63,6 +64,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:textDirection="locale"
             android:ellipsize="end"
             android:maxLines="1"
             android:visibility="gone"

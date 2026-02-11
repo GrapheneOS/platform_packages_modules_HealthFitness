@@ -20,7 +20,6 @@
     android:minHeight="?android:attr/listPreferredItemHeight"
     android:orientation="horizontal"
     android:layoutDirection="locale"
-    android:textDirection="locale"
     android:clickable="false">
 
     <FrameLayout
@@ -53,7 +52,9 @@
             android:id="@+id/app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center_vertical|start"
+            android:textDirection="locale"
+            android:gravity="start"
             android:ellipsize="end"
             android:maxLines="1"
             android:textAppearance="?attr/textAppearanceItem" />
@@ -62,7 +63,9 @@
             android:id="@+id/app_source_summary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center_vertical|start"
+            android:textDirection="locale"
+            android:gravity="start"
             android:ellipsize="end"
             android:maxLines="1"
             android:visibility="gone"
