@@ -304,6 +304,11 @@ healthconnectcontroller_optimized_java_defaults {
     },
 }
 
+filegroup {
+    name: "preinstalled-packages-com.android.healthconnect.controller.xml",
+    srcs: ["sysconfig/preinstalled-packages-com.android.healthconnect.controller.xml"],
+}
+
 android_app {
     name: "HealthConnectController",
     defaults: [
@@ -314,6 +319,7 @@ android_app {
     min_sdk_version: "34",
     privileged: true,
     privapp_allowlist: ":privapp_allowlist_com.android.healthconnect.controller.xml",
+    preinstall_allowlist: ":preinstalled-packages-com.android.healthconnect.controller.xml",
     rename_resources_package: false,
     updatable: true,
     additional_manifests: [

@@ -55,6 +55,11 @@ android_library {
     },
 }
 
+filegroup {
+    name: "preinstalled-packages-com.android.health.connect.backuprestore.xml",
+    srcs: ["sysconfig/preinstalled-packages-com.android.health.connect.backuprestore.xml"],
+}
+
 android_app {
     name: "HealthConnectBackupRestore",
     defaults: ["platform_app_defaults"],
@@ -62,6 +67,7 @@ android_app {
     min_sdk_version: "34",
     updatable: true,
     certificate: ":com.android.health.connect.backuprestore.certificate",
+    preinstall_allowlist: ":preinstalled-packages-com.android.health.connect.backuprestore.xml",
     additional_manifests: [
         "PermissionsManifest.xml",
     ],
