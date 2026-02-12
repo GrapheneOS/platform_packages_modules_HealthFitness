@@ -16,4 +16,11 @@
 
 <resources>
   <color name="ic_launcher_background">#FFFFFF</color>
+  <color name="ic_toolbox_combined1_background">#E3F2FD</color> <!-- Light Blue -->
+  <color name="ic_toolbox_combined2_background">#F8BBD0</color> <!-- Light Pink -->
+  <color name="ic_toolbox_combined3_background">#C8E6C9</color> <!-- Light Green -->
+  <color name="ic_toolbox_fitness_background">#FFE0B2</color> <!-- Light Orange -->
+  <color name="ic_toolbox_medical_background">#FFCDD2</color> <!-- Light Red -->
+  <color name="ic_toolbox_onboarding_background">#E1BEE7</color> <!-- Light Purple -->
+  <color name="ic_toolbox_ddp_background">#FFF9C4</color> <!-- Light Yellow -->
 </resources>
