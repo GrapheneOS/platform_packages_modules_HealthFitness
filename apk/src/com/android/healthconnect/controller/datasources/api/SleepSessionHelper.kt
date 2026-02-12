@@ -11,7 +11,6 @@ import com.android.healthconnect.controller.utils.isOnDayAfter
 import com.android.healthconnect.controller.utils.isOnSameDay
 import com.android.healthconnect.controller.utils.toInstantAtStartOfDay
 import com.android.healthconnect.controller.utils.toLocalDate
-import com.google.common.collect.Comparators
 import java.lang.Exception
 import java.time.Instant
 import java.time.LocalDate
@@ -129,13 +128,13 @@ constructor(
             } else if (currentSleepSession.endTime.isOnDayAfter(currentSleepSession.startTime)) {
                 // This is a session [Day 2 - Day 3]
                 // min and max candidate
-                minStartTime = Comparators.min(minStartTime, currentSleepSession.startTime)
-                maxEndTime = Comparators.max(maxEndTime, currentSleepSession.endTime)
+                minStartTime = minOf(minStartTime, currentSleepSession.startTime)
+                maxEndTime = maxOf(maxEndTime, currentSleepSession.endTime)
             } else {
                 // currentSleepSession.endTime is further than Day 3
                 // Max End time should be Day 4 at 12am
-                minStartTime = Comparators.min(minStartTime, currentSleepSession.startTime)
-                maxEndTime = Comparators.max(maxEndTime, maxPossibleEnd)
+                minStartTime = minOf(minStartTime, currentSleepSession.startTime)
+                maxEndTime = maxOf(maxEndTime, maxPossibleEnd)
             }
         }
 
@@ -171,8 +170,8 @@ constructor(
             if (currentSleepSession.endTime.isOnSameDay(lastDateWithDataInstant)) {
                 // This is a sleep session that starts on Day 1 and finishes on Day 2
                 // min/max candidate
-                minStartTime = Comparators.min(minStartTime, currentSleepSession.startTime)
-                maxEndTime = Comparators.max(maxEndTime, currentSleepSession.endTime)
+                minStartTime = minOf(minStartTime, currentSleepSession.startTime)
+                maxEndTime = maxOf(maxEndTime, currentSleepSession.endTime)
             } else if (currentSleepSession.endTime.isOnSameDay(currentSleepSession.startTime)) {
                 // This is a sleep session that starts and ends on Day 1
                 // We do not count it for min/max because this belongs to Day 1
@@ -180,8 +179,8 @@ constructor(
             } else {
                 // This is a sleep session that start on Day 1 and ends after Day 2
                 // Then the max end time should be Day 3 at 12am
-                minStartTime = Comparators.min(minStartTime, currentSleepSession.startTime)
-                maxEndTime = Comparators.max(maxEndTime, maxPossibleEnd)
+                minStartTime = minOf(minStartTime, currentSleepSession.startTime)
+                maxEndTime = maxOf(maxEndTime, maxPossibleEnd)
             }
         }
 
