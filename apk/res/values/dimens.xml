@@ -26,6 +26,7 @@
     <dimen name="spacing_spinner">40dp</dimen>
 
     <dimen name="button_size">48dp</dimen>
+    <dimen name="min_touch_target">48dp</dimen>
 
     <dimen name="icon_size">24dp</dimen>
     <dimen name="route_request_icon_size">20dp</dimen>
