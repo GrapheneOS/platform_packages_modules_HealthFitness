@@ -18,11 +18,10 @@ package com.android.server.healthconnect.fitness;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
 
-import static java.util.Collections.singletonList;
-
 import android.annotation.Nullable;
 import android.database.Cursor;
 import android.health.connect.PageTokenWrapper;
+import android.health.connect.ReadRecordsRequestUsingIds;
 import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.Pair;
@@ -146,14 +145,23 @@ public class FitnessRecordReadHelper {
                         mAppInfoHelper);
 
         if (request.getRecordIdFiltersParcel() != null) {
-            return Pair.create(
-                    readRecords(
-                            transactionManager,
-                            callingPackageName,
-                            Set.of(recordTypeId),
-                            singletonList(readTableRequest),
-                            shouldRecordAccessLog),
-                    PageTokenWrapper.EMPTY_PAGE_TOKEN);
+            List<RecordInternal<?>> recordInternals = new ArrayList<>();
+            try (Cursor cursor = transactionManager.read(readTableRequest.getReadTableRequest())) {
+                List<RecordInternal<?>> internalRecords =
+                        recordHelper.getInternalRecords(cursor, mDeviceInfoHelper, mAppInfoHelper);
+                populateInternalRecordsWithExtraData(
+                        transactionManager, internalRecords, readTableRequest);
+                recordInternals.addAll(internalRecords);
+            }
+
+            maybeRecordAccessLogs(
+                    transactionManager,
+                    callingPackageName,
+                    Set.of(recordTypeId),
+                    recordInternals,
+                    shouldRecordAccessLog);
+
+            return Pair.create(recordInternals, PageTokenWrapper.EMPTY_PAGE_TOKEN);
         }
 
         PageTokenWrapper pageToken =
@@ -262,30 +270,39 @@ public class FitnessRecordReadHelper {
             long startDateAccessMillis,
             boolean isInForeground,
             boolean shouldRecordAccessLog) {
-        List<RecordReadTableRequest> readTableRequests = new ArrayList<>();
+        List<RecordInternal<?>> allRecords = new ArrayList<>();
         recordTypeToUuids.forEach(
                 (recordType, uuids) -> {
                     if (!uuids.isEmpty()) {
-                        RecordHelper<?> recordHelper =
-                                mInternalHealthConnectMappings.getRecordHelper(recordType);
-                        readTableRequests.add(
-                                recordHelper.getReadTableRequest(
+                        ReadRecordsRequestUsingIds.Builder<?> builder =
+                                new ReadRecordsRequestUsingIds.Builder<>(
+                                        mInternalHealthConnectMappings
+                                                .getExternalMappings()
+                                                .getRecordIdToExternalRecordClassMap()
+                                                .get(recordType));
+                        for (UUID uuid : uuids) {
+                            builder.addId(uuid.toString());
+                        }
+                        ReadRecordsRequestParcel request =
+                                builder.build().toReadRecordsRequestParcel();
+
+                        Pair<List<RecordInternal<?>>, PageTokenWrapper> result =
+                                readRecords(
+                                        transactionManager,
                                         callingPackageName,
-                                        uuids,
-                                        startDateAccessMillis,
+                                        request,
                                         grantedExtraReadPermissions,
                                         grantedGranularPermissions,
+                                        startDateAccessMillis,
                                         isInForeground,
-                                        mAppInfoHelper));
+                                        shouldRecordAccessLog,
+                                        /* enforceSelfRead= */ false);
+                        // Page Token is always empty for requests with ID Filters.
+                        allRecords.addAll(result.first);
                     }
                 });
 
-        return readRecords(
-                transactionManager,
-                callingPackageName,
-                recordTypeToUuids.keySet(),
-                readTableRequests,
-                shouldRecordAccessLog);
+        return allRecords;
     }
 
     /**
@@ -325,34 +342,6 @@ public class FitnessRecordReadHelper {
                 /* isInForeground= */ true,
                 // Don't record access logs for internal reads.
                 /* shouldRecordAccessLog= */ false);
-    }
-
-    private List<RecordInternal<?>> readRecords(
-            TransactionManager transactionManager,
-            String callingPackageName,
-            Set<Integer> recordTypeIds,
-            List<RecordReadTableRequest> readTableRequests,
-            boolean shouldRecordAccessLog) {
-        List<RecordInternal<?>> recordInternals = new ArrayList<>();
-        for (RecordReadTableRequest readTableRequest : readTableRequests) {
-            RecordHelper<?> helper = readTableRequest.getRecordHelper();
-            try (Cursor cursor = transactionManager.read(readTableRequest.getReadTableRequest())) {
-                List<RecordInternal<?>> internalRecords =
-                        helper.getInternalRecords(cursor, mDeviceInfoHelper, mAppInfoHelper);
-                populateInternalRecordsWithExtraData(
-                        transactionManager, internalRecords, readTableRequest);
-                recordInternals.addAll(internalRecords);
-            }
-        }
-
-        maybeRecordAccessLogs(
-                transactionManager,
-                callingPackageName,
-                recordTypeIds,
-                recordInternals,
-                shouldRecordAccessLog);
-
-        return recordInternals;
     }
 
     private void maybeRecordAccessLogs(
