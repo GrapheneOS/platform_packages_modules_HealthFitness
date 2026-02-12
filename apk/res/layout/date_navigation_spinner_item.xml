@@ -25,5 +25,5 @@
     android:maxLines="2"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="?android:attr/listPreferredItemHeightSmall"
+    android:minHeight="@dimen/min_touch_target"
     android:ellipsize="end"/>
