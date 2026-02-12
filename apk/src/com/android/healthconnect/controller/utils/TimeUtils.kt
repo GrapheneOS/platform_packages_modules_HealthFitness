@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.utils
 
 import android.content.Context
+import android.text.format.DateFormat
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod.PERIOD_DAY
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod.PERIOD_MONTH
@@ -148,13 +149,7 @@ private fun areInSameYear(instant1: Instant, instant2: Instant, timeSource: Time
 /** Formats an [Instant] to a time in the local time format of the device, e.g. 13:45 or 9:25am. */
 fun formatRecentAccessTime(instant: Instant, timeSource: TimeSource, context: Context): String {
     val localTime: LocalTime = instant.atZone(ZoneId.systemDefault()).toLocalTime()
-    return if (timeSource.is24Hour(context)) {
-        localTime.format(DateTimeFormatter.ofPattern("HH:mm"))
-    } else {
-        if (Locale.getDefault() == Locale.KOREA || Locale.getDefault() == Locale.KOREAN) {
-            localTime.format(DateTimeFormatter.ofPattern("a h:mm"))
-        } else {
-            localTime.format(DateTimeFormatter.ofPattern("h:mm a"))
-        }
-    }
+    val skeleton = if (timeSource.is24Hour(context)) "Hm" else "hm"
+    val pattern = DateFormat.getBestDateTimePattern(Locale.getDefault(), skeleton)
+    return localTime.format(DateTimeFormatter.ofPattern(pattern, Locale.getDefault()))
 }
