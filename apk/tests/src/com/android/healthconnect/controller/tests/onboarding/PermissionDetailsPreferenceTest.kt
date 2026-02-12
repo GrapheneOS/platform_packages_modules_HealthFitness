@@ -84,7 +84,7 @@ class PermissionDetailsPreferenceTest {
         pref.onBindViewHolder(holder)
         assertThat(getText(R.id.data_access_type))
             .isEqualTo(
-                "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more about how your data is accessed"
             )
         assertThat(getText(R.id.access_info))
             .isEqualTo(
@@ -140,7 +140,7 @@ class PermissionDetailsPreferenceTest {
         pref.onBindViewHolder(holder)
         assertThat(getText(R.id.data_access_type))
             .isEqualTo(
-                "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more about how your data is accessed"
             )
         assertThat(getText(R.id.access_info))
             .isEqualTo("If you give read access, the app can read new and past data")
@@ -191,7 +191,7 @@ class PermissionDetailsPreferenceTest {
         pref.onBindViewHolder(holder)
         assertThat(getText(R.id.data_access_type))
             .isEqualTo(
-                "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more about how your data is accessed"
             )
         assertThat((holder.findViewById(R.id.access_info))?.isVisible).isFalse()
         assertThat(getText(R.id.privacy_policy))
@@ -244,7 +244,7 @@ class PermissionDetailsPreferenceTest {
         pref.onBindViewHolder(holder)
         assertThat(getText(R.id.data_access_type))
             .isEqualTo(
-                "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more about how your data is accessed"
             )
         assertThat(getText(R.id.access_info))
             .isEqualTo(
@@ -308,7 +308,7 @@ class PermissionDetailsPreferenceTest {
         pref.onBindViewHolder(holder)
         assertThat(getText(R.id.data_access_type))
             .isEqualTo(
-                "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more"
+                "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more about how your data is accessed"
             )
         assertThat(getText(R.id.access_info))
             .isEqualTo("If you give read access, the app can read new and past data")
