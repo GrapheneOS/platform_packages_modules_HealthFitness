@@ -16,13 +16,13 @@
 package com.android.healthconnect.controller.selectabledeletion
 
 import android.content.Context
+import android.view.View
 import android.view.View.GONE
 import android.view.View.OnClickListener
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.preference.Preference
-import androidx.preference.Preference.OnPreferenceClickListener
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.ComparablePreference
@@ -30,6 +30,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.utils.logging.ElementName
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import com.android.healthconnect.controller.utils.setupAccessibilityDelegateForCheckbox
 import dagger.hilt.android.EntryPointAccessors
 
 /** Custom preference for displaying checkboxes where the user can delete their data */
@@ -68,7 +69,9 @@ class DeletionPermissionTypesPreference(
 
         checkBox.isChecked = this.isChecked
 
-        checkBox.contentDescription = context.getString(mHealthPermissionType.upperCaseLabel())
+        checkBox.contentDescription = null
+        checkBox.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        checkBox.isFocusable = false
 
         checkBox.setOnClickListener(getCheckboxClickListenerWrapper())
         setOnPreferenceClickListener(checkBox, widgetFrame)
@@ -79,6 +82,14 @@ class DeletionPermissionTypesPreference(
             widgetFrameParent.paddingTop,
             widgetFrameParent.paddingEnd,
             widgetFrameParent.paddingBottom,
+        )
+
+        holder.itemView.isFocusable = true
+        setupAccessibilityDelegateForCheckbox(
+            holder.itemView,
+            isCheckboxState = showCheckbox,
+            isChecked = isChecked,
+            actionLabel = context.getString(R.string.a11y_action_select),
         )
     }
 

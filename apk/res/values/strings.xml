@@ -1694,6 +1694,7 @@
 
     <!-- region Selectable deletion -->
     <string name="select_all" description="Label for a button that selects all data for deletion [CHAR_LIMIT=40]">Select all</string>
+    <string name="a11y_action_select" description="Action description for selecting an item in deletion mode [CHAR LIMIT=NONE]">select</string>
     <string name="deletion_confirmation_dialog_body" description="Text for dialog asking the user to confirm they want to delete all data">Connected apps will no longer be able to read this data from Health&#160;Connect</string>
     <string name="a11y_checked" description="A11y title for an entry that has a checkbox showing and the checkbox is checked">Checked</string>
     <string name="a11y_unchecked" description="A11y title for an entry that has a checkbox showing and the checkbox is not checked">Not checked</string>

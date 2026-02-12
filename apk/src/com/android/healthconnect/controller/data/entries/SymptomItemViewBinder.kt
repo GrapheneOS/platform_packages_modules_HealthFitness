@@ -26,6 +26,7 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry.SymptomE
 import com.android.healthconnect.controller.shared.recyclerview.DeletionViewBinder
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import com.android.healthconnect.controller.utils.setupAccessibilityDelegateForCheckbox
 import dagger.hilt.android.EntryPointAccessors
 
 // TODO(b/446846882): Refactor view binders so that we have a single view binder for similar entries
@@ -57,9 +58,7 @@ class SymptomItemViewBinder(private val onSelectEntryListener: OnSelectEntryList
         val header = view.findViewById<TextView>(R.id.item_data_entry_header)
         val title = view.findViewById<TextView>(R.id.item_data_entry_title)
         header.text = data.header
-        header.contentDescription = data.headerA11y
         title.text = data.title
-        title.contentDescription = data.titleA11y
 
         val notesView = view.findViewById<TextView>(R.id.item_data_entry_notes)
         if (!data.notes.isNullOrBlank()) {
@@ -72,6 +71,9 @@ class SymptomItemViewBinder(private val onSelectEntryListener: OnSelectEntryList
         val checkbox = view.findViewById<CheckBox>(R.id.item_checkbox_button)
         checkbox.isVisible = isDeletionState
         checkbox.isChecked = isChecked
+        checkbox.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        checkbox.isFocusable = false
+        checkbox.contentDescription = null
 
         val divider = view.findViewById<View>(R.id.item_data_entry_divider)
         divider.isVisible = false // Always hide for symptom entries
@@ -81,22 +83,12 @@ class SymptomItemViewBinder(private val onSelectEntryListener: OnSelectEntryList
         if (isDeletionState) {
             view.setOnClickListener {
                 logger.logInteraction(logNameWithCheckbox)
-                // Checkbox state is now handled by its own listener, but toggle it visually here
-                if (!checkbox.isChecked) {
-                    checkbox.isChecked = true
-                    onSelectEntryListener.onSelectEntry(
-                        id = data.uuid,
-                        dataType = data.dataType,
-                        index = index,
-                    )
-                } else {
-                    checkbox.isChecked = false
-                    onSelectEntryListener.onSelectEntry(
-                        id = data.uuid,
-                        dataType = data.dataType,
-                        index = index,
-                    )
-                }
+                checkbox.toggle()
+                onSelectEntryListener.onSelectEntry(
+                    id = data.uuid,
+                    dataType = data.dataType,
+                    index = index,
+                )
             }
             checkbox.setOnClickListener {
                 onSelectEntryListener.onSelectEntry(
@@ -111,5 +103,14 @@ class SymptomItemViewBinder(private val onSelectEntryListener: OnSelectEntryList
             view.setOnClickListener(null)
             checkbox.setOnClickListener(null)
         }
+
+        view.contentDescription = "${data.headerA11y}, ${data.titleA11y}"
+        view.isFocusable = true
+        setupAccessibilityDelegateForCheckbox(
+            view,
+            isDeletionState,
+            isChecked,
+            view.context.getString(R.string.a11y_action_select),
+        )
     }
 }
