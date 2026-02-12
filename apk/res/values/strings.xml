@@ -557,7 +557,7 @@
     <string name="matchmaking_screen_apps_category_title" description="Title for category that holds list of matching apps">Apps that can sync this data</string>
     <string name="matchmaking_screen_devices_category_title" description="Title for category that holds list of matching devices">Devices that can sync this data</string>
     <string name="app_privacy_policy_footer" description="Footer with a link to the app's privacy policy.">Learn how <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> uses your data in their <a href="%2$s">privacy policy</a>.</string>
-    <string name="matchmaking_screen_footer" descriptio="Summary on match making screen explaining how Health Connect share health and fitness data between multiple data sources">Health Connect lets you share your health and fitness data between multiple data sources. This helps you unlock insights and experiences while keeping your data secure.</string>
+    <string name="matchmaking_screen_footer" descriptio="Summary on match making screen explaining how Health Connect share health and fitness data between multiple data sources">Health&#160;Connect lets you share your health and fitness data between multiple data sources. This helps you unlock insights and experiences while keeping your data secure.</string>
     <string name="more_about_health_connect" description="Title for link to learn more about Health Connect">More about Health&#160;Connect</string>
     <string name="expandable_preference_expand_talkback_description" description="A11y label for expanding an expandable item">expand</string>
     <string name="expandable_preference_collapse_talkback_description" description="A11y label for collapsing an expandable item">collapse</string>
@@ -1858,8 +1858,8 @@
     <string name="devices_current_device" description="Preference summary text that indicates that the specified device is the current device (phone) rather than a peripheral device such as a watch. [CHAR_LIMIT=40]">Current device</string>
     <string name="devices_unknown_device" description="Fallback string for a device that isn't recognised or has no name. [CHAR_LIMIT=40]">Unknown device</string>
     <string name="device_management_screen_title" description="Title for the device management screen. [CHAR_LIMIT=40]">Device info</string>
-    <string name="device_management_screen_footer" description="Footer text that explains the consequences of enabling tracking of device data. [CHAR_LIMIT=NONE]">Data collected by this device will be stored in Health Connect, where connected apps will access it</string>
-    <string name="device_management_screen_no_step_sensor_footer" description="Footer text that explains that this device does not have a steps sensor but still has data stored. [CHAR_LIMIT=NONE]">This device doesn\'t support step tracking, but still has data stored in Health Connect</string>
+    <string name="device_management_screen_footer" description="Footer text that explains the consequences of enabling tracking of device data. [CHAR_LIMIT=NONE]">Data collected by this device will be stored in Health&#160;Connect, where connected apps will access it</string>
+    <string name="device_management_screen_no_step_sensor_footer" description="Footer text that explains that this device does not have a steps sensor but still has data stored. [CHAR_LIMIT=NONE]">This device doesn\'t support step tracking, but still has data stored in Health&#160;Connect</string>
     <string name="device_management_screen_no_step_sensor_header" description="Header to display when the device does not have a steps sensor. [CHAR_LIMIT=100]">This device doesn\'t track steps</string>
     <string name="device_settings_label" description="Label for the device settings category. [CHAR_LIMIT=40]">Allowed to write</string>
     <string name="device_data_screen_title" description="Title for the device data screen. [CHAR_LIMIT=40]">Device data</string>
@@ -1873,8 +1873,8 @@
     <string name="native_steps_banner_dismiss_button" description="Button to dismiss the banner for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Dismiss</string>
     <string name="native_steps_banner_review_button" description="Button of banner to take users to a page where they can review device access to Health Connect. [CHAR_LIMIT=NONE]">Review</string>
 
-    <string name="native_steps_notification_title" description="Title of notification for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps are now in Health Connect</string>
-    <string name="native_steps_notification_content" description="Description of notification for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps tracked by this device are now stored in Health Connect for connected apps to access</string>
+    <string name="native_steps_notification_title" description="Title of notification for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps are now in Health&#160;Connect</string>
+    <string name="native_steps_notification_content" description="Description of notification for native step tracking in Health Connect. [CHAR_LIMIT=NONE]">Steps tracked by this device are now stored in Health&#160;Connect for connected apps to access</string>
     <!-- endregion -->
 
     <!-- region New Home Screen -->
@@ -1890,11 +1890,11 @@
     <string name="empty_apps_section_link" description="Link text shown when the user does not have any Health Connect compatible apps installed to take them to a page showing compatible apps [CHAR_LIMIT=NONE]">See compatible apps</string>
     <string name="see_all_connected_apps_button" description="Button taking user to the connected apps screen [CHAR_LIMIT=NONE]">See more health apps</string>
     <string name="app_not_connected_summary" description="Summary for preference indicating that an app is not connected to Health Connect [CHAR_LIMIT=NONE]">Not connected</string>
-    <string name="connect_app_button_content_description" description="Content description for icon displayed on a preference for connecting an app to Health Connect">Click to connect this app to Health Connect</string>
+    <string name="connect_app_button_content_description" description="Content description for icon displayed on a preference for connecting an app to Health Connect">Click to connect this app to Health&#160;Connect</string>
     <!-- endregion -->
 
     <!-- region new Device Data Provider System -->
-    <string name="devices_screen_description" description="Description text for overview of user's connected devices, displayed at the top. [CHAR_LIMIT=NONE]">Control which devices can sync data to Health Connect</string>
+    <string name="devices_screen_description" description="Description text for overview of user's connected devices, displayed at the top. [CHAR_LIMIT=NONE]">Control which devices can sync data to Health&#160;Connect</string>
     <string name="devices_screen_enabled_devices_header" description="Title shown for the section of enabled devices [CHAR_LIMIT=NONE]">Enabled</string>
     <string name="devices_screen_not_enabled_devices_header" description="Title shown for the section of devices that are not enabled [CHAR_LIMIT=NONE]">Not enabled</string>
     <string name="devices_this_phone" description="Preference summary text that indicates that the specified device is the current device (phone) rather than a peripheral device such as a watch. [CHAR_LIMIT=40]">This phone</string>
@@ -1933,8 +1933,8 @@
     <string name="acne_write_content_description" description="Content description for switch that enables permissions for writing the user's acne data [CHAR_LIMIT=NONE]">Write acne</string>
     <string name="brittle_nails_read_content_description" description="Content description for switch that enables permissions for reading the user's brittle nails data [CHAR_LIMIT=NONE]">Read brittle nails</string>
     <string name="brittle_nails_write_content_description" description="Content description for switch that enables permissions for writing the user's brittle nails data [CHAR_LIMIT=NONE]">Write brittle nails</string>
-    <string name="burning_mouth_read_content_description" description="Content description for switch that enables permissions for reading the user's burning mouth  data [CHAR_LIMIT=NONE]">Read burning mouth </string>
-    <string name="burning_mouth_write_content_description" description="Content description for switch that enables permissions for writing the user's burning mouth  data [CHAR_LIMIT=NONE]">Write burning mouth </string>
+    <string name="burning_mouth_read_content_description" description="Content description for switch that enables permissions for reading the user's burning mouth data [CHAR_LIMIT=NONE]">Read burning mouth</string>
+    <string name="burning_mouth_write_content_description" description="Content description for switch that enables permissions for writing the user's burning mouth data [CHAR_LIMIT=NONE]">Write burning mouth</string>
     <string name="chills_read_content_description" description="Content description for switch that enables permissions for reading the user's chills data [CHAR_LIMIT=NONE]">Read chills</string>
     <string name="chills_write_content_description" description="Content description for switch that enables permissions for writing the user's chills data [CHAR_LIMIT=NONE]">Write chills</string>
     <string name="dehydration_read_content_description" description="Content description for switch that enables permissions for reading the user's dehydration data [CHAR_LIMIT=NONE]">Read dehydration</string>
