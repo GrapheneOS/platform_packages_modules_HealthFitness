@@ -15,15 +15,28 @@
  */
 package com.android.healthconnect.testapps.toolbox.viewmodels
 
+import android.app.Application
+import android.health.connect.DeviceDataSourceInfo
+import android.health.connect.HealthConnectException
+import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.Device
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsRecord
+import android.os.OutcomeReceiver
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.android.healthconnect.testapps.toolbox.utils.GeneralUtils.Companion.DEVICE_DATA_SOURCES
+import java.util.concurrent.Executors
 
-class AdvertiseDevicesViewModel : ViewModel() {
+class AdvertiseDevicesViewModel(application: Application) : AndroidViewModel(application) {
+
+    var currentDeviceDataSourceInfo: DeviceDataSourceInfo? = null
+        private set
+
+    init {
+        loadCurrentDeviceSourceInfo(application)
+    }
 
     data class DataTypeConfig(
         var advertisedDataType: Class<out Record>,
@@ -41,6 +54,7 @@ class AdvertiseDevicesViewModel : ViewModel() {
         var deviceId: String,
         var advertisedDataTypes: MutableList<DataTypeConfig>,
         var isEnabled: Boolean = true,
+        var isCurrentDevice: Boolean = false,
     )
 
     private val _deviceConfigs =
@@ -71,12 +85,24 @@ class AdvertiseDevicesViewModel : ViewModel() {
         _selectedDeviceDataSourceInfo.value = info
     }
 
-    private var _isReAdvertiseMode: MutableLiveData<Boolean> = MutableLiveData<Boolean>(false)
-    val isReAdvertiseMode: LiveData<Boolean> = _isReAdvertiseMode
+    private fun loadCurrentDeviceSourceInfo(application: Application) {
+        val manager = application.getSystemService(HealthConnectManager::class.java)
+        if (manager == null) {
+            return
+        }
 
-    fun initializeReAdvertiseMode(newConfigs: List<DeviceAdvertisementConfig>) {
-        _deviceConfigs.value = newConfigs.toMutableList()
-        _isReAdvertiseMode.value = true
+        manager.getDeviceDataSourceInfos(
+            Executors.newSingleThreadExecutor(),
+            object : OutcomeReceiver<List<DeviceDataSourceInfo>, HealthConnectException> {
+                override fun onResult(result: List<DeviceDataSourceInfo>) {
+                    currentDeviceDataSourceInfo = result.find { it.isCurrentDevice }
+                }
+
+                override fun onError(error: HealthConnectException) {
+                    // Ignore
+                }
+            },
+        )
     }
 
     fun addDevice() {

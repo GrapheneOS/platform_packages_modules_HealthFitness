@@ -189,8 +189,8 @@ class HomeFragmentTest {
             checkTextIsDisplayed("Manage data")
             checkTextIsDisplayed(
                 "Health Connect lets you share your health and fitness data between " +
-                    "multiple apps. This helps you unlock insights and experiences while keeping " +
-                    "your data secure."
+                    "multiple data sources. This helps you unlock insights and experiences while " +
+                    "keeping your data secure."
             )
             checkTextIsDisplayed("More about Health Connect")
             verify(healthConnectLogger, atLeast(1)).setPageId(PageName.NEW_HOME_PAGE)

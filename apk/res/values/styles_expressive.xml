@@ -76,4 +76,8 @@
         <item name="android:lineHeight">20sp</item>
         <item name="android:textColor">@color/settingslib_materialColorOnSurfaceVariant</item>
     </style>
+
+    <style name="SettingsLibPreference.Intro.Expressive" parent="SettingsLibPreference.Expressive">
+        <item name="layout">@layout/settingslib_expressive_preference_intro</item>
+    </style>
 </resources>

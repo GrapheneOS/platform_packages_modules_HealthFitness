@@ -203,22 +203,16 @@ public class ImportManagerTest {
 
         ImportManager importManager =
                 new ImportManager(
-                        mAppInfoHelper,
                         mContext,
                         mExportImportSettingsStorage,
                         mTransactionManager,
-                        healthConnectInjector.getFitnessRecordUpsertHelper(),
-                        healthConnectInjector.getFitnessRecordReadHelper(),
-                        deviceInfoHelper,
-                        healthConnectInjector.getDeviceDataProviderMetadataHelper(),
-                        healthConnectInjector.getSyntheticPackageNameCreator(),
-                        mPriorityHelper,
                         fakeClock,
                         mNotificationSender,
                         mEnvironmentDataDirectory.getRoot(),
                         mExportImportLogger,
                         mCompressor,
-                        mNotificationFactory);
+                        mNotificationFactory,
+                        healthConnectInjector.getDatabaseMerger());
         mImportManagerSpy = Mockito.spy(importManager);
         doReturn(TEST_COMPRESSED_FILE_SIZE)
                 .when(mImportManagerSpy)

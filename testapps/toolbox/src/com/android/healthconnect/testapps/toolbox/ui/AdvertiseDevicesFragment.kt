@@ -19,6 +19,8 @@ import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.Device
 import android.health.connect.datatypes.SymptomRecord
+import android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN
+import android.health.connect.datatypes.SymptomRecord.SYMPTOM_TYPE_UNKNOWN
 import android.health.connect.device.DeviceDataAdvertisement
 import android.health.connect.device.DeviceDataTypeAdvertisement
 import android.os.Bundle
@@ -55,7 +57,6 @@ class AdvertiseDevicesFragment : Fragment() {
 
     private val symptomTypesMap =
         mapOf(
-            "Unknown" to SymptomRecord.SYMPTOM_TYPE_UNKNOWN,
             "Abdominal Pain" to SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN,
             "Acne" to SymptomRecord.SYMPTOM_TYPE_ACNE,
             "Back Pain" to SymptomRecord.SYMPTOM_TYPE_BACK_PAIN,
@@ -85,7 +86,6 @@ class AdvertiseDevicesFragment : Fragment() {
         devicesListContainer = view.requireViewById(R.id.devices_list)
 
         viewModel.deviceConfigs.observe(viewLifecycleOwner) { configs ->
-            val isReAdvertise = viewModel.isReAdvertiseMode.value == true
             val needsUpdate =
                 devicesListContainer.childCount != configs.size ||
                     configs.indices.any { i ->
@@ -101,20 +101,27 @@ class AdvertiseDevicesFragment : Fragment() {
                                     dataTypeView?.findViewById<AutoCompleteTextView>(
                                         R.id.data_type_auto_complete
                                     )
-                                autoComplete?.text?.toString() !=
-                                    configs[i].advertisedDataTypes[j].advertisedDataType.simpleName
+                                val symptomLayout =
+                                    dataTypeView?.findViewById<View>(R.id.symptom_type_layout)
+                                val isSymptom =
+                                    SymptomRecord::class
+                                        .java
+                                        .isAssignableFrom(
+                                            configs[i].advertisedDataTypes[j].advertisedDataType
+                                        )
+                                val textMismatch =
+                                    autoComplete?.text?.toString() !=
+                                        configs[i]
+                                            .advertisedDataTypes[j]
+                                            .advertisedDataType
+                                            .simpleName
+                                val visibilityMismatch = symptomLayout?.isVisible != isSymptom
+                                textMismatch || visibilityMismatch
                             }
                         }
                     }
             if (needsUpdate) {
-                updateDeviceList(view, configs, isReAdvertise)
-            }
-        }
-
-        viewModel.isReAdvertiseMode.observe(viewLifecycleOwner) { isReAdvertise ->
-            view.requireViewById<Button>(R.id.add_device_button).isVisible = !isReAdvertise
-            viewModel.deviceConfigs.value?.let { configs ->
-                updateDeviceList(view, configs, isReAdvertise)
+                updateDeviceList(view, configs)
             }
         }
 
@@ -127,11 +134,7 @@ class AdvertiseDevicesFragment : Fragment() {
         }
     }
 
-    private fun updateDeviceList(
-        view: View,
-        configs: List<DeviceAdvertisementConfig>,
-        isReAdvertise: Boolean,
-    ) {
+    private fun updateDeviceList(view: View, configs: List<DeviceAdvertisementConfig>) {
         // Simple update logic for now.
         // We might want to optimize this to avoid re-inflating everything if possible.
         devicesListContainer.removeAllViews()
@@ -139,18 +142,15 @@ class AdvertiseDevicesFragment : Fragment() {
             val itemView =
                 LayoutInflater.from(requireContext())
                     .inflate(R.layout.item_device_advertisement, devicesListContainer, false)
-            setupDeviceItemView(itemView, index, config, isReAdvertise)
+            setupDeviceItemView(itemView, index, config)
             devicesListContainer.addView(itemView)
         }
     }
 
-    private fun setupDeviceItemView(
-        view: View,
-        index: Int,
-        config: DeviceAdvertisementConfig,
-        isReAdvertise: Boolean,
-    ) {
+    private fun setupDeviceItemView(view: View, index: Int, config: DeviceAdvertisementConfig) {
         val enabledCheckbox = view.requireViewById<CheckBox>(R.id.device_enabled_checkbox)
+        val isCurrentDeviceCheckbox =
+            view.requireViewById<CheckBox>(R.id.is_current_device_checkbox)
         val manufacturerEdit = view.requireViewById<EditText>(R.id.manufacturer_edit_text)
         val modelEdit = view.requireViewById<EditText>(R.id.model_edit_text)
         val displayNameEdit = view.requireViewById<EditText>(R.id.display_name_edit_text)
@@ -161,22 +161,19 @@ class AdvertiseDevicesFragment : Fragment() {
         val addDataTypeButton = view.requireViewById<Button>(R.id.add_data_type_button)
         val removeButton = view.requireViewById<Button>(R.id.remove_device_button)
 
-        addDataTypeButton.isVisible = !isReAdvertise
-        removeButton.isVisible = !isReAdvertise
-        enabledCheckbox.isVisible = !isReAdvertise
-
-        view.requireViewById<View>(R.id.manufacturer_input_layout).isVisible = !isReAdvertise
-        view.requireViewById<View>(R.id.model_input_layout).isVisible = !isReAdvertise
-        view.requireViewById<View>(R.id.display_name_input_layout).isVisible = !isReAdvertise
-        view.requireViewById<View>(R.id.device_id_input_layout).isVisible = !isReAdvertise
-        view.requireViewById<View>(R.id.device_type_input_layout).isVisible = !isReAdvertise
-        view.requireViewById<View>(R.id.data_types_label).isVisible = !isReAdvertise
-
         enabledCheckbox.isChecked = config.isEnabled
         manufacturerEdit.setText(config.manufacturer)
         modelEdit.setText(config.model)
         displayNameEdit.setText(config.displayName)
         deviceIdEdit.setText(config.deviceId)
+        isCurrentDeviceCheckbox.isChecked = config.isCurrentDevice
+
+        val enableFields = !config.isCurrentDevice
+        manufacturerEdit.isEnabled = enableFields
+        modelEdit.isEnabled = enableFields
+        displayNameEdit.isEnabled = enableFields
+        deviceIdEdit.isEnabled = enableFields
+        typeAutoComplete.isEnabled = enableFields
 
         val deviceTypes =
             mapOf(
@@ -227,6 +224,47 @@ class AdvertiseDevicesFragment : Fragment() {
             viewModel.updateDevice(index, config)
         }
 
+        isCurrentDeviceCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            config.isCurrentDevice = isChecked
+            manufacturerEdit.isEnabled = !isChecked
+            modelEdit.isEnabled = !isChecked
+            displayNameEdit.isEnabled = !isChecked
+            deviceIdEdit.isEnabled = !isChecked
+            typeAutoComplete.isEnabled = !isChecked
+
+            if (isChecked) {
+                val dataSource = viewModel.currentDeviceDataSourceInfo
+                val currentId = viewModel.currentDeviceDataSourceInfo?.deviceDataOrigin?.packageName
+                if (dataSource != null && currentId != null) {
+                    val device = dataSource.device
+                    config.manufacturer = device.manufacturer
+                    config.model = device.model
+                    config.type = device.type
+                    config.displayName = device.displayName
+                    config.deviceId = currentId
+
+                    manufacturerEdit.setText(config.manufacturer)
+                    modelEdit.setText(config.model)
+                    displayNameEdit.setText(config.displayName)
+                    deviceIdEdit.setText(config.deviceId)
+                    typeAutoComplete.setText(
+                        deviceTypes.entries.find { it.value == config.type }?.key,
+                        false,
+                    )
+
+                    viewModel.updateDevice(index, config)
+                } else {
+                    Toast.makeText(context, "Current device info not found", Toast.LENGTH_LONG)
+                        .show()
+                    isCurrentDeviceCheckbox.isChecked = false
+                }
+            } else {
+                config.deviceId = "device_id_${System.currentTimeMillis()}"
+                deviceIdEdit.setText(config.deviceId)
+                viewModel.updateDevice(index, config)
+            }
+        }
+
         typeAutoComplete.setOnItemClickListener { _, _, position, _ ->
             val selectedType = typeAdapter.getItem(position)
             config.type = deviceTypes[selectedType] ?: Device.DEVICE_TYPE_UNKNOWN
@@ -238,7 +276,7 @@ class AdvertiseDevicesFragment : Fragment() {
             val dataTypeView =
                 LayoutInflater.from(requireContext())
                     .inflate(R.layout.item_data_type_advertisement, dataTypesContainer, false)
-            setupDataTypeItemView(dataTypeView, index, dataTypeIndex, dataTypeConfig, isReAdvertise)
+            setupDataTypeItemView(dataTypeView, index, dataTypeIndex, dataTypeConfig)
             dataTypesContainer.addView(dataTypeView)
         }
 
@@ -252,7 +290,6 @@ class AdvertiseDevicesFragment : Fragment() {
         deviceIndex: Int,
         dataTypeIndex: Int,
         config: DataTypeConfig,
-        isReAdvertise: Boolean,
     ) {
         val dataTypeAutoComplete =
             view.requireViewById<AutoCompleteTextView>(R.id.data_type_auto_complete)
@@ -265,10 +302,6 @@ class AdvertiseDevicesFragment : Fragment() {
             view.requireViewById<AutoCompleteTextView>(R.id.symptom_type_auto_complete)
         val removeButton = view.requireViewById<Button>(R.id.remove_data_type_button)
 
-        isAvailableCheckbox.isVisible = !isReAdvertise
-        isVisibleInMatchmakingCheckbox.isVisible = !isReAdvertise
-        removeButton.isVisible = !isReAdvertise
-
         val recordClasses =
             Constants.HealthPermissionType.entries.mapNotNull { it.recordClass?.java }
         val dataTypes = recordClasses.associateBy { it.simpleName }
@@ -277,15 +310,20 @@ class AdvertiseDevicesFragment : Fragment() {
             ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_dropdown_item_1line,
-                dataTypes.keys.toList(),
+                dataTypes.keys.toList().sorted(),
             )
         dataTypeAutoComplete.setAdapter(dataAdapter)
         dataTypeAutoComplete.setOnItemClickListener { _, _, position, _ ->
             val selectedName = dataAdapter.getItem(position)
             config.advertisedDataType = dataTypes[selectedName] ?: SymptomRecord::class.java
+            if (config.advertisedDataType == SymptomRecord::class.java) {
+                // A specific symptom type must be set for SymptomRecord advertisements
+                config.symptomType = SYMPTOM_TYPE_ABDOMINAL_PAIN
+            } else {
+                config.symptomType = SYMPTOM_TYPE_UNKNOWN
+            }
             viewModel.updateDevice(deviceIndex, viewModel.deviceConfigs.value!![deviceIndex])
         }
-        dataTypeAutoComplete.isEnabled = !isReAdvertise
         dataTypeAutoComplete.setText(config.advertisedDataType.simpleName, false)
 
         isAvailableCheckbox.isChecked = config.isAvailable
@@ -299,7 +337,7 @@ class AdvertiseDevicesFragment : Fragment() {
                 ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_dropdown_item_1line,
-                    symptomTypesMap.keys.toList(),
+                    symptomTypesMap.keys.toList().sorted(),
                 )
             symptomTypeAutoComplete.setAdapter(symptomTypeAdapter)
             symptomTypeAutoComplete.setText(
@@ -309,10 +347,9 @@ class AdvertiseDevicesFragment : Fragment() {
             symptomTypeAutoComplete.setOnItemClickListener { _, _, position, _ ->
                 val selectedSymptom = symptomTypeAdapter.getItem(position)
                 config.symptomType =
-                    symptomTypesMap[selectedSymptom] ?: SymptomRecord.SYMPTOM_TYPE_UNKNOWN
+                    symptomTypesMap[selectedSymptom] ?: SymptomRecord.SYMPTOM_TYPE_ABDOMINAL_PAIN
                 viewModel.updateDevice(deviceIndex, viewModel.deviceConfigs.value!![deviceIndex])
             }
-            symptomTypeAutoComplete.isEnabled = !isReAdvertise
         }
 
         isAvailableCheckbox.setOnCheckedChangeListener { _, isChecked ->

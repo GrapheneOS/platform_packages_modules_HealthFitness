@@ -19,6 +19,7 @@ package com.android.healthconnect.controller.newDevices
 import android.content.Intent.EXTRA_PACKAGE_NAME
 import android.health.connect.DeviceDataProviderInfo
 import android.health.connect.DeviceDataSourceInfo
+import android.health.connect.datatypes.SymptomRecord
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -208,7 +209,17 @@ class DeviceDataProviderFragment : Hilt_DeviceDataProviderFragment() {
                             deviceProvider.packageName,
                             deviceProvider.deviceId,
                             ArrayList(
-                                deviceProvider.deviceDataTypeAdvertisements.map { it.dataType }
+                                deviceProvider.deviceDataTypeAdvertisements
+                                    .map { it.dataType }
+                                    .distinct()
+                            ),
+                            ArrayList(
+                                deviceProvider.deviceDataTypeAdvertisements
+                                    .filter {
+                                        SymptomRecord::class.java.isAssignableFrom(it.dataType)
+                                    }
+                                    .map { it.symptomType }
+                                    .distinct()
                             ),
                         )
                     activity?.startActivity(intent)

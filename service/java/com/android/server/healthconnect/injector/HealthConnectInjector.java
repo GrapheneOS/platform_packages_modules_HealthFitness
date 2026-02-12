@@ -47,10 +47,12 @@ import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.device.notification.NativeStepsNotificationSender;
 import com.android.server.healthconnect.device.notification.NativeStepsNotificationStateManager;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
+import com.android.server.healthconnect.exportimport.DatabaseMerger;
 import com.android.server.healthconnect.exportimport.ExportImportLogger;
 import com.android.server.healthconnect.exportimport.ExportImportNotificationFactory;
 import com.android.server.healthconnect.exportimport.ExportImportSettingsStorage;
 import com.android.server.healthconnect.exportimport.ExportManager;
+import com.android.server.healthconnect.exportimport.ImportManager;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordReadHelper;
 import com.android.server.healthconnect.fitness.FitnessRecordUpsertHelper;
@@ -74,11 +76,13 @@ import com.android.server.healthconnect.onboarding.OnboardingNotificationStateMa
 import com.android.server.healthconnect.onboarding.OnboardingStateManager;
 import com.android.server.healthconnect.onboarding.matchmaking.MatchmakingDenialStateManager;
 import com.android.server.healthconnect.onboarding.matchmaking.MatchmakingManager;
+import com.android.server.healthconnect.permission.DataPermissionEnforcer;
 import com.android.server.healthconnect.permission.FirstGrantTimeDatastore;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.GrantTimeXmlHelper;
 import com.android.server.healthconnect.permission.HealthConnectPermissionHelper;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
+import com.android.server.healthconnect.permission.MedicalDataPermissionEnforcer;
 import com.android.server.healthconnect.permission.PackageInfoUtils;
 import com.android.server.healthconnect.permission.PermissionPackageChangesOrchestrator;
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
@@ -137,6 +141,24 @@ public abstract class HealthConnectInjector {
 
     /** Getter for {@link ExportManager} instance initialised by the Health Connect Injector. */
     public abstract ExportManager getExportManager();
+
+    /** Getter for {@link ImportManager} instance initialised by the Health Connect Injector. */
+    public abstract ImportManager getImportManager();
+
+    /** Getter for {@link DatabaseMerger} instance initialised by the Health Connect Injector. */
+    public abstract DatabaseMerger getDatabaseMerger();
+
+    /**
+     * Getter for {@link DataPermissionEnforcer} instance initialised by the Health Connect
+     * Injector.
+     */
+    public abstract DataPermissionEnforcer getDataPermissionEnforcer();
+
+    /**
+     * Getter for {@link MedicalDataPermissionEnforcer} instance initialised by the Health Connect
+     * Injector.
+     */
+    public abstract MedicalDataPermissionEnforcer getMedicalDataPermissionEnforcer();
 
     /**
      * Getter for {@link MigrationStateManager} instance initialised by the Health Connect Injector.

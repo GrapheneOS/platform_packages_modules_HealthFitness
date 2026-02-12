@@ -17,6 +17,7 @@ package com.android.healthconnect.controller.utils
 
 import android.app.Activity
 import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.SymptomRecord
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -167,6 +168,7 @@ fun Fragment.tryLaunchDeviceOnboardingActivity(
     packageName: String,
     deviceId: String,
     recordTypes: ArrayList<Class<out Record>> = arrayListOf(),
+    @SymptomRecord.SymptomType symptomTypes: ArrayList<Int> = arrayListOf(),
 ): Boolean {
     if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) return false
 
@@ -176,6 +178,7 @@ fun Fragment.tryLaunchDeviceOnboardingActivity(
             packageName,
             deviceId,
             recordTypes,
+            symptomTypes,
         )
     if (maybeOnboardingIntent != null) {
         activity?.startActivity(maybeOnboardingIntent)
@@ -196,6 +199,7 @@ fun Fragment.tryLaunchDeviceManagementActivity(
     packageName: String,
     deviceId: String,
     recordTypes: ArrayList<Class<out Record>> = arrayListOf(),
+    @SymptomRecord.SymptomType symptomTypes: ArrayList<Int> = arrayListOf(),
 ): Boolean {
     if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) return false
 
@@ -205,6 +209,7 @@ fun Fragment.tryLaunchDeviceManagementActivity(
             packageName,
             deviceId,
             recordTypes,
+            symptomTypes,
         )
     if (maybeManagementIntent != null) {
         activity?.startActivity(maybeManagementIntent)

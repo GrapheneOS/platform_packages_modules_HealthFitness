@@ -96,7 +96,6 @@ public class HealthConnectManagerService extends SystemService {
                         mHealthConnectInjector.getMedicalDataSourceHelper(),
                         mHealthConnectInjector.getExportManager(),
                         mHealthConnectInjector.getExportImportSettingsStorage(),
-                        mHealthConnectInjector.getExportImportNotificationSender(),
                         mHealthConnectInjector.getBackupRestore(),
                         mHealthConnectInjector.getAccessLogsHelper(),
                         mHealthConnectInjector.getHealthDataCategoryPriorityHelper(),
@@ -112,11 +111,8 @@ public class HealthConnectManagerService extends SystemService {
                         mHealthConnectInjector.getAppOpsManagerLocal(),
                         mHealthConnectInjector.getThreadScheduler(),
                         mRateLimiter,
-                        mHealthConnectInjector.getEnvironmentDataDirectory(),
-                        mHealthConnectInjector.getExportImportLogger(),
                         mHealthConnectInjector.getHealthFitnessStatsLog(),
                         mHealthConnectInjector.getBackupRestoreLogger(),
-                        mHealthConnectInjector.getExportImportNotificationFactory(),
                         mHealthConnectInjector.getTrackerManager(),
                         mHealthConnectInjector.getCloudBackupManager(),
                         mHealthConnectInjector.getCloudRestoreManager(),
@@ -125,7 +121,10 @@ public class HealthConnectManagerService extends SystemService {
                         mHealthConnectInjector.getDeviceDataSourcesHelper(),
                         mHealthConnectInjector.getDeviceDataProviderManager(),
                         mHealthConnectInjector.getDeviceDataProviderMetadataHelper(),
-                        mHealthConnectInjector.getSyntheticPackageNameCreator());
+                        mHealthConnectInjector.getSyntheticPackageNameCreator(),
+                        mHealthConnectInjector.getImportManager(),
+                        mHealthConnectInjector.getDataPermissionEnforcer(),
+                        mHealthConnectInjector.getMedicalDataPermissionEnforcer());
         mHealthConnectPermissionsChangedListener =
                 new HealthConnectPermissionsChangedListener(
                         mContext, healthConnectInjector.getFirstGrantTimeManager());
