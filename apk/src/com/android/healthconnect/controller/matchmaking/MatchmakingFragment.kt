@@ -208,6 +208,13 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                         preference.summary =
                             requireContext()
                                 .getString(R.string.app_permissions_granted_summary, granted, total)
+                        preference.switchContentDescription =
+                            requireContext()
+                                .getString(
+                                    R.string
+                                        .matchmaking_allow_all_app_permissions_content_description,
+                                    appData.metadata.appName,
+                                )
                     }
                     preference.isChecked = grantedPermissions.isNotEmpty()
 
@@ -345,6 +352,11 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                     setOnExpandChangeListener { isExpanded ->
                         viewModel.updateExpandedPreferenceKey(key, isExpanded)
                     }
+                    switchContentDescription =
+                        context.getString(
+                            R.string.matchmaking_allow_all_app_permissions_content_description,
+                            data.metadata.appName,
+                        )
                 }
                 is MatchmakingDeviceData -> {
                     if (deviceDataProvidersApi() && deviceDataProvidersUiMatchmakingScreen()) {
