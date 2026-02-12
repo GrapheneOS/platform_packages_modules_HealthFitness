@@ -24,12 +24,13 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.datasources.api.LoadPriorityListUseCase
 import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.CoroutineTestRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
-import com.google.common.truth.Truth
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -79,14 +80,15 @@ class LoadPriorityListUseCaseTest {
             .`when`(manager)
             .fetchDataOriginsPriorityOrder(eq(HealthDataCategory.ACTIVITY), any(), any())
 
-        val loadedAppsPriorityList = usecase.execute(HealthDataCategory.ACTIVITY)
+        val loadedAppsPriorityList = usecase.invoke(HealthDataCategory.ACTIVITY)
 
-        Truth.assertThat(loadedAppsPriorityList.size).isEqualTo(2)
+        assertThat(loadedAppsPriorityList is UseCaseResults.Success).isTrue()
+        assertThat((loadedAppsPriorityList as UseCaseResults.Success).data.size).isEqualTo(2)
 
-        Truth.assertThat(loadedAppsPriorityList)
+        assertThat(loadedAppsPriorityList.data)
             .contains(appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME))
 
-        Truth.assertThat(loadedAppsPriorityList)
+        assertThat(loadedAppsPriorityList.data)
             .contains(appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME_2))
     }
 

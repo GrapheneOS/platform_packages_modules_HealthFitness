@@ -17,9 +17,7 @@ package com.android.healthconnect.controller.tests.utils.di
 
 import android.hardware.Sensor
 import android.health.connect.HealthConnectException
-import android.health.connect.HealthDataCategory
 import android.health.connect.accesslog.AccessLog
-import android.health.connect.datatypes.Record
 import android.health.connect.exportimport.ScheduledExportSettings
 import android.net.Uri
 import com.android.healthconnect.controller.data.access.AppAccessMetadata
@@ -40,14 +38,6 @@ import com.android.healthconnect.controller.data.entries.api.LoadLatestSymptomEn
 import com.android.healthconnect.controller.data.entries.api.LoadMedicalEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataInput
 import com.android.healthconnect.controller.data.entries.api.LoadSymptomDataEntriesInput
-import com.android.healthconnect.controller.datasources.AggregationCardInfo
-import com.android.healthconnect.controller.datasources.api.ILoadLastDateWithPriorityDataUseCase
-import com.android.healthconnect.controller.datasources.api.ILoadMostRecentAggregationsUseCase
-import com.android.healthconnect.controller.datasources.api.ILoadPotentialPriorityListUseCase
-import com.android.healthconnect.controller.datasources.api.ILoadPriorityEntriesUseCase
-import com.android.healthconnect.controller.datasources.api.ILoadPriorityListUseCase
-import com.android.healthconnect.controller.datasources.api.ISleepSessionHelper
-import com.android.healthconnect.controller.datasources.api.IUpdatePriorityListUseCase
 import com.android.healthconnect.controller.devices.DeviceDataSource
 import com.android.healthconnect.controller.devices.ILoadDeviceDataSources
 import com.android.healthconnect.controller.devices.ILoadSensorListUseCase
@@ -75,14 +65,12 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.shared.IQueryRecentAccessLogsUseCase
 import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
-import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.IGetContributorAppInfoUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.toInstant
 import java.time.Instant
-import java.time.LocalDate
 import kotlinx.coroutines.Dispatchers
 
 class FakeRecentAccessUseCase : ILoadRecentAccessUseCase {
@@ -377,25 +365,6 @@ class FakeLoadDataAggregationsUseCase : ILoadDataAggregationsUseCase {
     }
 }
 
-class FakeLoadMostRecentAggregationsUseCase : ILoadMostRecentAggregationsUseCase {
-
-    private var mostRecentAggregations = listOf<AggregationCardInfo>()
-
-    override suspend fun invoke(
-        healthDataCategory: @HealthDataCategoryInt Int
-    ): UseCaseResults<List<AggregationCardInfo>> {
-        return UseCaseResults.Success(mostRecentAggregations)
-    }
-
-    fun updateMostRecentAggregations(aggregations: List<AggregationCardInfo>) {
-        this.mostRecentAggregations = aggregations
-    }
-
-    fun reset() {
-        this.mostRecentAggregations = listOf()
-    }
-}
-
 class FakeLoadMedicalEntriesUseCase : ILoadMedicalEntriesUseCase {
     private var formattedList = listOf<FormattedEntry>()
 
@@ -443,134 +412,6 @@ class FakeFailureLoadLatestEntryDateUseCase : ILoadLatestEntryDateUseCase {
 
     override suspend fun execute(input: LoadLatestEntryDateInput): Instant {
         return instant
-    }
-}
-
-class FakeSleepSessionHelper : ISleepSessionHelper {
-
-    private var forceFail = false
-    private var exceptionMessage = ""
-    private var datePair = Pair(Instant.EPOCH, Instant.EPOCH)
-
-    fun setDatePair(minDate: Instant, maxDate: Instant) {
-        datePair = Pair(minDate, maxDate)
-    }
-
-    fun setFailure(exceptionMessage: String) {
-        forceFail = true
-        this.exceptionMessage = exceptionMessage
-    }
-
-    override suspend fun clusterSleepSessions(
-        lastDateWithData: LocalDate
-    ): UseCaseResults<Pair<Instant, Instant>> {
-        return if (forceFail) UseCaseResults.Failed(Exception(this.exceptionMessage))
-        else UseCaseResults.Success(datePair)
-    }
-
-    fun reset() {
-        datePair = Pair(Instant.EPOCH, Instant.EPOCH)
-        exceptionMessage = ""
-        forceFail = false
-    }
-}
-
-class FakeLoadPriorityEntriesUseCase : ILoadPriorityEntriesUseCase {
-
-    private var priorityEntries = mutableMapOf<LocalDate, List<Record>>()
-    private var forceFail = false
-    private var exceptionMessage = ""
-
-    override suspend fun invoke(
-        fitnessPermissionType: FitnessPermissionType,
-        localDate: LocalDate,
-    ): UseCaseResults<List<Record>> {
-        return if (forceFail) UseCaseResults.Failed(Exception(this.exceptionMessage))
-        else UseCaseResults.Success(priorityEntries.getOrDefault(localDate, listOf()))
-    }
-
-    fun setEntriesList(localDate: LocalDate, list: List<Record>) {
-
-        priorityEntries[localDate] = list
-    }
-
-    fun setFailure(exceptionMessage: String) {
-        forceFail = true
-        this.exceptionMessage = exceptionMessage
-    }
-
-    fun reset() {
-        priorityEntries.clear()
-        exceptionMessage = ""
-        forceFail = false
-    }
-}
-
-class FakeLoadPotentialPriorityListUseCase : ILoadPotentialPriorityListUseCase {
-
-    private var potentialPriorityList = listOf<AppMetadata>()
-
-    override suspend fun invoke(
-        category: @HealthDataCategoryInt Int
-    ): UseCaseResults<List<AppMetadata>> {
-        return UseCaseResults.Success(potentialPriorityList)
-    }
-
-    fun updatePotentialPriorityList(potentialList: List<AppMetadata>) {
-        this.potentialPriorityList = potentialList
-    }
-
-    fun reset() {
-        this.potentialPriorityList = listOf()
-    }
-}
-
-class FakeLoadPriorityListUseCase : ILoadPriorityListUseCase {
-
-    private var priorityList = listOf<AppMetadata>()
-    private var forceFail = false
-    private var exceptionMessage = ""
-
-    override suspend fun invoke(
-        input: @HealthDataCategoryInt Int
-    ): UseCaseResults<List<AppMetadata>> {
-        return if (forceFail) UseCaseResults.Failed(Exception(this.exceptionMessage))
-        else UseCaseResults.Success(priorityList)
-    }
-
-    override suspend fun execute(input: Int): List<AppMetadata> {
-        return priorityList
-    }
-
-    fun updatePriorityList(priorityList: List<AppMetadata>) {
-        this.priorityList = priorityList
-    }
-
-    fun setFailure(exceptionMessage: String) {
-        forceFail = true
-        this.exceptionMessage = exceptionMessage
-    }
-
-    fun reset() {
-        this.priorityList = listOf()
-        exceptionMessage = ""
-        forceFail = false
-    }
-}
-
-class FakeUpdatePriorityListUseCase : IUpdatePriorityListUseCase {
-
-    var priorityList = listOf<String>()
-    var category = HealthDataCategory.UNKNOWN
-
-    override suspend fun invoke(priorityList: List<String>, category: Int) {
-        this.priorityList = priorityList
-        this.category = category
-    }
-
-    fun reset() {
-        this.priorityList = listOf()
-        this.category = HealthDataCategory.UNKNOWN
     }
 }
 
@@ -677,40 +518,6 @@ class FakeGetGrantedHealthPermissionsUseCase : IGetGrantedHealthPermissionsUseCa
 
     fun reset() {
         this.permissionsPerApp = mutableMapOf()
-    }
-}
-
-class FakeLoadLastDateWithPriorityDataUseCase : ILoadLastDateWithPriorityDataUseCase {
-
-    private var lastDateWithPriorityDataMap = mutableMapOf<FitnessPermissionType, LocalDate?>()
-    private var forceFail = false
-    private var exceptionMessage = ""
-
-    fun setLastDateWithPriorityDataForHealthPermissionType(
-        fitnessPermissionType: FitnessPermissionType,
-        localDate: LocalDate?,
-    ) {
-        lastDateWithPriorityDataMap[fitnessPermissionType] = localDate
-    }
-
-    fun setFailure(exceptionMessage: String) {
-        forceFail = true
-        this.exceptionMessage = exceptionMessage
-    }
-
-    override suspend fun invoke(
-        fitnessPermissionType: FitnessPermissionType
-    ): UseCaseResults<LocalDate?> {
-        if (forceFail) return UseCaseResults.Failed(Exception(this.exceptionMessage))
-        return if (lastDateWithPriorityDataMap.containsKey(fitnessPermissionType))
-            UseCaseResults.Success(lastDateWithPriorityDataMap[fitnessPermissionType])
-        else UseCaseResults.Success(null)
-    }
-
-    fun reset() {
-        lastDateWithPriorityDataMap.clear()
-        exceptionMessage = ""
-        forceFail = false
     }
 }
 
