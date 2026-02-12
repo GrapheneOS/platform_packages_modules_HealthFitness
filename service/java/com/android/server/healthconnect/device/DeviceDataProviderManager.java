@@ -18,6 +18,8 @@ package com.android.server.healthconnect.device;
 
 import static android.health.connect.Constants.DEFAULT_LONG;
 
+import static com.android.server.healthconnect.HealthConnectShellCommand.SHELL_PACKAGE_NAME;
+
 import static java.util.Objects.requireNonNull;
 
 import android.Manifest;
@@ -856,9 +858,10 @@ public class DeviceDataProviderManager {
     }
 
     protected void validateDdpConfiguration(String packageName) {
-        // The "android" package is a privileged package representing the system.
-        // It is always allowed.
-        if (Objects.equals(DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE, packageName)) {
+        // The "android" package and shell are privileged packages.
+        // They are always allowed.
+        if (Objects.equals(DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE, packageName)
+                || Objects.equals(SHELL_PACKAGE_NAME, packageName)) {
             return;
         }
 
