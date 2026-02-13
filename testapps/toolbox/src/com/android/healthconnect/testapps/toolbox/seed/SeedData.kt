@@ -86,6 +86,37 @@ class SeedData(private val context: Context, private val manager: HealthConnectM
         }
     }
 
+    suspend fun seedLargeHeartRateData() {
+        val start = Instant.now().truncatedTo(ChronoUnit.DAYS)
+        val random = Random()
+        val recordsCount = 1000
+        val samplesCount = 36000
+
+        for (i in 0 until recordsCount) {
+            val hrSamples = ArrayList<HeartRateRecord.HeartRateSample>()
+            val recordStartTime = start.minus(ofDays(i.toLong()))
+            repeat(samplesCount) { j ->
+                hrSamples.add(
+                    HeartRateRecord.HeartRateSample(
+                        getValidHeartRate(random),
+                        recordStartTime.plus(j.toLong() * 2, ChronoUnit.SECONDS),
+                    )
+                )
+            }
+            val recordEndTime = hrSamples.last().time
+            val record =
+                HeartRateRecord.Builder(
+                        getMetaData(context),
+                        recordStartTime,
+                        recordEndTime,
+                        hrSamples,
+                    )
+                    .build()
+
+            insertRecords(listOf(record), manager)
+        }
+    }
+
     private suspend fun seedStepsData() {
         val start = Instant.now().truncatedTo(ChronoUnit.DAYS)
         val records = (1L..50).map { count -> getStepsRecord(count, start.plus(ofMinutes(count))) }

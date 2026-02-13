@@ -55,6 +55,7 @@
     <string name="toast_seed_data_success">Data inserted successfully</string>
     <string name="matchmaking_button">Matchmaking</string>
     <string name="access_log_button">Seed Access Logs</string>
+    <string name="insert_large_hr_data">Insert Large HR Data</string>
     <string name="advertise_devices">Advertise Devices</string>
     <string name="insert_via_ddp_apis">Insert via DDP APIs</string>
     <string name="select_device_data_source">Select device data source that advertise type</string>
