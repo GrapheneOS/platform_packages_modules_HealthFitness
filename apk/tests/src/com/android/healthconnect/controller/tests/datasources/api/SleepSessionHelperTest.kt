@@ -20,7 +20,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.datasources.api.SleepSessionHelper
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadPriorityEntriesUseCase
+import com.android.healthconnect.controller.tests.utils.di.DEFAULT_USE_CASE_EXCEPTION_MESSAGE
 import com.android.healthconnect.controller.tests.utils.getSleepSessionRecords
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.google.common.truth.Truth.assertThat
@@ -87,7 +87,7 @@ class SleepSessionHelperTest {
         val SLEEP_SESSION_3_START_DATE = Instant.parse("2023-02-13T01:00:00.00Z")
         val SLEEP_SESSION_3_END_DATE = Instant.parse("2023-02-13T08:20:00.00Z")
 
-        loadPriorityEntriesUseCase.setEntriesList(
+        loadPriorityEntriesUseCase.setEntriesListForDate(
             sleepDate,
             getSleepSessionRecords(
                 listOf(
@@ -98,7 +98,7 @@ class SleepSessionHelperTest {
             ),
         )
 
-        val result = sleepSessionHelper.clusterSleepSessions(sleepDate)
+        val result = sleepSessionHelper.invoke(sleepDate)
         assertThat(result is UseCaseResults.Success).isTrue()
         assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_2_END_DATE))
@@ -132,7 +132,7 @@ class SleepSessionHelperTest {
             val SLEEP_SESSION_4_START_DATE = Instant.parse("2023-02-10T01:00:00.00Z")
             val SLEEP_SESSION_4_END_DATE = Instant.parse("2023-02-13T08:20:00.00Z")
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 sleepDate,
                 getSleepSessionRecords(
                     listOf(
@@ -143,14 +143,14 @@ class SleepSessionHelperTest {
                 ),
             )
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 pastSleepDate,
                 getSleepSessionRecords(
                     listOf(Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE))
                 ),
             )
 
-            val result = sleepSessionHelper.clusterSleepSessions(sleepDate)
+            val result = sleepSessionHelper.invoke(sleepDate)
             assertThat(result is UseCaseResults.Success).isTrue()
             assertThat((result as UseCaseResults.Success).data)
                 .isEqualTo(Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_2_END_DATE))
@@ -184,7 +184,7 @@ class SleepSessionHelperTest {
             val SLEEP_SESSION_4_START_DATE = Instant.parse("2023-02-10T01:00:00.00Z")
             val SLEEP_SESSION_4_END_DATE = Instant.parse("2023-02-15T08:20:00.00Z")
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 sleepDate,
                 getSleepSessionRecords(
                     listOf(
@@ -195,14 +195,14 @@ class SleepSessionHelperTest {
                 ),
             )
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 pastSleepSessionStartDate,
                 getSleepSessionRecords(
                     listOf(Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE))
                 ),
             )
 
-            val result = sleepSessionHelper.clusterSleepSessions(sleepDate)
+            val result = sleepSessionHelper.invoke(sleepDate)
             assertThat(result is UseCaseResults.Success).isTrue()
             assertThat((result as UseCaseResults.Success).data)
                 .isEqualTo(Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_2_END_DATE))
@@ -237,7 +237,7 @@ class SleepSessionHelperTest {
             val SLEEP_SESSION_5_START_DATE = Instant.parse("2023-02-12T12:00:00.00Z")
             val SLEEP_SESSION_5_END_DATE = Instant.parse("2023-02-12T14:20:00.00Z")
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 lastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(
@@ -247,7 +247,7 @@ class SleepSessionHelperTest {
                 ),
             )
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 secondToLastDateWithData,
                 getSleepSessionRecords(
                     listOf(
@@ -261,7 +261,7 @@ class SleepSessionHelperTest {
             // minStartTime = SLEEP_SESSION_3_START_DATE
             // maxEndTime = SLEEP_SESSION_2_END_DATE
             // Total time = 12 Feb, 23:00 - 13 Feb 23:15 = 24h 15m
-            val result = sleepSessionHelper.clusterSleepSessions(lastDateWithSleepData)
+            val result = sleepSessionHelper.invoke(lastDateWithSleepData)
             assertThat(result is UseCaseResults.Success).isTrue()
             assertThat((result as UseCaseResults.Success).data)
                 .isEqualTo(Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_2_END_DATE))
@@ -293,7 +293,7 @@ class SleepSessionHelperTest {
             val SLEEP_SESSION_4_START_DATE = Instant.parse("2023-02-12T16:00:00.00Z")
             val SLEEP_SESSION_4_END_DATE = Instant.parse("2023-02-12T23:20:00.00Z")
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 lastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(
@@ -303,7 +303,7 @@ class SleepSessionHelperTest {
                 ),
             )
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 secondToLastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(
@@ -316,7 +316,7 @@ class SleepSessionHelperTest {
             // minStartTime = SLEEP_SESSION_3_START_DATE
             // maxEndTime = SLEEP_SESSION_1_END_DATE
             // Total time = 2h + 2h 15m + 5h 20m = 9h 35m
-            val result = sleepSessionHelper.clusterSleepSessions(lastDateWithSleepData)
+            val result = sleepSessionHelper.invoke(lastDateWithSleepData)
             assertThat(result is UseCaseResults.Success).isTrue()
             assertThat((result as UseCaseResults.Success).data)
                 .isEqualTo(Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_1_END_DATE))
@@ -355,7 +355,7 @@ class SleepSessionHelperTest {
             val SLEEP_SESSION_5_START_DATE = Instant.parse("2023-02-10T12:00:00.00Z")
             val SLEEP_SESSION_5_END_DATE = Instant.parse("2023-02-13T14:20:00.00Z")
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 lastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(
@@ -365,7 +365,7 @@ class SleepSessionHelperTest {
                 ),
             )
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 secondToLastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(
@@ -375,7 +375,7 @@ class SleepSessionHelperTest {
                 ),
             )
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 pastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(Pair(SLEEP_SESSION_5_START_DATE, SLEEP_SESSION_5_END_DATE))
@@ -385,7 +385,7 @@ class SleepSessionHelperTest {
             // minStartTime = SLEEP_SESSION_3_START_DATE
             // maxEndTime = SLEEP_SESSION_2_END_DATE
             // Total time = 2h + 2h 15m + 5h 20m = 9h 35m
-            val result = sleepSessionHelper.clusterSleepSessions(lastDateWithSleepData)
+            val result = sleepSessionHelper.invoke(lastDateWithSleepData)
             assertThat(result is UseCaseResults.Success).isTrue()
             assertThat((result as UseCaseResults.Success).data)
                 .isEqualTo(Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_2_END_DATE))
@@ -426,7 +426,7 @@ class SleepSessionHelperTest {
 
             val maxDate = Instant.parse("2023-02-14T00:00:00.00Z")
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 lastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(
@@ -436,7 +436,7 @@ class SleepSessionHelperTest {
                 ),
             )
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 secondToLastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(
@@ -450,7 +450,7 @@ class SleepSessionHelperTest {
             // minStartTime = SLEEP_SESSION_5_START_DATE
             // maxEndTime = 2023-02-14T00:00
             // Total time = 12 Feb, 12:00 - 14 Feb 00:00 = 36h
-            val result = sleepSessionHelper.clusterSleepSessions(lastDateWithSleepData)
+            val result = sleepSessionHelper.invoke(lastDateWithSleepData)
             assertThat(result is UseCaseResults.Success).isTrue()
             assertThat((result as UseCaseResults.Success).data)
                 .isEqualTo(Pair(SLEEP_SESSION_5_START_DATE, maxDate))
@@ -484,7 +484,7 @@ class SleepSessionHelperTest {
             val SLEEP_SESSION_4_START_DATE = Instant.parse("2023-02-10T16:00:00.00Z")
             val SLEEP_SESSION_4_END_DATE = Instant.parse("2023-02-20T23:20:00.00Z")
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 lastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(
@@ -494,14 +494,14 @@ class SleepSessionHelperTest {
                 ),
             )
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 secondToLastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_3_END_DATE))
                 ),
             )
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 pastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_4_END_DATE))
@@ -511,7 +511,7 @@ class SleepSessionHelperTest {
             // minStartTime = SLEEP_SESSION_3_START_DATE
             // maxEndTime = SLEEP_SESSION_1_END_DATE
             // Total time = 12 Oct 20:00 - 13 Oct 20:00 = 24h
-            val result = sleepSessionHelper.clusterSleepSessions(lastDateWithSleepData)
+            val result = sleepSessionHelper.invoke(lastDateWithSleepData)
             assertThat(result is UseCaseResults.Success).isTrue()
             assertThat((result as UseCaseResults.Success).data)
                 .isEqualTo(Pair(SLEEP_SESSION_3_START_DATE, SLEEP_SESSION_1_END_DATE))
@@ -540,7 +540,7 @@ class SleepSessionHelperTest {
         val SLEEP_SESSION_4_START_DATE = Instant.parse("2023-02-13T22:00:00.00Z")
         val SLEEP_SESSION_4_END_DATE = Instant.parse("2023-02-14T08:00:00.00Z")
 
-        loadPriorityEntriesUseCase.setEntriesList(
+        loadPriorityEntriesUseCase.setEntriesListForDate(
             lastDateWithSleepData,
             getSleepSessionRecords(
                 listOf(
@@ -555,7 +555,7 @@ class SleepSessionHelperTest {
         // minStartTime = SLEEP_SESSION_4_START_DATE
         // maxEndTime = SLEEP_SESSION_2_END_DATE
         // Total time = 13 Feb 22:00 - 14 Feb 08:45 = 10h 45m
-        val result = sleepSessionHelper.clusterSleepSessions(lastDateWithSleepData)
+        val result = sleepSessionHelper.invoke(lastDateWithSleepData)
         assertThat(result is UseCaseResults.Success).isTrue()
         assertThat((result as UseCaseResults.Success).data)
             .isEqualTo(Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_2_END_DATE))
@@ -592,7 +592,7 @@ class SleepSessionHelperTest {
             val SLEEP_SESSION_5_START_DATE = Instant.parse("2023-02-11T22:00:00.00Z")
             val SLEEP_SESSION_5_END_DATE = Instant.parse("2023-02-14T09:00:00.00Z")
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 lastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(
@@ -604,7 +604,7 @@ class SleepSessionHelperTest {
                 ),
             )
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 pastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(Pair(SLEEP_SESSION_5_START_DATE, SLEEP_SESSION_5_END_DATE))
@@ -614,7 +614,7 @@ class SleepSessionHelperTest {
             // minStartTime = SLEEP_SESSION_4_START_DATE
             // maxEndTime = SLEEP_SESSION_2_END_DATE
             // Total time = 13 Feb 22:00 - 14 Feb 08:45 = 10h 45m
-            val result = sleepSessionHelper.clusterSleepSessions(lastDateWithSleepData)
+            val result = sleepSessionHelper.invoke(lastDateWithSleepData)
             assertThat(result is UseCaseResults.Success).isTrue()
             assertThat((result as UseCaseResults.Success).data)
                 .isEqualTo(Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_2_END_DATE))
@@ -652,7 +652,7 @@ class SleepSessionHelperTest {
 
             val maxEndTime = Instant.parse("2023-02-15T00:00:00.00Z")
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 lastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(
@@ -668,7 +668,7 @@ class SleepSessionHelperTest {
             // minStartTime = SLEEP_SESSION_4_START_DATE
             // maxEndTime = 15 Feb 00:00
             // Total time = 13 Feb 22:00 - 15 Feb 00:00 = 26h
-            val result = sleepSessionHelper.clusterSleepSessions(lastDateWithSleepData)
+            val result = sleepSessionHelper.invoke(lastDateWithSleepData)
             assertThat(result is UseCaseResults.Success).isTrue()
             assertThat((result as UseCaseResults.Success).data)
                 .isEqualTo(Pair(SLEEP_SESSION_4_START_DATE, maxEndTime))
@@ -704,7 +704,7 @@ class SleepSessionHelperTest {
             val SLEEP_SESSION_5_START_DATE = Instant.parse("2023-02-11T22:00:00.00Z")
             val SLEEP_SESSION_5_END_DATE = Instant.parse("2023-02-16T09:00:00.00Z")
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 lastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(
@@ -716,7 +716,7 @@ class SleepSessionHelperTest {
                 ),
             )
 
-            loadPriorityEntriesUseCase.setEntriesList(
+            loadPriorityEntriesUseCase.setEntriesListForDate(
                 pastDateWithSleepData,
                 getSleepSessionRecords(
                     listOf(Pair(SLEEP_SESSION_5_START_DATE, SLEEP_SESSION_5_END_DATE))
@@ -726,7 +726,7 @@ class SleepSessionHelperTest {
             // minStartTime = SLEEP_SESSION_4_START_DATE
             // maxEndTime = SLEEP_SESSION_2_END_DATE
             // Total time = 13 Feb 22:00 - 14 Feb 08:45 = 10h 45m
-            val result = sleepSessionHelper.clusterSleepSessions(lastDateWithSleepData)
+            val result = sleepSessionHelper.invoke(lastDateWithSleepData)
             assertThat(result is UseCaseResults.Success).isTrue()
             assertThat((result as UseCaseResults.Success).data)
                 .isEqualTo(Pair(SLEEP_SESSION_4_START_DATE, SLEEP_SESSION_2_END_DATE))
@@ -735,18 +735,19 @@ class SleepSessionHelperTest {
     @Test
     fun clusterSessions_whenLoadPriorityEntriesFails_returnsFailure() = runTest {
         val queryDate = LocalDate.of(2023, 1, 30)
-        loadPriorityEntriesUseCase.setFailure("Exception")
+        loadPriorityEntriesUseCase.setForceFail(true)
 
-        val result = sleepSessionHelper.clusterSleepSessions(queryDate)
+        val result = sleepSessionHelper.invoke(queryDate)
         assertThat(result is UseCaseResults.Failed).isTrue()
-        assertThat((result as UseCaseResults.Failed).exception.message).isEqualTo("Exception")
+        assertThat((result as UseCaseResults.Failed).exception.message)
+            .isEqualTo(DEFAULT_USE_CASE_EXCEPTION_MESSAGE)
     }
 
     @Test
     fun clusterSessions_whenNoData_returnsNull() = runTest {
         val queryDate = LocalDate.of(2023, 1, 30)
 
-        val result = sleepSessionHelper.clusterSleepSessions(queryDate)
+        val result = sleepSessionHelper.invoke(queryDate)
         assertThat(result is UseCaseResults.Success).isTrue()
         assertThat((result as UseCaseResults.Success).data).isNull()
     }

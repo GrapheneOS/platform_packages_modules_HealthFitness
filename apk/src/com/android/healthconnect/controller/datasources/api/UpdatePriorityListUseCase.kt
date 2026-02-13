@@ -18,11 +18,11 @@ import android.health.connect.HealthDataCategory
 import android.health.connect.UpdateDataOriginPriorityOrderRequest
 import android.health.connect.datatypes.DataOrigin
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
 
 @Singleton
 class UpdatePriorityListUseCase
@@ -30,27 +30,23 @@ class UpdatePriorityListUseCase
 constructor(
     private val healthConnectManager: HealthConnectManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : IUpdatePriorityListUseCase {
+) : BaseUseCase<UpdatePriorityListInput, Unit>(dispatcher) {
 
     /** Updates the priority list of the stored [DataOrigin]s for given [HealthDataCategory]. */
-    override suspend operator fun invoke(
-        priorityList: List<String>,
-        category: @HealthDataCategoryInt Int,
-    ) {
-        withContext(dispatcher) {
-            val dataOrigins: List<DataOrigin> =
-                priorityList
-                    .stream()
-                    .map { packageName -> DataOrigin.Builder().setPackageName(packageName).build() }
-                    .toList()
-            healthConnectManager.updateDataOriginPriorityOrder(
-                UpdateDataOriginPriorityOrderRequest(dataOrigins, category),
-                Runnable::run,
-            ) {}
-        }
+    override suspend fun execute(input: UpdatePriorityListInput): Unit {
+        val dataOrigins: List<DataOrigin> =
+            input.priorityList
+                .stream()
+                .map { packageName -> DataOrigin.Builder().setPackageName(packageName).build() }
+                .toList()
+        healthConnectManager.updateDataOriginPriorityOrder(
+            UpdateDataOriginPriorityOrderRequest(dataOrigins, input.category),
+            Runnable::run,
+        ) {}
     }
 }
 
-interface IUpdatePriorityListUseCase {
-    suspend fun invoke(priorityList: List<String>, category: @HealthDataCategoryInt Int)
-}
+data class UpdatePriorityListInput(
+    val priorityList: List<String>,
+    val category: @HealthDataCategoryInt Int,
+)

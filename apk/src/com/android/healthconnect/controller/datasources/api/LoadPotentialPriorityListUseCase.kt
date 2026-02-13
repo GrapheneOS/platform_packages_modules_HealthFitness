@@ -30,7 +30,9 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.LoadPriorityListUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -46,48 +48,44 @@ constructor(
     private val healthConnectManager: HealthConnectManager,
     private val healthPermissionReader: HealthPermissionReader,
     private val loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
-    private val loadPriorityListUseCase: LoadPriorityListUseCase,
+    @LoadPriorityListUseCase
+    private val loadPriorityListUseCase: BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : ILoadPotentialPriorityListUseCase {
+) : BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>(dispatcher) {
 
     private val TAG = "LoadAppSourcesUseCase"
 
     /** Returns a list of unique [AppMetadata]s that are potential priority list candidates. */
-    override suspend operator fun invoke(
-        category: @HealthDataCategoryInt Int
-    ): UseCaseResults<List<AppMetadata>> =
-        withContext(dispatcher) {
-            val appsWithDataResult = getAppsWithData(category)
-            val appsWithWritePermissionResult = getAppsWithWritePermission(category)
-            val appsOnPriorityListResult = loadPriorityListUseCase.invoke(category)
+    override suspend fun execute(category: @HealthDataCategoryInt Int): List<AppMetadata> {
+        val appsWithDataResult = getAppsWithData(category)
+        val appsWithWritePermissionResult = getAppsWithWritePermission(category)
+        val appsOnPriorityListResult = loadPriorityListUseCase.invoke(category)
 
-            // Propagate error if any calls fail
-            if (appsWithDataResult is UseCaseResults.Failed) {
-                UseCaseResults.Failed(appsWithDataResult.exception)
-            } else if (appsWithWritePermissionResult is UseCaseResults.Failed) {
-                UseCaseResults.Failed(appsWithWritePermissionResult.exception)
-            } else if (appsOnPriorityListResult is UseCaseResults.Failed) {
-                UseCaseResults.Failed(appsOnPriorityListResult.exception)
-            } else {
-                val appsWithData = (appsWithDataResult as UseCaseResults.Success).data
-                val appsWithWritePermission =
-                    (appsWithWritePermissionResult as UseCaseResults.Success).data
-                val appsOnPriorityList =
-                    (appsOnPriorityListResult as UseCaseResults.Success)
-                        .data
-                        .map { it.packageName }
-                        .toSet()
+        // Propagate error if any calls fail
+        if (appsWithDataResult is UseCaseResults.Failed) {
+            throw appsWithDataResult.exception
+        } else if (appsWithWritePermissionResult is UseCaseResults.Failed) {
+            throw appsWithWritePermissionResult.exception
+        } else if (appsOnPriorityListResult is UseCaseResults.Failed) {
+            throw appsOnPriorityListResult.exception
+        } else {
+            val appsWithData = (appsWithDataResult as UseCaseResults.Success).data
+            val appsWithWritePermission =
+                (appsWithWritePermissionResult as UseCaseResults.Success).data
+            val appsOnPriorityList =
+                (appsOnPriorityListResult as UseCaseResults.Success)
+                    .data
+                    .map { it.packageName }
+                    .toSet()
 
-                val potentialPriorityListApps =
-                    appsWithData
-                        .union(appsWithWritePermission)
-                        .minus(appsOnPriorityList)
-                        .toList()
-                        .map { appInfoReader.getAppMetadata(it) }
+            val potentialPriorityListApps =
+                appsWithData.union(appsWithWritePermission).minus(appsOnPriorityList).toList().map {
+                    appInfoReader.getAppMetadata(it)
+                }
 
-                UseCaseResults.Success(potentialPriorityListApps)
-            }
+            return potentialPriorityListApps
         }
+    }
 
     /** Returns a list of unique packageNames that have data in this [HealthDataCategory]. */
     @VisibleForTesting
@@ -153,8 +151,4 @@ constructor(
                 UseCaseResults.Failed(e)
             }
         }
-}
-
-interface ILoadPotentialPriorityListUseCase {
-    suspend fun invoke(category: @HealthDataCategoryInt Int): UseCaseResults<List<AppMetadata>>
 }

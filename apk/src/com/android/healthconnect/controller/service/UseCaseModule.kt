@@ -49,20 +49,6 @@ import com.android.healthconnect.controller.data.formatters.SleepSessionFormatte
 import com.android.healthconnect.controller.data.formatters.StepsFormatter
 import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
 import com.android.healthconnect.controller.data.formatters.medical.MedicalEntryFormatter
-import com.android.healthconnect.controller.datasources.api.ILoadLastDateWithPriorityDataUseCase
-import com.android.healthconnect.controller.datasources.api.ILoadMostRecentAggregationsUseCase
-import com.android.healthconnect.controller.datasources.api.ILoadPotentialPriorityListUseCase
-import com.android.healthconnect.controller.datasources.api.ILoadPriorityEntriesUseCase
-import com.android.healthconnect.controller.datasources.api.ILoadPriorityListUseCase
-import com.android.healthconnect.controller.datasources.api.ISleepSessionHelper
-import com.android.healthconnect.controller.datasources.api.IUpdatePriorityListUseCase
-import com.android.healthconnect.controller.datasources.api.LoadLastDateWithPriorityDataUseCase
-import com.android.healthconnect.controller.datasources.api.LoadMostRecentAggregationsUseCase
-import com.android.healthconnect.controller.datasources.api.LoadPotentialPriorityListUseCase
-import com.android.healthconnect.controller.datasources.api.LoadPriorityEntriesUseCase
-import com.android.healthconnect.controller.datasources.api.LoadPriorityListUseCase
-import com.android.healthconnect.controller.datasources.api.SleepSessionHelper
-import com.android.healthconnect.controller.datasources.api.UpdatePriorityListUseCase
 import com.android.healthconnect.controller.devices.ILoadDeviceDataSources
 import com.android.healthconnect.controller.devices.ILoadSensorListUseCase
 import com.android.healthconnect.controller.devices.ISetTrackingEnabled
@@ -246,91 +232,6 @@ class UseCaseModule {
         loadEntriesHelper: LoadEntriesHelper,
     ): ILoadMenstruationDataUseCase {
         return LoadMenstruationDataUseCase(loadEntriesHelper, dispatcher)
-    }
-
-    @Provides
-    fun providesMostRecentAggregationsUseCase(
-        loadDataAggregationsUseCase: LoadDataAggregationsUseCase,
-        loadLastDateWithPriorityDataUseCase: LoadLastDateWithPriorityDataUseCase,
-        sleepSessionHelper: SleepSessionHelper,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): ILoadMostRecentAggregationsUseCase {
-        return LoadMostRecentAggregationsUseCase(
-            loadDataAggregationsUseCase,
-            loadLastDateWithPriorityDataUseCase,
-            sleepSessionHelper,
-            dispatcher,
-        )
-    }
-
-    @Provides
-    fun providesSleepSessionHelper(
-        loadPriorityEntriesUseCase: LoadPriorityEntriesUseCase,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): ISleepSessionHelper {
-        return SleepSessionHelper(loadPriorityEntriesUseCase, dispatcher)
-    }
-
-    @Provides
-    fun providesLoadPriorityEntriesUseCase(
-        loadEntriesHelper: LoadEntriesHelper,
-        loadPriorityListUseCase: LoadPriorityListUseCase,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): ILoadPriorityEntriesUseCase {
-        return LoadPriorityEntriesUseCase(loadEntriesHelper, loadPriorityListUseCase, dispatcher)
-    }
-
-    @Provides
-    fun providesLoadPotentialPriorityListUseCase(
-        appInfoReader: AppInfoReader,
-        healthConnectManager: HealthConnectManager,
-        healthPermissionReader: HealthPermissionReader,
-        loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
-        loadPriorityListUseCase: LoadPriorityListUseCase,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): ILoadPotentialPriorityListUseCase {
-        return LoadPotentialPriorityListUseCase(
-            appInfoReader,
-            healthConnectManager,
-            healthPermissionReader,
-            loadGrantedHealthPermissionsUseCase,
-            loadPriorityListUseCase,
-            dispatcher,
-        )
-    }
-
-    @Provides
-    fun providesLoadLastDateWithPriorityDataUseCase(
-        healthConnectManager: HealthConnectManager,
-        loadEntriesHelper: LoadEntriesHelper,
-        loadPriorityListUseCase: LoadPriorityListUseCase,
-        timeSource: TimeSource,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): ILoadLastDateWithPriorityDataUseCase {
-        return LoadLastDateWithPriorityDataUseCase(
-            healthConnectManager,
-            loadEntriesHelper,
-            loadPriorityListUseCase,
-            timeSource,
-            dispatcher,
-        )
-    }
-
-    @Provides
-    fun providesPriorityListUseCase(
-        appInfoReader: AppInfoReader,
-        healthConnectManager: HealthConnectManager,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): ILoadPriorityListUseCase {
-        return LoadPriorityListUseCase(healthConnectManager, appInfoReader, dispatcher)
-    }
-
-    @Provides
-    fun updatePriorityListUseCase(
-        healthConnectManager: HealthConnectManager,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): IUpdatePriorityListUseCase {
-        return UpdatePriorityListUseCase(healthConnectManager, dispatcher)
     }
 
     @Provides
