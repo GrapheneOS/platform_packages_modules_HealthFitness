@@ -45,10 +45,10 @@ class DataSourcesViewModel
 @Inject
 constructor(
     private val loadDatesWithDataUseCase: BaseUseCase<Int, List<AggregationCardInfo>>,
-    @LoadPotentialPriorityListUseCase
+    @param:LoadPotentialPriorityListUseCase
     private val loadPotentialAppSourcesUseCase:
         BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>,
-    @LoadPriorityListUseCase
+    @param:LoadPriorityListUseCase
     private val loadPriorityListUseCase: BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>,
     private val updatePriorityListUseCase: BaseUseCase<UpdatePriorityListInput, Unit>,
     private val getDeviceDataSourcesInfoUseCase: GetDeviceDataSourcesInfoUseCase,

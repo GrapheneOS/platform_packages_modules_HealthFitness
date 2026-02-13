@@ -32,8 +32,8 @@ constructor(
      * Instants representing a time interval [minStartTime, maxEndTime] between which we will query
      * the aggregated time of sleep sessions.
      */
-    override suspend fun execute(lastDateWithData: LocalDate): Pair<Instant, Instant>? {
-        val currentDaySleepData = getPrioritySleepRecords(lastDateWithData)
+    override suspend fun execute(input: LocalDate): Pair<Instant, Instant>? {
+        val currentDaySleepData = getPrioritySleepRecords(input)
 
         if (currentDaySleepData.isEmpty()) {
             return null
@@ -58,8 +58,8 @@ constructor(
         // All sessions start and end on this day
         // now we look at the date before to see if there is a session
         // that ends today
-        val secondToLastDayWithData = lastDateWithData.minusDays(1)
-        val lastDateWithDataInstant = lastDateWithData.toInstantAtStartOfDay()
+        val secondToLastDayWithData = input.minusDays(1)
+        val lastDateWithDataInstant = input.toInstantAtStartOfDay()
 
         // Get all sleep sessions starting on secondToLastDate
         val previousDaySleepData = getPrioritySleepRecords(secondToLastDayWithData)

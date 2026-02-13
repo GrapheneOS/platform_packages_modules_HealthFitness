@@ -23,7 +23,7 @@ class LoadPriorityEntriesUseCase
 @Inject
 constructor(
     private val loadEntriesHelper: LoadEntriesHelper,
-    @LoadPriorityListUseCase
+    @param:LoadPriorityListUseCase
     private val loadPriorityListUseCase: BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : BaseUseCase<LoadPriorityEntriesInput, List<Record>>(dispatcher) {

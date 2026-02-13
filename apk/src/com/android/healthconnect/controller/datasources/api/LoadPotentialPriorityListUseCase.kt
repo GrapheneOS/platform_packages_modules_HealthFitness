@@ -48,7 +48,7 @@ constructor(
     private val healthConnectManager: HealthConnectManager,
     private val healthPermissionReader: HealthPermissionReader,
     private val loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
-    @LoadPriorityListUseCase
+    @param:LoadPriorityListUseCase
     private val loadPriorityListUseCase: BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) : BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>(dispatcher) {
@@ -56,10 +56,10 @@ constructor(
     private val TAG = "LoadAppSourcesUseCase"
 
     /** Returns a list of unique [AppMetadata]s that are potential priority list candidates. */
-    override suspend fun execute(category: @HealthDataCategoryInt Int): List<AppMetadata> {
-        val appsWithDataResult = getAppsWithData(category)
-        val appsWithWritePermissionResult = getAppsWithWritePermission(category)
-        val appsOnPriorityListResult = loadPriorityListUseCase.invoke(category)
+    override suspend fun execute(input: @HealthDataCategoryInt Int): List<AppMetadata> {
+        val appsWithDataResult = getAppsWithData(input)
+        val appsWithWritePermissionResult = getAppsWithWritePermission(input)
+        val appsOnPriorityListResult = loadPriorityListUseCase.invoke(input)
 
         // Propagate error if any calls fail
         if (appsWithDataResult is UseCaseResults.Failed) {

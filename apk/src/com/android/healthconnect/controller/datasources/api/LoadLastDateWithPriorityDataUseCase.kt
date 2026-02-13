@@ -42,7 +42,7 @@ class LoadLastDateWithPriorityDataUseCase
 constructor(
     private val healthConnectManager: HealthConnectManager,
     private val loadEntriesHelper: LoadEntriesHelper,
-    @LoadPriorityListUseCase
+    @param:LoadPriorityListUseCase
     private val loadPriorityListUseCase: BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>,
     private val timeSource: TimeSource,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,

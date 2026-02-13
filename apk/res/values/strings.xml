@@ -2172,4 +2172,6 @@
 
     <!-- endregion -->
     <string name="app_permissions_granted_summary"><xliff:g example="1" id="granted_permissions">%1$d</xliff:g> of <xliff:g example="4" id="total_permissions">%2$d</xliff:g> selected</string>
+    <string name="a11y_aggregation_card_content_desc" description="A11y content description name for the icon of a data totals aggregation card">Data category for this aggregation card</string>
+
 </resources>
