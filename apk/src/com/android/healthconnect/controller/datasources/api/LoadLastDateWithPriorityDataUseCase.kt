@@ -26,7 +26,6 @@ import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.toInstantAtStartOfDay
 import com.android.healthconnect.controller.utils.toLocalDate
-import com.google.common.collect.Comparators.max
 import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -151,7 +150,7 @@ constructor(
         if (firstDate == null) return secondDate
         if (secondDate == null) return firstDate
 
-        return max(firstDate, secondDate)
+        return maxOf(firstDate, secondDate)
     }
 }
 

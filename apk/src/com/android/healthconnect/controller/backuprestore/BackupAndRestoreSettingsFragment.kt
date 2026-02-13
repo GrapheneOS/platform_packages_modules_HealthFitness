@@ -33,6 +33,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.VisibleForTesting
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
@@ -74,7 +75,6 @@ import com.android.healthfitness.flags.Flags.cloudBackupAndRestoreHcUi
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsThemeHelper
-import com.google.common.annotations.VisibleForTesting
 import dagger.hilt.android.AndroidEntryPoint
 import java.time.Duration
 import java.time.Instant

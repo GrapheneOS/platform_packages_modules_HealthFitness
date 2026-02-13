@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.common.changelog;
 
+import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 import static android.health.connect.Constants.DELETE;
 import static android.health.connect.Constants.UPSERT;
@@ -31,10 +32,13 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVacc
 import static android.healthconnect.testing.unittest.RecordInternalFactory.buildBloodPressureRecord;
 import static android.healthconnect.testing.unittest.RecordInternalFactory.buildStepsRecord;
 
+import static com.android.healthfitness.flags.Flags.FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING;
+import static com.android.healthfitness.flags.Flags.FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.APP_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.OPERATION_TYPE_COLUMN_NAME;
+import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.PER_RECORD_PERMISSION_COLUMN_NAME;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.RECORD_TYPE_COLUMN_NAME;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.TIME_COLUMN_NAME;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.UUIDS_COLUMN_NAME;
@@ -727,6 +731,45 @@ public class ChangeLogsHelperTest {
     @Test
     public void toMedicalResourceIdList_nullByteArray_throwsException() {
         assertThrows(Exception.class, () -> toMedicalResourceIdList(null));
+    }
+
+    @Test
+    @EnableFlags({
+        FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING,
+        FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING_DB
+    })
+    public void getUpsertTableRequests_withPerRecordPermission_populatesColumn() {
+        ChangeLogsTableRequests tableRequests = ChangeLogsTableRequests.ofUpsertion(Instant.now());
+        UUID uuid = UUID.randomUUID();
+        int perRecordPermission = 10;
+        tableRequests.addRecordInfo(RECORD_TYPE_STEPS, 0, uuid, perRecordPermission);
+        List<UpsertTableRequest> requests = tableRequests.getUpsertTableRequests();
+
+        assertThat(requests).hasSize(1);
+        assertThat(
+                        requests.get(0)
+                                .getContentValues()
+                                .getAsInteger(PER_RECORD_PERMISSION_COLUMN_NAME))
+                .isEqualTo(perRecordPermission);
+    }
+
+    @Test
+    @EnableFlags({
+        FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING,
+        FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING_DB
+    })
+    public void getUpsertTableRequests_withNoPerRecordPermission_doesNotPopulateColumn() {
+        ChangeLogsTableRequests tableRequests = ChangeLogsTableRequests.ofUpsertion(Instant.now());
+        UUID uuid = UUID.randomUUID();
+        tableRequests.addRecordInfo(RECORD_TYPE_STEPS, 0, uuid, DEFAULT_INT);
+        List<UpsertTableRequest> requests = tableRequests.getUpsertTableRequests();
+
+        assertThat(requests).hasSize(1);
+        assertThat(
+                        requests.get(0)
+                                .getContentValues()
+                                .containsKey(PER_RECORD_PERMISSION_COLUMN_NAME))
+                .isFalse();
     }
 
     private void insertRecordChangeLog(

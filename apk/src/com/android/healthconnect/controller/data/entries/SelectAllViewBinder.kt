@@ -26,6 +26,7 @@ import com.android.healthconnect.controller.shared.recyclerview.DeletionViewBind
 import com.android.healthconnect.controller.utils.logging.EntriesElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.HealthConnectLoggerEntryPoint
+import com.android.healthconnect.controller.utils.setupAccessibilityDelegateForCheckbox
 import dagger.hilt.android.EntryPointAccessors
 
 class SelectAllViewBinder(private val onClickSelectAllListener: OnClickSelectAllListener) :
@@ -57,7 +58,6 @@ class SelectAllViewBinder(private val onClickSelectAllListener: OnClickSelectAll
             logger.logInteraction(logName)
             checkBox.toggle()
             onClickSelectAllListener.onClicked(checkBox.isChecked)
-            container.contentDescription = selectAllText.text.toString()
         }
 
         checkBox.isChecked = isChecked
@@ -65,9 +65,18 @@ class SelectAllViewBinder(private val onClickSelectAllListener: OnClickSelectAll
             logger.logInteraction(logName)
             // check all entries
             onClickSelectAllListener.onClicked(checkBox.isChecked)
-            container.contentDescription = selectAllText.text.toString()
         }
         checkBox.tag = if (isDeletionState) "checkbox" else ""
-        checkBox.contentDescription = selectAllText.text.toString()
+        checkBox.contentDescription = null
+        checkBox.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        checkBox.isFocusable = false
+
+        container.isFocusable = true
+        setupAccessibilityDelegateForCheckbox(
+            container,
+            isCheckboxState = true,
+            isChecked = isChecked,
+            actionLabel = container.context.getString(R.string.a11y_action_select),
+        )
     }
 }

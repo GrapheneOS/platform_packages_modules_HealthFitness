@@ -22,7 +22,7 @@
   <string name="request_fitness_permissions_data_access_type_read_write" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, <xliff:g example="learn more" id="learn_more_link">%1$s</xliff:g></string>
   <string name="request_fitness_permissions_data_access_type_read" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, <xliff:g example="learn more" id="learn_more_link">%1$s</xliff:g></string>
   <string name="request_fitness_permissions_data_access_type_write" description="Text asking the user to select permissions for an app. [CHAR_LIMIT=NONE]">Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, <xliff:g example="learn more" id="learn_more_link">%1$s</xliff:g></string>
-  <string name="request_learn_more" description="Link to a help page about fitness and wellness permissions request. [CHAR_LIMIT=NONE]">learn more</string>
+  <string name="request_learn_more" description="Link to a help page about fitness and wellness permissions request. [CHAR_LIMIT=NONE]">learn more about how your data is accessed</string>
 
   <string name="health_fitness_permissions_learn_more_link" description="Link that helps to learn more about Health Connect. [CHAR_LIMIT=50]" translatable="false">https://support.google.com/android?p=health_and_fitness_permissions</string>
 

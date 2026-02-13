@@ -22,6 +22,10 @@ import android.content.Context
 import android.graphics.Rect
 import android.view.TouchDelegate
 import android.view.View
+import android.widget.CheckBox
+import androidx.core.view.AccessibilityDelegateCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.android.healthconnect.controller.R
 import kotlin.math.max
 
@@ -31,12 +35,47 @@ fun increaseViewTouchTargetSize(context: Context, childView: View, parentView: V
     childView.getHitRect(largerTouchBounds)
     val margin =
         getTouchTargetMargin(
-            context.resources.getDimension(R.dimen.button_size), largerTouchBounds.height())
+            context.resources.getDimension(R.dimen.button_size),
+            largerTouchBounds.height(),
+        )
     largerTouchBounds.top -= margin
     largerTouchBounds.left -= margin
     largerTouchBounds.bottom += margin
     largerTouchBounds.right += margin
     parentView.touchDelegate = TouchDelegate(largerTouchBounds, childView)
+}
+
+/** Sets up the accessibility delegate for a view that should behave like a checkbox. */
+fun setupAccessibilityDelegateForCheckbox(
+    view: View,
+    isCheckboxState: Boolean,
+    isChecked: Boolean,
+    actionLabel: String? = null,
+) {
+    ViewCompat.setAccessibilityDelegate(
+        view,
+        object : AccessibilityDelegateCompat() {
+            override fun onInitializeAccessibilityNodeInfo(
+                host: View,
+                info: AccessibilityNodeInfoCompat,
+            ) {
+                super.onInitializeAccessibilityNodeInfo(host, info)
+                if (isCheckboxState) {
+                    info.className = CheckBox::class.java.name
+                    info.isCheckable = true
+                    info.isChecked = isChecked
+                    actionLabel?.let {
+                        info.addAction(
+                            AccessibilityNodeInfoCompat.AccessibilityActionCompat(
+                                AccessibilityNodeInfoCompat.ACTION_CLICK,
+                                it,
+                            )
+                        )
+                    }
+                }
+            }
+        },
+    )
 }
 
 fun getTouchTargetMargin(desiredSize: Float, actualSize: Int): Int {

@@ -509,52 +509,6 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     /**
-     * Returns RecordReadTableRequest for {@code uuids}. This method is intended to be overridden by
-     * record helpers that require special permission handling.
-     *
-     * @param packageName The package name of the app making this request.
-     * @param uuids The list of UUIDs to read.
-     * @param startDateAccess The earliest time this app is allowed to read from.
-     * @param grantedExtraReadPermissions List of permissions granted to this app to read associated
-     *     data.
-     * @param grantedGranularPermissions A set of granted granular permissions for the read
-     *     operation. These will be used to filter data in cases where a record type is associated
-     *     with multiple permissions, ensuring only data permitted based on these permissions is
-     *     returned.
-     * @param isInForeground If the calling app is in the foreground.
-     * @param appInfoHelper The AppInfoHelper to use.
-     */
-    public RecordReadTableRequest getReadTableRequest(
-            String packageName,
-            List<UUID> uuids,
-            long startDateAccess,
-            Set<String> grantedExtraReadPermissions,
-            Set<String> grantedGranularPermissions,
-            boolean isInForeground,
-            AppInfoHelper appInfoHelper) {
-        WhereClauses whereClause =
-                new WhereClauses(AND)
-                        .addWhereInClauseWithoutQuotes(
-                                UUID_COLUMN_NAME, StorageUtils.getListOfHexStrings(uuids))
-                        .addWhereLaterThanTimeClause(getStartTimeColumnName(), startDateAccess);
-        addCustomReadTableWhereClauses(
-                whereClause, grantedGranularPermissions, /* enforceSelfRead= */ false);
-        ReadTableRequest readTableRequest =
-                new ReadTableRequest(getMainTableName())
-                        .setJoinClause(getJoinForReadRequest())
-                        .setWhereClause(whereClause)
-                        .setExtraReadRequests(
-                                getExtraDataReadRequests(
-                                        packageName,
-                                        uuids,
-                                        startDateAccess,
-                                        grantedExtraReadPermissions,
-                                        isInForeground,
-                                        appInfoHelper));
-        return new RecordReadTableRequest(readTableRequest, this);
-    }
-
-    /**
      * Adds custom WHERE clauses for reading records. Subclasses can override this to add their own
      * filtering logic.
      *
@@ -576,20 +530,6 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     List<ReadTableRequest> getExtraDataReadRequests(
             ReadRecordsRequestParcel request,
             String packageName,
-            long startDateAccess,
-            Set<String> grantedExtraReadPermissions,
-            boolean isInForeground,
-            AppInfoHelper appInfoHelper) {
-        return Collections.emptyList();
-    }
-
-    /**
-     * Returns a list of ReadSingleTableRequest for {@code uuids} to populate extra data. Called in
-     * change logs read requests.
-     */
-    List<ReadTableRequest> getExtraDataReadRequests(
-            String packageName,
-            List<UUID> uuids,
             long startDateAccess,
             Set<String> grantedExtraReadPermissions,
             boolean isInForeground,

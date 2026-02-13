@@ -16,6 +16,7 @@
 
 package com.android.server.healthconnect.common.changelog;
 
+import static android.health.connect.Constants.DEFAULT_INT;
 import static android.health.connect.Constants.DEFAULT_LONG;
 import static android.health.connect.Constants.DEFAULT_PAGE_SIZE;
 
@@ -44,6 +45,7 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.util.ArrayMap;
 import android.util.Pair;
 
+import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.proto.serialization.MedicalResourceIdList;
@@ -279,7 +281,16 @@ public final class ChangeLogsHelper extends DatabaseHelper {
         /** Add a record to the list of changes */
         public void addRecordInfo(
                 @RecordTypeIdentifier.RecordType int recordType, long appId, UUID uuid) {
-            var recordGrouping = new RecordGrouping(recordType, appId);
+            addRecordInfo(recordType, appId, uuid, /* perRecordPermissionCategory */ DEFAULT_INT);
+        }
+
+        /** Add a record to the list of changes with per record permission category */
+        public void addRecordInfo(
+                @RecordTypeIdentifier.RecordType int recordType,
+                long appId,
+                UUID uuid,
+                int perRecordPermissionCategory) {
+            var recordGrouping = new RecordGrouping(recordType, appId, perRecordPermissionCategory);
             mRecordGroups.computeIfAbsent(recordGrouping, k -> new ArrayList<>()).add(uuid);
         }
 
@@ -315,6 +326,13 @@ public final class ChangeLogsHelper extends DatabaseHelper {
                                     StorageUtils.getSingleByteArray(
                                             uuids.subList(
                                                     i, min(i + DEFAULT_PAGE_SIZE, uuids.size()))));
+
+                            if (AconfigFlagHelper.isChangeLogsSchemaUpdateEnabled()
+                                    && recordGrouping.perRecordPermissionCategory != DEFAULT_INT) {
+                                contentValues.put(
+                                        PER_RECORD_PERMISSION_COLUMN_NAME,
+                                        recordGrouping.perRecordPermissionCategory);
+                            }
                             requests.add(new UpsertTableRequest(TABLE_NAME, contentValues));
                         }
                     });
@@ -349,17 +367,21 @@ public final class ChangeLogsHelper extends DatabaseHelper {
         // implementations are extremely slow and are occasionally timing out some tests.
         // https://stackoverflow.com/q/77514303
 
-        private record RecordGrouping(@RecordTypeIdentifier.RecordType int recordType, long appId) {
+        public record RecordGrouping(
+                @RecordTypeIdentifier.RecordType int recordType,
+                long appId,
+                int perRecordPermissionCategory) {
             @Override
             public boolean equals(Object o) {
                 return o instanceof RecordGrouping that
                         && appId == that.appId
-                        && recordType == that.recordType;
+                        && recordType == that.recordType
+                        && perRecordPermissionCategory == that.perRecordPermissionCategory;
             }
 
             @Override
             public int hashCode() {
-                return Objects.hash(recordType, appId);
+                return Objects.hash(recordType, appId, perRecordPermissionCategory);
             }
         }
 
@@ -500,8 +522,21 @@ public final class ChangeLogsHelper extends DatabaseHelper {
                     int recordType = getCursorInt(cursor, RECORD_TYPE_COLUMN_NAME);
                     List<UUID> recordIdList =
                             StorageUtils.getCursorUUIDList(cursor, UUIDS_COLUMN_NAME);
+
+                    int perRecordPermissionCategory =
+                            AconfigFlagHelper.isChangeLogsSchemaUpdateEnabled()
+                                            && !cursor.isNull(
+                                                    cursor.getColumnIndexOrThrow(
+                                                            PER_RECORD_PERMISSION_COLUMN_NAME))
+                                    ? getCursorInt(cursor, PER_RECORD_PERMISSION_COLUMN_NAME)
+                                    : DEFAULT_INT;
+
                     return new ChangeLogRecordRow(
-                            timeStamp, operationType, recordType, recordIdList);
+                            timeStamp,
+                            operationType,
+                            recordType,
+                            recordIdList,
+                            perRecordPermissionCategory);
                 } else if (!cursor.isNull(
                         cursor.getColumnIndexOrThrow(MEDICAL_RESOURCE_TYPE_COLUMN_NAME))) {
                     @MedicalResource.MedicalResourceType
@@ -520,7 +555,8 @@ public final class ChangeLogsHelper extends DatabaseHelper {
                 Instant timeStamp,
                 int operationType,
                 @RecordTypeIdentifier.RecordType int recordType,
-                List<UUID> recordIdList)
+                List<UUID> recordIdList,
+                int perRecordPermissionCategory)
                 implements ChangeLogRow {
             @Override
             public int count() {
@@ -538,6 +574,7 @@ public final class ChangeLogsHelper extends DatabaseHelper {
             public int count() {
                 return medicalResourceIdList.size();
             }
+
         }
     }
 

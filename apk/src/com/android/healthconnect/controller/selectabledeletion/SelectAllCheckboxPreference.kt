@@ -17,13 +17,14 @@ package com.android.healthconnect.controller.selectabledeletion
 
 import android.content.Context
 import android.util.AttributeSet
+import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.CheckBox
-import androidx.preference.Preference.OnPreferenceClickListener
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.preference.HealthPreference
+import com.android.healthconnect.controller.utils.setupAccessibilityDelegateForCheckbox
 
 /** Custom preference that displays a checkbox and allows the user to select all items */
 class SelectAllCheckboxPreference
@@ -52,7 +53,9 @@ constructor(context: Context, attrs: AttributeSet? = null) : HealthPreference(co
 
         checkBox?.setOnClickListener(checkboxButtonListener)
 
-        checkBox?.contentDescription = context.getString(R.string.select_all)
+        checkBox?.contentDescription = null
+        checkBox?.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        checkBox?.isFocusable = false
 
         val widgetFrameParent: ViewGroup? = widgetFrame?.parent as ViewGroup?
         widgetFrameParent?.setPaddingRelative(
@@ -60,6 +63,14 @@ constructor(context: Context, attrs: AttributeSet? = null) : HealthPreference(co
             widgetFrameParent.paddingTop,
             widgetFrameParent.paddingEnd,
             widgetFrameParent.paddingBottom,
+        )
+
+        holder.itemView.isFocusable = true
+        setupAccessibilityDelegateForCheckbox(
+            holder.itemView,
+            isCheckboxState = true,
+            isChecked = isChecked,
+            actionLabel = context.getString(R.string.a11y_action_select),
         )
     }
 

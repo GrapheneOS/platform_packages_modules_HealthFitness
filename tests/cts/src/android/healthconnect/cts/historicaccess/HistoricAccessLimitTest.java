@@ -265,12 +265,13 @@ public class HistoricAccessLimitTest {
                                         .addRecordType(WeightRecord.class)
                                         .build())
                         .getToken();
-        List<String> insertedRecentRecordIds =
+        String ownOldRecordId = insertWeightRecord(daysBeforeNow(50), 12);
+        List<String> insertedRecordIds =
                 List.of(
                         insertWeightRecord(daysBeforeNow(10), 10),
                         insertWeightRecord(daysBeforeNow(11), 11),
-                        insertWeightRecordViaTestApp(daysBeforeNow(2), 13));
-        insertWeightRecord(daysBeforeNow(50), 12);
+                        insertWeightRecordViaTestApp(daysBeforeNow(2), 13),
+                        ownOldRecordId);
         insertWeightRecordViaTestApp(daysBeforeNow(60), 14);
 
         List<String> logsRecordIds =
@@ -278,7 +279,7 @@ public class HistoricAccessLimitTest {
                         getChangeLogs(new ChangeLogsRequest.Builder(token).build())
                                 .getUpsertedRecords());
 
-        assertThat(logsRecordIds).containsExactlyElementsIn(insertedRecentRecordIds);
+        assertThat(logsRecordIds).containsExactlyElementsIn(insertedRecordIds);
     }
 
     @Test
