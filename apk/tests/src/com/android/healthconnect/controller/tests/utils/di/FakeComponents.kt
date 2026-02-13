@@ -17,7 +17,6 @@ package com.android.healthconnect.controller.tests.utils.di
 
 import android.hardware.Sensor
 import android.health.connect.HealthConnectException
-import android.health.connect.accesslog.AccessLog
 import android.health.connect.exportimport.ScheduledExportSettings
 import android.net.Uri
 import com.android.healthconnect.controller.data.access.AppAccessMetadata
@@ -64,7 +63,6 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.shared.IQueryRecentAccessLogsUseCase
-import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.IGetContributorAppInfoUseCase
@@ -72,43 +70,6 @@ import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.toInstant
 import java.time.Instant
 import kotlinx.coroutines.Dispatchers
-
-class FakeRecentAccessUseCase : ILoadRecentAccessUseCase {
-    private var list: List<AccessLog> = emptyList()
-    private var forceFail = false
-    var numberOfInvocations = 0
-
-    fun updateList(list: List<AccessLog>) {
-        this.list = list
-    }
-
-    fun addToList(newLogs: List<AccessLog>) {
-        this.list = list + newLogs
-    }
-
-    override suspend fun execute(input: Unit): List<AccessLog> {
-        return list
-    }
-
-    override suspend fun invoke(input: Unit): UseCaseResults<List<AccessLog>> {
-        numberOfInvocations += 1
-        return if (forceFail) {
-            UseCaseResults.Failed(IllegalStateException("Force fail recent access."))
-        } else {
-            UseCaseResults.Success(list)
-        }
-    }
-
-    fun setForceFail(forceFail: Boolean) {
-        this.forceFail = forceFail
-    }
-
-    fun reset() {
-        this.list = emptyList()
-        this.forceFail = false
-        this.numberOfInvocations = 0
-    }
-}
 
 class FakeHealthPermissionAppsUseCase : ILoadHealthPermissionApps {
     private var list: List<ConnectedAppMetadata> = emptyList()

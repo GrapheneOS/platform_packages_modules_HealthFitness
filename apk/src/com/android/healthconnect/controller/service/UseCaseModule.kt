@@ -86,15 +86,12 @@ import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealt
 import com.android.healthconnect.controller.permissions.connectedapps.LoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.shared.IQueryRecentAccessLogsUseCase
 import com.android.healthconnect.controller.permissions.shared.QueryRecentAccessLogsUseCase
-import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
-import com.android.healthconnect.controller.recentaccess.LoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.GetContributorAppInfoUseCase
 import com.android.healthconnect.controller.shared.app.IGetContributorAppInfoUseCase
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.utils.TimeSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -106,14 +103,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 @Module
 @InstallIn(SingletonComponent::class)
 class UseCaseModule {
-    @Provides
-    fun providesLoadRecentAccessUseCase(
-        manager: HealthConnectManager,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-        timeSource: TimeSource,
-    ): ILoadRecentAccessUseCase {
-        return LoadRecentAccessUseCase(manager, dispatcher, timeSource)
-    }
 
     @Provides
     fun providesLoadHealthPermissionAppsUseCase(

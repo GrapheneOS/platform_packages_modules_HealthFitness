@@ -40,13 +40,13 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.AdditionalPermission.Companion.READ_HEALTH_DATA_HISTORY
 import com.android.healthconnect.controller.permissions.data.HealthPermission.AdditionalPermission.Companion.READ_HEALTH_DATA_IN_BACKGROUND
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
-import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.tests.recentaccess.api.FakeRecentAccessUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionAppsUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadAppPermissionsStatusUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeRecentAccessUseCase
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -81,13 +81,14 @@ class WearConnectedAppsViewModelTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
     @get:Rule val setFlagsRule = SetFlagsRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
     private val testDispatcher = UnconfinedTestDispatcher()
     private val loadHealthPermissionApps: ILoadHealthPermissionApps =
         FakeHealthPermissionAppsUseCase()
     private val loadAppPermissionsStatusUseCase: ILoadAppPermissionsStatusUseCase =
         FakeLoadAppPermissionsStatusUseCase()
-    private val loadRecentAccessUseCase: ILoadRecentAccessUseCase = FakeRecentAccessUseCase()
+    private val loadRecentAccessUseCase = fakeUseCaseRule.watch(FakeRecentAccessUseCase())
 
     @BindValue val grantPermissionsStatusUseCase: GrantHealthPermissionUseCase = mock()
     @BindValue val revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase = mock()
@@ -124,7 +125,6 @@ class WearConnectedAppsViewModelTest {
         Dispatchers.resetMain()
         (loadHealthPermissionApps as FakeHealthPermissionAppsUseCase).reset()
         (loadAppPermissionsStatusUseCase as FakeLoadAppPermissionsStatusUseCase).reset()
-        (loadRecentAccessUseCase as FakeRecentAccessUseCase).reset()
         wearConnectedAppsViewModel.updateShowSystem(false)
     }
 

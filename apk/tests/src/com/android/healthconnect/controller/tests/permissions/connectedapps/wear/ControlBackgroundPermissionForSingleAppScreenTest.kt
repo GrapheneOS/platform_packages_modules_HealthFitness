@@ -36,13 +36,13 @@ import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsS
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.connectedapps.wear.ControlBackgroundReadForSingleAppScreen
 import com.android.healthconnect.controller.permissions.connectedapps.wear.WearConnectedAppsViewModel
-import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.tests.recentaccess.api.FakeRecentAccessUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TestComposeActivity
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionAppsUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadAppPermissionsStatusUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeRecentAccessUseCase
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -63,6 +63,7 @@ class ControlBackgroundPermissionForSingleAppScreenTest {
     @get:Rule(order = 0) val hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1) val composeTestRule = createAndroidComposeRule<TestComposeActivity>()
+    @get:Rule(order = 2) val fakeUseCaseRule = FakeUseCaseRule()
 
     private lateinit var wearConnectedAppsViewModel: WearConnectedAppsViewModel
     private val loadHealthPermissionApps: ILoadHealthPermissionApps =
@@ -71,7 +72,7 @@ class ControlBackgroundPermissionForSingleAppScreenTest {
         FakeLoadAppPermissionsStatusUseCase()
     @BindValue val grantPermissionsStatusUseCase: GrantHealthPermissionUseCase = mock()
     @BindValue val revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase = mock()
-    private val loadRecentAccessUseCase: ILoadRecentAccessUseCase = FakeRecentAccessUseCase()
+    private val loadRecentAccessUseCase = fakeUseCaseRule.watch(FakeRecentAccessUseCase())
     @BindValue val healthPermissionReader: HealthPermissionReader = mock()
 
     lateinit var context: Context
@@ -102,7 +103,6 @@ class ControlBackgroundPermissionForSingleAppScreenTest {
     fun tearDown() {
         (loadHealthPermissionApps as FakeHealthPermissionAppsUseCase).reset()
         (loadAppPermissionsStatusUseCase as FakeLoadAppPermissionsStatusUseCase).reset()
-        (loadRecentAccessUseCase as FakeRecentAccessUseCase).reset()
     }
 
     @Test

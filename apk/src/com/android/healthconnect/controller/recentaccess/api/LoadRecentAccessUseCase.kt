@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.recentaccess
+package com.android.healthconnect.controller.recentaccess.api
 
 import android.health.connect.HealthConnectManager
 import android.health.connect.accesslog.AccessLog
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import com.android.healthconnect.controller.utils.TimeSource
 import java.time.Duration
 import java.time.Instant
@@ -35,13 +35,9 @@ class LoadRecentAccessUseCase
 @Inject
 constructor(
     private val manager: HealthConnectManager,
-    @IoDispatcher private val dispatcher: CoroutineDispatcher,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
     private val timeSource: TimeSource,
-) : ILoadRecentAccessUseCase, BaseUseCase<Unit, List<AccessLog>>(dispatcher) {
-
-    companion object {
-        private const val TAG = "LoadRecentAccessUseCase"
-    }
+) : BaseUseCase<Unit, List<AccessLog>>(dispatcher), ILoadRecentAccessUseCase {
 
     /** Returns a list of apps that have recently accessed Health Connect */
     override suspend fun execute(input: Unit): List<AccessLog> {
@@ -60,8 +56,4 @@ constructor(
     }
 }
 
-interface ILoadRecentAccessUseCase {
-    suspend fun invoke(input: Unit): UseCaseResults<List<AccessLog>>
-
-    suspend fun execute(input: Unit): List<AccessLog>
-}
+interface ILoadRecentAccessUseCase : UseCaseContract<Unit, List<AccessLog>>
