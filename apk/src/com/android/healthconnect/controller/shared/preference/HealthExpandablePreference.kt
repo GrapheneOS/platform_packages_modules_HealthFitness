@@ -40,6 +40,12 @@ constructor(context: Context, attrs: AttributeSet? = null) :
             }
         }
 
+    var switchContentDescription: CharSequence? = null
+        set(value) {
+            field = value
+            notifyChanged()
+        }
+
     init {
         layoutResource =
             if (SettingsThemeHelper.isExpressiveTheme(context)) {
@@ -66,6 +72,7 @@ constructor(context: Context, attrs: AttributeSet? = null) :
         val twoTargetDivider = holder.findViewById(R.id.two_target_divider) as? View
         val switch = holder.findViewById(R.id.switch_widget) as? SwitchCompat
         switch?.isClickable = true
+        switch?.contentDescription = switchContentDescription
 
         switch?.setOnCheckedChangeListener(null)
         switch?.isChecked = isChecked

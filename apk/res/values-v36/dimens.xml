@@ -17,5 +17,4 @@
     <dimen name="item_exercise_session_marginEnd">@dimen/spacing_small</dimen>
     <dimen name="horizontal_padding_detailed_perms">0dp</dimen>
     <dimen name="vertical_padding_detailed_perms">0dp</dimen>
-
 </resources>

@@ -20,8 +20,12 @@ import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromFitnessPermissionType
+import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
+import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.LoadPriorityListUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.toInstantAtStartOfDay
@@ -31,7 +35,6 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
 
 @Singleton
 class LoadLastDateWithPriorityDataUseCase
@@ -39,51 +42,39 @@ class LoadLastDateWithPriorityDataUseCase
 constructor(
     private val healthConnectManager: HealthConnectManager,
     private val loadEntriesHelper: LoadEntriesHelper,
-    private val loadPriorityListUseCase: ILoadPriorityListUseCase,
+    @LoadPriorityListUseCase
+    private val loadPriorityListUseCase: BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>,
     private val timeSource: TimeSource,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : ILoadLastDateWithPriorityDataUseCase {
+) : BaseUseCase<FitnessPermissionType, LocalDate?>(dispatcher) {
 
     /**
      * Returns the last local date with data for this health permission type, from the data owned by
      * apps on the priority list.
      */
-    override suspend fun invoke(
-        fitnessPermissionType: FitnessPermissionType
-    ): UseCaseResults<LocalDate?> =
-        withContext(dispatcher) {
-            var latestDateWithData: LocalDate? = null
-            try {
-                when (
-                    val priorityAppsResult =
-                        loadPriorityListUseCase.invoke(
-                            fromFitnessPermissionType(fitnessPermissionType)
-                        )
-                ) {
-                    is UseCaseResults.Success -> {
-                        val priorityApps = priorityAppsResult.data
+    override suspend fun execute(input: FitnessPermissionType): LocalDate? {
+        var latestDateWithData: LocalDate? = null
+        when (
+            val priorityAppsResult =
+                loadPriorityListUseCase.invoke(fromFitnessPermissionType(input))
+        ) {
+            is UseCaseResults.Success -> {
+                val priorityApps = priorityAppsResult.data
 
-                        priorityApps.forEach { priorityApp ->
-                            val lastDateWithDataForApp =
-                                loadLastDateWithDataForApp(
-                                    fitnessPermissionType,
-                                    priorityApp.packageName,
-                                )
+                priorityApps.forEach { priorityApp ->
+                    val lastDateWithDataForApp =
+                        loadLastDateWithDataForApp(input, priorityApp.packageName)
 
-                            latestDateWithData =
-                                maxDateOrNull(latestDateWithData, lastDateWithDataForApp)
-                        }
-                    }
-                    is UseCaseResults.Failed -> {
-                        return@withContext UseCaseResults.Failed(priorityAppsResult.exception)
-                    }
+                    latestDateWithData = maxDateOrNull(latestDateWithData, lastDateWithDataForApp)
                 }
-
-                return@withContext UseCaseResults.Success(latestDateWithData)
-            } catch (e: Exception) {
-                UseCaseResults.Failed(e)
+            }
+            is UseCaseResults.Failed -> {
+                throw priorityAppsResult.exception
             }
         }
+
+        return latestDateWithData
+    }
 
     /**
      * Returns the last date with data from a particular packageName, or null if no such date
@@ -152,8 +143,4 @@ constructor(
 
         return maxOf(firstDate, secondDate)
     }
-}
-
-interface ILoadLastDateWithPriorityDataUseCase {
-    suspend fun invoke(fitnessPermissionType: FitnessPermissionType): UseCaseResults<LocalDate?>
 }

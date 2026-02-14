@@ -45,7 +45,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_3
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadPriorityListUseCase
+import com.android.healthconnect.controller.tests.utils.di.DEFAULT_USE_CASE_EXCEPTION_MESSAGE
 import com.android.healthconnect.controller.tests.utils.forDataType
 import com.android.healthconnect.controller.tests.utils.fromDataSource
 import com.android.healthconnect.controller.tests.utils.fromTimeRange
@@ -133,7 +133,7 @@ class LoadLastDateWithPriorityDataUseCaseTest {
 
     @Test
     fun emptyPriorityList_doesNotInvokeEntriesUseCase_returnsNull() = runTest {
-        loadPriorityListUseCase.updatePriorityList(listOf())
+        loadPriorityListUseCase.setPriorityList(listOf())
 
         val result = loadLastDateWithPriorityDataUseCase.invoke(FitnessPermissionType.STEPS)
         assertThat(result is UseCaseResults.Success).isTrue()
@@ -145,7 +145,7 @@ class LoadLastDateWithPriorityDataUseCaseTest {
     fun onePriorityApp_noActivityDates_noData_returnsNull() = runTest {
         val now = Instant.parse("2023-10-14T12:00:00Z")
         timeSource.setNow(now)
-        loadPriorityListUseCase.updatePriorityList(listOf(TEST_APP))
+        loadPriorityListUseCase.setPriorityList(listOf(TEST_APP))
 
         mockQueryActivityDatesAnswer(listOf())
         mockReadRecordsResult(
@@ -164,7 +164,7 @@ class LoadLastDateWithPriorityDataUseCaseTest {
     fun onePriorityApp_noActivityDates_dataPresent_returnsMostRecentDateWithPriority() = runTest {
         val now = Instant.parse("2023-10-14T12:00:00Z")
         timeSource.setNow(now)
-        loadPriorityListUseCase.updatePriorityList(listOf(TEST_APP))
+        loadPriorityListUseCase.setPriorityList(listOf(TEST_APP))
         val queryDate = timeSource.currentLocalDateTime().toLocalDate().minusMonths(1)
 
         mockQueryActivityDatesAnswer(listOf())
@@ -186,7 +186,7 @@ class LoadLastDateWithPriorityDataUseCaseTest {
         timeSource.setNow(now)
 
         val dateWithData = LocalDate.of(2023, 10, 10)
-        loadPriorityListUseCase.updatePriorityList(listOf(TEST_APP))
+        loadPriorityListUseCase.setPriorityList(listOf(TEST_APP))
         mockQueryActivityDatesAnswer(listOf(dateWithData))
 
         mockReadRecordsResult(
@@ -207,7 +207,7 @@ class LoadLastDateWithPriorityDataUseCaseTest {
         timeSource.setNow(now)
 
         val dateWithData = LocalDate.of(2023, 9, 10)
-        loadPriorityListUseCase.updatePriorityList(listOf(TEST_APP))
+        loadPriorityListUseCase.setPriorityList(listOf(TEST_APP))
         mockReadRecordsResult(
             packageName = TEST_APP_PACKAGE_NAME,
             fitnessPermissionType = FitnessPermissionType.STEPS,
@@ -232,7 +232,7 @@ class LoadLastDateWithPriorityDataUseCaseTest {
     fun multiplePriorityApps_withData_returnsMostRecentDateWithPriorityData() = runTest {
         val now = Instant.parse("2023-11-07T12:00:00Z")
         timeSource.setNow(now)
-        loadPriorityListUseCase.updatePriorityList(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
+        loadPriorityListUseCase.setPriorityList(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
 
         // datesWithin1MonthOfToday = 2023-11-1, 2023-11-2
         // min = 2023-11-1
@@ -291,7 +291,7 @@ class LoadLastDateWithPriorityDataUseCaseTest {
     fun multipleStepsPriorityApps_withDataAndWithout_returnsMostRecentDate() = runTest {
         val now = Instant.parse("2023-11-07T12:00:00Z")
         timeSource.setNow(now)
-        loadPriorityListUseCase.updatePriorityList(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
+        loadPriorityListUseCase.setPriorityList(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
 
         mockQueryActivityDatesAnswer(
             listOf(
@@ -336,7 +336,7 @@ class LoadLastDateWithPriorityDataUseCaseTest {
         val now = Instant.parse("2023-10-14T12:00:00Z")
         timeSource.setNow(now)
         val fitnessPermissionType = FitnessPermissionType.DISTANCE
-        loadPriorityListUseCase.updatePriorityList(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
+        loadPriorityListUseCase.setPriorityList(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
 
         mockQueryActivityDatesAnswer(
             listOf(
@@ -388,7 +388,7 @@ class LoadLastDateWithPriorityDataUseCaseTest {
         val now = Instant.parse("2023-10-14T12:00:00Z")
         timeSource.setNow(now)
         val fitnessPermissionType = FitnessPermissionType.TOTAL_CALORIES_BURNED
-        loadPriorityListUseCase.updatePriorityList(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
+        loadPriorityListUseCase.setPriorityList(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
 
         mockQueryActivityDatesAnswer(
             listOf(
@@ -440,7 +440,7 @@ class LoadLastDateWithPriorityDataUseCaseTest {
         val now = Instant.parse("2023-10-14T12:00:00Z")
         timeSource.setNow(now)
         val fitnessPermissionType = FitnessPermissionType.SLEEP
-        loadPriorityListUseCase.updatePriorityList(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
+        loadPriorityListUseCase.setPriorityList(listOf(TEST_APP, TEST_APP_2, TEST_APP_3))
 
         mockQueryActivityDatesAnswer(
             listOf(
@@ -489,20 +489,21 @@ class LoadLastDateWithPriorityDataUseCaseTest {
 
     @Test
     fun whenLoadPriorityListFails_returnsFailure() = runTest {
-        loadPriorityListUseCase.setFailure("Exception")
+        loadPriorityListUseCase.setForceFail(true)
         val result = loadLastDateWithPriorityDataUseCase.invoke(FitnessPermissionType.STEPS)
 
         verifyNoMoreInteractions(healthConnectManager)
         Mockito.verify(healthConnectManager, times(0)).readRecords<StepsRecord>(any(), any(), any())
         assertThat(result is UseCaseResults.Failed).isTrue()
-        assertThat((result as UseCaseResults.Failed).exception.message).isEqualTo("Exception")
+        assertThat((result as UseCaseResults.Failed).exception.message)
+            .isEqualTo(DEFAULT_USE_CASE_EXCEPTION_MESSAGE)
     }
 
     @Test
     fun whenLoadEntriesHelperFails_returnsFailure() = runTest {
         val now = Instant.parse("2023-10-14T12:00:00Z")
         timeSource.setNow(now)
-        loadPriorityListUseCase.updatePriorityList(listOf(TEST_APP))
+        loadPriorityListUseCase.setPriorityList(listOf(TEST_APP))
         Mockito.doAnswer(prepareFailureAnswer())
             .`when`(healthConnectManager)
             .readRecords<StepsRecord>(any(), any(), any())
@@ -518,7 +519,7 @@ class LoadLastDateWithPriorityDataUseCaseTest {
 
     @Test
     fun whenQueryActivityDatesFails_returnsFailure() = runTest {
-        loadPriorityListUseCase.updatePriorityList(listOf(TEST_APP))
+        loadPriorityListUseCase.setPriorityList(listOf(TEST_APP))
         mockQueryActivityDatesError()
 
         val result = loadLastDateWithPriorityDataUseCase.invoke(FitnessPermissionType.STEPS)

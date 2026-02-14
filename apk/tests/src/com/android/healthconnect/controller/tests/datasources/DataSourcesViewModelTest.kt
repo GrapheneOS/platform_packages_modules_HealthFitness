@@ -19,6 +19,10 @@ import com.android.healthconnect.controller.matchmaking.api.GetDeviceDataSources
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.tests.datasources.api.FakeLoadMostRecentAggregationsUseCase
+import com.android.healthconnect.controller.tests.datasources.api.FakeLoadPotentialPriorityListUseCase
+import com.android.healthconnect.controller.tests.datasources.api.FakeLoadPriorityListUseCase
+import com.android.healthconnect.controller.tests.datasources.api.FakeUpdatePriorityListUseCase
 import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_APP
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP
@@ -27,10 +31,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_3
 import com.android.healthconnect.controller.tests.utils.TEST_PHONE_SPN
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadMostRecentAggregationsUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadPotentialPriorityListUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadPriorityListUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeUpdatePriorityListUseCase
 import com.android.healthconnect.controller.tests.utils.getDeviceDataSourcesInfo
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
@@ -142,9 +142,9 @@ class DataSourcesViewModelTest {
             )
         val priorityList = listOf(TEST_APP, TEST_APP_2)
         val potentialAppSources = listOf(TEST_APP_3)
-        loadMostRecentAggregationsUseCase.updateMostRecentAggregations(mostRecentAggregations)
-        loadPriorityListUseCase.updatePriorityList(priorityList)
-        loadPotentialAppSourcesUseCase.updatePotentialPriorityList(potentialAppSources)
+        loadMostRecentAggregationsUseCase.setMostRecentAggregations(mostRecentAggregations)
+        loadPriorityListUseCase.setPriorityList(priorityList)
+        loadPotentialAppSourcesUseCase.setPotentialPriorityList(potentialAppSources)
         val testObserver = TestObserver<DataSourcesAndAggregationsInfo>()
         viewModel.dataSourcesAndAggregationsInfo.observeForever(testObserver)
         viewModel.loadData(HealthDataCategory.ACTIVITY)
@@ -176,7 +176,7 @@ class DataSourcesViewModelTest {
     @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun loadPotentialAppSources_ddpFlagEnabled_filtersLegacyDeviceDataProvider() = runTest {
         val potentialAppSources = listOf(TEST_APP, DEVICE_DATA_PROVIDER_APP)
-        loadPotentialAppSourcesUseCase.updatePotentialPriorityList(potentialAppSources)
+        loadPotentialAppSourcesUseCase.setPotentialPriorityList(potentialAppSources)
         val testObserver = TestObserver<DataSourcesAndAggregationsInfo>()
         viewModel.dataSourcesAndAggregationsInfo.observeForever(testObserver)
 
@@ -192,7 +192,7 @@ class DataSourcesViewModelTest {
     @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun loadPotentialAppSources_ddpFlagDisabled_includesLegacyDeviceDataProvider() = runTest {
         val potentialAppSources = listOf(TEST_APP, DEVICE_DATA_PROVIDER_APP)
-        loadPotentialAppSourcesUseCase.updatePotentialPriorityList(potentialAppSources)
+        loadPotentialAppSourcesUseCase.setPotentialPriorityList(potentialAppSources)
         val testObserver = TestObserver<DataSourcesAndAggregationsInfo>()
         viewModel.dataSourcesAndAggregationsInfo.observeForever(testObserver)
 
@@ -208,7 +208,7 @@ class DataSourcesViewModelTest {
     @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun loadCurrentPriorityList_ddpFlagEnabled_filtersLegacyDeviceDataProvider() = runTest {
         val priorityList = listOf(TEST_APP, DEVICE_DATA_PROVIDER_APP)
-        loadPriorityListUseCase.updatePriorityList(priorityList)
+        loadPriorityListUseCase.setPriorityList(priorityList)
         val testObserver = TestObserver<DataSourcesAndAggregationsInfo>()
         viewModel.dataSourcesAndAggregationsInfo.observeForever(testObserver)
 
@@ -224,7 +224,7 @@ class DataSourcesViewModelTest {
     @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun loadCurrentPriorityList_ddpFlagDisabled_includesLegacyDeviceDataProvider() = runTest {
         val priorityList = listOf(TEST_APP, DEVICE_DATA_PROVIDER_APP)
-        loadPriorityListUseCase.updatePriorityList(priorityList)
+        loadPriorityListUseCase.setPriorityList(priorityList)
         val testObserver = TestObserver<DataSourcesAndAggregationsInfo>()
         viewModel.dataSourcesAndAggregationsInfo.observeForever(testObserver)
 

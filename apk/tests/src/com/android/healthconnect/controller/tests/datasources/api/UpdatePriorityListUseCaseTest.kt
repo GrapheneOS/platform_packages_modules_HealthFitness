@@ -20,6 +20,7 @@ import android.health.connect.HealthDataCategory
 import android.health.connect.UpdateDataOriginPriorityOrderRequest
 import android.health.connect.datatypes.DataOrigin
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.android.healthconnect.controller.datasources.api.UpdatePriorityListInput
 import com.android.healthconnect.controller.datasources.api.UpdatePriorityListUseCase
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_3
@@ -68,7 +69,12 @@ class UpdatePriorityListUseCaseTest {
             .updateDataOriginPriorityOrder(any(), any(), any())
 
         val priorityList = listOf(TEST_APP_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_3)
-        useCase.invoke(priorityList = priorityList, category = HealthDataCategory.ACTIVITY)
+        useCase.invoke(
+            UpdatePriorityListInput(
+                priorityList = priorityList,
+                category = HealthDataCategory.ACTIVITY,
+            )
+        )
         val expectedPriorityList =
             priorityList
                 .map { packageName -> DataOrigin.Builder().setPackageName(packageName).build() }

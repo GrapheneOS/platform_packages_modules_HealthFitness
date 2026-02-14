@@ -4,6 +4,7 @@ import android.health.connect.datatypes.IntervalRecord
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SleepSessionRecord
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.isAtLeastOneDayAfter
@@ -11,94 +12,77 @@ import com.android.healthconnect.controller.utils.isOnDayAfter
 import com.android.healthconnect.controller.utils.isOnSameDay
 import com.android.healthconnect.controller.utils.toInstantAtStartOfDay
 import com.android.healthconnect.controller.utils.toLocalDate
-import java.lang.Exception
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.withContext
 
 @Singleton
 class SleepSessionHelper
 @Inject
 constructor(
-    private val loadPriorityEntriesUseCase: ILoadPriorityEntriesUseCase,
+    private val loadPriorityEntriesUseCase: BaseUseCase<LoadPriorityEntriesInput, List<Record>>,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : ISleepSessionHelper {
+) : BaseUseCase<LocalDate, Pair<Instant, Instant>?>(dispatcher) {
 
     /**
      * Given a list of sleep session records starting on the last date with data, returns a pair of
      * Instants representing a time interval [minStartTime, maxEndTime] between which we will query
      * the aggregated time of sleep sessions.
      */
-    override suspend fun clusterSleepSessions(
-        lastDateWithData: LocalDate
-    ): UseCaseResults<Pair<Instant, Instant>?> =
-        withContext(dispatcher) {
-            try {
-                val currentDaySleepData = getPrioritySleepRecords(lastDateWithData)
+    override suspend fun execute(lastDateWithData: LocalDate): Pair<Instant, Instant>? {
+        val currentDaySleepData = getPrioritySleepRecords(lastDateWithData)
 
-                if (currentDaySleepData.isEmpty()) {
-                    return@withContext UseCaseResults.Success(null)
-                }
-
-                // Determine if there is at least one session starting on Day 2 and finishing on Day
-                // 3
-                // (Case 3)
-                val sessionsCrossingMidnight =
-                    currentDaySleepData.any { record ->
-                        val currentSleepSession = (record as IntervalRecord)
-                        (currentSleepSession.endTime.isAtLeastOneDayAfter(
-                            currentSleepSession.startTime
-                        ))
-                    }
-
-                // Handle Case 3 - at least one sleep session starts on Day 2 and finishes on Day 3
-                if (sessionsCrossingMidnight) {
-                    return@withContext UseCaseResults.Success(
-                        handleSessionsCrossingMidnight(currentDaySleepData)
-                    )
-                }
-
-                // case 1 - start and end times on the same day (Day 2)
-                // case 2 - there might be sessions starting on Day 1 and finishing on Day 2
-                // All sessions start and end on this day
-                // now we look at the date before to see if there is a session
-                // that ends today
-                val secondToLastDayWithData = lastDateWithData.minusDays(1)
-                val lastDateWithDataInstant = lastDateWithData.toInstantAtStartOfDay()
-
-                // Get all sleep sessions starting on secondToLastDate
-                val previousDaySleepData = getPrioritySleepRecords(secondToLastDayWithData)
-
-                // For each session check if the end date is last date
-                // If we find it, extend minStartTime to the start time of that session
-                // Case 1 - All sessions start and end on this day (Day 2)
-                // We also need these for case2
-                val minStartTime: Instant =
-                    currentDaySleepData.minOf { (it as IntervalRecord).startTime }
-                val maxEndTime: Instant =
-                    currentDaySleepData.maxOf { (it as IntervalRecord).endTime }
-
-                if (previousDaySleepData.isNotEmpty()) {
-                    // Case 2 - At least one session starts on Day 1 and finishes on Day 2 or later
-                    return@withContext UseCaseResults.Success(
-                        handleSessionsStartingOnSecondToLastDate(
-                            previousDaySleepData,
-                            lastDateWithDataInstant,
-                            minStartTime,
-                            maxEndTime,
-                        )
-                    )
-                }
-
-                return@withContext UseCaseResults.Success(Pair(minStartTime, maxEndTime))
-            } catch (e: Exception) {
-                return@withContext UseCaseResults.Failed(e)
-            }
+        if (currentDaySleepData.isEmpty()) {
+            return null
         }
+
+        // Determine if there is at least one session starting on Day 2 and finishing on Day
+        // 3
+        // (Case 3)
+        val sessionsCrossingMidnight =
+            currentDaySleepData.any { record ->
+                val currentSleepSession = (record as IntervalRecord)
+                (currentSleepSession.endTime.isAtLeastOneDayAfter(currentSleepSession.startTime))
+            }
+
+        // Handle Case 3 - at least one sleep session starts on Day 2 and finishes on Day 3
+        if (sessionsCrossingMidnight) {
+            return handleSessionsCrossingMidnight(currentDaySleepData)
+        }
+
+        // case 1 - start and end times on the same day (Day 2)
+        // case 2 - there might be sessions starting on Day 1 and finishing on Day 2
+        // All sessions start and end on this day
+        // now we look at the date before to see if there is a session
+        // that ends today
+        val secondToLastDayWithData = lastDateWithData.minusDays(1)
+        val lastDateWithDataInstant = lastDateWithData.toInstantAtStartOfDay()
+
+        // Get all sleep sessions starting on secondToLastDate
+        val previousDaySleepData = getPrioritySleepRecords(secondToLastDayWithData)
+
+        // For each session check if the end date is last date
+        // If we find it, extend minStartTime to the start time of that session
+        // Case 1 - All sessions start and end on this day (Day 2)
+        // We also need these for case2
+        val minStartTime: Instant = currentDaySleepData.minOf { (it as IntervalRecord).startTime }
+        val maxEndTime: Instant = currentDaySleepData.maxOf { (it as IntervalRecord).endTime }
+
+        if (previousDaySleepData.isNotEmpty()) {
+            // Case 2 - At least one session starts on Day 1 and finishes on Day 2 or later
+            return handleSessionsStartingOnSecondToLastDate(
+                previousDaySleepData,
+                lastDateWithDataInstant,
+                minStartTime,
+                maxEndTime,
+            )
+        }
+
+        return Pair(minStartTime, maxEndTime)
+    }
 
     /** Handles sleep session case 3 - At least one session crosses midnight into Day 3. */
     private fun handleSessionsCrossingMidnight(entries: List<Record>): Pair<Instant, Instant> {
@@ -193,7 +177,9 @@ constructor(
     ): List<SleepSessionRecord> {
         when (
             val result =
-                loadPriorityEntriesUseCase.invoke(FitnessPermissionType.SLEEP, lastDateWithData)
+                loadPriorityEntriesUseCase.invoke(
+                    LoadPriorityEntriesInput(FitnessPermissionType.SLEEP, lastDateWithData)
+                )
         ) {
             is UseCaseResults.Success -> {
                 return result.data.map { it as SleepSessionRecord }
@@ -203,10 +189,4 @@ constructor(
             }
         }
     }
-}
-
-interface ISleepSessionHelper {
-    suspend fun clusterSleepSessions(
-        lastDateWithData: LocalDate
-    ): UseCaseResults<Pair<Instant, Instant>?>
 }

@@ -24,9 +24,8 @@ import com.android.healthconnect.controller.datasources.AggregationCardInfo
 import com.android.healthconnect.controller.datasources.api.LoadMostRecentAggregationsUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.utils.di.DEFAULT_USE_CASE_EXCEPTION_MESSAGE
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadDataAggregationsUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadLastDateWithPriorityDataUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeSleepSessionHelper
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.randomInstant
 import com.android.healthconnect.controller.utils.toInstantAtStartOfDay
@@ -350,11 +349,12 @@ class LoadMostRecentAggregationsUseCaseTest {
     @Test
     fun loadMostRecentAggregations_whenLoadLastDateWithPriorityDataFails_returnsFailure() =
         runTest {
-            loadLastDateWithPriorityDataUseCase.setFailure("Exception")
+            loadLastDateWithPriorityDataUseCase.setForceFail(true)
 
             val result = loadMostRecentAggregationsUseCase.invoke(HealthDataCategory.ACTIVITY)
             assertThat(result is UseCaseResults.Failed).isTrue()
-            assertThat((result as UseCaseResults.Failed).exception.message).isEqualTo("Exception")
+            assertThat((result as UseCaseResults.Failed).exception.message)
+                .isEqualTo(DEFAULT_USE_CASE_EXCEPTION_MESSAGE)
             assertThat(loadDataAggregationsUseCase.invocationCount).isEqualTo(0)
         }
 
@@ -396,11 +396,12 @@ class LoadMostRecentAggregationsUseCaseTest {
             FitnessPermissionType.SLEEP,
             sleepDate,
         )
-        sleepSessionHelper.setFailure("Exception")
+        sleepSessionHelper.setForceFail(true)
 
         val result = loadMostRecentAggregationsUseCase.invoke(HealthDataCategory.SLEEP)
         assertThat(loadDataAggregationsUseCase.invocationCount).isEqualTo(0)
         assertThat(result is UseCaseResults.Failed).isTrue()
-        assertThat((result as UseCaseResults.Failed).exception.message).isEqualTo("Exception")
+        assertThat((result as UseCaseResults.Failed).exception.message)
+            .isEqualTo(DEFAULT_USE_CASE_EXCEPTION_MESSAGE)
     }
 }

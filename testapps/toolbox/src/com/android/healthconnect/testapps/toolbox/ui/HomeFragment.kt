@@ -34,6 +34,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.android.healthconnect.testapps.toolbox.Constants.HEALTH_PERMISSIONS
@@ -44,6 +45,7 @@ import com.android.healthconnect.testapps.toolbox.seed.SeedData
 import com.android.healthconnect.testapps.toolbox.viewmodels.HomeFragmentViewModel
 import com.android.healthconnect.testapps.toolbox.viewmodels.PerformanceTestingViewModel
 import kotlin.system.exitProcess
+import kotlinx.coroutines.launch
 
 /** Home fragment for Health Connect Toolbox. */
 class HomeFragment : Fragment() {
@@ -159,6 +161,9 @@ class HomeFragment : Fragment() {
         view.requireViewById<Button>(R.id.access_log_button).setOnClickListener {
             accessLogButtonPressed()
         }
+        view
+            .requireViewById<Button>(R.id.insert_large_amount_of_heart_rate_data_button)
+            .setOnClickListener { insertLargeAmountOfHeartRateData() }
         view.requireViewById<Button>(R.id.advertise_device_button).setOnClickListener {
             mNavigationController.navigate(R.id.action_homeFragment_to_advertiseDevices)
         }
@@ -223,6 +228,22 @@ class HomeFragment : Fragment() {
                 .show()
         } catch (ex: Exception) {
             Toast.makeText(requireContext(), ex.localizedMessage, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun insertLargeAmountOfHeartRateData() {
+        lifecycleScope.launch {
+            try {
+                SeedData(requireContext(), manager).seedLargeHeartRateData()
+                Toast.makeText(
+                        requireContext(),
+                        R.string.toast_seed_data_success,
+                        Toast.LENGTH_SHORT,
+                    )
+                    .show()
+            } catch (ex: Exception) {
+                Toast.makeText(requireContext(), ex.localizedMessage, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

@@ -136,6 +136,9 @@
         <!-- New home screen -->
         <item name="connectButton">@drawable/ic_connect</item>
 
+        <!-- Recent access -->
+        <item name="recentAccessListItemPaddingVertical">@dimen/spacing_small</item>
+
         <!-- END REGION -->
 
         <!-- REGION DIALOG GRAVITY -->

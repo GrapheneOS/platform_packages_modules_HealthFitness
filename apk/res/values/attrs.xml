@@ -134,6 +134,9 @@
     <!-- New home screen -->
     <attr name="connectButton" format="reference" />
 
+    <!-- Recent access -->
+    <attr name="recentAccessListItemPaddingVertical" format="reference"/>
+
     <!-- END REGION -->
 
     <!-- REGION DIALOG GRAVITY -->

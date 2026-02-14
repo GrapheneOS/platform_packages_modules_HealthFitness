@@ -26,6 +26,7 @@ import com.android.healthconnect.controller.navigation.DestinationChangedListene
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthfitness.flags.Flags.newHomeScreen
 import com.android.settingslib.collapsingtoolbar.CollapsingToolbarBaseActivity
+import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -38,6 +39,9 @@ class MainActivity : Hilt_MainActivity() {
     private val migrationViewModel: MigrationViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        if (SettingsThemeHelper.isExpressiveTheme(this)) {
+            setTheme(R.style.Theme_HealthConnect_Expressive)
+        }
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 

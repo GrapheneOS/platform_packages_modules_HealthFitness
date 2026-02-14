@@ -22,6 +22,7 @@
         <item name="permissionHeaderTitle">@style/TextAppearance.HealthConnect.Expressive.PermissionHeading</item>
         <item name="headerDetails">@style/TextAppearance.HealthConnect.Expressive.DetailedHeading</item>
         <item name="notConnectedAppTitleColor">@color/settingslib_materialColorPrimary</item>
+        <item name="recentAccessListItemPaddingVertical">@dimen/spacing_normal</item>
     </style>
 
     <style name="Theme.HealthConnect.MatchMakingActivity.Expressive" parent="Theme.HealthConnect.Expressive">
@@ -45,5 +46,6 @@
         <item name="android:clipToPadding">true</item>
         <item name="android:clipChildren">true</item>
         <!-- END REGION -->
+        <item name="moreVertIcon">@drawable/more_vert</item>
     </style>
 </resources>

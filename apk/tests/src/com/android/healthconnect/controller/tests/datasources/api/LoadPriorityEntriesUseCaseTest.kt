@@ -29,6 +29,7 @@ import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.data.formatters.MenstruationPeriodFormatter
 import com.android.healthconnect.controller.data.formatters.shared.HealthDataEntryFormatter
+import com.android.healthconnect.controller.datasources.api.LoadPriorityEntriesInput
 import com.android.healthconnect.controller.datasources.api.LoadPriorityEntriesUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.service.HealthManagerModule
@@ -43,7 +44,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_3
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadPriorityListUseCase
+import com.android.healthconnect.controller.tests.utils.di.DEFAULT_USE_CASE_EXCEPTION_MESSAGE
 import com.android.healthconnect.controller.tests.utils.forDataType
 import com.android.healthconnect.controller.tests.utils.fromDataSource
 import com.android.healthconnect.controller.tests.utils.fromTimeRange
@@ -118,7 +119,7 @@ class LoadPriorityEntriesUseCaseTest {
     @Test
     fun invoke_onePriorityApp_doesNotIncludeNonPriorityData() = runTest {
         val sleepDate = LocalDate.of(2023, 2, 13)
-        loadPriorityListUseCase.updatePriorityList(listOf(TEST_APP))
+        loadPriorityListUseCase.setPriorityList(listOf(TEST_APP))
 
         // 2h
         val SLEEP_SESSION_1_START_DATE = Instant.parse("2023-02-13T16:00:00.00Z")
@@ -155,7 +156,10 @@ class LoadPriorityEntriesUseCaseTest {
                 ),
         )
 
-        val result = loadPriorityEntriesUseCase.invoke(FitnessPermissionType.SLEEP, sleepDate)
+        val result =
+            loadPriorityEntriesUseCase.invoke(
+                LoadPriorityEntriesInput(FitnessPermissionType.SLEEP, sleepDate)
+            )
         assertThat(result is UseCaseResults.Success).isTrue()
         verifySleepSessionListsEqual(
             actual = (result as UseCaseResults.Success).data,
@@ -174,7 +178,7 @@ class LoadPriorityEntriesUseCaseTest {
         val sleepDate = LocalDate.of(2023, 2, 13)
         val pastSleepDate = LocalDate.of(2023, 2, 12)
 
-        loadPriorityListUseCase.updatePriorityList(listOf(TEST_APP, TEST_APP_2))
+        loadPriorityListUseCase.setPriorityList(listOf(TEST_APP, TEST_APP_2))
 
         // 2h
         val SLEEP_SESSION_1_START_DATE = Instant.parse("2023-02-13T16:00:00.00Z")
@@ -253,7 +257,10 @@ class LoadPriorityEntriesUseCaseTest {
                 ),
         )
 
-        val result = loadPriorityEntriesUseCase.invoke(FitnessPermissionType.SLEEP, sleepDate)
+        val result =
+            loadPriorityEntriesUseCase.invoke(
+                LoadPriorityEntriesInput(FitnessPermissionType.SLEEP, sleepDate)
+            )
         assertThat(result is UseCaseResults.Success).isTrue()
         verifySleepSessionListsEqual(
             actual = (result as UseCaseResults.Success).data,
@@ -273,7 +280,7 @@ class LoadPriorityEntriesUseCaseTest {
         val noDataDate = LocalDate.of(2023, 2, 14)
         val sleepDate = LocalDate.of(2023, 2, 13)
         val pastSleepDate = LocalDate.of(2023, 2, 12)
-        loadPriorityListUseCase.updatePriorityList(listOf(TEST_APP, TEST_APP_2))
+        loadPriorityListUseCase.setPriorityList(listOf(TEST_APP, TEST_APP_2))
 
         // 2h
         val SLEEP_SESSION_1_START_DATE = Instant.parse("2023-02-13T16:00:00.00Z")
@@ -366,7 +373,10 @@ class LoadPriorityEntriesUseCaseTest {
                 ),
         )
 
-        val result = loadPriorityEntriesUseCase.invoke(FitnessPermissionType.SLEEP, noDataDate)
+        val result =
+            loadPriorityEntriesUseCase.invoke(
+                LoadPriorityEntriesInput(FitnessPermissionType.SLEEP, noDataDate)
+            )
         assertThat(result is UseCaseResults.Success).isTrue()
         assertThat((result as UseCaseResults.Success).data).isEmpty()
     }
@@ -374,11 +384,15 @@ class LoadPriorityEntriesUseCaseTest {
     @Test
     fun invoke_whenPriorityFails_returnsFailure() = runTest {
         val queryDate = LocalDate.of(2023, 1, 4)
-        loadPriorityListUseCase.setFailure("Exception")
+        loadPriorityListUseCase.setForceFail(true)
 
-        val result = loadPriorityEntriesUseCase.invoke(FitnessPermissionType.SLEEP, queryDate)
+        val result =
+            loadPriorityEntriesUseCase.invoke(
+                LoadPriorityEntriesInput(FitnessPermissionType.SLEEP, queryDate)
+            )
         assertThat(result is UseCaseResults.Failed).isTrue()
-        assertThat((result as UseCaseResults.Failed).exception.message).isEqualTo("Exception")
+        assertThat((result as UseCaseResults.Failed).exception.message)
+            .isEqualTo(DEFAULT_USE_CASE_EXCEPTION_MESSAGE)
         Mockito.verify(healthConnectManager, times(0))
             .readRecords<SleepSessionRecord>(any(), any(), any())
     }
@@ -386,12 +400,15 @@ class LoadPriorityEntriesUseCaseTest {
     @Test
     fun invoke_whenLoadEntriesHelperFails_returnsFailure() = runTest {
         val queryDate = LocalDate.of(2023, 1, 4)
-        loadPriorityListUseCase.updatePriorityList(listOf(TEST_APP_2, TEST_APP_3))
+        loadPriorityListUseCase.setPriorityList(listOf(TEST_APP_2, TEST_APP_3))
         Mockito.doAnswer(prepareFailureAnswer())
             .`when`(healthConnectManager)
             .readRecords<SleepSessionRecord>(any(), any(), any())
 
-        val result = loadPriorityEntriesUseCase.invoke(FitnessPermissionType.SLEEP, queryDate)
+        val result =
+            loadPriorityEntriesUseCase.invoke(
+                LoadPriorityEntriesInput(FitnessPermissionType.SLEEP, queryDate)
+            )
         assertThat(result is UseCaseResults.Failed).isTrue()
         assertThat((result as UseCaseResults.Failed).exception is HealthConnectException).isTrue()
         assertThat((result.exception as HealthConnectException).errorCode)
