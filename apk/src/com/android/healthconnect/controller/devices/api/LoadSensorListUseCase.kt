@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.devices
+package com.android.healthconnect.controller.devices.api
 
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -34,7 +34,7 @@ class LoadSensorListUseCase
 constructor(
     @param:ApplicationContext private val context: Context,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : ILoadSensorListUseCase, BaseUseCase<Unit, List<Sensor>>(dispatcher) {
+) : BaseUseCase<Unit, List<Sensor>>(dispatcher), ILoadSensorListUseCase {
     override suspend fun execute(input: Unit): List<Sensor> {
         val manager: SensorManager =
             context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -42,8 +42,4 @@ constructor(
     }
 }
 
-interface ILoadSensorListUseCase {
-    suspend fun invoke(input: Unit): UseCaseResults<List<Sensor>>
-
-    suspend fun execute(input: Unit): List<Sensor>
-}
+interface ILoadSensorListUseCase : UseCaseContract<Unit, List<Sensor>>

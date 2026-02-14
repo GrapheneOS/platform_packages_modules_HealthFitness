@@ -21,7 +21,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.devices.SetTrackingEnabled.Input
+import com.android.healthconnect.controller.devices.api.ILoadDeviceDataSourcesUseCase
+import com.android.healthconnect.controller.devices.api.ILoadSensorListUseCase
+import com.android.healthconnect.controller.devices.api.ISetTrackingEnabledUseCase
+import com.android.healthconnect.controller.devices.api.SetTrackingEnabledUseCase.Input
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -33,9 +36,9 @@ import kotlinx.coroutines.launch
 class ConnectedDevicesViewModel
 @Inject
 constructor(
-    private val loadDeviceDataSourcesUseCase: ILoadDeviceDataSources,
+    private val loadDeviceDataSourcesUseCase: ILoadDeviceDataSourcesUseCase,
     private val loadSensorListUseCase: ILoadSensorListUseCase,
-    private val setTrackingEnabled: ISetTrackingEnabled,
+    private val setTrackingEnabledUseCase: ISetTrackingEnabledUseCase,
     @param:IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : ViewModel() {
 
@@ -57,7 +60,7 @@ constructor(
 
     fun setTrackingEnabled(recordType: Class<out Record>, isEnabled: Boolean) {
         viewModelScope.launch(ioDispatcher) {
-            when (setTrackingEnabled.invoke(Input(recordType, isEnabled))) {
+            when (setTrackingEnabledUseCase.invoke(Input(recordType, isEnabled))) {
                 is UseCaseResults.Success -> {
                     val currentDevice = _selectedDevice.value
                     currentDevice?.let {

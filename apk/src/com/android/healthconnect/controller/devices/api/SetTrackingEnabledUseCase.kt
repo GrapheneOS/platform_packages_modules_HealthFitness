@@ -13,14 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller.devices
+package com.android.healthconnect.controller.devices.api
 
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CancellableContinuation
@@ -28,12 +28,12 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 @Singleton
-class SetTrackingEnabled
+class SetTrackingEnabledUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : ISetTrackingEnabled, BaseUseCase<SetTrackingEnabled.Input, Unit>(dispatcher) {
+) : BaseUseCase<SetTrackingEnabledUseCase.Input, Unit>(dispatcher), ISetTrackingEnabledUseCase {
 
     override suspend fun execute(input: Input) {
         suspendCancellableCoroutine { continuation: CancellableContinuation<Void> ->
@@ -49,8 +49,4 @@ constructor(
     data class Input(val recordType: Class<out Record>, val isEnabled: Boolean)
 }
 
-interface ISetTrackingEnabled {
-    suspend fun invoke(input: SetTrackingEnabled.Input): UseCaseResults<Unit>
-
-    suspend fun execute(input: SetTrackingEnabled.Input)
-}
+interface ISetTrackingEnabledUseCase : UseCaseContract<SetTrackingEnabledUseCase.Input, Unit>

@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.tests.devices
+package com.android.healthconnect.controller.tests.devices.api
 
 import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.StepsRecord
-import android.os.OutcomeReceiver
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.matchmaking.api.SetTrackingEnabledInput
 import com.android.healthconnect.controller.matchmaking.api.SetTrackingEnabledUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.utils.doReturnResult
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth
 import kotlinx.coroutines.Dispatchers
@@ -37,8 +37,8 @@ import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.stub
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
 
 @RunWith(AndroidJUnit4::class)
 @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
@@ -56,13 +56,12 @@ class SetTrackingEnabledUseCaseTest {
     }
 
     @Test
-    fun execute_success_callsSetTrackingEnabled() = runTest {
+    fun invoke_success_callsSetTrackingEnabled() = runTest {
         val input = SetTrackingEnabledInput(StepsRecord::class.java, true)
 
-        whenever(healthConnectManager.setTrackingEnabled(any(), any(), any(), any())).thenAnswer {
-            val receiver = it.arguments[3] as OutcomeReceiver<Void, HealthConnectException>
-            receiver.onResult(null)
-            null
+        healthConnectManager.stub {
+            on { setTrackingEnabled(any(), any(), any(), any()) } doReturnResult
+                Result.success<Void?>(null)
         }
 
         val result = setTrackingEnabledUseCase.invoke(input)
@@ -73,14 +72,13 @@ class SetTrackingEnabledUseCaseTest {
     }
 
     @Test
-    fun execute_healthConnectException_returnsFailed() = runTest {
+    fun invoke_healthConnectException_returnsFailed() = runTest {
         val input = SetTrackingEnabledInput(StepsRecord::class.java, true)
         val exception = HealthConnectException(HealthConnectException.ERROR_UNKNOWN)
 
-        whenever(healthConnectManager.setTrackingEnabled(any(), any(), any(), any())).thenAnswer {
-            val receiver = it.arguments[3] as OutcomeReceiver<Void, HealthConnectException>
-            receiver.onError(exception)
-            null
+        healthConnectManager.stub {
+            on { setTrackingEnabled(any(), any(), any(), any()) } doReturnResult
+                Result.failure<Void?>(exception)
         }
 
         val result = setTrackingEnabledUseCase.invoke(input) as UseCaseResults.Failed
