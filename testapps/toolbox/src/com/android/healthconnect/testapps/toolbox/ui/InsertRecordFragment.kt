@@ -118,6 +118,7 @@ class InsertRecordFragment : Fragment() {
                 }
 
                 is InsertOrUpdateRecordsViewModel.InsertedRecordsState.Error -> {
+                    Log.e("Toolbox", state.errorMessage)
                     Toast.makeText(
                             context,
                             "Unable to insert record(s)! ${state.errorMessage}",

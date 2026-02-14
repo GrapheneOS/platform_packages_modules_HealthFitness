@@ -18,15 +18,6 @@ package com.android.healthconnect.controller.service
 import android.content.Context
 import android.health.connect.HealthConnectManager
 import android.net.Uri
-import com.android.healthconnect.controller.data.access.AppAccessMetadata
-import com.android.healthconnect.controller.data.access.AppAccessState
-import com.android.healthconnect.controller.data.access.ILoadAccessUseCase
-import com.android.healthconnect.controller.data.access.ILoadFitnessTypeContributorAppsUseCase
-import com.android.healthconnect.controller.data.access.ILoadMedicalTypeContributorAppsUseCase
-import com.android.healthconnect.controller.data.access.LoadAccessUseCase
-import com.android.healthconnect.controller.data.access.LoadFitnessTypeContributorAppsUseCase
-import com.android.healthconnect.controller.data.access.LoadMedicalTypeContributorAppsUseCase
-import com.android.healthconnect.controller.data.access.LoadSymptomAccessUseCase
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.api.ILoadDataAggregationsUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadDataEntriesUseCase
@@ -215,58 +206,6 @@ class UseCaseModule {
         loadEntriesHelper: LoadEntriesHelper,
     ): ILoadMenstruationDataUseCase {
         return LoadMenstruationDataUseCase(loadEntriesHelper, dispatcher)
-    }
-
-    @Provides
-    fun providesLoadFitnessAccessUseCase(
-        loadFitnessTypeContributorAppsUseCase: ILoadFitnessTypeContributorAppsUseCase,
-        loadMedicalTypeContributorAppsUseCase: ILoadMedicalTypeContributorAppsUseCase,
-        loadGrantedHealthPermissionsUseCase: IGetGrantedHealthPermissionsUseCase,
-        healthPermissionReader: HealthPermissionReader,
-        appInfoReader: AppInfoReader,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): ILoadAccessUseCase {
-        return LoadAccessUseCase(
-            loadFitnessTypeContributorAppsUseCase,
-            loadMedicalTypeContributorAppsUseCase,
-            loadGrantedHealthPermissionsUseCase,
-            healthPermissionReader,
-            appInfoReader,
-            dispatcher,
-        )
-    }
-
-    @Provides
-    fun providesLoadSymptomAccessUseCase(
-        useCase: LoadSymptomAccessUseCase
-    ): BaseUseCase<Unit, Map<AppAccessState, List<AppAccessMetadata>>> {
-        return useCase
-    }
-
-    @Provides
-    fun providesLoadFitnessTypeContributorAppsUseCase(
-        appInfoReader: AppInfoReader,
-        healthConnectManager: HealthConnectManager,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): ILoadFitnessTypeContributorAppsUseCase {
-        return LoadFitnessTypeContributorAppsUseCase(
-            appInfoReader,
-            healthConnectManager,
-            dispatcher,
-        )
-    }
-
-    @Provides
-    fun providesLoadMedicalTypeContributorAppsUseCase(
-        appInfoReader: AppInfoReader,
-        healthConnectManager: HealthConnectManager,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): ILoadMedicalTypeContributorAppsUseCase {
-        return LoadMedicalTypeContributorAppsUseCase(
-            appInfoReader,
-            healthConnectManager,
-            dispatcher,
-        )
     }
 
     @Provides

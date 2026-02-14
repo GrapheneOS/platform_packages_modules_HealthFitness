@@ -18,11 +18,6 @@ package com.android.healthconnect.controller.tests.utils.di
 import android.health.connect.HealthConnectException
 import android.health.connect.exportimport.ScheduledExportSettings
 import android.net.Uri
-import com.android.healthconnect.controller.data.access.AppAccessMetadata
-import com.android.healthconnect.controller.data.access.AppAccessState
-import com.android.healthconnect.controller.data.access.ILoadAccessUseCase
-import com.android.healthconnect.controller.data.access.ILoadFitnessTypeContributorAppsUseCase
-import com.android.healthconnect.controller.data.access.ILoadMedicalTypeContributorAppsUseCase
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.api.ILoadDataAggregationsUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadDataEntriesUseCase
@@ -53,9 +48,6 @@ import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPer
 import com.android.healthconnect.controller.permissions.app.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsStatusUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
-import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
-import com.android.healthconnect.controller.permissions.data.HealthPermissionType
-import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.shared.IQueryRecentAccessLogsUseCase
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
@@ -295,95 +287,6 @@ class FakeFailureLoadLatestEntryDateUseCase : ILoadLatestEntryDateUseCase {
 
     override suspend fun execute(input: LoadLatestEntryDateInput): Instant {
         return instant
-    }
-}
-
-class FakeLoadAccessUseCase : ILoadAccessUseCase {
-
-    private var appDataMap: Map<AppAccessState, List<AppAccessMetadata>> = mutableMapOf()
-    var wasInvoked = false
-        private set
-
-    private var forceFail = false
-
-    override suspend fun invoke(
-        permissionType: HealthPermissionType
-    ): UseCaseResults<Map<AppAccessState, List<AppAccessMetadata>>> {
-        wasInvoked = true
-        return if (forceFail) {
-            UseCaseResults.Failed(IllegalStateException("Force failed"))
-        } else {
-            UseCaseResults.Success(appDataMap)
-        }
-    }
-
-    fun updateMap(map: Map<AppAccessState, List<AppAccessMetadata>>) {
-        appDataMap = map
-    }
-
-    fun setForceFail(forceFail: Boolean) {
-        this.forceFail = forceFail
-    }
-
-    fun reset() {
-        this.appDataMap = mutableMapOf()
-        wasInvoked = false
-        forceFail = false
-    }
-}
-
-class FakeLoadSymptomAccessUseCase :
-    FakeUseCase<Unit, Map<AppAccessState, List<AppAccessMetadata>>>(
-        dispatcher = Dispatchers.Unconfined
-    ) {
-
-    private var appDataMap: Map<AppAccessState, List<AppAccessMetadata>> = emptyMap()
-
-    override suspend fun successValue(input: Unit): Map<AppAccessState, List<AppAccessMetadata>> {
-        return appDataMap
-    }
-
-    fun updateMap(map: Map<AppAccessState, List<AppAccessMetadata>>) {
-        appDataMap = map
-    }
-
-    override fun reset() {
-        super.reset()
-        this.appDataMap = emptyMap()
-    }
-}
-
-class FakeLoadFitnessTypeContributorAppsUseCase : ILoadFitnessTypeContributorAppsUseCase {
-
-    private var contributorApps: List<AppMetadata> = listOf()
-
-    override suspend fun invoke(permissionType: FitnessPermissionType): List<AppMetadata> {
-        return contributorApps
-    }
-
-    fun updateList(list: List<AppMetadata>) {
-        contributorApps = list
-    }
-
-    fun reset() {
-        this.contributorApps = listOf()
-    }
-}
-
-class FakeLoadMedicalTypeContributorAppsUseCase : ILoadMedicalTypeContributorAppsUseCase {
-
-    private var contributorApps: List<AppMetadata> = listOf()
-
-    override suspend fun invoke(permissionType: MedicalPermissionType): List<AppMetadata> {
-        return contributorApps
-    }
-
-    fun updateList(list: List<AppMetadata>) {
-        contributorApps = list
-    }
-
-    fun reset() {
-        this.contributorApps = listOf()
     }
 }
 

@@ -13,25 +13,26 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.tests.data.access
+package com.android.healthconnect.controller.tests.data.access.api
 
 import android.content.Context
 import android.health.connect.HealthConnectManager
 import android.health.connect.MedicalResourceTypeInfo
 import android.health.connect.datatypes.MedicalResource
-import android.os.OutcomeReceiver
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.access.LoadMedicalTypeContributorAppsUseCase
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE_2
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE_DIFFERENT_APP
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
+import com.android.healthconnect.controller.tests.utils.doReturnResult
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -42,10 +43,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stub
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -55,14 +55,12 @@ class LoadMedicalTypeContributorAppsUseCaseTest {
 
     @BindValue lateinit var appInfoReader: AppInfoReader
     private lateinit var context: Context
-    private val healthConnectManager: HealthConnectManager =
-        Mockito.mock(HealthConnectManager::class.java)
+    private val healthConnectManager: HealthConnectManager = mock()
     private lateinit var loadMedicalTypeContributorAppsUseCase:
         LoadMedicalTypeContributorAppsUseCase
 
     @Before
     fun setup() = runTest {
-        MockitoAnnotations.initMocks(this)
         context = InstrumentationRegistry.getInstrumentation().context
         appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
@@ -76,12 +74,15 @@ class LoadMedicalTypeContributorAppsUseCaseTest {
 
     @Test
     fun whenNoData_returnsEmptyMap() = runTest {
-        Mockito.doAnswer(prepareAnswer(listOf()))
-            .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(any(), any())
+        healthConnectManager.stub {
+            on { queryAllMedicalResourceTypeInfos(any(), any()) } doReturnResult
+                Result.success<List<MedicalResourceTypeInfo>>(listOf())
+        }
         val result = loadMedicalTypeContributorAppsUseCase.invoke(MedicalPermissionType.VACCINES)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val data = (result as UseCaseResults.Success<List<AppMetadata>>).data
         val expected = listOf<AppMetadata>()
-        assertThat(result).isEqualTo(expected)
+        assertThat(data).isEqualTo(expected)
     }
 
     @Test
@@ -97,12 +98,16 @@ class LoadMedicalTypeContributorAppsUseCaseTest {
                     setOf(TEST_MEDICAL_DATA_SOURCE_2, TEST_MEDICAL_DATA_SOURCE_DIFFERENT_APP),
                 ),
             )
-        Mockito.doAnswer(prepareAnswer(medicalResourceTypeInfos))
-            .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(any(), any())
+        healthConnectManager.stub {
+            on { queryAllMedicalResourceTypeInfos(any(), any()) } doReturnResult
+                Result.success(medicalResourceTypeInfos)
+        }
+
         val result = loadMedicalTypeContributorAppsUseCase.invoke(MedicalPermissionType.VACCINES)
-        assertThat(result.size).isEqualTo(1)
-        assertThat(result[0].packageName).isEqualTo(TEST_APP_PACKAGE_NAME)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val data = (result as UseCaseResults.Success<List<AppMetadata>>).data
+        assertThat(data.size).isEqualTo(1)
+        assertThat(data[0].packageName).isEqualTo(TEST_APP_PACKAGE_NAME)
     }
 
     @Test
@@ -118,23 +123,15 @@ class LoadMedicalTypeContributorAppsUseCaseTest {
                     setOf(TEST_MEDICAL_DATA_SOURCE_2, TEST_MEDICAL_DATA_SOURCE_DIFFERENT_APP),
                 ),
             )
-        Mockito.doAnswer(prepareAnswer(medicalResourceTypeInfos))
-            .`when`(healthConnectManager)
-            .queryAllMedicalResourceTypeInfos(any(), any())
-        val result = loadMedicalTypeContributorAppsUseCase.invoke(MedicalPermissionType.MEDICATIONS)
-        assertThat(result.size).isEqualTo(2)
-        assertThat(result[0].packageName).isEqualTo(TEST_APP_PACKAGE_NAME)
-        assertThat(result[1].packageName).isEqualTo(TEST_APP_PACKAGE_NAME_2)
-    }
-
-    private fun prepareAnswer(
-        medicalResourceTypeInfos: List<MedicalResourceTypeInfo>
-    ): (InvocationOnMock) -> List<MedicalResourceTypeInfo> {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[1] as OutcomeReceiver<Any?, *>
-            receiver.onResult(medicalResourceTypeInfos)
-            medicalResourceTypeInfos
+        healthConnectManager.stub {
+            on { queryAllMedicalResourceTypeInfos(any(), any()) } doReturnResult
+                Result.success(medicalResourceTypeInfos)
         }
-        return answer
+        val result = loadMedicalTypeContributorAppsUseCase.invoke(MedicalPermissionType.MEDICATIONS)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val data = (result as UseCaseResults.Success<List<AppMetadata>>).data
+        assertThat(data.size).isEqualTo(2)
+        assertThat(data[0].packageName).isEqualTo(TEST_APP_PACKAGE_NAME)
+        assertThat(data[1].packageName).isEqualTo(TEST_APP_PACKAGE_NAME_2)
     }
 }

@@ -23,7 +23,6 @@ import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.data.access.AccessViewModel.AccessScreenState.Error
 import com.android.healthconnect.controller.data.access.AccessViewModel.AccessScreenState.WithData
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
-import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.postValueIfUpdated
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,8 +35,7 @@ class AccessViewModel
 @Inject
 constructor(
     private val loadAccessUseCase: ILoadAccessUseCase,
-    private val loadSymptomAccessUseCase:
-        BaseUseCase<Unit, Map<AppAccessState, List<AppAccessMetadata>>>,
+    private val loadSymptomAccessUseCase: ILoadSymptomAccessUseCase,
 ) : ViewModel() {
 
     private val _appMetadataMap = MutableLiveData<AccessScreenState>()
