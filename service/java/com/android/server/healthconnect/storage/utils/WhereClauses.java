@@ -45,7 +45,6 @@ public final class WhereClauses {
         mLogicalOperator = logicalOperator;
     }
 
-
     public WhereClauses addWhereBetweenClause(String columnName, long start, long end) {
         mClauses.add(columnName + " >= " + start + " AND " + columnName + " < " + end);
 
@@ -104,6 +103,13 @@ public final class WhereClauses {
         return this;
     }
 
+    /**
+     * Adds where in condition for the column.
+     *
+     * <p>Note: The values are inlined into the SQL string instead of using bind parameters. This is
+     * done to avoid the SQLite limit on the maximum number of host parameters (typically 999 or
+     * 1000).
+     */
     public WhereClauses addWhereInClause(String columnName, List<String> values) {
         if (values == null || values.isEmpty()) return this;
 
@@ -116,6 +122,10 @@ public final class WhereClauses {
      * Adds a clause for a value contained in a list of values.
      *
      * <p>If the clause would be guaranteed empty (values null or emoty) no clause is added.
+     *
+     * <p>Note: The values are inlined into the SQL string instead of using bind parameters. This is
+     * done to avoid the SQLite limit on the maximum number of host parameters (typically 999 or
+     * 1000).
      *
      * @param columnName the column to check (or no effect if null)
      * @param values the column to check (or no effect if null)
@@ -173,6 +183,10 @@ public final class WhereClauses {
     /**
      * Adds where in condition for the column.
      *
+     * <p>Note: The values are inlined into the SQL string instead of using bind parameters. This is
+     * done to avoid the SQLite limit on the maximum number of host parameters (typically 999 or
+     * 1000).
+     *
      * @param columnName Column name on which where condition to be applied
      * @param values to check in the where condition
      */
@@ -194,6 +208,10 @@ public final class WhereClauses {
 
     /**
      * Adds where in condition for the column.
+     *
+     * <p>Note: The values are inlined into the SQL string instead of using bind parameters. This is
+     * done to avoid the SQLite limit on the maximum number of host parameters (typically 999 or
+     * 1000).
      *
      * @param columnName Column name on which where condition to be applied
      * @param values to check in the where condition
