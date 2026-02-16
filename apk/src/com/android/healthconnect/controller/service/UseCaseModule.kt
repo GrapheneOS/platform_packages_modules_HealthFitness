@@ -49,12 +49,6 @@ import com.android.healthconnect.controller.data.formatters.SleepSessionFormatte
 import com.android.healthconnect.controller.data.formatters.StepsFormatter
 import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
 import com.android.healthconnect.controller.data.formatters.medical.MedicalEntryFormatter
-import com.android.healthconnect.controller.devices.ILoadDeviceDataSources
-import com.android.healthconnect.controller.devices.ILoadSensorListUseCase
-import com.android.healthconnect.controller.devices.ISetTrackingEnabled
-import com.android.healthconnect.controller.devices.LoadDeviceDataSources
-import com.android.healthconnect.controller.devices.LoadSensorListUseCase
-import com.android.healthconnect.controller.devices.SetTrackingEnabled
 import com.android.healthconnect.controller.exportimport.api.DocumentProvider
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
@@ -345,28 +339,6 @@ class UseCaseModule {
         useCase: LoadFitnessPermissionAppsUseCase
     ): BaseUseCase<Unit, List<ConnectedFitnessAppMetadata>> {
         return useCase
-    }
-
-    @Provides
-    fun provideLocalDeviceDataSources(
-        loadDeviceDataSources: LoadDeviceDataSources
-    ): ILoadDeviceDataSources {
-        return loadDeviceDataSources
-    }
-
-    @Provides
-    fun provideSetTrackingEnabledUseCase(
-        setTrackingEnabled: SetTrackingEnabled
-    ): ISetTrackingEnabled {
-        return setTrackingEnabled
-    }
-
-    @Provides
-    fun provideLoadSensorListUseCase(
-        @ApplicationContext context: Context,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): ILoadSensorListUseCase {
-        return LoadSensorListUseCase(context, dispatcher)
     }
 
     @Provides

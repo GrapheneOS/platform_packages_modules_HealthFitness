@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller.devices
+package com.android.healthconnect.controller.devices.api
 
 import android.content.Context
 import android.health.connect.HealthConnectManager
@@ -21,22 +21,23 @@ import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsRecord
 import android.provider.Settings
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.devices.DeviceDataSource
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 
 @Singleton
-class LoadDeviceDataSources
+class LoadDeviceDataSourcesUseCase
 @Inject
 constructor(
     @param:ApplicationContext private val context: Context,
     private val healthConnectManager: HealthConnectManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : ILoadDeviceDataSources, BaseUseCase<Unit, List<DeviceDataSource>>(dispatcher) {
+) : BaseUseCase<Unit, List<DeviceDataSource>>(dispatcher), ILoadDeviceDataSourcesUseCase {
     override suspend fun execute(input: Unit): List<DeviceDataSource> {
         // TODO(b/421131223): Fetch the actual device data sources from the service.
         val currentDeviceName =
@@ -55,8 +56,4 @@ constructor(
     }
 }
 
-interface ILoadDeviceDataSources {
-    suspend fun invoke(input: Unit): UseCaseResults<List<DeviceDataSource>>
-
-    suspend fun execute(input: Unit): List<DeviceDataSource>
-}
+interface ILoadDeviceDataSourcesUseCase : UseCaseContract<Unit, List<DeviceDataSource>>

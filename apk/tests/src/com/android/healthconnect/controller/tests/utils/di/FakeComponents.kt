@@ -15,7 +15,6 @@
  */
 package com.android.healthconnect.controller.tests.utils.di
 
-import android.hardware.Sensor
 import android.health.connect.HealthConnectException
 import android.health.connect.exportimport.ScheduledExportSettings
 import android.net.Uri
@@ -37,11 +36,6 @@ import com.android.healthconnect.controller.data.entries.api.LoadLatestSymptomEn
 import com.android.healthconnect.controller.data.entries.api.LoadMedicalEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataInput
 import com.android.healthconnect.controller.data.entries.api.LoadSymptomDataEntriesInput
-import com.android.healthconnect.controller.devices.DeviceDataSource
-import com.android.healthconnect.controller.devices.ILoadDeviceDataSources
-import com.android.healthconnect.controller.devices.ILoadSensorListUseCase
-import com.android.healthconnect.controller.devices.ISetTrackingEnabled
-import com.android.healthconnect.controller.devices.SetTrackingEnabled
 import com.android.healthconnect.controller.exportimport.api.DocumentProvider
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency.EXPORT_FREQUENCY_NEVER
@@ -120,78 +114,6 @@ class FakeLoadAppPermissionsStatusUseCase : ILoadAppPermissionsStatusUseCase {
     fun reset() {
         internalMap.clear()
         this.numberOfInvocations = 0
-    }
-}
-
-class FakeLoadDeviceDataSourcesUseCase : ILoadDeviceDataSources {
-    private var list: List<DeviceDataSource> = emptyList()
-    private var forceFail: Boolean = false
-
-    fun updateList(list: List<DeviceDataSource>) {
-        this.list = list
-    }
-
-    override suspend fun invoke(input: Unit): UseCaseResults<List<DeviceDataSource>> {
-        return if (forceFail) {
-            UseCaseResults.Failed(IllegalStateException("Failed to load device data sources"))
-        } else {
-            UseCaseResults.Success(list)
-        }
-    }
-
-    override suspend fun execute(input: Unit): List<DeviceDataSource> {
-        return list
-    }
-
-    fun setForceFail(forceFail: Boolean) {
-        this.forceFail = forceFail
-    }
-}
-
-class FakeLoadSensorListUseCase : ILoadSensorListUseCase {
-    private var sensors: List<Sensor> = emptyList()
-    private var forceFail: Boolean = false
-
-    override suspend fun invoke(input: Unit): UseCaseResults<List<Sensor>> {
-        return if (forceFail) {
-            UseCaseResults.Failed(IllegalStateException("Failed to load sensors"))
-        } else {
-            UseCaseResults.Success(sensors)
-        }
-    }
-
-    override suspend fun execute(input: Unit): List<Sensor> {
-        return sensors
-    }
-
-    fun setForceFail(forceFail: Boolean) {
-        this.forceFail = forceFail
-    }
-
-    fun updateSensors(sensors: List<Sensor>) {
-        this.sensors = sensors
-    }
-}
-
-class FakeSetTrackingEnabledUseCase : ISetTrackingEnabled {
-    private var forceFail: Boolean = false
-    var latestInput: SetTrackingEnabled.Input? = null
-
-    override suspend fun invoke(input: SetTrackingEnabled.Input): UseCaseResults<Unit> {
-        latestInput = input
-        return if (forceFail) {
-            UseCaseResults.Failed(IllegalStateException("Failed to set tracking enabled"))
-        } else {
-            UseCaseResults.Success(Unit)
-        }
-    }
-
-    override suspend fun execute(input: SetTrackingEnabled.Input) {
-        latestInput = input
-    }
-
-    fun setForceFail(forceFail: Boolean) {
-        this.forceFail = forceFail
     }
 }
 

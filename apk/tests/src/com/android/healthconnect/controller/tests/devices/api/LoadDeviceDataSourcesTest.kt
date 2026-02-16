@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller.tests.devices
+package com.android.healthconnect.controller.tests.devices.api
 
 import android.content.Context
 import android.health.connect.HealthConnectManager
@@ -24,7 +24,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.devices.DeviceDataSource
-import com.android.healthconnect.controller.devices.LoadDeviceDataSources
+import com.android.healthconnect.controller.devices.api.LoadDeviceDataSourcesUseCase
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -45,7 +46,7 @@ class LoadDeviceDataSourcesTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    private lateinit var loadDeviceDataSources: LoadDeviceDataSources
+    private lateinit var loadDeviceDataSources: LoadDeviceDataSourcesUseCase
     private var manager: HealthConnectManager = mock()
 
     private lateinit var context: Context
@@ -53,12 +54,16 @@ class LoadDeviceDataSourcesTest {
     @Before
     fun setup() {
         hiltRule.inject()
+        // Required for modifying Settings.Global
+        InstrumentationRegistry.getInstrumentation()
+            .uiAutomation
+            .adoptShellPermissionIdentity(android.Manifest.permission.WRITE_SECURE_SETTINGS)
         context = InstrumentationRegistry.getInstrumentation().targetContext
-        loadDeviceDataSources = LoadDeviceDataSources(context, manager, Dispatchers.IO)
+        loadDeviceDataSources = LoadDeviceDataSourcesUseCase(context, manager, Dispatchers.IO)
     }
 
     @Test
-    fun execute_whenDeviceNameIsSet_returnsDeviceName() {
+    fun invoke_whenDeviceNameIsSet_returnsDeviceName() {
         runBlocking {
             val testDeviceName = "Test Device"
             Settings.Global.putString(
@@ -70,9 +75,10 @@ class LoadDeviceDataSourcesTest {
                 mapOf(StepsRecord::class.java to true)
             }
 
-            val result = loadDeviceDataSources.execute(Unit)
+            val result = loadDeviceDataSources.invoke(Unit)
 
-            assertThat(result)
+            assertThat(result is UseCaseResults.Success).isTrue()
+            assertThat((result as UseCaseResults.Success).data)
                 .containsExactly(
                     DeviceDataSource(
                         deviceName = testDeviceName,
@@ -84,17 +90,18 @@ class LoadDeviceDataSourcesTest {
     }
 
     @Test
-    fun execute_whenDeviceNameIsNotSet_returnsUnknownDevice() {
+    fun invoke_whenDeviceNameIsNotSet_returnsUnknownDevice() {
         runBlocking {
             Settings.Global.putString(context.contentResolver, Settings.Global.DEVICE_NAME, null)
             whenever(manager.isTrackingEnabled(listOf(StepsRecord::class.java))).then {
                 mapOf(StepsRecord::class.java to true)
             }
 
-            val result = loadDeviceDataSources.execute(Unit)
+            val result = loadDeviceDataSources.invoke(Unit)
 
             val expectedDeviceName = context.getString(R.string.devices_unknown_device)
-            assertThat(result)
+            assertThat(result is UseCaseResults.Success).isTrue()
+            assertThat((result as UseCaseResults.Success).data)
                 .containsExactly(
                     DeviceDataSource(
                         deviceName = expectedDeviceName,
@@ -106,17 +113,18 @@ class LoadDeviceDataSourcesTest {
     }
 
     @Test
-    fun execute_whenTrackingIsDisabled_returnsTrackerStatusFalse() {
+    fun invoke_whenTrackingIsDisabled_returnsTrackerStatusFalse() {
         runBlocking {
             Settings.Global.putString(context.contentResolver, Settings.Global.DEVICE_NAME, null)
             whenever(manager.isTrackingEnabled(listOf(StepsRecord::class.java))).then {
                 mapOf(StepsRecord::class.java to false)
             }
 
-            val result = loadDeviceDataSources.execute(Unit)
+            val result = loadDeviceDataSources.invoke(Unit)
 
             val expectedDeviceName = context.getString(R.string.devices_unknown_device)
-            assertThat(result)
+            assertThat(result is UseCaseResults.Success).isTrue()
+            assertThat((result as UseCaseResults.Success).data)
                 .containsExactly(
                     DeviceDataSource(
                         deviceName = expectedDeviceName,
@@ -124,6 +132,20 @@ class LoadDeviceDataSourcesTest {
                         trackerStatus = mapOf(StepsRecord::class.java to false),
                     )
                 )
+        }
+    }
+
+    @Test
+    fun invoke_onException_returnsFailed() {
+        runBlocking {
+            whenever(manager.isTrackingEnabled(listOf(StepsRecord::class.java)))
+                .thenThrow(RuntimeException("Error"))
+
+            val result = loadDeviceDataSources.invoke(Unit)
+
+            assertThat(result is UseCaseResults.Failed).isTrue()
+            assertThat((result as UseCaseResults.Failed).exception)
+                .isInstanceOf(RuntimeException::class.java)
         }
     }
 }

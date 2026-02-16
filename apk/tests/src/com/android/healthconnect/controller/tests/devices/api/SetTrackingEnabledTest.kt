@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller.tests.devices
+package com.android.healthconnect.controller.tests.devices.api
 
 import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
@@ -21,8 +21,11 @@ import android.health.connect.datatypes.StepsRecord
 import android.os.OutcomeReceiver
 import android.platform.test.annotations.EnableFlags
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.healthconnect.controller.devices.SetTrackingEnabled
+import com.android.healthconnect.controller.devices.api.SetTrackingEnabledUseCase
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.utils.doReturnResult
 import com.android.healthfitness.flags.Flags
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
@@ -34,8 +37,8 @@ import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.stub
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -44,30 +47,26 @@ class SetTrackingEnabledTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    private lateinit var setTrackingEnabled: SetTrackingEnabled
+    private lateinit var setTrackingEnabled: SetTrackingEnabledUseCase
     private var manager: HealthConnectManager = mock()
 
     @Before
     fun setup() {
         hiltRule.inject()
-        setTrackingEnabled = SetTrackingEnabled(manager, Dispatchers.IO)
-        runBlocking {
-            whenever(manager.setTrackingEnabled(any(), any(), any(), any())).thenAnswer { invocation
-                ->
-                val receiver =
-                    invocation.getArgument<OutcomeReceiver<Void, HealthConnectException>>(3)
-                receiver.onResult(null)
-                null
-            }
+        setTrackingEnabled = SetTrackingEnabledUseCase(manager, Dispatchers.IO)
+        manager.stub {
+            on { setTrackingEnabled(any(), any(), any(), any()) } doReturnResult
+                Result.success<Void?>(null)
         }
     }
 
     @Test
-    fun execute_enableStepTracking_callsManagerWithCorrectParameters() {
+    fun invoke_enableStepTracking_callsManagerWithCorrectParameters() {
         runBlocking {
-            val input = SetTrackingEnabled.Input(StepsRecord::class.java, true)
-            setTrackingEnabled.execute(input)
+            val input = SetTrackingEnabledUseCase.Input(StepsRecord::class.java, true)
+            val result = setTrackingEnabled.invoke(input)
 
+            assertThat(result is UseCaseResults.Success).isTrue()
             verify(manager)
                 .setTrackingEnabled(
                     eq(StepsRecord::class.java),
@@ -79,11 +78,12 @@ class SetTrackingEnabledTest {
     }
 
     @Test
-    fun execute_disableStepTracking_callsManagerWithCorrectParameters() {
+    fun invoke_disableStepTracking_callsManagerWithCorrectParameters() {
         runBlocking {
-            val input = SetTrackingEnabled.Input(StepsRecord::class.java, false)
-            setTrackingEnabled.execute(input)
+            val input = SetTrackingEnabledUseCase.Input(StepsRecord::class.java, false)
+            val result = setTrackingEnabled.invoke(input)
 
+            assertThat(result is UseCaseResults.Success).isTrue()
             verify(manager)
                 .setTrackingEnabled(
                     eq(StepsRecord::class.java),
@@ -91,6 +91,23 @@ class SetTrackingEnabledTest {
                     any(),
                     any<OutcomeReceiver<Void, HealthConnectException>>(),
                 )
+        }
+    }
+
+    @Test
+    fun invoke_onException_returnsFailed() {
+        runBlocking {
+            val exception = HealthConnectException(HealthConnectException.ERROR_UNKNOWN)
+            manager.stub {
+                on { setTrackingEnabled(any(), any(), any(), any()) } doReturnResult
+                    Result.failure<Void?>(exception)
+            }
+
+            val input = SetTrackingEnabledUseCase.Input(StepsRecord::class.java, true)
+            val result = setTrackingEnabled.invoke(input)
+
+            assertThat(result is UseCaseResults.Failed).isTrue()
+            assertThat((result as UseCaseResults.Failed).exception).isEqualTo(exception)
         }
     }
 }

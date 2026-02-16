@@ -14,14 +14,15 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.tests.devices
+package com.android.healthconnect.controller.tests.devices.api
 
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorManager
 import android.platform.test.annotations.EnableFlags
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.healthconnect.controller.devices.LoadSensorListUseCase
+import com.android.healthconnect.controller.devices.api.LoadSensorListUseCase
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -57,21 +58,34 @@ class LoadSensorListUseCaseTest {
     }
 
     @Test
-    fun execute_whenSensorManagerReturnsSensors_returnsSensors() = runTest {
+    fun invoke_whenSensorManagerReturnsSensors_returnsSensors() = runTest {
         val sensorList = listOf(mock<Sensor> { on { type } doReturn Sensor.TYPE_STEP_COUNTER })
         whenever(sensorManager.getSensorList(Sensor.TYPE_ALL)).then { sensorList }
 
-        val result = loadSensorList.execute(Unit)
+        val result = loadSensorList.invoke(Unit)
 
-        assertThat(result).isEqualTo(sensorList)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data).isEqualTo(sensorList)
     }
 
     @Test
-    fun execute_whenSensorManagerReturnsEmptyList_returnsEmptyList() = runTest {
+    fun invoke_whenSensorManagerReturnsEmptyList_returnsEmptyList() = runTest {
         whenever(sensorManager.getSensorList(Sensor.TYPE_ALL)).then { emptyList<Sensor>() }
 
-        val result = loadSensorList.execute(Unit)
+        val result = loadSensorList.invoke(Unit)
 
-        assertThat(result).isEmpty()
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data).isEmpty()
+    }
+
+    @Test
+    fun invoke_onException_returnsFailed() = runTest {
+        whenever(sensorManager.getSensorList(Sensor.TYPE_ALL)).thenThrow(RuntimeException("Error"))
+
+        val result = loadSensorList.invoke(Unit)
+
+        assertThat(result is UseCaseResults.Failed).isTrue()
+        assertThat((result as UseCaseResults.Failed).exception)
+            .isInstanceOf(RuntimeException::class.java)
     }
 }
