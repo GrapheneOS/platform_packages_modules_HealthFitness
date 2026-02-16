@@ -199,7 +199,8 @@ android_app {
         "AndroidManifestAdditionalPermissions.xml",
         "AndroidManifestFitnessPermissions.xml",
         "AndroidManifestMedicalPermissions.xml",
-        "AndroidManifestOnboardingActivity.xml",
+        // Optional: uncomment to enable the onboarding activity in the DDP toolbox.
+        // "AndroidManifestOnboardingActivity.xml",
     ],
     certificate: "platform",
     static_libs: [
