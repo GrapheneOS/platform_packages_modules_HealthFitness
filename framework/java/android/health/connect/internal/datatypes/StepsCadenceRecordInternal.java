@@ -41,7 +41,7 @@ import java.util.TreeSet;
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_STEPS_CADENCE)
 public class StepsCadenceRecordInternal
         extends SeriesRecordInternal<
-                StepsCadenceRecord, StepsCadenceRecord.StepsCadenceRecordSample> {
+                StepsCadenceRecord, StepsCadenceRecordInternal.StepsCadenceRecordSample> {
     private Set<StepsCadenceRecordSample> mStepsCadenceRecordSamples =
             new TreeSet<>(Comparator.comparingLong(StepsCadenceRecordSample::getEpochMillis));
 
@@ -70,6 +70,11 @@ public class StepsCadenceRecordInternal
     @NonNull
     public Set<StepsCadenceRecordSample> getSamples() {
         return mStepsCadenceRecordSamples;
+    }
+
+    @Override
+    public void addSample(StepsCadenceRecordSample sample) {
+        mStepsCadenceRecordSamples.add(sample);
     }
 
     @Override

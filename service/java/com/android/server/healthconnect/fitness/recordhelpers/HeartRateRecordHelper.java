@@ -37,6 +37,7 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 
@@ -125,19 +126,27 @@ public class HeartRateRecordHelper
 
     @Override
     HeartRateRecordInternal populateSpecificValues(Cursor seriesTableCursor) {
+        if (Flags.optimizeChildReads()) {
+            return new HeartRateRecordInternal(new HashSet<>());
+        }
+
         HashSet<HeartRateRecordInternal.HeartRateSample> heartRateSamplesSet = new HashSet<>();
         UUID uuid = getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME);
         do {
-            heartRateSamplesSet.add(
-                    new HeartRateRecordInternal.HeartRateSample(
-                            getCursorInt(seriesTableCursor, BEATS_PER_MINUTE_COLUMN_NAME),
-                            getCursorLong(seriesTableCursor, EPOCH_MILLIS_COLUMN_NAME)));
+            heartRateSamplesSet.add(extractSample(seriesTableCursor));
         } while (seriesTableCursor.moveToNext()
                 && uuid.equals(getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME)));
         // In case we hit another record, move the cursor back to read next record in outer
         // RecordHelper#getInternalRecords loop.
         seriesTableCursor.moveToPrevious();
         return new HeartRateRecordInternal(heartRateSamplesSet);
+    }
+
+    @Override
+    HeartRateRecordInternal.HeartRateSample extractSample(Cursor cursor) {
+        return new HeartRateRecordInternal.HeartRateSample(
+                getCursorInt(cursor, BEATS_PER_MINUTE_COLUMN_NAME),
+                getCursorLong(cursor, EPOCH_MILLIS_COLUMN_NAME));
     }
 
     @Override

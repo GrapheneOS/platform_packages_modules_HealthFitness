@@ -42,7 +42,7 @@ import java.util.TreeSet;
 public class CyclingPedalingCadenceRecordInternal
         extends SeriesRecordInternal<
                 CyclingPedalingCadenceRecord,
-                CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample> {
+                CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample> {
     private Set<CyclingPedalingCadenceRecordSample> mSamples =
             new TreeSet<>(
                     Comparator.comparingLong(CyclingPedalingCadenceRecordSample::getEpochMillis));
@@ -73,6 +73,11 @@ public class CyclingPedalingCadenceRecordInternal
     @NonNull
     public Set<CyclingPedalingCadenceRecordSample> getSamples() {
         return mSamples;
+    }
+
+    @Override
+    public void addSample(CyclingPedalingCadenceRecordSample sample) {
+        mSamples.add(sample);
     }
 
     @Override
