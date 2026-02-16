@@ -33,6 +33,7 @@ import com.android.healthconnect.controller.utils.asAppMetadata
 import com.android.healthconnect.controller.utils.findSystemInfo
 import com.android.healthconnect.controller.utils.isDisabledByAllProviders
 import com.android.healthconnect.controller.utils.pref
+import com.android.settingslib.widget.TopIntroPreference
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -43,12 +44,14 @@ class DevicesFragment : Hilt_DevicesFragment() {
     companion object {
         private const val ENABLED_CATEGORY = "enabled_devices_category"
         private const val NOT_ENABLED_CATEGORY = "not_enabled_devices_category"
+        private const val INTRO_KEY = "devices_intro"
     }
 
     private val deviceSourcesViewModel: DeviceSourcesViewModel by viewModels()
 
     private val enabledDevicesCategory: PreferenceGroup by pref(ENABLED_CATEGORY)
     private val notEnabledDevicesCategory: PreferenceGroup by pref(NOT_ENABLED_CATEGORY)
+    private val introPreference: TopIntroPreference by pref(INTRO_KEY)
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
@@ -85,6 +88,8 @@ class DevicesFragment : Hilt_DevicesFragment() {
     }
 
     private fun updateScreen(state: DeviceSourcesViewModel.DeviceSourcesState.WithData) {
+        setPreferenceTitles()
+
         enabledDevicesCategory.removeAll()
         notEnabledDevicesCategory.removeAll()
 
@@ -119,6 +124,13 @@ class DevicesFragment : Hilt_DevicesFragment() {
 
         enabledDevicesCategory.isVisible = enabledDevicesCategory.preferenceCount > 0
         notEnabledDevicesCategory.isVisible = notEnabledDevicesCategory.preferenceCount > 0
+    }
+
+    private fun setPreferenceTitles() {
+        introPreference.title = getString(R.string.devices_screen_description)
+        enabledDevicesCategory.title = getString(R.string.devices_screen_enabled_devices_header)
+        notEnabledDevicesCategory.title =
+            getString(R.string.devices_screen_not_enabled_devices_header)
     }
 
     private fun HealthAppPreference.setCurrentDeviceButton(deviceSourceInfo: DeviceDataSourceInfo) {

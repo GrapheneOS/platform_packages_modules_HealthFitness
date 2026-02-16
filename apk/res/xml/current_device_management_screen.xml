@@ -18,22 +18,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/device_management_screen_title">
 
-    <PreferenceCategory
-        android:key="device_header_category"/>
+    <PreferenceCategory android:key="device_header_category" />
 
-    <PreferenceCategory
-        android:key="device_write_category"
-        android:title="@string/device_settings_label">
+    <PreferenceCategory android:key="device_write_category" />
 
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="device_data_category"
-        android:title="@string/device_data_label">
+    <PreferenceCategory android:key="device_data_category">
 
         <com.android.healthconnect.controller.shared.preference.HealthPreference
             android:key="device_data_button"
-            android:title="@string/device_data_button"
             app:persistent="false" />
 
     </PreferenceCategory>
