@@ -18,28 +18,38 @@ package com.android.server.healthconnect.fitness.recordhelpers;
 
 import static android.health.connect.datatypes.AggregationType.AggregationTypeIdentifier.SLEEP_SESSION_DURATION_TOTAL;
 
+import static com.android.server.healthconnect.fitness.recordhelpers.SeriesRecordHelper.PARENT_KEY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.TEXT_NULL;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorUUID;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.SleepSessionRecordInternal;
 import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
+import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
+import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -87,19 +97,21 @@ public final class SleepSessionRecordHelper
 
     @Override
     SleepSessionRecordInternal populateSpecificRecordValue(Cursor cursor) {
-        UUID uuid = getCursorUUID(cursor, UUID_COLUMN_NAME);
         SleepSessionRecordInternal sleepSessionRecord = new SleepSessionRecordInternal();
         sleepSessionRecord.setNotes(getCursorString(cursor, NOTES_COLUMN_NAME));
         sleepSessionRecord.setTitle(getCursorString(cursor, TITLE_COLUMN_NAME));
 
-        do {
-            // Populate stages from each row.
-            sleepSessionRecord.addSleepStage(
-                    SleepStageRecordHelper.populateStageIfRecorded(cursor));
-        } while (cursor.moveToNext() && uuid.equals(getCursorUUID(cursor, UUID_COLUMN_NAME)));
-        // In case we hit another record, move the cursor back to read next record in outer
-        // RecordHelper#getInternalRecords loop.
-        cursor.moveToPrevious();
+        if (!Flags.optimizeChildReads()) {
+            UUID uuid = getCursorUUID(cursor, UUID_COLUMN_NAME);
+            do {
+                // Populate stages from each row.
+                sleepSessionRecord.addSleepStage(
+                        SleepStageRecordHelper.populateStageIfRecorded(cursor));
+            } while (cursor.moveToNext() && uuid.equals(getCursorUUID(cursor, UUID_COLUMN_NAME)));
+            // In case we hit another record, move the cursor back to read next record in outer
+            // RecordHelper#getInternalRecords loop.
+            cursor.moveToPrevious();
+        }
         return sleepSessionRecord;
     }
 
@@ -132,7 +144,57 @@ public final class SleepSessionRecordHelper
     }
 
     @Override
+    @Nullable
     SqlJoin getJoinForReadRequest() {
+        if (Flags.optimizeChildReads()) {
+            return null;
+        }
         return SleepStageRecordHelper.getJoinReadRequest(getMainTableName());
+    }
+
+    @Override
+    public List<ReadTableRequest> getChildDataReadRequests(
+            List<RecordInternal<?>> records,
+            String callingPackageName,
+            Set<String> grantedExtraReadPermissions,
+            boolean isInForeground,
+            AppInfoHelper appInfoHelper) {
+        if (!Flags.optimizeChildReads() || records.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Integer> rowIds = records.stream().map(RecordInternal::getRowId).toList();
+        WhereClauses inClause = new WhereClauses(AND);
+        inClause.addWhereInIntsClause(PARENT_KEY_COLUMN_NAME, rowIds);
+
+        ReadTableRequest stagesRequest =
+                new ReadTableRequest(SleepStageRecordHelper.getTableName());
+        stagesRequest.setWhereClause(inClause);
+
+        return Collections.singletonList(stagesRequest);
+    }
+
+    @Override
+    public void readExtraData(
+            List<SleepSessionRecordInternal> internalRecords, Cursor cursorExtraData) {
+        if (!Flags.optimizeChildReads()) {
+            return;
+        }
+
+        // For quick access to records by rowId
+        var rowIdToRecordMap =
+                new HashMap<Integer, SleepSessionRecordInternal>(internalRecords.size());
+        for (SleepSessionRecordInternal record : internalRecords) {
+            rowIdToRecordMap.put(record.getRowId(), record);
+        }
+
+        while (cursorExtraData.moveToNext()) {
+            int rowId = getCursorInt(cursorExtraData, PARENT_KEY_COLUMN_NAME);
+            SleepSessionRecordInternal record = rowIdToRecordMap.get(rowId);
+            if (record != null) {
+                record.addSleepStage(
+                        SleepStageRecordHelper.populateStageIfRecorded(cursorExtraData));
+            }
+        }
     }
 }

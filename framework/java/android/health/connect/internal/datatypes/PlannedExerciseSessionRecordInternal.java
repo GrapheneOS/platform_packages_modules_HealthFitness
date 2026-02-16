@@ -24,6 +24,7 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.os.Parcel;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,7 +51,7 @@ public final class PlannedExerciseSessionRecordInternal
 
     public PlannedExerciseSessionRecordInternal(List<PlannedExerciseBlockInternal> exerciseBlocks) {
         super();
-        this.mExerciseBlocks = exerciseBlocks;
+        this.mExerciseBlocks = new ArrayList<>(exerciseBlocks);
     }
 
     @Nullable
@@ -89,7 +90,15 @@ public final class PlannedExerciseSessionRecordInternal
     @NonNull
     public PlannedExerciseSessionRecordInternal setExerciseBlocks(
             List<PlannedExerciseBlockInternal> blocks) {
-        this.mExerciseBlocks = blocks;
+        this.mExerciseBlocks = new ArrayList<>(blocks);
+        return this;
+    }
+
+    /** Adds an {@link PlannedExerciseBlockInternal} entry to this object. */
+    @NonNull
+    public PlannedExerciseSessionRecordInternal addExerciseBlock(
+            PlannedExerciseBlockInternal block) {
+        mExerciseBlocks.add(block);
         return this;
     }
 
