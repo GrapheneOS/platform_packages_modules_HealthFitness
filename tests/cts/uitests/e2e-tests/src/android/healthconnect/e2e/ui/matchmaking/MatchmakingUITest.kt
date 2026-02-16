@@ -73,9 +73,9 @@ class MatchmakingUITest : HealthConnectBaseTest() {
                 )
             ) {
                 waitMatchmakingActivityDisplayed()
-                findText("Share data between apps")
+                findText("Sync your apps and devices")
                 scrollDownToAndFindText(
-                    "Allow the CtsHealthConnectTestAppAWithNormalReadWritePermission app to read data from other apps on this device using Health Connect. This data can also be read by other apps you give access to."
+                    "Allow the CtsHealthConnectTestAppAWithNormalReadWritePermission app to read data from other apps or devices on this device using Health Connect. This data can also be read by other apps you give access to."
                 )
                 scrollDownToAndFindText("Allow all")
                 scrollDownToAndFindText(
@@ -109,9 +109,9 @@ class MatchmakingUITest : HealthConnectBaseTest() {
                 )
             ) {
                 waitMatchmakingActivityDisplayed()
-                findText("Share data between apps")
+                findText("Sync your apps and devices")
                 scrollDownToAndFindText(
-                    "Allow the CtsHealthConnectTestAppAWithNormalReadWritePermission app to read data from other apps on this device using Health Connect. This data can also be read by other apps you give access to."
+                    "Allow the CtsHealthConnectTestAppAWithNormalReadWritePermission app to read data from other apps or devices on this device using Health Connect. This data can also be read by other apps you give access to."
                 )
                 scrollDownToAndFindText("Allow all")
                 findTextAndClick("Allow all")
@@ -139,9 +139,9 @@ class MatchmakingUITest : HealthConnectBaseTest() {
                 )
             ) {
                 waitMatchmakingActivityDisplayed()
-                findText("Share data between apps")
+                findText("Sync your apps and devices")
                 scrollDownToAndFindText(
-                    "Allow the CtsHealthConnectTestAppAWithNormalReadWritePermission app to read data from other apps on this device using Health Connect. This data can also be read by other apps you give access to."
+                    "Allow the CtsHealthConnectTestAppAWithNormalReadWritePermission app to read data from other apps or devices on this device using Health Connect. This data can also be read by other apps you give access to."
                 )
 
                 pressBack()

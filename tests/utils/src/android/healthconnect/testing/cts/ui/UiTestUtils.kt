@@ -129,7 +129,7 @@ object UiTestUtils {
 
     fun waitMatchmakingActivityDisplayed(waitTimeout: Duration = WAIT_TIMEOUT) {
         waitDisplayed(
-            selector = By.textContains("Share data between apps"),
+            selector = By.textContains("Sync your apps and devices"),
             waitTimeout = waitTimeout,
         )
     }

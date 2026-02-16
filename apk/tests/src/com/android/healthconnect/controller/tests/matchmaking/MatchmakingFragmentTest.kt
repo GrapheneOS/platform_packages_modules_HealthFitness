@@ -60,6 +60,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.matchmaking.MatchmakingDevicePreference
 import com.android.healthconnect.controller.matchmaking.MatchmakingFragment
 import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel
 import com.android.healthconnect.controller.matchmaking.api.MatchmakingAppData
@@ -78,7 +79,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
-import com.android.healthconnect.controller.tests.utils.scrollToText
+import com.android.healthconnect.controller.tests.utils.clickSwitchOnRecyclerViewItemWithText
 import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
@@ -727,14 +728,7 @@ class MatchmakingFragmentTest {
                         .commitNow()
                 }
 
-                scrollToText("Data from $TEST_APP_NAME")
-                onView(
-                        allOf(
-                            withId(R.id.switch_widget),
-                            isDescendantOfA(hasDescendant(withText("Data from $TEST_APP_NAME"))),
-                        )
-                    )
-                    .perform(click())
+                clickSwitchOnRecyclerViewItemWithText("Data from $TEST_APP_NAME")
 
                 verify(viewModel, times(1)).addAllPermissionsToGrantedList(TEST_APP_PACKAGE_NAME)
             }
@@ -781,17 +775,106 @@ class MatchmakingFragmentTest {
                         .commitNow()
                 }
 
-                scrollToText("Data from $TEST_APP_NAME")
-                onView(
-                        allOf(
-                            withId(R.id.switch_widget),
-                            isDescendantOfA(hasDescendant(withText("Data from $TEST_APP_NAME"))),
-                        )
-                    )
-                    .perform(click())
+                clickSwitchOnRecyclerViewItemWithText("Data from $TEST_APP_NAME")
 
                 verify(viewModel, times(1))
                     .removeAllPermissionsFromGrantedList(TEST_APP_PACKAGE_NAME)
+            }
+    }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_MATCHMAKING,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun matchmakingFragment_deviceSwitchOn_notifiesViewModel() {
+        val deviceData =
+            MatchmakingDeviceData(
+                DeviceDataSourceInfo(
+                    DataOrigin.Builder().setPackageName("com.example.watchdevice").build(),
+                    Device.Builder().setManufacturer("Google").setModel("Watch").setType(2).build(),
+                    false,
+                    emptyList(),
+                ),
+                emptyList(),
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                emptyList(),
+                listOf(deviceData),
+            )
+        )
+
+        ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, MatchmakingFragment())
+                        .commitNow()
+                }
+
+                onView(withText("Google")).perform(click())
+
+                verify(viewModel).addDevicePermissionToGrantedList("com.example.watchdevice")
+            }
+    }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_MATCHMAKING,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun matchmakingFragment_deviceSwitchOff_notifiesViewModel() {
+        val deviceData =
+            MatchmakingDeviceData(
+                DeviceDataSourceInfo(
+                    DataOrigin.Builder().setPackageName("com.example.watchdevice").build(),
+                    Device.Builder().setManufacturer("Google").setModel("Watch").setType(2).build(),
+                    false,
+                    emptyList(),
+                ),
+                emptyList(),
+            )
+        whenever(viewModel.enabledDevicePackages)
+            .thenReturn(MutableLiveData(setOf("com.example.watchdevice")))
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                emptyList(),
+                listOf(deviceData),
+            )
+        )
+
+        ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, MatchmakingFragment())
+                        .commitNow()
+                }
+
+                onView(withText("Google")).perform(click())
+
+                verify(viewModel).removeAllPermissionsFromGrantedList("com.example.watchdevice")
             }
     }
 
@@ -1402,20 +1485,29 @@ class MatchmakingFragmentTest {
                         .add(android.R.id.content, fragment)
                         .commitNow()
 
-                    val expandablePreference =
-                        fragment.findPreference<HealthExpandablePreference>(watchPackageName)
+                    val devicePreference =
+                        fragment.findPreference<MatchmakingDevicePreference>(watchPackageName)
 
-                    assertThat(expandablePreference?.icon).isNotNull()
+                    assertThat(devicePreference?.icon).isNotNull()
+
                     val expectedIconResId =
                         AttributeResolver.getResource(activity, R.attr.deviceWatchIcon)
                     assertThat(expectedIconResId).isEqualTo(R.drawable.ic_device_watch)
+
                     val defaultAppIcon =
                         androidx.appcompat.content.res.AppCompatResources.getDrawable(
                             activity,
                             R.drawable.ic_apps,
                         )
-                    assertThat(expandablePreference?.icon?.constantState)
+                    assertThat(devicePreference?.icon?.constantState)
                         .isNotEqualTo(defaultAppIcon?.constantState)
+
+                    assertThat(devicePreference?.summary)
+                        .isEqualTo(
+                            context.getString(
+                                R.string.matchmaking_screen_continue_to_device_preferences_to_enable
+                            )
+                        )
                 }
             }
     }
