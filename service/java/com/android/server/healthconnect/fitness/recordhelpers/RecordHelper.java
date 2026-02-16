@@ -468,15 +468,7 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
                         .setJoinClause(getJoinForReadRequest())
                         .setWhereClause(whereClause)
                         .setOrderBy(getOrderByClause(request))
-                        .setLimit(getLimitSize(request))
-                        .setExtraReadRequests(
-                                getExtraDataReadRequests(
-                                        request,
-                                        callingPackageName,
-                                        startDateAccessMillis,
-                                        grantedExtraReadPermissions,
-                                        isInForeground,
-                                        appInfoHelper));
+                        .setLimit(getLimitSize(request));
         return new RecordReadTableRequest(readTableRequest, this);
     }
 
@@ -524,13 +516,12 @@ public abstract class RecordHelper<T extends RecordInternal<?>> {
     }
 
     /**
-     * Returns a list of ReadSingleTableRequest for {@code request} and package name {@code
-     * packageName} to populate extra data. Called in database read requests.
+     * Returns a list of ReadSingleTableRequest for {@code records} to populate extra data after the
+     * main records have been read.
      */
-    List<ReadTableRequest> getExtraDataReadRequests(
-            ReadRecordsRequestParcel request,
-            String packageName,
-            long startDateAccess,
+    public List<ReadTableRequest> getChildDataReadRequests(
+            List<RecordInternal<?>> records,
+            String callingPackageName,
             Set<String> grantedExtraReadPermissions,
             boolean isInForeground,
             AppInfoHelper appInfoHelper) {

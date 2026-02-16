@@ -38,7 +38,6 @@ import android.util.Pair;
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
-import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 import com.android.server.healthconnect.storage.utils.WhereClauses;
@@ -167,15 +166,6 @@ public class ExerciseSegmentRecordHelper {
             }
         }
         return segment;
-    }
-
-    static ReadTableRequest getReadRequest(ReadTableRequest sessionIdsRequest) {
-        ReadTableRequest readTableRequest =
-                new ReadTableRequest(EXERCISE_SEGMENT_RECORD_TABLE_NAME);
-        WhereClauses inClause = new WhereClauses(AND);
-        inClause.addWhereInSQLRequestClause(PARENT_KEY_COLUMN_NAME, sessionIdsRequest);
-        readTableRequest.setWhereClause(inClause);
-        return readTableRequest;
     }
 
     static SqlJoin getJoinReadRequest(String parentTableName) {

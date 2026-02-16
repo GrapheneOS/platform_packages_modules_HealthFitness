@@ -149,8 +149,13 @@ public class FitnessRecordReadHelper {
             try (Cursor cursor = transactionManager.read(readTableRequest.getReadTableRequest())) {
                 List<RecordInternal<?>> internalRecords =
                         recordHelper.getInternalRecords(cursor, mDeviceInfoHelper, mAppInfoHelper);
-                populateInternalRecordsWithExtraData(
-                        transactionManager, internalRecords, readTableRequest);
+                populateInternalRecordsWithChildData(
+                        transactionManager,
+                        internalRecords,
+                        recordHelper,
+                        callingPackageName,
+                        grantedExtraReadPermissions,
+                        isInForeground);
                 recordInternals.addAll(internalRecords);
             }
 
@@ -179,8 +184,13 @@ public class FitnessRecordReadHelper {
                             appIdToPackageNameMap,
                             deviceIdToDeviceInfoMap,
                             mAppInfoHelper);
-            populateInternalRecordsWithExtraData(
-                    transactionManager, readResult.first, readTableRequest);
+            populateInternalRecordsWithChildData(
+                    transactionManager,
+                    readResult.first,
+                    recordHelper,
+                    callingPackageName,
+                    grantedExtraReadPermissions,
+                    isInForeground);
         }
 
         maybeRecordAccessLogs(
@@ -371,22 +381,24 @@ public class FitnessRecordReadHelper {
      * Do extra sql requests to populate optional extra data. Used to populate {@link
      * android.health.connect.internal.datatypes.ExerciseRouteInternal}.
      */
-    private void populateInternalRecordsWithExtraData(
+    private void populateInternalRecordsWithChildData(
             TransactionManager transactionManager,
             List<RecordInternal<?>> records,
-            RecordReadTableRequest request) {
-        if (request.getReadTableRequest().getExtraReadRequests() == null) {
-            return;
-        }
-        for (ReadTableRequest extraDataRequest :
-                request.getReadTableRequest().getExtraReadRequests()) {
-            Cursor cursorExtraData = transactionManager.read(extraDataRequest);
-            RecordHelper<?> recordHelper = request.getRecordHelper();
-            if (recordHelper == null) {
-                throw new IllegalArgumentException(
-                        "Extra read request with no attached record helper.");
+            RecordHelper<?> recordHelper,
+            String callingPackageName,
+            Set<String> grantedExtraReadPermissions,
+            boolean isInForeground) {
+        List<ReadTableRequest> childRequests =
+                recordHelper.getChildDataReadRequests(
+                        records,
+                        callingPackageName,
+                        grantedExtraReadPermissions,
+                        isInForeground,
+                        mAppInfoHelper);
+        for (ReadTableRequest childRequest : childRequests) {
+            try (Cursor childCursor = transactionManager.read(childRequest)) {
+                recordHelper.updateInternalRecordsWithExtraFields(records, childCursor);
             }
-            recordHelper.updateInternalRecordsWithExtraFields(records, cursorExtraData);
         }
     }
 }

@@ -47,7 +47,6 @@ import static com.android.server.healthconnect.storage.utils.WhereClauses.Logica
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.HealthFitnessStatsLog;
-import android.health.connect.aidl.ReadRecordsRequestParcel;
 import android.health.connect.datatypes.AggregationType;
 import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.ExerciseLapInternal;
@@ -318,30 +317,31 @@ public final class ExerciseSessionRecordHelper
     }
 
     @Override
-    List<ReadTableRequest> getExtraDataReadRequests(
-            ReadRecordsRequestParcel request,
+    public List<ReadTableRequest> getChildDataReadRequests(
+            List<RecordInternal<?>> records,
             String callingPackageName,
-            long startDateAccessMillis,
             Set<String> grantedExtraReadPermissions,
             boolean isInForeground,
             AppInfoHelper appInfoHelper) {
         List<ReadTableRequest> extraRequests = new ArrayList<>();
 
-        if (Flags.optimizeChildReads()) {
-            WhereClauses sessionsWhereClause =
-                    getReadTableWhereClause(
-                            request,
-                            callingPackageName,
-                            /* enforceSelfRead= */ false,
-                            startDateAccessMillis,
-                            appInfoHelper);
-            ReadTableRequest sessionIdsRequest =
-                    getSessionIdsRequest(sessionsWhereClause)
-                            .setOrderBy(getOrderByClause(request))
-                            .setLimit(getLimitSize(request));
+        if (records.isEmpty()) {
+            return extraRequests;
+        }
 
-            extraRequests.add(ExerciseLapRecordHelper.getReadRequest(sessionIdsRequest));
-            extraRequests.add(ExerciseSegmentRecordHelper.getReadRequest(sessionIdsRequest));
+        List<Integer> rowIds = records.stream().map(RecordInternal::getRowId).toList();
+        WhereClauses inClause = new WhereClauses(AND);
+        inClause.addWhereInIntsClause(PARENT_KEY_COLUMN_NAME, rowIds);
+
+        if (Flags.optimizeChildReads()) {
+            ReadTableRequest lapsRequest = new ReadTableRequest(EXERCISE_LAPS_RECORD_TABLE_NAME);
+            lapsRequest.setWhereClause(inClause);
+            extraRequests.add(lapsRequest);
+
+            ReadTableRequest segmentsRequest =
+                    new ReadTableRequest(EXERCISE_SEGMENT_RECORD_TABLE_NAME);
+            segmentsRequest.setWhereClause(inClause);
+            extraRequests.add(segmentsRequest);
         }
 
         int routeAccessType =
@@ -352,25 +352,32 @@ public final class ExerciseSessionRecordHelper
         }
 
         boolean enforceSelfRead = routeAccessType == ROUTE_READ_ACCESS_TYPE_OWN;
-        if (enforceSelfRead && appInfoHelper.getAppInfoId(callingPackageName) == DEFAULT_LONG) {
-            // Calling app hasn't written anything, so no need for additional queries.
+        long callingAppInfoId = appInfoHelper.getAppInfoId(callingPackageName);
+
+        if (enforceSelfRead && callingAppInfoId == DEFAULT_LONG) {
             return extraRequests;
         }
 
-        WhereClauses sessionsWithAccessibleRouteClause =
-                getReadTableWhereClause(
-                        request,
-                        callingPackageName,
-                        enforceSelfRead,
-                        startDateAccessMillis,
-                        appInfoHelper);
+        ReadTableRequest routeReadRequest = new ReadTableRequest(EXERCISE_ROUTE_RECORD_TABLE_NAME);
+        if (enforceSelfRead) {
+            // Filter session IDs to only include those created by the calling app, so that we only
+            // read routes for owned sessions.
+            List<Integer> ownSessionRowIds =
+                    records.stream()
+                            .filter(r -> r.getAppInfoId() == callingAppInfoId)
+                            .map(RecordInternal::getRowId)
+                            .toList();
+            if (!ownSessionRowIds.isEmpty()) {
+                WhereClauses ownRouteWhereClause = new WhereClauses(AND);
+                ownRouteWhereClause.addWhereInIntsClause(PARENT_KEY_COLUMN_NAME, ownSessionRowIds);
+                routeReadRequest.setWhereClause(ownRouteWhereClause);
+                extraRequests.add(routeReadRequest);
+            }
+        } else {
+            routeReadRequest.setWhereClause(inClause);
+            extraRequests.add(routeReadRequest);
+        }
 
-        ReadTableRequest sessionIdsRequest =
-                getSessionIdsRequest(sessionsWithAccessibleRouteClause)
-                        .setOrderBy(getOrderByClause(request))
-                        .setLimit(getLimitSize(request));
-
-        extraRequests.add(getRouteReadRequest(sessionIdsRequest));
         return extraRequests;
     }
 
@@ -588,22 +595,6 @@ public final class ExerciseSessionRecordHelper
             }
         }
         return numberOfRecordsWithExerciseRoutes;
-    }
-
-    /** Same as the original request but for session IDs only */
-    private ReadTableRequest getSessionIdsRequest(WhereClauses whereClauses) {
-        return new ReadTableRequest(getMainTableName())
-                .setColumnNames(List.of(PRIMARY_COLUMN_NAME))
-                .setWhereClause(whereClauses);
-    }
-
-    private ReadTableRequest getRouteReadRequest(ReadTableRequest sessionIdsRequest) {
-        ReadTableRequest routeReadRequest = new ReadTableRequest(EXERCISE_ROUTE_RECORD_TABLE_NAME);
-
-        WhereClauses inClause = new WhereClauses(AND);
-        inClause.addWhereInSQLRequestClause(PARENT_KEY_COLUMN_NAME, sessionIdsRequest);
-        routeReadRequest.setWhereClause(inClause);
-        return routeReadRequest;
     }
 
     private int getExerciseRouteReadAccessType(
