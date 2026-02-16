@@ -30,7 +30,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
+import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -40,8 +40,7 @@ class LoadAutoDeleteUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
-    private val healthConnectManager: HealthConnectManager =
-        Mockito.mock(HealthConnectManager::class.java)
+    private val healthConnectManager: HealthConnectManager = mock()
 
     private lateinit var loadAutoDeleteUseCase: LoadAutoDeleteUseCase
 

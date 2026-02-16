@@ -20,6 +20,7 @@ import com.android.healthconnect.controller.autodelete.AutoDeleteRange
 import com.android.healthconnect.controller.autodelete.AutoDeleteViewModel
 import com.android.healthconnect.controller.tests.autodelete.api.FakeLoadAutoDeleteUseCase
 import com.android.healthconnect.controller.tests.autodelete.api.FakeUpdateAutoDeleteUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.google.common.truth.Truth.assertThat
@@ -45,12 +46,13 @@ class AutoDeleteViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
     private val testDispatcher = StandardTestDispatcher()
 
     private lateinit var viewModel: AutoDeleteViewModel
-    private val loadAutoDeleteUseCase = FakeLoadAutoDeleteUseCase()
-    private val updateAutoDeleteUseCase = FakeUpdateAutoDeleteUseCase()
+    private val loadAutoDeleteUseCase = fakeUseCaseRule.watch(FakeLoadAutoDeleteUseCase())
+    private val updateAutoDeleteUseCase = fakeUseCaseRule.watch(FakeUpdateAutoDeleteUseCase())
 
     @Before
     fun setup() {
