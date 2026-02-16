@@ -35,6 +35,7 @@ import static android.healthconnect.testing.unittest.RecordInternalFactory.build
 import static com.android.healthfitness.flags.Flags.FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING;
 import static com.android.healthfitness.flags.Flags.FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING_DB;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
+import static com.android.healthfitness.flags.Flags.FLAG_DEVELOPMENT_DATABASE_RW;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.APP_ID_COLUMN_NAME;
 import static com.android.server.healthconnect.common.changelog.ChangeLogsHelper.OPERATION_TYPE_COLUMN_NAME;
@@ -735,6 +736,7 @@ public class ChangeLogsHelperTest {
 
     @Test
     @EnableFlags({
+        FLAG_DEVELOPMENT_DATABASE_RW,
         FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING,
         FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING_DB
     })
@@ -742,6 +744,7 @@ public class ChangeLogsHelperTest {
         ChangeLogsTableRequests tableRequests = ChangeLogsTableRequests.ofUpsertion(Instant.now());
         UUID uuid = UUID.randomUUID();
         int perRecordPermission = 10;
+
         tableRequests.addRecordInfo(RECORD_TYPE_STEPS, 0, uuid, perRecordPermission);
         List<UpsertTableRequest> requests = tableRequests.getUpsertTableRequests();
 
@@ -755,12 +758,14 @@ public class ChangeLogsHelperTest {
 
     @Test
     @EnableFlags({
+        FLAG_DEVELOPMENT_DATABASE_RW,
         FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING,
         FLAG_CHANGE_LOGS_GRANULAR_PERMISSIONS_HANDLING_DB
     })
     public void getUpsertTableRequests_withNoPerRecordPermission_doesNotPopulateColumn() {
         ChangeLogsTableRequests tableRequests = ChangeLogsTableRequests.ofUpsertion(Instant.now());
         UUID uuid = UUID.randomUUID();
+
         tableRequests.addRecordInfo(RECORD_TYPE_STEPS, 0, uuid, DEFAULT_INT);
         List<UpsertTableRequest> requests = tableRequests.getUpsertTableRequests();
 
