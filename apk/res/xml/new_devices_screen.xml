@@ -14,22 +14,14 @@
   ~ limitations under the License.
   -->
 
-<PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:title="@string/devices_title">
 
-    <com.android.settingslib.widget.TopIntroPreference
-        android:title="@string/devices_screen_description" />
+    <com.android.settingslib.widget.TopIntroPreference android:key="devices_intro" />
 
-    <PreferenceCategory
-        android:key="enabled_devices_category"
-        android:title="@string/devices_screen_enabled_devices_header">
-    </PreferenceCategory>
+    <PreferenceCategory android:key="enabled_devices_category" />
 
-    <PreferenceCategory
-        android:key="not_enabled_devices_category"
-        android:title="@string/devices_screen_not_enabled_devices_header">
-    </PreferenceCategory>
+    <PreferenceCategory android:key="not_enabled_devices_category" />
 
 </PreferenceScreen>
