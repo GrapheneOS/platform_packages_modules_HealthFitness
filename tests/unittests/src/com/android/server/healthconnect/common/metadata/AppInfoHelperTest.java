@@ -26,6 +26,7 @@ import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
@@ -36,6 +37,8 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.ApplicationInfoFlags;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.health.connect.datatypes.AppInfo;
 import android.health.connect.internal.datatypes.AppInfoInternal;
@@ -71,6 +74,7 @@ import org.mockito.junit.MockitoRule;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
 
 @RunWith(AndroidJUnit4.class)
@@ -136,6 +140,42 @@ public class AppInfoHelperTest {
                 mPackageManager,
                 mMockDeviceDataSourceHelper,
                 mMockDeviceDataSource);
+    }
+
+    @Test
+    public void testGetAppInfo_iconIsTooLarge_resizesIcon() throws Exception {
+        setAppAsInstalled();
+        int width = 1000;
+        int height = 1000;
+        when(mDrawable.getIntrinsicHeight()).thenReturn(height);
+        when(mDrawable.getIntrinsicWidth()).thenReturn(width);
+
+        doAnswer(
+                        invocation -> {
+                            Canvas canvas = invocation.getArgument(0);
+                            int[] colors = new int[width * height];
+                            Random random = new Random(42); // Seed for reproducibility
+                            for (int i = 0; i < colors.length; i++) {
+                                colors[i] = random.nextInt();
+                            }
+                            Bitmap noise =
+                                    Bitmap.createBitmap(
+                                            colors, width, height, Bitmap.Config.ARGB_8888);
+                            canvas.drawBitmap(noise, 0, 0, null);
+                            return null;
+                        })
+                .when(mDrawable)
+                .draw(any(Canvas.class));
+
+        // This should store the large blob
+        mAppInfoHelper.getOrInsertAppInfoId(TEST_PACKAGE_NAME);
+
+        // Clear cache and read back to trigger SQLiteBlobTooBigException if icon was too large
+        mAppInfoHelper.clearCache();
+        // TODO(b/484258712): Fix the bug that causes this exception.
+        assertThrows(
+                android.database.sqlite.SQLiteBlobTooBigException.class,
+                () -> mAppInfoHelper.getAppInfoMap());
     }
 
     @Test
