@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 The Android Open Source Project
+ * Copyright (C) 2026 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.data.access
+package com.android.healthconnect.controller.data.access.api
 
 import android.health.connect.HealthConnectManager
 import android.health.connect.RecordTypeInfoResponse
 import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.SymptomRecord
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
-import com.android.healthconnect.controller.permissions.data.fromHealthPermissionCategory
-import com.android.healthconnect.controller.permissions.data.isSymptom
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
@@ -34,24 +32,17 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.suspendCancellableCoroutine
 
-/** Use case to load [AppMetadata]s that have data of this [FitnessPermissionType]. */
+/** Use case to load [AppMetadata]s that contribute symptom data. */
 @Singleton
-class LoadFitnessTypeContributorAppsUseCase
+class LoadSymptomContributorAppsUseCase
 @Inject
 constructor(
     private val appInfoReader: AppInfoReader,
     private val healthConnectManager: HealthConnectManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) :
-    BaseUseCase<FitnessPermissionType, List<AppMetadata>>(dispatcher),
-    ILoadFitnessTypeContributorAppsUseCase {
+) : BaseUseCase<Unit, List<AppMetadata>>(dispatcher), ILoadSymptomContributorAppsUseCase {
 
-    override suspend fun execute(input: FitnessPermissionType): List<AppMetadata> {
-        if (input.isSymptom()) {
-            throw IllegalArgumentException(
-                "Symptoms are not supported in this use case, please use LoadSymptomContributorAppsUseCase"
-            )
-        }
+    override suspend fun execute(input: Unit): List<AppMetadata> {
         val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
             suspendCancellableCoroutine { continuation ->
                 healthConnectManager.queryAllRecordTypesInfo(
@@ -60,21 +51,14 @@ constructor(
                 )
             }
         val packages =
-            recordTypeInfoMap.values
-                .filter { response ->
-                    response.permissionCategories.any { category ->
-                        try {
-                            fromHealthPermissionCategory(category) == input
-                        } catch (e: IllegalArgumentException) {
-                            false
-                        }
-                    } && response.contributingPackages.isNotEmpty()
-                }
-                .map { it.contributingPackages }
-                .flatten()
-        return packages.map { appInfoReader.getAppMetadata(it.packageName) }.sortedBy { it.appName }
+            recordTypeInfoMap[SymptomRecord::class.java]?.contributingPackages?.map {
+                it.packageName
+            } ?: emptyList()
+        return packages
+            .map { appInfoReader.getAppMetadata(it) }
+            .distinctBy { it.packageName }
+            .sortedBy { it.appName }
     }
 }
 
-interface ILoadFitnessTypeContributorAppsUseCase :
-    UseCaseContract<FitnessPermissionType, List<AppMetadata>>
+interface ILoadSymptomContributorAppsUseCase : UseCaseContract<Unit, List<AppMetadata>>

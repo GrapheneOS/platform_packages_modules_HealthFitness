@@ -17,11 +17,11 @@ package com.android.healthconnect.controller.tests.data.access.api
 
 import com.android.healthconnect.controller.data.access.AppAccessMetadata
 import com.android.healthconnect.controller.data.access.AppAccessState
-import com.android.healthconnect.controller.data.access.ILoadAccessUseCase
-import com.android.healthconnect.controller.data.access.ILoadFitnessTypeContributorAppsUseCase
-import com.android.healthconnect.controller.data.access.ILoadMedicalTypeContributorAppsUseCase
-import com.android.healthconnect.controller.data.access.ILoadSymptomAccessUseCase
-import com.android.healthconnect.controller.data.access.ILoadSymptomContributorAppsUseCase
+import com.android.healthconnect.controller.data.access.api.ILoadAccessUseCase
+import com.android.healthconnect.controller.data.access.api.ILoadFitnessTypeContributorAppsUseCase
+import com.android.healthconnect.controller.data.access.api.ILoadMedicalTypeContributorAppsUseCase
+import com.android.healthconnect.controller.data.access.api.ILoadSymptomAccessUseCase
+import com.android.healthconnect.controller.data.access.api.ILoadSymptomContributorAppsUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType

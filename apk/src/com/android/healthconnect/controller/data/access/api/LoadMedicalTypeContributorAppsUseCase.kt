@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.data.access
+package com.android.healthconnect.controller.data.access.api
 
 import android.health.connect.HealthConnectManager
 import android.health.connect.MedicalResourceTypeInfo

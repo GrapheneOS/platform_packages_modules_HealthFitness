@@ -26,7 +26,7 @@ import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.SymptomRecord
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.data.access.LoadSymptomContributorAppsUseCase
+import com.android.healthconnect.controller.data.access.api.LoadSymptomContributorAppsUseCase
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults

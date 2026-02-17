@@ -22,6 +22,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.data.access.AccessViewModel.AccessScreenState.Error
 import com.android.healthconnect.controller.data.access.AccessViewModel.AccessScreenState.WithData
+import com.android.healthconnect.controller.data.access.api.ILoadAccessUseCase
+import com.android.healthconnect.controller.data.access.api.ILoadSymptomAccessUseCase
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.postValueIfUpdated
