@@ -57,6 +57,7 @@ java_sdk_library {
         "fhirspec-java-proto-lite",
         "backup-restore-proto",
         "serialization-proto",
+        "modules-utils-shell-command-handler",
     ],
     jarjar_rules: "jarjar-rules.txt",
     installable: true,
