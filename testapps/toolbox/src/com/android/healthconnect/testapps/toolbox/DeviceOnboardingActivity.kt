@@ -31,7 +31,7 @@ import java.util.concurrent.Executors
 class DeviceOnboardingActivity : AppCompatActivity() {
 
     companion object {
-        const val TOOLBOX_APP_NAME = "com.android.healthconnect.testapps.toolboxcombined"
+        const val TOOLBOX_APP_NAME = "com.android.healthconnect.testapps.toolboxddp"
     }
 
     private val healthConnectManager by lazy {
