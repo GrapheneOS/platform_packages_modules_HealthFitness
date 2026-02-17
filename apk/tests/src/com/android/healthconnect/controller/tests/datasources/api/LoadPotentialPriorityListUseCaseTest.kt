@@ -23,7 +23,6 @@ import android.health.connect.datatypes.HeartRateRecord
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsRecord
-import android.os.OutcomeReceiver
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.datasources.api.LoadPotentialPriorityListUseCase
@@ -40,6 +39,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_3
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
+import com.android.healthconnect.controller.tests.utils.doReturnResult
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -48,14 +48,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
-import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
-import org.mockito.kotlin.whenever
+import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stub
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
@@ -69,12 +69,9 @@ class LoadPotentialPriorityListUseCaseTest {
     private lateinit var loadPotentialPriorityListUseCase: LoadPotentialPriorityListUseCase
     @BindValue lateinit var appInfoReader: AppInfoReader
 
-    private val healthPermissionManager: HealthPermissionManager =
-        Mockito.mock(HealthPermissionManager::class.java)
-    private val healthConnectManager: HealthConnectManager =
-        Mockito.mock(HealthConnectManager::class.java)
-    private val healthPermissionReader: HealthPermissionReader =
-        Mockito.mock(HealthPermissionReader::class.java)
+    private val healthPermissionManager: HealthPermissionManager = mock()
+    private val healthConnectManager: HealthConnectManager = mock()
+    private val healthPermissionReader: HealthPermissionReader = mock()
 
     @Before
     fun setup() = runTest {
@@ -98,9 +95,10 @@ class LoadPotentialPriorityListUseCaseTest {
 
     @Test
     fun getAppsWithData_forActivity_returnsAppsForActivity() = runTest {
-        Mockito.doAnswer(prepareQueryAllRecordTypesAnswer())
-            .`when`(healthConnectManager)
-            .queryAllRecordTypesInfo(any(), any())
+        healthConnectManager.stub {
+            on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
+                Result.success(getRecordTypeInfoMap())
+        }
 
         val result = loadPotentialPriorityListUseCase.getAppsWithData(HealthDataCategory.ACTIVITY)
         assertThat(result is UseCaseResults.Success).isTrue()
@@ -110,9 +108,10 @@ class LoadPotentialPriorityListUseCaseTest {
 
     @Test
     fun getAppsWithData_forSleep_returnsAppsForSleep() = runTest {
-        Mockito.doAnswer(prepareQueryAllRecordTypesAnswer())
-            .`when`(healthConnectManager)
-            .queryAllRecordTypesInfo(any(), any())
+        healthConnectManager.stub {
+            on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
+                Result.success(getRecordTypeInfoMap())
+        }
 
         val result = loadPotentialPriorityListUseCase.getAppsWithData(HealthDataCategory.SLEEP)
         assertThat(result is UseCaseResults.Success).isTrue()
@@ -120,38 +119,30 @@ class LoadPotentialPriorityListUseCaseTest {
             .isEqualTo(setOf(TEST_APP_PACKAGE_NAME_2))
     }
 
-    // TODO (b/376085889) Unignore test when we can use mockito-kotlin
     @Test
-    @Ignore
     fun getAppsWithWritePermission_forActivity_returnsAppsForActivity() = runTest {
-        whenever(healthPermissionReader.getAppsWithFitnessPermissions())
-            .thenReturn(
+        healthPermissionReader.stub {
+            on { getAppsWithFitnessPermissions() } doReturn
                 listOf(TEST_APP_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2, TEST_APP_PACKAGE_NAME_3)
+        }
+
+        val permissionsMap =
+            mapOf(
+                TEST_APP_PACKAGE_NAME to
+                    FitnessPermission(FitnessPermissionType.DISTANCE, PermissionsAccessType.WRITE),
+                TEST_APP_PACKAGE_NAME_2 to
+                    FitnessPermission(FitnessPermissionType.SLEEP, PermissionsAccessType.WRITE),
+                TEST_APP_PACKAGE_NAME_3 to
+                    FitnessPermission(FitnessPermissionType.HEART_RATE, PermissionsAccessType.READ),
             )
 
-        whenever(healthPermissionManager.getGrantedHealthPermissions(TEST_APP_PACKAGE_NAME))
-            .thenReturn(
-                listOf(
-                    FitnessPermission(FitnessPermissionType.DISTANCE, PermissionsAccessType.WRITE)
-                        .toString()
-                )
-            )
-
-        whenever(healthPermissionManager.getGrantedHealthPermissions(TEST_APP_PACKAGE_NAME_2))
-            .thenReturn(
-                listOf(
-                    FitnessPermission(FitnessPermissionType.SLEEP, PermissionsAccessType.WRITE)
-                        .toString()
-                )
-            )
-
-        whenever(healthPermissionManager.getGrantedHealthPermissions(TEST_APP_PACKAGE_NAME_3))
-            .thenReturn(
-                listOf(
-                    FitnessPermission(FitnessPermissionType.HEART_RATE, PermissionsAccessType.READ)
-                        .toString()
-                )
-            )
+        healthPermissionManager.stub {
+            on { getGrantedHealthPermissions(any()) } doAnswer
+                { invocation ->
+                    val pkg = invocation.getArgument<String>(0)
+                    permissionsMap[pkg]?.let { listOf(it.toString()) } ?: emptyList()
+                }
+        }
 
         val result =
             loadPotentialPriorityListUseCase.getAppsWithWritePermission(HealthDataCategory.ACTIVITY)
@@ -159,37 +150,30 @@ class LoadPotentialPriorityListUseCaseTest {
         assertThat((result as UseCaseResults.Success).data).isEqualTo(setOf(TEST_APP_PACKAGE_NAME))
     }
 
-    // TODO (b/376085889) Unignore test when we can use mockito-kotlin
     @Test
-    @Ignore
     fun getAppsWithWritePermission_forSleep_returnsAppsForSleep() = runTest {
-        whenever(healthPermissionReader.getAppsWithFitnessPermissions())
-            .thenReturn(
+        healthPermissionReader.stub {
+            on { getAppsWithFitnessPermissions() } doReturn
                 listOf(TEST_APP_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2, TEST_APP_PACKAGE_NAME_3)
-            )
-        whenever(healthPermissionManager.getGrantedHealthPermissions(TEST_APP_PACKAGE_NAME))
-            .thenReturn(
-                listOf(
-                    FitnessPermission(FitnessPermissionType.SLEEP, PermissionsAccessType.READ)
-                        .toString()
-                )
+        }
+
+        val permissionsMap =
+            mapOf(
+                TEST_APP_PACKAGE_NAME to
+                    FitnessPermission(FitnessPermissionType.SLEEP, PermissionsAccessType.READ),
+                TEST_APP_PACKAGE_NAME_2 to
+                    FitnessPermission(FitnessPermissionType.SLEEP, PermissionsAccessType.WRITE),
+                TEST_APP_PACKAGE_NAME_3 to
+                    FitnessPermission(FitnessPermissionType.HEART_RATE, PermissionsAccessType.READ),
             )
 
-        whenever(healthPermissionManager.getGrantedHealthPermissions(TEST_APP_PACKAGE_NAME_2))
-            .thenReturn(
-                listOf(
-                    FitnessPermission(FitnessPermissionType.SLEEP, PermissionsAccessType.WRITE)
-                        .toString()
-                )
-            )
-
-        whenever(healthPermissionManager.getGrantedHealthPermissions(TEST_APP_PACKAGE_NAME_3))
-            .thenReturn(
-                listOf(
-                    FitnessPermission(FitnessPermissionType.HEART_RATE, PermissionsAccessType.READ)
-                        .toString()
-                )
-            )
+        healthPermissionManager.stub {
+            on { getGrantedHealthPermissions(any()) } doAnswer
+                { invocation ->
+                    val pkg = invocation.getArgument<String>(0)
+                    permissionsMap[pkg]?.let { listOf(it.toString()) } ?: emptyList()
+                }
+        }
 
         val result =
             loadPotentialPriorityListUseCase.getAppsWithWritePermission(HealthDataCategory.SLEEP)
@@ -202,40 +186,29 @@ class LoadPotentialPriorityListUseCaseTest {
         val map = mutableMapOf<Class<out Record>, RecordTypeInfoResponse>()
         map[StepsRecord::class.java] =
             RecordTypeInfoResponse(
-                FitnessPermissionType.STEPS.category,
+                setOf(FitnessPermissionType.STEPS.category),
                 HealthDataCategory.ACTIVITY,
                 listOf(getDataOriginTestApp()),
             )
         map[DistanceRecord::class.java] =
             RecordTypeInfoResponse(
-                FitnessPermissionType.DISTANCE.category,
+                setOf(FitnessPermissionType.DISTANCE.category),
                 HealthDataCategory.ACTIVITY,
                 listOf(getDataOriginTestApp2()),
             )
         map[HeartRateRecord::class.java] =
             RecordTypeInfoResponse(
-                FitnessPermissionType.HEART_RATE.category,
+                setOf(FitnessPermissionType.HEART_RATE.category),
                 HealthDataCategory.VITALS,
                 listOf(getDataOriginTestApp3()),
             )
         map[SleepSessionRecord::class.java] =
             RecordTypeInfoResponse(
-                FitnessPermissionType.SLEEP.category,
+                setOf(FitnessPermissionType.SLEEP.category),
                 HealthDataCategory.SLEEP,
                 listOf(getDataOriginTestApp2()),
             )
         return map
-    }
-
-    private fun prepareQueryAllRecordTypesAnswer(): (InvocationOnMock) -> Nothing? {
-        val answer = { args: InvocationOnMock ->
-            val receiver =
-                args.arguments[1]
-                    as OutcomeReceiver<Map<Class<out Record>, RecordTypeInfoResponse>, *>
-            receiver.onResult(getRecordTypeInfoMap())
-            null
-        }
-        return answer
     }
 
     private fun getDataOriginTestApp(): DataOrigin =
