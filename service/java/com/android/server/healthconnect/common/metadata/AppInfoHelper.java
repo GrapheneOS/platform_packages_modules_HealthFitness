@@ -111,6 +111,8 @@ public final class AppInfoHelper extends DatabaseHelper {
     public static final String DEVICE_INFO_ID_COLUMN_NAME = "device_info_id";
 
     private static final int COMPRESS_FACTOR = 100;
+    // Largest icon size on UI 72x72dp, so using 288x288 for xxxhdpi.
+    private static final int MAX_APP_ICON_SIZE_PX = 288;
 
     /**
      * Map to store appInfoId -> packageName mapping for populating record for read
@@ -987,15 +989,44 @@ public final class AppInfoHelper extends DatabaseHelper {
 
     @Nullable
     private static Bitmap getBitmapFromDrawable(Drawable drawable) {
-        final Bitmap bmp =
-                Bitmap.createBitmap(
-                        drawable.getIntrinsicWidth(),
-                        drawable.getIntrinsicHeight(),
-                        Bitmap.Config.ARGB_8888);
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+
+        if (width <= 0 || height <= 0) {
+            return null;
+        }
+
+        final Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
         final Canvas canvas = new Canvas(bmp);
         drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
         drawable.draw(canvas);
+
+        if (Flags.resizeLargeAppIcons()) {
+            return resizeBitmap(bmp);
+        }
+
         return bmp;
+    }
+
+    /**
+     * Resizes the bitmap to be at most {@link #MAX_APP_ICON_SIZE_PX} in width or height,
+     * maintaining aspect ratio.
+     */
+    public static Bitmap resizeBitmap(Bitmap bitmap) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        if (width <= MAX_APP_ICON_SIZE_PX && height <= MAX_APP_ICON_SIZE_PX) {
+            return bitmap;
+        }
+        float aspectRatio = (float) width / height;
+        if (width > height) {
+            width = MAX_APP_ICON_SIZE_PX;
+            height = (int) (width / aspectRatio);
+        } else {
+            height = MAX_APP_ICON_SIZE_PX;
+            width = (int) (height * aspectRatio);
+        }
+        return Bitmap.createScaledBitmap(bitmap, width, height, true);
     }
 
     private Set<String> convertPackageIdsToPackageName(Set<Long> packageIds) {
