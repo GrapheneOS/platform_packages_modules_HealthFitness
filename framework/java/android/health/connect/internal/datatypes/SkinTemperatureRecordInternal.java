@@ -42,7 +42,8 @@ import java.util.Set;
  */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE)
 public final class SkinTemperatureRecordInternal
-        extends SeriesRecordInternal<SkinTemperatureRecord, SkinTemperatureRecord.Delta> {
+        extends SeriesRecordInternal<
+                SkinTemperatureRecord, SkinTemperatureRecordInternal.SkinTemperatureDeltaSample> {
 
     private Temperature mBaseline = Temperature.fromCelsius(DEFAULT_DOUBLE);
     private Set<SkinTemperatureDeltaSample> mDeltaSamples;
@@ -96,6 +97,11 @@ public final class SkinTemperatureRecordInternal
     @Override
     public Set<SkinTemperatureDeltaSample> getSamples() {
         return mDeltaSamples;
+    }
+
+    @Override
+    public void addSample(SkinTemperatureDeltaSample sample) {
+        mDeltaSamples.add(sample);
     }
 
     public Temperature getBaseline() {

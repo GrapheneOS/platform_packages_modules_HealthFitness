@@ -37,6 +37,7 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 
@@ -123,19 +124,27 @@ public class PowerRecordHelper
     /** Populates the {@code record} with values specific to datatype */
     @Override
     PowerRecordInternal populateSpecificValues(Cursor seriesTableCursor) {
+        if (Flags.optimizeChildReads()) {
+            return new PowerRecordInternal(new HashSet<>());
+        }
+
         HashSet<PowerRecordInternal.PowerRecordSample> powerRecordSampleSet = new HashSet<>();
         UUID uuid = getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME);
         do {
-            powerRecordSampleSet.add(
-                    new PowerRecordInternal.PowerRecordSample(
-                            getCursorDouble(seriesTableCursor, POWER_COLUMN_NAME),
-                            getCursorLong(seriesTableCursor, EPOCH_MILLIS_COLUMN_NAME)));
+            powerRecordSampleSet.add(extractSample(seriesTableCursor));
         } while (seriesTableCursor.moveToNext()
                 && uuid.equals(getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME)));
         // In case we hit another record, move the cursor back to read next record in outer
         // RecordHelper#getInternalRecords loop.
         seriesTableCursor.moveToPrevious();
         return new PowerRecordInternal(powerRecordSampleSet);
+    }
+
+    @Override
+    PowerRecordInternal.PowerRecordSample extractSample(Cursor cursor) {
+        return new PowerRecordInternal.PowerRecordSample(
+                getCursorDouble(cursor, POWER_COLUMN_NAME),
+                getCursorLong(cursor, EPOCH_MILLIS_COLUMN_NAME));
     }
 
     @Override

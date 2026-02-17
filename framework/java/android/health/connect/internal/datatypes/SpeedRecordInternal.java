@@ -41,7 +41,7 @@ import java.util.TreeSet;
  */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_SPEED)
 public class SpeedRecordInternal
-        extends SeriesRecordInternal<SpeedRecord, SpeedRecord.SpeedRecordSample> {
+        extends SeriesRecordInternal<SpeedRecord, SpeedRecordInternal.SpeedRecordSample> {
     private Set<SpeedRecordSample> mSpeedRecordSamples =
             new TreeSet<>(Comparator.comparingLong(SpeedRecordSample::getEpochMillis));
 
@@ -67,6 +67,11 @@ public class SpeedRecordInternal
     @NonNull
     public Set<SpeedRecordSample> getSamples() {
         return mSpeedRecordSamples;
+    }
+
+    @Override
+    public void addSample(SpeedRecordSample sample) {
+        mSpeedRecordSamples.add(sample);
     }
 
     @Override

@@ -19,20 +19,32 @@ package com.android.server.healthconnect.fitness.recordhelpers;
 import static android.health.connect.Constants.PARENT_KEY;
 
 import static com.android.server.healthconnect.storage.utils.StorageUtils.INTEGER;
+import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.health.connect.datatypes.RecordTypeIdentifier;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.health.connect.internal.datatypes.SeriesRecordInternal;
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
+
+import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.storage.request.CreateTableRequest;
+import com.android.server.healthconnect.storage.request.ReadTableRequest;
 import com.android.server.healthconnect.storage.request.UpsertTableRequest;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
+import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /** @hide */
 public abstract class SeriesRecordHelper<
@@ -79,12 +91,60 @@ public abstract class SeriesRecordHelper<
 
     /** Returns the INNER JOIN clause for querying from the table for series datatype */
     @Override
+    @Nullable
     final SqlJoin getJoinForReadRequest() {
+        if (Flags.optimizeChildReads()) {
+            return null;
+        }
+
         return new SqlJoin(
                 getMainTableName(),
                 getSeriesDataTableName(),
                 PRIMARY_COLUMN_NAME,
                 PARENT_KEY_COLUMN_NAME);
+    }
+
+    @Override
+    public List<ReadTableRequest> getChildDataReadRequests(
+            List<RecordInternal<?>> records,
+            String callingPackageName,
+            Set<String> grantedExtraReadPermissions,
+            boolean isInForeground,
+            AppInfoHelper appInfoHelper) {
+        if (!Flags.optimizeChildReads() || records.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Integer> rowIds = records.stream().map(RecordInternal::getRowId).toList();
+        WhereClauses inClause = new WhereClauses(AND);
+        inClause.addWhereInIntsClause(PARENT_KEY_COLUMN_NAME, rowIds);
+
+        ReadTableRequest seriesDataRequest = new ReadTableRequest(getSeriesDataTableName());
+        seriesDataRequest.setWhereClause(inClause);
+
+        return Collections.singletonList(seriesDataRequest);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked") // Cast to SeriesRecordInternal to invoke addSample
+    public void readExtraData(List<T> internalRecords, Cursor cursorExtraData) {
+        if (!Flags.optimizeChildReads()) {
+            return;
+        }
+
+        // For quick access to records by rowId
+        Map<Integer, T> rowIdToRecordMap = new HashMap<>(internalRecords.size());
+        for (T record : internalRecords) {
+            rowIdToRecordMap.put(record.getRowId(), record);
+        }
+
+        while (cursorExtraData.moveToNext()) {
+            int rowId = getCursorInt(cursorExtraData, PARENT_KEY_COLUMN_NAME);
+            T record = rowIdToRecordMap.get(rowId);
+            if (record != null) {
+                ((SeriesRecordInternal) record).addSample(extractSample(cursorExtraData));
+            }
+        }
     }
 
     @Override
@@ -119,6 +179,9 @@ public abstract class SeriesRecordHelper<
 
     /** Populates the {@code record} with values specific to dataytpe */
     abstract T populateSpecificValues(Cursor cursor);
+
+    /** Extracts a single sample from the cursor. */
+    abstract U extractSample(Cursor cursor);
 
     /** Puts the {@code sample} to the {@code contentValues} */
     abstract void populateSampleTo(ContentValues contentValues, U sample);

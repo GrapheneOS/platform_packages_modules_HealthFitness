@@ -41,7 +41,7 @@ import java.util.TreeSet;
  */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_POWER)
 public class PowerRecordInternal
-        extends SeriesRecordInternal<PowerRecord, PowerRecord.PowerRecordSample> {
+        extends SeriesRecordInternal<PowerRecord, PowerRecordInternal.PowerRecordSample> {
     private Set<PowerRecordSample> mPowerRecordSamples =
             new TreeSet<>(Comparator.comparingLong(PowerRecordSample::getEpochMillis));
 
@@ -69,6 +69,11 @@ public class PowerRecordInternal
     @NonNull
     public Set<PowerRecordSample> getSamples() {
         return mPowerRecordSamples;
+    }
+
+    @Override
+    public void addSample(PowerRecordSample sample) {
+        mPowerRecordSamples.add(sample);
     }
 
     @Override

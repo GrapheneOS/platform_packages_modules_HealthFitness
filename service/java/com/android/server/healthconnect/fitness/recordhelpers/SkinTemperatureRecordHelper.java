@@ -43,6 +43,7 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 
@@ -92,22 +93,30 @@ public final class SkinTemperatureRecordHelper
 
         HashSet<SkinTemperatureRecordInternal.SkinTemperatureDeltaSample>
                 skinTemperatureDeltaSamples = new HashSet<>();
-        UUID uuid = getCursorUUID(cursor, UUID_COLUMN_NAME);
-        do {
-            skinTemperatureDeltaSamples.add(
-                    new SkinTemperatureRecordInternal.SkinTemperatureDeltaSample(
-                            getCursorDouble(cursor, SKIN_TEMPERATURE_DELTA_COLUMN_NAME),
-                            getCursorLong(cursor, EPOCH_MILLIS_COLUMN_NAME)));
-        } while (cursor.moveToNext() && uuid.equals(getCursorUUID(cursor, UUID_COLUMN_NAME)));
-        // In case we hit another record, move the cursor back to read next record in outer
-        // RecordHelper#getInternalRecords loop.
-        cursor.moveToPrevious();
+
+        if (!Flags.optimizeChildReads()) {
+            UUID uuid = getCursorUUID(cursor, UUID_COLUMN_NAME);
+            do {
+                skinTemperatureDeltaSamples.add(extractSample(cursor));
+            } while (cursor.moveToNext() && uuid.equals(getCursorUUID(cursor, UUID_COLUMN_NAME)));
+            // In case we hit another record, move the cursor back to read next record in outer
+            // RecordHelper#getInternalRecords loop.
+            cursor.moveToPrevious();
+        }
+
         SkinTemperatureRecordInternal recordInternal =
                 new SkinTemperatureRecordInternal(skinTemperatureDeltaSamples);
 
         recordInternal.setMeasurementLocation(measurementLocation);
         recordInternal.setBaseline(Temperature.fromCelsius(baseline));
         return recordInternal;
+    }
+
+    @Override
+    SkinTemperatureRecordInternal.SkinTemperatureDeltaSample extractSample(Cursor cursor) {
+        return new SkinTemperatureRecordInternal.SkinTemperatureDeltaSample(
+                getCursorDouble(cursor, SKIN_TEMPERATURE_DELTA_COLUMN_NAME),
+                getCursorLong(cursor, EPOCH_MILLIS_COLUMN_NAME));
     }
 
     @Override

@@ -36,6 +36,7 @@ import android.health.connect.datatypes.RecordTypeIdentifier;
 import android.health.connect.internal.datatypes.SpeedRecordInternal;
 import android.util.Pair;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 
@@ -84,19 +85,27 @@ public class SpeedRecordHelper
     /** Populates the {@code record} with values specific to datatype */
     @Override
     SpeedRecordInternal populateSpecificValues(Cursor seriesTableCursor) {
+        if (Flags.optimizeChildReads()) {
+            return new SpeedRecordInternal(new HashSet<>());
+        }
+
         HashSet<SpeedRecordInternal.SpeedRecordSample> speedRecordSampleSet = new HashSet<>();
         UUID uuid = getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME);
         do {
-            speedRecordSampleSet.add(
-                    new SpeedRecordInternal.SpeedRecordSample(
-                            getCursorDouble(seriesTableCursor, SPEED_COLUMN_NAME),
-                            getCursorLong(seriesTableCursor, EPOCH_MILLIS_COLUMN_NAME)));
+            speedRecordSampleSet.add(extractSample(seriesTableCursor));
         } while (seriesTableCursor.moveToNext()
                 && uuid.equals(getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME)));
         // In case we hit another record, move the cursor back to read next record in outer
         // RecordHelper#getInternalRecords loop.
         seriesTableCursor.moveToPrevious();
         return new SpeedRecordInternal(speedRecordSampleSet);
+    }
+
+    @Override
+    SpeedRecordInternal.SpeedRecordSample extractSample(Cursor cursor) {
+        return new SpeedRecordInternal.SpeedRecordSample(
+                getCursorDouble(cursor, SPEED_COLUMN_NAME),
+                getCursorLong(cursor, EPOCH_MILLIS_COLUMN_NAME));
     }
 
     @Override
