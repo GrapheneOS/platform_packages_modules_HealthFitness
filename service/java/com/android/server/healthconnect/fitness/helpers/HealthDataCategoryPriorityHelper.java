@@ -33,6 +33,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.health.connect.HealthDataCategory;
 import android.health.connect.device.SyntheticPackageNameMatcher;
+import android.health.connect.internal.datatypes.AppInfoInternal;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
 import android.os.UserHandle;
 import android.os.UserManager;
@@ -93,6 +94,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
     private final HealthConnectMappings mHealthConnectMappings;
     private final HealthConnectThreadScheduler mThreadScheduler;
     private final UserManager mUserManager;
+    private final DeviceDataSourcesHelper mDeviceDataSourcesHelper;
 
     /**
      * map of {@link HealthDataCategory} to list of app ids from {@link AppInfoHelper}, in the order
@@ -110,7 +112,8 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
             HealthConnectMappings healthConnectMappings,
             DatabaseHelpers databaseHelpers,
             HealthConnectThreadScheduler threadScheduler,
-            UserManager userManager) {
+            UserManager userManager,
+            DeviceDataSourcesHelper deviceDataSourcesHelper) {
         super(databaseHelpers);
         mUserContext = userContext;
         mAppInfoHelper = appInfoHelper;
@@ -120,6 +123,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
         mHealthConnectMappings = healthConnectMappings;
         mThreadScheduler = threadScheduler;
         mUserManager = userManager;
+        mDeviceDataSourcesHelper = deviceDataSourcesHelper;
     }
 
     /**
@@ -239,49 +243,62 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
     }
 
     /**
-     * Removes a packageName from the priority list of a particular category if the package name
-     * does not have any granted write permissions and has no data.
-     */
-    public synchronized void maybeRemoveAppFromPriorityList(
-            String packageName, @HealthDataCategory.Type int dataCategory) {
-        if (isDevicePackage(packageName)) {
-            // Devices don't hold conventional permissions, so we shouldn't treat them as inactive
-            // on this basis alone.
-            return;
-        }
-        PackageInfo packageInfo =
-                mPackageInfoUtils.getPackageInfoWithPermissionsAsUser(
-                        packageName, mUserContext.getUser(), mUserContext);
-
-        // If package is not found, assume no permissions are granted.
-        if (packageInfo == null
-                || !getPackageHasWriteHealthPermissionsForCategory(
-                        packageInfo, dataCategory, mUserContext)) {
-            removeAppFromPriorityListIfNoDataExists(dataCategory, packageName);
-        }
-    }
-
-    /**
      * Removes a packageName from the priority list of all categories if the package name does not
      * have any granted write permissions and has no data.
      */
     public synchronized void maybeRemoveAppFromPriorityList(String packageName) {
-        for (Integer dataCategory : getHealthDataCategoryToAppIdPriorityMap().keySet()) {
+        for (int dataCategory : getHealthDataCategoryToAppIdPriorityMap().keySet()) {
             maybeRemoveAppFromPriorityList(packageName, dataCategory);
         }
     }
 
     /**
-     * Removes a packageName from the priority list of a particular category if the package name has
-     * no data.
+     * Removes a packageName from the priority list of a particular category if the package name
+     * does not have any granted write permissions and has no data.
      *
-     * <p>Assumes that the app has no write permission.
+     * <p>For devices (SPNs), it uses the advertisements from {@link DeviceDataSourcesHelper}.
      */
-    public synchronized void maybeRemoveAppWithoutWritePermissionsFromPriorityList(
-            String packageName) {
-        for (Integer dataCategory : getHealthDataCategoryToAppIdPriorityMap().keySet()) {
-            removeAppFromPriorityListIfNoDataExists(dataCategory, packageName);
+    public synchronized void maybeRemoveAppFromPriorityList(
+            String packageName, @HealthDataCategory.Type int dataCategory) {
+        boolean hasAdvertisedCategory = hasAdvertisedCategory(packageName, dataCategory);
+        if (packageName.equals(DEVICE_DATA_PROVIDER_PACKAGE)) {
+            // "android" package is never removed.
+            return;
+        } else if (!hasAdvertisedCategory) {
+            PackageInfo packageInfo =
+                    mPackageInfoUtils.getPackageInfoWithPermissionsAsUser(
+                            packageName, mUserContext.getUser(), mUserContext);
+
+            // If the package is found and has write permission, it should remain in the priority
+            // list
+            if (packageInfo != null
+                    && getPackageHasWriteHealthPermissionsForCategory(
+                            packageInfo, dataCategory, mUserContext)) {
+                return;
+            }
         }
+
+        removeAppFromPriorityListIfNoDataExists(dataCategory, packageName, hasAdvertisedCategory);
+    }
+
+    /**
+     * Returns whether there are active advertisements for a given {@code packageName} and {@code
+     * dataCategory}.
+     *
+     * <p>For non-synthetic packages, it always returns false.
+     */
+    @VisibleForTesting
+    boolean hasAdvertisedCategory(String packageName, int dataCategory) {
+        if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()
+                || !SyntheticPackageNameMatcher.matches(packageName)) {
+            return false;
+        }
+
+        Long appInfoId = mAppInfoHelper.getAppInfoId(packageName);
+        if (appInfoId == null) {
+            return false;
+        }
+        return mDeviceDataSourcesHelper.getAdvertisedCategories(appInfoId).contains(dataCategory);
     }
 
     /**
@@ -436,10 +453,13 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
         // Remove any apps without any permission for the category, if they have no data present.
         for (Map.Entry<Integer, Set<Long>> entry :
                 dataCategoryToAppIdMapWithoutPermission.entrySet()) {
+            int category = entry.getKey();
             for (Long appInfoId : entry.getValue()) {
                 try {
+                    String packageName = mAppInfoHelper.getPackageName(appInfoId);
+                    boolean hasAdvertisedCategory = hasAdvertisedCategory(packageName, category);
                     removeAppFromPriorityListIfNoDataExists(
-                            entry.getKey(), mAppInfoHelper.getPackageName(appInfoId));
+                            category, packageName, hasAdvertisedCategory);
                 } catch (PackageManager.NameNotFoundException e) {
                     Slog.e(TAG, "Package name not found while syncing priority table", e);
                 }
@@ -455,13 +475,22 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
     }
 
     /**
-     * Removes a packageName from the priority list of a category. The package name is not removed
-     * if it has data in that category.
+     * Removes a packageName from the priority list of a category if it has no data and it's not a
+     * system package.
+     *
+     * <p>For devices (SPNs), it also checks if there are any active advertisements.
      */
     private synchronized void removeAppFromPriorityListIfNoDataExists(
-            @HealthDataCategory.Type int dataCategory, String packageName) {
-        if (isDevicePackage(packageName)) {
-            // Once we've appended devices to the priority list they should remain there.
+            @HealthDataCategory.Type int dataCategory,
+            String packageName,
+            boolean hasAdvertisedCategory) {
+        if (DEVICE_DATA_PROVIDER_PACKAGE.equals(packageName)) {
+            // "android" package is never removed.
+            return;
+        }
+
+        if (hasAdvertisedCategory) {
+            // Devices should remain if they are still advertised.
             return;
         }
         boolean dataExistsForPackageName = appHasDataInCategory(packageName, dataCategory);
@@ -565,26 +594,20 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
     }
 
     @VisibleForTesting
-    boolean appHasDataInCategory(String packageName, int category) {
+    public boolean appHasDataInCategory(String packageName, int category) {
         return getDataCategoriesWithDataForPackage(packageName).contains(category);
     }
 
     @VisibleForTesting
     Set<Integer> getDataCategoriesWithDataForPackage(String packageName) {
-        Map<Integer, Set<String>> recordTypeToContributingPackages =
-                mAppInfoHelper.getRecordTypesToContributingPackagesMap();
-        Set<Integer> dataCategoriesWithData = new HashSet<>();
-
-        for (Map.Entry<Integer, Set<String>> entry : recordTypeToContributingPackages.entrySet()) {
-            Integer recordType = entry.getKey();
-            Set<String> contributingPackages = entry.getValue();
-            int recordCategory = mHealthConnectMappings.getRecordCategoryForRecordType(recordType);
-            boolean isPackageNameContributor = contributingPackages.contains(packageName);
-            if (isPackageNameContributor) {
-                dataCategoriesWithData.add(recordCategory);
-            }
+        AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(packageName);
+        if (appInfo == null || appInfo.getRecordTypesUsed() == null) {
+            return Collections.emptySet();
         }
-        return dataCategoriesWithData;
+
+        return appInfo.getRecordTypesUsed().stream()
+                .map(mHealthConnectMappings::getRecordCategoryForRecordType)
+                .collect(Collectors.toSet());
     }
 
     /**
