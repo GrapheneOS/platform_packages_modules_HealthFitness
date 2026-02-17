@@ -90,7 +90,7 @@ java_sdk_library {
             "//external/nullaway:nullaway_plugin",
         ],
         javacflags: [
-            "-XepExcludedPaths:.*/out/soong/.*",
+            "-XepExcludedPaths:.*/soong/.*",
             "-Xep:DefaultLocale:ERROR",
             "-Xep:NullAway:ERROR",
             "-XepOpt:NullAway:AnnotatedPackages=android.health.connect",
