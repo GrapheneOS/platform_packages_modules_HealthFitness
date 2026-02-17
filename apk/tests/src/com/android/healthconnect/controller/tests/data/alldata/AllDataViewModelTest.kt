@@ -15,46 +15,28 @@
  */
 package com.android.healthconnect.controller.tests.data.alldata
 
-import android.content.Context
-import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
-import android.health.connect.HealthPermissionCategory
-import android.health.connect.MedicalResourceTypeInfo
-import android.health.connect.ReadRecordsResponse
-import android.health.connect.RecordTypeInfoResponse
-import android.health.connect.datatypes.HeartRateRecord
-import android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES
-import android.health.connect.datatypes.MedicalResource.MEDICAL_RESOURCE_TYPE_VACCINES
-import android.health.connect.datatypes.Record
-import android.health.connect.datatypes.StepsRecord
-import android.health.connect.datatypes.SymptomRecord
-import android.health.connect.datatypes.WeightRecord
-import android.os.OutcomeReceiver
 import android.platform.test.annotations.RequiresFlagsDisabled
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.alldata.AllDataViewModel
-import com.android.healthconnect.controller.data.appdata.AllDataUseCase
-import com.android.healthconnect.controller.data.appdata.PermissionTypesPerCategory
+import com.android.healthconnect.controller.data.alldata.AllDataViewModel.AllDataState.WithData
+import com.android.healthconnect.controller.data.api.PermissionTypesPerCategory
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.data.getAllSymptomPermissionTypes
-import com.android.healthconnect.controller.selectabledeletion.DeletionDataViewModel
+import com.android.healthconnect.controller.selectabledeletion.DeletionDataViewModel.DeletionScreenState
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.MEDICAL
+import com.android.healthconnect.controller.tests.data.alldata.api.FakeGetFitnessPermissionTypesWithDataUseCase
+import com.android.healthconnect.controller.tests.data.alldata.api.FakeGetMedicalPermissionTypesWithDataUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
-import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
-import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
-import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.TestObserver
-import com.android.healthconnect.controller.tests.utils.getDataOrigin
-import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import java.util.Locale
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -67,11 +49,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.doAnswer
-import org.mockito.Mockito.mock
-import org.mockito.MockitoAnnotations
-import org.mockito.invocation.InvocationOnMock
-import org.mockito.kotlin.any
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -80,31 +57,27 @@ class AllDataViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
-
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
+
     private val testDispatcher = UnconfinedTestDispatcher()
 
-    var manager: HealthConnectManager = mock(HealthConnectManager::class.java)
+    private val fakeGetFitnessPermissionTypesWithDataUseCase =
+        fakeUseCaseRule.watch(FakeGetFitnessPermissionTypesWithDataUseCase())
+    private val fakeGetMedicalPermissionTypesWithDataUseCase =
+        fakeUseCaseRule.watch(FakeGetMedicalPermissionTypesWithDataUseCase())
 
     private lateinit var viewModel: AllDataViewModel
-    private lateinit var context: Context
 
     @Before
     fun setup() {
-        MockitoAnnotations.initMocks(this)
-        context = InstrumentationRegistry.getInstrumentation().context
-        context.setLocale(Locale.US)
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
-        viewModel = AllDataViewModel(AllDataUseCase(manager, testDispatcher))
-
-        doAnswer { invocation ->
-                val receiver = invocation.arguments[2] as OutcomeReceiver<ReadRecordsResponse<*>, *>
-                receiver.onResult(ReadRecordsResponse(emptyList(), -1))
-                null
-            }
-            .`when`(manager)
-            .readRecords<Record>(any(), any(), any())
+        viewModel =
+            AllDataViewModel(
+                fakeGetFitnessPermissionTypesWithDataUseCase,
+                fakeGetMedicalPermissionTypesWithDataUseCase,
+            )
     }
 
     @After
@@ -115,82 +88,50 @@ class AllDataViewModelTest {
     @Test
     @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun loadAllData_symptomsFlagEnabled_noFitnessData_returnsEmptyList() = runTest {
-        doAnswer(prepareAnswer(mapOf())).`when`(manager).queryAllRecordTypesInfo(any(), any())
+        fakeGetFitnessPermissionTypesWithDataUseCase.setPermissionTypesPerCategory(emptyList())
 
         val testObserver = TestObserver<AllDataViewModel.AllDataState>()
         viewModel.allData.observeForever(testObserver)
         viewModel.loadAllFitnessData()
         advanceUntilIdle()
 
-        val expected =
-            listOf(
-                PermissionTypesPerCategory(HealthDataCategory.ACTIVITY, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.BODY_MEASUREMENTS, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.VITALS, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
-            )
-        assertThat(testObserver.getLastValue())
-            .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))
+        val expected = emptyList<PermissionTypesPerCategory>()
+        assertThat(testObserver.getLastValue()).isEqualTo(WithData(expected))
     }
 
     @Test
     @RequiresFlagsDisabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun loadAllData_symptomsFlagDisabled_noFitnessData_returnsEmptyList() = runTest {
-        doAnswer(prepareAnswer(mapOf())).`when`(manager).queryAllRecordTypesInfo(any(), any())
+        fakeGetFitnessPermissionTypesWithDataUseCase.setPermissionTypesPerCategory(emptyList())
 
         val testObserver = TestObserver<AllDataViewModel.AllDataState>()
         viewModel.allData.observeForever(testObserver)
         viewModel.loadAllFitnessData()
         advanceUntilIdle()
 
-        val expected =
-            listOf(
-                PermissionTypesPerCategory(HealthDataCategory.ACTIVITY, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.BODY_MEASUREMENTS, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.VITALS, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
-            )
-        assertThat(testObserver.getLastValue())
-            .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))
+        val expected = emptyList<PermissionTypesPerCategory>()
+        assertThat(testObserver.getLastValue()).isEqualTo(WithData(expected))
     }
 
     @Test
     @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun loadAllData_symptomsFlagEnabled_hasData_returnsDataWrittenByAllFitnessApps() = runTest {
-        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
-            mapOf(
-                StepsRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.STEPS,
-                        HealthDataCategory.ACTIVITY,
-                        listOf(
-                            getDataOrigin(TEST_APP_PACKAGE_NAME),
-                            getDataOrigin(TEST_APP_PACKAGE_NAME_2),
-                        ),
-                    ),
-                WeightRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.WEIGHT,
-                        HealthDataCategory.BODY_MEASUREMENTS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME_2))),
-                    ),
-                HeartRateRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.HEART_RATE,
-                        HealthDataCategory.VITALS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
-                    ),
+        val permissionTypes =
+            listOf(
+                PermissionTypesPerCategory(
+                    HealthDataCategory.ACTIVITY,
+                    listOf(FitnessPermissionType.STEPS),
+                ),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.BODY_MEASUREMENTS,
+                    listOf(FitnessPermissionType.WEIGHT),
+                ),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.VITALS,
+                    listOf(FitnessPermissionType.HEART_RATE),
+                ),
             )
-        doAnswer(prepareAnswer(recordTypeInfoMap))
-            .`when`(manager)
-            .queryAllRecordTypesInfo(any(), any())
+        fakeGetFitnessPermissionTypesWithDataUseCase.setPermissionTypesPerCategory(permissionTypes)
 
         val testObserver = TestObserver<AllDataViewModel.AllDataState>()
         viewModel.allData.observeForever(testObserver)
@@ -207,57 +148,18 @@ class AllDataViewModelTest {
                     HealthDataCategory.BODY_MEASUREMENTS,
                     listOf(FitnessPermissionType.WEIGHT),
                 ),
-                PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
                 PermissionTypesPerCategory(
                     HealthDataCategory.VITALS,
                     listOf(FitnessPermissionType.HEART_RATE),
                 ),
-                PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
             )
-        assertThat(testObserver.getLastValue())
-            .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))
+        assertThat(testObserver.getLastValue()).isEqualTo(WithData(expected))
     }
 
     @Test
     @RequiresFlagsDisabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun loadAllData_symptomsFlagDisabled_hasData_returnsDataWrittenByAllFitnessApps() = runTest {
-        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
-            mapOf(
-                StepsRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.STEPS,
-                        HealthDataCategory.ACTIVITY,
-                        listOf(
-                            getDataOrigin(TEST_APP_PACKAGE_NAME),
-                            getDataOrigin(TEST_APP_PACKAGE_NAME_2),
-                        ),
-                    ),
-                WeightRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.WEIGHT,
-                        HealthDataCategory.BODY_MEASUREMENTS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME_2))),
-                    ),
-                HeartRateRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.HEART_RATE,
-                        HealthDataCategory.VITALS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
-                    ),
-            )
-        doAnswer(prepareAnswer(recordTypeInfoMap))
-            .`when`(manager)
-            .queryAllRecordTypesInfo(any(), any())
-
-        val testObserver = TestObserver<AllDataViewModel.AllDataState>()
-        viewModel.allData.observeForever(testObserver)
-        viewModel.loadAllFitnessData()
-        advanceUntilIdle()
-
-        val expected =
+        val permissionTypes =
             listOf(
                 PermissionTypesPerCategory(
                     HealthDataCategory.ACTIVITY,
@@ -267,34 +169,24 @@ class AllDataViewModelTest {
                     HealthDataCategory.BODY_MEASUREMENTS,
                     listOf(FitnessPermissionType.WEIGHT),
                 ),
-                PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
                 PermissionTypesPerCategory(
                     HealthDataCategory.VITALS,
                     listOf(FitnessPermissionType.HEART_RATE),
                 ),
-                PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
             )
-        assertThat(testObserver.getLastValue())
-            .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))
+        fakeGetFitnessPermissionTypesWithDataUseCase.setPermissionTypesPerCategory(permissionTypes)
+
+        val testObserver = TestObserver<AllDataViewModel.AllDataState>()
+        viewModel.allData.observeForever(testObserver)
+        viewModel.loadAllFitnessData()
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue()).isEqualTo(WithData(permissionTypes))
     }
 
     @Test
     fun loadMedicalData_noMedicalData_returnsEmptyList() = runTest {
-        doAnswer(
-                prepareAnswer(
-                    listOf(
-                        MedicalResourceTypeInfo(MEDICAL_RESOURCE_TYPE_VACCINES, setOf()),
-                        MedicalResourceTypeInfo(
-                            MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES,
-                            setOf(),
-                        ),
-                    )
-                )
-            )
-            .`when`(manager)
-            .queryAllMedicalResourceTypeInfos(any(), any())
+        fakeGetMedicalPermissionTypesWithDataUseCase.setPermissionTypesPerCategory(emptyList())
 
         val testObserver = TestObserver<AllDataViewModel.AllDataState>()
         viewModel.allData.observeForever(testObserver)
@@ -302,23 +194,14 @@ class AllDataViewModelTest {
         advanceUntilIdle()
 
         val expected = emptyList<PermissionTypesPerCategory>()
-        assertThat(testObserver.getLastValue())
-            .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))
+        assertThat(testObserver.getLastValue()).isEqualTo(WithData(expected))
     }
 
     @Test
     fun loadMedicalData_hasMedicalData_returnsMedicalData() = runTest {
-        val medicalResourceTypeResources: List<MedicalResourceTypeInfo> =
-            listOf(
-                MedicalResourceTypeInfo(
-                    MEDICAL_RESOURCE_TYPE_VACCINES,
-                    setOf(TEST_MEDICAL_DATA_SOURCE),
-                ),
-                MedicalResourceTypeInfo(MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES, setOf()),
-            )
-        doAnswer(prepareAnswer(medicalResourceTypeResources))
-            .`when`(manager)
-            .queryAllMedicalResourceTypeInfos(any(), any())
+        val medicalData =
+            listOf(PermissionTypesPerCategory(MEDICAL, listOf(MedicalPermissionType.VACCINES)))
+        fakeGetMedicalPermissionTypesWithDataUseCase.setPermissionTypesPerCategory(medicalData)
 
         val testObserver = TestObserver<AllDataViewModel.AllDataState>()
         viewModel.allData.observeForever(testObserver)
@@ -327,8 +210,7 @@ class AllDataViewModelTest {
 
         val expected =
             listOf(PermissionTypesPerCategory(MEDICAL, listOf(MedicalPermissionType.VACCINES)))
-        assertThat(testObserver.getLastValue())
-            .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))
+        assertThat(testObserver.getLastValue()).isEqualTo(WithData(expected))
     }
 
     @Test
@@ -353,18 +235,16 @@ class AllDataViewModelTest {
 
     @Test
     fun setDeletionScreenState_setsCorrectly() {
-        viewModel.setDeletionScreenStateValue(DeletionDataViewModel.DeletionScreenState.DELETE)
+        viewModel.setDeletionScreenStateValue(DeletionScreenState.DELETE)
 
-        assertThat(viewModel.getDeletionScreenStateValue())
-            .isEqualTo(DeletionDataViewModel.DeletionScreenState.DELETE)
+        assertThat(viewModel.getDeletionScreenStateValue()).isEqualTo(DeletionScreenState.DELETE)
     }
 
     @Test
     fun getDeletionScreenState_getsCorrectValue() {
-        viewModel.setDeletionScreenStateValue(DeletionDataViewModel.DeletionScreenState.VIEW)
+        viewModel.setDeletionScreenStateValue(DeletionScreenState.VIEW)
 
-        assertThat(viewModel.getDeletionScreenStateValue())
-            .isEqualTo(DeletionDataViewModel.DeletionScreenState.VIEW)
+        assertThat(viewModel.getDeletionScreenStateValue()).isEqualTo(DeletionScreenState.VIEW)
     }
 
     @Test
@@ -378,33 +258,22 @@ class AllDataViewModelTest {
 
     @Test
     fun getNumOfPermissionTypes_withoutSymptoms_returnsCorrect() = runTest {
-        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
-            mapOf(
-                StepsRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.STEPS,
-                        HealthDataCategory.ACTIVITY,
-                        listOf(
-                            getDataOrigin(TEST_APP_PACKAGE_NAME),
-                            getDataOrigin(TEST_APP_PACKAGE_NAME_2),
-                        ),
-                    ),
-                WeightRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.WEIGHT,
-                        HealthDataCategory.BODY_MEASUREMENTS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME_2))),
-                    ),
-                HeartRateRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.HEART_RATE,
-                        HealthDataCategory.VITALS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
-                    ),
+        val permissionTypes =
+            listOf(
+                PermissionTypesPerCategory(
+                    HealthDataCategory.ACTIVITY,
+                    listOf(FitnessPermissionType.STEPS),
+                ),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.BODY_MEASUREMENTS,
+                    listOf(FitnessPermissionType.WEIGHT),
+                ),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.VITALS,
+                    listOf(FitnessPermissionType.HEART_RATE),
+                ),
             )
-        doAnswer(prepareAnswer(recordTypeInfoMap))
-            .`when`(manager)
-            .queryAllRecordTypesInfo(any(), any())
+        fakeGetFitnessPermissionTypesWithDataUseCase.setPermissionTypesPerCategory(permissionTypes)
 
         viewModel.loadAllFitnessData()
         advanceUntilIdle()
@@ -415,45 +284,27 @@ class AllDataViewModelTest {
     @Test
     @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun getNumOfPermissionTypes_withSymptoms_returnsCorrect() = runTest {
-        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
-            mapOf(
-                StepsRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.STEPS,
-                        HealthDataCategory.ACTIVITY,
-                        listOf(
-                            getDataOrigin(TEST_APP_PACKAGE_NAME),
-                            getDataOrigin(TEST_APP_PACKAGE_NAME_2),
-                        ),
-                    ),
-                WeightRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.WEIGHT,
-                        HealthDataCategory.BODY_MEASUREMENTS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
-                    ),
-                HeartRateRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.HEART_RATE,
-                        HealthDataCategory.VITALS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
-                    ),
-                SymptomRecord::class.java to
-                    RecordTypeInfoResponse(
-                        setOf(
-                            HealthPermissionCategory.SYMPTOM_ACNE,
-                            HealthPermissionCategory.SYMPTOM_CHILLS,
-                        ),
-                        HealthDataCategory.SYMPTOMS,
-                        listOf(
-                            getDataOrigin(TEST_APP_PACKAGE_NAME),
-                            getDataOrigin(TEST_APP_PACKAGE_NAME_2),
-                        ),
-                    ),
+        val permissionTypes =
+            listOf(
+                PermissionTypesPerCategory(
+                    HealthDataCategory.ACTIVITY,
+                    listOf(FitnessPermissionType.STEPS),
+                ),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.BODY_MEASUREMENTS,
+                    listOf(FitnessPermissionType.WEIGHT),
+                ),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.VITALS,
+                    listOf(FitnessPermissionType.HEART_RATE),
+                ),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.SYMPTOMS,
+                    // SYMPTOM_ABDOMINAL_PAIN represents the Symptoms category
+                    listOf(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN),
+                ),
             )
-        doAnswer(prepareAnswer(recordTypeInfoMap))
-            .`when`(manager)
-            .queryAllRecordTypesInfo(any(), any())
+        fakeGetFitnessPermissionTypesWithDataUseCase.setPermissionTypesPerCategory(permissionTypes)
 
         viewModel.loadAllFitnessData()
         advanceUntilIdle()
@@ -465,52 +316,7 @@ class AllDataViewModelTest {
     @Test
     @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun prepareDeletionType_withAllSymptoms_returnsAllSymptomTypes() = runTest {
-        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
-            mapOf(
-                StepsRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.STEPS,
-                        HealthDataCategory.ACTIVITY,
-                        listOf(
-                            getDataOrigin(TEST_APP_PACKAGE_NAME),
-                            getDataOrigin(TEST_APP_PACKAGE_NAME_2),
-                        ),
-                    ),
-                WeightRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.WEIGHT,
-                        HealthDataCategory.BODY_MEASUREMENTS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME_2))),
-                    ),
-                HeartRateRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.HEART_RATE,
-                        HealthDataCategory.VITALS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
-                    ),
-                SymptomRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.SYMPTOM_ACNE,
-                        HealthDataCategory.SYMPTOMS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
-                    ),
-                SymptomRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.SYMPTOM_CHILLS,
-                        HealthDataCategory.SYMPTOMS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
-                    ),
-            )
-        doAnswer(prepareAnswer(recordTypeInfoMap))
-            .`when`(manager)
-            .queryAllRecordTypesInfo(any(), any())
-
-        val testObserver = TestObserver<AllDataViewModel.AllDataState>()
-        viewModel.allData.observeForever(testObserver)
-        viewModel.loadAllFitnessData()
-        advanceUntilIdle()
-
-        val expected =
+        val permissionTypes =
             listOf(
                 PermissionTypesPerCategory(
                     HealthDataCategory.ACTIVITY,
@@ -520,26 +326,27 @@ class AllDataViewModelTest {
                     HealthDataCategory.BODY_MEASUREMENTS,
                     listOf(FitnessPermissionType.WEIGHT),
                 ),
-                PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
                 PermissionTypesPerCategory(
                     HealthDataCategory.VITALS,
                     listOf(FitnessPermissionType.HEART_RATE),
                 ),
-                PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
-                // Special case for symptoms since we show "All symptoms" on the screen
                 PermissionTypesPerCategory(
                     HealthDataCategory.SYMPTOMS,
+                    // SYMPTOM_ABDOMINAL_PAIN represents the Symptoms category
                     listOf(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN),
                 ),
             )
-        assertThat(testObserver.getLastValue())
-            .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))
+        fakeGetFitnessPermissionTypesWithDataUseCase.setPermissionTypesPerCategory(permissionTypes)
+
+        val testObserver = TestObserver<AllDataViewModel.AllDataState>()
+        viewModel.allData.observeForever(testObserver)
+        viewModel.loadAllFitnessData()
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue()).isEqualTo(WithData(permissionTypes))
         assertThat(viewModel.getTheNumOfPermissionTypes())
             .isEqualTo(3 + getAllSymptomPermissionTypes().size)
 
-        // Now add symptoms to deletion
         viewModel.addToDeletionSet(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)
         val deletionType = viewModel.prepareDeletionType()
         val expectedSymptomTypes = getAllSymptomPermissionTypes()
@@ -551,40 +358,7 @@ class AllDataViewModelTest {
 
     @Test
     fun prepareDeletionType_withoutSymptoms_returnsSelectedTypes() = runTest {
-        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
-            mapOf(
-                StepsRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.STEPS,
-                        HealthDataCategory.ACTIVITY,
-                        listOf(
-                            getDataOrigin(TEST_APP_PACKAGE_NAME),
-                            getDataOrigin(TEST_APP_PACKAGE_NAME_2),
-                        ),
-                    ),
-                WeightRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.WEIGHT,
-                        HealthDataCategory.BODY_MEASUREMENTS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME_2))),
-                    ),
-                HeartRateRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.HEART_RATE,
-                        HealthDataCategory.VITALS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
-                    ),
-            )
-        doAnswer(prepareAnswer(recordTypeInfoMap))
-            .`when`(manager)
-            .queryAllRecordTypesInfo(any(), any())
-
-        val testObserver = TestObserver<AllDataViewModel.AllDataState>()
-        viewModel.allData.observeForever(testObserver)
-        viewModel.loadAllFitnessData()
-        advanceUntilIdle()
-
-        val expected =
+        val permissionTypes =
             listOf(
                 PermissionTypesPerCategory(
                     HealthDataCategory.ACTIVITY,
@@ -594,22 +368,21 @@ class AllDataViewModelTest {
                     HealthDataCategory.BODY_MEASUREMENTS,
                     listOf(FitnessPermissionType.WEIGHT),
                 ),
-                PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
                 PermissionTypesPerCategory(
                     HealthDataCategory.VITALS,
                     listOf(FitnessPermissionType.HEART_RATE),
                 ),
-                PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
-                // Special case for symptoms since we show "All symptoms" on the screen
-                PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
             )
-        assertThat(testObserver.getLastValue())
-            .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))
+        fakeGetFitnessPermissionTypesWithDataUseCase.setPermissionTypesPerCategory(permissionTypes)
+
+        val testObserver = TestObserver<AllDataViewModel.AllDataState>()
+        viewModel.allData.observeForever(testObserver)
+        viewModel.loadAllFitnessData()
+        advanceUntilIdle()
+
+        assertThat(testObserver.getLastValue()).isEqualTo(WithData(permissionTypes))
         assertThat(viewModel.getTheNumOfPermissionTypes()).isEqualTo(3)
 
-        // Now add to deletion set
         viewModel.addToDeletionSet(FitnessPermissionType.STEPS)
         viewModel.addToDeletionSet(FitnessPermissionType.HEART_RATE)
         val deletionType = viewModel.prepareDeletionType()
@@ -620,46 +393,26 @@ class AllDataViewModelTest {
 
     @Test
     fun prepareDeletionType_medicalAndFitness_setsCorrectly() = runTest {
-        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
-            mapOf(
-                StepsRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.STEPS,
-                        HealthDataCategory.ACTIVITY,
-                        listOf(
-                            getDataOrigin(TEST_APP_PACKAGE_NAME),
-                            getDataOrigin(TEST_APP_PACKAGE_NAME_2),
-                        ),
-                    ),
-                WeightRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.WEIGHT,
-                        HealthDataCategory.BODY_MEASUREMENTS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME_2))),
-                    ),
-                HeartRateRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.HEART_RATE,
-                        HealthDataCategory.VITALS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
-                    ),
-            )
-        doAnswer(prepareAnswer(recordTypeInfoMap))
-            .`when`(manager)
-            .queryAllRecordTypesInfo(any(), any())
-
-        // Mock medical data
-        val medicalResourceTypeResources: List<MedicalResourceTypeInfo> =
+        val permissionTypes =
             listOf(
-                MedicalResourceTypeInfo(
-                    MEDICAL_RESOURCE_TYPE_VACCINES,
-                    setOf(TEST_MEDICAL_DATA_SOURCE),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.ACTIVITY,
+                    listOf(FitnessPermissionType.STEPS),
                 ),
-                MedicalResourceTypeInfo(MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES, setOf()),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.BODY_MEASUREMENTS,
+                    listOf(FitnessPermissionType.WEIGHT),
+                ),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.VITALS,
+                    listOf(FitnessPermissionType.HEART_RATE),
+                ),
             )
-        doAnswer(prepareAnswer(medicalResourceTypeResources))
-            .`when`(manager)
-            .queryAllMedicalResourceTypeInfos(any(), any())
+        fakeGetFitnessPermissionTypesWithDataUseCase.setPermissionTypesPerCategory(permissionTypes)
+
+        val medicalData =
+            listOf(PermissionTypesPerCategory(MEDICAL, listOf(MedicalPermissionType.VACCINES)))
+        fakeGetMedicalPermissionTypesWithDataUseCase.setPermissionTypesPerCategory(medicalData)
 
         val testObserver = TestObserver<AllDataViewModel.AllDataState>()
         viewModel.allData.observeForever(testObserver)
@@ -676,23 +429,15 @@ class AllDataViewModelTest {
                     HealthDataCategory.BODY_MEASUREMENTS,
                     listOf(FitnessPermissionType.WEIGHT),
                 ),
-                PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
                 PermissionTypesPerCategory(
                     HealthDataCategory.VITALS,
                     listOf(FitnessPermissionType.HEART_RATE),
                 ),
-                PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
-                // Special case for symptoms since we show "All symptoms" on the screen
-                PermissionTypesPerCategory(HealthDataCategory.SYMPTOMS, listOf()),
                 PermissionTypesPerCategory(MEDICAL, listOf(MedicalPermissionType.VACCINES)),
             )
-        assertThat(testObserver.getLastValue())
-            .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))
+        assertThat(testObserver.getLastValue()).isEqualTo(WithData(expected))
         assertThat(viewModel.getTheNumOfPermissionTypes()).isEqualTo(4)
 
-        // Now add to deletion set
         viewModel.addToDeletionSet(FitnessPermissionType.STEPS)
         viewModel.addToDeletionSet(MedicalPermissionType.VACCINES)
         val deletionType = viewModel.prepareDeletionType()
@@ -704,58 +449,31 @@ class AllDataViewModelTest {
     @Test
     @RequiresFlagsEnabled(Flags.FLAG_SYMPTOMS, Flags.FLAG_SYMPTOMS_DB)
     fun prepareDeletionType_symptomsOnly_setsCorrectly() = runTest {
-        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
-            mapOf(
-                StepsRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.STEPS,
-                        HealthDataCategory.ACTIVITY,
-                        listOf(
-                            getDataOrigin(TEST_APP_PACKAGE_NAME),
-                            getDataOrigin(TEST_APP_PACKAGE_NAME_2),
-                        ),
-                    ),
-                WeightRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.WEIGHT,
-                        HealthDataCategory.BODY_MEASUREMENTS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME_2))),
-                    ),
-                HeartRateRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.HEART_RATE,
-                        HealthDataCategory.VITALS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
-                    ),
-                SymptomRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.SYMPTOM_ACNE,
-                        HealthDataCategory.SYMPTOMS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
-                    ),
-                SymptomRecord::class.java to
-                    RecordTypeInfoResponse(
-                        HealthPermissionCategory.SYMPTOM_CHILLS,
-                        HealthDataCategory.SYMPTOMS,
-                        listOf((getDataOrigin(TEST_APP_PACKAGE_NAME))),
-                    ),
-            )
-        doAnswer(prepareAnswer(recordTypeInfoMap))
-            .`when`(manager)
-            .queryAllRecordTypesInfo(any(), any())
-
-        // Mock medical data
-        val medicalResourceTypeResources: List<MedicalResourceTypeInfo> =
+        val permissionTypes =
             listOf(
-                MedicalResourceTypeInfo(
-                    MEDICAL_RESOURCE_TYPE_VACCINES,
-                    setOf(TEST_MEDICAL_DATA_SOURCE),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.ACTIVITY,
+                    listOf(FitnessPermissionType.STEPS),
                 ),
-                MedicalResourceTypeInfo(MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES, setOf()),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.BODY_MEASUREMENTS,
+                    listOf(FitnessPermissionType.WEIGHT),
+                ),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.VITALS,
+                    listOf(FitnessPermissionType.HEART_RATE),
+                ),
+                PermissionTypesPerCategory(
+                    HealthDataCategory.SYMPTOMS,
+                    // SYMPTOM_ABDOMINAL_PAIN represents the Symptoms category
+                    listOf(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN),
+                ),
             )
-        doAnswer(prepareAnswer(medicalResourceTypeResources))
-            .`when`(manager)
-            .queryAllMedicalResourceTypeInfos(any(), any())
+        fakeGetFitnessPermissionTypesWithDataUseCase.setPermissionTypesPerCategory(permissionTypes)
+
+        val medicalData =
+            listOf(PermissionTypesPerCategory(MEDICAL, listOf(MedicalPermissionType.VACCINES)))
+        fakeGetMedicalPermissionTypesWithDataUseCase.setPermissionTypesPerCategory(medicalData)
 
         val testObserver = TestObserver<AllDataViewModel.AllDataState>()
         viewModel.allData.observeForever(testObserver)
@@ -772,54 +490,25 @@ class AllDataViewModelTest {
                     HealthDataCategory.BODY_MEASUREMENTS,
                     listOf(FitnessPermissionType.WEIGHT),
                 ),
-                PermissionTypesPerCategory(HealthDataCategory.CYCLE_TRACKING, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.NUTRITION, listOf()),
-                PermissionTypesPerCategory(HealthDataCategory.SLEEP, listOf()),
                 PermissionTypesPerCategory(
                     HealthDataCategory.VITALS,
                     listOf(FitnessPermissionType.HEART_RATE),
                 ),
-                PermissionTypesPerCategory(HealthDataCategory.WELLNESS, listOf()),
-                // Special case for symptoms since we show "All symptoms" on the screen
                 PermissionTypesPerCategory(
                     HealthDataCategory.SYMPTOMS,
                     listOf(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN),
                 ),
                 PermissionTypesPerCategory(MEDICAL, listOf(MedicalPermissionType.VACCINES)),
             )
-        assertThat(testObserver.getLastValue())
-            .isEqualTo(AllDataViewModel.AllDataState.WithData(expected))
+        assertThat(testObserver.getLastValue()).isEqualTo(WithData(expected))
         assertThat(viewModel.getTheNumOfPermissionTypes())
             .isEqualTo(4 + getAllSymptomPermissionTypes().size)
 
-        // Now add to deletion set
         viewModel.addToDeletionSet(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)
         val deletionType = viewModel.prepareDeletionType()
         assertThat(deletionType.healthPermissionTypes)
             .containsExactlyElementsIn(getAllSymptomPermissionTypes())
         assertThat(deletionType.totalPermissionTypes)
             .isEqualTo(4 + getAllSymptomPermissionTypes().size)
-    }
-
-    private fun prepareAnswer(
-        recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse>
-    ): (InvocationOnMock) -> Map<Class<out Record>, RecordTypeInfoResponse> {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[1] as OutcomeReceiver<Any?, *>
-            receiver.onResult(recordTypeInfoMap)
-            recordTypeInfoMap
-        }
-        return answer
-    }
-
-    private fun prepareAnswer(
-        medicalResourceTypeInfo: List<MedicalResourceTypeInfo>
-    ): (InvocationOnMock) -> List<MedicalResourceTypeInfo> {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[1] as OutcomeReceiver<Any?, *>
-            receiver.onResult(medicalResourceTypeInfo)
-            medicalResourceTypeInfo
-        }
-        return answer
     }
 }

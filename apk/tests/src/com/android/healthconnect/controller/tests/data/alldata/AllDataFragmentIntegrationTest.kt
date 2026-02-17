@@ -26,12 +26,9 @@ import android.health.connect.datatypes.MedicalDataSource
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SymptomRecord
 import android.os.Bundle
-import android.os.OutcomeReceiver
-import android.platform.test.annotations.DisableFlags
-import android.platform.test.annotations.EnableFlags
+import android.platform.test.annotations.RequiresFlagsDisabled
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
-import android.platform.test.flag.junit.SetFlagsRule
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.preference.PreferenceCategory
@@ -52,7 +49,8 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.alldata.AllDataFragment
 import com.android.healthconnect.controller.data.alldata.AllDataFragment.Companion.IS_BROWSE_MEDICAL_DATA_SCREEN
 import com.android.healthconnect.controller.data.alldata.AllDataViewModel
-import com.android.healthconnect.controller.data.appdata.AllDataUseCase
+import com.android.healthconnect.controller.data.alldata.api.GetFitnessPermissionTypesWithDataUseCase
+import com.android.healthconnect.controller.data.alldata.api.GetMedicalPermissionTypesWithDataUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.BASAL_BODY_TEMPERATURE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.DISTANCE
@@ -75,6 +73,7 @@ import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
+import com.android.healthconnect.controller.tests.utils.doReturnResult
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.scrollToText
@@ -102,30 +101,36 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
-import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
+import org.mockito.kotlin.stub
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 @UninstallModules(HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
-class AllDataFragmentTest {
+class AllDataFragmentIntegrationTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @get:Rule val setFlagsRule = SetFlagsRule()
     @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
 
     @BindValue val manager: HealthConnectManager = mock()
 
-    private val allDataUseCase: AllDataUseCase = AllDataUseCase(manager, Dispatchers.Main)
+    private val getFitnessPermissionTypesWithDataUseCase =
+        GetFitnessPermissionTypesWithDataUseCase(manager, Dispatchers.Main)
+    private val getMedicalPermissionTypesWithDataUseCase =
+        GetMedicalPermissionTypesWithDataUseCase(manager, Dispatchers.Main)
 
-    @BindValue val allDataViewModel: AllDataViewModel = AllDataViewModel(allDataUseCase)
+    @BindValue
+    val allDataViewModel: AllDataViewModel =
+        AllDataViewModel(
+            getFitnessPermissionTypesWithDataUseCase,
+            getMedicalPermissionTypesWithDataUseCase,
+        )
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
     private lateinit var navHostController: TestNavHostController
     private lateinit var context: Context
@@ -137,13 +142,11 @@ class AllDataFragmentTest {
         navHostController = TestNavHostController(context)
         context.setLocale(Locale.US)
 
-        doAnswer { invocation ->
-                val receiver = invocation.arguments[2] as OutcomeReceiver<ReadRecordsResponse<*>, *>
-                receiver.onResult(ReadRecordsResponse<Record>(emptyList(), -1))
-                null
-            }
-            .`when`(manager)
-            .readRecords<Record>(any(), any(), any())
+        manager.stub {
+            on { currentDeviceId } doReturn "test_device_id"
+            on { readRecords<Record>(any(), any(), any()) } doReturnResult
+                Result.success(ReadRecordsResponse<Record>(emptyList(), -1))
+        }
 
         mockData(listOf())
         mockData(listOf(), setOf())
@@ -157,7 +160,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun populatedFitnessDataTypesDisplayed_impressionsLogged() {
         mockData(listOf(STEPS, HEART_RATE, BASAL_BODY_TEMPERATURE))
 
@@ -174,7 +177,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun whenCombinedData_populatedFitnessDataTypesDisplayed_impressionsLogged() {
         mockData(listOf(STEPS, HEART_RATE, BASAL_BODY_TEMPERATURE))
 
@@ -191,7 +194,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun populatedCombinedDataTypesDisplayed_impressionsLogged() {
         mockData(listOf(STEPS, HEART_RATE, HYDRATION))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -216,7 +219,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun populatedMedicalData_pageImpressionLogged() {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -227,7 +230,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun populatedCombinedDataTypesDisplayed_onlyMedicalAvailable_impressionsLogged() {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -250,7 +253,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun medicalDataPresent_populatedDataTypesDisplayed() {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -296,7 +299,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun whenOnlyMedicalDataTypesDisplayed_topIntroShown() {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -310,7 +313,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun whenCombinedData_andOnlyMedicalDataTypesDisplayed_topIntroShown() {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -344,7 +347,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun whenMedicalShown_navigatesToMedicalAllEntries() {
         mockData(listOf(VACCINES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -365,7 +368,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun whenCombinedData_onlyMedicalShown_navigatesToMedicalAllEntries() {
         mockData(listOf(VACCINES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -390,14 +393,15 @@ class AllDataFragmentTest {
             mapOf(
                 SymptomRecord::class.java to
                     RecordTypeInfoResponse(
-                        HealthPermissionCategory.SYMPTOM_SNORE, // Placeholder
+                        setOf(HealthPermissionCategory.SYMPTOM_SNORE), // Placeholder
                         HealthDataCategory.SYMPTOMS,
                         listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
                     )
             )
-        doAnswer(prepareAnswer(recordTypeInfoMap))
-            .`when`(manager)
-            .queryAllRecordTypesInfo(any(), any())
+        manager.stub {
+            on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
+                Result.success(recordTypeInfoMap)
+        }
 
         launchFragment<AllDataFragment> {
                 navHostController.setGraph(R.navigation.data_nav_graph_new_ia)
@@ -439,7 +443,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun triggerDeletionState_medicalData_showsCheckboxes() {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
         launchMedicalAllDataFragment().use { scenario ->
@@ -460,7 +464,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun triggerDeletionState_combinedData_onlyMedicalShown_showsCheckboxes() {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
         launchFragment<AllDataFragment>().use { scenario ->
@@ -481,7 +485,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun triggerDeletionState_combinedData_showsCheckboxes() {
         mockData(listOf(DISTANCE, MENSTRUATION))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -528,7 +532,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_medicalData_checkedItemsAddedToDeleteSet() {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -550,7 +554,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_onlyMedicalShown_checkedItemsAddedToDeleteSet() = runTest {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -575,7 +579,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_checkedItemsAddedToDeleteSet() {
         mockData(listOf(DISTANCE, HEART_RATE))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -606,14 +610,15 @@ class AllDataFragmentTest {
             mapOf(
                 SymptomRecord::class.java to
                     RecordTypeInfoResponse(
-                        HealthPermissionCategory.SYMPTOM_SNORE, // Placeholder
+                        setOf(HealthPermissionCategory.SYMPTOM_SNORE), // Placeholder
                         HealthDataCategory.SYMPTOMS,
                         listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
                     )
             )
-        doAnswer(prepareAnswer(recordTypeInfoMap))
-            .whenever(manager)
-            .queryAllRecordTypesInfo(any(), any())
+        manager.stub {
+            on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
+                Result.success(recordTypeInfoMap)
+        }
 
         launchFragment<AllDataFragment>().use { scenario ->
             scenario.onActivity { activity ->
@@ -707,7 +712,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun triggerDeletionState_medicalData_displaysSelectAllButton() {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
         launchMedicalAllDataFragment().use { scenario ->
@@ -721,7 +726,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun triggerDeletionState_combinedData_onlyMedicalShown_displaysSelectAllButton() {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
         launchFragment<AllDataFragment>().use { scenario ->
@@ -735,8 +740,8 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
-    fun triggerDeletionState_combinedData_displaysSelectAllButton() {
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
+    fun triggerDeletionState_combinedData_displaysSelectAllButton() = runTest {
         mockData(listOf(DISTANCE, MENSTRUATION))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
         launchFragment<AllDataFragment>().use { scenario ->
@@ -770,7 +775,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_medicalData_onSelectAllChecked_allPermissionTypesChecked() = runTest {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -791,7 +796,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_onlyMedicalShown_onSelectAllChecked_allPermissionTypesChecked() =
         runTest {
             mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -813,7 +818,7 @@ class AllDataFragmentTest {
         }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_onSelectAllChecked_allPermissionTypesChecked() = runTest {
         mockData(listOf(DISTANCE, MENSTRUATION))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -858,7 +863,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_medicalData_onSelectAllUnchecked_allPermissionTypesUnChecked() = runTest {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -880,7 +885,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_onlyMedicalShown_onSelectAllUnchecked_allPermissionTypesUnChecked() =
         runTest {
             mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -903,7 +908,7 @@ class AllDataFragmentTest {
         }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_onSelectAllUnchecked_allPermissionTypesUnChecked() = runTest {
         mockData(listOf(DISTANCE, MENSTRUATION))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -954,7 +959,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_medicalData_allPermissionTypesChecked_selectAllShouldBeChecked() {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -980,7 +985,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_onlyMedicalShown_allPermissionTypesChecked_selectAllShouldBeChecked() =
         runTest {
             mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -1008,7 +1013,7 @@ class AllDataFragmentTest {
         }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_allPermissionTypesChecked_selectAllShouldBeChecked() =
         runTest {
             mockData(listOf(DISTANCE, MENSTRUATION))
@@ -1069,7 +1074,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_medicalData_selectAllChecked_oneUnchecked_selectAllUnchecked() = runTest {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -1096,7 +1101,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_onlyMedicalShown_selectAllChecked_oneUnchecked_selectAllUnchecked() =
         runTest {
             mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -1124,7 +1129,7 @@ class AllDataFragmentTest {
         }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_selectAllChecked_oneUnchecked_selectAllUnchecked() = runTest {
         mockData(listOf(DISTANCE, MENSTRUATION))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -1199,7 +1204,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_medicalData_checkboxesRemainOnOrientationChange() = runTest {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -1246,7 +1251,7 @@ class AllDataFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedDataOnlyMedicalShowing_checkboxesRemainOnOrientationChange() =
         runTest {
             mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -1288,7 +1293,7 @@ class AllDataFragmentTest {
         }
 
     @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
+    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_checkboxesRemainOnOrientationChange() = runTest {
         mockData(listOf(DISTANCE, MENSTRUATION))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -1338,14 +1343,15 @@ class AllDataFragmentTest {
             mapOf(
                 SymptomRecord::class.java to
                     RecordTypeInfoResponse(
-                        HealthPermissionCategory.SYMPTOM_SNORE, // Placeholder
+                        setOf(HealthPermissionCategory.SYMPTOM_SNORE), // Placeholder
                         HealthDataCategory.SYMPTOMS,
                         listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
                     )
             )
-        doAnswer(prepareAnswer(recordTypeInfoMap))
-            .`when`(manager)
-            .queryAllRecordTypesInfo(any(), any())
+        manager.stub {
+            on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
+                Result.success(recordTypeInfoMap)
+        }
 
         launchFragment<AllDataFragment>().use {
             checkTextIsDisplayed("Symptoms") // Category title
@@ -1364,7 +1370,7 @@ class AllDataFragmentTest {
             mapOf(
                 SymptomRecord::class.java to
                     RecordTypeInfoResponse(
-                        HealthPermissionCategory.SYMPTOM_SNORE, // Placeholder
+                        setOf(HealthPermissionCategory.SYMPTOM_SNORE), // Placeholder
                         HealthDataCategory.SYMPTOMS,
                         listOf(
                             getDataOrigin(TEST_APP_PACKAGE_NAME),
@@ -1372,9 +1378,10 @@ class AllDataFragmentTest {
                         ),
                     )
             )
-        doAnswer(prepareAnswer(recordTypeInfoMap))
-            .`when`(manager)
-            .queryAllRecordTypesInfo(any(), any())
+        manager.stub {
+            on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
+                Result.success(recordTypeInfoMap)
+        }
 
         launchFragment<AllDataFragment>().use {
             checkTextIsDisplayed("Symptoms") // Category title
@@ -1419,15 +1426,16 @@ class AllDataFragmentTest {
 
                 dataType to
                     RecordTypeInfoResponse(
-                        permissionCategory,
+                        setOf(permissionCategory),
                         healthCategory,
                         listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
                     )
             }
 
-        doAnswer(prepareAnswer(recordTypeInfoMap))
-            .`when`(manager)
-            .queryAllRecordTypesInfo(any(), any())
+        manager.stub {
+            on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
+                Result.success(recordTypeInfoMap)
+        }
     }
 
     private fun mockData(
@@ -1439,31 +1447,10 @@ class AllDataFragmentTest {
                 MedicalResourceTypeInfo(toMedicalResourceType(it), medicalDataSources)
             }
 
-        doAnswer(prepareAnswer(medicalResourceTypeResources))
-            .`when`(manager)
-            .queryAllMedicalResourceTypeInfos(any(), any())
-    }
-
-    private fun prepareAnswer(
-        recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse>
-    ): (InvocationOnMock) -> Map<Class<out Record>, RecordTypeInfoResponse> {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[1] as OutcomeReceiver<Any?, *>
-            receiver.onResult(recordTypeInfoMap)
-            recordTypeInfoMap
+        manager.stub {
+            on { queryAllMedicalResourceTypeInfos(any(), any()) } doReturnResult
+                Result.success(medicalResourceTypeResources)
         }
-        return answer
-    }
-
-    private fun prepareAnswer(
-        medicalResourceTypeInfo: List<MedicalResourceTypeInfo>
-    ): (InvocationOnMock) -> List<MedicalResourceTypeInfo> {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[1] as OutcomeReceiver<Any?, *>
-            receiver.onResult(medicalResourceTypeInfo)
-            medicalResourceTypeInfo
-        }
-        return answer
     }
 
     private fun launchMedicalAllDataFragment(): ActivityScenario<TestActivity> =
