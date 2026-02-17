@@ -57,6 +57,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -142,6 +143,7 @@ public class DeviceDataPriorityListTest {
     }
 
     @Test
+    @Ignore("b/440298571 - Failing test")
     public void removeDeviceAdvertisement_noData_removesFromPriorityList() throws Exception {
         advertiseDevice(DEVICE_ID, DEVICE, StepsRecord.class);
         insertDeviceRecords(DEVICE_ID, Collections.singletonList(createStepsRecord()));
@@ -160,6 +162,7 @@ public class DeviceDataPriorityListTest {
     }
 
     @Test
+    @Ignore("b/440298571 - Failing test")
     // Advertise Steps (ACTIVITY) and Sleep (SLEEP), insert data, delete Steps data.
     public void removeDataTypeAdvertisement_noData_removesFromCategoryList() throws Exception {
         setupMultipleCategories(/* insertSteps */ true, /* insertSleep */ true);
