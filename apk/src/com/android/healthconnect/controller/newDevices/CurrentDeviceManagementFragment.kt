@@ -39,6 +39,7 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.dataTypeToCategory
+import com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference
@@ -55,6 +56,8 @@ import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import kotlin.getValue
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.launch
 
 /**
@@ -68,6 +71,7 @@ class CurrentDeviceManagementFragment : Hilt_CurrentDeviceManagementFragment() {
         private const val DEVICE_WRITE_CATEGORY = "device_write_category"
         private const val DEVICE_DATA_CATEGORY = "device_data_category"
         private const val DEVICE_DATA_BUTTON = "device_data_button"
+        private const val DEVICE_SYNC_PREF = "device_sync_pref"
         private const val FOOTER_KEY = "connected_app_footer"
     }
 
@@ -79,6 +83,7 @@ class CurrentDeviceManagementFragment : Hilt_CurrentDeviceManagementFragment() {
     private val deviceWriteCategory: PreferenceCategory by pref(DEVICE_WRITE_CATEGORY)
     private val deviceDataCategory: PreferenceCategory by pref(DEVICE_DATA_CATEGORY)
     private val deviceDataButton: HealthPreference by pref(DEVICE_DATA_BUTTON)
+    private val deviceSyncCategory: HealthMainSwitchPreference by pref(DEVICE_SYNC_PREF)
     private val connectedAppFooter: FooterPreference by pref(FOOTER_KEY)
 
     private var packageName: String = ""
@@ -103,7 +108,6 @@ class CurrentDeviceManagementFragment : Hilt_CurrentDeviceManagementFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO(b/477850701): Hide all elements to avoid "flashes" before loading
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 deviceSourcesViewModel.selectedDeviceSourceInfoState.collect { state ->
@@ -136,17 +140,17 @@ class CurrentDeviceManagementFragment : Hilt_CurrentDeviceManagementFragment() {
 
         val deviceAppMetadata = selectedDeviceInfo.asAppMetadata(requireContext())
         val hasStepsSensor = selectedDeviceInfo.providesNativeSteps()
+        val currentDeviceAdvertisements =
+            selectedDeviceInfo.findSystemInfo()!!.deviceDataTypeAdvertisements
 
         if (!hasStepsSensor) {
             setUpNoSensorHeader()
         }
         updateHeader(deviceAppMetadata)
 
-        // TODO(b/476947851): Add sync to Health Connect button
+        updateDeviceSyncCategory(currentDeviceAdvertisements)
 
-        updateDeviceWriteCategory(
-            selectedDeviceInfo.findSystemInfo()!!.deviceDataTypeAdvertisements
-        )
+        updateDeviceWriteCategory(currentDeviceAdvertisements)
 
         updateDeviceDataButton(deviceAppMetadata)
 
@@ -193,6 +197,32 @@ class CurrentDeviceManagementFragment : Hilt_CurrentDeviceManagementFragment() {
         }
     }
 
+    private fun updateDeviceSyncCategory(typeAdvertisements: Set<DeviceDataTypeAdvertisement>) {
+        // Since isCurrentDeviceSynced updates with every toggle, any failure effectively reverts
+        // the UI state. Therefore, both methods can safely return true
+        val onChecked = suspend {
+            toggleAllAvailableDatatypes(typeAdvertisements, true)
+            true
+        }
+        val onUnchecked = suspend {
+            toggleAllAvailableDatatypes(typeAdvertisements, false)
+            true
+        }
+
+        deviceSyncCategory.apply {
+            title = getString(R.string.device_sync_button)
+            isVisible = typeAdvertisements.size > 1
+            isEnabled = typeAdvertisements.any { it.isAvailable }
+
+            setUpStateManagement(
+                viewLifecycleOwner,
+                deviceSourcesViewModel.isCurrentDeviceSynced,
+                onChecked,
+                onUnchecked,
+            )
+        }
+    }
+
     private fun updateDeviceWriteCategory(typeAdvertisements: Set<DeviceDataTypeAdvertisement>) {
         typeAdvertisements.forEach {
             val typeTrackingSwitch =
@@ -234,6 +264,45 @@ class CurrentDeviceManagementFragment : Hilt_CurrentDeviceManagementFragment() {
         }
     }
 
+    private fun toggleAllAvailableDatatypes(
+        typeAdvertisements: Set<DeviceDataTypeAdvertisement>,
+        newValue: Boolean,
+    ) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            val trackingCalls =
+                typeAdvertisements
+                    .filter { it.isAvailable }
+                    .map { advertisement ->
+                        async {
+                            SetNativeTrackingCallback(
+                                advertisement.dataType.name,
+                                deviceSourcesViewModel.setNativeTrackingEnabled(
+                                    recordType = advertisement.dataType,
+                                    isEnabled = newValue,
+                                    shouldUpdateSyncedState = false,
+                                ),
+                            )
+                        }
+                    }
+
+            val results = trackingCalls.awaitAll()
+
+            results
+                .filter { it.wasSuccess }
+                .forEach {
+                    val updatedPref =
+                        deviceWriteCategory.findPreference<HealthSwitchPreference>(it.typeKey)
+                    (updatedPref as HealthSwitchPreference).isChecked = newValue
+                }
+
+            if (results.any { !it.wasSuccess }) {
+                toastManager.showToast(requireContext(), R.string.default_error, Toast.LENGTH_SHORT)
+            }
+
+            deviceSourcesViewModel.loadIsCurrentDeviceSynced()
+        }
+    }
+
     private fun getDisplayName(recordType: Class<out Record>): String? {
         val permissionType =
             HealthPermissionToDatatypeMapper.getPermissionType(recordType)
@@ -265,4 +334,6 @@ class CurrentDeviceManagementFragment : Hilt_CurrentDeviceManagementFragment() {
             else getString(R.string.device_management_screen_no_step_sensor_footer)
         connectedAppFooter.title = title
     }
+
+    private data class SetNativeTrackingCallback(val typeKey: String, val wasSuccess: Boolean)
 }

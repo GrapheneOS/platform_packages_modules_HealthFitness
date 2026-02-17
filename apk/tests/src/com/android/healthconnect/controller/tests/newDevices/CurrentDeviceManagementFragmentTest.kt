@@ -53,6 +53,7 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.newDevices.CurrentDeviceManagementFragment
 import com.android.healthconnect.controller.newDevices.DeviceSourcesViewModel
 import com.android.healthconnect.controller.newDevices.DeviceSourcesViewModel.SelectedDeviceSourceInfoState
+import com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference
 import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference
 import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PACKAGE_NAME
@@ -75,9 +76,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
+import org.mockito.kotlin.doNothing
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyBlocking
 import org.mockito.kotlin.whenever
@@ -99,6 +103,7 @@ class CurrentDeviceManagementFragmentTest {
     private lateinit var navHostController: TestNavHostController
     private lateinit var context: Context
     private lateinit var selectedDeviceSourceState: MutableStateFlow<SelectedDeviceSourceInfoState>
+    private lateinit var isCurrentDeviceSyncedState: MutableStateFlow<Boolean>
 
     @Before
     fun setup() {
@@ -112,6 +117,8 @@ class CurrentDeviceManagementFragmentTest {
                 SelectedDeviceSourceInfoState.WithData(phoneDevice)
             )
         whenever(viewModel.selectedDeviceSourceInfoState).thenReturn(selectedDeviceSourceState)
+        isCurrentDeviceSyncedState = MutableStateFlow(false)
+        whenever(viewModel.isCurrentDeviceSynced).thenReturn(isCurrentDeviceSyncedState)
     }
 
     @Test
@@ -168,6 +175,156 @@ class CurrentDeviceManagementFragmentTest {
     }
 
     @Test
+    fun syncButton_withOnlyOneType_notDisplayed() {
+        launchCurrentDeviceManagementFragment(phoneDevice).use {
+            onView(withText("Sync to Health\u00A0Connect")).check(doesNotExist())
+        }
+    }
+
+    @Test
+    fun syncButton_withMultipleTypes_displayed() {
+        val multipleTypeDevice = createCurrentDeviceWithMultipleTypeAds()
+        selectedDeviceSourceState.value = SelectedDeviceSourceInfoState.WithData(multipleTypeDevice)
+
+        launchCurrentDeviceManagementFragment(multipleTypeDevice).use {
+            onView(withText("Sync to Health\u00A0Connect")).check(matches(isDisplayed()))
+            onView(withText("Sync to Health\u00A0Connect")).check(matches(isEnabled()))
+        }
+    }
+
+    @Test
+    fun syncButton_pressed_callsSetTracking() {
+        val multipleTypeDevice = createCurrentDeviceWithMultipleTypeAds()
+        selectedDeviceSourceState.value = SelectedDeviceSourceInfoState.WithData(multipleTypeDevice)
+
+        runBlocking {
+            doReturn(true).whenever(viewModel).setNativeTrackingEnabled(any(), any(), any())
+        }
+        runBlocking { doNothing().whenever(viewModel).loadIsCurrentDeviceSynced() }
+
+        launchCurrentDeviceManagementFragment(multipleTypeDevice).use {
+            onView(withText("Sync to Health\u00A0Connect")).perform(click())
+
+            verifyBlocking(viewModel) {
+                setNativeTrackingEnabled(eq(StepsRecord::class.java), eq(true), eq(false))
+            }
+            verifyBlocking(viewModel) {
+                setNativeTrackingEnabled(eq(SleepSessionRecord::class.java), eq(true), eq(false))
+            }
+            verifyBlocking(viewModel, never()) {
+                setNativeTrackingEnabled(
+                    eq(TotalCaloriesBurnedRecord::class.java),
+                    eq(true),
+                    eq(false),
+                )
+            }
+            verifyBlocking(viewModel) { loadIsCurrentDeviceSynced() }
+
+            it.onActivity { activity ->
+                val fragment =
+                    activity.supportFragmentManager.findFragmentByTag("")
+                        as CurrentDeviceManagementFragment
+
+                val stepsCheckboxPreference =
+                    fragment.preferenceScreen.findPreference(StepsRecord::class.java.name)
+                        as HealthSwitchPreference?
+                assertThat(stepsCheckboxPreference?.isChecked).isTrue()
+
+                val sleepCheckboxPreference =
+                    fragment.preferenceScreen.findPreference(SleepSessionRecord::class.java.name)
+                        as HealthSwitchPreference?
+                assertThat(sleepCheckboxPreference?.isChecked).isTrue()
+
+                val caloriesCheckboxPreference =
+                    fragment.preferenceScreen.findPreference(
+                        TotalCaloriesBurnedRecord::class.java.name
+                    ) as HealthSwitchPreference?
+                assertThat(caloriesCheckboxPreference?.isChecked).isFalse()
+            }
+
+            isCurrentDeviceSyncedState.value = true
+            onView(withText("Sync to Health\u00A0Connect")).perform(click())
+
+            verifyBlocking(viewModel) {
+                setNativeTrackingEnabled(eq(StepsRecord::class.java), eq(false), eq(false))
+            }
+            verifyBlocking(viewModel) {
+                setNativeTrackingEnabled(eq(SleepSessionRecord::class.java), eq(false), eq(false))
+            }
+            verifyBlocking(viewModel, never()) {
+                setNativeTrackingEnabled(
+                    eq(TotalCaloriesBurnedRecord::class.java),
+                    eq(false),
+                    eq(false),
+                )
+            }
+
+            it.onActivity { activity ->
+                val fragment =
+                    activity.supportFragmentManager.findFragmentByTag("")
+                        as CurrentDeviceManagementFragment
+
+                val stepsCheckboxPreference =
+                    fragment.preferenceScreen.findPreference(StepsRecord::class.java.name)
+                        as HealthSwitchPreference?
+                assertThat(stepsCheckboxPreference?.isChecked).isFalse()
+
+                val sleepCheckboxPreference =
+                    fragment.preferenceScreen.findPreference(SleepSessionRecord::class.java.name)
+                        as HealthSwitchPreference?
+                assertThat(sleepCheckboxPreference?.isChecked).isFalse()
+
+                val caloriesCheckboxPreference =
+                    fragment.preferenceScreen.findPreference(
+                        TotalCaloriesBurnedRecord::class.java.name
+                    ) as HealthSwitchPreference?
+                assertThat(caloriesCheckboxPreference?.isChecked).isFalse()
+            }
+        }
+    }
+
+    @Test
+    fun syncButton_individualTypesSet_isCheckedWhenAllAvailableChecked() {
+        val multipleTypeDevice = createCurrentDeviceWithMultipleTypeAds()
+        selectedDeviceSourceState.value = SelectedDeviceSourceInfoState.WithData(multipleTypeDevice)
+
+        runBlocking {
+            doReturn(true).whenever(viewModel).setNativeTrackingEnabled(any(), any(), any())
+        }
+        runBlocking { doNothing().whenever(viewModel).loadIsCurrentDeviceSynced() }
+
+        launchCurrentDeviceManagementFragment(multipleTypeDevice).use {
+            onView(withText("Sleep")).perform(click())
+            isCurrentDeviceSyncedState.value = true
+
+            it.onActivity { activity ->
+                val fragment =
+                    activity.supportFragmentManager.findFragmentByTag("")
+                        as CurrentDeviceManagementFragment
+
+                val syncPreference =
+                    fragment.preferenceScreen.findPreference("device_sync_pref")
+                        as HealthMainSwitchPreference?
+                assertThat(syncPreference?.isChecked).isTrue()
+            }
+
+            onView(withText("Sleep")).perform(click())
+            isCurrentDeviceSyncedState.value = false
+
+            it.onActivity { activity ->
+                val fragment =
+                    activity.supportFragmentManager.findFragmentByTag("")
+                        as CurrentDeviceManagementFragment
+
+                val syncPreference =
+                    fragment.preferenceScreen.findPreference("device_sync_pref")
+                        as HealthMainSwitchPreference?
+                assertThat(syncPreference?.isChecked).isFalse()
+            }
+        }
+    }
+
+    @Test
     fun stepTrackingSwitch_hasSensor_isDisplayedAndEnabled() {
         launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(withText("Steps")).check(matches(isDisplayed()))
@@ -188,22 +345,30 @@ class CurrentDeviceManagementFragmentTest {
 
     @Test
     fun stepTrackingSwitch_whenClicked_callsViewModel() {
-        runBlocking { doReturn(true).whenever(viewModel).setNativeTrackingEnabled(any(), any()) }
+        runBlocking {
+            doReturn(true).whenever(viewModel).setNativeTrackingEnabled(any(), any(), any())
+        }
 
         launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(withText("Steps")).perform(click())
-            verifyBlocking(viewModel) { setNativeTrackingEnabled(StepsRecord::class.java, false) }
+            verifyBlocking(viewModel) {
+                setNativeTrackingEnabled(eq(StepsRecord::class.java), eq(false), eq(true))
+            }
         }
     }
 
     @Test
     fun stepTrackingSwitch_whenClickedAndSuccess_changesToggle() {
-        runBlocking { doReturn(true).whenever(viewModel).setNativeTrackingEnabled(any(), any()) }
+        runBlocking {
+            doReturn(true).whenever(viewModel).setNativeTrackingEnabled(any(), any(), any())
+        }
 
         launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(withText("Steps")).perform(click())
 
-            verifyBlocking(viewModel) { setNativeTrackingEnabled(StepsRecord::class.java, false) }
+            verifyBlocking(viewModel) {
+                setNativeTrackingEnabled(eq(StepsRecord::class.java), eq(false), eq(true))
+            }
 
             it.onActivity { activity ->
                 val fragment =
@@ -216,7 +381,9 @@ class CurrentDeviceManagementFragmentTest {
             }
 
             onView(withText("Steps")).perform(click())
-            verifyBlocking(viewModel) { setNativeTrackingEnabled(StepsRecord::class.java, true) }
+            verifyBlocking(viewModel) {
+                setNativeTrackingEnabled(eq(StepsRecord::class.java), eq(true), eq(true))
+            }
 
             it.onActivity { activity ->
                 val fragment =
@@ -232,12 +399,16 @@ class CurrentDeviceManagementFragmentTest {
 
     @Test
     fun stepTrackingSwitch_whenClickedAndFailed_doesNotToggle() {
-        runBlocking { doReturn(false).whenever(viewModel).setNativeTrackingEnabled(any(), any()) }
+        runBlocking {
+            doReturn(false).whenever(viewModel).setNativeTrackingEnabled(any(), any(), any())
+        }
 
         launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(withText("Steps")).perform(click())
 
-            verifyBlocking(viewModel) { setNativeTrackingEnabled(StepsRecord::class.java, false) }
+            verifyBlocking(viewModel) {
+                setNativeTrackingEnabled(eq(StepsRecord::class.java), eq(false), eq(true))
+            }
 
             it.onActivity { activity ->
                 val fragment =
@@ -253,11 +424,15 @@ class CurrentDeviceManagementFragmentTest {
 
     @Test
     fun stepTrackingSwitch_whenClickedAndFails_displaysToast() {
-        runBlocking { doReturn(false).whenever(viewModel).setNativeTrackingEnabled(any(), any()) }
+        runBlocking {
+            doReturn(false).whenever(viewModel).setNativeTrackingEnabled(any(), any(), any())
+        }
 
         launchCurrentDeviceManagementFragment(phoneDevice).use {
             onView(withText("Steps")).perform(click())
-            verifyBlocking(viewModel) { setNativeTrackingEnabled(StepsRecord::class.java, false) }
+            verifyBlocking(viewModel) {
+                setNativeTrackingEnabled(eq(StepsRecord::class.java), eq(false), eq(true))
+            }
             it.onActivity { activity: TestActivity ->
                 verify(toastManager).showToast(any(), eq(R.string.default_error), any())
             }

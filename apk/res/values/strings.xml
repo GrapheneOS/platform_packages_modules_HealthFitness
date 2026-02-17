@@ -1867,6 +1867,7 @@
     <string name="device_data_screen_title" description="Title for the device data screen. [CHAR_LIMIT=40]">Device data</string>
     <string name="device_data_label" description="Label for the device settings category. [CHAR_LIMIT=40]">Manage device</string>
     <string name="device_data_button" description="Button for taking users to device data screen. [CHAR_LIMIT=40]">See device data</string>
+    <string name="device_sync_button" description="Button for enabling or disabling all native data type tracking for the current device (e.g. steps tracked by phone). [CHAR_LIMIT=NONE]">Sync to Health&#160;Connect</string>
     <!-- endregion -->
 
     <!-- region Native Steps -->
