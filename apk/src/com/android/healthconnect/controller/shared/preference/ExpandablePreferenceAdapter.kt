@@ -23,6 +23,7 @@ import androidx.preference.PreferenceGroupAdapter
 import androidx.preference.PreferenceScreen
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.matchmaking.MatchmakingDevicePreference
 import com.android.healthconnect.controller.matchmaking.MatchmakingPrivacyFooterPreference
 import com.android.settingslib.widget.SettingsThemeHelper
 import com.android.settingslib.widget.theme.R as SettingsLibResources
@@ -61,6 +62,9 @@ class ExpandablePreferenceAdapter(
                                 .settingslib_round_background_top_highlighted
 
                         preference is BaseExpandablePreference && !preference.mIsExpanded ->
+                            SettingsLibResources.drawable.settingslib_round_background
+
+                        preference is MatchmakingDevicePreference ->
                             SettingsLibResources.drawable.settingslib_round_background
 
                         preference is HealthSwitchPreference && preference.isLastInGroup ->

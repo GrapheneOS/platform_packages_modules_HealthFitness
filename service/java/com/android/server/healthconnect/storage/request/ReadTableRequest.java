@@ -36,7 +36,6 @@ import com.android.server.healthconnect.storage.utils.WhereClauses;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -70,7 +69,7 @@ public class ReadTableRequest {
     // Null means no limit.
     @Nullable private Integer mLimit = null;
     @Nullable private Integer mFinalLimit = null;
-    @Nullable private List<ReadTableRequest> mExtraReadRequests;
+
     @Nullable private List<ReadTableRequest> mUnionReadRequests;
     private String mUnionType = UNION_ALL;
 
@@ -261,18 +260,6 @@ public class ReadTableRequest {
         return query
                 + mFinalOrderByClause.getOrderBy()
                 + (mFinalLimit == null ? "" : LIMIT_SIZE + mFinalLimit);
-    }
-
-    /** Get requests for populating extra data */
-    @Nullable
-    public List<ReadTableRequest> getExtraReadRequests() {
-        return mExtraReadRequests;
-    }
-
-    /** Sets requests to populate extra data */
-    public ReadTableRequest setExtraReadRequests(List<ReadTableRequest> extraDataReadRequests) {
-        mExtraReadRequests = new ArrayList<>(extraDataReadRequests);
-        return this;
     }
 
     /** Get table name of the request */

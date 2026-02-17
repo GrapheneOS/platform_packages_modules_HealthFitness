@@ -233,7 +233,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
 
         viewModel.enabledDevicePackages.observe(viewLifecycleOwner) { enabledDevices ->
             matchmakingDevicesCategory.children.forEach { preference ->
-                if (preference is HealthExpandablePreference) {
+                if (preference is MatchmakingDevicePreference) {
                     preference.isChecked = enabledDevices.contains(preference.key)
                 }
             }
@@ -297,16 +297,23 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     }
 
     private fun addDevicePreference(deviceData: MatchmakingDeviceData) {
-        val expandablePreference = createExpandablePreference(deviceData)
-        matchmakingDevicesCategory.addPreference(expandablePreference)
-        customStyledPrefs.add(expandablePreference)
-
-        expandablePreference.setOnSwitchChangeListener { isChecked ->
-            if (isChecked) {
-                viewModel.addDevicePermissionToGrantedList(expandablePreference.key)
-            } else {
-                viewModel.removeAllPermissionsFromGrantedList(expandablePreference.key)
+        val devicePreference =
+            MatchmakingDevicePreference(requireContext()).apply {
+                title = deviceData.deviceDataSourceInfo.device.manufacturer
+                icon = deviceData.deviceDataSourceInfo.asAppMetadata(requireContext()).icon
+                key = deviceData.deviceDataSourceInfo.deviceDataOrigin.packageName
             }
+        matchmakingDevicesCategory.addPreference(devicePreference)
+        customStyledPrefs.add(devicePreference)
+
+        devicePreference.setOnPreferenceChangeListener { preference, newValue ->
+            val isChecked = newValue as Boolean
+            if (isChecked) {
+                viewModel.addDevicePermissionToGrantedList(preference.key)
+            } else {
+                viewModel.removeAllPermissionsFromGrantedList(preference.key)
+            }
+            true
         }
     }
 
@@ -329,43 +336,23 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
         }
     }
 
-    private fun createExpandablePreference(data: Any): HealthExpandablePreference {
+    private fun createExpandablePreference(data: MatchmakingAppData): HealthExpandablePreference {
         return HealthExpandablePreference(requireContext(), null).apply {
-            when (data) {
-                is MatchmakingAppData -> {
-                    title =
-                        context.getString(
-                            R.string.matchmaking_screen_data_from_app,
-                            data.metadata.appName,
-                        )
-                    icon =
-                        data.metadata.icon
-                            ?: ContextCompat.getDrawable(requireContext(), R.drawable.ic_apps)
-                    key = data.metadata.packageName
-                    logName = MatchmakingElement.MATCHMAKING_EXPANDABLE_PREFERENCE
-                    setExpanded(
-                        isInitiallyExpanded(
-                            data.metadata.packageName,
-                            viewModel.matchingAppsCount.value ?: 0,
-                        )
-                    )
-                    setOnExpandChangeListener { isExpanded ->
-                        viewModel.updateExpandedPreferenceKey(key, isExpanded)
-                    }
-                    switchContentDescription =
-                        context.getString(
-                            R.string.matchmaking_allow_all_app_permissions_content_description,
-                            data.metadata.appName,
-                        )
-                }
-                is MatchmakingDeviceData -> {
-                    if (deviceDataProvidersApi() && deviceDataProvidersUiMatchmakingScreen()) {
-                        title = data.deviceDataSourceInfo.device.manufacturer
-                        icon = data.deviceDataSourceInfo.asAppMetadata(requireContext()).icon
-                        key = data.deviceDataSourceInfo.deviceDataOrigin.packageName
-                        setExpanded(false)
-                    }
-                }
+            title =
+                context.getString(R.string.matchmaking_screen_data_from_app, data.metadata.appName)
+            icon =
+                data.metadata.icon
+                    ?: ContextCompat.getDrawable(requireContext(), R.drawable.ic_apps)
+            key = data.metadata.packageName
+            logName = MatchmakingElement.MATCHMAKING_EXPANDABLE_PREFERENCE
+            setExpanded(
+                isInitiallyExpanded(
+                    data.metadata.packageName,
+                    viewModel.matchingAppsCount.value ?: 0,
+                )
+            )
+            setOnExpandChangeListener { isExpanded ->
+                viewModel.updateExpandedPreferenceKey(key, isExpanded)
             }
         }
     }
@@ -514,6 +501,14 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                     preference.isChecked = isChecked
                     if (isChecked) {
                         viewModel.addAllPermissionsToGrantedList(packageName)
+                    } else {
+                        viewModel.removeAllPermissionsFromGrantedList(packageName)
+                    }
+                } else if (preference is MatchmakingDevicePreference) {
+                    val packageName = preference.key
+                    preference.isChecked = isChecked
+                    if (isChecked) {
+                        viewModel.addDevicePermissionToGrantedList(packageName)
                     } else {
                         viewModel.removeAllPermissionsFromGrantedList(packageName)
                     }

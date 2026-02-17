@@ -49,12 +49,6 @@ import com.android.healthconnect.controller.data.formatters.SleepSessionFormatte
 import com.android.healthconnect.controller.data.formatters.StepsFormatter
 import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
 import com.android.healthconnect.controller.data.formatters.medical.MedicalEntryFormatter
-import com.android.healthconnect.controller.devices.ILoadDeviceDataSources
-import com.android.healthconnect.controller.devices.ILoadSensorListUseCase
-import com.android.healthconnect.controller.devices.ISetTrackingEnabled
-import com.android.healthconnect.controller.devices.LoadDeviceDataSources
-import com.android.healthconnect.controller.devices.LoadSensorListUseCase
-import com.android.healthconnect.controller.devices.SetTrackingEnabled
 import com.android.healthconnect.controller.exportimport.api.DocumentProvider
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
@@ -86,15 +80,12 @@ import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealt
 import com.android.healthconnect.controller.permissions.connectedapps.LoadHealthPermissionApps
 import com.android.healthconnect.controller.permissions.shared.IQueryRecentAccessLogsUseCase
 import com.android.healthconnect.controller.permissions.shared.QueryRecentAccessLogsUseCase
-import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
-import com.android.healthconnect.controller.recentaccess.LoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.GetContributorAppInfoUseCase
 import com.android.healthconnect.controller.shared.app.IGetContributorAppInfoUseCase
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.utils.TimeSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -106,14 +97,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 @Module
 @InstallIn(SingletonComponent::class)
 class UseCaseModule {
-    @Provides
-    fun providesLoadRecentAccessUseCase(
-        manager: HealthConnectManager,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-        timeSource: TimeSource,
-    ): ILoadRecentAccessUseCase {
-        return LoadRecentAccessUseCase(manager, dispatcher, timeSource)
-    }
 
     @Provides
     fun providesLoadHealthPermissionAppsUseCase(
@@ -356,28 +339,6 @@ class UseCaseModule {
         useCase: LoadFitnessPermissionAppsUseCase
     ): BaseUseCase<Unit, List<ConnectedFitnessAppMetadata>> {
         return useCase
-    }
-
-    @Provides
-    fun provideLocalDeviceDataSources(
-        loadDeviceDataSources: LoadDeviceDataSources
-    ): ILoadDeviceDataSources {
-        return loadDeviceDataSources
-    }
-
-    @Provides
-    fun provideSetTrackingEnabledUseCase(
-        setTrackingEnabled: SetTrackingEnabled
-    ): ISetTrackingEnabled {
-        return setTrackingEnabled
-    }
-
-    @Provides
-    fun provideLoadSensorListUseCase(
-        @ApplicationContext context: Context,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): ILoadSensorListUseCase {
-        return LoadSensorListUseCase(context, dispatcher)
     }
 
     @Provides

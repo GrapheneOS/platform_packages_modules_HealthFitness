@@ -17,15 +17,18 @@ package com.android.healthconnect.controller.tests.utils
 
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.utils.navigateSafe
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.verifyNoMoreInteractions
 import org.mockito.kotlin.whenever
 
+@RunWith(AndroidJUnit4::class)
 class FragmentUtilsTest {
 
     val navController: NavController = mock()

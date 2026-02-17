@@ -66,6 +66,7 @@ class CurrentDeviceManagementFragment : Hilt_CurrentDeviceManagementFragment() {
     companion object {
         private const val HEADER_KEY = "device_header_category"
         private const val DEVICE_WRITE_CATEGORY = "device_write_category"
+        private const val DEVICE_DATA_CATEGORY = "device_data_category"
         private const val DEVICE_DATA_BUTTON = "device_data_button"
         private const val FOOTER_KEY = "connected_app_footer"
     }
@@ -76,6 +77,7 @@ class CurrentDeviceManagementFragment : Hilt_CurrentDeviceManagementFragment() {
 
     private val headerGroup: PreferenceCategory by pref(HEADER_KEY)
     private val deviceWriteCategory: PreferenceCategory by pref(DEVICE_WRITE_CATEGORY)
+    private val deviceDataCategory: PreferenceCategory by pref(DEVICE_DATA_CATEGORY)
     private val deviceDataButton: HealthPreference by pref(DEVICE_DATA_BUTTON)
     private val connectedAppFooter: FooterPreference by pref(FOOTER_KEY)
 
@@ -127,6 +129,8 @@ class CurrentDeviceManagementFragment : Hilt_CurrentDeviceManagementFragment() {
     }
 
     private fun updateScreen(selectedDeviceInfo: DeviceDataSourceInfo) {
+        setPreferenceTitles()
+
         headerGroup.removeAll()
         deviceWriteCategory.removeAll()
 
@@ -147,6 +151,12 @@ class CurrentDeviceManagementFragment : Hilt_CurrentDeviceManagementFragment() {
         updateDeviceDataButton(deviceAppMetadata)
 
         updateFooter(hasStepsSensor)
+    }
+
+    private fun setPreferenceTitles() {
+        deviceWriteCategory.title = getString(R.string.device_settings_label)
+        deviceDataCategory.title = getString(R.string.device_data_label)
+        deviceDataButton.title = getString(R.string.device_data_button)
     }
 
     private fun updateHeader(deviceAppMetadata: AppMetadata) =

@@ -551,11 +551,12 @@
     <!--endregion-->
 
     <!-- region Matchmaking request strings -->
-    <string name="matchmaking_screen_title" description="Title for match making screen to add missing data">Share data between apps</string>
+    <string name="matchmaking_screen_title" description="Title for match making screen to add missing data">Sync your apps and devices</string>
     <string name="matchmaking_screen_data_from_app" description="Title for category that holds list of matching apps">Data from <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g></string>
-    <string name="matchmaking_screen_summary" description="Summary on match making screen to allow the given app to read data from other apps using Health Connect">Allow the <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> app to read data from other apps on this device using Health&#160;Connect. This data can also be read by other apps you give access to.</string>
+    <string name="matchmaking_screen_summary" description="Summary on match making screen to allow the given app to read data from other apps using Health Connect">Allow the <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> app to read data from other apps or devices on this device using Health&#160;Connect. This data can also be read by other apps you give access to.</string>
     <string name="matchmaking_screen_apps_category_title" description="Title for category that holds list of matching apps">Apps that can sync this data</string>
     <string name="matchmaking_screen_devices_category_title" description="Title for category that holds list of matching devices">Devices that can sync this data</string>
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" description="Summary text for device preference in matchmaking screen [CHAR_LIMIT=NONE]">Continue to device preferences to enable</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" description="Content description for the switch that allows all permissions for a specific app in the matchmaking screen.">Allow all <xliff:g id="app_name" example="Strava">%1$s</xliff:g> permissions</string>
     <string name="app_privacy_policy_footer" description="Footer with a link to the app's privacy policy.">Learn how <xliff:g example="Run Tracker" id="app_name">%1$s</xliff:g> uses your data in their <a href="%2$s">privacy policy</a>.</string>
     <string name="matchmaking_screen_footer" descriptio="Summary on match making screen explaining how Health Connect share health and fitness data between multiple data sources">Health&#160;Connect lets you share your health and fitness data between multiple data sources. This helps you unlock insights and experiences while keeping your data secure.</string>
@@ -2172,4 +2173,6 @@
 
     <!-- endregion -->
     <string name="app_permissions_granted_summary"><xliff:g example="1" id="granted_permissions">%1$d</xliff:g> of <xliff:g example="4" id="total_permissions">%2$d</xliff:g> selected</string>
+    <string name="a11y_aggregation_card_content_desc" description="A11y content description name for the icon of a data totals aggregation card">Data category for this aggregation card</string>
+
 </resources>

@@ -35,6 +35,8 @@ import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.dataTypeToCategory
+import com.android.healthconnect.controller.tests.recentaccess.api.FakeRecentAccessUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.MIDNIGHT
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -45,7 +47,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionAppsUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeRecentAccessUseCase
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -73,6 +74,7 @@ class RecentAccessViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val setFlagsRule = SetFlagsRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -81,7 +83,7 @@ class RecentAccessViewModelTest {
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
     private val timeSource = TestTimeSource
-    private val fakeRecentAccessUseCase = FakeRecentAccessUseCase()
+    private val fakeRecentAccessUseCase = fakeUseCaseRule.watch(FakeRecentAccessUseCase())
     private val fakeHealthPermissionAppsUseCase = FakeHealthPermissionAppsUseCase()
     private lateinit var viewModel: RecentAccessViewModel
 
@@ -102,7 +104,6 @@ class RecentAccessViewModelTest {
     @After
     fun tearDown() {
         Dispatchers.resetMain()
-        fakeRecentAccessUseCase.setForceFail(false)
     }
 
     @Test

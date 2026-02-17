@@ -28,7 +28,7 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionSt
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.AdditionalPermission.Companion.READ_HEALTH_DATA_IN_BACKGROUND
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission.Companion.fromPermissionString
-import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
+import com.android.healthconnect.controller.recentaccess.api.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper.getPermissionType
 import com.android.healthconnect.controller.shared.app.AppMetadata

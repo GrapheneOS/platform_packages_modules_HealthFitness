@@ -25,6 +25,7 @@ import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.RecentAccessState.Loading
+import com.android.healthconnect.controller.recentaccess.api.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader

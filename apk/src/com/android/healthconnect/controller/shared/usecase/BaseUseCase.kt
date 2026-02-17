@@ -19,8 +19,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
 
 /** Base class for UseCase to offload UseCase work to a background dispatcher. */
-abstract class BaseUseCase<Input, Output>(private val dispatcher: CoroutineDispatcher) {
-    suspend operator fun invoke(input: Input): UseCaseResults<Output> {
+abstract class BaseUseCase<Input, Output>(private val dispatcher: CoroutineDispatcher) :
+    UseCaseContract<Input, Output> {
+    override suspend operator fun invoke(input: Input): UseCaseResults<Output> {
         UseCaseIdlingResource.increment()
         return try {
             withContext(dispatcher) {
@@ -36,4 +37,8 @@ abstract class BaseUseCase<Input, Output>(private val dispatcher: CoroutineDispa
     }
 
     protected abstract suspend fun execute(input: Input): Output
+}
+
+interface UseCaseContract<Input, Output> {
+    suspend operator fun invoke(input: Input): UseCaseResults<Output>
 }

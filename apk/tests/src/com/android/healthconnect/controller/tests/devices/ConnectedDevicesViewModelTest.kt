@@ -22,11 +22,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.devices.ConnectedDevicesViewModel
 import com.android.healthconnect.controller.devices.ConnectedDevicesViewModel.ConnectedDevicesState
 import com.android.healthconnect.controller.devices.DeviceDataSource
+import com.android.healthconnect.controller.tests.devices.api.FakeLoadDeviceDataSourcesUseCase
+import com.android.healthconnect.controller.tests.devices.api.FakeLoadSensorListUseCase
+import com.android.healthconnect.controller.tests.devices.api.FakeSetTrackingEnabledUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TestObserver
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadDeviceDataSourcesUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadSensorListUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeSetTrackingEnabledUseCase
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -54,11 +55,13 @@ class ConnectedDevicesViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
     private val testDispatcher = UnconfinedTestDispatcher()
-    private val loadDeviceDataSourcesUseCase = FakeLoadDeviceDataSourcesUseCase()
-    private val loadSensorListUseCaseTest = FakeLoadSensorListUseCase()
-    private val setTrackingEnabledUseCase = FakeSetTrackingEnabledUseCase()
+    private val loadDeviceDataSourcesUseCase =
+        fakeUseCaseRule.watch(FakeLoadDeviceDataSourcesUseCase())
+    private val loadSensorListUseCaseTest = fakeUseCaseRule.watch(FakeLoadSensorListUseCase())
+    private val setTrackingEnabledUseCase = fakeUseCaseRule.watch(FakeSetTrackingEnabledUseCase())
 
     private lateinit var viewModel: ConnectedDevicesViewModel
 

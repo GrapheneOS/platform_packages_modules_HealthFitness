@@ -30,14 +30,14 @@ import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealt
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
-import com.android.healthconnect.controller.recentaccess.ILoadRecentAccessUseCase
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.tests.recentaccess.api.FakeRecentAccessUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionAppsUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadAppPermissionsStatusUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeRecentAccessUseCase
 import kotlin.collections.forEach
 
 fun assertTitleAndSummary(composeTestRule: ComposeTestRule, title: String, summary: String) {
@@ -59,7 +59,7 @@ fun setupConnectedApps(
     apps: List<AppConnectionsAndRecentAccess>,
     loadHealthPermissionApps: ILoadHealthPermissionApps,
     loadAppPermissionsStatusUseCase: ILoadAppPermissionsStatusUseCase,
-    loadRecentAccessUseCase: ILoadRecentAccessUseCase,
+    loadRecentAccessUseCase: BaseUseCase<Unit, List<AccessLog>>,
 ) {
     apps.forEach {
         val connectedAppMetadata =

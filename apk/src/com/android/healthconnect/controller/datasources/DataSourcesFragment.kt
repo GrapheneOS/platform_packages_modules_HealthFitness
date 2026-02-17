@@ -28,12 +28,13 @@ import com.android.healthconnect.controller.datasources.DataSourcesViewModel.Pot
 import com.android.healthconnect.controller.datasources.DataSourcesViewModel.PriorityListState
 import com.android.healthconnect.controller.datasources.appsources.AppSourcesPreferenceCategory
 import com.android.healthconnect.controller.navigation.CATEGORY_KEY
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromFitnessPermissionType
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.icon
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.lowercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppUtils
-import com.android.healthconnect.controller.shared.preference.CardContainerPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.shared.preference.buttonPreference
 import com.android.healthconnect.controller.shared.preference.topIntroPreference
@@ -99,8 +100,6 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
     private val appSourcesCategory: AppSourcesPreferenceCategory by pref(APP_SOURCES_CATEGORY_KEY)
 
     private val nonEmptyFooterPreference: FooterPreference by pref(NON_EMPTY_FOOTER_PREFERENCE_KEY)
-
-    private var cardContainerPreference: CardContainerPreference? = null
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
@@ -255,7 +254,8 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
             if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
                 addValuePreferences(cardInfos)
             } else {
-                addLegacyCardContainer(cardInfos)
+                dataTotalsPreferenceGroup.title = getString(R.string.data_totals_header)
+                addLegacyHealthPreferences(cardInfos)
             }
         }
     }
@@ -284,14 +284,31 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
         )
     }
 
-    private fun addLegacyCardContainer(cardInfos: List<AggregationCardInfo>) {
-        cardContainerPreference =
-            CardContainerPreference(requireContext(), timeSource).also {
-                it.setAggregationCardInfo(cardInfos)
-                it.key = DATA_TOTALS_PREFERENCE_LEGACY_KEY
-            }
+    private fun addLegacyHealthPreferences(cardInfos: List<AggregationCardInfo>) {
+        if (cardInfos.isEmpty()) {
+            return
+        }
+        // We display a max of 2 cards
+        val cardsToShow = if (cardInfos.size > 2) cardInfos.subList(0, 2) else cardInfos
+
+        addLegacyHealthPreference(cardsToShow.getOrNull(0), DATA_TOTALS_PREFERENCE_ONE_KEY)
+        addLegacyHealthPreference(cardsToShow.getOrNull(1), DATA_TOTALS_PREFERENCE_TWO_KEY)
+    }
+
+    private fun addLegacyHealthPreference(cardInfo: AggregationCardInfo?, key: String) {
+        if (cardInfo == null) {
+            return
+        }
         dataTotalsPreferenceGroup.addPreference(
-            (cardContainerPreference as CardContainerPreference)
+            AggregationCardPreference(requireContext()).also {
+                it.key = key
+                it.title = cardInfo.aggregation.aggregation
+                it.icon =
+                    fromFitnessPermissionType(cardInfo.fitnessPermissionType).icon(requireContext())
+                it.logName = DataSourcesElement.DATA_TOTALS_CARD
+                it.summary = formatDateText(cardInfo.startDate, cardInfo.endDate)
+                it.isSelectable = false
+            }
         )
     }
 
@@ -300,7 +317,7 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
         if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
             updateValuePreferenceAggregations(isLoading, cardInfos)
         } else {
-            updateLegacyAggregations(isLoading, cardInfos)
+            updateLegacyHealthPreferenceAggregations(isLoading, cardInfos)
         }
     }
 
@@ -349,17 +366,45 @@ class DataSourcesFragment : Hilt_DataSourcesFragment() {
         }
     }
 
-    private fun updateLegacyAggregations(isLoading: Boolean, cardInfos: List<AggregationCardInfo>) {
+    private fun updateLegacyHealthPreferenceAggregations(
+        isLoading: Boolean,
+        cardInfos: List<AggregationCardInfo>,
+    ) {
         if (isLoading) {
-            cardContainerPreference?.setLoading(true)
+            updateLegacyHealthPreferenceToLoading(DATA_TOTALS_PREFERENCE_ONE_KEY)
+            updateLegacyHealthPreferenceToLoading(DATA_TOTALS_PREFERENCE_TWO_KEY)
         } else {
             if (cardInfos.isEmpty()) {
                 dataTotalsPreferenceGroup.isVisible = false
             } else {
                 dataTotalsPreferenceGroup.isVisible = true
-                cardContainerPreference?.setAggregationCardInfo(cardInfos)
-                cardContainerPreference?.setLoading(false)
+                updateLegacyHealthPreference(DATA_TOTALS_PREFERENCE_ONE_KEY, cardInfos.getOrNull(0))
+                updateLegacyHealthPreference(DATA_TOTALS_PREFERENCE_TWO_KEY, cardInfos.getOrNull(1))
             }
+        }
+    }
+
+    private fun updateLegacyHealthPreference(key: String, cardInfo: AggregationCardInfo?) {
+        val preference = dataTotalsPreferenceGroup.findPreference<AggregationCardPreference>(key)
+        preference?.also {
+            if (cardInfo == null) {
+                it.isVisible = false
+            } else {
+                it.isVisible = true
+                it.title = cardInfo.aggregation.aggregation
+                it.icon =
+                    fromFitnessPermissionType(cardInfo.fitnessPermissionType).icon(requireContext())
+                it.summary = formatDateText(cardInfo.startDate, cardInfo.endDate)
+                it.isSelectable = false
+            }
+        }
+    }
+
+    private fun updateLegacyHealthPreferenceToLoading(key: String) {
+        val preference = dataTotalsPreferenceGroup.findPreference<AggregationCardPreference>(key)
+        preference?.also {
+            it.title = getString(R.string.loading)
+            it.summary = null
         }
     }
 
