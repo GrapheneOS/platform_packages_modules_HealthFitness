@@ -80,6 +80,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.clickSwitchOnRecyclerViewItemWithText
+import com.android.healthconnect.controller.tests.utils.scrollToText
 import com.android.healthconnect.controller.tests.utils.scrollToTextAndClick
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
@@ -225,7 +226,7 @@ class MatchmakingFragmentTest {
                 onView(
                         withText(
                             context.getString(
-                                R.string.matchmaking_screen_data_from_app,
+                                R.string.matchmaking_screen_data_from_data_source,
                                 TEST_APP_NAME,
                             )
                         )
@@ -237,7 +238,7 @@ class MatchmakingFragmentTest {
                     .check(matches(isDisplayed()))
                 onView(withId(androidx.preference.R.id.recycler_view))
                     .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-                onView(withText("Data from $TEST_APP_NAME")).perform(scrollTo()).perform(click())
+                onView(withText(TEST_APP_NAME)).perform(scrollTo()).perform(click())
                 onView(withText("Exercise")).perform(scrollTo()).check(matches(isDisplayed()))
                 onView(withText("Steps")).perform(scrollTo()).check(matches(isDisplayed()))
                 val policyString = context.getString(R.string.request_permissions_privacy_policy)
@@ -423,7 +424,7 @@ class MatchmakingFragmentTest {
                         .commitNow()
                 }
 
-                scrollToTextAndClick("Data from $TEST_APP_NAME")
+                scrollToTextAndClick(TEST_APP_NAME)
                 scrollToTextAndClick("Exercise")
                 onView(allOf(withText("Allow"), isDescendantOfA(withId(R.id.action_container))))
                     .perform(click())
@@ -728,7 +729,7 @@ class MatchmakingFragmentTest {
                         .commitNow()
                 }
 
-                clickSwitchOnRecyclerViewItemWithText("Data from $TEST_APP_NAME")
+                clickSwitchOnRecyclerViewItemWithText(TEST_APP_NAME)
 
                 verify(viewModel, times(1)).addAllPermissionsToGrantedList(TEST_APP_PACKAGE_NAME)
             }
@@ -775,7 +776,7 @@ class MatchmakingFragmentTest {
                         .commitNow()
                 }
 
-                clickSwitchOnRecyclerViewItemWithText("Data from $TEST_APP_NAME")
+                clickSwitchOnRecyclerViewItemWithText(TEST_APP_NAME)
 
                 verify(viewModel, times(1))
                     .removeAllPermissionsFromGrantedList(TEST_APP_PACKAGE_NAME)
@@ -793,7 +794,11 @@ class MatchmakingFragmentTest {
             MatchmakingDeviceData(
                 DeviceDataSourceInfo(
                     DataOrigin.Builder().setPackageName("com.example.watchdevice").build(),
-                    Device.Builder().setManufacturer("Google").setModel("Watch").setType(2).build(),
+                    Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Watch")
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .build(),
                     false,
                     emptyList(),
                 ),
@@ -823,7 +828,7 @@ class MatchmakingFragmentTest {
                         .commitNow()
                 }
 
-                onView(withText("Google")).perform(click())
+                scrollToTextAndClick("Watch")
 
                 verify(viewModel).addDevicePermissionToGrantedList("com.example.watchdevice")
             }
@@ -840,7 +845,11 @@ class MatchmakingFragmentTest {
             MatchmakingDeviceData(
                 DeviceDataSourceInfo(
                     DataOrigin.Builder().setPackageName("com.example.watchdevice").build(),
-                    Device.Builder().setManufacturer("Google").setModel("Watch").setType(2).build(),
+                    Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Watch")
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .build(),
                     false,
                     emptyList(),
                 ),
@@ -872,7 +881,7 @@ class MatchmakingFragmentTest {
                         .commitNow()
                 }
 
-                onView(withText("Google")).perform(click())
+                scrollToTextAndClick("Watch")
 
                 verify(viewModel).removeAllPermissionsFromGrantedList("com.example.watchdevice")
             }
@@ -903,7 +912,7 @@ class MatchmakingFragmentTest {
                         Device.Builder()
                             .setManufacturer("Google")
                             .setModel("Pixel Watch")
-                            .setType(2)
+                            .setType(Device.DEVICE_TYPE_WATCH)
                             .build(),
                         false,
                         listOf(
@@ -973,7 +982,7 @@ class MatchmakingFragmentTest {
                         Device.Builder()
                             .setManufacturer("Google")
                             .setModel("Pixel Watch")
-                            .setType(2)
+                            .setType(Device.DEVICE_TYPE_WATCH)
                             .build(),
                         false,
                         listOf(
@@ -1015,6 +1024,7 @@ class MatchmakingFragmentTest {
                         .commitNow()
                 }
 
+                scrollToText(context.getString(R.string.matchmaking_screen_devices_category_title))
                 onView(withText(R.string.matchmaking_screen_devices_category_title))
                     .check(matches(withEffectiveVisibility(VISIBLE)))
             }
@@ -1035,7 +1045,7 @@ class MatchmakingFragmentTest {
                         Device.Builder()
                             .setManufacturer("Google")
                             .setModel("Pixel Watch")
-                            .setType(2)
+                            .setType(Device.DEVICE_TYPE_WATCH)
                             .build(),
                         false,
                         listOf(
@@ -1079,6 +1089,7 @@ class MatchmakingFragmentTest {
 
                 scenario.recreate()
 
+                scrollToText("Watch")
                 onView(allOf(withId(R.id.switch_widget), isDisplayed())).check(matches(isChecked()))
             }
     }
@@ -1099,7 +1110,7 @@ class MatchmakingFragmentTest {
                     Device.Builder()
                         .setManufacturer("Google")
                         .setModel("Pixel Watch")
-                        .setType(2)
+                        .setType(Device.DEVICE_TYPE_WATCH)
                         .build(),
                     false,
                     listOf(
@@ -1260,7 +1271,11 @@ class MatchmakingFragmentTest {
             MatchmakingDeviceData(
                 DeviceDataSourceInfo(
                     DataOrigin.Builder().setPackageName("com.example.watchdevice").build(),
-                    Device.Builder().setManufacturer("Google").setModel("Watch").setType(2).build(),
+                    Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Watch")
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .build(),
                     false,
                     emptyList(),
                 ),
@@ -1332,7 +1347,7 @@ class MatchmakingFragmentTest {
                     Device.Builder()
                         .setManufacturer("Google")
                         .setModel("Pixel Watch")
-                        .setType(2)
+                        .setType(Device.DEVICE_TYPE_WATCH)
                         .build(),
                     false,
                     listOf(
@@ -1488,6 +1503,13 @@ class MatchmakingFragmentTest {
                     val devicePreference =
                         fragment.findPreference<MatchmakingDevicePreference>(watchPackageName)
 
+                    assertThat(devicePreference?.title)
+                        .isEqualTo(
+                            context.getString(
+                                R.string.matchmaking_screen_data_from_data_source,
+                                "Watch",
+                            )
+                        )
                     assertThat(devicePreference?.icon).isNotNull()
 
                     val expectedIconResId =

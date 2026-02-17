@@ -297,10 +297,16 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     }
 
     private fun addDevicePreference(deviceData: MatchmakingDeviceData) {
+        val deviceMetadata = deviceData.deviceDataSourceInfo.asAppMetadata(requireContext())
         val devicePreference =
             MatchmakingDevicePreference(requireContext()).apply {
-                title = deviceData.deviceDataSourceInfo.device.manufacturer
-                icon = deviceData.deviceDataSourceInfo.asAppMetadata(requireContext()).icon
+                title =
+                    requireContext()
+                        .getString(
+                            R.string.matchmaking_screen_data_from_data_source,
+                            deviceMetadata.appName,
+                        )
+                icon = deviceMetadata.icon
                 key = deviceData.deviceDataSourceInfo.deviceDataOrigin.packageName
             }
         matchmakingDevicesCategory.addPreference(devicePreference)
@@ -339,7 +345,10 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
     private fun createExpandablePreference(data: MatchmakingAppData): HealthExpandablePreference {
         return HealthExpandablePreference(requireContext(), null).apply {
             title =
-                context.getString(R.string.matchmaking_screen_data_from_app, data.metadata.appName)
+                context.getString(
+                    R.string.matchmaking_screen_data_from_data_source,
+                    data.metadata.appName,
+                )
             icon =
                 data.metadata.icon
                     ?: ContextCompat.getDrawable(requireContext(), R.drawable.ic_apps)
