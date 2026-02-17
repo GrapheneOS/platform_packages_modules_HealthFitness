@@ -23,7 +23,8 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"选择此应用可以访问的健身和身心状态数据，包括在此设备上跟踪和存储的数据，<xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"选择此应用可以访问的健身和身心状态数据，包括在此设备上跟踪和存储的数据，<xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"选择此应用可以访问的健身与健康数据，包括在此设备上跟踪和存储的数据，<xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <string name="request_learn_more" msgid="2665249156693144626">"了解详情"</string>
+    <!-- no translation found for request_learn_more (563937923005882945) -->
+    <skip />
     <string name="settings_manage_permission" msgid="3585762257420446893">"健康、健身和身心状态"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"健康、健身和身心状态"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"健身与健康"</string>

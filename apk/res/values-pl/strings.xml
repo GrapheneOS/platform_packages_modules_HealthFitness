@@ -403,13 +403,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Wybierz, jakie dane ta aplikacja może zapisywać w Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Wybierz, jakie dane ta aplikacja może odczytywać lub zapisywać w Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Wybierz, jakie dane ta aplikacja może odczytywać z Health Connect"</string>
-    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Udostępniaj dane między aplikacjami"</string>
+    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <skip />
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dane z aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Zezwalaj aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g> na odczytywanie danych z innych aplikacji na tym urządzeniu za pomocą Health Connect. Te dane będą też mogły odczytywać inne aplikacje, którym przyznasz dostęp."</string>
+    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikacje, które mogą synchronizować te dane"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Urządzenia, które mogą synchronizować te dane"</string>
+    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
+    <skip />
+    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"O tym, jak aplikacja <xliff:g id="APP_NAME">%1$s</xliff:g> wykorzystuje Twoje dane, dowiesz się z jej "<a href="%2$s">"polityki prywatności"</a>"."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect pozwala udostępniać dane o zdrowiu i aktywności fizycznej między wieloma aplikacjami. Dzięki temu możesz przeglądać statystyki i odkrywać nowe funkcje, zachowując bezpieczeństwo danych."</string>
+    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
+    <skip />
     <string name="more_about_health_connect" msgid="8105996800108743876">"Więcej informacji o Health Connect"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"rozwiń"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"zwiń"</string>
@@ -1222,6 +1229,8 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Aby zwiększyć bezpieczeństwo swoich danych dotyczących zdrowia, ustaw na urządzeniu kod PIN, wzór lub hasło"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Ustaw blokadę ekranu"</string>
     <string name="select_all" msgid="837499881590001166">"Zaznacz wszystko"</string>
+    <!-- no translation found for a11y_action_select (8149815243533964711) -->
+    <skip />
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Połączone aplikacje nie będą już mogły odczytywać tych danych z Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Zaznaczono"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Nie zaznaczono"</string>
@@ -1325,8 +1334,10 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Bieżące urządzenie"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Nieznane urządzenie"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Informacje o urządzeniu"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"Dane zebrane przez to urządzenie będą przechowywane w Health Connect, gdzie będą do nich miały dostęp połączone aplikacje"</string>
-    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"To urządzenie nie obsługuje śledzenia liczby kroków, ale dane są nadal przechowywane w Health Connect"</string>
+    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
+    <skip />
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"To urządzenie nie śledzi liczby kroków"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Może zapisywać"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Dane na urządzeniu"</string>
@@ -1336,12 +1347,15 @@
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Dane o krokach zliczanych przez to urządzenie są teraz przechowywane w Health Connect, gdzie mają do nich dostęp połączone aplikacje"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Zamknij"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Sprawdź"</string>
-    <string name="native_steps_notification_title" msgid="4059138095111818516">"Kroki są teraz w Health Connect"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"Dane o krokach zliczanych przez to urządzenie są teraz przechowywane w Health Connect, gdzie mają do nich dostęp połączone aplikacje"</string>
+    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
+    <skip />
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Aplikacje związane ze zdrowiem"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Dane dotyczące zdrowia"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Ustawienia"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect pozwala udostępniać dane o zdrowiu i aktywności fizycznej między wieloma aplikacjami. Dzięki temu możesz przeglądać statystyki i odkrywać nowe funkcje, zachowując bezpieczeństwo danych."</string>
+    <!-- no translation found for home_screen_footer (3704528068051346905) -->
+    <skip />
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Więcej informacji o Health Connect"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Dane i aplikacje, które mają do nich dostęp"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Aplikacje, które ostatnio używały Twoich danych"</string>
@@ -1350,8 +1364,10 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Zobacz zgodne aplikacje"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Zobacz więcej aplikacji związanych ze zdrowiem"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Brak połączenia"</string>
-    <string name="connect_app_button_content_description" msgid="296796277841527165">"Kliknij, aby połączyć tę aplikację z Health Connect"</string>
-    <string name="devices_screen_description" msgid="8171826001441781372">"Określ, które urządzenia mogą synchronizować dane z Health Connect"</string>
+    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
+    <skip />
+    <!-- no translation found for devices_screen_description (5009317766902606842) -->
+    <skip />
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Włączone"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Niewłączone"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Ten telefon"</string>
@@ -1381,8 +1397,10 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Zapisuj dane o trądziku"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Odczytuj dane o łamliwych paznokciach"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Zapisuj dane o łamliwych paznokciach"</string>
-    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Odczytuj dane o pieczeniu w jamie ustnej"</string>
-    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Zapisuj dane o pieczeniu w jamie ustnej"</string>
+    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
+    <skip />
+    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
+    <skip />
     <string name="chills_read_content_description" msgid="7244946135559432433">"Odczytuj dane o dreszczach"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Zapisuj dane o dreszczach"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Odczytuj dane o odwodnieniu"</string>
@@ -1614,4 +1632,6 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Świszczący oddech"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"świszczący oddech"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Wybrano <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> z <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
+    <skip />
 </resources>

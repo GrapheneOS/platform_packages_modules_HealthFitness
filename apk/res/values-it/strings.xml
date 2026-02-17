@@ -403,13 +403,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Scegli i dati da far scrivere a questa app in Connessione Salute"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Scegli i dati da far leggere o scrivere a questa app in Connessione Salute"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Scegli i dati da far leggere a questa app in Connessione Salute"</string>
-    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Condividi dati tra le app"</string>
+    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <skip />
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dati da <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Consenti all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di leggere i dati da altre app su questo dispositivo utilizzando Connessione Salute. Questi dati possono essere letti anche da altre app a cui concedi l\'accesso."</string>
+    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"App che possono sincronizzare questi dati"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Dispositivi che possono sincronizzare questi dati"</string>
+    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
+    <skip />
+    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Leggi le "<a href="%2$s">"norme sulla privacy"</a>" di <xliff:g id="APP_NAME">%1$s</xliff:g> per scoprire in che modo vengono utilizzati i tuoi dati."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Connessione Salute ti consente di condividere i tuoi dati relativi alla salute e all\'attività fisica tra più app. In questo modo, potrai accedere ad approfondimenti ed esperienze senza compromettere la sicurezza dei dati."</string>
+    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
+    <skip />
     <string name="more_about_health_connect" msgid="8105996800108743876">"Scopri di più su Connessione Salute"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"espandi"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"comprimi"</string>
@@ -1222,6 +1229,8 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Per una maggiore sicurezza dei dati relativi alla tua salute, imposta un PIN, una sequenza o una password per questo dispositivo"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Imposta un blocco schermo"</string>
     <string name="select_all" msgid="837499881590001166">"Seleziona tutto"</string>
+    <!-- no translation found for a11y_action_select (8149815243533964711) -->
+    <skip />
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Le app collegate non potranno più leggere questi dati di Connessione Salute"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Elemento selezionato"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Elemento non selezionato"</string>
@@ -1325,8 +1334,10 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Dispositivo corrente"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Dispositivo sconosciuto"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Informazioni dispositivo"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"I dati raccolti da questo dispositivo verranno archiviati in Connessione Salute, dove saranno accessibili alle app collegate"</string>
-    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Questo dispositivo non supporta il rilevamento dei passi, ma ha ancora dati archiviati in Connessione Salute"</string>
+    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
+    <skip />
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Questo dispositivo non rileva i passi"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Autorizzazioni di scrittura"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Dati sul dispositivo"</string>
@@ -1336,12 +1347,15 @@
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"I passi monitorati da questo dispositivo sono ora archiviati in Connessione Salute e sono accessibili alle app connesse"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Ignora"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Esamina"</string>
-    <string name="native_steps_notification_title" msgid="4059138095111818516">"I passi sono ora in Connessione Salute"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"I passi monitorati da questo dispositivo sono ora archiviati in Connessione Salute e sono accessibili alle app connesse"</string>
+    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
+    <skip />
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Le tue app per la salute"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"I tuoi dati relativi alla salute"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferenze"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Connessione Salute ti consente di condividere i tuoi dati relativi alla salute e all\'attività fisica tra più app. In questo modo, potrai accedere ad approfondimenti ed esperienze senza compromettere la sicurezza dei dati."</string>
+    <!-- no translation found for home_screen_footer (3704528068051346905) -->
+    <skip />
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Scopri di più su Connessione Salute"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"I tuoi dati e quali app possono accedervi"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"App che hanno utilizzato i tuoi dati di recente"</string>
@@ -1350,8 +1364,10 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Vedi le app compatibili"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Visualizza altre app per la salute"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Non connessa"</string>
-    <string name="connect_app_button_content_description" msgid="296796277841527165">"Fai clic per collegare questa app a Connessione Salute"</string>
-    <string name="devices_screen_description" msgid="8171826001441781372">"Stabilisci quali dispositivi possono sincronizzare i dati con Connessione Salute"</string>
+    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
+    <skip />
+    <!-- no translation found for devices_screen_description (5009317766902606842) -->
+    <skip />
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Abilitati"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Non abilitati"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Questo smartphone"</string>
@@ -1381,8 +1397,10 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Scrittura di dati sull\'acne"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Lettura di dati sulle unghie fragili"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Scrittura di dati sulle unghie fragili"</string>
-    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Lettura di dati sul bruciore alla bocca "</string>
-    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Scrittura di dati sul bruciore alla bocca "</string>
+    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
+    <skip />
+    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
+    <skip />
     <string name="chills_read_content_description" msgid="7244946135559432433">"Lettura di dati sui brividi"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Scrittura di dati sui brividi"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Lettura di dati sulla disidratazione"</string>
@@ -1614,4 +1632,6 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Respiro sibilante"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"respiro sibilante"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> di <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> selezionate"</string>
+    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
+    <skip />
 </resources>
