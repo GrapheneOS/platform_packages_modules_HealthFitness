@@ -29,6 +29,7 @@ import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPerm
 import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.LoadAccessDateUseCase
+import com.android.healthconnect.controller.route.api.ILoadExerciseRouteUseCase
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
@@ -44,7 +45,7 @@ class ExerciseRouteViewModel
 @Inject
 constructor(
     @ApplicationContext private val context: Context,
-    private val loadExerciseRouteUseCase: LoadExerciseRouteUseCase,
+    private val loadExerciseRouteUseCase: ILoadExerciseRouteUseCase,
     private val getGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
     private val getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase,
     private val grantHealthPermissionUseCase: GrantHealthPermissionUseCase,
@@ -69,8 +70,9 @@ constructor(
                         _exerciseSession.postValue(
                             SessionWithAttribution(
                                 record,
-                                appInfoReader.getAppMetadata(
-                                    record.metadata.dataOrigin.packageName)))
+                                appInfoReader.getAppMetadata(record.metadata.dataOrigin.packageName),
+                            )
+                        )
                     } else {
                         _exerciseSession.postValue(null)
                     }
@@ -101,12 +103,14 @@ constructor(
         return flags[permission]!!.and(PackageManager.FLAG_PERMISSION_USER_FIXED) != 0
     }
 
+    // TODO move this to HealthPermissionReader
     fun isReadRoutesPermissionDeclared(packageName: String): Boolean {
         return try {
             val appInfo =
                 context.packageManager.getPackageInfo(
                     packageName,
-                    PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS.toLong()))
+                    PackageManager.PackageInfoFlags.of(PackageManager.GET_PERMISSIONS.toLong()),
+                )
 
             if (appInfo.requestedPermissions == null) {
                 Log.e(TAG, "isPermissionDeclared error: no permissions")
