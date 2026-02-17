@@ -23,7 +23,8 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"Piliin kung aling data ng fitness at wellness ang maa-access ng app na ito. Kabilang dito ang data na sinusubaybayan at naka-store sa device na ito, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"Piliin kung aling data ng fitness at wellness ang maa-access ng app na ito. Kabilang dito ang data na sinusubaybayan at naka-store sa device na ito, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"Piliin kung aling data ng fitness at wellness ang maa-access ng app na ito. Kabilang dito ang data na sinusubaybayan at naka-store sa device na ito, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <string name="request_learn_more" msgid="2665249156693144626">"matuto pa"</string>
+    <!-- no translation found for request_learn_more (563937923005882945) -->
+    <skip />
     <string name="settings_manage_permission" msgid="3585762257420446893">"Kalusugan, fitness at wellness"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"Kalusugan, fitness at wellness"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"Fitness at wellness"</string>

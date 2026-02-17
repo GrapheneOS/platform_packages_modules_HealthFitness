@@ -353,9 +353,9 @@
     <string name="personal_details_uppercase_label" msgid="7241635933310394120">"Лични данни"</string>
     <string name="personal_details_lowercase_label" msgid="1907848447611775151">"лични данни"</string>
     <string name="personal_details_content_description" msgid="3191211304673909831">"Четене на личните данни"</string>
-    <string name="practitioner_details_uppercase_label" msgid="2940667649808082510">"Подробности за практикуващите лекари"</string>
-    <string name="practitioner_details_lowercase_label" msgid="8195591077717971542">"подробности за практикуващите лекари"</string>
-    <string name="practitioner_details_content_description" msgid="8775396516928504185">"Четене на подробностите за практикуващите лекари"</string>
+    <string name="practitioner_details_uppercase_label" msgid="2940667649808082510">"Подробности за медицинските лица"</string>
+    <string name="practitioner_details_lowercase_label" msgid="8195591077717971542">"подробности за медицинските лица"</string>
+    <string name="practitioner_details_content_description" msgid="8775396516928504185">"Четене на подробностите за медицинските лица"</string>
     <string name="pregnancy_uppercase_label" msgid="5979925175194337864">"Бременност"</string>
     <string name="pregnancy_lowercase_label" msgid="810439290131044517">"бременност"</string>
     <string name="pregnancy_content_description" msgid="3436773729243586287">"Четене на данните за бременността"</string>
@@ -403,13 +403,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Изберете данните, които искате да записва това приложение в Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Изберете данните, които искате да чете или записва това приложение в Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Изберете данните, които искате да чете това приложение от Health Connect"</string>
-    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Споделяне на данни между приложенията"</string>
+    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <skip />
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Данни от <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Разрешете на приложението <xliff:g id="APP_NAME">%1$s</xliff:g> да чете данни от други приложения на това устройство чрез Health Connect. Тези данни могат да се четат и от други приложения, на които предоставите достъп."</string>
+    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Приложения, които могат да синхронизират тези данни"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Устройства, които могат да синхронизират тези данни"</string>
+    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
+    <skip />
+    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Научете как <xliff:g id="APP_NAME">%1$s</xliff:g> използва данните ви в "<a href="%2$s">"декларацията за поверителност на приложението"</a>"."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect ви дава възможност да споделяте данните за здравето и физическата си активност между няколко приложения. Това ви помага да отключвате статистика и нови възможности, като същевременно запазва безопасността на данните ви."</string>
+    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
+    <skip />
     <string name="more_about_health_connect" msgid="8105996800108743876">"Още за Health Connect"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"разгъване"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"свиване"</string>
@@ -1222,6 +1229,8 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"За допълнителна сигурност на здравните ви данни задайте ПИН код, фигура или парола за това устройство"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Задаване на опция"</string>
     <string name="select_all" msgid="837499881590001166">"Избиране на всички"</string>
+    <!-- no translation found for a11y_action_select (8149815243533964711) -->
+    <skip />
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Свързаните приложения вече няма да могат да четат тези данни от Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"С отметка"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Без отметка"</string>
@@ -1325,8 +1334,10 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Текущо устройство"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Неизвестно устройство"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Информация за устройството"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"Данните, събирани от това устройство, ще се съхраняват в Health Connect, където свързаните приложения ще имат достъп до тях"</string>
-    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Това устройство не поддържа проследяване на крачките, но данни от него все още се съхраняват в Health Connect"</string>
+    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
+    <skip />
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Това устройство не проследява крачките"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"С разрешение за записване"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Данни от устройството"</string>
@@ -1336,12 +1347,15 @@
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Крачките, проследявани от това устройство, вече се съхраняват в Health Connect, за да имат достъп до тях свързаните приложения"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Отхвърляне"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Преглед"</string>
-    <string name="native_steps_notification_title" msgid="4059138095111818516">"Крачките вече са в Health Connect"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"Крачките, проследявани от това устройство, вече се съхраняват в Health Connect, за да имат достъп до тях свързаните приложения"</string>
+    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
+    <skip />
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Вашите здравни приложения"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Вашите здравни данни"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Предпочитания"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect ви дава възможност да споделяте данните за здравето и физическата си активност между няколко приложения. Това ви помага да отключвате статистика и нови възможности, като същевременно запазва безопасността на данните ви."</string>
+    <!-- no translation found for home_screen_footer (3704528068051346905) -->
+    <skip />
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Още за Health Connect"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Вашите данни и приложенията, които имат достъп до тях"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Приложения, които наскоро са използвали данните ви"</string>
@@ -1350,8 +1364,10 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Преглед на съвместимите приложения"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Преглед на още здравни приложения"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Няма връзка"</string>
-    <string name="connect_app_button_content_description" msgid="296796277841527165">"Кликнете, за да свържете това приложение с Health Connect"</string>
-    <string name="devices_screen_description" msgid="8171826001441781372">"Контролирайте кои устройства могат да синхронизират данни с Health Connect"</string>
+    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
+    <skip />
+    <!-- no translation found for devices_screen_description (5009317766902606842) -->
+    <skip />
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Активирани"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Неактивирани"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Този телефон"</string>
@@ -1381,8 +1397,10 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Записване на данни за акнето"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Четене на данните за чупливите нокти"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Записване на данни за чупливите нокти"</string>
-    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Четене на данните за паренето в устата"</string>
-    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Записване на данни за паренето в устата"</string>
+    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
+    <skip />
+    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
+    <skip />
     <string name="chills_read_content_description" msgid="7244946135559432433">"Четене на данните за втрисането"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Записване на данни за втрисането"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Четене на данните за дехидратацията"</string>
@@ -1614,4 +1632,6 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Хрипове"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"хрипове"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Избрахте <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> от <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
+    <skip />
 </resources>

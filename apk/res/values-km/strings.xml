@@ -403,13 +403,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"ជ្រើសរើសទិន្នន័យដែលអ្នកចង់ឱ្យកម្មវិធីនេះសរសេរទៅ Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"ជ្រើសរើសទិន្នន័យដែលអ្នកចង់ឱ្យកម្មវិធីនេះអាន ឬសរសេរទៅ Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"ជ្រើសរើសទិន្នន័យដែលអ្នកចង់ឱ្យកម្មវិធីនេះអានពី Health Connect"</string>
-    <string name="matchmaking_screen_title" msgid="7839701301617377279">"ចែករំលែកទិន្នន័យរវាងកម្មវិធី"</string>
+    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <skip />
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"ទិន្នន័យពី <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"អនុញ្ញាតឱ្យកម្មវិធី <xliff:g id="APP_NAME">%1$s</xliff:g> អានទិន្នន័យពីកម្មវិធីផ្សេងទៀតនៅលើឧបករណ៍នេះដោយប្រើ Health Connect។ កម្មវិធីផ្សេងទៀតដែលអ្នកផ្ដល់សិទ្ធិចូលប្រើក៏អាចអានទិន្នន័យនេះបានផងដែរ។"</string>
+    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"កម្មវិធីដែលអាចធ្វើ​សម​កាល​កម្មទិន្នន័យនេះ"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"ឧបករណ៍ដែលអាចធ្វើ​សម​កាល​កម្មទិន្នន័យនេះ"</string>
+    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
+    <skip />
+    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ស្វែងយល់អំពីរបៀប<xliff:g id="APP_NAME">%1$s</xliff:g>ប្រើប្រាស់ទិន្នន័យរបស់អ្នកនៅក្នុង"<a href="%2$s">"គោលការណ៍​ឯកជនភាព"</a>"របស់កម្មវិធី។"</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect អនុញ្ញាតឱ្យអ្នកចែករំលែកទិន្នន័យសុខភាព និង​សម្បទារបស់អ្នករវាងកម្មវិធីជាច្រើន។ ការធ្វើបែបនេះជួយឱ្យអ្នកទទួលបានព័ត៌មានស៊ីជម្រៅ និងបទពិសោធប្រើប្រាស់ ដោយរក្សាទិន្នន័យរបស់អ្នកឱ្យមានសុវត្ថិភាព។"</string>
+    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
+    <skip />
     <string name="more_about_health_connect" msgid="8105996800108743876">"ព័ត៌មានបន្ថែម​អំពី Health Connect"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"ពង្រីក"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"បង្រួម"</string>
@@ -1222,6 +1229,8 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"ដើម្បីសុវត្ថិភាពបន្ថែមសម្រាប់ទិន្នន័យសុខភាពរបស់អ្នក សូមកំណត់កូដ PIN, លំនាំ ឬពាក្យ​សម្ងាត់សម្រាប់ឧបករណ៍នេះ"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"កំណត់​ការចាក់​សោ​អេក្រង់"</string>
     <string name="select_all" msgid="837499881590001166">"ជ្រើស​រើសទាំង​អស់"</string>
+    <!-- no translation found for a11y_action_select (8149815243533964711) -->
+    <skip />
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"កម្មវិធីដែលបានភ្ជាប់នឹងមិនអាចអានទិន្នន័យនេះពី Health Connect បានទៀតទេ"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"បាន​ធីក"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"មិន​បាន​ធីក"</string>
@@ -1325,8 +1334,10 @@
     <string name="devices_current_device" msgid="6388308185566619743">"ឧបករណ៍បច្ចុប្បន្ន"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"ឧបករណ៍​ដែលមិន​ស្គាល់"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"ព័ត៌មានឧបករណ៍"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"ទិន្នន័យដែលបានប្រមូលបានដោយឧបករណ៍នេះនឹងត្រូវបានរក្សាទុកនៅក្នុង Health Connect ដែលកម្មវិធី​តភ្ជាប់នឹងចូលប្រើទិន្នន័យនោះ"</string>
-    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"ឧបករណ៍នេះមិនអាចប្រើមុខងារតាមដានជំហានបានទេ ប៉ុន្តែនៅតែរក្សាទុកទិន្នន័យនៅក្នុង Health Connect ដដែល"</string>
+    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
+    <skip />
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"ឧបករណ៍នេះមិនតាមដានជំហានទេ"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"បានអនុញ្ញាតឱ្យសរសេរ"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"ទិន្នន័យឧបករណ៍"</string>
@@ -1336,12 +1347,14 @@
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"ឥឡូវនេះ ចំនួនជំហានដែលបានតាមដានដោយឧបករណ៍នេះត្រូវបានរក្សាទុកនៅក្នុង Health Connect សម្រាប់ឱ្យកម្មវិធីតភ្ជាប់ចូលប្រើ"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"ច្រានចោល"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"ពិនិត្យមើល"</string>
-    <string name="native_steps_notification_title" msgid="4059138095111818516">"ឥឡូវ ចំនួនជំហានមានក្នុង Health Connect"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"ឥឡូវនេះ ចំនួនជំហានដែលតាមដានដោយឧបករណ៍នេះត្រូវបានរក្សាទុកនៅក្នុង Health Connect សម្រាប់ឱ្យកម្មវិធីតភ្ជាប់ចូលប្រើ"</string>
+    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
+    <skip />
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"កម្មវិធីសុខភាពរបស់អ្នក"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"ទិន្នន័យសុខភាពរបស់អ្នក"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"ចំណូល​ចិត្ត"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect អនុញ្ញាតឱ្យអ្នកចែករំលែកទិន្នន័យសុខភាព និង​សម្បទារបស់អ្នករវាងកម្មវិធីជាច្រើន។ ការធ្វើបែបនេះជួយឱ្យអ្នកទទួលបានព័ត៌មានស៊ីជម្រៅ និងបទពិសោធប្រើប្រាស់ ដោយរក្សាទិន្នន័យរបស់អ្នកឱ្យមានសុវត្ថិភាព។"</string>
+    <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect អាចឱ្យអ្នកចែករំលែកទិន្នន័យសុខភាព និង​សម្បទារបស់អ្នករវាងប្រភពទិន្នន័យជាច្រើន។ ការធ្វើបែបនេះជួយឱ្យអ្នកទទួលបានព័ត៌មានស៊ីជម្រៅ និងបទពិសោធប្រើប្រាស់ ព្រមទាំងរក្សាទិន្នន័យរបស់អ្នកឱ្យមានសុវត្ថិភាព។"</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"ព័ត៌មានបន្ថែម​អំពី Health Connect"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"ទិន្នន័យរបស់អ្នក និង​កម្មវិធី​ដែលអាចចូលប្រើ​វាបាន"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"កម្មវិធីដែលបានប្រើទិន្នន័យរបស់អ្នកនាពេលថ្មីៗនេះ"</string>
@@ -1350,8 +1363,10 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"មើលកម្មវិធីដែលត្រូវគ្នា"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"មើលកម្មវិធីសុខភាពច្រើនទៀត"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"មិន​បាន​ភ្ជាប់"</string>
-    <string name="connect_app_button_content_description" msgid="296796277841527165">"ចុចដើម្បីភ្ជាប់កម្មវិធីនេះទៅ Health Connect"</string>
-    <string name="devices_screen_description" msgid="8171826001441781372">"គ្រប់គ្រងឧបករណ៍ដែលអាចធ្វើសមកាលកម្មទិន្នន័យទៅ Health Connect"</string>
+    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
+    <skip />
+    <!-- no translation found for devices_screen_description (5009317766902606842) -->
+    <skip />
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"បាន​បើក"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"មិន​បាន​បើក"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"ទូរសព្ទនេះ"</string>
@@ -1381,8 +1396,10 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"សរសេរទិន្នន័យអំពីមុន"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"អានទិន្នន័យអំពីក្រចកផុយ"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"សរសេរទិន្នន័យអំពីក្រចកផុយ"</string>
-    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"អានទិន្នន័យអំពីការឈឺមាត់ "</string>
-    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"សរសេរទិន្នន័យអំពីការឈឺមាត់ "</string>
+    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
+    <skip />
+    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
+    <skip />
     <string name="chills_read_content_description" msgid="7244946135559432433">"អានទិន្នន័យអំពីការញ័រញាក់"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"សរសេរទិន្នន័យអំពីការញ័រញាក់"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"អានទិន្នន័យអំពីការខ្វះជាតិទឹក"</string>
@@ -1614,4 +1631,6 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"សំឡេងដង្ហើមតឹង"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"សំឡេងដង្ហើមតឹង"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"បានជ្រើសរើស <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> នៃ <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
+    <skip />
 </resources>

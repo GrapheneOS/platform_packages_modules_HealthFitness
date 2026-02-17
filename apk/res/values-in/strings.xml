@@ -403,13 +403,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Pilih data yang dapat ditulis oleh aplikasi ini ke Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Pilih data yang dapat dibaca atau ditulis oleh aplikasi ini ke Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Pilih data yang boleh dibaca aplikasi ini dari Health Connect"</string>
-    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Bagikan data antar-aplikasi"</string>
+    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <skip />
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data dari <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Izinkan aplikasi <xliff:g id="APP_NAME">%1$s</xliff:g> membaca data dari aplikasi lain di perangkat ini menggunakan Health Connect. Data ini juga dapat dibaca oleh aplikasi lain yang Anda beri akses."</string>
+    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikasi yang dapat menyinkronkan data ini"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Perangkat yang dapat menyinkronkan data ini"</string>
+    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
+    <skip />
+    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Pelajari cara <xliff:g id="APP_NAME">%1$s</xliff:g> menggunakan data Anda dalam "<a href="%2$s">"kebijakan privasi"</a>" mereka."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect memungkinkan Anda berbagi data kesehatan dan kebugaran antar-aplikasi. Hal ini membantu Anda mendapatkan analisis dan pengalaman baru sambil tetap menjaga keamanan data Anda."</string>
+    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
+    <skip />
     <string name="more_about_health_connect" msgid="8105996800108743876">"Selengkapnya tentang Health Connect"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"luaskan"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"ciutkan"</string>
@@ -1222,6 +1229,8 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Agar data kesehatan Anda lebih aman, setel PIN, pola, atau sandi untuk perangkat ini"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Setel kunci layar"</string>
     <string name="select_all" msgid="837499881590001166">"Pilih semua"</string>
+    <!-- no translation found for a11y_action_select (8149815243533964711) -->
+    <skip />
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Aplikasi yang terhubung tidak dapat lagi membaca data ini dari Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Dicentang"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Tidak dicentang"</string>
@@ -1325,8 +1334,10 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Perangkat saat ini"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Perangkat tidak dikenal"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Info perangkat"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"Data yang dikumpulkan perangkat ini akan disimpan di Health Connect yang kemudian dapat diakses aplikasi yang terhubung"</string>
-    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Perangkat ini tidak mendukung pelacakan langkah, tetapi masih memiliki data yang disimpan di Health Connect"</string>
+    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
+    <skip />
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Perangkat ini tidak melacak langkah"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Diizinkan menulis"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Data perangkat"</string>
@@ -1336,12 +1347,15 @@
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Langkah yang dilacak perangkat ini kini disimpan di Health Connect agar dapat diakses oleh aplikasi yang terhubung"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Tutup"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Tinjau"</string>
-    <string name="native_steps_notification_title" msgid="4059138095111818516">"Langkah kini tersedia di Health Connect"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"Langkah yang dilacak perangkat ini kini disimpan di Health Connect agar dapat diakses oleh aplikasi yang terhubung"</string>
+    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
+    <skip />
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Aplikasi kesehatan Anda"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Data kesehatan Anda"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferensi"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect memungkinkan Anda berbagi data kesehatan dan kebugaran antar-aplikasi. Hal ini membantu Anda mendapatkan analisis dan pengalaman baru sambil tetap menjaga keamanan data Anda."</string>
+    <!-- no translation found for home_screen_footer (3704528068051346905) -->
+    <skip />
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Selengkapnya tentang Health Connect"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Data dan aplikasi yang dapat mengaksesnya"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Aplikasi yang baru-baru ini menggunakan data Anda"</string>
@@ -1350,8 +1364,10 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Lihat aplikasi yang kompatibel"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Lihat aplikasi kesehatan lainnya"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Tidak terhubung"</string>
-    <string name="connect_app_button_content_description" msgid="296796277841527165">"Klik untuk menghubungkan aplikasi ini ke Health Connect"</string>
-    <string name="devices_screen_description" msgid="8171826001441781372">"Kontrol perangkat yang dapat menyinkronkan data ke Health Connect"</string>
+    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
+    <skip />
+    <!-- no translation found for devices_screen_description (5009317766902606842) -->
+    <skip />
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Aktif"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Tidak diaktifkan"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Ponsel ini"</string>
@@ -1381,8 +1397,10 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Tulis jerawat"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Baca kuku rapuh"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Tulis kuku rapuh"</string>
-    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Baca mulut terasa terbakar "</string>
-    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Tulis mulut terasa terbakar "</string>
+    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
+    <skip />
+    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
+    <skip />
     <string name="chills_read_content_description" msgid="7244946135559432433">"Baca menggigil"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Tulis menggigil"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Baca dehidrasi"</string>
@@ -1614,4 +1632,6 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Sesak"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"sesak"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> dari <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> dipilih"</string>
+    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
+    <skip />
 </resources>

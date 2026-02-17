@@ -403,13 +403,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Bu uygulamanın Health Connect\'e yazmasını istediğiniz verileri seçin"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Bu uygulamanın okumasını veya Health Connect\'e yazmasını istediğiniz verileri seçin"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Bu uygulamanın Health Connect\'ten okumasını istediğiniz verileri seçin"</string>
-    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Uygulamalar arasında veri paylaşın"</string>
+    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <skip />
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasından veriler"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasının, Health Connect\'i kullanarak bu cihazda bulunan diğer uygulamalardaki verileri okumasına izin verin. Bu veriler, erişim izni verdiğiniz diğer uygulamalar tarafından da okunabilir."</string>
+    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Bu verileri senkronize edebilen uygulamalar"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Bu verileri senkronize edebilen cihazlar"</string>
+    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
+    <skip />
+    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> uygulamasının, verilerinizi nasıl kullandığını "<a href="%2$s">"gizlilik politikasından"</a>" öğrenin."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect, sağlık ve fitness verilerinizi birden fazla uygulama arasında paylaşmanıza olanak tanır. Bu sayede verilerinizin güvenliğini sağlarken analizler ve deneyimlerden faydalanabilirsiniz."</string>
+    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
+    <skip />
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect hakkında daha fazla bilgi"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"genişlet"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"daralt"</string>
@@ -1222,6 +1229,8 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Sağlık verilerinizin güvenliğini artırmak için bu cihazda PIN, desen veya şifre belirleyin"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Ekran kilidi ayarla"</string>
     <string name="select_all" msgid="837499881590001166">"Tümünü seç"</string>
+    <!-- no translation found for a11y_action_select (8149815243533964711) -->
+    <skip />
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Bağlı uygulamalar Health Connect\'teki bu verileri artık okuyamayacak"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"İşaretli"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"İşaretlenmedi"</string>
@@ -1325,8 +1334,10 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Mevcut cihaz"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Bilinmeyen cihaz"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Cihaz bilgileri"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"Bu cihazın topladığı veriler Health Connect\'te saklanır ve bağlı uygulamalar verilere erişebilir"</string>
-    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Bu cihaz, adım takibini desteklemiyor ancak verileri Health Connect\'te depolanmaya devam ediyor"</string>
+    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
+    <skip />
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Bu cihaz adım sayısını takip etmiyor"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Yazmasına izin verilir"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Cihaz verileri"</string>
@@ -1336,12 +1347,15 @@
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Bu cihazın takip ettiği adımlar artık bağlı uygulamaların erişebilmesi için Health Connect\'te saklanıyor"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Kapat"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"İncele"</string>
-    <string name="native_steps_notification_title" msgid="4059138095111818516">"Adımlar artık Health Connect\'te"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"Bu cihazın takip ettiği adımlar artık bağlı uygulamaların erişebilmesi için Health Connect\'te saklanıyor"</string>
+    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
+    <skip />
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Sağlık uygulamalarınız"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Sağlık verileriniz"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Tercihler"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect, sağlık ve fitness verilerinizi birden fazla uygulama arasında paylaşmanıza olanak tanır. Bu sayede verilerinizin güvenliğini sağlarken analizler ve deneyimlerden faydalanabilirsiniz."</string>
+    <!-- no translation found for home_screen_footer (3704528068051346905) -->
+    <skip />
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect hakkında daha fazla bilgi"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Verileriniz ve bunlara erişebilen uygulamalar"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Yakın zamanda verilerinizi kullanan uygulamalar"</string>
@@ -1350,8 +1364,10 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Uyumlu uygulamaları görüntüleyin"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Diğer sağlık uygulamalarını göster"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Bağlı değil"</string>
-    <string name="connect_app_button_content_description" msgid="296796277841527165">"Bu uygulamayı Health Connect\'e bağlamak için tıklayın"</string>
-    <string name="devices_screen_description" msgid="8171826001441781372">"Hangi cihazların Health Connect ile veri senkronize edebileceğini kontrol edin"</string>
+    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
+    <skip />
+    <!-- no translation found for devices_screen_description (5009317766902606842) -->
+    <skip />
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Etkinleştirildi"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Etkinleştirilmedi"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Bu telefon"</string>
@@ -1381,8 +1397,10 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Akne verilerini yazma"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Kolay kırılan tırnaklar verilerini okuma"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Kolay kırılan tırnaklar verilerini yazma"</string>
-    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Ağız yanması verilerini okuma"</string>
-    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Ağız yanması verilerini yazma"</string>
+    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
+    <skip />
+    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
+    <skip />
     <string name="chills_read_content_description" msgid="7244946135559432433">"Titreme verilerini okuma"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Titreme verilerini yazma"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Sıvı kaybı verilerini okuma"</string>
@@ -1614,4 +1632,6 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Hırıltılı soluma"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"hırıltılı soluma"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> seçildi"</string>
+    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
+    <skip />
 </resources>

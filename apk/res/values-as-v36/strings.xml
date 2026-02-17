@@ -23,7 +23,8 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"এই এপ্‌টোৱে ফিটনেছ আৰু সুস্থতা সম্পৰ্কীয় কি কি ডেটা এক্সেছ কৰিব পাৰে বাছনি কৰক। ইয়াত এই ডিভাইচটোত ট্ৰেক কৰা আৰু ষ্ট’ৰ কৰা ডেটা অন্তৰ্ভুক্ত, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"এই এপ্‌টোৱে ফিটনেছ আৰু সুস্থতা সম্পৰ্কীয় কি কি ডেটা এক্সেছ কৰিব পাৰে বাছনি কৰক। ইয়াত এই ডিভাইচটোত ট্ৰেক কৰা আৰু ষ্ট’ৰ কৰা ডেটা অন্তৰ্ভুক্ত, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"এই এপ্‌টোৱে ফিটনেছ আৰু সুস্থতা সম্পৰ্কীয় কি কি ডেটা এক্সেছ কৰিব পাৰে বাছনি কৰক। ইয়াত এই ডিভাইচটোত ট্ৰেক কৰা আৰু ষ্ট’ৰ কৰা ডেটা অন্তৰ্ভুক্ত, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <string name="request_learn_more" msgid="2665249156693144626">"অধিক জানক"</string>
+    <!-- no translation found for request_learn_more (563937923005882945) -->
+    <skip />
     <string name="settings_manage_permission" msgid="3585762257420446893">"স্বাস্থ্য, ফিটনেছ আৰু সুস্থতা"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"স্বাস্থ্য, ফিটনেছ আৰু সুস্থতা"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"ফিটনেছ আৰু সুস্থতা"</string>
