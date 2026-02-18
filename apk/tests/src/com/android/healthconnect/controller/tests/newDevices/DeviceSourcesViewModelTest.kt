@@ -16,8 +16,14 @@
 
 package com.android.healthconnect.controller.tests.newDevices
 
+import android.health.connect.DeviceDataProviderInfo
 import android.health.connect.DeviceDataSourceInfo
 import android.health.connect.HealthConnectException
+import android.health.connect.datatypes.DataOrigin
+import android.health.connect.datatypes.Device
+import android.health.connect.datatypes.HeartRateRecord
+import android.health.connect.datatypes.StepsRecord
+import android.health.connect.device.DeviceDataTypeAdvertisement
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -27,8 +33,10 @@ import com.android.healthconnect.controller.newDevices.DeviceSourcesViewModel
 import com.android.healthconnect.controller.newDevices.DeviceSourcesViewModel.DeviceSourcesState
 import com.android.healthconnect.controller.newDevices.DeviceSourcesViewModel.SelectedDeviceSourceInfoState
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_PHONE_SPN
+import com.android.healthconnect.controller.tests.utils.TEST_WATCH_SPN
 import com.android.healthconnect.controller.tests.utils.getDeviceDataSourcesInfo
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
@@ -120,6 +128,105 @@ class DeviceSourcesViewModelTest {
         assertThat(state).isEqualTo(SelectedDeviceSourceInfoState.Error)
     }
 
+    @Test
+    fun isCurrentDeviceSynced_allEnabled_returnsTrue() = runTest {
+        val advertisements =
+            setOf(
+                DeviceDataTypeAdvertisement.Builder(StepsRecord::class.java)
+                    .setAvailable(true)
+                    .setUserEnabled(true)
+                    .build(),
+                DeviceDataTypeAdvertisement.Builder(HeartRateRecord::class.java)
+                    .setAvailable(true)
+                    .setUserEnabled(true)
+                    .build(),
+            )
+        val info = getDeviceDataSourceInfoWithAdvertisements(true, advertisements)
+        val state = loadIsCurrentDeviceSynced(setOf(info), TEST_PHONE_SPN)
+
+        assertThat(state).isTrue()
+    }
+
+    @Test
+    fun isCurrentDeviceSynced_oneDisabled_returnsFalse() = runTest {
+        val advertisements =
+            setOf(
+                DeviceDataTypeAdvertisement.Builder(StepsRecord::class.java)
+                    .setAvailable(true)
+                    .setUserEnabled(true)
+                    .build(),
+                DeviceDataTypeAdvertisement.Builder(HeartRateRecord::class.java)
+                    .setAvailable(true)
+                    .setUserEnabled(false)
+                    .build(),
+            )
+        val info = getDeviceDataSourceInfoWithAdvertisements(true, advertisements)
+        val state = loadIsCurrentDeviceSynced(setOf(info), TEST_PHONE_SPN)
+
+        assertThat(state).isFalse()
+    }
+
+    @Test
+    fun isCurrentDeviceSynced_notCurrentDevice_returnsFalse() = runTest {
+        val advertisements =
+            setOf(
+                DeviceDataTypeAdvertisement.Builder(StepsRecord::class.java)
+                    .setAvailable(true)
+                    .setUserEnabled(true)
+                    .build()
+            )
+        val info = getDeviceDataSourceInfoWithAdvertisements(false, advertisements)
+        val state = loadIsCurrentDeviceSynced(setOf(info), TEST_WATCH_SPN)
+
+        assertThat(state).isFalse()
+    }
+
+    @Test
+    fun isCurrentDeviceSynced_unavailableIgnored_returnsTrue() = runTest {
+        val advertisements =
+            setOf(
+                DeviceDataTypeAdvertisement.Builder(StepsRecord::class.java)
+                    .setAvailable(true)
+                    .setUserEnabled(true)
+                    .build(),
+                DeviceDataTypeAdvertisement.Builder(HeartRateRecord::class.java)
+                    .setAvailable(false)
+                    .setUserEnabled(false)
+                    .build(),
+            )
+        val info = getDeviceDataSourceInfoWithAdvertisements(true, advertisements)
+        val state = loadIsCurrentDeviceSynced(setOf(info), TEST_PHONE_SPN)
+
+        assertThat(state).isTrue()
+    }
+
+    private fun getDeviceDataSourceInfoWithAdvertisements(
+        isCurrentDevice: Boolean,
+        advertisements: Set<DeviceDataTypeAdvertisement>,
+    ): DeviceDataSourceInfo {
+        return DeviceDataSourceInfo(
+            DataOrigin.Builder()
+                .setPackageName(if (isCurrentDevice) TEST_PHONE_SPN else TEST_WATCH_SPN)
+                .build(),
+            Device.Builder()
+                .setDisplayName("Device")
+                .setModel("Model")
+                .setManufacturer("Manufacturer")
+                .setType(Device.DEVICE_TYPE_PHONE)
+                .build(),
+            isCurrentDevice,
+            listOf(
+                DeviceDataProviderInfo(
+                    DEVICE_DATA_PROVIDER_PACKAGE_NAME,
+                    "deviceId",
+                    "",
+                    "",
+                    advertisements,
+                )
+            ),
+        )
+    }
+
     private suspend fun stubGetDeviceDataSourcesInfoUseCase(
         expectedInfos: Set<DeviceDataSourceInfo>
     ) {
@@ -192,6 +299,29 @@ class DeviceSourcesViewModelTest {
         val actualState = mutableListOf<SelectedDeviceSourceInfoState>()
         val stateCollectJob = launch {
             viewModel.selectedDeviceSourceInfoState.collect { value -> actualState.add(value) }
+        }
+        advanceUntilIdle()
+
+        viewModel.loadSelectedDeviceSourceInfo(selectedPackageName)
+        advanceUntilIdle()
+
+        stateCollectJob.cancel()
+        return actualState.last()
+    }
+
+    private suspend fun TestScope.loadIsCurrentDeviceSynced(
+        expectedInfos: Set<DeviceDataSourceInfo> = setOf(),
+        selectedPackageName: String = "",
+    ): Boolean {
+        stubGetDeviceDataSourcesInfoUseCase(expectedInfos)
+
+        viewModel =
+            DeviceSourcesViewModel(getDeviceDataSourcesInfoUseCase, setTrackingEnabledUseCase)
+        advanceUntilIdle()
+
+        val actualState = mutableListOf<Boolean>()
+        val stateCollectJob = launch {
+            viewModel.isCurrentDeviceSynced.collect { value -> actualState.add(value) }
         }
         advanceUntilIdle()
 

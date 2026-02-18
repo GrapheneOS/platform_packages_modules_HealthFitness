@@ -66,7 +66,6 @@ class DevicesFragment : Hilt_DevicesFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO(b/477850701): Hide all elements to avoid "flashes" before loading
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 deviceSourcesViewModel.deviceSourcesState.collect { state ->

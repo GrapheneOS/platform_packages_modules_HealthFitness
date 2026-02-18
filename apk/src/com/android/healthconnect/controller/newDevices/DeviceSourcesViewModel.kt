@@ -25,6 +25,7 @@ import com.android.healthconnect.controller.matchmaking.api.GetDeviceDataSources
 import com.android.healthconnect.controller.matchmaking.api.SetTrackingEnabledInput
 import com.android.healthconnect.controller.matchmaking.api.SetTrackingEnabledUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.utils.findSystemInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -47,6 +48,7 @@ constructor(
 
     private val _deviceSourcesInfos = MutableStateFlow<Set<DeviceDataSourceInfo>>(emptySet())
     private val _selectedDeviceSourceInfo = MutableStateFlow<DeviceDataSourceInfo?>(null)
+    private val _isCurrentDeviceSynced = MutableStateFlow(false)
 
     private val _isLoading = MutableStateFlow(true)
     private val _hasError = MutableStateFlow(false)
@@ -101,6 +103,13 @@ constructor(
                 initialValue = SelectedDeviceSourceInfoState.Loading,
             )
 
+    val isCurrentDeviceSynced: StateFlow<Boolean> =
+        _isCurrentDeviceSynced.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = false,
+        )
+
     fun loadDeviceSourcesInfos() {
         viewModelScope.launch {
             _isLoading.value = true
@@ -141,6 +150,8 @@ constructor(
                         _hasError.value = false
                         _isLoading.value = false
                         _selectedDeviceSourceInfo.value = selectedDeviceSourceInfo
+
+                        loadIsCurrentDeviceSynced()
                     } else {
                         _hasError.value = true
                         _isLoading.value = false
@@ -152,11 +163,36 @@ constructor(
         }
     }
 
+    fun loadIsCurrentDeviceSynced() {
+        val selectedDeviceSourceInfo = _selectedDeviceSourceInfo.value
+        if (selectedDeviceSourceInfo == null || !selectedDeviceSourceInfo.isCurrentDevice) {
+            return
+        }
+
+        viewModelScope.launch {
+            val result = loadDeviceDataSourcesInfosUseCase.invoke(Unit)
+            if (result is UseCaseResults.Success) {
+                val currentSelectedDeviceSourceInfo =
+                    result.data.find {
+                        it.deviceDataOrigin.packageName ==
+                            selectedDeviceSourceInfo.deviceDataOrigin.packageName
+                    }
+
+                val systemInfo = currentSelectedDeviceSourceInfo?.findSystemInfo()
+                _isCurrentDeviceSynced.value =
+                    systemInfo
+                        ?.deviceDataTypeAdvertisements
+                        ?.filter { it.isAvailable }
+                        ?.all { it.isUserEnabled } ?: _isCurrentDeviceSynced.value
+            }
+        }
+    }
+
     suspend fun setNativeTrackingEnabled(
         recordType: Class<out Record>,
         isEnabled: Boolean,
+        shouldUpdateSyncedState: Boolean = true,
     ): Boolean {
-        // TODO(b/477838543): Verify behavior once devices get re-advertised with this call
         return when (
             setTrackingEnabledUseCase.invoke(SetTrackingEnabledInput(recordType, isEnabled))
         ) {
@@ -164,6 +200,9 @@ constructor(
                 false
             }
             is UseCaseResults.Success -> {
+                if (shouldUpdateSyncedState) {
+                    loadIsCurrentDeviceSynced()
+                }
                 true
             }
         }
