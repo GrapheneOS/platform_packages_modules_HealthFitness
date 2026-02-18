@@ -298,6 +298,34 @@ class MatchmakingViewModelTest {
     }
 
     @Test
+    fun loadMatchmakingData_sortsPermissionsByLocalizedLabel() = runTest {
+        val app =
+            MatchmakingAppData(
+                AppMetadata("pkg", "App", null),
+                listOf(
+                    HealthPermission.FitnessPermission(
+                        FitnessPermissionType.STEPS,
+                        PermissionsAccessType.WRITE,
+                    ),
+                    HealthPermission.FitnessPermission(
+                        FitnessPermissionType.DISTANCE,
+                        PermissionsAccessType.WRITE,
+                    ),
+                ),
+            )
+
+        stubGetMatchingDataSourcesUseCase(listOf(app), emptyList())
+
+        viewModel.loadMatchmakingData(TEST_APP_PACKAGE_NAME, emptyArray())
+
+        val state = viewModel.matchmakingState.value as WithData
+        val permissions = state.matchingApps[0].permissions
+
+        assertThat(permissions[0].fitnessPermissionType).isEqualTo(FitnessPermissionType.DISTANCE)
+        assertThat(permissions[1].fitnessPermissionType).isEqualTo(FitnessPermissionType.STEPS)
+    }
+
+    @Test
     fun loadMatchmakingData_returnsSortedDevices_byDisplayName() = runTest {
         val deviceB =
             MatchmakingDeviceData(

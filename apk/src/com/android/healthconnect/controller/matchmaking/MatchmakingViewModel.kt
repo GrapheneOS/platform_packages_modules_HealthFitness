@@ -42,6 +42,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission.Fi
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.utils.LocaleSorter.sortByLocale
 import com.android.healthconnect.controller.utils.toDeviceTypeString
 import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import com.android.healthfitness.flags.Flags.deviceDataProvidersUiMatchmakingScreen
@@ -150,15 +151,17 @@ constructor(
                             .map { appData ->
                                 appData.copy(
                                     permissions =
-                                        appData.permissions.sortedBy {
-                                            it.fitnessPermissionType.toString()
+                                        appData.permissions.sortByLocale {
+                                            context.getString(
+                                                it.fitnessPermissionType.upperCaseLabel()
+                                            )
                                         }
                                 )
                             }
-                            .sortedBy { it.metadata.appName }
+                            .sortByLocale { it.metadata.appName }
 
                     val matchingDevices =
-                        result.data.matchingDevices.sortedBy {
+                        result.data.matchingDevices.sortByLocale {
                             it.deviceDataSourceInfo.device.displayName
                                 ?: it.deviceDataSourceInfo.device.type.toDeviceTypeString(context)
                         }
