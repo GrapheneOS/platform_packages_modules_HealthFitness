@@ -16,6 +16,7 @@
 
 package com.android.healthconnect.controller.matchmaking
 
+import android.content.Context
 import android.content.Intent
 import android.health.connect.HealthConnectManager.ACTION_SHOW_DEVICE_ONBOARDING
 import android.health.connect.HealthConnectManager.EXTRA_DEVICE_ID
@@ -41,9 +42,11 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission.Fi
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.utils.toDeviceTypeString
 import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import com.android.healthfitness.flags.Flags.deviceDataProvidersUiMatchmakingScreen
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 
@@ -51,6 +54,7 @@ import kotlinx.coroutines.launch
 class MatchmakingViewModel
 @Inject
 constructor(
+    @param:ApplicationContext private val context: Context,
     private val getMatchingDataSourcesUseCase: GetMatchingDataSourcesUseCase,
     private val recordMatchmakingDenialUseCase: RecordMatchmakingDenialUseCase,
     private val appInfoReader: AppInfoReader,
@@ -153,7 +157,11 @@ constructor(
                             }
                             .sortedBy { it.metadata.appName }
 
-                    val matchingDevices = result.data.matchingDevices
+                    val matchingDevices =
+                        result.data.matchingDevices.sortedBy {
+                            it.deviceDataSourceInfo.device.displayName
+                                ?: it.deviceDataSourceInfo.device.type.toDeviceTypeString(context)
+                        }
                     if (grantedPermissions.value == null) {
                         grantedPermissions.value = emptyMap()
                     }

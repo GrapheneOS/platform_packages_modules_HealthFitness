@@ -728,8 +728,7 @@ public final class FirstGrantTimeManager {
 
     private void removeAppsFromPriorityList(String[] packageNames) {
         for (String packageName : packageNames) {
-            mHealthDataCategoryPriorityHelper.maybeRemoveAppWithoutWritePermissionsFromPriorityList(
-                    packageName);
+            mHealthDataCategoryPriorityHelper.maybeRemoveAppFromPriorityList(packageName);
         }
     }
 }

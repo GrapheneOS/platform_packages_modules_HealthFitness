@@ -132,9 +132,8 @@ public class PermissionPackageChangesOrchestrator extends BroadcastReceiver {
                     && userManager.isUserUnlocked(userHandle)) {
                 mThreadScheduler.scheduleInternalTask(
                         () ->
-                                mHealthDataCategoryPriorityHelper
-                                        .maybeRemoveAppWithoutWritePermissionsFromPriorityList(
-                                                packageName));
+                                mHealthDataCategoryPriorityHelper.maybeRemoveAppFromPriorityList(
+                                        packageName));
             }
             return;
         }

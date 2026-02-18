@@ -78,9 +78,7 @@ class MatchmakingUITest : HealthConnectBaseTest() {
                     "Allow the CtsHealthConnectTestAppAWithNormalReadWritePermission app to read data from other apps or devices on this device using Health Connect. This data can also be read by other apps you give access to."
                 )
                 scrollDownToAndFindText("Allow all")
-                scrollDownToAndFindText(
-                    "Data from CtsHealthConnectTestAppBWithNormalReadWritePermission"
-                )
+                scrollDownToAndFindText("CtsHealthConnectTestAppBWithNormalReadWritePermission")
                 scrollDownToAndFindText("Height")
                 findTextAndClick("Height")
                 scrollDownToAndFindText("Steps")

@@ -32,6 +32,7 @@ import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.SavedStateHandle
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel
 import com.android.healthconnect.controller.matchmaking.MatchmakingViewModel.MatchmakingState.LoadingFailed
@@ -104,6 +105,7 @@ class MatchmakingViewModelTest {
         appInfoReader = createFakeAppInfoReader()
         viewModel =
             MatchmakingViewModel(
+                ApplicationProvider.getApplicationContext(),
                 getMatchingDataSourcesUseCase,
                 recordMatchmakingDenialUseCase,
                 appInfoReader,
@@ -293,6 +295,91 @@ class MatchmakingViewModelTest {
             .isEqualTo(FitnessPermissionType.EXERCISE)
         assertThat(data[0].permissions[1].fitnessPermissionType)
             .isEqualTo(FitnessPermissionType.STEPS)
+    }
+
+    @Test
+    fun loadMatchmakingData_returnsSortedDevices_byDisplayName() = runTest {
+        val deviceB =
+            MatchmakingDeviceData(
+                DeviceDataSourceInfo(
+                    DataOrigin.Builder().setPackageName("pkg.b").build(),
+                    android.health.connect.datatypes.Device.Builder()
+                        .setManufacturer("Manufacturer B")
+                        .setDisplayName("B Device")
+                        .build(),
+                    false,
+                    emptyList(),
+                ),
+                emptyList(),
+            )
+        val deviceA =
+            MatchmakingDeviceData(
+                DeviceDataSourceInfo(
+                    DataOrigin.Builder().setPackageName("pkg.a").build(),
+                    android.health.connect.datatypes.Device.Builder()
+                        .setManufacturer("Manufacturer A")
+                        .setDisplayName("A Device")
+                        .build(),
+                    false,
+                    emptyList(),
+                ),
+                emptyList(),
+            )
+
+        stubGetMatchingDataSourcesUseCase(emptyList(), listOf(deviceB, deviceA))
+
+        viewModel.loadMatchmakingData(TEST_APP_PACKAGE_NAME, arrayOf(StepsRecord::class.java.name))
+
+        val state = viewModel.matchmakingState.value
+
+        val data = (state as WithData).matchingDevices
+        assertThat(data.size).isEqualTo(2)
+        assertThat(data[0].deviceDataSourceInfo.device.displayName).isEqualTo("A Device")
+        assertThat(data[1].deviceDataSourceInfo.device.displayName).isEqualTo("B Device")
+    }
+
+    @Test
+    fun loadMatchmakingData_returnsSortedDevices_byType() = runTest {
+        val deviceWatch =
+            MatchmakingDeviceData(
+                DeviceDataSourceInfo(
+                    DataOrigin.Builder().setPackageName("pkg.watch").build(),
+                    android.health.connect.datatypes.Device.Builder()
+                        .setManufacturer("Manufacturer C")
+                        .setType(android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH)
+                        .build(),
+                    false,
+                    emptyList(),
+                ),
+                emptyList(),
+            )
+        val devicePhone =
+            MatchmakingDeviceData(
+                DeviceDataSourceInfo(
+                    DataOrigin.Builder().setPackageName("pkg.phone").build(),
+                    android.health.connect.datatypes.Device.Builder()
+                        .setManufacturer("Manufacturer D")
+                        .setType(android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE)
+                        .build(),
+                    false,
+                    emptyList(),
+                ),
+                emptyList(),
+            )
+
+        stubGetMatchingDataSourcesUseCase(emptyList(), listOf(devicePhone, deviceWatch))
+
+        viewModel.loadMatchmakingData(TEST_APP_PACKAGE_NAME, arrayOf(StepsRecord::class.java.name))
+
+        val state = viewModel.matchmakingState.value
+
+        val data = (state as WithData).matchingDevices
+        assertThat(data.size).isEqualTo(2)
+        // Alphabetically "Phone" (type 2) comes before "Watch" (type 1)
+        assertThat(data[0].deviceDataSourceInfo.device.type)
+            .isEqualTo(android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE)
+        assertThat(data[1].deviceDataSourceInfo.device.type)
+            .isEqualTo(android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH)
     }
 
     @Test

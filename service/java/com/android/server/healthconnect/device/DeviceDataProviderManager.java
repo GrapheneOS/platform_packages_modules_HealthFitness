@@ -171,7 +171,8 @@ public class DeviceDataProviderManager {
 
         for (Long appInfoId : existingAppInfoIds) {
             if (!currentAppInfoIds.contains(appInfoId)) {
-                mDeviceDataSourcesHelper.deleteAdvertisements(callingDdpPackageName, appInfoId);
+                updateAdvertisementsAndPriorityList(
+                        callingDdpPackageName, appInfoId, /* currentAdvertisement= */ null);
             }
         }
     }
@@ -273,12 +274,62 @@ public class DeviceDataProviderManager {
         long appInfoId = mAppInfoHelper.insertOrUpdateDeviceDataSource(spn, deviceInfoId);
 
         // DDP package name + app info id + data type + status
-        mDeviceDataSourcesHelper.insertOrUpdateAdvertisement(
-                callingDdpPackageName, appInfoId, advertisement);
+        updateAdvertisementsAndPriorityList(callingDdpPackageName, appInfoId, advertisement);
 
         mDeviceDataProviderMetadataHelper.insertIfNotPresent(callingDdpPackageName);
 
         return appInfoId;
+    }
+
+    /**
+     * Updates the advertisements for a device and performs priority list cleanup if any categories
+     * are no longer advertised and have no data.
+     *
+     * @param callingDdpPackageName The package name of the device data provider.
+     * @param appInfoId The internal app info ID of the device (SPN).
+     * @param currentAdvertisement The new advertisement for the device, or {@code null} if all
+     *     advertisements for this DDP and device should be deleted.
+     */
+    private void updateAdvertisementsAndPriorityList(
+            String callingDdpPackageName,
+            long appInfoId,
+            @Nullable DeviceDataAdvertisement currentAdvertisement) {
+        List<Integer> removedRecordTypes;
+        if (currentAdvertisement == null) {
+            removedRecordTypes =
+                    mDeviceDataSourcesHelper.deleteAdvertisements(callingDdpPackageName, appInfoId);
+        } else {
+            removedRecordTypes =
+                    mDeviceDataSourcesHelper.insertOrUpdateAdvertisement(
+                            callingDdpPackageName, appInfoId, currentAdvertisement);
+        }
+
+        if (removedRecordTypes.isEmpty()) {
+            return;
+        }
+
+        String spn = getOrThrowSyntheticPackageName(appInfoId);
+        Set<Integer> potentialRemovedCategories =
+                removedRecordTypes.stream()
+                        .map(
+                                mInternalHealthConnectMappings.getExternalMappings()
+                                        ::getRecordCategoryForRecordType)
+                        .collect(Collectors.toSet());
+
+        // It is not sufficient to consider the advertisement from a single DDP alone. There may be
+        // other DDPs which still advertise the data types omitted in this advertisement for the
+        // same device.
+        Set<Integer> stillAdvertisedCategories =
+                mDeviceDataSourcesHelper.getAdvertisedCategories(appInfoId);
+
+        Set<Integer> categoriesToRemove =
+                potentialRemovedCategories.stream()
+                        .filter(category -> !stillAdvertisedCategories.contains(category))
+                        .collect(Collectors.toSet());
+
+        for (int dataCategory : categoriesToRemove) {
+            mHealthDataCategoryPriorityHelper.maybeRemoveAppFromPriorityList(spn, dataCategory);
+        }
     }
 
     /**
