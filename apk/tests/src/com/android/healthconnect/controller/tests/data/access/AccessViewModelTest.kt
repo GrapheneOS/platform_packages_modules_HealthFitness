@@ -26,13 +26,14 @@ import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppPermissionsType.COMBINED_PERMISSIONS
 import com.android.healthconnect.controller.shared.app.AppPermissionsType.MEDICAL_PERMISSIONS_ONLY
+import com.android.healthconnect.controller.tests.data.access.api.FakeLoadAccessUseCase
+import com.android.healthconnect.controller.tests.data.access.api.FakeLoadSymptomAccessUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_3
 import com.android.healthconnect.controller.tests.utils.TestObserver
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadAccessUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadSymptomAccessUseCase
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -51,7 +52,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.MockitoAnnotations
 import org.mockito.kotlin.mock
 
 @ExperimentalCoroutinesApi
@@ -62,11 +62,12 @@ class AccessViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
     @BindValue val healthConnectManager: HealthConnectManager = mock()
 
-    private val fakeLoadAccessUseCase = FakeLoadAccessUseCase()
-    private val fakeLoadSymptomAccessUseCase = FakeLoadSymptomAccessUseCase()
+    private val fakeLoadAccessUseCase = fakeUseCaseRule.watch(FakeLoadAccessUseCase())
+    private val fakeLoadSymptomAccessUseCase = fakeUseCaseRule.watch(FakeLoadSymptomAccessUseCase())
 
     private lateinit var viewModel: AccessViewModel
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -75,7 +76,6 @@ class AccessViewModelTest {
 
     @Before
     fun setup() {
-        MockitoAnnotations.initMocks(this)
         Dispatchers.setMain(testDispatcher)
         hiltRule.inject()
         viewModel = AccessViewModel(fakeLoadAccessUseCase, fakeLoadSymptomAccessUseCase)
@@ -197,7 +197,7 @@ class AccessViewModelTest {
 
         assertThat(testObserver.getLastValue()).isEqualTo(AccessViewModel.AccessScreenState.Error)
         assertThat(fakeLoadSymptomAccessUseCase.numberOfInvocations).isEqualTo(0)
-        assertThat(fakeLoadAccessUseCase.wasInvoked).isFalse()
+        assertThat(fakeLoadAccessUseCase.numberOfInvocations).isEqualTo(0)
     }
 
     @Test
@@ -214,7 +214,7 @@ class AccessViewModelTest {
         advanceUntilIdle()
 
         assertThat(fakeLoadSymptomAccessUseCase.numberOfInvocations).isEqualTo(1)
-        assertThat(fakeLoadAccessUseCase.wasInvoked).isFalse()
+        assertThat(fakeLoadAccessUseCase.numberOfInvocations).isEqualTo(0)
     }
 
     @Test
@@ -228,7 +228,7 @@ class AccessViewModelTest {
         advanceUntilIdle()
 
         assertThat(fakeLoadSymptomAccessUseCase.numberOfInvocations).isEqualTo(0)
-        assertThat(fakeLoadAccessUseCase.wasInvoked).isTrue()
+        assertThat(fakeLoadAccessUseCase.numberOfInvocations).isEqualTo(1)
     }
 
     @Test

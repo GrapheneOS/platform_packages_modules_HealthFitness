@@ -17,10 +17,10 @@
 package com.android.healthconnect.controller.data.access
 
 import android.health.connect.HealthConnectManager
-import android.health.connect.MedicalResourceTypeInfo
+import android.health.connect.RecordTypeInfoResponse
+import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.SymptomRecord
 import androidx.core.os.asOutcomeReceiver
-import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
-import com.android.healthconnect.controller.permissions.data.fromMedicalResourceType
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
@@ -29,42 +29,36 @@ import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.suspendCancellableCoroutine
 
-/** Use case to load [AppMetadata]s that have data of this [MedicalPermissionType]. */
+/** Use case to load [AppMetadata]s that contribute symptom data. */
 @Singleton
-class LoadMedicalTypeContributorAppsUseCase
+class LoadSymptomContributorAppsUseCase
 @Inject
 constructor(
     private val appInfoReader: AppInfoReader,
     private val healthConnectManager: HealthConnectManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) :
-    BaseUseCase<MedicalPermissionType, List<AppMetadata>>(dispatcher),
-    ILoadMedicalTypeContributorAppsUseCase {
+) : BaseUseCase<Unit, List<AppMetadata>>(dispatcher), ILoadSymptomContributorAppsUseCase {
 
-    override suspend fun execute(input: MedicalPermissionType): List<AppMetadata> {
-        val recordTypeInfoMap: List<MedicalResourceTypeInfo> =
+    override suspend fun execute(input: Unit): List<AppMetadata> {
+        val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
             suspendCancellableCoroutine { continuation ->
-                healthConnectManager.queryAllMedicalResourceTypeInfos(
-                    Runnable::run,
+                healthConnectManager.queryAllRecordTypesInfo(
+                    dispatcher.asExecutor(),
                     continuation.asOutcomeReceiver(),
                 )
             }
         val packages =
-            recordTypeInfoMap
-                .filter {
-                    fromMedicalResourceType(it.medicalResourceType) == input &&
-                        it.contributingDataSources.isNotEmpty()
-                }
-                .map { it.contributingDataSources }
-                .flatten()
+            recordTypeInfoMap[SymptomRecord::class.java]?.contributingPackages?.map {
+                it.packageName
+            } ?: emptyList()
         return packages
-            .map { appInfoReader.getAppMetadata(it.packageName) }
-            .distinct()
+            .map { appInfoReader.getAppMetadata(it) }
+            .distinctBy { it.packageName }
             .sortedBy { it.appName }
     }
 }
 
-interface ILoadMedicalTypeContributorAppsUseCase :
-    UseCaseContract<MedicalPermissionType, List<AppMetadata>>
+interface ILoadSymptomContributorAppsUseCase : UseCaseContract<Unit, List<AppMetadata>>

@@ -447,7 +447,7 @@ filegroup {
         // SharedPreferences.
         "src/com/android/healthconnect/controller/tests/data/DataManagementActivityTest.kt",
         // This needs more investigation
-        "src/com/android/healthconnect/controller/tests/data/access/LoadAccessUseCaseTest.kt",
+        "src/com/android/healthconnect/controller/tests/data/access/api/LoadAccessUseCaseTest.kt",
         // This test is not finding something in the view. Needs more investigation.
         "src/com/android/healthconnect/controller/tests/data/entries/MockedAllEntriesFragmentTest.kt",
         // This test asserts that an intent is fired. But the code just exits the activity, so
