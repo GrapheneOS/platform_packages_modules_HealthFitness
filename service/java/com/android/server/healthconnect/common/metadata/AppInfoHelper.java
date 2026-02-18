@@ -111,8 +111,13 @@ public final class AppInfoHelper extends DatabaseHelper {
     public static final String DEVICE_INFO_ID_COLUMN_NAME = "device_info_id";
 
     private static final int COMPRESS_FACTOR = 100;
+
     // Largest icon size on UI 72x72dp, so using 288x288 for xxxhdpi.
     private static final int MAX_APP_ICON_SIZE_PX = 288;
+    // Resize icons larger than this threshold to a lower size.
+    // This is bigger than what we need for the max app icon size defined above. This would help
+    // us avoid resizes since this can still fit within the cursor window.
+    private static final int LARGE_APP_ICON_SIZE_THRESHOLD_BYTES = 512 * 1024; // 512 KB
 
     /**
      * Map to store appInfoId -> packageName mapping for populating record for read
@@ -624,6 +629,45 @@ public final class AppInfoHelper extends DatabaseHelper {
     }
 
     /**
+     * Resizes the app icons for all the apps in the app info table if the icon size is greater than
+     * 512 KB.
+     *
+     * <p>Note: We should not call {@link #getAppInfoMap()} or {@link #getAppInfo(String)} in this
+     * method because that would read the entire row (including the large icon blob) and cause a
+     * {@link android.database.sqlite.SQLiteBlobTooBigException} crash loop.
+     */
+    public boolean resizeLargeAppIcons() {
+        if (!Flags.resizeLargeAppIcons()) {
+            return false;
+        }
+
+        try (Cursor cursor =
+                mTransactionManager.rawQuery(
+                        "SELECT "
+                                + PACKAGE_COLUMN_NAME
+                                + " FROM "
+                                + TABLE_NAME
+                                + " WHERE length("
+                                + APP_ICON_COLUMN_NAME
+                                + ") > "
+                                + LARGE_APP_ICON_SIZE_THRESHOLD_BYTES,
+                        null)) {
+            while (cursor.moveToNext()) {
+                String packageName = getCursorString(cursor, PACKAGE_COLUMN_NAME);
+                // Always fetch from PackageManager. If app is not installed, this returns
+                // the default activity icon (resized), or potentially null/default if that
+                // fails. This avoids ever reading the huge blob from the DB.
+                byte[] newIcon = getIconFromPackageName(packageName);
+                updateAppIcon(packageName, newIcon);
+            }
+        } catch (Exception e) {
+            Slog.e(TAG, "Failed to resize legacy app icons", e);
+            return false;
+        }
+        return true;
+    }
+
+    /**
      * This method updates recordTypesUsed for all packages and hence is a heavy operation. This
      * method is used during AutoDeleteService and is run once per day.
      */
@@ -931,6 +975,34 @@ public final class AppInfoHelper extends DatabaseHelper {
 
         mTransactionManager.update(upsertTableRequest);
         getAppInfoMap().put(packageName, appInfoInternal);
+    }
+
+    private synchronized void updateAppIcon(String packageName, @Nullable byte[] icon) {
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(PACKAGE_COLUMN_NAME, packageName);
+        contentValues.put(APP_ICON_COLUMN_NAME, icon);
+
+        UpsertTableRequest upsertTableRequest =
+                new UpsertTableRequest(TABLE_NAME, contentValues, UNIQUE_COLUMN_INFO);
+
+        mTransactionManager.update(upsertTableRequest);
+
+        // We also need to update the in-memory cache to reflect the change if it's already
+        // populated.
+        if (mAppInfoMap != null && mAppInfoMap.containsKey(packageName)) {
+            AppInfoInternal current = mAppInfoMap.get(packageName);
+            if (current != null) {
+                AppInfoInternal updated =
+                        new AppInfoInternal(
+                                current.getId(),
+                                current.getPackageName(),
+                                current.getName(),
+                                icon,
+                                current.getRecordTypesUsed(),
+                                current.getDeviceInfoId());
+                mAppInfoMap.put(packageName, updated);
+            }
+        }
     }
 
     private ContentValues getContentValues(String packageName, AppInfoInternal appInfo) {
