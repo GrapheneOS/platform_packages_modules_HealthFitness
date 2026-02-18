@@ -662,6 +662,101 @@ class MatchmakingFragmentTest {
 
     @Test
     @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingFragment_partialAppPermissions_switchOff() {
+        val app =
+            MatchmakingAppData(
+                AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                listOf(
+                    FitnessPermission(FitnessPermissionType.EXERCISE, READ),
+                    FitnessPermission(FitnessPermissionType.STEPS, READ),
+                ),
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                listOf(app),
+                emptyList(),
+            )
+        )
+        // Only one of two permissions granted
+        grantedPermissions.postValue(
+            mapOf(
+                TEST_APP_PACKAGE_NAME to
+                    listOf(FitnessPermission(FitnessPermissionType.EXERCISE, READ))
+            )
+        )
+
+        ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = MatchmakingFragment()
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, fragment)
+                        .commitNow()
+
+                    val expandablePreference =
+                        fragment.findPreference<HealthExpandablePreference>(TEST_APP_PACKAGE_NAME)
+                    assertThat(expandablePreference?.isChecked).isFalse()
+                    assertThat(expandablePreference?.summary).isEqualTo("1 of 2 selected")
+                }
+            }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
+    fun matchmakingFragment_allAppPermissions_switchOn() {
+        val app =
+            MatchmakingAppData(
+                AppMetadata(TEST_APP_PACKAGE_NAME, TEST_APP_NAME, null),
+                listOf(
+                    FitnessPermission(FitnessPermissionType.EXERCISE, READ),
+                    FitnessPermission(FitnessPermissionType.STEPS, READ),
+                ),
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                listOf(app),
+                emptyList(),
+            )
+        )
+        // All permissions granted
+        grantedPermissions.postValue(mapOf(TEST_APP_PACKAGE_NAME to app.permissions))
+
+        ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    val fragment = MatchmakingFragment()
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, fragment)
+                        .commitNow()
+
+                    val expandablePreference =
+                        fragment.findPreference<HealthExpandablePreference>(TEST_APP_PACKAGE_NAME)
+                    assertThat(expandablePreference?.isChecked).isTrue()
+                    assertThat(expandablePreference?.summary).isEqualTo("2 of 2 selected")
+                }
+            }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_MATCHMAKING)
     fun matchmakingFragment_expandablePreferenceSwitchOn_addsAppPermissions() {
         val appWithMultiplePermissions =
             MatchmakingAppData(
