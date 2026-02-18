@@ -38,7 +38,7 @@ import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadDeclaredHealthPermissionUseCase
+import com.android.healthconnect.controller.permissions.additionalaccess.api.ILoadDeclaredHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
@@ -57,10 +57,14 @@ import com.android.healthconnect.controller.permissions.request.MedicalScreenSta
 import com.android.healthconnect.controller.permissions.request.PermissionGroupKey
 import com.android.healthconnect.controller.permissions.request.PermissionsActivityState
 import com.android.healthconnect.controller.permissions.request.RequestPermissionViewModel
+import com.android.healthconnect.controller.service.DispatcherModule
 import com.android.healthconnect.controller.service.HealthPermissionManagerModule
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.usecase.DefaultDispatcher
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.MainDispatcher
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
@@ -77,6 +81,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import javax.inject.Inject
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -94,7 +99,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
-@UninstallModules(HealthPermissionManagerModule::class)
+@UninstallModules(HealthPermissionManagerModule::class, DispatcherModule::class)
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 class RequestPermissionViewModelTest {
@@ -103,6 +108,9 @@ class RequestPermissionViewModelTest {
     @get:Rule val setFlagsRule = SetFlagsRule()
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
     private val testDispatcher = UnconfinedTestDispatcher()
+    @BindValue @IoDispatcher val ioDispatcher: CoroutineDispatcher = testDispatcher
+    @BindValue @DefaultDispatcher val defaultDispatcher: CoroutineDispatcher = testDispatcher
+    @BindValue @MainDispatcher val mainDispatcher: CoroutineDispatcher = testDispatcher
 
     @BindValue val permissionManager: HealthPermissionManager = FakeHealthPermissionManager()
 
@@ -113,7 +121,7 @@ class RequestPermissionViewModelTest {
     @Inject lateinit var revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase
     @Inject lateinit var getGrantHealthPermissionUseCase: GetGrantedHealthPermissionsUseCase
     @Inject lateinit var getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase
-    @Inject lateinit var loadDeclaredHealthPermissionUseCase: LoadDeclaredHealthPermissionUseCase
+    @Inject lateinit var loadDeclaredHealthPermissionUseCase: ILoadDeclaredHealthPermissionUseCase
     @BindValue var loadAccessDateUseCase: LoadAccessDateUseCase = mock()
 
     lateinit var viewModel: RequestPermissionViewModel
@@ -1647,7 +1655,7 @@ class RequestPermissionViewModelTest {
     }
 
     @Test
-    fun isAnyPermissionUserFixed_whenNoPermissionUserFixed_returnsFalse() {
+    fun isAnyPermissionUserFixed_whenNoPermissionUserFixed_returnsFalse() = runTest {
         val permissionFlags =
             mapOf(
                 READ_EXERCISE to PackageManager.FLAG_PERMISSION_USER_SET,
@@ -1667,7 +1675,7 @@ class RequestPermissionViewModelTest {
     }
 
     @Test
-    fun isAnyPermissionUserFixed_whenAtLeastOnePermissionIsUserFixed_returnsTrue() {
+    fun isAnyPermissionUserFixed_whenAtLeastOnePermissionIsUserFixed_returnsTrue() = runTest {
         val permissionFlags =
             mapOf(
                 READ_EXERCISE to PackageManager.FLAG_PERMISSION_USER_SET,
@@ -1687,44 +1695,46 @@ class RequestPermissionViewModelTest {
     }
 
     @Test
-    fun isAnyPermissionUserFixed_whenNoPermissionUserFixed_andSomePermissionsNotDeclared_returnsFalse() {
-        val permissionFlags =
-            mapOf(
-                READ_EXERCISE to PackageManager.FLAG_PERMISSION_USER_SET,
-                READ_SLEEP to PackageManager.FLAG_PERMISSION_GRANTED_BY_DEFAULT,
-            )
-        (permissionManager as FakeHealthPermissionManager).setHealthPermissionFlags(
-            TEST_APP_PACKAGE_NAME,
-            permissionFlags,
-        )
-
-        val result =
-            viewModel.isAnyPermissionUserFixed(
+    fun isAnyPermissionUserFixed_whenNoPermissionUserFixed_andSomePermissionsNotDeclared_returnsFalse() =
+        runTest {
+            val permissionFlags =
+                mapOf(
+                    READ_EXERCISE to PackageManager.FLAG_PERMISSION_USER_SET,
+                    READ_SLEEP to PackageManager.FLAG_PERMISSION_GRANTED_BY_DEFAULT,
+                )
+            (permissionManager as FakeHealthPermissionManager).setHealthPermissionFlags(
                 TEST_APP_PACKAGE_NAME,
-                arrayOf(READ_EXERCISE, READ_SLEEP, READ_SKIN_TEMPERATURE),
+                permissionFlags,
             )
-        assertThat(result).isFalse()
-    }
+
+            val result =
+                viewModel.isAnyPermissionUserFixed(
+                    TEST_APP_PACKAGE_NAME,
+                    arrayOf(READ_EXERCISE, READ_SLEEP, READ_SKIN_TEMPERATURE),
+                )
+            assertThat(result).isFalse()
+        }
 
     @Test
-    fun isAnyPermissionUserFixed_whenAtLeastOnePermissionIsUserFixed__andSomePermissionsNotDeclared_returnsTrue() {
-        val permissionFlags =
-            mapOf(
-                READ_EXERCISE to PackageManager.FLAG_PERMISSION_USER_SET,
-                READ_SLEEP to PackageManager.FLAG_PERMISSION_USER_FIXED,
-            )
-        (permissionManager as FakeHealthPermissionManager).setHealthPermissionFlags(
-            TEST_APP_PACKAGE_NAME,
-            permissionFlags,
-        )
-
-        val result =
-            viewModel.isAnyPermissionUserFixed(
+    fun isAnyPermissionUserFixed_whenAtLeastOnePermissionIsUserFixed__andSomePermissionsNotDeclared_returnsTrue() =
+        runTest {
+            val permissionFlags =
+                mapOf(
+                    READ_EXERCISE to PackageManager.FLAG_PERMISSION_USER_SET,
+                    READ_SLEEP to PackageManager.FLAG_PERMISSION_USER_FIXED,
+                )
+            (permissionManager as FakeHealthPermissionManager).setHealthPermissionFlags(
                 TEST_APP_PACKAGE_NAME,
-                arrayOf(READ_EXERCISE, READ_SLEEP, WRITE_PLANNED_EXERCISE),
+                permissionFlags,
             )
-        assertThat(result).isTrue()
-    }
+
+            val result =
+                viewModel.isAnyPermissionUserFixed(
+                    TEST_APP_PACKAGE_NAME,
+                    arrayOf(READ_EXERCISE, READ_SLEEP, WRITE_PLANNED_EXERCISE),
+                )
+            assertThat(result).isTrue()
+        }
 
     @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
     @Test

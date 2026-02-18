@@ -32,9 +32,6 @@ import com.android.healthconnect.controller.migration.api.DEFAULT_MIGRATION_REST
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.api.OnboardingState
-import com.android.healthconnect.controller.permissions.additionalaccess.api.ExerciseRouteState
-import com.android.healthconnect.controller.permissions.additionalaccess.api.ILoadExerciseRoutePermissionUseCase
-import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState
 import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.app.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsStatusUseCase
@@ -284,8 +281,13 @@ class FakeFailureLoadLatestEntryDateUseCase : ILoadLatestEntryDateUseCase {
 class FakeGetGrantedHealthPermissionsUseCase : IGetGrantedHealthPermissionsUseCase {
 
     private var permissionsPerApp: MutableMap<String, List<String>> = mutableMapOf()
+    var forceFail = false
 
     override fun invoke(packageName: String): List<String> {
+        if (forceFail) {
+            throw DEFAULT_USE_CASE_EXCEPTION
+        }
+
         return permissionsPerApp.getOrDefault(packageName, listOf())
     }
 
@@ -295,6 +297,7 @@ class FakeGetGrantedHealthPermissionsUseCase : IGetGrantedHealthPermissionsUseCa
 
     fun reset() {
         this.permissionsPerApp = mutableMapOf()
+        forceFail = false
     }
 }
 
@@ -328,27 +331,6 @@ class FakeQueryRecentAccessLogsUseCase : IQueryRecentAccessLogsUseCase {
 
     fun reset() {
         this.recentAccessMap = emptyMap()
-    }
-}
-
-class FakeLoadExerciseRoute : ILoadExerciseRoutePermissionUseCase {
-
-    private var state =
-        ExerciseRouteState(
-            exercisePermissionState = PermissionUiState.ASK_EVERY_TIME,
-            exerciseRoutePermissionState = PermissionUiState.ASK_EVERY_TIME,
-        )
-
-    fun setExerciseRouteState(state: ExerciseRouteState) {
-        this.state = state
-    }
-
-    override suspend fun execute(input: String): ExerciseRouteState {
-        return this.state
-    }
-
-    override suspend fun invoke(input: String): UseCaseResults<ExerciseRouteState> {
-        return UseCaseResults.Success(this.state)
     }
 }
 

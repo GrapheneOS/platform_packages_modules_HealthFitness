@@ -26,9 +26,9 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.permissions.additionalaccess.api.GetAdditionalPermissionUseCase
-import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadDeclaredHealthPermissionUseCase
-import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadExerciseRoutePermissionUseCase
+import com.android.healthconnect.controller.permissions.additionalaccess.api.IGetAdditionalPermissionUseCase
+import com.android.healthconnect.controller.permissions.additionalaccess.api.ILoadDeclaredHealthPermissionUseCase
+import com.android.healthconnect.controller.permissions.additionalaccess.api.ILoadExerciseRoutePermissionUseCase
 import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState
 import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState.ALWAYS_ALLOW
 import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState.ASK_EVERY_TIME
@@ -57,15 +57,15 @@ class AdditionalAccessViewModel
 constructor(
     private val appInfoReader: AppInfoReader,
     private val healthPermissionReader: HealthPermissionReader,
-    private val loadExerciseRoutePermissionUseCase: LoadExerciseRoutePermissionUseCase,
+    private val loadExerciseRoutePermissionUseCase: ILoadExerciseRoutePermissionUseCase,
     private val grantHealthPermissionUseCase: GrantHealthPermissionUseCase,
     private val revokeHealthPermissionUseCase: RevokeHealthPermissionUseCase,
     private val setHealthPermissionsUserFixedFlagValueUseCase:
         SetHealthPermissionsUserFixedFlagValueUseCase,
-    private val getAdditionalPermissionUseCase: GetAdditionalPermissionUseCase,
+    private val getAdditionalPermissionUseCase: IGetAdditionalPermissionUseCase,
     private val getGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
     private val loadAccessDateUseCase: LoadAccessDateUseCase,
-    private val loadDeclaredHealthPermissionUseCase: LoadDeclaredHealthPermissionUseCase,
+    private val loadDeclaredHealthPermissionUseCase: ILoadDeclaredHealthPermissionUseCase,
 ) : ViewModel() {
 
     private val _additionalAccessState = MutableLiveData<State>()
@@ -123,12 +123,22 @@ constructor(
                     }
                 }
 
-            val additionalPermissions = getAdditionalPermissionUseCase(packageName)
+            val additionalPermissions =
+                when (val result = getAdditionalPermissionUseCase(packageName)) {
+                    is UseCaseResults.Success -> result.data
+                    // TODO (b/485810177) handle error state
+                    else -> emptyList()
+                }
             val grantedPermissions =
                 getGrantedHealthPermissionsUseCase.invoke(packageName).filter {
                     !healthPermissionReader.shouldHidePermission(it)
                 }
-            val declaredPermissions = loadDeclaredHealthPermissionUseCase.invoke(packageName)
+            val declaredPermissions =
+                when (val result = loadDeclaredHealthPermissionUseCase(packageName)) {
+                    is UseCaseResults.Success -> result.data
+                    // TODO (b/485810177) handle error state
+                    else -> emptyList()
+                }
 
             val isAnyHealthReadPermissionGranted =
                 grantedPermissions.any {

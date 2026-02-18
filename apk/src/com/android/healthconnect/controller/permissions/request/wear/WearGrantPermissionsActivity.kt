@@ -29,10 +29,12 @@ import android.view.WindowManager.LayoutParams.SYSTEM_FLAG_HIDE_NON_SYSTEM_OVERL
 import androidx.activity.ComponentActivity
 import androidx.activity.viewModels
 import androidx.compose.ui.platform.ComposeView
+import androidx.lifecycle.lifecycleScope
 import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.permissions.request.RequestPermissionViewModel
 import com.android.modules.utils.build.SdkLevel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 /** Wear Grant Permissions activity for Health Connect. */
 @AndroidEntryPoint(ComponentActivity::class)
@@ -76,28 +78,30 @@ class WearGrantPermissionsActivity : Hilt_WearGrantPermissionsActivity() {
             return
         }
 
-        // Dismiss this request if any permission is USER_FIXED.
-        if (
-            requestPermissionsViewModel.isAnyPermissionUserFixed(
-                packageName,
-                grantableHealthPermissions.map { it.toString() }.toTypedArray(),
-            )
-        ) {
-            handlePermissionResults()
-            finish()
-            return
-        }
-
-        // Launch composable UI.
-        val root = ComposeView(this)
-        root.setContent {
-            WearGrantPermissionsScreen(requestPermissionsViewModel) {
-                requestPermissionsViewModel.requestHealthPermissions(packageName)
+        lifecycleScope.launch {
+            // Dismiss this request if any permission is USER_FIXED.
+            if (
+                requestPermissionsViewModel.isAnyPermissionUserFixed(
+                    packageName,
+                    grantableHealthPermissions.map { it.toString() }.toTypedArray(),
+                )
+            ) {
                 handlePermissionResults()
                 finish()
+                return@launch
             }
+
+            // Launch composable UI.
+            val root = ComposeView(this@WearGrantPermissionsActivity)
+            root.setContent {
+                WearGrantPermissionsScreen(requestPermissionsViewModel) {
+                    requestPermissionsViewModel.requestHealthPermissions(packageName)
+                    handlePermissionResults()
+                    finish()
+                }
+            }
+            setContentView(root)
         }
-        setContentView(root)
     }
 
     // TODO: b/376845793 - Reuse handlePermissionResults code in phone and wear, potentially move
