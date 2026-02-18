@@ -20,7 +20,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import com.android.healthconnect.controller.autodelete.api.ILoadAutoDeleteUseCase
+import com.android.healthconnect.controller.autodelete.api.IUpdateAutoDeleteUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -31,8 +32,8 @@ import kotlinx.coroutines.launch
 class AutoDeleteViewModel
 @Inject
 constructor(
-    private val loadAutoDeleteUseCase: BaseUseCase<Unit, Int>,
-    private val updateAutoDeleteUseCase: BaseUseCase<Int, Unit>,
+    private val loadAutoDeleteUseCase: ILoadAutoDeleteUseCase,
+    private val updateAutoDeleteUseCase: IUpdateAutoDeleteUseCase,
 ) : ViewModel() {
 
     companion object {

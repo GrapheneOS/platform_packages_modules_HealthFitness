@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.autodelete.api
 import android.health.connect.HealthConnectManager
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -28,7 +29,7 @@ class LoadAutoDeleteUseCase
 constructor(
     private val healthConnectManager: HealthConnectManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : BaseUseCase<Unit, Int>(dispatcher) {
+) : BaseUseCase<Unit, Int>(dispatcher), ILoadAutoDeleteUseCase {
 
     companion object {
         private const val DAYS_IN_MONTH = 30.0
@@ -39,3 +40,5 @@ constructor(
         return (healthConnectManager.recordRetentionPeriodInDays / DAYS_IN_MONTH).toInt()
     }
 }
+
+interface ILoadAutoDeleteUseCase : UseCaseContract<Unit, Int>

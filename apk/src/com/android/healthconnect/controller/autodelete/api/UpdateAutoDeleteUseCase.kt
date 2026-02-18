@@ -16,11 +16,15 @@
 package com.android.healthconnect.controller.autodelete.api
 
 import android.health.connect.HealthConnectManager
+import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.asExecutor
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 @Singleton
 class UpdateAutoDeleteUseCase
@@ -28,17 +32,22 @@ class UpdateAutoDeleteUseCase
 constructor(
     private val healthConnectManager: HealthConnectManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : BaseUseCase<Int, Unit>(dispatcher) {
+) : BaseUseCase<Int, Unit>(dispatcher), IUpdateAutoDeleteUseCase {
 
     companion object {
         private const val DAYS_IN_MONTH = 30
     }
 
     /** Updates the stored auto-delete range. */
-    override suspend fun execute(numberOfMonths: Int): Unit {
-        healthConnectManager.setRecordRetentionPeriodInDays(
-            numberOfMonths * DAYS_IN_MONTH,
-            Runnable::run,
-        ) {}
+    override suspend fun execute(numberOfMonths: Int) {
+        suspendCancellableCoroutine<Void?> { continuation ->
+            healthConnectManager.setRecordRetentionPeriodInDays(
+                numberOfMonths * DAYS_IN_MONTH,
+                dispatcher.asExecutor(),
+                continuation.asOutcomeReceiver(),
+            )
+        }
     }
 }
+
+interface IUpdateAutoDeleteUseCase : UseCaseContract<Int, Unit>

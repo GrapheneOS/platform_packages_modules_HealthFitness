@@ -16,10 +16,13 @@
 
 package com.android.healthconnect.controller.tests.autodelete.api
 
+import com.android.healthconnect.controller.autodelete.api.ILoadAutoDeleteUseCase
+import com.android.healthconnect.controller.autodelete.api.IUpdateAutoDeleteUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeUseCase
 import kotlinx.coroutines.Dispatchers
 
-class FakeLoadAutoDeleteUseCase : FakeUseCase<Unit, Int>(dispatcher = Dispatchers.Unconfined) {
+class FakeLoadAutoDeleteUseCase :
+    FakeUseCase<Unit, Int>(dispatcher = Dispatchers.Unconfined), ILoadAutoDeleteUseCase {
     private var autoDeleteRange = 0
 
     fun setAutoDeleteRange(range: Int) {
@@ -36,7 +39,8 @@ class FakeLoadAutoDeleteUseCase : FakeUseCase<Unit, Int>(dispatcher = Dispatcher
     }
 }
 
-class FakeUpdateAutoDeleteUseCase : FakeUseCase<Int, Unit>(dispatcher = Dispatchers.Unconfined) {
+class FakeUpdateAutoDeleteUseCase :
+    FakeUseCase<Int, Unit>(dispatcher = Dispatchers.Unconfined), IUpdateAutoDeleteUseCase {
     override suspend fun successValue(input: Int) {
         return
     }
