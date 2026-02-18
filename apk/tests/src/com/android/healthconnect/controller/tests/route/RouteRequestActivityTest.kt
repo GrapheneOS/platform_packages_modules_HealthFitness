@@ -73,7 +73,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.verify
@@ -128,10 +127,8 @@ class RouteRequestActivityTest {
             .build()
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @BindValue
-    val viewModel: ExerciseRouteViewModel = Mockito.mock(ExerciseRouteViewModel::class.java)
-    @BindValue
-    val migrationViewModel: MigrationViewModel = Mockito.mock(MigrationViewModel::class.java)
+    @BindValue val viewModel: ExerciseRouteViewModel = mock()
+    @BindValue val migrationViewModel: MigrationViewModel = mock()
     private lateinit var context: Context
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
 

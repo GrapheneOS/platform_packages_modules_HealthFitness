@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 The Android Open Source Project
+ * Copyright (C) 2026 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,4 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller.route
+
+package com.android.healthconnect.controller.route.api
+
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@Module
+@InstallIn(SingletonComponent::class)
+interface RouteUseCaseModule {
+
+    @Binds
+    @Singleton
+    abstract fun provideLoadExerciseRouteUseCase(
+        useCase: LoadExerciseRouteUseCase
+    ): ILoadExerciseRouteUseCase
+}
