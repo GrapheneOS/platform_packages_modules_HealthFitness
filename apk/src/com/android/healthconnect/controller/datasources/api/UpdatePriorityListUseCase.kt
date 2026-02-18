@@ -17,12 +17,16 @@ import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
 import android.health.connect.UpdateDataOriginPriorityOrderRequest
 import android.health.connect.datatypes.DataOrigin
+import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.asExecutor
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 @Singleton
 class UpdatePriorityListUseCase
@@ -30,7 +34,7 @@ class UpdatePriorityListUseCase
 constructor(
     private val healthConnectManager: HealthConnectManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : BaseUseCase<UpdatePriorityListInput, Unit>(dispatcher) {
+) : BaseUseCase<UpdatePriorityListInput, Unit>(dispatcher), IUpdatePriorityListUseCase {
 
     /** Updates the priority list of the stored [DataOrigin]s for given [HealthDataCategory]. */
     override suspend fun execute(input: UpdatePriorityListInput): Unit {
@@ -39,10 +43,14 @@ constructor(
                 .stream()
                 .map { packageName -> DataOrigin.Builder().setPackageName(packageName).build() }
                 .toList()
-        healthConnectManager.updateDataOriginPriorityOrder(
-            UpdateDataOriginPriorityOrderRequest(dataOrigins, input.category),
-            Runnable::run,
-        ) {}
+
+        suspendCancellableCoroutine { continuation ->
+            healthConnectManager.updateDataOriginPriorityOrder(
+                UpdateDataOriginPriorityOrderRequest(dataOrigins, input.category),
+                dispatcher.asExecutor(),
+                continuation.asOutcomeReceiver(),
+            )
+        }
     }
 }
 
@@ -50,3 +58,5 @@ data class UpdatePriorityListInput(
     val priorityList: List<String>,
     val category: @HealthDataCategoryInt Int,
 )
+
+interface IUpdatePriorityListUseCase : UseCaseContract<UpdatePriorityListInput, Unit>

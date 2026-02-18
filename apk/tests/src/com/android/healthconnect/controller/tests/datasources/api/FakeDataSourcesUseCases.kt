@@ -19,6 +19,13 @@ package com.android.healthconnect.controller.tests.datasources.api
 import android.health.connect.HealthDataCategory
 import android.health.connect.datatypes.Record
 import com.android.healthconnect.controller.datasources.AggregationCardInfo
+import com.android.healthconnect.controller.datasources.api.ILoadLastDateWithPriorityDataUseCase
+import com.android.healthconnect.controller.datasources.api.ILoadMostRecentAggregationsUseCase
+import com.android.healthconnect.controller.datasources.api.ILoadPotentialPriorityListUseCase
+import com.android.healthconnect.controller.datasources.api.ILoadPriorityEntriesUseCase
+import com.android.healthconnect.controller.datasources.api.ILoadPriorityListUseCase
+import com.android.healthconnect.controller.datasources.api.ISleepSessionHelper
+import com.android.healthconnect.controller.datasources.api.IUpdatePriorityListUseCase
 import com.android.healthconnect.controller.datasources.api.LoadPriorityEntriesInput
 import com.android.healthconnect.controller.datasources.api.UpdatePriorityListInput
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
@@ -30,11 +37,11 @@ import java.time.LocalDate
 import kotlinx.coroutines.Dispatchers
 
 class FakeLoadMostRecentAggregationsUseCase :
-    FakeUseCase<Int, List<AggregationCardInfo>>(dispatcher = Dispatchers.Unconfined) {
+    FakeUseCase<Int, List<AggregationCardInfo>>(dispatcher = Dispatchers.Unconfined),
+    ILoadMostRecentAggregationsUseCase {
 
     private var mostRecentAggregations = listOf<AggregationCardInfo>()
 
-    // TODO per int?
     override suspend fun successValue(input: Int): List<AggregationCardInfo> {
         return mostRecentAggregations
     }
@@ -50,7 +57,8 @@ class FakeLoadMostRecentAggregationsUseCase :
 }
 
 class FakeLoadLastDateWithPriorityDataUseCase :
-    FakeUseCase<FitnessPermissionType, LocalDate?>(dispatcher = Dispatchers.Unconfined) {
+    FakeUseCase<FitnessPermissionType, LocalDate?>(dispatcher = Dispatchers.Unconfined),
+    ILoadLastDateWithPriorityDataUseCase {
 
     private var lastDateWithPriorityDataMap = mutableMapOf<FitnessPermissionType, LocalDate?>()
 
@@ -72,9 +80,8 @@ class FakeLoadLastDateWithPriorityDataUseCase :
 }
 
 class FakeLoadPriorityListUseCase :
-    FakeUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>(
-        dispatcher = Dispatchers.Unconfined
-    ) {
+    FakeUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>(dispatcher = Dispatchers.Unconfined),
+    ILoadPriorityListUseCase {
 
     private var priorityList = listOf<AppMetadata>()
 
@@ -92,9 +99,8 @@ class FakeLoadPriorityListUseCase :
 }
 
 class FakeLoadPotentialPriorityListUseCase :
-    FakeUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>(
-        dispatcher = Dispatchers.Unconfined
-    ) {
+    FakeUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>(dispatcher = Dispatchers.Unconfined),
+    ILoadPotentialPriorityListUseCase {
 
     private var potentialPriorityList = listOf<AppMetadata>()
 
@@ -112,7 +118,8 @@ class FakeLoadPotentialPriorityListUseCase :
 }
 
 class FakeLoadPriorityEntriesUseCase :
-    FakeUseCase<LoadPriorityEntriesInput, List<Record>>(dispatcher = Dispatchers.Unconfined) {
+    FakeUseCase<LoadPriorityEntriesInput, List<Record>>(dispatcher = Dispatchers.Unconfined),
+    ILoadPriorityEntriesUseCase {
 
     private var priorityEntries = mutableMapOf<LocalDate, List<Record>>()
 
@@ -130,7 +137,8 @@ class FakeLoadPriorityEntriesUseCase :
 }
 
 class FakeSleepSessionHelper :
-    FakeUseCase<LocalDate, Pair<Instant, Instant>?>(dispatcher = Dispatchers.Unconfined) {
+    FakeUseCase<LocalDate, Pair<Instant, Instant>?>(dispatcher = Dispatchers.Unconfined),
+    ISleepSessionHelper {
 
     private var datePair = Pair(Instant.EPOCH, Instant.EPOCH)
 
@@ -148,7 +156,8 @@ class FakeSleepSessionHelper :
 }
 
 class FakeUpdatePriorityListUseCase :
-    FakeUseCase<UpdatePriorityListInput, Unit>(dispatcher = Dispatchers.Unconfined) {
+    FakeUseCase<UpdatePriorityListInput, Unit>(dispatcher = Dispatchers.Unconfined),
+    IUpdatePriorityListUseCase {
 
     var priorityList = listOf<String>()
     var category = HealthDataCategory.UNKNOWN

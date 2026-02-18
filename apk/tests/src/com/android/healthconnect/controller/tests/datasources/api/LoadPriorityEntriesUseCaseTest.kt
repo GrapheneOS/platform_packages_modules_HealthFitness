@@ -22,7 +22,6 @@ import android.health.connect.ReadRecordsRequestUsingFilters
 import android.health.connect.ReadRecordsResponse
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SleepSessionRecord
-import android.os.OutcomeReceiver
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
@@ -32,11 +31,11 @@ import com.android.healthconnect.controller.data.formatters.shared.HealthDataEnt
 import com.android.healthconnect.controller.datasources.api.LoadPriorityEntriesInput
 import com.android.healthconnect.controller.datasources.api.LoadPriorityEntriesUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
-import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_3
@@ -45,6 +44,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_3
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.di.DEFAULT_USE_CASE_EXCEPTION_MESSAGE
+import com.android.healthconnect.controller.tests.utils.doReturnResult
 import com.android.healthconnect.controller.tests.utils.forDataType
 import com.android.healthconnect.controller.tests.utils.fromDataSource
 import com.android.healthconnect.controller.tests.utils.fromTimeRange
@@ -56,7 +56,6 @@ import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.UninstallModules
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
@@ -71,26 +70,26 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stub
 import org.mockito.kotlin.times
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
-@UninstallModules(HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
 class LoadPriorityEntriesUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
+
     @BindValue lateinit var appInfoReader: AppInfoReader
     private lateinit var context: Context
 
-    private val loadPriorityListUseCase = FakeLoadPriorityListUseCase()
+    private val loadPriorityListUseCase = fakeUseCaseRule.watch(FakeLoadPriorityListUseCase())
     private lateinit var loadEntriesHelper: LoadEntriesHelper
-    @BindValue val healthConnectManager = Mockito.mock(HealthConnectManager::class.java)
-
+    private val healthConnectManager: HealthConnectManager = mock()
     private lateinit var loadPriorityEntriesUseCase: LoadPriorityEntriesUseCase
     @Inject lateinit var healthDataEntryFormatter: HealthDataEntryFormatter
     @Inject lateinit var menstruationPeriodFormatter: MenstruationPeriodFormatter
@@ -98,7 +97,6 @@ class LoadPriorityEntriesUseCaseTest {
 
     @Before
     fun setup() = runTest {
-        MockitoAnnotations.initMocks(this)
         appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().context
@@ -401,9 +399,12 @@ class LoadPriorityEntriesUseCaseTest {
     fun invoke_whenLoadEntriesHelperFails_returnsFailure() = runTest {
         val queryDate = LocalDate.of(2023, 1, 4)
         loadPriorityListUseCase.setPriorityList(listOf(TEST_APP_2, TEST_APP_3))
-        Mockito.doAnswer(prepareFailureAnswer())
-            .`when`(healthConnectManager)
-            .readRecords<SleepSessionRecord>(any(), any(), any())
+        healthConnectManager.stub {
+            on { readRecords<SleepSessionRecord>(any(), any(), any()) } doReturnResult
+                Result.failure<ReadRecordsResponse<SleepSessionRecord>>(
+                    HealthConnectException(HealthConnectException.ERROR_UNKNOWN)
+                )
+        }
 
         val result =
             loadPriorityEntriesUseCase.invoke(
@@ -429,37 +430,20 @@ class LoadPriorityEntriesUseCaseTest {
             )
         val dataTypes = HealthPermissionToDatatypeMapper.getDataTypes(fitnessPermissionType)
 
-        dataTypes.map { dataType ->
-            Mockito.doAnswer(prepareRecordsAnswer(records))
-                .`when`(healthConnectManager)
-                .readRecords(
-                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
-                        request.fromDataSource(packageName) &&
-                            request.fromTimeRange(timeFilterRange) &&
-                            request.forDataType(dataType)
-                    },
-                    any(),
-                    any(),
-                )
+        healthConnectManager.stub {
+            dataTypes.forEach { dataType ->
+                onGeneric {
+                    readRecords(
+                        argThat<ReadRecordsRequestUsingFilters<Record>> {
+                            fromDataSource(packageName) &&
+                                fromTimeRange(timeFilterRange) &&
+                                forDataType(dataType)
+                        },
+                        any(),
+                        any(),
+                    )
+                } doReturnResult Result.success(ReadRecordsResponse(records, -1))
+            }
         }
-    }
-
-    private fun prepareRecordsAnswer(records: List<Record>): (InvocationOnMock) -> Nothing? {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[2] as OutcomeReceiver<ReadRecordsResponse<Record>, *>
-            receiver.onResult(ReadRecordsResponse(records, -1))
-            null
-        }
-        return answer
-    }
-
-    private fun prepareFailureAnswer(): (InvocationOnMock) -> Nothing? {
-        val answer = { args: InvocationOnMock ->
-            val receiver =
-                args.arguments[2] as OutcomeReceiver<List<LocalDate>, HealthConnectException>
-            receiver.onError(HealthConnectException(HealthConnectException.ERROR_UNKNOWN))
-            null
-        }
-        return answer
     }
 }

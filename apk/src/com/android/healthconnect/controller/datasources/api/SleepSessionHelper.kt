@@ -6,6 +6,7 @@ import android.health.connect.datatypes.SleepSessionRecord
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.isAtLeastOneDayAfter
 import com.android.healthconnect.controller.utils.isOnDayAfter
@@ -23,9 +24,9 @@ import kotlinx.coroutines.CoroutineDispatcher
 class SleepSessionHelper
 @Inject
 constructor(
-    private val loadPriorityEntriesUseCase: BaseUseCase<LoadPriorityEntriesInput, List<Record>>,
+    private val loadPriorityEntriesUseCase: ILoadPriorityEntriesUseCase,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : BaseUseCase<LocalDate, Pair<Instant, Instant>?>(dispatcher) {
+) : BaseUseCase<LocalDate, Pair<Instant, Instant>?>(dispatcher), ISleepSessionHelper {
 
     /**
      * Given a list of sleep session records starting on the last date with data, returns a pair of
@@ -190,3 +191,5 @@ constructor(
         }
     }
 }
+
+interface ISleepSessionHelper : UseCaseContract<LocalDate, Pair<Instant, Instant>?>

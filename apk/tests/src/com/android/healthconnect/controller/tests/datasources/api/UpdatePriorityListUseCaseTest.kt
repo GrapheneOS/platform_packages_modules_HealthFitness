@@ -24,6 +24,7 @@ import com.android.healthconnect.controller.datasources.api.UpdatePriorityListIn
 import com.android.healthconnect.controller.datasources.api.UpdatePriorityListUseCase
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_3
+import com.android.healthconnect.controller.tests.utils.doReturnResult
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -34,15 +35,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentCaptor
-import org.mockito.Captor
-import org.mockito.Mockito.doAnswer
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
-import org.mockito.MockitoAnnotations
-import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stub
+import org.mockito.kotlin.verify
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
@@ -51,22 +48,22 @@ class UpdatePriorityListUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     private lateinit var useCase: UpdatePriorityListUseCase
-    private val healthConnectManager: HealthConnectManager = mock(HealthConnectManager::class.java)
+    private val healthConnectManager: HealthConnectManager = mock()
 
-    @Captor lateinit var requestCaptor: ArgumentCaptor<UpdateDataOriginPriorityOrderRequest>
+    private val requestCaptor = argumentCaptor<UpdateDataOriginPriorityOrderRequest>()
 
     @Before
     fun setup() {
-        MockitoAnnotations.initMocks(this)
         hiltRule.inject()
         useCase = UpdatePriorityListUseCase(healthConnectManager, Dispatchers.Main)
     }
 
     @Test
     fun invoke_callsHealthConnectManager() = runTest {
-        doAnswer(prepareAnswer())
-            .`when`(healthConnectManager)
-            .updateDataOriginPriorityOrder(any(), any(), any())
+        healthConnectManager.stub {
+            on { updateDataOriginPriorityOrder(any(), any(), any()) } doReturnResult
+                Result.success<Void?>(null)
+        }
 
         val priorityList = listOf(TEST_APP_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_3)
         useCase.invoke(
@@ -80,14 +77,9 @@ class UpdatePriorityListUseCaseTest {
                 .map { packageName -> DataOrigin.Builder().setPackageName(packageName).build() }
                 .toList()
 
-        verify(healthConnectManager, times(1))
+        verify(healthConnectManager)
             .updateDataOriginPriorityOrder(requestCaptor.capture(), any(), any())
-        assertThat(requestCaptor.value.dataCategory).isEqualTo(HealthDataCategory.ACTIVITY)
-        assertThat(requestCaptor.value.dataOriginInOrder).isEqualTo(expectedPriorityList)
-    }
-
-    private fun prepareAnswer(): (InvocationOnMock) -> Nothing? {
-        val answer = { _: InvocationOnMock -> null }
-        return answer
+        assertThat(requestCaptor.firstValue.dataCategory).isEqualTo(HealthDataCategory.ACTIVITY)
+        assertThat(requestCaptor.firstValue.dataOriginInOrder).isEqualTo(expectedPriorityList)
     }
 }

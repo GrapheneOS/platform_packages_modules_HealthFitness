@@ -21,15 +21,16 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.datasources.api.ILoadMostRecentAggregationsUseCase
+import com.android.healthconnect.controller.datasources.api.ILoadPotentialPriorityListUseCase
+import com.android.healthconnect.controller.datasources.api.ILoadPriorityListUseCase
+import com.android.healthconnect.controller.datasources.api.IUpdatePriorityListUseCase
 import com.android.healthconnect.controller.datasources.api.UpdatePriorityListInput
 import com.android.healthconnect.controller.matchmaking.api.GetDeviceDataSourcesInfoUseCase
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
-import com.android.healthconnect.controller.shared.usecase.BaseUseCase
-import com.android.healthconnect.controller.shared.usecase.LoadPotentialPriorityListUseCase
-import com.android.healthconnect.controller.shared.usecase.LoadPriorityListUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -44,13 +45,10 @@ import kotlinx.coroutines.launch
 class DataSourcesViewModel
 @Inject
 constructor(
-    private val loadDatesWithDataUseCase: BaseUseCase<Int, List<AggregationCardInfo>>,
-    @param:LoadPotentialPriorityListUseCase
-    private val loadPotentialAppSourcesUseCase:
-        BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>,
-    @param:LoadPriorityListUseCase
-    private val loadPriorityListUseCase: BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>,
-    private val updatePriorityListUseCase: BaseUseCase<UpdatePriorityListInput, Unit>,
+    private val loadDatesWithDataUseCase: ILoadMostRecentAggregationsUseCase,
+    private val loadPotentialAppSourcesUseCase: ILoadPotentialPriorityListUseCase,
+    private val loadPriorityListUseCase: ILoadPriorityListUseCase,
+    private val updatePriorityListUseCase: IUpdatePriorityListUseCase,
     private val getDeviceDataSourcesInfoUseCase: GetDeviceDataSourcesInfoUseCase,
     private val appInfoReader: AppInfoReader,
 ) : ViewModel() {

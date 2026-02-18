@@ -24,6 +24,7 @@ import com.android.healthconnect.controller.datasources.AggregationCardInfo
 import com.android.healthconnect.controller.datasources.api.LoadMostRecentAggregationsUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.di.DEFAULT_USE_CASE_EXCEPTION_MESSAGE
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadDataAggregationsUseCase
 import com.android.healthconnect.controller.tests.utils.setLocale
@@ -45,7 +46,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.MockitoAnnotations
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -62,13 +62,15 @@ class LoadMostRecentAggregationsUseCaseTest {
     }
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
     private lateinit var context: Context
     private lateinit var loadMostRecentAggregationsUseCase: LoadMostRecentAggregationsUseCase
 
     private val loadDataAggregationsUseCase = FakeLoadDataAggregationsUseCase()
-    private val loadLastDateWithPriorityDataUseCase = FakeLoadLastDateWithPriorityDataUseCase()
-    private val sleepSessionHelper = FakeSleepSessionHelper()
+    private val loadLastDateWithPriorityDataUseCase =
+        fakeUseCaseRule.watch(FakeLoadLastDateWithPriorityDataUseCase())
+    private val sleepSessionHelper = fakeUseCaseRule.watch(FakeSleepSessionHelper())
 
     private val stepsAggregation = formattedAggregation("100 steps")
     private val distanceAggregation = formattedAggregation("1.5 km")
@@ -76,7 +78,6 @@ class LoadMostRecentAggregationsUseCaseTest {
 
     @Before
     fun setup() {
-        MockitoAnnotations.initMocks(this)
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.US)
