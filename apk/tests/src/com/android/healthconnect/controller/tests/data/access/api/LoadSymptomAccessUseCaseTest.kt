@@ -16,10 +16,17 @@
 package com.android.healthconnect.controller.tests.data.access.api
 
 import android.content.Context
+import android.health.connect.DeviceDataProviderInfo
+import android.health.connect.DeviceDataSourceInfo
 import android.health.connect.HealthPermissions
-import android.health.connect.RecordTypeInfoResponse
-import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.DataOrigin
+import android.health.connect.datatypes.Device
+import android.health.connect.datatypes.StepsRecord
 import android.health.connect.datatypes.SymptomRecord
+import android.health.connect.device.DeviceDataTypeAdvertisement
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.access.AppAccessMetadata
@@ -31,6 +38,7 @@ import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.devices.api.FakeGetDeviceDataSourcesInfoUseCase
 import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP
@@ -39,10 +47,13 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
+import com.android.healthconnect.controller.tests.utils.TEST_PHONE_APP
+import com.android.healthconnect.controller.tests.utils.TEST_PHONE_SPN
+import com.android.healthconnect.controller.tests.utils.TEST_WATCH_SPN
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.di.FakeGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeQueryRecentAccessLogsUseCase
-import com.android.healthconnect.controller.tests.utils.getDataOrigin
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -55,6 +66,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
+import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -65,6 +77,7 @@ class LoadSymptomAccessUseCaseTest {
     @get:Rule(order = 0) val hiltRule = HiltAndroidRule(this)
     @get:Rule(order = 1) val instantTaskExecutorRule = InstantTaskExecutorRule()
     @get:Rule(order = 2) val fakeUseCaseRule = FakeUseCaseRule()
+    @get:Rule(order = 3) val setFlagsRule = SetFlagsRule()
 
     private lateinit var appInfoReader: AppInfoReader
 
@@ -74,6 +87,8 @@ class LoadSymptomAccessUseCaseTest {
         fakeUseCaseRule.watch(FakeLoadSymptomTypeContributorAppsUseCase())
     private val recentAccessLogsUseCase: IQueryRecentAccessLogsUseCase =
         FakeQueryRecentAccessLogsUseCase()
+    private val fakeLoadDeviceDataSourcesInfosUseCase =
+        fakeUseCaseRule.watch(FakeGetDeviceDataSourcesInfoUseCase())
 
     private lateinit var useCase: LoadSymptomAccessUseCase
     private lateinit var context: Context
@@ -98,21 +113,11 @@ class LoadSymptomAccessUseCaseTest {
             LoadSymptomAccessUseCase(
                 fakeGetGrantedHealthPermissionsUseCase,
                 fakeLoadSymptomContributorAppsUseCase,
+                fakeLoadDeviceDataSourcesInfosUseCase,
                 healthPermissionReader,
                 appInfoReader,
+                context,
                 Dispatchers.Main,
-            )
-    }
-
-    private fun mockContributingApps(packageNames: List<String>) {
-        val recordTypeInfoResponse = mock<RecordTypeInfoResponse>()
-        val dataOriginList = packageNames.map { getDataOrigin(it) }
-
-        whenever(recordTypeInfoResponse.contributingPackages).thenReturn(dataOriginList)
-
-        val answerMap =
-            mapOf<Class<out Record>, RecordTypeInfoResponse>(
-                SymptomRecord::class.java to recordTypeInfoResponse
             )
     }
 
@@ -285,5 +290,102 @@ class LoadSymptomAccessUseCaseTest {
         assertThat(data[AppAccessState.Write])
             .containsExactly(AppAccessMetadata(app2, AppPermissionsType.FITNESS_PERMISSIONS_ONLY))
         assertThat(data[AppAccessState.Inactive]).isEmpty()
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun devices_ddpFlagOff_devicesAreSeenAsNormalApps() = runTest {
+        whenever(healthPermissionReader.getAppsWithFitnessPermissions()).thenReturn(emptyList())
+        whenever(appInfoReader.getAppMetadata(eq(TEST_PHONE_SPN))).thenReturn(TEST_PHONE_APP)
+        fakeGetGrantedHealthPermissionsUseCase.updateData(TEST_PHONE_SPN, emptyList())
+        fakeLoadSymptomContributorAppsUseCase.updateList(listOf(TEST_PHONE_APP))
+
+        val result = useCase.invoke(Unit)
+
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val data = (result as UseCaseResults.Success).data
+
+        assertThat(data[AppAccessState.Write]).isEmpty()
+        assertThat(data[AppAccessState.Read]).isEmpty()
+        assertThat(data[AppAccessState.Inactive]).isNotNull()
+        assertThat(data[AppAccessState.Inactive]!!).hasSize(1)
+        assertThat(data[AppAccessState.Inactive]!![0].appMetadata.packageName)
+            .isEqualTo(TEST_PHONE_SPN)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun devices_ddpFlagOn_devicesHaveSpecialHandling() = runTest {
+        val devices =
+            setOf(
+                DeviceDataSourceInfo(
+                    DataOrigin.Builder().setPackageName(TEST_PHONE_SPN).build(),
+                    Device.Builder().setType(Device.DEVICE_TYPE_PHONE).build(),
+                    false,
+                    listOf(
+                        DeviceDataProviderInfo(
+                            "device_id",
+                            "provider_id",
+                            "label",
+                            "description",
+                            setOf(
+                                DeviceDataTypeAdvertisement.Builder(SymptomRecord::class.java)
+                                    .setSymptomType(SymptomRecord.SYMPTOM_TYPE_COUGH)
+                                    .setAvailable(true)
+                                    .setUserEnabled(true)
+                                    .build()
+                            ),
+                        )
+                    ),
+                ),
+                DeviceDataSourceInfo(
+                    DataOrigin.Builder().setPackageName(TEST_WATCH_SPN).build(),
+                    Device.Builder().setType(Device.DEVICE_TYPE_WATCH).build(),
+                    false,
+                    listOf(
+                        DeviceDataProviderInfo(
+                            "device_id_2",
+                            "provider_id_2",
+                            "label",
+                            "description",
+                            setOf(
+                                DeviceDataTypeAdvertisement.Builder(StepsRecord::class.java)
+                                    .setAvailable(true)
+                                    .setUserEnabled(true)
+                                    .build()
+                            ),
+                        )
+                    ),
+                ),
+            )
+
+        whenever(healthPermissionReader.getAppsWithFitnessPermissions()).thenReturn(emptyList())
+        fakeGetGrantedHealthPermissionsUseCase.updateData(TEST_PHONE_SPN, emptyList())
+        fakeGetGrantedHealthPermissionsUseCase.updateData(TEST_WATCH_SPN, emptyList())
+        fakeLoadSymptomContributorAppsUseCase.updateList(listOf())
+
+        whenever(appInfoReader.getAppMetadata(eq(TEST_PHONE_SPN))).thenReturn(TEST_PHONE_APP)
+        whenever(appInfoReader.getAppMetadata(eq(TEST_WATCH_SPN)))
+            .thenReturn(AppMetadata(TEST_WATCH_SPN, "Watch", null))
+
+        fakeLoadDeviceDataSourcesInfosUseCase.updateSet(devices)
+
+        val result = useCase.invoke(Unit)
+
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val data = (result as UseCaseResults.Success).data
+
+        // phone has Symptoms advertised -> In Write category
+        assertThat(data[AppAccessState.Write]).isNotNull()
+        assertThat(data[AppAccessState.Write]!!).hasSize(1)
+        assertThat(data[AppAccessState.Write]!![0].appMetadata.packageName)
+            .isEqualTo(TEST_PHONE_SPN)
+
+        // Watch does not have Symptoms advertised -> Not included
+        // No devices in Read
+        assertThat(data[AppAccessState.Read]).isEmpty()
+
+        // Watch is not a contributor for Symptoms -> Not included in Inactive
+        assertThat(data[AppAccessState.Inactive]).isNotNull()
     }
 }

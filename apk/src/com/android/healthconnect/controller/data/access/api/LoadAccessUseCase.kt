@@ -16,8 +16,11 @@
 
 package com.android.healthconnect.controller.data.access.api
 
+import android.content.Context
+import android.health.connect.DeviceDataSourceInfo
 import com.android.healthconnect.controller.data.access.AppAccessMetadata
 import com.android.healthconnect.controller.data.access.AppAccessState
+import com.android.healthconnect.controller.matchmaking.api.IGetDeviceDataSourcesInfoUseCase
 import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
@@ -25,13 +28,17 @@ import com.android.healthconnect.controller.permissions.data.HealthPermissionTyp
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.utils.categorizeAndInsertToAppAccessState
 import com.android.healthconnect.controller.utils.isDevicePackage
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -47,8 +54,10 @@ constructor(
     private val loadFitnessTypeContributorAppsUseCase: ILoadFitnessTypeContributorAppsUseCase,
     private val loadMedicalTypeContributorAppsUseCase: ILoadMedicalTypeContributorAppsUseCase,
     private val loadGrantedHealthPermissionsUseCase: IGetGrantedHealthPermissionsUseCase,
+    private val loadDeviceDataSourcesInfosUseCase: IGetDeviceDataSourcesInfoUseCase,
     private val healthPermissionReader: HealthPermissionReader,
     private val appInfoReader: AppInfoReader,
+    @param:ApplicationContext private val context: Context,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) :
     BaseUseCase<HealthPermissionType, Map<AppAccessState, List<AppAccessMetadata>>>(dispatcher),
@@ -83,10 +92,7 @@ constructor(
             }
         }
         // Apps that are inactive: can no longer READ or WRITE, but still have data in
-        // Health Connect. Excludes devices, as permissions are irrelevant to them.
-        // However, devices are seen as inactive if all their providers have disabled all of
-        // their data types.
-        // TODO(b/478259450): Check disabled devices
+        // Health Connect.
         contributingApps.forEach { app ->
             if (
                 !readOrWriteAppPackageNameSet.contains(app.packageName) &&
@@ -97,6 +103,19 @@ constructor(
                 val appAccessMetadata = AppAccessMetadata(appMetadata = app)
                 inactiveAppMetadataSet.add(appAccessMetadata)
             }
+        }
+
+        if (deviceDataProvidersApi() && input is FitnessPermissionType) {
+            val recordTypes = HealthPermissionToDatatypeMapper.getDataTypes(input)
+            val deviceSourcesInfo = loadDeviceDataSourcesInfo()
+
+            deviceSourcesInfo.categorizeAndInsertToAppAccessState(
+                targetRecordTypes = recordTypes,
+                contributingApps = contributingApps,
+                writeAppMetadataSet = writeAppMetadataSet,
+                inactiveAppMetadataSet = inactiveAppMetadataSet,
+                context = context,
+            )
         }
 
         return mapOf(
@@ -127,6 +146,16 @@ constructor(
                     (result as UseCaseResults.Success).data
                 }
             else -> throw IllegalArgumentException(exceptionMessage(healthPermissionType))
+        }
+    }
+
+    private suspend fun loadDeviceDataSourcesInfo(): Set<DeviceDataSourceInfo> {
+        val deviceSources = loadDeviceDataSourcesInfosUseCase.invoke(Unit)
+        return if (deviceSources is UseCaseResults.Success) {
+            deviceSources.data
+        } else {
+            // TODO(b/486156654): Think of and implement alternative error handling
+            emptySet()
         }
     }
 

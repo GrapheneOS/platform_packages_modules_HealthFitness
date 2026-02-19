@@ -21,7 +21,7 @@ import android.health.connect.datatypes.Record
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.matchmaking.api.GetDeviceDataSourcesInfoUseCase
+import com.android.healthconnect.controller.matchmaking.api.IGetDeviceDataSourcesInfoUseCase
 import com.android.healthconnect.controller.matchmaking.api.SetTrackingEnabledInput
 import com.android.healthconnect.controller.matchmaking.api.SetTrackingEnabledUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
 class DeviceSourcesViewModel
 @Inject
 constructor(
-    private val loadDeviceDataSourcesInfosUseCase: GetDeviceDataSourcesInfoUseCase,
+    private val loadDeviceDataSourcesInfosUseCase: IGetDeviceDataSourcesInfoUseCase,
     private val setTrackingEnabledUseCase: SetTrackingEnabledUseCase,
 ) : ViewModel() {
     companion object {

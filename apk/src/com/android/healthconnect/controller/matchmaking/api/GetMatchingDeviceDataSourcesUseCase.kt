@@ -28,7 +28,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 class GetMatchingDeviceDataSourcesUseCase
 @Inject
 constructor(
-    private val getDeviceDataSourcesInfoUseCase: GetDeviceDataSourcesInfoUseCase,
+    private val getDeviceDataSourcesInfoUseCase: IGetDeviceDataSourcesInfoUseCase,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) :
     BaseUseCase<GetMatchingDeviceDataSourcesUseCase.Input, List<MatchmakingDeviceData>>(

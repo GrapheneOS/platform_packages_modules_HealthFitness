@@ -13,28 +13,23 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/devices_nav_graph"
-    app:startDestination="@id/newDevicesFragment">
+    android:id="@+id/current_device_management_nav_graph"
+    app:startDestination="@id/currentDeviceManagementFragment">
 
     <include app:graph="@navigation/app_data_nav_graph" />
-    <include app:graph="@navigation/device_management_nav_graph" />
-    <include app:graph="@navigation/current_device_management_nav_graph" />
-    <include app:graph="@navigation/device_data_provider_nav_graph" />
 
     <fragment
-        android:id="@+id/newDevicesFragment"
-        android:name="com.android.healthconnect.controller.newDevices.DevicesFragment"
-        android:label="@string/devices_title">
+        android:id="@+id/currentDeviceManagementFragment"
+        android:name="com.android.healthconnect.controller.newDevices.CurrentDeviceManagementFragment"
+        android:label="@string/device_management_screen_title">
+        <argument
+            android:name="android.intent.extra.PACKAGE_NAME"
+            app:argType="string" />
         <action
-            android:id="@+id/action_newDevicesFragment_to_currentDeviceManagementFragment"
-            app:destination="@id/current_device_management_nav_graph" />
-
-        <action
-            android:id="@+id/action_newDevicesFragment_to_deviceDataProviderFragment"
-            app:destination="@id/device_data_provider_nav_graph" />
+            android:id="@+id/action_currentDeviceManagementFragment_to_appData"
+            app:destination="@id/app_data_nav_graph" />
     </fragment>
 
 </navigation>

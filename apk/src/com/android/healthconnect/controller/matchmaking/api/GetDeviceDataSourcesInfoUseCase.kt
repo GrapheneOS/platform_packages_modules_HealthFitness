@@ -21,6 +21,7 @@ import android.health.connect.HealthConnectManager
 import android.os.OutcomeReceiver
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import java.util.concurrent.Executor
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -34,7 +35,7 @@ class GetDeviceDataSourcesInfoUseCase
 constructor(
     private val healthConnectManager: HealthConnectManager,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
-) : BaseUseCase<Unit, Set<DeviceDataSourceInfo>>(ioDispatcher) {
+) : BaseUseCase<Unit, Set<DeviceDataSourceInfo>>(ioDispatcher), IGetDeviceDataSourcesInfoUseCase {
 
     override suspend fun execute(input: Unit): Set<DeviceDataSourceInfo> {
         return suspendCancellableCoroutine { continuation ->
@@ -53,3 +54,5 @@ constructor(
         }
     }
 }
+
+interface IGetDeviceDataSourcesInfoUseCase : UseCaseContract<Unit, Set<DeviceDataSourceInfo>>
