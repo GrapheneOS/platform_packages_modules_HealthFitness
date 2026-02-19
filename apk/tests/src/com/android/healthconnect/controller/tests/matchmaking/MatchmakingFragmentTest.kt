@@ -124,7 +124,7 @@ class MatchmakingFragmentTest {
     private val matchmakingState = MutableLiveData<MatchmakingViewModel.MatchmakingState>()
     private val expandedKeys = MutableLiveData<Set<String>>(emptySet())
     private val context: Context = ApplicationProvider.getApplicationContext()
-    private val atLeastOnePermissionGranted = MutableLiveData(false)
+    private val atLeastOneDataSourceSelected = MutableLiveData(false)
     private val allPermissionsGranted = MutableLiveData(false)
     private val hasSelectedDevice = MutableLiveData(false)
     private val hasSelectedApp = MutableLiveData(false)
@@ -143,7 +143,7 @@ class MatchmakingFragmentTest {
 
         whenever(viewModel.matchmakingState).thenReturn(matchmakingState)
         whenever(viewModel.expandedPreferenceKeys).thenReturn(expandedKeys)
-        whenever(viewModel.atLeastOnePermissionGranted).thenReturn(atLeastOnePermissionGranted)
+        whenever(viewModel.atLeastOneDataSourceSelected).thenReturn(atLeastOneDataSourceSelected)
         whenever(viewModel.allPermissionsGranted).thenReturn(allPermissionsGranted)
         whenever(viewModel.grantedPermissions).thenReturn(grantedPermissions)
         whenever(viewModel.matchingAppsCount).thenReturn(matchingAppsCount)
@@ -372,7 +372,7 @@ class MatchmakingFragmentTest {
                 emptyList(),
             )
         )
-        atLeastOnePermissionGranted.postValue(true)
+        atLeastOneDataSourceSelected.postValue(true)
 
         ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
@@ -1201,7 +1201,7 @@ class MatchmakingFragmentTest {
         )
         hasSelectedApp.postValue(true)
         hasSelectedDevice.postValue(true)
-        atLeastOnePermissionGranted.postValue(true)
+        atLeastOneDataSourceSelected.postValue(true)
 
         ActivityScenario.launch<TestActivity>(
                 Intent(context, TestActivity::class.java).apply {
