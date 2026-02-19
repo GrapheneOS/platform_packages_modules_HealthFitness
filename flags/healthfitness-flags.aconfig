@@ -622,3 +622,13 @@ flag {
     description: "Enables optimization for reading child tables by using separate read requests instead of joins."
     bug: "408987104"
 }
+
+flag {
+    name: "resize_large_app_icons"
+    namespace: "health_fitness_aconfig"
+    description: "Enables resizing of large app icons to prevent SQLiteBlobTooBigException."
+    bug: "484258712"
+    metadata {
+        purpose: PURPOSE_BUGFIX
+    }
+}
