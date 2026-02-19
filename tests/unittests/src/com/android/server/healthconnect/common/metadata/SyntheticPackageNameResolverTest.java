@@ -73,9 +73,9 @@ public class SyntheticPackageNameResolverTest {
                 .thenReturn(
                         Map.of(
                                 TEST_APP_PACKAGE_NAME,
-                                        new AppInfoInternal(1, null, null, null, null, null),
+                                        new AppInfoInternal(1, null, null, null, null),
                                 TEST_CANONICAL_SPN,
-                                        new AppInfoInternal(2, null, null, null, null, null)));
+                                        new AppInfoInternal(2, null, null, null, null)));
         when(mDeviceDataProviderManager.getCurrentDeviceId())
                 .thenReturn(TEST_CURRENT_DEVICE_ID_RUNTIME_CANONICAL_SPN);
         when(mDeviceDataProviderManager.getStableCurrentDeviceId())
