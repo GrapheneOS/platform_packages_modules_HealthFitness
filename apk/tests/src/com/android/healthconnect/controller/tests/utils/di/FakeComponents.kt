@@ -41,9 +41,9 @@ import com.android.healthconnect.controller.migration.api.DEFAULT_MIGRATION_REST
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.api.OnboardingState
-import com.android.healthconnect.controller.permissions.additionalaccess.ExerciseRouteState
-import com.android.healthconnect.controller.permissions.additionalaccess.ILoadExerciseRoutePermissionUseCase
-import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState
+import com.android.healthconnect.controller.permissions.additionalaccess.api.ExerciseRouteState
+import com.android.healthconnect.controller.permissions.additionalaccess.api.ILoadExerciseRoutePermissionUseCase
+import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState
 import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.app.HealthPermissionStatus
 import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsStatusUseCase

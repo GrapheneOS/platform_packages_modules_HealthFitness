@@ -16,7 +16,7 @@
  *
  */
 
-package com.android.healthconnect.controller.tests.permissions.additionalaccess
+package com.android.healthconnect.controller.tests.permissions.additionalaccess.api
 
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.FLAG_PERMISSION_USER_SET
@@ -29,13 +29,13 @@ import android.health.connect.HealthPermissions.WRITE_DISTANCE
 import android.health.connect.HealthPermissions.WRITE_HEIGHT
 import android.health.connect.HealthPermissions.WRITE_SPEED
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.healthconnect.controller.permissions.additionalaccess.ExerciseRouteState
-import com.android.healthconnect.controller.permissions.additionalaccess.LoadDeclaredHealthPermissionUseCase
-import com.android.healthconnect.controller.permissions.additionalaccess.LoadExerciseRoutePermissionUseCase
-import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState.ALWAYS_ALLOW
-import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState.ASK_EVERY_TIME
-import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState.NEVER_ALLOW
-import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState.NOT_DECLARED
+import com.android.healthconnect.controller.permissions.additionalaccess.api.ExerciseRouteState
+import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadDeclaredHealthPermissionUseCase
+import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadExerciseRoutePermissionUseCase
+import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState.ALWAYS_ALLOW
+import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState.ASK_EVERY_TIME
+import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState.NEVER_ALLOW
+import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState.NOT_DECLARED
 import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
