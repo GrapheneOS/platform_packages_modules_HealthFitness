@@ -16,7 +16,7 @@
  *
  */
 
-package com.android.healthconnect.controller.permissions.additionalaccess
+package com.android.healthconnect.controller.permissions.additionalaccess.api
 
 import android.content.pm.PackageManager
 import android.health.connect.HealthPermissions.READ_EXERCISE

@@ -16,7 +16,7 @@
  *
  */
 
-package com.android.healthconnect.controller.permissions.additionalaccess
+package com.android.healthconnect.controller.permissions.additionalaccess.api
 
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import javax.inject.Inject

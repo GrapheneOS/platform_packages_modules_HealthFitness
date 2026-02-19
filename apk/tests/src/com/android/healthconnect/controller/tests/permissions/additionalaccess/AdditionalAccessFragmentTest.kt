@@ -43,9 +43,9 @@ import com.android.healthconnect.controller.permissions.additionalaccess.Additio
 import com.android.healthconnect.controller.permissions.additionalaccess.AdditionalAccessViewModel
 import com.android.healthconnect.controller.permissions.additionalaccess.AdditionalAccessViewModel.EnableExerciseDialogEvent
 import com.android.healthconnect.controller.permissions.additionalaccess.AdditionalAccessViewModel.State
-import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState.ALWAYS_ALLOW
-import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState.ASK_EVERY_TIME
-import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState.NEVER_ALLOW
+import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState.ALWAYS_ALLOW
+import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState.ASK_EVERY_TIME
+import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState.NEVER_ALLOW
 import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference

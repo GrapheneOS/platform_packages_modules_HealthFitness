@@ -16,14 +16,13 @@
  *
  */
 
-package com.android.healthconnect.controller.tests.permissions.additionalaccess
+package com.android.healthconnect.controller.tests.permissions.additionalaccess.api
 
-import android.health.connect.HealthPermissions.READ_EXERCISE_ROUTES
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.healthconnect.controller.permissions.additionalaccess.GetAdditionalPermissionUseCase
+import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadDeclaredHealthPermissionUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
-import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -32,42 +31,34 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
+import org.mockito.Mockito.mock
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-class GetAdditionalPermissionUseCaseTest {
+class LoadDeclaredHealthPermissionUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val setFlagsRule = SetFlagsRule()
 
-    @Inject lateinit var useCase: GetAdditionalPermissionUseCase
+    @Inject lateinit var useCase: LoadDeclaredHealthPermissionUseCase
 
-    @BindValue val healthPermissionReader = Mockito.mock(HealthPermissionReader::class.java)
+    @BindValue val healthPermissionReader = mock(HealthPermissionReader::class.java)
 
     @Before
     fun setup() {
         hiltRule.inject()
-        whenever(healthPermissionReader.getAdditionalPermissions(TEST_APP_PACKAGE_NAME)).then {
+        whenever(healthPermissionReader.getDeclaredHealthPermissions(TEST_APP_PACKAGE_NAME)).then {
             emptyList<String>()
         }
     }
 
     @Test
-    fun execute_callsGetHealthPermissions() {
+    fun execute_callsGetValidHealthPermissions() {
         useCase.invoke(TEST_APP_PACKAGE_NAME)
 
-        verify(healthPermissionReader).getAdditionalPermissions(eq(TEST_APP_PACKAGE_NAME))
-    }
-
-    @Test
-    fun execute_returnsAdditionalPermissions() {
-        whenever(healthPermissionReader.getAdditionalPermissions(TEST_APP_PACKAGE_NAME)).then {
-            listOf(READ_EXERCISE_ROUTES)
-        }
-
-        assertThat(useCase.invoke(TEST_APP_PACKAGE_NAME)).isEqualTo(listOf(READ_EXERCISE_ROUTES))
+        verify(healthPermissionReader).getValidHealthPermissions(eq(TEST_APP_PACKAGE_NAME))
     }
 }
