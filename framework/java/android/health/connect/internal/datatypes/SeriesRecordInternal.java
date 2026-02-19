@@ -28,7 +28,8 @@ import java.util.Set;
  *
  * @hide
  */
-public abstract class SeriesRecordInternal<T extends IntervalRecord, U>
+public abstract class SeriesRecordInternal<
+                T extends IntervalRecord, U extends SeriesRecordInternal.Sample>
         extends IntervalRecordInternal<T> {
     public SeriesRecordInternal() {
         super();
@@ -38,7 +39,10 @@ public abstract class SeriesRecordInternal<T extends IntervalRecord, U>
         super(parcel);
     }
 
-    public abstract Set<? extends Sample> getSamples();
+    public abstract Set<U> getSamples();
+
+    /** Add a sample to the record. */
+    public abstract void addSample(U sample);
 
     /** Base class for the series data stored in {@link SeriesRecordInternal} types */
     public interface Sample {}

@@ -40,7 +40,7 @@ import java.util.TreeSet;
  */
 @Identifier(recordIdentifier = RecordTypeIdentifier.RECORD_TYPE_HEART_RATE)
 public class HeartRateRecordInternal
-        extends SeriesRecordInternal<HeartRateRecord, HeartRateRecord.HeartRateSample> {
+        extends SeriesRecordInternal<HeartRateRecord, HeartRateRecordInternal.HeartRateSample> {
     public static final class HeartRateSample implements Sample {
         private final int mBeatsPerMinute;
         private final long mEpochMillis;
@@ -109,6 +109,11 @@ public class HeartRateRecordInternal
     @Override
     public Set<HeartRateSample> getSamples() {
         return mHeartRateHeartRateSamples;
+    }
+
+    @Override
+    public void addSample(HeartRateSample sample) {
+        mHeartRateHeartRateSamples.add(sample);
     }
 
     @Override

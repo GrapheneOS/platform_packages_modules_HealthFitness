@@ -16,22 +16,20 @@
 
 package com.android.healthconnect.controller.autodelete.api
 
-import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class AutoDeleteUseCaseModule {
-    @Provides
-    fun provideLoadAutoDeleteUseCase(useCase: LoadAutoDeleteUseCase): BaseUseCase<Unit, Int> {
-        return useCase
-    }
+interface AutoDeleteUseCaseModule {
+    @Binds
+    @Singleton
+    fun provideLoadAutoDeleteUseCase(useCase: LoadAutoDeleteUseCase): ILoadAutoDeleteUseCase
 
-    @Provides
-    fun provideUpdateAutoDeleteUseCase(useCase: UpdateAutoDeleteUseCase): BaseUseCase<Int, Unit> {
-        return useCase
-    }
+    @Binds
+    @Singleton
+    fun provideUpdateAutoDeleteUseCase(useCase: UpdateAutoDeleteUseCase): IUpdateAutoDeleteUseCase
 }

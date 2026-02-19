@@ -37,6 +37,7 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 
@@ -86,20 +87,28 @@ public class StepsCadenceRecordHelper
     /** Populates the {@code record} with values specific to datatype */
     @Override
     StepsCadenceRecordInternal populateSpecificValues(Cursor seriesTableCursor) {
+        if (Flags.optimizeChildReads()) {
+            return new StepsCadenceRecordInternal(new HashSet<>());
+        }
+
         HashSet<StepsCadenceRecordInternal.StepsCadenceRecordSample> stepsCadenceRecordSampleSet =
                 new HashSet<>();
         UUID uuid = getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME);
         do {
-            stepsCadenceRecordSampleSet.add(
-                    new StepsCadenceRecordInternal.StepsCadenceRecordSample(
-                            getCursorDouble(seriesTableCursor, RATE_COLUMN_NAME),
-                            getCursorLong(seriesTableCursor, EPOCH_MILLIS_COLUMN_NAME)));
+            stepsCadenceRecordSampleSet.add(extractSample(seriesTableCursor));
         } while (seriesTableCursor.moveToNext()
                 && uuid.equals(getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME)));
         // In case we hit another record, move the cursor back to read next record in outer
         // RecordHelper#getInternalRecords loop.
         seriesTableCursor.moveToPrevious();
         return new StepsCadenceRecordInternal(stepsCadenceRecordSampleSet);
+    }
+
+    @Override
+    StepsCadenceRecordInternal.StepsCadenceRecordSample extractSample(Cursor cursor) {
+        return new StepsCadenceRecordInternal.StepsCadenceRecordSample(
+                getCursorDouble(cursor, RATE_COLUMN_NAME),
+                getCursorLong(cursor, EPOCH_MILLIS_COLUMN_NAME));
     }
 
     @Override

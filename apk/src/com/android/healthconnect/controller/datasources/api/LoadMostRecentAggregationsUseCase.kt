@@ -22,6 +22,7 @@ import com.android.healthconnect.controller.permissions.data.FitnessPermissionTy
 import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.toInstantAtStartOfDay
 import java.time.Instant
@@ -35,10 +36,12 @@ class LoadMostRecentAggregationsUseCase
 @Inject
 constructor(
     private val loadDataAggregationsUseCase: ILoadDataAggregationsUseCase,
-    private val loadLastDateWithPriorityDataUseCase: BaseUseCase<FitnessPermissionType, LocalDate?>,
-    private val sleepSessionHelper: BaseUseCase<LocalDate, Pair<Instant, Instant>?>,
+    private val loadLastDateWithPriorityDataUseCase: ILoadLastDateWithPriorityDataUseCase,
+    private val sleepSessionHelper: ISleepSessionHelper,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : BaseUseCase<Int, List<AggregationCardInfo>>(dispatcher) {
+) :
+    BaseUseCase<@HealthDataCategoryInt Int, List<AggregationCardInfo>>(dispatcher),
+    ILoadMostRecentAggregationsUseCase {
 
     /**
      * Provides the most recent [AggregationDataCard]s info for Activity or Sleep.
@@ -183,3 +186,6 @@ constructor(
         }
     }
 }
+
+interface ILoadMostRecentAggregationsUseCase :
+    UseCaseContract<@HealthDataCategoryInt Int, List<AggregationCardInfo>>

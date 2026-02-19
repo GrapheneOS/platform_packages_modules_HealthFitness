@@ -13,25 +13,25 @@
  * or implied. See the License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.android.healthconnect.controller.tests.data.access
+package com.android.healthconnect.controller.tests.data.access.api
 
-import android.platform.test.annotations.DisableFlags
-import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.android.healthconnect.controller.data.access.AppAccessMetadata
 import com.android.healthconnect.controller.data.access.AppAccessState
-import com.android.healthconnect.controller.data.access.ILoadAccessUseCase
 import com.android.healthconnect.controller.data.access.LoadAccessUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
+import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppPermissionsType.COMBINED_PERMISSIONS
-import com.android.healthconnect.controller.shared.app.AppPermissionsType.FITNESS_PERMISSIONS_ONLY
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
@@ -39,9 +39,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.di.FakeGetGrantedHealthPermissionsUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadFitnessTypeContributorAppsUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadMedicalTypeContributorAppsUseCase
-import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -62,12 +59,14 @@ class LoadAccessUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val setFlagsRule = SetFlagsRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
-    private lateinit var useCase: ILoadAccessUseCase
+    private lateinit var useCase:
+        BaseUseCase<HealthPermissionType, Map<AppAccessState, List<AppAccessMetadata>>>
     private val fakeLoadFitnessTypeContributorAppsUseCase =
-        FakeLoadFitnessTypeContributorAppsUseCase()
+        fakeUseCaseRule.watch(FakeLoadFitnessTypeContributorAppsUseCase())
     private val fakeLoadMedicalTypeContributorAppsUseCase =
-        FakeLoadMedicalTypeContributorAppsUseCase()
+        fakeUseCaseRule.watch(FakeLoadMedicalTypeContributorAppsUseCase())
     private val fakeGetGrantedHealthPermissionsUseCase = FakeGetGrantedHealthPermissionsUseCase()
 
     @Inject lateinit var appInfoReader: AppInfoReader
@@ -90,7 +89,9 @@ class LoadAccessUseCaseTest {
 
     @Test
     fun noDataNorPermission_returnsEmptyMap() = runTest {
-        val actual = (useCase.invoke(FitnessPermissionType.STEPS) as UseCaseResults.Success).data
+        val result = useCase.invoke(FitnessPermissionType.STEPS)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val actual = (result as UseCaseResults.Success).data
 
         assertThat(actual[AppAccessState.Write]!!.size).isEqualTo(0)
         assertThat(actual[AppAccessState.Read]!!.size).isEqualTo(0)
@@ -104,7 +105,9 @@ class LoadAccessUseCaseTest {
             FitnessPermission(FitnessPermissionType.STEPS, PermissionsAccessType.WRITE).toString()
         fakeGetGrantedHealthPermissionsUseCase.updateData(TEST_APP_PACKAGE_NAME, listOf(writeSteps))
 
-        val actual = (useCase.invoke(FitnessPermissionType.STEPS) as UseCaseResults.Success).data
+        val result = useCase.invoke(FitnessPermissionType.STEPS)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val actual = (result as UseCaseResults.Success).data
 
         assertThat(actual[AppAccessState.Write]).isNotNull()
         assertThat(actual[AppAccessState.Write]!!.size).isEqualTo(1)
@@ -130,7 +133,9 @@ class LoadAccessUseCaseTest {
             FitnessPermission(FitnessPermissionType.STEPS, PermissionsAccessType.READ).toString()
         fakeGetGrantedHealthPermissionsUseCase.updateData(TEST_APP_PACKAGE_NAME, listOf(writeSteps))
 
-        val actual = (useCase.invoke(FitnessPermissionType.STEPS) as UseCaseResults.Success).data
+        val result = useCase.invoke(FitnessPermissionType.STEPS)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val actual = (result as UseCaseResults.Success).data
 
         assertThat(actual[AppAccessState.Write]).isNotNull()
         assertThat(actual[AppAccessState.Write]!!.size).isEqualTo(0)
@@ -162,8 +167,9 @@ class LoadAccessUseCaseTest {
             listOf(steps, immunization),
         )
 
-        val actual =
-            (useCase.invoke(MedicalPermissionType.VACCINES) as UseCaseResults.Success).data
+        val result = useCase.invoke(MedicalPermissionType.VACCINES)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val actual = (result as UseCaseResults.Success).data
 
         assertThat(actual[AppAccessState.Write]).isNotNull()
         assertThat(actual[AppAccessState.Write]!!.size).isEqualTo(0)
@@ -193,8 +199,9 @@ class LoadAccessUseCaseTest {
             listOf(steps, immunization, allMedicalData),
         )
 
-        val actual =
-            (useCase.invoke(MedicalPermissionType.VACCINES) as UseCaseResults.Success).data
+        val result = useCase.invoke(MedicalPermissionType.VACCINES)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val actual = (result as UseCaseResults.Success).data
 
         assertThat(actual[AppAccessState.Write]).isNotNull()
         assertThat(actual[AppAccessState.Write]!!.size).isEqualTo(1)
@@ -227,8 +234,9 @@ class LoadAccessUseCaseTest {
             listOf(steps, allMedicalData),
         )
 
-        val actual =
-            (useCase.invoke(MedicalPermissionType.ALL_MEDICAL_DATA) as UseCaseResults.Success).data
+        val result = useCase.invoke(MedicalPermissionType.ALL_MEDICAL_DATA)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val actual = (result as UseCaseResults.Success).data
 
         assertThat(actual[AppAccessState.Write]).isNotNull()
         assertThat(actual[AppAccessState.Write]!!.size).isEqualTo(1)
@@ -248,8 +256,9 @@ class LoadAccessUseCaseTest {
         fakeLoadFitnessTypeContributorAppsUseCase.updateList(listOf(TEST_APP_2))
         fakeLoadMedicalTypeContributorAppsUseCase.updateList(listOf(TEST_APP))
 
-        val actual =
-            (useCase.invoke(MedicalPermissionType.VACCINES) as UseCaseResults.Success).data
+        val result = useCase.invoke(MedicalPermissionType.VACCINES)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val actual = (result as UseCaseResults.Success).data
 
         assertThat(actual[AppAccessState.Write]).isNotNull()
         assertThat(actual[AppAccessState.Write]!!.size).isEqualTo(0)

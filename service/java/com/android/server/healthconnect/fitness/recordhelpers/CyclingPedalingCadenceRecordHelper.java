@@ -37,6 +37,7 @@ import android.util.Pair;
 
 import androidx.annotation.Nullable;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.fitness.aggregation.AggregateParams;
 import com.android.server.healthconnect.storage.utils.SqlJoin;
 
@@ -87,20 +88,29 @@ public class CyclingPedalingCadenceRecordHelper
     /** Populates the {@code record} with values specific to datatype */
     @Override
     CyclingPedalingCadenceRecordInternal populateSpecificValues(Cursor seriesTableCursor) {
+        if (Flags.optimizeChildReads()) {
+            return new CyclingPedalingCadenceRecordInternal(new HashSet<>());
+        }
+
         UUID uuid = getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME);
         HashSet<CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample>
                 cyclingPedalingCadenceRecordSampleSet = new HashSet<>();
         do {
-            cyclingPedalingCadenceRecordSampleSet.add(
-                    new CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample(
-                            getCursorDouble(seriesTableCursor, REVOLUTIONS_PER_MINUTE_COLUMN_NAME),
-                            getCursorLong(seriesTableCursor, EPOCH_MILLIS_COLUMN_NAME)));
+            cyclingPedalingCadenceRecordSampleSet.add(extractSample(seriesTableCursor));
         } while (seriesTableCursor.moveToNext()
                 && uuid.equals(getCursorUUID(seriesTableCursor, UUID_COLUMN_NAME)));
         // In case we hit another record, move the cursor back to read next record in outer
         // RecordHelper#getInternalRecords loop.
         seriesTableCursor.moveToPrevious();
         return new CyclingPedalingCadenceRecordInternal(cyclingPedalingCadenceRecordSampleSet);
+    }
+
+    @Override
+    CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample extractSample(
+            Cursor cursor) {
+        return new CyclingPedalingCadenceRecordInternal.CyclingPedalingCadenceRecordSample(
+                getCursorDouble(cursor, REVOLUTIONS_PER_MINUTE_COLUMN_NAME),
+                getCursorLong(cursor, EPOCH_MILLIS_COLUMN_NAME));
     }
 
     @Override

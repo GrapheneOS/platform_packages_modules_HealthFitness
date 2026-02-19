@@ -17,9 +17,9 @@ package com.android.healthconnect.controller.tests.datasources.api
 
 import android.content.Context
 import android.health.connect.FetchDataOriginsPriorityOrderResponse
+import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
-import android.os.OutcomeReceiver
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.datasources.api.LoadPriorityListUseCase
@@ -29,6 +29,7 @@ import com.android.healthconnect.controller.tests.utils.CoroutineTestRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
+import com.android.healthconnect.controller.tests.utils.doReturnResult
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
@@ -41,10 +42,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
-import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stub
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
@@ -53,7 +54,7 @@ class LoadPriorityListUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val coroutineTestRule = CoroutineTestRule()
 
-    private val manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
+    private val manager: HealthConnectManager = mock()
     @BindValue lateinit var appInfoReader: AppInfoReader
     private lateinit var usecase: LoadPriorityListUseCase
     private lateinit var context: Context
@@ -67,7 +68,7 @@ class LoadPriorityListUseCaseTest {
     }
 
     @Test
-    fun loadPriorityList_listOfAppsInPriorityListReturnedCorrectly() = runTest {
+    fun invoke_listOfAppsInPriorityListReturnedCorrectly() = runTest {
         val dataOriginsPriorityOrderResponse =
             FetchDataOriginsPriorityOrderResponse(
                 mutableListOf(
@@ -76,9 +77,11 @@ class LoadPriorityListUseCaseTest {
                 )
             )
 
-        Mockito.doAnswer(prepareAnswer(dataOriginsPriorityOrderResponse))
-            .`when`(manager)
-            .fetchDataOriginsPriorityOrder(eq(HealthDataCategory.ACTIVITY), any(), any())
+        manager.stub {
+            on {
+                fetchDataOriginsPriorityOrder(eq(HealthDataCategory.ACTIVITY), any(), any())
+            } doReturnResult Result.success(dataOriginsPriorityOrderResponse)
+        }
 
         val loadedAppsPriorityList = usecase.invoke(HealthDataCategory.ACTIVITY)
 
@@ -92,15 +95,21 @@ class LoadPriorityListUseCaseTest {
             .contains(appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME_2))
     }
 
-    private fun prepareAnswer(
-        fetchDataOriginsPriorityOrderResponse: FetchDataOriginsPriorityOrderResponse
-    ): (InvocationOnMock) -> Nothing? {
-        val answer = { args: InvocationOnMock ->
-            val receiver =
-                args.arguments[2] as OutcomeReceiver<FetchDataOriginsPriorityOrderResponse, *>
-            receiver.onResult(fetchDataOriginsPriorityOrderResponse)
-            null
+    @Test
+    fun invoke_managerError_returnsFailure() = runTest {
+        manager.stub {
+            on {
+                fetchDataOriginsPriorityOrder(eq(HealthDataCategory.ACTIVITY), any(), any())
+            } doReturnResult
+                Result.failure<FetchDataOriginsPriorityOrderResponse>(
+                    HealthConnectException(HealthConnectException.ERROR_UNKNOWN)
+                )
         }
-        return answer
+
+        val loadedAppsPriorityList = usecase.invoke(HealthDataCategory.ACTIVITY)
+
+        assertThat(loadedAppsPriorityList is UseCaseResults.Failed).isTrue()
+        assertThat((loadedAppsPriorityList as UseCaseResults.Failed).exception)
+            .isInstanceOf(HealthConnectException::class.java)
     }
 }

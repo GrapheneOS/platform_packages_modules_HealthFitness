@@ -403,13 +403,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"या अ‍ॅपने Health Connect ला राइट करावा असा तुम्हाला वाटणारा डेटा निवडा"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"या अ‍ॅपने Health Connect ला रीड किंवा राइट करावा असा तुम्हाला वाटणारा डेटा निवडा"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"या अ‍ॅपने Health Connect वरून रीड करावा असा तुम्हाला वाटणारा डेटा निवडा"</string>
-    <string name="matchmaking_screen_title" msgid="7839701301617377279">"अ‍ॅप्सदरम्यान डेटा शेअर करा"</string>
+    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <skip />
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> यामधील डेटा"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Health Connect वापरून <xliff:g id="APP_NAME">%1$s</xliff:g> अ‍ॅपला या डिव्हाइसवरील इतर अ‍ॅप्समधील डेटा वाचण्याची अनुमती द्या. तुम्ही अ‍ॅक्सेस दिलेल्या इतर अ‍ॅप्सद्वारेदेखील हा डेटा वाचला जाऊ शकतो."</string>
+    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"हा डेटा सिंक करू शकणारी अ‍ॅप्स"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"हा डेटा सिंक करू शकणारी डिव्हाइस"</string>
+    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
+    <skip />
+    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> तुमचा डेटा कसा वापरते ते त्यांच्या "<a href="%2$s">"गोपनीयता धोरण"</a>" यामध्ये जाणून घ्या."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Health Connect तुम्हाला तुमच्या एकाहून अधिक अ‍ॅप्सदरम्यान आरोग्य आणि फिटनेसशी संबंधित डेटा शेअर करू देते. हे तुमचा डेटा सुरक्षित ठेवून तुम्हाला इनसाइट आणि अनुभव अनलॉक करण्यास मदत करते."</string>
+    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
+    <skip />
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect बद्दल आणखी बरेच काही"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"विस्तार करा"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"कोलॅप्स करा"</string>
@@ -1222,6 +1229,8 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"तुमच्या आरोग्यासंबंधित डेटाच्या अतिरिक्त सुरक्षेसाठी, या डिव्हाइससाठी पिन, पॅटर्न किंवा पासवर्ड सेट करा"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"स्क्रीन लॉक सेट करा"</string>
     <string name="select_all" msgid="837499881590001166">"सर्व निवडा"</string>
+    <!-- no translation found for a11y_action_select (8149815243533964711) -->
+    <skip />
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"कनेक्ट केलेली अ‍ॅप्स यापुढे Health Connect मधील हा डेटा रीड करू शकणार नाहीत"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"खूण केली आहे"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"खूण केली नाही"</string>
@@ -1325,8 +1334,10 @@
     <string name="devices_current_device" msgid="6388308185566619743">"सद्य डिव्हाइस"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"अज्ञात डिव्हाइस"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"डिव्हाइसची माहिती"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"या डिव्हाइसद्वारे गोळा केलेला डेटा Health Connect मध्ये स्टोअर केला जाईल, जिथे कनेक्ट केलेली अ‍ॅप्स तो ॲक्सेस करतील"</string>
-    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"हे डिव्हाइस स्टेप ट्रॅकिंगला सपोर्ट करत नाही पण तरीही त्याचा डेटा Health Connect मध्ये स्टोअर केलेला आहे"</string>
+    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
+    <skip />
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"हे डिव्हाइस स्टेप ट्रॅक करत नाही"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"राइट करण्याची अनुमती आहे"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"डिव्हाइसमधील डेटा"</string>
@@ -1336,12 +1347,14 @@
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"कनेक्ट केलेली अ‍ॅप्स अ‍ॅक्सेस करण्यासाठी या डिव्हाइसद्वारे माग ठेवलेल्या पायऱ्या आता Health Connect मध्ये स्टोअर केल्या आहेत"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"डिसमिस करा"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"पुनरावलोकन करा"</string>
-    <string name="native_steps_notification_title" msgid="4059138095111818516">"पायऱ्या आता Health Connect मध्ये आहेत"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"कनेक्ट केलेली अ‍ॅप्स अ‍ॅक्सेस करण्यासाठी या डिव्हाइसद्वारे माग ठेवलेल्या पायऱ्या आता Health Connect मध्ये स्टोअर केल्या आहेत"</string>
+    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
+    <skip />
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"तुमची आरोग्यविषयक अ‍ॅप्स"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"तुमचा आरोग्याशी संबंधित डेटा"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"प्राधान्ये"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Health Connect तुम्हाला तुमच्या एकाहून अधिक अ‍ॅप्सदरम्यान आरोग्य आणि फिटनेसशी संबंधित डेटा शेअर करू देते. हे तुमचा डेटा सुरक्षित ठेवून तुम्हाला इनसाइट आणि अनुभव अनलॉक करण्यास मदत करते."</string>
+    <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect तुम्हाला एकाहून अधिक डेटा स्रोतांदरम्यान तुमचा आरोग्य आणि फिटनेस डेटा शेअर करू देते. हे तुमचा डेटा सुरक्षित ठेवून तुम्हाला इनसाइट आणि अनुभव अनलॉक करण्यास मदत करते."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect बद्दल आणखी बरेच काही"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"तुमचा डेटा आणि कोणती अ‍ॅप्स तो अ‍ॅक्सेस करू शकतात ते पहा"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"तुमचा डेटा अलीकडे वापरलेली अ‍ॅप्स"</string>
@@ -1350,8 +1363,10 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"कंपॅटिबल अ‍ॅप्स पहा"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"आणखी आरोग्यविषयक अ‍ॅप्स पहा"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"कनेक्ट केलेले नाही"</string>
-    <string name="connect_app_button_content_description" msgid="296796277841527165">"हे अ‍ॅप Health Connect शी कनेक्ट करण्यासाठी क्लिक करा"</string>
-    <string name="devices_screen_description" msgid="8171826001441781372">"कोणती डिव्हाइस Health Connect वर डेटा सिंक करू शकतात हे नियंत्रित करा"</string>
+    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
+    <skip />
+    <!-- no translation found for devices_screen_description (5009317766902606842) -->
+    <skip />
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"सुरू केली आहेत"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"सुरू केलेल्या नाहीत"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"हा फोन"</string>
@@ -1381,8 +1396,10 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"मुरूम लिहा"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"ठिसूळ नखे वाचा"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"ठिसूळ नखे लिहा"</string>
-    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"तोंडाची जळजळ वाचा "</string>
-    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"तोंडाची जळजळ लिहा "</string>
+    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
+    <skip />
+    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
+    <skip />
     <string name="chills_read_content_description" msgid="7244946135559432433">"हुडहुडी भरणे वाचा"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"हुडहुडी भरणे लिहा"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"निर्जलीकरण वाचा"</string>
@@ -1614,4 +1631,6 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"घरघर"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"घरघर"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> पैकी <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> निवडल्या"</string>
+    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
+    <skip />
 </resources>

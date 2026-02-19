@@ -20,12 +20,10 @@ import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.fromFitnessPermissionType
-import com.android.healthconnect.controller.shared.HealthDataCategoryInt
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
-import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.LoadPriorityListUseCase
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.toInstantAtStartOfDay
@@ -34,6 +32,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 @Singleton
@@ -42,11 +41,12 @@ class LoadLastDateWithPriorityDataUseCase
 constructor(
     private val healthConnectManager: HealthConnectManager,
     private val loadEntriesHelper: LoadEntriesHelper,
-    @param:LoadPriorityListUseCase
-    private val loadPriorityListUseCase: BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>,
+    private val loadPriorityListUseCase: ILoadPriorityListUseCase,
     private val timeSource: TimeSource,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : BaseUseCase<FitnessPermissionType, LocalDate?>(dispatcher) {
+) :
+    BaseUseCase<FitnessPermissionType, LocalDate?>(dispatcher),
+    ILoadLastDateWithPriorityDataUseCase {
 
     /**
      * Returns the last local date with data for this health permission type, from the data owned by
@@ -94,7 +94,7 @@ constructor(
         val datesWithData = suspendCancellableCoroutine { continuation ->
             healthConnectManager.queryActivityDates(
                 recordTypes,
-                Runnable::run,
+                dispatcher.asExecutor(),
                 continuation.asOutcomeReceiver(),
             )
         }
@@ -144,3 +144,5 @@ constructor(
         return maxOf(firstDate, secondDate)
     }
 }
+
+interface ILoadLastDateWithPriorityDataUseCase : UseCaseContract<FitnessPermissionType, LocalDate?>

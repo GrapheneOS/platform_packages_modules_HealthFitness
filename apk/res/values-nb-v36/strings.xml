@@ -23,7 +23,8 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"Velg hvilke trenings- og velværedata denne appen skal ha tilgang til. Dette inkluderer data som spores og lagres på denne enheten. <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"Velg hvilke trenings- og velværedata denne appen skal ha tilgang til. Dette inkluderer data som spores og lagres på denne enheten. <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"Velg hvilke trenings- og velværedata denne appen skal ha tilgang til. Dette inkluderer data som spores og lagres på denne enheten. <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <string name="request_learn_more" msgid="2665249156693144626">"Finn ut mer"</string>
+    <!-- no translation found for request_learn_more (563937923005882945) -->
+    <skip />
     <string name="settings_manage_permission" msgid="3585762257420446893">"Helse, trening og velvære"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"Helse, trening og velvære"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"Trening og velvære"</string>

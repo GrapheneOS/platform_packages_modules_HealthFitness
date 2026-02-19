@@ -496,6 +496,26 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mCurrentForegroundUser = currentForegroundUser;
     }
 
+    /** This override is needed to enable testing of multiple device data providers in CTS. */
+    @Override
+    public int handleShellCommand(
+            @NonNull ParcelFileDescriptor in,
+            @NonNull ParcelFileDescriptor out,
+            @NonNull ParcelFileDescriptor err,
+            @NonNull String[] args) {
+        if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            return super.handleShellCommand(in, out, err, args);
+        }
+
+        return new HealthConnectShellCommand()
+                .exec(
+                        this,
+                        in.getFileDescriptor(),
+                        out.getFileDescriptor(),
+                        err.getFileDescriptor(),
+                        args);
+    }
+
     @Override
     public void grantHealthPermission(String packageName, String permissionName, UserHandle user) {
         checkParamsNonNull(packageName, permissionName, user);
@@ -4302,7 +4322,10 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     private void enforceMemoryRateLimit(List<Long> recordsSize, long recordsChunkSize) {
-        recordsSize.forEach(mRateLimiter::checkMaxRecordMemoryUsage);
+        // IPC size not calculated for local calls (e.g., from HealthConnectShellCommand)
+        if (recordsSize != null) {
+            recordsSize.forEach(mRateLimiter::checkMaxRecordMemoryUsage);
+        }
         mRateLimiter.checkMaxChunkMemoryUsage(recordsChunkSize);
     }
 

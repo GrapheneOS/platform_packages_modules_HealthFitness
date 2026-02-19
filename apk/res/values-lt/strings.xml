@@ -403,13 +403,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Pasirinkite duomenis, kuriuos ši programa galės rašyti naudojant „Health Connect“"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Pasirinkite duomenis, kuriuos ši programa galės skaityti ar rašyti naudojant „Health Connect“"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Pasirinkite duomenis, kuriuos ši programa galės skaityti iš „Health Connect“"</string>
-    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Bendrinkite duomenis tarp programų"</string>
+    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <skip />
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Duomenys iš „<xliff:g id="APP_NAME">%1$s</xliff:g>“"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Leisti programai „<xliff:g id="APP_NAME">%1$s</xliff:g>“ skaityti duomenis iš kitų programų šiame įrenginyje naudojant „Health Connect“ Šiuos duomenis taip pat gali skaityti kitos programos, kurioms suteikiate prieigą."</string>
+    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Programos, kurios gali sinchronizuoti šiuos duomenis"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Įrenginiai, kurie gali sinchronizuoti šiuos duomenis"</string>
+    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
+    <skip />
+    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Sužinokite, kaip „<xliff:g id="APP_NAME">%1$s</xliff:g>“ naudoja jūsų duomenis, jos "<a href="%2$s">"privatumo politikoje"</a>"."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Naudodami „Health Connect“ galite bendrinti sveikatos ir kūno rengybos duomenis tarp kelių programų. Tai padeda gauti įžvalgų ir funkcijų, o jūsų duomenys lieka saugūs."</string>
+    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
+    <skip />
     <string name="more_about_health_connect" msgid="8105996800108743876">"Daugiau apie „Health Connect“"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"išskleisti"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"sutraukti"</string>
@@ -1222,6 +1229,8 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Kad pagerintumėte sveikatos duomenų saugą, nustatykite šio įrenginio PIN kodą, atrakinimo piešinį arba slaptažodį"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Nustatyti ekrano užraktą"</string>
     <string name="select_all" msgid="837499881590001166">"Pasirinkti viską"</string>
+    <!-- no translation found for a11y_action_select (8149815243533964711) -->
+    <skip />
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Prijungtos programos nebegalės skaityti šių duomenų iš „Health Connect“"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Pažymėta"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Nepažymėta"</string>
@@ -1325,8 +1334,10 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Dabartinis įrenginys"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Nežinomas įrenginys"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Įrenginio informacija"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"Šio įrenginio surinkti duomenys bus saugomi „Health Connect“, kur prijungtos programos galės juos pasiekti"</string>
-    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Šis įrenginys nepalaiko žingsnių stebėjimo, bet vis tiek saugo duomenis sistemoje „Health Connect“"</string>
+    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
+    <skip />
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Šis įrenginys nestebi žingsnių"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Leidžiama rašyti"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Įrenginio duomenys"</string>
@@ -1336,12 +1347,14 @@
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Šio įrenginio stebimi žingsniai dabar saugomi sistemoje „Health Connect“, kad prijungtos programos galėtų juos pasiekti"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Uždaryti"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Peržiūrėti"</string>
-    <string name="native_steps_notification_title" msgid="4059138095111818516">"Žingsniai saugomi sistemoje „Health Connect“"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"Šio įrenginio stebimi žingsniai dabar saugomi sistemoje „Health Connect“, kad prijungtos programos galėtų juos pasiekti"</string>
+    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
+    <skip />
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Jūsų sveikatos programos"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Jūsų sveikatos duomenys"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Nuostatos"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Naudodami „Health Connect“ galite bendrinti sveikatos ir kūno rengybos duomenis su keliomis programomis. Tai padeda gauti įžvalgų ir funkcijų, o jūsų duomenys lieka saugūs."</string>
+    <string name="home_screen_footer" msgid="3704528068051346905">"Naudojant „Health Connect“ galima bendrinti sveikatos ir kūno rengybos duomenis su keliais duomenų šaltiniais. Tai padeda gauti įžvalgų ir funkcijų, o jūsų duomenys lieka saugūs."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Daugiau apie „Health Connect“"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Jūsų duomenys ir programos, kurios gali juos pasiekti"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Programos, kurios neseniai naudojo jūsų duomenis"</string>
@@ -1350,8 +1363,10 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Suderinamų programų peržiūra"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Žr. daugiau sveikatos programų"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Neprisijungta"</string>
-    <string name="connect_app_button_content_description" msgid="296796277841527165">"Spustelėkite, kad prijungtumėte šią programą prie „Health Connect“"</string>
-    <string name="devices_screen_description" msgid="8171826001441781372">"Valdykite, kurie įrenginiai gali sinchronizuoti duomenis su „Health Connect“"</string>
+    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
+    <skip />
+    <!-- no translation found for devices_screen_description (5009317766902606842) -->
+    <skip />
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Įgalinta"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Neįgalinta"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Šis telefonas"</string>
@@ -1381,8 +1396,10 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Rašyti aknės duomenis"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Skaityti trapių nagų duomenis"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Rašyti trapių nagų duomenis"</string>
-    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Skaityti degančios burnos duomenis "</string>
-    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Rašyti degančios burnos duomenis "</string>
+    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
+    <skip />
+    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
+    <skip />
     <string name="chills_read_content_description" msgid="7244946135559432433">"Skaityti šaltkrėčio duomenis"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Rašyti šaltkrėčio duomenis"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Skaityti dehidratacijos duomenis"</string>
@@ -1614,4 +1631,6 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Švokštimas"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"švokštimas"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Pasirinkta: <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> iš <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
+    <skip />
 </resources>

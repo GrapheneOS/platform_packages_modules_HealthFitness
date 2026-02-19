@@ -23,7 +23,8 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"ಈ ಆ್ಯಪ್ ಯಾವೆಲ್ಲ ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು ಎಂಬುದನ್ನು ಆಯ್ಕೆಮಾಡಿ. ಇದು ಈ ಸಾಧನದಲ್ಲಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಲಾದ ಮತ್ತು ಸಂಗ್ರಹಿಸಲಾದ ಡೇಟಾವನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"ಈ ಆ್ಯಪ್ ಯಾವೆಲ್ಲ ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು ಎಂಬುದನ್ನು ಆಯ್ಕೆಮಾಡಿ. ಇದು ಈ ಸಾಧನದಲ್ಲಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಲಾದ ಮತ್ತು ಸಂಗ್ರಹಿಸಲಾದ ಡೇಟಾವನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"ಈ ಆ್ಯಪ್ ಯಾವೆಲ್ಲ ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು ಎಂಬುದನ್ನು ಆಯ್ಕೆಮಾಡಿ. ಇದು ಈ ಸಾಧನದಲ್ಲಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಲಾದ ಮತ್ತು ಸಂಗ್ರಹಿಸಲಾದ ಡೇಟಾವನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <string name="request_learn_more" msgid="2665249156693144626">"ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ"</string>
+    <!-- no translation found for request_learn_more (563937923005882945) -->
+    <skip />
     <string name="settings_manage_permission" msgid="3585762257420446893">"ಆರೋಗ್ಯ, ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ಯೋಗಕ್ಷೇಮ"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"ಆರೋಗ್ಯ, ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ವೆಲ್‌ನೆಸ್"</string>

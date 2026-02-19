@@ -15,15 +15,10 @@
  */
 package com.android.healthconnect.controller.data.access
 
-import android.health.connect.HealthConnectManager
 import android.health.connect.HealthDataCategory
-import android.health.connect.RecordTypeInfoResponse
-import android.health.connect.datatypes.Record
-import android.health.connect.datatypes.SymptomRecord
-import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
-import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
+import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.PermissionsAccessType
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.healthPermissionTypes
 import com.android.healthconnect.controller.shared.HealthPermissionReader
@@ -31,13 +26,12 @@ import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.isDevicePackage
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.asExecutor
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
 
 /**
  * Use case to load a list of apps that have access to symptom data types.
@@ -49,18 +43,28 @@ import kotlinx.coroutines.withContext
 class LoadSymptomAccessUseCase
 @Inject
 constructor(
-    private val healthConnectManager: HealthConnectManager,
     private val loadGrantedHealthPermissionsUseCase: IGetGrantedHealthPermissionsUseCase,
+    private val loadSymptomContributorAppsUseCase: ILoadSymptomContributorAppsUseCase,
     private val healthPermissionReader: HealthPermissionReader,
     private val appInfoReader: AppInfoReader,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : BaseUseCase<Unit, Map<AppAccessState, List<AppAccessMetadata>>>(dispatcher) {
+) :
+    BaseUseCase<Unit, Map<AppAccessState, List<AppAccessMetadata>>>(dispatcher),
+    ILoadSymptomAccessUseCase {
 
     override suspend fun execute(input: Unit): Map<AppAccessState, List<AppAccessMetadata>> {
         val appsWithHealthPermissions: List<String> =
             healthPermissionReader.getAppsWithFitnessPermissions()
 
-        val contributingApps: List<AppMetadata> = getSymptomContributingApps()
+        val contributingAppsResult = loadSymptomContributorAppsUseCase.invoke(Unit)
+        val contributingApps: List<AppMetadata> =
+            when (contributingAppsResult) {
+                is UseCaseResults.Success -> {
+                    contributingAppsResult.data
+                }
+                // TODO should we propagate error in this case?
+                else -> emptyList<AppMetadata>()
+            }
 
         val readAppMetadataSet: MutableSet<AppAccessMetadata> = mutableSetOf()
         val writeAppMetadataSet: MutableSet<AppAccessMetadata> = mutableSetOf()
@@ -81,7 +85,8 @@ constructor(
             if (
                 symptomPermissionTypes.any { symptomType ->
                     permissionsPerPackage.contains(
-                        FitnessPermission(symptomType, PermissionsAccessType.READ).toString()
+                        HealthPermission.FitnessPermission(symptomType, PermissionsAccessType.READ)
+                            .toString()
                     )
                 }
             ) {
@@ -91,7 +96,8 @@ constructor(
             if (
                 symptomPermissionTypes.any { symptomType ->
                     permissionsPerPackage.contains(
-                        FitnessPermission(symptomType, PermissionsAccessType.WRITE).toString()
+                        HealthPermission.FitnessPermission(symptomType, PermissionsAccessType.WRITE)
+                            .toString()
                     )
                 }
             ) {
@@ -123,32 +129,12 @@ constructor(
         )
     }
 
-    private suspend fun getSymptomContributingApps(): List<AppMetadata> =
-        withContext(dispatcher) {
-            try {
-                val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
-                    suspendCancellableCoroutine { continuation ->
-                        healthConnectManager.queryAllRecordTypesInfo(
-                            dispatcher.asExecutor(),
-                            continuation.asOutcomeReceiver(),
-                        )
-                    }
-                val packages =
-                    recordTypeInfoMap[SymptomRecord::class.java]?.contributingPackages?.map {
-                        it.packageName
-                    } ?: emptyList()
-                packages
-                    .map { appInfoReader.getAppMetadata(it) }
-                    .distinctBy { it.packageName }
-                    .sortedBy { it.appName }
-            } catch (e: Exception) {
-                emptyList()
-            }
-        }
-
     private fun alphabeticallySortedMetadataList(
         packageNames: Set<AppAccessMetadata>
     ): List<AppAccessMetadata> {
         return packageNames.sortedBy { appAccessMetadata -> appAccessMetadata.appMetadata.appName }
     }
 }
+
+interface ILoadSymptomAccessUseCase :
+    UseCaseContract<Unit, Map<AppAccessState, List<AppAccessMetadata>>>

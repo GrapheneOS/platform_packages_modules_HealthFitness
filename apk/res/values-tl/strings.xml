@@ -403,13 +403,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Piliin ang data na gusto mong i-write ng app na ito sa Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Piliin ang data na gusto mong i-read o i-write ng app na ito sa Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Piliin ang data na gusto mong i-read ng app na ito sa Health Connect"</string>
-    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Mag-share ng data sa pagitan ng mga app"</string>
+    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <skip />
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data mula sa <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Payagan ang <xliff:g id="APP_NAME">%1$s</xliff:g> app na mag-read ng data mula sa iba pang app sa device na ito gamit ang Health Connect. Puwede ring ma-read ng iba pang app na bibigyan mo ng access ang data na ito."</string>
+    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Mga app na nakakapag-sync ng data na ito"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Mga device na puwedeng mag-sync ng data na ito"</string>
+    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
+    <skip />
+    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Alamin kung paano ginagamit ng <xliff:g id="APP_NAME">%1$s</xliff:g> ang iyong data sa kanilang "<a href="%2$s">"patakaran sa privacy"</a>"."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Nagbibigay-daan sa iyo ang Health Connect na i-share ang iyong data sa kalusugan at fitness sa pagitan ng maraming app. Nakakatulong ito sa iyong mag-unlock ng mga insight at experience habang pinapanatiling secure ang data mo."</string>
+    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
+    <skip />
     <string name="more_about_health_connect" msgid="8105996800108743876">"Higit pa tungkol sa Health Connect"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"i-expand"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"i-collapse"</string>
@@ -1222,6 +1229,8 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Para sa karagdagang seguridad ng data ng kalusugan mo, magtakda ng PIN, pattern, o password para sa device na ito"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Magtakda ng screen lock"</string>
     <string name="select_all" msgid="837499881590001166">"Piliin lahat"</string>
+    <!-- no translation found for a11y_action_select (8149815243533964711) -->
+    <skip />
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Hindi na mare-read ng mga nakakonektang app ang data na ito mula sa Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"May check"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Walang check"</string>
@@ -1325,8 +1334,10 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Kasalukuyang device"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Hindi kilalang device"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Impormasyon ng device"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"Iso-store ang data na nakolekta ng device na ito sa Health Connect, kung saan ia-access ito ng mga nakakonektang app"</string>
-    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Hindi sinusuportahan ng device na ito ang pag-track ng hakbang, pero may data pa rin na naka-store sa Health Connect"</string>
+    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
+    <skip />
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Hindi nagta-track ang device na ito ng mga hakbang."</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Pinapayagang i-write"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Data ng device"</string>
@@ -1336,12 +1347,15 @@
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Naka-store na sa Health Connect ang mga hakbang na tina-track ng device na ito para ma-access ng mga nakakonektang app"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"I-dismiss"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Suriin"</string>
-    <string name="native_steps_notification_title" msgid="4059138095111818516">"Nasa Health Connect na ang mga hakbang"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"Naka-store na sa Health Connect ang mga hakbang na tina-track ng device na ito para ma-access ng mga nakakonektang app"</string>
+    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
+    <skip />
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Ang iyong mga pangkalusugang app"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Ang iyong data sa kalusugan"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Mga Preference"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Nagbibigay-daan sa iyo ang Health Connect na i-share ang iyong data sa kalusugan at fitness sa pagitan ng maraming app. Nakakatulong ito sa iyong mag-unlock ng mga insight at experience habang pinapanatiling secure ang data mo."</string>
+    <!-- no translation found for home_screen_footer (3704528068051346905) -->
+    <skip />
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Higit pa tungkol sa Health Connect"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Ang iyong data at kung aling mga app ang may access dito"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Mga app na kamakailang ginamit ang iyong data"</string>
@@ -1350,8 +1364,10 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Tingnan ang mga compatible na app"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Tumingin pa sa mga pangkalusugang app"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Hindi nakakonekta"</string>
-    <string name="connect_app_button_content_description" msgid="296796277841527165">"I-click para ikonekta ang app na ito sa Health Connect"</string>
-    <string name="devices_screen_description" msgid="8171826001441781372">"Kontrolin kung aling mga device ang makakapag-sync ng data sa Health Connect"</string>
+    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
+    <skip />
+    <!-- no translation found for devices_screen_description (5009317766902606842) -->
+    <skip />
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Naka-enable"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Hindi naka-enable"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Ang teleponong ito"</string>
@@ -1381,8 +1397,10 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"I-write ang acne"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"I-read ang madaling maputol na kuko"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"I-write ang madaling maputol na kuko"</string>
-    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"I-read ang mahapding bibig "</string>
-    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"I-write ang mahapding bibig "</string>
+    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
+    <skip />
+    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
+    <skip />
     <string name="chills_read_content_description" msgid="7244946135559432433">"I-read ang panginginig"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"I-write ang panginginig"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"I-read ang dehydration"</string>
@@ -1614,4 +1632,6 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Maingay na paghinga"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"maingay na paghinga"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> sa <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> ang napili"</string>
+    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
+    <skip />
 </resources>

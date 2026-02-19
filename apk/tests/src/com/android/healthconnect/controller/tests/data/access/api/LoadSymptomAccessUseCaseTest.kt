@@ -13,16 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller.tests.data.access
+package com.android.healthconnect.controller.tests.data.access.api
 
 import android.content.Context
-import android.health.connect.HealthConnectException
-import android.health.connect.HealthConnectManager
 import android.health.connect.HealthPermissions
 import android.health.connect.RecordTypeInfoResponse
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SymptomRecord
-import android.os.OutcomeReceiver
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.access.AppAccessMetadata
@@ -34,7 +31,10 @@ import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
+import com.android.healthconnect.controller.tests.utils.TEST_APP
+import com.android.healthconnect.controller.tests.utils.TEST_APP_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
@@ -48,7 +48,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import java.util.concurrent.Executor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -56,7 +55,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
-import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
@@ -66,13 +64,14 @@ class LoadSymptomAccessUseCaseTest {
 
     @get:Rule(order = 0) val hiltRule = HiltAndroidRule(this)
     @get:Rule(order = 1) val instantTaskExecutorRule = InstantTaskExecutorRule()
-
-    private val healthConnectManager: HealthConnectManager = mock()
+    @get:Rule(order = 2) val fakeUseCaseRule = FakeUseCaseRule()
 
     private lateinit var appInfoReader: AppInfoReader
 
     private val healthPermissionReader: HealthPermissionReader = mock()
     private val fakeGetGrantedHealthPermissionsUseCase = FakeGetGrantedHealthPermissionsUseCase()
+    private val fakeLoadSymptomContributorAppsUseCase =
+        fakeUseCaseRule.watch(FakeLoadSymptomTypeContributorAppsUseCase())
     private val recentAccessLogsUseCase: IQueryRecentAccessLogsUseCase =
         FakeQueryRecentAccessLogsUseCase()
 
@@ -97,8 +96,8 @@ class LoadSymptomAccessUseCaseTest {
 
         useCase =
             LoadSymptomAccessUseCase(
-                healthConnectManager,
                 fakeGetGrantedHealthPermissionsUseCase,
+                fakeLoadSymptomContributorAppsUseCase,
                 healthPermissionReader,
                 appInfoReader,
                 Dispatchers.Main,
@@ -115,34 +114,12 @@ class LoadSymptomAccessUseCaseTest {
             mapOf<Class<out Record>, RecordTypeInfoResponse>(
                 SymptomRecord::class.java to recordTypeInfoResponse
             )
-
-        doAnswer { invocation ->
-                val receiver =
-                    invocation.arguments[1]
-                        as
-                        OutcomeReceiver<
-                            Map<Class<out Record>, RecordTypeInfoResponse>,
-                            HealthConnectException,
-                        >
-                receiver.onResult(answerMap)
-                null
-            }
-            .whenever(healthConnectManager)
-            .queryAllRecordTypesInfo(
-                any<Executor>(),
-                any<
-                    OutcomeReceiver<
-                        Map<Class<out Record>, RecordTypeInfoResponse>,
-                        HealthConnectException,
-                    >
-                >(),
-            )
     }
 
     @Test
     fun execute_noApps_returnsEmpty() = runTest {
         whenever(healthPermissionReader.getAppsWithFitnessPermissions()).thenReturn(emptyList())
-        mockContributingApps(emptyList())
+        fakeLoadSymptomContributorAppsUseCase.updateList(emptyList())
         (recentAccessLogsUseCase as FakeQueryRecentAccessLogsUseCase).recentAccessMap(emptyMap())
 
         val result = useCase.invoke(Unit)
@@ -158,7 +135,8 @@ class LoadSymptomAccessUseCaseTest {
     fun execute_appWithReadSymptom_active_returnsInRead() = runTest {
         whenever(healthPermissionReader.getAppsWithFitnessPermissions())
             .thenReturn(listOf(TEST_APP_PACKAGE_NAME))
-        mockContributingApps(listOf(TEST_APP_PACKAGE_NAME))
+        fakeLoadSymptomContributorAppsUseCase.updateList(listOf(TEST_APP))
+
         fakeGetGrantedHealthPermissionsUseCase.updateData(
             TEST_APP_PACKAGE_NAME,
             listOf(HealthPermissions.READ_SYMPTOM_ABDOMINAL_PAIN),
@@ -181,7 +159,7 @@ class LoadSymptomAccessUseCaseTest {
     fun execute_appWithWriteSymptom_active_returnsInWrite() = runTest {
         whenever(healthPermissionReader.getAppsWithFitnessPermissions())
             .thenReturn(listOf(TEST_APP_PACKAGE_NAME))
-        mockContributingApps(listOf(TEST_APP_PACKAGE_NAME))
+        fakeLoadSymptomContributorAppsUseCase.updateList(listOf(TEST_APP))
         fakeGetGrantedHealthPermissionsUseCase.updateData(
             TEST_APP_PACKAGE_NAME,
             listOf(HealthPermissions.WRITE_SYMPTOM_ACNE),
@@ -204,7 +182,7 @@ class LoadSymptomAccessUseCaseTest {
     fun execute_appWithReadWriteSymptom_active_returnsInReadWrite() = runTest {
         whenever(healthPermissionReader.getAppsWithFitnessPermissions())
             .thenReturn(listOf(TEST_APP_PACKAGE_NAME))
-        mockContributingApps(listOf(TEST_APP_PACKAGE_NAME))
+        fakeLoadSymptomContributorAppsUseCase.updateList(listOf(TEST_APP))
         fakeGetGrantedHealthPermissionsUseCase.updateData(
             TEST_APP_PACKAGE_NAME,
             listOf(
@@ -231,7 +209,7 @@ class LoadSymptomAccessUseCaseTest {
     fun execute_appWithNonSymptomPerms_returnsEmpty() = runTest {
         whenever(healthPermissionReader.getAppsWithFitnessPermissions())
             .thenReturn(listOf(TEST_APP_PACKAGE_NAME))
-        mockContributingApps(emptyList())
+        fakeLoadSymptomContributorAppsUseCase.updateList(emptyList())
         fakeGetGrantedHealthPermissionsUseCase.updateData(
             TEST_APP_PACKAGE_NAME,
             listOf(HealthPermissions.READ_STEPS, HealthPermissions.WRITE_WEIGHT),
@@ -252,7 +230,7 @@ class LoadSymptomAccessUseCaseTest {
     @Test
     fun execute_inactiveAppWithNoPermissions_AddsToInactive() = runTest {
         whenever(healthPermissionReader.getAppsWithFitnessPermissions()).thenReturn(emptyList())
-        mockContributingApps(listOf(TEST_APP_PACKAGE_NAME))
+        fakeLoadSymptomContributorAppsUseCase.updateList(listOf(TEST_APP))
         fakeGetGrantedHealthPermissionsUseCase.updateData(TEST_APP_PACKAGE_NAME, emptyList())
 
         val result = useCase.invoke(Unit)
@@ -268,7 +246,7 @@ class LoadSymptomAccessUseCaseTest {
     fun execute_contributingAppWithPermissions_notInactive() = runTest {
         whenever(healthPermissionReader.getAppsWithFitnessPermissions())
             .thenReturn(listOf(TEST_APP_PACKAGE_NAME))
-        mockContributingApps(listOf(TEST_APP_PACKAGE_NAME))
+        fakeLoadSymptomContributorAppsUseCase.updateList(listOf(TEST_APP))
         fakeGetGrantedHealthPermissionsUseCase.updateData(
             TEST_APP_PACKAGE_NAME,
             listOf(HealthPermissions.READ_SYMPTOM_COUGH),
@@ -285,7 +263,7 @@ class LoadSymptomAccessUseCaseTest {
     fun execute_multipleApps_categorizesCorrectly() = runTest {
         whenever(healthPermissionReader.getAppsWithFitnessPermissions())
             .thenReturn(listOf(TEST_APP_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2))
-        mockContributingApps(listOf(TEST_APP_PACKAGE_NAME, TEST_APP_PACKAGE_NAME_2))
+        fakeLoadSymptomContributorAppsUseCase.updateList(listOf(TEST_APP, TEST_APP_2))
         fakeGetGrantedHealthPermissionsUseCase.updateData(
             TEST_APP_PACKAGE_NAME,
             listOf(HealthPermissions.READ_SYMPTOM_COUGH),

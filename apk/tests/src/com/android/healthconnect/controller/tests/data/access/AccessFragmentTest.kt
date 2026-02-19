@@ -16,7 +16,6 @@
 package com.android.healthconnect.controller.tests.data.access
 
 import android.content.Context
-import android.health.connect.HealthConnectManager
 import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
@@ -40,7 +39,6 @@ import com.android.healthconnect.controller.data.access.AppAccessState
 import com.android.healthconnect.controller.data.appdata.AppDataFragment.Companion.PERMISSION_TYPE_NAME_KEY
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
-import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.tests.utils.TEST_APP
@@ -54,7 +52,6 @@ import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import dagger.hilt.android.testing.UninstallModules
 import java.util.Locale
 import org.hamcrest.Matchers.not
 import org.junit.After
@@ -70,14 +67,12 @@ import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
-@UninstallModules(HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
 class AccessFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @BindValue val viewModel: AccessViewModel = mock()
-    @BindValue val healthConnectManager: HealthConnectManager = mock()
     private lateinit var navHostController: TestNavHostController
     private lateinit var context: Context
     @BindValue val healthConnectLogger: HealthConnectLogger = mock()
@@ -294,7 +289,7 @@ class AccessFragmentTest {
         }
 
         launchFragment<AccessFragment>(distanceBundle) {
-                navHostController.setGraph(R.navigation.data_nav_graph_new_ia)
+                navHostController.setGraph(R.navigation.entries_and_access_nav_graph)
                 navHostController.setCurrentDestination(R.id.entriesAndAccessFragment)
                 Navigation.setViewNavController(this.requireView(), navHostController)
             }
@@ -323,7 +318,7 @@ class AccessFragmentTest {
         }
 
         launchFragment<AccessFragment>(distanceBundle) {
-                navHostController.setGraph(R.navigation.data_nav_graph_new_ia)
+                navHostController.setGraph(R.navigation.entries_and_access_nav_graph)
                 navHostController.setCurrentDestination(R.id.entriesAndAccessFragment)
                 Navigation.setViewNavController(this.requireView(), navHostController)
             }
@@ -350,7 +345,7 @@ class AccessFragmentTest {
         }
 
         launchFragment<AccessFragment>(distanceBundle) {
-                navHostController.setGraph(R.navigation.data_nav_graph_new_ia)
+                navHostController.setGraph(R.navigation.entries_and_access_nav_graph)
                 navHostController.setCurrentDestination(R.id.entriesAndAccessFragment)
                 Navigation.setViewNavController(this.requireView(), navHostController)
             }

@@ -23,7 +23,8 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"Vyberte, k jakým údajům o kondici a kvalitě života bude mít tato aplikace přístup. Patří sem data sledovaná a uložená v tomto zařízení. <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"Vyberte, k jakým údajům o kondici a kvalitě života bude mít tato aplikace přístup. Patří sem data sledovaná a uložená v tomto zařízení. <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"Vyberte, k jakým údajům o kondici a kvalitě života bude mít tato aplikace přístup. Patří sem data sledovaná a uložená v tomto zařízení. <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <string name="request_learn_more" msgid="2665249156693144626">"Další informace"</string>
+    <!-- no translation found for request_learn_more (563937923005882945) -->
+    <skip />
     <string name="settings_manage_permission" msgid="3585762257420446893">"Zdraví, kondice a  kvalita života"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"Zdraví, kondice a  kvalita života"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"Kondice a kvalita života"</string>

@@ -403,13 +403,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Alege datele pe care dorești să le scrie această aplicație în Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Alege datele pe care dorești să le citească sau scrie această aplicație în Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Alege datele pe care dorești să le citească această aplicație în Health Connect"</string>
-    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Trimite date între aplicații"</string>
+    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <skip />
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Date de la <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Permite ca aplicația <xliff:g id="APP_NAME">%1$s</xliff:g> să citească date din alte aplicații de pe acest dispozitiv folosind Health Connect. Aceste date pot fi citite și de alte aplicații cărora le acorzi acces."</string>
+    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplicații care pot sincroniza aceste date"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Dispozitive care pot sincroniza aceste date"</string>
+    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
+    <skip />
+    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Află cum îți folosește <xliff:g id="APP_NAME">%1$s</xliff:g> datele, în "<a href="%2$s">"politica de confidențialitate"</a>"."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Cu Health Connect, poți să trimiți date despre sănătate și fitness între mai multe aplicații. Astfel, poți să descoperi statistici și experiențe, păstrându-ți datele în siguranță."</string>
+    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
+    <skip />
     <string name="more_about_health_connect" msgid="8105996800108743876">"Mai multe despre Health Connect"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"extinde"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"restrânge"</string>
@@ -1222,6 +1229,8 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Pentru mai multă securitate pentru datele de sănătate, setează un PIN, un model sau o parolă pentru acest dispozitiv"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Setează blocarea ecranului"</string>
     <string name="select_all" msgid="837499881590001166">"Selectează tot"</string>
+    <!-- no translation found for a11y_action_select (8149815243533964711) -->
+    <skip />
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Aplicațiile conectate nu vor mai putea să acceseze aceste date din Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Bifată"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Nebifată"</string>
@@ -1325,8 +1334,10 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Dispozitivul actual"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Dispozitiv necunoscut"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Informații despre dispozitiv"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"Datele colectate de acest dispozitiv vor fi stocate în Health Connect, unde vor fi accesate de aplicațiile conectate"</string>
-    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Dispozitivul nu acceptă urmărirea pașilor, dar are date stocate în Health Connect"</string>
+    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
+    <skip />
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Acest dispozitiv nu urmărește pașii"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Poate scrie"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Datele de pe dispozitiv"</string>
@@ -1336,12 +1347,15 @@
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Pașii urmăriți de acest dispozitiv sunt acum stocați în Health Connect, unde pot fi accesați de aplicațiile conectate"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Închide"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Examinează"</string>
-    <string name="native_steps_notification_title" msgid="4059138095111818516">"Pașii se afișează acum în Health Connect"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"Pașii urmăriți de acest dispozitiv sunt acum stocați în Health Connect, unde pot fi accesați de aplicațiile conectate"</string>
+    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
+    <skip />
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Aplicațiile tale de sănătate"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Datele tale despre sănătate"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferințe"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Cu Health Connect, poți să trimiți date despre sănătate și fitness între mai multe aplicații. Astfel, poți să descoperi statistici și experiențe, păstrându-ți datele în siguranță."</string>
+    <!-- no translation found for home_screen_footer (3704528068051346905) -->
+    <skip />
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Mai multe despre Health Connect"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Datele tale și ce aplicații le pot accesa"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Aplicații care ți-au folosit recent datele"</string>
@@ -1350,8 +1364,10 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Vezi aplicațiile compatibile"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Vezi mai multe aplicații de sănătate"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Neconectată"</string>
-    <string name="connect_app_button_content_description" msgid="296796277841527165">"Dă clic pentru a conecta această aplicație la Health Connect"</string>
-    <string name="devices_screen_description" msgid="8171826001441781372">"Alege ce dispozitive pot sincroniza date cu Health Connect"</string>
+    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
+    <skip />
+    <!-- no translation found for devices_screen_description (5009317766902606842) -->
+    <skip />
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Activat"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Neactivat"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Acest telefon"</string>
@@ -1381,8 +1397,10 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Să scrie date despre acnee"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Să citească datele despre unghiile casante"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Să scrie date despre unghiile casante"</string>
-    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Să citească datele despre senzația de arsură la nivelul gurii"</string>
-    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Să scrie date despre senzația de arsură la nivelul gurii"</string>
+    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
+    <skip />
+    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
+    <skip />
     <string name="chills_read_content_description" msgid="7244946135559432433">"Să citească datele despre frisoane"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Să scrie date despre frisoane"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Să citească datele despre deshidratare"</string>
@@ -1614,4 +1632,6 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Respirație șuierătoare"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"respirație șuierătoare"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Ai selectat <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> din <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
+    <skip />
 </resources>

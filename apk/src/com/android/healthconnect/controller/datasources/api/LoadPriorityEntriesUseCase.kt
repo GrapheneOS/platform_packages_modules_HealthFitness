@@ -6,11 +6,9 @@ import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions
-import com.android.healthconnect.controller.shared.HealthDataCategoryInt
-import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.LoadPriorityListUseCase
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.utils.toInstantAtStartOfDay
 import java.time.LocalDate
@@ -23,10 +21,9 @@ class LoadPriorityEntriesUseCase
 @Inject
 constructor(
     private val loadEntriesHelper: LoadEntriesHelper,
-    @param:LoadPriorityListUseCase
-    private val loadPriorityListUseCase: BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>,
+    private val loadPriorityListUseCase: ILoadPriorityListUseCase,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : BaseUseCase<LoadPriorityEntriesInput, List<Record>>(dispatcher) {
+) : BaseUseCase<LoadPriorityEntriesInput, List<Record>>(dispatcher), ILoadPriorityEntriesUseCase {
 
     /**
      * Returns a list of records from the specified date originating from any of the apps on the
@@ -75,3 +72,5 @@ data class LoadPriorityEntriesInput(
     val fitnessPermissionType: FitnessPermissionType,
     val localDate: LocalDate,
 )
+
+interface ILoadPriorityEntriesUseCase : UseCaseContract<LoadPriorityEntriesInput, List<Record>>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2024 The Android Open Source Project
+ * Copyright (C) 2026 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.android.healthconnect.controller.data.access
 
 import android.health.connect.HealthConnectManager
@@ -22,13 +23,15 @@ import com.android.healthconnect.controller.permissions.data.MedicalPermissionTy
 import com.android.healthconnect.controller.permissions.data.fromMedicalResourceType
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
 
+/** Use case to load [AppMetadata]s that have data of this [MedicalPermissionType]. */
 @Singleton
 class LoadMedicalTypeContributorAppsUseCase
 @Inject
@@ -36,37 +39,32 @@ constructor(
     private val appInfoReader: AppInfoReader,
     private val healthConnectManager: HealthConnectManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : ILoadMedicalTypeContributorAppsUseCase {
+) :
+    BaseUseCase<MedicalPermissionType, List<AppMetadata>>(dispatcher),
+    ILoadMedicalTypeContributorAppsUseCase {
 
-    /** Returns a list of [AppMetadata]s that have data in this [MedicalPermissionType]. */
-    override suspend operator fun invoke(permissionType: MedicalPermissionType): List<AppMetadata> =
-        withContext(dispatcher) {
-            try {
-                val recordTypeInfoMap: List<MedicalResourceTypeInfo> =
-                    suspendCancellableCoroutine { continuation ->
-                        healthConnectManager.queryAllMedicalResourceTypeInfos(
-                            Runnable::run,
-                            continuation.asOutcomeReceiver(),
-                        )
-                    }
-                val packages =
-                    recordTypeInfoMap
-                        .filter {
-                            fromMedicalResourceType(it.medicalResourceType) == permissionType &&
-                                it.contributingDataSources.isNotEmpty()
-                        }
-                        .map { it.contributingDataSources }
-                        .flatten()
-                packages
-                    .map { appInfoReader.getAppMetadata(it.packageName) }
-                    .distinct()
-                    .sortedBy { it.appName }
-            } catch (e: Exception) {
-                emptyList()
+    override suspend fun execute(input: MedicalPermissionType): List<AppMetadata> {
+        val recordTypeInfoMap: List<MedicalResourceTypeInfo> =
+            suspendCancellableCoroutine { continuation ->
+                healthConnectManager.queryAllMedicalResourceTypeInfos(
+                    Runnable::run,
+                    continuation.asOutcomeReceiver(),
+                )
             }
-        }
+        val packages =
+            recordTypeInfoMap
+                .filter {
+                    fromMedicalResourceType(it.medicalResourceType) == input &&
+                        it.contributingDataSources.isNotEmpty()
+                }
+                .map { it.contributingDataSources }
+                .flatten()
+        return packages
+            .map { appInfoReader.getAppMetadata(it.packageName) }
+            .distinct()
+            .sortedBy { it.appName }
+    }
 }
 
-interface ILoadMedicalTypeContributorAppsUseCase {
-    suspend fun invoke(permissionType: MedicalPermissionType): List<AppMetadata>
-}
+interface ILoadMedicalTypeContributorAppsUseCase :
+    UseCaseContract<MedicalPermissionType, List<AppMetadata>>

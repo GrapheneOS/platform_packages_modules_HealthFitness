@@ -16,70 +16,52 @@
 
 package com.android.healthconnect.controller.datasources.api
 
-import android.health.connect.datatypes.Record
-import com.android.healthconnect.controller.datasources.AggregationCardInfo
-import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
-import com.android.healthconnect.controller.shared.HealthDataCategoryInt
-import com.android.healthconnect.controller.shared.app.AppMetadata
-import com.android.healthconnect.controller.shared.usecase.BaseUseCase
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import java.time.Instant
-import java.time.LocalDate
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DataSourcesUseCaseModule {
-    @Provides
-    fun providesLoadLastDateWithPriorityDataUseCase(
+interface DataSourcesUseCaseModule {
+    @Binds
+    @Singleton
+    abstract fun providesLoadLastDateWithPriorityDataUseCase(
         useCase: LoadLastDateWithPriorityDataUseCase
-    ): BaseUseCase<FitnessPermissionType, LocalDate?> {
-        return useCase
-    }
+    ): ILoadLastDateWithPriorityDataUseCase
 
-    @Provides
-    @com.android.healthconnect.controller.shared.usecase.LoadPriorityListUseCase
-    fun providesPriorityListUseCase(
+    @Binds
+    @Singleton
+    abstract fun providesPriorityListUseCase(
         useCase: LoadPriorityListUseCase
-    ): BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>> {
-        return useCase
-    }
+    ): ILoadPriorityListUseCase
 
-    @Provides
-    fun updatePriorityListUseCase(
+    @Binds
+    @Singleton
+    abstract fun updatePriorityListUseCase(
         useCase: UpdatePriorityListUseCase
-    ): BaseUseCase<UpdatePriorityListInput, Unit> {
-        return useCase
-    }
+    ): IUpdatePriorityListUseCase
 
-    @Provides
-    fun providesSleepSessionHelper(
-        useCase: SleepSessionHelper
-    ): BaseUseCase<LocalDate, Pair<Instant, Instant>?> {
-        return useCase
-    }
+    @Binds
+    @Singleton
+    abstract fun providesSleepSessionHelper(useCase: SleepSessionHelper): ISleepSessionHelper
 
-    @Provides
-    fun providesLoadPriorityEntriesUseCase(
+    @Binds
+    @Singleton
+    abstract fun providesLoadPriorityEntriesUseCase(
         useCase: LoadPriorityEntriesUseCase
-    ): BaseUseCase<LoadPriorityEntriesInput, List<Record>> {
-        return useCase
-    }
+    ): ILoadPriorityEntriesUseCase
 
-    @Provides
-    @com.android.healthconnect.controller.shared.usecase.LoadPotentialPriorityListUseCase
-    fun providesLoadPotentialPriorityListUseCase(
+    @Binds
+    @Singleton
+    abstract fun providesLoadPotentialPriorityListUseCase(
         useCase: LoadPotentialPriorityListUseCase
-    ): BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>> {
-        return useCase
-    }
+    ): ILoadPotentialPriorityListUseCase
 
-    @Provides
-    fun providesMostRecentAggregationsUseCase(
+    @Binds
+    @Singleton
+    abstract fun providesMostRecentAggregationsUseCase(
         useCase: LoadMostRecentAggregationsUseCase
-    ): BaseUseCase<Int, List<AggregationCardInfo>> {
-        return useCase
-    }
+    ): ILoadMostRecentAggregationsUseCase
 }

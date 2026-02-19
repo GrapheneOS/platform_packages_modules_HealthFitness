@@ -403,13 +403,20 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Επιλέξτε τα δεδομένα που θέλετε να γράφει αυτή η εφαρμογή στο Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Επιλέξτε τα δεδομένα που θέλετε να διαβάζει ή να γράφει αυτή η εφαρμογή στο Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Επιλέξτε τα δεδομένα που θέλετε να διαβάζει αυτή η εφαρμογή από το Health Connect"</string>
-    <string name="matchmaking_screen_title" msgid="7839701301617377279">"Κοινή χρήση δεδομένων μεταξύ εφαρμογών"</string>
+    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <skip />
     <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Δεδομένα από την εφαρμογή <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <string name="matchmaking_screen_summary" msgid="6028389402895099556">"Επιτρέψτε στην εφαρμογή <xliff:g id="APP_NAME">%1$s</xliff:g> να διαβάζει δεδομένα από άλλες εφαρμογές σε αυτή τη συσκευή χρησιμοποιώντας το Health Connect. Αυτά τα δεδομένα μπορούν επίσης να διαβαστούν από άλλες εφαρμογές στις οποίες παραχωρείτε πρόσβαση."</string>
+    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
+    <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Εφαρμογές που μπορούν να συγχρονίσουν αυτά τα δεδομένα"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Συσκευές που μπορούν να συγχρονίσουν αυτά τα δεδομένα"</string>
+    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
+    <skip />
+    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
+    <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Μάθετε πώς η εφαρμογή <xliff:g id="APP_NAME">%1$s</xliff:g> χρησιμοποιεί τα δεδομένα σας στην "<a href="%2$s">"πολιτική απορρήτου"</a>"."</string>
-    <string name="matchmaking_screen_footer" msgid="128363859074109442">"Το Health Connect σας επιτρέπει να μοιράζεστε τα δεδομένα υγείας και φυσικής κατάστασης μεταξύ πολλών εφαρμογών. Με αυτόν τον τρόπο, μπορείτε να αποκτήσετε πρόσβαση σε insight και εμπειρίες, διατηρώντας τα δεδομένα σας ασφαλή."</string>
+    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
+    <skip />
     <string name="more_about_health_connect" msgid="8105996800108743876">"Περισσότερα σχετικά με το Health Connect"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"ανάπτυξη"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"σύμπτυξη"</string>
@@ -557,7 +564,7 @@
     <string name="import_in_progress_toast_text" msgid="3363548588078895706">"Επαναφορά σε εξέλιξη"</string>
     <string name="import_complete_toast_text" msgid="7730872919621230959">"Η επαναφορά των δεδομένων ολοκληρώθηκε"</string>
     <string name="import_notification_error_generic_error_title" msgid="19162830551127433">"Δεν ήταν δυνατή η επαναφορά των δεδομένων από το Health Connect"</string>
-    <string name="import_notification_error_more_space_needed_title" msgid="240259612132385794">"Απαιτείται περισσότερος χρόνος"</string>
+    <string name="import_notification_error_more_space_needed_title" msgid="240259612132385794">"Απαιτείται περισσότερος χώρος"</string>
     <string name="import_notification_error_invalid_file_body_text" msgid="8877884063398886772">"Δεν είναι δυνατή η επαναφορά του αρχείου που επιλέξατε. Βεβαιωθείτε ότι έχετε επιλέξει το σωστό αρχείο που εξάχθηκε προηγουμένως."</string>
     <string name="import_notification_error_more_space_needed_body_text" msgid="7577564968089566232">"Το Health Connect χρειάζεται <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> αποθηκευτικού χώρου στο τηλέφωνό σας προκειμένου να συνεχίσει την επαναφορά των δεδομένων σας."</string>
     <string name="import_notification_error_generic_error_body_text" msgid="6562162452820282874">"Παρουσιάστηκε κάποιο πρόβλημα κατά την επαναφορά δεδομένων από την εξαγωγή σας."</string>
@@ -1222,6 +1229,8 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Για πρόσθετη ασφάλεια για τα δεδομένα υγείας σας, ορίστε ένα PIN, ένα μοτίβο ή έναν κωδικό πρόσβασης για αυτή τη συσκευή"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Ορισμός κλειδώματος οθόνης"</string>
     <string name="select_all" msgid="837499881590001166">"Επιλογή όλων"</string>
+    <!-- no translation found for a11y_action_select (8149815243533964711) -->
+    <skip />
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Οι συνδεδεμένες εφαρμογές δεν θα έχουν πλέον τη δυνατότητα ανάγνωσης αυτών των δεδομένων από το Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Επιλεγμένο"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Μη επιλεγμένο"</string>
@@ -1325,8 +1334,10 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Τρέχουσα συσκευή"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Άγνωστη συσκευή"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Πληροφορίες συσκευής"</string>
-    <string name="device_management_screen_footer" msgid="1787611015335737167">"Τα δεδομένα που συλλέγονται από αυτή τη συσκευή θα αποθηκεύονται στο Health Connect, όπου θα έχουν πρόσβαση οι συνδεδεμένες εφαρμογές"</string>
-    <string name="device_management_screen_no_step_sensor_footer" msgid="4919722476738792627">"Αυτή η συσκευή δεν υποστηρίζει την παρακολούθηση βημάτων, αλλά εξακολουθεί να έχει δεδομένα αποθηκευμένα στο Health Connect"</string>
+    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
+    <skip />
+    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
+    <skip />
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Αυτή η συσκευή δεν παρακολουθεί βήματα"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Επιτρέπεται η εγγραφή"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Δεδομένα συσκευής"</string>
@@ -1336,12 +1347,15 @@
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Τα βήματα που παρακολουθούνται από αυτή τη συσκευή αποθηκεύονται πλέον στο Health Connect, για να έχουν πρόσβαση οι συνδεδεμένες εφαρμογές"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Παράβλεψη"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Έλεγχος"</string>
-    <string name="native_steps_notification_title" msgid="4059138095111818516">"Τα βήματα είναι πλέον στο Health Connect"</string>
-    <string name="native_steps_notification_content" msgid="6606582041727891093">"Τα βήματα που παρακολουθούνται από αυτή τη συσκευή αποθηκεύονται πλέον στο Health Connect, για να έχουν πρόσβαση οι συνδεδεμένες εφαρμογές"</string>
+    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
+    <skip />
+    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
+    <skip />
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Οι εφαρμογές υγείας σας"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Τα δεδομένα υγείας σας"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Προτιμήσεις"</string>
-    <string name="home_screen_footer" msgid="7572797414754117707">"Το Health Connect σας επιτρέπει να μοιράζεστε τα δεδομένα υγείας και φυσικής κατάστασης μεταξύ πολλών εφαρμογών. Με αυτόν τον τρόπο, μπορείτε να αποκτήσετε πρόσβαση σε insight και εμπειρίες, διατηρώντας τα δεδομένα σας ασφαλή."</string>
+    <!-- no translation found for home_screen_footer (3704528068051346905) -->
+    <skip />
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Περισσότερα σχετικά με το Health Connect"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Τα δεδομένα σας και ποιες εφαρμογές μπορούν να αποκτήσουν πρόσβαση σε αυτά"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Εφαρμογές που χρησιμοποίησαν πρόσφατα τα δεδομένα σας"</string>
@@ -1350,8 +1364,10 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Εμφάνιση συμβατών εφαρμογών"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Εμφάνιση περισσότερων εφαρμογών υγείας"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Δεν είναι συνδεδεμένη"</string>
-    <string name="connect_app_button_content_description" msgid="296796277841527165">"Κάντε κλικ, για να συνδέσετε αυτή την εφαρμογή στο Health Connect"</string>
-    <string name="devices_screen_description" msgid="8171826001441781372">"Ελέγξτε ποιες συσκευές μπορούν να συγχρονίζουν δεδομένα με το Health Connect"</string>
+    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
+    <skip />
+    <!-- no translation found for devices_screen_description (5009317766902606842) -->
+    <skip />
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Ενεργοποιήθηκε"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Απενεργοποιήθηκε"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Αυτό το τηλέφωνο"</string>
@@ -1381,8 +1397,10 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Εγγραφή δεδομένων για ακμή"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Ανάγνωση δεδομένων για εύθραυστα νύχια"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Εγγραφή δεδομένων για εύθραυστα νύχια"</string>
-    <string name="burning_mouth_read_content_description" msgid="71088318928262260">"Ανάγνωση δεδομένων για κάψιμο στο στόμα "</string>
-    <string name="burning_mouth_write_content_description" msgid="2778289937475041118">"Εγγραφή δεδομένων για κάψιμο στο στόμα "</string>
+    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
+    <skip />
+    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
+    <skip />
     <string name="chills_read_content_description" msgid="7244946135559432433">"Ανάγνωση δεδομένων για ρίγη"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Εγγραφή δεδομένων για ρίγη"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Ανάγνωση δεδομένων για αφυδάτωση"</string>
@@ -1614,4 +1632,6 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Συριγμός"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"συριγμός"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Επιλέχθηκαν <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> από <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
+    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
+    <skip />
 </resources>

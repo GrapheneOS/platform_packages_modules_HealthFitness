@@ -32,11 +32,12 @@ import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.LoadPriorityListUseCase
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 
@@ -48,10 +49,11 @@ constructor(
     private val healthConnectManager: HealthConnectManager,
     private val healthPermissionReader: HealthPermissionReader,
     private val loadGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
-    @param:LoadPriorityListUseCase
-    private val loadPriorityListUseCase: BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>,
+    private val loadPriorityListUseCase: ILoadPriorityListUseCase,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>(dispatcher) {
+) :
+    BaseUseCase<@HealthDataCategoryInt Int, List<AppMetadata>>(dispatcher),
+    ILoadPotentialPriorityListUseCase {
 
     private val TAG = "LoadAppSourcesUseCase"
 
@@ -87,6 +89,7 @@ constructor(
         }
     }
 
+    // TODO reuse this from data/access?
     /** Returns a list of unique packageNames that have data in this [HealthDataCategory]. */
     @VisibleForTesting
     suspend fun getAppsWithData(category: @HealthDataCategoryInt Int): UseCaseResults<Set<String>> =
@@ -95,7 +98,7 @@ constructor(
                 val recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse> =
                     suspendCancellableCoroutine { continuation ->
                         healthConnectManager.queryAllRecordTypesInfo(
-                            Runnable::run,
+                            dispatcher.asExecutor(),
                             continuation.asOutcomeReceiver(),
                         )
                     }
@@ -113,6 +116,7 @@ constructor(
             }
         }
 
+    // TODO Extract to separate use case
     /**
      * Returns a set of packageNames which have at least one WRITE permission in this
      * [HealthDataCategory] *
@@ -152,3 +156,6 @@ constructor(
             }
         }
 }
+
+interface ILoadPotentialPriorityListUseCase :
+    UseCaseContract<@HealthDataCategoryInt Int, List<AppMetadata>>
