@@ -403,15 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Escolha os dados que quer que esta app escreva na Saúde Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Escolha os dados que quer que esta app leia ou escreva na Saúde Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Escolha os dados que quer que esta app leia da Saúde Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Sincronize as apps e os dispositivos"</string>
+    <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dados da app <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Permita que a app <xliff:g id="APP_NAME">%1$s</xliff:g> leia dados de outras apps ou dispositivos neste dispositivo através da Saúde Connect. Estes dados também podem ser lidos por outras apps às quais dê acesso."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps que podem sincronizar estes dados"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Dispositivos que podem sincronizar estes dados"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Continue para as preferências do dispositivo para ativar"</string>
     <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
     <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Saiba como a app <xliff:g id="APP_NAME">%1$s</xliff:g> usa os seus dados na respetiva "<a href="%2$s">"Política de Privacidade"</a>"."</string>
@@ -435,7 +433,7 @@
     <string name="medical_request_footer" msgid="157243861031258933">"Sincronize os seus registos médicos de diferentes apps e origens para os manter num único lugar"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Remover todas as autorizações?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Remover tudo"</string>
-    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"A app <xliff:g id="APP_NAME">%1$s</xliff:g> vai deixar de poder ler e escrever dados da Saúde Connect.\n\nIsto não afeta outras autorizações que esta app possa ter, como Localização, Câmara ou Microfone."</string>
+    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"A app <xliff:g id="APP_NAME">%1$s</xliff:g> vai deixar de poder ler e escrever dados da Saúde Connect.\n\nIsto não afeta outras autorizações que esta app possa ter, como o acesso à câmara, ao microfone ou à localização."</string>
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"A app <xliff:g id="APP_NAME">%1$s</xliff:g> vai deixar de poder ler e escrever dados da Saúde Connect, incluindo dados de segundo plano.\n\nIsto não afeta outras autorizações que esta app possa ter, como Localização, Câmara ou Microfone."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"A app <xliff:g id="APP_NAME">%1$s</xliff:g> vai deixar de poder ler e escrever dados da Saúde Connect, incluindo dados antigos.\n\nIsto não afeta outras autorizações que esta app possa ter, como Localização, Câmara ou Microfone."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"A app <xliff:g id="APP_NAME">%1$s</xliff:g> vai deixar de poder ler e escrever dados da Saúde Connect, incluindo dados antigos e de segundo plano.\n\nIsto não afeta outras autorizações que esta app possa ter, como Localização, Câmara ou Microfone."</string>
@@ -1343,6 +1341,8 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Dados do dispositivo"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Gerir dispositivo"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Ver dados do dispositivo"</string>
+    <!-- no translation found for device_sync_button (2075007109033449483) -->
+    <skip />
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Os passos monitorizados no telemóvel aparecem na Saúde Connect"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Agora, os passos monitorizados por este dispositivo são armazenados na Saúde Connect para acesso pelas apps associadas"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Ignorar"</string>
@@ -1356,7 +1356,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferências"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"A Saúde Connect permite-lhe partilhar os seus dados de saúde e fitness entre várias origens de dados. Isto ajuda a desbloquear estatísticas e experiências, mantendo os seus dados seguros."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Mais sobre a Saúde Connect"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Os seus dados e que apps podem aceder a estes"</string>
+    <string name="data_and_access_summary" msgid="1435478623777637347">"Os seus dados e que apps têm acesso"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Apps que usaram os seus dados recentemente"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Reveja os dispositivos que podem aceder aos dados de saúde"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Instale apps que funcionem com a Saúde Connect para as ver aqui"</string>
@@ -1631,6 +1631,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Respiração sibilante"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"respiração sibilante"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> de <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> selecionada(s)"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Categoria de dados para este cartão de agregação"</string>
 </resources>

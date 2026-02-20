@@ -405,18 +405,17 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect වෙතින් ඔබට මෙම යෙදුම කියවීමට අවශ්‍ය දත්ත තෝරා ගන්න"</string>
     <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
     <skip />
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> වෙතින් දත්ත"</string>
+    <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
+    <skip />
     <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
     <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"මෙම දත්ත සමමුහුර්ත කළ හැකි යෙදුම්"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"මෙම දත්ත සමමුහුර්ත කළ හැකි උපාංග"</string>
     <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
     <skip />
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"සියලු <xliff:g id="APP_NAME">%1$s</xliff:g> අවසරවලට ඉඩ දෙන්න"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> ඔවුන්ගේ "<a href="%2$s">"පෞද්ගලිකත්ව ප්‍රතිපත්තියේ"</a>" ඔබේ දත්ත භාවිතා කරන ආකාරය දැන ගන්න."</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect මඟින් ඔබේ සෞඛ්‍ය සහ යෝග්‍යතා දත්ත බහු දත්ත මූලාශ්‍ර අතර බෙදා ගැනීමට ඔබට ඉඩ දෙයි. මෙය ඔබේ දත්ත සුරක්ෂිතව තබා ගනිමින් ඇතුළාන්තයන් සහ අත්දැකීම් අගුළු හැරීමට ඔබට උදවු වේ."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect පිළිබඳ වැඩිදුර"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"දිග හරින්න"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"හකුළන්න"</string>
@@ -1229,8 +1228,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"ඔබේ සෞඛ්‍ය දත්ත සඳහා අමතර ආරක්ෂාවක් ලබා ගැනීමට, මෙම උපාංගය සඳහා PIN, රටාව හෝ මුරපදය සකසන්න"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"තිර අගුල සකසන්න"</string>
     <string name="select_all" msgid="837499881590001166">"සියල්ල තෝරන්න"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"තෝරන්න"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"සම්බන්ධිත යෙදුම්වලට තවදුරටත් Health Connect වෙතින් මෙම දත්ත කියවීමට නොහැකි වනු ඇත"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"සලකුණු කරන ලදි"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"සලකුණු නොකළ"</string>
@@ -1334,28 +1332,25 @@
     <string name="devices_current_device" msgid="6388308185566619743">"වත්මන් උපාංගය"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"නොදන්නා උපාංගය"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"උපාංග තතු"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"මෙම උපාංගය මගින් රැස් කරන ලද දත්ත Health Connect හි ගබඩා කරනු ලබන අතර, එහි දී සම්බන්ධිත යෙදුම් එයට ප්‍රවේශ වනු ඇත"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"මෙම උපාංගය පියවර ලුහුබැඳීමට සහාය නොදක්වයි, නමුත් තවමත් Health Connect හි දත්ත ගබඩා කර ඇත"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"මෙම උපාංගය පියවර ලුහුබැඳීම සිදු නොකරයි."</string>
     <string name="device_settings_label" msgid="9053791237491247819">"ලිවීමට ඉඩ දුන්නා"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"උපාංග දත්ත"</string>
     <string name="device_data_label" msgid="2056618513138892435">"උපාංගය කළමනාකරණය කරන්න"</string>
     <string name="device_data_button" msgid="8002406105399136401">"උපාංග දත්ත බලන්න"</string>
+    <!-- no translation found for device_sync_button (2075007109033449483) -->
+    <skip />
     <string name="native_steps_banner_title" msgid="8990874387340782536">"ඔබේ දුරකථනයේ නිරීක්ෂණය කරන ලද පියවර Health Connect හි දිස්වනු ඇත"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"සම්බන්ධිත යෙදුම් වෙත ප්‍රවේශ වීම සඳහා මෙම උපාංගය මඟින් නිරීක්ෂණය කරන ලද පියවර දැන් Health Connect හි ගබඩා කර ඇත"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"අස් කරන්න"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"සමාලෝචන කරන්න"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"පියවර දැන් Health Connect හි ඇත"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"සම්බන්ධිත යෙදුම් වෙත ප්‍රවේශ වීම සඳහා මෙම උපාංගය මඟින් නිරීක්ෂණය කරන ලද පියවර දැන් Health Connect හි ගබඩා කර ඇත"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"ඔබේ සෞඛ්‍ය යෙදුම්"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"ඔබේ සෞඛ්‍ය දත්ත"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"මනාප"</string>
-    <!-- no translation found for home_screen_footer (3704528068051346905) -->
-    <skip />
+    <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect මඟින් ඔබේ සෞඛ්‍ය සහ යෝග්‍යතා දත්ත බහු දත්ත මූලාශ්‍ර අතර බෙදා ගැනීමට ඔබට ඉඩ දෙයි. මෙය ඔබේ දත්ත සුරක්ෂිතව තබා ගනිමින් ඇතුළාන්ත සහ අත්දැකීම් අගුළු හැරීමට ඔබට උදවු වේ."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect පිළිබඳ වැඩිදුර"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"ඔබේ දත්ත සහ ඒවාට ප්‍රවේශ විය හැකි යෙදුම්"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"මෑතකදී ඔබේ දත්ත භාවිත කළ යෙදුම්"</string>
@@ -1364,10 +1359,8 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"ගැළපෙන යෙදුම් බලන්න"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"තවත් සෞඛ්‍ය යෙදුම් බලන්න"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"සම්බන්ධ වී නොමැත"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"මෙම යෙදුම Health Connect වෙත සම්බන්ධ කිරීමට ක්ලික් කරන්න"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"Health Connect වෙත දත්ත සමමුහුර්ත කළ හැකි උපාංග පාලනය කරන්න"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"සබලයි"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"සබල කර නැත"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"මෙම දුරකථනය"</string>
@@ -1397,10 +1390,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"කුරුලෑ ලියන්න"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"බිඳෙනසුලු නියපොතු කියවන්න"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"බිඳෙනසුලු නියපොතු ලියන්න"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"මුඛය දැවිල්ල කියවන්න"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"මුඛය දැවිල්ල ලියන්න"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"මිරිස් කියවන්න"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"මිරිස් ලියන්න"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"විජලනය කියවන්න"</string>

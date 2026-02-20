@@ -403,20 +403,16 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Zgjidh të dhënat që dëshiron që ky aplikacion të shkruajë te Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Zgjidh të dhënat që dëshiron që ky aplikacion të lexojë ose të shkruajë te Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Zgjidh të dhënat që dëshiron që ky aplikacion të lexojë nga Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Sinkronizo aplikacionet dhe pajisjet e tua"</string>
+    <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Të dhënat nga <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Lejo që aplikacioni <xliff:g id="APP_NAME">%1$s</xliff:g> të lexojë të dhënat nga aplikacionet ose pajisjet e tjera në këtë pajisje duke përdorur Health Connect. Këto të dhëna mund të lexohen gjithashtu nga aplikacionet e tjera të cilave u jep qasje."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikacionet që mund të sinkronizojnë këto të dhëna"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Pajisjet që mund të sinkronizojnë këto të dhëna"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Vazhdo te preferencat e pajisjes për ta aktivizuar"</string>
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Lejo të gjitha lejet e <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Mëso se si <xliff:g id="APP_NAME">%1$s</xliff:g> i përdor të dhënat e tua në "<a href="%2$s">"politikën e vet të privatësisë"</a>"."</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect të lejon të ndash të dhënat e tua të shëndetit dhe fitnesit midis disa burimeve të të dhënave. Kjo të ndihmon të shkyçësh statistikat dhe përvojat ndërkohë që i mban të dhënat të sigurta."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Më shumë rreth Health Connect"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"zgjero"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"palos"</string>
@@ -1229,8 +1225,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Për më shumë siguri për të dhënat e shëndetit, cakto një kod PIN, motiv ose fjalëkalim për këtë pajisje"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Cakto kyçjen e ekranit"</string>
     <string name="select_all" msgid="837499881590001166">"Zgjidh të gjitha"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"zgjidh"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Aplikacionet e lidhura nuk do të mund të lexojnë më këto të dhëna nga Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Zgjedhur"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Nuk është zgjedhur"</string>
@@ -1334,23 +1329,21 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Pajisja aktuale"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Pajisje e panjohur"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Informacionet e pajisjes"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"Të dhënat e mbledhura nga kjo pajisje do të ruhen në Health Connect, ku aplikacionet e lidhura do të kenë qasje në to"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"Kjo pajisje nuk e mbështet monitorimin e hapave, por ka akoma të dhëna të ruajtura te Health Connect"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Kjo pajisje nuk i monitoron hapat"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"I lejohet të shkruajë"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Të dhënat e pajisjes"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Menaxho pajisjen"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Shiko të dhënat e pajisjes"</string>
+    <!-- no translation found for device_sync_button (2075007109033449483) -->
+    <skip />
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Hapat e gjurmuar në telefon do të shfaqen në Health Connect"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Hapat e gjurmuar nga kjo pajisje tani ruhen në Health Connect për t\'u qasur nga aplikacionet e lidhura"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Hiq"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Rishiko"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"Hapat tani janë në Health Connect"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"Hapat e gjurmuar nga kjo pajisje tani ruhen në Health Connect për t\'u qasur nga aplikacionet e lidhura"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Aplikacionet e tua për shëndetin"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Të dhënat e tua të shëndetit"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferencat"</string>
@@ -1363,10 +1356,8 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Shiko aplikacionet e përputhshme"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Shiko më shumë aplikacione për shëndetin"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Nuk është lidhur"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"Kliko për të lidhur këtë aplikacion me Health Connect"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"Kontrollo se cilat pajisje mund të sinkronizojnë të dhënat në Health Connect"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Aktivizuar"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Çaktivizuar"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Ky telefon"</string>
@@ -1396,10 +1387,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Të shkruajë të dhënat për aknet"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Të lexojë të dhënat për thonjtë e brishtë"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Të shkruajë të dhënat për thonjtë e brishtë"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"Të lexojë të dhënat për djegien e gojës"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"Të shkruajë të dhënat për djegien e gojës"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"Të lexojë të dhënat për të dridhurat"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Të shkruajë të dhënat për të dridhurat"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Të lexojë të dhënat për dehidratimin"</string>
@@ -1631,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Gulçim"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"gulçim"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Janë zgjedhur: <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> nga <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Kategoria e të dhënave për këtë kartë përmbledhëse"</string>
 </resources>

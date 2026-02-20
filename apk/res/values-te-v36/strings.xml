@@ -23,8 +23,7 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"ఈ యాప్ ఏ ఫిట్‌నెస్, వెల్‌నెస్ డేటాను యాక్సెస్ చేయవచ్చో ఎంచుకోండి. ఇందులో ఈ డివైజ్ నుండి ట్రాక్ చేసే డేటాతో పాటు అందులో స్టోర్ అయ్యే డేటా కూడా ఉంటుంది, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"ఈ యాప్ ఏ ఫిట్‌నెస్, వెల్‌నెస్ డేటాను యాక్సెస్ చేయవచ్చో ఎంచుకోండి. ఇందులో ఈ డివైజ్ నుండి ట్రాక్ చేసే డేటాతో పాటు అందులో స్టోర్ అయ్యే డేటా కూడా ఉంటుంది, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"ఈ యాప్ ఏ ఫిట్‌నెస్, వెల్‌నెస్ డేటాను యాక్సెస్ చేయవచ్చో ఎంచుకోండి. ఇందులో ఈ డివైజ్ నుండి ట్రాక్ చేసే డేటాతో పాటు అందులో స్టోర్ అయ్యే డేటా కూడా ఉంటుంది, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for request_learn_more (563937923005882945) -->
-    <skip />
+    <string name="request_learn_more" msgid="563937923005882945">"మీ డేటా ఎలా యాక్సెస్ చేయబడుతుంది అనే దాని గురించి మరింత తెలుసుకోండి"</string>
     <string name="settings_manage_permission" msgid="3585762257420446893">"హెల్త్, ఫిట్‌నెస్ &amp; వెల్‌నెస్"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"హెల్త్, ఫిట్‌నెస్ &amp; వెల్‌నెస్"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"ఫిట్‌నెస్ &amp; వెల్‌నెస్"</string>

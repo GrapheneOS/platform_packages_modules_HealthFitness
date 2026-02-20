@@ -23,8 +23,7 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"Escolle os datos sobre a actividade física e o benestar (por exemplo, aqueles dos que fagas un seguimento con este dispositivo e os que estean almacenados nel: <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>) aos que pode acceder esta aplicación"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"Escolle os datos sobre a actividade física e o benestar (por exemplo, aqueles dos que fagas un seguimento con este dispositivo e os que estean almacenados nel: <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>) aos que pode acceder esta aplicación"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"Escolle os datos sobre a actividade física e o benestar (por exemplo, aqueles dos que fagas un seguimento con este dispositivo e os que estean almacenados nel: <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>) aos que pode acceder esta aplicación"</string>
-    <!-- no translation found for request_learn_more (563937923005882945) -->
-    <skip />
+    <string name="request_learn_more" msgid="563937923005882945">"máis información sobre o acceso aos teus datos"</string>
     <string name="settings_manage_permission" msgid="3585762257420446893">"Saúde, actividade física e benestar"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"Saúde, actividade física e benestar"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"Actividade física e benestar"</string>
