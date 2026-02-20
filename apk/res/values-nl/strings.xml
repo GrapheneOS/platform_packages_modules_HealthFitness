@@ -199,7 +199,7 @@
     <string name="steps_lowercase_label" msgid="706153549312838582">"stappen"</string>
     <string name="steps_read_content_description" msgid="7839297670092769964">"Gegevens over stappen lezen"</string>
     <string name="steps_write_content_description" msgid="6360223825799711659">"Gegevens over stappen schrijven"</string>
-    <string name="total_calories_burned_uppercase_label" msgid="2749855864302679314">"Totaal verbrande kilocalorieën"</string>
+    <string name="total_calories_burned_uppercase_label" msgid="2749855864302679314">"Totaal verbrande calorieën"</string>
     <string name="total_calories_burned_lowercase_label" msgid="3185370725975873922">"totaal verbrande kilocalorieën"</string>
     <string name="total_calories_burned_read_content_description" msgid="1569722345910293531">"Gegevens over totaal verbrande kilocalorieën lezen"</string>
     <string name="total_calories_burned_write_content_description" msgid="2727752180681851608">"Gegevens over totaal verbrande kilocalorieën schrijven"</string>
@@ -403,15 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Bepaal welke gegevens deze app mag schrijven in Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Bepaal welke gegevens deze app mag lezen of schrijven in Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Bepaal welke gegevens deze app mag lezen in Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Je apps en apparaten synchroniseren"</string>
+    <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Gegevens van <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Geef de app <xliff:g id="APP_NAME">%1$s</xliff:g> toestemming om gegevens van andere apps of apparaten op dit apparaat te lezen via Health Connect. Deze gegevens kunnen ook worden gelezen door andere apps waaraan je toegang geeft."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps die deze gegevens kunnen synchroniseren"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Apparaten die deze gegevens kunnen synchroniseren"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Ga naar apparaatvoorkeuren om dit aan te zetten"</string>
     <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
     <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Meer informatie over hoe <xliff:g id="APP_NAME">%1$s</xliff:g> je gegevens gebruikt, vind je in hun "<a href="%2$s">"privacybeleid"</a>"."</string>
@@ -1343,6 +1341,8 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Apparaatgegevens"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Apparaat beheren"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Apparaatgegevens bekijken"</string>
+    <!-- no translation found for device_sync_button (2075007109033449483) -->
+    <skip />
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Op je telefoon bijgehouden stappen worden getoond in Health Connect"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Stappen die door dit apparaat worden bijgehouden, worden nu opgeslagen in Health Connect, zodat gekoppelde apps er toegang toe hebben"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Sluiten"</string>
@@ -1354,15 +1354,14 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Je gezondheidsapps"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Je gezondheidsgegevens"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Voorkeuren"</string>
-    <!-- no translation found for home_screen_footer (3704528068051346905) -->
-    <skip />
+    <string name="home_screen_footer" msgid="3704528068051346905">"Met Health Connect kun je je gezondheids- en fitnessgegevens delen tussen meerdere gegevensbronnen. Zo kun je inzichten en functionaliteiten mogelijk maken terwijl je gegevens beveiligd blijven."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Meer informatie over Health Connect"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Je gegevens en welke apps er toegang toe hebben"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Apps die je gegevens recent hebben gebruikt"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Check welke apparaten toegang hebben tot gezondheidsgegevens"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Installeer apps die werken met Health Connect om ze hier te zien"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Compatibele apps bekijken"</string>
-    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Meer gezondheids-apps bekijken"</string>
+    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Meer gezondheidsapps bekijken"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Niet verbonden"</string>
     <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
     <skip />
@@ -1632,6 +1631,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Piepende ademhaling"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"piepende ademhaling"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> van <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> geselecteerd"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Gegevenscategorie voor deze aggregatiekaart"</string>
 </resources>

@@ -23,8 +23,8 @@
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Autorizzazioni e dati"</string>
     <string name="home_subtitle" msgid="2154213430054477787">"Gestisci i dati relativi alla salute e all\'attività fisica sul dispositivo e stabilisci a quali app concedere l\'accesso"</string>
     <string name="data_title" msgid="4456619761533380816">"Dati e accesso"</string>
-    <string name="browse_medical_data" msgid="6492659245149862639">"Cerca nelle cartelle cliniche"</string>
-    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"Visualizza le tue cartelle cliniche e scopri quali app possono accedervi"</string>
+    <string name="browse_medical_data" msgid="6492659245149862639">"Cerca nella storia clinica"</string>
+    <string name="browse_medical_data_subtitle" msgid="5019009186352225863">"Visualizza la tua storia clinica e scopri quali app possono accedervi"</string>
     <string name="all_categories_title" msgid="1446410643217937926">"Tutte le categorie"</string>
     <string name="see_all_categories" msgid="5599882403901010434">"Vedi tutte le categorie"</string>
     <string name="no_data" msgid="1906986019249068659">"Nessun dato"</string>
@@ -108,8 +108,8 @@
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Lettura delle calorie bruciate"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Consente all\'app di leggere le calorie bruciate"</string>
     <string name="background_read_single_request_title" msgid="4903874755139858906">"Consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere ai dati in background?"</string>
-    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Se lo consenti, questa app può accedere ai dati su fitness e benessere, nonché alle cartelle cliniche quando non la utilizzi."</string>
-    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"Se lo consenti, questa app può accedere alle cartelle cliniche quando non la utilizzi."</string>
+    <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Se lo consenti, questa app può accedere ai dati su fitness e benessere, nonché alla storia clinica quando non la utilizzi."</string>
+    <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"Se lo consenti, questa app può accedere alla storia clinica quando non la utilizzi."</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Se lo consenti, questa app può accedere ai dati relativi a benessere e attività fisica quando non la utilizzi."</string>
     <string name="background_read_single_request_description" msgid="2679634929322639576">"Se lo consenti, questa app può accedere ai dati di Connessione Salute quando non la utilizzi."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"Consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere ai dati precedenti?"</string>
@@ -120,9 +120,9 @@
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"Consentire l\'accesso aggiuntivo per l\'app <xliff:g id="APP_NAME">%1$s</xliff:g>?"</string>
     <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"L\'app <xliff:g id="APP_NAME">%1$s</xliff:g> vuole accedere anche a queste impostazioni di Connessione Salute"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Accesso a tutti i dati in background"</string>
-    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"Accesso alle cartelle cliniche in background"</string>
+    <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"Accesso alla storia clinica in background"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Accesso ai dati relativi a benessere e attività fisica in background"</string>
-    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"Consenti a questa app di accedere ai dati su fitness e benessere, nonché alle cartelle cliniche quando non la utilizzi"</string>
+    <string name="background_read_medical_combined_request_description_both_types_granted" msgid="1552208401309746060">"Consenti a questa app di accedere ai dati su fitness e benessere, nonché alla storia clinica quando non la utilizzi"</string>
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Consenti a questa app di accedere a questi dati quando non la utilizzi"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Consenti a questa app di accedere a questi dati quando non la utilizzi"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Accesso ai dati in background"</string>
@@ -133,12 +133,12 @@
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Accesso ai dati precedenti"</string>
     <string name="history_read_combined_request_description" msgid="1437787086896636484">"Consenti a questa app di accedere ai dati di Connessione Salute aggiunti prima del giorno <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Consenti a questa app di accedere a tutti i dati precedenti di Connessione Salute"</string>
-    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"<xliff:g id="APP_NAME">%1$s</xliff:g> può già accedere ai dati passati per le tue cartelle cliniche"</string>
+    <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"<xliff:g id="APP_NAME">%1$s</xliff:g> può già accedere ai dati passati per la tua storia clinica"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Scopri di più sulle autorizzazioni"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Accesso a tutti i dati in background"</string>
-    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"Accesso alle cartelle cliniche in background"</string>
+    <string name="background_read_medical_access_title_medical_granted" msgid="4595850721639536407">"Accesso alla storia clinica in background"</string>
     <string name="background_read_medical_access_title_fitness_granted" msgid="8691675952190647227">"Accesso ai dati relativi a benessere e attività fisica in background"</string>
-    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"Consenti a questa app di accedere ai dati su fitness e benessere, nonché alle cartelle cliniche quando non la utilizzi"</string>
+    <string name="background_read_medical_access_description_both_types_granted" msgid="9156377686028948011">"Consenti a questa app di accedere ai dati su fitness e benessere, nonché alla storia clinica quando non la utilizzi"</string>
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Consenti a questa app di accedere a questi dati quando non la utilizzi"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Consenti a questa app di accedere a questi dati quando non la utilizzi"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Accesso ai dati in background"</string>
@@ -150,8 +150,8 @@
     <string name="history_read_access_description" msgid="800722432229526128">"Consenti a questa app di accedere ai dati di Connessione Salute aggiunti prima del giorno <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Consenti a questa app di accedere a tutti i dati precedenti di Connessione Salute"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Al momento non vengono letti dati relativi all\'attività fisica perché <xliff:g id="APP_NAME">%1$s</xliff:g> non dispone dei permessi di lettura"</string>
-    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g> può già accedere ai dati passati per le tue cartelle cliniche. Per modificare questa impostazione, disattiva le autorizzazioni di questa app per le cartelle cliniche."</string>
-    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"Gestisci le autorizzazioni per le cartelle cliniche"</string>
+    <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g> può già accedere ai dati passati per la tua storia clinica. Per modificare questa impostazione, disattiva le autorizzazioni di questa app per la storia clinica."</string>
+    <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"Gestisci le autorizzazioni per la storia clinica"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Abilita almeno un permesso di lettura per attivare l\'accesso in background o ai dati precedenti per questa app"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Abilita almeno un permesso di lettura per attivare l\'accesso in background per questa app"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Abilita almeno un permesso di lettura per attivare l\'accesso ai dati precedenti per questa app"</string>
@@ -331,10 +331,10 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"temperatura cutanea"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Leggere la temperatura cutanea"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Scrivere la temperatura cutanea"</string>
-    <string name="browse_health_records_intro" msgid="6883015193140441521">"Comprese tutte le cartelle cliniche sincronizzate e aggiunte a Connessione Salute. La tua cartella clinica potrebbe non essere completa e non include una descrizione medica delle tue cartelle cliniche."</string>
-    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"Tutte le cartelle cliniche"</string>
-    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"tutte le cartelle cliniche"</string>
-    <string name="all_medical_data_content_description" msgid="3454355551506537094">"Scrittura di tutte le cartelle cliniche"</string>
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"Comprese tutte le cartelle cliniche sincronizzate e aggiunte a Connessione Salute. La tua storia clinica potrebbe non essere completa e non include una descrizione medica delle tue cartelle cliniche."</string>
+    <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"Tutte la storia clinica"</string>
+    <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"tutte la storia clinica"</string>
+    <string name="all_medical_data_content_description" msgid="3454355551506537094">"Scrittura di tutte la storia clinica"</string>
     <string name="allergies_intolerances_uppercase_label" msgid="2458552115947636884">"Allergie"</string>
     <string name="allergies_intolerances_lowercase_label" msgid="5066782073511167288">"allergie"</string>
     <string name="allergies_intolerances_content_description" msgid="7954532940667325068">"Lettura di allergie"</string>
@@ -405,18 +405,17 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Scegli i dati da far leggere a questa app in Connessione Salute"</string>
     <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
     <skip />
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dati da <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
+    <skip />
     <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
     <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"App che possono sincronizzare questi dati"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Dispositivi che possono sincronizzare questi dati"</string>
     <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
     <skip />
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Consenti tutte le autorizzazioni per <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Leggi le "<a href="%2$s">"norme sulla privacy"</a>" di <xliff:g id="APP_NAME">%1$s</xliff:g> per scoprire in che modo vengono utilizzati i tuoi dati."</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Connessione Salute ti consente di condividere i tuoi dati relativi alla salute e all\'attività fisica tra più origini dati. In questo modo, potrai accedere ad approfondimenti ed esperienze senza compromettere la sicurezza dei dati."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Scopri di più su Connessione Salute"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"espandi"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"comprimi"</string>
@@ -426,13 +425,13 @@
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere ai dati relativi a benessere e attività fisica?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Per sapere in che modo l\'app <xliff:g id="APP_NAME">%1$s</xliff:g> tratta i tuoi dati, consulta le sue <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"norme sulla privacy"</string>
-    <string name="medical_request_header" msgid="5701693055388739014">"Consentire a <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere alle tue cartelle cliniche?"</string>
+    <string name="medical_request_header" msgid="5701693055388739014">"Consentire a <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere alla tua storia clinica?"</string>
     <string name="medical_request_header_access_info_read_write" msgid="221400464566148357">"Se concedi l\'accesso, l\'app può leggere e scrivere dati quali allergie, risultati di laboratorio, vaccini e altro\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Se concedi l\'accesso, l\'app può leggere dati quali allergie, risultati di laboratorio, vaccini e altro\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
-    <string name="medical_request_about_health_records" msgid="4569605370685007268">"Informazioni sulle cartelle cliniche"</string>
+    <string name="medical_request_about_health_records" msgid="4569605370685007268">"Informazioni sulla storia clinica"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"I dati da condividere includono"</string>
-    <string name="medical_request_summary" msgid="553735170968628758">"Se lo consenti, <xliff:g id="APP_NAME">%1$s</xliff:g> può condividere le tue cartelle cliniche con Connessione Salute."</string>
-    <string name="medical_request_footer" msgid="157243861031258933">"Sincronizza le tue cartelle cliniche da diverse app e fonti per conservarle in un unico posto"</string>
+    <string name="medical_request_summary" msgid="553735170968628758">"Se lo consenti, <xliff:g id="APP_NAME">%1$s</xliff:g> può condividere la tua storia clinica con Connessione Salute."</string>
+    <string name="medical_request_footer" msgid="157243861031258933">"Sincronizza la tua storia clinica da diverse app e fonti per conservarle in un unico posto"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Rimuovere tutte le autorizzazioni?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Rimuovi tutto"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Connessione Salute.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
@@ -442,8 +441,8 @@
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Elimina anche i dati di <xliff:g id="APP_NAME">%1$s</xliff:g> da Connessione Salute"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Rimuovere tutte le autorizzazioni per fitness e benessere?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Elimina anche i dati relativi all\'attività fisica di <xliff:g id="APP_NAME">%1$s</xliff:g> da Connessione Salute"</string>
-    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"Rimuovere tutte le autorizzazioni per le cartelle cliniche?"</string>
-    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"Elimina anche le cartelle cliniche da <xliff:g id="APP_NAME">%1$s</xliff:g> tramite Connessione Salute"</string>
+    <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"Rimuovere tutte le autorizzazioni per la storia clinica?"</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"Elimina anche la storia clinica da <xliff:g id="APP_NAME">%1$s</xliff:g> tramite Connessione Salute"</string>
     <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere questi dati da Connessione Salute.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
     <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere questi dati da Connessione Salute, inclusi i dati in background.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
     <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere questi dati da Connessione Salute, inclusi i dati precedenti.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
@@ -453,7 +452,7 @@
     <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Connessione Salute, inclusi i dati in background.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
     <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Connessione Salute, inclusi i dati precedenti.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
     <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Connessione Salute, inclusi i dati in background e precedenti.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"Elimina anche le cartelle cliniche e i dati relativi all\'attività fisica da <xliff:g id="APP_NAME">%1$s</xliff:g> tramite Connessione Salute"</string>
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"Elimina anche la storia clinica e i dati relativi all\'attività fisica da <xliff:g id="APP_NAME">%1$s</xliff:g> tramite Connessione Salute"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Autorizzazioni rimosse per questa app"</string>
     <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Elimina anche tutti i dati di Connessione Salute"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Giorno successivo"</string>
@@ -502,8 +501,8 @@
     <string name="permissions_header" msgid="6519976063360071569">"Autorizzazioni"</string>
     <string name="fitness_permissions" msgid="586264186537460254">"Attività fisica e benessere"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"Allenamento, sonno, alimentazione e altro"</string>
-    <string name="medical_permissions" msgid="1066296298908103091">"Cartelle cliniche"</string>
-    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"cartelle cliniche"</string>
+    <string name="medical_permissions" msgid="1066296298908103091">"Storia clinica"</string>
+    <string name="medical_permissions_lowercase" msgid="5825812584960807537">"storia clinica"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Risultati di laboratorio, farmaci, vaccini e altro"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Autorizzazioni app rimosse"</string>
     <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Connessione Salute ha rimosso le autorizzazioni per <xliff:g id="APP_DATA">%s</xliff:g>"</string>
@@ -597,7 +596,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Vai al Play Store"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Inizia a usare Connessione Salute"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Connessione Salute archivia i dati su salute e fitness e ti consente di sincronizzare facilmente le varie app installate sul dispositivo"</string>
-    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Connessione Salute archivia e sincronizza i dati su fitness e salute di diverse app.\n\n"<b>"Dati su fitness e benessere,"</b>" tra cui sessioni di allenamento, passi, alimentazione, sonno e altro ancora\n\n"<b>"Cartelle cliniche,"</b>" compresi vaccini, risultati di laboratorio e altro ancora"</string>
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Connessione Salute archivia e sincronizza i dati su fitness e salute di diverse app.\n\n"<b>"Dati su fitness e benessere,"</b>" tra cui sessioni di allenamento, passi, alimentazione, sonno e altro ancora\n\n"<b>"Storia clinica,"</b>" compresi vaccini, risultati di laboratorio e altro ancora"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Con Connessione Salute"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Condividi i dati con le tue app"</b>\n"Scegli i dati che ciascuna app può leggere o scrivere su Connessione Salute"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Gestisci le impostazioni e la privacy"</b>\n"Modifica le autorizzazioni app e gestisci i tuoi dati in qualsiasi momento"</string>
@@ -1229,8 +1228,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Per una maggiore sicurezza dei dati relativi alla tua salute, imposta un PIN, una sequenza o una password per questo dispositivo"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Imposta un blocco schermo"</string>
     <string name="select_all" msgid="837499881590001166">"Seleziona tutto"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"seleziona"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Le app collegate non potranno più leggere questi dati di Connessione Salute"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Elemento selezionato"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Elemento non selezionato"</string>
@@ -1334,28 +1332,25 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Dispositivo corrente"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Dispositivo sconosciuto"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Informazioni dispositivo"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"I dati raccolti da questo dispositivo verranno archiviati in Connessione Salute, dove saranno accessibili alle app connesse"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"Questo dispositivo non supporta il rilevamento dei passi, ma ha ancora dati archiviati in Connessione Salute"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Questo dispositivo non rileva i passi"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Autorizzazioni di scrittura"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Dati sul dispositivo"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Gestisci dispositivo"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Visualizza i dati sul dispositivo"</string>
+    <!-- no translation found for device_sync_button (2075007109033449483) -->
+    <skip />
     <string name="native_steps_banner_title" msgid="8990874387340782536">"I passi monitorati sul tuo smartphone verranno visualizzati in Connessione Salute"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"I passi monitorati da questo dispositivo sono ora archiviati in Connessione Salute e sono accessibili alle app connesse"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Ignora"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Esamina"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"I passi sono ora in Connessione Salute"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"I passi monitorati da questo dispositivo sono ora archiviati in Connessione Salute e sono accessibili alle app connesse"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Le tue app per la salute"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"I tuoi dati relativi alla salute"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferenze"</string>
-    <!-- no translation found for home_screen_footer (3704528068051346905) -->
-    <skip />
+    <string name="home_screen_footer" msgid="3704528068051346905">"Connessione Salute ti consente di condividere i tuoi dati relativi alla salute e all\'attività fisica tra più origini dati. In questo modo, potrai accedere ad approfondimenti ed esperienze senza compromettere la sicurezza dei dati."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Scopri di più su Connessione Salute"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"I tuoi dati e quali app possono accedervi"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"App che hanno utilizzato i tuoi dati di recente"</string>
@@ -1364,10 +1359,8 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Vedi le app compatibili"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Visualizza altre app per la salute"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Non connessa"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"Fai clic per collegare questa app a Connessione Salute"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"Stabilisci quali dispositivi possono sincronizzare i dati con Connessione Salute"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Abilitati"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Non abilitati"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Questo smartphone"</string>
@@ -1397,10 +1390,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Scrittura di dati sull\'acne"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Lettura di dati sulle unghie fragili"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Scrittura di dati sulle unghie fragili"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"Leggi dati sul bruciore alla bocca"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"Scrivi dati sul bruciore alla bocca"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"Lettura di dati sui brividi"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Scrittura di dati sui brividi"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Lettura di dati sulla disidratazione"</string>

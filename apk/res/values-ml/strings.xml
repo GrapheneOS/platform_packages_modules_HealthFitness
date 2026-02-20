@@ -403,20 +403,16 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connect-ൽ ഈ ആപ്പ് റൈറ്റ് ചെയ്യാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Health Connect-ൽ നിന്ന് ഈ ആപ്പ് റീഡ് ചെയ്യണമെന്നോ റൈറ്റ് ചെയ്യണമെന്നോ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect-ൽ നിന്ന് ഈ ആപ്പ് റീഡ് ചെയ്യാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്ന ഡാറ്റ തിരഞ്ഞെടുക്കുക"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"നിങ്ങളുടെ ആപ്പുകളും ഉപകരണങ്ങളും സമന്വയിപ്പിക്കുക"</string>
+    <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> എന്ന ആപ്പിൽ നിന്നുള്ള ഡാറ്റ"</string>
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Health Connect ഉപയോഗിച്ച് ഈ ഉപകരണത്തിലെ മറ്റ് ആപ്പുകളിൽ നിന്നോ ഉപകരണങ്ങളിൽ നിന്നോ ഡാറ്റ റീഡ് ചെയ്യാൻ <xliff:g id="APP_NAME">%1$s</xliff:g> ആപ്പിനെ അനുവദിക്കുക. നിങ്ങൾ ആക്‌സസ് നൽകുന്ന മറ്റ് ആപ്പുകൾക്കും ഈ ഡാറ്റ വായിക്കാനാകും."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ഈ ഡാറ്റ സമന്വയിപ്പിക്കാനാകുന്ന ആപ്പുകൾ"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"ഈ ഡാറ്റ സമന്വയിപ്പിക്കാനാകുന്ന ഉപകരണങ്ങൾ"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"പ്രവർത്തനക്ഷമമാക്കാൻ ഉപകരണത്തിന്റെ മുൻഗണനകളിലേക്ക് പോകുക"</string>
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"എല്ലാ <xliff:g id="APP_NAME">%1$s</xliff:g> അനുമതികളും അനുവദിക്കുക"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> നിങ്ങളുടെ ഡാറ്റ ഉപയോഗിക്കുന്ന രീതി അവരുടെ "<a href="%2$s">"സ്വകാര്യതാ നയത്തിൽ"</a>" അറിയൂ."</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"ഒന്നിലധികം ഡാറ്റാ ഉറവിടങ്ങൾ തമ്മിൽ നിങ്ങളുടെ ആരോഗ്യവും ഫിറ്റ്‌നസും സംബന്ധിച്ച ഡാറ്റ പങ്കിടാൻ Health Connect അനുവദിക്കുന്നു. ഡാറ്റ സുരക്ഷിതമാക്കിക്കൊണ്ട് സ്ഥിതിവിവരക്കണക്കുകളും അനുഭവങ്ങളും അൺലോക്ക് ചെയ്യാൻ ഇത് നിങ്ങളെ സഹായിക്കുന്നു."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect-നെ കുറിച്ച് കൂടുതൽ"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"വികസിപ്പിക്കുക"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"ചുരുക്കുക"</string>
@@ -1229,8 +1225,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"നിങ്ങളുടെ ആരോഗ്യ ഡാറ്റയുടെ അധിക സുരക്ഷയ്ക്കായി, ഈ ഉപകരണത്തിന് ഒരു പിൻ, പാറ്റേൺ അല്ലെങ്കിൽ പാസ്‌വേഡ് സജ്ജീകരിക്കുക"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"സ്‌ക്രീൻ ലോക്ക് സജ്ജീകരിക്കുക"</string>
     <string name="select_all" msgid="837499881590001166">"എല്ലാം തിരഞ്ഞെടുക്കുക"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"തിരഞ്ഞെടുക്കുക"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"കണക്‌റ്റ് ചെയ്‌തിട്ടുള്ള ആപ്പുകൾക്ക് ഇനി Health Connect-ൽ നിന്ന് ഈ ഡാറ്റ വായിക്കാനാകില്ല"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"ചെക്ക് മാർക്കിട്ടു"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"ചെക്ക് മാർക്കിട്ടിട്ടില്ലാത്തത്"</string>
@@ -1334,23 +1329,21 @@
     <string name="devices_current_device" msgid="6388308185566619743">"നിലവിലെ ഉപകരണം"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"അജ്ഞാത ഉപകരണം"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"ഉപകരണ വിവരങ്ങൾ"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"ഈ ഉപകരണം ശേഖരിക്കുന്ന ഡാറ്റ Health Connect-ൽ സംഭരിക്കും, അവിടെ കണക്റ്റ് ചെയ്ത ആപ്പുകൾ അത് ആക്സസ് ചെയ്യും"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"ഈ ഉപകരണം ചുവട് ട്രാക്കിംഗ് പിന്തുണയ്ക്കുന്നില്ല, എന്നാൽ Health Connect-ൽ ഇപ്പോഴും ഡാറ്റ സംഭരിച്ചിരിക്കുന്നു"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"ഈ ഉപകരണം ചുവടുകൾ ട്രാക്ക് ചെയ്യുന്നില്ല"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"റൈറ്റ് ചെയ്യാൻ അനുവാദമുള്ളവ"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"ഉപകരണ ഡാറ്റ"</string>
     <string name="device_data_label" msgid="2056618513138892435">"ഉപകരണം മാനേജ് ചെയ്യുക"</string>
     <string name="device_data_button" msgid="8002406105399136401">"ഉപകരണ ഡാറ്റ കാണുക"</string>
+    <!-- no translation found for device_sync_button (2075007109033449483) -->
+    <skip />
     <string name="native_steps_banner_title" msgid="8990874387340782536">"ഫോണിൽ ട്രാക്ക് ചെയ്ത ചുവടുകൾ Health Connect-ൽ കാണാം"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"കണക്റ്റ് ചെയ്ത ആപ്പുകൾക്ക് ആക്സസ് ചെയ്യുന്നതിനായി, ഈ ഉപകരണം ട്രാക്ക് ചെയ്ത ചുവടുകൾ ഇപ്പോൾ Health Connect-ൽ സംഭരിച്ചിരിക്കുന്നു"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"ഡിസ്‌മിസ് ചെയ്യുക"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"റിവ്യൂ ചെയ്യുക"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"ചുവടുകൾ ഇപ്പോൾ Health Connect-ൽ ഉണ്ട്"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"കണക്റ്റ് ചെയ്ത ആപ്പുകൾക്ക് ആക്സസ് ചെയ്യുന്നതിനായി, ഈ ഉപകരണം ട്രാക്ക് ചെയ്ത ചുവടുകൾ ഇപ്പോൾ Health Connect-ൽ സംഭരിച്ചിരിക്കുന്നു"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"നിങ്ങളുടെ ആരോഗ്യ ആപ്പുകൾ"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"നിങ്ങളുടെ ആരോഗ്യ ഡാറ്റ"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"മുൻഗണനകൾ"</string>
@@ -1363,10 +1356,8 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"അനുയോജ്യമായ ആപ്പുകൾ കാണുക"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"കൂടുതൽ ആരോഗ്യ ആപ്പുകൾ കാണുക"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"കണ‌ക്റ്റ് ചെയ്‌തിട്ടില്ല"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"Health Connect-ലേക്ക് ഈ ആപ്പ് കണക്റ്റ് ചെയ്യാൻ ക്ലിക്ക് ചെയ്യുക"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"ഏതെല്ലാം ഉപകരണങ്ങൾക്ക് Health Connect-ലേക്ക് ഡാറ്റ സമന്വയിപ്പിക്കാനാകുമെന്നത് നിയന്ത്രിക്കുക"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"പ്രവർത്തനക്ഷമമാക്കിയത്"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"പ്രവർത്തനക്ഷമമാക്കിയിട്ടില്ലാത്തത്"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"ഈ ഫോൺ"</string>
@@ -1396,10 +1387,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"മുഖക്കുരു സംബന്ധിച്ച ഡാറ്റ റൈറ്റ് ചെയ്യുക"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"നഖങ്ങൾ പൊട്ടുന്നത് സംബന്ധിച്ച ഡാറ്റ റീഡ് ചെയ്യുക"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"നഖങ്ങൾ പൊട്ടുന്നത് സംബന്ധിച്ച ഡാറ്റ റൈറ്റ് ചെയ്യുക"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"ബേണിംഗ് മൗത്ത് സംബന്ധിച്ച ഡാറ്റ റീഡ് ചെയ്യുക"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"ബേണിംഗ് മൗത്ത് സംബന്ധിച്ച ഡാറ്റ റൈറ്റ് ചെയ്യുക"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"തണുത്ത് വിറയ്ക്കൽ സംബന്ധിച്ച ഡാറ്റ റീഡ് ചെയ്യുക"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"തണുത്ത് വിറയ്ക്കൽ സംബന്ധിച്ച ഡാറ്റ റൈറ്റ് ചെയ്യുക"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"നിർജ്ജലീകരണം സംബന്ധിച്ച ഡാറ്റ റീഡ് ചെയ്യുക"</string>
@@ -1631,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ശ്വാസംമുട്ടൽ"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ശ്വാസംമുട്ടൽ"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>-ൽ <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> എണ്ണം തിരഞ്ഞെടുത്തു"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"ഈ അഗ്രഗേഷൻ കാർഡിനുള്ള ഡാറ്റാ വിഭാഗം"</string>
 </resources>

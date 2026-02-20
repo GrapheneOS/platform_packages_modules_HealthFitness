@@ -403,15 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Chọn dữ liệu bạn muốn ứng dụng này ghi vào Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Chọn dữ liệu bạn muốn ứng dụng này đọc hoặc ghi vào Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Chọn dữ liệu bạn muốn ứng dụng này đọc từ Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Đồng bộ hoá ứng dụng và thiết bị"</string>
+    <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dữ liệu của <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Cho phép ứng dụng <xliff:g id="APP_NAME">%1$s</xliff:g> đọc dữ liệu của các ứng dụng hoặc thiết bị khác trên thiết bị này thông qua Health Connect. Các ứng dụng khác mà bạn cấp quyền truy cập cũng có thể đọc dữ liệu này."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Các ứng dụng có thể đồng bộ hoá dữ liệu này"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Những thiết bị có thể đồng bộ hoá dữ liệu này"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Tiếp tục chuyển đến phần lựa chọn ưu tiên của thiết bị để bật"</string>
     <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
     <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Tìm hiểu cách <xliff:g id="APP_NAME">%1$s</xliff:g> dùng dữ liệu của bạn trong "<a href="%2$s">"chính sách quyền riêng tư"</a>" của họ."</string>
@@ -1343,6 +1341,8 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Dữ liệu trên thiết bị"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Quản lý thiết bị"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Xem dữ liệu trên thiết bị"</string>
+    <!-- no translation found for device_sync_button (2075007109033449483) -->
+    <skip />
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Số bước được theo dõi trên điện thoại sẽ hiện trong Health Connect"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Số bước mà thiết bị này theo dõi hiện được lưu trữ trong Health Connect để các ứng dụng đã kết nối có thể truy cập"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Đóng"</string>
@@ -1354,8 +1354,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Ứng dụng sức khoẻ của bạn"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Dữ liệu sức khoẻ của bạn"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Lựa chọn ưu tiên"</string>
-    <!-- no translation found for home_screen_footer (3704528068051346905) -->
-    <skip />
+    <string name="home_screen_footer" msgid="3704528068051346905">"Khi dùng Health Connect, bạn có thể chia sẻ dữ liệu về sức khoẻ và hoạt động thể dục giữa nhiều nguồn dữ liệu. Nhờ đó, bạn sẽ có thêm những thông tin chuyên sâu và trải nghiệm, trong khi vẫn đảm bảo an toàn cho dữ liệu của mình."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Tìm hiểu thêm về Health Connect"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Dữ liệu của bạn và những ứng dụng có thể truy cập vào dữ liệu đó"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Những ứng dụng gần đây đã dùng dữ liệu của bạn"</string>
@@ -1632,6 +1631,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Thở khò khè"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"thở khò khè"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Đã chọn <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Danh mục dữ liệu cho thẻ tổng hợp này"</string>
 </resources>

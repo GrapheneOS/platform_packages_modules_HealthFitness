@@ -403,15 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Choose data you want this app to write to Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Choose data you want this app to read or write to Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Choose data you want this app to read from Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Sync your apps and devices"</string>
+    <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data from <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Allow the <xliff:g id="APP_NAME">%1$s</xliff:g> app to read data from other apps or devices on this device using Health Connect. This data can also be read by other apps you give access to."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps that can sync this data"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Devices that can sync this data"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Continue to device preferences to enable"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Allow all <xliff:g id="APP_NAME">%1$s</xliff:g> permissions"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Learn how <xliff:g id="APP_NAME">%1$s</xliff:g> uses your data in their "<a href="%2$s">"privacy policy"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect lets you share your health and fitness data between multiple data sources. This helps you unlock insights and experiences while keeping your data secure."</string>
@@ -1338,6 +1336,7 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Device data"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Manage device"</string>
     <string name="device_data_button" msgid="8002406105399136401">"See device data"</string>
+    <string name="device_sync_button" msgid="2075007109033449483">"Sync to Health Connect"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Steps tracked on your phone will appear in Health Connect"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Steps tracked by this device are now stored in Health Connect for connected apps to access"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Dismiss"</string>
@@ -1620,6 +1619,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Wheezing"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"wheezing"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> of <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> selected"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Data category for this aggregation card"</string>
 </resources>

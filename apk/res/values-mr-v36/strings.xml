@@ -23,8 +23,7 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"हे अ‍ॅप फिटनेस आणि स्वास्थ्याशी संबंधित कोणता डेटा अ‍ॅक्सेस करू शकेल हे निवडा. यामध्ये या डिव्हाइसवर ट्रॅक आणि स्टोअर केलेला डेटा समाविष्ट आहे, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"हे अ‍ॅप फिटनेस आणि स्वास्थ्याशी संबंधित कोणता डेटा अ‍ॅक्सेस करू शकेल हे निवडा. यामध्ये या डिव्हाइसवर ट्रॅक आणि स्टोअर केलेला डेटा समाविष्ट आहे, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"हे अ‍ॅप फिटनेस आणि स्वास्थ्याशी संबंधित कोणता डेटा अ‍ॅक्सेस करू शकेल हे निवडा. यामध्ये या डिव्हाइसवर ट्रॅक आणि स्टोअर केलेला डेटा समाविष्ट आहे, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for request_learn_more (563937923005882945) -->
-    <skip />
+    <string name="request_learn_more" msgid="563937923005882945">"तुमच्या डेटावर कशी प्रक्रिया केली जाते याविषयी अधिक जाणून घ्या"</string>
     <string name="settings_manage_permission" msgid="3585762257420446893">"आरोग्य, फिटनेस आणि स्वास्थ्य"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"आरोग्य, फिटनेस आणि स्वास्थ्य"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"फिटनेस आणि स्वास्थ्य"</string>

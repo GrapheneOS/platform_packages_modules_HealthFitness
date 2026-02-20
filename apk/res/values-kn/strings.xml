@@ -403,20 +403,16 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connect ಗೆ ಈ ಆ್ಯಪ್ ಬರೆಯಬೇಕು ಎಂದು ನೀವು ಬಯಸುವ ಡೇಟಾವನ್ನು ಆಯ್ಕೆಮಾಡಿ"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Health Connect ಗೆ ಈ ಆ್ಯಪ್ ಓದಬೇಕು ಅಥವಾ ಬರೆಯಬೇಕು ಎಂದು ನೀವು ಬಯಸುವ ಡೇಟಾವನ್ನು ಆಯ್ಕೆಮಾಡಿ"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect ನಿಂದ ಈ ಆ್ಯಪ್ ಓದಬೇಕು ಎಂದು ನೀವು ಬಯಸುವ ಡೇಟಾವನ್ನು ಆಯ್ಕೆಮಾಡಿ"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"ನಿಮ್ಮ ಆ್ಯಪ್‌ಗಳು ಮತ್ತು ಸಾಧನಗಳನ್ನು ಸಿಂಕ್ ಮಾಡಿ"</string>
+    <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> ನಲ್ಲಿನ ಡೇಟಾ"</string>
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Health Connect ಬಳಸಿಕೊಂಡು ಈ ಸಾಧನದಲ್ಲಿರುವ ಇತರ ಆ್ಯಪ್‌ಗಳು ಅಥವಾ ಸಾಧನಗಳಿಂದ ಡೇಟಾವನ್ನು ಓದಲು <xliff:g id="APP_NAME">%1$s</xliff:g> ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಸಿ. ನೀವು ಆ್ಯಕ್ಸೆಸ್ ನೀಡುವ ಇತರ ಆ್ಯಪ್‌ಗಳಿಂದಲೂ ಈ ಡೇಟಾವನ್ನು ಓದಬಹುದು."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ಈ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಬಹುದಾದ ಆ್ಯಪ್‌ಗಳು"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"ಈ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಬಹುದಾದ ಸಾಧನಗಳು"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"ಸಕ್ರಿಯಗೊಳಿಸಲು ಸಾಧನದ ಆದ್ಯತೆಗಳಿಗೆ ಮುಂದುವರಿಯಿರಿ"</string>
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"<xliff:g id="APP_NAME">%1$s</xliff:g> ಗೆ ಎಲ್ಲಾ ಅನುಮತಿಗಳನ್ನು ನೀಡಿ"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಹೇಗೆ ಬಳಸುತ್ತದೆ ಎಂಬುದನ್ನು ಅದರ "<a href="%2$s">"ಗೌಪ್ಯತೆ ನೀತಿಯಲ್ಲಿ ತಿಳಿಯಿರಿ"</a>"."</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect, ನಿಮ್ಮ ಆರೋಗ್ಯ ಹಾಗೂ ಫಿಟ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಹಲವು ಡೇಟಾ ಮೂಲಗಳಾದ್ಯಂತ ಹಂಚಿಕೊಳ್ಳಲು ನಿಮಗೆ ಅವಕಾಶ ನೀಡುತ್ತದೆ. ಇದು ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸುರಕ್ಷಿತವಾಗಿಟ್ಟುಕೊಂಡು, ಒಳನೋಟಗಳು ಮತ್ತು ಅನುಭವಗಳನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಲು ನಿಮಗೆ ನೆರವಾಗುತ್ತದೆ."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect ಕುರಿತಾಗಿ ಹೆಚ್ಚಿನ ಮಾಹಿತಿ"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"ವಿಸ್ತೃತಗೊಳಿಸಿ"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"ಕುಗ್ಗಿಸಿ"</string>
@@ -1229,8 +1225,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"ನಿಮ್ಮ ಆರೋಗ್ಯದ ಡೇಟಾಗೆ ಹೆಚ್ಚುವರಿ ಸುರಕ್ಷತೆಯನ್ನು ಒದಗಿಸಲು, ಈ ಸಾಧನಕ್ಕಾಗಿ ಪಿನ್, ಪ್ಯಾಟರ್ನ್ ಅಥವಾ ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ಸೆಟ್ ಮಾಡಿ"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"ಸ್ಕ್ರೀನ್ ಲಾಕ್ ಸೆಟ್ ಮಾಡಿ"</string>
     <string name="select_all" msgid="837499881590001166">"ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆಮಾಡಿ"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"ಆಯ್ಕೆಮಾಡಿ"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"ಕನೆಕ್ಟ್ ಮಾಡಲಾದ ಆ್ಯಪ್‌ಗಳಿಗೆ ಇನ್ನು ಮುಂದೆ Health Connect ನಲ್ಲಿನ ಈ ಡೇಟಾವನ್ನು ಓದಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"ಗುರುತಿಸಲಾಗಿದೆ"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"ಗುರುತಿಸಲಾಗಿಲ್ಲ"</string>
@@ -1334,23 +1329,21 @@
     <string name="devices_current_device" msgid="6388308185566619743">"ಪ್ರಸ್ತುತ ಸಾಧನ"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"ಅಪರಿಚಿತ ಸಾಧನ"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"ಸಾಧನದ ಮಾಹಿತಿ"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"ಈ ಸಾಧನವು ಕಲೆಹಾಕಿದ ಡೇಟಾವನ್ನು Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ, ಅಲ್ಲಿ ಕನೆಕ್ಟ್ ಮಾಡಲಾದ ಆ್ಯಪ್‌ಗಳು ಅದನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡುತ್ತವೆ"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"ಈ ಸಾಧನವು ಹೆಜ್ಜೆ ಟ್ರ್ಯಾಕ್ ಮಾಡುವುದನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ, ಆದರೆ ಆಗಲೂ Health Connect ನಲ್ಲಿ ಡೇಟಾವನ್ನು ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"ಈ ಸಾಧನವು ಹೆಜ್ಜೆಗಳನ್ನು ಟ್ರ್ಯಾಕ್ ಮಾಡುವುದಿಲ್ಲ"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"ಬರೆಯಲು ಅನುಮತಿಸಲಾಗಿದೆ"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"ಸಾಧನದ ಡೇಟಾ"</string>
     <string name="device_data_label" msgid="2056618513138892435">"ಸಾಧನವನ್ನು ನಿರ್ವಹಿಸಿ"</string>
     <string name="device_data_button" msgid="8002406105399136401">"ಸಾಧನದ ಡೇಟಾವನ್ನು ನೋಡಿ"</string>
+    <!-- no translation found for device_sync_button (2075007109033449483) -->
+    <skip />
     <string name="native_steps_banner_title" msgid="8990874387340782536">"ಫೋನ್‌ನಲ್ಲಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಿದ ಹೆಜ್ಜೆಗಳು Health Connect ನಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"ಈ ಸಾಧನವು ಟ್ರ್ಯಾಕ್ ಮಾಡಿದ ಹೆಜ್ಜೆಗಳನ್ನು ಈಗ Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗಿದೆ, ಇದರಿಂದ ಕನೆಕ್ಟ್ ಮಾಡಲಾದ ಆ್ಯಪ್‌ಗಳು ಅದನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"ವಜಾಗೊಳಿಸಿ"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"ಪರಿಶೀಲಿಸಿ"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"ಹೆಜ್ಜೆಗಳ ಡೇಟಾ ಈಗ Health Connect ನಲ್ಲಿದೆ"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"ಈ ಸಾಧನವು ಟ್ರ್ಯಾಕ್ ಮಾಡಿದ ಹೆಜ್ಜೆಗಳನ್ನು ಈಗ Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗಿದೆ, ಇದರಿಂದ ಕನೆಕ್ಟ್ ಮಾಡಲಾದ ಆ್ಯಪ್‌ಗಳು ಅದನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"ನಿಮ್ಮ ಹೆಲ್ತ್ ಆ್ಯಪ್‌ಗಳು"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"ನಿಮ್ಮ ಆರೋಗ್ಯ ಡೇಟಾ"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"ಆದ್ಯತೆಗಳು"</string>
@@ -1363,10 +1356,8 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"ಹೊಂದಾಣಿಕೆಯ ಆ್ಯಪ್‌ಗಳನ್ನು ನೋಡಿ"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"ಇನ್ನಷ್ಟು ಹೆಲ್ತ್ ಆ್ಯಪ್‌ಗಳನ್ನು ನೋಡಿ"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"ಕನೆಕ್ಟ್ ಆಗಿಲ್ಲ"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"ಈ ಆ್ಯಪ್ ಅನ್ನು Health Connect ಗೆ ಕನೆಕ್ಟ್ ಮಾಡಲು ಕ್ಲಿಕ್ ಮಾಡಿ"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"ಯಾವ ಸಾಧನಗಳು Health Connect ಗೆ ಡೇಟಾವನ್ನು ಸಿಂಕ್ ಮಾಡಬಹುದು ಎಂಬುದನ್ನು ನಿಯಂತ್ರಿಸಿ"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿಲ್ಲ"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"ಈ ಫೋನ್"</string>
@@ -1396,10 +1387,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"ಮೊಡವೆಯ ಡೇಟಾವನ್ನು ಬರೆಯಿರಿ"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"ಸುಲಭವಾಗಿ ಮುರಿಯುವ ಉಗುರುಗಳ ಡೇಟಾವನ್ನು ಓದಿ"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"ಸುಲಭವಾಗಿ ಮುರಿಯುವ ಉಗುರುಗಳ ಡೇಟಾವನ್ನು ಬರೆಯಿರಿ"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"ಬಾಯಿ ಉರಿಯುವಿಕೆಯ ಡೇಟಾವನ್ನು ಓದಿ"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"ಬಾಯಿ ಉರಿಯುವಿಕೆಯ ಡೇಟಾವನ್ನು ಬರೆಯಿರಿ"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"ಚಳಿಯ ಡೇಟಾವನ್ನು ಓದಿ"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"ಚಳಿಯ ಡೇಟಾವನ್ನು ಬರೆಯಿರಿ"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"ನಿರ್ಜಲೀಕರಣದ ಡೇಟಾವನ್ನು ಓದಿ"</string>
@@ -1631,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ಉಬ್ಬಸ"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ಉಬ್ಬಸ"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> ರಲ್ಲಿ <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"ಈ ಅಗ್ರಿಗೇಶನ್ ಕಾರ್ಡ್‌ಗೆ ಸಂಬಂಧಿಸಿದ ಡೇಟಾ ವರ್ಗ"</string>
 </resources>

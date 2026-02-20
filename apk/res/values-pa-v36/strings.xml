@@ -23,8 +23,7 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"ਚੁਣੋ ਕਿ ਇਹ ਐਪ ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ ਸੰਬੰਧੀ ਕਿਹੜੇ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਦੀ ਹੈ। ਇਸ ਵਿੱਚ ਇਸ ਡੀਵਾਈਸ \'ਤੇ ਟਰੈਕ ਅਤੇ ਸਟੋਰ ਕੀਤਾ ਗਿਆ ਡਾਟਾ ਸ਼ਾਮਲ ਹੈ, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"ਚੁਣੋ ਕਿ ਇਹ ਐਪ ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ ਸੰਬੰਧੀ ਕਿਹੜੇ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਦੀ ਹੈ। ਇਸ ਵਿੱਚ ਇਸ ਡੀਵਾਈਸ \'ਤੇ ਟਰੈਕ ਅਤੇ ਸਟੋਰ ਕੀਤਾ ਗਿਆ ਡਾਟਾ ਸ਼ਾਮਲ ਹੈ, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"ਚੁਣੋ ਕਿ ਇਹ ਐਪ ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ ਸੰਬੰਧੀ ਕਿਹੜੇ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਦੀ ਹੈ। ਇਸ ਵਿੱਚ ਇਸ ਡੀਵਾਈਸ \'ਤੇ ਟਰੈਕ ਅਤੇ ਸਟੋਰ ਕੀਤਾ ਗਿਆ ਡਾਟਾ ਸ਼ਾਮਲ ਹੈ, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for request_learn_more (563937923005882945) -->
-    <skip />
+    <string name="request_learn_more" msgid="563937923005882945">"ਆਪਣੇ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਕਰਨ ਦੇ ਤਰੀਕੇ ਬਾਰੇ ਹੋਰ ਜਾਣੋ"</string>
     <string name="settings_manage_permission" msgid="3585762257420446893">"ਸਿਹਤ, ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"ਸਿਹਤ, ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"ਫਿੱਟਨੈੱਸ ਅਤੇ ਤੰਦਰੁਸਤੀ"</string>

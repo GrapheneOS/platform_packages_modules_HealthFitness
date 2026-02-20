@@ -405,18 +405,17 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Tria les dades que vols que aquesta aplicació pugui llegir de Salut connectada"</string>
     <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
     <skip />
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Dades de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
+    <skip />
     <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
     <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplicacions que poden sincronitzar aquestes dades"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Dispositius que poden sincronitzar aquestes dades"</string>
     <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
     <skip />
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Permet tots els permisos de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Obtén informació sobre com <xliff:g id="APP_NAME">%1$s</xliff:g> utilitza les teves dades a la seva "<a href="%2$s">"política de privadesa"</a>"."</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Salut connectada et permet compartir les teves dades de salut i fitnes entre diverses fonts de dades. Això t\'ajuda a descobrir informació detallada i experiències alhora que mantens les teves dades protegides."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Més informació sobre Salut connectada"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"desplega"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"replega"</string>
@@ -1229,8 +1228,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Per augmentar la seguretat de les teves dades de salut, configura un PIN, un patró o una contrasenya per a aquest dispositiu"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Defineix bloqueig"</string>
     <string name="select_all" msgid="837499881590001166">"Selecciona-ho tot"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"selecciona"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Les aplicacions connectades ja no podran llegir aquestes dades de Salut connectada"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Marcat"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Desmarcat"</string>
@@ -1334,28 +1332,25 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Dispositiu actual"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Dispositiu desconegut"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Informació del dispositiu"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"Les dades recollides per aquest dispositiu s\'emmagatzemaran a Salut connectada, on les aplicacions connectades hi accediran"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"Aquest dispositiu no admet el seguiment de passos, però encara té dades emmagatzemades a Salut connectada"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Aquest dispositiu no fa un seguiment dels passos"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Amb permís d\'escriptura"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Dades del dispositiu"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Gestiona el dispositiu"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Consulta les dades del dispositiu"</string>
+    <!-- no translation found for device_sync_button (2075007109033449483) -->
+    <skip />
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Els passos registrats al telèfon es mostraran a Salut connectada"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Els passos que registra aquest dispositiu ara s\'emmagatzemen a Salut connectada perquè les aplicacions connectades hi puguin accedir"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Ignora"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Revisa"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"Ara els passos són a Salut connectada"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"Els passos que registra aquest dispositiu ara s\'emmagatzemen a Salut connectada perquè les aplicacions connectades hi puguin accedir"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Les teves aplicacions de salut"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Les teves dades de salut"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferències"</string>
-    <!-- no translation found for home_screen_footer (3704528068051346905) -->
-    <skip />
+    <string name="home_screen_footer" msgid="3704528068051346905">"Salut connectada et permet compartir les teves dades de salut i fitnes entre diverses fonts de dades. Això t\'ajuda a descobrir informació detallada i experiències alhora que mantens les teves dades protegides."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Més informació sobre Salut connectada"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Les teves dades i quines aplicacions hi poden accedir"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Aplicacions que han utilitzat les teves dades recentment"</string>
@@ -1364,10 +1359,8 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Mostra les aplicacions compatibles"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Mostra més aplicacions de salut"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"No connectada"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"Fes clic per connectar aquesta aplicació a Salut connectada"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"Controla quins dispositius poden sincronitzar dades a Salut connectada"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Activats"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"No activats"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Aquest telèfon"</string>
@@ -1397,10 +1390,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Escriure l\'acne"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Llegir les ungles fràgils"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Escriure les ungles fràgils"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"Llegir sobre la síndrome de la boca ardent"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"Escriure sobre la síndrome de la boca ardent"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"Llegir els calfreds"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Escriure els calfreds"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Llegir la deshidratació"</string>
