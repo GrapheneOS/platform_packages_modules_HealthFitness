@@ -16,7 +16,6 @@
 package com.android.server.healthconnect.device;
 
 import android.annotation.NonNull;
-import android.content.Context;
 
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.metadata.DeviceInfoHelper;
@@ -29,6 +28,7 @@ import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetada
 import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
+import com.android.server.healthconnect.storage.HealthConnectContext;
 
 /**
  * A {@link DeviceDataProviderManager} that overrides the serial number of the device to a fake
@@ -47,7 +47,7 @@ public class FakeSerialDeviceDataProviderManager extends DeviceDataProviderManag
     private final boolean mIgnoresActionConfiguration;
 
     public FakeSerialDeviceDataProviderManager(
-            @NonNull Context context,
+            @NonNull HealthConnectContext context,
             @NonNull DeviceInfoHelper deviceInfoHelper,
             @NonNull AppInfoHelper appInfoHelper,
             @NonNull DeviceDataSourceHelper deviceDataSourceHelper,

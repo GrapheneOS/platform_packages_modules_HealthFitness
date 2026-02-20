@@ -107,10 +107,11 @@ public class DdpDatabaseMergerTest {
                         .setDeviceDataSourceHelper(
                                 new DeviceDataSourceHelper(() -> "test_device_serial"))
                         .build();
-
+        HealthConnectContext hcContext =
+                HealthConnectContext.create(mContext, mContext.getUser(), null, dir);
         DeviceDataProviderManager fakeSourceDdpManager =
                 new FakeSerialDeviceDataProviderManager(
-                        mContext,
+                        hcContext,
                         baseInjector.getDeviceInfoHelper(),
                         baseInjector.getAppInfoHelper(),
                         new DeviceDataSourceHelper(() -> "test_device_serial"),

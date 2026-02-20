@@ -26,7 +26,6 @@ import android.Manifest;
 import android.annotation.NonNull;
 import android.annotation.Nullable;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -66,6 +65,7 @@ import com.android.server.healthconnect.fitness.helpers.DeviceDataProviderMetada
 import com.android.server.healthconnect.fitness.helpers.DeviceDataSourcesHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
+import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.TransactionManager;
 
 import java.security.SecureRandom;
@@ -90,7 +90,6 @@ public class DeviceDataProviderManager {
     private static final String TAG = "DeviceDataProviderManager";
     private static final String TRACKING_PREFERENCE_PREFIX = "TRACKING_PREF_";
 
-    private final Context mContext;
     private final DeviceInfoHelper mDeviceInfoHelper;
     private final AppInfoHelper mAppInfoHelper;
     private final DeviceDataSourceHelper mDeviceDataSourceHelper;
@@ -104,13 +103,15 @@ public class DeviceDataProviderManager {
     private final HealthDataCategoryPriorityHelper mHealthDataCategoryPriorityHelper;
     private final InternalHealthConnectMappings mInternalHealthConnectMappings;
 
+    private HealthConnectContext mUserContext;
+
     @Nullable private String mStableCurrentDeviceId;
 
     // see {@link #getCurrentDeviceId}
     @Nullable private String mRuntimeCurrentDeviceId;
 
     public DeviceDataProviderManager(
-            @NonNull Context context,
+            @NonNull HealthConnectContext context,
             @NonNull DeviceInfoHelper deviceInfoHelper,
             @NonNull AppInfoHelper appInfoHelper,
             @NonNull DeviceDataSourceHelper deviceDataSourceHelper,
@@ -123,7 +124,7 @@ public class DeviceDataProviderManager {
             @NonNull PreferenceHelper preferenceHelper,
             @NonNull HealthDataCategoryPriorityHelper healthDataCategoryPriorityHelper,
             @NonNull InternalHealthConnectMappings internalHealthConnectMappings) {
-        mContext = requireNonNull(context);
+        mUserContext = requireNonNull(context);
         mDeviceInfoHelper = requireNonNull(deviceInfoHelper);
         mAppInfoHelper = requireNonNull(appInfoHelper);
         mDeviceDataSourceHelper = requireNonNull(deviceDataSourceHelper);
@@ -136,6 +137,13 @@ public class DeviceDataProviderManager {
         mPreferenceHelper = requireNonNull(preferenceHelper);
         mHealthDataCategoryPriorityHelper = requireNonNull(healthDataCategoryPriorityHelper);
         mInternalHealthConnectMappings = requireNonNull(internalHealthConnectMappings);
+    }
+
+    /** Setup the manager for the given user. */
+    public synchronized void setupForUser(@NonNull HealthConnectContext userContext) {
+        mUserContext = requireNonNull(userContext);
+        mStableCurrentDeviceId = null;
+        mRuntimeCurrentDeviceId = null;
     }
 
     /**
@@ -154,7 +162,7 @@ public class DeviceDataProviderManager {
      *     </ul>
      */
     // TODO(b/440066697): Check if we want to handle advertisements that are no longer present.
-    public void handleAdvertisement(
+    public synchronized void handleAdvertisement(
             @NonNull Set<DeviceDataAdvertisement> advertisements,
             @NonNull String callingDdpPackageName) {
         requireNonNull(advertisements);
@@ -190,7 +198,7 @@ public class DeviceDataProviderManager {
      * <p>This method is called at device startup, as the generated ID is required by {@link
      * #getCurrentDeviceId}.
      */
-    public void initializeOrRefreshCurrentDeviceIds() {
+    public synchronized void initializeOrRefreshCurrentDeviceIds() {
         mStableCurrentDeviceId =
                 mSyntheticPackageNameCreator.createCanonical(Device.DEVICE_TYPE_PHONE, getSerial());
 
@@ -205,11 +213,12 @@ public class DeviceDataProviderManager {
      * each device boot.
      */
     @NonNull
-    public String getCurrentDeviceId() throws IllegalStateException {
+    public synchronized String getCurrentDeviceId() throws IllegalStateException {
         if (mRuntimeCurrentDeviceId == null) {
             throw new IllegalStateException(
                     "Current device id has not been initialized yet.Ensure to call"
-                            + " initializeOrRefreshCurrentDeviceIds before calling this method.");
+                            + " initializeOrRefreshCurrentDeviceIds before calling this"
+                            + " method.");
         }
         return mRuntimeCurrentDeviceId;
     }
@@ -219,11 +228,12 @@ public class DeviceDataProviderManager {
      * restarts and only resets when the device is factory reset.
      */
     @NonNull
-    public String getStableCurrentDeviceId() {
+    public synchronized String getStableCurrentDeviceId() {
         if (mStableCurrentDeviceId == null) {
             throw new IllegalStateException(
                     "Current device id has not been initialized yet.Ensure to call"
-                            + " initializeOrRefreshCurrentDeviceIds before calling this method.");
+                            + " initializeOrRefreshCurrentDeviceIds before calling this"
+                            + " method.");
         }
         return mStableCurrentDeviceId;
     }
@@ -348,7 +358,7 @@ public class DeviceDataProviderManager {
      *     record type is not advertised.
      * @throws IllegalStateException if the generated syntheticPackageName or appInfoId is not valid
      */
-    public List<String> insertDeviceRecords(
+    public synchronized List<String> insertDeviceRecords(
             @NonNull String callingDdpPackageName,
             @NonNull String deviceId,
             @NonNull List<RecordInternal<?>> records) {
@@ -385,7 +395,7 @@ public class DeviceDataProviderManager {
      *     more than one package filter, or the device with the provided device Id can not be found.
      * @throws IllegalStateException if the generated syntheticPackageName or appInfoId is not valid
      */
-    public Pair<List<RecordInternal<?>>, PageTokenWrapper> readDeviceRecords(
+    public synchronized Pair<List<RecordInternal<?>>, PageTokenWrapper> readDeviceRecords(
             TransactionManager transactionManager,
             String callingDdpPackageName,
             ReadRecordsRequestParcel request) {
@@ -442,7 +452,7 @@ public class DeviceDataProviderManager {
      * @throws IllegalStateException if the generated syntheticPackageName or deviceInfoId is not
      *     valid
      */
-    public List<String> updateDeviceRecords(
+    public synchronized List<String> updateDeviceRecords(
             @NonNull String callingDdpPackageName,
             @NonNull String deviceId,
             @NonNull List<RecordInternal<?>> records) {
@@ -482,7 +492,7 @@ public class DeviceDataProviderManager {
      *     with the provided device Id can not be found.
      * @throws IllegalStateException if the generated syntheticPackageName or appInfoId is not valid
      */
-    public void deleteDeviceRecords(
+    public synchronized void deleteDeviceRecords(
             String callingDdpPackageName,
             String deviceId,
             DeleteUsingFiltersRequestParcel request) {
@@ -522,7 +532,7 @@ public class DeviceDataProviderManager {
      *
      * <p>See b/315116545 for details of these fallback checks.
      */
-    public boolean isPermittedToProvideDeviceData(
+    public synchronized boolean isPermittedToProvideDeviceData(
             @NonNull String callingPackageName, int uid, int pid) {
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.BAKLAVA) {
             // For details of this fallback see b/315116545
@@ -536,11 +546,11 @@ public class DeviceDataProviderManager {
 
             // This fallback caters primarily for test environments as the shell holds this
             // permission from Android U upwards.
-            return mContext.checkPermission(
+            return mUserContext.checkPermission(
                             HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION, pid, uid)
                     == PackageManager.PERMISSION_GRANTED;
         } else {
-            return mContext.checkPermission(
+            return mUserContext.checkPermission(
                             Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA, pid, uid)
                     == PackageManager.PERMISSION_GRANTED;
         }
@@ -611,7 +621,7 @@ public class DeviceDataProviderManager {
 
     /** Get the app info id for the caller and device, or throw if not found */
     @VisibleForTesting
-    public long getOrThrowAppInfoId(String callingDdpPackageName, String deviceId) {
+    public synchronized long getOrThrowAppInfoId(String callingDdpPackageName, String deviceId) {
         List<Long> appInfoIds = mDeviceDataSourcesHelper.getAppInfoIds(callingDdpPackageName);
         if (appInfoIds.isEmpty()) {
             // TODO(b/459388902): Use the data type string in the exception.
@@ -640,7 +650,7 @@ public class DeviceDataProviderManager {
 
     /** Acquire the SPN for the given device app info id or throw */
     @VisibleForTesting
-    public String getOrThrowSyntheticPackageName(long appInfoId) {
+    public synchronized String getOrThrowSyntheticPackageName(long appInfoId) {
         try {
             return mAppInfoHelper.getPackageName(appInfoId);
         } catch (PackageManager.NameNotFoundException e) {
@@ -692,8 +702,10 @@ public class DeviceDataProviderManager {
      * Creates a DeviceDataSource for the current device with the currentDeviceId, populated Device
      * metadata and empty set of supported data types.
      */
-    public android.health.connect.DeviceDataSource getDefaultCurrentDeviceDataSource() {
-        DeviceDataSource currentDeviceSource = mDeviceDataSourceHelper.getCurrentDevice(mContext);
+    public synchronized android.health.connect.DeviceDataSource
+            getDefaultCurrentDeviceDataSource() {
+        DeviceDataSource currentDeviceSource =
+                mDeviceDataSourceHelper.getCurrentDevice(mUserContext);
         Device currentDevice =
                 new Device.Builder()
                         .setManufacturer(currentDeviceSource.getManufacturer())
@@ -708,7 +720,7 @@ public class DeviceDataProviderManager {
     }
 
     /** Retrieves the list of all device data sources and their provider info. */
-    public List<DeviceDataSourceInfo> getDeviceDataSourceInfos() {
+    public synchronized List<DeviceDataSourceInfo> getDeviceDataSourceInfos() {
         Map<Long, Map<String, List<DeviceDataTypeAdvertisement>>> appInfoIdToDdpAds =
                 mDeviceDataSourcesHelper.getDeviceDataTypeAdvertisements();
 
@@ -801,8 +813,9 @@ public class DeviceDataProviderManager {
      * enablement of each native capability corresponding to its native tracking preference prefixed
      * with "TRACKING_PREF_".
      */
-    public void advertiseCurrentDeviceNativeCapabilities() {
-        DeviceDataSource currentDeviceSource = mDeviceDataSourceHelper.getCurrentDevice(mContext);
+    public synchronized void advertiseCurrentDeviceNativeCapabilities() {
+        DeviceDataSource currentDeviceSource =
+                mDeviceDataSourceHelper.getCurrentDevice(mUserContext);
 
         Device currentDevice =
                 new Device.Builder()
@@ -834,7 +847,7 @@ public class DeviceDataProviderManager {
         handleAdvertisement(Set.of(advertisement), DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE);
     }
 
-    private List<DeviceDataProviderInfo> getDeviceDataProviderInfos(
+    private synchronized List<DeviceDataProviderInfo> getDeviceDataProviderInfos(
             Map<String, List<DeviceDataTypeAdvertisement>> ddpPackageToAdvertisements,
             String deviceId)
             throws PackageManager.NameNotFoundException {
@@ -844,7 +857,8 @@ public class DeviceDataProviderManager {
             String packageName = ddpEntry.getKey();
 
             // Verify that the package is installed
-            mContext.getPackageManager()
+            mUserContext
+                    .getPackageManager()
                     .getPackageInfo(packageName, PackageManager.PackageInfoFlags.of(0));
 
             String onboardingLabel =
@@ -865,13 +879,13 @@ public class DeviceDataProviderManager {
         return providerInfos;
     }
 
-    private String getResolvedActivityLabel(String packageName, String action) {
+    private synchronized String getResolvedActivityLabel(String packageName, String action) {
         Intent intent = new Intent(action);
         intent.setPackage(packageName);
-        ResolveInfo resolveInfo = mContext.getPackageManager().resolveActivity(intent, 0);
+        ResolveInfo resolveInfo = mUserContext.getPackageManager().resolveActivity(intent, 0);
         if (resolveInfo != null) {
             // This is always non-null.
-            CharSequence label = resolveInfo.loadLabel(mContext.getPackageManager());
+            CharSequence label = resolveInfo.loadLabel(mUserContext.getPackageManager());
             return label.toString();
         }
         // This shouldn't happen. We enforce that DDPs export these activities.
@@ -922,10 +936,11 @@ public class DeviceDataProviderManager {
                 packageName, HealthConnectManager.ACTION_SHOW_DEVICE_MANAGEMENT);
     }
 
-    private void validateActivityPresentAndPermissionGuarded(String packageName, String action) {
+    private synchronized void validateActivityPresentAndPermissionGuarded(
+            String packageName, String action) {
         Intent intent = new Intent(action);
         intent.setPackage(packageName);
-        ResolveInfo resolveInfo = mContext.getPackageManager().resolveActivity(intent, 0);
+        ResolveInfo resolveInfo = mUserContext.getPackageManager().resolveActivity(intent, 0);
 
         if (resolveInfo == null || resolveInfo.activityInfo == null) {
             throw new IllegalArgumentException(
@@ -949,8 +964,9 @@ public class DeviceDataProviderManager {
         }
     }
 
-    private boolean hasPedometer() {
-        SensorManager sensorManager = mContext.getSystemService(SensorManager.class);
+    private synchronized boolean hasPedometer() {
+        SensorManager sensorManager =
+                mUserContext.getApplicationContext().getSystemService(SensorManager.class);
         if (sensorManager == null) {
             return false;
         }
@@ -958,10 +974,10 @@ public class DeviceDataProviderManager {
         return !Objects.isNull(sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER));
     }
 
-    private void addDeviceToPriorityList(String spn, Set<Integer> categories) {
+    private synchronized void addDeviceToPriorityList(String spn, Set<Integer> categories) {
         for (int category : categories) {
             mHealthDataCategoryPriorityHelper.appendToPriorityList(
-                    spn, category, mContext.getUser());
+                    spn, category, mUserContext.getUser());
         }
     }
 

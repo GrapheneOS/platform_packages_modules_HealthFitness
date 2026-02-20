@@ -45,6 +45,7 @@ import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AppOpLogsHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
+import com.android.server.healthconnect.storage.HealthConnectContext;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -78,6 +79,9 @@ public class DeviceDataProviderManagerConfigurationValidationTest {
         doReturn(mPackageManager).when(context).getPackageManager();
         doReturn(context).when(context).getApplicationContext();
         doReturn(context).when(context).createContextAsUser(any(), anyInt());
+        HealthConnectContext hcContext =
+                HealthConnectContext.create(
+                        context, context.getUser(), null, mEnvironmentDataDir.getRoot());
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setAppOpLogsHelper(mAppOpLogsHelper)
@@ -86,7 +90,7 @@ public class DeviceDataProviderManagerConfigurationValidationTest {
 
         mDeviceDataProviderManager =
                 new FakeSerialDeviceDataProviderManager(
-                        context,
+                        hcContext,
                         healthConnectInjector.getDeviceInfoHelper(),
                         healthConnectInjector.getAppInfoHelper(),
                         new FakeSerialDeviceDataSourceHelper(),
