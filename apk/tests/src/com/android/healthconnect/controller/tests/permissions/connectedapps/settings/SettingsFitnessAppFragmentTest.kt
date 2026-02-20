@@ -54,7 +54,7 @@ import com.android.healthconnect.controller.migration.api.MigrationRestoreState.
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
 import com.android.healthconnect.controller.permissions.additionalaccess.AdditionalAccessViewModel
-import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState
+import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState
 import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel
 import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel.DisableExerciseRouteDialogEvent
 import com.android.healthconnect.controller.permissions.app.AppPermissionViewModel.RevokeAllState

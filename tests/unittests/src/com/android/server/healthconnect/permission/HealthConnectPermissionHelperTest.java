@@ -37,9 +37,14 @@ import android.content.pm.PermissionGroupInfo;
 import android.content.pm.PermissionInfo;
 import android.health.connect.HealthPermissions;
 import android.health.connect.internal.datatypes.utils.HealthConnectMappings;
+import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.Build;
 import android.os.Process;
 import android.os.UserHandle;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.annotation.Nullable;
@@ -67,6 +72,15 @@ public class HealthConnectPermissionHelperTest {
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+
+    @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
+
+    @Rule
+    public AssumptionCheckerRule mSupportedHardwareRule =
+            new AssumptionCheckerRule(
+                    DeviceSupportUtils::isHealthConnectFullySupported,
+                    "Tests should run on supported hardware only.");
 
     private HealthConnectPermissionHelper mPermissionHelper;
     private final HealthConnectMappings mHealthConnectMappings = new HealthConnectMappings();
@@ -2065,6 +2079,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
+    @RequiresFlagsEnabled({Flags.FLAG_DEVICE_UDI, Flags.FLAG_DEVICE_UDI_DB})
     public void revokeAllHealthPermissions_skipsNormalPermissions()
             throws PackageManager.NameNotFoundException {
         String normalPermission = HealthPermissions.WRITE_DEVICE_UDI;
@@ -2074,15 +2089,14 @@ public class HealthConnectPermissionHelperTest {
                 getMockPackageInfo(
                         Build.VERSION_CODES.BAKLAVA,
                         new String[] {
-                            normalPermission,
-                            dangerousPermission,
+                            normalPermission, dangerousPermission,
                         },
                         new int[] {
                             PackageInfo.REQUESTED_PERMISSION_GRANTED,
                             PackageInfo.REQUESTED_PERMISSION_GRANTED,
                         });
         when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
-        .thenReturn(mockPackageInfo);
+                .thenReturn(mockPackageInfo);
 
         assertThat(mPermissionHelper.getGrantedHealthPermissions(TEST_PACKAGE_NAME, CURRENT_USER))
                 .containsAtLeast(normalPermission, dangerousPermission);
@@ -2129,7 +2143,7 @@ public class HealthConnectPermissionHelperTest {
                     createPermissionInfo(HealthPermissions.READ_STEPS),
                     createPermissionInfo(HealthPermissions.WRITE_BLOOD_PRESSURE),
                     createPermissionInfo(
-                        HealthPermissions.WRITE_DEVICE_UDI, PermissionInfo.PROTECTION_NORMAL),
+                            HealthPermissions.WRITE_DEVICE_UDI, PermissionInfo.PROTECTION_NORMAL),
                 };
         for (PermissionInfo permissionInfo : mockPackageInfo.permissions) {
             when(mPackageManager.getPermissionInfo(eq(permissionInfo.name), anyInt()))

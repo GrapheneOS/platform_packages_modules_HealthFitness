@@ -215,8 +215,8 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                                         .matchmaking_allow_all_app_permissions_content_description,
                                     appData.metadata.appName,
                                 )
+                        preference.isChecked = granted == total && total > 0
                     }
-                    preference.isChecked = grantedPermissions.isNotEmpty()
 
                     // Update child switch states
                     preference.children.forEach { child ->

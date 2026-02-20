@@ -17,12 +17,9 @@ package com.android.healthconnect.controller.tests.route
 
 import android.content.Context
 import android.health.connect.HealthConnectManager
-import android.health.connect.ReadRecordsRequestUsingIds
-import android.health.connect.ReadRecordsResponse
 import android.health.connect.datatypes.ExerciseRoute
 import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.ExerciseSessionType
-import android.os.OutcomeReceiver
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
@@ -31,8 +28,9 @@ import com.android.healthconnect.controller.permissions.api.GrantHealthPermissio
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.api.LoadAccessDateUseCase
 import com.android.healthconnect.controller.route.ExerciseRouteViewModel
-import com.android.healthconnect.controller.route.LoadExerciseRouteUseCase
 import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.tests.route.api.FakeLoadExerciseRouteUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
@@ -58,11 +56,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.doAnswer
-import org.mockito.Mockito.mock
-import org.mockito.MockitoAnnotations
-import org.mockito.invocation.InvocationOnMock
-import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -72,19 +66,20 @@ class ExerciseRouteViewModelTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
 
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
     private val testDispatcher = UnconfinedTestDispatcher()
 
     @BindValue lateinit var appInfoReader: AppInfoReader
 
-    var manager: HealthConnectManager = mock(HealthConnectManager::class.java)
-    private val healthPermissionManager = mock(HealthPermissionManager::class.java)
+    private val manager: HealthConnectManager = mock()
+    private val healthPermissionManager: HealthPermissionManager = mock()
+    private val loadExerciseRouteUseCase = fakeUseCaseRule.watch(FakeLoadExerciseRouteUseCase())
 
     private lateinit var viewModel: ExerciseRouteViewModel
     private lateinit var context: Context
 
     @Before
     fun setup() = runTest {
-        MockitoAnnotations.initMocks(this)
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.US)
         appInfoReader = createFakeAppInfoReader()
@@ -93,7 +88,7 @@ class ExerciseRouteViewModelTest {
         viewModel =
             ExerciseRouteViewModel(
                 context,
-                LoadExerciseRouteUseCase(manager, Dispatchers.Main),
+                loadExerciseRouteUseCase,
                 GetGrantedHealthPermissionsUseCase(healthPermissionManager),
                 GetHealthPermissionsFlagsUseCase(healthPermissionManager),
                 GrantHealthPermissionUseCase(healthPermissionManager),
@@ -108,10 +103,8 @@ class ExerciseRouteViewModelTest {
     }
 
     @Test
-    fun loadExerciseRoute_noSession() = runTest {
-        doAnswer(prepareAnswer(listOf()))
-            .`when`(manager)
-            .readRecords(any<ReadRecordsRequestUsingIds<ExerciseSessionRecord>>(), any(), any())
+    fun loadExerciseRoute_returnsNullFromUseCase() = runTest {
+        loadExerciseRouteUseCase.updateExerciseSession(null)
 
         val testObserver = TestObserver<ExerciseRouteViewModel.SessionWithAttribution?>()
         viewModel.exerciseSession.observeForever(testObserver)
@@ -122,24 +115,8 @@ class ExerciseRouteViewModelTest {
     }
 
     @Test
-    fun loadExerciseRoute_noRoute() = runTest {
-        val start = Instant.ofEpochMilli(1234567891011)
-        val end = start.plusMillis(123456)
-        doAnswer(
-                prepareAnswer(
-                    listOf(
-                        ExerciseSessionRecord.Builder(
-                                getMetaData(),
-                                start,
-                                end,
-                                ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING,
-                            )
-                            .build()
-                    )
-                )
-            )
-            .`when`(manager)
-            .readRecords(any<ReadRecordsRequestUsingIds<ExerciseSessionRecord>>(), any(), any())
+    fun loadExerciseRoute_whenUseCaseFails_returnsNull() = runTest {
+        loadExerciseRouteUseCase.setForceFail(true)
 
         val testObserver = TestObserver<ExerciseRouteViewModel.SessionWithAttribution?>()
         viewModel.exerciseSession.observeForever(testObserver)
@@ -179,10 +156,7 @@ class ExerciseRouteViewModelTest {
                     )
                 )
                 .build()
-        doAnswer(prepareAnswer(listOf(expectedSession)))
-            .`when`(manager)
-            .readRecords(any<ReadRecordsRequestUsingIds<ExerciseSessionRecord>>(), any(), any())
-
+        loadExerciseRouteUseCase.updateExerciseSession(expectedSession)
         val testObserver = TestObserver<ExerciseRouteViewModel.SessionWithAttribution?>()
         viewModel.exerciseSession.observeForever(testObserver)
         viewModel.getExerciseWithRoute("testId")
@@ -193,16 +167,5 @@ class ExerciseRouteViewModelTest {
         assertThat(result?.session as ExerciseSessionRecord).isEqualTo(expectedSession)
         assertThat(result.appInfo.appName).isEqualTo(TEST_APP_NAME)
         assertThat(result.appInfo.packageName).isEqualTo(TEST_APP_PACKAGE_NAME)
-    }
-
-    private fun prepareAnswer(
-        sessions: List<ExerciseSessionRecord>
-    ): (InvocationOnMock) -> List<ExerciseSessionRecord> {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[2] as OutcomeReceiver<Any?, *>
-            receiver.onResult(ReadRecordsResponse(sessions, -1))
-            sessions
-        }
-        return answer
     }
 }

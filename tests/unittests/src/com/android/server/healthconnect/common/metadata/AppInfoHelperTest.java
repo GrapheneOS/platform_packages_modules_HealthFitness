@@ -38,6 +38,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.ApplicationInfoFlags;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.health.connect.datatypes.AppInfo;
@@ -143,9 +144,10 @@ public class AppInfoHelperTest {
     }
 
     @Test
+    @EnableFlags(Flags.FLAG_RESIZE_LARGE_APP_ICONS)
     public void testGetAppInfo_iconIsTooLarge_resizesIcon() throws Exception {
         setAppAsInstalled();
-        int width = 1000;
+        int width = 2000;
         int height = 1000;
         when(mDrawable.getIntrinsicHeight()).thenReturn(height);
         when(mDrawable.getIntrinsicWidth()).thenReturn(width);
@@ -172,10 +174,14 @@ public class AppInfoHelperTest {
 
         // Clear cache and read back to trigger SQLiteBlobTooBigException if icon was too large
         mAppInfoHelper.clearCache();
-        // TODO(b/484258712): Fix the bug that causes this exception.
-        assertThrows(
-                android.database.sqlite.SQLiteBlobTooBigException.class,
-                () -> mAppInfoHelper.getAppInfoMap());
+        Map<String, AppInfoInternal> appInfoMap = mAppInfoHelper.getAppInfoMap();
+
+        AppInfoInternal appInfo = appInfoMap.get(TEST_PACKAGE_NAME);
+        byte[] icon = appInfo.getIcon();
+        Bitmap bitmap = BitmapFactory.decodeByteArray(icon, 0, icon.length);
+
+        assertThat(bitmap.getWidth()).isEqualTo(288);
+        assertThat(bitmap.getHeight()).isEqualTo(144);
     }
 
     @Test

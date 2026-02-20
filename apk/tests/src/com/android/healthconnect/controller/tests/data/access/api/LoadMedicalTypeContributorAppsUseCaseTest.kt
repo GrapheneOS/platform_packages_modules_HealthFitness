@@ -21,7 +21,7 @@ import android.health.connect.MedicalResourceTypeInfo
 import android.health.connect.datatypes.MedicalResource
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.android.healthconnect.controller.data.access.LoadMedicalTypeContributorAppsUseCase
+import com.android.healthconnect.controller.data.access.api.LoadMedicalTypeContributorAppsUseCase
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata

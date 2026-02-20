@@ -24,10 +24,10 @@ import android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VACCINES
 import android.health.connect.HealthPermissions.WRITE_DISTANCE
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.additionalaccess.AdditionalAccessViewModel
-import com.android.healthconnect.controller.permissions.additionalaccess.GetAdditionalPermissionUseCase
-import com.android.healthconnect.controller.permissions.additionalaccess.LoadDeclaredHealthPermissionUseCase
-import com.android.healthconnect.controller.permissions.additionalaccess.LoadExerciseRoutePermissionUseCase
-import com.android.healthconnect.controller.permissions.additionalaccess.PermissionUiState
+import com.android.healthconnect.controller.permissions.additionalaccess.api.GetAdditionalPermissionUseCase
+import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadDeclaredHealthPermissionUseCase
+import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadExerciseRoutePermissionUseCase
+import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase

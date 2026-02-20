@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.data.access
+package com.android.healthconnect.controller.data.access.api
 
+import com.android.healthconnect.controller.data.access.AppAccessMetadata
+import com.android.healthconnect.controller.data.access.AppAccessState
 import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
@@ -34,7 +36,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 
-/** Use case to load a map of [AppAccessState] to a list of [AppAccessMetadata]. */
+/**
+ * Use case to load a map of [com.android.healthconnect.controller.data.access.AppAccessState] to a
+ * list of [com.android.healthconnect.controller.data.access.AppAccessMetadata].
+ */
 @Singleton
 class LoadAccessUseCase
 @Inject

@@ -20,6 +20,8 @@
 
     <PreferenceCategory android:key="device_header_category" />
 
+    <com.android.healthconnect.controller.shared.preference.HealthMainSwitchPreference android:key="device_sync_pref" />
+
     <PreferenceCategory android:key="device_write_category" />
 
     <PreferenceCategory android:key="device_data_category">
