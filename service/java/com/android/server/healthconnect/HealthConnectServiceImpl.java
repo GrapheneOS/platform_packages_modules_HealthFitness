@@ -55,6 +55,7 @@ import static com.android.server.healthconnect.common.logging.HealthConnectServi
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MATCHING_DATA_SOURCES;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MEDICAL_DATA_SOURCES_BY_IDS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MEDICAL_DATA_SOURCES_BY_REQUESTS;
+import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.HAS_USER_ENABLED_TRACKING;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.INSERT_DATA;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.INSERT_DEVICE_RECORDS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.READ_AGGREGATED_DATA;
@@ -3984,7 +3985,6 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 mBackupRestore.getDataRestoreError());
     }
 
-    // TODO(b/455514553): Use specific API method for logging and additional telemetry.
     @Override
     public boolean hasUserEnabledTracking(
             AttributionSource attributionSource, String recordTypePrefKey) {
@@ -3992,7 +3992,13 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         final UserHandle userHandle = Binder.getCallingUserHandle();
         final int uid = Binder.getCallingUid();
         final int pid = Binder.getCallingPid();
+        final boolean holdsDataManagementPermission = hasDataManagementPermission(uid, pid);
         final String callingPackageName = requireNonNull(attributionSource.getPackageName());
+        final HealthConnectServiceLogger.Builder logger =
+                new HealthConnectServiceLogger.Builder(
+                                holdsDataManagementPermission, HAS_USER_ENABLED_TRACKING)
+                        .setHealthFitnessStatsLog(mStatsLog)
+                        .setPackageName(callingPackageName);
 
         try {
             if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
@@ -4011,13 +4017,18 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                         "Caller does not have permission to call hasUserEnabledTracking.");
             }
 
-            return getTrackingPreferenceFor(recordTypePrefKey);
-
+            boolean result = getTrackingPreferenceFor(recordTypePrefKey);
+            logger.setHealthDataServiceApiStatusSuccess();
+            return result;
         } catch (SQLiteException | UnsupportedOperationException | SecurityException e) {
+            logger.setHealthDataServiceApiStatusError(getErrorCode(e));
             Slog.e(TAG, "Unable to get current preference for " + recordTypePrefKey);
             throw e;
         } catch (Exception e) {
+            logger.setHealthDataServiceApiStatusError(getErrorCode(e));
             throw new RuntimeException();
+        } finally {
+            logger.build().log();
         }
     }
 
