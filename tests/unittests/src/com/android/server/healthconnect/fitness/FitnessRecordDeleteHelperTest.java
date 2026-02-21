@@ -63,6 +63,7 @@ import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMa
 import com.android.server.healthconnect.fitness.recordhelpers.RecordHelper;
 import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
+import com.android.server.healthconnect.storage.HealthConnectContext;
 import com.android.server.healthconnect.storage.request.DeleteTableRequest;
 
 import com.google.common.collect.ImmutableList;
@@ -102,6 +103,9 @@ public class FitnessRecordDeleteHelperTest {
     public void setup() {
         Context context = ApplicationProvider.getApplicationContext();
         mUserHandle = context.getUser();
+        HealthConnectContext hcContext =
+                HealthConnectContext.create(
+                        context, mUserHandle, null, mEnvironmentDataDir.getRoot());
         HealthConnectInjector injector =
                 HealthConnectInjectorImpl.newBuilderForTest(context)
                         .setAppOpLogsHelper(mAppOpLogsHelper)
@@ -116,7 +120,7 @@ public class FitnessRecordDeleteHelperTest {
         if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
             mDeviceDataProviderManager =
                     new FakeSerialDeviceDataProviderManager(
-                            context,
+                            hcContext,
                             injector.getDeviceInfoHelper(),
                             injector.getAppInfoHelper(),
                             new FakeSerialDeviceDataSourceHelper(),

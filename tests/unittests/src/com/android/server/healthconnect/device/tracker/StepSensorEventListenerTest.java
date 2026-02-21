@@ -59,6 +59,7 @@ import com.android.server.healthconnect.injector.HealthConnectInjector;
 import com.android.server.healthconnect.injector.HealthConnectInjectorImpl;
 import com.android.server.healthconnect.permission.FirstGrantTimeManager;
 import com.android.server.healthconnect.permission.HealthPermissionIntentAppsTracker;
+import com.android.server.healthconnect.storage.HealthConnectContext;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -110,6 +111,9 @@ public class StepSensorEventListenerTest {
         Context mContext = spy(InstrumentationRegistry.getInstrumentation().getContext());
         AndroidPackageMocker.addToContext(mContext);
         DeviceDataSourceHelper deviceDataSourceHelper = new FakeSerialDeviceDataSourceHelper();
+        HealthConnectContext hcContext =
+                HealthConnectContext.create(
+                        mContext, mContext.getUser(), null, mEnvironmentDataDir.getRoot());
         HealthConnectInjector healthConnectInjector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
@@ -117,6 +121,7 @@ public class StepSensorEventListenerTest {
                         .setAppOpLogsHelper(mAppOpLogsHelper)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
                         .setDeviceDataSourceHelper(deviceDataSourceHelper)
+                        .setDeviceDataProviderManager(mDeviceDataProviderManager)
                         .build();
         mThreadScheduler = healthConnectInjector.getThreadScheduler();
         DeviceRecordHelper mDeviceRecordHelper = healthConnectInjector.getDeviceRecordHelper();
@@ -128,7 +133,7 @@ public class StepSensorEventListenerTest {
             mDeviceDataProviderManager =
                     spy(
                             new FakeSerialDeviceDataProviderManager(
-                                    mContext,
+                                    hcContext,
                                     healthConnectInjector.getDeviceInfoHelper(),
                                     healthConnectInjector.getAppInfoHelper(),
                                     healthConnectInjector.getDeviceDataSourceHelper(),

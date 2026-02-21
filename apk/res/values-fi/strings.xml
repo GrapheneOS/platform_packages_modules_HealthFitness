@@ -405,7 +405,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Valitse, mitä Health Connect -dataa haluat sovelluksen lukevan"</string>
     <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
     <skip />
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data sovelluksesta: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
+    <skip />
     <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
     <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Sovellukset, jotka voivat synkronoida tämän datan"</string>
@@ -1343,6 +1344,8 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Laitteen data"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Muuta laitteen asetuksia"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Katso laitteen data"</string>
+    <!-- no translation found for device_sync_button (2075007109033449483) -->
+    <skip />
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Puhelimen seuraamat askeleet näkyvät Health Connectissa"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Laitteen seuraamat askeleet tallennetaan nyt Health Connectiin, josta yhdistetyt sovellukset saavat pääsyn niihin"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Ohita"</string>
@@ -1354,8 +1357,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Terveyssovellukset"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Terveysdata"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Valinnat"</string>
-    <!-- no translation found for home_screen_footer (3704528068051346905) -->
-    <skip />
+    <string name="home_screen_footer" msgid="3704528068051346905">"Health Connectin avulla voit jakaa terveys- ja kuntoiludataa useiden datalähteiden välillä. Näin voit hyödyntää havaintoja ja kokemuksia sekä pitää datasi turvassa."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Lisätietoa Health Connectista"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Datasi ja sovellukset, joilla on pääsy siihen"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Sovellukset, jotka ovat käyttäneet dataasi äskettäin"</string>

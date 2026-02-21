@@ -100,6 +100,7 @@ import static com.android.server.healthconnect.common.logging.HealthConnectServi
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MATCHING_DATA_SOURCES;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MEDICAL_DATA_SOURCES_BY_IDS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.GET_MEDICAL_DATA_SOURCES_BY_REQUESTS;
+import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.HAS_USER_ENABLED_TRACKING;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.INSERT_DEVICE_RECORDS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.READ_DEVICE_RECORDS;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.READ_MEDICAL_RESOURCES_BY_IDS;
@@ -278,6 +279,7 @@ import com.android.server.healthconnect.phr.ReadMedicalResourcesInternalResponse
 import com.android.server.healthconnect.phr.storage.MedicalDataSourceHelper;
 import com.android.server.healthconnect.phr.storage.MedicalResourceHelper;
 import com.android.server.healthconnect.proto.backuprestore.BackupRestoreProto.Settings;
+import com.android.server.healthconnect.storage.HealthConnectContext;
 
 import com.google.common.collect.Iterables;
 
@@ -482,6 +484,7 @@ public class HealthConnectServiceImplTest {
     @Captor private ArgumentCaptor<HealthConnectOnboardingState> mOnboardingStateCaptor;
     private FakeTimeSource mFakeTimeSource;
     private Context mContext;
+    private HealthConnectContext mHcContext;
     private AttributionSource mAttributionSource;
     private HealthConnectServiceImpl mHealthConnectService;
     private UserHandle mUserHandle;
@@ -527,6 +530,10 @@ public class HealthConnectServiceImplTest {
         when(mPackageManager.getApplicationIcon(anyString()))
                 .thenThrow(new PackageManager.NameNotFoundException());
         when(mPackageManager.getDefaultActivityIcon()).thenReturn(mDrawable);
+
+        mHcContext =
+                HealthConnectContext.create(
+                        mServiceContext, mUserHandle, null, mEnvironmentDataDir.getRoot());
         DeviceDataSourceHelper deviceDataSourceHelper = new FakeSerialDeviceDataSourceHelper();
 
         HealthConnectInjector healthConnectInjector =
@@ -564,7 +571,7 @@ public class HealthConnectServiceImplTest {
             mDeviceDataProviderManager =
                     spy(
                             new FakeSerialDeviceDataProviderManager(
-                                    mServiceContext,
+                                    mHcContext,
                                     healthConnectInjector.getDeviceInfoHelper(),
                                     healthConnectInjector.getAppInfoHelper(),
                                     healthConnectInjector.getDeviceDataSourceHelper(),
@@ -4905,6 +4912,32 @@ public class HealthConnectServiceImplTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
     })
+    public void hasUserEnabledTrackingWithoutPermission_logsApiCallError() {
+        setDeviceDataProviderPermission(PackageManager.PERMISSION_DENIED);
+
+        assertThrows(
+                SecurityException.class,
+                () ->
+                        mHealthConnectService.hasUserEnabledTracking(
+                                mAttributionSource, "TRACKING_PREF_1"));
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HAS_USER_ENABLED_TRACKING),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__ERROR),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+    })
     public void hasUserEnabledTracking_withPreferencesSet_returnsPreferences() {
         when(mPreferenceHelper.getPreference("TRACKING_PREF_1")).thenReturn("true");
         when(mPreferenceHelper.getPreference("TRACKING_PREF_2")).thenReturn("false");
@@ -4930,6 +4963,33 @@ public class HealthConnectServiceImplTest {
                 mHealthConnectService.hasUserEnabledTracking(mAttributionSource, "TRACKING_PREF_1");
 
         assertThat(result).isTrue();
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+    })
+    public void hasUserEnabledTracking_logsApiCall() {
+        when(mServiceContext.checkPermission(eq(MANAGE_HEALTH_DATA_PERMISSION), anyInt(), anyInt()))
+                .thenReturn(PackageManager.PERMISSION_DENIED);
+        doReturn(true)
+                .when(mDeviceDataProviderManager)
+                .isPermittedToProvideDeviceData(anyString(), anyInt(), anyInt());
+
+        mHealthConnectService.hasUserEnabledTracking(mAttributionSource, "TRACKING_PREF_1");
+
+        verify(mHealthFitnessStatsLog, times(1))
+                .write(
+                        eq(HEALTH_CONNECT_API_CALLED),
+                        eq(HAS_USER_ENABLED_TRACKING),
+                        eq(HEALTH_CONNECT_API_CALLED__API_STATUS__SUCCESS),
+                        anyInt(),
+                        anyLong(),
+                        anyInt(),
+                        anyInt(),
+                        anyInt(),
+                        eq(mTestPackageName));
     }
 
     @Test

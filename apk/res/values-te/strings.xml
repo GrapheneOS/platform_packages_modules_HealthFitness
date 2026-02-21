@@ -403,20 +403,16 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connect కోసం ఈ యాప్, ఏ డేటాను రాయాలో ఎంచుకోండి"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"ఈ యాప్, Health Connectలో ఏ డేటాను రీడ్ చేయవచ్చు లేదా రైట్ చేయవచ్చు అన్నది ఎంచుకోండి"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"ఈ యాప్, Health Connectలో ఏ డేటాను రీడ్ చేయవచ్చు అన్నది ఎంచుకోండి"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"మీ యాప్‌లను, డివైజ్‌లను సింక్ చేయండి"</string>
+    <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> నుండి డేటా"</string>
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Health Connectను ఉపయోగించి, ఈ డివైజ్‌లోని ఇతర యాప్‌లు లేదా డివైజ్‌ల నుండి డేటాను యాక్సెస్ చేయడానికి, <xliff:g id="APP_NAME">%1$s</xliff:g> యాప్‌ను అనుమతించండి. మీరు యాక్సెస్ ఇచ్చిన ఇతర యాప్‌లు కూడా ఈ డేటాను చదవగలవు."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ఈ డేటాను సింక్ చేయగల యాప్‌లు"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"ఈ డేటాను సింక్ చేయగల డివైజ్‌లు"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"ఎనేబుల్ చేయడానికి డివైజ్ ప్రాధాన్యతలకు కొనసాగించండి"</string>
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"అన్ని <xliff:g id="APP_NAME">%1$s</xliff:g> అనుమతులను అనుమతించండి"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g>, మీ డేటాను వారి "<a href="%2$s">"గోప్యతా పాలసీ"</a>"లో ఎలా ఉపయోగిస్తారో తెలుసుకోండి."</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect మీ ఆరోగ్యం, ఫిట్‌నెస్ డేటాను మల్టిపుల్ డేటా సోర్స్‌ల మధ్య షేర్ చేసుకోవడానికి మిమ్మల్ని అనుమతిస్తుంది. ఇది మీ డేటాను సురక్షితంగా ఉంచుతూ గణాంకాలు, ఎక్స్‌పీరియన్స్‌లను అన్‌లాక్ చేయడంలో మీకు సహాయపడుతుంది."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect గురించిన మరింత సమాచారం"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"విస్తరించండి"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"కుదించండి"</string>
@@ -1229,8 +1225,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"మీ హెల్త్ డేటాకు అదనపు సెక్యూరిటీని అందించడానికి, ఈ డివైజ్‌కు PINను, ఆకృతిని, లేదా పాస్‌వర్డ్‌ను సెట్ చేయండి"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"స్క్రీన్ లాక్‌ను సెట్ చేయండి"</string>
     <string name="select_all" msgid="837499881590001166">"అన్నింటినీ ఎంచుకోండి"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"ఎంచుకోండి"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"కనెక్ట్ అయి ఉన్న యాప్‌లు ఇకపై Health Connectలో ఈ డేటాను రీడ్ చేయలేవు"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"ఎంచుకోబడింది"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"ఎంచుకోలేదు"</string>
@@ -1334,23 +1329,21 @@
     <string name="devices_current_device" msgid="6388308185566619743">"ప్రస్తుత డివైజ్"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"తెలియని డివైజ్"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"డివైజ్ సమాచారం"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"ఈ డివైజ్ ద్వారా కలెక్ట్ అయిన డేటా Health Connectలో స్టోర్ అవుతుంది, అక్కడ కనెక్ట్ చేయబడిన యాప్‌లు దానిని యాక్సెస్ చేస్తాయి"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"ఈ డివైజ్, స్టెప్ ట్రాకింగ్‌కు సపోర్ట్ చేయదు, కానీ ఇప్పటికీ Health Connectలో డేటా స్టోర్ చేసి ఉంటుంది"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"ఈ డివైజ్ స్టెప్స్‌ను ట్రాక్ చేయదు"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"రైటింగ్‌కు అనుమ‌తి ఉంది"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"డివైజ్ డేటా"</string>
     <string name="device_data_label" msgid="2056618513138892435">"డివైజ్‌ను మేనేజ్ చేయండి"</string>
     <string name="device_data_button" msgid="8002406105399136401">"డివైజ్ డేటాను చూడండి"</string>
+    <!-- no translation found for device_sync_button (2075007109033449483) -->
+    <skip />
     <string name="native_steps_banner_title" msgid="8990874387340782536">"మీ ఫోన్‌లో ట్రాక్ అయిన అడుగులు Health Connectలో కనిపిస్తాయి"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"ఈ డివైజ్, ట్రాక్ చేసే స్టెప్స్ (అడుగులు) ఇప్పుడు Health Connectలో స్టోర్ అవుతాయి. వీటిని కనెక్టెడ్ యాప్స్‌, యాక్సెస్ చేస్తాయి"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"విస్మరించండి"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"రివ్యూ చేయండి"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"Health Connectలో ఇప్పుడు అడుగులు ఉన్నాయి"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"కనెక్టెడ్ యాప్‌లను యాక్సెస్ చేయడానికి ఈ డివైజ్ ద్వారా ట్రాక్ చేయబడిన స్టెప్స్ ఇప్పుడు Health Connectలో స్టోర్ చేయబడతాయి"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"మీ హెల్త్ యాప్‌లు"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"మీ ఆరోగ్య సంబంధిత డేటా"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"ప్రాధాన్యతలు"</string>
@@ -1363,10 +1356,8 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"అనుకూల యాప్‌లను చూడండి"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"మరిన్ని హెల్త్ యాప్‌లను చూడండి"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"కనెక్ట్ అయి లేదు"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"ఈ యాప్‌ను Health Connectకు కనెక్ట్ చేయడానికి క్లిక్ చేయండి"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"Health Connectకు ఏ డివైజ్‌లు డేటాను సింక్ చేయవచ్చో కంట్రోల్ చేయండి"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"ఎనేబుల్ అయ్యింది"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"ఎనేబుల్ అవ్వలేదు"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"ఈ ఫోన్"</string>
@@ -1396,10 +1387,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"మొటిమల డేటాను రాస్తుంది"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"పెళుసుగా ఉండే గోళ్ల డేటాను చదువుతుంది"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"పెళుసుగా ఉండే గోళ్ల డేటాను రాస్తుంది"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"నోటిలో మంటగా అనిపించడానికి సంబంధించిన డేటాను చదువుతుంది"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"నోటిలో మంటగా అనిపించడానికి సంబంధించిన డేటాను రాస్తుంది"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"వణకడం డేటాను చదువుతుంది"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"వణకడం డేటాను రాస్తుంది"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"డీహైడ్రేషన్ డేటాను చదువుతుంది"</string>
@@ -1631,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ఊపిరి పీల్చుకుంటున్నప్పుడు వచ్చే ఈల శబ్దం"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ఊపిరి పీల్చుకుంటున్నప్పుడు వచ్చే ఈల శబ్దం"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>లో <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> ఎంచుకోబడ్డాయి"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"ఈ అగ్రిగేషన్ కార్డ్ కోసం డేటా కేటగిరీ"</string>
 </resources>

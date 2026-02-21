@@ -405,7 +405,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"तपाईं यो एपलाई Health Connect मा कुन कुन जानकारी रिड गर्न दिन चाहनुहुन्छ छनौट गर्नुहोस्"</string>
     <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
     <skip />
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"<xliff:g id="APP_NAME">%1$s</xliff:g> मा भएको डेटा"</string>
+    <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
+    <skip />
     <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
     <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"यो डेटा सिंक गर्न सक्ने एपहरू"</string>
@@ -1343,6 +1344,8 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"डिभाइसमा भएको डेटा"</string>
     <string name="device_data_label" msgid="2056618513138892435">"डिभाइस व्यवस्थापन गर्नुहोस्"</string>
     <string name="device_data_button" msgid="8002406105399136401">"डिभाइसमा भएको डेटा हेर्नुहोस्"</string>
+    <!-- no translation found for device_sync_button (2075007109033449483) -->
+    <skip />
     <string name="native_steps_banner_title" msgid="8990874387340782536">"तपाईंको फोनमा ट्र्याक गरिएका कदमहरूसम्बन्धी जानकारी Health Connect मा देखिने छ"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"यो डिभाइसले ट्र्याक गरेका कदमहरूसम्बन्धी जानकारी सम्बन्धित एपहरूले एक्सेस गर्न सकून् भन्नाका लागि उक्त जानकारी अब Health Connect मा भण्डारण गरिन्छ"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"हटाउनुहोस्"</string>
@@ -1354,8 +1357,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"तपाईंका स्वास्थ्यसम्बन्धी एपहरू"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"तपाईंको स्वास्थ्यसम्बन्धी डेटा"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"प्राथमिकताहरू"</string>
-    <!-- no translation found for home_screen_footer (3704528068051346905) -->
-    <skip />
+    <string name="home_screen_footer" msgid="3704528068051346905">"तपाईं Health Connect प्रयोग गरी डेटाका एकभन्दा बढी स्रोतहरूका बिचमा आफ्नो स्वास्थ्य र व्यायामसम्बन्धी डेटा सेयर गर्न सक्नुहुन्छ। तपाईं यसका सहायताले आफ्नो डेटा सुरक्षित राखेर विश्लेषणात्मक डेटा र सुविधाहरू प्राप्त गर्न सक्नुहुन्छ।"</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect का बारेमा थप जानकारी"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"तपाईंको डेटा हेर्नुहोस् र कुन कुन एपले तपाईंको डेटा एक्सेस गर्न सक्छन् जान्नुहोस्"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"हालसालै तपाईंको डेटा प्रयोग गरेका एपहरू"</string>

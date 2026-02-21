@@ -106,10 +106,12 @@ public class BackupRestoreWithoutMocksTest {
                         .setFirstGrantTimeManager(mFirstGrantTimeManager)
                         .setEnvironmentDataDirectory(mEnvironmentDataDirectory.getRoot())
                         .build();
-
+        HealthConnectContext hcContext =
+                HealthConnectContext.create(
+                        mContext, mContext.getUser(), null, mEnvironmentDataDirectory.getRoot());
         DeviceDataProviderManager fakeDeviceDataProviderManager =
                 new FakeSerialDeviceDataProviderManager(
-                        mContext,
+                        hcContext,
                         healthConnectInjectorTemp.getDeviceInfoHelper(),
                         healthConnectInjectorTemp.getAppInfoHelper(),
                         healthConnectInjectorTemp.getDeviceDataSourceHelper(),

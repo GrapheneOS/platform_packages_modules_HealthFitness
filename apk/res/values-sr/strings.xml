@@ -403,20 +403,16 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Одаберите податке које желите да ова апликација уписује у Повезивање здравља"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Одаберите податке које желите да ова апликација чита или уписује у Повезивање здравља"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Одаберите податке које желите да ова апликација чита из Повезивања здравља"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Синхронизујте апликације и уређаје"</string>
+    <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Подаци из: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Дозволите апликацији <xliff:g id="APP_NAME">%1$s</xliff:g> да помоћу Повезивања здравља чита податке из других апликација или уређаја на овом уређају. Ове податке могу да читају и друге апликације којима омогућите приступ."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Апликације које могу да синхронизују ове податке"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Уређаји који могу да синхронизују ове податке"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Пређите на подешавања уређаја да бисте омогућили"</string>
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Дозволи све дозволе за апликацију <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Да бисте сазнали како апликација <xliff:g id="APP_NAME">%1$s</xliff:g> користи ваше податке, погледајте њену "<a href="%2$s">"политику приватности"</a>"."</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Повезивање здравља вам омогућава да делите податке о здрављу и фитнесу између више извора података. То вам помаже да откријете увиде и доживљаје, a да подаци притом остану безбедни."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Више о Повезивању здравља"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"прошири"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"скупи"</string>
@@ -1229,8 +1225,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Подесите PIN, шаблон или лозинку за овај уређај да бисте побољшали безбедност података о здрављу"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Подеси откључавање екрана"</string>
     <string name="select_all" msgid="837499881590001166">"Изабери све"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"изабери"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Повезане апликације више неће моћи да читају ове податке из Повезивања здравља"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Означено"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Није означено"</string>
@@ -1334,28 +1329,25 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Актуелни уређај"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Непознат уређај"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Информације о уређају"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"Подаци које прикупи овај уређај чувају се у Повезивању здравља и ту им приступају повезане апликације"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"Овај уређај не подржава праћење корака, али и даље садржи податке сачуване у Повезивању здравља"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Овај уређај не прати коракe"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Дозвољено за писање"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Подаци о уређају"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Управљање уређајем"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Прикажи податке о уређају"</string>
+    <!-- no translation found for device_sync_button (2075007109033449483) -->
+    <skip />
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Кораци који се прате на телефону приказују се у Повезивању здравља"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Кораци које прати овај уређај сада се чувају у Повезивању здравља како би им приступале повезане апликације"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Одбаци"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Прикажи"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"Кораци су сада у Повезивању здравља"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"Кораци које прати овај уређај сада се чувају у Повезивању здравља како би им приступале повезане апликације"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Здравствене апликације"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Ваши здравствени подаци"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Подешавања"</string>
-    <!-- no translation found for home_screen_footer (3704528068051346905) -->
-    <skip />
+    <string name="home_screen_footer" msgid="3704528068051346905">"Повезивање здравља вам омогућава да делите податке о здрављу и фитнесу између више извора података. То вам помаже да откријете увиде и доживљаје, a да подаци притом остану безбедни."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Више о Повезивању здравља"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Подаци и које апликације могу да им приступају"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Апликације које су недавно користиле ваше податке"</string>
@@ -1364,10 +1356,8 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Погледајте компатибилне апликације"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Погледајте још здравствених апликација"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Није повезано"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"Кликните да бисте повезали ову апликацију са Повезивањем здравља"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"Контролишите који уређаји могу да синхронизују податке са Повезивањем здравља"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Омогућено"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Није омогућено"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Овај телефон"</string>
@@ -1397,10 +1387,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Уписивање података о акнама"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Читање података о ломљивим ноктима"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Уписивање података о ломљивим ноктима"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"Читање података о пецкању у устима"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"Уписивање података о пецкању у устима"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"Читање података о дрхтавици"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Уписивање података о дрхтавици"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Читање података о дехидратацији"</string>
@@ -1632,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Звиждање у грудима"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"звиждање у грудима"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Изабрано: <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> од <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Категорија података за ову картицу за груписање"</string>
 </resources>

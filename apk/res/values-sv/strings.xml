@@ -405,7 +405,8 @@
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Välj data som du vill att den här appen ska kunna läsa från Health Connect"</string>
     <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
     <skip />
-    <string name="matchmaking_screen_data_from_app" msgid="8220118846137120239">"Data från <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
+    <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
+    <skip />
     <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
     <skip />
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Appar som kan synkronisera denna data"</string>
@@ -1343,6 +1344,8 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Enhetsdata"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Hantera enhet"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Se enhetsdata"</string>
+    <!-- no translation found for device_sync_button (2075007109033449483) -->
+    <skip />
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Steg på telefonen visas i Health Connect"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"De steg som registreras av den här enheten lagras nu i Health Connect så att anslutna appar kan komma åt dem"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Stäng"</string>
@@ -1354,8 +1357,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Dina hälsoappar"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Din hälsodata"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Inställningar"</string>
-    <!-- no translation found for home_screen_footer (3704528068051346905) -->
-    <skip />
+    <string name="home_screen_footer" msgid="3704528068051346905">"Med Health Connect kan du dela din hälso- och träningsdata mellan flera datakällor. Detta hjälper dig att få fler insikter och upplevelser samtidigt som din data skyddas."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Mer om Health Connect"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"Din data och vilka appar som har åtkomst till den"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Appar som nyligen har använt din data"</string>
