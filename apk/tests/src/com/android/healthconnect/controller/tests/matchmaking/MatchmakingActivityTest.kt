@@ -81,7 +81,7 @@ class MatchmakingActivityTest {
 
     private val matchmakingState = MutableLiveData<MatchmakingViewModel.MatchmakingState>()
     private val expandedKeys = MutableLiveData<Set<String>>(emptySet())
-    private val atLeastOnePermissionGranted = MutableLiveData(false)
+    private val atLeastOneDataSourceSelected = MutableLiveData(false)
     private val allPermissionsGranted = MutableLiveData(false)
     private val grantedPermissions =
         MutableLiveData<Map<String, List<FitnessPermission>>>(emptyMap())
@@ -102,7 +102,7 @@ class MatchmakingActivityTest {
         context = getInstrumentation().targetContext
         whenever(viewModel.matchmakingState).thenReturn(matchmakingState)
         whenever(viewModel.expandedPreferenceKeys).thenReturn(expandedKeys)
-        whenever(viewModel.atLeastOnePermissionGranted).thenReturn(atLeastOnePermissionGranted)
+        whenever(viewModel.atLeastOneDataSourceSelected).thenReturn(atLeastOneDataSourceSelected)
         whenever(viewModel.allPermissionsGranted).thenReturn(allPermissionsGranted)
         whenever(viewModel.grantedPermissions).thenReturn(grantedPermissions)
         whenever(viewModel.matchingAppsCount).thenReturn(matchingAppsCount)
@@ -252,7 +252,7 @@ class MatchmakingActivityTest {
     fun matchmakingScreen_dontAllowButton_isClicked_finishesWithResultCanceled() {
         launchMatchmakingActivity().use { scenario ->
             registerBottomSheetIdlingResource(scenario)
-            atLeastOnePermissionGranted.postValue(true)
+            atLeastOneDataSourceSelected.postValue(true)
 
             onView(withText("Don\u0027t allow")).inRoot(isDialog()).perform(click())
 

@@ -572,7 +572,7 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
             activity?.finish()
         }
 
-        viewModel.atLeastOnePermissionGranted.observe(viewLifecycleOwner) { isEnabled ->
+        viewModel.atLeastOneDataSourceSelected.observe(viewLifecycleOwner) { isEnabled ->
             allowButton.isEnabled = isEnabled
         }
     }
