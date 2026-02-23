@@ -23,15 +23,19 @@ import static org.mockito.Mockito.when;
 
 import android.content.Context;
 import android.os.Process;
+import android.platform.test.annotations.EnableFlags;
+import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsRequestHelper;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
+import com.android.server.healthconnect.common.preferences.PreferencesManager;
 import com.android.server.healthconnect.exportimport.ExportManager;
 import com.android.server.healthconnect.fitness.FitnessRecordDeleteHelper;
 import com.android.server.healthconnect.fitness.RecordDeleteTableRequest;
@@ -62,6 +66,7 @@ public class DailyCleanupJobTest {
             "auto_delete_duration_records_key";
 
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
+    @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
 
     @Mock private PreferenceHelper mPreferenceHelper;
     @Mock private TransactionManager mTransactionManager;
@@ -171,5 +176,46 @@ public class DailyCleanupJobTest {
         tableNames.add(ReadAccessLogsHelper.getDeleteRequestForAutoDelete().getTableName());
 
         return tableNames;
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_RESIZE_LARGE_APP_ICONS)
+    public void testStartDailyCleanup_appIconsResizeNotCompleted_callsResize() {
+        when(mPreferenceHelper.getPreference(PreferencesManager.APP_ICONS_RESIZE_COMPLETED_KEY))
+                .thenReturn("false");
+        when(mAppInfoHelper.resizeLargeAppIcons()).thenReturn(true);
+
+        mDailyCleanupJob.startDailyCleanup();
+
+        verify(mAppInfoHelper).resizeLargeAppIcons();
+        verify(mPreferenceHelper)
+                .insertOrReplacePreference(
+                        PreferencesManager.APP_ICONS_RESIZE_COMPLETED_KEY, "true");
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_RESIZE_LARGE_APP_ICONS)
+    public void testStartDailyCleanup_appIconsResizeFailed_doesNotUpdatePreference() {
+        when(mPreferenceHelper.getPreference(PreferencesManager.APP_ICONS_RESIZE_COMPLETED_KEY))
+                .thenReturn("false");
+        when(mAppInfoHelper.resizeLargeAppIcons()).thenReturn(false);
+
+        mDailyCleanupJob.startDailyCleanup();
+
+        verify(mAppInfoHelper).resizeLargeAppIcons();
+        verify(mPreferenceHelper, times(0))
+                .insertOrReplacePreference(
+                        PreferencesManager.APP_ICONS_RESIZE_COMPLETED_KEY, "true");
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_RESIZE_LARGE_APP_ICONS)
+    public void testStartDailyCleanup_appIconsResizeCompleted_doesNotCallResize() {
+        when(mPreferenceHelper.getPreference(PreferencesManager.APP_ICONS_RESIZE_COMPLETED_KEY))
+                .thenReturn("true");
+
+        mDailyCleanupJob.startDailyCleanup();
+
+        verify(mAppInfoHelper, times(0)).resizeLargeAppIcons();
     }
 }

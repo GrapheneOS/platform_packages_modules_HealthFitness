@@ -83,6 +83,8 @@ public class AppInfoHelperTest {
 
     private static final String TEST_PACKAGE_NAME = "test.package.name";
     private static final String TEST_APP_NAME = "testAppName";
+    private static final int DEFAULT_DRAWABLE_WIDTH = 100;
+    private static final int DEFAULT_DRAWABLE_HEIGHT = 200;
 
     @Rule public final TemporaryFolder mEnvironmentDataDir = new TemporaryFolder();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -112,8 +114,8 @@ public class AppInfoHelperTest {
 
         when(mPackageManager.getDefaultActivityIcon()).thenReturn(mDrawable);
 
-        when(mDrawable.getIntrinsicHeight()).thenReturn(200);
-        when(mDrawable.getIntrinsicWidth()).thenReturn(200);
+        when(mDrawable.getIntrinsicHeight()).thenReturn(DEFAULT_DRAWABLE_HEIGHT);
+        when(mDrawable.getIntrinsicWidth()).thenReturn(DEFAULT_DRAWABLE_WIDTH);
 
         when(mMockDeviceDataSourceHelper.getCurrentDevice(any())).thenReturn(mMockDeviceDataSource);
         when(mMockDeviceDataSource.getDisplayName()).thenReturn(EXPECTED_DEVICE_APP_NAME);
@@ -145,43 +147,91 @@ public class AppInfoHelperTest {
 
     @Test
     @EnableFlags(Flags.FLAG_RESIZE_LARGE_APP_ICONS)
-    public void testGetAppInfo_iconIsTooLarge_resizesIcon() throws Exception {
+    public void testInsertAppInfo_iconIsTooLarge_resizesIcon() throws Exception {
         setAppAsInstalled();
         int width = 2000;
         int height = 1000;
-        when(mDrawable.getIntrinsicHeight()).thenReturn(height);
-        when(mDrawable.getIntrinsicWidth()).thenReturn(width);
-
-        doAnswer(
-                        invocation -> {
-                            Canvas canvas = invocation.getArgument(0);
-                            int[] colors = new int[width * height];
-                            Random random = new Random(42); // Seed for reproducibility
-                            for (int i = 0; i < colors.length; i++) {
-                                colors[i] = random.nextInt();
-                            }
-                            Bitmap noise =
-                                    Bitmap.createBitmap(
-                                            colors, width, height, Bitmap.Config.ARGB_8888);
-                            canvas.drawBitmap(noise, 0, 0, null);
-                            return null;
-                        })
-                .when(mDrawable)
-                .draw(any(Canvas.class));
+        mockDrawableBitmap(width, height);
 
         // This should store the large blob
         mAppInfoHelper.getOrInsertAppInfoId(TEST_PACKAGE_NAME);
 
-        // Clear cache and read back to trigger SQLiteBlobTooBigException if icon was too large
+        // Clear cache and read back to ensure icon was resized.
         mAppInfoHelper.clearCache();
-        Map<String, AppInfoInternal> appInfoMap = mAppInfoHelper.getAppInfoMap();
-
-        AppInfoInternal appInfo = appInfoMap.get(TEST_PACKAGE_NAME);
-        byte[] icon = appInfo.getIcon();
-        Bitmap bitmap = BitmapFactory.decodeByteArray(icon, 0, icon.length);
-
+        AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME);
+        Bitmap bitmap =
+                BitmapFactory.decodeByteArray(appInfo.getIcon(), 0, appInfo.getIcon().length);
         assertThat(bitmap.getWidth()).isEqualTo(288);
         assertThat(bitmap.getHeight()).isEqualTo(144);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_RESIZE_LARGE_APP_ICONS)
+    public void testResizeLargeAppIcons_installedAppWithLargeIcon_updatesFromPackage()
+            throws Exception {
+        // Insert large icon into db via a path that doesn't resize.
+        setAppAsNotInstalled(TEST_PACKAGE_NAME);
+        byte[] largeIcon = createIconBytes(2000, 1000); // > 512KB
+        mAppInfoHelper.addAppInfoIfNoAppInfoEntryExists(TEST_PACKAGE_NAME, TEST_APP_NAME);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, largeIcon);
+
+        // Set the app as installed with a smaller icon when resize runs.
+        setAppAsInstalled();
+        int width = 65;
+        int height = 78;
+        mockDrawableBitmap(width, height);
+
+        // Run resize
+        mAppInfoHelper.resizeLargeAppIcons();
+
+        // Clear cache and verify DB has new icon
+        mAppInfoHelper.clearCache();
+        AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME);
+        Bitmap bitmap =
+                BitmapFactory.decodeByteArray(appInfo.getIcon(), 0, appInfo.getIcon().length);
+        assertThat(bitmap.getWidth()).isEqualTo(width);
+        assertThat(bitmap.getHeight()).isEqualTo(height);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_RESIZE_LARGE_APP_ICONS)
+    public void testResizeLargeAppIcons_uninstalledAppWithLargeIcon_replacesWithDefaultIcon()
+            throws Exception {
+        // Insert large icon into db via a path that doesn't resize.
+        setAppAsNotInstalled(TEST_PACKAGE_NAME);
+        byte[] largeIcon = createIconBytes(2000, 1000);
+        mAppInfoHelper.addAppInfoIfNoAppInfoEntryExists(TEST_PACKAGE_NAME, TEST_APP_NAME);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, largeIcon);
+
+        // Run resize (app is uninstalled)
+        mAppInfoHelper.resizeLargeAppIcons();
+
+        // 3. Verify DB has default icon
+        mAppInfoHelper.clearCache();
+        AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME);
+        assertThat(appInfo.getIcon().length).isLessThan(largeIcon.length);
+        Bitmap storedBitmap =
+                BitmapFactory.decodeByteArray(appInfo.getIcon(), 0, appInfo.getIcon().length);
+        assertThat(storedBitmap.getWidth()).isEqualTo(DEFAULT_DRAWABLE_WIDTH);
+        assertThat(storedBitmap.getHeight()).isEqualTo(DEFAULT_DRAWABLE_HEIGHT);
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_RESIZE_LARGE_APP_ICONS)
+    public void testResizeLargeAppIcons_uninstalledAppWithSmallIcon_noChange() throws Exception {
+        // Insert small icon into db via a path that doesn't resize.
+        setAppAsNotInstalled(TEST_PACKAGE_NAME);
+        byte[] smallIcon = createIconBytes(90, 90);
+        mAppInfoHelper.addAppInfoIfNoAppInfoEntryExists(TEST_PACKAGE_NAME, TEST_APP_NAME);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, smallIcon);
+
+        // Run resize (app is uninstalled)
+        mAppInfoHelper.resizeLargeAppIcons();
+
+        // 3. Verify DB has same icon
+        mAppInfoHelper.clearCache();
+        AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME);
+        assertThat(appInfo.getIcon()).isEqualTo(smallIcon);
     }
 
     @Test
@@ -539,6 +589,9 @@ public class AppInfoHelperTest {
     }
 
     private void setAppAsInstalled() throws PackageManager.NameNotFoundException {
+        reset(mPackageManager);
+        when(mPackageManager.getDefaultActivityIcon()).thenReturn(mDrawable);
+
         ApplicationInfo expectedAppInfo = new ApplicationInfo();
         expectedAppInfo.packageName = TEST_PACKAGE_NAME;
         when(mPackageManager.getApplicationInfo(
@@ -551,5 +604,35 @@ public class AppInfoHelperTest {
 
     private boolean doesRecordExistForPackage() {
         return mAppInfoHelper.getAppInfoId(TEST_PACKAGE_NAME) != -1;
+    }
+
+    private Bitmap createBitmap(int width, int height) {
+        int[] colors = new int[width * height];
+        Random random = new Random(42); // Seed for reproducibility
+        for (int i = 0; i < colors.length; i++) {
+            colors[i] = random.nextInt();
+        }
+        return Bitmap.createBitmap(colors, width, height, Bitmap.Config.ARGB_8888);
+    }
+
+    private byte[] createIconBytes(int width, int height) {
+        Bitmap largeBitmap = createBitmap(width, height);
+        java.io.ByteArrayOutputStream stream = new java.io.ByteArrayOutputStream();
+        largeBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        return stream.toByteArray();
+    }
+
+    private void mockDrawableBitmap(int width, int height) {
+        when(mDrawable.getIntrinsicHeight()).thenReturn(height);
+        when(mDrawable.getIntrinsicWidth()).thenReturn(width);
+        doAnswer(
+                        invocation -> {
+                            Canvas canvas = invocation.getArgument(0);
+                            Bitmap noise = createBitmap(width, height);
+                            canvas.drawBitmap(noise, 0, 0, null);
+                            return null;
+                        })
+                .when(mDrawable)
+                .draw(any(Canvas.class));
     }
 }
