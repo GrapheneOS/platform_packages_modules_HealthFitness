@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"เลือกข้อมูลที่คุณต้องการให้แอปนี้เขียนลงใน Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"เลือกข้อมูลที่คุณต้องการให้แอปนี้อ่านหรือเขียนลงใน Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"เลือกข้อมูลที่คุณต้องการให้แอปนี้อ่านจาก Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"ซิงค์แอปและอุปกรณ์"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"อนุญาตให้แอป <xliff:g id="APP_NAME">%1$s</xliff:g> อ่านข้อมูลจากแอปหรืออุปกรณ์อื่นๆ ในอุปกรณ์เครื่องนี้โดยใช้ Health Connect แอปอื่นๆ ที่คุณให้สิทธิ์เข้าถึงจะอ่านข้อมูลนี้ได้เช่นกัน"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"แอปที่ซิงค์ข้อมูลนี้ได้"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"อุปกรณ์ที่ซิงค์ข้อมูลนี้ได้"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"ไปที่ค่ากำหนดของอุปกรณ์เพื่อเปิดใช้"</string>
     <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
     <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ดูวิธีที่ <xliff:g id="APP_NAME">%1$s</xliff:g> ใช้ข้อมูลของคุณใน"<a href="%2$s">"นโยบายความเป็นส่วนตัว"</a></string>
@@ -1634,6 +1631,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"หายใจเป็นเสียงหวีด"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"หายใจเป็นเสียงหวีด"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"เลือกแล้ว <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> จาก <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> รายการ"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"หมวดหมู่ข้อมูลสําหรับการ์ดการรวมข้อมูลนี้"</string>
 </resources>

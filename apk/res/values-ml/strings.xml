@@ -1336,8 +1336,7 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"ഉപകരണ ഡാറ്റ"</string>
     <string name="device_data_label" msgid="2056618513138892435">"ഉപകരണം മാനേജ് ചെയ്യുക"</string>
     <string name="device_data_button" msgid="8002406105399136401">"ഉപകരണ ഡാറ്റ കാണുക"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Health Connect-ലേക്ക് സമന്വയിപ്പിക്കുക"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"ഫോണിൽ ട്രാക്ക് ചെയ്ത ചുവടുകൾ Health Connect-ൽ കാണാം"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"കണക്റ്റ് ചെയ്ത ആപ്പുകൾക്ക് ആക്സസ് ചെയ്യുന്നതിനായി, ഈ ഉപകരണം ട്രാക്ക് ചെയ്ത ചുവടുകൾ ഇപ്പോൾ Health Connect-ൽ സംഭരിച്ചിരിക്കുന്നു"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"ഡിസ്‌മിസ് ചെയ്യുക"</string>

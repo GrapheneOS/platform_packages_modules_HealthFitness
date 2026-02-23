@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"يُرجى اختيار البيانات المطلوب أن يكتبها هذا التطبيق في Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"يُرجى اختيار البيانات المطلوب أن يقرأها هذا التطبيق من Health Connect أو يكتبها فيه"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"يُرجى اختيار البيانات المطلوب أن يقرأها هذا التطبيق من Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"مزامنة التطبيقات والأجهزة"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"يمكنك السماح لتطبيق \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" بقراءة البيانات من تطبيقات أو أجهزة أخرى على هذا الجهاز باستخدام Health Connect. ويمكن أيضًا للتطبيقات الأخرى قراءة هذه البيانات إذا حصلت على إذن بذلك."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"التطبيقات التي يمكنها مزامنة هذه البيانات"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"الأجهزة التي يمكنها مزامنة هذه البيانات"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"يُرجى الانتقال إلى إعدادات الجهاز المفضّلة للتفعيل"</string>
     <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
     <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"يمكنك الاطّلاع على "<a href="%2$s">"سياسة الخصوصية"</a>" لمعرفة طريقة استخدام \"<xliff:g id="APP_NAME">%1$s</xliff:g>\" لبياناتك"</string>
@@ -1634,6 +1631,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"صعوبة التنفّس"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"صعوبة التنفّس"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"تم اختيار <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> من إجمالي <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"فئة البيانات لبطاقة التجميع هذه"</string>
 </resources>

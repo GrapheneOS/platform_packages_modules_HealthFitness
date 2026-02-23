@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"داده‌هایی را که می‌خواهید این برنامه در Health Connect بنویسد انتخاب کنید"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"داده‌هایی را که می‌خواهید این برنامه بخواند یا در Health Connect بنویسد انتخاب کنید"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"داده‌هایی را که می‌خواهید این برنامه از Health Connect بخواند انتخاب کنید"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"همگام‌سازی برنامه‌ها و دستگاه‌ها"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"به برنامه «<xliff:g id="APP_NAME">%1$s</xliff:g>» اجازه دهید تا داده‌ها را بااستفاده از Health Connect از برنامه‌ها یا دستگاه‌های دیگر در این دستگاه بخواند. برنامه‌های دیگری که به آن‌ها دسترسی می‌دهید نیز می‌توانند این داده‌ها را بخوانند."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"برنامه‌هایی که می‌توانند این داده‌ها را همگام‌سازی کنند"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"دستگاه‌هایی که می‌توانند این داده‌ها را همگام‌سازی کنند"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"برای فعال کردن، به اولویت‌های دستگاه بروید"</string>
     <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
     <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ببینید که <xliff:g id="APP_NAME">%1$s</xliff:g> چگونه از داده‌هایتان در "<a href="%2$s">"خط‌مشی رازداری"</a>" خود استفاده می‌کند."</string>
@@ -1634,6 +1631,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"خس‌خس سینه"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"خس‌خس سینه"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"‫<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> مورد از <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> مورد انتخاب شده است"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"دسته داده برای این کارت تجمیع"</string>
 </resources>

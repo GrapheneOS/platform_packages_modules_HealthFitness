@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"ជ្រើសរើសទិន្នន័យដែលអ្នកចង់ឱ្យកម្មវិធីនេះសរសេរទៅ Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"ជ្រើសរើសទិន្នន័យដែលអ្នកចង់ឱ្យកម្មវិធីនេះអាន ឬសរសេរទៅ Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"ជ្រើសរើសទិន្នន័យដែលអ្នកចង់ឱ្យកម្មវិធីនេះអានពី Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"ធ្វើសមកាលកម្មកម្មវិធី និងឧបករណ៍របស់អ្នក"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"អនុញ្ញាតឱ្យកម្មវិធី<xliff:g id="APP_NAME">%1$s</xliff:g>អានទិន្នន័យពីកម្មវិធី ឬឧបករណ៍ផ្សេងទៀតនៅលើឧបករណ៍នេះដោយប្រើ Health Connect។ កម្មវិធីផ្សេងទៀតដែលអ្នកផ្ដល់សិទ្ធិចូលប្រើក៏អាចអានទិន្នន័យនេះបានផងដែរ។"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"កម្មវិធីដែលអាចធ្វើ​សម​កាល​កម្មទិន្នន័យនេះ"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"ឧបករណ៍ដែលអាចធ្វើ​សម​កាល​កម្មទិន្នន័យនេះ"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"បន្តទៅចំណូលចិត្តឧបករណ៍ ដើម្បីបើក"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"ផ្ដល់ការអនុញ្ញាតទាំងអស់ឱ្យ <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ស្វែងយល់អំពីរបៀប<xliff:g id="APP_NAME">%1$s</xliff:g>ប្រើប្រាស់ទិន្នន័យរបស់អ្នកនៅក្នុង"<a href="%2$s">"គោលការណ៍​ឯកជនភាព"</a>"របស់កម្មវិធី។"</string>
     <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect អាចឱ្យអ្នកចែករំលែកទិន្នន័យសុខភាព និង​សម្បទារបស់អ្នករវាងប្រភពទិន្នន័យជាច្រើន។ ការធ្វើបែបនេះជួយឱ្យអ្នកទទួលបានព័ត៌មានស៊ីជម្រៅ និងបទពិសោធប្រើប្រាស់ ព្រមទាំងរក្សាទិន្នន័យរបស់អ្នកឱ្យមានសុវត្ថិភាព។"</string>
@@ -1623,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"សំឡេងដង្ហើមតឹង"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"សំឡេងដង្ហើមតឹង"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"បានជ្រើសរើស <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> នៃ <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"ប្រភេទទិន្នន័យសម្រាប់កាតប្រមូលផ្ដុំនេះ"</string>
 </resources>
