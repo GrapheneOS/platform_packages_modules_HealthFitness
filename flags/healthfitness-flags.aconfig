@@ -343,18 +343,6 @@ flag {
 }
 
 flag {
-    name: "phr_allow_nulls_in_primitive_value_arrays"
-    namespace: "health_fitness_aconfig"
-    description: "Allows null values in FHIR primitive type value arrays in addition to primitive type extension arrays."
-    bug: "411366808"
-    is_fixed_read_only: true
-    is_exported: false
-    metadata {
-        purpose: PURPOSE_BUGFIX
-    }
-}
-
-flag {
     name: "new_device_types"
     namespace: "health_fitness_aconfig"
     description: "Flag for adding new device types to metadata."

@@ -26,7 +26,6 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSI
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_VERSION_R4B;
 
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_RESOURCE;
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_EXTENSION_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION;
@@ -527,30 +526,6 @@ public class FhirResourceValidatorTest {
                 .contains("Invalid resource structure. Expected array for field: category");
     }
 
-    @DisableFlags({FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS})
-    @Test
-    public void testValidateFhirResource_flagDisabled_primitiveTypeArrayFieldContainsNull_throws()
-            throws JSONException {
-        FhirResourceValidator validator = new FhirResourceValidator();
-        // The "category" field is an array of primitive type "code"
-        JSONObject allergyJson =
-                new JSONObject(
-                        new AllergyBuilder()
-                                .set("category", new JSONArray("[\"value\", null, null]"))
-                                .toJson());
-
-        Throwable thrown =
-                assertThrows(
-                        IllegalArgumentException.class,
-                        () ->
-                                validator.validateFhirResource(
-                                        allergyJson,
-                                        FHIR_RESOURCE_TYPE_ALLERGY_INTOLERANCE,
-                                        FHIR_VERSION_R4));
-        assertThat(thrown).hasMessageThat().contains("Found null value in field: category");
-    }
-
-    @EnableFlags({FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS})
     @Test
     public void testValidateFhirResource_primitiveTypeArrayFieldContainsNull_suceeds()
             throws JSONException {
