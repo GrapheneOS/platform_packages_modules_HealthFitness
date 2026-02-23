@@ -32,6 +32,7 @@ import androidx.wear.compose.material.Text
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionStrings
 import com.android.healthconnect.controller.permissions.data.HealthPermission
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.uppercaseTitle
 import com.android.healthconnect.controller.shared.WearPermissionsPaddingValues
 import com.android.permissioncontroller.wear.permission.components.ScrollableScreen
 import com.android.permissioncontroller.wear.permission.components.material3.WearPermissionButton
@@ -45,76 +46,84 @@ fun AllDataTypesScreen(
 ) {
     val res = LocalContext.current.resources
     val wearHealthApps by viewModel.wearHealthApps.collectAsState()
-    val systemHealthPermissions by viewModel.systemHealthPermissions.collectAsState()
+    val systemHealthPermissionsByCategory by
+        viewModel.systemHealthPermissionsByCategory.collectAsState()
 
     ScrollableScreen(
         asScalingList = true,
         showTimeText = true,
         title = stringResource(R.string.fitness_and_wellness),
     ) {
-        item {
-            Row(
-                modifier =
-                    Modifier.fillMaxWidth()
-                        .padding(WearPermissionsPaddingValues.dataTypeCategoryHeaderPaddingValues),
-                horizontalArrangement = Arrangement.Start,
-            ) {
-                Text(stringResource(R.string.vitals_category_uppercase))
-            }
-        }
-
-        // Granular data type and the number of apps allowed.
-        systemHealthPermissions.forEach { healthPermission ->
+        systemHealthPermissionsByCategory.entries.forEachIndexed { index, entry ->
+            val category = entry.key
+            val healthPermissions = entry.value
+            val padding =
+                if (index >= 1) {
+                    WearPermissionsPaddingValues.dataTypeCategoryHeaderPaddingValues
+                } else {
+                    WearPermissionsPaddingValues.firstDataTypeCategoryHeaderPaddingValues
+                }
             item {
-                val strDataType =
-                    stringResource(
-                        FitnessPermissionStrings.fromPermissionType(
-                                (healthPermission as HealthPermission.FitnessPermission)
-                                    .fitnessPermissionType
-                            )
-                            .uppercaseLabel
+                Row(
+                    modifier = Modifier.fillMaxWidth().padding(padding),
+                    horizontalArrangement = Arrangement.Start,
+                ) {
+                    Text(text = stringResource(id = category.uppercaseTitle()))
+                }
+            }
+
+            healthPermissions.forEach { healthPermission ->
+                item {
+                    val strPermission =
+                        stringResource(
+                            FitnessPermissionStrings.fromPermissionType(
+                                    (healthPermission as HealthPermission.FitnessPermission)
+                                        .fitnessPermissionType
+                                )
+                                .uppercaseLabel
+                        )
+                    val allowedAppCount =
+                        wearHealthApps.getNumberOfAllowedAppsForFitnessPermission(healthPermission)
+                    val deniedAppCount =
+                        wearHealthApps.getNumberOfDeniedAppsForFitnessPermission(healthPermission)
+                    val usedAppCount =
+                        wearHealthApps.getNumberOfUsedAppsForFitnessPermission(healthPermission)
+                    val requestedAppCount = allowedAppCount + deniedAppCount
+                    val enabled =
+                        if (showRecentAccess) {
+                            usedAppCount != 0
+                        } else {
+                            requestedAppCount != 0
+                        }
+                    val message =
+                        when {
+                            enabled && showRecentAccess ->
+                                MessageFormat.format(
+                                    res.getString(R.string.used_by_apps_count),
+                                    mapOf("count" to usedAppCount),
+                                )
+
+                            enabled && !showRecentAccess ->
+                                stringResource(
+                                    R.string.allowed_apps_count,
+                                    allowedAppCount,
+                                    requestedAppCount,
+                                )
+
+                            !enabled && showRecentAccess ->
+                                stringResource(R.string.not_used_in_past_24_hours)
+
+                            else -> stringResource(R.string.no_apps_requesting)
+                        }
+                    WearPermissionButton(
+                        label = strPermission,
+                        labelMaxLines = 3,
+                        secondaryLabel = message,
+                        secondaryLabelMaxLines = 3,
+                        onClick = { onClick(healthPermission.toString()) },
+                        enabled = enabled,
                     )
-                val allowedAppCount =
-                    wearHealthApps.getNumberOfAllowedAppsForFitnessPermission(healthPermission)
-                val deniedAppCount =
-                    wearHealthApps.getNumberOfDeniedAppsForFitnessPermission(healthPermission)
-                val usedAppCount =
-                    wearHealthApps.getNumberOfUsedAppsForFitnessPermission(healthPermission)
-                val requestedAppCount = allowedAppCount + deniedAppCount
-                val enabled =
-                    if (showRecentAccess) {
-                        usedAppCount != 0
-                    } else {
-                        requestedAppCount != 0
-                    }
-                val message =
-                    when {
-                        enabled && showRecentAccess ->
-                            MessageFormat.format(
-                                res.getString(R.string.used_by_apps_count),
-                                mapOf("count" to usedAppCount),
-                            )
-
-                        enabled && !showRecentAccess ->
-                            stringResource(
-                                R.string.allowed_apps_count,
-                                allowedAppCount,
-                                requestedAppCount,
-                            )
-
-                        !enabled && showRecentAccess ->
-                            stringResource(R.string.not_used_in_past_24_hours)
-
-                        else -> stringResource(R.string.no_apps_requesting)
-                    }
-                WearPermissionButton(
-                    label = strDataType,
-                    labelMaxLines = 3,
-                    secondaryLabel = message,
-                    secondaryLabelMaxLines = 3,
-                    onClick = { onClick(healthPermission.toString()) },
-                    enabled = enabled,
-                )
+                }
             }
         }
     }

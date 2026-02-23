@@ -106,12 +106,17 @@ val READ_SKIN_TEMPERATURE_PERMISSION =
         PermissionsAccessType.READ,
     )
 
+val READ_VO2_MAX_PERMISSION =
+    HealthPermission.FitnessPermission(FitnessPermissionType.VO2_MAX, PermissionsAccessType.READ)
+
 val GRANTED_READ_HEART_RATE_PERMISSION =
     HealthPermissionStatus(healthPermission = READ_HEART_RATE_PERMISSION, isGranted = true)
 val GRANTED_READ_SKIN_TEMPERATURE_PERMISSION =
     HealthPermissionStatus(healthPermission = READ_SKIN_TEMPERATURE_PERMISSION, isGranted = true)
 val GRANTED_READ_OXYGEN_SATURATION_PERMISSION =
     HealthPermissionStatus(healthPermission = READ_OXYGEN_SATURATION_PERMISSION, isGranted = true)
+val GRANTED_READ_VO2_MAX_PERMISSION =
+    HealthPermissionStatus(healthPermission = READ_VO2_MAX_PERMISSION, isGranted = true)
 val GRANTED_READ_HEALTH_DATA_IN_BACKGROUND_PERMISSION =
     HealthPermissionStatus(
         healthPermission = HealthPermission.AdditionalPermission.READ_HEALTH_DATA_IN_BACKGROUND,
