@@ -529,6 +529,11 @@ public class HealthConnectServiceImplTest {
         when(mDrawable.getIntrinsicWidth()).thenReturn(200);
         when(mPackageManager.getApplicationIcon(anyString()))
                 .thenThrow(new PackageManager.NameNotFoundException());
+        when(mPackageManager.getApplicationInfo(
+                        anyString(), any(PackageManager.ApplicationInfoFlags.class)))
+                .thenReturn(new ApplicationInfo());
+        when(mPackageManager.getApplicationIcon(any(ApplicationInfo.class))).thenReturn(mDrawable);
+        when(mPackageManager.getApplicationLabel(any())).thenReturn("Mock App Label");
         when(mPackageManager.getDefaultActivityIcon()).thenReturn(mDrawable);
 
         mHcContext =
@@ -6260,7 +6265,7 @@ public class HealthConnectServiceImplTest {
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
     })
-    public void getCurrentDeviceDataSource_success_returnsOnlyCurrentDeviceDataSource()
+    public void getCurrentDeviceDataSource_withTwoDevices_returnsOnlyCurrentDeviceDataSource()
             throws RemoteException {
         mDeviceDataProviderManager.initializeOrRefreshCurrentDeviceIds();
         when(mHealthConnectPermissionHelper.getGrantedHealthPermissions(
@@ -6277,10 +6282,13 @@ public class HealthConnectServiceImplTest {
                 new Device.Builder()
                         .setManufacturer("Google")
                         .setModel("Pixel")
-                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .setType(Device.DEVICE_TYPE_PHONE)
                         .build();
-        advertiseStepsDeviceDataSource(clientExposedId, device1);
-        advertiseStepsDeviceDataSource(clientExposedId, device2);
+        advertiseDeviceDataSources(
+                List.of(
+                        createDeviceDataAdvertisement(clientExposedId, device1, StepsRecord.class),
+                        createDeviceDataAdvertisement(
+                                "other_device_id", device2, StepsRecord.class)));
 
         mHealthConnectService.getCurrentDeviceDataSource(
                 mAttributionSource, mGetCurrentDeviceDataSourceCallback);
@@ -6295,7 +6303,7 @@ public class HealthConnectServiceImplTest {
         assertThat(result.getDevice().getDisplayName()).isEqualTo(device1.getDisplayName());
         assertThat(result.getDeviceDataTypeSources()).hasSize(1);
         assertThat(Iterables.getOnlyElement(result.getDeviceDataTypeSources()))
-                .isEqualTo(DeviceDataTypeSource.ofDataType(StepsRecord.class, true, false));
+                .isEqualTo(DeviceDataTypeSource.ofDataType(StepsRecord.class, true, true));
     }
 
     @Test
@@ -6336,6 +6344,7 @@ public class HealthConnectServiceImplTest {
                 mAttributionSource, advertisements, mEmptyResponseCallback);
 
         verify(mEmptyResponseCallback, timeout(5000)).onResult();
+        clearInvocations(mEmptyResponseCallback);
     }
 
     private DeviceDataAdvertisement createDeviceDataAdvertisement(
@@ -6493,10 +6502,12 @@ public class HealthConnectServiceImplTest {
         DeviceDataAdvertisement advertisement =
                 new DeviceDataAdvertisement(device, deviceId, deviceDataTypeAdvertisements);
 
+        clearInvocations(mEmptyResponseCallback);
         mHealthConnectService.advertiseDeviceDataSources(
                 mAttributionSource, List.of(advertisement), mEmptyResponseCallback);
 
         verify(mEmptyResponseCallback, timeout(5000).times(1)).onResult();
+        clearInvocations(mEmptyResponseCallback);
     }
 
     private RecordsParcel getRestoredStepsRecordsParcel(StepsRecord stepsRecord) {
