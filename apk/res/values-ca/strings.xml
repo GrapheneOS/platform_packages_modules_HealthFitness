@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Tria les dades que vols que aquesta aplicació pugui escriure a Salut connectada"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Tria les dades que vols que aquesta aplicació pugui llegir o escriure a Salut connectada"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Tria les dades que vols que aquesta aplicació pugui llegir de Salut connectada"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Sincronitza les teves aplicacions i els teus dispositius"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Permet que l\'aplicació <xliff:g id="APP_NAME">%1$s</xliff:g> llegeixi dades d\'altres aplicacions o dispositius en aquest dispositiu mitjançant Salut connectada. Altres aplicacions a les quals donis accés també podran llegir aquestes dades."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplicacions que poden sincronitzar aquestes dades"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Dispositius que poden sincronitzar aquestes dades"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Continua cap a les preferències del dispositiu per activar-lo"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Permet tots els permisos de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Obtén informació sobre com <xliff:g id="APP_NAME">%1$s</xliff:g> utilitza les teves dades a la seva "<a href="%2$s">"política de privadesa"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="986685221263640285">"Salut connectada et permet compartir les teves dades de salut i fitnes entre diverses fonts de dades. Això t\'ajuda a descobrir informació detallada i experiències alhora que mantens les teves dades protegides."</string>
@@ -1623,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Sibilacions"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"sibilacions"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> de <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> permisos seleccionats"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Categoria de dades per a aquesta targeta d\'agregació"</string>
 </resources>

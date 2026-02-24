@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Ընտրեք, թե ինչ տվյալներ այս հավելվածը գրանցի Health Connect-ում"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Ընտրեք, թե ինչ տվյալներ այս հավելվածը կարդա կամ գրանցի Health Connect-ում"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Ընտրեք, թե ինչ տվյալներ այս հավելվածը կարդա Health Connect-ից"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Համաժամացրեք ձեր հավելվածներն ու սարքերը"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Թույլատրեք <xliff:g id="APP_NAME">%1$s</xliff:g> հավելվածին Health Connect-ի միջոցով կարդալ տվյալներ այլ հավելվածներից կամ սարքերից այս սարքում։ Այս տվյալները կարող են նաև կարդացվել այլ հավելվածների կողմից, որոնց հասանելիություն եք տրամադրել։"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Հավելվածներ, որոնք կարող են համաժամացնել այս տվյալները"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Սարքեր, որոնք կարող են համաժամացնել այս տվյալները"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Միացնելու համար անցեք ձեր սարքի կարգավորումներ"</string>
     <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
     <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052"><a href="%2$s">"Գաղտնիության քաղաքականությունում"</a>" իմացեք, թե ինչպես է <xliff:g id="APP_NAME">%1$s</xliff:g> հավելվածն օգտագործում ձեր տվյալները։"</string>
@@ -1634,6 +1631,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Շնչառական խզզոցներ"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"շնչառական խզզոցներ"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Ընտրված է՝ <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Ագրեգացման այս քարտի տվյալների կատեգորիան"</string>
 </resources>

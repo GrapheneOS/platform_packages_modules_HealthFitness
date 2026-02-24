@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Wybierz, jakie dane ta aplikacja może zapisywać w Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Wybierz, jakie dane ta aplikacja może odczytywać lub zapisywać w Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Wybierz, jakie dane ta aplikacja może odczytywać z Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Synchronizuj aplikacje i urządzenia"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Zezwalaj aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g> na odczytywanie danych z innych aplikacji lub urządzeń na tym urządzeniu za pomocą Health Connect. Te dane będą też mogły odczytywać inne aplikacje, którym przyznasz dostęp."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikacje, które mogą synchronizować te dane"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Urządzenia, które mogą synchronizować te dane"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Aby włączyć uprawnienie, przejdź do ustawień urządzenia"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Przyznaj aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g> wszystkie uprawnienia"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"O tym, jak aplikacja <xliff:g id="APP_NAME">%1$s</xliff:g> wykorzystuje Twoje dane, dowiesz się z jej "<a href="%2$s">"polityki prywatności"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect pozwala udostępniać dane o zdrowiu i aktywności fizycznej między wieloma źródłami danych. Dzięki temu możesz przeglądać statystyki i odkrywać nowe funkcje, zachowując bezpieczeństwo danych."</string>
@@ -1623,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Świszczący oddech"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"świszczący oddech"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Wybrano <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> z <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Kategoria danych dla tej karty agregacji"</string>
 </resources>

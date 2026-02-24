@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"या अ‍ॅपने Health Connect ला राइट करावा असा तुम्हाला वाटणारा डेटा निवडा"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"या अ‍ॅपने Health Connect ला रीड किंवा राइट करावा असा तुम्हाला वाटणारा डेटा निवडा"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"या अ‍ॅपने Health Connect वरून रीड करावा असा तुम्हाला वाटणारा डेटा निवडा"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"तुमची अ‍ॅप्स आणि डिव्हाइस सिंक करा"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Health Connect वापरून <xliff:g id="APP_NAME">%1$s</xliff:g> अ‍ॅपला या डिव्हाइसवरील इतर अ‍ॅप्स किंवा डिव्हाइसमधील डेटा वाचण्याची अनुमती द्या. तुम्ही अ‍ॅक्सेस दिलेल्या इतर अ‍ॅप्सद्वारेदेखील हा डेटा वाचला जाऊ शकतो."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"हा डेटा सिंक करू शकणारी अ‍ॅप्स"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"हा डेटा सिंक करू शकणारी डिव्हाइस"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"सुरू करण्यासाठी डिव्हाइस प्राधान्यांवर पुढे सुरू ठेवा"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"सर्व <xliff:g id="APP_NAME">%1$s</xliff:g> परवानग्यांना अनुमती द्या"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> तुमचा डेटा कसा वापरते ते त्यांच्या "<a href="%2$s">"गोपनीयता धोरण"</a>" यामध्ये जाणून घ्या."</string>
     <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect तुम्हाला एकाहून अधिक डेटा स्रोतांदरम्यान तुमचा आरोग्य आणि फिटनेस डेटा शेअर करू देते. हे तुमचा डेटा सुरक्षित ठेवून तुम्हाला इनसाइट आणि अनुभव अनलॉक करण्यास मदत करते."</string>
@@ -1623,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"घरघर"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"घरघर"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> पैकी <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> निवडल्या"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"या अ‍ॅग्रिगेशन कार्डसाठी डेटा वर्गवारी"</string>
 </resources>

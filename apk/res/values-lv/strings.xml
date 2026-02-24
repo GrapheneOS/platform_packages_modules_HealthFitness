@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Izvēlieties, kādus datus šī lietotne drīkst rakstīt platformā Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Izvēlieties, kādus datus šī lietotne drīkst lasīt vai rakstīt platformā Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Izvēlieties, kādus datus šī lietotne drīkst lasīt platformā Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Lietotņu un ierīču sinhronizēšana"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Atļaujiet lietotnei <xliff:g id="APP_NAME">%1$s</xliff:g> lasīt datus no citām lietotnēm vai ierīcēm šajā ierīcē, izmantojot Health Connect. Šos datus var lasīt arī citas lietotnes, kurām piešķirat piekļuvi."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Lietotnes, kas var sinhronizēt šos datus"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Ierīces, kurās var sinhronizēt šos datus"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Pārejiet uz ierīces preferencēm, lai iespējotu atļauju."</string>
     <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
     <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Lai uzzinātu, kā lietotne <xliff:g id="APP_NAME">%1$s</xliff:g> izmanto jūsu datus, skatiet tās "<a href="%2$s">"konfidencialitātes politiku"</a>"."</string>
@@ -1340,7 +1337,7 @@
     <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
     <skip />
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Šī ierīce neuzskaita soļus"</string>
-    <string name="device_settings_label" msgid="9053791237491247819">"Atļauta rakstīšana"</string>
+    <string name="device_settings_label" msgid="9053791237491247819">"Atļauta datu pierakstīšana"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Ierīces dati"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Ierīces pārvaldība"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Skatīt ierīces datus"</string>
@@ -1634,6 +1631,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Sēkšana"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"sēkšana"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Atlasītās atļaujas: <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> no <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Šīs apkopojuma kartītes datu kategorija"</string>
 </resources>

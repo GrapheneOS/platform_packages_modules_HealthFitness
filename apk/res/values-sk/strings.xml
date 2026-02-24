@@ -126,7 +126,7 @@
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Povoľte tejto aplikácii prístup k týmto údajom, keď ju nebudete používať"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Povoľte tejto aplikácii prístup k týmto údajom, keď ju nebudete používať"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Prístup k údajom na pozadí"</string>
-    <string name="background_read_combined_request_description" msgid="2423480522986545286">"Povoľte tejto aplikácii prístup k údajom Dát o zdraví, keď ju nebudete používať"</string>
+    <string name="background_read_combined_request_description" msgid="2423480522986545286">"Povoliť tejto aplikácii prístup k údajom Dát o zdraví, keď ju nepoužívate"</string>
     <string name="history_read_medical_combined_request_title" msgid="1262267962861942478">"Prístup k minulým údajom o kondícii a zdraví"</string>
     <string name="history_read_medical_combined_request_description" msgid="7550922315652791771">"Povoľte tejto aplikácii prístup k údajom pridaným do <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_medical_combined_request_description_fallback" msgid="3567968660826834911">"Povoľte tejto aplikácii prístup k všetkým minulým údajom"</string>
@@ -142,12 +142,12 @@
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Povoľte tejto aplikácii prístup k týmto údajom, keď ju nebudete používať"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Povoľte tejto aplikácii prístup k týmto údajom, keď ju nebudete používať"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Prístup k údajom na pozadí"</string>
-    <string name="background_read_access_description" msgid="2360433029368320323">"Povoľte tejto aplikácii prístup k údajom Dát o zdraví, keď ju nebudete používať"</string>
+    <string name="background_read_access_description" msgid="2360433029368320323">"Povoliť tejto aplikácii prístup k údajom Dát o zdraví, keď ju nepoužívate"</string>
     <string name="history_read_medical_access_title" msgid="1375462150672418692">"Prístup k minulým údajom o kondícii a zdraví"</string>
     <string name="history_read_medical_access_description" msgid="5615959269427106141">"Povoľte tejto aplikácii prístup k údajom pridaným do <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_medical_access_description_fallback" msgid="3888547064992673535">"Povoľte tejto aplikácii prístup k všetkým minulým údajom"</string>
     <string name="history_read_access_title" msgid="870048398702887144">"Prístup k minulým údajom"</string>
-    <string name="history_read_access_description" msgid="800722432229526128">"Povoľte tejto aplikácii prístup k údajom Dát o zdraví pridaným do <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
+    <string name="history_read_access_description" msgid="800722432229526128">"Povoliť tejto aplikácii prístup k údajom Dát o zdraví pridaným do <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Povoľte tejto aplikácii prístup k všetkým minulým údajom Dát o zdraví"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Momentálne sa nečítajú žiadne údaje o kondícii, pretože <xliff:g id="APP_NAME">%1$s</xliff:g> nemá povolenia na čítanie"</string>
     <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g> už má prístup k minulým údajom vo vašich zdravotných záznamoch Ak to chcete zmeniť, vypnite povolenia tejto aplikácie pre zdravotné záznamy."</string>
@@ -179,7 +179,7 @@
     <string name="distance_lowercase_label" msgid="2287154001209381379">"vzdialenosť"</string>
     <string name="distance_read_content_description" msgid="8787235642020285789">"Čítanie údajov o vzdialenosti"</string>
     <string name="distance_write_content_description" msgid="494549494589487562">"Zapisovanie údajov o vzdialenosti"</string>
-    <string name="elevation_gained_uppercase_label" msgid="7708101940695442377">"Dosiahnutá nadmorská výška"</string>
+    <string name="elevation_gained_uppercase_label" msgid="7708101940695442377">"Zdolané prevýšenie"</string>
     <string name="elevation_gained_lowercase_label" msgid="7532517182346738562">"dosiahnutá nadmorská výška"</string>
     <string name="elevation_gained_read_content_description" msgid="6018756385903843355">"Čítanie údajov o dosiahnutej nadmorskej výške"</string>
     <string name="elevation_gained_write_content_description" msgid="6790199544670231367">"Zapisovanie údajov o dosiahnutej nadmorskej výške"</string>
@@ -203,8 +203,8 @@
     <string name="total_calories_burned_lowercase_label" msgid="3185370725975873922">"celkový počet spálených kalórií"</string>
     <string name="total_calories_burned_read_content_description" msgid="1569722345910293531">"Čítanie údajov o celkovom počte spálených kalórií"</string>
     <string name="total_calories_burned_write_content_description" msgid="2727752180681851608">"Zapisovanie údajov o celkovom počte spálených kalórií"</string>
-    <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"Maximálne využitie kyslíka"</string>
-    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"Maximálne využitie kyslíka"</string>
+    <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"VO2 max"</string>
+    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"VO2 max"</string>
     <string name="vo2_max_read_content_description" msgid="8132626885797169882">"Čítanie údajov VO2 max"</string>
     <string name="vo2_max_write_content_description" msgid="4783300275788728546">"Zapisovanie údajov VO2 max"</string>
     <string name="wheelchair_pushes_uppercase_label" msgid="5582991294340226965">"Potlačenia invalidného vozíka"</string>
@@ -227,8 +227,8 @@
     <string name="body_water_mass_lowercase_label" msgid="9196249948631920955">"objem telesnej vody"</string>
     <string name="body_water_mass_read_content_description" msgid="1468266374858854184">"Čítanie údajov o objeme telesnej vody"</string>
     <string name="body_water_mass_write_content_description" msgid="8485284654932647383">"Zapisovanie údajov o objeme telesnej vody"</string>
-    <string name="bone_mass_uppercase_label" msgid="6815438946872228501">"Hmotnosť kostí"</string>
-    <string name="bone_mass_lowercase_label" msgid="5127378263122564055">"hmotnosť kostí"</string>
+    <string name="bone_mass_uppercase_label" msgid="6815438946872228501">"Kostná hmota"</string>
+    <string name="bone_mass_lowercase_label" msgid="5127378263122564055">"kostná hmota"</string>
     <string name="bone_mass_read_content_description" msgid="8401070346821477225">"Čítanie údajov o hmotnosti kostí"</string>
     <string name="bone_mass_write_content_description" msgid="8711285422751587975">"Zapisovanie údajov o hmotnosti kostí"</string>
     <string name="height_uppercase_label" msgid="6839543632311723181">"Výška"</string>
@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Vyberte údaje, ktoré má táto aplikácia zapisovať do Dát o zdraví"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Vyberte údaje, ktoré má táto aplikácia čítať z Dát o zdraví alebo do nich zapisovať"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Vyberte údaje, ktoré má táto aplikácia čítať z Dát o zdraví"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Synchronizujte svoje aplikácie a zariadenia"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Povoľte aplikácii <xliff:g id="APP_NAME">%1$s</xliff:g> čítať údaje z iných aplikácií alebo zariadení v tomto zariadení pomocou Dát o zdraví. Tieto údaje budú môcť čítať aj iné aplikácie, ktorým udelíte prístup."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikácie, ktoré môžu synchronizovať tieto údaje"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Zariadenia, ktoré môžu synchronizovať tieto údaje"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Toto povolíte v nastaveniach zariadenia"</string>
     <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
     <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Prečítajte si, ako <xliff:g id="APP_NAME">%1$s</xliff:g> používa vaše údaje, v jej "<a href="%2$s">"pravidlách ochrany súkromia"</a>"."</string>
@@ -1634,6 +1631,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Chrčanie"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"chrčanie"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Vybrané: <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> z <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Kategória údajov pre túto kartu agregácie"</string>
 </resources>

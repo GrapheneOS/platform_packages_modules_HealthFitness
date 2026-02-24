@@ -403,19 +403,16 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"選擇這個應用程式可寫入「健康資料同步」的資料"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"選擇這個應用程式可讀取或寫入「健康資料同步」的資料"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"選擇這個應用程式可從「健康資料同步」讀取的資料"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"同步處理應用程式和裝置"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」應用程式透過「健康資料同步」，讀取這部裝置上其他應用程式或裝置的資料。你授予存取權的其他應用程式也能讀取這類資料。"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"可同步處理這類資料的應用程式"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"可同步處理這類資料的裝置"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"前往裝置偏好設定啟用"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"允許所有「<xliff:g id="APP_NAME">%1$s</xliff:g>」權限"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"如要瞭解「<xliff:g id="APP_NAME">%1$s</xliff:g>」如何使用你的資料，請參閱對方的"<a href="%2$s">"隱私權政策"</a>"。"</string>
-    <string name="matchmaking_screen_footer" msgid="986685221263640285">"你可以透過「健康資料同步」在多個資料來源間共用健康與健身資料。這有助於發掘洞察資料及提供優質體驗，同時確保資料安全無虞。"</string>
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"你可以透過「健康資料同步」，共用不同來源的健康與健身資料，從中取得深入分析、享受優質體驗，同時確保資料安全。"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"進一步瞭解「健康資料同步」"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"展開"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"收合"</string>
@@ -1205,7 +1202,7 @@
     <string name="remove" msgid="1340423400489007362">"移除"</string>
     <string name="app_data_title" msgid="6499967982291000837">"應用程式資料"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」的資料會顯示在這裡"</string>
-    <string name="all_data_no_data_footer" msgid="2553443887019153340">"如果資料來自可存取「健康資料同步」的應用程式，就會在此顯示"</string>
+    <string name="all_data_no_data_footer" msgid="2553443887019153340">"可存取「健康資料同步」的應用程式如果有資料，就會顯示在這裡"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"一天"</string>
     <string name="date_picker_week" msgid="1038805538316142229">"一週"</string>
     <string name="date_picker_month" msgid="3560692391260778560">"一個月"</string>
@@ -1350,7 +1347,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"你的健康應用程式"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"你的健康資料"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"偏好設定"</string>
-    <string name="home_screen_footer" msgid="3704528068051346905">"你可以透過「健康資料同步」在多個資料來源間共用健康與健身資料。這有助於發掘洞察資料及提供優質體驗，同時確保資料安全。"</string>
+    <string name="home_screen_footer" msgid="3704528068051346905">"你可以透過「健康資料同步」，共用不同來源的健康與健身資料，從中取得深入分析、享受優質體驗，同時確保資料安全。"</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"進一步瞭解「健康資料同步」"</string>
     <string name="data_and_access_summary" msgid="1435478623777637347">"你的資料以及可存取這類資料的應用程式"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"最近用過你資料的應用程式"</string>
@@ -1623,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"喘鳴"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"喘鳴"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"已選取 <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> 個，共 <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> 個"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"這個匯總資訊卡的資料類別"</string>
 </resources>

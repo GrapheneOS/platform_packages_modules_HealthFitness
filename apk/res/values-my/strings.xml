@@ -126,12 +126,12 @@
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"ဤအက်ပ်ကို သင်အသုံးမပြုချိန်တွင် ၎င်းအား ဤဒေတာကို သုံးခွင့်ပြုနိုင်သည်"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"ဤအက်ပ်ကို သင်အသုံးမပြုချိန်တွင် ၎င်းအား ဤဒေတာကို သုံးခွင့်ပြုနိုင်သည်"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"နောက်ခံတွင် ဒေတာသုံးခြင်း"</string>
-    <string name="background_read_combined_request_description" msgid="2423480522986545286">"ဤအက်ပ်ကို သင်အသုံးမပြုချိန်တွင် ၎င်းအား Health Connect ဒေတာကို သုံးခွင့်ပြုနိုင်သည်"</string>
+    <string name="background_read_combined_request_description" msgid="2423480522986545286">"ဤအက်ပ်ကို သင်အသုံးမပြုချိန်တွင် ၎င်းအား Health Connect ဒေတာကို သုံးခွင့်ပြုသည်"</string>
     <string name="history_read_medical_combined_request_title" msgid="1262267962861942478">"ယခင်ကျန်းမာကြံ့ခိုင်ရေးဒေတာများကို သုံးခြင်း"</string>
     <string name="history_read_medical_combined_request_description" msgid="7550922315652791771">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> မတိုင်မီ ထည့်ထားသော ဒေတာကို ဤအက်ပ်အား သုံးခွင့်ပြုနိုင်သည်"</string>
     <string name="history_read_medical_combined_request_description_fallback" msgid="3567968660826834911">"ယခင်ဒေတာအားလုံးကို ဤအက်ပ်အား သုံးခွင့်ပြုနိုင်သည်"</string>
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"ယခင်ဒေတာ သုံးခြင်း"</string>
-    <string name="history_read_combined_request_description" msgid="1437787086896636484">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> မတိုင်မီ ထည့်ထားသော Health Connect ဒေတာကို ဤအက်ပ်အား သုံးခွင့်ပြုနိုင်သည်"</string>
+    <string name="history_read_combined_request_description" msgid="1437787086896636484">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> မတိုင်မီ ထည့်ထားသော Health Connect ဒေတာကို ဤအက်ပ်အား သုံးခွင့်ပြုသည်"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"ယခင် Health Connect ဒေတာအားလုံးကို ဤအက်ပ်အား သုံးခွင့်ပြုနိုင်သည်"</string>
     <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"<xliff:g id="APP_NAME">%1$s</xliff:g> သည် သင့်ကျန်းမာရေးမှတ်တမ်းများ၏ ယခင်ဒေတာကို သုံးနိုင်နေပြီဖြစ်သည်"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"ခွင့်ပြုချက်များအကြောင်း ပိုမိုဖတ်ရှုရန်"</string>
@@ -142,12 +142,12 @@
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"ဤအက်ပ်ကို သင်အသုံးမပြုချိန်တွင် ၎င်းအား ဤဒေတာကို သုံးခွင့်ပြုနိုင်သည်"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"ဤအက်ပ်ကို သင်အသုံးမပြုချိန်တွင် ၎င်းအား ဤဒေတာကို သုံးခွင့်ပြုနိုင်သည်"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"နောက်ခံတွင် ဒေတာသုံးခြင်း"</string>
-    <string name="background_read_access_description" msgid="2360433029368320323">"ဤအက်ပ်ကို သင်အသုံးမပြုချိန်တွင် ၎င်းအား Health Connect ဒေတာကို သုံးခွင့်ပြုနိုင်သည်"</string>
+    <string name="background_read_access_description" msgid="2360433029368320323">"ဤအက်ပ်ကို သင်အသုံးမပြုချိန်တွင် ၎င်းအား Health Connect ဒေတာကို သုံးခွင့်ပြုသည်"</string>
     <string name="history_read_medical_access_title" msgid="1375462150672418692">"ယခင်ကျန်းမာကြံ့ခိုင်ရေးဒေတာများကို သုံးခြင်း"</string>
     <string name="history_read_medical_access_description" msgid="5615959269427106141">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> မတိုင်မီ ထည့်ထားသော ဒေတာကို ဤအက်ပ်အား သုံးခွင့်ပြုနိုင်သည်"</string>
     <string name="history_read_medical_access_description_fallback" msgid="3888547064992673535">"ယခင်ဒေတာအားလုံးကို ဤအက်ပ်အား သုံးခွင့်ပြုနိုင်သည်"</string>
     <string name="history_read_access_title" msgid="870048398702887144">"ယခင်ဒေတာ သုံးခြင်း"</string>
-    <string name="history_read_access_description" msgid="800722432229526128">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> မတိုင်မီ ထည့်ထားသော Health Connect ဒေတာကို ဤအက်ပ်အား သုံးခွင့်ပြုနိုင်သည်"</string>
+    <string name="history_read_access_description" msgid="800722432229526128">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> မတိုင်မီ ထည့်ထားသော Health Connect ဒေတာကို ဤအက်ပ်အား သုံးခွင့်ပြုသည်"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Health Connect ယခင်ဒေတာအားလုံးကို ဤအက်ပ်အား သုံးခွင့်ပြုနိုင်သည်"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"<xliff:g id="APP_NAME">%1$s</xliff:g> တွင် ဖတ်ခွင့်ဖွင့်မထားသဖြင့် လက်ရှိဖတ်နေသည့် ကြံ့ခိုင်မှု ဒေတာ မရှိပါ"</string>
     <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g> သည် သင့်ကျန်းမာရေးမှတ်တမ်းများ၏ ယခင်ဒေတာကို သုံးနိုင်နေပြီဖြစ်သည်။ ၎င်းကိုပြောင်းရန် ဤအက်ပ်အတွက် ကျန်းမာရေးမှတ်တမ်းခွင့်ပြုချက်များကို ပိတ်ပါ"</string>
@@ -156,7 +156,7 @@
     <string name="additional_access_background_footer" msgid="1638739578431818525">"ဤအက်ပ်အတွက် နောက်ကွယ်၌ အသုံးပြုခွင့် ဖွင့်ရန် အနည်းဆုံး ဖတ်ခွင့်တစ်ခုပေးပါ"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"ဤအက်ပ်အတွက် ယခင်ဒေတာသုံးခွင့် ဖွင့်ရန် အနည်းဆုံး ဖတ်ခွင့်တစ်ခု ပေးပါ"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"ယခင် Health Connect ဒေတာအားလုံးကို ဤအက်ပ်အား သုံးခွင့်ပြုနိုင်သည်"</string>
-    <string name="background_read_description" msgid="3203594555849969283">"ဤအက်ပ်ကို အသုံးမပြုချိန်တွင် ၎င်းအား Health Connect ဒေတာ သုံးခွင့်ပြုနိုင်သည်"</string>
+    <string name="background_read_description" msgid="3203594555849969283">"ဤအက်ပ်ကို သင်အသုံးမပြုချိန်တွင် ၎င်းအား Health Connect ဒေတာကို သုံးခွင့်ပြုသည်"</string>
     <string name="write_device_udi_content_description" msgid="3345237277637293502">"ဤအက်ပ်အား ‘စက်ပစ္စည်း UDI’ ကို Health Connect ဒေတာတွင် ရေးခွင့်ပြုပါ"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"လောင်ကျွမ်းသည့် လှုပ်ရှားကယ်လိုရီ"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"လောင်ကျွမ်းသည့် လှုပ်ရှားကယ်လိုရီ"</string>
@@ -403,21 +403,16 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Health Connect တွင် ဤအက်ပ်အား ရေးစေလိုသော ဒေတာကို ရွေးပါ"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Health Connect တွင် ဤအက်ပ်အား ဖတ်စေ (သို့) ရေးထည့်စေလိုသော ဒေတာကို ရွေးပါ"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect တွင် ဤအက်ပ်အား ဖတ်စေလိုသော ဒေတာကို ရွေးပါ"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"သင့်အက်ပ်နှင့် စက်ပစ္စည်းများကို စင့်ခ်လုပ်ပါ"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Health Connect ကိုအသုံးပြု၍ ဤစက်ပစ္စည်းရှိ အခြားအက်ပ်များ (သို့) စက်ပစ္စည်းများမှ ဒေတာကို ဖတ်ရန် <xliff:g id="APP_NAME">%1$s</xliff:g> အက်ပ်အား ခွင့်ပြုပါ။ ဤဒေတာကို သင်ခွင့်ပြုပေးထားသည့် အခြားအက်ပ်များကလည်း ဖတ်ရှုနိုင်ပါသည်။"</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ဤဒေတာကို စင့်ခ်လုပ်နိုင်သော အက်ပ်များ"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"ဤဒေတာကို စင့်ခ်လုပ်နိုင်သော စက်များ"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"ဖွင့်ရန်အတွက် စက်ပစ္စည်းသတ်မှတ်ချက်များသို့ သွားပါ"</string>
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"<xliff:g id="APP_NAME">%1$s</xliff:g> ခွင့်ပြုချက်အားလုံးကို ခွင့်ပြုရန်"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> က သင့်ဒေတာ အသုံးပြုပုံကို ၎င်း၏ "<a href="%2$s">"ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒ"</a>" တွင် လေ့လာနိုင်သည်။"</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect က သင့်ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးဒေတာကို အက်ပ်များအကြား မျှဝေနိုင်စေသည်။ ယင်းသည် သင့်ဒေတာကို လုံခြုံအောင် ထိန်းသိမ်းပေးရင်း သိကောင်းစရာများနှင့် အတွေ့အကြုံသစ်များ ရရှိစေရန် ကူညီပေးသည်။"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect အကြောင်း ပိုလေ့လာရန်"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"ချဲ့ရန်"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"ချုံ့ရန်"</string>
@@ -434,7 +429,7 @@
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"မျှဝေမည့်ဒေတာတွင် ပါဝင်သည်များ-"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"ခွင့်ပြုပါက <xliff:g id="APP_NAME">%1$s</xliff:g> သည် သင့်ကျန်းမာရေးမှတ်တမ်းများကို Health Connect နှင့် မျှဝေနိုင်သည်။"</string>
     <string name="medical_request_footer" msgid="157243861031258933">"သင့်အက်ပ်နှင့် ရင်းမြစ်အမျိုးမျိုးမှ ကျန်းမာရေးမှတ်တမ်းများကို တစ်နေရာတည်းတွင် သိမ်းရန် စင့်ခ်လုပ်ပါ"</string>
-    <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"ခွင့်ပြုချက်အားလုံး ဖယ်ရှားမလား။"</string>
+    <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"ခွင့်ပြုချက်အားလုံး ဖယ်ရှားမလား"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"အားလုံး ဖယ်ရှားရန်"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> သည် Health Connect မှ ဒေတာများကို ဖတ်နိုင် (သို့) ရေးနိုင်တော့မည် မဟုတ်ပါ။\n\n၎င်းသည် ဤအက်ပ်တွင်ရှိနိုင်သော ကင်မရာ၊ မိုက်ခရိုဖုန်း (သို့) တည်နေရာကဲ့သို့ အခြားခွင့်ပြုချက်များပေါ် သက်ရောက်မှုမရှိပါ။"</string>
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"<xliff:g id="APP_NAME">%1$s</xliff:g> သည် နောက်ခံတွင်အသုံးပြုသောဒေတာ အပါအဝင် Health Connect မှ ဒေတာများကို ဖတ်နိုင် (သို့) ရေးနိုင်တော့မည် မဟုတ်ပါ။\n\n၎င်းသည် ဤအက်ပ်တွင်ရှိနိုင်သော တည်နေရာ၊ ကင်မရာ (သို့) မိုက်ခရိုဖုန်းကဲ့သို့ အခြားခွင့်ပြုချက်များပေါ် သက်ရောက်မှုမရှိပါ။"</string>
@@ -1230,8 +1225,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"သင့်ကျန်းမာရေးဒေတာ ပိုမိုလုံခြုံစေရန် ဤစက်အတွက် ပင်နံပါတ်၊ ပုံဖော်ခြင်း (သို့) စကားဝှက် သတ်မှတ်ပါ"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"စခရင်လော့ခ် သတ်မှတ်ရန်"</string>
     <string name="select_all" msgid="837499881590001166">"အားလုံး ရွေးရန်"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"ရွေးရန်"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"ချိတ်ဆက်ထားသည့် အက်ပ်များက Health Connect ထံမှ ဤဒေတာကို ဖတ်နိုင်တော့မည်မဟုတ်ပါ"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"အမှန်ခြစ်ထားသည်"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"အမှန်ခြစ်မထားပါ"</string>
@@ -1335,10 +1329,8 @@
     <string name="devices_current_device" msgid="6388308185566619743">"လက်ရှိစက်ပစ္စည်း"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"အမျိုးအမည်မသိ စက်ပစ္စည်း"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"စက်အချက်အလက်"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"ဤစက်က စုဆောင်းသောဒေတာကို Health Connect ၌ သိမ်းမည်ဖြစ်ပြီး ထိုနေရာတွင် ချိတ်ဆက်အက်ပ်များက ယင်းဒေတာကို သုံးမည်"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"ဤစက်ပစ္စည်းသည် ခြေလှမ်းခြေရာခံခြင်းကို မပံ့ပိုးသော်လည်း Health Connect တွင် ဒေတာသိမ်းထားသေးသည်"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"ဤစက်ပစ္စည်းသည် ခြေလှမ်းများကို ခြေရာမခံပါ"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"ရေးခွင့်ပေးထားသည်များ"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"ကိရိယာ ဒေတာ"</string>
@@ -1350,10 +1342,8 @@
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"ဤစက်က ခြေရာခံထားသော ခြေလှမ်းများကို ချိတ်ဆက်အက်ပ်များဖြင့် ဝင်ကြည့်နိုင်ရန်အတွက် Health Connect တွင် သိမ်းလိုက်ပါပြီ"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"ပယ်ရန်"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"ကြည့်ရန်"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"‘ခြေလှမ်းများ’ သည် Health Connect ၌ ရှိနေပြီ"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"ဤစက်က ခြေရာခံထားသော ခြေလှမ်းများကို ချိတ်ဆက်အက်ပ်များဖြင့် ဝင်ကြည့်နိုင်ရန်အတွက် Health Connect တွင် သိမ်းလိုက်ပါပြီ"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"သင့်ကျန်းမာရေးအက်ပ်များ"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"သင့်ကျန်းမာရေးဒေတာ"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"သတ်မှတ်ချက်များ"</string>
@@ -1366,10 +1356,8 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"တွဲသုံးနိုင်သော အက်ပ်များကို ကြည့်ရန်"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"နောက်ထပ် ကျန်းမာရေးအက်ပ်များ ကြည့်ရန်"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"ချိတ်ဆက်မထားပါ"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"ဤအက်ပ်ကို Health Connect နှင့် ချိတ်ဆက်ရန် နှိပ်ပါ"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"Health Connect သို့ ဒေတာစင့်ခ်လုပ်နိုင်သော စက်များကို ထိန်းချုပ်သည်"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"ဖွင့်ထားသည်"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"ဖွင့်မထားပါ"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"ဤဖုန်း"</string>
@@ -1399,10 +1387,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"ဝက်ခြံဒေတာ ရေးရန်"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"လက်သည်းကျိုးလွယ်ခြင်းဒေတာ ဖတ်ရန်"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"လက်သည်းကျိုးလွယ်ခြင်းဒေတာ ရေးရန်"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"ပါးစပ်အပူလောင်ခြင်းဒေတာ ဖတ်ရန်"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"ပါးစပ်အပူလောင်ခြင်းဒေတာ ရေးရန်"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"ချမ်းတုန်ခြင်းဒေတာ ဖတ်ရန်"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"ချမ်းတုန်ခြင်းဒေတာ ရေးရန်"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"ရေဓာတ်ခန်းခြောက်ခြင်းဒေတာ ဖတ်ရန်"</string>
@@ -1634,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"အသက်ရှူစဉ် လေချွန်သံထွက်ခြင်း"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"အသက်ရှူစဉ် လေချွန်သံထွက်ခြင်း"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> ခုအနက် <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> ခုကို ရွေးထားသည်"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"ဤပေါင်းစည်းမှုကတ်အတွက် ဒေတာအမျိုးအစား"</string>
 </resources>

@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Bu tətbiqin Health Connect-dən yazmasını istədiyiniz datanı seçin"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Bu tətbiqin Health Connect-dən oxumasını və ya yazmasını istədiyiniz datanı seçin"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Bu tətbiqin Health Connect-dən oxumasını istədiyiniz datanı seçin"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Tətbiq və cihazları sinxronlaşdırın"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinin Health Connect-dən istifadə edərək bu cihazdakı digər tətbiqlərdən və ya cihazlardan data oxumasına icazə verin. Bu data giriş icazəsi verdiyiniz digər tətbiqlər tərəfindən də oxuna bilər."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Bu datanı sinxronlaşdıra bilən tətbiqlər"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Bu datanı sinxronlaşdıra bilən cihazlar"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Aktivləşdirmək üçün cihaz tərcihlərinə keçin"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Bütün <xliff:g id="APP_NAME">%1$s</xliff:g> icazələrinə icazə verin"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> tətbiqinin datanızı "<a href="%2$s">"məxfilik siyasətində"</a>" necə istifadə etdiyini öyrənin."</string>
     <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect sağlamlıq və fitnes datanızı çoxsaylı data mənbələri arasında paylaşmağa imkan verir. Bu, datanızı təhlükəsiz saxlayaraq yeni statistik məlumat və təcrübələrin kilidini açmağınıza kömək edir."</string>
@@ -1623,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Xırıltı"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"xırıltı"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> seçilib"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Bu aqreqasiya kartı üçün data kateqoriyası"</string>
 </resources>

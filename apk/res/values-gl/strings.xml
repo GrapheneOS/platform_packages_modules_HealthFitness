@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Escolle os datos que queres que escriba esta aplicación en Saúde conectada"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Escolle os datos que queres que lea ou escriba esta aplicación en Saúde conectada"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Escolle os datos que queres que lea esta aplicación en Saúde conectada"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Sincronizar as aplicacións e os dispositivos"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Permite que a aplicación <xliff:g id="APP_NAME">%1$s</xliff:g> lea os datos doutras aplicacións ou dispositivos neste aparello por medio de Saúde conectada. Tamén poderán lelos outras aplicacións ás que lles deas acceso."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplicacións que poden sincronizar estes datos"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Dispositivos que poden sincronizar estes datos"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Continúa coas preferencias do dispositivo para activar os permisos"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Conceder todos os permisos de <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Infórmate sobre como <xliff:g id="APP_NAME">%1$s</xliff:g> utiliza os teus datos na súa "<a href="%2$s">"política de privacidade"</a>"."</string>
     <string name="matchmaking_screen_footer" msgid="986685221263640285">"Saúde conectada permíteche compartir os teus datos de saúde e actividade física entre varias fontes de datos. Deste xeito, podes acceder a estatísticas e experiencias ao mesmo tempo que mantés seguros os datos."</string>
@@ -1623,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Sibilancias"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"sibilancias"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Categorías seleccionadas: <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> de <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Categoría de datos desta tarxeta de agregación"</string>
 </resources>

@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Scegli i dati da far scrivere a questa app in Connessione Salute"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Scegli i dati da far leggere o scrivere a questa app in Connessione Salute"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Scegli i dati da far leggere a questa app in Connessione Salute"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Sincronizza le app e i dispositivi"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Consenti all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di leggere i dati da altre app o altri dispositivi su questo dispositivo utilizzando Connessione Salute. Questi dati possono essere letti anche da altre app a cui concedi l\'accesso."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"App che possono sincronizzare questi dati"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Dispositivi che possono sincronizzare questi dati"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Vai alle preferenze del dispositivo per attivare"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Consenti tutte le autorizzazioni per <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Leggi le "<a href="%2$s">"norme sulla privacy"</a>" di <xliff:g id="APP_NAME">%1$s</xliff:g> per scoprire in che modo vengono utilizzati i tuoi dati."</string>
     <string name="matchmaking_screen_footer" msgid="986685221263640285">"Connessione Salute ti consente di condividere i tuoi dati relativi alla salute e all\'attività fisica tra più origini dati. In questo modo, potrai accedere ad approfondimenti ed esperienze senza compromettere la sicurezza dei dati."</string>
@@ -1623,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Respiro sibilante"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"respiro sibilante"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> di <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> selezionate"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Categoria di dati per questa scheda di aggregazione"</string>
 </resources>

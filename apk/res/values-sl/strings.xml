@@ -1336,8 +1336,7 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Podatki v napravi"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Upravljanje naprave"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Ogled podatkov v napravi"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Sinhronizacija s storitvijo Health Connect"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Koraki v telefonu bodo prikazani v storitvi Health Connect"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Koraki, ki jih spremlja ta naprava, so zdaj shranjeni v storitvi Health Connect, da lahko do njih dostopajo povezane aplikacije"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Opusti"</string>

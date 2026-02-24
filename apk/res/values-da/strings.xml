@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Vælg, hvilke data denne app skal kunne skrive til Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Vælg, hvilke data denne app skal kunne læse eller skrive til Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Vælg, hvilke data denne app skal kunne læse fra Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Synkroniser dine apps og enheder"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Giv appen <xliff:g id="APP_NAME">%1$s</xliff:g> tilladelse til at læse data fra andre apps eller enheder på denne enhed via Health Connect. Disse data kan også læses af andre apps, du giver adgang til."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps, der kan synkronisere disse data"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Enheder, der kan synkronisere disse data"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Fortsæt til enhedspræferencer for at aktivere"</string>
     <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
     <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Få flere oplysninger om, hvordan <xliff:g id="APP_NAME">%1$s</xliff:g> bruger dine data, i "<a href="%2$s">"privatlivspolitikken"</a>"."</string>
@@ -1634,6 +1631,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Hvæsen"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"hvæsen"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> ud af <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> er valgt"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Datakategori for dette aggregeringskort"</string>
 </resources>

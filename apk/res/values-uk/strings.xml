@@ -207,8 +207,8 @@
     <string name="vo2_max_lowercase_label" msgid="824972630000900033">"Максимальне споживання кисню (VO2 max)"</string>
     <string name="vo2_max_read_content_description" msgid="8132626885797169882">"Зчитувати максимальне споживання кисню (VO2 max)"</string>
     <string name="vo2_max_write_content_description" msgid="4783300275788728546">"Записувати максимальне споживання кисню (VO2 max)"</string>
-    <string name="wheelchair_pushes_uppercase_label" msgid="5582991294340226965">"Поштовхи інвалідного візка"</string>
-    <string name="wheelchair_pushes_lowercase_label" msgid="8919337990806379687">"поштовхи інвалідного візка"</string>
+    <string name="wheelchair_pushes_uppercase_label" msgid="5582991294340226965">"Поштовхи колісного крісла"</string>
+    <string name="wheelchair_pushes_lowercase_label" msgid="8919337990806379687">"поштовхи колісного крісла"</string>
     <string name="wheelchair_pushes_read_content_description" msgid="157304610943976471">"Зчитувати кількість поштовхів інвалідного візка"</string>
     <string name="wheelchair_pushes_write_content_description" msgid="2745600707106818641">"Записувати кількість поштовхів інвалідного візка"</string>
     <string name="activity_intensity_uppercase_label" msgid="8718366426053335611">"Інтенсивність дій"</string>
@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Виберіть дані, які цей додаток зможе записувати в Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Виберіть дані, які цей додаток зможе переглядати або записувати в Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Виберіть дані, які цей додаток зможе переглядати в Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Синхронізуйте додатки й пристрої"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Дозвольте додатку <xliff:g id="APP_NAME">%1$s</xliff:g> переглядати дані з інших пристроїв і додатків на цьому пристрої за допомогою Health Connect. Їх також можуть переглядати інші додатки, яким ви надали доступ."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Додатки, які можуть синхронізувати ці дані"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Пристрої, які можуть синхронізувати ці дані"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Щоб надати доступ, перейдіть до параметрів пристрою"</string>
     <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
     <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Ознайомтеся з інформацією про те, як додаток <xliff:g id="APP_NAME">%1$s</xliff:g> використовує ваші дані, у його "<a href="%2$s">"політиці конфіденційності"</a>"."</string>
@@ -683,7 +680,7 @@
     <string name="velocity_minute_per_one_hundred_meters_long" msgid="6806485527680697198">"<xliff:g id="MINUTE">%1$s</xliff:g> хв на 100 метрів"</string>
     <string name="time_range_long" msgid="5067423945245490288">"від <xliff:g id="START_TIME">%1$s</xliff:g> до <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
     <string name="date_range_long" msgid="6022190423982451176">"від <xliff:g id="START_TIME">%1$s</xliff:g> до <xliff:g id="END_TIME">%2$s</xliff:g>"</string>
-    <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{1 поштовх інвалідного візка}one{# поштовх інвалідного візка}few{# поштовхи інвалідного візка}many{# поштовхів інвалідного візка}other{# поштовху інвалідного візка}}"</string>
+    <string name="wheelchair_pushes" msgid="5807293867148465190">"{count,plural, =1{1 поштовх колісного крісла}one{# поштовх колісного крісла}few{# поштовхи колісного крісла}many{# поштовхів колісного крісла}other{# поштовху колісного крісла}}"</string>
     <string name="liter" msgid="8276522589564337053">"{count,plural, =1{1 л}one{# л}few{# л}many{# л}other{# л}}"</string>
     <string name="liter_long" msgid="7094280457555707835">"{count,plural, =1{1 літр}one{# літр}few{# літри}many{# літрів}other{# літра}}"</string>
     <string name="milliliter" msgid="7730118351176678375">"{count,plural, =1{1 мл}one{# мл}few{# мл}many{# мл}other{# мл}}"</string>
@@ -1634,6 +1631,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Хрипи"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"хрипи"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"Вибрано <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> з <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Категорія даних для цієї картки зі зведеними даними"</string>
 </resources>

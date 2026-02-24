@@ -403,21 +403,16 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Velg dataene du vil gi denne appen tillatelse til å skrive til Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Velg dataene du vil gi denne appen tillatelse til å lese eller skrive til Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Velg dataene du vil gi denne appen tillatelse til å lese fra Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Synkroniser appene og enhetene dine"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"La appen <xliff:g id="APP_NAME">%1$s</xliff:g> lese data fra andre apper eller enheter på denne enheten via Health Connect. Disse dataene kan også leses av andre apper du gir tilgang."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apper som kan synkronisere disse dataene"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Enheter som kan synkronisere disse dataene"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Gå til enhetinnstillinger for å slå på"</string>
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Gi alle <xliff:g id="APP_NAME">%1$s</xliff:g>-tillatelser"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Finn ut hvordan <xliff:g id="APP_NAME">%1$s</xliff:g> bruker dataene dine, i "<a href="%2$s">"personvernreglene deres"</a>"."</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Med Health Connect kan du dele helse- og treningsdata mellom flere datakilder. Dette hjelper deg med å få innsikt og opplevelser samtidig som dataene dine holdes sikre."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Mer om Health Connect"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"vis"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"skjul"</string>
@@ -1230,8 +1225,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"For å øke sikkerheten for helsedataene dine bør du angi en PIN-kode, et mønster eller et passord for denne enheten"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Angi skjermlås"</string>
     <string name="select_all" msgid="837499881590001166">"Merk alt"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"velg"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Tilknyttede apper mister muligheten til å lese disse dataene fra Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Avmerket"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Ikke avmerket"</string>
@@ -1335,10 +1329,8 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Gjeldende enhet"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Ukjent enhet"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Enhetsinformasjon"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"Data som samles inn av denne enheten, lagres i Health Connect, der tilknyttede apper bruker dem"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"Denne enheten støtter ikke sporing av skritt, men har fortsatt data lagret i Health Connect"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Denne enheten sporer ikke skritt"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Kan skrive"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Enhetsdata"</string>
@@ -1350,10 +1342,8 @@
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Nå lagres skritt som spores av denne enheten, i Health Connect, slik at tilknyttede apper kan bruke dem"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Lukk"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Gjennomgå"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"Nå er skritt i Health Connect"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"Nå lagres skritt som spores av denne enheten, i Health Connect, slik at tilknyttede apper kan bruke dem"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Dine helseapper"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Dine helsedata"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Innstillinger"</string>
@@ -1366,10 +1356,8 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Se kompatible apper"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Se flere helseapper"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Ikke tilkoblet"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"Klikk for å koble denne appen til Health Connect"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"Kontroller hvilke enheter som kan synkronisere data med Health Connect"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Slått på"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Ikke slått på"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Denne telefonen"</string>
@@ -1399,10 +1387,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Skriving av akne"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Lesing av skjøre negler"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Skriving av skjøre negler"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"Lesing av svie i munnen"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"Skriving av svie i munnen"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"Lesing av frysninger"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Skriving av frysninger"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Lesing av dehydrering"</string>
@@ -1634,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Gisping"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"gisping"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> av <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> er valgt"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Datakategori for dette aggregeringskortet"</string>
 </resources>
