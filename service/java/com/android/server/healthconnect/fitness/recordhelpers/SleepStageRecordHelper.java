@@ -61,6 +61,10 @@ public final class SleepStageRecordHelper {
         return SLEEP_STAGE_END_TIME;
     }
 
+    public static String getTableName() {
+        return SLEEP_STAGES_RECORD_TABLE_NAME;
+    }
+
     /** Returns sql join needed for calculating sleep duration */
     public static SqlJoin getJoinForDurationAggregation(String parentTableName) {
         SqlJoin join = getJoinReadRequest(parentTableName);

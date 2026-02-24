@@ -27,6 +27,7 @@ import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Record
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -42,6 +43,7 @@ import com.android.healthconnect.controller.permissions.data.HealthPermission.Fi
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.utils.LocaleSorter.sortByLocale
 import com.android.healthconnect.controller.utils.toDeviceTypeString
 import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import com.android.healthfitness.flags.Flags.deviceDataProvidersUiMatchmakingScreen
@@ -77,11 +79,38 @@ constructor(
     val enabledDevicePackages: MutableLiveData<Set<String>> =
         savedStateHandle.getLiveData(ENABLED_DEVICES_KEY, emptySet())
 
-    val atLeastOnePermissionGranted = MutableLiveData(false)
-    val allPermissionsGranted = MutableLiveData(false)
+    val atLeastOneDataSourceSelected: LiveData<Boolean> =
+        MediatorLiveData<Boolean>().apply {
+            val update = {
+                value =
+                    grantedPermissions.value?.isNotEmpty() == true ||
+                        enabledDevicePackages.value?.isNotEmpty() == true
+            }
+            addSource(grantedPermissions) { update() }
+            addSource(enabledDevicePackages) { update() }
+            update()
+        }
 
-    val hasSelectedDevice = MutableLiveData(false)
-    val hasSelectedApp = MutableLiveData(false)
+    val allPermissionsGranted: LiveData<Boolean> =
+        MediatorLiveData<Boolean>().apply {
+            val update = { value = calculateAllPermissionsGranted() }
+            addSource(grantedPermissions) { update() }
+            addSource(enabledDevicePackages) { update() }
+            addSource(matchmakingState) { update() }
+            update()
+        }
+
+    val hasSelectedDevice: LiveData<Boolean> =
+        MediatorLiveData<Boolean>().apply {
+            addSource(enabledDevicePackages) { value = it.isNotEmpty() }
+            value = enabledDevicePackages.value?.isNotEmpty() == true
+        }
+
+    val hasSelectedApp: LiveData<Boolean> =
+        MediatorLiveData<Boolean>().apply {
+            addSource(grantedPermissions) { value = it.isNotEmpty() }
+            value = grantedPermissions.value?.isNotEmpty() == true
+        }
 
     @get:VisibleForTesting val ddpIntentQueue = MutableLiveData<List<Intent>>(emptyList())
 
@@ -150,15 +179,17 @@ constructor(
                             .map { appData ->
                                 appData.copy(
                                     permissions =
-                                        appData.permissions.sortedBy {
-                                            it.fitnessPermissionType.toString()
+                                        appData.permissions.sortByLocale {
+                                            context.getString(
+                                                it.fitnessPermissionType.upperCaseLabel()
+                                            )
                                         }
                                 )
                             }
-                            .sortedBy { it.metadata.appName }
+                            .sortByLocale { it.metadata.appName }
 
                     val matchingDevices =
-                        result.data.matchingDevices.sortedBy {
+                        result.data.matchingDevices.sortByLocale {
                             it.deviceDataSourceInfo.device.displayName
                                 ?: it.deviceDataSourceInfo.device.type.toDeviceTypeString(context)
                         }
@@ -168,10 +199,6 @@ constructor(
                     if (enabledDevicePackages.value == null) {
                         enabledDevicePackages.value = emptySet()
                     }
-                    atLeastOnePermissionGranted.value =
-                        grantedPermissions.value?.isNotEmpty() == true ||
-                            enabledDevicePackages.value?.isNotEmpty() == true
-                    updateAllPermissionsGrantedStatus()
                     matchingAppsCount.value = sortedApps.size
                     _matchmakingState.value =
                         MatchmakingState.WithData(appMetadata, sortedApps, matchingDevices)
@@ -189,9 +216,6 @@ constructor(
         appPermissions.add(permission)
         currentPermissions[packageName] = appPermissions
         grantedPermissions.value = currentPermissions
-        atLeastOnePermissionGranted.value = true
-        hasSelectedApp.value = true
-        updateAllPermissionsGrantedStatus()
     }
 
     fun removePermissionFromGrantedList(packageName: String, permission: FitnessPermission) {
@@ -204,11 +228,6 @@ constructor(
             currentPermissions[packageName] = appPermissions
         }
         grantedPermissions.value = currentPermissions
-        atLeastOnePermissionGranted.value =
-            grantedPermissions.value?.isNotEmpty() == true ||
-                enabledDevicePackages.value?.isNotEmpty() == true
-        hasSelectedApp.value = grantedPermissions.value?.isNotEmpty() == true
-        updateAllPermissionsGrantedStatus()
     }
 
     fun addAllPermissionsToGrantedList(packageName: String) {
@@ -219,7 +238,6 @@ constructor(
         val currentPermissions = grantedPermissions.value?.toMutableMap() ?: mutableMapOf()
         if (allPermissionsForApp != null) {
             currentPermissions[packageName] = allPermissionsForApp
-            hasSelectedApp.value = true
         } else {
             val isDevice =
                 state?.matchingDevices?.any {
@@ -233,17 +251,12 @@ constructor(
             }
         }
         grantedPermissions.value = currentPermissions
-        atLeastOnePermissionGranted.value = true
-        updateAllPermissionsGrantedStatus()
     }
 
     fun addDevicePermissionToGrantedList(packageName: String) {
         val currentEnabledDevices = enabledDevicePackages.value?.toMutableSet() ?: mutableSetOf()
         currentEnabledDevices.add(packageName)
         enabledDevicePackages.value = currentEnabledDevices
-        atLeastOnePermissionGranted.value = true
-        hasSelectedDevice.value = true
-        updateAllPermissionsGrantedStatus()
     }
 
     fun removeAllPermissionsFromGrantedList(packageName: String) {
@@ -254,21 +267,13 @@ constructor(
         val currentEnabledDevices = enabledDevicePackages.value?.toMutableSet() ?: mutableSetOf()
         currentEnabledDevices.remove(packageName)
         enabledDevicePackages.value = currentEnabledDevices
-
-        atLeastOnePermissionGranted.value =
-            grantedPermissions.value?.isNotEmpty() == true ||
-                enabledDevicePackages.value?.isNotEmpty() == true
-        hasSelectedApp.value = grantedPermissions.value?.isNotEmpty() == true
-        hasSelectedDevice.value = enabledDevicePackages.value?.isNotEmpty() == true
-        updateAllPermissionsGrantedStatus()
     }
 
-    private fun updateAllPermissionsGrantedStatus() {
+    private fun calculateAllPermissionsGranted(): Boolean {
         val grantedMap = grantedPermissions.value ?: emptyMap()
         val state = _matchmakingState.value as? MatchmakingState.WithData
         if (state == null) {
-            allPermissionsGranted.value = false
-            return
+            return false
         }
         val allApps = state.matchingApps
         val allDevices = state.matchingDevices
@@ -284,7 +289,7 @@ constructor(
                     deviceData.deviceDataSourceInfo.deviceDataOrigin.packageName
                 ) == true
             }
-        allPermissionsGranted.value = allGrantedApps && allGrantedDevices
+        return allGrantedApps && allGrantedDevices
     }
 
     fun grantPermissions() {
@@ -318,8 +323,6 @@ constructor(
             }
         }
         grantedPermissions.value = emptyMap()
-        atLeastOnePermissionGranted.value = false
-        hasSelectedApp.value = false
     }
 
     private fun grantDevicePermissions(enabledDevicePackagesSnapshot: Set<String>) {
@@ -355,76 +358,49 @@ constructor(
     }
 
     fun onDdpIntentFinished(resultCode: Int) {
-        val currentQueue = ddpIntentQueue.value.orEmpty().toMutableList()
-        val intentToFinish = currentQueue.firstOrNull()
-        val ddpPackageName = intentToFinish?.getPackage()
+        val ddpPackageName = ddpIntentQueue.value?.firstOrNull()?.`package`
         when (resultCode) {
             android.app.Activity.RESULT_OK,
             RESULT_DEVICE_ONBOARDING_ALLOWED -> {
                 _atLeastOneGrantSucceeded = true
-                currentQueue.removeFirstOrNull()
-                ddpIntentQueue.value = currentQueue
-                val nextIntent = currentQueue.firstOrNull()
-                if (nextIntent == null) {
-                    enabledDevicePackages.value = emptySet()
-                    hasSelectedDevice.value = false
-                    _ddpOnboardingState.value =
-                        DdpOnboardingState.Finished(android.app.Activity.RESULT_OK)
-                } else {
-                    _ddpOnboardingState.value = DdpOnboardingState.Onboarding(nextIntent)
-                }
+                moveToNextOnboardingIntent()
             }
             RESULT_DEVICE_ONBOARDING_ABORTED -> {
                 recordDeviceDenial(ddpPackageName)
                 ddpIntentQueue.value = emptyList()
-                enabledDevicePackages.value = emptySet()
-                hasSelectedDevice.value = false
-                if (_atLeastOneGrantSucceeded) {
-                    _ddpOnboardingState.value =
-                        DdpOnboardingState.Finished(android.app.Activity.RESULT_OK)
-                } else {
-                    _ddpOnboardingState.value =
-                        DdpOnboardingState.Finished(android.app.Activity.RESULT_CANCELED)
-                }
+                finishOnboardingFlow()
             }
             RESULT_DEVICE_ONBOARDING_DENIED -> {
                 recordDeviceDenial(ddpPackageName)
-                currentQueue.removeFirstOrNull()
-                ddpIntentQueue.value = currentQueue
-                val nextIntent = currentQueue.firstOrNull()
-                if (nextIntent == null) {
-                    enabledDevicePackages.value = emptySet()
-                    hasSelectedDevice.value = false
-                    if (_atLeastOneGrantSucceeded) {
-                        _ddpOnboardingState.value =
-                            DdpOnboardingState.Finished(android.app.Activity.RESULT_OK)
-                    } else {
-                        _ddpOnboardingState.value =
-                            DdpOnboardingState.Finished(android.app.Activity.RESULT_CANCELED)
-                    }
-                } else {
-                    _ddpOnboardingState.value = DdpOnboardingState.Onboarding(nextIntent)
-                }
+                moveToNextOnboardingIntent()
             }
             else -> {
-                currentQueue.removeFirstOrNull()
-                ddpIntentQueue.value = currentQueue
-                val nextIntent = currentQueue.firstOrNull()
-                if (nextIntent == null) {
-                    enabledDevicePackages.value = emptySet()
-                    hasSelectedDevice.value = false
-                    if (_atLeastOneGrantSucceeded) {
-                        _ddpOnboardingState.value =
-                            DdpOnboardingState.Finished(android.app.Activity.RESULT_OK)
-                    } else {
-                        _ddpOnboardingState.value =
-                            DdpOnboardingState.Finished(android.app.Activity.RESULT_CANCELED)
-                    }
-                } else {
-                    _ddpOnboardingState.value = DdpOnboardingState.Onboarding(nextIntent)
-                }
+                moveToNextOnboardingIntent()
             }
         }
+    }
+
+    private fun moveToNextOnboardingIntent() {
+        val currentQueue = ddpIntentQueue.value.orEmpty().toMutableList()
+        currentQueue.removeFirstOrNull()
+        ddpIntentQueue.value = currentQueue
+        val nextIntent = currentQueue.firstOrNull()
+        if (nextIntent != null) {
+            _ddpOnboardingState.value = DdpOnboardingState.Onboarding(nextIntent)
+        } else {
+            finishOnboardingFlow()
+        }
+    }
+
+    private fun finishOnboardingFlow() {
+        enabledDevicePackages.value = emptySet()
+        val finalResultCode =
+            if (_atLeastOneGrantSucceeded) {
+                android.app.Activity.RESULT_OK
+            } else {
+                android.app.Activity.RESULT_CANCELED
+            }
+        _ddpOnboardingState.value = DdpOnboardingState.Finished(finalResultCode)
     }
 
     private fun recordDeviceDenial(ddpPackageName: String?) {

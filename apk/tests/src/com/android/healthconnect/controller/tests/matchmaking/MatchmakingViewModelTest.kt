@@ -113,6 +113,12 @@ class MatchmakingViewModelTest {
                 healthPermissionManager,
             )
         viewModel.matchingAppsCount.postValue(0)
+
+        // Observe reactive properties to ensure they update in tests
+        viewModel.atLeastOneDataSourceSelected.observeForever {}
+        viewModel.allPermissionsGranted.observeForever {}
+        viewModel.hasSelectedDevice.observeForever {}
+        viewModel.hasSelectedApp.observeForever {}
     }
 
     private suspend fun stubGetMatchingDataSourcesUseCase(
@@ -298,6 +304,34 @@ class MatchmakingViewModelTest {
     }
 
     @Test
+    fun loadMatchmakingData_sortsPermissionsByLocalizedLabel() = runTest {
+        val app =
+            MatchmakingAppData(
+                AppMetadata("pkg", "App", null),
+                listOf(
+                    HealthPermission.FitnessPermission(
+                        FitnessPermissionType.STEPS,
+                        PermissionsAccessType.WRITE,
+                    ),
+                    HealthPermission.FitnessPermission(
+                        FitnessPermissionType.DISTANCE,
+                        PermissionsAccessType.WRITE,
+                    ),
+                ),
+            )
+
+        stubGetMatchingDataSourcesUseCase(listOf(app), emptyList())
+
+        viewModel.loadMatchmakingData(TEST_APP_PACKAGE_NAME, emptyArray())
+
+        val state = viewModel.matchmakingState.value as WithData
+        val permissions = state.matchingApps[0].permissions
+
+        assertThat(permissions[0].fitnessPermissionType).isEqualTo(FitnessPermissionType.DISTANCE)
+        assertThat(permissions[1].fitnessPermissionType).isEqualTo(FitnessPermissionType.STEPS)
+    }
+
+    @Test
     fun loadMatchmakingData_returnsSortedDevices_byDisplayName() = runTest {
         val deviceB =
             MatchmakingDeviceData(
@@ -391,7 +425,7 @@ class MatchmakingViewModelTest {
 
         assertThat(viewModel.grantedPermissions.value?.get(TEST_APP_PACKAGE_NAME))
             .contains(permission)
-        assertThat(viewModel.atLeastOnePermissionGranted.value).isTrue()
+        assertThat(viewModel.atLeastOneDataSourceSelected.value).isTrue()
     }
 
     @Test
@@ -403,7 +437,7 @@ class MatchmakingViewModelTest {
         viewModel.removePermissionFromGrantedList(TEST_APP_PACKAGE_NAME, permission)
 
         assertThat(viewModel.grantedPermissions.value?.get(TEST_APP_PACKAGE_NAME)).isNull()
-        assertThat(viewModel.atLeastOnePermissionGranted.value).isFalse()
+        assertThat(viewModel.atLeastOneDataSourceSelected.value).isFalse()
     }
 
     @Test
@@ -433,7 +467,7 @@ class MatchmakingViewModelTest {
                     .permissions
             )
         assertThat(viewModel.enabledDevicePackages.value).contains(TEST_WATCH_DEVICE_PACKAGE_NAME)
-        assertThat(viewModel.atLeastOnePermissionGranted.value).isTrue()
+        assertThat(viewModel.atLeastOneDataSourceSelected.value).isTrue()
         assertThat(viewModel.allPermissionsGranted.value).isTrue()
     }
 
@@ -463,7 +497,7 @@ class MatchmakingViewModelTest {
                         .first { it.metadata.packageName == TEST_APP_PACKAGE_NAME_2 }
                         .permissions
                 )
-            assertThat(viewModel.atLeastOnePermissionGranted.value).isTrue()
+            assertThat(viewModel.atLeastOneDataSourceSelected.value).isTrue()
             assertThat(viewModel.allPermissionsGranted.value).isTrue()
         }
 
@@ -480,7 +514,7 @@ class MatchmakingViewModelTest {
 
         assertThat(viewModel.grantedPermissions.value).isEmpty()
         assertThat(viewModel.enabledDevicePackages.value).isEmpty()
-        assertThat(viewModel.atLeastOnePermissionGranted.value).isFalse()
+        assertThat(viewModel.atLeastOneDataSourceSelected.value).isFalse()
         assertThat(viewModel.allPermissionsGranted.value).isFalse()
     }
 
@@ -943,6 +977,48 @@ class MatchmakingViewModelTest {
 
         assertThat(viewModel.ddpOnboardingState.value)
             .isEqualTo(MatchmakingViewModel.DdpOnboardingState.Setup)
+    }
+
+    @Test
+    fun selectionState_isCorrectlyUpdated_reactive() = runTest {
+        setupWithData()
+        val permission =
+            HealthPermission.fromPermissionString(WRITE_STEPS) as HealthPermission.FitnessPermission
+
+        // Initial state
+        assertThat(viewModel.atLeastOneDataSourceSelected.value).isFalse()
+        assertThat(viewModel.hasSelectedApp.value).isFalse()
+        assertThat(viewModel.hasSelectedDevice.value).isFalse()
+        assertThat(viewModel.allPermissionsGranted.value).isFalse()
+
+        // Add app permission
+        viewModel.addAppPermissionToGrantedList(TEST_APP_PACKAGE_NAME, permission)
+        assertThat(viewModel.atLeastOneDataSourceSelected.value).isTrue()
+        assertThat(viewModel.hasSelectedApp.value).isTrue()
+        assertThat(viewModel.hasSelectedDevice.value).isFalse()
+        assertThat(viewModel.allPermissionsGranted.value).isFalse()
+
+        // Add device
+        viewModel.addDevicePermissionToGrantedList("com.example.watchdevice")
+        assertThat(viewModel.atLeastOneDataSourceSelected.value).isTrue()
+        assertThat(viewModel.hasSelectedApp.value).isTrue()
+        assertThat(viewModel.hasSelectedDevice.value).isTrue()
+
+        // Remove app permission
+        viewModel.removePermissionFromGrantedList(TEST_APP_PACKAGE_NAME, permission)
+        assertThat(viewModel.atLeastOneDataSourceSelected.value).isTrue()
+        assertThat(viewModel.hasSelectedApp.value).isFalse()
+        assertThat(viewModel.hasSelectedDevice.value).isTrue()
+
+        // Grant all
+        viewModel.addAllPermissionsToGrantedList(TEST_APP_PACKAGE_NAME)
+        viewModel.addAllPermissionsToGrantedList(TEST_APP_PACKAGE_NAME_2)
+        assertThat(viewModel.allPermissionsGranted.value).isTrue()
+
+        // Remove all for one app
+        viewModel.removeAllPermissionsFromGrantedList(TEST_APP_PACKAGE_NAME)
+        assertThat(viewModel.allPermissionsGranted.value).isFalse()
+        assertThat(viewModel.atLeastOneDataSourceSelected.value).isTrue()
     }
 
     private fun getExpectedDevicesWithMultipleProviders(): List<MatchmakingDeviceData> {

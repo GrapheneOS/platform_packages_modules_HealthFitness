@@ -20,6 +20,7 @@ import static android.health.connect.datatypes.RecordTypeIdentifier.RECORD_TYPE_
 
 import static com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper.EXERCISE_SESSION_RECORD_TABLE_NAME;
 import static com.android.server.healthconnect.fitness.recordhelpers.ExerciseSessionRecordHelper.PLANNED_EXERCISE_SESSION_ID_COLUMN_NAME;
+import static com.android.server.healthconnect.fitness.recordhelpers.RecordHelper.PRIMARY_COLUMN_NAME;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BLOB_NULL;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.BOOLEAN_FALSE_VALUE;
@@ -38,6 +39,7 @@ import static com.android.server.healthconnect.storage.utils.StorageUtils.getCur
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorInt;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorString;
 import static com.android.server.healthconnect.storage.utils.StorageUtils.getCursorUUID;
+import static com.android.server.healthconnect.storage.utils.WhereClauses.LogicalOperator.AND;
 
 import android.content.ContentValues;
 import android.database.Cursor;
@@ -67,8 +69,13 @@ import android.health.connect.internal.datatypes.ExercisePerformanceGoalInternal
 import android.health.connect.internal.datatypes.PlannedExerciseBlockInternal;
 import android.health.connect.internal.datatypes.PlannedExerciseSessionRecordInternal;
 import android.health.connect.internal.datatypes.PlannedExerciseStepInternal;
+import android.health.connect.internal.datatypes.RecordInternal;
 import android.util.Pair;
 
+import androidx.annotation.Nullable;
+
+import com.android.healthfitness.flags.Flags;
+import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.RecordReadTableRequest;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
 import com.android.server.healthconnect.storage.request.AlterTableRequest;
@@ -84,7 +91,9 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
@@ -208,7 +217,12 @@ public final class PlannedExerciseSessionRecordHelper
     }
 
     @Override
+    @Nullable
     SqlJoin getJoinForReadRequest() {
+        if (Flags.optimizeChildReads()) {
+            return null;
+        }
+
         return new SqlJoin(
                         PLANNED_EXERCISE_SESSION_RECORD_TABLE_NAME,
                         PLANNED_EXERCISE_SESSION_BLOCKS_TABLE_NAME,
@@ -233,8 +247,13 @@ public final class PlannedExerciseSessionRecordHelper
 
     @Override
     PlannedExerciseSessionRecordInternal populateSpecificRecordValue(Cursor cursor) {
+        List<PlannedExerciseBlockInternal> exerciseBlocks = new ArrayList<>();
+        if (!Flags.optimizeChildReads()) {
+            exerciseBlocks = extractBlocks(cursor);
+        }
+
         PlannedExerciseSessionRecordInternal plannedExerciseSessionRecord =
-                new PlannedExerciseSessionRecordInternal(extractBlocks(cursor));
+                new PlannedExerciseSessionRecordInternal(exerciseBlocks);
         plannedExerciseSessionRecord.setNotes(getCursorString(cursor, NOTES_COLUMN_NAME));
         plannedExerciseSessionRecord.setExerciseType(
                 getCursorInt(cursor, EXERCISE_TYPE_COLUMN_NAME));
@@ -605,5 +624,70 @@ public final class PlannedExerciseSessionRecordHelper
                         affectedExerciseSessionsReadRequest,
                         InternalHealthConnectMappings.getInstance()
                                 .getRecordHelper(RECORD_TYPE_EXERCISE_SESSION)));
+    }
+
+    @Override
+    public List<ReadTableRequest> getChildDataReadRequests(
+            List<RecordInternal<?>> records,
+            String callingPackageName,
+            Set<String> grantedExtraReadPermissions,
+            boolean isInForeground,
+            AppInfoHelper appInfoHelper) {
+        if (!Flags.optimizeChildReads() || records.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<Integer> rowIds = records.stream().map(RecordInternal::getRowId).toList();
+        WhereClauses inClause = new WhereClauses(AND);
+        inClause.addWhereInIntsClause(BLOCK_PARENT_ID_COLUMN_NAME, rowIds);
+
+        ReadTableRequest blocksRequest =
+                new ReadTableRequest(PLANNED_EXERCISE_SESSION_BLOCKS_TABLE_NAME);
+        blocksRequest.setJoinClause(
+                new SqlJoin(
+                                PLANNED_EXERCISE_SESSION_BLOCKS_TABLE_NAME,
+                                PLANNED_EXERCISE_SESSION_STEPS_TABLE_NAME,
+                                BLOCK_ROW_ID_COLUMN_NAME,
+                                STEP_PARENT_ID_COLUMN_NAME)
+                        .setJoinType(SqlJoin.SQL_JOIN_LEFT)
+                        .attachJoin(
+                                new SqlJoin(
+                                                PLANNED_EXERCISE_SESSION_STEPS_TABLE_NAME,
+                                                PLANNED_EXERCISE_SESSION_GOALS_TABLE_NAME,
+                                                STEP_ROW_ID_COLUMN_NAME,
+                                                GOAL_PARENT_ID_COLUMN_NAME)
+                                        .setJoinType(SqlJoin.SQL_JOIN_LEFT)));
+        blocksRequest.setWhereClause(inClause);
+
+        return Collections.singletonList(blocksRequest);
+    }
+
+    @Override
+    public void readExtraData(
+            List<PlannedExerciseSessionRecordInternal> internalRecords, Cursor cursorExtraData) {
+        if (!Flags.optimizeChildReads()) {
+            return;
+        }
+
+        Map<Integer, PlannedExerciseSessionRecordInternal> rowIdToRecordMap =
+                new HashMap<>(internalRecords.size());
+        for (PlannedExerciseSessionRecordInternal record : internalRecords) {
+            rowIdToRecordMap.put(record.getRowId(), record);
+        }
+
+        while (cursorExtraData.moveToNext()) {
+            int rowId = getCursorInt(cursorExtraData, BLOCK_PARENT_ID_COLUMN_NAME);
+            PlannedExerciseSessionRecordInternal record = rowIdToRecordMap.get(rowId);
+            if (record == null) {
+                continue;
+            }
+
+            PlannedExerciseBlockInternal block =
+                    new PlannedExerciseBlockInternal(
+                            getCursorInt(cursorExtraData, BLOCK_REPETITIONS_COLUMN_NAME));
+            block.setDescription(getCursorString(cursorExtraData, BLOCK_DESCRIPTION_COLUMN_NAME));
+            block.setExerciseSteps(extractSteps(cursorExtraData));
+            record.addExerciseBlock(block);
+        }
     }
 }
