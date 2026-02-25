@@ -1452,11 +1452,7 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
-    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.BAKLAVA)
-    public void isPermittedToProvideDeviceData_baklavaAndLower_aRPackage_returnsTrue() {
-        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
-        assumeTrue(Build.VERSION.SDK_INT <= Build.VERSION_CODES.BAKLAVA);
-
+    public void isPermittedToProvideDeviceData_aRPackage_returnsTrue() {
         doReturn(PackageManager.PERMISSION_DENIED)
                 .when(mContext)
                 .checkPermission(
