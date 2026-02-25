@@ -4350,13 +4350,14 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         // b/486393299 This special casing is to allow MultiProviderTest to run in
         // multi-user scenarios where the test instrumentation (running as shell/root)
         // originates from user 0 but the foreground user is different.
-        boolean canInteractAcrossUsers =
-                mContext.checkCallingPermission(
-                                android.Manifest.permission.INTERACT_ACROSS_USERS_FULL)
-                        == PERMISSION_GRANTED;
-
-        if (AconfigFlagHelper.isDeviceDataProvidersEnabled() && canInteractAcrossUsers) {
-            return;
+        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+            boolean canInteractAcrossUsers =
+                    mContext.checkCallingPermission(
+                                    android.Manifest.permission.INTERACT_ACROSS_USERS_FULL)
+                            == PERMISSION_GRANTED;
+            if (canInteractAcrossUsers) {
+                return;
+            }
         }
 
         if (!callingUserHandle.equals(mCurrentForegroundUser)) {
