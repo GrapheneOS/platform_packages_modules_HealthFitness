@@ -324,7 +324,7 @@ class FitnessPermissionsFragment : Hilt_FitnessPermissionsFragment() {
                 val preferenceKey = PermissionGroupKey(accessType, dataCategory)
                 val permissions = permissionGroupKeyToRequestedPermissions[preferenceKey]!!
 
-                if (viewModel.expandedDataCategoryPreferenceKeys.value?.isEmpty() == true) {
+                if (viewModel.expandedDataCategoryPreferenceKeys.value == null) {
                     viewModel.updateDataCategoryPreferenceKey(preferenceKey, /* isExpanded= */ true)
                 }
 
