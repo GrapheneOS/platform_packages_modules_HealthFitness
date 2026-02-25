@@ -215,7 +215,6 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
-import com.android.internal.annotations.VisibleForTesting;
 import com.android.modules.utils.build.SdkLevel;
 import com.android.server.appop.AppOpsManagerLocal;
 import com.android.server.healthconnect.backuprestore.BackupRestore;
@@ -4345,21 +4344,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
      * On a multi-user device, enforce that the calling user handle (user account) is the same as
      * the current foreground user (account).
      */
-    @VisibleForTesting
-    void enforceIsForegroundUser(UserHandle callingUserHandle) {
-        // b/486393299 This special casing is to allow MultiProviderTest to run in
-        // multi-user scenarios where the test instrumentation (running as shell/root)
-        // originates from user 0 but the foreground user is different.
-        if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
-            boolean canInteractAcrossUsers =
-                    mContext.checkCallingPermission(
-                                    android.Manifest.permission.INTERACT_ACROSS_USERS_FULL)
-                            == PERMISSION_GRANTED;
-            if (canInteractAcrossUsers) {
-                return;
-            }
-        }
-
+    private void enforceIsForegroundUser(UserHandle callingUserHandle) {
         if (!callingUserHandle.equals(mCurrentForegroundUser)) {
             throw new IllegalStateException(
                     "Calling user: "
