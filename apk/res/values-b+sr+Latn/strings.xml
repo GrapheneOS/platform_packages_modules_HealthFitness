@@ -40,7 +40,7 @@
     <string name="browse_data_title" msgid="5232691805953326097">"Pregledajte podatke"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Pregledajte podatke i koje aplikacije mogu da im pristupaju"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"Automatsko brisanje, izvori podataka, rezervna kopija i vraćanje"</string>
-    <string name="banner_group_more_items" msgid="1071243933488973950">"Više stavki"</string>
+    <string name="banner_group_more_items" msgid="1071243933488973950">"Još stavki"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"Manje stavki"</string>
     <string name="settings_manage_permission" msgid="3805037674102124581">"Povezivanje zdravlja"</string>
     <string name="settings_combined_permissions" msgid="3660209476196545539">"Povezivanje zdravlja"</string>

@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"ඔබට මෙම යෙදුම Health Connect වෙත ලිවීමට අවශ්‍ය දත්ත තෝරා ගන්න"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"ඔබට මෙම යෙදුම Health Connect වෙත කියවීමට හෝ ලිවීමට අවශ්‍ය දත්ත තෝරන්න"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Health Connect වෙතින් ඔබට මෙම යෙදුම කියවීමට අවශ්‍ය දත්ත තෝරා ගන්න"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"ඔබේ යෙදුම් සහ උපාංග සමමුහුර්ත කරන්න"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Health Connect භාවිතයෙන් මෙම උපාංගයේ අනෙකුත් යෙදුම් හෝ උපාංගවලින් දත්ත කියවීමට <xliff:g id="APP_NAME">%1$s</xliff:g> යෙදුමට ඉඩ දෙන්න. මෙම දත්ත ඔබ ප්‍රවේශය ලබා දෙන වෙනත් යෙදුම් මගින් ද කියවිය හැක."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"මෙම දත්ත සමමුහුර්ත කළ හැකි යෙදුම්"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"මෙම දත්ත සමමුහුර්ත කළ හැකි උපාංග"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"සබල කිරීමට උපාංග මනාප වෙත දිගටම කරගෙන යන්න"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"සියලු <xliff:g id="APP_NAME">%1$s</xliff:g> අවසරවලට ඉඩ දෙන්න"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> ඔවුන්ගේ "<a href="%2$s">"පෞද්ගලිකත්ව ප්‍රතිපත්තියේ"</a>" ඔබේ දත්ත භාවිතා කරන ආකාරය දැන ගන්න."</string>
     <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect මඟින් ඔබේ සෞඛ්‍ය සහ යෝග්‍යතා දත්ත බහු දත්ත මූලාශ්‍ර අතර බෙදා ගැනීමට ඔබට ඉඩ දෙයි. මෙය ඔබේ දත්ත සුරක්ෂිතව තබා ගනිමින් ඇතුළාන්තයන් සහ අත්දැකීම් අගුළු හැරීමට ඔබට උදවු වේ."</string>
@@ -1623,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"ඇදුම"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"ඇදුම"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>කින් <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>ක් තේරිණි"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"මෙම එකතු කිරීමේ කාඩ්පත සඳහා දත්ත ප්‍රවර්ගය"</string>
 </resources>

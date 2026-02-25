@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Veldu gögnin sem þú vilt leyfa forritinu að skrifa í Heilsutengingu"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Veldu hvaða gögn þú vilt að forritið lesi eða skrifi á Heilsutengingu"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Veldu gögnin sem þú vilt leyfa forritinu að lesa úr Heilsutengingu"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Samstilltu forritin og tækin þín"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Leyfa <xliff:g id="APP_NAME">%1$s</xliff:g>-forritinu að lesa gögn úr öðrum forritum eða tækjum í þessu tæki með Heilsutengingu. Önnur forrit sem þú veitir aðgang geta einnig lesið þessi gögn."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Forrit sem geta samstillt þessi gögn"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Tæki sem geta samstillt þessi gögn"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Haltu áfram í kjörstillingar tækisins til að kveikja"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Leyfa allar heimildir fyrir <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Kynntu þér hvernig <xliff:g id="APP_NAME">%1$s</xliff:g> notar gögnin þín í "<a href="%2$s">"persónuverndarstefnu"</a>" forritsins."</string>
     <string name="matchmaking_screen_footer" msgid="986685221263640285">"Með Heilsutengingu geturðu deilt heilsu- og hreystigögnunum þínum á milli margra gagnauppspretta. Þannig öðlastu aukna innsýn og bætir upplifun þína en heldur gögnunum þínum áfram öruggum."</string>
@@ -1623,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Más"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"más"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> af <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> valin"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Gagnaflokkur þessa samantektarspjalds"</string>
 </resources>

@@ -23,8 +23,7 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"ফিটনেস ও সুস্থতা সম্পর্কিত কোন ডেটা এই অ্যাপ অ্যাক্সেস করতে পারবে তা বেছে নিন। এর মধ্যে অন্তর্ভুক্ত রয়েছে এই ডিভাইসে ট্র্যাক ও সেভ করা ডেটা, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"ফিটনেস ও সুস্থতা সম্পর্কিত কোন ডেটা এই অ্যাপ অ্যাক্সেস করতে পারবে তা বেছে নিন। এর মধ্যে অন্তর্ভুক্ত রয়েছে এই ডিভাইসে ট্র্যাক ও সেভ করা ডেটা, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"ফিটনেস ও সুস্থতা সম্পর্কিত কোন ডেটা এই অ্যাপ অ্যাক্সেস করতে পারবে তা বেছে নিন। এর মধ্যে অন্তর্ভুক্ত রয়েছে এই ডিভাইসে ট্র্যাক ও সেভ করা ডেটা, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for request_learn_more (563937923005882945) -->
-    <skip />
+    <string name="request_learn_more" msgid="563937923005882945">"কীভাবে আপনার ডেটা অ্যাক্সেস করা হয় সেই সম্পর্কে আরও জানুন"</string>
     <string name="settings_manage_permission" msgid="3585762257420446893">"স্বাস্থ্য, ফিটনেস ও সুস্থতা"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"স্বাস্থ্য, ফিটনেস ও সুস্থতা"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"ফিটনেস ও সুস্থতা"</string>

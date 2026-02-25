@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"יש לבחור את הנתונים שהאפליקציה הזו תכתוב אל Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"צריך לבחור את הנתונים שהאפליקציה הזו תקרא ותכתוב ב-Health Connect"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"יש לבחור את הנתונים שהאפליקציה הזו תקרא מ-Health Connect"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"סנכרון האפליקציות והמכשירים שלך"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"אם האפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> תקבל ממך הרשאה, היא תוכל לקרוא נתונים ממכשירים או מאפליקציות אחרות במכשיר הזה באמצעות Health Connect. גם אפליקציות אחרות שנתת להן גישה יכולות לקרוא את הנתונים האלה."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"אפליקציות שיכולות לסנכרן את הנתונים האלה"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"מכשירים שיכולים לסנכרן את הנתונים האלה"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"כדי להפעיל את האפשרות, צריך לעבור להעדפות המכשיר"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"אישור כל ההרשאות לאפליקציית <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"ב"<a href="%2$s">"מדיניות הפרטיות"</a>" של <xliff:g id="APP_NAME">%1$s</xliff:g> מוסבר איך האפליקציה משתמשת בנתונים שלך."</string>
     <string name="matchmaking_screen_footer" msgid="986685221263640285">"כדי לקבל תובנות ולשפר את חוויית השימוש, באמצעות Health Connect אפשר לשתף את נתוני הבריאות והכושר עם מקורות נתונים אחרים בצורה מאובטחת."</string>
@@ -1623,6 +1620,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"צפצופים בזמן הנשימה"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"צפצופים בזמן הנשימה"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"נבחרו <xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g> מתוך <xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g>"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"קטגוריית הנתונים של כרטיס הנתונים הנצברים"</string>
 </resources>

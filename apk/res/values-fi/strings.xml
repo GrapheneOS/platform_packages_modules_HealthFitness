@@ -403,16 +403,13 @@
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Valitse, mitä dataa haluat sovelluksen kirjoittavan Health Connectiin"</string>
     <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Valitse, mitä Health Connect -dataa haluat sovelluksen kirjoittavan tai lukevan"</string>
     <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Valitse, mitä Health Connect -dataa haluat sovelluksen lukevan"</string>
-    <!-- no translation found for matchmaking_screen_title (2245143614291907682) -->
-    <skip />
+    <string name="matchmaking_screen_title" msgid="2245143614291907682">"Synkronoi sovellukset ja laitteet"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <!-- no translation found for matchmaking_screen_summary (252103453254608305) -->
-    <skip />
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Salli, että <xliff:g id="APP_NAME">%1$s</xliff:g> lukee dataa muista sovelluksista tai laitteista tällä laitteella Health Connectin avulla. Myös muut sovellukset, joille annat pääsyn, voivat lukea tätä dataa."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Sovellukset, jotka voivat synkronoida tämän datan"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Laitteet, jotka voivat synkronoida tämän datan"</string>
-    <!-- no translation found for matchmaking_screen_continue_to_device_preferences_to_enable (2917826310622439910) -->
-    <skip />
+    <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Jatka laiteasetuksiin, niin voit ottaa sen käyttöön"</string>
     <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
     <skip />
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Lue "<a href="%2$s">"tietosuojakäytännöstä"</a>", miten <xliff:g id="APP_NAME">%1$s</xliff:g> käyttää dataasi."</string>
@@ -440,7 +437,7 @@
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"<xliff:g id="APP_NAME">%1$s</xliff:g> ei voi enää lukea tai kirjoittaa mitään Health Connectin dataa, mukaan lukien taustatietoja.\n\nTämä ei vaikuta sovelluksen muihin lupiin, kuten sijainti-, kamera- tai mikrofonilupaan."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"<xliff:g id="APP_NAME">%1$s</xliff:g> ei voi enää lukea tai kirjoittaa mitään Health Connectin dataa, mukaan lukien aiempaa dataa.\n\nTämä ei vaikuta sovelluksen muihin lupiin, kuten sijainti-, kamera- tai mikrofonilupaan."</string>
     <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"<xliff:g id="APP_NAME">%1$s</xliff:g> ei voi enää lukea tai kirjoittaa mitään Health Connectin dataa, mukaan lukien taustatietoja ja aiempaa data.\n\nTämä ei vaikuta sovelluksen muihin lupiin, kuten sijainti-, kamera- tai mikrofonilupaan."</string>
-    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Poista Health Connectista myös tämä <xliff:g id="APP_NAME">%1$s</xliff:g>-data"</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Poista myös <xliff:g id="APP_NAME">%1$s</xliff:g>-data Health Connectista"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Poistetaanko kaikki liikunta‑ ja hyvinvointiluvat?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Poista Health Connectista myös kuntodata, joka on peräisin täältä: <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"Poistetaanko kaikki terveystietoluvat?"</string>
@@ -1364,7 +1361,7 @@
     <string name="home_devices_summary" msgid="6056984338393523399">"Tarkista laitteet, joilla on pääsy terveysdataan"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Asenna Health Connectin kanssa toimivia sovelluksia, niin näet ne täällä"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Näytä yhteensopivat sovellukset"</string>
-    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Katso lisää terveyssovelluksia"</string>
+    <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Näytä lisää terveyssovelluksia"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Ei yhdistetty"</string>
     <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
     <skip />
@@ -1634,6 +1631,5 @@
     <string name="wheezing_uppercase_label" msgid="2837114949197811787">"Vinkuva hengitys"</string>
     <string name="wheezing_lowercase_label" msgid="1278548371813007771">"vinkuva hengitys"</string>
     <string name="app_permissions_granted_summary" msgid="4303703603708332836">"<xliff:g id="GRANTED_PERMISSIONS">%1$d</xliff:g>/<xliff:g id="TOTAL_PERMISSIONS">%2$d</xliff:g> valittu"</string>
-    <!-- no translation found for a11y_aggregation_card_content_desc (6092767340989271591) -->
-    <skip />
+    <string name="a11y_aggregation_card_content_desc" msgid="6092767340989271591">"Tämän koontikortin datakategoria"</string>
 </resources>

@@ -410,11 +410,9 @@
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"可以同步这些数据的应用"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"可以同步这些数据的设备"</string>
     <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"继续前往设备偏好设置以启用"</string>
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"允许<xliff:g id="APP_NAME">%1$s</xliff:g>的全部权限"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"如需了解“<xliff:g id="APP_NAME">%1$s</xliff:g>”如何使用您的数据，请参阅其"<a href="%2$s">"《隐私权政策》"</a>"。"</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"“健康数据共享”可让您在多个数据源之间共享健康与健身数据，从而助您解锁更多分析洞见和体验，同时保障数据安全。"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"详细了解“健康数据共享”"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"展开"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"收起"</string>
@@ -1227,8 +1225,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"为了提高健康数据的安全性，请为此设备设置解锁图案、数字密码或混合密码"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"设置屏锁"</string>
     <string name="select_all" msgid="837499881590001166">"全选"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"选择"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"关联的应用将无法再通过“健康数据共享”读取相应数据"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"已选中"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"未选中"</string>
@@ -1332,10 +1329,8 @@
     <string name="devices_current_device" msgid="6388308185566619743">"当前设备"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"未知设备"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"设备信息"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"此设备收集的数据将存储在“健康数据共享”中，关联的应用将可访问这些数据"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"此设备不支持步数跟踪，但仍会有数据存储在“健康数据共享”中"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"此设备无法跟踪步数"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"允许写入"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"设备数据"</string>
@@ -1347,10 +1342,8 @@
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"此设备跟踪的步数现已存储在“健康数据共享”中，可供关联的应用访问"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"关闭"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"查看"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"步数现已存储在“健康数据共享”中"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"此设备跟踪的步数现已存储在“健康数据共享”中，可供关联的应用访问"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"您的健康类应用"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"您的健康数据"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"偏好设置"</string>
@@ -1363,10 +1356,8 @@
     <string name="empty_apps_section_link" msgid="5227373618435407625">"查看兼容应用"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"查看更多健康类应用"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"未连接"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"点击即可将此应用关联到“健康数据共享”"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"控制哪些设备可以将数据同步到“健康数据共享”"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"已启用"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"未启用"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"本机"</string>
@@ -1396,10 +1387,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"写入痤疮数据"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"读取脆甲数据"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"写入脆甲数据"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"读取口腔灼痛数据"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"写入口腔灼痛数据"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"读取发冷数据"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"写入发冷数据"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"读取脱水数据"</string>

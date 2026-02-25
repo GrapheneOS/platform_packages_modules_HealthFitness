@@ -33,6 +33,8 @@ public class PreferencesManager {
     public static final String AUTO_DELETE_DURATION_RECORDS_KEY =
             "auto_delete_duration_records_key";
 
+    public static final String APP_ICONS_RESIZE_COMPLETED_KEY = "app_icons_resize_completed_key";
+
     /**
      * Key to store timestamp of the last time any PHR <b>read medical resources</b> API is called.
      */
@@ -57,6 +59,18 @@ public class PreferencesManager {
     public void setRecordRetentionPeriodInDays(int days) {
         mPreferenceHelper.insertOrReplacePreference(
                 AUTO_DELETE_DURATION_RECORDS_KEY, String.valueOf(days));
+    }
+
+    /** Returns true if the one-time job to resize existing app icons has completed. */
+    public boolean getAppIconsResizeCompleted() {
+        String result = mPreferenceHelper.getPreference(APP_ICONS_RESIZE_COMPLETED_KEY);
+        return Boolean.parseBoolean(result);
+    }
+
+    /** Sets the completion status of the one-time job to resize existing app icons. */
+    public void setAppIconsResizeCompleted(boolean isCompleted) {
+        mPreferenceHelper.insertOrReplacePreference(
+                APP_ICONS_RESIZE_COMPLETED_KEY, String.valueOf(isCompleted));
     }
 
     /** Sets timestamp of the last time any PHR <b>read medical resources</b> API is called. */

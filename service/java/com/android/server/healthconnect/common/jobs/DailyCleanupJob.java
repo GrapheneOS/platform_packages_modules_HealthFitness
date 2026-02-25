@@ -18,6 +18,7 @@ package com.android.server.healthconnect.common.jobs;
 
 import android.util.Slog;
 
+import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.accesslog.ReadAccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper;
@@ -73,6 +74,11 @@ public class DailyCleanupJob {
             deleteStaleRecordEntries();
             deleteStaleChangeLogEntries();
             deleteStaleAccessLogEntries();
+            if (Flags.resizeLargeAppIcons() && !mPreferencesManager.getAppIconsResizeCompleted()) {
+                if (mAppInfoHelper.resizeLargeAppIcons()) {
+                    mPreferencesManager.setAppIconsResizeCompleted(true);
+                }
+            }
             // Update the recordTypesUsed by packages if required after the deletion of records.
             mAppInfoHelper.syncAppInfoRecordTypesUsed();
             // Re-sync activity dates table
