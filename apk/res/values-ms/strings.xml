@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Semua apl"</string>
     <string name="can_read" msgid="4568261079308309564">"Boleh membaca <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Boleh menulis <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"Apl yang tidak aktif"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Apl ini tidak boleh membaca atau menulis <xliff:g id="DATA_TYPE">%s</xliff:g> lagi tetapi masih menyimpan data dalam Health Connect"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"Apl tidak lagi dapat membaca atau menulis <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> dan tiada data <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> yang disimpan dalam Health Connect"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Data ini mengandungi maklumat seperti masa aktif, jenis senaman, pusingan, ulangan, sesi atau kuak renang."</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Data ini mengandungi maklumat seperti peringkat tidur dan sesi tidur."</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Lihat semua masukan"</string>
@@ -1336,8 +1339,7 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Data peranti"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Urus peranti"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Lihat data peranti"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Segerakkan kepada Health Connect"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Langkah dijejaki pada telefon akan dipaparkan dalam Health Connect"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Kini langkah yang dijejaki oleh peranti ini disimpan dalam Health Connect untuk diakses oleh apl disambungkan"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Ketepikan"</string>
@@ -1347,9 +1349,10 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Apl kesihatan anda"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Data kesihatan anda"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Pilihan"</string>
-    <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect membolehkan anda berkongsi data kesihatan dan kecergasan anda antara berbilang sumber data. Ciri ini membantu anda membuka kunci cerapan dan pengalaman sambil memastikan data anda selamat."</string>
+    <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect membolehkan anda berkongsi data kesihatan dan kecergasan anda antara berbilang sumber data. Hal ini membantu anda memperoleh cerapan dan pengalaman sambil memastikan data anda selamat."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Maklumat lanjut tentang Health Connect"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Data anda dan apl yang diberi akses"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"Apl yang menggunakan data anda baru-baru ini"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Semak peranti yang boleh mengakses data kesihatan"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Pasang apl yang berfungsi dengan Health Connect untuk melihat apl tersebut di sini"</string>

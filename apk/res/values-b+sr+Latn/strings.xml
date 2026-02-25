@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Sve aplikacije"</string>
     <string name="can_read" msgid="4568261079308309564">"Može da čita podatke tipa: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Može da upisuje podatke tipa: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"Neaktivne aplikacije"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Ove aplikacije više ne mogu da čitaju ni da upisuju podatke tipa <xliff:g id="DATA_TYPE">%s</xliff:g>, ali još uvek imaju podatke u Povezivanju zdravlja."</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"Aplikacije više ne mogu da čitaju ni upisuju podatke tipa <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>, a nikakvi podaci <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> nisu sačuvani u Povezivanju zdravlja"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Ovi podaci obuhvataju informacije poput vremena aktivnosti, tipa vežbanja, krugova, ponavljanja, sesija ili zaveslaja"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Ovi podaci obuhvataju informacije poput faza sna i sesija spavanja"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Prikaži sve stavke"</string>
@@ -1336,8 +1339,7 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Podaci o uređaju"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Upravljanje uređajem"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Prikaži podatke o uređaju"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Sinhronizuj sa Povezivanjem zdravlja"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Koraci koji se prate na telefonu prikazuju se u Povezivanju zdravlja"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Koraci koje prati ovaj uređaj sada se čuvaju u Povezivanju zdravlja kako bi im pristupale povezane aplikacije"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Odbaci"</string>
@@ -1349,7 +1351,8 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Podešavanja"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Povezivanje zdravlja vam omogućava da delite podatke o zdravlju i fitnesu između više izvora podataka. To vam pomaže da otkrijete uvide i doživljaje, a da podaci pritom ostanu bezbedni."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Više o Povezivanju zdravlja"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Podaci i koje aplikacije mogu da im pristupaju"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"Aplikacije koje su nedavno koristile vaše podatke"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Pregledajte uređaje koji mogu da pristupaju podacima o zdravlju"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Instalirajte aplikacije koje rade sa Povezivanjem zdravlja da biste ih videli ovde"</string>

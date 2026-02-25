@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"എല്ലാ ആപ്പുകളും"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> റീഡ് ചെയ്യാനാകും"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> റൈറ്റ് ചെയ്യാനാകും"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"നിഷ്‌ക്രിയമായ ആപ്പുകൾ"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"ഈ ആപ്പുകൾക്ക് ഇനി <xliff:g id="DATA_TYPE">%s</xliff:g> റീഡ് ചെയ്യാനോ റൈറ്റ് ചെയ്യാനോ കഴിയില്ല, എന്നാൽ അവയുടെ ഡാറ്റ ഇപ്പോഴും Health Connect-ൽ സംഭരിച്ചിട്ടുണ്ട്"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"ആപ്പുകൾക്ക് ഇനി <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> റീഡ് ചെയ്യാനോ റൈറ്റ് ചെയ്യാനോ കഴിയില്ല, Health Connect-ൽ <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> ഡാറ്റയൊന്നും സംഭരിക്കുകയുമില്ല"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"സജീവമായ സമയം, വ്യായാമ തരം, ലാപ്പുകൾ, ആവർത്തനങ്ങൾ, സെഷനുകൾ, നീന്തൽ സ്‌ട്രോക്കുകൾ എന്നിവ പോലുള്ള വിവരങ്ങൾ ഈ ഡാറ്റയിൽ ഉൾപ്പെടുന്നു"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"ഉറക്ക ഘട്ടങ്ങൾ, ഉറക്ക സെഷനുകൾ എന്നിവ പോലുള്ള വിവരങ്ങൾ ഈ ഡാറ്റയിൽ ഉൾപ്പെടുന്നു"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"എല്ലാ എൻട്രികളും കാണുക"</string>
@@ -1348,7 +1351,8 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"മുൻഗണനകൾ"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"ഒന്നിലധികം ഡാറ്റാ ഉറവിടങ്ങൾക്കിടയിൽ നിങ്ങളുടെ ആരോഗ്യവും ഫിറ്റ്‌നസും സംബന്ധിച്ച ഡാറ്റ പങ്കിടാൻ Health Connect അനുവദിക്കുന്നു. ഡാറ്റ സുരക്ഷിതമാക്കിക്കൊണ്ട് സ്ഥിതിവിവരക്കണക്കുകളും അനുഭവങ്ങളും അൺലോക്ക് ചെയ്യാൻ ഇത് നിങ്ങളെ സഹായിക്കുന്നു."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect-നെ കുറിച്ച് കൂടുതൽ"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"നിങ്ങളുടെ ഡാറ്റയും ഏതെല്ലാ ആപ്പുകൾക്ക് ഇത് ആക്‌സസ് ചെയ്യാനാകുമെന്നതും"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"അടുത്തിടെ നിങ്ങളുടെ ഡാറ്റ ഉപയോഗിച്ച ആപ്പുകൾ"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"ആരോഗ്യ ഡാറ്റ ആക്‌സസ് ചെയ്യാൻ കഴിയുന്ന ഉപകരണങ്ങൾ അവലോകനം ചെയ്യുക"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect-നൊപ്പം പ്രവർത്തിക്കുന്ന ആപ്പുകൾ ഇവിടെ കാണുന്നതിന് അവ ഇൻസ്‌റ്റാൾ ചെയ്യുക"</string>

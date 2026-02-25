@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"All apps"</string>
     <string name="can_read" msgid="4568261079308309564">"Can read <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Can write <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"Inactive apps"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"These apps can no longer read or write <xliff:g id="DATA_TYPE">%s</xliff:g>, but still have data stored in Health Connect"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"Apps can no longer read or write <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> and there is no <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> data stored in Health Connect"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"This data includes information like active time, exercise type, laps, repetitions, sessions, or swimming strokes"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"This data includes information like sleep stages and sleep sessions"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"See all entries"</string>
@@ -1348,7 +1351,8 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferences"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect lets you share your health and fitness data between multiple data sources. This helps you unlock insights and experiences while keeping your data secure."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"More about Health Connect"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Your data and which apps can access it"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"Apps that recently used your data"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Review devices that can access health data"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Install apps that work with Health Connect to see them here"</string>

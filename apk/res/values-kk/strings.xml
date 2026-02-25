@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Барлық қолданба"</string>
     <string name="can_read" msgid="4568261079308309564">"Оқи алады: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Жаза алады: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"Әрекетсіз қолданбалар"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Бұл қолданбалар бұдан былай <xliff:g id="DATA_TYPE">%s</xliff:g> деректерін оқи алмайды немесе жаза алмайды, бірақ деректерді бұрынғыша Health Connect қолданбасында сақтайды."</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"Қолданбалар бұдан былай <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> деректерін оқи не жаза алмайды, сондай-ақ <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> деректері Health Connect қолданбасында сақталмайды."</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Бұл деректерге белсенді уақыт, жаттығу түрі, айналымдар, қайталау саны, сеанстар немесе жүзу қимылдары сияқты ақпарат кіреді."</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Бұл деректерге ұйқы кезеңдері мен сеанстары сияқты ақпарат кіреді."</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Барлық деректі көру"</string>
@@ -410,11 +413,9 @@
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Бұл деректерді синхрондай алатын қолданбалар"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Бұл деректерді синхрондай алатын құрылғылар"</string>
     <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Қосу үшін құрылғы параметрлеріне өтіңіз."</string>
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасына барлық рұқсатты беру"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"<xliff:g id="APP_NAME">%1$s</xliff:g> қолданбасының деректеріңізді қалай пайдаланатынын оның "<a href="%2$s">"құпиялық саясатынан"</a>" қараңыз."</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect денсаулық және фитнес деректерін бірнеше дереккөз арасында бөлісуіңізге мүмкіндік береді. Сондай-ақ ол деректеріңізді қорғай отырып, статистика мен функциялар құлпын ашуға көмектеседі"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect туралы қосымша ақпарат"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"жаю"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"жию"</string>
@@ -1227,8 +1228,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Денсаулық деректерінің қауіпсіздігін арттыру үшін, осы құрылғыға PIN кодын, өрнек немесе құпия сөз орнатыңыз."</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Экран құлпын орнату"</string>
     <string name="select_all" msgid="837499881590001166">"Барлығын таңдау"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"таңдау"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Байланысқан қолданбалар бұдан былай Health Connect-тегі бұл деректерді оқи алмайды."</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Белгіленді"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Құсбелгі қойылмаған"</string>
@@ -1332,41 +1332,35 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Осы құрылғы"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Белгісіз құрылғы"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Құрылғы туралы ақпарат"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"Бұл құрылғы жинайтын деректер Health Connect-те сақталады және оларды байланысқан қолданбалар пайдаланады."</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"Бұл құрылғы қадамдарды бақылауға қолдау көрсетпесе де, Health Connect-те деректер сақталған"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Бұл құрылғы қадамдарды бақыламайды"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Жазуға рұқсаты бар"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Құрылғыдағы дерек"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Құрылғыны басқару"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Құрылғыдағы деректі көру"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Health Connect-пен синхрондау"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Телефон бақылаған қадамдар Health Connect-те пайда болады"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Байланысқан қолданбалар қол жеткізуі үшін, бұл құрылғы бақылаған қадамдар енді Health Connect-ке сақталады."</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Жабу"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Тексеру"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"Қадамдар енді Health Connect-те сақталады"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"Байланысқан қолданбалар пайдалана алуы үшін, бұл құрылғы бақылаған қадамдар енді Health Connect-ке сақталады."</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Денсаулық туралы қолданбаларыңыз"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Денсаулық туралы деректеріңіз"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Параметрлер"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect денсаулық және фитнес деректерін бірнеше дереккөз арасында бөлісуіңізге мүмкіндік береді. Сондай-ақ ол деректеріңізді қорғай отырып, статистика мен функциялар құлпын ашуға көмектеседі."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect туралы қосымша ақпарат"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Деректер және оларды пайдалана алатын қолданбалар"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"Жақында деректеріңізді пайдаланған қолданбалар"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Денсаулық деректерін пайдалана алатын құрылғыларды тексеру"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect-пен істейтін қолданбаларды орнатқанда, олар осы жерде шығып тұрады."</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Үйлесімді қолданбаларды көру"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Басқа денсаулық қолданбаларын көру"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Байланыспаған"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"Бұл қолданбаны Health Connect-пен байланыстыру үшін басыңыз."</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"Деректерді Health Connect-ке қай құрылғылардың синхрондай алатынын басқарыңыз."</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Қосылған"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Қосылмаған"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Осы телефон"</string>
@@ -1396,10 +1390,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Безеу деректерін жазу"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Тырнақтың сынғыштығы деректерін оқу"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Тырнақтың сынғыштығы деректерін жазу"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"Ауыз қуысындағы күйдіру синдромы деректерін оқу"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"Ауыз қуысындағы күйдіру синдромы деректерін жазу"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"Тоңып дірілдеу деректерін оқу"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Тоңып дірілдеу деректерін жазу"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Сусыздану деректерін оқу"</string>

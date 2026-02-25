@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Todos os apps"</string>
     <string name="can_read" msgid="4568261079308309564">"Podem ler os dados de: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Podem gravar os dados de: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"Apps inativos"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Esses apps não podem mais ler ou gravar <xliff:g id="DATA_TYPE">%s</xliff:g>, mas ainda têm dados armazenados na Conexão Saúde"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"Os apps não podem mais ler ou gravar dados de <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>, e não há dados de <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> armazenados na plataforma Conexão Saúde"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Esses dados incluem informações como tempo de atividade, tipo de exercício, voltas, repetições, sessões ou braçadas de natação"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Esses dados incluem informações como Estágios e sessões de sono"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Ver todas as entradas"</string>
@@ -412,7 +415,7 @@
     <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Acesse as preferências do dispositivo para ativar"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Autorizar todas as permissões do <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Acesse a "<a href="%2$s">"Política de Privacidade"</a>" do app <xliff:g id="APP_NAME">%1$s</xliff:g> para saber como ele usa seus dados."</string>
-    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Com a Conexão Saúde, você compartilha seus dados de saúde e condicionamento físico entre várias fontes de dados. Assim, você acessa insights e experiências sem deixar de lado a segurança das informações."</string>
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Com a Conexão Saúde, você compartilha seus dados de saúde e condicionamento físico com várias fontes de dados. Isso te dá acesso a insights e experiências sem deixar de lado a segurança das informações."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Mais informações sobre o app Conexão Saúde"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"abrir"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"fechar"</string>
@@ -1336,8 +1339,7 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Dados do dispositivo"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Gerenciar dispositivo"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Ver dados do dispositivo"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Sincronizar com a Conexão Saúde"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Os passos monitorados no seu celular vão aparecer na Conexão Saúde"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Os passos monitorados por este dispositivo agora estão armazenados na Conexão Saúde para acesso dos apps conectados"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Dispensar"</string>
@@ -1349,7 +1351,8 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferências"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Com a Conexão Saúde, você compartilha seus dados de saúde e condicionamento físico entre várias fontes de dados. Assim, você acessa insights e experiências sem deixar de lado a segurança das informações."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Mais informações sobre a Conexão Saúde"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Seus dados e quais apps podem acessá-los"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"Apps que usaram seus dados recentemente"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Analise dispositivos que podem acessar dados de saúde"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Instale apps compatíveis com a Conexão Saúde para que eles apareçam aqui"</string>

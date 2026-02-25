@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Todas as apps"</string>
     <string name="can_read" msgid="4568261079308309564">"Pode ler <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Pode escrever <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"Apps inativas"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Estas apps já não podem ler nem escrever dados de <xliff:g id="DATA_TYPE">%s</xliff:g>, mas ainda têm dados armazenados na Saúde Connect"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"As apps já não podem ler nem escrever dados de <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>, e não existem dados de <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> armazenados na Saúde Connect"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Estes dados incluem informações como o tempo de atividade, o tipo de exercício, as voltas, as repetições, as sessões ou as braçadas de natação"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Estes dados incluem informações como as fases do sono e as sessões de sono"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Ver todas as entradas"</string>
@@ -410,11 +413,9 @@
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Apps que podem sincronizar estes dados"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Dispositivos que podem sincronizar estes dados"</string>
     <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Continue para as preferências do dispositivo para ativar"</string>
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Permita todas as autorizações da app <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Saiba como a app <xliff:g id="APP_NAME">%1$s</xliff:g> usa os seus dados na respetiva "<a href="%2$s">"Política de Privacidade"</a>"."</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"A Saúde Connect permite-lhe partilhar os seus dados de saúde e fitness entre várias origens de dados. Isto ajuda a desbloquear estatísticas e experiências, mantendo os seus dados seguros."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Mais sobre a Saúde Connect"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"expandir"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"reduzir"</string>
@@ -1227,8 +1228,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Para uma segurança adicional para os seus dados de saúde, defina um PIN, um padrão ou uma palavra-passe para este dispositivo"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Definir bloqueio de ecrã"</string>
     <string name="select_all" msgid="837499881590001166">"Selecionar tudo"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"selecionar"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"As apps associadas deixam de poder ler estes dados da Saúde Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Selecionada"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Não selecionada"</string>
@@ -1332,41 +1332,35 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Dispositivo atual"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Dispositivo desconhecido"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Informações do dispositivo"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"Os dados recolhidos por este dispositivo são armazenados na Saúde Connect, onde as apps associadas acedem a estes"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"Este dispositivo não é compatível com a monitorização de passos, mas ainda tem dados armazenados na Saúde Connect"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Este dispositivo não monitoriza os passos"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Com autorização para escrever"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Dados do dispositivo"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Gerir dispositivo"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Ver dados do dispositivo"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Sincronizar com Saúde Connect"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Os passos monitorizados no telemóvel aparecem na Saúde Connect"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Agora, os passos monitorizados por este dispositivo são armazenados na Saúde Connect para acesso pelas apps associadas"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Ignorar"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Rever"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"Os passos estão agora na Saúde Connect"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"Agora, os passos monitorizados por este dispositivo são armazenados na Saúde Connect para acesso pelas apps associadas"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"As suas apps de saúde"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Os seus dados de saúde"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferências"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"A Saúde Connect permite-lhe partilhar os seus dados de saúde e fitness entre várias origens de dados. Isto ajuda a desbloquear estatísticas e experiências, mantendo os seus dados seguros."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Mais sobre a Saúde Connect"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Os seus dados e que apps têm acesso"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"Apps que usaram os seus dados recentemente"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Reveja os dispositivos que podem aceder aos dados de saúde"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Instale apps que funcionem com a Saúde Connect para as ver aqui"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Veja apps compatíveis"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Ver mais apps de saúde"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Não associada"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"Clique para associar esta app à Saúde Connect"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"Controle que dispositivos podem sincronizar dados com a Saúde Connect"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Ativados"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Não ativados"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Este telemóvel"</string>
@@ -1396,10 +1390,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Escrever acne"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Ler unhas quebradiças"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Escrever unhas quebradiças"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"Ler ardor bucal"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"Escrever ardor bucal"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"Ler arrepios"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Escrever arrepios"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Ler desidratação"</string>

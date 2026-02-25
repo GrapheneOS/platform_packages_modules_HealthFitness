@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Todas las apps"</string>
     <string name="can_read" msgid="4568261079308309564">"Pueden leer <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Pueden escribir <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"Apps inactivas"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Estas apps ya no tendrán acceso de lectura ni de escritura a datos de <xliff:g id="DATA_TYPE">%s</xliff:g>, pero seguirán teniendo datos almacenados en Health Connect"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"Las apps ya no pueden leer ni escribir datos de <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>, y no hay datos almacenados de <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> en Health Connect"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Estos datos incluyen información como el tiempo de actividad, el tipo de ejercicio, las vueltas, las repeticiones, las sesiones y las brazadas"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Estos datos incluyen información como las fases y las sesiones de sueño"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Ver todas las entradas"</string>
@@ -1336,8 +1339,7 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Datos del dispositivo"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Administrar dispositivo"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Ver datos del dispositivo"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Sincronizar con Health Connect"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Los pasos que se registren en tu teléfono aparecerán en Health Connect"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Los pasos que registra este dispositivo ahora se almacenan en Health Connect para que las apps conectadas puedan acceder a ellos"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Descartar"</string>
@@ -1349,7 +1351,8 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferencias"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect te permite compartir tus datos de salud y actividad física entre varias fuentes de datos. De esta manera, puedes acceder a información valiosa y experiencias sin dejar de proteger tus datos."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Más información sobre Health Connect"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Tus datos y las apps que pueden acceder a ellos"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"Apps que usaron tus datos recientemente"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Revisa los dispositivos que pueden acceder a los datos de salud"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Instala apps que funcionen con Health Connect para verlas aquí"</string>
