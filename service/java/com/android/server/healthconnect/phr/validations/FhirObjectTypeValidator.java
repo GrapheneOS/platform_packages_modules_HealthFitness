@@ -303,12 +303,7 @@ public class FhirObjectTypeValidator {
                     fieldIsPrimitiveType && fieldStartsWithUnderscore;
             // Primitive type extension arrays and value arrays are allowed to have
             // NULL values. See https://build.fhir.org/json.html#primitive.
-            boolean jsonNullAllowed;
-            if (Flags.phrAllowNullsInPrimitiveValueArrays()) {
-                jsonNullAllowed = fieldIsPrimitiveType && fieldConfig.getIsArray();
-            } else {
-                jsonNullAllowed = fieldIsPrimitiveTypeExtension && fieldConfig.getIsArray();
-            }
+            boolean jsonNullAllowed = fieldIsPrimitiveType && fieldConfig.getIsArray();
 
             for (Object object : objectsToValidate) {
                 if (object.equals(JSONObject.NULL) && jsonNullAllowed) {

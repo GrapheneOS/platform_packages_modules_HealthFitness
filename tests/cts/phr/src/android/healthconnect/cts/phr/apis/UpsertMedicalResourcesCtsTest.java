@@ -52,7 +52,6 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVacc
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getUpsertMedicalResourceRequest;
 
-import static com.android.healthfitness.flags.Flags.FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_COMPLEX_TYPE_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_EXTENSION_VALIDATION;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_FHIR_PRIMITIVE_TYPE_VALIDATION;
@@ -732,27 +731,6 @@ public class UpsertMedicalResourcesCtsTest {
     }
 
     @Test
-    @RequiresFlagsDisabled({FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS})
-    public void testUpsertMedicalResources_flagDisabled_primitiveTypeArrayWithNulls_throws()
-            throws Exception {
-        MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
-        HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
-        String allergyResource =
-                new AllergyBuilder().set("category", new JSONArray("[\"food\", null]")).toJson();
-        UpsertMedicalResourceRequest request =
-                new UpsertMedicalResourceRequest.Builder(
-                                dataSource.getId(), FHIR_VERSION_R4, allergyResource)
-                        .build();
-
-        mManager.upsertMedicalResources(
-                List.of(request), Executors.newSingleThreadExecutor(), receiver);
-
-        assertThat(receiver.assertAndGetException().getErrorCode())
-                .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);
-    }
-
-    @Test
-    @RequiresFlagsEnabled({FLAG_PHR_ALLOW_NULLS_IN_PRIMITIVE_VALUE_ARRAYS})
     public void testUpsertMedicalResources_primitiveTypeArrayWithNulls_succeeds() throws Exception {
         MedicalDataSource dataSource = mUtil.createDataSource(getCreateMedicalDataSourceRequest());
         HealthConnectReceiver<List<MedicalResource>> receiver = new HealthConnectReceiver<>();
