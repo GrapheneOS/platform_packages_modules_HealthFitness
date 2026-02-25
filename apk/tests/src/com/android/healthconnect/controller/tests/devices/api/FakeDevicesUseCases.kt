@@ -16,11 +16,13 @@
 package com.android.healthconnect.controller.tests.devices.api
 
 import android.hardware.Sensor
+import android.health.connect.DeviceDataSourceInfo
 import com.android.healthconnect.controller.devices.DeviceDataSource
 import com.android.healthconnect.controller.devices.api.ILoadDeviceDataSourcesUseCase
 import com.android.healthconnect.controller.devices.api.ILoadSensorListUseCase
 import com.android.healthconnect.controller.devices.api.ISetTrackingEnabledUseCase
 import com.android.healthconnect.controller.devices.api.SetTrackingEnabledUseCase
+import com.android.healthconnect.controller.matchmaking.api.IGetDeviceDataSourcesInfoUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeUseCase
 import kotlinx.coroutines.Dispatchers
 
@@ -73,5 +75,24 @@ class FakeSetTrackingEnabledUseCase :
     override fun reset() {
         super.reset()
         latestInput = null
+    }
+}
+
+class FakeGetDeviceDataSourcesInfoUseCase :
+    FakeUseCase<Unit, Set<DeviceDataSourceInfo>>(dispatcher = Dispatchers.Unconfined),
+    IGetDeviceDataSourcesInfoUseCase {
+    private var deviceSources: Set<DeviceDataSourceInfo> = emptySet()
+
+    fun updateSet(deviceSourcesSet: Set<DeviceDataSourceInfo>) {
+        deviceSources = deviceSourcesSet
+    }
+
+    override suspend fun successValue(input: Unit): Set<DeviceDataSourceInfo> {
+        return deviceSources
+    }
+
+    override fun reset() {
+        super.reset()
+        deviceSources = emptySet()
     }
 }

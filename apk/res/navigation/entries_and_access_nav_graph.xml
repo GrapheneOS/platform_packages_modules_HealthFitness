@@ -25,6 +25,8 @@
     <include app:graph="@navigation/combined_permissions_nav_graph" />
     <include app:graph="@navigation/connected_apps_nav_graph" />
     <include app:graph="@navigation/data_sources_nav_graph" />
+    <include app:graph="@navigation/current_device_management_nav_graph" />
+    <include app:graph="@navigation/device_data_provider_nav_graph" />
 
     <fragment
         android:id="@+id/entriesAndAccessFragment"
@@ -54,6 +56,12 @@
         <action
             android:id="@+id/action_entriesAndAccess_to_setUnitsFragment"
             app:destination="@id/setUnitsFragment" />
+        <action
+            android:id="@+id/action_entriesAndAccess_to_currentDeviceManagementFragment"
+            app:destination="@id/current_device_management_nav_graph" />
+        <action
+            android:id="@+id/action_entriesAndAccess_to_deviceDataProviderFragment"
+            app:destination="@id/device_data_provider_nav_graph" />
     </fragment>
 
     <fragment

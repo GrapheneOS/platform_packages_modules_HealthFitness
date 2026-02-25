@@ -17,6 +17,9 @@ package com.android.healthconnect.controller.tests.data.access
 
 import android.content.Context
 import android.os.Bundle
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
@@ -43,11 +46,16 @@ import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_PHONE_APP
+import com.android.healthconnect.controller.tests.utils.TEST_PHONE_APP_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_WATCH_SPN
+import com.android.healthconnect.controller.tests.utils.getDeviceDataSourcesInfo
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.logging.DataAccessElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -71,6 +79,7 @@ import org.mockito.kotlin.whenever
 class AccessFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val setFlagsRule = SetFlagsRule()
 
     @BindValue val viewModel: AccessViewModel = mock()
     private lateinit var navHostController: TestNavHostController
@@ -88,6 +97,108 @@ class AccessFragmentTest {
     @After
     fun tearDown() {
         reset(healthConnectLogger)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun whenSomeDeviceNameClicked_ddpEnabled_navigatesToProviderDeviceScreen() {
+        val notCurrentDevice = getDeviceDataSourcesInfo().first { !it.isCurrentDevice }
+        val map =
+            mapOf(
+                AppAccessState.Read to
+                    listOf(
+                        AppAccessMetadata(
+                            AppMetadata(TEST_WATCH_SPN, "Watch", null),
+                            deviceDataSourceInfo = notCurrentDevice,
+                        )
+                    ),
+                AppAccessState.Write to emptyList(),
+                AppAccessState.Inactive to emptyList(),
+            )
+
+        whenever(viewModel.appMetadataMap).then {
+            MutableLiveData<AccessScreenState>(WithData(map))
+        }
+
+        launchFragment<AccessFragment>(distanceBundle) {
+                navHostController.setGraph(R.navigation.entries_and_access_nav_graph)
+                navHostController.setCurrentDestination(R.id.entriesAndAccessFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText("Watch")).check(matches(isDisplayed()))
+                onView(withText("Watch")).perform(click())
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.deviceDataProviderFragment)
+            }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun whenCurrentDeviceNameClicked_ddpEnabled_navigatesToCurrentDeviceManagement() {
+        val deviceDataSourceInfo = getDeviceDataSourcesInfo().first { it.isCurrentDevice }
+        val map =
+            mapOf(
+                AppAccessState.Read to
+                    listOf(
+                        AppAccessMetadata(
+                            TEST_PHONE_APP,
+                            deviceDataSourceInfo = deviceDataSourceInfo,
+                        )
+                    ),
+                AppAccessState.Write to emptyList(),
+                AppAccessState.Inactive to emptyList(),
+            )
+
+        whenever(viewModel.appMetadataMap).then {
+            MutableLiveData<AccessScreenState>(WithData(map))
+        }
+
+        launchFragment<AccessFragment>(distanceBundle) {
+                navHostController.setGraph(R.navigation.entries_and_access_nav_graph)
+                navHostController.setCurrentDestination(R.id.entriesAndAccessFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText(TEST_PHONE_APP_NAME)).check(matches(isDisplayed()))
+                onView(withText(TEST_PHONE_APP_NAME)).perform(click())
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.currentDeviceManagementFragment)
+            }
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun whenSomeDeviceNameClicked_ddpDisabled_navigatesToFitnessApp() {
+        val deviceDataSourceInfo = getDeviceDataSourcesInfo().first { it.isCurrentDevice }
+        val map =
+            mapOf(
+                AppAccessState.Read to
+                    listOf(
+                        AppAccessMetadata(
+                            TEST_PHONE_APP,
+                            deviceDataSourceInfo = deviceDataSourceInfo,
+                        )
+                    ),
+                AppAccessState.Write to emptyList(),
+                AppAccessState.Inactive to emptyList(),
+            )
+
+        whenever(viewModel.appMetadataMap).then {
+            MutableLiveData<AccessScreenState>(WithData(map))
+        }
+
+        launchFragment<AccessFragment>(distanceBundle) {
+                navHostController.setGraph(R.navigation.entries_and_access_nav_graph)
+                navHostController.setCurrentDestination(R.id.entriesAndAccessFragment)
+                Navigation.setViewNavController(this.requireView(), navHostController)
+            }
+            .use {
+                onView(withText(TEST_PHONE_APP_NAME)).check(matches(isDisplayed()))
+                onView(withText(TEST_PHONE_APP_NAME)).perform(click())
+                assertThat(navHostController.currentDestination?.id)
+                    .isEqualTo(R.id.fitnessAppFragment)
+            }
     }
 
     @Test
@@ -232,10 +343,10 @@ class AccessFragmentTest {
         launchFragment<AccessFragment>(distanceBundle).use {
             onView(withText("Can read distance")).check(doesNotExist())
             onView(withText("Can write distance")).check(doesNotExist())
-            onView(withText("Inactive apps")).check(matches(isDisplayed()))
+            onView(withText("Inactive data sources")).check(matches(isDisplayed()))
             onView(
                     withText(
-                        "These apps can no longer read or write distance, but still have data stored in Health\u00A0Connect"
+                        "These data sources can no longer read or write distance, but still have data stored in Health\u00A0Connect"
                     )
                 )
                 .check(matches(isDisplayed()))

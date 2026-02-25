@@ -35,10 +35,12 @@ import android.health.connect.datatypes.Device.DEVICE_TYPE_SCALE
 import android.health.connect.datatypes.Device.DEVICE_TYPE_SMART_DISPLAY
 import android.health.connect.datatypes.Device.DEVICE_TYPE_UNKNOWN
 import android.health.connect.datatypes.Device.DEVICE_TYPE_WATCH
+import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.StepsRecord
 import android.health.connect.device.SyntheticPackageNameMatcher
 import androidx.appcompat.content.res.AppCompatResources
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.data.access.AppAccessMetadata
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
@@ -80,6 +82,40 @@ fun DeviceDataSourceInfo.asAppMetadata(context: Context) =
                 AppCompatResources.getDrawable(context, this.device.type.toDeviceIconRes())
             },
     )
+
+fun DeviceDataSourceInfo.asAppAccessMetadata(context: Context) =
+    AppAccessMetadata(appMetadata = this.asAppMetadata(context), deviceDataSourceInfo = this)
+
+fun DeviceDataSourceInfo.isDisabledByAllProviders() =
+    this.deviceDataProviderInfos.all { providerInfo ->
+        providerInfo.deviceDataTypeAdvertisements.none { typeAd -> typeAd.isUserEnabled }
+    }
+
+fun DeviceDataSourceInfo.shouldNavigateToCurrentDeviceManagement(): Boolean =
+    this.isCurrentDevice && this.deviceDataProviderInfos.size == 1 && this.findSystemInfo() != null
+
+fun Set<DeviceDataSourceInfo>.categorizeAndInsertToAppAccessState(
+    targetRecordTypes: List<Class<out Record>>,
+    contributingApps: List<AppMetadata>,
+    writeAppMetadataSet: MutableSet<AppAccessMetadata>,
+    inactiveAppMetadataSet: MutableSet<AppAccessMetadata>,
+    context: Context,
+) {
+    this.forEach {
+        if (it.canWriteAny(targetRecordTypes)) {
+            // Devices can WRITE a data type if they have a corresponding type
+            // advertisement which is USER_ENABLED
+            writeAppMetadataSet.add(it.asAppAccessMetadata(context))
+        } else if (it.hasContributedData(contributingApps)) {
+            // Devices that CANNOT WRITE but have contributed data are seen as
+            // INACTIVE
+            inactiveAppMetadataSet.add(it.asAppAccessMetadata(context))
+        }
+    }
+}
+
+fun DeviceDataProviderInfo.enabledAdsCount() =
+    this.deviceDataTypeAdvertisements.count { typeAd -> typeAd.isUserEnabled }
 
 fun Int.toDeviceIconAttr(): Int {
     return when (this) {
@@ -148,10 +184,16 @@ fun Int.toDeviceTypeString(context: Context): String {
     return context.getString(resId)
 }
 
-fun DeviceDataSourceInfo.isDisabledByAllProviders() =
-    this.deviceDataProviderInfos.all { providerInfo ->
-        providerInfo.deviceDataTypeAdvertisements.none { typeAd -> typeAd.isUserEnabled }
+private fun DeviceDataSourceInfo.canWriteAny(recordTypes: List<Class<out Record>>): Boolean {
+    return this.deviceDataProviderInfos.any { providerInfo ->
+        providerInfo.deviceDataTypeAdvertisements.any { typeAd ->
+            recordTypes.contains(typeAd.dataType) && typeAd.isUserEnabled
+        }
     }
+}
 
-fun DeviceDataProviderInfo.enabledAdsCount() =
-    this.deviceDataTypeAdvertisements.count { typeAd -> typeAd.isUserEnabled }
+private fun DeviceDataSourceInfo.hasContributedData(contributingApps: List<AppMetadata>): Boolean {
+    return contributingApps.any { contributor ->
+        contributor.packageName == this.deviceDataOrigin.packageName
+    }
+}
