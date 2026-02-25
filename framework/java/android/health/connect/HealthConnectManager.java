@@ -885,24 +885,7 @@ public class HealthConnectManager {
             mService.insertRecords(
                     mContext.getAttributionSource(),
                     new RecordsParcel(recordInternals),
-                    new IInsertRecordsResponseCallback.Stub() {
-                        @Override
-                        public void onResult(InsertRecordsResponseParcel parcel) {
-                            Binder.clearCallingIdentity();
-                            executor.execute(
-                                    () ->
-                                            callback.onResult(
-                                                    new InsertRecordsResponse(
-                                                            toExternalRecordsWithUuids(
-                                                                    recordInternals,
-                                                                    parcel.getUids()))));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new InsertRecordsResponseCallback(recordInternals, executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -1129,17 +1112,7 @@ public class HealthConnectManager {
             mService.deleteUsingFilters(
                     mContext.getAttributionSource(),
                     new DeleteUsingFiltersRequestParcel(request),
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            executor.execute(() -> callback.onResult(null));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new EmptyResponseCallback(executor, callback));
         } catch (RemoteException remoteException) {
             remoteException.rethrowFromSystemServer();
         }
@@ -1172,17 +1145,7 @@ public class HealthConnectManager {
                     mContext.getAttributionSource(),
                     new DeleteUsingFiltersRequestParcel(
                             new RecordIdFiltersParcel(recordIds), mContext.getPackageName()),
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            executor.execute(() -> callback.onResult(null));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new EmptyResponseCallback(executor, callback));
         } catch (RemoteException remoteException) {
             remoteException.rethrowFromSystemServer();
         }
@@ -1220,17 +1183,7 @@ public class HealthConnectManager {
                                     .addRecordType(recordType)
                                     .setTimeRangeFilter(timeRangeFilter)
                                     .build()),
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            executor.execute(() -> callback.onResult(null));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new EmptyResponseCallback(executor, callback));
         } catch (RemoteException remoteException) {
             remoteException.rethrowFromSystemServer();
         }
@@ -1578,7 +1531,8 @@ public class HealthConnectManager {
             mService.readRecords(
                     mContext.getAttributionSource(),
                     request.toReadRecordsRequestParcel(),
-                    getReadCallback(executor, callback));
+                    new ReadRecordsResponseCallback<>(
+                            mInternalExternalRecordConverter, executor, callback));
         } catch (RemoteException remoteException) {
             remoteException.rethrowFromSystemServer();
         }
@@ -2510,18 +2464,96 @@ public class HealthConnectManager {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    private <T extends Record> IReadRecordsResponseCallback.Stub getReadCallback(
-            @NonNull Executor executor,
-            @NonNull OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
-        return new IReadRecordsResponseCallback.Stub() {
-            @Override
-            public void onResult(ReadRecordsResponseParcel parcel) {
+    private static class InsertRecordsResponseCallback extends IInsertRecordsResponseCallback.Stub {
+        @Nullable private List<RecordInternal<?>> mRecordInternals;
+        @Nullable private Executor mExecutor;
+        @Nullable private OutcomeReceiver<InsertRecordsResponse, HealthConnectException> mCallback;
+
+        InsertRecordsResponseCallback(
+                List<RecordInternal<?>> recordInternals,
+                Executor executor,
+                OutcomeReceiver<InsertRecordsResponse, HealthConnectException> callback) {
+            mRecordInternals = recordInternals;
+            mExecutor = executor;
+            mCallback = callback;
+        }
+
+        @Override
+        public void onResult(InsertRecordsResponseParcel parcel) {
+            List<RecordInternal<?>> recordInternals = mRecordInternals;
+            Executor executor = mExecutor;
+            OutcomeReceiver<InsertRecordsResponse, HealthConnectException> callback = mCallback;
+
+            // The binder proxy in the system server that calls the InsertRecordsResponseCallback
+            // can keep holding a reference to the callback and contained objects till GC is run in
+            // the system server, hence delaying the GC of the contained objects in the client
+            // process.
+            // Setting variables to null here will allow GC in the client app to re-claim the memory
+            // before GC has run in the system server.
+            // See go/binder-lingering-allocation-guide for further details.
+            mRecordInternals = null;
+            mExecutor = null;
+            mCallback = null;
+
+            if (executor != null && callback != null && recordInternals != null) {
+                Binder.clearCallingIdentity();
+                executor.execute(
+                        () ->
+                                callback.onResult(
+                                        new InsertRecordsResponse(
+                                                toExternalRecordsWithUuids(
+                                                        recordInternals, parcel.getUids()))));
+            }
+        }
+
+        @Override
+        public void onError(HealthConnectExceptionParcel exception) {
+            Executor executor = mExecutor;
+            OutcomeReceiver<InsertRecordsResponse, HealthConnectException> callback = mCallback;
+
+            mRecordInternals = null;
+            mExecutor = null;
+            mCallback = null;
+
+            if (executor != null && callback != null) {
+                returnError(executor, exception, callback);
+            }
+        }
+    }
+
+    private static class ReadRecordsResponseCallback<T extends Record>
+            extends IReadRecordsResponseCallback.Stub {
+        @Nullable private InternalExternalRecordConverter mInternalExternalRecordConverter;
+        @Nullable private Executor mExecutor;
+        @Nullable private OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> mCallback;
+
+        ReadRecordsResponseCallback(
+                InternalExternalRecordConverter internalExternalRecordConverter,
+                Executor executor,
+                OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
+            mInternalExternalRecordConverter = internalExternalRecordConverter;
+            mExecutor = executor;
+            mCallback = callback;
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public void onResult(ReadRecordsResponseParcel parcel) {
+            InternalExternalRecordConverter internalExternalRecordConverter =
+                    mInternalExternalRecordConverter;
+            Executor executor = mExecutor;
+            OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback = mCallback;
+
+            mInternalExternalRecordConverter = null;
+            mExecutor = null;
+            mCallback = null;
+
+            if (executor != null && callback != null && internalExternalRecordConverter != null) {
                 Binder.clearCallingIdentity();
                 try {
                     List<T> externalRecords =
                             (List<T>)
-                                    mInternalExternalRecordConverter.getExternalRecords(
+                                    internalExternalRecordConverter.getExternalRecords(
                                             parcel.getRecordsParcel().getRecords());
                     executor.execute(
                             () ->
@@ -2539,15 +2571,62 @@ public class HealthConnectManager {
                             callback);
                 }
             }
+        }
 
-            @Override
-            public void onError(HealthConnectExceptionParcel exception) {
+        @Override
+        public void onError(HealthConnectExceptionParcel exception) {
+            Executor executor = mExecutor;
+            OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback = mCallback;
+
+            mInternalExternalRecordConverter = null;
+            mExecutor = null;
+            mCallback = null;
+
+            if (executor != null && callback != null) {
                 returnError(executor, exception, callback);
             }
-        };
+        }
     }
 
-    private List<Record> toExternalRecordsWithUuids(
+    private static class EmptyResponseCallback extends IEmptyResponseCallback.Stub {
+        @Nullable private Executor mExecutor;
+        @Nullable private OutcomeReceiver<Void, HealthConnectException> mCallback;
+
+        EmptyResponseCallback(
+                Executor executor, OutcomeReceiver<Void, HealthConnectException> callback) {
+            mExecutor = executor;
+            mCallback = callback;
+        }
+
+        @Override
+        public void onResult() {
+            Executor executor = mExecutor;
+            OutcomeReceiver<Void, HealthConnectException> callback = mCallback;
+
+            mExecutor = null;
+            mCallback = null;
+
+            if (executor != null && callback != null) {
+                Binder.clearCallingIdentity();
+                executor.execute(() -> callback.onResult(null));
+            }
+        }
+
+        @Override
+        public void onError(HealthConnectExceptionParcel exception) {
+            Executor executor = mExecutor;
+            OutcomeReceiver<Void, HealthConnectException> callback = mCallback;
+
+            mExecutor = null;
+            mCallback = null;
+
+            if (executor != null && callback != null) {
+                returnError(executor, exception, callback);
+            }
+        }
+    }
+
+    private static List<Record> toExternalRecordsWithUuids(
             List<RecordInternal<?>> recordInternals, List<String> uuids) {
         int i = 0;
         List<Record> records = new ArrayList<>();
@@ -2566,7 +2645,7 @@ public class HealthConnectManager {
         executor.execute(() -> callback.onResult(result));
     }
 
-    private void returnError(
+    private static void returnError(
             Executor executor,
             HealthConnectExceptionParcel exception,
             OutcomeReceiver<?, HealthConnectException> callback) {
@@ -3804,7 +3883,7 @@ public class HealthConnectManager {
      * @return An {@link Intent} configured to show the flow for discovering and managing write
      *     permissions for matching data origins. This intent must be launched using {@link
      *     android.app.Activity#startActivityForResult(Intent, int)}.
-     * @see #isMatchmakingPossible(MatchmakingRequest, Executor, OutcomeReceiver)
+     * @see #isMatchmakingPossieble(MatchmakingRequest, Executor, OutcomeReceiver)
      */
     @FlaggedApi(FLAG_MATCHMAKING)
     @NonNull
@@ -4172,24 +4251,7 @@ public class HealthConnectManager {
                     mContext.getAttributionSource(),
                     deviceId,
                     new RecordsParcel(recordInternals),
-                    new IInsertRecordsResponseCallback.Stub() {
-                        @Override
-                        public void onResult(InsertRecordsResponseParcel parcel) {
-                            Binder.clearCallingIdentity();
-                            executor.execute(
-                                    () ->
-                                            callback.onResult(
-                                                    new InsertRecordsResponse(
-                                                            toExternalRecordsWithUuids(
-                                                                    recordInternals,
-                                                                    parcel.getUids()))));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new InsertRecordsResponseCallback(recordInternals, executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -4311,7 +4373,8 @@ public class HealthConnectManager {
             mService.readDeviceRecords(
                     mContext.getAttributionSource(),
                     request.toReadRecordsRequestParcel(),
-                    getReadCallback(executor, callback));
+                    new ReadRecordsResponseCallback<>(
+                            mInternalExternalRecordConverter, executor, callback));
         } catch (RemoteException remoteException) {
             remoteException.rethrowFromSystemServer();
         }
@@ -4357,20 +4420,7 @@ public class HealthConnectManager {
                                     .addRecordType(recordType)
                                     .setTimeRangeFilter(timeRangeFilter)
                                     .build()),
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(null));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            Binder.clearCallingIdentity();
-                            executor.execute(
-                                    () -> callback.onError(exception.getHealthConnectException()));
-                        }
-                    });
+                    new EmptyResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -4421,20 +4471,7 @@ public class HealthConnectManager {
                     mContext.getAttributionSource(),
                     deviceId,
                     parcel,
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(null));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            Binder.clearCallingIdentity();
-                            executor.execute(
-                                    () -> callback.onError(exception.getHealthConnectException()));
-                        }
-                    });
+                    new EmptyResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
