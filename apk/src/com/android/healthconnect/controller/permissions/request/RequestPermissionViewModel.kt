@@ -109,7 +109,7 @@ constructor(
         get() = _healthPermissionsList
 
     private val _expandedDataCategoryPreferenceKeys =
-        savedStateHandle.getLiveData<Set<String>>(EXPANDED_CATEGORY_PREFERENCE_KEYS, emptySet())
+        savedStateHandle.getLiveData<Set<String>>(EXPANDED_CATEGORY_PREFERENCE_KEYS)
 
     val expandedDataCategoryPreferenceKeys: LiveData<Set<String>>
         get() = _expandedDataCategoryPreferenceKeys
