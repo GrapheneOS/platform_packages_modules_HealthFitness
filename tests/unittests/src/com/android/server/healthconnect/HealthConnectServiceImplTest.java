@@ -435,6 +435,7 @@ public class HealthConnectServiceImplTest {
             HEALTH_CONNECT_PHR_API_INVOKED__MEDICAL_RESOURCE_TYPE__MEDICAL_RESOURCE_TYPE_VACCINES;
     private static final int ALLERGIES_INVOKED =
             HEALTH_CONNECT_PHR_API_INVOKED__MEDICAL_RESOURCE_TYPE__MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
+    private static final UserHandle BACKGROUND_USER = UserHandle.of(11);
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
@@ -6481,6 +6482,45 @@ public class HealthConnectServiceImplTest {
         assertThat(headacheSource.getDataType()).isEqualTo(SymptomRecord.class);
         assertThat(headacheSource.isAvailable()).isTrue();
         assertThat(headacheSource.isUserEnabled()).isFalse();
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+    })
+    public void enforceIsForegroundUser_privilegedCaller_bypassEnabled_success() {
+        when(mServiceContext.checkCallingPermission(
+                        eq(android.Manifest.permission.INTERACT_ACROSS_USERS_FULL)))
+                .thenReturn(PERMISSION_GRANTED);
+        mHealthConnectService.enforceIsForegroundUser(BACKGROUND_USER);
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+    })
+    public void enforceIsForegroundUser_normalApp_differentUser_throwsSecurityException() {
+        when(mServiceContext.checkCallingPermission(
+                        eq(android.Manifest.permission.INTERACT_ACROSS_USERS_FULL)))
+                .thenReturn(PERMISSION_DENIED);
+
+        assertThrows(
+                IllegalStateException.class,
+                () -> mHealthConnectService.enforceIsForegroundUser(BACKGROUND_USER));
+    }
+
+    @Test
+    @EnableFlags({
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB,
+    })
+    public void enforceIsForegroundUser_standardUser_sameProfile_success() {
+        when(mServiceContext.checkCallingPermission(
+                        eq(android.Manifest.permission.INTERACT_ACROSS_USERS_FULL)))
+                .thenReturn(PERMISSION_DENIED);
+        mHealthConnectService.enforceIsForegroundUser(mUserHandle);
     }
 
     private void advertiseStepsDeviceDataSource(String deviceId, Device device)

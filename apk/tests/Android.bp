@@ -159,6 +159,7 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/data/**/*.kt",
         "src/com/android/healthconnect/controller/selectabledeletion/**/*.kt",
         "src/com/android/healthconnect/controller/selectabledeletion/**/*.java",
+        "src/com/android/healthconnect/controller/tests/devices/api/FakeDevicesUseCases.kt",
     ],
     visibility: ["//visibility:private"],
 }
@@ -265,6 +266,7 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/recentaccess/**/*.java",
         "src/com/android/healthconnect/controller/tests/recentaccess/**/*.kt",
         "src/com/android/healthconnect/controller/tests/devices/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/newDevices/**/*.kt",
     ],
     visibility: ["//visibility:private"],
 }
@@ -347,12 +349,13 @@ android_test {
 filegroup {
     name: "permission-tests-srcs",
     srcs: [
-        "src/com/android/healthconnect/controller/tests/matchmaking/*.java",
-        "src/com/android/healthconnect/controller/tests/matchmaking/*.kt",
+        "src/com/android/healthconnect/controller/tests/matchmaking/**/*.java",
+        "src/com/android/healthconnect/controller/tests/matchmaking/**/*.kt",
         "src/com/android/healthconnect/controller/tests/permissions/**/*.java",
         "src/com/android/healthconnect/controller/tests/permissions/**/*.kt",
         "src/com/android/healthconnect/controller/tests/shared/**/*.java",
         "src/com/android/healthconnect/controller/tests/shared/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/devices/api/FakeDevicesUseCases.kt",
     ],
     exclude_srcs: [
         ":wear-ui-tests-srcs",

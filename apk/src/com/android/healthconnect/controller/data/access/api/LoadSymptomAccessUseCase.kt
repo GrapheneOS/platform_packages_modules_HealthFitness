@@ -15,9 +15,13 @@
  */
 package com.android.healthconnect.controller.data.access.api
 
+import android.content.Context
+import android.health.connect.DeviceDataSourceInfo
 import android.health.connect.HealthDataCategory
+import android.health.connect.datatypes.SymptomRecord
 import com.android.healthconnect.controller.data.access.AppAccessMetadata
 import com.android.healthconnect.controller.data.access.AppAccessState
+import com.android.healthconnect.controller.matchmaking.api.IGetDeviceDataSourcesInfoUseCase
 import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermission
@@ -30,7 +34,10 @@ import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.utils.categorizeAndInsertToAppAccessState
 import com.android.healthconnect.controller.utils.isDevicePackage
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -47,8 +54,10 @@ class LoadSymptomAccessUseCase
 constructor(
     private val loadGrantedHealthPermissionsUseCase: IGetGrantedHealthPermissionsUseCase,
     private val loadSymptomContributorAppsUseCase: ILoadSymptomContributorAppsUseCase,
+    private val loadDeviceDataSourcesInfosUseCase: IGetDeviceDataSourcesInfoUseCase,
     private val healthPermissionReader: HealthPermissionReader,
     private val appInfoReader: AppInfoReader,
+    @param:ApplicationContext private val context: Context,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) :
     BaseUseCase<Unit, Map<AppAccessState, List<AppAccessMetadata>>>(dispatcher),
@@ -64,7 +73,7 @@ constructor(
                 is UseCaseResults.Success -> {
                     contributingAppsResult.data
                 }
-                // TODO should we propagate error in this case?
+                // TODO(b/486156654): Think of and implement alternative error handling
                 else -> emptyList<AppMetadata>()
             }
 
@@ -110,10 +119,8 @@ constructor(
 
         contributingApps.forEach { app ->
             if (
-                // Permissions are irrelevant to the device data provider package.
-                // However, devices are seen as inactive if all their providers have disabled all of
-                // their data types.
-                // TODO(b/478259450): Check disabled devices
+                // Apps that are inactive: can no longer READ or WRITE, but still have data in
+                // Health Connect.
                 !readOrWriteAppPackageNameSet.contains(app.packageName) &&
                     !isDevicePackage(app.packageName)
             ) {
@@ -124,11 +131,33 @@ constructor(
             }
         }
 
+        if (deviceDataProvidersApi()) {
+            val deviceSourcesInfo = loadDeviceDataSourcesInfo()
+
+            deviceSourcesInfo.categorizeAndInsertToAppAccessState(
+                targetRecordTypes = listOf(SymptomRecord::class.java),
+                contributingApps = contributingApps,
+                writeAppMetadataSet = writeAppMetadataSet,
+                inactiveAppMetadataSet = inactiveAppMetadataSet,
+                context = context,
+            )
+        }
+
         return mapOf(
             AppAccessState.Read to alphabeticallySortedMetadataList(readAppMetadataSet),
             AppAccessState.Write to alphabeticallySortedMetadataList(writeAppMetadataSet),
             AppAccessState.Inactive to alphabeticallySortedMetadataList(inactiveAppMetadataSet),
         )
+    }
+
+    private suspend fun loadDeviceDataSourcesInfo(): Set<DeviceDataSourceInfo> {
+        val deviceSources = loadDeviceDataSourcesInfosUseCase.invoke(Unit)
+        return if (deviceSources is UseCaseResults.Success) {
+            deviceSources.data
+        } else {
+            // TODO(b/486156654): Think of and implement alternative error handling
+            emptySet()
+        }
     }
 
     private fun alphabeticallySortedMetadataList(

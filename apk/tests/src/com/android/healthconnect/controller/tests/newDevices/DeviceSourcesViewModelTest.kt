@@ -18,7 +18,6 @@ package com.android.healthconnect.controller.tests.newDevices
 
 import android.health.connect.DeviceDataProviderInfo
 import android.health.connect.DeviceDataSourceInfo
-import android.health.connect.HealthConnectException
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Device
 import android.health.connect.datatypes.HeartRateRecord
@@ -27,19 +26,20 @@ import android.health.connect.device.DeviceDataTypeAdvertisement
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.healthconnect.controller.matchmaking.api.GetDeviceDataSourcesInfoUseCase
 import com.android.healthconnect.controller.matchmaking.api.SetTrackingEnabledUseCase
 import com.android.healthconnect.controller.newDevices.DeviceSourcesViewModel
 import com.android.healthconnect.controller.newDevices.DeviceSourcesViewModel.DeviceSourcesState
 import com.android.healthconnect.controller.newDevices.DeviceSourcesViewModel.SelectedDeviceSourceInfoState
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.devices.api.FakeGetDeviceDataSourcesInfoUseCase
 import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_PHONE_SPN
 import com.android.healthconnect.controller.tests.utils.TEST_WATCH_SPN
 import com.android.healthconnect.controller.tests.utils.getDeviceDataSourcesInfo
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -54,10 +54,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
 
 @ExperimentalCoroutinesApi
 @HiltAndroidTest
@@ -65,10 +62,13 @@ import org.mockito.kotlin.whenever
 @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
 class DeviceSourcesViewModelTest {
 
-    @get:Rule(order = 0) val instantTaskExecutorRule = InstantTaskExecutorRule()
-    @get:Rule(order = 1) val setFlagsRule = SetFlagsRule()
+    @get:Rule(order = 0) val hiltRule = HiltAndroidRule(this)
+    @get:Rule(order = 1) val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule(order = 2) val setFlagsRule = SetFlagsRule()
+    @get:Rule(order = 3) val fakeUseCaseRule = FakeUseCaseRule()
 
-    private val getDeviceDataSourcesInfoUseCase: GetDeviceDataSourcesInfoUseCase = mock()
+    private val fakeLoadDeviceDataSourcesInfosUseCase =
+        fakeUseCaseRule.watch(FakeGetDeviceDataSourcesInfoUseCase())
     private val setTrackingEnabledUseCase: SetTrackingEnabledUseCase = mock()
 
     private lateinit var viewModel: DeviceSourcesViewModel
@@ -227,53 +227,48 @@ class DeviceSourcesViewModelTest {
         )
     }
 
-    private suspend fun stubGetDeviceDataSourcesInfoUseCase(
-        expectedInfos: Set<DeviceDataSourceInfo>
-    ) {
-        whenever(getDeviceDataSourcesInfoUseCase.invoke(any()))
-            .doReturn(UseCaseResults.Success(expectedInfos))
+    private fun stubGetDeviceDataSourcesInfoUseCase(expectedInfos: Set<DeviceDataSourceInfo>) {
+        fakeLoadDeviceDataSourcesInfosUseCase.updateSet(expectedInfos)
     }
 
-    private suspend fun TestScope.loadSuccessfulDeviceSourcesState(
+    private fun TestScope.loadSuccessfulDeviceSourcesState(
         expectedInfos: Set<DeviceDataSourceInfo> = setOf()
     ): DeviceSourcesState {
         stubGetDeviceDataSourcesInfoUseCase(expectedInfos)
 
         viewModel =
-            DeviceSourcesViewModel(getDeviceDataSourcesInfoUseCase, setTrackingEnabledUseCase)
+            DeviceSourcesViewModel(fakeLoadDeviceDataSourcesInfosUseCase, setTrackingEnabledUseCase)
         advanceUntilIdle()
 
         return getDeviceSourcesState()
     }
 
-    private suspend fun TestScope.loadFailedDeviceSourcesState(): DeviceSourcesState {
-        whenever(getDeviceDataSourcesInfoUseCase.invoke(any()))
-            .doReturn(UseCaseResults.Failed(HealthConnectException(1)))
+    private fun TestScope.loadFailedDeviceSourcesState(): DeviceSourcesState {
+        fakeLoadDeviceDataSourcesInfosUseCase.setForceFail(true)
         viewModel =
-            DeviceSourcesViewModel(getDeviceDataSourcesInfoUseCase, setTrackingEnabledUseCase)
+            DeviceSourcesViewModel(fakeLoadDeviceDataSourcesInfosUseCase, setTrackingEnabledUseCase)
         advanceUntilIdle()
 
         return getDeviceSourcesState()
     }
 
-    private suspend fun TestScope.loadSelectedDeviceSourceInfoState(
+    private fun TestScope.loadSelectedDeviceSourceInfoState(
         expectedInfos: Set<DeviceDataSourceInfo> = setOf(),
         selectedPackageName: String = "",
     ): SelectedDeviceSourceInfoState {
         stubGetDeviceDataSourcesInfoUseCase(expectedInfos)
 
         viewModel =
-            DeviceSourcesViewModel(getDeviceDataSourcesInfoUseCase, setTrackingEnabledUseCase)
+            DeviceSourcesViewModel(fakeLoadDeviceDataSourcesInfosUseCase, setTrackingEnabledUseCase)
         advanceUntilIdle()
 
         return getSelectedDeviceSourceState(selectedPackageName)
     }
 
-    private suspend fun TestScope.loadFailedSelectedDeviceState(): SelectedDeviceSourceInfoState {
-        whenever(getDeviceDataSourcesInfoUseCase.invoke(any()))
-            .doReturn(UseCaseResults.Failed(HealthConnectException(1)))
+    private fun TestScope.loadFailedSelectedDeviceState(): SelectedDeviceSourceInfoState {
+        fakeLoadDeviceDataSourcesInfosUseCase.setForceFail(true)
         viewModel =
-            DeviceSourcesViewModel(getDeviceDataSourcesInfoUseCase, setTrackingEnabledUseCase)
+            DeviceSourcesViewModel(fakeLoadDeviceDataSourcesInfosUseCase, setTrackingEnabledUseCase)
         advanceUntilIdle()
 
         return getSelectedDeviceSourceState()
@@ -309,14 +304,14 @@ class DeviceSourcesViewModelTest {
         return actualState.last()
     }
 
-    private suspend fun TestScope.loadIsCurrentDeviceSynced(
+    private fun TestScope.loadIsCurrentDeviceSynced(
         expectedInfos: Set<DeviceDataSourceInfo> = setOf(),
         selectedPackageName: String = "",
     ): Boolean {
         stubGetDeviceDataSourcesInfoUseCase(expectedInfos)
 
         viewModel =
-            DeviceSourcesViewModel(getDeviceDataSourcesInfoUseCase, setTrackingEnabledUseCase)
+            DeviceSourcesViewModel(fakeLoadDeviceDataSourcesInfosUseCase, setTrackingEnabledUseCase)
         advanceUntilIdle()
 
         val actualState = mutableListOf<Boolean>()

@@ -16,6 +16,7 @@
 package com.android.healthconnect.controller.data.access
 
 import android.content.Intent.EXTRA_PACKAGE_NAME
+import android.health.connect.DeviceDataSourceInfo
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
@@ -43,6 +44,8 @@ import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setTitle
+import com.android.healthconnect.controller.utils.shouldNavigateToCurrentDeviceManagement
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -221,10 +224,32 @@ class AccessFragment : Hilt_AccessFragment() {
         return HealthAppPreference(requireContext(), appAccessMetadata.appMetadata).also {
             it.logName = DataAccessElement.DATA_ACCESS_APP_BUTTON
             it.setOnPreferenceClickListener {
-                navigateToAppInfoScreen(appAccessMetadata)
+                if (deviceDataProvidersApi() && appAccessMetadata.deviceDataSourceInfo != null) {
+                    navigateToDeviceScreen(appAccessMetadata.deviceDataSourceInfo)
+                } else {
+                    navigateToAppInfoScreen(appAccessMetadata)
+                }
                 true
             }
         }
+    }
+
+    private fun navigateToDeviceScreen(deviceSourceInfo: DeviceDataSourceInfo) {
+        val actionId =
+            if (deviceSourceInfo.shouldNavigateToCurrentDeviceManagement())
+                R.id.action_entriesAndAccess_to_currentDeviceManagementFragment
+            else {
+                R.id.action_entriesAndAccess_to_deviceDataProviderFragment
+            }
+
+        findNavController()
+            .navigateSafe(
+                R.id.entriesAndAccessFragment,
+                actionId,
+                Bundle().apply {
+                    putString(EXTRA_PACKAGE_NAME, deviceSourceInfo.deviceDataOrigin.packageName)
+                },
+            )
     }
 
     private fun navigateToAppInfoScreen(appAccessMetadata: AppAccessMetadata) {

@@ -345,7 +345,7 @@ class ConnectedAppsFragmentTest {
 
         launchFragment<ConnectedAppsFragment>(Bundle()).use {
             onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-            onView(withText(R.string.inactive_apps)).check(matches(isDisplayed()))
+            onView(withText(R.string.inactive_apps_section_title)).check(matches(isDisplayed()))
             verify(healthConnectLogger).logImpression(AppPermissionsElement.INACTIVE_APP_BUTTON)
             verify(healthConnectLogger)
                 .logImpression(AppPermissionsElement.INACTIVE_APP_DELETE_BUTTON)
@@ -473,7 +473,7 @@ class ConnectedAppsFragmentTest {
 
         launchFragment<ConnectedAppsFragment>(Bundle()).use {
             onView(withText(TEST_APP_NAME)).check(matches(isDisplayed()))
-            onView(withText(R.string.inactive_apps)).check(matches(isDisplayed()))
+            onView(withText(R.string.inactive_apps_section_title)).check(matches(isDisplayed()))
             onView(withTagValue(`is`("Delete button inactive app"))).perform(click())
 
             onView(withText("Permanently delete all $TEST_APP_NAME data?"))

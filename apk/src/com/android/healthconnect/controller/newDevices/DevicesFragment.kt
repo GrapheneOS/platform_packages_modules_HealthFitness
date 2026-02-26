@@ -30,9 +30,9 @@ import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.permissions.connectedapps.HealthAppPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
 import com.android.healthconnect.controller.utils.asAppMetadata
-import com.android.healthconnect.controller.utils.findSystemInfo
 import com.android.healthconnect.controller.utils.isDisabledByAllProviders
 import com.android.healthconnect.controller.utils.pref
+import com.android.healthconnect.controller.utils.shouldNavigateToCurrentDeviceManagement
 import com.android.settingslib.widget.TopIntroPreference
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -103,11 +103,7 @@ class DevicesFragment : Hilt_DevicesFragment() {
                             summary = getString(R.string.devices_this_phone)
                         }
 
-                        if (
-                            deviceSourceInfo.isCurrentDevice &&
-                                deviceSourceInfo.deviceDataProviderInfos.size == 1 &&
-                                deviceSourceInfo.findSystemInfo() != null
-                        ) {
+                        if (deviceSourceInfo.shouldNavigateToCurrentDeviceManagement()) {
                             setCurrentDeviceButton(deviceSourceInfo)
                         } else {
                             setDeviceDataProviderButton(deviceSourceInfo)

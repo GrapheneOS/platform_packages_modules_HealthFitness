@@ -17,10 +17,12 @@
  */
 package com.android.healthconnect.controller.data.access
 
+import android.health.connect.DeviceDataSourceInfo
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 
 data class AppAccessMetadata(
     val appMetadata: AppMetadata,
     val appPermissionsType: AppPermissionsType = AppPermissionsType.FITNESS_PERMISSIONS_ONLY,
+    val deviceDataSourceInfo: DeviceDataSourceInfo? = null,
 )

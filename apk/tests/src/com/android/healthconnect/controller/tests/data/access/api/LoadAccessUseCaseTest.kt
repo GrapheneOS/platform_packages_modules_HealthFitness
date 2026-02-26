@@ -15,8 +15,18 @@
  */
 package com.android.healthconnect.controller.tests.data.access.api
 
+import android.health.connect.DeviceDataProviderInfo
+import android.health.connect.DeviceDataSourceInfo
+import android.health.connect.datatypes.DataOrigin
+import android.health.connect.datatypes.Device
+import android.health.connect.datatypes.MenstruationFlowRecord
+import android.health.connect.datatypes.MenstruationPeriodRecord
+import android.health.connect.device.DeviceDataTypeAdvertisement
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.access.AppAccessMetadata
 import com.android.healthconnect.controller.data.access.AppAccessState
 import com.android.healthconnect.controller.data.access.api.LoadAccessUseCase
@@ -31,6 +41,7 @@ import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppPermissionsType.COMBINED_PERMISSIONS
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.devices.api.FakeGetDeviceDataSourcesInfoUseCase
 import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
@@ -38,7 +49,13 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME_2
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
+import com.android.healthconnect.controller.tests.utils.TEST_PHONE_APP
+import com.android.healthconnect.controller.tests.utils.TEST_PHONE_APP_NAME
+import com.android.healthconnect.controller.tests.utils.TEST_PHONE_SPN
+import com.android.healthconnect.controller.tests.utils.TEST_WATCH_SPN
 import com.android.healthconnect.controller.tests.utils.di.FakeGetGrantedHealthPermissionsUseCase
+import com.android.healthconnect.controller.tests.utils.getDeviceDataSourcesInfo
+import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -69,6 +86,9 @@ class LoadAccessUseCaseTest {
         fakeUseCaseRule.watch(FakeLoadMedicalTypeContributorAppsUseCase())
     private val fakeGetGrantedHealthPermissionsUseCase = FakeGetGrantedHealthPermissionsUseCase()
 
+    private val fakeLoadDeviceDataSourcesInfosUseCase =
+        fakeUseCaseRule.watch(FakeGetDeviceDataSourcesInfoUseCase())
+
     @Inject lateinit var appInfoReader: AppInfoReader
     @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
@@ -81,8 +101,10 @@ class LoadAccessUseCaseTest {
                 fakeLoadFitnessTypeContributorAppsUseCase,
                 fakeLoadMedicalTypeContributorAppsUseCase,
                 fakeGetGrantedHealthPermissionsUseCase,
+                fakeLoadDeviceDataSourcesInfosUseCase,
                 healthPermissionReader,
                 appInfoReader,
+                InstrumentationRegistry.getInstrumentation().context,
                 Dispatchers.Main,
             )
     }
@@ -96,6 +118,129 @@ class LoadAccessUseCaseTest {
         assertThat(actual[AppAccessState.Write]!!.size).isEqualTo(0)
         assertThat(actual[AppAccessState.Read]!!.size).isEqualTo(0)
         assertThat(actual[AppAccessState.Inactive]!!.size).isEqualTo(0)
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun devices_ddpFlagOff_devicesAreSeenAsNormalApps() = runTest {
+        fakeLoadFitnessTypeContributorAppsUseCase.updateList(listOf(TEST_PHONE_APP))
+
+        val result = useCase.invoke(FitnessPermissionType.STEPS)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val actual = (result as UseCaseResults.Success).data
+
+        assertThat(actual[AppAccessState.Write]).isNotNull()
+        assertThat(actual[AppAccessState.Write]!!).isEmpty()
+
+        assertThat(actual[AppAccessState.Read]).isNotNull()
+        assertThat(actual[AppAccessState.Read]!!).isEmpty()
+
+        assertThat(actual[AppAccessState.Inactive]).isNotNull()
+        assertThat(actual[AppAccessState.Inactive]!!).hasSize(1)
+        assertThat(actual[AppAccessState.Inactive]!![0].appMetadata.packageName)
+            .isEqualTo(TEST_PHONE_SPN)
+        assertThat(actual[AppAccessState.Inactive]!![0].appMetadata.appName)
+            .isEqualTo(TEST_PHONE_APP_NAME)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun devices_ddpFlagOn_devicesHaveSpecialHandling() = runTest {
+        fakeLoadDeviceDataSourcesInfosUseCase.updateSet(getDeviceDataSourcesInfo())
+
+        val result = useCase.invoke(FitnessPermissionType.STEPS)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val actual = (result as UseCaseResults.Success).data
+
+        // Phone has StepsRecord advertised -> In Write category
+        assertThat(actual[AppAccessState.Write]).isNotNull()
+        assertThat(actual[AppAccessState.Write]!!).hasSize(1)
+        assertThat(actual[AppAccessState.Write]!![0].appMetadata.packageName)
+            .isEqualTo(TEST_PHONE_SPN)
+        assertThat(actual[AppAccessState.Write]!![0].appMetadata.appName).isEqualTo("Some phone")
+
+        // Watch does not have StepsRecord advertised -> Not included
+        // No devices in Read
+        assertThat(actual[AppAccessState.Read]).isNotNull()
+        assertThat(actual[AppAccessState.Read]!!).isEmpty()
+
+        // Watch is not a contributor for Steps -> Not included in Inactive
+        assertThat(actual[AppAccessState.Inactive]).isNotNull()
+        assertThat(actual[AppAccessState.Inactive]!!).isEmpty()
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun devices_writeMenstruation_deviceWithOnlyFlowConsideredWriting() = runTest {
+        val deviceWithMenstruation =
+            DeviceDataSourceInfo(
+                DataOrigin.Builder().setPackageName(TEST_WATCH_SPN).build(),
+                Device.Builder().setType(Device.DEVICE_TYPE_WATCH).build(),
+                false,
+                listOf(
+                    DeviceDataProviderInfo(
+                        "device_id",
+                        "provider_id",
+                        "label",
+                        "description",
+                        setOf(
+                            DeviceDataTypeAdvertisement.Builder(MenstruationFlowRecord::class.java)
+                                .setAvailable(true)
+                                .setUserEnabled(true)
+                                .build()
+                        ),
+                    )
+                ),
+            )
+
+        fakeLoadDeviceDataSourcesInfosUseCase.updateSet(setOf(deviceWithMenstruation))
+
+        val result = useCase.invoke(FitnessPermissionType.MENSTRUATION)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val actual = (result as UseCaseResults.Success).data
+
+        assertThat(actual[AppAccessState.Write]).isNotNull()
+        assertThat(actual[AppAccessState.Write]!!).hasSize(1)
+        assertThat(actual[AppAccessState.Write]!![0].appMetadata.packageName)
+            .isEqualTo(TEST_WATCH_SPN)
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun devices_writeMenstruation_deviceWithOnlyPeriodConsideredWriting() = runTest {
+        val deviceWithMenstruation =
+            DeviceDataSourceInfo(
+                DataOrigin.Builder().setPackageName(TEST_WATCH_SPN).build(),
+                Device.Builder().setType(Device.DEVICE_TYPE_WATCH).build(),
+                false,
+                listOf(
+                    DeviceDataProviderInfo(
+                        "device_id",
+                        "provider_id",
+                        "label",
+                        "description",
+                        setOf(
+                            DeviceDataTypeAdvertisement.Builder(
+                                    MenstruationPeriodRecord::class.java
+                                )
+                                .setAvailable(true)
+                                .setUserEnabled(true)
+                                .build()
+                        ),
+                    )
+                ),
+            )
+
+        fakeLoadDeviceDataSourcesInfosUseCase.updateSet(setOf(deviceWithMenstruation))
+
+        val result = useCase.invoke(FitnessPermissionType.MENSTRUATION)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        val actual = (result as UseCaseResults.Success).data
+
+        assertThat(actual[AppAccessState.Write]).isNotNull()
+        assertThat(actual[AppAccessState.Write]!!).hasSize(1)
+        assertThat(actual[AppAccessState.Write]!![0].appMetadata.packageName)
+            .isEqualTo(TEST_WATCH_SPN)
     }
 
     @Test

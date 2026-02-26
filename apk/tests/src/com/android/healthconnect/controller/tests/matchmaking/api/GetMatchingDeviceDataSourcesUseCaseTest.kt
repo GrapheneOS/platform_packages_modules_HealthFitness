@@ -22,9 +22,10 @@ import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.healthconnect.controller.matchmaking.api.GetDeviceDataSourcesInfoUseCase
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingDeviceDataSourcesUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.devices.api.FakeGetDeviceDataSourcesInfoUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -35,11 +36,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.kotlin.any
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.never
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -48,15 +44,22 @@ class GetMatchingDeviceDataSourcesUseCaseTest {
 
     @get:Rule val hiltRule = dagger.hilt.android.testing.HiltAndroidRule(this)
     @get:Rule val setFlagsRule = SetFlagsRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
+
+    // TODO(b/487238102): Add failing scenarios
 
     private lateinit var useCase: GetMatchingDeviceDataSourcesUseCase
-    private val getDeviceDataSourcesInfoUseCase: GetDeviceDataSourcesInfoUseCase = mock()
+    private val fakeLoadDeviceDataSourcesInfosUseCase =
+        fakeUseCaseRule.watch(FakeGetDeviceDataSourcesInfoUseCase())
 
     @Before
     fun setup() {
         hiltRule.inject()
         useCase =
-            GetMatchingDeviceDataSourcesUseCase(getDeviceDataSourcesInfoUseCase, Dispatchers.Main)
+            GetMatchingDeviceDataSourcesUseCase(
+                fakeLoadDeviceDataSourcesInfosUseCase,
+                Dispatchers.Main,
+            )
     }
 
     @Test
@@ -82,8 +85,7 @@ class GetMatchingDeviceDataSourcesUseCaseTest {
                     emptyList(),
                 ),
             )
-        whenever(getDeviceDataSourcesInfoUseCase.invoke(Unit))
-            .thenReturn(UseCaseResults.Success(allDevices))
+        fakeLoadDeviceDataSourcesInfosUseCase.updateSet(allDevices)
         val matchedDevicesMap = mapOf(matchedDevicePackageName to setOf<String>())
         val input = GetMatchingDeviceDataSourcesUseCase.Input(matchedDevicesMap)
 
@@ -104,10 +106,10 @@ class GetMatchingDeviceDataSourcesUseCaseTest {
         val matchedDevicePackageName = "com.example.device"
         val matchedDevicesMap = mapOf(matchedDevicePackageName to setOf<String>())
         val input = GetMatchingDeviceDataSourcesUseCase.Input(matchedDevicesMap)
+        fakeLoadDeviceDataSourcesInfosUseCase.setForceFail(true)
 
         val result = useCase.invoke(input) as UseCaseResults.Success
 
         assertThat(result.data).isEmpty()
-        verify(getDeviceDataSourcesInfoUseCase, never()).invoke(any())
     }
 }

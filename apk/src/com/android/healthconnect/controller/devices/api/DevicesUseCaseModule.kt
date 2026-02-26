@@ -15,6 +15,8 @@
  */
 package com.android.healthconnect.controller.devices.api
 
+import com.android.healthconnect.controller.matchmaking.api.GetDeviceDataSourcesInfoUseCase
+import com.android.healthconnect.controller.matchmaking.api.IGetDeviceDataSourcesInfoUseCase
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -42,4 +44,10 @@ interface DevicesUseCaseModule {
     abstract fun provideLoadSensorListUseCase(
         useCase: LoadSensorListUseCase
     ): ILoadSensorListUseCase
+
+    @Binds
+    @Singleton
+    abstract fun provideGetDeviceDataSourcesInfoUseCase(
+        useCase: GetDeviceDataSourcesInfoUseCase
+    ): IGetDeviceDataSourcesInfoUseCase
 }
