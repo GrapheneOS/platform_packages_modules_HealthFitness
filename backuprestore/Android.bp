@@ -38,9 +38,6 @@ android_library {
         "framework-annotations-lib",
         "framework-healthfitness.impl",
     ],
-    static_libs: [
-        "healthfitness-statsd",
-    ],
     apex_available: ["com.android.healthfitness"],
     errorprone: {
         extra_check_modules: [
