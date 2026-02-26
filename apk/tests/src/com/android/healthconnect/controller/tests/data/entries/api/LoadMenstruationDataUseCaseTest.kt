@@ -1,29 +1,27 @@
 /*
  * Copyright (C) 2024 The Android Open Source Project
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License. You may obtain a copy of the License at
  *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied. See the License for the specific language governing permissions and limitations under
+ * the License.
  */
 package com.android.healthconnect.controller.tests.data.entries.api
 
 import android.content.Context
+import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.ReadRecordsRequestUsingFilters
 import android.health.connect.ReadRecordsResponse
 import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.Record
+import android.os.OutcomeReceiver
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
@@ -51,6 +49,7 @@ import java.time.Duration.ofDays
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
+import java.util.concurrent.Executor
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
@@ -309,67 +308,97 @@ class LoadMenstruationDataUseCaseTest {
             LoadMenstruationDataInput(
                 packageName = TEST_APP_PACKAGE_NAME,
                 displayedStartTime = NOW,
-                period = DateNavigationPeriod.PERIOD_WEEK,
+                period = DateNavigationPeriod.PERIOD_MONTH,
                 showDataOrigin = true,
             )
 
         val result = loadMenstruationDataUseCase.invoke(input)
         assertThat(result is UseCaseResults.Success).isTrue()
-        assertThat((result as UseCaseResults.Success).data)
-            .containsExactlyElementsIn(
-                listOf(
-                    FormattedEntry.EntryDateSectionHeader(date = "Today"),
-                    FormattedEntry.FormattedDataEntry(
-                        uuid = "test_id",
-                        header = "Oct 20 – 25 • $TEST_APP_NAME",
-                        headerA11y = "Oct 20 – 25 • $TEST_APP_NAME",
-                        title = "Period (6 days)",
-                        titleA11y = "Period (6 days)",
-                        dataType = MenstruationPeriodRecord::class,
-                        startTime = NOW,
-                        endTime = NOW.plus(ofDays(5)),
-                    ),
-                    FormattedEntry.FormattedDataEntry(
-                        uuid = "test_id",
-                        header = "7:06 AM • $TEST_APP_NAME",
-                        headerA11y = "7:06 AM • $TEST_APP_NAME",
-                        title = "Heavy flow",
-                        titleA11y = "Heavy flow",
-                        dataType = MenstruationFlowRecord::class,
-                    ),
-                    FormattedEntry.EntryDateSectionHeader(date = "Yesterday"),
-                    FormattedEntry.FormattedDataEntry(
-                        uuid = "test_id",
-                        header = "Oct 19 – 22 • $TEST_APP_NAME",
-                        headerA11y = "Oct 19 – 22 • $TEST_APP_NAME",
-                        title = "Period (4 days)",
-                        titleA11y = "Period (4 days)",
-                        dataType = MenstruationPeriodRecord::class,
-                        startTime = NOW.minus(ofDays(1)),
-                        endTime = NOW.plus(ofDays(2)),
-                    ),
-                    FormattedEntry.EntryDateSectionHeader(date = "October 18, 2022"),
-                    FormattedEntry.FormattedDataEntry(
-                        uuid = "test_id",
-                        header = "7:06 AM • $TEST_APP_NAME",
-                        headerA11y = "7:06 AM • $TEST_APP_NAME",
-                        title = "Light flow",
-                        titleA11y = "Light flow",
-                        dataType = MenstruationFlowRecord::class,
-                    ),
-                    FormattedEntry.EntryDateSectionHeader(date = "October 10, 2022"),
-                    FormattedEntry.FormattedDataEntry(
-                        uuid = "test_id",
-                        header = "October 10 • $TEST_APP_NAME",
-                        headerA11y = "October 10 • $TEST_APP_NAME",
-                        title = "Period (1 day)",
-                        titleA11y = "Period (1 day)",
-                        dataType = MenstruationPeriodRecord::class,
-                        startTime = NOW.minus(ofDays(10)),
-                        endTime = NOW.minus(ofDays(10)),
-                    ),
-                )
+        val data = (result as UseCaseResults.Success).data
+        assertThat(data)
+            .containsExactly(
+                FormattedEntry.EntryDateSectionHeader(date = "Today"),
+                FormattedEntry.FormattedDataEntry(
+                    uuid = "test_id",
+                    header = "Oct 20 – 25 • $TEST_APP_NAME",
+                    headerA11y = "Oct 20 – 25 • $TEST_APP_NAME",
+                    title = "Period (6 days)",
+                    titleA11y = "Period (6 days)",
+                    dataType = MenstruationPeriodRecord::class,
+                    startTime = NOW,
+                    endTime = NOW.plus(ofDays(5)),
+                ),
+                FormattedEntry.FormattedDataEntry(
+                    uuid = "test_id",
+                    header = "7:06 AM • $TEST_APP_NAME",
+                    headerA11y = "7:06 AM • $TEST_APP_NAME",
+                    title = "Heavy flow",
+                    titleA11y = "Heavy flow",
+                    dataType = MenstruationFlowRecord::class,
+                ),
+                FormattedEntry.EntryDateSectionHeader(date = "Yesterday"),
+                FormattedEntry.FormattedDataEntry(
+                    uuid = "test_id",
+                    header = "Oct 19 – 22 • $TEST_APP_NAME",
+                    headerA11y = "Oct 19 – 22 • $TEST_APP_NAME",
+                    title = "Period (4 days)",
+                    titleA11y = "Period (4 days)",
+                    dataType = MenstruationPeriodRecord::class,
+                    startTime = NOW.minus(ofDays(1)),
+                    endTime = NOW.plus(ofDays(2)),
+                ),
+                FormattedEntry.EntryDateSectionHeader(date = "October 18, 2022"),
+                FormattedEntry.FormattedDataEntry(
+                    uuid = "test_id",
+                    header = "7:06 AM • $TEST_APP_NAME",
+                    headerA11y = "7:06 AM • $TEST_APP_NAME",
+                    title = "Light flow",
+                    titleA11y = "Light flow",
+                    dataType = MenstruationFlowRecord::class,
+                ),
+                FormattedEntry.EntryDateSectionHeader(date = "October 10, 2022"),
+                FormattedEntry.FormattedDataEntry(
+                    uuid = "test_id",
+                    header = "October 10 • $TEST_APP_NAME",
+                    headerA11y = "October 10 • $TEST_APP_NAME",
+                    title = "Period (1 day)",
+                    titleA11y = "Period (1 day)",
+                    dataType = MenstruationPeriodRecord::class,
+                    startTime = NOW.minus(ofDays(10)),
+                    endTime = NOW.minus(ofDays(10)),
+                ),
             )
+    }
+
+    @Test
+    fun invoke_showDataOriginFalse_returnsFormattedDataWithoutAppName() = runTest {
+        val menstruationPeriodRecords =
+            listOf(
+                MenstruationPeriodRecord.Builder(getMetaData(), NOW, NOW.plus(ofDays(5))).build()
+            )
+
+        healthConnectManager.stub {
+            on {
+                readRecords<Record>(
+                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                        request?.forDataType(dataType = MenstruationPeriodRecord::class.java) ==
+                            true
+                    },
+                    any<Executor>(),
+                    any<OutcomeReceiver<ReadRecordsResponse<Record>, HealthConnectException>>(),
+                )
+            } doReturnResult Result.success(ReadRecordsResponse(menstruationPeriodRecords, -1))
+
+            on {
+                readRecords<Record>(
+                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                        request?.forDataType(dataType = MenstruationFlowRecord::class.java) == true
+                    },
+                    any<Executor>(),
+                    any<OutcomeReceiver<ReadRecordsResponse<Record>, HealthConnectException>>(),
+                )
+            } doReturnResult Result.success(ReadRecordsResponse(emptyList(), -1))
+        }
     }
 
     @Test

@@ -116,6 +116,7 @@ class LoadLastDateWithPriorityDataUseCaseTest {
         loadEntriesHelper =
             LoadEntriesHelper(
                 context,
+                Dispatchers.Main,
                 healthDataEntryFormatter,
                 menstruationPeriodFormatter,
                 healthConnectManager,

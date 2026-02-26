@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 The Android Open Source Project
+ * Copyright (C) 2026 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller.data.entries
+package com.android.healthconnect.controller.data.entries.views
 
 import android.view.LayoutInflater
 import android.view.View
@@ -27,8 +27,8 @@ import com.android.healthconnect.controller.shared.recyclerview.SimpleViewBinder
 /** View binder for a section title that looks like a PreferenceCategory. */
 class SectionTitleViewBinder : SimpleViewBinder<EntryDateSectionHeader, LinearLayout> {
     override fun newView(parent: ViewGroup): LinearLayout {
-        return LayoutInflater.from(parent.context).inflate(R.layout.item_data_entry_section_title, parent, false)
-            as LinearLayout
+        return LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_data_entry_section_title, parent, false) as LinearLayout
     }
 
     override fun bind(view: View, data: EntryDateSectionHeader, index: Int) {

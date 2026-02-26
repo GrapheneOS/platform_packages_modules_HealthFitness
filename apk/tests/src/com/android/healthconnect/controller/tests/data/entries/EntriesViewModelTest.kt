@@ -31,19 +31,19 @@ import com.android.healthconnect.controller.data.entries.datenavigation.DateNavi
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.tests.data.entries.api.FakeLoadDataAggregationsUseCase
+import com.android.healthconnect.controller.tests.data.entries.api.FakeLoadDataEntriesUseCase
+import com.android.healthconnect.controller.tests.data.entries.api.FakeLoadLatestEntryDateUseCase
+import com.android.healthconnect.controller.tests.data.entries.api.FakeLoadLatestSymptomEntryDateUseCase
+import com.android.healthconnect.controller.tests.data.entries.api.FakeLoadMedicalEntriesUseCase
+import com.android.healthconnect.controller.tests.data.entries.api.FakeLoadMenstruationDataUseCase
+import com.android.healthconnect.controller.tests.data.entries.api.FakeLoadSymptomDataEntriesUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_RESOURCE_IMMUNIZATION
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.TestTimeSource
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
-import com.android.healthconnect.controller.tests.utils.di.FakeFailureLoadLatestEntryDateUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadDataAggregationsUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadDataEntriesUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadLatestEntryDateUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadLatestSymptomEntryDateUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadMedicalEntriesUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadMenstruationDataUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadSymptomDataEntriesUseCase
 import com.android.healthconnect.controller.utils.TimeSource
 import com.android.healthconnect.controller.utils.toInstant
 import com.android.healthfitness.flags.Flags.FLAG_MINDFULNESS_AGGREGATION
@@ -132,8 +132,6 @@ class EntriesViewModelTest {
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
     private val testDispatcher = UnconfinedTestDispatcher()
 
-    @BindValue lateinit var appInfoReader: AppInfoReader
-    private val timeSource: TimeSource = TestTimeSource
     private val fakeLoadDataEntriesUseCase = FakeLoadDataEntriesUseCase()
     private val fakeLoadSymptomDataEntriesUseCase = FakeLoadSymptomDataEntriesUseCase()
     private val fakeLoadMenstruationDataUseCase = FakeLoadMenstruationDataUseCase()
@@ -141,6 +139,21 @@ class EntriesViewModelTest {
     private val fakeLoadMedicalEntriesUseCase = FakeLoadMedicalEntriesUseCase()
     private val fakeLoadLatestEntryDateUseCase = FakeLoadLatestEntryDateUseCase()
     private val fakeLoadLatestSymptomEntryDateUseCase = FakeLoadLatestSymptomEntryDateUseCase()
+
+    @get:Rule
+    val fakeUseCaseRule =
+        FakeUseCaseRule(
+            fakeLoadDataEntriesUseCase,
+            fakeLoadSymptomDataEntriesUseCase,
+            fakeLoadMenstruationDataUseCase,
+            fakeLoadDataAggregationsUseCase,
+            fakeLoadMedicalEntriesUseCase,
+            fakeLoadLatestEntryDateUseCase,
+            fakeLoadLatestSymptomEntryDateUseCase,
+        )
+
+    @BindValue lateinit var appInfoReader: AppInfoReader
+    private val timeSource: TimeSource = TestTimeSource
 
     private lateinit var viewModel: EntriesViewModel
     private lateinit var context: Context
@@ -151,7 +164,6 @@ class EntriesViewModelTest {
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
 
-        fakeLoadDataAggregationsUseCase.reset()
         context = InstrumentationRegistry.getInstrumentation().context
         viewModel =
             EntriesViewModel(
@@ -263,7 +275,7 @@ class EntriesViewModelTest {
         advanceUntilIdle()
 
         assertThat(fakeLoadSymptomDataEntriesUseCase.numberOfInvocations).isEqualTo(1)
-        assertThat(fakeLoadDataEntriesUseCase.wasInvoked).isFalse()
+        assertThat(fakeLoadDataEntriesUseCase.numberOfInvocations).isEqualTo(0)
     }
 
     @Test
@@ -279,7 +291,7 @@ class EntriesViewModelTest {
         )
         advanceUntilIdle()
 
-        assertThat(fakeLoadDataEntriesUseCase.wasInvoked).isTrue()
+        assertThat(fakeLoadDataEntriesUseCase.numberOfInvocations).isEqualTo(1)
         assertThat(fakeLoadSymptomDataEntriesUseCase.numberOfInvocations).isEqualTo(0)
     }
 
@@ -440,28 +452,16 @@ class EntriesViewModelTest {
 
     @Test
     fun loadLatestRecordDate_fails_returnsInput() = runTest {
-        val fakeFailureLoadLatestEntryDateUseCase = FakeFailureLoadLatestEntryDateUseCase()
-        val failureViewModel =
-            EntriesViewModel(
-                appInfoReader,
-                fakeLoadDataEntriesUseCase,
-                fakeLoadMenstruationDataUseCase,
-                fakeLoadDataAggregationsUseCase,
-                fakeLoadMedicalEntriesUseCase,
-                fakeFailureLoadLatestEntryDateUseCase,
-                fakeLoadSymptomDataEntriesUseCase,
-                fakeLoadLatestSymptomEntryDateUseCase,
-            )
-
+        fakeLoadLatestEntryDateUseCase.setForceFail(true)
         val now = timeSource.currentTimeMillis().toInstant()
         val then = now.plusMillis(100)
-        fakeFailureLoadLatestEntryDateUseCase.updateInstant(now)
+        fakeLoadLatestEntryDateUseCase.updateInstant(now)
 
-        failureViewModel.loadLatestRecordDate(
+        viewModel.loadLatestRecordDate(
             selectedDate = then,
             permissionType = FitnessPermissionType.STEPS,
         )
         advanceUntilIdle()
-        assertThat(failureViewModel.latestDate.value).isEqualTo(then)
+        assertThat(viewModel.latestDate.value).isEqualTo(then)
     }
 }

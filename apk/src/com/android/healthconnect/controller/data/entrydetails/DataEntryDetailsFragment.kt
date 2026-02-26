@@ -27,7 +27,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.data.entries.EntriesAdapter
 import com.android.healthconnect.controller.data.entries.EntriesViewModel
-import com.android.healthconnect.controller.data.entries.ExerciseSessionItemViewBinder
 import com.android.healthconnect.controller.data.entries.ExpressiveEntriesAdapter
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ExercisePerformanceGoalEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.ExerciseSessionEntry
@@ -45,10 +44,11 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry.ReverseS
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SeriesDataEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SessionHeader
 import com.android.healthconnect.controller.data.entries.FormattedEntry.SleepSessionEntry
-import com.android.healthconnect.controller.data.entries.MarginItemDecoration
-import com.android.healthconnect.controller.data.entries.PlannedExerciseSessionItemViewBinder
-import com.android.healthconnect.controller.data.entries.SeriesDataItemViewBinder
-import com.android.healthconnect.controller.data.entries.SleepSessionItemViewBinder
+import com.android.healthconnect.controller.data.entries.views.ExerciseSessionItemViewBinder
+import com.android.healthconnect.controller.data.entries.views.MarginItemDecoration
+import com.android.healthconnect.controller.data.entries.views.PlannedExerciseSessionItemViewBinder
+import com.android.healthconnect.controller.data.entries.views.SeriesDataItemViewBinder
+import com.android.healthconnect.controller.data.entries.views.SleepSessionItemViewBinder
 import com.android.healthconnect.controller.data.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState
 import com.android.healthconnect.controller.data.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.Loading
 import com.android.healthconnect.controller.data.entrydetails.DataEntryDetailsViewModel.DateEntryFragmentState.LoadingFailed

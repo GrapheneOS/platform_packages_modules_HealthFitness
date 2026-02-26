@@ -32,7 +32,7 @@ import com.android.healthconnect.controller.data.entries.EntriesAdapter
 import com.android.healthconnect.controller.data.entries.ExpressiveEntriesAdapter
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.FormattedEntry.FormattedMedicalDataEntry
-import com.android.healthconnect.controller.data.entries.MarginItemDecoration
+import com.android.healthconnect.controller.data.entries.views.MarginItemDecoration
 import com.android.healthconnect.controller.data.entrydetails.ItemDataEntrySeparatorViewBinder
 import com.android.healthconnect.controller.data.fhir.raw.RawFhirFragment
 import com.android.healthconnect.controller.shared.recyclerview.RecyclerViewAdapter

@@ -24,7 +24,7 @@
     android:clipChildren="true"
     android:scrollbars="none">
 
-    <com.android.healthconnect.controller.data.entries.AppHeaderView
+    <com.android.healthconnect.controller.data.entries.views.AppHeaderView
         android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"

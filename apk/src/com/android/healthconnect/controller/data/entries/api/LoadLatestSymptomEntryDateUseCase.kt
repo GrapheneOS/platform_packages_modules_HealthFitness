@@ -20,6 +20,7 @@ import android.health.connect.TimeInstantRangeFilter
 import android.health.connect.datatypes.SymptomRecord
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -32,7 +33,9 @@ class LoadLatestSymptomEntryDateUseCase
 constructor(
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
     private val loadEntriesHelper: LoadEntriesHelper,
-) : BaseUseCase<LoadLatestSymptomEntryDateInput, Instant>(dispatcher) {
+) :
+    BaseUseCase<LoadLatestSymptomEntryDateInput, Instant>(dispatcher),
+    ILoadLatestSymptomEntryDateUseCase {
 
     /**
      * Returns the start time of the most recent [SymptomRecord] before or at the
@@ -59,3 +62,6 @@ data class LoadLatestSymptomEntryDateInput(
     val displayedStartTime: Instant,
     val packageName: String? = null,
 )
+
+interface ILoadLatestSymptomEntryDateUseCase :
+    UseCaseContract<LoadLatestSymptomEntryDateInput, Instant>

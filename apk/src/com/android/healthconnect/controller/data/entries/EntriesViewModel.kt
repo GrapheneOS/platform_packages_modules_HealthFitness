@@ -23,8 +23,10 @@ import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.data.entries.api.ILoadDataAggregationsUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadDataEntriesUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadLatestEntryDateUseCase
+import com.android.healthconnect.controller.data.entries.api.ILoadLatestSymptomEntryDateUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadMedicalEntriesUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadMenstruationDataUseCase
+import com.android.healthconnect.controller.data.entries.api.ILoadSymptomDataEntriesUseCase
 import com.android.healthconnect.controller.data.entries.api.LoadAggregationInput
 import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesInput
 import com.android.healthconnect.controller.data.entries.api.LoadLatestEntryDateInput
@@ -44,7 +46,6 @@ import com.android.healthconnect.controller.permissions.data.isSymptom
 import com.android.healthconnect.controller.shared.DataType
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
-import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthfitness.flags.Flags.mindfulnessAggregation
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -63,10 +64,8 @@ constructor(
     private val loadDataAggregationsUseCase: ILoadDataAggregationsUseCase,
     private val loadMedicalEntriesUseCase: ILoadMedicalEntriesUseCase,
     private val loadLatestDateUseCase: ILoadLatestEntryDateUseCase,
-    private val loadSymptomDataEntriesUseCase:
-        BaseUseCase<LoadSymptomDataEntriesInput, List<FormattedEntry>>,
-    private val loadLatestSymptomEntryDateUseCase:
-        BaseUseCase<LoadLatestSymptomEntryDateInput, Instant>,
+    private val loadSymptomDataEntriesUseCase: ILoadSymptomDataEntriesUseCase,
+    private val loadLatestSymptomEntryDateUseCase: ILoadLatestSymptomEntryDateUseCase,
 ) : ViewModel() {
 
     companion object {

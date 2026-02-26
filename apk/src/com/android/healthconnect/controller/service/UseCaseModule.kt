@@ -17,29 +17,6 @@ package com.android.healthconnect.controller.service
 
 import android.content.Context
 import android.health.connect.HealthConnectManager
-import com.android.healthconnect.controller.data.entries.FormattedEntry
-import com.android.healthconnect.controller.data.entries.api.ILoadDataAggregationsUseCase
-import com.android.healthconnect.controller.data.entries.api.ILoadDataEntriesUseCase
-import com.android.healthconnect.controller.data.entries.api.ILoadLatestEntryDateUseCase
-import com.android.healthconnect.controller.data.entries.api.ILoadMedicalEntriesUseCase
-import com.android.healthconnect.controller.data.entries.api.ILoadMenstruationDataUseCase
-import com.android.healthconnect.controller.data.entries.api.LoadDataAggregationsUseCase
-import com.android.healthconnect.controller.data.entries.api.LoadDataEntriesUseCase
-import com.android.healthconnect.controller.data.entries.api.LoadEntriesHelper
-import com.android.healthconnect.controller.data.entries.api.LoadLatestEntryDateUseCase
-import com.android.healthconnect.controller.data.entries.api.LoadLatestSymptomEntryDateInput
-import com.android.healthconnect.controller.data.entries.api.LoadLatestSymptomEntryDateUseCase
-import com.android.healthconnect.controller.data.entries.api.LoadMedicalEntriesUseCase
-import com.android.healthconnect.controller.data.entries.api.LoadMenstruationDataUseCase
-import com.android.healthconnect.controller.data.entries.api.LoadSymptomDataEntriesInput
-import com.android.healthconnect.controller.data.entries.api.LoadSymptomDataEntriesUseCase
-import com.android.healthconnect.controller.data.formatters.DistanceFormatter
-import com.android.healthconnect.controller.data.formatters.MindfulnessSessionFormatter
-import com.android.healthconnect.controller.data.formatters.SleepSessionFormatter
-import com.android.healthconnect.controller.data.formatters.StepsFormatter
-import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
-import com.android.healthconnect.controller.data.formatters.medical.MedicalEntryFormatter
-import com.android.healthconnect.controller.devices.api.IGetCurrentDeviceIdUseCase
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
 import com.android.healthconnect.controller.exportimport.api.IUpdateExportSettingsUseCase
 import com.android.healthconnect.controller.exportimport.api.UpdateExportSettingsUseCase
@@ -69,7 +46,6 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import java.time.Instant
 import kotlinx.coroutines.CoroutineDispatcher
 
 @Module
@@ -106,80 +82,6 @@ class UseCaseModule {
             healthPermissionReader,
             dispatcher,
         )
-    }
-
-    @Provides
-    fun providesLoadDataEntriesUseCase(
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-        loadEntriesHelper: LoadEntriesHelper,
-    ): ILoadDataEntriesUseCase {
-        return LoadDataEntriesUseCase(dispatcher, loadEntriesHelper)
-    }
-
-    @Provides
-    fun providesLatestEntryDateUseCase(
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-        loadEntriesHelper: LoadEntriesHelper,
-    ): ILoadLatestEntryDateUseCase {
-        return LoadLatestEntryDateUseCase(dispatcher, loadEntriesHelper)
-    }
-
-    @Provides
-    fun providesLoadSymptomDataEntriesUseCase(
-        useCase: LoadSymptomDataEntriesUseCase
-    ): BaseUseCase<LoadSymptomDataEntriesInput, List<FormattedEntry>> {
-        return useCase
-    }
-
-    @Provides
-    fun providesLatestSymptomEntryDateUseCase(
-        useCase: LoadLatestSymptomEntryDateUseCase
-    ): BaseUseCase<LoadLatestSymptomEntryDateInput, Instant> {
-        return useCase
-    }
-
-    @Provides
-    fun providesLoadMedicalEntriesUseCase(
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-        loadEntriesHelper: LoadEntriesHelper,
-        medicalEntryFormatter: MedicalEntryFormatter,
-    ): ILoadMedicalEntriesUseCase {
-        return LoadMedicalEntriesUseCase(dispatcher, medicalEntryFormatter, loadEntriesHelper)
-    }
-
-    @Provides
-    fun providesLoadDataAggregationsUseCase(
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-        stepsFormatter: StepsFormatter,
-        totalCaloriesBurnedFormatter: TotalCaloriesBurnedFormatter,
-        distanceFormatter: DistanceFormatter,
-        sleepSessionFormatter: SleepSessionFormatter,
-        mindfulnessSessionFormatter: MindfulnessSessionFormatter,
-        healthConnectManager: HealthConnectManager,
-        appInfoReader: AppInfoReader,
-        loadEntriesHelper: LoadEntriesHelper,
-        getCurrentDeviceIdUseCase: IGetCurrentDeviceIdUseCase,
-    ): ILoadDataAggregationsUseCase {
-        return LoadDataAggregationsUseCase(
-            loadEntriesHelper,
-            stepsFormatter,
-            totalCaloriesBurnedFormatter,
-            distanceFormatter,
-            sleepSessionFormatter,
-            mindfulnessSessionFormatter,
-            healthConnectManager,
-            appInfoReader,
-            getCurrentDeviceIdUseCase,
-            dispatcher,
-        )
-    }
-
-    @Provides
-    fun providesLoadMenstruationDataUseCase(
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-        loadEntriesHelper: LoadEntriesHelper,
-    ): ILoadMenstruationDataUseCase {
-        return LoadMenstruationDataUseCase(loadEntriesHelper, dispatcher)
     }
 
     @Provides

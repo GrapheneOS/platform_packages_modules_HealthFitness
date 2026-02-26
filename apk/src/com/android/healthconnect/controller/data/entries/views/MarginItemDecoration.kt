@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2025 The Android Open Source Project
+ * Copyright (C) 2026 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.data.entries
+package com.android.healthconnect.controller.data.entries.views
 
 import android.graphics.Rect
 import android.view.View
@@ -30,7 +30,9 @@ internal object MarginItemDecoration : RecyclerView.ItemDecoration() {
     ) {
         with(outRect) {
             bottom =
-                view.resources.getDimensionPixelSize(R.dimen.recyclerview_decorator_expressive_extrasmall)
+                view.resources.getDimensionPixelSize(
+                    R.dimen.recyclerview_decorator_expressive_extrasmall
+                )
         }
     }
 }

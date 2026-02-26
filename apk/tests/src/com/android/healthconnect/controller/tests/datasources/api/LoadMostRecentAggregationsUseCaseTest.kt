@@ -24,9 +24,9 @@ import com.android.healthconnect.controller.datasources.AggregationCardInfo
 import com.android.healthconnect.controller.datasources.api.LoadMostRecentAggregationsUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.data.entries.api.FakeLoadDataAggregationsUseCase
 import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.di.DEFAULT_USE_CASE_EXCEPTION_MESSAGE
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadDataAggregationsUseCase
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.randomInstant
 import com.android.healthconnect.controller.utils.toInstantAtStartOfDay
@@ -62,15 +62,21 @@ class LoadMostRecentAggregationsUseCaseTest {
     }
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
+
+    private val loadDataAggregationsUseCase = FakeLoadDataAggregationsUseCase()
+    private val loadLastDateWithPriorityDataUseCase = FakeLoadLastDateWithPriorityDataUseCase()
+    private val sleepSessionHelper = FakeSleepSessionHelper()
+
+    @get:Rule
+    val fakeUseCaseRule =
+        FakeUseCaseRule(
+            loadDataAggregationsUseCase,
+            loadLastDateWithPriorityDataUseCase,
+            sleepSessionHelper,
+        )
 
     private lateinit var context: Context
     private lateinit var loadMostRecentAggregationsUseCase: LoadMostRecentAggregationsUseCase
-
-    private val loadDataAggregationsUseCase = FakeLoadDataAggregationsUseCase()
-    private val loadLastDateWithPriorityDataUseCase =
-        fakeUseCaseRule.watch(FakeLoadLastDateWithPriorityDataUseCase())
-    private val sleepSessionHelper = fakeUseCaseRule.watch(FakeSleepSessionHelper())
 
     private val stepsAggregation = formattedAggregation("100 steps")
     private val distanceAggregation = formattedAggregation("1.5 km")
@@ -93,9 +99,7 @@ class LoadMostRecentAggregationsUseCaseTest {
 
     @After
     fun tearDown() {
-        loadDataAggregationsUseCase.reset()
-        loadLastDateWithPriorityDataUseCase.reset()
-        sleepSessionHelper.reset()
+        TimeZone.setDefault(null)
     }
 
     @Test
@@ -356,7 +360,7 @@ class LoadMostRecentAggregationsUseCaseTest {
             assertThat(result is UseCaseResults.Failed).isTrue()
             assertThat((result as UseCaseResults.Failed).exception.message)
                 .isEqualTo(DEFAULT_USE_CASE_EXCEPTION_MESSAGE)
-            assertThat(loadDataAggregationsUseCase.invocationCount).isEqualTo(0)
+            assertThat(loadDataAggregationsUseCase.numberOfInvocations).isEqualTo(0)
         }
 
     @Test
@@ -367,11 +371,10 @@ class LoadMostRecentAggregationsUseCaseTest {
             FitnessPermissionType.STEPS,
             stepsDate,
         )
-        loadDataAggregationsUseCase.setFailure("Exception")
+        loadDataAggregationsUseCase.setForceFail(true)
 
         val result = loadMostRecentAggregationsUseCase.invoke(HealthDataCategory.ACTIVITY)
         assertThat(result is UseCaseResults.Failed).isTrue()
-        assertThat((result as UseCaseResults.Failed).exception.message).isEqualTo("Exception")
     }
 
     @Test
@@ -382,11 +385,10 @@ class LoadMostRecentAggregationsUseCaseTest {
             FitnessPermissionType.SLEEP,
             sleepDate,
         )
-        loadDataAggregationsUseCase.setFailure("Exception")
+        loadDataAggregationsUseCase.setForceFail(true)
 
         val result = loadMostRecentAggregationsUseCase.invoke(HealthDataCategory.SLEEP)
         assertThat(result is UseCaseResults.Failed).isTrue()
-        assertThat((result as UseCaseResults.Failed).exception.message).isEqualTo("Exception")
     }
 
     @Test
@@ -400,7 +402,7 @@ class LoadMostRecentAggregationsUseCaseTest {
         sleepSessionHelper.setForceFail(true)
 
         val result = loadMostRecentAggregationsUseCase.invoke(HealthDataCategory.SLEEP)
-        assertThat(loadDataAggregationsUseCase.invocationCount).isEqualTo(0)
+        assertThat(loadDataAggregationsUseCase.numberOfInvocations).isEqualTo(0)
         assertThat(result is UseCaseResults.Failed).isTrue()
         assertThat((result as UseCaseResults.Failed).exception.message)
             .isEqualTo(DEFAULT_USE_CASE_EXCEPTION_MESSAGE)

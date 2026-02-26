@@ -25,7 +25,7 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import java.time.Duration.ofDays
 import java.time.Instant
 import javax.inject.Inject
@@ -141,8 +141,5 @@ data class LoadMenstruationDataInput(
     val showDataOrigin: Boolean,
 )
 
-interface ILoadMenstruationDataUseCase {
-    suspend fun invoke(input: LoadMenstruationDataInput): UseCaseResults<List<FormattedEntry>>
-
-    suspend fun execute(input: LoadMenstruationDataInput): List<FormattedEntry>
-}
+interface ILoadMenstruationDataUseCase :
+    UseCaseContract<LoadMenstruationDataInput, List<FormattedEntry>>
