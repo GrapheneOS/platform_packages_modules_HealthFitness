@@ -435,7 +435,6 @@ public class HealthConnectServiceImplTest {
             HEALTH_CONNECT_PHR_API_INVOKED__MEDICAL_RESOURCE_TYPE__MEDICAL_RESOURCE_TYPE_VACCINES;
     private static final int ALLERGIES_INVOKED =
             HEALTH_CONNECT_PHR_API_INVOKED__MEDICAL_RESOURCE_TYPE__MEDICAL_RESOURCE_TYPE_ALLERGIES_INTOLERANCES;
-    private static final UserHandle BACKGROUND_USER = UserHandle.of(11);
 
     @Rule public final SetFlagsRule mSetFlagsRule = new SetFlagsRule();
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();

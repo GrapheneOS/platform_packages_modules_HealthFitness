@@ -86,6 +86,14 @@ public class MultiProviderTest {
                     DeviceSupportUtils::isHealthConnectFullySupported,
                     "Tests should run on supported hardware only.");
 
+    // On a multi-user setup, the terminal will be executed by the secondary user. As HC API calls
+    // enforce that calls are coming from the foreground user (user 0), the tests fail.
+    // See b/486393299 for more details.
+    @Rule
+    public AssumptionCheckerRule mSystemUserRule =
+            new AssumptionCheckerRule(
+                    DeviceSupportUtils::isSystemUser, "Tests should run on system user only.");
+
     private static final String TEST_APP_NAME = "android.healthconnect.cts";
     private static final String SHELL_PACKAGE_NAME = "com.android.shell";
     private static final String DEVICE_DATA_PROVIDER_PACKAGE = "android";
