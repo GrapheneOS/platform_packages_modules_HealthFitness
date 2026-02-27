@@ -23,7 +23,7 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"選擇此應用程式可存取哪些健身和健康資料，包括此裝置所記錄和儲存的資料，<xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"選擇此應用程式可存取哪些健身和身心健康資料，包括此裝置所記錄和儲存的資料，<xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"選擇此應用程式可存取哪些健身和健康資料，包括此裝置所記錄和儲存的資料，<xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <string name="request_learn_more" msgid="563937923005882945">"進一步瞭解 Google 如何存取你的資料"</string>
+    <string name="request_learn_more" msgid="563937923005882945">"進一步瞭解資料存取方式"</string>
     <string name="settings_manage_permission" msgid="3585762257420446893">"健身和保健"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"健康、健身和身心健康"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"健身和健康"</string>

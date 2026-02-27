@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Alle apps"</string>
     <string name="can_read" msgid="4568261079308309564">"Mag gegevens van het type <xliff:g id="PERMISSION_TYPE">%s</xliff:g> lezen"</string>
     <string name="can_write" msgid="5082414937218423823">"Mag gegevens van het type <xliff:g id="PERMISSION_TYPE">%s</xliff:g> schrijven"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"Inactieve apps"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Deze apps kunnen geen gegevens van het type <xliff:g id="DATA_TYPE">%s</xliff:g> meer lezen of schrijven, maar hebben nog steeds gegevens opgeslagen in Health Connect"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"Apps kunnen <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> niet meer lezen of schrijven en er worden geen gegevens voor <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> opgeslagen in Health Connect"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Deze gegevens omvatten informatie zoals tijd actief, type beweging, ronden, herhalingen, sessies of zwemslagen"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Deze gegevens omvatten informatie zoals slaapfasen en slaapsessies"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Alle vermeldingen bekijken"</string>
@@ -331,7 +334,7 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"huidtemperatuur"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Huidtemperatuur lezen"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Huidtemperatuur schrijven"</string>
-    <string name="browse_health_records_intro" msgid="6883015193140441521">"Dit omvat alle medische dossiers die zijn gesynchroniseerd met en toegevoegd aan Health Connect. Dit is misschien niet je volledige medische dossier en dit bevat geen medische beschrijving van je medische dossiers."</string>
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"Dit omvat alle medisch dossiers die zijn gesynchroniseerd met en toegevoegd aan Health Connect. Dit is misschien niet je volledige medisch dossier en dit bevat geen medische beschrijving van je medisch dossiers."</string>
     <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"Alle medische dossiers"</string>
     <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"alle medische dossiers"</string>
     <string name="all_medical_data_content_description" msgid="3454355551506537094">"Alle medische dossiers schrijven"</string>
@@ -1336,8 +1339,7 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Apparaatgegevens"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Apparaat beheren"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Apparaatgegevens bekijken"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Synchroniseren met Health Connect"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Op je telefoon bijgehouden stappen worden getoond in Health Connect"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Stappen die door dit apparaat worden bijgehouden, worden nu opgeslagen in Health Connect, zodat gekoppelde apps er toegang toe hebben"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Sluiten"</string>
@@ -1349,7 +1351,8 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Voorkeuren"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Met Health Connect kun je je gezondheids- en fitnessgegevens delen tussen meerdere gegevensbronnen. Zo kun je inzichten en functionaliteiten mogelijk maken terwijl je gegevens beveiligd blijven."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Meer informatie over Health Connect"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Je gegevens en welke apps er toegang toe hebben"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"Apps die je gegevens recent hebben gebruikt"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Check welke apparaten toegang hebben tot gezondheidsgegevens"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Installeer apps die werken met Health Connect om ze hier te zien"</string>

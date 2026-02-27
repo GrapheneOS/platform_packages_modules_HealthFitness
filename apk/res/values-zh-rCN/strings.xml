@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"所有应用"</string>
     <string name="can_read" msgid="4568261079308309564">"可以读取<xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"可以写入<xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"非活跃应用"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"这些应用无法继续读取或写入<xliff:g id="DATA_TYPE">%s</xliff:g>数据，但仍有数据存储在“健康数据共享”中"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"应用无法再读取或写入<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>数据，并且健康数据共享中没有存储任何<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>数据"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"此数据包含运动时间、锻炼类型、趟数、重复次数、时段或游泳动作等信息"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"此数据包含睡眠阶段和睡眠时段等信息"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"查看所有条目"</string>
@@ -126,7 +129,7 @@
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"允许此应用在您未使用它时访问此类数据"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"允许此应用在您未使用它时访问此类数据"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"在后台访问数据"</string>
-    <string name="background_read_combined_request_description" msgid="2423480522986545286">"允许此应用在您未使用它时访问“健康数据共享”数据"</string>
+    <string name="background_read_combined_request_description" msgid="2423480522986545286">"允许此应用在非使用状态下访问“健康数据共享”数据"</string>
     <string name="history_read_medical_combined_request_title" msgid="1262267962861942478">"访问过往的健身与健康数据"</string>
     <string name="history_read_medical_combined_request_description" msgid="7550922315652791771">"允许此应用访问在<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>之前添加的数据"</string>
     <string name="history_read_medical_combined_request_description_fallback" msgid="3567968660826834911">"允许此应用访问所有过往数据"</string>
@@ -142,7 +145,7 @@
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"允许此应用在您未使用它时访问此类数据"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"允许此应用在您未使用它时访问此类数据"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"在后台访问数据"</string>
-    <string name="background_read_access_description" msgid="2360433029368320323">"允许此应用在您未使用它时访问“健康数据共享”数据"</string>
+    <string name="background_read_access_description" msgid="2360433029368320323">"允许此应用在非使用状态下访问“健康数据共享”数据"</string>
     <string name="history_read_medical_access_title" msgid="1375462150672418692">"访问过往的健身与健康数据"</string>
     <string name="history_read_medical_access_description" msgid="5615959269427106141">"允许此应用访问在<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>之前添加的数据"</string>
     <string name="history_read_medical_access_description_fallback" msgid="3888547064992673535">"允许此应用访问所有过往数据"</string>
@@ -429,7 +432,7 @@
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"要分享的数据包括"</string>
     <string name="medical_request_summary" msgid="553735170968628758">"如果您允许，“<xliff:g id="APP_NAME">%1$s</xliff:g>”将可以与“健康数据共享”分享您的医疗记录。"</string>
     <string name="medical_request_footer" msgid="157243861031258933">"同步来自不同应用和来源的医疗记录，将其集中存放在一个位置"</string>
-    <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"要撤消所有权限吗？"</string>
+    <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"要撤销所有权限吗？"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"全部撤销"</string>
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"“<xliff:g id="APP_NAME">%1$s</xliff:g>”将无法再读取“健康数据共享”中的任何数据或向其中写入数据。\n\n这不会影响此应用可能拥有的其他权限，例如相机、麦克风或位置信息权限。"</string>
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"“<xliff:g id="APP_NAME">%1$s</xliff:g>”将无法再读取“健康数据共享”中的任何数据或向其中写入数据，包括后台数据。\n\n这不会影响此应用可能拥有的其他权限，例如位置信息、摄像头或麦克风使用权。"</string>
@@ -484,7 +487,7 @@
     <string name="delete_app_data" msgid="6890357774873859952">"删除应用数据"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"非活跃应用"</string>
     <string name="inactive_apps_section_message" msgid="2610789262055974739">"这些应用已经没有访问权限，但仍有数据存储在健康数据共享中"</string>
-    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"“<xliff:g id="APP_NAME">%1$s</xliff:g>”可以读取 <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>之后添加的数据"</string>
+    <string name="manage_permissions_time_frame" msgid="1299483940842401923">"“<xliff:g id="APP_NAME">%1$s</xliff:g>”可以读取<xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>之后添加的数据"</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"如需管理此应用的其他 Android 权限，请依次进入“设置”&gt;“应用”"</string>
     <string name="manage_permissions_rationale" msgid="2780008055185441703">"您可在相应开发者的隐私权政策中了解“<xliff:g id="APP_NAME">%1$s</xliff:g>”会如何处理您的数据"</string>
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"如需管理此应用的其他 Android 权限，请进入“设置”，然后点按“应用”"</string>
@@ -1202,7 +1205,7 @@
     <string name="remove" msgid="1340423400489007362">"移除"</string>
     <string name="app_data_title" msgid="6499967982291000837">"应用数据"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"来自“<xliff:g id="APP_NAME">%1$s</xliff:g>”的数据将显示在此处"</string>
-    <string name="all_data_no_data_footer" msgid="2553443887019153340">"具有“健康数据共享”访问权限的应用写入的数据会显示在这里"</string>
+    <string name="all_data_no_data_footer" msgid="2553443887019153340">"如果应用具有“健康数据共享”访问权限，则其写入的数据会显示在此处"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"日"</string>
     <string name="date_picker_week" msgid="1038805538316142229">"周"</string>
     <string name="date_picker_month" msgid="3560692391260778560">"月"</string>
@@ -1336,20 +1339,20 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"设备数据"</string>
     <string name="device_data_label" msgid="2056618513138892435">"管理设备"</string>
     <string name="device_data_button" msgid="8002406105399136401">"查看设备数据"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"同步到“健康数据共享”"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"手机跟踪的步数将显示在“健康数据共享”中"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"此设备跟踪的步数现已存储在“健康数据共享”中，可供关联的应用访问"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"关闭"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"查看"</string>
     <string name="native_steps_notification_title" msgid="9173169256837064455">"步数现已存储在“健康数据共享”中"</string>
     <string name="native_steps_notification_content" msgid="7752396476899221256">"此设备跟踪的步数现已存储在“健康数据共享”中，可供关联的应用访问"</string>
-    <string name="your_health_apps_category_title" msgid="2140744650535785802">"您的健康类应用"</string>
-    <string name="your_health_data_category_title" msgid="7049426060456828669">"您的健康数据"</string>
+    <string name="your_health_apps_category_title" msgid="2140744650535785802">"健康类应用"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"健康数据"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"偏好设置"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"“健康数据共享”可让您在多个数据源之间共享健康与健身数据，从而助您解锁更多分析洞见和体验，同时保障数据安全。"</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"详细了解“健康数据共享”"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"您的数据及可以访问这些数据的应用"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"近期使用过您数据的应用"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"查看可以访问健康数据的设备"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"安装可与“健康数据共享”搭配使用的应用，即可在此处查看这些应用的数据"</string>

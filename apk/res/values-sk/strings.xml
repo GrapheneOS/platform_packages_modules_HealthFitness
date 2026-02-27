@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Všetky aplikácie"</string>
     <string name="can_read" msgid="4568261079308309564">"Môže čítať údaje typu <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Môže zapisovať údaje typu <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"Neaktívne aplikácie"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Tieto aplikácie už nemôžu čítať ani zapisovať údaje typu <xliff:g id="DATA_TYPE">%s</xliff:g>, ale stále majú údaje uložené v Dátach o zdraví"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"Aplikácie už nemôžu čítať ani zapisovať údaje typu<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>. V Dátach o zdraví nie sú uložené žiadne údaje typu <xliff:g id="DATA_TYPE_2">%2$s</xliff:g>."</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Tieto údaje zahrnujú informácie ako čas aktivity, typ cvičenia, kolá, opakovania, série alebo plavecké tempá"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Tieto údaje zahrnujú informácie ako fázy a relácie spánku"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Zobraziť všetky záznamy"</string>
@@ -410,11 +413,9 @@
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikácie, ktoré môžu synchronizovať tieto údaje"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Zariadenia, ktoré môžu synchronizovať tieto údaje"</string>
     <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Toto povolíte v nastaveniach zariadenia"</string>
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Povoliť všetky povolenia aplikácie <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Prečítajte si, ako <xliff:g id="APP_NAME">%1$s</xliff:g> používa vaše údaje, v jej "<a href="%2$s">"pravidlách ochrany súkromia"</a>"."</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Dáta o zdraví umožňujú zdieľať údaje o zdraví a kondícii medzi viacerými aplikáciami. Pomôže vám to získať prehľad a zlepšiť fukčnosť aplikácie bez ohrozenia bezpečnosti údajov."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Ďalšie informácie o Dátach o zdraví"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"rozbaliť"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"zbaliť"</string>
@@ -1227,8 +1228,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Zvýšte zabezpečenie svojich zdravotných dát nastavením kódu PIN, vzoru alebo hesla pre toto zariadenie"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Nastaviť zámku obrazovky"</string>
     <string name="select_all" msgid="837499881590001166">"Vybrať všetko"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"vybrať"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Pripojené aplikácie už nebudú môcť čítať tieto údaje z Dát o zdraví"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Začiarknuté"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Nezačiarknuté"</string>
@@ -1276,7 +1276,7 @@
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"<xliff:g id="APP_NAME">%1$s</xliff:g> žiada o prístup k údajom typu <xliff:g id="DATA_TYPES">%2$s</xliff:g>.\n\nUdeľte všetky povolenia alebo ich ovládajte individuálne."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Chcete povoliť aplikácii <xliff:g id="APP_NAME">%1$s</xliff:g> prístup k údajom typu <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Kondícia a zdravie"</string>
-    <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Po celý čas"</string>
+    <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Neustále"</string>
     <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"Počas používania aplikácie"</string>
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"Aplikácia <xliff:g id="APP_NAME">%1$s</xliff:g> má nepretržitý prístup k všetkým vašim údajom o kondícii a zdraví"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"Aplikácia <xliff:g id="APP_NAME">%1$s</xliff:g> má počas používania prístup k všetkým vašim údajom o kondícii a zdraví"</string>
@@ -1332,41 +1332,35 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Aktuálne zariadenie"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Neznáme zariadenie"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Informácie o zariadení"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"Údaje zhromaždené týmto zariadením sa budú ukladať v Dátach o zdraví, kde k nim budú mať prístup pripojené aplikácie"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"Toto zariadenie nepodporuje sledovanie krokov, ale stále má údaje uložené v Dátach o zdraví"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Toto zariadenie nesleduje kroky"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Môže zapisovať"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Dáta zo zariadenia"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Správa zariadenia"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Zobraziť dáta zo zariadenia"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Synchronizovať s Dátami o zdraví"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Kroky sledované v telefóne sa budú zobrazovať v Dátach o zdraví"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Kroky sledované týmto zariadením sa teraz ukladajú v Dátach o zdraví, aby k nim mali prístup pripojené aplikácie"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Zavrieť"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Skontrolovať"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"Kroky sú teraz v Dátach o zdraví"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"Kroky sledované týmto zariadením sa teraz ukladajú v Dátach o zdraví, aby k nim mali prístup pripojené aplikácie"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Vaše zdravotné aplikácie"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Vaše zdravotné údaje"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Predvoľby"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Dáta o zdraví umožňujú zdieľať údaje o zdraví a kondícii medzi viacerými zdrojmi údajov. Pomôže vám to získať prehľad a zlepšiť fukčnosť aplikácie bez ohrozenia bezpečnosti údajov."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Ďalšie informácie o Dátach o zdraví"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Vaše údaje a aplikácie, ktoré k nim majú prístup"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"Aplikácie, ktoré nedávno použili vaše údaje"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Skontrolujte zariadenia, ktoré majú prístup k zdravotným údajom"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Keď si nainštalujete nejaké aplikácie, kompatibilné s Dátami o zdraví, uvidíte ich tu"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Zobraziť kompatibilné aplikácie"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Zobraziť ďalšie zdravotné aplikácie"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Nepripojená"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"Kliknutím pripojíte túto aplikáciu k Dátam o zdraví"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"Ovládajte, ktoré zariadenia môžu synchronizovať údaje s Dátami o zdraví"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Aktívne"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Neaktívne"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Tento telefón"</string>
@@ -1396,10 +1390,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Zapisovať údaje o akné"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Čítať údaje o lámavých nechtoch"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Zapisovať údaje o lámavých nechtoch"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"Čítať údaje o pálení v ústach"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"Zapisovať údaje o pálení v ústach"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"Čítať údaje o zimnici"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Zapisovať údaje o zimnici"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Čítať údaje o dehydratácii"</string>

@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Sve aplikacije"</string>
     <string name="can_read" msgid="4568261079308309564">"Može čitati <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Može bilježiti <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"Neaktivne aplikacije"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Ove aplikacije više ne mogu čitati ni bilježiti <xliff:g id="DATA_TYPE">%s</xliff:g>, no i dalje imaju pohranjene te podatke na Health Connectu"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"Aplikacije više ne mogu čitati niti bilježiti <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>, a u Health Connectu nisu pohranjeni podaci za <xliff:g id="DATA_TYPE_2">%2$s</xliff:g>"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Ovi podaci uključuju informacije kao što su aktivno vrijeme, vrsta vježbe, krugovi, ponavljanja, sesije ili plivački zamasi"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Ovi podaci uključuju informacije kao što su faze spavanja i sesije spavanja"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Pogledajte sve unose"</string>
@@ -410,11 +413,9 @@
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"Aplikacije koje mogu sinkronizirati te podatke"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Uređaji koji mogu sinkronizirati te podatke"</string>
     <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Nastavite na postavke uređaja da biste to omogućili"</string>
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Dopusti sva dopuštenja za aplikaciju <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Saznajte kako aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> upotrebljava vaše podatke u svojim "<a href="%2$s">"pravilima o privatnosti"</a>"."</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect omogućuje vam dijeljenje podataka o zdravlju i fitnessu iz više izvora podataka. Na taj način dobivate pristup uvidima i doživljajima, a vaši su podaci sigurni."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Više o Health Connectu"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"proširi"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"sažmi"</string>
@@ -436,7 +437,7 @@
     <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti bilježiti podatke iz Health Connecta.\n\nTo ne utječe na druga dopuštenja dodijeljena ovoj aplikaciji kao što su pristup kameri, mikrofonu ili lokaciji."</string>
     <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti bilježiti podatke iz Health Connecta, uključujući pozadinske podatke.\n\nTo ne utječe na druga dopuštenja dodijeljena ovoj aplikaciji kao što su pristup lokaciji, kameri ili mikrofonu."</string>
     <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti bilježiti podatke iz Health Connecta, uključujući prethodne podatke.\n\nTo ne utječe na druga dopuštenja koja ova aplikacija može imati, kao što su lokacija, fotoaparat ili mikrofon."</string>
-    <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"Aplikacija <xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti bilježiti podatke iz Health Connecta, uključujući pozadinske podatke ili prethodne podatke.\n\nTo ne utječe na druga dopuštenja koja ova aplikacija može imati, kao što su dopuštenja za upotrebu lokacije, kamere ili mikrofona."</string>
+    <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"<xliff:g id="APP_NAME">%1$s</xliff:g> više neće moći čitati niti bilježiti podatke iz Health Connecta, uključujući pozadinske ili prošle podatke.\n\nTo ne utječe na druga dopuštenja te aplikacije, poput dopuštenja za upotrebu lokacije, kamere ili mikrofona."</string>
     <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Izbriši i podatke aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g> iz Health Connecta"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Želite li ukloniti sva dopuštenja za fitness i opće stanje?"</string>
     <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Izbriši i podatke o fitnessu iz aplikacije <xliff:g id="APP_NAME">%1$s</xliff:g> iz Health Connecta"</string>
@@ -1227,8 +1228,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Da biste dodatno zaštitili svoje zdravstvene podatke, postavite PIN, uzorak ili zaporku za ovaj uređaj"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Postavite zaključavanje"</string>
     <string name="select_all" msgid="837499881590001166">"Odaberi sve"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"odaberi"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Povezane aplikacije više neće moći čitati te podatke iz Health Connecta"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Potvrđeno"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Nije potvrđeno"</string>
@@ -1332,41 +1332,35 @@
     <string name="devices_current_device" msgid="6388308185566619743">"Trenutačni uređaj"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Nepoznati uređaj"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Informacije o uređaju"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"Podaci koje prikupi ovaj uređaj pohranjivat će se u Health Connectu, gdje će im pristupati povezane aplikacije"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"Ovaj uređaj ne podržava praćenje koraka, no i dalje ima podatke pohranjene u Health Connectu"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Ovaj uređaj ne prati korake"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Ima dopuštenje za bilježenje"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Podaci o uređaju"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Upravljanje uređajem"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Prikaži podatke o uređaju"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Sinkroniziraj s Health Connectom"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Koraci praćeni na telefonu prikazat će se u Health Connectu"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Koraci praćeni na ovom uređaju sada se pohranjuju u Health Connect kako bi im povezane aplikacije mogle pristupiti"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Odbaci"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Pregledajte"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"Koraci su sada u Health Connectu"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"Koraci praćeni na ovom uređaju sada se pohranjuju u Health Connect kako bi im povezane aplikacije mogle pristupiti"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Vaše aplikacije za zdravlje"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Vaši podaci o zdravlju"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Postavke"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect omogućuje vam dijeljenje podataka o zdravlju i fitnessu s više izvora podataka. Na taj način dobivate pristup uvidima i doživljajima, a vaši su podaci sigurni."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Više o Health Connectu"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Vaši podaci i koje im aplikacije mogu pristupiti"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"Aplikacije koje su nedavno upotrebljavale vaše podatke"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Pregledajte uređaje koji mogu pristupati podacima o zdravlju"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Instalirajte aplikacije koje funkcioniraju s Health Connectom da biste ih vidjeli ovdje"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Prikaži kompatibilne aplikacije"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Prikaži više aplikacija za zdravlje"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Nije povezano"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"Kliknite da biste ovu aplikaciju povezali s Health Connectom"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"Odredite koji uređaji mogu sinkronizirati podatke s Health Connectom"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Omogućeno"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Nije omogućeno"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Ovaj telefon"</string>
@@ -1396,10 +1390,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"Upiši podatke o aknama"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"Čitaj podatke o lomljivim noktima"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"Upiši podatke o lomljivim noktima"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"Čitaj podatke o pečenju u ustima"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"Upiši podatke o pečenju u ustima"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"Čitaj podatke o zimici"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"Upiši podatke o zimici"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"Čitaj podatke o dehidraciji"</string>

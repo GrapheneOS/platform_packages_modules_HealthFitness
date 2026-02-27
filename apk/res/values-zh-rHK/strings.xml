@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"所有應用程式"</string>
     <string name="can_read" msgid="4568261079308309564">"可以讀取<xliff:g id="PERMISSION_TYPE">%s</xliff:g>資料"</string>
     <string name="can_write" msgid="5082414937218423823">"可以寫入<xliff:g id="PERMISSION_TYPE">%s</xliff:g>資料"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"已停用的應用程式"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"這些應用程式無法再讀取或寫入<xliff:g id="DATA_TYPE">%s</xliff:g>，但仍有資料儲存在「健康資料同步」"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"應用程式無法再於 Health Connect 中讀取或寫入<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>資料，而且 Health Connect 亦沒有儲存任何<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>資料"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"此資料包括活動時間、運動類型、圈數、重複次數、時段、泳式等資料"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"此資料包括睡眠階段和睡眠時段"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"查看所有資料"</string>
@@ -412,7 +415,7 @@
     <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"繼續前往裝置偏好設定以啟用"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"允許所有「<xliff:g id="APP_NAME">%1$s</xliff:g>」權限"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"查看《"<a href="%2$s">"私隱權政策"</a>"》以瞭解「<xliff:g id="APP_NAME">%1$s</xliff:g>」如何使用你的資料。"</string>
-    <string name="matchmaking_screen_footer" msgid="986685221263640285">"你可以透過「健康資料同步」，共用不同來源的健康與健身資料，從中取得深入分析、享受優質體驗，同時確保資料安全。"</string>
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"「健康資料同步」讓你在多個資料來源之間分享健康和健身資料，協助你取得分析資料和盡享更優質的體驗，同時保障你的資料安全。"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"進一步瞭解「健康資料同步」"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"打開"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"收埋"</string>
@@ -1225,7 +1228,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"為進一步保障健康資料安全，請為此裝置設定 PIN、圖案或密碼"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"設定螢幕鎖定"</string>
     <string name="select_all" msgid="837499881590001166">"全部選取"</string>
-    <string name="a11y_action_select" msgid="8149815243533964711">"選取"</string>
+    <string name="a11y_action_select" msgid="8149815243533964711">"揀"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"已連結的應用程式將無法在「健康資料同步」中讀取這些資料"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"已勾選"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"未勾選"</string>
@@ -1329,35 +1332,35 @@
     <string name="devices_current_device" msgid="6388308185566619743">"目前使用的裝置"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"不明裝置"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"裝置資訊"</string>
-    <string name="device_management_screen_footer" msgid="6798880518173922679">"這部裝置收集的資料會儲存在「健康資料同步」，連結的應用程式將可存取這些資料"</string>
-    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"這部裝置無法追蹤步數，但仍有資料儲存在「健康資料同步」"</string>
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"此裝置收集的資料會儲存於「健康資料同步」，然後連結的應用程式會在「健康資料同步」中存取有關資料"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"此裝置不支援步數追蹤功能，但仍有資料儲存於「健康資料同步」中"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"此裝置不追蹤步數"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"允許寫入"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"裝置資料"</string>
     <string name="device_data_label" msgid="2056618513138892435">"管理裝置"</string>
     <string name="device_data_button" msgid="8002406105399136401">"查看裝置資料"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"同步至「健康資料同步」"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"手機追蹤的步數會在「健康資料同步」中顯示"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"此裝置追蹤的步數現已儲存於「健康資料同步」，以供連結的應用程式存取"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"關閉"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"查看"</string>
-    <string name="native_steps_notification_title" msgid="9173169256837064455">"步數資料現已儲存在「健康資料同步」"</string>
-    <string name="native_steps_notification_content" msgid="7752396476899221256">"這部裝置記錄的步數現在會儲存在「健康資料同步」，供連結的應用程式存取"</string>
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"現在「健康資料同步」會顯示步數"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"此裝置追蹤的步數現已儲存於「健康資料同步」，以供連結的應用程式存取"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"你的健康應用程式"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"你的健康資料"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"偏好設定"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"「健康資料同步」讓你在多個資料來源之間分享健康和健身資料，協助你取得分析資料和盡享更優質的體驗，同時保障你的資料安全。"</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"進一步瞭解「健康資料同步」"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"你的資料，以及可存取資料的應用程式"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"近期使用過你資料的應用程式"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"查看可存取健康資料的應用程式"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"安裝適用於「健康資料同步」的應用程式，就可以在這裡查看相關資料"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"查看兼容的應用程式"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"查看更多健康應用程式"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"未連接"</string>
-    <string name="connect_app_button_content_description" msgid="8652692724367722351">"點選即可將這個應用程式連結至「健康資料同步」"</string>
-    <string name="devices_screen_description" msgid="5009317766902606842">"控管哪些裝置可以將資料同步到「健康資料同步」"</string>
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"㩒一下就可以將呢個應用程式連結去「健康資料同步」"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"控制哪些裝置可將資料同步至「健康資料同步」"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"已啟用"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"未啟用"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"這部手機"</string>
@@ -1387,8 +1390,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"寫入暗瘡資料"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"讀取脆甲資料"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"寫入脆甲資料"</string>
-    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"讀取「口腔灼熱」資料"</string>
-    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"寫入「口腔灼熱」資料"</string>
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"讀取口腔灼熱資料"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"寫入口腔灼熱資料"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"讀取發冷資料"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"寫入發冷資料"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"讀取脫水資料"</string>

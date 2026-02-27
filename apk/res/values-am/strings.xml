@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"ሁሉም መተግበሪያዎች"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g>ን ማንበብ ይችላል"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g>ን መጻፍ ይችላል"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"የቦዘኑ መተግበሪያዎች"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"እነዚህ መተግበሪያዎች ከእንግዲህ <xliff:g id="DATA_TYPE">%s</xliff:g>ን ማንበብ ወይም መጻፍ አይችሉም ነገር ግን አሁንም በጤና አገናኝ ውስጥ የተከማቸ ውሂብ አላቸው"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"መተግበሪያዎች ከእንግዲህ <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>ን ማንበብ ወይም መጻፍ አይችሉም እና በHealth Connect ውስጥ የተከማቸ ምንም የ<xliff:g id="DATA_TYPE_2">%2$s</xliff:g> ውሂብ የለም"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"ይህ ውሂብ እንደ ገቢር የሆነበት ጊዜ፣ የልምምድ ዓይነት፣ ዙሮች፣ ድግግሞሾች፣ ክፍለ-ጊዜዎች ወይም የዋና ቀዘፋዎች ያለ መረጃን ያካትታል"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"ይህ ውሂብ እንደ የእንቅልፍ ደረጃዎች እና የእንቅልፍ ክፍለ-ጊዜዎች ያለ መረጃን ያካትታል"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"ሁሉንም ግቤቶች አሳይ"</string>
@@ -410,11 +413,9 @@
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"ይህን ውሂብ ማስመር የሚችሉ መተግበሪያዎች"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"ይህን ውሂብ ማሥመር የሚችሉ መሣሪያዎች"</string>
     <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"ለማንቃት ወደ የመሣሪያ ምርጫዎች ይቀጥሉ"</string>
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"ሁሉንም <xliff:g id="APP_NAME">%1$s</xliff:g> ፈቃዶች ይፍቀዱ"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"እንዴት <xliff:g id="APP_NAME">%1$s</xliff:g> ውሂብዎን በእነሱ "<a href="%2$s">"የግላዊነት መመሪያ"</a>" ውስጥ እንደሚጠቀም ይወቁ።"</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"የጤና አገናኝ የጤና እና የአካል ብቃት ውሂብዎን በበርካታ የውሂብ ምንጮች መካከል እንዲያጋሩ ያስችልዎታል። ይህ የውሂብዎ ደኅንነት ተጠብቆ ሳለ ግንዛቤዎችን እና ተሞክሮዎችን ለመክፈት ያግዝዎታል።"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"ስለ የጤና አገናኝ ተጨማሪ"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"ዘርጋ"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"ሰብስብ"</string>
@@ -1227,8 +1228,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"ለጤና ውሂብዎ ተጨማሪ ደህንነት ሲባል፣ ለዚህ መሣሪያ ፒን፣ ሥርዓተ ጥለት ወይም የይለፍ ቃል ያቀናብሩ"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"ማያ ገፅ መቆለፊያውን አቀናብር"</string>
     <string name="select_all" msgid="837499881590001166">"ሁሉንም ምረጥ"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"ምረጥ"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"የተገናኙ መተግበሪያዎች ከእንግዲህ ይህን ውሂብ ከጤና አገናኝ መድረስ አይችሉም"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"ምልክት ተደርጎበታል"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"ምልክት አልተደረገበትም"</string>
@@ -1332,41 +1332,35 @@
     <string name="devices_current_device" msgid="6388308185566619743">"የአሁኑ መሣሪያ"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"ያልታወቀ መሣሪያ"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"የመሣሪያ መረጃ"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"በዚህ መሣሪያ የተሰበሰብ ውሂብ በጤና አገናኝ ውስጥ ይከማቻል፣ የተገናኙ መተግበሪያዎችም ይደርሱታል"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"ይህ መሣሪያ የእርምጃ መከታተልን አይደግፍም፣ ነገር ግን አሁንም የጤና አገናኝ ውስጥ የተከማቸ ውሂብ አለው"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"ይህ መሣሪያ እርምጃዎችን አይከታተልም"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"ለመፃፍ የተፈቀደለት"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"የመሣሪያ ውሂብ"</string>
     <string name="device_data_label" msgid="2056618513138892435">"መሣሪያን አስተዳድር"</string>
     <string name="device_data_button" msgid="8002406105399136401">"የመሣሪያ ውሂብ አሳይ"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"ከጤና አገናኝ ጋር አሥምር"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"በስልክዎ ላይ ክትትል የተደረገባቸው እርምጃዎች የጤና አገናኝ ውስጥ ይታያሉ"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"በዚህ መሣሪያ ክትትል የተደረገባቸው እርምጃዎች አሁን የተገናኙ መተግበሪያዎች እንዲደርሷቸው የጤና አገናኝ ውስጥ ይቀመጣሉ"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"አሰናብት"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"ገምግም"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"እርምጃዎች አሁን የጤና አገናኝ ውስጥ ናቸው"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"በዚህ መሣሪያ ክትትል የተደረገባቸው እርምጃዎች አሁን የተገናኙ መተግበሪያዎች እንዲደርሷቸው የጤና አገናኝ ውስጥ ይቀመጣሉ"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"የጤና መተግበሪያዎችዎ"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"የጤና ውሂብዎ"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"ምርጫዎች"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"የጤና አገናኝ የጤና እና የአካል ብቃት ውሂብዎን በበርካታ የውሂብ ምንጮች መካከል እንዲያጋሩ ያስችልዎታል። ይህ የውሂብዎ ደኅንነት ተጠብቆ ሳለ ግንዛቤዎችን እና ተሞክሮዎችን ለመክፈት ያግዝዎታል።"</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"ስለ የጤና አገናኝ ተጨማሪ"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"ውሂብዎ እና የትኛዎቹ መተግበሪያዎች ሊደርሱት እንደሚችሉ"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"በቅርቡ ውሂብዎን የተጠቀሙ መተግበሪያዎች"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"የጤና ውሂብን መድረስ የሚችሉ መሣሪያዎችን ይገምግሙ"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"እዚህ ለማየት ከጤና አገናኝ ጋር የሚሰሩ መተግበሪያዎችን ይጫኑ"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"ተኳዃኝ መተግበሪያዎችን ይመልከቱ"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"ተጨማሪ የጤና መተግበሪያዎችን ይመልከቱ"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"አልተገናኘም"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"ይህን መተግበሪያ ከጤና አገናኝ ጋር ለማገናኘት ጠቅ ያድርጉ"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"የትኛዎቹ መሣሪያዎች ውሂብን ከጤና አገናኝ ጋር ማሥመር እንደሚችሉ ይቆጣጠሩ"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"ነቅቷል"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"አልነቃም"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"ይህ ስልክ"</string>
@@ -1396,10 +1390,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"ብጉርን ጻፍ"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"የተጎዱ ጥፍሮችን አንብብ"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"የተጎዱ ጥፍሮች ጻፍ"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"የሚያቃጥል አፍን አንብብ"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"የሚያቃጥል አፍ ጻፍ"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"ብርድ ብርድ ማለትን አንብብ"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"ብርድ ብርድ ማለትን ጻፍ"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"ውሃ ማጣትን አንብብ"</string>

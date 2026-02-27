@@ -23,8 +23,7 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"Chagua data ya siha na mazoezi ambayo programu hii inaweza kufikia. Hii ni pamoja na data inayofuatiliwa na kuhifadhiwa kwenye kifaa hiki, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"Chagua data ya siha na mazoezi ambayo programu hii inaweza kufikia. Hii ni pamoja na data inayofuatiliwa na kuhifadhiwa kwenye kifaa hiki, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"Chagua data ya siha na mazoezi ambayo programu hii inaweza kufikia. Hii ni pamoja na data inayofuatiliwa na kuhifadhiwa kwenye kifaa hiki, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for request_learn_more (563937923005882945) -->
-    <skip />
+    <string name="request_learn_more" msgid="563937923005882945">"pata maelezo zaidi kuhusu jinsi data yako inavyofikiwa"</string>
     <string name="settings_manage_permission" msgid="3585762257420446893">"Afya, mazoezi na siha"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"Afya, mazoezi na siha"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"Mazoezi na siha"</string>

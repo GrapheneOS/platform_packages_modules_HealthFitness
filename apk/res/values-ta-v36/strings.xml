@@ -23,8 +23,7 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"இந்த ஆப்ஸ் எந்தெந்த ஃபிட்னஸ் மற்றும் ஆரோக்கியத் தரவை அணுகலாம் என்பதைத் தேர்ந்தெடுங்கள். இந்தச் சாதனத்தில் கண்காணிக்கப்படும் தரவும் சேமிக்கப்படும் தரவும் இதிலடங்கும், <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"இந்த ஆப்ஸ் எந்தெந்த ஃபிட்னஸ் மற்றும் ஆரோக்கியத் தரவை அணுகலாம் என்பதைத் தேர்ந்தெடுங்கள். இந்தச் சாதனத்தில் கண்காணிக்கப்படும் தரவும் சேமிக்கப்படும் தரவும் இதிலடங்கும், <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"இந்த ஆப்ஸ் எந்தெந்த ஃபிட்னஸ் மற்றும் ஆரோக்கியத் தரவை அணுகலாம் என்பதைத் தேர்ந்தெடுங்கள். இந்தச் சாதனத்தில் கண்காணிக்கப்படும் தரவும் சேமிக்கப்படும் தரவும் இதிலடங்கும், <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for request_learn_more (563937923005882945) -->
-    <skip />
+    <string name="request_learn_more" msgid="563937923005882945">"உங்கள் தரவு அணுகப்படும் விதம் பற்றி மேலும் தெரிந்துகொள்ளுங்கள்"</string>
     <string name="settings_manage_permission" msgid="3585762257420446893">"உடல்நலம், ஃபிட்னஸ் மற்றும் ஆரோக்கியம்"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"உடல்நலம், ஃபிட்னஸ் மற்றும் ஆரோக்கியம்"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"ஃபிட்னஸ் மற்றும் ஆரோக்கியம்"</string>

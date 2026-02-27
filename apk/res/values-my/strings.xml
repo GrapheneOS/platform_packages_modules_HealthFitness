@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"အက်ပ်အားလုံး"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ကို ဖတ်နိုင်သည်"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ကို ရေးနိုင်သည်"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"အသုံးမပြုသော အက်ပ်များ"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"ဤအက်ပ်များက <xliff:g id="DATA_TYPE">%s</xliff:g> ကို မဖတ်နိုင် (သို့) မရေးနိုင်တော့သော်လည်း Health Connect တွင် ဒေတာများ သိမ်းထားသေးသည်"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"အက်ပ်များသည် <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> ကို ဖတ်နိုင် (သို့) ရေးနိုင်တော့မည်မဟုတ်ပါ။ Health Connect တွင် <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> ဒေတာများ သိမ်းထားခြင်းမရှိပါ"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"ဤဒေတာတွင် လှုပ်ရှားချိန်၊ လေ့ကျင့်ခန်းအမျိုးအစား၊ အကြိမ်ရေ၊ အကျော့ရေ၊ စက်ရှင် (သို့) ရေကူးခပ်သည့် အရေအတွက်များကဲ့သို့ အချက်အလက်များပါဝင်သည်"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"ဤဒေတာတွင် အိပ်စက်မှုဆိုင်ရာ အဆင့်နှင့် စက်ရှင်များကဲ့သို့ အချက်အလက်များပါဝင်သည်"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"ထည့်သွင်းမှုအားလုံးကြည့်ရန်"</string>
@@ -1336,8 +1339,7 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"ကိရိယာ ဒေတာ"</string>
     <string name="device_data_label" msgid="2056618513138892435">"စက်ပစ္စည်း စီမံရန်"</string>
     <string name="device_data_button" msgid="8002406105399136401">"စက်တွင်း ဒေတာ ကြည့်ရန်"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Health Connect သို့ စင့်ခ်လုပ်ရန်"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"သင့်ဖုန်း၌ ခြေရာခံထားသော ခြေလှမ်းများကို Health Connect တွင် မြင်ရပါမည်"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"ဤစက်က ခြေရာခံထားသော ခြေလှမ်းများကို ချိတ်ဆက်အက်ပ်များဖြင့် ဝင်ကြည့်နိုင်ရန်အတွက် Health Connect တွင် သိမ်းလိုက်ပါပြီ"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"ပယ်ရန်"</string>
@@ -1349,7 +1351,8 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"သတ်မှတ်ချက်များ"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect က သင့်ကျန်းမာရေးနှင့် ကြံ့ခိုင်ရေးဒေတာကို အက်ပ်များအကြား မျှဝေခွင့်ပြုသည်။ သင်က သိကောင်းစရာနှင့် အသုံးပြုနိုင်များကို ရယူနေချိန်တွင် သင့်ဒေတာကို လုံခြုံအောင်ထားပေးသည်။"</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect အကြောင်း ပိုမိုသိရှိရန်"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"သင့်ဒေတာနှင့် ၎င်းအားသုံးနိုင်သည့် အက်ပ်များ"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"သင့်ဒေတာကို လတ်တလောသုံးထားသည့် အက်ပ်များ"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"ကျန်းမာရေးဒေတာသုံးနိုင်သော စက်များကို ကြည့်ရန်"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect နှင့် တွဲသုံးနိုင်သော အက်ပ်များကို ဤနေရာတွင် မြင်ရရန် ထည့်သွင်းပါ"</string>
