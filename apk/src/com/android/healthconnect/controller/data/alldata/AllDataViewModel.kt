@@ -21,8 +21,9 @@ import android.health.connect.HealthDataCategory
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.data.appdata.AllDataUseCase
-import com.android.healthconnect.controller.data.appdata.PermissionTypesPerCategory
+import com.android.healthconnect.controller.data.alldata.api.IGetFitnessPermissionTypesWithDataUseCase
+import com.android.healthconnect.controller.data.alldata.api.IGetMedicalPermissionTypesWithDataUseCase
+import com.android.healthconnect.controller.data.api.PermissionTypesPerCategory
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.getAllSymptomPermissionTypes
 import com.android.healthconnect.controller.selectabledeletion.DeletionDataViewModel
@@ -34,12 +35,12 @@ import kotlinx.coroutines.launch
 
 /** View model for the [AllDataFragment] . */
 @HiltViewModel
-class AllDataViewModel @Inject constructor(private val loadAllDataUseCase: AllDataUseCase) :
-    DeletionDataViewModel() {
-
-    companion object {
-        private const val TAG = "AllDataViewModel"
-    }
+class AllDataViewModel
+@Inject
+constructor(
+    private val getFitnessPermissionTypesWithDataUseCase: IGetFitnessPermissionTypesWithDataUseCase,
+    private val getMedicalPermissionTypesWithDataUseCase: IGetMedicalPermissionTypesWithDataUseCase,
+) : DeletionDataViewModel() {
 
     private val _allData = MutableLiveData<AllDataState>()
 
@@ -62,7 +63,7 @@ class AllDataViewModel @Inject constructor(private val loadAllDataUseCase: AllDa
     fun loadAllFitnessData() {
         _allData.postValue(AllDataState.Loading)
         viewModelScope.launch {
-            when (val result = loadAllDataUseCase.loadAllFitnessData()) {
+            when (val result = getFitnessPermissionTypesWithDataUseCase.invoke(Unit)) {
                 is UseCaseResults.Success -> {
                     _allData.postValue(AllDataState.WithData(result.data))
                     numOfPermissionTypes = result.data.sumOf { it.data.size }
@@ -87,7 +88,7 @@ class AllDataViewModel @Inject constructor(private val loadAllDataUseCase: AllDa
     fun loadAllMedicalData() {
         _allData.postValue(AllDataState.Loading)
         viewModelScope.launch {
-            when (val result = loadAllDataUseCase.loadAllMedicalData()) {
+            when (val result = getMedicalPermissionTypesWithDataUseCase.invoke(Unit)) {
                 is UseCaseResults.Success -> {
                     _allData.postValue(AllDataState.WithData(result.data))
                     numOfPermissionTypes = result.data.sumOf { it.data.size }
@@ -102,8 +103,8 @@ class AllDataViewModel @Inject constructor(private val loadAllDataUseCase: AllDa
     fun loadAllFitnessAndMedicalData() {
         _allData.postValue(AllDataState.Loading)
         viewModelScope.launch {
-            val fitnessResult = loadAllDataUseCase.loadAllFitnessData()
-            val medicalResult = loadAllDataUseCase.loadAllMedicalData()
+            val fitnessResult = getFitnessPermissionTypesWithDataUseCase.invoke(Unit)
+            val medicalResult = getMedicalPermissionTypesWithDataUseCase.invoke(Unit)
 
             if (
                 fitnessResult is UseCaseResults.Success && medicalResult is UseCaseResults.Success

@@ -24,7 +24,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.data.appdata.AllDataUseCase
+import com.android.healthconnect.controller.data.alldata.api.HasFitnessDataUseCase
+import com.android.healthconnect.controller.data.alldata.api.HasMedicalDataUseCase
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.shared.Constants.LOCK_SCREEN_BANNER_SEEN_FITNESS
 import com.android.healthconnect.controller.shared.Constants.LOCK_SCREEN_BANNER_SEEN_MEDICAL
@@ -40,8 +41,9 @@ class HomeViewModel
 @Inject
 constructor(
     private val loadHealthPermissionApps: ILoadHealthPermissionApps,
-    private val loadAllDataUseCase: AllDataUseCase,
     private val keyguardManagerUtil: KeyguardManagerUtil,
+    private val hasFitnessDataUseCase: HasFitnessDataUseCase,
+    private val hasMedicalDataUseCase: HasMedicalDataUseCase,
 ) : ViewModel() {
 
     companion object {
@@ -89,7 +91,7 @@ constructor(
     fun loadHasAnyMedicalData() {
         _hasAnyMedicalData.postValue(false)
         viewModelScope.launch {
-            when (val result = loadAllDataUseCase.loadHasAnyMedicalData()) {
+            when (val result = hasMedicalDataUseCase.invoke(Unit)) {
                 is UseCaseResults.Success -> {
                     _hasAnyMedicalData.postValue(result.data)
                 }
@@ -114,7 +116,7 @@ constructor(
     private fun loadHasAnyFitnessData() {
         _hasAnyFitnessData.postValue(false)
         viewModelScope.launch {
-            when (val result = loadAllDataUseCase.loadHasAnyFitnessData()) {
+            when (val result = hasFitnessDataUseCase.invoke(Unit)) {
                 is UseCaseResults.Success -> {
                     _hasAnyFitnessData.postValue(result.data)
                 }

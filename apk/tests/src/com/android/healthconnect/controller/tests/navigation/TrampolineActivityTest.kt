@@ -38,7 +38,7 @@ import androidx.test.espresso.Espresso.onIdle
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.alldata.AllDataViewModel
-import com.android.healthconnect.controller.data.appdata.PermissionTypesPerCategory
+import com.android.healthconnect.controller.data.api.PermissionTypesPerCategory
 import com.android.healthconnect.controller.exportimport.api.ExportStatusViewModel
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiStatus

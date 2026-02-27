@@ -29,8 +29,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceCategory
 import com.android.healthconnect.controller.R
+import com.android.healthconnect.controller.data.api.PermissionTypesPerCategory
 import com.android.healthconnect.controller.data.appdata.AppDataFragment.Companion.PERMISSION_TYPE_NAME_KEY
-import com.android.healthconnect.controller.data.appdata.PermissionTypesPerCategory
 import com.android.healthconnect.controller.data.entries.EntriesViewModel
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
@@ -306,9 +306,9 @@ open class AllDataFragment : Hilt_AllDataFragment() {
             if (newHomeScreen()) {
                 sortAndAddMedicalToLast(permissionTypesPerCategoryList)
             } else {
-                permissionTypesPerCategoryList
-                    .filter { it.data.isNotEmpty() }
-                    .sortByLocale { getString(it.category.uppercaseTitle()) }
+                permissionTypesPerCategoryList.sortByLocale {
+                    getString(it.category.uppercaseTitle())
+                }
             }
         if (populatedCategories.isEmpty()) {
             setupEmptyState()
@@ -431,7 +431,7 @@ open class AllDataFragment : Hilt_AllDataFragment() {
     ): List<PermissionTypesPerCategory> {
         val populatedFitnessCategories =
             permissionTypesPerCategoryList
-                .filter { it.data.isNotEmpty() && it.category != MEDICAL }
+                .filter { it.category != MEDICAL }
                 .sortByLocale { getString(it.category.uppercaseTitle()) }
 
         val medicalCategory =
