@@ -22,7 +22,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import java.time.Instant
@@ -33,7 +32,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ImportFlowViewModel
 @Inject
-constructor(private val triggerImportUseCase: BaseUseCase<Uri, Unit>) : ViewModel() {
+constructor(private val triggerImportUseCase: ITriggerImportUseCase) : ViewModel() {
 
     private val _lastImportCompletionInstant = MutableLiveData<Instant?>()
 

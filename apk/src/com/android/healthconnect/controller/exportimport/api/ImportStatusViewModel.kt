@@ -20,7 +20,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -30,7 +29,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ImportStatusViewModel
 @Inject
-constructor(private val loadImportStatusUseCase: BaseUseCase<Unit, ImportUiState>) : ViewModel() {
+constructor(private val loadImportStatusUseCase: ILoadImportStatusUseCase) : ViewModel() {
     private val _storedImportStatus = MutableLiveData<ImportUiStatus>()
 
     /** Holds the import status that is stored in the Health Connect service. */

@@ -20,10 +20,12 @@ import android.net.Uri
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CancellableContinuation
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 @Singleton
@@ -32,19 +34,18 @@ class TriggerImportUseCase
 constructor(
     private val healthDataImportManager: HealthDataImportManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : BaseUseCase<Uri, Unit>(dispatcher) {
-    companion object {
-        private const val TAG = "TriggerImportUseCase"
-    }
+) : BaseUseCase<Uri, Unit>(dispatcher), ITriggerImportUseCase {
 
     /** Triggers the process to import and restore the user-selected backup file. */
     override suspend fun execute(fileToImportUri: Uri) {
         suspendCancellableCoroutine { continuation: CancellableContinuation<Void> ->
             healthDataImportManager.runImport(
                 fileToImportUri,
-                Runnable::run,
+                dispatcher.asExecutor(),
                 continuation.asOutcomeReceiver(),
             )
         }
     }
 }
+
+interface ITriggerImportUseCase : UseCaseContract<Uri, Unit>

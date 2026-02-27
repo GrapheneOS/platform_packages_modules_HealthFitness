@@ -19,9 +19,11 @@ package com.android.healthconnect.controller.exportimport.api
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 @Singleton
@@ -30,17 +32,14 @@ class QueryDocumentProvidersUseCase
 constructor(
     private val healthDataExportManager: HealthDataExportManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : BaseUseCase<Unit, List<DocumentProvider>>(dispatcher) {
-    companion object {
-        private const val TAG = "QueryDocumentProvidersUseCase"
-    }
+) : BaseUseCase<Unit, List<DocumentProvider>>(dispatcher), IQueryDocumentProvidersUseCase {
 
     /** Returns the available document providers. */
     override suspend fun execute(input: Unit): List<DocumentProvider> {
         val documentProviders: List<DocumentProvider> =
             suspendCancellableCoroutine { continuation ->
                     healthDataExportManager.queryDocumentProviders(
-                        Runnable::run,
+                        dispatcher.asExecutor(),
                         continuation.asOutcomeReceiver(),
                     )
                 }
@@ -65,3 +64,5 @@ constructor(
             .toList()
     }
 }
+
+interface IQueryDocumentProvidersUseCase : UseCaseContract<Unit, List<DocumentProvider>>

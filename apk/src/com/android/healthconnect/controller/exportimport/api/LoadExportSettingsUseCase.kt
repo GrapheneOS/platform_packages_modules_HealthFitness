@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.exportimport.api
 
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -28,15 +29,13 @@ class LoadExportSettingsUseCase
 constructor(
     private val healthDataExportManager: HealthDataExportManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : BaseUseCase<Unit, ExportFrequency>(dispatcher) {
-    companion object {
-        private const val TAG = "LoadExportSettingsUseCase"
-    }
+) : BaseUseCase<Unit, ExportFrequency>(dispatcher), ILoadExportSettingsUseCase {
 
     /** Returns the stored export settings. */
     override suspend fun execute(input: Unit): ExportFrequency {
         val periodInDays = healthDataExportManager.getScheduledExportPeriodInDays()
-        val frequency = fromPeriodInDays(periodInDays)
-        return frequency
+        return fromPeriodInDays(periodInDays)
     }
 }
+
+interface ILoadExportSettingsUseCase : UseCaseContract<Unit, ExportFrequency>
