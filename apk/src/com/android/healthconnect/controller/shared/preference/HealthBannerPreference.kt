@@ -32,6 +32,8 @@ class HealthBannerPreference(context: Context, private val logName: ElementName)
     private var negativeButtonLogName: ElementName? = null
     private var dismissButtonLogName: ElementName? = null
 
+    private var impressionLogged = false
+
     init {
         val hiltEntryPoint =
             EntryPointAccessors.fromApplication(
@@ -86,11 +88,18 @@ class HealthBannerPreference(context: Context, private val logName: ElementName)
         }
     }
 
+    override fun onAttached() {
+        super.onAttached()
+        if (!impressionLogged) {
+            logger.logImpression(logName)
+            positiveButtonLogName?.let { logger.logImpression(it) }
+            negativeButtonLogName?.let { logger.logImpression(it) }
+            dismissButtonLogName?.let { logger.logImpression(it) }
+            impressionLogged = true
+        }
+    }
+
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
-        logger.logImpression(logName)
-        positiveButtonLogName?.let { logger.logImpression(it) }
-        negativeButtonLogName?.let { logger.logImpression(it) }
-        dismissButtonLogName?.let { logger.logImpression(it) }
     }
 }

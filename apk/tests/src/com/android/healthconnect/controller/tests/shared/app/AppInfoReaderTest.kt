@@ -22,6 +22,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.ApplicationInfoFlags
 import android.content.pm.PackageManager.NameNotFoundException
+import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import android.provider.Settings
@@ -29,6 +30,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.app.IGetContributorAppInfoUseCase
 import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.di.FakeGetContributorAppInfoUseCase
 import com.android.healthfitness.flags.Flags
@@ -67,6 +69,8 @@ class AppInfoReaderTest {
     private val appInfoReader = AppInfoReader(mockContext, getContributorAppInfoUseCase)
     private val emptyGetContributorAppInfoUseCase = FakeGetContributorAppInfoUseCase()
     private val emptyInfoReader = AppInfoReader(mockContext, emptyGetContributorAppInfoUseCase)
+    private val mockUseCase = mock<IGetContributorAppInfoUseCase>()
+    private val appInfoReaderWithMockUseCase = AppInfoReader(mockContext, mockUseCase)
 
     @Before
     fun setup() {
@@ -251,5 +255,37 @@ class AppInfoReaderTest {
             // Verifies it's not STORED_LABEL
             assertThat(appMetadata.appName).isEqualTo(PACKAGE_MANAGER_LABEL)
         }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun getAppMetadata_flagOn_regularPackage_isCached() = runBlocking {
+        assertRegularPackageIsCached()
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+    fun getAppMetadata_flagOff_regularPackage_isCached() = runBlocking {
+        assertRegularPackageIsCached()
+    }
+
+    private suspend fun assertRegularPackageIsCached() {
+        // Arrange: Force fallback to use case and setup mock response
+        mockPackageManager.stub {
+            on { getApplicationInfo(eq(PACKAGE_NAME), any<ApplicationInfoFlags>()) } doThrow
+                NameNotFoundException()
+        }
+        val appMetadata =
+            AppMetadata(packageName = PACKAGE_NAME, appName = STORED_LABEL, icon = null)
+        whenever(mockUseCase.invoke()).thenReturn(mapOf(PACKAGE_NAME to appMetadata))
+
+        // Act: Call the method twice to test caching
+        val firstResult = appInfoReaderWithMockUseCase.getAppMetadata(PACKAGE_NAME)
+        val secondResult = appInfoReaderWithMockUseCase.getAppMetadata(PACKAGE_NAME)
+
+        // Assert: Verify the use case was only invoked once, and results are correct
+        verify(mockUseCase).invoke()
+        assertThat(firstResult).isEqualTo(appMetadata)
+        assertThat(secondResult).isEqualTo(appMetadata)
     }
 }

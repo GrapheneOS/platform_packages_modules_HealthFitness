@@ -21,7 +21,6 @@ import static java.util.Objects.requireNonNull;
 import android.annotation.Nullable;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.health.connect.HealthPermissions;
 import android.health.connect.ratelimiter.RateLimiter;
 import android.os.Process;
 import android.os.UserHandle;
@@ -31,7 +30,6 @@ import android.util.Slog;
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
-import com.android.modules.utils.build.SdkLevel;
 import com.android.server.SystemService;
 import com.android.server.healthconnect.common.jobs.HealthConnectDailyJobs;
 import com.android.server.healthconnect.exportimport.ExportImportJobs;
@@ -51,7 +49,7 @@ import com.android.server.healthconnect.telemetry.TelemetryJobService;
  */
 public class HealthConnectManagerService extends SystemService {
     private static final String TAG = "HealthConnectManagerService";
-    private final boolean mIsHardwareSupported;
+    private final boolean mSkipServiceInitialization;
     private final Context mContext;
     private final HealthConnectServiceImpl mHealthConnectService;
     private final UserManager mUserManager;
@@ -70,7 +68,7 @@ public class HealthConnectManagerService extends SystemService {
         super(context);
         mRateLimiter = new RateLimiter();
         mContext = context;
-        mIsHardwareSupported = isHardwareSupported(context);
+        mSkipServiceInitialization = shouldSkipServiceInitialization(context);
         mCurrentForegroundUser = context.getUser();
         mUserManager = context.getSystemService(UserManager.class);
         HealthConnectInjector.setInstance(healthConnectInjector);
@@ -132,11 +130,11 @@ public class HealthConnectManagerService extends SystemService {
 
     @Override
     public void onStart() {
-        if (mIsHardwareSupported) {
+        if (mSkipServiceInitialization) {
+            Slog.w(TAG, "Health Connect is not supported on this device.");
+        } else {
             registerEventListeners();
             publishService(Context.HEALTHCONNECT_SERVICE, mHealthConnectService);
-        } else {
-            Slog.w(TAG, "Health Connect is not supported on this device.");
         }
     }
 
@@ -163,7 +161,7 @@ public class HealthConnectManagerService extends SystemService {
      */
     @Override
     public void onUserSwitching(@Nullable TargetUser from, TargetUser to) {
-        if (!mIsHardwareSupported) {
+        if (mSkipServiceInitialization) {
             return;
         }
 
@@ -206,7 +204,7 @@ public class HealthConnectManagerService extends SystemService {
     @Override
     public void onUserUnlocked(TargetUser user) {
         requireNonNull(user);
-        if (!mIsHardwareSupported) {
+        if (mSkipServiceInitialization) {
             return;
         }
         if (!user.getUserHandle().equals(mCurrentForegroundUser)) {
@@ -225,7 +223,7 @@ public class HealthConnectManagerService extends SystemService {
     }
 
     private void setupForCurrentForegroundUser() {
-        if (!mIsHardwareSupported) {
+        if (mSkipServiceInitialization) {
             return;
         }
         Slog.d(TAG, "setupForCurrentForegroundUser: " + mCurrentForegroundUser);
@@ -398,25 +396,17 @@ public class HealthConnectManagerService extends SystemService {
         }
     }
 
-    private static boolean isHardwareSupported(Context context) {
+    private static boolean shouldSkipServiceInitialization(Context context) {
         if (!Flags.enableHardwareSupportCheck()) {
-            return true;
-        }
-        PackageManager pm = context.getPackageManager();
-        // Not available on embedded/tv/auto.
-        if (pm.hasSystemFeature(PackageManager.FEATURE_EMBEDDED)
-                || pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
-                || pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)) {
             return false;
         }
-        // Only available on Wear for permission management.
-        if (pm.hasSystemFeature(PackageManager.FEATURE_WATCH)) {
-            return SdkLevel.isAtLeastB()
-                    && context.checkSelfPermission(HealthPermissions.MANAGE_HEALTH_PERMISSIONS)
-                            == PackageManager.PERMISSION_GRANTED;
+        PackageManager pm = context.getPackageManager();
+        // Not available on auto.
+        if (pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)) {
+            return true;
         }
         // Supported everywhere else.
-        return true;
+        return false;
     }
 
     private static Context getUserContext(Context context, UserHandle user) {

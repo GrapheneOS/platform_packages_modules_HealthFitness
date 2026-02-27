@@ -27,7 +27,6 @@ import android.os.Bundle
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
@@ -117,7 +116,7 @@ class FitnessPermissionsFragmentTest {
     private lateinit var fitnessReadPermissions: List<FitnessPermission>
     private lateinit var fitnessWritePermissions: List<FitnessPermission>
     private lateinit var fitnessReadWritePermissions: List<FitnessPermission>
-    private lateinit var mockExpandedPreferences: LiveData<Set<String>>
+    private lateinit var mockExpandedDataCategoryPreferenceKeys: MutableLiveData<Set<String>>
 
     @Before
     fun setup() {
@@ -135,7 +134,13 @@ class FitnessPermissionsFragmentTest {
         fitnessWritePermissions =
             listOf(fromPermissionString(WRITE_HEART_RATE), fromPermissionString(WRITE_HYDRATION))
         fitnessReadWritePermissions = fitnessReadPermissions + fitnessWritePermissions
-        mockExpandedPreferences = MutableLiveData(emptySet<String>())
+        mockExpandedDataCategoryPreferenceKeys =
+            MutableLiveData(
+                setOf(
+                    PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
+                        .toString()
+                )
+            )
         whenever(viewModel.allFitnessPermissionsGranted).then { MutableLiveData(false) }
         whenever(viewModel.grantedFitnessPermissions).then {
             MutableLiveData(emptySet<FitnessPermission>())
@@ -143,15 +148,28 @@ class FitnessPermissionsFragmentTest {
         whenever(viewModel.fitnessScreenState).then {
             MutableLiveData(FitnessScreenState.NoFitnessData)
         }
-        // Expand Activity category by default
         whenever(viewModel.expandedDataCategoryPreferenceKeys).then {
-            MutableLiveData(
-                setOf(
-                    PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
-                        .toString()
+            mockExpandedDataCategoryPreferenceKeys
+        }
+        whenever(
+                viewModel.updateDataCategoryPreferenceKey(
+                    any(PermissionGroupKey::class.java),
+                    any(Boolean::class.java),
                 )
             )
-        }
+            .then { invocation ->
+                val key = invocation.arguments[0] as PermissionGroupKey
+                val isExpanded = invocation.arguments[1] as Boolean
+                val currentKeys =
+                    mockExpandedDataCategoryPreferenceKeys.value.orEmpty().toMutableSet()
+                if (isExpanded) {
+                    currentKeys.add(key.toString())
+                } else {
+                    currentKeys.remove(key.toString())
+                }
+                mockExpandedDataCategoryPreferenceKeys.value = currentKeys.toSet()
+                null
+            }
     }
 
     @After
@@ -1143,6 +1161,62 @@ class FitnessPermissionsFragmentTest {
             // 3. Click "Steps" to turn it off again
             clickOnRecyclerViewItemWithText("Steps")
             assertThat(expandablePreference.isChecked).isFalse()
+        }
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
+    fun collapsedState_isPreservedOnRecreate() {
+        whenever(viewModel.fitnessScreenState).then {
+            MutableLiveData(
+                FitnessScreenState.ShowFitnessRead(
+                    historyGranted = false,
+                    hasMedical = false,
+                    appMetadata = appMetadata,
+                    fitnessPermissions = fitnessReadPermissions,
+                )
+            )
+        }
+
+        launchFragment<FitnessPermissionsFragment>(Bundle()).use { scenario ->
+            onIdle()
+            val activityKey =
+                PermissionGroupKey(PermissionsAccessType.READ, HealthDataCategory.ACTIVITY)
+                    .toString()
+
+            lateinit var activityPreference: HealthToggleExpandablePreference
+            scenario.onActivity { activity ->
+                val fragment =
+                    activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                        as FitnessPermissionsFragment
+                activityPreference = fragment.preferenceScreen.findPreference(activityKey)!!
+            }
+
+            // Verify default expansion
+            assertThat(activityPreference.mIsExpanded).isTrue()
+
+            // User collapses the category
+            clickOnRecyclerViewItemWithText("Activity")
+            onIdle()
+
+            assertThat(activityPreference.mIsExpanded).isFalse()
+            assertThat(mockExpandedDataCategoryPreferenceKeys.value).isEmpty()
+
+            // Recreate the activity
+            scenario.recreate()
+            onIdle()
+
+            // Get the new instances after recreation
+            scenario.onActivity { activity ->
+                val fragment =
+                    activity.supportFragmentManager.findFragmentById(android.R.id.content)
+                        as FitnessPermissionsFragment
+                activityPreference = fragment.preferenceScreen.findPreference(activityKey)!!
+
+                // Verify it REMAINS collapsed
+                assertThat(activityPreference.mIsExpanded).isFalse()
+                assertThat(mockExpandedDataCategoryPreferenceKeys.value).isEmpty()
+            }
         }
     }
 }

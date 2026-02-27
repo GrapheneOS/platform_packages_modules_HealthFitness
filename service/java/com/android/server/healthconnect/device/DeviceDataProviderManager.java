@@ -534,16 +534,16 @@ public class DeviceDataProviderManager {
      */
     public synchronized boolean isPermittedToProvideDeviceData(
             @NonNull String callingPackageName, int uid, int pid) {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.BAKLAVA) {
-            // For details of this fallback see b/315116545
-            final int resourceId =
-                    Resources.getSystem()
-                            .getIdentifier("config_systemActivityRecognizer", "string", "android");
-            if (resourceId != 0
-                    && callingPackageName.equals(Resources.getSystem().getString(resourceId))) {
-                return true;
-            }
+        // For details of this fallback see b/315116545
+        final int resourceId =
+                Resources.getSystem()
+                        .getIdentifier("config_systemActivityRecognizer", "string", "android");
+        if (resourceId != 0
+                && callingPackageName.equals(Resources.getSystem().getString(resourceId))) {
+            return true;
+        }
 
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.BAKLAVA) {
             // This fallback caters primarily for test environments as the shell holds this
             // permission from Android U upwards.
             return mUserContext.checkPermission(
