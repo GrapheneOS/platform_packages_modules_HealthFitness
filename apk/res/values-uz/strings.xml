@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Barcha ilovalar"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> axborotini oʻqishi mumkin"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> axborotini yozishi mumkin"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"Nofaol ilovalar"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Quyidagi ilovalar endi <xliff:g id="DATA_TYPE">%s</xliff:g> axborotini oʻqa olmaydi yoki yoza olmaydi, lekin Health Connectda ularning axboroti boʻlishi mumkin"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"Ilovalar endi <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> maʼlumotlarini oʻqiy olmaydi va yoza olmaydi. Health Connect ilovasiga hech qanday <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> maʼlumotlari saqlanmaydi"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Bunga faol vaqt, mashq turi, aylanishlar, takrorlar, seanslar yoki suzish zarbalari kabi axborotlar kiradi"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Bunga uyqu bosqichlari va seanslari kabi axborotlar kiradi"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Barcha kiritilgan axborotlar"</string>
@@ -1348,7 +1351,8 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Sozlamalar"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect salomatlik va fitnes axborotlaringizni bir nechta maʼlumot manbasiga ulashish imkonini beradi. Bu maʼlumotlaringizni xavfsiz saqlagan holda statistika va tajribalarni ochishga yordam beradi."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect haqida batafsil"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Maʼlumotlaringiz va ularga ruxsat olgan ilovalar"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"Maʼlumotlaringizdan yaqinda foydalangan ilovalar"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Salomatlik maʼlumotlariga ruxsat olgan qurilmalarni tekshirish"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Bu yerda chiqishi uchun Health Connect bilan ishlaydigan ilovalarni oʻrnating"</string>

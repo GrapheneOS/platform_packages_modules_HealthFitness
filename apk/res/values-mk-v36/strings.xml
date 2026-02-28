@@ -23,8 +23,7 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"Изберете до кои податоци за фитнес и благосостојба да пристапува апликацијава. Ова ги опфаќа податоците што се следат и се складираат на овој уред, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"Изберете до кои податоци за фитнес и благосостојба да пристапува апликацијава. Ова ги опфаќа податоците што се следат и се складираат на овој уред, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"Изберете до кои податоци за фитнес и благосостојба да пристапува апликацијава. Ова ги опфаќа податоците што се следат и се складираат на овој уред, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for request_learn_more (563937923005882945) -->
-    <skip />
+    <string name="request_learn_more" msgid="563937923005882945">"дознајте повеќе за тоа како се пристапува до вашите податоци"</string>
     <string name="settings_manage_permission" msgid="3585762257420446893">"Здравје, фитнес и благосостојба"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"Здравје, фитнес и благосостојба"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"Фитнес и благосостојба"</string>

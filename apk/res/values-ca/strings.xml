@@ -39,7 +39,7 @@
     <string name="entry_details_title" msgid="590184849040247850">"Detalls de l\'entrada"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"Navega per les dades"</string>
     <string name="browse_data_subtitle" msgid="7025164374898103993">"Consulta les dades i quines aplicacions hi poden accedir"</string>
-    <string name="manage_data_summary" msgid="8537870912521944449">"Supressió automàtica, font de dades, còpia de seguretat i restauració"</string>
+    <string name="manage_data_summary" msgid="8537870912521944449">"Supressió automàtica, fonts de dades, còpia de seguretat i restauració"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"Més elements"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"Menys elements"</string>
     <string name="settings_manage_permission" msgid="3805037674102124581">"Salut connectada"</string>
@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Totes les aplicacions"</string>
     <string name="can_read" msgid="4568261079308309564">"Pot llegir dades de <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Pot escriure dades de <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"Aplicacions inactives"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Aquestes aplicacions ja no poden llegir ni escriure <xliff:g id="DATA_TYPE">%s</xliff:g>, però encara tenen dades emmagatzemades a Salut connectada"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"Les aplicacions ja no poden llegir o escriure <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> i no hi ha cap dada de <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> emmagatzemada a Salut connectada"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Aquestes dades inclouen informació com ara el temps d\'activitat, el tipus d\'exercici, les voltes, les repeticions, les sessions o les braçades"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Aquestes dades inclouen informació com ara les fases del son i les sessions de son"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Mostra totes les entrades"</string>
@@ -1273,7 +1276,7 @@
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"<xliff:g id="APP_NAME">%1$s</xliff:g> sol·licita accés a <xliff:g id="DATA_TYPES">%2$s</xliff:g>.\n\nPermet-ho tot o controla-ho individualment."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Vols permetre que <xliff:g id="APP_NAME">%1$s</xliff:g> accedeixi a <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitnes i benestar"</string>
-    <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Sempre"</string>
+    <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"En tot moment"</string>
     <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"Mentre s\'utilitza l\'aplicació"</string>
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"<xliff:g id="APP_NAME">%1$s</xliff:g> pot accedir sempre a totes les teves dades de fitnes i benestar"</string>
     <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"<xliff:g id="APP_NAME">%1$s</xliff:g> pot accedir a totes les teves dades de fitnes i benestar mentre s\'utilitza"</string>
@@ -1336,8 +1339,7 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Dades del dispositiu"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Gestiona el dispositiu"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Consulta les dades del dispositiu"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Sincronitza a Salut connectada"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Els passos registrats al telèfon es mostraran a Salut connectada"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Els passos que registra aquest dispositiu ara s\'emmagatzemen a Salut connectada perquè les aplicacions connectades hi puguin accedir"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Ignora"</string>
@@ -1349,7 +1351,8 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferències"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Salut connectada et permet compartir les teves dades de salut i fitnes entre diverses fonts de dades. Això t\'ajuda a descobrir informació detallada i experiències alhora que mantens les teves dades protegides."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Més informació sobre Salut connectada"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Les teves dades i quines aplicacions hi poden accedir"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"Aplicacions que han utilitzat les teves dades recentment"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Revisa els dispositius que poden accedir a les dades de salut"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Instal·la aplicacions que funcionin amb Salut connectada per veure-les aquí"</string>

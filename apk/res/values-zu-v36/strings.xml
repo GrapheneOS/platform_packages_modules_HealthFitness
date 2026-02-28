@@ -23,8 +23,7 @@
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"Khetha ukuthi iyiphi idatha yokufaneleka nempilo le-app engafinyelela kuyo. Lokhu kubandakanya idatha elandelelwe futhi egcinwe kule divayisi, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"Khetha ukuthi iyiphi idatha yokufaneleka nempilo le-app engafinyelela kuyo. Lokhu kubandakanya idatha elandelelwe futhi egcinwe kule divayisi, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="8699879399386811720">"Khetha ukuthi iyiphi idatha yokufaneleka nempilo le-app engafinyelela kuyo. Lokhu kubandakanya idatha elandelelwe futhi egcinwe kule divayisi, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
-    <!-- no translation found for request_learn_more (563937923005882945) -->
-    <skip />
+    <string name="request_learn_more" msgid="563937923005882945">"funda kabanzi mayelana nendlela idatha yakho efinyelelwa ngayo"</string>
     <string name="settings_manage_permission" msgid="3585762257420446893">"Impilo, ukufaneleka kanye nokuphila kahle"</string>
     <string name="settings_combined_permissions" msgid="1243346425556604875">"Impilo, ukufaneleka kanye nokuphila kahle"</string>
     <string name="settings_fitness_permissions" msgid="989130669597060476">"Ukufaneleka nempilo enhle"</string>

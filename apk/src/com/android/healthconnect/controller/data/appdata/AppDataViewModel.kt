@@ -18,11 +18,13 @@
 package com.android.healthconnect.controller.data.appdata
 
 import android.health.connect.HealthDataCategory
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.android.healthconnect.controller.data.api.PermissionTypesPerCategory
+import com.android.healthconnect.controller.data.appdata.api.IGetAppFitnessPermissionTypesUseCase
+import com.android.healthconnect.controller.data.appdata.api.IGetAppMedicalPermissionTypesUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.getAllSymptomPermissionTypes
 import com.android.healthconnect.controller.selectabledeletion.DeletionDataViewModel
@@ -41,7 +43,8 @@ class AppDataViewModel
 @Inject
 constructor(
     private val appInfoReader: AppInfoReader,
-    private val loadAllDataUseCase: AllDataUseCase,
+    private val getAppFitnessPermissionTypesUseCase: IGetAppFitnessPermissionTypesUseCase,
+    private val getAppMedicalPermissionTypesUseCase: IGetAppMedicalPermissionTypesUseCase,
 ) : DeletionDataViewModel() {
 
     companion object {
@@ -96,14 +99,12 @@ constructor(
     }
 
     fun loadAppData(packageName: String) {
-        Log.i("TEOG", "AppDataViewModel.loadData( $packageName )")
-
         _appFitnessData.postValue(AppDataState.Loading)
         _appMedicalData.postValue(AppDataState.Loading)
         numOfPermissionTypes = 0
         viewModelScope.launch {
-            val fitnessData = async { loadAllDataUseCase.loadFitnessAppData(packageName) }
-            val medicalData = async { loadAllDataUseCase.loadMedicalAppData(packageName) }
+            val fitnessData = async { getAppFitnessPermissionTypesUseCase.invoke(packageName) }
+            val medicalData = async { getAppMedicalPermissionTypesUseCase.invoke(packageName) }
 
             handleResult(fitnessData.await(), _appFitnessData)
             handleResult(medicalData.await(), _appMedicalData)

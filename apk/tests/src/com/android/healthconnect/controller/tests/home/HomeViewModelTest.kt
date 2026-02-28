@@ -30,7 +30,8 @@ import android.health.connect.datatypes.WeightRecord
 import android.os.OutcomeReceiver
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.healthconnect.controller.data.appdata.AllDataUseCase
+import com.android.healthconnect.controller.data.alldata.api.HasFitnessDataUseCase
+import com.android.healthconnect.controller.data.alldata.api.HasMedicalDataUseCase
 import com.android.healthconnect.controller.home.HomeViewModel
 import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealthPermissionApps
 import com.android.healthconnect.controller.shared.Constants
@@ -97,8 +98,9 @@ class HomeViewModelTest {
         viewModel =
             HomeViewModel(
                 loadHealthPermissionApps,
-                AllDataUseCase(manager, Dispatchers.Main),
                 keyguardManagerUtils,
+                HasFitnessDataUseCase(manager, Dispatchers.Main),
+                HasMedicalDataUseCase(manager, Dispatchers.Main),
             )
         whenever(keyguardManagerUtils.isDeviceSecure(any())).thenReturn(false)
     }

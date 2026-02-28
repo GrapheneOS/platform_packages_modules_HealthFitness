@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"כל האפליקציות"</string>
     <string name="can_read" msgid="4568261079308309564">"קריאת נתונים של <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"שמירת נתונים של <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"אפליקציות לא פעילות"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"האפליקציות האלה כבר לא יכולות לקרוא או לשמור נתונים מסוג <xliff:g id="DATA_TYPE">%s</xliff:g>, אבל הנתונים שלהן עדיין מאוחסנים ב-Health Connect"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"אפליקציות כבר לא יוכלו לקרוא או לכתוב נתונים מסוג <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> ואין נתונים מסוג <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> שמאוחסנים ב-Health Connect"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"הנתונים האלה כוללים מידע כמו משך הפעילות, סוג האימון, הקפות, חזרות, סשנים או חתירות בשחייה"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"הנתונים האלה כוללים מידע כמו שלבי השינה וסשנים של שינה"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"לעיון בכל הרשומות"</string>
@@ -490,7 +493,7 @@
     <string name="other_android_permissions_content_description" msgid="2261431010048933820">"כדי לנהל הרשאות אחרות ב-Android שהאפליקציה הזו יכולה לגשת אליהן, עוברים ל\"הגדרות\" ולוחצים על \"אפליקציות\""</string>
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"לעיון במדיניות הפרטיות"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"האפליקציה ניגשה לנתונים ב-24 השעות האחרונות"</string>
-    <string name="app_access_title" msgid="7137018424885371763">"הנתונים שהאפליקציה יכולה לגשת אליהם"</string>
+    <string name="app_access_title" msgid="7137018424885371763">"ניהול הגישה של האפליקציה"</string>
     <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"לא מותקנות אפליקציות תואמות"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"הרשאות גישה נוספות"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"נתונים קודמים, נתוני רקע"</string>
@@ -1336,8 +1339,7 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"נתוני המכשיר"</string>
     <string name="device_data_label" msgid="2056618513138892435">"ניהול המכשיר"</string>
     <string name="device_data_button" msgid="8002406105399136401">"צפייה בנתוני המכשיר"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"סנכרון עם Health Connect"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"נתוני הצעדים שהטלפון מדד יופיעו ב-Health Connect"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"נתוני הצעדים שהמכשיר הזה מדד מאוחסנים עכשיו ב-Health Connect ואפליקציות מקושרות יכולות לגשת אליהם"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"סגירה"</string>
@@ -1349,7 +1351,8 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"העדפות"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"כדי לקבל תובנות ולשפר את חוויית השימוש, אפשר לשתף באמצעות Health Connect את נתוני הבריאות והכושר עם מקורות נתונים אחרים בצורה מאובטחת."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"מידע נוסף על Health Connect"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"הנתונים שלך והאפליקציות שיכולות לראות אותם"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"אפליקציות שהשתמשו לאחרונה בנתונים שלך"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"לאילו מכשירים יש גישה לנתוני הבריאות?"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"רוצה להתקין אפליקציות שמשתלבות עם Health Connect?"</string>

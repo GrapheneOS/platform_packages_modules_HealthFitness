@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"அனைத்து ஆப்ஸும்"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> தரவைப் படிக்கலாம்"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> தரவை எழுதலாம்"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"செயலில் இல்லாத ஆப்ஸ்"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"இந்த ஆப்ஸால் இனி <xliff:g id="DATA_TYPE">%s</xliff:g> தரவைப் படிக்கவோ எழுதவோ முடியாது என்றாலும் அவை சேமித்த தரவு இன்னும் Health Connectடில் அப்படியே இருக்கும்"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"<xliff:g id="DATA_TYPE_0">%1$s</xliff:g> தரவை ஆப்ஸால் இனி படிக்கவோ எழுதவோ முடியாது. Health Connect ஆப்ஸில் <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> தரவு எதுவும் சேமிக்கப்படவில்லை"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"செயல்பாட்டு நேரம், உடற்பயிற்சி வகை, சுற்றுகள், மீண்டும் செய்தல், அமர்வுகள், ஸ்விம்மிங் ஸ்ட்ரோக்குகள் போன்ற தகவல்கள் இந்தத் தரவில் உள்ளடங்கும்"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"உறக்க நிலைகள், உறக்கநேர அமர்வுகள் போன்ற தகவல்கள் இந்தத் தரவில் உள்ளடங்கும்"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"அனைத்து உள்ளீடுகளையும் காட்டு"</string>
@@ -410,11 +413,9 @@
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"இந்தத் தரவை ஒத்திசைக்கக்கூடிய ஆப்ஸ்"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"இந்தத் தரவை ஒத்திசைக்கக்கூடிய சாதனங்கள்"</string>
     <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"ஆன் செய்ய, சாதன விருப்பத்தேர்வுகளுக்குச் செல்லவும்"</string>
-    <!-- no translation found for matchmaking_allow_all_app_permissions_content_description (7450664840474294719) -->
-    <skip />
+    <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"<xliff:g id="APP_NAME">%1$s</xliff:g> அனுமதிகள் அனைத்தையும் வழங்கும்"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"உங்கள் தரவை <xliff:g id="APP_NAME">%1$s</xliff:g> எப்படிப் பயன்படுத்துகிறது என்பதை அதன் "<a href="%2$s">"தனியுரிமைக் கொள்கையில்"</a>" தெரிந்துகொள்ளுங்கள்."</string>
-    <!-- no translation found for matchmaking_screen_footer (986685221263640285) -->
-    <skip />
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"உங்கள் ஆரோக்கியம் மற்றும் உடற்பயிற்சி தொடர்பான தரவை Health Connect மூலம் பல்வேறு தரவு ஆதாரங்களுக்கிடையே பகிரலாம். இது உங்கள் தரவைப் பாதுகாப்பாக வைத்திருக்கும் அதேவேளையில், புள்ளிவிவரங்களையும் அனுபவங்களையும் பெற உதவுகிறது."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Health Connect பற்றிய கூடுதல் தகவல்கள்"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"விரிவாக்கும்"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"சுருக்கும்"</string>
@@ -1227,8 +1228,7 @@
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"உங்கள் ஆரோக்கியம் குறித்த தரவுக்கான கூடுதல் பாதுகாப்பிற்காக, இந்தச் சாதனத்திற்கு பின் (PIN), பேட்டர்ன்/கடவுச்சொல்லை அமையுங்கள்"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"திரைப் பூட்டை அமை"</string>
     <string name="select_all" msgid="837499881590001166">"அனைத்தையும் தேர்ந்தெடு"</string>
-    <!-- no translation found for a11y_action_select (8149815243533964711) -->
-    <skip />
+    <string name="a11y_action_select" msgid="8149815243533964711">"தேர்ந்தெடுக்கும்"</string>
     <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Health Connectடில் உள்ள இந்தத் தரவை இணைக்கப்பட்ட ஆப்ஸால் இனி படிக்க முடியாது"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"தேர்வுசெய்யப்பட்டது"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"தேர்வுசெய்யப்படவில்லை"</string>
@@ -1332,41 +1332,35 @@
     <string name="devices_current_device" msgid="6388308185566619743">"இந்தச் சாதனம்"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"ஏதோ ஒரு சாதனம்"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"சாதனத் தகவல்கள்"</string>
-    <!-- no translation found for device_management_screen_footer (6798880518173922679) -->
-    <skip />
-    <!-- no translation found for device_management_screen_no_step_sensor_footer (1907424903465905829) -->
-    <skip />
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"இந்தச் சாதனத்தால் சேகரிக்கப்படும் தரவு Health Connectடில் சேமிக்கப்படும், அங்கு இணைக்கப்பட்ட ஆப்ஸ் அதை அணுகும்"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"இந்தச் சாதனத்தில் காலடியைக் கண்காணித்தல் வசதி ஆதரிக்கப்படவில்லை, எனினும் அதன் தரவு Health Connect ஆப்ஸில் சேமிக்கப்பட்டுள்ளது"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"இந்தச் சாதனம் காலடிகளைக் கண்காணிக்காது"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"எழுத அனுமதிக்கப்பட்டவை"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"சாதனத் தரவு"</string>
     <string name="device_data_label" msgid="2056618513138892435">"சாதனத்தை நிர்வகியுங்கள்"</string>
     <string name="device_data_button" msgid="8002406105399136401">"சாதனத் தரவைக் காட்டு"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Health Connect உடன் ஒத்திசை"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"மொபைலில் டிராக் செய்யப்படும் காலடிகள் Health Connectடில் காட்டப்படும்"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"இணைக்கப்பட்ட ஆப்ஸ் அணுகுவதற்காக, இந்தச் சாதனத்தால் டிராக் செய்யப்படும் காலடிகள் இப்போது Health Connectடில் சேமிக்கப்படுகின்றன"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"மூடு"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"சரிபாருங்கள்"</string>
-    <!-- no translation found for native_steps_notification_title (9173169256837064455) -->
-    <skip />
-    <!-- no translation found for native_steps_notification_content (7752396476899221256) -->
-    <skip />
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"Health Connectடில் தற்போது காலடிகளைக் கண்காணிக்கலாம்"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"இணைக்கப்பட்ட ஆப்ஸ் அணுகுவதற்காக, இந்தச் சாதனத்தால் கண்காணிக்கப்படும் காலடிகள் இப்போது Health Connectடில் சேமிக்கப்படுகின்றன"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"உங்கள் ஆரோக்கிய ஆப்ஸ்"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"உங்கள் ஆரோக்கியம் தொடர்பான தரவு"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"விருப்பத்தேர்வுகள்"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect, உங்கள் ஆரோக்கியம் மற்றும் உடற்பயிற்சி குறித்த தரவை பல்வேறு தரவு மூலங்களுக்கிடையே பகிர உங்களை அனுமதிக்கிறது. இது உங்கள் தரவைப் பாதுகாப்பாக வைத்திருப்பதோடு, நீங்கள் புள்ளிவிவரங்களையும் அனுபவங்களையும் பெற உதவுகிறது."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect பற்றிய கூடுதல் தகவல்கள்"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"உங்கள் தரவு மற்றும் அதை அணுகக்கூடிய ஆப்ஸ்"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"சமீபத்தில் உங்கள் தரவைப் பயன்படுத்திய ஆப்ஸ்"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"ஆரோக்கியம் தொடர்பான தரவை அணுகக்கூடிய சாதனங்களைப் பாருங்கள்"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect உடன் செயல்படும் ஆப்ஸை இங்கே பார்க்க நிறுவுங்கள்"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"இணக்கமான ஆப்ஸைக் காட்டு"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"கூடுதல் ஆரோக்கிய ஆப்ஸைக் காட்டு"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"இணைக்கப்படவில்லை"</string>
-    <!-- no translation found for connect_app_button_content_description (8652692724367722351) -->
-    <skip />
-    <!-- no translation found for devices_screen_description (5009317766902606842) -->
-    <skip />
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"இந்த ஆப்ஸை Health Connect உடன் இணைக்க, கிளிக் செய்யலாம்"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"Health Connect உடன் எந்தெந்தச் சாதனங்கள் தரவை ஒத்திசைக்கலாம் என்பதைக் கட்டுப்படுத்தலாம்"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"இயக்கப்பட்டது"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"இயக்கப்படவில்லை"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"இந்த மொபைல்"</string>
@@ -1396,10 +1390,8 @@
     <string name="acne_write_content_description" msgid="9221785868351412493">"முகப்பரு தொடர்பான தரவை எழுதும்"</string>
     <string name="brittle_nails_read_content_description" msgid="423745726647038216">"உடையக்கூடிய நகங்கள் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
     <string name="brittle_nails_write_content_description" msgid="1804481735143147688">"உடையக்கூடிய நகங்கள் தொடர்பான தரவை எழுதும்"</string>
-    <!-- no translation found for burning_mouth_read_content_description (2781812616518222842) -->
-    <skip />
-    <!-- no translation found for burning_mouth_write_content_description (2855865249662942197) -->
-    <skip />
+    <string name="burning_mouth_read_content_description" msgid="2781812616518222842">"வாய் எரிச்சல் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
+    <string name="burning_mouth_write_content_description" msgid="2855865249662942197">"வாய் எரிச்சல் தொடர்பான தரவை எழுதும்"</string>
     <string name="chills_read_content_description" msgid="7244946135559432433">"குளிர் நடுக்கம் தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>
     <string name="chills_write_content_description" msgid="6478646233405107436">"குளிர் நடுக்கம் தொடர்பான தரவை எழுதும்"</string>
     <string name="dehydration_read_content_description" msgid="7633935838518756206">"நீரிழப்பு தொடர்பான தரவைத் தெரிந்துகொள்ளும்"</string>

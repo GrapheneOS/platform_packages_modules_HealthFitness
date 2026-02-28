@@ -24,7 +24,6 @@ import android.health.connect.ReadRecordsResponse
 import android.health.connect.datatypes.MenstruationFlowRecord
 import android.health.connect.datatypes.MenstruationPeriodRecord
 import android.health.connect.datatypes.Record
-import android.os.OutcomeReceiver
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.data.entries.FormattedEntry
@@ -39,6 +38,7 @@ import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
+import com.android.healthconnect.controller.tests.utils.doReturnResult
 import com.android.healthconnect.controller.tests.utils.forDataType
 import com.android.healthconnect.controller.tests.utils.getMetaData
 import com.android.healthconnect.controller.tests.utils.setLocale
@@ -58,11 +58,10 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito
-import org.mockito.MockitoAnnotations
-import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stub
 
 @HiltAndroidTest
 @UninstallModules(HealthManagerModule::class)
@@ -77,12 +76,10 @@ class LoadMenstruationDataUseCaseTest {
     @Inject lateinit var loadEntriesHelper: LoadEntriesHelper
 
     @BindValue lateinit var appInfoReader: AppInfoReader
-    @BindValue
-    val healthConnectManager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
+    @BindValue val healthConnectManager: HealthConnectManager = mock()
 
     @Before
     fun setup() = runTest {
-        MockitoAnnotations.initMocks(this)
         context = InstrumentationRegistry.getInstrumentation().context
         context.setLocale(Locale.US)
         appInfoReader = createFakeAppInfoReader()
@@ -94,13 +91,14 @@ class LoadMenstruationDataUseCaseTest {
 
     @Test
     fun invoke_noData_returnsEmptyList() = runTest {
-        Mockito.doAnswer(prepareRecordsAnswer(listOf()))
-            .`when`(healthConnectManager)
-            .readRecords<MenstruationFlowRecord>(any(), any(), any())
-
-        Mockito.doAnswer(prepareRecordsAnswer(listOf()))
-            .`when`(healthConnectManager)
-            .readRecords<MenstruationPeriodRecord>(any(), any(), any())
+        healthConnectManager.stub {
+            on { readRecords<MenstruationFlowRecord>(any(), any(), any()) } doReturnResult
+                Result.success(ReadRecordsResponse<Record>(emptyList(), -1))
+        }
+        healthConnectManager.stub {
+            on { readRecords<MenstruationPeriodRecord>(any(), any(), any()) } doReturnResult
+                Result.success(ReadRecordsResponse<Record>(emptyList(), -1))
+        }
 
         val input =
             LoadMenstruationDataInput(
@@ -136,24 +134,8 @@ class LoadMenstruationDataUseCaseTest {
                     )
                     .build()
             )
-        Mockito.doAnswer(prepareRecordsAnswer(menstruationPeriodRecords))
-            .`when`(healthConnectManager)
-            .readRecords(
-                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
-                    request.forDataType(dataType = MenstruationPeriodRecord::class.java)
-                },
-                any(),
-                any(),
-            )
-        Mockito.doAnswer(prepareRecordsAnswer(menstruationFlowRecords))
-            .`when`(healthConnectManager)
-            .readRecords(
-                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
-                    request.forDataType(dataType = MenstruationFlowRecord::class.java)
-                },
-                any(),
-                any(),
-            )
+
+        mockReadRecords(menstruationPeriodRecords, menstruationFlowRecords)
 
         val input =
             LoadMenstruationDataInput(
@@ -228,24 +210,8 @@ class LoadMenstruationDataUseCaseTest {
                     )
                     .build(),
             )
-        Mockito.doAnswer(prepareRecordsAnswer(menstruationPeriodRecords))
-            .`when`(healthConnectManager)
-            .readRecords(
-                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
-                    request.forDataType(dataType = MenstruationPeriodRecord::class.java)
-                },
-                any(),
-                any(),
-            )
-        Mockito.doAnswer(prepareRecordsAnswer(menstruationFlowRecords))
-            .`when`(healthConnectManager)
-            .readRecords(
-                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
-                    request.forDataType(dataType = MenstruationFlowRecord::class.java)
-                },
-                any(),
-                any(),
-            )
+
+        mockReadRecords(menstruationPeriodRecords, menstruationFlowRecords)
 
         val input =
             LoadMenstruationDataInput(
@@ -336,24 +302,8 @@ class LoadMenstruationDataUseCaseTest {
                     )
                     .build(),
             )
-        Mockito.doAnswer(prepareRecordsAnswer(menstruationPeriodRecords))
-            .`when`(healthConnectManager)
-            .readRecords(
-                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
-                    request.forDataType(dataType = MenstruationPeriodRecord::class.java)
-                },
-                any(),
-                any(),
-            )
-        Mockito.doAnswer(prepareRecordsAnswer(menstruationFlowRecords))
-            .`when`(healthConnectManager)
-            .readRecords(
-                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
-                    request.forDataType(dataType = MenstruationFlowRecord::class.java)
-                },
-                any(),
-                any(),
-            )
+
+        mockReadRecords(menstruationPeriodRecords, menstruationFlowRecords)
 
         val input =
             LoadMenstruationDataInput(
@@ -422,12 +372,59 @@ class LoadMenstruationDataUseCaseTest {
             )
     }
 
-    private fun prepareRecordsAnswer(records: List<Record>): (InvocationOnMock) -> Nothing? {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[2] as OutcomeReceiver<ReadRecordsResponse<Record>, *>
-            receiver.onResult(ReadRecordsResponse(records, -1))
-            null
+    @Test
+    fun invoke_periodDay_recordEndingAtStartOfDay_returnsFormattedData() = runTest {
+        val zoneId = ZoneId.of("UTC")
+        val todayStart = NOW.atZone(zoneId).toLocalDate().atStartOfDay(zoneId).toInstant()
+        val yesterdayStart = todayStart.minus(ofDays(1))
+
+        val menstruationPeriodRecord =
+            MenstruationPeriodRecord.Builder(getMetaData(), yesterdayStart, todayStart).build()
+
+        mockReadRecords(listOf(menstruationPeriodRecord), listOf())
+
+        val input =
+            LoadMenstruationDataInput(
+                packageName = TEST_APP_PACKAGE_NAME,
+                displayedStartTime = NOW,
+                period = DateNavigationPeriod.PERIOD_DAY,
+                showDataOrigin = true,
+            )
+
+        val result = loadMenstruationDataUseCase.invoke(input)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data).isNotEmpty()
+    }
+
+    private fun mockReadRecords(
+        menstruationPeriodRecords: List<MenstruationPeriodRecord>,
+        menstruationFlowRecords: List<MenstruationFlowRecord>,
+    ) {
+        healthConnectManager.stub {
+            on {
+                readRecords(
+                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                        request != null &&
+                            request.forDataType(dataType = MenstruationPeriodRecord::class.java)
+                    },
+                    any(),
+                    any(),
+                )
+            } doReturnResult
+                Result.success(ReadRecordsResponse<Record>(menstruationPeriodRecords, -1))
         }
-        return answer
+        healthConnectManager.stub {
+            on {
+                readRecords(
+                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                        request != null &&
+                            request.forDataType(dataType = MenstruationFlowRecord::class.java)
+                    },
+                    any(),
+                    any(),
+                )
+            } doReturnResult
+                Result.success(ReadRecordsResponse<Record>(menstruationFlowRecords, -1))
+        }
     }
 }

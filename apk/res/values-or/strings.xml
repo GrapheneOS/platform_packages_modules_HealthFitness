@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"ସମସ୍ତ ଆପ୍ସ"</string>
     <string name="can_read" msgid="4568261079308309564">"ଏହି ଆପ <xliff:g id="PERMISSION_TYPE">%s</xliff:g> ଡାଟା ସହ ପଢ଼ିପାରିବ"</string>
     <string name="can_write" msgid="5082414937218423823">"ଏହି ଆପ <xliff:g id="PERMISSION_TYPE">%s</xliff:g> ଡାଟା ସହ ଲେଖିପାରିବ"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"ନିଷ୍କ୍ରିୟ ଆପ୍ସ"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"ଏହି ଆପ୍ସ <xliff:g id="DATA_TYPE">%s</xliff:g>କୁ ଆଉ ପଢ଼ିପାରିବ ନାହିଁ ବା ଲେଖିପାରିବ ନାହିଁ, କିନ୍ତୁ ଏବେ ବି ଷ୍ଟୋର କରାଯାଇଥିବା ଡାଟା Health Connectରେ ଅଛି"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"ଆପ୍ସ <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>କୁ ଆଉ ପଢ଼ିପାରିବ କିମ୍ବା ଲେଖିପାରିବ ନାହିଁ ଏବଂ Health Connectରେ କୌଣସି <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> ଡାଟା ଷ୍ଟୋର କରାଯାଇନାହିଁ"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"ଏହି ଡାଟାରେ ସକ୍ରିୟ ସମୟ, ବ୍ୟାୟାମର ପ୍ରକାର, ଲାପ, ରିପିଟିସନ, ସେସନ କିମ୍ବା ସୁଇମିଂ ଷ୍ଟ୍ରୋକ ପରି ସୂଚନା ଅନ୍ତର୍ଭୁକ୍ତ ଅଛି"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"ଶୋଇବା ପର୍ଯ୍ୟାୟ ଏବଂ ଶୋଇବାର ସେସନଗୁଡ଼ିକ ପରି ସୂଚନା ଏହି ଡାଟାରେ ଅନ୍ତର୍ଭୁକ୍ତ ଅଛି"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"ସମସ୍ତ ଏଣ୍ଟ୍ରି ଦେଖନ୍ତୁ"</string>
@@ -1336,8 +1339,7 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"ଡିଭାଇସ ଡାଟା"</string>
     <string name="device_data_label" msgid="2056618513138892435">"ଡିଭାଇସକୁ ପରିଚାଳନା କରନ୍ତୁ"</string>
     <string name="device_data_button" msgid="8002406105399136401">"ଡିଭାଇସ ଡାଟା ଦେଖନ୍ତୁ"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Health Connectରେ ସିଙ୍କ କରନ୍ତୁ"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"ଫୋନରେ ଟ୍ରାକ ହୋଇଥିବା ଷ୍ଟେପ Health Connectରେ ଦେଖାଯିବ"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"କନେକ୍ଟ ହୋଇଥିବା ଆପ୍ସକୁ ଆକ୍ସେସ କରିବା ପାଇଁ ଏହି ଡିଭାଇସ ଦ୍ୱାରା ଟ୍ରାକ କରାଯାଇଥିବା ଷ୍ଟେପଗୁଡ଼ିକୁ ବର୍ତ୍ତମାନ Health Connectରେ ଷ୍ଟୋର କରାଯାଇଛି"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"ଖାରଜ କରନ୍ତୁ"</string>
@@ -1349,7 +1351,8 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"ପସନ୍ଦ"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect ଆପଣଙ୍କୁ ଆପଣଙ୍କର ସ୍ୱାସ୍ଥ୍ୟ ଏବଂ ଫିଟନେସ ଡାଟାକୁ ଏକାଧିକ ଡାଟା ସୋର୍ସ ମଧ୍ୟରେ ସେୟାର କରିବାକୁ ଦିଏ। ଏହା ଆପଣଙ୍କ ଡାଟାକୁ ସୁରକ୍ଷିତ ରଖିବା ସମୟରେ ଇନସାଇଟ ଏବଂ ଅନୁଭୂତିଗୁଡ଼ିକୁ ଅନଲକ କରିବାରେ ସହାୟତା କରେ।"</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect ବିଷୟରେ ଅଧିକ"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"ଆପଣଙ୍କ ଡାଟା ଏବଂ କେଉଁ ଆପ୍ସ ଏହାକୁ ଆକ୍ସେସ କରିପାରିବ"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"ଏବେ ଆପଣଙ୍କର ଡାଟା ବ୍ୟବହାର କରିଥିବା ଆପ୍ସ"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"ହେଲ୍ଥ ଡାଟା ଆକ୍ସେସ କରିପାରୁଥିବା ଡିଭାଇସଗୁଡ଼ିକର ରିଭ୍ୟୁ କରନ୍ତୁ"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect ସହିତ କାମ କରୁଥିବା ଆପ୍ସକୁ ଏଠାରେ ଦେଖିବା ପାଇଁ ସେଗୁଡ଼ିକୁ ଇନଷ୍ଟଲ କରନ୍ତୁ"</string>

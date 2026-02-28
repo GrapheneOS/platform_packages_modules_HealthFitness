@@ -22,7 +22,8 @@ import android.provider.Settings.ACTION_SECURITY_SETTINGS
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.data.appdata.AllDataUseCase
+import com.android.healthconnect.controller.data.alldata.api.IHasFitnessDataUseCase
+import com.android.healthconnect.controller.data.alldata.api.IHasMedicalDataUseCase
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
@@ -57,12 +58,13 @@ class HomeViewModel
 constructor(
     @ApplicationContext private val context: Context,
     private val loadHealthPermissionApps: ILoadHealthPermissionApps,
-    private val loadAllDataUseCase: AllDataUseCase,
     private val keyguardManagerUtil: KeyguardManagerUtil,
     private val deviceInfoUtils: DeviceInfoUtils,
     private val loadMigrationRestoreStateUseCase: BaseUseCase<Unit, MigrationRestoreState>,
     private val loadScheduledExportStatusUseCase: BaseUseCase<Unit, ScheduledExportUiState>,
     private val loadOnboardingStateUseCase: BaseUseCase<Unit, OnboardingState>,
+    private val hasFitnessDataUseCase: IHasFitnessDataUseCase,
+    private val hasMedicalDataUseCase: IHasMedicalDataUseCase,
 ) : ViewModel() {
 
     companion object {
@@ -338,8 +340,8 @@ constructor(
                 return@launch
             }
 
-            val hasAnyFitnessDataResult = loadAllDataUseCase.loadHasAnyFitnessData()
-            val hasAnyMedicalDataResult = loadAllDataUseCase.loadHasAnyMedicalData()
+            val hasAnyFitnessDataResult = hasFitnessDataUseCase.invoke(Unit)
+            val hasAnyMedicalDataResult = hasMedicalDataUseCase.invoke(Unit)
             if (
                 hasAnyFitnessDataResult is UseCaseResults.Success &&
                     hasAnyMedicalDataResult is UseCaseResults.Success

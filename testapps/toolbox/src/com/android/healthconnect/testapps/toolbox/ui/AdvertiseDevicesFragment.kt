@@ -410,11 +410,6 @@ class AdvertiseDevicesFragment : Fragment() {
                     )
                 }
 
-        if (advertisements.isEmpty()) {
-            Toast.makeText(context, "No devices enabled to advertise", Toast.LENGTH_SHORT).show()
-            return
-        }
-
         val executor = Executors.newSingleThreadExecutor()
         val receiver =
             object : OutcomeReceiver<Void, HealthConnectException> {

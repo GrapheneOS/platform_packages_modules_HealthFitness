@@ -103,7 +103,7 @@ constructor(
                     .filter { menstruationPeriodRecord ->
                         menstruationPeriodRecord is MenstruationPeriodRecord &&
                             menstruationPeriodRecord.startTime.isBefore(exactEnd) &&
-                            menstruationPeriodRecord.endTime.isAfter(exactStart)
+                            menstruationPeriodRecord.endTime >= exactStart
                     }
         } else {
             records =

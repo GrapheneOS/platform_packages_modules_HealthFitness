@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"ಎಲ್ಲಾ ಆ್ಯಪ್‌ಗಳು"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ಓದಬಹುದು"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ಅನ್ನು ಬರೆಯಬಹುದು"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"ನಿಷ್ಕ್ರಿಯ ಆ್ಯಪ್‌ಗಳು"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"ಈ ಆ್ಯಪ್‌ಗಳಿಗೆ ಇನ್ನು ಮುಂದೆ <xliff:g id="DATA_TYPE">%s</xliff:g> ಅನ್ನು ಓದಲು ಅಥವಾ ಬರೆಯಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ, ಆದರೆ ಅವು Health Connect ನಲ್ಲಿ ಈಗಲೂ ಡೇಟಾವನ್ನು ಸಂಗ್ರಹಿಸಿಡುತ್ತವೆ"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"ಆ್ಯಪ್‌ಗಳಿಗೆ ಇನ್ನು ಮುಂದೆ <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> ಡೇಟಾವನ್ನು ಓದಲು ಅಥವಾ ಬರೆಯಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ ಹಾಗೂ Health Connect ನಲ್ಲಿ <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> ಡೇಟಾವನ್ನು ಸಂಗ್ರಹಿಸಲಾಗಿಲ್ಲ"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"ಈ ಡೇಟಾ, ಸಕ್ರಿಯವಾಗಿದ್ದ ಸಮಯ, ವ್ಯಾಯಾಮದ ಪ್ರಕಾರ, ಲ್ಯಾಪ್‌ಗಳು, ಪುನರಾವರ್ತನೆಗಳು, ಸೆಶನ್‌ಗಳು ಅಥವಾ ಈಜುವಿಕೆ ಸ್ಟ್ರೋಕ್‌ಗಳಂತಹ ಮಾಹಿತಿಯನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"ಈ ಡೇಟಾ, ನಿದ್ರೆಯ ಹಂತಗಳು ಹಾಗೂ ನಿದ್ರೆಯ ಅವಧಿಗಳಂತಹ ಮಾಹಿತಿಯನ್ನು ಒಳಗೊಂಡಿರುತ್ತದೆ"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"ಎಲ್ಲಾ ನಮೂದುಗಳನ್ನು ನೋಡಿ"</string>
@@ -126,12 +129,12 @@
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"ನೀವು ಆ್ಯಪ್ ಅನ್ನು ಬಳಸದೇ ಇರುವಾಗ ಈ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಈ ಆ್ಯಪ್ ಅನ್ನು ಅನುಮತಿಸಿ"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"ನೀವು ಆ್ಯಪ್ ಅನ್ನು ಬಳಸದೇ ಇರುವಾಗ ಈ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಈ ಆ್ಯಪ್ ಅನ್ನು ಅನುಮತಿಸಿ"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"ಹಿನ್ನೆಲೆಯಲ್ಲಿ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಿ"</string>
-    <string name="background_read_combined_request_description" msgid="2423480522986545286">"ನೀವು ಆ್ಯಪ್ ಅನ್ನು ಬಳಸದೇ ಇರುವಾಗ Health Connect ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಈ ಆ್ಯಪ್ ಅನ್ನು ಅನುಮತಿಸಿ"</string>
+    <string name="background_read_combined_request_description" msgid="2423480522986545286">"ನೀವು ಆ್ಯಪ್ ಅನ್ನು ಬಳಸದೇ ಇರುವಾಗ Health Connect ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಈ ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಸಿ"</string>
     <string name="history_read_medical_combined_request_title" msgid="1262267962861942478">"ಹಿಂದಿನ ಫಿಟ್‌ನೆಸ್ ಮತ್ತು ಯೋಗಕ್ಷೇಮ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಿ"</string>
     <string name="history_read_medical_combined_request_description" msgid="7550922315652791771">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> ಕ್ಕಿಂತ ಮೊದಲು ಸೇರಿಸಲಾದ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಈ ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಸಿ"</string>
     <string name="history_read_medical_combined_request_description_fallback" msgid="3567968660826834911">"ಹಿಂದಿನ ಎಲ್ಲಾ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಈ ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಸಿ"</string>
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"ಹಿಂದಿನ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಿ"</string>
-    <string name="history_read_combined_request_description" msgid="1437787086896636484">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> ಗೂ ಮೊದಲು ಸೇರಿಸಲಾದ Health Connect ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಈ ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಸಿ"</string>
+    <string name="history_read_combined_request_description" msgid="1437787086896636484">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> ಗೂ ಮೊದಲು ಸೇರಿಸಲಾದ Health Connect ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಈ ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಸಿ"</string>
     <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"ಹಿಂದಿನ ಎಲ್ಲಾ Health Connect ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಈ ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಸಿ"</string>
     <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"<xliff:g id="APP_NAME">%1$s</xliff:g> ಗೆ ಈಗಾಗಲೇ ನಿಮ್ಮ ಹಿಂದಿನ ವೈದ್ಯಕೀಯ ದಾಖಲೆಗಳ ಡೇಟಾಗೆ ಆ್ಯಕ್ಸೆಸ್ ಇದೆ"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"ಅನುಮತಿಗಳ ಕುರಿತು ಇನ್ನಷ್ಟು ಓದಿ"</string>
@@ -147,7 +150,7 @@
     <string name="history_read_medical_access_description" msgid="5615959269427106141">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> ಕ್ಕಿಂತ ಮೊದಲು ಸೇರಿಸಲಾದ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಈ ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಸಿ"</string>
     <string name="history_read_medical_access_description_fallback" msgid="3888547064992673535">"ಹಿಂದಿನ ಎಲ್ಲಾ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಈ ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಸಿ"</string>
     <string name="history_read_access_title" msgid="870048398702887144">"ಹಿಂದಿನ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಿ"</string>
-    <string name="history_read_access_description" msgid="800722432229526128">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> ಗೂ ಮೊದಲು ಸೇರಿಸಲಾದ Health Connect ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಈ ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಸಿ"</string>
+    <string name="history_read_access_description" msgid="800722432229526128">"<xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g> ಗೂ ಮೊದಲು ಸೇರಿಸಲಾದ Health Connect ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಈ ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಸಿ"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"ಹಿಂದಿನ ಎಲ್ಲಾ Health Connect ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಈ ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಸಿ"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"ಯಾವುದೇ ಫಿಟ್‌ನೆಸ್ ಡೇಟಾವನ್ನು ಪ್ರಸ್ತುತ ಓದಲಾಗುತ್ತಿಲ್ಲ, ಏಕೆಂದರೆ <xliff:g id="APP_NAME">%1$s</xliff:g> ಗೆ ರೀಡ್ ಅನುಮತಿಗಳು ಆನ್‌ ಆಗಿಲ್ಲ"</string>
     <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g> ಗೆ ಈಗಾಗಲೇ ನಿಮ್ಮ ಹಿಂದಿನ ವೈದ್ಯಕೀಯ ದಾಖಲೆಗಳ ಡೇಟಾಗೆ ಆ್ಯಕ್ಸೆಸ್ ಇದೆ. ಇದನ್ನು ಬದಲಾಯಿಸಲು, ಈ ಆ್ಯಪ್‌ಗೆ ನೀಡಿರುವ ವೈದ್ಯಕೀಯ ದಾಖಲೆ ಅನುಮತಿಗಳನ್ನು ಆಫ್ ಮಾಡಿ"</string>
@@ -156,7 +159,7 @@
     <string name="additional_access_background_footer" msgid="1638739578431818525">"ಈ ಆ್ಯಪ್‌ಗೆ ಹಿನ್ನೆಲೆ ಆ್ಯಕ್ಸೆಸ್ ಅನ್ನು ಆನ್ ಮಾಡಲು ಕನಿಷ್ಠ ಒಂದು ರೀಡ್ ಅನುಮತಿಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"ಈ ಆ್ಯಪ್‌ಗಾಗಿ ಹಿಂದಿನ ಡೇಟಾ ಆ್ಯಕ್ಸೆಸ್ ಅನ್ನು ಆನ್ ಮಾಡಲು ಕನಿಷ್ಠ ಒಂದು ರೀಡ್ ಅನುಮತಿಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ"</string>
     <string name="historic_access_description" msgid="3309195636349468633">"ಹಿಂದಿನ ಎಲ್ಲಾ Health Connect ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಈ ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಸಿ"</string>
-    <string name="background_read_description" msgid="3203594555849969283">"ನೀವು ಆ್ಯಪ್ ಅನ್ನು ಬಳಸದೇ ಇರುವಾಗ Health Connect ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಈ ಆ್ಯಪ್ ಅನ್ನು ಅನುಮತಿಸಿ"</string>
+    <string name="background_read_description" msgid="3203594555849969283">"ನೀವು ಆ್ಯಪ್ ಅನ್ನು ಬಳಸದೇ ಇರುವಾಗ Health Connect ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಲು ಈ ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿಸಿ"</string>
     <string name="write_device_udi_content_description" msgid="3345237277637293502">"ಸಾಧನ UDI ಅನ್ನು Health Connect ಡೇಟಾದಲ್ಲಿ ಬರೆಯಲು ಈ ಆ್ಯಪ್‌ಗೆ ಅನುಮತಿ ನೀಡಿ"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"ಕರಗಿಸಿದ ಸಕ್ರಿಯ ಕ್ಯಾಲೋರಿಗಳು"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"ಸಕ್ರಿಯ ಕ್ಯಾಲೋರಿಗಳನ್ನು ಕಳೆದುಕೊಳ್ಳಲಾಗಿದೆ"</string>
@@ -1336,8 +1339,7 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"ಸಾಧನದ ಡೇಟಾ"</string>
     <string name="device_data_label" msgid="2056618513138892435">"ಸಾಧನವನ್ನು ನಿರ್ವಹಿಸಿ"</string>
     <string name="device_data_button" msgid="8002406105399136401">"ಸಾಧನದ ಡೇಟಾವನ್ನು ನೋಡಿ"</string>
-    <!-- no translation found for device_sync_button (2075007109033449483) -->
-    <skip />
+    <string name="device_sync_button" msgid="2075007109033449483">"Health Connect ಗೆ ಸಿಂಕ್ ಮಾಡಿ"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"ಫೋನ್‌ನಲ್ಲಿ ಟ್ರ್ಯಾಕ್ ಮಾಡಿದ ಹೆಜ್ಜೆಗಳು Health Connect ನಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"ಈ ಸಾಧನವು ಟ್ರ್ಯಾಕ್ ಮಾಡಿದ ಹೆಜ್ಜೆಗಳನ್ನು ಈಗ Health Connect ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗಿದೆ, ಇದರಿಂದ ಕನೆಕ್ಟ್ ಮಾಡಲಾದ ಆ್ಯಪ್‌ಗಳು ಅದನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"ವಜಾಗೊಳಿಸಿ"</string>
@@ -1349,7 +1351,8 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"ಆದ್ಯತೆಗಳು"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect ನಿಮ್ಮ ಆರೋಗ್ಯ ಮತ್ತು ಫಿಟ್‌ನೆಸ್‌ ಡೇಟಾವನ್ನು ಬಹು ಡೇಟಾ ಮೂಲಗಳ ನಡುವೆ ಹಂಚಿಕೊಳ್ಳಲು ನಿಮಗೆ ಅನುಮತಿಸುತ್ತದೆ. ಇದು ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಸುರಕ್ಷಿತವಾಗಿರಿಸಿಕೊಳ್ಳುವ ಸಮಯದಲ್ಲಿ ಒಳನೋಟಗಳು ಮತ್ತು ಅನುಭವಗಳನ್ನು ಅನ್‌ಲಾಕ್‌ ಮಾಡಲು ನಿಮಗೆ ಸಹಾಯ ಮಾಡುತ್ತದೆ."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect ಕುರಿತಾಗಿ ಹೆಚ್ಚಿನ ಮಾಹಿತಿ"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"ನಿಮ್ಮ ಡೇಟಾ ಮತ್ತು ಅದನ್ನು ಯಾವ ಆ್ಯಪ್‌ಗಳು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದು"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"ನಿಮ್ಮ ಡೇಟಾವನ್ನು ಇತ್ತೀಚೆಗೆ ಬಳಸಿದ ಆ್ಯಪ್‌ಗಳು"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"ಆರೋಗ್ಯ ಡೇಟಾವನ್ನು ಆ್ಯಕ್ಸೆಸ್ ಮಾಡಬಹುದಾದ ಸಾಧನಗಳನ್ನು ಪರಿಶೀಲಿಸಿ"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect ಜೊತೆಗೆ ಕಾರ್ಯನಿರ್ವಹಿಸುವ ಆ್ಯಪ್‌ಗಳನ್ನು ಇಲ್ಲಿ ನೋಡಲು ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ"</string>

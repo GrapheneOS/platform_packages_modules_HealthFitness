@@ -1,0 +1,184 @@
+/*
+ * Copyright (C) 2026 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.android.healthconnect.controller.tests.data.alldata.api
+
+import android.health.connect.HealthConnectException
+import android.health.connect.HealthConnectManager
+import android.health.connect.HealthDataCategory
+import android.health.connect.HealthPermissionCategory
+import android.health.connect.RecordTypeInfoResponse
+import android.health.connect.datatypes.Record
+import android.health.connect.datatypes.StepsRecord
+import android.health.connect.datatypes.SymptomRecord
+import android.platform.test.annotations.DisableFlags
+import android.platform.test.annotations.EnableFlags
+import android.platform.test.flag.junit.SetFlagsRule
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.android.healthconnect.controller.data.alldata.api.HasFitnessDataUseCase
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.doReturnResult
+import com.android.healthconnect.controller.tests.utils.getDataOrigin
+import com.android.healthfitness.flags.Flags
+import com.google.common.truth.Truth.assertThat
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.test.runTest
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.kotlin.any
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stub
+
+@HiltAndroidTest
+@RunWith(AndroidJUnit4::class)
+class HasFitnessDataUseCaseTest {
+    @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val setFlagsRule = SetFlagsRule()
+
+    private val healthConnectManager: HealthConnectManager = mock()
+    private lateinit var hasFitnessDataUseCase: HasFitnessDataUseCase
+
+    @Before
+    fun setup() {
+        hiltRule.inject()
+        hasFitnessDataUseCase = HasFitnessDataUseCase(healthConnectManager, Dispatchers.Main)
+    }
+
+    @Test
+    fun invoke_managerError_returnsFailure() = runTest {
+        healthConnectManager.stub {
+            on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
+                Result.failure<Map<Class<out Record>, RecordTypeInfoResponse>>(
+                    HealthConnectException(HealthConnectException.ERROR_UNKNOWN)
+                )
+        }
+
+        val result = hasFitnessDataUseCase.invoke(Unit)
+        assertThat(result).isInstanceOf(UseCaseResults.Failed::class.java)
+        assertThat((result as UseCaseResults.Failed).exception)
+            .isInstanceOf(HealthConnectException::class.java)
+    }
+
+    @Test
+    fun invoke_noData_returnsFalse() = runTest {
+        healthConnectManager.stub {
+            on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
+                Result.success(emptyMap<Class<out Record>, RecordTypeInfoResponse>())
+        }
+
+        val result = hasFitnessDataUseCase.invoke(Unit)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        assertThat((result as UseCaseResults.Success).data).isFalse()
+    }
+
+    @Test
+    fun invoke_fitnessData_returnsTrue() = runTest {
+        val recordTypeInfoMap =
+            mapOf(
+                StepsRecord::class.java to
+                    RecordTypeInfoResponse(
+                        setOf(HealthPermissionCategory.STEPS),
+                        HealthDataCategory.ACTIVITY,
+                        listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
+                    )
+            )
+        healthConnectManager.stub {
+            on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
+                Result.success(recordTypeInfoMap)
+        }
+
+        val result = hasFitnessDataUseCase.invoke(Unit)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        assertThat((result as UseCaseResults.Success).data).isTrue()
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_SYMPTOMS)
+    fun invoke_symptomDataOnly_flagOff_returnsFalse() = runTest {
+        val recordTypeInfoMap =
+            mapOf(
+                SymptomRecord::class.java to
+                    RecordTypeInfoResponse(
+                        emptySet(),
+                        HealthDataCategory.SYMPTOMS,
+                        listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
+                    )
+            )
+        healthConnectManager.stub {
+            on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
+                Result.success(recordTypeInfoMap)
+        }
+
+        val result = hasFitnessDataUseCase.invoke(Unit)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        assertThat((result as UseCaseResults.Success).data).isFalse()
+    }
+
+    @Test
+    @EnableFlags(Flags.FLAG_SYMPTOMS)
+    fun invoke_symptomDataOnly_flagOn_returnsTrue() = runTest {
+        val recordTypeInfoMap =
+            mapOf(
+                SymptomRecord::class.java to
+                    RecordTypeInfoResponse(
+                        emptySet(),
+                        HealthDataCategory.SYMPTOMS,
+                        listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
+                    )
+            )
+        healthConnectManager.stub {
+            on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
+                Result.success(recordTypeInfoMap)
+        }
+
+        val result = hasFitnessDataUseCase.invoke(Unit)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        assertThat((result as UseCaseResults.Success).data).isTrue()
+    }
+
+    @Test
+    @DisableFlags(Flags.FLAG_SYMPTOMS)
+    fun invoke_fitnessAndSymptomData_flagOff_returnsTrue() = runTest {
+        val recordTypeInfoMap =
+            mapOf(
+                StepsRecord::class.java to
+                    RecordTypeInfoResponse(
+                        setOf(HealthPermissionCategory.STEPS),
+                        HealthDataCategory.ACTIVITY,
+                        listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
+                    ),
+                SymptomRecord::class.java to
+                    RecordTypeInfoResponse(
+                        emptySet(),
+                        HealthDataCategory.SYMPTOMS,
+                        listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
+                    ),
+            )
+        healthConnectManager.stub {
+            on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
+                Result.success(recordTypeInfoMap)
+        }
+
+        val result = hasFitnessDataUseCase.invoke(Unit)
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        assertThat((result as UseCaseResults.Success).data).isTrue()
+    }
+}

@@ -95,9 +95,12 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Semua aplikasi"</string>
     <string name="can_read" msgid="4568261079308309564">"Dapat membaca <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Dapat menulis <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <string name="inactive_apps" msgid="8956546286760797760">"Aplikasi yang tidak aktif"</string>
-    <string name="inactive_apps_message" msgid="8335803540719022910">"Aplikasi ini tidak dapat menulis data <xliff:g id="DATA_TYPE">%s</xliff:g> lagi, tetapi masih memiliki data yang disimpan di Health Connect"</string>
-    <string name="data_access_empty_message" msgid="9084350402254264452">"Aplikasi tidak dapat lagi membaca dan menulis <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>, dan tidak ada data <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> yang disimpan di Health Connect"</string>
+    <!-- no translation found for inactive_apps (1413060306609966606) -->
+    <skip />
+    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
+    <skip />
+    <!-- no translation found for data_access_empty_message (323965759318632888) -->
+    <skip />
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Data ini termasuk informasi seperti waktu aktif, jenis olahraga, putaran, repetisi, sesi, atau gaya renang"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Data ini termasuk informasi seperti fase tidur dan sesi tidur"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Lihat semua entri"</string>
@@ -275,8 +278,8 @@
     <string name="sexual_activity_lowercase_label" msgid="8285364117437418834">"aktivitas seksual"</string>
     <string name="sexual_activity_read_content_description" msgid="4937721417714312007">"Baca aktivitas seksual"</string>
     <string name="sexual_activity_write_content_description" msgid="3063448245882840534">"Tulis aktivitas seksual"</string>
-    <string name="spotting_uppercase_label" msgid="5106739829390033240">"Bercak"</string>
-    <string name="spotting_lowercase_label" msgid="4361141146039580583">"bercak"</string>
+    <string name="spotting_uppercase_label" msgid="5106739829390033240">"Flek"</string>
+    <string name="spotting_lowercase_label" msgid="4361141146039580583">"flek"</string>
     <string name="spotting_read_content_description" msgid="5422420770022357631">"Baca data bercak"</string>
     <string name="spotting_write_content_description" msgid="9049462631184362964">"Tulis data bercak"</string>
     <string name="hydration_uppercase_label" msgid="1196083392597480565">"Hidrasi"</string>
@@ -691,8 +694,8 @@
     <string name="cycling_cadence_series_range_long" msgid="6852892013260504985">"dari <xliff:g id="MIN">%1$s</xliff:g> sampai <xliff:g id="MAX">%2$s</xliff:g>"</string>
     <string name="sexual_activity_protected" msgid="4259473257597274326">"Dengan kontrasepsi"</string>
     <string name="sexual_activity_unprotected" msgid="2250981470537379807">"Tanpa kontrasepsi"</string>
-    <string name="spotting" msgid="1637175837078770520">"Bercak"</string>
-    <string name="flow_spotting" msgid="832418664953780156">"Bercak"</string>
+    <string name="spotting" msgid="1637175837078770520">"Flek"</string>
+    <string name="flow_spotting" msgid="832418664953780156">"Flek"</string>
     <string name="flow_light" msgid="1937543318146228793">"Ringan"</string>
     <string name="flow_medium" msgid="3783688724668943154">"Sedang"</string>
     <string name="flow_heavy" msgid="8672261792750634294">"Deras"</string>
@@ -1348,7 +1351,8 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferensi"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect memungkinkan Anda berbagi data kesehatan dan kebugaran antar-berbagai sumber data. Hal ini membantu Anda mendapatkan analisis dan pengalaman baru dengan tetap menjaga keamanan data Anda."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Selengkapnya tentang Health Connect"</string>
-    <string name="data_and_access_summary" msgid="1435478623777637347">"Data dan aplikasi yang dapat mengaksesnya"</string>
+    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
+    <skip />
     <string name="recent_access_summary" msgid="3933708982145999939">"Aplikasi yang baru-baru ini menggunakan data Anda"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Tinjau perangkat yang dapat mengakses data kesehatan"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Instal aplikasi yang dapat berfungsi dengan Health Connect untuk melihatnya di sini"</string>

@@ -199,12 +199,6 @@ class DdpOnboardingFragment : Fragment() {
         advertisements: List<DeviceDataAdvertisement>,
         healthConnectManager: HealthConnectManager,
     ) {
-        if (advertisements.isEmpty()) {
-            activity?.setResult(RESULT_DEVICE_ONBOARDING_DENIED)
-            activity?.finish()
-            return
-        }
-
         healthConnectManager.advertiseDeviceDataSources(
             advertisements.toSet(),
             Executors.newSingleThreadExecutor(),

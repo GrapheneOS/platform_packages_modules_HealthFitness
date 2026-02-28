@@ -26,7 +26,6 @@ import android.health.connect.RecordTypeInfoResponse
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SymptomRecord
 import android.os.Bundle
-import android.os.OutcomeReceiver
 import android.platform.test.annotations.RequiresFlagsEnabled
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
@@ -43,9 +42,10 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.data.appdata.AllDataUseCase
 import com.android.healthconnect.controller.data.appdata.AppDataFragment
 import com.android.healthconnect.controller.data.appdata.AppDataViewModel
+import com.android.healthconnect.controller.data.appdata.api.GetAppFitnessPermissionTypesUseCase
+import com.android.healthconnect.controller.data.appdata.api.GetAppMedicalPermissionTypesUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.HealthPermissionType
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
@@ -65,6 +65,7 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
+import com.android.healthconnect.controller.tests.utils.doReturnResult
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
 import com.android.healthconnect.controller.tests.utils.launchFragment
 import com.android.healthconnect.controller.utils.logging.AppDataElement
@@ -88,12 +89,12 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
-import org.mockito.kotlin.doAnswer
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
+import org.mockito.kotlin.stub
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 
@@ -101,7 +102,7 @@ import org.mockito.kotlin.verify
 @HiltAndroidTest
 @UninstallModules(HealthManagerModule::class)
 @RunWith(AndroidJUnit4::class)
-class AppDataFragmentTest {
+class AppDataFragmentIntegrationTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -114,6 +115,11 @@ class AppDataFragmentTest {
     private lateinit var navHostController: TestNavHostController
     private lateinit var context: Context
 
+    private val getAppFitnessPermissionTypesWithDataUseCase =
+        GetAppFitnessPermissionTypesUseCase(manager, Dispatchers.Main)
+    private val getAppMedicalPermissionTypesWithDataUseCase =
+        GetAppMedicalPermissionTypesUseCase(manager, Dispatchers.Main)
+
     @Before
     fun setup() = runTest {
         appInfoReader = createFakeAppInfoReader()
@@ -121,15 +127,17 @@ class AppDataFragmentTest {
         Dispatchers.setMain(testDispatcher)
         context = InstrumentationRegistry.getInstrumentation().context
         navHostController = TestNavHostController(context)
-        val allDataUseCase = AllDataUseCase(manager, Dispatchers.Main)
-        appDataViewModel = AppDataViewModel(appInfoReader, allDataUseCase)
-        doAnswer { invocation ->
-                val receiver = invocation.arguments[2] as OutcomeReceiver<ReadRecordsResponse<*>, *>
-                receiver.onResult(ReadRecordsResponse(emptyList(), -1))
-                null
-            }
-            .`when`(manager)
-            .readRecords<Record>(any(), any(), any())
+        appDataViewModel =
+            AppDataViewModel(
+                appInfoReader,
+                getAppFitnessPermissionTypesWithDataUseCase,
+                getAppMedicalPermissionTypesWithDataUseCase,
+            )
+        manager.stub {
+            on { currentDeviceId } doReturn "test_device_id"
+            on { readRecords<Record>(any(), any(), any()) } doReturnResult
+                Result.success(ReadRecordsResponse<Record>(emptyList(), -1))
+        }
     }
 
     @After
@@ -1232,7 +1240,7 @@ class AppDataFragmentTest {
         if (permissionTypesList.contains(FitnessPermissionType.SYMPTOM_ABDOMINAL_PAIN)) {
             recordTypeInfoMap[SymptomRecord::class.java] =
                 RecordTypeInfoResponse(
-                    HealthPermissionCategory.SYMPTOM_ABDOMINAL_PAIN,
+                    setOf(HealthPermissionCategory.SYMPTOM_ABDOMINAL_PAIN),
                     HealthDataCategory.SYMPTOMS,
                     listOf(getDataOrigin(TEST_APP_PACKAGE_NAME)),
                 )
@@ -1243,35 +1251,15 @@ class AppDataFragmentTest {
                 MedicalResourceTypeInfo(toMedicalResourceType(it), setOf(TEST_MEDICAL_DATA_SOURCE))
             }
 
-        doAnswer(prepareAnswer(recordTypeInfoMap))
-            .`when`(manager)
-            .queryAllRecordTypesInfo(any(), any())
-
-        doAnswer(prepareAnswer(medicalResourceTypeResources))
-            .`when`(manager)
-            .queryAllMedicalResourceTypeInfos(any(), any())
-    }
-
-    private fun prepareAnswer(
-        recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse>
-    ): (InvocationOnMock) -> Map<Class<out Record>, RecordTypeInfoResponse> {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[1] as OutcomeReceiver<Any?, *>
-            receiver.onResult(recordTypeInfoMap)
-            recordTypeInfoMap
+        manager.stub {
+            on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
+                Result.success(recordTypeInfoMap)
         }
-        return answer
-    }
 
-    private fun prepareAnswer(
-        medicalResourceTypeInfo: List<MedicalResourceTypeInfo>
-    ): (InvocationOnMock) -> List<MedicalResourceTypeInfo> {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[1] as OutcomeReceiver<Any?, *>
-            receiver.onResult(medicalResourceTypeInfo)
-            medicalResourceTypeInfo
+        manager.stub {
+            on { queryAllMedicalResourceTypeInfos(any(), any()) } doReturnResult
+                Result.success(medicalResourceTypeResources)
         }
-        return answer
     }
 
     private fun assertCheckboxShown(title: String, tag: String = "checkbox") {
