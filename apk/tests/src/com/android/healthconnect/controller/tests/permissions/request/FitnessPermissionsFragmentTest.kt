@@ -62,7 +62,6 @@ import com.android.healthconnect.controller.tests.TestActivity
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.any
-import com.android.healthconnect.controller.tests.utils.clickOnRecyclerViewItemWithText
 import com.android.healthconnect.controller.tests.utils.clickSwitchOnRecyclerViewItemWithText
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.launchFragment
@@ -1159,7 +1158,7 @@ class FitnessPermissionsFragmentTest {
             assertThat(expandablePreference.mIsExpanded).isTrue()
 
             // 3. Click "Steps" to turn it off again
-            clickOnRecyclerViewItemWithText("Steps")
+            scrollToTextAndClick("Steps")
             assertThat(expandablePreference.isChecked).isFalse()
         }
     }
@@ -1196,7 +1195,7 @@ class FitnessPermissionsFragmentTest {
             assertThat(activityPreference.mIsExpanded).isTrue()
 
             // User collapses the category
-            clickOnRecyclerViewItemWithText("Activity")
+            scrollToTextAndClick("Activity")
             onIdle()
 
             assertThat(activityPreference.mIsExpanded).isFalse()
