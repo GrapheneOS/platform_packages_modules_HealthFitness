@@ -112,7 +112,7 @@ class MedicalWritePermissionFragment : Hilt_MedicalWritePermissionFragment() {
 
         footer.title = getString(R.string.medical_request_footer)
         footer.setLearnMoreText(getString(R.string.medical_request_about_health_records))
-        footer.setLearnMoreAction { deviceInfoUtils.openHCGetStartedLink(requireActivity()) }
+        footer.setLearnMoreAction { deviceInfoUtils.openHCLearnMoreLink(requireActivity()) }
 
         setupAllowButton()
         setupDoNotAllowButton()

@@ -37,6 +37,9 @@ class FakeDeviceInfoUtils : DeviceInfoUtils {
     var helpCenterInvoked = false
     var backupAndRestoreHelpCenterInvoked = false
     var healthFitnessPermissionsHelpCenterInvoked = false
+    var manageDataInvoked = false
+    var hcLearnMoreInvoked = false
+    var hcIntegrationInvoked = false
 
     fun reset() {
         sendFeedbackAvailable = false
@@ -45,6 +48,9 @@ class FakeDeviceInfoUtils : DeviceInfoUtils {
         helpCenterInvoked = false
         backupAndRestoreHelpCenterInvoked = false
         healthFitnessPermissionsHelpCenterInvoked = false
+        manageDataInvoked = false
+        hcLearnMoreInvoked = false
+        hcIntegrationInvoked = false
     }
 
     fun setSendFeedbackAvailability(available: Boolean) {
@@ -88,6 +94,18 @@ class FakeDeviceInfoUtils : DeviceInfoUtils {
 
     override fun openHCBackupAndRestoreLink(activity: FragmentActivity) {
         backupAndRestoreHelpCenterInvoked = true
+    }
+
+    override fun openHCManageDataLink(activity: FragmentActivity) {
+        manageDataInvoked = true
+    }
+
+    override fun openHCLearnMoreLink(activity: FragmentActivity) {
+        hcLearnMoreInvoked = true
+    }
+
+    override fun openHCIntegrationLink(activity: FragmentActivity) {
+        hcIntegrationInvoked = true
     }
 
     override fun openHealthFitnessPermissionsLearnMoreLink(activity: FragmentActivity) {
