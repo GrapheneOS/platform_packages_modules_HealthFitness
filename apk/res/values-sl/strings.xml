@@ -366,8 +366,8 @@
     <string name="procedures_lowercase_label" msgid="5320804313946273234">"posegi"</string>
     <string name="procedures_content_description" msgid="1086900373141440005">"Branje podatkov o posegih"</string>
     <string name="social_history_uppercase_label" msgid="4119611299449533999">"Socialna anamneza"</string>
-    <string name="social_history_lowercase_label" msgid="9027541979445736412">"zgodovina družabnih stikov"</string>
-    <string name="social_history_content_description" msgid="7187059309389849831">"Branje zgodovine družabnih stikov"</string>
+    <string name="social_history_lowercase_label" msgid="9027541979445736412">"socialna anamneza"</string>
+    <string name="social_history_content_description" msgid="7187059309389849831">"Branje socialne anamneze"</string>
     <string name="visits_uppercase_label" msgid="8532619758336375886">"Obiski"</string>
     <string name="visits_lowercase_label" msgid="2545887061364564151">"obiski"</string>
     <string name="visits_content_description" msgid="6336796415049565697">"Branje podatkov o obiskih"</string>

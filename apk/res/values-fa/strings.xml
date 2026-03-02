@@ -1383,7 +1383,7 @@
     <string name="device_type_fitness_equipment" msgid="4702700814093068235">"تجهیزات تناسب اندام"</string>
     <string name="device_type_portable_computer" msgid="9003721967778945730">"رایانه قابل‌حمل"</string>
     <string name="device_type_meter" msgid="3409050593674148325">"متر"</string>
-    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"اکنون نه"</string>
+    <string name="banner_default_dismiss_button" msgid="3193723491836994371">"حالا نه"</string>
     <string name="all_symptoms_uppercase_label" msgid="8536062555780157046">"همه علائم"</string>
     <string name="symptoms_lowercase_label" msgid="767123038349492995">"علائم"</string>
     <string name="acne_read_content_description" msgid="1176708404029936065">"خواندن داده‌های آکنه"</string>
