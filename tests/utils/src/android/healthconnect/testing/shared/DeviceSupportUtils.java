@@ -17,6 +17,7 @@ package android.healthconnect.testing.shared;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Process;
 
 import androidx.test.core.app.ApplicationProvider;
 
@@ -25,6 +26,11 @@ import androidx.test.core.app.ApplicationProvider;
  * if not.
  */
 public class DeviceSupportUtils {
+
+    /** Returns true if the current user is the system user. */
+    public static boolean isSystemUser() {
+        return Process.myUserHandle().isSystem();
+    }
 
     /** Returns true if HealthConnect is fully supported on this device. */
     public static boolean isHealthConnectFullySupported() {
