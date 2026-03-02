@@ -267,6 +267,9 @@ android_library {
         error_checks: ["NewApi"],
     },
     plugins: ["dagger2-compiler"],
+    optimize: {
+        proguard_flags_files: ["proguard.flags"],
+    },
 }
 
 // Opt-out config for optimizing the HealthConnectController target using R8.
@@ -293,6 +296,7 @@ healthconnectcontroller_optimized_java_defaults {
                     enabled: true,
                     optimize: true,
                     shrink_resources: true,
+                    ignore_warnings: false,
                 },
             },
         },
