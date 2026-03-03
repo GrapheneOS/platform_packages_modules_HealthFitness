@@ -33,6 +33,7 @@ import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
 import com.android.healthconnect.controller.tests.data.alldata.api.FakeHasFitnessDataUseCase
 import com.android.healthconnect.controller.tests.data.alldata.api.FakeHasMedicalDataUseCase
+import com.android.healthconnect.controller.tests.exportimport.api.FakeLoadScheduledExportStatusUseCase
 import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.NOW
@@ -46,7 +47,6 @@ import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionAppsUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadMigrationStateUseCase
 import com.android.healthconnect.controller.tests.utils.di.FakeLoadOnboardingStateUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadScheduledExportStatusUseCase
 import com.android.healthconnect.controller.utils.KeyguardManagerUtil
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
@@ -87,7 +87,8 @@ class HomeViewModelTest {
     private val testDispatcher = UnconfinedTestDispatcher()
 
     private val loadMigrationRestoreStateUseCase = FakeLoadMigrationStateUseCase()
-    private val loadScheduledExportStatusUseCase = FakeLoadScheduledExportStatusUseCase()
+    private val loadScheduledExportStatusUseCase =
+        fakeUseCaseRule.watch(FakeLoadScheduledExportStatusUseCase())
     private val loadOnboardingStateUseCase = fakeUseCaseRule.watch(FakeLoadOnboardingStateUseCase())
     private val hasFitnessDataUseCase = fakeUseCaseRule.watch(FakeHasFitnessDataUseCase())
     private val hasMedicalDataUseCase = fakeUseCaseRule.watch(FakeHasMedicalDataUseCase())
@@ -117,7 +118,6 @@ class HomeViewModelTest {
     fun tearDown() {
         Dispatchers.resetMain()
         loadMigrationRestoreStateUseCase.reset()
-        loadScheduledExportStatusUseCase.reset()
     }
 
     // region Connected apps

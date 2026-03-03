@@ -20,9 +20,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.exportimport.api.ExportStatusViewModel
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiStatus
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TestObserver
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadScheduledExportStatusUseCase
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -51,9 +51,11 @@ class ExportStatusViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
     private lateinit var viewModel: ExportStatusViewModel
-    private val loadScheduledExportStatusUseCase = FakeLoadScheduledExportStatusUseCase()
+    private val loadScheduledExportStatusUseCase =
+        fakeUseCaseRule.watch(FakeLoadScheduledExportStatusUseCase())
 
     @Before
     fun setup() {
@@ -64,7 +66,6 @@ class ExportStatusViewModelTest {
 
     @After
     fun tearDown() {
-        loadScheduledExportStatusUseCase.reset()
         Dispatchers.resetMain()
     }
 

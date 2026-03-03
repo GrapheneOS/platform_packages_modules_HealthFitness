@@ -20,7 +20,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -30,18 +29,17 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ExportStatusViewModel
 @Inject
-constructor(
-    private val loadScheduledExportStatusUseCase: BaseUseCase<Unit, ScheduledExportUiState>
-) : ViewModel() {
+constructor(private val loadScheduledExportStatusUseCase: ILoadScheduledExportStatusUseCase) :
+    ViewModel() {
     private val _storedScheduledExportStatus = MutableLiveData<ScheduledExportUiStatus>()
-    private val _storedNextExportSequentialNumber = MutableLiveData<Int>()
+    private val _storedNextExportSequentialNumber = MutableLiveData<Int?>()
 
     /** Holds the export status that is stored in the Health Connect service. */
     val storedScheduledExportStatus: LiveData<ScheduledExportUiStatus>
         get() = _storedScheduledExportStatus
 
     /** Holds the next export sequential number is stored in the Health Connect service. */
-    val storedNextExportSequentialNumber: LiveData<Int>
+    val storedNextExportSequentialNumber: LiveData<Int?>
         get() = _storedNextExportSequentialNumber
 
     init {

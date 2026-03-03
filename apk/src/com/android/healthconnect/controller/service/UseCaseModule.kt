@@ -17,7 +17,6 @@ package com.android.healthconnect.controller.service
 
 import android.content.Context
 import android.health.connect.HealthConnectManager
-import android.net.Uri
 import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.api.ILoadDataAggregationsUseCase
 import com.android.healthconnect.controller.data.entries.api.ILoadDataEntriesUseCase
@@ -40,17 +39,8 @@ import com.android.healthconnect.controller.data.formatters.SleepSessionFormatte
 import com.android.healthconnect.controller.data.formatters.StepsFormatter
 import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
 import com.android.healthconnect.controller.data.formatters.medical.MedicalEntryFormatter
-import com.android.healthconnect.controller.exportimport.api.DocumentProvider
-import com.android.healthconnect.controller.exportimport.api.ExportFrequency
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
 import com.android.healthconnect.controller.exportimport.api.IUpdateExportSettingsUseCase
-import com.android.healthconnect.controller.exportimport.api.ImportUiState
-import com.android.healthconnect.controller.exportimport.api.LoadExportSettingsUseCase
-import com.android.healthconnect.controller.exportimport.api.LoadImportStatusUseCase
-import com.android.healthconnect.controller.exportimport.api.LoadScheduledExportStatusUseCase
-import com.android.healthconnect.controller.exportimport.api.QueryDocumentProvidersUseCase
-import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
-import com.android.healthconnect.controller.exportimport.api.TriggerImportUseCase
 import com.android.healthconnect.controller.exportimport.api.UpdateExportSettingsUseCase
 import com.android.healthconnect.controller.migration.api.LoadMigrationRestoreStateUseCase
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
@@ -233,9 +223,9 @@ class UseCaseModule {
     }
 
     @Provides
-    fun providesLoadExportSettingsUseCase(
-        useCase: LoadExportSettingsUseCase
-    ): BaseUseCase<Unit, ExportFrequency> {
+    fun providesLoadFitnessPermissionAppsUseCase(
+        useCase: LoadFitnessPermissionAppsUseCase
+    ): BaseUseCase<Unit, List<ConnectedFitnessAppMetadata>> {
         return useCase
     }
 
@@ -245,39 +235,6 @@ class UseCaseModule {
         @IoDispatcher dispatcher: CoroutineDispatcher,
     ): IUpdateExportSettingsUseCase {
         return UpdateExportSettingsUseCase(healthDataExportManager, dispatcher)
-    }
-
-    @Provides
-    fun providesLoadScheduledExportStatusUseCase(
-        useCase: LoadScheduledExportStatusUseCase
-    ): BaseUseCase<Unit, ScheduledExportUiState> {
-        return useCase
-    }
-
-    @Provides
-    fun providesQueryDocumentProvidersUseCase(
-        useCase: QueryDocumentProvidersUseCase
-    ): BaseUseCase<Unit, List<DocumentProvider>> {
-        return useCase
-    }
-
-    @Provides
-    fun providesTriggerImportUseCase(useCase: TriggerImportUseCase): BaseUseCase<Uri, Unit> {
-        return useCase
-    }
-
-    @Provides
-    fun providesLoadImportStatusUseCase(
-        useCase: LoadImportStatusUseCase
-    ): BaseUseCase<Unit, ImportUiState> {
-        return useCase
-    }
-
-    @Provides
-    fun providesLoadFitnessPermissionAppsUseCase(
-        useCase: LoadFitnessPermissionAppsUseCase
-    ): BaseUseCase<Unit, List<ConnectedFitnessAppMetadata>> {
-        return useCase
     }
 
     @Provides
