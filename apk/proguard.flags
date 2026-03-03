@@ -1,0 +1,3 @@
+# Suppress warnings for missing classes in optional libs that might be
+# referenced from static androidx.wear deps.
+-dontwarn com.google.wear.input.**
