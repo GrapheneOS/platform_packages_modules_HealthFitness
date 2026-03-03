@@ -17,8 +17,13 @@
 package com.android.healthconnect.controller.matchmaking
 
 import android.content.Context
+import android.text.Layout
 import android.util.AttributeSet
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Checkable
+import android.widget.TextView
+import androidx.core.view.children
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.shared.preference.HealthSwitchPreference
@@ -47,10 +52,20 @@ constructor(context: Context, attrs: AttributeSet? = null) :
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
+        setupHyphenation(holder.itemView)
 
         val switch = holder.findViewById(R.id.switch_widget) as? Checkable
         switch?.isChecked = isChecked
 
         holder.findViewById(R.id.switch_widget)?.isClickable = false
+    }
+
+    private fun setupHyphenation(view: View) {
+        if (view is TextView) {
+            view.hyphenationFrequency = Layout.HYPHENATION_FREQUENCY_NORMAL
+            view.breakStrategy = Layout.BREAK_STRATEGY_SIMPLE
+        } else if (view is ViewGroup) {
+            view.children.forEach { child -> setupHyphenation(child) }
+        }
     }
 }
