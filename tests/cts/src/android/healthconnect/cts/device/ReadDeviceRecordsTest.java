@@ -15,7 +15,6 @@
  */
 package android.healthconnect.cts.device;
 
-import static android.health.connect.HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION;
 import static android.health.connect.datatypes.StepsRecord.STEPS_COUNT_TOTAL;
 import static android.healthconnect.testing.cts.TestOutcomeReceiver.outcomeExecutor;
 import static android.healthconnect.testing.cts.TestUtils.advertiseDevice;
@@ -114,7 +113,7 @@ public class ReadDeviceRecordsTest {
                                     receiver);
                             return receiver.assertAndGetException();
                         },
-                        MANAGE_HEALTH_DATA_PERMISSION);
+                        TestUtils.getDeviceDataProviderPermissions());
 
         assertThat(exception.getErrorCode())
                 .isEqualTo(HealthConnectException.ERROR_INVALID_ARGUMENT);

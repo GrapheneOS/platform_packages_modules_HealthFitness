@@ -16,6 +16,7 @@
 
 package android.healthconnect.testing.cts;
 
+import static android.Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA;
 import static android.health.connect.HealthDataCategory.ACTIVITY;
 import static android.health.connect.HealthDataCategory.BODY_MEASUREMENTS;
 import static android.health.connect.HealthDataCategory.CYCLE_TRACKING;
@@ -148,6 +149,7 @@ import android.health.connect.device.DeviceDataTypeAdvertisement;
 import android.health.connect.migration.MigrationEntity;
 import android.health.connect.migration.MigrationException;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
+import android.os.Build;
 import android.os.OutcomeReceiver;
 import android.util.Log;
 
@@ -1248,9 +1250,16 @@ public final class TestUtils {
     }
 
     /** Calls {@link HealthConnectManager#getCurrentDeviceId} with shell permission identity. */
+    public static String[] getDeviceDataProviderPermissions() {
+        if (Build.VERSION.SDK_INT >= 37) {
+            return new String[] {PROVIDE_HEALTH_CONNECT_DEVICE_DATA};
+        }
+        return new String[] {MANAGE_HEALTH_DATA_PERMISSION};
+    }
+
     public static String getCurrentDeviceId() throws InterruptedException {
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
-        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+        uiAutomation.adoptShellPermissionIdentity(getDeviceDataProviderPermissions());
         String response;
 
         try {
@@ -1359,7 +1368,7 @@ public final class TestUtils {
             TestOutcomeReceiver<Void, HealthConnectException> callback)
             throws InterruptedException {
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
-        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+        uiAutomation.adoptShellPermissionIdentity(getDeviceDataProviderPermissions());
 
         try {
             getHealthConnectManager().advertiseDeviceDataSources(advertisement, executor, callback);
@@ -1382,7 +1391,7 @@ public final class TestUtils {
             TestOutcomeReceiver<InsertRecordsResponse, HealthConnectException> callback)
             throws InterruptedException {
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
-        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+        uiAutomation.adoptShellPermissionIdentity(getDeviceDataProviderPermissions());
 
         try {
             getHealthConnectManager().insertDeviceRecords(deviceId, records, executor, callback);
@@ -1418,7 +1427,7 @@ public final class TestUtils {
             TestOutcomeReceiver<Void, HealthConnectException> callback)
             throws InterruptedException {
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
-        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+        uiAutomation.adoptShellPermissionIdentity(getDeviceDataProviderPermissions());
 
         try {
             getHealthConnectManager().updateDeviceRecords(deviceId, records, executor, callback);
@@ -1452,7 +1461,7 @@ public final class TestUtils {
             TestOutcomeReceiver<Void, HealthConnectException> callback)
             throws InterruptedException {
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
-        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+        uiAutomation.adoptShellPermissionIdentity(getDeviceDataProviderPermissions());
 
         try {
             getHealthConnectManager()
@@ -1487,7 +1496,7 @@ public final class TestUtils {
             TestOutcomeReceiver<Void, HealthConnectException> callback)
             throws InterruptedException {
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
-        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+        uiAutomation.adoptShellPermissionIdentity(getDeviceDataProviderPermissions());
 
         try {
             getHealthConnectManager().deleteDeviceRecords(deviceId, recordIds, executor, callback);
@@ -1547,7 +1556,7 @@ public final class TestUtils {
         HealthConnectReceiver<ReadRecordsResponse<T>> receiver = new HealthConnectReceiver<>();
 
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
-        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+        uiAutomation.adoptShellPermissionIdentity(getDeviceDataProviderPermissions());
 
         try {
             getHealthConnectManager(context)
@@ -1588,7 +1597,7 @@ public final class TestUtils {
     public static boolean hasUserEnabledTracking(Class<? extends Record> recordType)
             throws InterruptedException {
         UiAutomation uiAutomation = InstrumentationRegistry.getInstrumentation().getUiAutomation();
-        uiAutomation.adoptShellPermissionIdentity(MANAGE_HEALTH_DATA_PERMISSION);
+        uiAutomation.adoptShellPermissionIdentity(getDeviceDataProviderPermissions());
 
         try {
             return getHealthConnectManager().hasUserEnabledTracking(recordType);
