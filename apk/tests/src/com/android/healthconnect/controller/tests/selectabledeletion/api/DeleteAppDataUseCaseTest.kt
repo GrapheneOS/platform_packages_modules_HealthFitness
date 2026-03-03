@@ -31,6 +31,8 @@ import com.android.healthconnect.controller.selectabledeletion.DeletionType.Dele
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteAppDataUseCase
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
+import com.android.healthconnect.controller.tests.devices.api.FakeGetCurrentDeviceIdUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE_2
 import com.android.healthconnect.controller.tests.utils.TEST_PHONE_SPN
@@ -56,12 +58,15 @@ import org.mockito.invocation.InvocationOnMock
 class DeleteAppDataUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val setFlagsRule = SetFlagsRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
     private lateinit var useCase: DeleteAppDataUseCase
 
     private var dataManager: HealthConnectManager = mock(HealthConnectManager::class.java)
     private var permissionManager: HealthPermissionManager =
         mock(HealthPermissionManager::class.java)
+    private val fakeGetCurrentDeviceIdUseCase =
+        fakeUseCaseRule.watch(FakeGetCurrentDeviceIdUseCase())
 
     @Captor lateinit var filtersCaptor: ArgumentCaptor<DeleteUsingFiltersRequest>
     @Captor lateinit var dataSourceIdCaptor: ArgumentCaptor<String>
@@ -75,6 +80,7 @@ class DeleteAppDataUseCaseTest {
                 dataManager,
                 MedicalDataSourceReader(dataManager, Dispatchers.Main),
                 revokePermissionsUseCase,
+                fakeGetCurrentDeviceIdUseCase,
                 Dispatchers.Main,
             )
     }
@@ -107,7 +113,7 @@ class DeleteAppDataUseCaseTest {
     fun invoke_deleteAppData_ddpFlagsOn_withCurrentDevicePackage_addsAndroidPackageToFilter() =
         runTest {
             val currentDeviceId = TEST_WATCH_SPN
-            `when`(dataManager.currentDeviceId).thenReturn(currentDeviceId)
+            fakeGetCurrentDeviceIdUseCase.updateDeviceId(currentDeviceId)
             doAnswer(prepareAnswer())
                 .`when`(dataManager)
                 .deleteRecords(any(DeleteUsingFiltersRequest::class.java), any(), any())
@@ -132,7 +138,7 @@ class DeleteAppDataUseCaseTest {
     fun invoke_deleteAppData_ddpFlagsOff_withCurrentDevicePackage_doesNotAddAndroidPackage() =
         runTest {
             val currentDeviceId = TEST_WATCH_SPN
-            `when`(dataManager.currentDeviceId).thenReturn(currentDeviceId)
+            fakeGetCurrentDeviceIdUseCase.updateDeviceId(currentDeviceId)
             doAnswer(prepareAnswer())
                 .`when`(dataManager)
                 .deleteRecords(any(DeleteUsingFiltersRequest::class.java), any(), any())
@@ -154,7 +160,7 @@ class DeleteAppDataUseCaseTest {
     fun invoke_deleteAppData_ddpFlagsOn_withRandomDevice_doesNotAddAndroidPackageToFilter() =
         runTest {
             val deviceId = TEST_WATCH_SPN
-            `when`(dataManager.currentDeviceId).thenReturn(TEST_PHONE_SPN)
+            fakeGetCurrentDeviceIdUseCase.updateDeviceId(TEST_PHONE_SPN)
             doAnswer(prepareAnswer())
                 .`when`(dataManager)
                 .deleteRecords(any(DeleteUsingFiltersRequest::class.java), any(), any())

@@ -46,6 +46,8 @@ import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDE
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.devices.api.FakeGetCurrentDeviceIdUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
@@ -84,11 +86,15 @@ class LoadDataAggregationsUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val checkFlagsRule = SetFlagsRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
     private lateinit var context: Context
     @BindValue lateinit var appInfoReader: AppInfoReader
     @BindValue
     val healthConnectManager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
     private lateinit var loadDataAggregationsUseCase: LoadDataAggregationsUseCase
+
+    private val fakeGetCurrentDeviceIdUseCase =
+        fakeUseCaseRule.watch(FakeGetCurrentDeviceIdUseCase())
 
     @Inject lateinit var loadEntriesHelper: LoadEntriesHelper
 
@@ -119,6 +125,7 @@ class LoadDataAggregationsUseCaseTest {
                 mindfulnessSessionFormatter,
                 healthConnectManager,
                 appInfoReader,
+                fakeGetCurrentDeviceIdUseCase,
                 Dispatchers.Main,
             )
     }
@@ -128,7 +135,7 @@ class LoadDataAggregationsUseCaseTest {
     fun loadDataAggregationsUseCase_flagsOn_withCurrentDevicePackage_addsAndroidPackageToFilter() =
         runTest {
             val deviceId = "test_device_id"
-            whenever(healthConnectManager.currentDeviceId).thenReturn(deviceId)
+            fakeGetCurrentDeviceIdUseCase.updateDeviceId(deviceId)
             doAnswer(prepareStepsAggregationAnswer())
                 .whenever(healthConnectManager)
                 .aggregate<Long>(any(), any(), any())
@@ -159,7 +166,7 @@ class LoadDataAggregationsUseCaseTest {
     fun loadDataAggregationsUseCase_flagsOff_withCurrentDevicePackage_doesNotAddAndroidPackage() =
         runTest {
             val deviceId = "test_device_id"
-            whenever(healthConnectManager.currentDeviceId).thenReturn(deviceId)
+            fakeGetCurrentDeviceIdUseCase.updateDeviceId(deviceId)
             doAnswer(prepareStepsAggregationAnswer())
                 .whenever(healthConnectManager)
                 .aggregate<Long>(any(), any(), any())
@@ -186,7 +193,7 @@ class LoadDataAggregationsUseCaseTest {
     @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun loadDataAggregationsUseCase_withRandomDevice_doesNotAddAndroidPackageToFilter() = runTest {
         val deviceId = "test_device_id"
-        whenever(healthConnectManager.currentDeviceId).thenReturn("not_test_device_id")
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId("not_test_device_id")
         doAnswer(prepareStepsAggregationAnswer())
             .whenever(healthConnectManager)
             .aggregate<Long>(any(), any(), any())
@@ -213,7 +220,7 @@ class LoadDataAggregationsUseCaseTest {
     @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun loadDataAggregationsUseCase_flagsOn_withAndroid_addsCurrentDeviceToFilter() = runTest {
         val currentDeviceId = "test_device_id"
-        whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId(currentDeviceId)
         doAnswer(prepareStepsAggregationAnswer())
             .whenever(healthConnectManager)
             .aggregate<Long>(any(), any(), any())
@@ -243,7 +250,7 @@ class LoadDataAggregationsUseCaseTest {
     @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun loadDataAggregationsUseCase_flagsOff_withAndroid_doesNotAddCurrentDevice() = runTest {
         val currentDeviceId = "test_device_id"
-        whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId(currentDeviceId)
         doAnswer(prepareStepsAggregationAnswer())
             .whenever(healthConnectManager)
             .aggregate<Long>(any(), any(), any())
@@ -273,7 +280,7 @@ class LoadDataAggregationsUseCaseTest {
     fun loadDataAggregationsUseCase_ddpFlagsOff_withAndroidAndCurrentDevice_doesNotFilterAndroid() =
         runTest {
             val currentDeviceId = "test_device_id"
-            whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+            fakeGetCurrentDeviceIdUseCase.updateDeviceId(currentDeviceId)
             whenever(appInfoReader.getAppMetadata(DEVICE_DATA_PROVIDER_PACKAGE))
                 .thenReturn(AppMetadata(DEVICE_DATA_PROVIDER_PACKAGE, "My Device", null))
             whenever(appInfoReader.getAppMetadata(currentDeviceId))
@@ -307,7 +314,7 @@ class LoadDataAggregationsUseCaseTest {
     fun loadDataAggregationsUseCase_ddpFlagsOn_withAndroidButNoCurrentDevice_doesNotFilterAndroid() =
         runTest {
             val currentDeviceId = "test_device_id"
-            whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+            fakeGetCurrentDeviceIdUseCase.updateDeviceId(currentDeviceId)
             whenever(appInfoReader.getAppMetadata(DEVICE_DATA_PROVIDER_PACKAGE))
                 .thenReturn(AppMetadata(DEVICE_DATA_PROVIDER_PACKAGE, "My Device", null))
             whenever(appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME))
@@ -343,7 +350,7 @@ class LoadDataAggregationsUseCaseTest {
     fun loadDataAggregationsUseCase_ddpFlagsOn_withAndroidAndCurrentDevice_filtersAndroid() =
         runTest {
             val currentDeviceId = "test_device_id"
-            whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+            fakeGetCurrentDeviceIdUseCase.updateDeviceId(currentDeviceId)
             whenever(appInfoReader.getAppMetadata(DEVICE_DATA_PROVIDER_PACKAGE))
                 .thenReturn(AppMetadata(DEVICE_DATA_PROVIDER_PACKAGE, "My Device", null))
             whenever(appInfoReader.getAppMetadata(currentDeviceId))
@@ -377,7 +384,7 @@ class LoadDataAggregationsUseCaseTest {
     fun loadDataAggregationsUseCase_ddpFlagsOn_withCurrentDeviceAndNoAndroid_doesNotFilterAnything() =
         runTest {
             val currentDeviceId = "test_device_id"
-            whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+            fakeGetCurrentDeviceIdUseCase.updateDeviceId(currentDeviceId)
             whenever(appInfoReader.getAppMetadata(currentDeviceId))
                 .thenReturn(AppMetadata(currentDeviceId, "My Device", null))
             whenever(appInfoReader.getAppMetadata(TEST_APP_PACKAGE_NAME))

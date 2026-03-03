@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.selectabledeletion.api
 import android.health.connect.DeleteUsingFiltersRequest
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.DataOrigin
+import com.android.healthconnect.controller.devices.api.IGetCurrentDeviceIdUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
@@ -37,6 +38,7 @@ class DeleteFitnessPermissionTypesFromAppUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
+    private val getCurrentDeviceIdUseCase: IGetCurrentDeviceIdUseCase,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) {
 
@@ -52,15 +54,15 @@ constructor(
 
         deleteRequest.addDataOrigin(DataOrigin.Builder().setPackageName(packageName).build())
 
-        if (deviceDataProvidersApi() && packageName == healthConnectManager.currentDeviceId) {
+        if (deviceDataProvidersApi() && getCurrentDeviceIdUseCase.isCurrentDevice(packageName)) {
             deleteRequest.addDataOrigin(
                 DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build()
             )
         }
         if (deviceDataProvidersApi() && packageName == DEVICE_DATA_PROVIDER_PACKAGE) {
-            deleteRequest.addDataOrigin(
-                DataOrigin.Builder().setPackageName(healthConnectManager.currentDeviceId).build()
-            )
+            getCurrentDeviceIdUseCase.getOrNull()?.let {
+                deleteRequest.addDataOrigin(DataOrigin.Builder().setPackageName(it).build())
+            }
         }
 
         withContext(dispatcher) {

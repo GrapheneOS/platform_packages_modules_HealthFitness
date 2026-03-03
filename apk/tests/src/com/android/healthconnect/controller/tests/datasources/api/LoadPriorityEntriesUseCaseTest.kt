@@ -35,6 +35,7 @@ import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMap
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.devices.api.FakeGetCurrentDeviceIdUseCase
 import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP
 import com.android.healthconnect.controller.tests.utils.TEST_APP_2
@@ -91,6 +92,9 @@ class LoadPriorityEntriesUseCaseTest {
     private lateinit var loadEntriesHelper: LoadEntriesHelper
     private val healthConnectManager: HealthConnectManager = mock()
     private lateinit var loadPriorityEntriesUseCase: LoadPriorityEntriesUseCase
+    private val fakeGetCurrentDeviceIdUseCase =
+        fakeUseCaseRule.watch(FakeGetCurrentDeviceIdUseCase())
+
     @Inject lateinit var healthDataEntryFormatter: HealthDataEntryFormatter
     @Inject lateinit var menstruationPeriodFormatter: MenstruationPeriodFormatter
     @Inject lateinit var dataSourceReader: MedicalDataSourceReader
@@ -109,6 +113,7 @@ class LoadPriorityEntriesUseCaseTest {
                 menstruationPeriodFormatter,
                 healthConnectManager,
                 dataSourceReader,
+                fakeGetCurrentDeviceIdUseCase,
             )
         loadPriorityEntriesUseCase =
             LoadPriorityEntriesUseCase(loadEntriesHelper, loadPriorityListUseCase, Dispatchers.Main)

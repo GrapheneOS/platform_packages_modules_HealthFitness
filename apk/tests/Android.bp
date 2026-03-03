@@ -43,6 +43,18 @@ filegroup {
 }
 
 filegroup {
+    name: "fake-use-cases-tests-srcs",
+    srcs: [
+        "src/com/android/healthconnect/controller/tests/devices/api/FakeDevicesUseCases.kt",
+        "src/com/android/healthconnect/controller/tests/data/alldata/api/FakeAllDataUseCaseComponents.kt",
+        "src/com/android/healthconnect/controller/tests/exportimport/api/FakeExportImportUseCases.kt",
+    ],
+    visibility: [
+        "//vendor:__subpackages__",
+    ],
+}
+
+filegroup {
     name: "wear-ui-tests-srcs",
     srcs: [
         "src/com/android/healthconnect/controller/tests/permissions/connectedapps/wear/**/*.kt",
@@ -53,7 +65,10 @@ filegroup {
 
 java_defaults {
     name: "health-connect-controller-tests-default",
-    srcs: [":healthconnect-test-srcs"],
+    srcs: [
+        ":healthconnect-test-srcs",
+        ":fake-use-cases-tests-srcs",
+    ],
     kotlin_lang_version: "1.9",
     defaults: ["modules-utils-testable-device-config-defaults"],
     sdk_version: "module_current",
@@ -159,7 +174,6 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/data/**/*.kt",
         "src/com/android/healthconnect/controller/selectabledeletion/**/*.kt",
         "src/com/android/healthconnect/controller/selectabledeletion/**/*.java",
-        "src/com/android/healthconnect/controller/tests/devices/api/FakeDevicesUseCases.kt",
     ],
     visibility: ["//visibility:private"],
 }
@@ -268,8 +282,6 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/recentaccess/**/*.kt",
         "src/com/android/healthconnect/controller/tests/devices/**/*.kt",
         "src/com/android/healthconnect/controller/tests/newDevices/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/data/alldata/api/FakeAllDataUseCaseComponents.kt",
-        "src/com/android/healthconnect/controller/tests/exportimport/api/FakeExportImportUseCases.kt",
     ],
     visibility: ["//visibility:private"],
 }
@@ -358,7 +370,6 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/permissions/**/*.kt",
         "src/com/android/healthconnect/controller/tests/shared/**/*.java",
         "src/com/android/healthconnect/controller/tests/shared/**/*.kt",
-        "src/com/android/healthconnect/controller/tests/devices/api/FakeDevicesUseCases.kt",
     ],
     exclude_srcs: [
         ":wear-ui-tests-srcs",
@@ -586,6 +597,7 @@ android_robolectric_test {
         "src/com/android/healthconnect/controller/tests/recentaccess/api/**/*.kt",
         ":wear-ui-tests-srcs",
         ":healthconnect-test-srcs",
+        ":fake-use-cases-tests-srcs",
     ],
     // Enable robolectric changes we need for tests, that were contributed back and aren't default
     // yet.

@@ -32,6 +32,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.data.alldata.api.GetFitnessPermissionTypesWithDataUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.devices.api.FakeGetCurrentDeviceIdUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.doReturnResult
 import com.android.healthconnect.controller.tests.utils.getDataOrigin
@@ -46,7 +48,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
-import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.stub
 
@@ -55,17 +56,24 @@ import org.mockito.kotlin.stub
 class GetFitnessPermissionTypesWithDataUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val setFlagsRule = SetFlagsRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
     private val healthConnectManager: HealthConnectManager = mock()
     private lateinit var getFitnessPermissionTypesWithDataUseCase:
         GetFitnessPermissionTypesWithDataUseCase
+    private val fakeGetCurrentDeviceIdUseCase =
+        fakeUseCaseRule.watch(FakeGetCurrentDeviceIdUseCase())
 
     @Before
     fun setup() {
         hiltRule.inject()
         getFitnessPermissionTypesWithDataUseCase =
-            GetFitnessPermissionTypesWithDataUseCase(healthConnectManager, Dispatchers.Main)
-        healthConnectManager.stub { on { currentDeviceId } doReturn "current_device_id" }
+            GetFitnessPermissionTypesWithDataUseCase(
+                healthConnectManager,
+                fakeGetCurrentDeviceIdUseCase,
+                Dispatchers.Main,
+            )
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId("current_device_id")
     }
 
     @Test

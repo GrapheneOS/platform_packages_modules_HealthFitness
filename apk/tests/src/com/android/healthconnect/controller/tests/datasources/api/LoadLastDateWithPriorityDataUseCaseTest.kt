@@ -35,6 +35,7 @@ import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMap
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.devices.api.FakeGetCurrentDeviceIdUseCase
 import com.android.healthconnect.controller.tests.utils.CoroutineTestRule
 import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP
@@ -98,6 +99,8 @@ class LoadLastDateWithPriorityDataUseCaseTest {
     private lateinit var loadLastDateWithPriorityDataUseCase: LoadLastDateWithPriorityDataUseCase
     private lateinit var context: Context
     private val timeSource = TestTimeSource
+    private val fakeGetCurrentDeviceIdUseCase =
+        fakeUseCaseRule.watch(FakeGetCurrentDeviceIdUseCase())
 
     @Inject lateinit var healthDataEntryFormatter: HealthDataEntryFormatter
     @Inject lateinit var menstruationPeriodFormatter: MenstruationPeriodFormatter
@@ -117,6 +120,7 @@ class LoadLastDateWithPriorityDataUseCaseTest {
                 menstruationPeriodFormatter,
                 healthConnectManager,
                 dataSourceReader,
+                fakeGetCurrentDeviceIdUseCase,
             )
         loadLastDateWithPriorityDataUseCase =
             LoadLastDateWithPriorityDataUseCase(

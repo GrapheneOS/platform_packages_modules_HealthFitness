@@ -39,6 +39,7 @@ import com.android.healthconnect.controller.data.formatters.SleepSessionFormatte
 import com.android.healthconnect.controller.data.formatters.StepsFormatter
 import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
 import com.android.healthconnect.controller.data.formatters.medical.MedicalEntryFormatter
+import com.android.healthconnect.controller.devices.api.IGetCurrentDeviceIdUseCase
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
 import com.android.healthconnect.controller.exportimport.api.IUpdateExportSettingsUseCase
 import com.android.healthconnect.controller.exportimport.api.UpdateExportSettingsUseCase
@@ -176,6 +177,7 @@ class UseCaseModule {
         healthConnectManager: HealthConnectManager,
         appInfoReader: AppInfoReader,
         loadEntriesHelper: LoadEntriesHelper,
+        getCurrentDeviceIdUseCase: IGetCurrentDeviceIdUseCase,
     ): ILoadDataAggregationsUseCase {
         return LoadDataAggregationsUseCase(
             loadEntriesHelper,
@@ -186,6 +188,7 @@ class UseCaseModule {
             mindfulnessSessionFormatter,
             healthConnectManager,
             appInfoReader,
+            getCurrentDeviceIdUseCase,
             dispatcher,
         )
     }

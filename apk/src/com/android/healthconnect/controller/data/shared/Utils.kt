@@ -38,7 +38,7 @@ fun getPermissionTypesPerCategory(
     category: @HealthDataCategoryInt Int,
     recordTypeInfoMap: Map<Class<out Record>, RecordTypeInfoResponse>,
     packageName: String?,
-    currentDeviceId: String,
+    currentDeviceId: String?,
 ): PermissionTypesPerCategory {
     if (category == HealthDataCategory.SYMPTOMS) {
         return getSymptomPermissionTypes(recordTypeInfoMap, packageName)
@@ -51,6 +51,7 @@ fun getPermissionTypesPerCategory(
                 hasData(it, recordTypeInfoMap)
             } else if (
                 deviceDataProvidersApi() &&
+                    currentDeviceId != null &&
                     (packageName == currentDeviceId || packageName == DEVICE_DATA_PROVIDER_PACKAGE)
             ) {
                 hasDataByApp(it, recordTypeInfoMap, currentDeviceId) ||
