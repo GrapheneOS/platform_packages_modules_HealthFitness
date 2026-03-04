@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.healthconnect.controller.data.alldata.api.IHasFitnessDataUseCase
 import com.android.healthconnect.controller.data.alldata.api.IHasMedicalDataUseCase
+import com.android.healthconnect.controller.exportimport.api.ILoadScheduledExportStatusUseCase
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
@@ -61,7 +62,7 @@ constructor(
     private val keyguardManagerUtil: KeyguardManagerUtil,
     private val deviceInfoUtils: DeviceInfoUtils,
     private val loadMigrationRestoreStateUseCase: BaseUseCase<Unit, MigrationRestoreState>,
-    private val loadScheduledExportStatusUseCase: BaseUseCase<Unit, ScheduledExportUiState>,
+    private val loadScheduledExportStatusUseCase: ILoadScheduledExportStatusUseCase,
     private val loadOnboardingStateUseCase: BaseUseCase<Unit, OnboardingState>,
     private val hasFitnessDataUseCase: IHasFitnessDataUseCase,
     private val hasMedicalDataUseCase: IHasMedicalDataUseCase,

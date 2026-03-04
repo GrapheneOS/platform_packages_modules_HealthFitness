@@ -17,10 +17,14 @@
 package com.android.healthconnect.controller.shared.preference
 
 import android.content.Context
+import android.text.Layout
 import android.util.AttributeSet
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.preference.PreferenceViewHolder
 import com.android.healthconnect.controller.R
@@ -67,6 +71,7 @@ constructor(context: Context, attrs: AttributeSet? = null) :
 
     override fun onBindViewHolder(holder: PreferenceViewHolder) {
         super.onBindViewHolder(holder)
+        setHyphenation(holder.itemView)
 
         val expandArrow = holder.findViewById(R.id.expand_arrow) as? ImageView
         val twoTargetDivider = holder.findViewById(R.id.two_target_divider) as? View
@@ -106,5 +111,14 @@ constructor(context: Context, attrs: AttributeSet? = null) :
 
     override fun getDropDownIconId(): Int {
         return R.drawable.ic_expand_more
+    }
+
+    private fun setHyphenation(view: View) {
+        if (view is TextView) {
+            view.hyphenationFrequency = Layout.HYPHENATION_FREQUENCY_NORMAL
+            view.breakStrategy = Layout.BREAK_STRATEGY_SIMPLE
+        } else if (view is ViewGroup) {
+            view.children.forEach { child -> setHyphenation(child) }
+        }
     }
 }

@@ -28,11 +28,9 @@ import com.android.healthconnect.controller.exportimport.api.ExportFrequency.EXP
 import com.android.healthconnect.controller.exportimport.api.ExportFrequency.EXPORT_FREQUENCY_WEEKLY
 import com.android.healthconnect.controller.exportimport.api.ExportSettings
 import com.android.healthconnect.controller.exportimport.api.ExportSettingsViewModel
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TestObserver
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadExportSettingsUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeQueryDocumentProvidersUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeUpdateExportSettingsUseCase
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -70,11 +68,13 @@ class ExportSettingsViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
     private lateinit var viewModel: ExportSettingsViewModel
-    private val loadExportSettingsUseCase = FakeLoadExportSettingsUseCase()
+    private val loadExportSettingsUseCase = fakeUseCaseRule.watch(FakeLoadExportSettingsUseCase())
     private val updateExportSettingsUseCase = FakeUpdateExportSettingsUseCase()
-    private val queryDocumentProvidersUseCase = FakeQueryDocumentProvidersUseCase()
+    private val queryDocumentProvidersUseCase =
+        fakeUseCaseRule.watch(FakeQueryDocumentProvidersUseCase())
 
     @Before
     fun setup() {
@@ -91,7 +91,6 @@ class ExportSettingsViewModelTest {
     @After
     fun tearDown() {
         updateExportSettingsUseCase.reset()
-        loadExportSettingsUseCase.reset()
         Dispatchers.resetMain()
     }
 

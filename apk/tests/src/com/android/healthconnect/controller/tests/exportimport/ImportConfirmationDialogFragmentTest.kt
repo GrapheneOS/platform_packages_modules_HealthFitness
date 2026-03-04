@@ -103,22 +103,18 @@ class ImportConfirmationDialogFragmentTest {
                 }
             )
             .use {
-                onView(withText(R.string.import_confirmation_dialog_title))
+                onView(withText("Import this file?"))
                     .inRoot(isDialog())
                     .check(matches(isDisplayed()))
                 onView(withId(R.id.dialog_custom_message))
                     .inRoot(isDialog())
                     .check(matches(withText(startsWith(FILE_NAME))))
 
-                val dialogCancelButton =
-                    onView(withText(R.string.import_confirmation_dialog_cancel_button))
-                        .inRoot(isDialog())
+                val dialogCancelButton = onView(withText("Cancel")).inRoot(isDialog())
                 dialogCancelButton.check(matches(isDisplayed()))
                 dialogCancelButton.check(matches(isClickable()))
 
-                val dialogImportButton =
-                    onView(withText(R.string.import_confirmation_dialog_import_button))
-                        .inRoot(isDialog())
+                val dialogImportButton = onView(withText("Import")).inRoot(isDialog())
                 dialogImportButton.check(matches(isDisplayed()))
                 dialogImportButton.check(matches(isClickable()))
                 verify(healthConnectLogger)
@@ -138,9 +134,8 @@ class ImportConfirmationDialogFragmentTest {
                 }
             )
             .use {
-                val dialogImportButton =
-                    onView(withText(R.string.import_confirmation_dialog_import_button))
-                        .inRoot(isDialog())
+                val dialogImportButton = onView(withText("Import")).inRoot(isDialog())
+                dialogImportButton.check(matches(isDisplayed()))
                 dialogImportButton.perform(click())
 
                 intended(hasAction(Intent.ACTION_MAIN))
@@ -162,9 +157,7 @@ class ImportConfirmationDialogFragmentTest {
                 }
             )
             .use {
-                val dialogCancelButton =
-                    onView(withText(R.string.import_confirmation_dialog_cancel_button))
-                        .inRoot(isDialog())
+                val dialogCancelButton = onView(withText("Cancel")).inRoot(isDialog())
                 dialogCancelButton.check(matches(isDisplayed()))
                 dialogCancelButton.perform(click())
 

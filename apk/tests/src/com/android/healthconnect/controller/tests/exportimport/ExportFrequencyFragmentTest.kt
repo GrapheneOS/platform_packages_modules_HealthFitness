@@ -121,6 +121,8 @@ class ExportFrequencyFragmentTest {
     fun exportFrequencyFragment_cancelButton_isClickable() {
         launchFragment<ExportFrequencyFragment>(Bundle()).use {
             onView(withId(R.id.secondary_button)).check(matches(isClickable()))
+
+            onView(withId(R.id.secondary_button)).check(matches(isDisplayed()))
             onView(withId(R.id.secondary_button)).perform(click())
 
             verify(exportSettingsViewModel)
@@ -156,7 +158,9 @@ class ExportFrequencyFragmentTest {
                 Navigation.setViewNavController(this.requireView(), navHostController)
             }
             .use {
+                onView(withText("Daily")).check(matches(isDisplayed()))
                 onView(withText("Daily")).perform(click())
+                onView(withId(R.id.primary_button_full)).check(matches(isDisplayed()))
                 onView(withId(R.id.primary_button_full)).perform(click())
 
                 verify(exportSettingsViewModel, times(2))
@@ -174,7 +178,9 @@ class ExportFrequencyFragmentTest {
                 Navigation.setViewNavController(this.requireView(), navHostController)
             }
             .use {
+                onView(withText("Weekly")).check(matches(isDisplayed()))
                 onView(withText("Weekly")).perform(click())
+                onView(withId(R.id.primary_button_full)).check(matches(isDisplayed()))
                 onView(withId(R.id.primary_button_full)).perform(click())
 
                 verify(exportSettingsViewModel)
@@ -192,7 +198,9 @@ class ExportFrequencyFragmentTest {
                 Navigation.setViewNavController(this.requireView(), navHostController)
             }
             .use {
+                onView(withText("Monthly")).check(matches(isDisplayed()))
                 onView(withText("Monthly")).perform(click())
+                onView(withId(R.id.primary_button_full)).check(matches(isDisplayed()))
                 onView(withId(R.id.primary_button_full)).perform(click())
 
                 verify(exportSettingsViewModel)
@@ -215,6 +223,7 @@ class ExportFrequencyFragmentTest {
     @Test
     fun exportFrequencyFragment_checksWeeklyButton_updatesSelectedFrequency() {
         launchFragment<ExportFrequencyFragment>(Bundle()).use {
+            onView(withText("Weekly")).check(matches(isDisplayed()))
             onView(withText("Weekly")).perform(click())
 
             verify(exportSettingsViewModel)
@@ -227,6 +236,7 @@ class ExportFrequencyFragmentTest {
     @Test
     fun exportFrequencyFragment_checksMonthlyButton_updatesSelectedFrequency() {
         launchFragment<ExportFrequencyFragment>(Bundle()).use {
+            onView(withText("Monthly")).check(matches(isDisplayed()))
             onView(withText("Monthly")).perform(click())
 
             verify(exportSettingsViewModel)

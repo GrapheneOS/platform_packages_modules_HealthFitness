@@ -20,9 +20,11 @@ import android.health.connect.exportimport.ScheduledExportStatus
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 @Singleton
@@ -31,17 +33,13 @@ class LoadScheduledExportStatusUseCase
 constructor(
     private val healthDataExportManager: HealthDataExportManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : BaseUseCase<Unit, ScheduledExportUiState>(dispatcher) {
-
-    companion object {
-        private const val TAG = "LoadScheduledExportStatusUseCase"
-    }
+) : BaseUseCase<Unit, ScheduledExportUiState>(dispatcher), ILoadScheduledExportStatusUseCase {
 
     override suspend fun execute(input: Unit): ScheduledExportUiState {
         val scheduledExportStatus: ScheduledExportStatus =
             suspendCancellableCoroutine { continuation ->
                 healthDataExportManager.getScheduledExportStatus(
-                    Runnable::run,
+                    dispatcher.asExecutor(),
                     continuation.asOutcomeReceiver(),
                 )
             }
@@ -70,3 +68,5 @@ constructor(
         )
     }
 }
+
+interface ILoadScheduledExportStatusUseCase : UseCaseContract<Unit, ScheduledExportUiState>

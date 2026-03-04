@@ -20,9 +20,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.exportimport.api.ImportStatusViewModel
 import com.android.healthconnect.controller.exportimport.api.ImportUiState
 import com.android.healthconnect.controller.exportimport.api.ImportUiStatus
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TestObserver
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadImportStatusUseCase
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -47,9 +47,10 @@ class ImportStatusViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
     private lateinit var viewModel: ImportStatusViewModel
-    private val loadImportStatusUseCase = FakeLoadImportStatusUseCase()
+    private val loadImportStatusUseCase = fakeUseCaseRule.watch(FakeLoadImportStatusUseCase())
 
     @Before
     fun setup() {
@@ -60,7 +61,6 @@ class ImportStatusViewModelTest {
 
     @After
     fun tearDown() {
-        loadImportStatusUseCase.reset()
         Dispatchers.resetMain()
     }
 
@@ -70,7 +70,7 @@ class ImportStatusViewModelTest {
         viewModel.storedImportStatus.observeForever(testObserver)
         val importUiState =
             ImportUiState(ImportUiState.DataImportState.DATA_IMPORT_ERROR_VERSION_MISMATCH)
-        loadImportStatusUseCase.updateExportStatus(importUiState)
+        loadImportStatusUseCase.updateImportStatus(importUiState)
 
         viewModel.loadImportStatus()
         advanceUntilIdle()

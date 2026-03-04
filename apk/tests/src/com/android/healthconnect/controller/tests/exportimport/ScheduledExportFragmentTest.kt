@@ -250,6 +250,7 @@ class ScheduledExportFragmentTest {
     @Test
     fun turnsOffControl_offIsDisplayed() = runTest {
         launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(withText("Use scheduled export")).check(matches(isDisplayed()))
             onView(withText("Use scheduled export")).perform(click())
 
             advanceUntilIdle()
@@ -261,6 +262,7 @@ class ScheduledExportFragmentTest {
     @Test
     fun turnsOffControl_exportFrequencySectionDoesNotExist() {
         launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(withText("Use scheduled export")).check(matches(isDisplayed()))
             onView(withText("Use scheduled export")).perform(click())
 
             onView(withText("Use scheduled export")).check(matches(isDisplayed()))
@@ -282,6 +284,7 @@ class ScheduledExportFragmentTest {
         fakeHealthDataExportManager.setScheduledExportStatus(scheduledExportStatus)
 
         launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(withText("Use scheduled export")).check(matches(isDisplayed()))
             onView(withText("Use scheduled export")).perform(click())
 
             onView(allOf(withText(containsString("Next export")))).check(doesNotExist())
@@ -296,9 +299,11 @@ class ScheduledExportFragmentTest {
                 .build()
         )
         launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(withText("Use scheduled export")).check(matches(isDisplayed()))
             onView(withText("Use scheduled export")).perform(click())
             assertThat(healthDataExportManager.getScheduledExportPeriodInDays())
                 .isEqualTo(ExportFrequency.EXPORT_FREQUENCY_NEVER.periodInDays)
+            onView(withText("Use scheduled export")).check(matches(isDisplayed()))
             onView(withText("Use scheduled export")).perform(click())
 
             advanceUntilIdle()
@@ -316,7 +321,9 @@ class ScheduledExportFragmentTest {
         )
 
         launchFragment<ScheduledExportFragment>(Bundle()).use {
+            onView(withText("Daily")).check(matches(isDisplayed()))
             onView(checkBoxOf("Daily")).check(matches(isChecked()))
+            onView(withText("Monthly")).check(matches(isDisplayed()))
             onView(withText("Monthly")).perform(click())
             advanceUntilIdle()
             assertThat(fakeHealthDataExportManager.getScheduledExportPeriodInDays())

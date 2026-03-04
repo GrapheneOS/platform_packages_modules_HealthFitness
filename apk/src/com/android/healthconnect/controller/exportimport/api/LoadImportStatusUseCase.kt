@@ -25,9 +25,11 @@ import android.health.connect.exportimport.ImportStatus.DATA_IMPORT_STARTED
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 @Singleton
@@ -36,11 +38,14 @@ class LoadImportStatusUseCase
 constructor(
     private val healthDataImportManager: HealthDataImportManager,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
-) : BaseUseCase<Unit, ImportUiState>(dispatcher) {
+) : BaseUseCase<Unit, ImportUiState>(dispatcher), ILoadImportStatusUseCase {
 
     override suspend fun execute(input: Unit): ImportUiState {
         val importStatus: ImportStatus = suspendCancellableCoroutine { continuation ->
-            healthDataImportManager.getImportStatus(Runnable::run, continuation.asOutcomeReceiver())
+            healthDataImportManager.getImportStatus(
+                dispatcher.asExecutor(),
+                continuation.asOutcomeReceiver(),
+            )
         }
         // TODO verify why we need the ImportUiState at all, can we just use the server state?
         val dataImportState: ImportUiState.DataImportState =
@@ -59,3 +64,5 @@ constructor(
         return ImportUiState(dataImportState)
     }
 }
+
+interface ILoadImportStatusUseCase : UseCaseContract<Unit, ImportUiState>
