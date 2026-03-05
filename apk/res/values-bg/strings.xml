@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Всички приложения"</string>
     <string name="can_read" msgid="4568261079308309564">"Може да чете данни от типа „<xliff:g id="PERMISSION_TYPE">%s</xliff:g>“"</string>
     <string name="can_write" msgid="5082414937218423823">"Може да записва данни от типа „<xliff:g id="PERMISSION_TYPE">%s</xliff:g>“"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Неактивни източници на данни"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Тези източници на данни вече не могат да четат или записват данни от типа „<xliff:g id="DATA_TYPE">%s</xliff:g>“, но техни данни все още се съхраняват в Health Connect"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Източниците на данни вече не могат да четат и записват данни от типа „<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>“ и в Health Connect няма съхранени данни от типа „<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>“"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Тези данни включват различна информация, като например времето на активност, типа на упражненията, обиколките, повторенията, сесиите или загребванията при плуване"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Тези данни включват различна информация, като например фазите и сесиите, свързани със съня"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Преглед на всички записи"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Предпочитания"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect ви дава възможност да споделяте данните за здравето и физическата си активност между няколко източника на данни. Това ви помага да отключвате статистика и нови възможности, като същевременно запазва безопасността на данните ви."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Още за Health Connect"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Вашите данни и източниците на данни, които имат достъп до тях"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Приложения, които наскоро са използвали данните ви"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Преглед на устройствата, които имат достъп до здравните данни"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Инсталирайте приложения, които работят с Health Connect, за да ги виждате тук"</string>

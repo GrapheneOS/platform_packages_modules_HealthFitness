@@ -468,7 +468,7 @@
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Code source détaillé : <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"Afficher les données source"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"Les applis ayant cette autorisation peuvent lire et écrire vos données de santé et de remise en forme."</string>
-    <string name="connected_apps_text" msgid="1177626440966855831">"Contrôlez les applis autorisées à accéder aux données stockées dans Santé Connect. Appuyez sur une appli pour vérifier les données qu\'elle peut lire ou écrire."</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"Contrôlez les applis autorisées à accéder aux données stockées dans Santé Connect. Appuyez sur une appli pour vérifier quelles données elle peut lire ou écrire."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Accès autorisé"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Accès non autorisé"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"Mise à jour nécessaire"</string>

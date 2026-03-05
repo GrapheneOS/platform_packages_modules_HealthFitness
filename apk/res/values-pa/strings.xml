@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"ਸਾਰੀਆਂ ਐਪਾਂ"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ਨੂੰ ਪੜ੍ਹ ਸਕਦੀਆਂ ਹਨ"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ਦਾ ਸੰਪਾਦਨ ਕਰ ਸਕਦੀਆਂ ਹਨ"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"ਅਕਿਰਿਆਸ਼ੀਲ ਡਾਟਾ ਸਰੋਤ"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"ਇਹ ਡਾਟਾ ਸਰੋਤ ਹੁਣ <xliff:g id="DATA_TYPE">%s</xliff:g> ਪੜ੍ਹ ਜਾਂ ਲਿਖ ਨਹੀਂ ਸਕਦੇ, ਪਰ ਹਾਲੇ ਵੀ ਇਨ੍ਹਾਂ ਦਾ ਡਾਟਾ Health Connect ਵਿੱਚ ਸਟੋਰ ਹੈ"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"ਡਾਟਾ ਸਰੋਤ ਹੁਣ <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> ਸੰਬੰਧੀ ਡਾਟਾ ਪੜ੍ਹ ਜਾਂ ਉਸਦਾ ਸੰਪਾਦਨ ਨਹੀਂ ਕਰ ਸਕਦੇ ਅਤੇ Health Connect ਵਿੱਚ <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> ਸੰਬੰਧੀ ਕੋਈ ਡਾਟਾ ਸਟੋਰ ਨਹੀਂ ਹੈ"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"ਇਸ ਡਾਟਾ ਵਿੱਚ ਕਿਰਿਆਸ਼ੀਲ ਸਮਾਂ, ਕਸਰਤ ਦੀ ਕਿਸਮ, ਲੈਪ, ਕਸਰਤ ਕਿੰਨੀ ਵਾਰ ਦੁਹਰਾਈ ਗਈ, ਸੈਸ਼ਨ ਜਾਂ ਤੈਰਾਕੀ ਦੇ ਸਟ੍ਰੋਕਾਂ ਵਰਗੀ ਜਾਣਕਾਰੀ ਸ਼ਾਮਲ ਹੈ"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"ਇਸ ਡਾਟਾ ਵਿੱਚ ਨੀਂਦ ਦੇ ਪੜਾਅ ਅਤੇ ਨੀਂਦ ਸੰਬੰਧੀ ਸੈਸ਼ਨਾਂ ਵਰਗੀ ਜਾਣਕਾਰੀ ਸ਼ਾਮਲ ਹੈ"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"ਸਾਰੇ ਇੰਦਰਾਜ ਦੇਖੋ"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"ਤਰਜੀਹਾਂ"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect ਨਾਲ ਤੁਸੀਂ ਆਪਣਾ ਸਿਹਤ ਅਤੇ ਫਿੱਟਨੈੱਸ ਡਾਟਾ ਕਈ ਡਾਟਾ ਸਰੋਤਾਂ ਵਿਚਕਾਰ ਸਾਂਝਾ ਕਰ ਸਕਦੇ ਹੋ। ਇਸ ਨਾਲ ਤੁਹਾਨੂੰ ਆਪਣੇ ਡਾਟੇ ਨੂੰ ਸੁਰੱਖਿਅਤ ਰੱਖਦੇ ਹੋਏ, ਅੰਦਰੂਨੀ-ਝਾਤਾਂ ਅਤੇ ਅਨੁਭਵਾਂ ਨੂੰ ਅਣਲਾਕ ਕਰਨ ਵਿੱਚ ਮਦਦ ਮਿਲਦੀ ਹੈ।"</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect ਬਾਰੇ ਹੋਰ ਜਾਣਕਾਰੀ"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"ਤੁਹਾਡਾ ਡਾਟਾ ਅਤੇ ਉਹ ਡਾਟਾ ਸਰੋਤ ਜੋ ਇਸ ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਦੇ ਹਨ"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"ਉਹ ਐਪਾਂ ਜਿਨ੍ਹਾਂ ਨੇ ਹਾਲ ਹੀ ਵਿੱਚ ਤੁਹਾਡੇ ਡਾਟੇ ਦੀ ਵਰਤੋਂ ਕੀਤੀ"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"ਉਨ੍ਹਾਂ ਡੀਵਾਈਸਾਂ ਦੀ ਸਮੀਖਿਆ ਕਰੋ ਜੋ ਸਿਹਤ ਸੰਬੰਧੀ ਡਾਟੇ ਤੱਕ ਪਹੁੰਚ ਕਰ ਸਕਣ"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect ਨਾਲ ਕੰਮ ਕਰਨ ਵਾਲੀਆਂ ਐਪਾਂ ਨੂੰ ਸਥਾਪਤ ਕਰੋ ਤਾਂ ਜੋ ਤੁਸੀਂ ਉਨ੍ਹਾਂ ਨੂੰ ਇੱਥੇ ਦੇਖ ਸਕੋ"</string>

@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Lahat ng app"</string>
     <string name="can_read" msgid="4568261079308309564">"Puwedeng tumingin ng <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Puwedeng mag-edit ng <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Mga hindi aktibong data source"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Hindi na puwedeng i-read o i-write ng mga data source na ito ang <xliff:g id="DATA_TYPE">%s</xliff:g>, pero maso-store pa rin ang data ng mga ito sa Health Connect"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Hindi na puwedeng i-read o i-write ng mga data source ang <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> at walang naka-store na <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> na data sa Health Connect"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Kasama sa data na ito ang impormasyon tulad ng oras na aktibo, uri ng ehersisyo, mga lap, mga pag-uulit, mga session, o mga swimming stroke"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Kasama sa data na ito ang impormasyon tulad ng mga yugto ng pagtulog at session ng pagtulog"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Tingnan ang lahat ng entry"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Mga Preference"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Nagbibigay-daan sa iyo ang Health Connect na i-share ang iyong data ng kalusugan at fitness sa pagitan ng maraming data source. Nakakatulong ito sa iyong mag-unlock ng mga insight at experience habang pinapanatiling secure ang data mo."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Higit pa tungkol sa Health Connect"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Ang iyong data at kung aling mga data source ang may access dito"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Mga app na kamakailang ginamit ang iyong data"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Suriin ang mga device na makaka-access sa data ng kalusugan"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Mag-install ng mga app na gumagana sa Health Connect para makita ang mga iyon dito"</string>

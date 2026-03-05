@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"सर्व अ‍ॅप्स"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> रीड करू शकते"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> राइट करू शकते"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"निष्क्रिय डेटा स्रोत"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"हे डेटा स्रोत यापुढे <xliff:g id="DATA_TYPE">%s</xliff:g> रीड किंवा राइट करू शकत नाहीत, पण तरीही Health Connect मध्ये डेटा स्टोअर केलेला राहील"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"डेटा स्रोत यापुढे <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> रीड किंवा राइट करू शकत नाहीत आणि Health Connect मध्ये कोणताही <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> डेटा स्टोअर केलेला नाही"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"या डेटामध्ये अ‍ॅक्टिव्ह वेळ, व्यायामाचा प्रकार, लॅप, पुनरावृत्ती, सेशन किंवा स्विमिंग स्‍ट्रोक यांसारख्या माहितीचा समावेश आहे"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"या डेटामध्ये झोपेचे टप्पे आणि झोपेची सेशन यांसारख्या माहितीचा समावेश आहे"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"सर्व एंट्री पहा"</string>
@@ -1080,7 +1077,7 @@
     <string name="send_feedback_description" msgid="2887207112856240778">"कोणत्या आरोग्य आणि फिटनेस ॲप्सनी Health Connect सह काम करावे असे तुम्हाला वाटते ते आम्हाला सांगा"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"ऑटो-डिलीट"</string>
-    <string name="auto_delete_title" msgid="8761742828224207826">"ऑटो-डिलीट"</string>
+    <string name="auto_delete_title" msgid="8761742828224207826">"ऑटोमॅटिक-डिलीट"</string>
     <string name="auto_delete_header" msgid="4258649705159293715">"तुमचा डेटा सेट केलेल्या वेळेनंतर हटवण्यासाठी शेड्यूल करून Health Connect मध्ये किती काळ स्टोअर केला जातो ते नियंत्रित करा"</string>
     <string name="auto_delete_learn_more" msgid="7416469042791307994">"ऑटो-डिलीटबद्दल अधिक जाणून घ्या"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"डेटा ऑटो-डिलीट करा"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"प्राधान्ये"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect तुम्हाला एकाहून अधिक डेटा स्रोतांदरम्यान तुमचा आरोग्य आणि फिटनेस डेटा शेअर करू देते. हे तुमचा डेटा सुरक्षित ठेवून तुम्हाला इनसाइट आणि अनुभव अनलॉक करण्यास मदत करते."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect बद्दल आणखी बरेच काही"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"तुमचा डेटा आणि कोणते डेटा स्रोत ते अ‍ॅक्सेस करू शकतात"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"तुमचा डेटा अलीकडे वापरलेली अ‍ॅप्स"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"आरोग्याशी संबंधित डेटा अ‍ॅक्सेस करू शकणाऱ्या डिव्हाइसचे पुनरावलोकन करा"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect सह काम करणारी अ‍ॅप्स येथे पाहण्यासाठी ती इंस्टॉल करा"</string>

@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Все приложения"</string>
     <string name="can_read" msgid="4568261079308309564">"Доступ на чтение: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Доступ на запись: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Неактивные источники данных"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"У этих источников данных больше нет доступа к чтению и записи информации \"<xliff:g id="DATA_TYPE">%s</xliff:g>\", но их данные по-прежнему хранятся в сервисе \"Здоровье и спорт\"."</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"У источников данных больше нет доступа к чтению и записи информации \"<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>\", и в сервисе \"Здоровье и спорт\" не хранятся данные \"<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>\"."</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Сведения о времени и типе тренировок, количестве кругов, повторений, подходов, гребков и т. д."</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Сведения о сне, например о его фазах."</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Посмотреть все записи"</string>
@@ -468,7 +465,7 @@
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Подробный исходный код: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"Посмотреть исходные данные"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"Приложения с этим разрешением могут читать и записывать данные о вашем здоровье и физической активности."</string>
-    <string name="connected_apps_text" msgid="1177626440966855831">"Выберите, какие приложения получат доступ к данным, хранящимся в сервисе \"Здоровье и спорт\". Нажмите на приложение, чтобы посмотреть, какие данные оно может читать и записывать."</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"Выберите, какие приложения смогут обращаться к данным в Здоровье и спорте. Нажмите на приложение, чтобы посмотреть, какие данные оно может читать и записывать."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Доступ разрешен"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Доступ запрещен"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"Требуют обновления"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Настройки"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Платформа \"Здоровье и спорт\" позволяет обмениваться информацией о здоровье и физической активности с разными источниками. Вы получаете полезную статистику и новые возможности, а ваши данные остаются в безопасности."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"О платформе \"Здоровье и спорт\""</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Ваши данные и список источников с доступом к ним"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Приложения, которые недавно использовали ваши данные"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Список устройств, которые могут получать доступ к данным о здоровье"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Когда вы установите приложения, которые работают со Здоровьем и спортом, они появятся здесь."</string>
@@ -1360,7 +1356,7 @@
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Другие приложения для здоровья"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Не подключено"</string>
     <string name="connect_app_button_content_description" msgid="8652692724367722351">"Нажмите, чтобы подключить это приложение к платформе \"Здоровье и спорт\""</string>
-    <string name="devices_screen_description" msgid="5009317766902606842">"Выберите, какие устройства могут синхронизировать данные с платформой \"Здоровье и спорт\"."</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"Выберите, какие устройства смогут синхронизировать данные со Здоровьем и спортом."</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Включено"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Не включено"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Этот телефон"</string>

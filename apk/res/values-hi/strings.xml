@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"सभी ऐप्लिकेशन"</string>
     <string name="can_read" msgid="4568261079308309564">"ये ऐप्लिकेशन, <xliff:g id="PERMISSION_TYPE">%s</xliff:g> देख सकते हैं"</string>
     <string name="can_write" msgid="5082414937218423823">"ये ऐप <xliff:g id="PERMISSION_TYPE">%s</xliff:g> सेव, क्रिएट, एडिट, और डिलीट कर सकते हैं"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"ऐसे डेटा सोर्स जो चालू नहीं हैं"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"अब इन डेटा सोर्स के पास <xliff:g id="DATA_TYPE">%s</xliff:g> से जुड़ा डेटा देखने या उसे सेव करने की अनुमति नहीं है. हालांकि, Health Connect में इससे जुड़ा डेटा अब भी सेव है"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"अब किसी भी डेटा सोर्स के पास <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> से जुड़ा डेटा देखने या उसे सेव करने की अनुमति नहीं है. साथ ही, Health Connect में <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> से जुड़ा डेटा सेव नहीं किया गया है"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"इस डेटा में कई तरह की जानकारी शामिल होती है. जैसे, कसरत का कुल समय, किस तरह की कसरत की गई, कितने लैप किए गए, कसरत कितनी बार दोहराई गई, कितने सेशन या स्विमिंग स्ट्रोक किए"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"इस डेटा में, नींद के चरण और इसके सेशन वगैरह की जानकारी शामिल होती है"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"सभी एंट्री देखें"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"प्राथमिकताएं"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect की मदद से, अपनी सेहत और फ़िटनेस का डेटा कई डेटा सोर्स के बीच शेयर किया जा सकता है. इससे आपको अहम जानकारी और ज़्यादा बेहतर अनुभव मिलता है. साथ ही, इससे आपका डेटा सुरक्षित रहता है."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect के बारे में ज़्यादा जानकारी"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"अपना डेटा देखें और जानें कि कौनसे डेटा सोर्स इसे ऐक्सेस कर सकते हैं"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"ऐसे ऐप्लिकेशन जिन्होंने हाल ही में आपका डेटा इस्तेमाल किया है"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"सेहत से जुड़ा डेटा ऐक्सेस कर सकने वाले डिवाइस देखें"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect के साथ काम करने वाले ऐप्लिकेशन इंस्टॉल करें और उन्हें यहां देखें"</string>

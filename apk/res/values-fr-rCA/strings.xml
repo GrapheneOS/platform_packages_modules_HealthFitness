@@ -59,7 +59,7 @@
     <string name="today_header" msgid="1006837293203834373">"Aujourd\'hui"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"Hier"</string>
     <string name="read_data_access_label" msgid="8968758932021241976">"Lecture : <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
-    <string name="write_data_access_label" msgid="105976369853871061">"Écriture : <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
+    <string name="write_data_access_label" msgid="105976369853871061">"Écriture – <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
     <string name="separator" msgid="5521285473288943819">", "</string>
     <string name="manage_permissions" msgid="8394221950712608160">"Gérer les autorisations"</string>
     <string name="recent_access_time_content_descritption" msgid="1137471676075811472">"Heure : <xliff:g id="RECENT_ACCESS_TIME">%1$s</xliff:g>"</string>
