@@ -101,7 +101,7 @@ public class MultiProviderTest {
     private static final String ALTERNATIVE_DEVICE_ID = "OtherDeviceId";
 
     @Before
-    public void before() throws Exception {
+    public void before() throws InterruptedException {
         TestUtils.deleteAllDataFromHealthConnect();
     }
 
@@ -495,6 +495,7 @@ public class MultiProviderTest {
                                 DEVICE_DATA_PROVIDER_COMMAND.GET_DEVICE_DATA_SOURCES
                                         .getShellCommand())
                         .trim();
+
         // shell package has not been granted any READ permissions
         assertThat(Integer.parseInt(count)).isEqualTo(0);
     }
