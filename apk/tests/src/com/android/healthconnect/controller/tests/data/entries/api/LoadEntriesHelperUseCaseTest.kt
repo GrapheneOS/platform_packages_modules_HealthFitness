@@ -62,9 +62,11 @@ import com.android.healthconnect.controller.service.HealthManagerModule
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
+import com.android.healthconnect.controller.tests.devices.api.FakeGetCurrentDeviceIdUseCase
 import com.android.healthconnect.controller.tests.utils.BODYTEMPERATURE_MONTH
 import com.android.healthconnect.controller.tests.utils.BODYWATERMASS_WEEK
 import com.android.healthconnect.controller.tests.utils.DISTANCE_STARTDATE_1500
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.HYDRATION_MONTH
 import com.android.healthconnect.controller.tests.utils.HYDRATION_MONTH2
 import com.android.healthconnect.controller.tests.utils.HYDRATION_MONTH3
@@ -133,7 +135,6 @@ import org.mockito.junit.MockitoJUnit
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
 import org.mockito.stubbing.Stubber
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -145,6 +146,7 @@ class LoadEntriesHelperUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val mockitoRule = MockitoJUnit.rule()
     @get:Rule val checkFlagsRule = SetFlagsRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
     @BindValue @JvmField val timeSource = TestTimeSource
 
     private val defaultStartTime: Instant = START_TIME
@@ -157,6 +159,8 @@ class LoadEntriesHelperUseCaseTest {
 
     private lateinit var context: Context
     private lateinit var loadEntriesHelper: LoadEntriesHelper
+    private val fakeGetCurrentDeviceIdUseCase =
+        fakeUseCaseRule.watch(FakeGetCurrentDeviceIdUseCase())
 
     @Captor
     lateinit var menstruationRequestCaptor:
@@ -198,6 +202,7 @@ class LoadEntriesHelperUseCaseTest {
                 menstruationPeriodFormatter,
                 healthConnectManager,
                 dataSourceReader,
+                fakeGetCurrentDeviceIdUseCase,
                 timeSource,
             )
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
@@ -212,7 +217,7 @@ class LoadEntriesHelperUseCaseTest {
     @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun readRecords_withCurrentDevicePackage_addsAndroidPackageToFilter() = runTest {
         val deviceId = "test_device_id"
-        whenever(healthConnectManager.currentDeviceId).thenReturn(deviceId)
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId(deviceId)
 
         val input =
             LoadDataEntriesInput(
@@ -245,7 +250,7 @@ class LoadEntriesHelperUseCaseTest {
     @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun readRecords_flagsOff_withCurrentDevicePackage_doesNotAddAndroidPackage() = runTest {
         val deviceId = "test_device_id"
-        whenever(healthConnectManager.currentDeviceId).thenReturn(deviceId)
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId(deviceId)
 
         val input =
             LoadDataEntriesInput(
@@ -278,7 +283,7 @@ class LoadEntriesHelperUseCaseTest {
     @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun readRecords_withDevicePackage_doesNotAddAndroidPackage() = runTest {
         val deviceId = "test_device_id"
-        whenever(healthConnectManager.currentDeviceId).thenReturn("not_test_device_id")
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId("not_test_device_id")
 
         val input =
             LoadDataEntriesInput(
@@ -311,7 +316,7 @@ class LoadEntriesHelperUseCaseTest {
     @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun readRecords_withAndroid_addsCurrentDeviceToFilter() = runTest {
         val currentDeviceId = "test_device_id"
-        whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId(currentDeviceId)
 
         val input =
             LoadDataEntriesInput(
@@ -344,7 +349,7 @@ class LoadEntriesHelperUseCaseTest {
     @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun readRecords_flagsOff_withAndroid_doesNotAddCurrentDevicePackage() = runTest {
         val currentDeviceId = "test_device_id"
-        whenever(healthConnectManager.currentDeviceId).thenReturn(currentDeviceId)
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId(currentDeviceId)
 
         val input =
             LoadDataEntriesInput(

@@ -39,6 +39,7 @@ import com.android.healthconnect.controller.data.entries.datenavigation.DateNavi
 import com.android.healthconnect.controller.data.entries.datenavigation.toPeriod
 import com.android.healthconnect.controller.data.formatters.MenstruationPeriodFormatter
 import com.android.healthconnect.controller.data.formatters.shared.HealthDataEntryFormatter
+import com.android.healthconnect.controller.devices.api.IGetCurrentDeviceIdUseCase
 import com.android.healthconnect.controller.permissions.data.toMedicalResourceType
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
@@ -70,6 +71,7 @@ constructor(
     private val menstruationPeriodFormatter: MenstruationPeriodFormatter,
     private val healthConnectManager: HealthConnectManager,
     private val dataSourceReader: MedicalDataSourceReader,
+    private val getCurrentDeviceIdUseCase: IGetCurrentDeviceIdUseCase,
     private val timeSource: TimeSource = SystemTimeSource,
 ) {
     private val dateFormatter = LocalDateTimeFormatter(context)
@@ -88,6 +90,9 @@ constructor(
         ascending: Boolean = false,
         pageSize: Int = 1000,
     ): List<Record> {
+        val currentDeviceId =
+            if (deviceDataProvidersApi()) getCurrentDeviceIdUseCase.getOrNull() else null
+
         val filter =
             buildReadRecordsRequestUsingFilters(
                 data,
@@ -95,6 +100,7 @@ constructor(
                 packageName,
                 ascending,
                 pageSize,
+                currentDeviceId,
             )
         val records =
             suspendCancellableCoroutine<ReadRecordsResponse<*>> { continuation ->
@@ -392,6 +398,7 @@ constructor(
         packageName: String?,
         ascending: Boolean = true,
         pageSize: Int = 1000,
+        currentDeviceId: String?,
     ): ReadRecordsRequestUsingFilters<out Record> {
         val filter =
             ReadRecordsRequestUsingFilters.Builder(data)
@@ -401,15 +408,17 @@ constructor(
         if (packageName != null) {
             filter.addDataOrigins(DataOrigin.Builder().setPackageName(packageName).build()).build()
         }
-        if (deviceDataProvidersApi() && packageName == healthConnectManager.currentDeviceId) {
+        if (deviceDataProvidersApi() && currentDeviceId != null && packageName == currentDeviceId) {
             filter.addDataOrigins(
                 DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build()
             )
         }
-        if (deviceDataProvidersApi() && packageName == DEVICE_DATA_PROVIDER_PACKAGE) {
-            filter.addDataOrigins(
-                DataOrigin.Builder().setPackageName(healthConnectManager.currentDeviceId).build()
-            )
+        if (
+            deviceDataProvidersApi() &&
+                currentDeviceId != null &&
+                packageName == DEVICE_DATA_PROVIDER_PACKAGE
+        ) {
+            filter.addDataOrigins(DataOrigin.Builder().setPackageName(currentDeviceId).build())
         }
         return filter.build()
     }
