@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Бүх апп"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g>-г унших боломжтой"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g>-г бичих боломжтой"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Идэвхгүй өгөгдлийн сурвалж"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Эдгээр өгөгдлийн сурвалж цаашид <xliff:g id="DATA_TYPE">%s</xliff:g>-г унших, бичих боломжгүй хэдий ч Health Connect-д өгөгдөл нь хадгалагдсан хэвээр байна"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Өгөгдлийн сурвалжууд цаашид <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>-г унших, бичих боломжгүй бөгөөд Health Connect-д <xliff:g id="DATA_TYPE_2">%2$s</xliff:g>-н ямар ч өгөгдөл хадгалаагүй байна"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Энэ өгөгдөлд идэвхтэй хугацаа, дасгалын төрөл, тойрог, давталт, дасгалын хугацаа эсвэл сэлэлтийн төрөл гэх мэт мэдээлэл багтана"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Энэ өгөгдөлд нойрны үе шатууд болон унтах хугацаа зэрэг мэдээлэл багтана"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Бүх оруулгыг харах"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Сонголт"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Та Health Connect-г ашиглан эрүүл мэнд, фитнесийн өгөгдлөө олон өгөгдлийн сурвалж хооронд хуваалцах боломжтой. Энэ нь танд статистик, хэрэглээг нээхэд туслахын зэрэгцээ таны өгөгдлийг найдвартай хадгална."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect-н тухай нэмэлт мэдээлэл"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Таны өгөгдөл болон үүнд хандаж болох өгөгдлийн сурвалжууд"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Таны өгөгдлийг саяхан ашигласан апп"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Эрүүл мэндийн өгөгдөлд хандах боломжтой төхөөрөмжүүдийг хянах"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect-тэй ажилладаг аппыг суулгаж эндээс харна уу"</string>

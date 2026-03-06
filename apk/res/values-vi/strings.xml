@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Tất cả ứng dụng"</string>
     <string name="can_read" msgid="4568261079308309564">"Có thể đọc <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Có thể ghi <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Nguồn dữ liệu không hoạt động"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Những nguồn dữ liệu này không thể đọc hoặc ghi dữ liệu về <xliff:g id="DATA_TYPE">%s</xliff:g> nữa, nhưng dữ liệu hiện có của những nguồn này vẫn được lưu trữ trong Health Connect"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Các nguồn dữ liệu không thể đọc hoặc ghi dữ liệu về <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> nữa và không có dữ liệu nào về <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> được lưu trữ trong Health Connect"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Dữ liệu này bao gồm thông tin như thời gian hoạt động, loại bài tập, số vòng, số lần lặp lại, số phiên hoặc kiểu bơi"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Dữ liệu này bao gồm thông tin như các giai đoạn ngủ và giấc ngủ"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Xem tất cả các mục"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Lựa chọn ưu tiên"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Khi dùng Health Connect, bạn có thể chia sẻ dữ liệu về sức khoẻ và hoạt động thể dục giữa nhiều nguồn dữ liệu. Nhờ đó, bạn sẽ có thêm những thông tin chuyên sâu và trải nghiệm, trong khi vẫn đảm bảo an toàn cho dữ liệu của mình."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Tìm hiểu thêm về Health Connect"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Dữ liệu của bạn và những nguồn dữ liệu có thể truy cập vào dữ liệu đó"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Những ứng dụng gần đây đã dùng dữ liệu của bạn"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Xem những thiết bị có thể truy cập vào dữ liệu sức khoẻ"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Cài đặt các ứng dụng tương thích với Health Connect để xem chúng tại đây"</string>

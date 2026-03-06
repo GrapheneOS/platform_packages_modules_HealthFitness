@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Tüm uygulamalar"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> verilerini okuyabilir"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> verilerini yazabilir"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Etkin olmayan veri kaynakları"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Bu veri kaynakları artık <xliff:g id="DATA_TYPE">%s</xliff:g> verilerini okuyup yazamaz ancak verileri Health Connect\'te saklanmaya devam eder"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Veri kaynakları artık <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> verilerini okuyup yazamayacak ve Health Connect\'te <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> verisi olmayacak"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Aktif olunan süre, egzersiz türü, turlar, tekrarlar, seanslar ve yüzme sırasındaki kulaçlar gibi bilgiler bu verilere dahildir"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Uyku aşamaları ve uyku seansları gibi bilgiler bu verilere dahildir"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Tüm girişleri göster"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Tercihler"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect, sağlık ve fitness verilerinizi birden fazla veri kaynağı arasında paylaşmanıza olanak tanır. Bu sayede verilerinizin güvenliğini sağlarken analizler ve deneyimlerden faydalanabilirsiniz."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect hakkında daha fazla bilgi"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Verileriniz ve bunlara erişebilen veri kaynakları"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Yakın zamanda verilerinizi kullanan uygulamalar"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Sağlık verilerine erişebilecek cihazları inceleyin"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Burada görmek istediğiniz Health Connect ile çalışan uygulamaları yükleyin"</string>

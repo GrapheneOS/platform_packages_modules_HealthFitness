@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Aplikazio guztiak"</string>
     <string name="can_read" msgid="4568261079308309564">"Kategoria honetako datuak irakur ditzaketenak: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Kategoria honetako datuak idatz ditzaketenak: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Datu-iturburu inaktiboak"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Datu-iturburu hauek jada ezin dute irakurri edo idatzi \"<xliff:g id="DATA_TYPE">%s</xliff:g>\" kategoriako daturik, baina oraindik datuak gordeta dauzkate Health Connect-en"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Datu-iturburuek jada ezin dituzte irakurri eta idatzi \"<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>\" kategoriako datuak, eta ez dago \"<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>\" kategoriako daturik Health Connect-en gordeta"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Aktibo egondako denbora, ariketa mota, itzuliak, errepikapenak, saioak, besakadak eta antzeko informazioa sartzen da datuetan"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Lo-faseak eta -saioak, eta antzeko informazioa sartzen da datuetan"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Ikusi sarrera guztiak"</string>
@@ -400,7 +397,7 @@
     <string name="request_permissions_allow" msgid="4201324235711040631">"Eman baimena"</string>
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Eman baimen guztiak"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Ez eman baimenik"</string>
-    <string name="allow_and_continue" msgid="4523565115589395706">"Onartu eta egin aurrera"</string>
+    <string name="allow_and_continue" msgid="4523565115589395706">"Eman baimena eta egin aurrera"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Aukeratu aplikazio honek Health Connect-en irakurri edo idatz ditzakeen datuak"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Aukeratu aplikazio honek Health Connect-en irakur ditzakeen datuak"</string>
     <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Aukeratu aplikazio honek Health Connect-en idatz ditzakeen datuak"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Hobespenak"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect-ek osasunari eta fitnessari buruzko datuak datu-iturri batekin baino gehiagorekin partekatzeko aukera ematen dizu. Horri esker, estatistikak eta eginbideak desblokea ditzakezu datuak seguru mantendu bitartean."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect-i buruzko informazio gehiago"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Zure datuak eta zein datu-iturburuk atzi ditzaketen"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Zure datuak berriki erabili dituzten aplikazioak"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Berrikusi osasunari buruzko datuak atzi ditzaketen gailuak"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Instalatu Health Connect-ekin funtzionatzen duten aplikazioak hemen ikusteko"</string>

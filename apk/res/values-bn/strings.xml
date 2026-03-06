@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"সব অ্যাপ"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> দেখতে পারবে"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> এডিট করতে পারবে"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"ইনঅ্যাক্টিভ ডেটা সোর্স"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"এইসব ডেটা সোর্স আর <xliff:g id="DATA_TYPE">%s</xliff:g> পড়তে অথবা লিখতে পারবে না, তবে এখনও Health Connect-এ ডেটা স্টোর করে রাখতে পারবে"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"ডেটা সোর্স আর <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> পড়তে অথবা লিখতে পারবে না এবং Health Connect-এ <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> সংক্রান্ত কোনও ডেটা স্টোর করা নেই"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"কতক্ষণ ব্যায়াম করেছেন, ব্যায়ামের ধরন, ল্যাপের সংখ্যা, রিপিট হওয়া, সেশন বা সাঁতারের স্ট্রোকের মতো তথ্য এই ডেটায় অন্তর্ভুক্ত থাকে"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"ঘুমের বিভিন্ন পর্যায় ও স্লিপ সেশনের মতো তথ্য এই ডেটায় অন্তর্ভুক্ত থাকে"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"সব এন্ট্রি দেখুন"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"পছন্দ"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect আপনাকে একাধিক ডেটা সোর্সের মধ্যে নিজের স্বাস্থ্য ও ফিটনেস ডেটা শেয়ার করার সুবিধা দেয়। এটি আপনার ডেটা সুরক্ষিত রাখার পাশাপাশি আপনাকে ইনসাইট ও অভিজ্ঞতা পেতে সাহায্য করে।"</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect সম্পর্কে আরও তথ্য"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"আপনার ডেটা এবং কোন ডেটা সোর্স এটি অ্যাক্সেস করতে পারবে"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"যেসব অ্যাপ সম্প্রতি আপনার ডেটা ব্যবহার করেছে"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"স্বাস্থ্য সংক্রান্ত ডেটা অ্যাক্সেস করতে পারে এমন ডিভাইস পর্যালোচনা করুন"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect-এর সাথে কাজ করে এমন অ্যাপ ইনস্টল করুন যাতে সেগুলি এখানে দেখা যায়"</string>

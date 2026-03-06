@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"所有应用"</string>
     <string name="can_read" msgid="4568261079308309564">"可以读取<xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"可以写入<xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"已停止访问数据的数据源"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"这些数据源无法继续读取或写入<xliff:g id="DATA_TYPE">%s</xliff:g>数据，但仍有数据存储在“健康数据共享”中"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"数据源无法再读取或写入<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>数据，并且“健康数据共享”中没有存储任何<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>数据"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"此数据包含运动时间、锻炼类型、趟数、重复次数、时段或游泳动作等信息"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"此数据包含睡眠阶段和睡眠时段等信息"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"查看所有条目"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"偏好设置"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"“健康数据共享”可让您在多个数据源之间共享健康与健身数据，从而助您解锁更多分析洞见和体验，同时保障数据安全。"</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"详细了解“健康数据共享”"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"您的数据及可以访问这些数据的数据源"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"近期使用过您数据的应用"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"查看可以访问健康数据的设备"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"安装可与“健康数据共享”搭配使用的应用，即可在此处查看这些应用的数据"</string>
