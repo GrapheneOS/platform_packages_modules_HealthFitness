@@ -44,7 +44,7 @@ sealed class BannerAction {
     data class StartActivityAndDismiss(val intent: Intent, val banner: BannerData) : BannerAction()
 }
 
-/** A class that constructs banners for the HomeFragment */
+/** A class that constructs banners for the NewHomeFragment */
 class BannerFactory(
     private val context: Context,
     private val dateFormatter: LocalDateTimeFormatter,

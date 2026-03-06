@@ -272,8 +272,6 @@ android_test {
 filegroup {
     name: "home-and-onboarding-tests-srcs",
     srcs: [
-        "src/com/android/healthconnect/controller/tests/home/**/*.java",
-        "src/com/android/healthconnect/controller/tests/home/**/*.kt",
         "src/com/android/healthconnect/controller/tests/newHome/**/*.java",
         "src/com/android/healthconnect/controller/tests/newHome/**/*.kt",
         "src/com/android/healthconnect/controller/tests/onboarding/**/*.java",

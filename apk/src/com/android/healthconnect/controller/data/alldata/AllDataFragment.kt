@@ -61,7 +61,6 @@ import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.setupSharedMenu
 import com.android.healthfitness.flags.Flags
-import com.android.healthfitness.flags.Flags.newHomeScreen
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsThemeHelper
 import com.android.settingslib.widget.ZeroStatePreference
@@ -193,21 +192,7 @@ open class AllDataFragment : Hilt_AllDataFragment() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
         setPreferencesFromResource(R.xml.all_data_screen, rootKey)
-        displayType =
-            if (newHomeScreen()) {
-                DisplayType.COMBINED_DATA
-            } else {
-                if (arguments?.containsKey(IS_BROWSE_MEDICAL_DATA_SCREEN) == true) {
-                    val isBrowseMedicalData =
-                        arguments?.getBoolean(IS_BROWSE_MEDICAL_DATA_SCREEN)
-                            ?: throw IllegalArgumentException(
-                                "IS_BROWSE_MEDICAL_DATA_SCREEN can't be null!"
-                            )
-                    if (isBrowseMedicalData) DisplayType.MEDICAL_DATA else DisplayType.FITNESS_DATA
-                } else {
-                    DisplayType.FITNESS_DATA
-                }
-            }
+        displayType = DisplayType.COMBINED_DATA
 
         if (childFragmentManager.findFragmentByTag(DELETION_TAG) == null) {
             childFragmentManager.commitNow { add(DeletionFragment(), DELETION_TAG) }
@@ -302,14 +287,7 @@ open class AllDataFragment : Hilt_AllDataFragment() {
         var preferenceOrder = 0
         permissionTypesListGroup.removeAll()
 
-        val populatedCategories =
-            if (newHomeScreen()) {
-                sortAndAddMedicalToLast(permissionTypesPerCategoryList)
-            } else {
-                permissionTypesPerCategoryList.sortByLocale {
-                    getString(it.category.uppercaseTitle())
-                }
-            }
+        val populatedCategories = sortAndAddMedicalToLast(permissionTypesPerCategoryList)
         if (populatedCategories.isEmpty()) {
             setupEmptyState()
             return
