@@ -38,7 +38,7 @@
     <string name="connected_apps_button_no_permissions_subtitle" msgid="1651994862419752908">"कुनै पनि एप कनेक्ट गरिएको छैन"</string>
     <string name="entry_details_title" msgid="590184849040247850">"इन्ट्रीसम्बन्धी विवरणहरू"</string>
     <string name="browse_data_title" msgid="5232691805953326097">"डेटा ब्राउज गर्नुहोस्"</string>
-    <string name="browse_data_subtitle" msgid="7025164374898103993">"जानकारी र कुन कुन एपले उक्त जानकारी एक्सेस गर्न सक्छन् भन्ने कुरा हेर्नुहोस्"</string>
+    <string name="browse_data_subtitle" msgid="7025164374898103993">"जानकारी र कुन कुन एपले उक्त जानकारी एक्सेस गर्न सक्छन् हेर्नुहोस्"</string>
     <string name="manage_data_summary" msgid="8537870912521944449">"स्वतः मेटाउने सुविधा, डेटाको स्रोत, ब्याकअप र रिस्टोर गर्ने सुविधा"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"थप सामग्री"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"अझ कम सामग्री"</string>
@@ -55,7 +55,7 @@
     <string name="recent_access_header" msgid="7623497371790225888">"हालसालै डेटा एक्सेस गर्ने एपहरू"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"कुनै पनि एपले हालसालै Health Connect प्रयोग गरेको छैन"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"हालसालै डेटा रिड र राइट गरेका सबै एपहरू हेर्नुहोस्"</string>
-    <string name="recent_access_screen_description" msgid="331101209889185402">"विगत २४ घण्टामा कुन कुन एपले तपाईंको डेटा एक्सेस गरे भन्ने कुरा हेर्नुहोस्"</string>
+    <string name="recent_access_screen_description" msgid="331101209889185402">"विगत २४ घण्टामा कुन कुन एपले तपाईंको डेटा एक्सेस गरे हेर्नुहोस्"</string>
     <string name="today_header" msgid="1006837293203834373">"आज"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"हिजो"</string>
     <string name="read_data_access_label" msgid="8968758932021241976">"रिड एक्सेस: <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
@@ -1326,7 +1326,7 @@
     <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"अर्को एपले तन्दुरुस्ती तथा आरोग्यसम्बन्धी जानकारी सेयर गर्न थाल्न सकोस् भन्नाका लागि अर्को एप सेटअप गर्नुहोस्"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"जारी राख्नुहोस्"</string>
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"विभिन्न एपहरूमा आफ्नो स्वास्थ्यसम्बन्धी जानकारी हेर्नुहोस्"</string>
-    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"तपाईं Health Connect का सहायताले आफ्ना एपहरूका बिचमा तन्दुरुस्ती तथा आरोग्यसम्बन्धी जानकारी सेयर गर्न सक्नुहुन्छ। तपाईं अहिले कुन कुन एप कनेक्ट गर्न सक्नुहुन्छ भन्ने कुरा हेर्नुहोस्।"</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"तपाईं Health Connect का सहायताले आफ्ना एपहरूका बिचमा तन्दुरुस्ती तथा आरोग्यसम्बन्धी जानकारी सेयर गर्न सक्नुहुन्छ। तपाईं अहिले कुन कुन एप कनेक्ट गर्न सक्नुहुन्छ हेर्नुहोस्।"</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"दोस्रो एप कनेक्ट गर्नुहोस्"</string>
     <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"कुनै अर्को एपसँग तन्दुरुस्ती तथा आरोग्यसम्बन्धी जानकारी सेयर गर्न उक्त एप Health Connect मा कनेक्ट गर्नुहोस्"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"हालको डिभाइस"</string>

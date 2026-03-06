@@ -197,6 +197,22 @@
       "name": "HealthConnectControllerWearRoboUITests"
     }
   ],
+  "healthfitness-robo-screenshot-tests": [
+    {
+        "name": "HealthFitnessRoboRNGTests",
+        "options": [
+            {
+                "exclude-annotation": "org.junit.Ignore"
+            },
+            {
+                "exclude-annotation": "androidx.test.filters.FlakyTest"
+            },
+            {
+                "exclude-annotation": "android.platform.test.annotations.Postsubmit"
+            }
+        ]
+    }
+  ],
   "healthfitness-screenshot-tests": [
     {
         "name": "HealthFitnessScreenDiffTests",

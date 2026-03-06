@@ -961,6 +961,28 @@ class MatchmakingViewModelTest {
     }
 
     @Test
+    fun allPermissionsGranted_whenStateIsNotWithData_isFalse() = runTest {
+        // Initially, matchmakingState is not WithData, so allPermissionsGranted should be false.
+        assertThat(viewModel.allPermissionsGranted.value).isFalse()
+
+        // Even if we grant a permission (which shouldn't happen in this state), it should remain
+        // false because calculateAllPermissionsGranted returns early if state is not WithData.
+        val permission =
+            HealthPermission.fromPermissionString(WRITE_STEPS) as HealthPermission.FitnessPermission
+        viewModel.addAppPermissionToGrantedList(TEST_APP_PACKAGE_NAME, permission)
+        assertThat(viewModel.allPermissionsGranted.value).isFalse()
+
+        // Simulate a loading failure
+        whenever(getMatchingDataSourcesUseCase.invoke(any()))
+            .doReturn(UseCaseResults.Failed(Exception()))
+        viewModel.loadMatchmakingData("any.package", emptyArray())
+
+        // State is now LoadingFailed, so allPermissionsGranted should still be false.
+        assertThat(viewModel.matchmakingState.value).isInstanceOf(LoadingFailed::class.java)
+        assertThat(viewModel.allPermissionsGranted.value).isFalse()
+    }
+
+    @Test
     @EnableFlags(
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,

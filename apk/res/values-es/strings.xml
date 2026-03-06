@@ -55,7 +55,7 @@
     <string name="recent_access_header" msgid="7623497371790225888">"Accesos recientes"</string>
     <string name="no_recent_access" msgid="4724297929902441784">"Ninguna aplicación ha accedido a Salud conectada recientemente"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Ver todos los accesos recientes"</string>
-    <string name="recent_access_screen_description" msgid="331101209889185402">"Consulta qué apps han accedido a tus datos en las últimas 24 horas"</string>
+    <string name="recent_access_screen_description" msgid="331101209889185402">"Consulta qué aplicaciones han accedido a tus datos en las últimas 24 horas"</string>
     <string name="today_header" msgid="1006837293203834373">"Hoy"</string>
     <string name="yesterday_header" msgid="6652176268273681505">"Ayer"</string>
     <string name="read_data_access_label" msgid="8968758932021241976">"Leer: <xliff:g id="DATA_TYPE">%s</xliff:g>"</string>
@@ -468,7 +468,7 @@
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Código fuente detallado: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"Ver datos de origen"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"Las apps con este permiso pueden leer y escribir tus datos de salud y actividad física."</string>
-    <string name="connected_apps_text" msgid="1177626440966855831">"Controla qué apps pueden acceder a los datos almacenados en Salud conectada. Toca una app para comprobar los datos que puede leer o escribir."</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"Controla qué aplicaciones pueden acceder a los datos almacenados en Salud conectada. Toca una aplicación para comprobar los datos que puede leer o escribir."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Acceso permitido"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Acceso no permitido"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"Actualización necesaria"</string>

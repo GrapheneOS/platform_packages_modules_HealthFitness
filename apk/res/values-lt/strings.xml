@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Visos programos"</string>
     <string name="can_read" msgid="4568261079308309564">"Gali skaityti šiuos duomenis: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Gali rašyti šiuos duomenis: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Neaktyvūs duomenų šaltiniai"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Šie duomenų šaltiniai nebegali skaityti ar rašyti <xliff:g id="DATA_TYPE">%s</xliff:g> duomenų, bet vis dar saugo duomenis sistemoje „Health Connect“"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Duomenų šaltiniai nebegali skaityti ar rašyti šio tipo duomenų: <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> ir sistemoje „Health Connect“ nėra saugomų šio tipo duomenų: <xliff:g id="DATA_TYPE_2">%2$s</xliff:g>"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Į šiuos duomenis įtraukiama informacija, pvz., aktyvumo laikas, pratimo tipas, ratai, pakartojimai, seansai ar plaukimo mostai"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Į šiuos duomenis įtraukiama informacija, pvz., miego fazės ir miego seansai"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Žr. visus įrašus"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Nuostatos"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Naudojant „Health Connect“ galima bendrinti sveikatos ir kūno rengybos duomenis su keliais duomenų šaltiniais. Tai padeda gauti įžvalgų ir funkcijų, o jūsų duomenys lieka saugūs."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Daugiau apie „Health Connect“"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Jūsų duomenys ir duomenų šaltiniai, kurie gali juos pasiekti"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Programos, kurios neseniai naudojo jūsų duomenis"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Peržiūrėkite įrenginius, kurie gali pasiekti sveikatos duomenis"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Įdiekite programas, kurios veikia su „Health Connect“, kad matytumėte jas čia"</string>

@@ -620,3 +620,24 @@ flag {
         purpose: PURPOSE_BUGFIX
     }
 }
+
+flag {
+    name: "health_permission_reader_improvements"
+    namespace: "health_fitness_aconfig"
+    description: "Improves the functionality and performance of the health permission reader."
+    bug: "489738630"
+}
+
+flag {
+    name: "ui_architecture_improvements"
+    namespace: "health_fitness_aconfig"
+    description: "Improves data flow in the UI layer and guards navigation to the updated screens."
+    bug: "481356187"
+}
+
+flag {
+    name: "entries_pagination"
+    namespace: "health_fitness_aconfig"
+    description: "Enables data pagination for entries screen."
+    bug: "384028690"
+}

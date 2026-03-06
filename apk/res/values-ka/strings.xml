@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"ყველა აპი"</string>
     <string name="can_read" msgid="4568261079308309564">"შეუძლია, წაიკითხოს <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"შეუძლია, ჩაიწეროს <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"არააქტიური მონაცემთა წყაროები"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"ამ მონაცემთა წყაროებს აღარ შეუძლია <xliff:g id="DATA_TYPE">%s</xliff:g>-ის წაკითხვა ან ჩაწერა, მაგრამ მონაცემები მაინც ინახება Health Connect-ში"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"მონაცემთა წყაროებს აღარ შეუძლია <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>-ის წაკითხვა და ჩაწერა და Health Connect-ში არ არის შენახული <xliff:g id="DATA_TYPE_2">%2$s</xliff:g>-ის მონაცემები"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"ეს მონაცემები მოიცავს ინფორმაციას, როგორიცაა აქტიური დრო, ვარჯიშის ტიპი, წრეები, გამეორებები, სესიები ან საცურაო ხაზები."</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"ეს მონაცემები მოიცავს ინფორმაციას, როგორიცაა ძილის ეტაპები და ძილის სესიები"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"ყველა მონაცემის ნახვა"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"პარამეტრები"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect საშუალებას გაძლევთ, გააზიაროთ თქვენი ჯანმრთელობისა და ფიტნესის მონაცემები მონაცემთა რამდენიმე წყაროს შორის. ეს გეხმარებათ, მიიღოთ ანალიზი და გამოცდილებები თქვენი მონაცემების უსაფრთხოდ შენარჩუნების პარალელურად."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"ვრცლად Health Connect-ის შესახებ"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"თქვენი მონაცემები და რომელ მონაცემთა წყაროებს შეუძლია მათზე წვდომა"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"აპები, რომლებმაც ახლახან გამოიყენა თქვენი მონაცემები"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"მიმოიხილეთ მოწყობილობები, რომლებსაც შეუძლია ჯანმრთელობის მონაცემებზე წვდომა"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"დააინსტალირეთ Health Connect-თან თავსებადი აპები, რათა მათი აქ ნახვა შეძლოთ"</string>

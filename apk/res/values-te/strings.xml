@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"అన్ని యాప్‌లు"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g>‌ను రీడ్ చేయగలదు."</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g>‌ను రాయగలదు"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"ఇన్‌యాక్టివ్ డేటా సోర్స్‌లు"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"ఈ డేటా సోర్స్‌లు ఇకపై <xliff:g id="DATA_TYPE">%s</xliff:g>‌ను చదవలేవు లేదా రాయలేవు, కానీ ఇప్పటికీ Health Connectలో డేటా స్టోర్ అయి ఉంది"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"డేటా సోర్స్‌లు ఇకపై <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>‌ను చదవలేవు లేదా రాయలేవు, Health Connectలో స్టోర్ అయిన <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> డేటా ఏదీ లేదు"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"ఈ డేటాలో యాక్టివ్ టైమ్, వ్యాయామ రకం, ల్యాప్‌లు, రిపిటీషన్‌లు, సెషన్‌లు, లేదా స్విమ్మింగ్ స్ట్రోక్‌లు వంటి సమాచారం ఉంటుంది"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"ఈ డేటాలో నిద్ర దశలు, నిద్ర సెషన్‌ల వంటి సమాచారం ఉంటుంది"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"అన్ని ఎంట్రీలను చూడండి"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"ప్రాధాన్యతలు"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect మీ ఆరోగ్యం, ఫిట్‌నెస్ డేటాను మల్టిపుల్ డేటా సోర్స్‌ల మధ్య షేర్ చేసుకోవడానికి మిమ్మల్ని అనుమతిస్తుంది. ఇది మీ డేటాను సురక్షితంగా ఉంచుతూ గణాంకాలు, ఎక్స్‌పీరియన్స్‌లను అన్‌లాక్ చేయడంలో మీకు సహాయపడుతుంది."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect గురించిన మరింత సమాచారం"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"మీ డేటా, దాన్ని యాక్సెస్ చేయగల డేటా సోర్స్‌లు"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"ఇటీవల మీ డేటాను ఉపయోగించిన యాప్‌లు"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"ఆరోగ్య సంబంధిత డేటాను యాక్సెస్ చేయగల డివైజ్‌లను రివ్యూ చేయండి"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connectతో కంపాటబిలిటీ ఉన్న (ఇంటిగ్రేట్ కాగలిగిన) యాప్‌లను ఇన్‌స్టాల్ చేయండి. అవి మీకు ఇక్కడ ఇక్కడ కనిపిస్తాయి"</string>

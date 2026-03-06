@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"සියලු යෙදුම්"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> කියවිය හැක"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> ලිවිය හැක"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"අක්‍රිය දත්ත මූලාශ්‍ර"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"මෙම දත්ත මූලාශ්‍රවලට තවදුරටත් <xliff:g id="DATA_TYPE">%s</xliff:g> කියවීමට හෝ ලිවීමට නොහැකි නමුත්, තවම Health Connect තුළ දත්ත ගබඩා කර ඇත"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"දත්ත මූලාශ්‍රවලට තවදුරටත් <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> කියවීමට හෝ ලිවීමට නොහැකි අතර Health Connect තුළ <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> දත්ත ගබඩා කර නොමැත"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"මෙම දත්තවල ක්‍රියාකාරී වේලාව, ව්‍යායාම වර්ගය, වට, පුනරාවර්තන, සැසි, හෝ පිහිනුම් පහරවල් වැනි තොරතුරු ඇතුළත් වේ"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"මෙම දත්තවලට නින්දේ අදියර සහ නින්ද සැසි වැනි තොරතුරු ඇතුළත් වේ"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"සියලු ඇතුළත් කිරීම් බලන්න"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"මනාප"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect මඟින් ඔබේ සෞඛ්‍ය සහ යෝග්‍යතා දත්ත බහු දත්ත මූලාශ්‍ර අතර බෙදා ගැනීමට ඔබට ඉඩ දෙයි. මෙය ඔබේ දත්ත සුරක්ෂිතව තබා ගනිමින් ඇතුළාන්ත සහ අත්දැකීම් අගුළු හැරීමට ඔබට උදවු වේ."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect පිළිබඳ වැඩිදුර"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"ඔබේ දත්ත සහ එයට ප්‍රවේශ විය හැකි දත්ත මූලාශ්‍ර"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"මෑතකදී ඔබේ දත්ත භාවිත කළ යෙදුම්"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"සෞඛ්‍ය දත්ත වෙත ප්‍රවේශ විය හැකි උපාංග සමාලෝචනය කරන්න"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect සමග ක්‍රියා කරන යෙදුම් මෙහි දැකීමට ස්ථාපනය කරන්න"</string>

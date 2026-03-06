@@ -468,7 +468,7 @@
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Código fuente detallado: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"Ver datos de origen"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"Las apps con este permiso pueden leer y escribir tus datos de salud y actividad física."</string>
-    <string name="connected_apps_text" msgid="1177626440966855831">"Controla qué apps pueden acceder a los datos almacenados en Health Connect. Presiona una app para ver los datos que puede escribir y leer."</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"Controla qué apps pueden acceder a los datos almacenados en Health Connect. Presiona una app para ver los datos que puede escribir o leer."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Acceso permitido"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Acceso no permitido"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"Actualización necesaria"</string>
