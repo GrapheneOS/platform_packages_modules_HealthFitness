@@ -28,7 +28,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadDeclaredHealthPermissionUseCase
+import com.android.healthconnect.controller.permissions.additionalaccess.api.ILoadDeclaredHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
@@ -50,6 +50,7 @@ import com.android.healthconnect.controller.permissions.data.PermissionState
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.modules.utils.build.SdkLevel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -71,7 +72,7 @@ constructor(
     private val getGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase,
     private val getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase,
     private val loadAccessDateUseCase: LoadAccessDateUseCase,
-    private val loadDeclaredHealthPermissionUseCase: LoadDeclaredHealthPermissionUseCase,
+    private val loadDeclaredHealthPermissionUseCase: ILoadDeclaredHealthPermissionUseCase,
 ) : ViewModel() {
 
     companion object {
@@ -297,20 +298,24 @@ constructor(
 
         populateRequestedPermissionsForAll(packageName, permissions)
 
-        // First check if we are already in a permission request flow.
-        // Without this check, if any permissions from the previous screen
-        // were USER_FIXED, we would terminate the request without showing
-        // the subsequent screens.
-        if (isAnyPermissionUserFixed(packageName, permissions)) {
-            if (!isFitnessPermissionRequestConcluded() && !isMedicalPermissionRequestConcluded()) {
-                Log.e(TAG, "App has at least one USER_FIXED permission, finishing!")
-                updatePermissionGrants()
-                _permissionsActivityState.value = PermissionsActivityState.FinishRequest
-                return
+        viewModelScope.launch {
+            // First check if we are already in a permission request flow.
+            // Without this check, if any permissions from the previous screen
+            // were USER_FIXED, we would terminate the request without showing
+            // the subsequent screens.
+            if (isAnyPermissionUserFixed(packageName, permissions)) {
+                if (
+                    !isFitnessPermissionRequestConcluded() && !isMedicalPermissionRequestConcluded()
+                ) {
+                    Log.e(TAG, "App has at least one USER_FIXED permission, finishing!")
+                    updatePermissionGrants()
+                    _permissionsActivityState.postValue(PermissionsActivityState.FinishRequest)
+                    return@launch
+                }
             }
-        }
 
-        loadPermissions(packageName, permissions)
+            loadPermissions(packageName, permissions)
+        }
     }
 
     /** Populates the [requestedPermissions] map for all initially requested permissions. */
@@ -349,8 +354,15 @@ constructor(
     }
 
     /** Returns true if any of the requested permissions is USER_FIXED, false otherwise. */
-    fun isAnyPermissionUserFixed(packageName: String, permissions: Array<out String>): Boolean {
-        val declaredPermissions = loadDeclaredHealthPermissionUseCase.invoke(packageName)
+    suspend fun isAnyPermissionUserFixed(
+        packageName: String,
+        permissions: Array<out String>,
+    ): Boolean {
+        val declaredPermissions =
+            when (val result = loadDeclaredHealthPermissionUseCase(packageName)) {
+                is UseCaseResults.Success -> result.data
+                else -> emptyList()
+            }
         val validPermissions = permissions.filter { declaredPermissions.contains(it) }
         val permissionFlags =
             getHealthPermissionsFlagsUseCase.invoke(packageName, validPermissions.toList())
@@ -501,10 +513,10 @@ constructor(
 
     /** Reloads permissions after one type of permissions have been granted in a flow */
     private fun reloadPermissions() {
-        loadPermissions(packageName, initialRequestedPermissions)
+        viewModelScope.launch { loadPermissions(packageName, initialRequestedPermissions) }
     }
 
-    private fun loadPermissions(packageName: String, permissions: Array<out String>) {
+    private suspend fun loadPermissions(packageName: String, permissions: Array<out String>) {
         val grantedPermissions = getGrantedHealthPermissionsUseCase.invoke(packageName)
 
         anyFitnessReadPermissionsGranted = grantedPermissions.any { isFitnessReadPermission(it) }
@@ -515,7 +527,11 @@ constructor(
 
         historyAccessGranted =
             grantedPermissions.any { permission -> isHistoryReadPermission(permission) }
-        var validPermissions = loadDeclaredHealthPermissionUseCase.invoke(packageName)
+        var validPermissions =
+            when (val result = loadDeclaredHealthPermissionUseCase(packageName)) {
+                is UseCaseResults.Success -> result.data
+                else -> emptyList()
+            }
         // On Wear, only the system permissions are considered valid to be requested.
         // TODO: b/404305506 - Consider moving this filter upstream into HealthPermissionReader.
         if (
@@ -586,13 +602,14 @@ constructor(
                         permission == AdditionalPermission.READ_HEALTH_DATA_IN_BACKGROUND
                 }
 
-        _fitnessPermissionsList.value = fitnessNotGrantedPermissions
-        _medicalPermissionsList.value = medicalNotGrantedPermissions
-        _additionalPermissionsList.value = additionalNotGrantedPermissions
-        _healthPermissionsList.value =
+        _fitnessPermissionsList.postValue(fitnessNotGrantedPermissions)
+        _medicalPermissionsList.postValue(medicalNotGrantedPermissions)
+        _additionalPermissionsList.postValue(additionalNotGrantedPermissions)
+        _healthPermissionsList.postValue(
             fitnessNotGrantedPermissions +
                 medicalNotGrantedPermissions +
                 additionalNotGrantedPermissions
+        )
 
         val anyMedicalRequested = medicalNotGrantedPermissions.isNotEmpty()
         val anyFitnessRequested = fitnessNotGrantedPermissions.isNotEmpty()
@@ -613,7 +630,7 @@ constructor(
             } else {
                 PermissionsActivityState.NoPermissions
             }
-        _permissionsActivityState.value = permissionsActivityState
+        _permissionsActivityState.postValue(permissionsActivityState)
     }
 
     private fun getMedicalScreenState(

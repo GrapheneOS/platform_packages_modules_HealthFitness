@@ -49,11 +49,7 @@ import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetada
 import com.android.healthconnect.controller.onboarding.LoadFitnessPermissionAppsUseCase
 import com.android.healthconnect.controller.onboarding.api.LoadOnboardingStateUseCase
 import com.android.healthconnect.controller.onboarding.api.OnboardingState
-import com.android.healthconnect.controller.permissions.additionalaccess.api.ILoadExerciseRoutePermissionUseCase
-import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadDeclaredHealthPermissionUseCase
-import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadExerciseRoutePermissionUseCase
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
-import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsStatusUseCase
@@ -149,21 +145,6 @@ class UseCaseModule {
         medicalEntryFormatter: MedicalEntryFormatter,
     ): ILoadMedicalEntriesUseCase {
         return LoadMedicalEntriesUseCase(dispatcher, medicalEntryFormatter, loadEntriesHelper)
-    }
-
-    @Provides
-    fun providesExerciseRoutePermissionUseCase(
-        loadDeclaredHealthPermissionUseCase: LoadDeclaredHealthPermissionUseCase,
-        getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase,
-        getGrantedHealthPermissionsUseCase: IGetGrantedHealthPermissionsUseCase,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): ILoadExerciseRoutePermissionUseCase {
-        return LoadExerciseRoutePermissionUseCase(
-            loadDeclaredHealthPermissionUseCase,
-            getHealthPermissionsFlagsUseCase,
-            getGrantedHealthPermissionsUseCase,
-            dispatcher,
-        )
     }
 
     @Provides

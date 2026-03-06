@@ -95,6 +95,7 @@ import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -132,8 +133,9 @@ class MockedPermissionsActivityTest {
     private lateinit var context: Context
     private lateinit var appMetadata: AppMetadata
 
+    // TODO why is runTest necessary here?
     @Before
-    fun setup() {
+    fun setup() = runTest {
         hiltRule.inject()
         context = getInstrumentation().context
         appMetadata =
@@ -838,7 +840,7 @@ class MockedPermissionsActivityTest {
     }
 
     @Test
-    fun whenPermissionUserFixed_noFlowConcluded_sendsResultOk() {
+    fun whenPermissionUserFixed_noFlowConcluded_sendsResultOk() = runTest {
         whenever(viewModel.isAnyPermissionUserFixed(anyString(), anyArray())).thenReturn(true)
         whenever(viewModel.isFitnessPermissionRequestConcluded()).thenReturn(false)
         whenever(viewModel.isMedicalPermissionRequestConcluded()).thenReturn(false)
@@ -865,7 +867,7 @@ class MockedPermissionsActivityTest {
 
     @Test
     @DisableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
-    fun whenPermissionUserFixed_flowConcluded_showsRequest() {
+    fun whenPermissionUserFixed_flowConcluded_showsRequest() = runTest {
         whenever(viewModel.isAnyPermissionUserFixed(anyString(), anyArray())).thenReturn(true)
         whenever(viewModel.isFitnessPermissionRequestConcluded()).thenReturn(false)
         whenever(viewModel.isMedicalPermissionRequestConcluded()).thenReturn(true)
@@ -901,7 +903,7 @@ class MockedPermissionsActivityTest {
 
     @Test
     @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
-    fun whenPermissionUserFixed_flowConcluded_showsRequest_bottomSheet() {
+    fun whenPermissionUserFixed_flowConcluded_showsRequest_bottomSheet() = runTest {
         whenever(viewModel.isAnyPermissionUserFixed(anyString(), anyArray())).thenReturn(true)
         whenever(viewModel.isFitnessPermissionRequestConcluded()).thenReturn(false)
         whenever(viewModel.isMedicalPermissionRequestConcluded()).thenReturn(true)
@@ -937,7 +939,7 @@ class MockedPermissionsActivityTest {
     }
 
     @Test
-    fun whenPermissionUserFixed_sendsResultOk() {
+    fun whenPermissionUserFixed_sendsResultOk() = runTest {
         whenever(viewModel.isAnyPermissionUserFixed(anyString(), anyArray())).thenReturn(true)
         whenever(viewModel.permissionsActivityState).then {
             MutableLiveData(PermissionsActivityState.FinishRequest)

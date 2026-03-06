@@ -1171,6 +1171,7 @@ class AdditionalAccessFragmentTest {
                 Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
             )
             .use {
+                onView(withText(R.string.route_permissions_label)).check(matches(isDisplayed()))
                 onView(withText(R.string.route_permissions_label)).perform(click())
                 onIdle()
 
