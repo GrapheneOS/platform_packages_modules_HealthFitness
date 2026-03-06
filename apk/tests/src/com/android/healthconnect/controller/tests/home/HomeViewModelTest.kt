@@ -22,11 +22,11 @@ import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.core.app.ApplicationProvider
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
+import com.android.healthconnect.controller.home.HomeViewModel
+import com.android.healthconnect.controller.home.HomeViewModel.BannerData
+import com.android.healthconnect.controller.home.HomeViewModel.HomeBannerState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
-import com.android.healthconnect.controller.newHome.HomeViewModel
-import com.android.healthconnect.controller.newHome.HomeViewModel.BannerData
-import com.android.healthconnect.controller.newHome.HomeViewModel.HomeBannerState
 import com.android.healthconnect.controller.onboarding.api.OnboardingState
 import com.android.healthconnect.controller.shared.Constants
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata

@@ -48,7 +48,7 @@
 
     <fragment
         android:id="@+id/newHomeFragment"
-        android:name="com.android.healthconnect.controller.newHome.HomeFragment"
+        android:name="com.android.healthconnect.controller.home.HomeFragment"
         android:label="@string/app_label">
         <action
             android:id="@+id/action_newHomeFragment_to_dataAndAccess"

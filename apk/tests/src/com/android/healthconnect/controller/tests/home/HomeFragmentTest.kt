@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.android.healthconnect.controller.tests.newHome
+package com.android.healthconnect.controller.tests.home
 
 import android.app.Activity
 import android.app.Instrumentation
@@ -44,9 +44,9 @@ import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.newHome.HomeFragment
-import com.android.healthconnect.controller.newHome.HomeViewModel
-import com.android.healthconnect.controller.newHome.HomeViewModel.BannerData
+import com.android.healthconnect.controller.home.HomeFragment
+import com.android.healthconnect.controller.home.HomeViewModel
+import com.android.healthconnect.controller.home.HomeViewModel.BannerData
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata

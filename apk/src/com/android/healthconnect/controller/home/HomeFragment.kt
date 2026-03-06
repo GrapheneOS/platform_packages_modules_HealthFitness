@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.newHome
+package com.android.healthconnect.controller.home
 
 import android.content.Intent
 import android.os.Bundle
@@ -119,7 +119,7 @@ class HomeFragment : Hilt_HomeFragment() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
-        setPreferencesFromResource(R.xml.new_home_screen, rootKey)
+        setPreferencesFromResource(R.xml.home_screen, rootKey)
 
         dataAndAccessPreference.logName = NewHomePageElement.DATA_AND_ACCESS_BUTTON
         dataAndAccessPreference.setOnPreferenceClickListener {

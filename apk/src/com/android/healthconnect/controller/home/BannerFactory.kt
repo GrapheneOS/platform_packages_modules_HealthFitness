@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.newHome
+package com.android.healthconnect.controller.home
 
 import android.content.Context
 import android.content.Intent
 import android.health.connect.HealthConnectManager
 import android.provider.Settings
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.newHome.HomeViewModel.BannerData
+import com.android.healthconnect.controller.home.HomeViewModel.BannerData
 import com.android.healthconnect.controller.shared.preference.HealthBannerPreference
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter

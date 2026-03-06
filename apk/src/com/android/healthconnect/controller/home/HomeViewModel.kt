@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.newHome
+package com.android.healthconnect.controller.home
 
 import android.content.Context
 import android.content.Intent
