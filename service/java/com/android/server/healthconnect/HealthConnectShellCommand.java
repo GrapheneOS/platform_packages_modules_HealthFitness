@@ -223,8 +223,8 @@ public class HealthConnectShellCommand extends BasicShellCommandHandler {
                 new IReadRecordsResponseCallback.Stub() {
                     @Override
                     public void onResult(ReadRecordsResponseParcel response) {
-                        mCountDownLatch.countDown();
                         mRecordCount = response.getRecordsParcel().getRecords().size();
+                        mCountDownLatch.countDown();
                     }
 
                     @Override
@@ -269,8 +269,8 @@ public class HealthConnectShellCommand extends BasicShellCommandHandler {
                     @Override
                     @RequiresNoPermission
                     public void onResult(GetDeviceDataSourcesResponse response) {
-                        mCountDownLatch.countDown();
                         mDataSourceCount = response.getDeviceDataSources().size();
+                        mCountDownLatch.countDown();
                     }
 
                     @Override
