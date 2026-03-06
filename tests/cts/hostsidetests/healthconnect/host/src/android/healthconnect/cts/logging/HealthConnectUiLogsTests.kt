@@ -29,7 +29,6 @@ import android.healthfitness.ui.ElementId
 import android.healthfitness.ui.PageId
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.host.HostFlagsValueProvider
-import com.android.healthfitness.flags.Flags.newHomeScreen
 import com.android.os.StatsLog
 import com.android.os.healthfitness.ui.UiExtensionAtoms
 import com.android.tradefed.build.IBuildInfo
@@ -114,12 +113,7 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
         val data = ReportUtils.getEventMetricDataList(device, registry)
         assertThat(data.size).isAtLeast(2)
 
-        val homePageId =
-            if (newHomeScreen()) {
-                PageId.NEW_HOME_PAGE
-            } else {
-                PageId.HOME_PAGE
-            }
+        val homePageId = PageId.NEW_HOME_PAGE
         val manageDataPageId = PageId.MANAGE_DATA_PAGE
         val homePageImpression =
             data.filter {
@@ -148,26 +142,12 @@ class HealthConnectUiLogsTests : DeviceTestCase(), IBuildReceiver {
 
         // Home page impressions
         val appPermissionsImpression =
-            if (newHomeScreen()) {
-                filterImpressionLogs(data, ElementId.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON)
-            } else {
-                filterImpressionLogs(data, ElementId.APP_PERMISSIONS_BUTTON)
-            }
+            filterImpressionLogs(data, ElementId.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON)
         assertThat(appPermissionsImpression.size).isAtLeast(1)
 
-        if (newHomeScreen()) {
-            val recentAccessButtonImpression =
-                filterImpressionLogs(data, ElementId.RECENT_ACCESS_BUTTON)
-            assertThat(recentAccessButtonImpression.size).isAtLeast(1)
-        } else {
-            val recentAccessDataImpression =
-                filterImpressionLogs(data, ElementId.RECENT_ACCESS_ENTRY)
-            assertThat(recentAccessDataImpression.size).isAtLeast(1)
-
-            val seeAllRecentAccessImpression =
-                filterImpressionLogs(data, ElementId.SEE_ALL_RECENT_ACCESS_BUTTON)
-            assertThat(seeAllRecentAccessImpression.size).isAtLeast(1)
-        }
+        val recentAccessButtonImpression =
+            filterImpressionLogs(data, ElementId.RECENT_ACCESS_BUTTON)
+        assertThat(recentAccessButtonImpression.size).isAtLeast(1)
 
         val toolbarImpression = filterImpressionLogs(data, ElementId.TOOLBAR_SETTINGS_BUTTON)
         assertThat(toolbarImpression.size).isAtLeast(1)

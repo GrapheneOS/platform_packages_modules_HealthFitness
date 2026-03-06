@@ -42,7 +42,6 @@ import androidx.test.uiautomator.Until
 import com.android.compatibility.common.util.SystemUtil
 import com.android.compatibility.common.util.UiAutomatorUtils2
 import com.android.compatibility.common.util.UiDumpUtils
-import com.android.healthfitness.flags.Flags.newHomeScreen
 import java.time.Duration
 import java.time.Instant
 import java.util.concurrent.TimeoutException
@@ -104,15 +103,7 @@ object UiTestUtils {
     }
 
     fun waitHomeScreenDisplayed(waitTimeout: Duration = WAIT_TIMEOUT) {
-        waitDisplayed(
-            selector =
-                if (newHomeScreen()) {
-                    By.text("Your health apps")
-                } else {
-                    By.text("Recent access")
-                },
-            waitTimeout = waitTimeout,
-        )
+        waitDisplayed(selector = By.text("Your health apps"), waitTimeout = waitTimeout)
     }
 
     fun waitDataActivityDisplayed(waitTimeout: Duration = WAIT_TIMEOUT) {
@@ -185,11 +176,7 @@ object UiTestUtils {
     }
 
     fun navigateToAppPermissions() {
-        if (newHomeScreen()) {
-            navigateToNewPage("See more health apps")
-        } else {
-            navigateToNewPage("App permissions")
-        }
+        navigateToNewPage("See more health apps")
         scrollDownToAndFindText("Allowed access")
     }
 
@@ -199,11 +186,7 @@ object UiTestUtils {
     }
 
     fun navigateToMedicalRecords() {
-        if (newHomeScreen()) {
-            navigateToNewPage("Data and access")
-        } else {
-            navigateToNewPage("Browse health records")
-        }
+        navigateToNewPage("Data and access")
     }
 
     /**
