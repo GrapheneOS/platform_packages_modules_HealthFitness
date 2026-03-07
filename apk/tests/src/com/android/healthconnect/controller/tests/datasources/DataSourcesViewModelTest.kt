@@ -93,7 +93,6 @@ class DataSourcesViewModelTest {
         appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
-        whenever(healthConnectManager.currentDeviceId).thenReturn(TEST_PHONE_SPN)
         doAnswer { invocation ->
                 val callback =
                     invocation.arguments[1] as OutcomeReceiver<List<DeviceDataSourceInfo>, *>

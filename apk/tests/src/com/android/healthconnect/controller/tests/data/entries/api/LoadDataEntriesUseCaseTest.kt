@@ -35,6 +35,8 @@ import com.android.healthconnect.controller.data.formatters.shared.HealthDataEnt
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.devices.api.FakeGetCurrentDeviceIdUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.forDataType
 import com.android.healthconnect.controller.tests.utils.getStepsRecord
 import com.android.healthconnect.controller.tests.utils.setLocale
@@ -65,6 +67,7 @@ import org.mockito.kotlin.argThat
 class LoadDataEntriesUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
     @Inject lateinit var healthDataEntryFormatter: HealthDataEntryFormatter
     @Inject lateinit var menstruationPeriodFormatter: MenstruationPeriodFormatter
     @Inject lateinit var dataSourceReader: MedicalDataSourceReader
@@ -74,6 +77,8 @@ class LoadDataEntriesUseCaseTest {
     private lateinit var context: Context
     private lateinit var loadEntriesHelper: LoadEntriesHelper
     private lateinit var loadDataEntriesUseCase: LoadDataEntriesUseCase
+    private val fakeGetCurrentDeviceIdUseCase =
+        fakeUseCaseRule.watch(FakeGetCurrentDeviceIdUseCase())
 
     @Before
     fun setup() {
@@ -88,6 +93,7 @@ class LoadDataEntriesUseCaseTest {
                 menstruationPeriodFormatter,
                 healthConnectManager,
                 dataSourceReader,
+                fakeGetCurrentDeviceIdUseCase,
             )
         loadDataEntriesUseCase = LoadDataEntriesUseCase(Dispatchers.Main, loadEntriesHelper)
     }

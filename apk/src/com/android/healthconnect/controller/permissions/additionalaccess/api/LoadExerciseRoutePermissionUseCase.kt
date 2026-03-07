@@ -1,19 +1,17 @@
 /*
- * Copyright 2024 The Android Open Source Project
+ * Copyright (C) 2026 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- *
  */
 
 package com.android.healthconnect.controller.permissions.additionalaccess.api
@@ -25,16 +23,25 @@ import com.android.healthconnect.controller.permissions.api.GetHealthPermissions
 import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
 
+/**
+ * Use case that determines the UI state for the [READ_EXERCISE_ROUTES] permission.
+ *
+ * This class evaluates the current status of [READ_EXERCISE] and [READ_EXERCISE_ROUTES] based on
+ * the app's declared permissions, grant status, and system flags. Each permission can result in one
+ * of four states: [PermissionUiState.NOT_DECLARED], [PermissionUiState.ALWAYS_ALLOW],
+ * [PermissionUiState.ASK_EVERY_TIME], or [PermissionUiState.NEVER_ALLOW].
+ */
 @Singleton
 class LoadExerciseRoutePermissionUseCase
 @Inject
 constructor(
-    private val loadDeclaredHealthPermissionUseCase: LoadDeclaredHealthPermissionUseCase,
+    private val loadDeclaredHealthPermissionUseCase: ILoadDeclaredHealthPermissionUseCase,
     private val getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase,
     private val getGrantedHealthPermissionsUseCase: IGetGrantedHealthPermissionsUseCase,
     @IoDispatcher dispatcher: CoroutineDispatcher,
@@ -42,7 +49,11 @@ constructor(
 
     override suspend fun execute(input: String): ExerciseRouteState {
         val grantedPermissions = getGrantedHealthPermissionsUseCase(input)
-        val appPermissions = loadDeclaredHealthPermissionUseCase(input)
+        val appPermissions =
+            when (val result = loadDeclaredHealthPermissionUseCase(input)) {
+                is UseCaseResults.Success -> result.data
+                is UseCaseResults.Failed -> throw result.exception
+            }
         val permissionFlags =
             getHealthPermissionsFlagsUseCase(
                 input,
@@ -102,8 +113,4 @@ enum class PermissionUiState {
     NEVER_ALLOW,
 }
 
-interface ILoadExerciseRoutePermissionUseCase {
-    suspend operator fun invoke(input: String): UseCaseResults<ExerciseRouteState>
-
-    suspend fun execute(input: String): ExerciseRouteState
-}
+interface ILoadExerciseRoutePermissionUseCase : UseCaseContract<String, ExerciseRouteState>

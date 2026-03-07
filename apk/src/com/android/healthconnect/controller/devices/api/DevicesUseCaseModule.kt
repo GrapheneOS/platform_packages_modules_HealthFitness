@@ -29,25 +29,29 @@ interface DevicesUseCaseModule {
 
     @Binds
     @Singleton
-    abstract fun provideLoadDeviceDataSourcesUseCase(
+    abstract fun bindLoadDeviceDataSourcesUseCase(
         useCase: LoadDeviceDataSourcesUseCase
     ): ILoadDeviceDataSourcesUseCase
 
     @Binds
     @Singleton
-    abstract fun provideSetTrackingEnabledUseCase(
+    abstract fun bindSetTrackingEnabledUseCase(
         useCase: SetTrackingEnabledUseCase
     ): ISetTrackingEnabledUseCase
 
     @Binds
     @Singleton
-    abstract fun provideLoadSensorListUseCase(
-        useCase: LoadSensorListUseCase
-    ): ILoadSensorListUseCase
+    abstract fun bindLoadSensorListUseCase(useCase: LoadSensorListUseCase): ILoadSensorListUseCase
 
     @Binds
     @Singleton
-    abstract fun provideGetDeviceDataSourcesInfoUseCase(
+    abstract fun bindGetDeviceDataSourcesInfoUseCase(
         useCase: GetDeviceDataSourcesInfoUseCase
     ): IGetDeviceDataSourcesInfoUseCase
+
+    @Binds
+    @Singleton
+    abstract fun bindGetCurrentDeviceIdUseCase(
+        useCase: GetCurrentDeviceIdUseCase
+    ): IGetCurrentDeviceIdUseCase
 }

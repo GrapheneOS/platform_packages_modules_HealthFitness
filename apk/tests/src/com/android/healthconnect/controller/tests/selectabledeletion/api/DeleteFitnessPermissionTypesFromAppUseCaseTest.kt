@@ -33,6 +33,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteFitnessPermissionTypesFromAppUseCase
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
+import com.android.healthconnect.controller.tests.devices.api.FakeGetCurrentDeviceIdUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.TEST_WATCH_SPN
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
@@ -58,16 +60,24 @@ class DeleteFitnessPermissionTypesFromAppUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val setFlagsRule = SetFlagsRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
     private lateinit var useCase: DeleteFitnessPermissionTypesFromAppUseCase
     var manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
+    private val fakeGetCurrentDeviceIdUseCase =
+        fakeUseCaseRule.watch(FakeGetCurrentDeviceIdUseCase())
 
     @Captor lateinit var filtersCaptor: ArgumentCaptor<DeleteUsingFiltersRequest>
 
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        useCase = DeleteFitnessPermissionTypesFromAppUseCase(manager, Dispatchers.Main)
+        useCase =
+            DeleteFitnessPermissionTypesFromAppUseCase(
+                manager,
+                fakeGetCurrentDeviceIdUseCase,
+                Dispatchers.Main,
+            )
     }
 
     @Test
@@ -110,7 +120,7 @@ class DeleteFitnessPermissionTypesFromAppUseCaseTest {
     @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun invoke_ddpFlagsOn_withCurrentDevicePackage_addsAndroidPackageToFilter() = runTest {
         val currentDeviceId = "test_device_id"
-        Mockito.`when`(manager.currentDeviceId).thenReturn(currentDeviceId)
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId(currentDeviceId)
         doAnswer(prepareAnswer())
             .`when`(manager)
             .deleteRecords(any<DeleteUsingFiltersRequest>(), any(), any())
@@ -133,7 +143,7 @@ class DeleteFitnessPermissionTypesFromAppUseCaseTest {
     @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun invoke_ddpFlagsOff_withCurrentDevicePackage_doesNotAddAndroidPackage() = runTest {
         val currentDeviceId = "test_device_id"
-        Mockito.`when`(manager.currentDeviceId).thenReturn(currentDeviceId)
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId(currentDeviceId)
         doAnswer(prepareAnswer())
             .`when`(manager)
             .deleteRecords(any<DeleteUsingFiltersRequest>(), any(), any())
@@ -153,7 +163,7 @@ class DeleteFitnessPermissionTypesFromAppUseCaseTest {
     @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun invoke_ddpFlagsOn_withRandomDevice_doesNotAddAndroidPackageToFilter() = runTest {
         val deviceId = TEST_WATCH_SPN
-        Mockito.`when`(manager.currentDeviceId).thenReturn("other_device_id")
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId("other_device_id")
         doAnswer(prepareAnswer())
             .`when`(manager)
             .deleteRecords(any<DeleteUsingFiltersRequest>(), any(), any())
@@ -173,7 +183,7 @@ class DeleteFitnessPermissionTypesFromAppUseCaseTest {
     @EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun invoke_ddpFlagsOn_withAndroid_addsCurrentDeviceToFilter() = runTest {
         val currentDeviceId = "test_device_id"
-        Mockito.`when`(manager.currentDeviceId).thenReturn(currentDeviceId)
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId(currentDeviceId)
         doAnswer(prepareAnswer())
             .`when`(manager)
             .deleteRecords(any<DeleteUsingFiltersRequest>(), any(), any())
@@ -196,7 +206,7 @@ class DeleteFitnessPermissionTypesFromAppUseCaseTest {
     @DisableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
     fun invoke_ddpFlagsOff_withAndroid_doesNotAddCurrentDevice() = runTest {
         val currentDeviceId = "test_device_id"
-        Mockito.`when`(manager.currentDeviceId).thenReturn(currentDeviceId)
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId(currentDeviceId)
         doAnswer(prepareAnswer())
             .`when`(manager)
             .deleteRecords(any<DeleteUsingFiltersRequest>(), any(), any())

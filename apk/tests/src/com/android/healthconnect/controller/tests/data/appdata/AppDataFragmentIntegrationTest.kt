@@ -60,6 +60,8 @@ import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMap
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.children
 import com.android.healthconnect.controller.shared.preference.EmptyPreferenceCategory
+import com.android.healthconnect.controller.tests.devices.api.FakeGetCurrentDeviceIdUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
@@ -91,7 +93,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
-import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.stub
@@ -106,6 +107,7 @@ class AppDataFragmentIntegrationTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
     private val testDispatcher = UnconfinedTestDispatcher()
 
     @BindValue val manager: HealthConnectManager = mock()
@@ -114,9 +116,15 @@ class AppDataFragmentIntegrationTest {
     @BindValue lateinit var appInfoReader: AppInfoReader
     private lateinit var navHostController: TestNavHostController
     private lateinit var context: Context
+    private val fakeGetCurrentDeviceIdUseCase =
+        fakeUseCaseRule.watch(FakeGetCurrentDeviceIdUseCase())
 
     private val getAppFitnessPermissionTypesWithDataUseCase =
-        GetAppFitnessPermissionTypesUseCase(manager, Dispatchers.Main)
+        GetAppFitnessPermissionTypesUseCase(
+            manager,
+            fakeGetCurrentDeviceIdUseCase,
+            Dispatchers.Main,
+        )
     private val getAppMedicalPermissionTypesWithDataUseCase =
         GetAppMedicalPermissionTypesUseCase(manager, Dispatchers.Main)
 
@@ -134,10 +142,10 @@ class AppDataFragmentIntegrationTest {
                 getAppMedicalPermissionTypesWithDataUseCase,
             )
         manager.stub {
-            on { currentDeviceId } doReturn "test_device_id"
             on { readRecords<Record>(any(), any(), any()) } doReturnResult
                 Result.success(ReadRecordsResponse<Record>(emptyList(), -1))
         }
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId("test_device_id")
     }
 
     @After

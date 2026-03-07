@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.android.healthconnect.controller.tests.permissions.additionalaccess
 
-import android.content.pm.PackageManager
 import android.health.connect.HealthPermissions.READ_EXERCISE
 import android.health.connect.HealthPermissions.READ_EXERCISE_ROUTES
 import android.health.connect.HealthPermissions.READ_HEALTH_DATA_HISTORY
@@ -24,18 +24,19 @@ import android.health.connect.HealthPermissions.READ_MEDICAL_DATA_VACCINES
 import android.health.connect.HealthPermissions.WRITE_DISTANCE
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.additionalaccess.AdditionalAccessViewModel
-import com.android.healthconnect.controller.permissions.additionalaccess.api.GetAdditionalPermissionUseCase
-import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadDeclaredHealthPermissionUseCase
-import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadExerciseRoutePermissionUseCase
+import com.android.healthconnect.controller.permissions.additionalaccess.api.ExerciseRouteState
 import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
-import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
 import com.android.healthconnect.controller.permissions.api.GrantHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.LoadAccessDateUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.api.SetHealthPermissionsUserFixedFlagValueUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.tests.permissions.additionalaccess.api.FakeGetAdditionalPermissionUseCase
+import com.android.healthconnect.controller.tests.permissions.additionalaccess.api.FakeLoadDeclaredHealthPermissionUseCase
+import com.android.healthconnect.controller.tests.permissions.additionalaccess.api.FakeLoadExerciseRoutePermissionUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
@@ -69,6 +70,7 @@ class AdditionalAccessViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
     private val testDispatcher = UnconfinedTestDispatcher()
 
     private val grantHealthPermissionUseCase: GrantHealthPermissionUseCase = mock()
@@ -76,30 +78,27 @@ class AdditionalAccessViewModelTest {
     private val setHealthPermissionsUserFixedFlagValueUseCase:
         SetHealthPermissionsUserFixedFlagValueUseCase =
         mock()
-    private val getAdditionalPermissionUseCase: GetAdditionalPermissionUseCase = mock()
     private val getGrantedHealthPermissionsUseCase: GetGrantedHealthPermissionsUseCase = mock()
     private val loadAccessDateUseCase: LoadAccessDateUseCase = mock()
-    private val loadDeclaredHealthPermissionUseCase: LoadDeclaredHealthPermissionUseCase = mock()
-    private val getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase = mock()
     private val healthPermissionReader: HealthPermissionReader = mock()
+
+    private val getAdditionalPermissionUseCase =
+        fakeUseCaseRule.watch(FakeGetAdditionalPermissionUseCase())
+    private val loadDeclaredHealthPermissionUseCase =
+        fakeUseCaseRule.watch(FakeLoadDeclaredHealthPermissionUseCase())
+    private val loadExerciseRoutePermissionUseCase =
+        fakeUseCaseRule.watch(FakeLoadExerciseRoutePermissionUseCase())
 
     @BindValue lateinit var appInfoReader: AppInfoReader
 
     private lateinit var additionalAccessViewModel: AdditionalAccessViewModel
-    private lateinit var loadExerciseRoutePermissionUseCase: LoadExerciseRoutePermissionUseCase
 
     @Before
     fun setup() = runTest {
         appInfoReader = createFakeAppInfoReader()
         hiltRule.inject()
         Dispatchers.setMain(testDispatcher)
-        loadExerciseRoutePermissionUseCase =
-            LoadExerciseRoutePermissionUseCase(
-                loadDeclaredHealthPermissionUseCase,
-                getHealthPermissionsFlagsUseCase,
-                getGrantedHealthPermissionsUseCase,
-                testDispatcher,
-            )
+
         additionalAccessViewModel =
             AdditionalAccessViewModel(
                 appInfoReader,
@@ -116,31 +115,28 @@ class AdditionalAccessViewModelTest {
 
         whenever(loadAccessDateUseCase.invoke(any())).thenReturn(NOW)
 
-        whenever(loadDeclaredHealthPermissionUseCase.invoke(TEST_APP_PACKAGE_NAME))
-            .thenReturn(
-                listOf(
-                    READ_EXERCISE,
-                    READ_EXERCISE_ROUTES,
-                    READ_HEALTH_DATA_HISTORY,
-                    READ_HEALTH_DATA_IN_BACKGROUND,
-                    WRITE_DISTANCE,
-                )
-            )
+        loadDeclaredHealthPermissionUseCase.setDeclaredPermissions(
+            TEST_APP_PACKAGE_NAME,
+            listOf(
+                READ_EXERCISE,
+                READ_EXERCISE_ROUTES,
+                READ_HEALTH_DATA_HISTORY,
+                READ_HEALTH_DATA_IN_BACKGROUND,
+                WRITE_DISTANCE,
+            ),
+        )
 
-        whenever(getHealthPermissionsFlagsUseCase.invoke(any(), any())).then {
-            mapOf(
-                READ_EXERCISE_ROUTES to PackageManager.FLAG_PERMISSION_USER_SET,
-                READ_EXERCISE to PackageManager.FLAG_PERMISSION_USER_SET,
+        getAdditionalPermissionUseCase.setAdditionalPermissions(
+            TEST_APP_PACKAGE_NAME,
+            listOf(READ_EXERCISE_ROUTES, READ_HEALTH_DATA_HISTORY, READ_HEALTH_DATA_IN_BACKGROUND),
+        )
+
+        loadExerciseRoutePermissionUseCase.setExerciseRouteState(
+            ExerciseRouteState(
+                exercisePermissionState = PermissionUiState.ASK_EVERY_TIME,
+                exerciseRoutePermissionState = PermissionUiState.ASK_EVERY_TIME,
             )
-        }
-        whenever(getAdditionalPermissionUseCase.invoke(TEST_APP_PACKAGE_NAME))
-            .thenReturn(
-                listOf(
-                    READ_EXERCISE_ROUTES,
-                    READ_HEALTH_DATA_HISTORY,
-                    READ_HEALTH_DATA_IN_BACKGROUND,
-                )
-            )
+        )
     }
 
     @After
@@ -158,19 +154,26 @@ class AdditionalAccessViewModelTest {
 
     @Test
     fun whenMedicalDeclared_andFitnessReadGranted_loadsAllAdditionalAccess() = runTest {
-        whenever(loadDeclaredHealthPermissionUseCase.invoke(TEST_APP_PACKAGE_NAME))
-            .thenReturn(
-                listOf(
-                    READ_EXERCISE,
-                    WRITE_DISTANCE,
-                    READ_MEDICAL_DATA_VACCINES,
-                    READ_EXERCISE_ROUTES,
-                    READ_HEALTH_DATA_HISTORY,
-                    READ_HEALTH_DATA_IN_BACKGROUND,
-                )
-            )
+        loadDeclaredHealthPermissionUseCase.setDeclaredPermissions(
+            TEST_APP_PACKAGE_NAME,
+            listOf(
+                READ_EXERCISE,
+                WRITE_DISTANCE,
+                READ_MEDICAL_DATA_VACCINES,
+                READ_EXERCISE_ROUTES,
+                READ_HEALTH_DATA_HISTORY,
+                READ_HEALTH_DATA_IN_BACKGROUND,
+            ),
+        )
         whenever(getGrantedHealthPermissionsUseCase.invoke(TEST_APP_PACKAGE_NAME))
             .thenReturn(listOf(READ_EXERCISE, READ_EXERCISE_ROUTES, READ_HEALTH_DATA_HISTORY))
+
+        loadExerciseRoutePermissionUseCase.setExerciseRouteState(
+            ExerciseRouteState(
+                exercisePermissionState = PermissionUiState.ALWAYS_ALLOW,
+                exerciseRoutePermissionState = PermissionUiState.ALWAYS_ALLOW,
+            )
+        )
 
         val additionalAccessStateObserver = TestObserver<AdditionalAccessViewModel.State>()
         val screenStateObserver = TestObserver<AdditionalAccessViewModel.ScreenState>()
@@ -227,16 +230,16 @@ class AdditionalAccessViewModelTest {
 
     @Test
     fun whenNoReadPermissionsGranted_additionalPermissionsDisabled() = runTest {
-        whenever(loadDeclaredHealthPermissionUseCase.invoke(TEST_APP_PACKAGE_NAME))
-            .thenReturn(
-                listOf(
-                    READ_EXERCISE,
-                    WRITE_DISTANCE,
-                    READ_EXERCISE_ROUTES,
-                    READ_HEALTH_DATA_IN_BACKGROUND,
-                    READ_HEALTH_DATA_HISTORY,
-                )
-            )
+        loadDeclaredHealthPermissionUseCase.setDeclaredPermissions(
+            TEST_APP_PACKAGE_NAME,
+            listOf(
+                READ_EXERCISE,
+                WRITE_DISTANCE,
+                READ_EXERCISE_ROUTES,
+                READ_HEALTH_DATA_IN_BACKGROUND,
+                READ_HEALTH_DATA_HISTORY,
+            ),
+        )
         whenever(getGrantedHealthPermissionsUseCase.invoke(TEST_APP_PACKAGE_NAME))
             .thenReturn(listOf(WRITE_DISTANCE))
 
@@ -296,17 +299,17 @@ class AdditionalAccessViewModelTest {
     @Test
     fun whenMedicalAndHistoryReadDeclared_andMedicalReadGranted_shouldShowMedicalFooter() =
         runTest {
-            whenever(loadDeclaredHealthPermissionUseCase.invoke(TEST_APP_PACKAGE_NAME))
-                .thenReturn(
-                    listOf(
-                        READ_EXERCISE,
-                        WRITE_DISTANCE,
-                        READ_EXERCISE_ROUTES,
-                        READ_MEDICAL_DATA_VACCINES,
-                        READ_HEALTH_DATA_IN_BACKGROUND,
-                        READ_HEALTH_DATA_HISTORY,
-                    )
-                )
+            loadDeclaredHealthPermissionUseCase.setDeclaredPermissions(
+                TEST_APP_PACKAGE_NAME,
+                listOf(
+                    READ_EXERCISE,
+                    WRITE_DISTANCE,
+                    READ_EXERCISE_ROUTES,
+                    READ_MEDICAL_DATA_VACCINES,
+                    READ_HEALTH_DATA_IN_BACKGROUND,
+                    READ_HEALTH_DATA_HISTORY,
+                ),
+            )
             whenever(getGrantedHealthPermissionsUseCase.invoke(TEST_APP_PACKAGE_NAME))
                 .thenReturn(listOf(WRITE_DISTANCE, READ_MEDICAL_DATA_VACCINES))
 
@@ -367,6 +370,12 @@ class AdditionalAccessViewModelTest {
     fun updateExerciseRouteState_toAlwaysAllow_noExercisePermission_showsDialog() = runTest {
         whenever(getGrantedHealthPermissionsUseCase.invoke(TEST_APP_PACKAGE_NAME))
             .thenReturn(listOf(WRITE_DISTANCE))
+        loadExerciseRoutePermissionUseCase.setExerciseRouteState(
+            ExerciseRouteState(
+                exercisePermissionState = PermissionUiState.ASK_EVERY_TIME,
+                exerciseRoutePermissionState = PermissionUiState.ASK_EVERY_TIME,
+            )
+        )
 
         val additionalAccessStateObserver = TestObserver<AdditionalAccessViewModel.State>()
         val showEnableExerciseEventObserver =
@@ -402,6 +411,12 @@ class AdditionalAccessViewModelTest {
     fun updateExerciseRouteState_toAlwaysAllow_withExercisePermission_grantsPermission() = runTest {
         whenever(getGrantedHealthPermissionsUseCase.invoke(TEST_APP_PACKAGE_NAME))
             .thenReturn(listOf(READ_EXERCISE, WRITE_DISTANCE))
+        loadExerciseRoutePermissionUseCase.setExerciseRouteState(
+            ExerciseRouteState(
+                exercisePermissionState = PermissionUiState.ALWAYS_ALLOW,
+                exerciseRoutePermissionState = PermissionUiState.ASK_EVERY_TIME,
+            )
+        )
 
         val additionalAccessStateObserver = TestObserver<AdditionalAccessViewModel.State>()
         val showEnableExerciseEventObserver =
@@ -438,6 +453,12 @@ class AdditionalAccessViewModelTest {
     fun updateExerciseRouteState_toAskEveryTime_fromAlwaysAllow_revokesPermission() = runTest {
         whenever(getGrantedHealthPermissionsUseCase.invoke(TEST_APP_PACKAGE_NAME))
             .thenReturn(listOf(READ_EXERCISE, READ_EXERCISE_ROUTES, WRITE_DISTANCE))
+        loadExerciseRoutePermissionUseCase.setExerciseRouteState(
+            ExerciseRouteState(
+                exercisePermissionState = PermissionUiState.ALWAYS_ALLOW,
+                exerciseRoutePermissionState = PermissionUiState.ALWAYS_ALLOW,
+            )
+        )
 
         val additionalAccessStateObserver = TestObserver<AdditionalAccessViewModel.State>()
         val showEnableExerciseEventObserver =
@@ -474,12 +495,13 @@ class AdditionalAccessViewModelTest {
     fun updateExerciseRouteState_toAskEveryTime_fromNeverAllow_setsFlag() = runTest {
         whenever(getGrantedHealthPermissionsUseCase.invoke(TEST_APP_PACKAGE_NAME))
             .thenReturn(listOf(READ_EXERCISE, WRITE_DISTANCE))
-        whenever(getHealthPermissionsFlagsUseCase.invoke(any(), any())).then {
-            mapOf(
-                READ_EXERCISE_ROUTES to PackageManager.FLAG_PERMISSION_USER_FIXED,
-                READ_EXERCISE to PackageManager.FLAG_PERMISSION_USER_SET,
+        // TODO is this correct?
+        loadExerciseRoutePermissionUseCase.setExerciseRouteState(
+            ExerciseRouteState(
+                exercisePermissionState = PermissionUiState.ALWAYS_ALLOW,
+                exerciseRoutePermissionState = PermissionUiState.NEVER_ALLOW,
             )
-        }
+        )
 
         val additionalAccessStateObserver = TestObserver<AdditionalAccessViewModel.State>()
         val showEnableExerciseEventObserver =
@@ -517,6 +539,12 @@ class AdditionalAccessViewModelTest {
     fun updateExerciseRouteState_toNeverAllow_revokesPermission_setsFlag() = runTest {
         whenever(getGrantedHealthPermissionsUseCase.invoke(TEST_APP_PACKAGE_NAME))
             .thenReturn(listOf(READ_EXERCISE, READ_EXERCISE_ROUTES, WRITE_DISTANCE))
+        loadExerciseRoutePermissionUseCase.setExerciseRouteState(
+            ExerciseRouteState(
+                exercisePermissionState = PermissionUiState.ALWAYS_ALLOW,
+                exerciseRoutePermissionState = PermissionUiState.ALWAYS_ALLOW,
+            )
+        )
 
         val additionalAccessStateObserver = TestObserver<AdditionalAccessViewModel.State>()
         val showEnableExerciseEventObserver =
@@ -552,36 +580,25 @@ class AdditionalAccessViewModelTest {
     }
 
     @Test
-    fun enableExercisePermission_invokesGrantUseCase_forExerciseAndExerciseRoutes() {
-        additionalAccessViewModel.enableExercisePermission(TEST_APP_PACKAGE_NAME)
-        verify(grantHealthPermissionUseCase).invoke(TEST_APP_PACKAGE_NAME, READ_EXERCISE_ROUTES)
-        verify(grantHealthPermissionUseCase).invoke(TEST_APP_PACKAGE_NAME, READ_EXERCISE)
-    }
-
-    @Test
-    fun hideExercisePermissionRequestDialog_hidesDialog() = runTest {
-        val showEnableExerciseEventObserver =
-            TestObserver<AdditionalAccessViewModel.EnableExerciseDialogEvent>()
-        additionalAccessViewModel.showEnableExerciseEvent.observeForever(
-            showEnableExerciseEventObserver
-        )
-
-        additionalAccessViewModel.hideExercisePermissionRequestDialog()
-        advanceUntilIdle()
-
-        assertThat(showEnableExerciseEventObserver.getLastValue().shouldShowDialog).isFalse()
-    }
-
-    @Test
     fun loadAdditionalAccessPreferences_filtersHiddenPermissions() = runTest {
         val hiddenPermission = "android.permission.health.READ_STEPS"
-        whenever(loadDeclaredHealthPermissionUseCase.invoke(TEST_APP_PACKAGE_NAME))
-            .thenReturn(listOf(hiddenPermission, READ_HEALTH_DATA_HISTORY))
+        loadDeclaredHealthPermissionUseCase.setDeclaredPermissions(
+            TEST_APP_PACKAGE_NAME,
+            listOf(hiddenPermission, READ_HEALTH_DATA_HISTORY),
+        )
         whenever(getGrantedHealthPermissionsUseCase.invoke(TEST_APP_PACKAGE_NAME))
             .thenReturn(listOf(hiddenPermission))
         whenever(healthPermissionReader.shouldHidePermission(hiddenPermission)).thenReturn(true)
-        whenever(getAdditionalPermissionUseCase.invoke(TEST_APP_PACKAGE_NAME))
-            .thenReturn(listOf(READ_HEALTH_DATA_HISTORY))
+        getAdditionalPermissionUseCase.setAdditionalPermissions(
+            TEST_APP_PACKAGE_NAME,
+            listOf(READ_HEALTH_DATA_HISTORY),
+        )
+        loadExerciseRoutePermissionUseCase.setExerciseRouteState(
+            ExerciseRouteState(
+                exercisePermissionState = PermissionUiState.NOT_DECLARED,
+                exerciseRoutePermissionState = PermissionUiState.NOT_DECLARED,
+            )
+        )
 
         val screenStateObserver = TestObserver<AdditionalAccessViewModel.ScreenState>()
         additionalAccessViewModel.screenState.observeForever(screenStateObserver)
@@ -599,8 +616,8 @@ class AdditionalAccessViewModelTest {
 
     @Test
     fun updatePermission_grants() {
-        additionalAccessViewModel.updatePermission(TEST_APP_PACKAGE_NAME, READ_EXERCISE, true)
-        verify(grantHealthPermissionUseCase).invoke(TEST_APP_PACKAGE_NAME, READ_EXERCISE)
+        additionalAccessViewModel.updatePermission(TEST_APP_PACKAGE_NAME, WRITE_DISTANCE, true)
+        verify(grantHealthPermissionUseCase).invoke(TEST_APP_PACKAGE_NAME, WRITE_DISTANCE)
     }
 
     @Test

@@ -67,6 +67,8 @@ import android.app.UiAutomation;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.health.connect.AggregateRecordsGroupedByDurationResponse;
 import android.health.connect.AggregateRecordsGroupedByPeriodResponse;
 import android.health.connect.AggregateRecordsRequest;
@@ -1117,8 +1119,11 @@ public final class TestUtils {
     /** returns true if the current device has hardware to count steps. */
     public static boolean hasPedometer() {
         Context context = ApplicationProvider.getApplicationContext();
-        PackageManager pm = context.getPackageManager();
-        return pm.hasSystemFeature(PackageManager.FEATURE_SENSOR_STEP_COUNTER);
+        SensorManager sensorManager = context.getSystemService(SensorManager.class);
+        if (sensorManager == null) {
+            return false;
+        }
+        return sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER) != null;
     }
 
     /** Gets the priority list after getting the MANAGE_HEALTH_DATA permission. */

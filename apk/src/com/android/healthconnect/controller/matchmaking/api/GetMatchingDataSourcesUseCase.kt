@@ -30,6 +30,7 @@ import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.utils.findSystemInfo
 import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import com.android.healthfitness.flags.Flags.deviceDataProvidersUiMatchmakingScreen
 import java.util.concurrent.Executor
@@ -104,7 +105,12 @@ constructor(
                     )
             ) {
                 is UseCaseResults.Success -> {
-                    matchingDevices = deviceResult.data.toList()
+                    matchingDevices =
+                        deviceResult.data
+                            // TODO(b/469717403): Device how to handle native tracking properly
+                            // Filter out devices advertised by the system
+                            .filterNot { it.deviceDataSourceInfo.findSystemInfo() != null }
+                            .toList()
                 }
                 is UseCaseResults.Failed -> {
                     throw deviceResult.exception

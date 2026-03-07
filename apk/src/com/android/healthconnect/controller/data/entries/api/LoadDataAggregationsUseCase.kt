@@ -39,6 +39,7 @@ import com.android.healthconnect.controller.data.formatters.MindfulnessSessionFo
 import com.android.healthconnect.controller.data.formatters.SleepSessionFormatter
 import com.android.healthconnect.controller.data.formatters.StepsFormatter
 import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
+import com.android.healthconnect.controller.devices.api.IGetCurrentDeviceIdUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.DISTANCE
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType.MINDFULNESS
@@ -70,6 +71,7 @@ constructor(
     private val mindfulnessSessionFormatter: MindfulnessSessionFormatter,
     private val healthConnectManager: HealthConnectManager,
     private val appInfoReader: AppInfoReader,
+    private val getCurrentDeviceIdUseCase: IGetCurrentDeviceIdUseCase,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) :
     BaseUseCase<LoadAggregationInput, FormattedAggregation>(dispatcher),
@@ -158,15 +160,15 @@ constructor(
         if (packageName != null) {
             request.addDataOriginsFilter(DataOrigin.Builder().setPackageName(packageName).build())
         }
-        if (deviceDataProvidersApi() && packageName == healthConnectManager.currentDeviceId) {
+        if (deviceDataProvidersApi() && getCurrentDeviceIdUseCase.isCurrentDevice(packageName)) {
             request.addDataOriginsFilter(
                 DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build()
             )
         }
         if (deviceDataProvidersApi() && packageName == DEVICE_DATA_PROVIDER_PACKAGE) {
-            request.addDataOriginsFilter(
-                DataOrigin.Builder().setPackageName(healthConnectManager.currentDeviceId).build()
-            )
+            getCurrentDeviceIdUseCase.getOrNull()?.let {
+                request.addDataOriginsFilter(DataOrigin.Builder().setPackageName(it).build())
+            }
         }
 
         val response =
@@ -246,7 +248,7 @@ constructor(
 
         val shouldFilterOutLegacyDevice =
             deviceDataProvidersApi() &&
-                apps.any { it.packageName == healthConnectManager.currentDeviceId }
+                apps.any { getCurrentDeviceIdUseCase.isCurrentDevice(it.packageName) }
 
         val appsToInclude =
             if (shouldFilterOutLegacyDevice) {

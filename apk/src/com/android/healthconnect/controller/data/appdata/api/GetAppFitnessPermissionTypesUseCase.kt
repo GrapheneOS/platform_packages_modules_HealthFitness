@@ -23,11 +23,13 @@ import android.health.connect.datatypes.Record
 import androidx.core.os.asOutcomeReceiver
 import com.android.healthconnect.controller.data.api.PermissionTypesPerCategory
 import com.android.healthconnect.controller.data.shared.getPermissionTypesPerCategory
+import com.android.healthconnect.controller.devices.api.IGetCurrentDeviceIdUseCase
 import com.android.healthconnect.controller.shared.FITNESS_DATA_CATEGORIES
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import com.android.healthfitness.flags.Flags
+import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -43,6 +45,7 @@ class GetAppFitnessPermissionTypesUseCase
 @Inject
 constructor(
     private val healthConnectManager: HealthConnectManager,
+    private val getCurrentDeviceIdUseCase: IGetCurrentDeviceIdUseCase,
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) :
     BaseUseCase<String, List<PermissionTypesPerCategory>>(dispatcher),
@@ -55,14 +58,13 @@ constructor(
                     continuation.asOutcomeReceiver(),
                 )
             }
+
+        val currentDeviceId =
+            if (deviceDataProvidersApi()) getCurrentDeviceIdUseCase.getOrNull() else null
+
         val categories =
             FITNESS_DATA_CATEGORIES.map {
-                    getPermissionTypesPerCategory(
-                        it,
-                        recordTypeInfoMap,
-                        input,
-                        healthConnectManager.currentDeviceId,
-                    )
+                    getPermissionTypesPerCategory(it, recordTypeInfoMap, input, currentDeviceId)
                 }
                 .filter { it.data.isNotEmpty() }
                 .filter { it.category != HealthDataCategory.SYMPTOMS || Flags.symptoms() }

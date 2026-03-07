@@ -35,7 +35,9 @@ import com.android.healthconnect.controller.data.formatters.shared.HealthDataEnt
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.devices.api.FakeGetCurrentDeviceIdUseCase
 import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.forDataType
@@ -67,7 +69,6 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
 import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -75,6 +76,7 @@ import org.mockito.kotlin.whenever
 class LoadLatestEntryDateUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
     @Inject lateinit var healthDataEntryFormatter: HealthDataEntryFormatter
     @Inject lateinit var menstruationPeriodFormatter: MenstruationPeriodFormatter
     @Inject lateinit var dataSourceReader: MedicalDataSourceReader
@@ -83,6 +85,8 @@ class LoadLatestEntryDateUseCaseTest {
     private lateinit var context: Context
     private lateinit var loadEntriesHelper: LoadEntriesHelper
     private lateinit var loadLatestEntryDateUseCase: LoadLatestEntryDateUseCase
+    private val fakeGetCurrentDeviceIdUseCase =
+        fakeUseCaseRule.watch(FakeGetCurrentDeviceIdUseCase())
 
     @Before
     fun setup() {
@@ -96,10 +100,11 @@ class LoadLatestEntryDateUseCaseTest {
                 menstruationPeriodFormatter,
                 healthConnectManager,
                 dataSourceReader,
+                fakeGetCurrentDeviceIdUseCase,
             )
         loadLatestEntryDateUseCase = LoadLatestEntryDateUseCase(Dispatchers.Main, loadEntriesHelper)
         if (deviceDataProvidersApi()) {
-            whenever(healthConnectManager.currentDeviceId).thenReturn("deviceId")
+            fakeGetCurrentDeviceIdUseCase.updateDeviceId("deviceId")
         }
     }
 

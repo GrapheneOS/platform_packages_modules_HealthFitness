@@ -39,6 +39,7 @@ import com.android.healthconnect.controller.data.formatters.SleepSessionFormatte
 import com.android.healthconnect.controller.data.formatters.StepsFormatter
 import com.android.healthconnect.controller.data.formatters.TotalCaloriesBurnedFormatter
 import com.android.healthconnect.controller.data.formatters.medical.MedicalEntryFormatter
+import com.android.healthconnect.controller.devices.api.IGetCurrentDeviceIdUseCase
 import com.android.healthconnect.controller.exportimport.api.HealthDataExportManager
 import com.android.healthconnect.controller.exportimport.api.IUpdateExportSettingsUseCase
 import com.android.healthconnect.controller.exportimport.api.UpdateExportSettingsUseCase
@@ -48,11 +49,7 @@ import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetada
 import com.android.healthconnect.controller.onboarding.LoadFitnessPermissionAppsUseCase
 import com.android.healthconnect.controller.onboarding.api.LoadOnboardingStateUseCase
 import com.android.healthconnect.controller.onboarding.api.OnboardingState
-import com.android.healthconnect.controller.permissions.additionalaccess.api.ILoadExerciseRoutePermissionUseCase
-import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadDeclaredHealthPermissionUseCase
-import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadExerciseRoutePermissionUseCase
 import com.android.healthconnect.controller.permissions.api.GetGrantedHealthPermissionsUseCase
-import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
 import com.android.healthconnect.controller.permissions.api.HealthPermissionManager
 import com.android.healthconnect.controller.permissions.api.IGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.permissions.app.ILoadAppPermissionsStatusUseCase
@@ -151,21 +148,6 @@ class UseCaseModule {
     }
 
     @Provides
-    fun providesExerciseRoutePermissionUseCase(
-        loadDeclaredHealthPermissionUseCase: LoadDeclaredHealthPermissionUseCase,
-        getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase,
-        getGrantedHealthPermissionsUseCase: IGetGrantedHealthPermissionsUseCase,
-        @IoDispatcher dispatcher: CoroutineDispatcher,
-    ): ILoadExerciseRoutePermissionUseCase {
-        return LoadExerciseRoutePermissionUseCase(
-            loadDeclaredHealthPermissionUseCase,
-            getHealthPermissionsFlagsUseCase,
-            getGrantedHealthPermissionsUseCase,
-            dispatcher,
-        )
-    }
-
-    @Provides
     fun providesLoadDataAggregationsUseCase(
         @IoDispatcher dispatcher: CoroutineDispatcher,
         stepsFormatter: StepsFormatter,
@@ -176,6 +158,7 @@ class UseCaseModule {
         healthConnectManager: HealthConnectManager,
         appInfoReader: AppInfoReader,
         loadEntriesHelper: LoadEntriesHelper,
+        getCurrentDeviceIdUseCase: IGetCurrentDeviceIdUseCase,
     ): ILoadDataAggregationsUseCase {
         return LoadDataAggregationsUseCase(
             loadEntriesHelper,
@@ -186,6 +169,7 @@ class UseCaseModule {
             mindfulnessSessionFormatter,
             healthConnectManager,
             appInfoReader,
+            getCurrentDeviceIdUseCase,
             dispatcher,
         )
     }

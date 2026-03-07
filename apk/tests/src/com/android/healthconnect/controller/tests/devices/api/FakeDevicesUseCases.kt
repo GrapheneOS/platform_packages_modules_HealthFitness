@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.tests.devices.api
 import android.hardware.Sensor
 import android.health.connect.DeviceDataSourceInfo
 import com.android.healthconnect.controller.devices.DeviceDataSource
+import com.android.healthconnect.controller.devices.api.IGetCurrentDeviceIdUseCase
 import com.android.healthconnect.controller.devices.api.ILoadDeviceDataSourcesUseCase
 import com.android.healthconnect.controller.devices.api.ILoadSensorListUseCase
 import com.android.healthconnect.controller.devices.api.ISetTrackingEnabledUseCase
@@ -94,5 +95,31 @@ class FakeGetDeviceDataSourcesInfoUseCase :
     override fun reset() {
         super.reset()
         deviceSources = emptySet()
+    }
+}
+
+class FakeGetCurrentDeviceIdUseCase :
+    FakeUseCase<Unit, String>(dispatcher = Dispatchers.Unconfined), IGetCurrentDeviceIdUseCase {
+    private var deviceId: String = "test_device_id"
+
+    fun updateDeviceId(id: String) {
+        deviceId = id
+    }
+
+    override suspend fun successValue(input: Unit): String {
+        return deviceId
+    }
+
+    override fun reset() {
+        super.reset()
+        deviceId = "test_device_id"
+    }
+
+    override suspend fun isCurrentDevice(packageName: String?): Boolean {
+        return deviceId == packageName
+    }
+
+    override suspend fun getOrNull(): String? {
+        return deviceId
     }
 }

@@ -30,7 +30,6 @@ import android.health.connect.HealthPermissions.WRITE_HEIGHT
 import android.health.connect.HealthPermissions.WRITE_SPEED
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.additionalaccess.api.ExerciseRouteState
-import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadDeclaredHealthPermissionUseCase
 import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadExerciseRoutePermissionUseCase
 import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState.ALWAYS_ALLOW
 import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState.ASK_EVERY_TIME
@@ -38,7 +37,9 @@ import com.android.healthconnect.controller.permissions.additionalaccess.api.Per
 import com.android.healthconnect.controller.permissions.additionalaccess.api.PermissionUiState.NOT_DECLARED
 import com.android.healthconnect.controller.permissions.api.GetHealthPermissionsFlagsUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.di.DEFAULT_USE_CASE_EXCEPTION
 import com.android.healthconnect.controller.tests.utils.di.FakeGetGrantedHealthPermissionsUseCase
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -50,7 +51,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
-import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -60,15 +60,17 @@ import org.mockito.kotlin.whenever
 class LoadExerciseRoutePermissionUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
-    private val loadDeclaredHealthPermissionUseCase: LoadDeclaredHealthPermissionUseCase = mock()
+    private val loadDeclaredHealthPermissionUseCase =
+        fakeUseCaseRule.watch(FakeLoadDeclaredHealthPermissionUseCase())
     private val getHealthPermissionsFlagsUseCase: GetHealthPermissionsFlagsUseCase = mock()
     private val getGrantedHealthPermissionsUseCase = FakeGetGrantedHealthPermissionsUseCase()
 
     private lateinit var useCase: LoadExerciseRoutePermissionUseCase
 
     @Before
-    fun setup() {
+    fun setup() = runTest {
         hiltRule.inject()
         useCase =
             LoadExerciseRoutePermissionUseCase(
@@ -78,9 +80,10 @@ class LoadExerciseRoutePermissionUseCaseTest {
                 Dispatchers.Main,
             )
         getGrantedHealthPermissionsUseCase.updateData(TEST_APP_PACKAGE_NAME, emptyList())
-        whenever(loadDeclaredHealthPermissionUseCase.invoke(eq(TEST_APP_PACKAGE_NAME))).then {
-            listOf(READ_EXERCISE_ROUTES, READ_EXERCISE)
-        }
+        loadDeclaredHealthPermissionUseCase.setDeclaredPermissions(
+            TEST_APP_PACKAGE_NAME,
+            listOf(READ_EXERCISE_ROUTES, READ_EXERCISE),
+        )
         whenever(getHealthPermissionsFlagsUseCase.invoke(any(), any())).then {
             mapOf(
                 READ_EXERCISE_ROUTES to FLAG_PERMISSION_USER_SET,
@@ -108,10 +111,6 @@ class LoadExerciseRoutePermissionUseCaseTest {
 
     @Test
     fun execute_exerciseRoutePermissionDeclared_returnDeclaredState() = runTest {
-        whenever(loadDeclaredHealthPermissionUseCase.invoke(eq(TEST_APP_PACKAGE_NAME))).then {
-            listOf(READ_EXERCISE_ROUTES, READ_EXERCISE)
-        }
-
         val state = useCase.invoke(TEST_APP_PACKAGE_NAME)
 
         val expected =
@@ -172,9 +171,10 @@ class LoadExerciseRoutePermissionUseCaseTest {
 
     @Test
     fun execute_onlyReadExerciseDeclared_routePermissionNotDeclared() = runTest {
-        whenever(loadDeclaredHealthPermissionUseCase.invoke(TEST_APP_PACKAGE_NAME)).then {
-            listOf(READ_EXERCISE)
-        }
+        loadDeclaredHealthPermissionUseCase.setDeclaredPermissions(
+            TEST_APP_PACKAGE_NAME,
+            listOf(READ_EXERCISE),
+        )
 
         val state = useCase.invoke(TEST_APP_PACKAGE_NAME)
 
@@ -190,9 +190,10 @@ class LoadExerciseRoutePermissionUseCaseTest {
 
     @Test
     fun execute_onlyRoutePermissionDeclared_exercisePermissionNotDeclared() = runTest {
-        whenever(loadDeclaredHealthPermissionUseCase.invoke(TEST_APP_PACKAGE_NAME)).then {
-            listOf(READ_EXERCISE_ROUTES)
-        }
+        loadDeclaredHealthPermissionUseCase.setDeclaredPermissions(
+            TEST_APP_PACKAGE_NAME,
+            listOf(READ_EXERCISE_ROUTES),
+        )
 
         val state = useCase.invoke(TEST_APP_PACKAGE_NAME)
 
@@ -208,9 +209,7 @@ class LoadExerciseRoutePermissionUseCaseTest {
 
     @Test
     fun execute_permissionsNotDeclared_returnNotDeclaredState() = runTest {
-        whenever(loadDeclaredHealthPermissionUseCase.invoke(TEST_APP_PACKAGE_NAME)).then {
-            listOf<String>()
-        }
+        loadDeclaredHealthPermissionUseCase.setDeclaredPermissions(TEST_APP_PACKAGE_NAME, listOf())
 
         val state = useCase.invoke(TEST_APP_PACKAGE_NAME)
 
@@ -225,7 +224,8 @@ class LoadExerciseRoutePermissionUseCaseTest {
 
     @Test
     fun execute_ignoresOtherPermissions() = runTest {
-        whenever(loadDeclaredHealthPermissionUseCase.invoke(TEST_APP_PACKAGE_NAME)).then {
+        loadDeclaredHealthPermissionUseCase.setDeclaredPermissions(
+            TEST_APP_PACKAGE_NAME,
             listOf(
                 READ_STEPS,
                 WRITE_DISTANCE,
@@ -235,8 +235,8 @@ class LoadExerciseRoutePermissionUseCaseTest {
                 READ_EXERCISE_ROUTES,
                 READ_BODY_FAT,
                 WRITE_HEIGHT,
-            )
-        }
+            ),
+        )
 
         val state = useCase.invoke(TEST_APP_PACKAGE_NAME)
 
@@ -251,14 +251,32 @@ class LoadExerciseRoutePermissionUseCaseTest {
     }
 
     @Test
-    fun execute_onException_returnFailedResults() = runTest {
-        val ex = IllegalStateException()
-        whenever(loadDeclaredHealthPermissionUseCase.invoke(TEST_APP_PACKAGE_NAME)).then {
-            throw ex
-        }
-
+    fun execute_onLoadDeclaredHealthPermissionsUseCaseException_returnFailedResults() = runTest {
+        loadDeclaredHealthPermissionUseCase.setForceFail(true)
         val state = useCase.invoke(TEST_APP_PACKAGE_NAME)
 
-        assertThat(state).isEqualTo(UseCaseResults.Failed(ex))
+        assertThat(state).isInstanceOf(UseCaseResults.Failed::class.java)
+        assertThat((state as UseCaseResults.Failed).exception).isEqualTo(DEFAULT_USE_CASE_EXCEPTION)
     }
+
+    @Test
+    fun execute_onGetGrantedHealthPermissionUseCaseException_returnFailedResults() = runTest {
+        getGrantedHealthPermissionsUseCase.forceFail = true
+        val state = useCase.invoke(TEST_APP_PACKAGE_NAME)
+
+        assertThat(state).isInstanceOf(UseCaseResults.Failed::class.java)
+        assertThat((state as UseCaseResults.Failed).exception).isEqualTo(DEFAULT_USE_CASE_EXCEPTION)
+    }
+
+    @Test
+    fun execute_onGetHealthPermissionFlagsUseCaseException_returnFailedResults() = runTest {
+        whenever(getHealthPermissionsFlagsUseCase.invoke(any(), any()))
+            .thenThrow(DEFAULT_USE_CASE_EXCEPTION)
+        val state = useCase.invoke(TEST_APP_PACKAGE_NAME)
+
+        assertThat(state).isInstanceOf(UseCaseResults.Failed::class.java)
+        assertThat((state as UseCaseResults.Failed).exception).isEqualTo(DEFAULT_USE_CASE_EXCEPTION)
+    }
+
+    // TODO test error from other dependencies
 }

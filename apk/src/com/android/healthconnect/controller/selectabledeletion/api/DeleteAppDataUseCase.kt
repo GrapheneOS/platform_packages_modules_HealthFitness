@@ -18,6 +18,7 @@ package com.android.healthconnect.controller.selectabledeletion.api
 import android.health.connect.DeleteUsingFiltersRequest
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.DataOrigin
+import com.android.healthconnect.controller.devices.api.IGetCurrentDeviceIdUseCase
 import com.android.healthconnect.controller.permissions.api.RevokeAllHealthPermissionsUseCase
 import com.android.healthconnect.controller.selectabledeletion.DeletionType
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
@@ -38,6 +39,7 @@ constructor(
     private val healthConnectManager: HealthConnectManager,
     private val medicalDataSourceReader: MedicalDataSourceReader,
     private val revokeAllHealthPermissionsUseCase: RevokeAllHealthPermissionsUseCase,
+    private val getCurrentDeviceIdUseCase: IGetCurrentDeviceIdUseCase,
     @IoDispatcher private val dispatcher: CoroutineDispatcher,
 ) {
     suspend fun invoke(
@@ -66,12 +68,12 @@ constructor(
         }
     }
 
-    private fun deleteUsingFilterRequest(packageName: String): DeleteUsingFiltersRequest {
+    private suspend fun deleteUsingFilterRequest(packageName: String): DeleteUsingFiltersRequest {
         val requestBuilder =
             DeleteUsingFiltersRequest.Builder()
                 .addDataOrigin(DataOrigin.Builder().setPackageName(packageName).build())
 
-        if (deviceDataProvidersApi() && packageName == healthConnectManager.currentDeviceId) {
+        if (deviceDataProvidersApi() && getCurrentDeviceIdUseCase.isCurrentDevice(packageName)) {
             requestBuilder.addDataOrigin(
                 DataOrigin.Builder().setPackageName(DEVICE_DATA_PROVIDER_PACKAGE).build()
             )

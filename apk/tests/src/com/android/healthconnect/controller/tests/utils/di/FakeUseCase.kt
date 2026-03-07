@@ -28,8 +28,7 @@ abstract class FakeUseCase<Input, Output>(
         protected set
 
     private var shouldForceFail = false
-    private var failureException: Throwable =
-        IllegalStateException(DEFAULT_USE_CASE_EXCEPTION_MESSAGE)
+    private var failureException: Throwable = DEFAULT_USE_CASE_EXCEPTION
 
     protected abstract suspend fun successValue(input: Input): Output
 
@@ -45,13 +44,10 @@ abstract class FakeUseCase<Input, Output>(
     open fun reset() {
         numberOfInvocations = 0
         shouldForceFail = false
-        failureException = IllegalStateException(DEFAULT_USE_CASE_EXCEPTION_MESSAGE)
+        failureException = DEFAULT_USE_CASE_EXCEPTION
     }
 
-    fun setForceFail(
-        forceFail: Boolean,
-        exception: Throwable = IllegalStateException(DEFAULT_USE_CASE_EXCEPTION_MESSAGE),
-    ) {
+    fun setForceFail(forceFail: Boolean, exception: Throwable = DEFAULT_USE_CASE_EXCEPTION) {
         this.shouldForceFail = forceFail
         if (forceFail) {
             this.failureException = exception
@@ -60,3 +56,4 @@ abstract class FakeUseCase<Input, Output>(
 }
 
 const val DEFAULT_USE_CASE_EXCEPTION_MESSAGE = "Forced failure in FakeUseCase"
+val DEFAULT_USE_CASE_EXCEPTION = IllegalStateException(DEFAULT_USE_CASE_EXCEPTION_MESSAGE)

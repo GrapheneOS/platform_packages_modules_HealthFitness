@@ -1,40 +1,45 @@
 /*
- * Copyright 2024 The Android Open Source Project
+ * Copyright (C) 2026 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      https://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- *
- *
  */
 
 package com.android.healthconnect.controller.tests.permissions.additionalaccess.api
 
+import android.health.connect.HealthPermissions
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.permissions.additionalaccess.api.LoadDeclaredHealthPermissionUseCase
+import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.shared.HealthPermissionReader
+import com.android.healthconnect.controller.shared.usecase.UseCaseResults
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import javax.inject.Inject
+import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.mock
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.doThrow
 import org.mockito.kotlin.eq
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.stub
 import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -45,20 +50,40 @@ class LoadDeclaredHealthPermissionUseCaseTest {
 
     @Inject lateinit var useCase: LoadDeclaredHealthPermissionUseCase
 
-    @BindValue val healthPermissionReader = mock(HealthPermissionReader::class.java)
+    @BindValue val healthPermissionReader: HealthPermissionReader = mock()
 
     @Before
     fun setup() {
         hiltRule.inject()
-        whenever(healthPermissionReader.getDeclaredHealthPermissions(TEST_APP_PACKAGE_NAME)).then {
-            emptyList<String>()
-        }
     }
 
     @Test
-    fun execute_callsGetValidHealthPermissions() {
-        useCase.invoke(TEST_APP_PACKAGE_NAME)
+    fun invoke_returnsValidHealthPermissions() = runTest {
+        val permissions =
+            listOf(
+                HealthPermission.fromPermissionString(HealthPermissions.READ_EXERCISE),
+                HealthPermission.fromPermissionString(HealthPermissions.WRITE_HEIGHT),
+            )
 
+        healthPermissionReader.stub {
+            on { getValidHealthPermissions(TEST_APP_PACKAGE_NAME) } doReturn permissions
+        }
+        val result = useCase.invoke(TEST_APP_PACKAGE_NAME)
         verify(healthPermissionReader).getValidHealthPermissions(eq(TEST_APP_PACKAGE_NAME))
+        assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
+        assertThat((result as UseCaseResults.Success).data)
+            .containsExactlyElementsIn(permissions.map { it.toString() })
+    }
+
+    @Test
+    fun invoke_healthPermissionReaderError_returnsFailure() = runTest {
+        healthPermissionReader.stub {
+            on { getValidHealthPermissions(TEST_APP_PACKAGE_NAME) } doThrow
+                RuntimeException("Exception")
+        }
+        val result = useCase.invoke(TEST_APP_PACKAGE_NAME)
+        assertThat(result).isInstanceOf(UseCaseResults.Failed::class.java)
+        assertThat((result as UseCaseResults.Failed).exception)
+            .isInstanceOf(RuntimeException::class.java)
     }
 }

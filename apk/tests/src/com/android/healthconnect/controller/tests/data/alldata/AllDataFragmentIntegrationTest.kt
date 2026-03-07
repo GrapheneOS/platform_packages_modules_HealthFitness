@@ -70,6 +70,8 @@ import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions.
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
 import com.android.healthconnect.controller.shared.children
 import com.android.healthconnect.controller.tests.TestActivity
+import com.android.healthconnect.controller.tests.devices.api.FakeGetCurrentDeviceIdUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_MEDICAL_DATA_SOURCE
 import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
@@ -103,7 +105,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.atLeast
-import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.reset
 import org.mockito.kotlin.stub
@@ -117,11 +118,18 @@ class AllDataFragmentIntegrationTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
     @BindValue val manager: HealthConnectManager = mock()
+    private val fakeGetCurrentDeviceIdUseCase =
+        fakeUseCaseRule.watch(FakeGetCurrentDeviceIdUseCase())
 
     private val getFitnessPermissionTypesWithDataUseCase =
-        GetFitnessPermissionTypesWithDataUseCase(manager, Dispatchers.Main)
+        GetFitnessPermissionTypesWithDataUseCase(
+            manager,
+            fakeGetCurrentDeviceIdUseCase,
+            Dispatchers.Main,
+        )
     private val getMedicalPermissionTypesWithDataUseCase =
         GetMedicalPermissionTypesWithDataUseCase(manager, Dispatchers.Main)
 
@@ -143,10 +151,10 @@ class AllDataFragmentIntegrationTest {
         context.setLocale(Locale.US)
 
         manager.stub {
-            on { currentDeviceId } doReturn "test_device_id"
             on { readRecords<Record>(any(), any(), any()) } doReturnResult
                 Result.success(ReadRecordsResponse<Record>(emptyList(), -1))
         }
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId("test_device_id")
 
         mockData(listOf())
         mockData(listOf(), setOf())

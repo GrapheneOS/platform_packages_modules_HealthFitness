@@ -16,22 +16,31 @@
 
 package com.android.healthconnect.controller.tests.matchmaking.api
 
+import android.health.connect.DeviceDataProviderInfo
+import android.health.connect.DeviceDataSourceInfo
 import android.health.connect.GetMatchingDataSourcesResponse
 import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.HealthPermissions
 import android.health.connect.MatchmakingRequest
 import android.health.connect.datatypes.DataOrigin
+import android.health.connect.datatypes.Device
+import android.health.connect.datatypes.SleepSessionRecord
 import android.health.connect.datatypes.StepsRecord
+import android.health.connect.device.DeviceDataTypeAdvertisement
 import android.platform.test.annotations.DisableFlags
 import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingDataSourcesUseCase
 import com.android.healthconnect.controller.matchmaking.api.GetMatchingDeviceDataSourcesUseCase
+import com.android.healthconnect.controller.matchmaking.api.MatchmakingDeviceData
+import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.utils.TEST_PHONE_SPN
+import com.android.healthconnect.controller.tests.utils.TEST_WATCH_SPN
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.Dispatchers
@@ -375,5 +384,94 @@ class GetMatchingDataSourcesUseCaseTest {
         val result = useCase.invoke(input) as UseCaseResults.Failed
 
         assertThat(result.exception).isEqualTo(exception)
+    }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun execute_filtersOutSystemAdvertisedDevices() = runTest {
+        val appPackageName = "com.example.app"
+        val response =
+            GetMatchingDataSourcesResponse(
+                mapOf(appPackageName to setOf(HealthPermissions.READ_STEPS)),
+                mapOf(),
+            )
+        whenever(healthConnectManager.getMatchingDataSources(any(), any(), any())).thenAnswer {
+            val receiver =
+                it.arguments[2]
+                    as
+                    android.os.OutcomeReceiver<
+                        GetMatchingDataSourcesResponse,
+                        HealthConnectException,
+                    >
+            receiver.onResult(response)
+            null
+        }
+        whenever(appInfoReader.getAppMetadata(appPackageName))
+            .thenReturn(AppMetadata(appPackageName, "App", null))
+
+        val systemDevice =
+            DeviceDataSourceInfo(
+                DataOrigin.Builder().setPackageName(TEST_PHONE_SPN).build(),
+                Device.Builder().setType(Device.DEVICE_TYPE_PHONE).build(),
+                true,
+                listOf(
+                    DeviceDataProviderInfo(
+                        DEVICE_DATA_PROVIDER_PACKAGE,
+                        "phoneId",
+                        "",
+                        "",
+                        setOf(
+                            DeviceDataTypeAdvertisement.Builder(StepsRecord::class.java)
+                                .setAvailable(true)
+                                .setUserEnabled(false)
+                                .build()
+                        ),
+                    )
+                ),
+            )
+
+        val byDdpDevice =
+            DeviceDataSourceInfo(
+                DataOrigin.Builder().setPackageName(TEST_WATCH_SPN).build(),
+                Device.Builder().setType(Device.DEVICE_TYPE_WATCH).build(),
+                false,
+                listOf(
+                    DeviceDataProviderInfo(
+                        "testDdp",
+                        "deviceId",
+                        "",
+                        "",
+                        setOf(
+                            DeviceDataTypeAdvertisement.Builder(SleepSessionRecord::class.java)
+                                .setAvailable(true)
+                                .setUserEnabled(false)
+                                .build()
+                        ),
+                    )
+                ),
+            )
+
+        whenever(getMatchingDeviceDataSourcesUseCase.invoke(any()))
+            .thenReturn(
+                UseCaseResults.Success(
+                    listOf(
+                        MatchmakingDeviceData(systemDevice, emptyList()),
+                        MatchmakingDeviceData(byDdpDevice, emptyList()),
+                    )
+                )
+            )
+
+        val input =
+            GetMatchingDataSourcesUseCase.GetMatchingDataSourcesInput(
+                "calling.app",
+                setOf(StepsRecord::class.java),
+            )
+        val result = useCase.invoke(input) as UseCaseResults.Success
+
+        assertThat(result.data.matchingDevices).hasSize(1)
+        assertThat(result.data.matchingDevices[0].deviceDataSourceInfo).isEqualTo(byDdpDevice)
     }
 }

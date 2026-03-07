@@ -44,13 +44,14 @@ import com.android.healthconnect.controller.selectabledeletion.DeletionType.Dele
 import com.android.healthconnect.controller.selectabledeletion.api.DeleteAppDataUseCase
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppInfoReader
+import com.android.healthconnect.controller.tests.permissions.additionalaccess.api.FakeLoadExerciseRoutePermissionUseCase
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.InstantTaskExecutorRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.di.FakeGetGrantedHealthPermissionsUseCase
-import com.android.healthconnect.controller.tests.utils.di.FakeLoadExerciseRoute
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
@@ -88,6 +89,7 @@ class AppPermissionViewModelTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val instantTaskExecutorRule = InstantTaskExecutorRule()
     @get:Rule val setFlagsRule = SetFlagsRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
     private val testDispatcher = UnconfinedTestDispatcher()
 
     private var appInfoReader: AppInfoReader = mock()
@@ -98,7 +100,8 @@ class AppPermissionViewModelTest {
     private val revokeAllHealthPermissionsUseCase: RevokeAllHealthPermissionsUseCase = mock()
     private val revokePermissionStatusUseCase: RevokeHealthPermissionUseCase = mock()
     private val grantPermissionsUseCase: GrantHealthPermissionUseCase = mock()
-    private val loadExerciseRoutePermissionUseCase = FakeLoadExerciseRoute()
+    private val loadExerciseRoutePermissionUseCase =
+        fakeUseCaseRule.watch(FakeLoadExerciseRoutePermissionUseCase())
     private val deviceInfoUtils: DeviceInfoUtils = mock()
 
     private lateinit var loadAppPermissionsStatusUseCase: LoadAppPermissionsStatusUseCase

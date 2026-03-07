@@ -35,7 +35,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.data.appdata.api.GetAppFitnessPermissionTypesUseCase
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.tests.devices.api.FakeGetCurrentDeviceIdUseCase
 import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_WATCH_SPN
 import com.android.healthconnect.controller.tests.utils.doReturnResult
@@ -51,7 +53,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.any
-import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.stub
 
@@ -61,16 +62,23 @@ class GetAppFitnessPermissionTypesUseCaseTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val setFlagsRule = SetFlagsRule()
     @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
+    @get:Rule val fakeUseCaseRule = FakeUseCaseRule()
 
     private val healthConnectManager: HealthConnectManager = mock()
     private lateinit var getAppFitnessPermissionTypesUseCase: GetAppFitnessPermissionTypesUseCase
+    private val fakeGetCurrentDeviceIdUseCase =
+        fakeUseCaseRule.watch(FakeGetCurrentDeviceIdUseCase())
 
     @Before
     fun setup() = runTest {
         hiltRule.inject()
         getAppFitnessPermissionTypesUseCase =
-            GetAppFitnessPermissionTypesUseCase(healthConnectManager, Dispatchers.Main)
-        healthConnectManager.stub { on { currentDeviceId } doReturn "current_device_id" }
+            GetAppFitnessPermissionTypesUseCase(
+                healthConnectManager,
+                fakeGetCurrentDeviceIdUseCase,
+                Dispatchers.Main,
+            )
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId("current_device_id")
     }
 
     @Test
@@ -221,8 +229,8 @@ class GetAppFitnessPermissionTypesUseCaseTest {
             healthConnectManager.stub {
                 on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
                     Result.success(recordTypeInfoMap)
-                on { currentDeviceId } doReturn deviceId
             }
+            fakeGetCurrentDeviceIdUseCase.updateDeviceId(deviceId)
 
             val result = getAppFitnessPermissionTypesUseCase.invoke(deviceId)
             assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
@@ -249,8 +257,8 @@ class GetAppFitnessPermissionTypesUseCaseTest {
         healthConnectManager.stub {
             on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
                 Result.success(recordTypeInfoMap)
-            on { currentDeviceId } doReturn "NotDeviceId"
         }
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId("NotDeviceId")
 
         val result = getAppFitnessPermissionTypesUseCase.invoke(testDeviceId)
         assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
@@ -275,8 +283,8 @@ class GetAppFitnessPermissionTypesUseCaseTest {
             healthConnectManager.stub {
                 on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
                     Result.success(recordTypeInfoMap)
-                on { currentDeviceId } doReturn deviceId
             }
+            fakeGetCurrentDeviceIdUseCase.updateDeviceId(deviceId)
 
             val result = getAppFitnessPermissionTypesUseCase.invoke(deviceId)
             assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
@@ -300,8 +308,8 @@ class GetAppFitnessPermissionTypesUseCaseTest {
         healthConnectManager.stub {
             on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
                 Result.success(recordTypeInfoMap)
-            on { currentDeviceId } doReturn testDeviceId
         }
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId(testDeviceId)
 
         val result = getAppFitnessPermissionTypesUseCase.invoke(DEVICE_DATA_PROVIDER_PACKAGE_NAME)
         assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
@@ -327,8 +335,8 @@ class GetAppFitnessPermissionTypesUseCaseTest {
         healthConnectManager.stub {
             on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
                 Result.success(recordTypeInfoMap)
-            on { currentDeviceId } doReturn "NotDeviceId"
         }
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId("NotDeviceId")
 
         val result = getAppFitnessPermissionTypesUseCase.invoke(DEVICE_DATA_PROVIDER_PACKAGE_NAME)
         assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
@@ -352,8 +360,8 @@ class GetAppFitnessPermissionTypesUseCaseTest {
         healthConnectManager.stub {
             on { queryAllRecordTypesInfo(any(), any()) } doReturnResult
                 Result.success(recordTypeInfoMap)
-            on { currentDeviceId } doReturn testDeviceId
         }
+        fakeGetCurrentDeviceIdUseCase.updateDeviceId(testDeviceId)
 
         val result = getAppFitnessPermissionTypesUseCase.invoke(DEVICE_DATA_PROVIDER_PACKAGE_NAME)
         assertThat(result).isInstanceOf(UseCaseResults.Success::class.java)
