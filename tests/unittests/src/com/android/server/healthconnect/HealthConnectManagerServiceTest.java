@@ -213,8 +213,50 @@ public class HealthConnectManagerServiceTest {
 
     @Test
     @EnableFlags({FLAG_ENABLE_HARDWARE_SUPPORT_CHECK})
-    public void onStart_flagOn_deviceNotSupported_doesNotStartListeners() {
+    public void onStart_flagOn_autoDeviceNotSupported_doesNotStartListeners() {
         when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)).thenReturn(true);
+        HealthConnectInjector injector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+        HealthConnectInjector spiedInjector = Mockito.spy(injector);
+        PermissionPackageChangesOrchestrator orchestrator =
+                Mockito.mock(PermissionPackageChangesOrchestrator.class);
+        Mockito.doReturn(orchestrator)
+                .when(spiedInjector)
+                .getPermissionPackageChangesOrchestrator();
+
+        HealthConnectManagerService service = makeServiceWithSpy(mContext, spiedInjector);
+        service.onStart();
+
+        verify(orchestrator, never()).registerBroadcastReceiver(any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_ENABLE_HARDWARE_SUPPORT_CHECK})
+    public void onStart_flagOn_tvDeviceNotSupported_doesNotStartListeners() {
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)).thenReturn(true);
+        HealthConnectInjector injector =
+                HealthConnectInjectorImpl.newBuilderForTest(mContext)
+                        .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
+                        .build();
+        HealthConnectInjector spiedInjector = Mockito.spy(injector);
+        PermissionPackageChangesOrchestrator orchestrator =
+                Mockito.mock(PermissionPackageChangesOrchestrator.class);
+        Mockito.doReturn(orchestrator)
+                .when(spiedInjector)
+                .getPermissionPackageChangesOrchestrator();
+
+        HealthConnectManagerService service = makeServiceWithSpy(mContext, spiedInjector);
+        service.onStart();
+
+        verify(orchestrator, never()).registerBroadcastReceiver(any());
+    }
+
+    @Test
+    @EnableFlags({FLAG_ENABLE_HARDWARE_SUPPORT_CHECK})
+    public void onStart_flagOn_embeddedDeviceNotSupported_doesNotStartListeners() {
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_EMBEDDED)).thenReturn(true);
         HealthConnectInjector injector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)
                         .setEnvironmentDataDirectory(mEnvironmentDataDir.getRoot())
@@ -236,6 +278,8 @@ public class HealthConnectManagerServiceTest {
     @EnableFlags({FLAG_ENABLE_HARDWARE_SUPPORT_CHECK})
     public void onStart_flagOn_deviceSupported_startsListeners() {
         when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)).thenReturn(false);
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_LEANBACK)).thenReturn(false);
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_EMBEDDED)).thenReturn(false);
 
         HealthConnectInjector injector =
                 HealthConnectInjectorImpl.newBuilderForTest(mContext)

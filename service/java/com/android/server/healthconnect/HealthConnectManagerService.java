@@ -401,8 +401,10 @@ public class HealthConnectManagerService extends SystemService {
             return false;
         }
         PackageManager pm = context.getPackageManager();
-        // Not available on auto.
-        if (pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)) {
+        // Not available on auto, tv and embedded
+        if (pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)
+                || pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
+                || pm.hasSystemFeature(PackageManager.FEATURE_EMBEDDED)) {
             return true;
         }
         // Supported everywhere else.
