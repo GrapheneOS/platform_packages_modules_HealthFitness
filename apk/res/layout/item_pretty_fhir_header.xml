@@ -20,30 +20,36 @@
     android:layout_height="wrap_content"
     android:layout_weight="1"
     android:orientation="vertical"
-    android:paddingStart="?android:attr/listPreferredItemPaddingStart"
-    android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
-    android:paddingVertical="@dimen/spacing_normal"
     android:clickable="true">
 
-    <TextView
-        android:id="@+id/item_pretty_fhir_entry_header"
-        style="?attr/textAppearanceSummary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/item_pretty_fhir_title"
-        style="?attr/textAppearanceItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <com.android.settingslib.widget.LinkableTextView
-        android:id="@+id/item_pretty_fhir_link"
-        android:text="@string/pretty_fhir_header_view_source_data"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/spacing_small"
-        style="@style/SettingslibTextAppearance.LinkableTextStyle.Expressive" />
+        android:orientation="vertical"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:paddingVertical="@dimen/spacing_data_entries">
 
+        <TextView
+            android:id="@+id/item_pretty_fhir_entry_header"
+            style="?attr/textAppearanceSummary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/item_pretty_fhir_title"
+            style="?attr/textAppearanceItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.android.settingslib.widget.LinkableTextView
+            android:id="@+id/item_pretty_fhir_link"
+            android:text="@string/pretty_fhir_header_view_source_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/spacing_small"
+            style="@style/SettingslibTextAppearance.LinkableTextStyle.Expressive" />
+
+    </LinearLayout>
 
 </LinearLayout>
