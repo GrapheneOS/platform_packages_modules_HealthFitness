@@ -32,6 +32,7 @@ import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.health.connect.HealthConnectOnboardingState;
 import android.os.PersistableBundle;
 import android.os.UserHandle;
@@ -66,7 +67,7 @@ public final class OnboardingNotificationJob {
             Context context,
             UserHandle userHandle,
             HealthConnectResourcesContext resourcesContext) {
-        if (!isOnboardingNotificationEnabled(resourcesContext)) {
+        if (!isOnboardingNotificationEnabled(resourcesContext, context)) {
             return;
         }
         if (!requireNonNull(context.getSystemService(JobScheduler.class))
@@ -113,7 +114,7 @@ public final class OnboardingNotificationJob {
             OnboardingNotificationStateManager notificationShownStateManager,
             UserHandle userHandle,
             HealthConnectResourcesContext resourcesContext) {
-        if (!isOnboardingNotificationEnabled(resourcesContext)) {
+        if (!isOnboardingNotificationEnabled(resourcesContext, context)) {
             Slog.d(TAG, "Onboarding flag is disabled");
             return;
         }
@@ -149,8 +150,13 @@ public final class OnboardingNotificationJob {
     }
 
     private static boolean isOnboardingNotificationEnabled(
-            HealthConnectResourcesContext resourcesContext) {
+            HealthConnectResourcesContext resourcesContext, Context context) {
         if (!Flags.onboarding()) {
+            return false;
+        }
+        // We do not send notification on wear
+        PackageManager pm = context.getPackageManager();
+        if (pm.hasSystemFeature(PackageManager.FEATURE_WATCH)) {
             return false;
         }
         boolean enabled = resourcesContext.getBoolByName(CONFIG_ENABLE_DISCOVERY).orElse(true);
