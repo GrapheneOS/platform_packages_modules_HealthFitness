@@ -674,7 +674,7 @@ public class HealthDataCategoryPriorityHelper extends DatabaseHelper {
     }
 
     private boolean isDevicePackage(String packageName) {
-        return (Flags.stepTrackingEnabled() && DEVICE_DATA_PROVIDER_PACKAGE.equals(packageName))
+        return DEVICE_DATA_PROVIDER_PACKAGE.equals(packageName)
                 || (AconfigFlagHelper.isDeviceDataProvidersEnabled()
                         && SyntheticPackageNameMatcher.matches(packageName));
     }

@@ -47,9 +47,6 @@ public class DeviceRecordHelper {
      */
     public void insertRecords(
             DeviceDataSource deviceDataSource, List<? extends RecordInternal<?>> records) {
-        if (!Flags.stepTrackingEnabled()) {
-            return;
-        }
         addDeviceMetadataToRecords(deviceDataSource, records);
 
         // Treat all permissions as granted to pass any per-record checks.

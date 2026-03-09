@@ -177,7 +177,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onSensorChanged_doesNotThrow() throws Exception {
         mStepSensorEventListener.onSensorChanged(
                 createStepSensorEvent(/* value= */ 1, /* timestamp= */ 1234567890));
@@ -207,7 +206,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void writeSteps_withStepFlags_hasLegacySource() throws Throwable {
         int stepCount = 100;
@@ -229,7 +227,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onSensorChangedAfterBoot_highCadence_writesStepsSinceBoot() throws Throwable {
         int stepCount = 100;
         long endTimestampNanos = MINUTES.toNanos(2);
@@ -249,7 +246,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onSensorChangedAfterBoot_lowCadence_writesStepsWithEstimatedStart()
             throws Throwable {
         int stepCount = 10;
@@ -270,7 +266,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onSensorChanged_initialDeltaOfZero_setsBaseline() throws Exception {
         int stepCount = 0;
         long endTimestampNanos = MINUTES.toNanos(2);
@@ -283,7 +278,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void afterBaselineEvent_savesBaselineData() throws Exception {
         setBaselineStepCount(5);
 
@@ -294,7 +288,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onSensorChanged_hasInitialDelta_setsBaselineAndCalculatesDelta() throws Throwable {
         int baselineStepCount = 100;
         long baselineStepCountTimestampNanos = MINUTES.toNanos(1);
@@ -320,7 +313,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onSensorChangedTwice_writesTwice() throws Throwable {
         // The first event is always written instantly and the second is written through the
         // scheduled future
@@ -358,7 +350,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onSensorChangedThrice_writesTwice() throws Throwable {
         // The first event is always written instantly and the second and third events are merged
         // and written through the scheduled future
@@ -399,7 +390,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onSensorChangedTwice_bothStepCountsAreDuplicate_ignoresSecondEvent()
             throws Throwable {
         int firstStepCount = 10;
@@ -428,7 +418,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onSensorChangedTwice_secondStepCountIsLower_ignoresSecondEvent() throws Throwable {
         int firstStepCount = 10;
         long firstEndTimestampNanos = MINUTES.toNanos(10);
@@ -457,7 +446,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onSensorChangedTwice_bothTimestampsAreDuplicate_ignoresSecondEvent()
             throws Throwable {
         int firstStepCount = 10;
@@ -485,7 +473,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onSensorChangedTwice_secondTimestampsIsLower_ignoresSecondEvent() throws Throwable {
         int firstStepCount = 10;
         long firstEndTimestampNanos = MINUTES.toNanos(10);
@@ -514,7 +501,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onSensorChangedSoonAfterBoot_writesStartTimestampAsBootTime() throws Throwable {
         int stepCount = 10;
         long endTimestampNanos = SECONDS.toNanos(10);
@@ -534,7 +520,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onSensorChanged_pendingBatchWriteFutureNotEmpty() throws Exception {
         int stepDelta = 10;
         long endTimestampNanos = MINUTES.toNanos(10);
@@ -558,7 +543,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void afterOnSensorChanged_noNewEventsReceived_stopsSchedulingWrites() throws Exception {
         int timeoutBuffer = 100;
         int stepDelta = 10;
@@ -583,7 +567,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void eventSoonAfterPreviousEvent_returnsStartAsEndOfPreviousEvent() {
         int stepDelta = 1;
         long endOfLastDataPointNanos = SECONDS.toNanos(100);
@@ -600,7 +583,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void eventOneMinuteAfterPreviousEvent_returnsStartAsEndOfPreviousEvent() {
         int stepDelta = 1;
         long endOfLastDataPointNanos = SECONDS.toNanos(100);
@@ -617,7 +599,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void eventTwoMinutesAfterPreviousEvent_highCadence_returnsStartAsEndOfPreviousEvent() {
         int stepDelta = 90;
         long endOfLastDataPointNanos = SECONDS.toNanos(100);
@@ -634,7 +615,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void eventTwoMinutesAfterPreviousEvent_lowCadence_returnsEstimatedStartTime() {
         int stepDelta = 1;
         long endOfLastDataPointNanos = SECONDS.toNanos(100);
@@ -652,7 +632,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void eventTwoMinutesAfterPreviousEvent_lowCadence_returnsLongerEstimatedStartTime() {
         int stepDelta = 45; // 30 steps per minute cadence means this would take 1 minute 30 seconds
         long endOfLastDataPointNanos = SECONDS.toNanos(100);
@@ -669,7 +648,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onSensorChanged_timeTravelsForwards_writesStepsWithNewTime() throws Throwable {
         int firstStepCount = 10;
         long firstEndTimestampNanos = MINUTES.toNanos(10);
@@ -705,7 +683,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onSensorChanged_timeTravelsBackwards_writesStepsWithNewTime() throws Throwable {
         int firstStepCount = 10;
         long firstEndTimestampNanos = MINUTES.toNanos(10);
@@ -741,7 +718,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void reset_clearsDataAndCancelsFuture() throws Exception {
         setBaselineStepCount(0);
         triggerStepEvent(10, MINUTES.toNanos(1));
@@ -757,7 +733,6 @@ public class StepSensorEventListenerTest {
     }
 
     @Test
-    @EnableFlags({Flags.FLAG_STEP_TRACKING_ENABLED})
     public void onAccuracyChanged_doesNotThrow() throws Exception {
         mStepSensorEventListener.onAccuracyChanged(
                 createSensor(), SensorManager.SENSOR_STATUS_ACCURACY_HIGH);

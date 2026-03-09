@@ -89,7 +89,7 @@ import org.mockito.kotlin.whenever
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
 @UninstallModules(ToastManagerModule::class)
-@EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED, Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
+@EnableFlags(Flags.FLAG_DEVICE_DATA_PROVIDERS_API)
 class CurrentDeviceManagementFragmentTest {
 
     @get:Rule(order = 0) val hiltRule = HiltAndroidRule(this)

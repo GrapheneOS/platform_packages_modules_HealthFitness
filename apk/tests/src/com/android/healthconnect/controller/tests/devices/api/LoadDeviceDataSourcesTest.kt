@@ -18,7 +18,6 @@ package com.android.healthconnect.controller.tests.devices.api
 import android.content.Context
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.StepsRecord
-import android.platform.test.annotations.EnableFlags
 import android.provider.Settings
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
@@ -41,7 +40,6 @@ import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-@EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
 class LoadDeviceDataSourcesTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

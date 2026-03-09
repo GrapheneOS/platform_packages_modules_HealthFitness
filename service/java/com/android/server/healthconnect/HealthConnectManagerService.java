@@ -332,7 +332,7 @@ public class HealthConnectManagerService extends SystemService {
                     }
                 });
 
-        if (Flags.stepTrackingEnabled() && !AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
+        if (!AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
             threadScheduler.scheduleInternalTask(
                     () -> {
                         try {
@@ -385,12 +385,10 @@ public class HealthConnectManagerService extends SystemService {
 
                         // The steps tracker may want to write steps at startup for which it
                         // requires the current device to have been advertised beforehand.
-                        if (Flags.stepTrackingEnabled()) {
-                            try {
-                                mHealthConnectInjector.getTrackerManager().initializeOrRefresh();
-                            } catch (Exception e) {
-                                Slog.e(TAG, "Failed to initialize steps tracker.", e);
-                            }
+                        try {
+                            mHealthConnectInjector.getTrackerManager().initializeOrRefresh();
+                        } catch (Exception e) {
+                            Slog.e(TAG, "Failed to initialize steps tracker.", e);
                         }
                     });
         }

@@ -52,7 +52,6 @@ import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
 import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
-import com.android.healthfitness.flags.Flags.stepTrackingEnabled
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
 import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsThemeHelper
@@ -135,18 +134,14 @@ class HomeFragment : Hilt_HomeFragment() {
             true
         }
 
-        if (stepTrackingEnabled() || deviceDataProvidersApi()) {
-            devicesPreference.isVisible = true
-            devicesPreference.logName = NewHomePageElement.DEVICES_BUTTON
-            devicesPreference.setOnPreferenceClickListener {
-                val action =
-                    if (deviceDataProvidersApi()) R.id.action_newHomeFragment_to_newDevicesFragment
-                    else R.id.action_newHomeFragment_to_connectedDevicesFragment
-                findNavController().navigateSafe(R.id.newHomeFragment, action)
-                true
-            }
-        } else {
-            devicesPreference.isVisible = false
+        devicesPreference.isVisible = true
+        devicesPreference.logName = NewHomePageElement.DEVICES_BUTTON
+        devicesPreference.setOnPreferenceClickListener {
+            val action =
+                if (deviceDataProvidersApi()) R.id.action_newHomeFragment_to_newDevicesFragment
+                else R.id.action_newHomeFragment_to_connectedDevicesFragment
+            findNavController().navigateSafe(R.id.newHomeFragment, action)
+            true
         }
 
         manageDataPreference.logName = NewHomePageElement.MANAGE_DATA_BUTTON

@@ -19,7 +19,6 @@ import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
 import android.health.connect.datatypes.StepsRecord
 import android.os.OutcomeReceiver
-import android.platform.test.annotations.EnableFlags
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.devices.api.SetTrackingEnabledUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
@@ -42,7 +41,6 @@ import org.mockito.kotlin.verify
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-@EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
 class SetTrackingEnabledTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

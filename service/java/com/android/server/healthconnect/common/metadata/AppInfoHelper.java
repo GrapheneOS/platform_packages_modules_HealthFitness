@@ -523,9 +523,7 @@ public final class AppInfoHelper extends DatabaseHelper {
                 long rowId = getCursorLong(cursor, RecordHelper.PRIMARY_COLUMN_NAME);
                 String packageName = getCursorString(cursor, PACKAGE_COLUMN_NAME);
                 String appName = getCursorString(cursor, APPLICATION_COLUMN_NAME);
-                if (Flags.stepTrackingEnabled()
-                        && Objects.equals(
-                                packageName, DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE)) {
+                if (Objects.equals(packageName, DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE)) {
                     // TODO(b/422986550): don't cache this as it may change at runtime.
                     appName =
                             mDeviceDataSourceHelper.getCurrentDevice(mUserContext).getDisplayName();
@@ -942,8 +940,7 @@ public final class AppInfoHelper extends DatabaseHelper {
                 packageManager.getApplicationInfo(
                         packageName, PackageManager.ApplicationInfoFlags.of(0));
         String appName;
-        if (Flags.stepTrackingEnabled()
-                && Objects.equals(packageName, DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE)) {
+        if (Objects.equals(packageName, DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE)) {
             // TODO(b/422986550): don't cache this as it may change at runtime.
             appName = mDeviceDataSourceHelper.getCurrentDevice(mUserContext).getDisplayName();
         } else {

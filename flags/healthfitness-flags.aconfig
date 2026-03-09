@@ -310,7 +310,7 @@ flag {
 flag {
     name: "step_tracking_enabled"
     namespace: "health_fitness_aconfig"
-    description: "Enables native step tracking within Health Connect"
+    description: "Enables native step tracking within Health Connect. This flag has been rolled and cleaned up."
     bug: "397419824"
     is_fixed_read_only: true
     is_exported: true
