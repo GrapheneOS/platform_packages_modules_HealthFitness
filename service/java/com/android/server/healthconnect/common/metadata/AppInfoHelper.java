@@ -58,6 +58,7 @@ import android.util.Slog;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
 import com.android.healthfitness.flags.Flags;
+import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.device.DeviceDataSourceHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
 import com.android.server.healthconnect.fitness.mappings.InternalHealthConnectMappings;
@@ -208,8 +209,10 @@ public final class AppInfoHelper extends DatabaseHelper {
                                 + "not found in app info map, ensure the device data source has"
                                 + " been advertised");
             }
+            byte[] icon = null;
             try {
                 appInfo = getAppInfo(packageName);
+                icon = getIconFromPackageName(packageName);
             } catch (NameNotFoundException e) {
                 if (requireAllFields) {
                     Slog.e(TAG, "Could not find package info", e);
@@ -218,10 +221,10 @@ public final class AppInfoHelper extends DatabaseHelper {
 
                 appInfo =
                         new AppInfoInternal(
-                                DEFAULT_LONG, packageName, record.getAppName(), null, null, null);
+                                DEFAULT_LONG, packageName, record.getAppName(), null, null);
             }
 
-            insertIfNotPresent(packageName, appInfo);
+            insertIfNotPresent(packageName, appInfo, icon);
         }
 
         record.setAppInfoId(appInfo.getId());
@@ -240,6 +243,10 @@ public final class AppInfoHelper extends DatabaseHelper {
             return;
         }
 
+        if (!getAppInfoMap().containsKey(packageName)) {
+            return;
+        }
+
         byte[] icon = maybeIcon == null ? getIconFromPackageName(packageName) : maybeIcon;
         var appInfo = getAppInfoMap().get(packageName);
         // using pre-existing value of recordTypesUsed.
@@ -254,10 +261,12 @@ public final class AppInfoHelper extends DatabaseHelper {
                         getAppInfoId(packageName),
                         packageName,
                         name,
-                        icon,
                         recordTypesUsed,
                         deviceInfoId);
         updateIfPresent(packageName, appInfoInternal);
+        if (icon != null) {
+            updateAppIcon(packageName, icon);
+        }
     }
 
     /**
@@ -275,7 +284,6 @@ public final class AppInfoHelper extends DatabaseHelper {
                             currentAppInfo.getId(),
                             currentAppInfo.getPackageName(),
                             name,
-                            currentAppInfo.getIcon(),
                             currentAppInfo.getRecordTypesUsed(),
                             AconfigFlagHelper.isDeviceDataProvidersEnabled()
                                     ? currentAppInfo.getDeviceInfoId()
@@ -296,12 +304,11 @@ public final class AppInfoHelper extends DatabaseHelper {
                             DEFAULT_LONG,
                             packageName,
                             name,
-                            icon,
                             null,
                             // TODO(b/439815121): Extend method with optional deviceInfoId, or parse
                             // from name.
                             null);
-            insertIfNotPresent(packageName, appInfoInternal);
+            insertIfNotPresent(packageName, appInfoInternal, icon);
         }
     }
 
@@ -387,19 +394,58 @@ public final class AppInfoHelper extends DatabaseHelper {
         return packageNames;
     }
 
+    @VisibleForTesting
+    Map<String, byte[]> getAppIcons(List<String> packageNames) {
+        Map<String, byte[]> result = new HashMap<>();
+        if (packageNames.isEmpty()) {
+            return result;
+        }
+
+        try (Cursor cursor =
+                mTransactionManager.read(
+                        new ReadTableRequest(TABLE_NAME)
+                                .setColumnNames(List.of(PACKAGE_COLUMN_NAME, APP_ICON_COLUMN_NAME))
+                                .setWhereClause(
+                                        new WhereClauses(AND)
+                                                .addWhereInClause(
+                                                        PACKAGE_COLUMN_NAME, packageNames)))) {
+            while (cursor.moveToNext()) {
+                String packageName = getCursorString(cursor, PACKAGE_COLUMN_NAME);
+                byte[] icon = getCursorBlob(cursor, APP_ICON_COLUMN_NAME);
+                if (icon != null) {
+                    result.put(packageName, icon);
+                }
+            }
+        }
+
+        return result;
+    }
+
     /**
      * Returns a list of AppInfo objects which are contributing data to some recordType, or belongs
      * to the provided {@code appInfoIds}.
      */
     public List<AppInfo> getApplicationInfosWithRecordTypesOrInIdsList(Set<Long> appInfoIds) {
-        return getAppInfoMap().values().stream()
-                .filter(
-                        (appInfo) ->
-                                (appInfo.getRecordTypesUsed() != null
-                                                && !appInfo.getRecordTypesUsed().isEmpty())
-                                        || appInfoIds.contains(appInfo.getId()))
-                // TODO(b/441440072): Remove unnecessary decoding of Bitmaps.
-                .map(AppInfoInternal::toExternal)
+        List<AppInfoInternal> appInfoInternals =
+                getAppInfoMap().values().stream()
+                        .filter(
+                                (appInfo) ->
+                                        (appInfo.getRecordTypesUsed() != null
+                                                        && !appInfo.getRecordTypesUsed().isEmpty())
+                                                || appInfoIds.contains(appInfo.getId()))
+                        .collect(Collectors.toList());
+
+        List<String> packageNames =
+                appInfoInternals.stream()
+                        .map(AppInfoInternal::getPackageName)
+                        .collect(Collectors.toList());
+        Map<String, byte[]> appIcons = getAppIcons(packageNames);
+
+        return appInfoInternals.stream()
+                .map(
+                        appInfo ->
+                                appInfo.toExternal(
+                                        appIcons.getOrDefault(appInfo.getPackageName(), null)))
                 .collect(Collectors.toList());
     }
 
@@ -459,7 +505,8 @@ public final class AppInfoHelper extends DatabaseHelper {
 
         if (appInfoInternal == null) {
             appInfoInternal = getAppInfo(packageName);
-            insertIfNotPresent(db, packageName, appInfoInternal);
+            byte[] icon = getIconFromPackageName(packageName);
+            insertIfNotPresent(db, packageName, appInfoInternal, icon);
         }
 
         return appInfoInternal.getId();
@@ -483,7 +530,6 @@ public final class AppInfoHelper extends DatabaseHelper {
                     appName =
                             mDeviceDataSourceHelper.getCurrentDevice(mUserContext).getDisplayName();
                 }
-                byte[] icon = getCursorBlob(cursor, APP_ICON_COLUMN_NAME);
                 String recordTypesUsed = getCursorString(cursor, RECORD_TYPES_USED_COLUMN_NAME);
                 Long deviceInfoId = null;
                 if (AconfigFlagHelper.isDeviceDataProvidersEnabled()) {
@@ -498,12 +544,7 @@ public final class AppInfoHelper extends DatabaseHelper {
                 appInfoMap.put(
                         packageName,
                         new AppInfoInternal(
-                                rowId,
-                                packageName,
-                                appName,
-                                icon,
-                                recordTypesListAsSet,
-                                deviceInfoId));
+                                rowId, packageName, appName, recordTypesListAsSet, deviceInfoId));
                 idPackageNameMap.put(rowId, packageName);
             }
         }
@@ -772,9 +813,11 @@ public final class AppInfoHelper extends DatabaseHelper {
         WhereClauses whereClauseForAppInfoTableUpdate = new WhereClauses(AND);
         whereClauseForAppInfoTableUpdate.addWhereEqualsClause(
                 PACKAGE_COLUMN_NAME, appInfo.getPackageName());
+
+        ContentValues contentValues = getContentValues(packageName, appInfo, /* icon= */ null);
+
         UpsertTableRequest upsertRequestForAppInfoUpdate =
-                new UpsertTableRequest(
-                        TABLE_NAME, getContentValues(packageName, appInfo), UNIQUE_COLUMN_INFO);
+                new UpsertTableRequest(TABLE_NAME, contentValues, UNIQUE_COLUMN_INFO);
         mTransactionManager.update(upsertRequestForAppInfoUpdate);
 
         // update locally stored maps to keep data in sync.
@@ -843,10 +886,9 @@ public final class AppInfoHelper extends DatabaseHelper {
                             DEFAULT_LONG,
                             syntheticPackageName,
                             /* name= */ null,
-                            /* icon= */ null,
                             /* recordTypesUsed= */ null,
                             deviceInfoId);
-            insertIfNotPresent(syntheticPackageName, appInfo);
+            insertIfNotPresent(syntheticPackageName, appInfo, /* icon= */ null);
             return appInfo.getId();
         }
 
@@ -859,7 +901,6 @@ public final class AppInfoHelper extends DatabaseHelper {
                         existingAppInfo.getId(),
                         syntheticPackageName,
                         /* name= */ null,
-                        /* icon= */ null,
                         /* recordTypesUsed= */ existingAppInfo.getRecordTypesUsed(),
                         deviceInfoId);
         updateIfPresent(syntheticPackageName, updatedAppInfo);
@@ -908,11 +949,8 @@ public final class AppInfoHelper extends DatabaseHelper {
         } else {
             appName = packageManager.getApplicationLabel(info).toString();
         }
-        Drawable icon = packageManager.getApplicationIcon(info);
-        Bitmap bitmap = getBitmapFromDrawable(icon);
         // TODO(b/439815121): Extend method with optional deviceInfoId, or parse from name.
-        return new AppInfoInternal(
-                DEFAULT_LONG, packageName, appName, encodeBitmap(bitmap), null, null);
+        return new AppInfoInternal(DEFAULT_LONG, packageName, appName, null, null);
     }
 
     @Nullable
@@ -929,8 +967,9 @@ public final class AppInfoHelper extends DatabaseHelper {
         }
     }
 
-    private synchronized void insertIfNotPresent(String packageName, AppInfoInternal appInfo) {
-        insertIfNotPresent(Optional.empty(), packageName, appInfo);
+    private synchronized void insertIfNotPresent(
+            String packageName, AppInfoInternal appInfo, @Nullable byte[] icon) {
+        insertIfNotPresent(Optional.empty(), packageName, appInfo, icon);
     }
 
     /**
@@ -939,22 +978,30 @@ public final class AppInfoHelper extends DatabaseHelper {
      * TransactionManager#getWritableDb()} for writes.
      */
     private synchronized void insertIfNotPresent(
-            Optional<SQLiteDatabase> db, String packageName, AppInfoInternal appInfo) {
+            Optional<SQLiteDatabase> db,
+            String packageName,
+            AppInfoInternal appInfo,
+            @Nullable byte[] icon) {
         if (getAppInfoMap(db).containsKey(packageName)) {
             return;
         }
 
-        long rowId = insertAppInfo(db, packageName, appInfo);
+        long rowId = insertAppInfo(db, packageName, appInfo, icon);
         appInfo.setId(rowId);
         getAppInfoMap(db).put(packageName, appInfo);
         getIdPackageNameMap(db).put(appInfo.getId(), packageName);
     }
 
     private long insertAppInfo(
-            Optional<SQLiteDatabase> db, String packageName, AppInfoInternal appInfo) {
+            Optional<SQLiteDatabase> db,
+            String packageName,
+            AppInfoInternal appInfo,
+            @Nullable byte[] icon) {
         UpsertTableRequest upsertRequest =
                 new UpsertTableRequest(
-                        TABLE_NAME, getContentValues(packageName, appInfo), UNIQUE_COLUMN_INFO);
+                        TABLE_NAME,
+                        getContentValues(packageName, appInfo, icon),
+                        UNIQUE_COLUMN_INFO);
         return db.map(
                         sqLiteDatabase ->
                                 mTransactionManager.insertOrThrowOnConflict(
@@ -967,11 +1014,11 @@ public final class AppInfoHelper extends DatabaseHelper {
             return;
         }
 
+        ContentValues contentValues =
+                getContentValues(packageName, appInfoInternal, /* icon= */ null);
+
         UpsertTableRequest upsertTableRequest =
-                new UpsertTableRequest(
-                        TABLE_NAME,
-                        getContentValues(packageName, appInfoInternal),
-                        UNIQUE_COLUMN_INFO);
+                new UpsertTableRequest(TABLE_NAME, contentValues, UNIQUE_COLUMN_INFO);
 
         mTransactionManager.update(upsertTableRequest);
         getAppInfoMap().put(packageName, appInfoInternal);
@@ -986,30 +1033,16 @@ public final class AppInfoHelper extends DatabaseHelper {
                 new UpsertTableRequest(TABLE_NAME, contentValues, UNIQUE_COLUMN_INFO);
 
         mTransactionManager.update(upsertTableRequest);
-
-        // We also need to update the in-memory cache to reflect the change if it's already
-        // populated.
-        if (mAppInfoMap != null && mAppInfoMap.containsKey(packageName)) {
-            AppInfoInternal current = mAppInfoMap.get(packageName);
-            if (current != null) {
-                AppInfoInternal updated =
-                        new AppInfoInternal(
-                                current.getId(),
-                                current.getPackageName(),
-                                current.getName(),
-                                icon,
-                                current.getRecordTypesUsed(),
-                                current.getDeviceInfoId());
-                mAppInfoMap.put(packageName, updated);
-            }
-        }
     }
 
-    private ContentValues getContentValues(String packageName, AppInfoInternal appInfo) {
+    private ContentValues getContentValues(
+            String packageName, AppInfoInternal appInfo, @Nullable byte[] icon) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(PACKAGE_COLUMN_NAME, packageName);
         contentValues.put(APPLICATION_COLUMN_NAME, appInfo.getName());
-        contentValues.put(APP_ICON_COLUMN_NAME, appInfo.getIcon());
+        if (icon != null) {
+            contentValues.put(APP_ICON_COLUMN_NAME, icon);
+        }
         String recordTypesUsedAsString = null;
         // Since a list of recordTypeIds cannot be saved directly in the database, record types IDs
         // are concatenated using ',' and are saved as a string.
@@ -1060,7 +1093,10 @@ public final class AppInfoHelper extends DatabaseHelper {
     }
 
     @Nullable
-    private static Bitmap getBitmapFromDrawable(Drawable drawable) {
+    private static Bitmap getBitmapFromDrawable(@Nullable Drawable drawable) {
+        if (drawable == null) {
+            return null;
+        }
         int width = drawable.getIntrinsicWidth();
         int height = drawable.getIntrinsicHeight();
 
