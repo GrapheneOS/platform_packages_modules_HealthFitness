@@ -623,3 +623,11 @@ flag {
     description: "Enables data pagination for entries screen."
     bug: "384028690"
 }
+
+flag {
+    name: "distance_and_calories_tracking_enabled"
+    namespace: "health_fitness_aconfig"
+    description: "Enables native distance and calories tracking within Health Connect"
+    bug: "485496373"
+    is_exported: false
+}
