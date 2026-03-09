@@ -27,8 +27,6 @@ import android.health.connect.HealthConnectManager.ACTION_HEALTH_HOME_SETTINGS
 import android.health.connect.HealthConnectManager.ACTION_MANAGE_HEALTH_DATA
 import android.health.connect.HealthConnectManager.ACTION_SYNC_MORE_APPS
 import android.health.connect.HealthDataCategory
-import android.platform.test.annotations.DisableFlags
-import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MediatorLiveData
@@ -42,7 +40,7 @@ import com.android.healthconnect.controller.data.api.PermissionTypesPerCategory
 import com.android.healthconnect.controller.exportimport.api.ExportStatusViewModel
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
 import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiStatus
-import com.android.healthconnect.controller.home.HomeViewModel
+import com.android.healthconnect.controller.home.HomeViewModel as NewHomeViewModel
 import com.android.healthconnect.controller.migration.MigrationViewModel
 import com.android.healthconnect.controller.migration.MigrationViewModel.MigrationFragmentState.WithData
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState
@@ -50,7 +48,6 @@ import com.android.healthconnect.controller.migration.api.MigrationRestoreState.
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
 import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
 import com.android.healthconnect.controller.navigation.TrampolineActivity
-import com.android.healthconnect.controller.newHome.HomeViewModel as NewHomeViewModel
 import com.android.healthconnect.controller.onboarding.ConnectedFitnessAppMetadata
 import com.android.healthconnect.controller.onboarding.OnboardingViewModel
 import com.android.healthconnect.controller.permissions.additionalaccess.AdditionalAccessViewModel
@@ -72,8 +69,6 @@ import com.android.healthconnect.controller.tests.utils.checkTextIsDisplayed
 import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
-import com.android.healthfitness.flags.Flags
-import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -106,7 +101,6 @@ class TrampolineActivityTest {
     @BindValue val connectedAppsViewModel: ConnectedAppsViewModel = mock()
     @BindValue val additionalAccessViewModel: AdditionalAccessViewModel = mock()
     @BindValue val allDataViewModel: AllDataViewModel = mock()
-    @BindValue val homeViewModel: HomeViewModel = mock()
     @BindValue val recentAccessViewModel: RecentAccessViewModel = mock()
 
     @BindValue val onboardingViewModel: OnboardingViewModel = mock()
@@ -216,13 +210,6 @@ class TrampolineActivityTest {
         }
         whenever(allDataViewModel.getDeletionScreenStateValue())
             .thenReturn(DeletionDataViewModel.DeletionScreenState.VIEW)
-        whenever(homeViewModel.connectedApps).then {
-            MutableLiveData(listOf(ConnectedAppMetadata(TEST_APP, ConnectedAppStatus.ALLOWED)))
-        }
-        whenever(homeViewModel.hasAnyMedicalData).then { MutableLiveData(false) }
-        whenever(homeViewModel.showLockScreenBanner).then {
-            MediatorLiveData(HomeViewModel.LockScreenBannerState.NoBanner)
-        }
         whenever(recentAccessViewModel.recentAccessApps).then {
             MutableLiveData(RecentAccessViewModel.RecentAccessState.WithData(listOf()))
         }
@@ -273,25 +260,7 @@ class TrampolineActivityTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_NEW_HOME_SCREEN)
     fun homeSettingsIntent_launchesMainActivity() {
-        (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(true)
-
-        launchActivityForResult<TrampolineActivity>(createStartIntent(ACTION_HEALTH_HOME_SETTINGS))
-            .use {
-                onIdle()
-                if (SettingsThemeHelper.isExpressiveTheme(context)) {
-                    checkTextIsDisplayed("No recent access")
-                } else {
-                    checkTextIsDisplayed("No apps recently accessed Health\u00A0Connect")
-                }
-                checkTextIsDisplayed("Permissions and data")
-            }
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_NEW_HOME_SCREEN)
-    fun homeSettingsIntent_launchesMainActivity_withNewHomeScreen() {
         (deviceInfoUtils as FakeDeviceInfoUtils).setHealthConnectAvailable(true)
 
         launchActivityForResult<TrampolineActivity>(createStartIntent(ACTION_HEALTH_HOME_SETTINGS))

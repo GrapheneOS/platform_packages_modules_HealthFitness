@@ -38,13 +38,9 @@ import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.testing.cts.ui.UiTestUtils.scrollToEnd
 import android.healthconnect.testing.cts.ui.UiTestUtils.verifyTextNotFound
 import android.healthconnect.testing.cts.ui.UiTestUtils.waitForObjectNotFound
-import android.platform.test.annotations.RequiresFlagsDisabled
-import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.uiautomator.By
-import com.android.healthfitness.flags.Flags.FLAG_NEW_HOME_SCREEN
-import com.android.settingslib.widget.theme.flags.Flags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED
 import com.google.common.truth.Truth.assertThat
 import java.time.Duration.ofSeconds
 import org.junit.After
@@ -208,27 +204,7 @@ abstract class BaseDataTypeTest<T : Record> : HealthConnectBaseTest() {
     }
 
     @Test
-    @RequiresFlagsDisabled(FLAG_IS_EXPRESSIVE_DESIGN_ENABLED, FLAG_NEW_HOME_SCREEN)
-    fun legacySeeAllRecentAccess_showsDataCategory() {
-        context.launchMainActivity {
-            navigateToNewPage("See all recent access")
-            scrollDownToAndFindText("Write: ${dataCategoryString}")
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
-    @RequiresFlagsDisabled(FLAG_NEW_HOME_SCREEN)
-    fun expressiveSeeAllRecentAccess_showsDataCategory() {
-        context.launchMainActivity {
-            navigateToNewPage("View all")
-            scrollDownToAndFindText("Write: ${dataCategoryString}")
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(FLAG_NEW_HOME_SCREEN)
-    fun newHomeScreen_seeRecentAccess_showsDataCategory() {
+    fun homeScreen_seeRecentAccess_showsDataCategory() {
         context.launchMainActivity {
             navigateToNewPage("Recent access")
             scrollDownToAndFindText("Write: ${dataCategoryString}")

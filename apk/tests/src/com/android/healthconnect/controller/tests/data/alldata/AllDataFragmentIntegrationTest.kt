@@ -26,7 +26,6 @@ import android.health.connect.datatypes.MedicalDataSource
 import android.health.connect.datatypes.Record
 import android.health.connect.datatypes.SymptomRecord
 import android.os.Bundle
-import android.platform.test.annotations.RequiresFlagsDisabled
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.navigation.Navigation
@@ -168,24 +167,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
-    fun populatedFitnessDataTypesDisplayed_impressionsLogged() {
-        mockData(listOf(STEPS, HEART_RATE, BASAL_BODY_TEMPERATURE))
-
-        launchFragment<AllDataFragment>().use {
-            checkTextIsDisplayed("Steps")
-            checkTextIsDisplayed("Heart rate")
-            checkTextIsDisplayed("Basal body temperature")
-            onView(withText("No data")).check(doesNotExist())
-            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ALL_DATA_PAGE)
-            verify(healthConnectLogger).logPageImpression()
-            verify(healthConnectLogger, atLeast(3))
-                .logImpression(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun whenCombinedData_populatedFitnessDataTypesDisplayed_impressionsLogged() {
         mockData(listOf(STEPS, HEART_RATE, BASAL_BODY_TEMPERATURE))
 
@@ -202,7 +183,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun populatedCombinedDataTypesDisplayed_impressionsLogged() {
         mockData(listOf(STEPS, HEART_RATE, HYDRATION))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -227,18 +207,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
-    fun populatedMedicalData_pageImpressionLogged() {
-        mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
-
-        launchMedicalAllDataFragment().use {
-            verify(healthConnectLogger, atLeast(1)).setPageId(PageName.ALL_MEDICAL_DATA_PAGE)
-            verify(healthConnectLogger).logPageImpression()
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun populatedCombinedDataTypesDisplayed_onlyMedicalAvailable_impressionsLogged() {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -257,20 +225,6 @@ class AllDataFragmentIntegrationTest {
                 .logImpression(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
             verify(healthConnectLogger).logImpression(AllDataElement.MEDICAL_RECORDS_HEADER)
             verify(healthConnectLogger).logImpression(AllDataElement.MEDICAL_RECORDS_HEADER_LINK)
-        }
-    }
-
-    @Test
-    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
-    fun medicalDataPresent_populatedDataTypesDisplayed() {
-        mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
-
-        launchMedicalAllDataFragment().use {
-            checkTextIsDisplayed("Allergies")
-            checkTextIsDisplayed("Vaccines")
-            onView(withText("Distance")).check(doesNotExist())
-            onView(withText("No data")).check(doesNotExist())
-            onView(withText("Select all")).check(doesNotExist())
         }
     }
 
@@ -307,21 +261,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
-    fun whenOnlyMedicalDataTypesDisplayed_topIntroShown() {
-        mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
-
-        launchMedicalAllDataFragment().use {
-            onView(withText("Medical records")).check(doesNotExist())
-            checkTextIsDisplayed(
-                "This includes all the medical records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your medical records."
-            )
-            checkTextIsDisplayed("About medical records")
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun whenCombinedData_andOnlyMedicalDataTypesDisplayed_topIntroShown() {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -355,28 +294,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
-    fun whenMedicalShown_navigatesToMedicalAllEntries() {
-        mockData(listOf(VACCINES), setOf(TEST_MEDICAL_DATA_SOURCE))
-
-        launchFragment<AllDataFragment>(
-                Bundle().apply { putBoolean(IS_BROWSE_MEDICAL_DATA_SCREEN, true) }
-            ) {
-                navHostController.setGraph(R.navigation.medical_data_nav_graph)
-                Navigation.setViewNavController(this.requireView(), navHostController)
-            }
-            .use {
-                checkTextIsDisplayed("Vaccines")
-                scrollToTextAndClick("Vaccines")
-                verify(healthConnectLogger)
-                    .logInteraction(AllDataElement.PERMISSION_TYPE_BUTTON_NO_CHECKBOX)
-                assertThat(navHostController.currentDestination?.id)
-                    .isEqualTo(R.id.entriesAndAccessFragment)
-            }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun whenCombinedData_onlyMedicalShown_navigatesToMedicalAllEntries() {
         mockData(listOf(VACCINES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -451,28 +368,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
-    fun triggerDeletionState_medicalData_showsCheckboxes() {
-        mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
-        launchMedicalAllDataFragment().use { scenario ->
-            assertCheckboxNotShown("Allergies")
-            assertCheckboxNotShown("Vaccines")
-
-            scenario.onActivity { activity ->
-                val fragment = activity.supportFragmentManager.findFragmentByTag("")
-                (fragment as AllDataFragment).triggerDeletionState(DELETE)
-            }
-
-            assertCheckboxShown("Allergies")
-            assertCheckboxShown("Vaccines")
-            verify(healthConnectLogger).logImpression(AllDataElement.SELECT_ALL_BUTTON)
-            verify(healthConnectLogger, atLeast(2))
-                .logImpression(AllDataElement.PERMISSION_TYPE_BUTTON_WITH_CHECKBOX)
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun triggerDeletionState_combinedData_onlyMedicalShown_showsCheckboxes() {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
         launchFragment<AllDataFragment>().use { scenario ->
@@ -493,7 +388,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun triggerDeletionState_combinedData_showsCheckboxes() {
         mockData(listOf(DISTANCE, MENSTRUATION))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -540,29 +434,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
-    fun inDeletionState_medicalData_checkedItemsAddedToDeleteSet() {
-        mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
-
-        launchMedicalAllDataFragment().use { scenario ->
-            scenario.onActivity { activity ->
-                val fragment = activity.supportFragmentManager.findFragmentByTag("")
-                (fragment as AllDataFragment).triggerDeletionState(DELETE)
-            }
-
-            scrollToTextAndClick("Vaccines")
-            onIdle()
-            assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value)
-                .containsExactlyElementsIn(setOf(VACCINES))
-            verify(healthConnectLogger)
-                .logInteraction(AllDataElement.PERMISSION_TYPE_BUTTON_WITH_CHECKBOX)
-            scrollToTextAndClick("Vaccines")
-            assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value).isEmpty()
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_onlyMedicalShown_checkedItemsAddedToDeleteSet() = runTest {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
 
@@ -587,7 +458,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_checkedItemsAddedToDeleteSet() {
         mockData(listOf(DISTANCE, HEART_RATE))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -720,21 +590,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
-    fun triggerDeletionState_medicalData_displaysSelectAllButton() {
-        mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
-        launchMedicalAllDataFragment().use { scenario ->
-            scenario.onActivity { activity ->
-                val fragment = activity.supportFragmentManager.findFragmentByTag("")
-                (fragment as AllDataFragment).triggerDeletionState(DELETE)
-            }
-            scrollToTopOfPreferenceScreen()
-            assertCheckboxShown("Select all")
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun triggerDeletionState_combinedData_onlyMedicalShown_displaysSelectAllButton() {
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
         launchFragment<AllDataFragment>().use { scenario ->
@@ -748,7 +603,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun triggerDeletionState_combinedData_displaysSelectAllButton() = runTest {
         mockData(listOf(DISTANCE, MENSTRUATION))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -783,28 +637,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
-    fun inDeletionState_medicalData_onSelectAllChecked_allPermissionTypesChecked() = runTest {
-        mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
-
-        launchMedicalAllDataFragment().use { scenario ->
-            scenario.onActivity { activity ->
-                val fragment = activity.supportFragmentManager.findFragmentByTag("")
-                (fragment as AllDataFragment).triggerDeletionState(DELETE)
-            }
-
-            onIdle()
-            scrollToTopOfPreferenceScreen()
-            assertCheckboxShown("Select all")
-            onView(withText("Select all")).perform(click())
-            assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value)
-                .containsExactlyElementsIn(setOf(VACCINES, ALLERGIES_INTOLERANCES))
-            verify(healthConnectLogger).logInteraction(AllDataElement.SELECT_ALL_BUTTON)
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_onlyMedicalShown_onSelectAllChecked_allPermissionTypesChecked() =
         runTest {
             mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -826,7 +658,6 @@ class AllDataFragmentIntegrationTest {
         }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_onSelectAllChecked_allPermissionTypesChecked() = runTest {
         mockData(listOf(DISTANCE, MENSTRUATION))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -871,29 +702,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
-    fun inDeletionState_medicalData_onSelectAllUnchecked_allPermissionTypesUnChecked() = runTest {
-        mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
-
-        launchMedicalAllDataFragment().use { scenario ->
-            scenario.onActivity { activity ->
-                val fragment = activity.supportFragmentManager.findFragmentByTag("")
-                (fragment as AllDataFragment).triggerDeletionState(DELETE)
-            }
-
-            onIdle()
-            scrollToTopOfPreferenceScreen()
-            assertCheckboxShown("Select all")
-            onView(withText("Select all")).perform(click())
-            assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value)
-                .containsExactlyElementsIn(setOf(VACCINES, ALLERGIES_INTOLERANCES))
-            onView(withText("Select all")).perform(click())
-            assertThat(allDataViewModel.setOfPermissionTypesToBeDeleted.value).isEmpty()
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_onlyMedicalShown_onSelectAllUnchecked_allPermissionTypesUnChecked() =
         runTest {
             mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -916,7 +724,6 @@ class AllDataFragmentIntegrationTest {
         }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_onSelectAllUnchecked_allPermissionTypesUnChecked() = runTest {
         mockData(listOf(DISTANCE, MENSTRUATION))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -967,33 +774,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
-    fun inDeletionState_medicalData_allPermissionTypesChecked_selectAllShouldBeChecked() {
-        mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
-
-        launchMedicalAllDataFragment().use { scenario ->
-            scenario.onActivity { activity ->
-                val fragment = activity.supportFragmentManager.findFragmentByTag("")
-                (fragment as AllDataFragment).triggerDeletionState(DELETE)
-            }
-
-            assertCheckboxShown("Allergies")
-            assertCheckboxShown("Vaccines")
-            scrollToTextAndClick("Allergies")
-            scrollToTextAndClick("Vaccines")
-            scenario.onActivity { activity ->
-                val fragment =
-                    activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
-                val selectAllCheckboxPreference =
-                    fragment.preferenceScreen.findPreference("key_select_all")
-                        as SelectAllCheckboxPreference?
-                assertThat(selectAllCheckboxPreference?.getIsChecked()).isTrue()
-            }
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_onlyMedicalShown_allPermissionTypesChecked_selectAllShouldBeChecked() =
         runTest {
             mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -1021,7 +801,6 @@ class AllDataFragmentIntegrationTest {
         }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_allPermissionTypesChecked_selectAllShouldBeChecked() =
         runTest {
             mockData(listOf(DISTANCE, MENSTRUATION))
@@ -1082,34 +861,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
-    fun inDeletionState_medicalData_selectAllChecked_oneUnchecked_selectAllUnchecked() = runTest {
-        mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
-
-        launchMedicalAllDataFragment().use { scenario ->
-            scenario.onActivity { activity ->
-                val fragment = activity.supportFragmentManager.findFragmentByTag("")
-                (fragment as AllDataFragment).triggerDeletionState(DELETE)
-            }
-
-            onIdle()
-            scrollToTopOfPreferenceScreen()
-            assertCheckboxShown("Select all")
-            scrollToTextAndClick("Select all")
-            scrollToTextAndClick("Allergies")
-            scenario.onActivity { activity ->
-                val fragment =
-                    activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
-                val selectAllCheckboxPreference =
-                    fragment.preferenceScreen.findPreference("key_select_all")
-                        as SelectAllCheckboxPreference?
-                assertThat(selectAllCheckboxPreference?.getIsChecked()).isFalse()
-            }
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_onlyMedicalShown_selectAllChecked_oneUnchecked_selectAllUnchecked() =
         runTest {
             mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -1137,7 +888,6 @@ class AllDataFragmentIntegrationTest {
         }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_selectAllChecked_oneUnchecked_selectAllUnchecked() = runTest {
         mockData(listOf(DISTANCE, MENSTRUATION))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -1212,54 +962,6 @@ class AllDataFragmentIntegrationTest {
     }
 
     @Test
-    @RequiresFlagsDisabled(Flags.FLAG_NEW_HOME_SCREEN)
-    fun inDeletionState_medicalData_checkboxesRemainOnOrientationChange() = runTest {
-        mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
-
-        launchMedicalAllDataFragment().use { scenario ->
-            scenario.onActivity { activity ->
-                val fragment = activity.supportFragmentManager.findFragmentByTag("")
-                (fragment as AllDataFragment).triggerDeletionState(DELETE)
-            }
-
-            onIdle()
-            scrollToTopOfPreferenceScreen()
-            assertCheckboxShown("Select all")
-            scrollToTextAndClick("Select all")
-
-            scenario.recreate()
-
-            scrollToText("Select all")
-            scenario.onActivity { activity ->
-                val fragment =
-                    activity.supportFragmentManager.findFragmentByTag("") as AllDataFragment
-                val selectAllCheckboxPreference =
-                    fragment.preferenceScreen.findPreference("key_select_all")
-                        as SelectAllCheckboxPreference?
-                assertThat(selectAllCheckboxPreference?.getIsChecked()).isTrue()
-                fragment.preferenceScreen.children.forEach { preference ->
-                    if (preference is PreferenceCategory) {
-                        preference.children.forEach { permissionTypePreference ->
-                            if (permissionTypePreference is DeletionPermissionTypesPreference) {
-                                assertThat(permissionTypePreference.getIsChecked()).isTrue()
-                            }
-                        }
-                    }
-                }
-            }
-            assertCheckboxShown("Allergies")
-            assertCheckboxShown("Vaccines")
-            onView(
-                    withText(
-                        "This includes all the medical records synced to and added to Health\u00A0Connect. This might not be your full medical record and does not include a medical description of your medical records."
-                    )
-                )
-                .check(doesNotExist())
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedDataOnlyMedicalShowing_checkboxesRemainOnOrientationChange() =
         runTest {
             mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))
@@ -1301,7 +1003,6 @@ class AllDataFragmentIntegrationTest {
         }
 
     @Test
-    @RequiresFlagsEnabled(Flags.FLAG_NEW_HOME_SCREEN)
     fun inDeletionState_combinedData_checkboxesRemainOnOrientationChange() = runTest {
         mockData(listOf(DISTANCE, MENSTRUATION))
         mockData(listOf(VACCINES, ALLERGIES_INTOLERANCES), setOf(TEST_MEDICAL_DATA_SOURCE))

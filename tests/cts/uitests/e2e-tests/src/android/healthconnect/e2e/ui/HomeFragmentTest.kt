@@ -28,12 +28,8 @@ import android.healthconnect.testing.shared.DataFactory.getEmptyMetadata
 import android.healthconnect.testing.shared.DeviceSupportUtils
 import android.healthconnect.testing.shared.phr.PhrDataFactory.FHIR_DATA_IMMUNIZATION
 import android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest
-import android.platform.test.annotations.RequiresFlagsDisabled
-import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
-import com.android.healthfitness.flags.Flags.FLAG_NEW_HOME_SCREEN
-import com.android.settingslib.widget.theme.flags.Flags.FLAG_IS_EXPRESSIVE_DESIGN_ENABLED
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 import org.junit.AfterClass
@@ -108,27 +104,7 @@ class HomeFragmentTest : HealthConnectBaseTest() {
     }
 
     @Test
-    @RequiresFlagsDisabled(FLAG_IS_EXPRESSIVE_DESIGN_ENABLED, FLAG_NEW_HOME_SCREEN)
-    fun oldHomeFragment_legacyRecentAccessShownOnHomeScreen() {
-        context.launchMainActivity {
-            scrollDownToAndFindTextContains("CtsHealthConnectTest")
-            scrollDownToAndFindText("See all recent access")
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
-    @RequiresFlagsDisabled(FLAG_NEW_HOME_SCREEN)
-    fun oldHomeFragment_expressiveRecentAccessShownOnHomeScreen() {
-        context.launchMainActivity {
-            scrollDownToAndFindTextContains("CtsHealthConnectTest")
-            scrollDownToAndFindText("View all")
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(FLAG_NEW_HOME_SCREEN)
-    fun newHomeFragment_navigatesToRecentAccess() {
+    fun homeFragment_navigatesToRecentAccess() {
         context.launchMainActivity {
             navigateToNewPage("Recent access")
             scrollDownToAndFindText("Today")
@@ -137,43 +113,7 @@ class HomeFragmentTest : HealthConnectBaseTest() {
     }
 
     @Test
-    @RequiresFlagsDisabled(FLAG_IS_EXPRESSIVE_DESIGN_ENABLED, FLAG_NEW_HOME_SCREEN)
-    fun oldHomeFragment_navigatesToLegacyRecentAccess() {
-        context.launchMainActivity {
-            navigateToNewPage("See all recent access")
-
-            scrollDownToAndFindText("Today")
-            scrollDownToAndFindTextContains("CtsHealthConnectTest")
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(FLAG_IS_EXPRESSIVE_DESIGN_ENABLED)
-    @RequiresFlagsDisabled(FLAG_NEW_HOME_SCREEN)
-    fun oldHomeFragment_navigatesToExpressiveRecentAccess() {
-        context.launchMainActivity {
-            navigateToNewPage("View all")
-
-            scrollDownToAndFindText("Today")
-            scrollDownToAndFindTextContains("CtsHealthConnectTest")
-        }
-    }
-
-    @Test
-    @RequiresFlagsDisabled(FLAG_NEW_HOME_SCREEN)
-    fun oldHomeFragment_withMedicalData_opensBrowseMedicalRecords() {
-        val dataSource =
-            APP_A_WITH_READ_WRITE_PERMS.createMedicalDataSource(getCreateMedicalDataSourceRequest())
-        APP_A_WITH_READ_WRITE_PERMS.upsertMedicalResource(dataSource.id, FHIR_DATA_IMMUNIZATION)
-        context.launchMainActivity {
-            navigateToMedicalRecords()
-            scrollDownToAndFindText("Vaccines")
-        }
-    }
-
-    @Test
-    @RequiresFlagsEnabled(FLAG_NEW_HOME_SCREEN)
-    fun newHomeFragment_showsCombinedData_inDataAndAccess() {
+    fun homeFragment_showsCombinedData_inDataAndAccess() {
         val dataSource =
             APP_A_WITH_READ_WRITE_PERMS.createMedicalDataSource(getCreateMedicalDataSourceRequest())
         APP_A_WITH_READ_WRITE_PERMS.upsertMedicalResource(dataSource.id, FHIR_DATA_IMMUNIZATION)

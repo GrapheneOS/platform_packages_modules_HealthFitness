@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2025 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,751 +13,353 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.android.healthconnect.controller.home
 
-import android.content.Context
 import android.content.Intent
-import android.health.connect.HealthConnectManager
-import android.icu.text.MessageFormat
 import android.os.Bundle
-import android.provider.Settings.ACTION_SECURITY_SETTINGS
 import android.view.View
-import android.widget.Toast
-import androidx.fragment.app.activityViewModels
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.preference.Preference
 import androidx.preference.PreferenceGroup
 import com.android.healthconnect.controller.R
-import com.android.healthconnect.controller.data.alldata.AllDataFragment.Companion.IS_BROWSE_MEDICAL_DATA_SCREEN
-import com.android.healthconnect.controller.devices.NativeStepsNotificationViewModel
-import com.android.healthconnect.controller.exportimport.api.ExportStatusViewModel
-import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiState
-import com.android.healthconnect.controller.exportimport.api.ScheduledExportUiStatus
-import com.android.healthconnect.controller.home.HomeViewModel.LockScreenBannerState
-import com.android.healthconnect.controller.migration.MigrationActivity.Companion.maybeShowWhatsNewDialog
-import com.android.healthconnect.controller.migration.MigrationViewModel
-import com.android.healthconnect.controller.migration.api.MigrationRestoreState
-import com.android.healthconnect.controller.migration.api.MigrationRestoreState.DataRestoreUiState
-import com.android.healthconnect.controller.migration.api.MigrationRestoreState.MigrationUiState
-import com.android.healthconnect.controller.onboarding.OnboardingViewModel
-import com.android.healthconnect.controller.recentaccess.RecentAccessEntry
-import com.android.healthconnect.controller.recentaccess.RecentAccessPreference
-import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel
-import com.android.healthconnect.controller.recentaccess.RecentAccessViewModel.RecentAccessState
+import com.android.healthconnect.controller.permissions.connectedapps.HealthAppPreference
 import com.android.healthconnect.controller.shared.Constants
-import com.android.healthconnect.controller.shared.Constants.LOCK_SCREEN_BANNER_SEEN_FITNESS
-import com.android.healthconnect.controller.shared.Constants.LOCK_SCREEN_BANNER_SEEN_MEDICAL
-import com.android.healthconnect.controller.shared.Constants.MIGRATION_NOT_COMPLETE_DIALOG_SEEN
-import com.android.healthconnect.controller.shared.Constants.USER_ACTIVITY_TRACKER
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.app.AppPermissionsType
 import com.android.healthconnect.controller.shared.app.ConnectedAppMetadata
 import com.android.healthconnect.controller.shared.app.ConnectedAppStatus
 import com.android.healthconnect.controller.shared.dialog.AlertDialogBuilder
-import com.android.healthconnect.controller.shared.preference.HealthBannerPreference
 import com.android.healthconnect.controller.shared.preference.HealthButtonPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreference
 import com.android.healthconnect.controller.shared.preference.HealthPreferenceFragment
+import com.android.healthconnect.controller.shared.preference.NoAppsPreference
+import com.android.healthconnect.controller.shared.preference.NotConnectedAppPreference
 import com.android.healthconnect.controller.utils.AttributeResolver
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
-import com.android.healthconnect.controller.utils.SettingsTransitionHelper.createMainlineServiceUpdateSettingsIntent
-import com.android.healthconnect.controller.utils.TimeSource
-import com.android.healthconnect.controller.utils.formatRecentAccessTime
-import com.android.healthconnect.controller.utils.logging.DataRestoreElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
-import com.android.healthconnect.controller.utils.logging.HomePageElement
 import com.android.healthconnect.controller.utils.logging.MigrationElement
+import com.android.healthconnect.controller.utils.logging.NewHomePageElement
 import com.android.healthconnect.controller.utils.logging.PageName
-import com.android.healthconnect.controller.utils.logging.RecentAccessElement
 import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
+import com.android.healthconnect.controller.utils.setupMenu
 import com.android.healthconnect.controller.utils.tryLaunchAppOnboardingActivity
 import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import com.android.healthfitness.flags.Flags.stepTrackingEnabled
 import com.android.settingslib.widget.BannerMessagePreferenceGroup
+import com.android.settingslib.widget.FooterPreference
 import com.android.settingslib.widget.SettingsThemeHelper
-import com.android.settingslib.widget.ZeroStatePreference
 import dagger.hilt.android.AndroidEntryPoint
-import java.time.Instant
 import javax.inject.Inject
+import kotlinx.coroutines.launch
 
-/** Home fragment for Health Connect. */
 @AndroidEntryPoint(HealthPreferenceFragment::class)
 class HomeFragment : Hilt_HomeFragment() {
 
     companion object {
         private const val BANNER_GROUP = "banner_group"
-        private const val NO_RECENT_ACCESS = "no_recent_access"
-        private const val PERMISSIONS_AND_DATA_CATEGORY_KEY = "permissions_and_data_category"
-        private const val DATA_AND_ACCESS_PREFERENCE_KEY = "data_and_access"
-        private const val RECENT_ACCESS_PREFERENCE_KEY = "recent_access"
-        private const val CONNECTED_APPS_PREFERENCE_KEY = "connected_apps"
-        private const val DEVICES_PREFERENCE_KEY = "devices"
-        private const val MIGRATION_BANNER_PREFERENCE_KEY = "migration_banner"
-        private const val DATA_RESTORE_BANNER_PREFERENCE_KEY = "data_restore_banner"
-        private const val MANAGE_DATA_PREFERENCE_KEY = "manage_data"
-        private const val BROWSE_MEDICAL_DATA_PREFERENCE_KEY = "medical_data"
-        private const val EXPORT_ERROR_BANNER_PREFERENCE_KEY = "export_error_banner"
-        private const val LOCK_SCREEN_BANNER_KEY = "lock_screen_banner"
-        private const val ONBOARDING_ZERO_APPS_BANNER_KEY = "onboarding_zero_apps_banner_key"
-        private const val ONBOARDING_ONE_APP_BANNER_KEY = "onboarding_one_app_banner_key"
-        private const val NATIVE_STEPS_BANNER_KEY = "native_steps_banner_key"
-        private val securitySettingsIntent = Intent(ACTION_SECURITY_SETTINGS)
-
-        @JvmStatic fun newInstance() = HomeFragment()
+        private const val YOUR_HEALTH_APPS_CATEGORY = "your_health_apps"
+        private const val DATA_AND_ACCESS = "data_and_access"
+        private const val RECENT_ACCESS = "recent_access"
+        private const val DEVICES = "devices"
+        private const val MANAGE_DATA = "manage_data"
+        private const val FOOTER = "footer"
     }
 
     init {
-        this.setPageName(PageName.HOME_PAGE)
+        setPageName(PageName.NEW_HOME_PAGE)
     }
 
-    @Inject lateinit var timeSource: TimeSource
-    @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
-    @Inject lateinit var healthPermissionReader: HealthPermissionReader
-    @Inject lateinit var logger: HealthConnectLogger
-
-    private val recentAccessViewModel: RecentAccessViewModel by viewModels()
     private val homeViewModel: HomeViewModel by viewModels()
-    private val migrationViewModel: MigrationViewModel by activityViewModels()
-    private val exportStatusViewModel: ExportStatusViewModel by activityViewModels()
-    private val onboardingViewModel: OnboardingViewModel by activityViewModels()
-    private val nativeStepsNotificationViewModel: NativeStepsNotificationViewModel by
-        activityViewModels()
 
-    private val noRecentAccessPreference: ZeroStatePreference by pref(NO_RECENT_ACCESS)
+    @Inject lateinit var deviceInfoUtils: DeviceInfoUtils
+    @Inject lateinit var healthConnectLogger: HealthConnectLogger
+    @Inject lateinit var healthPermissionReader: HealthPermissionReader
 
-    private val recentAccessPreferenceGroup: PreferenceGroup by pref(RECENT_ACCESS_PREFERENCE_KEY)
-
-    private val permissionsAndDataPreferenceGroup: PreferenceGroup by
-        pref(PERMISSIONS_AND_DATA_CATEGORY_KEY)
-
-    private val appPermissionsPreference: HealthPreference by pref(CONNECTED_APPS_PREFERENCE_KEY)
-    private val devicesPreference: HealthPreference by pref(DEVICES_PREFERENCE_KEY)
-
-    private val dataAndAccessPreference: HealthPreference by pref(DATA_AND_ACCESS_PREFERENCE_KEY)
-
-    private val manageDataPreference: HealthPreference by pref(MANAGE_DATA_PREFERENCE_KEY)
-
+    private val bannerGroup: BannerMessagePreferenceGroup by pref(BANNER_GROUP)
+    private val yourHealthAppsCategory: PreferenceGroup by pref(YOUR_HEALTH_APPS_CATEGORY)
+    private val dataAndAccessPreference: HealthPreference by pref(DATA_AND_ACCESS)
+    private val recentAccessPreference: HealthPreference by pref(RECENT_ACCESS)
+    private val devicesPreference: HealthPreference by pref(DEVICES)
+    private val manageDataPreference: HealthPreference by pref(MANAGE_DATA)
+    private val footer: FooterPreference by pref(FOOTER)
     private val dateFormatter: LocalDateTimeFormatter by lazy {
         LocalDateTimeFormatter(requireContext())
     }
 
-    private val isLockScreenBannerAvailable: Boolean by lazy {
-        deviceInfoUtils.isIntentHandlerAvailable(requireContext(), securitySettingsIntent)
+    private val bannerFactory: BannerFactory by lazy {
+        BannerFactory(requireContext(), dateFormatter, ::handleBannerAction)
     }
 
-    private val bannerGroup: BannerMessagePreferenceGroup by pref(BANNER_GROUP)
-    private lateinit var migrationBannerSummary: String
+    private var bannerToDismissOnStop: HomeViewModel.BannerData? = null
+
+    private fun handleBannerAction(action: BannerAction) {
+        when (action) {
+            is BannerAction.Navigate ->
+                findNavController().navigateSafe(R.id.newHomeFragment, action.destinationId)
+            is BannerAction.StartActivity -> startActivity(action.intent)
+            is BannerAction.Dismiss -> homeViewModel.onDismissBanner(action.banner)
+            is BannerAction.NavigateAndDismiss -> {
+                findNavController().navigateSafe(R.id.newHomeFragment, action.destinationId)
+                homeViewModel.onDismissBanner(action.banner)
+            }
+            is BannerAction.StartActivityAndDismiss -> {
+                startActivity(action.intent)
+                bannerToDismissOnStop = action.banner
+            }
+        }
+    }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         super.onCreatePreferences(savedInstanceState, rootKey)
-        setPreferencesFromResource(R.xml.home_preference_screen, rootKey)
-        dataAndAccessPreference.logName = HomePageElement.DATA_AND_ACCESS_BUTTON
-        dataAndAccessPreference.summary = getString(R.string.browse_data_subtitle)
+        setPreferencesFromResource(R.xml.home_screen, rootKey)
+
+        dataAndAccessPreference.logName = NewHomePageElement.DATA_AND_ACCESS_BUTTON
         dataAndAccessPreference.setOnPreferenceClickListener {
             findNavController()
-                .navigateSafe(
-                    R.id.homeFragment,
-                    R.id.action_homeFragment_to_healthDataCategoriesFragment,
-                )
+                .navigateSafe(R.id.newHomeFragment, R.id.action_newHomeFragment_to_dataAndAccess)
             true
         }
-        appPermissionsPreference.logName = HomePageElement.APP_PERMISSIONS_BUTTON
-        appPermissionsPreference.setOnPreferenceClickListener {
+
+        recentAccessPreference.logName = NewHomePageElement.RECENT_ACCESS_BUTTON
+        recentAccessPreference.setOnPreferenceClickListener {
             findNavController()
-                .navigateSafe(R.id.homeFragment, R.id.action_homeFragment_to_connectedAppsFragment)
+                .navigateSafe(R.id.newHomeFragment, R.id.action_newHomeFragment_to_recentAccess)
             true
         }
 
-        // TODO(b/429618933): add logging for devices section
-        devicesPreference.setOnPreferenceClickListener {
-            val action =
-                if (deviceDataProvidersApi()) R.id.action_homeFragment_to_newDevicesFragment
-                else R.id.action_homeFragment_to_connectedDevicesFragment
-            findNavController().navigateSafe(R.id.homeFragment, action)
-            true
+        if (stepTrackingEnabled() || deviceDataProvidersApi()) {
+            devicesPreference.isVisible = true
+            devicesPreference.logName = NewHomePageElement.DEVICES_BUTTON
+            devicesPreference.setOnPreferenceClickListener {
+                val action =
+                    if (deviceDataProvidersApi()) R.id.action_newHomeFragment_to_newDevicesFragment
+                    else R.id.action_newHomeFragment_to_connectedDevicesFragment
+                findNavController().navigateSafe(R.id.newHomeFragment, action)
+                true
+            }
+        } else {
+            devicesPreference.isVisible = false
         }
-        devicesPreference.summary = getString(R.string.devices_summary)
 
-        manageDataPreference.logName = HomePageElement.MANAGE_DATA_BUTTON
+        manageDataPreference.logName = NewHomePageElement.MANAGE_DATA_BUTTON
         manageDataPreference.setOnPreferenceClickListener {
             findNavController()
-                .navigateSafe(R.id.homeFragment, R.id.action_homeFragment_to_manageDataFragment)
+                .navigateSafe(R.id.newHomeFragment, R.id.action_newHomeFragment_to_manageData)
             true
         }
-        manageDataPreference.summary = getString(R.string.manage_data_summary)
 
-        migrationBannerSummary = getString(R.string.resume_migration_banner_description_fallback)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        recentAccessViewModel.loadRecentAccessApps(maxNumEntries = 3)
-        homeViewModel.loadConnectedApps()
-        exportStatusViewModel.loadScheduledExportStatus()
-        homeViewModel.loadHasAnyMedicalData()
-        onboardingViewModel.loadConnectedApps()
-        onboardingViewModel.loadOnboardingBannerState()
-        if (stepTrackingEnabled()) {
-            nativeStepsNotificationViewModel.loadWasSeen()
-        }
-        if (isLockScreenBannerAvailable) {
-            homeViewModel.loadShouldShowLockScreenBanner(getSharedPreference(), requireContext())
+        healthConnectLogger.logImpression(NewHomePageElement.HOME_PAGE_FOOTER)
+        healthConnectLogger.logImpression(NewHomePageElement.HOME_PAGE_FOOTER_LINK)
+        footer.setLearnMoreText(getString(R.string.home_screen_footer_link))
+        footer.setLearnMoreAction {
+            healthConnectLogger.logInteraction(NewHomePageElement.HOME_PAGE_FOOTER_LINK)
+            deviceInfoUtils.openHCGetStartedLink(requireActivity())
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        recentAccessViewModel.loadRecentAccessApps(maxNumEntries = 3)
-        recentAccessViewModel.recentAccessApps.observe(viewLifecycleOwner) { recentAppsState ->
-            when (recentAppsState) {
-                is RecentAccessState.WithData -> {
-                    updateRecentApps(recentAppsState.recentAccessEntries)
+        setupMenu(
+            R.menu.show_system_with_send_feedback_and_help,
+            viewLifecycleOwner,
+            healthConnectLogger,
+            onPrepareMenu = { menu ->
+                val showHideSystemMenuItem = menu.findItem(R.id.menu_show_hide_system)
+                showHideSystemMenuItem?.let {
+                    val isShowingSystem = homeViewModel.showSystemApps
+                    it.setTitle(
+                        if (isShowingSystem) {
+                            R.string.menu_hide_system
+                        } else {
+                            R.string.menu_show_system
+                        }
+                    )
                 }
-
-                is RecentAccessState.Error -> {
-                    updateRecentAppsWithError()
-                }
-
-                else -> {
-                    updateRecentApps(emptyList())
-                }
-            }
-        }
-        homeViewModel.connectedApps.observe(viewLifecycleOwner) { connectedApps ->
-            updateConnectedApps(connectedApps)
-        }
-
-        migrationViewModel.migrationState.observe(viewLifecycleOwner) { migrationState ->
-            when (migrationState) {
-                is MigrationViewModel.MigrationFragmentState.WithData -> {
-                    showMigrationState(migrationState.migrationRestoreState)
-                }
-
-                else -> {
-                    // do nothing
-                }
-            }
-        }
-        exportStatusViewModel.storedScheduledExportStatus.observe(viewLifecycleOwner) {
-            scheduledExportUiStatus ->
-            when (scheduledExportUiStatus) {
-                is ScheduledExportUiStatus.WithData -> {
-                    maybeShowExportErrorBanner(scheduledExportUiStatus.scheduledExportUiState)
-                }
-
-                else -> {
-                    // do nothing
-                }
-            }
-        }
-
-        homeViewModel.loadHasAnyMedicalData()
-        homeViewModel.hasAnyMedicalData.observe(viewLifecycleOwner) { hasAnyMedicalData ->
-            if (hasAnyMedicalData) {
-                addBrowseHealthDataButton()
+            },
+        ) { menuItem ->
+            if (menuItem.itemId == R.id.menu_show_hide_system) {
+                homeViewModel.setShouldShowSystemApps(!homeViewModel.showSystemApps)
+                requireActivity().invalidateMenu()
+                true
             } else {
-                removeBrowseHealthDataButton()
+                false
             }
         }
-        if (isLockScreenBannerAvailable) {
-            val sharedPreference = getSharedPreference()
-            homeViewModel.loadShouldShowLockScreenBanner(sharedPreference, requireContext())
-            homeViewModel.showLockScreenBanner.observe(viewLifecycleOwner) { bannerState ->
-                if (bannerState is LockScreenBannerState.ShowBanner) {
-                    addLockScreenBanner(bannerState)
-                } else {
-                    removeLockScreenBanner()
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeViewModel.homeFragmentState.collect { state ->
+                    when (state) {
+                        is HomeViewModel.HomeFragmentState.Loading -> setLoading(isLoading = true)
+                        is HomeViewModel.HomeFragmentState.Error -> {
+                            setLoading(false)
+                            setError(true)
+                        }
+                        is HomeViewModel.HomeFragmentState.WithData -> {
+                            setLoading(false)
+                            updateBanners(state.bannerState)
+                            updateScreen(state)
+                            maybeShowDialog(state.migrationDialog)
+                        }
+                    }
                 }
             }
         }
-
-        onboardingViewModel.onboardingBannerState.observe(viewLifecycleOwner) { state ->
-            maybeShowOnboardingBanner(state)
-        }
-
-        if (stepTrackingEnabled()) {
-            nativeStepsNotificationViewModel.wasSeen.observe(viewLifecycleOwner) { wasSeen ->
-                maybeShowNativeStepsBanner(wasSeen)
-            }
-        }
-
-        devicesPreference.isVisible = stepTrackingEnabled()
     }
 
-    private fun maybeShowNativeStepsBanner(wasSeen: Boolean) {
-        if (!stepTrackingEnabled()) {
-            return
+    private fun maybeShowDialog(dialog: HomeViewModel.MigrationDialog) {
+        when (dialog) {
+            is HomeViewModel.MigrationDialog.MigrationCompleteDialog -> {
+                showMigrationCompleteDialog()
+            }
+            is HomeViewModel.MigrationDialog.MigrationNotCompleteDialog -> {
+                showMigrationNotCompleteDialog()
+            }
+            else -> {
+                // Do nothing
+            }
         }
+    }
 
-        if (wasSeen) {
-            hideBanners(listOf(NATIVE_STEPS_BANNER_KEY))
+    private fun showMigrationCompleteDialog() {
+        AlertDialogBuilder(this, MigrationElement.MIGRATION_DONE_DIALOG_CONTAINER)
+            .setTitle(R.string.migration_whats_new_dialog_title)
+            .setMessage(R.string.migration_whats_new_dialog_content)
+            .setCancelable(false)
+            .setNegativeButton(
+                R.string.migration_whats_new_dialog_button,
+                MigrationElement.MIGRATION_DONE_DIALOG_BUTTON,
+            ) { _, _ ->
+                homeViewModel.onDismissDialog(HomeViewModel.MigrationDialog.MigrationCompleteDialog)
+            }
+            .create()
+            .show()
+    }
+
+    private fun showMigrationNotCompleteDialog() {
+        AlertDialogBuilder(this, MigrationElement.MIGRATION_NOT_COMPLETE_DIALOG_CONTAINER)
+            .setTitle(R.string.migration_not_complete_dialog_title)
+            .setMessage(R.string.migration_not_complete_dialog_content)
+            .setCancelable(false)
+            .setNegativeButton(
+                R.string.migration_whats_new_dialog_button,
+                MigrationElement.MIGRATION_NOT_COMPLETE_DIALOG_BUTTON,
+            ) { _, _ ->
+                homeViewModel.onDismissDialog(
+                    HomeViewModel.MigrationDialog.MigrationNotCompleteDialog
+                )
+            }
+            .create()
+            .show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        homeViewModel.loadInitialData()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        bannerToDismissOnStop?.let {
+            homeViewModel.onDismissBanner(it)
+            bannerToDismissOnStop = null
+        }
+    }
+
+    private fun updateBanners(bannerState: HomeViewModel.HomeBannerState) {
+        bannerGroup.removeAll()
+        if (bannerState is HomeViewModel.HomeBannerState.ShowBanners) {
+            bannerState.banners.forEach { bannerData ->
+                bannerGroup.addPreference(bannerFactory.getBanner(bannerData))
+            }
+        }
+    }
+
+    private fun updateScreen(homeFragmentState: HomeViewModel.HomeFragmentState.WithData) {
+        yourHealthAppsCategory.removeAll()
+        if (homeFragmentState.connectedApps.isEmpty()) {
+            yourHealthAppsCategory.addPreference(getNoAppsPreference())
         } else {
-            showNativeStepsBanner()
-        }
-    }
-
-    private fun showNativeStepsBanner() {
-        if (bannerGroup.findPreference<HealthBannerPreference>(NATIVE_STEPS_BANNER_KEY) == null) {
-            bannerGroup.addPreference(getNativeStepsBanner())
-        }
-    }
-
-    private fun getNativeStepsBanner(): HealthBannerPreference {
-        return HealthBannerPreference(requireContext(), HomePageElement.NATIVE_STEPS_BANNER).also {
-            banner ->
-            banner.setPositiveButton(
-                text = getString(R.string.native_steps_banner_review_button),
-                logName = HomePageElement.NATIVE_STEPS_BANNER_REVIEW_BUTTON,
-            ) {
-                // TODO(b/435354542): Navigate directly to device management
-                findNavController()
-                    .navigateSafe(
-                        R.id.homeFragment,
-                        R.id.action_homeFragment_to_connectedDevicesFragment,
-                    )
-                dismissBanner(Constants.NATIVE_STEPS_BANNER_SEEN, NATIVE_STEPS_BANNER_KEY)
-                nativeStepsNotificationViewModel.loadWasSeen()
-            }
-
-            banner.setNegativeButton(
-                text = getString(R.string.native_steps_banner_dismiss_button),
-                logName = HomePageElement.NATIVE_STEPS_BANNER_DISMISS_BUTTON,
-            ) {
-                dismissBanner(Constants.NATIVE_STEPS_BANNER_SEEN, NATIVE_STEPS_BANNER_KEY)
-                nativeStepsNotificationViewModel.loadWasSeen()
-            }
-
-            banner.title = getString(R.string.native_steps_banner_title)
-            banner.summary = getString(R.string.native_steps_banner_summary)
-            banner.icon =
-                AttributeResolver.getNullableDrawable(requireContext(), R.attr.healthConnectIcon)
-            banner.key = NATIVE_STEPS_BANNER_KEY
-        }
-    }
-
-    private fun maybeShowOnboardingBanner(state: OnboardingViewModel.OnboardingBannerState) {
-        when (state) {
-            is OnboardingViewModel.OnboardingBannerState.ZeroAppsOnboardingBanner ->
-                showZeroAppsConnectedBanner()
-
-            is OnboardingViewModel.OnboardingBannerState.OneAppOnboardingBanner ->
-                showOneAppConnectedBanner()
-
-            else ->
-                hideBanners(listOf(ONBOARDING_ZERO_APPS_BANNER_KEY, ONBOARDING_ONE_APP_BANNER_KEY))
-        }
-    }
-
-    private fun showZeroAppsConnectedBanner() {
-        if (
-            bannerGroup.findPreference<HealthBannerPreference>(ONBOARDING_ZERO_APPS_BANNER_KEY) ==
-                null
-        ) {
-            bannerGroup.addPreference(getZeroAppsOnboardingBanner())
-        }
-    }
-
-    private fun showOneAppConnectedBanner() {
-        if (
-            bannerGroup.findPreference<HealthBannerPreference>(ONBOARDING_ONE_APP_BANNER_KEY) ==
-                null
-        ) {
-            bannerGroup.addPreference(getOneAppConnectedBanner())
-        }
-    }
-
-    private fun getZeroAppsOnboardingBanner(): HealthBannerPreference {
-        return HealthBannerPreference(requireContext(), HomePageElement.ZERO_APPS_CONNECTED_BANNER)
-            .also { banner ->
-                banner.setPositiveButton(
-                    text = getString(R.string.zero_apps_onboarding_banner_button),
-                    logName = HomePageElement.ZERO_APPS_CONNECTED_BANNER_SET_UP_BUTTON,
-                ) {
-                    startActivity(Intent(HealthConnectManager.ACTION_SYNC_MORE_APPS))
+            homeFragmentState.connectedApps.take(5).forEach { app ->
+                val appPreference =
+                    if (app.status == ConnectedAppStatus.DENIED) {
+                        NotConnectedAppPreference(requireContext(), appMetadata = app.appMetadata)
+                            .also {
+                                it.logName = NewHomePageElement.NOT_CONNECTED_APP_HOME_SCREEN_BUTTON
+                            }
+                    } else {
+                        HealthAppPreference(requireContext(), app.appMetadata).also {
+                            it.logName = NewHomePageElement.CONNECTED_APP_HOME_SCREEN_BUTTON
+                        }
+                    }
+                appPreference.setOnPreferenceClickListener {
+                    navigateToAppInfoOrOnboarding(app)
+                    true
                 }
 
-                banner.setNegativeButton(
-                    text = getString(R.string.banner_default_dismiss_button),
-                    logName = HomePageElement.ZERO_APPS_CONNECTED_BANNER_DISMISS_BUTTON,
-                ) {
-                    dismissBanner(
-                        Constants.ONBOARDING_ZERO_APPS_BANNER_SEEN,
-                        ONBOARDING_ZERO_APPS_BANNER_KEY,
-                    )
-                }
-                banner.title = getString(R.string.zero_apps_onboarding_banner_title)
-                banner.summary = getString(R.string.zero_apps_onboarding_banner_summary)
-                banner.icon =
-                    AttributeResolver.getNullableDrawable(
-                        requireContext(),
-                        R.attr.healthConnectIcon,
-                    )
-                banner.key = ONBOARDING_ZERO_APPS_BANNER_KEY
+                yourHealthAppsCategory.addPreference(appPreference)
             }
-    }
-
-    private fun getOneAppConnectedBanner(): HealthBannerPreference {
-        return HealthBannerPreference(requireContext(), HomePageElement.ONE_APP_CONNECTED_BANNER)
-            .also { banner ->
-                banner.setPositiveButton(
-                    text = getString(R.string.one_app_onboarding_banner_button),
-                    logName = HomePageElement.ONE_APP_CONNECTED_BANNER_SET_UP_BUTTON,
-                ) {
-                    startActivity(Intent(HealthConnectManager.ACTION_SYNC_MORE_APPS))
-                }
-
-                banner.setNegativeButton(
-                    text = getString(R.string.banner_default_dismiss_button),
-                    logName = HomePageElement.ONE_APP_CONNECTED_BANNER_DISMISS_BUTTON,
-                ) {
-                    setBannerSeen(Constants.ONBOARDING_ONE_APP_BANNER_SEEN)
-                    bannerGroup.removePreferenceRecursively(ONBOARDING_ONE_APP_BANNER_KEY)
-                }
-                banner.title = getString(R.string.one_app_onboarding_banner_title)
-                banner.summary = getString(R.string.one_app_onboarding_banner_summary)
-                banner.icon =
-                    AttributeResolver.getNullableDrawable(requireContext(), R.attr.syncIcon)
-                banner.key = ONBOARDING_ONE_APP_BANNER_KEY
-            }
-    }
-
-    private fun addBrowseHealthDataButton() {
-        if (isBrowseHealthDataAlreadyAdded()) {
-            return
         }
-        permissionsAndDataPreferenceGroup.addPreference(
-            HealthPreference(requireContext()).also {
-                it.key = BROWSE_MEDICAL_DATA_PREFERENCE_KEY
-                it.title = getString(R.string.browse_medical_data)
-                it.summary = getString(R.string.browse_medical_data_subtitle)
-                it.icon = AttributeResolver.getDrawable(requireContext(), R.attr.dataAndAccessIcon)
-                it.logName = HomePageElement.BROWSE_HEALTH_RECORDS_BUTTON
-                it.setOnPreferenceClickListener {
+
+        if (homeFragmentState.showSeeMoreHealthApps) {
+            yourHealthAppsCategory.addPreference(getSeeAllPreference())
+        }
+    }
+
+    private fun getNoAppsPreference(): NoAppsPreference {
+        return NoAppsPreference(requireContext()).also {
+            it.title = getString(R.string.empty_apps_section_title)
+            if (deviceInfoUtils.isPlayStoreAvailable(requireContext())) {
+                it.setLearnMoreText(getString(R.string.empty_apps_section_link))
+                it.setLearnMoreAction {
                     findNavController()
                         .navigateSafe(
-                            R.id.homeFragment,
-                            R.id.action_homeFragment_to_medicalDataFragment,
-                            Bundle().apply { putBoolean(IS_BROWSE_MEDICAL_DATA_SCREEN, true) },
+                            R.id.newHomeFragment,
+                            R.id.action_newHomeFragment_to_playStoreActivity,
                         )
                     true
                 }
             }
-        )
-    }
-
-    private fun isBrowseHealthDataAlreadyAdded(): Boolean {
-        return permissionsAndDataPreferenceGroup.findPreference<HealthPreference>(
-            BROWSE_MEDICAL_DATA_PREFERENCE_KEY
-        ) != null
-    }
-
-    private fun removeBrowseHealthDataButton() {
-        permissionsAndDataPreferenceGroup.removePreferenceRecursively(
-            BROWSE_MEDICAL_DATA_PREFERENCE_KEY
-        )
-    }
-
-    private fun isLockScreenBannerAlreadyAdded(): Boolean {
-        return bannerGroup.findPreference<HealthBannerPreference>(LOCK_SCREEN_BANNER_KEY) != null
-    }
-
-    private fun addLockScreenBanner(bannerState: LockScreenBannerState.ShowBanner) {
-        if (!isLockScreenBannerAlreadyAdded()) {
-            bannerGroup.addPreference(getLockScreenBanner(bannerState))
-        }
-    }
-
-    private fun removeLockScreenBanner() {
-        bannerGroup.removePreferenceRecursively(LOCK_SCREEN_BANNER_KEY)
-    }
-
-    private fun showMigrationState(migrationRestoreState: MigrationRestoreState) {
-        bannerGroup.removePreferenceRecursively(MIGRATION_BANNER_PREFERENCE_KEY)
-        bannerGroup.removePreferenceRecursively(DATA_RESTORE_BANNER_PREFERENCE_KEY)
-
-        val (migrationUiState, dataRestoreUiState, dataRestoreError) = migrationRestoreState
-
-        if (
-            dataRestoreUiState == DataRestoreUiState.PENDING &&
-                dataRestoreError == MigrationRestoreState.DataRestoreUiError.ERROR_VERSION_DIFF
-        ) {
-            bannerGroup.addPreference(getDataRestorePendingBanner())
-        } else if (
-            migrationUiState in
-                listOf(
-                    MigrationUiState.ALLOWED_PAUSED,
-                    MigrationUiState.ALLOWED_NOT_STARTED,
-                    MigrationUiState.MODULE_UPGRADE_REQUIRED,
-                    MigrationUiState.APP_UPGRADE_REQUIRED,
-                )
-        ) {
-            bannerGroup.addPreference(getMigrationBanner())
-        } else if (migrationUiState == MigrationUiState.COMPLETE) {
-            maybeShowWhatsNewDialog(requireContext())
-        } else if (migrationUiState == MigrationUiState.ALLOWED_ERROR) {
-            maybeShowMigrationNotCompleteDialog()
-        }
-    }
-
-    private fun maybeShowMigrationNotCompleteDialog() {
-        val sharedPreference = getSharedPreference()
-        val dialogSeen = sharedPreference.getBoolean(MIGRATION_NOT_COMPLETE_DIALOG_SEEN, false)
-
-        if (!dialogSeen) {
-            AlertDialogBuilder(this, MigrationElement.MIGRATION_NOT_COMPLETE_DIALOG_CONTAINER)
-                .setTitle(R.string.migration_not_complete_dialog_title)
-                .setMessage(R.string.migration_not_complete_dialog_content)
-                .setCancelable(false)
-                .setNegativeButton(
-                    R.string.migration_whats_new_dialog_button,
-                    MigrationElement.MIGRATION_NOT_COMPLETE_DIALOG_BUTTON,
-                ) { _, _ ->
-                    sharedPreference.edit().apply {
-                        putBoolean(MIGRATION_NOT_COMPLETE_DIALOG_SEEN, true)
-                        apply()
-                    }
-                }
-                .create()
-                .show()
-        }
-    }
-
-    // region Banners
-    private fun maybeShowExportErrorBanner(scheduledExportUiState: ScheduledExportUiState) {
-        if (bannerGroup.findPreference<Preference>(EXPORT_ERROR_BANNER_PREFERENCE_KEY) != null) {
-            bannerGroup.removePreferenceRecursively(EXPORT_ERROR_BANNER_PREFERENCE_KEY)
-        }
-        if (
-            scheduledExportUiState.dataExportError !=
-                ScheduledExportUiState.DataExportError.DATA_EXPORT_ERROR_NONE
-        ) {
-            scheduledExportUiState.lastFailedExportTime?.let {
-                bannerGroup.addPreference(getExportFileAccessErrorBanner(it))
-            }
-        }
-    }
-
-    private fun getExportFileAccessErrorBanner(
-        lastFailedExportTime: Instant
-    ): HealthBannerPreference {
-        return HealthBannerPreference(requireContext(), HomePageElement.EXPORT_ERROR_BANNER).also {
-            banner ->
-            banner.setPositiveButton(
-                text = getString(R.string.export_file_access_error_banner_button),
-                logName = HomePageElement.EXPORT_ERROR_BANNER_BUTTON,
-            ) {
-                findNavController()
-                    .navigateSafe(
-                        R.id.homeFragment,
-                        R.id.action_homeFragment_to_exportSetupActivity,
-                    )
-            }
-
-            banner.title = getString(R.string.export_file_access_error_banner_title)
-            banner.summary =
-                getString(
-                    R.string.export_file_access_error_banner_summary,
-                    dateFormatter.formatLongDate(lastFailedExportTime),
-                )
-            banner.icon =
-                AttributeResolver.getNullableDrawable(requireContext(), R.attr.warningIcon)
-            banner.key = EXPORT_ERROR_BANNER_PREFERENCE_KEY
-        }
-    }
-
-    private fun getMigrationBanner(): HealthBannerPreference {
-        return HealthBannerPreference(requireContext(), MigrationElement.MIGRATION_RESUME_BANNER)
-            .also { banner ->
-                banner.setPositiveButton(
-                    text = getString(R.string.resume_migration_banner_button),
-                    logName = MigrationElement.MIGRATION_RESUME_BANNER_BUTTON,
-                ) {
-                    findNavController()
-                        .navigateSafe(
-                            R.id.homeFragment,
-                            R.id.action_homeFragment_to_migrationActivity,
-                        )
-                }
-
-                banner.icon =
-                    AttributeResolver.getNullableDrawable(
-                        requireContext(),
-                        R.attr.settingsAlertIcon,
-                    )
-                banner.title = getString(R.string.resume_migration_banner_title)
-                banner.summary = migrationBannerSummary
-                banner.key = MIGRATION_BANNER_PREFERENCE_KEY
-            }
-    }
-
-    private fun getDataRestorePendingBanner(): HealthBannerPreference {
-        return HealthBannerPreference(requireContext(), DataRestoreElement.RESTORE_PENDING_BANNER)
-            .also { banner ->
-                banner.setPositiveButton(
-                    text = getString(R.string.data_restore_pending_banner_button),
-                    logName = DataRestoreElement.RESTORE_PENDING_BANNER_UPDATE_BUTTON,
-                ) {
-                    val intent = requireContext().createMainlineServiceUpdateSettingsIntent()
-                    startActivity(intent)
-                }
-
-                banner.icon =
-                    AttributeResolver.getNullableDrawable(requireContext(), R.attr.updateNeededIcon)
-                banner.title = getString(R.string.data_restore_pending_banner_title)
-                banner.summary = getString(R.string.data_restore_pending_banner_content)
-                banner.key = DATA_RESTORE_BANNER_PREFERENCE_KEY
-            }
-    }
-
-    private fun getLockScreenBanner(
-        bannerState: LockScreenBannerState.ShowBanner
-    ): HealthBannerPreference {
-        return HealthBannerPreference(requireContext(), HomePageElement.LOCK_SCREEN_BANNER).also {
-            banner ->
-            banner.title = resources.getString(R.string.lock_screen_banner_title)
-            banner.summary = resources.getString(R.string.lock_screen_banner_content)
-            banner.icon = AttributeResolver.getNullableDrawable(requireContext(), R.attr.lockIcon)
-            banner.key = LOCK_SCREEN_BANNER_KEY
-
-            banner.setPositiveButton(
-                text = getString(R.string.lock_screen_banner_button),
-                logName = HomePageElement.LOCK_SCREEN_BANNER_BUTTON,
-            ) {
-                updateLockScreenBannerSeen(bannerState)
-                navigateToSecuritySettings()
-            }
-
-            banner.setNegativeButton(
-                text = getString(R.string.banner_default_dismiss_button),
-                logName = HomePageElement.LOCK_SCREEN_BANNER_DISMISS_BUTTON,
-            ) {
-                updateLockScreenBannerSeen(bannerState)
-                bannerGroup.removePreferenceRecursively(LOCK_SCREEN_BANNER_KEY)
-            }
-        }
-    }
-
-    private fun updateLockScreenBannerSeen(bannerState: LockScreenBannerState.ShowBanner) {
-        val sharedPreference = getSharedPreference()
-        sharedPreference.edit().apply {
-            val anyFitnessData = bannerState.hasAnyFitnessData
-            val anyMedicalData = bannerState.hasAnyMedicalData
-
-            if (!(anyFitnessData || anyMedicalData)) {
-                // This should not happen.
-                putBoolean(LOCK_SCREEN_BANNER_SEEN_FITNESS, true)
-                putBoolean(LOCK_SCREEN_BANNER_SEEN_MEDICAL, true)
-            }
-            if (anyFitnessData) {
-                putBoolean(LOCK_SCREEN_BANNER_SEEN_FITNESS, true)
-            }
-            if (anyMedicalData) {
-                putBoolean(LOCK_SCREEN_BANNER_SEEN_MEDICAL, true)
-            }
-            apply()
-        }
-    }
-
-    // endregion
-
-    private fun navigateToSecuritySettings() {
-        startActivity(securitySettingsIntent)
-    }
-
-    private fun updateConnectedApps(connectedApps: List<ConnectedAppMetadata>) {
-        val connectedAppsGroup = connectedApps.groupBy { it.status }
-        val numAllowedApps = connectedAppsGroup[ConnectedAppStatus.ALLOWED].orEmpty().size
-        val numNotAllowedApps = connectedAppsGroup[ConnectedAppStatus.DENIED].orEmpty().size
-        val numTotalApps = numAllowedApps + numNotAllowedApps
-
-        if (numTotalApps == 0) {
-            appPermissionsPreference.summary =
-                getString(R.string.connected_apps_button_no_permissions_subtitle)
-        } else if (numAllowedApps == numTotalApps) {
-            appPermissionsPreference.summary =
-                MessageFormat.format(
-                    getString(R.string.connected_apps_connected_subtitle),
-                    mapOf("count" to numAllowedApps),
-                )
-        } else {
-            appPermissionsPreference.summary =
-                getString(
-                    if (numAllowedApps == 1) R.string.only_one_connected_app_button_subtitle
-                    else R.string.connected_apps_button_subtitle,
-                    numAllowedApps,
-                    numTotalApps,
-                )
-        }
-    }
-
-    private fun updateRecentApps(recentAppsList: List<RecentAccessEntry>) {
-        if (SettingsThemeHelper.isExpressiveTheme(requireContext()) && recentAppsList.isEmpty()) {
-            noRecentAccessPreference.isVisible = true
-            recentAccessPreferenceGroup.isVisible = false
-            return
-        }
-
-        noRecentAccessPreference.isVisible = false
-        recentAccessPreferenceGroup.isVisible = true
-        recentAccessPreferenceGroup.removeAll()
-
-        if (recentAppsList.isEmpty()) {
-            recentAccessPreferenceGroup.addPreference(
-                Preference(requireContext())
-                    .also { it.setSummary(R.string.no_recent_access) }
-                    .also { it.isSelectable = false }
+            it.setLogNames(
+                textLogName = NewHomePageElement.NO_APPS_AVAILABLE_HEADER,
+                linkLogName = NewHomePageElement.NO_APPS_AVAILABLE_LINK,
             )
-        } else {
-            recentAppsList.forEach { recentApp ->
-                val newRecentAccessPreference = getRecentAccessPreference(recentApp)
-                recentAccessPreferenceGroup.addPreference(newRecentAccessPreference)
-            }
-            recentAccessPreferenceGroup.addPreference(getSeeAllPreference())
         }
-    }
-
-    private fun updateRecentAppsWithError() {
-        noRecentAccessPreference.isVisible = false
-        recentAccessPreferenceGroup.isVisible = true
-        recentAccessPreferenceGroup.removeAll()
-        recentAccessPreferenceGroup.addPreference(
-            HealthPreference(requireContext()).also {
-                it.title = getString(R.string.recent_access_error)
-                it.isSelectable = false
-                it.setIcon(AttributeResolver.getResource(requireContext(), R.attr.warningIcon))
-            }
-        )
     }
 
     private fun getSeeAllPreference(): Preference {
         val seeAllPreference =
             if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
                 HealthButtonPreference(requireContext()).also {
-                    it.setTitle(R.string.recent_access_view_all_button)
+                    it.setTitle(R.string.see_all_connected_apps_button)
                     it.setIcon(AttributeResolver.getResource(requireContext(), R.attr.optionsIcon))
-                    it.logName = HomePageElement.SEE_ALL_RECENT_ACCESS_BUTTON
                     it.setOnClickListener {
                         findNavController()
                             .navigateSafe(
-                                R.id.homeFragment,
-                                R.id.action_homeFragment_to_recentAccessFragment,
+                                R.id.newHomeFragment,
+                                R.id.action_newHomeFragment_to_connectedAppsFragment,
                             )
                     }
+                    it.logName = NewHomePageElement.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON
                 }
             } else {
                 HealthPreference(requireContext()).also {
-                    it.setTitle(R.string.show_recent_access_entries_button_title)
+                    it.setTitle(R.string.see_all_connected_apps_button)
                     it.setIcon(AttributeResolver.getResource(requireContext(), R.attr.seeAllIcon))
-                    it.logName = HomePageElement.SEE_ALL_RECENT_ACCESS_BUTTON
+                    it.logName = NewHomePageElement.SEE_ALL_CONNECTED_APPS_HOME_SCREEN_BUTTON
                     it.setOnPreferenceClickListener {
                         findNavController()
                             .navigateSafe(
-                                R.id.homeFragment,
-                                R.id.action_homeFragment_to_recentAccessFragment,
+                                R.id.newHomeFragment,
+                                R.id.action_newHomeFragment_to_connectedAppsFragment,
                             )
                         true
                     }
@@ -767,92 +369,34 @@ class HomeFragment : Hilt_HomeFragment() {
         return seeAllPreference
     }
 
-    private fun getRecentAccessPreference(recentApp: RecentAccessEntry): HealthPreference {
-        val preference =
-            if (SettingsThemeHelper.isExpressiveTheme(requireContext())) {
-                HealthPreference(requireContext()).also { newPreference ->
-                    newPreference.logName = RecentAccessElement.RECENT_ACCESS_ENTRY_BUTTON
-                    newPreference.title = recentApp.metadata.appName
-                    newPreference.icon = recentApp.metadata.icon
-                    newPreference.summary =
-                        formatRecentAccessTime(recentApp.instantTime, timeSource, requireContext())
-                }
-            } else {
-                RecentAccessPreference(requireContext(), recentApp, timeSource, false)
-            }
-
-        preference.setOnPreferenceClickListener {
-            if (recentApp.isInactive) {
-                Toast.makeText(
-                        requireContext(),
-                        getString(R.string.recent_access_inactive_app),
-                        Toast.LENGTH_LONG,
-                    )
-                    .show()
-            } else {
-                navigateToAppInfoOrOnboarding(recentApp)
-            }
-            true
-        }
-
-        return preference
-    }
-
-    private fun navigateToAppInfoOrOnboarding(recentApp: RecentAccessEntry) {
-        val appPermissionsType = recentApp.appPermissionsType
+    private fun navigateToAppInfoOrOnboarding(app: ConnectedAppMetadata) {
+        val appPermissionsType = app.permissionsType
         val navigationId =
             when (appPermissionsType) {
                 AppPermissionsType.FITNESS_PERMISSIONS_ONLY ->
-                    R.id.action_homeFragment_to_fitnessAppFragment
+                    R.id.action_newHomeFragment_to_fitnessAppFragment
 
                 AppPermissionsType.MEDICAL_PERMISSIONS_ONLY ->
-                    R.id.action_homeFragment_to_medicalAppFragment
+                    R.id.action_newHomeFragment_to_medicalAppFragment
 
                 AppPermissionsType.COMBINED_PERMISSIONS ->
-                    R.id.action_homeFragment_to_combinedPermissionsFragment
+                    R.id.action_newHomeFragment_to_combinedPermissionsFragment
             }
 
         if (
-            recentApp.shouldLaunchAppOnboardingIfAvailable &&
-                tryLaunchAppOnboardingActivity(
-                    healthPermissionReader,
-                    recentApp.metadata.packageName,
-                )
+            app.status == ConnectedAppStatus.DENIED &&
+                tryLaunchAppOnboardingActivity(healthPermissionReader, app.appMetadata.packageName)
         ) {
             return
         }
         findNavController()
             .navigateSafe(
-                R.id.homeFragment,
+                R.id.newHomeFragment,
                 navigationId,
-                Bundle().apply {
-                    putString(Intent.EXTRA_PACKAGE_NAME, recentApp.metadata.packageName)
-                    putString(Constants.EXTRA_APP_NAME, recentApp.metadata.appName)
-                },
+                bundleOf(
+                    Intent.EXTRA_PACKAGE_NAME to app.appMetadata.packageName,
+                    Constants.EXTRA_APP_NAME to app.appMetadata.appName,
+                ),
             )
-    }
-
-    private fun dismissBanner(seenKey: String, bannerKey: String) {
-        setBannerSeen(seenKey)
-        hideBanners(listOf(bannerKey))
-    }
-
-    private fun getSharedPreference() =
-        requireActivity().getSharedPreferences(USER_ACTIVITY_TRACKER, Context.MODE_PRIVATE)
-
-    private fun setBannerSeen(sharedPrefKey: String, seen: Boolean = true) {
-        val sharedPreference = getSharedPreference()
-        sharedPreference.edit().apply {
-            putBoolean(sharedPrefKey, seen)
-            apply()
-        }
-    }
-
-    private fun hideBanners(banners: List<String>) {
-        for (banner in banners) {
-            if (bannerGroup.findPreference<HealthBannerPreference>(banner) != null) {
-                bannerGroup.removePreferenceRecursively(banner)
-            }
-        }
     }
 }

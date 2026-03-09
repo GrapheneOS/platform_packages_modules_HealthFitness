@@ -454,15 +454,6 @@ flag {
 }
 
 flag {
-    name: "new_home_screen"
-    namespace: "health_fitness_aconfig"
-    description: "Enables the new home screen UI."
-    bug: "434918574"
-    is_fixed_read_only: true
-    is_exported: false
-}
-
-flag {
     name: "permissions_grouping_ui"
     namespace: "health_fitness_aconfig"
     description: "Flag to show the updated permissions grouped by data category UI"
