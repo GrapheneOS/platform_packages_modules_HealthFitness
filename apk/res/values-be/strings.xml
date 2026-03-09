@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Усе праграмы"</string>
     <string name="can_read" msgid="4568261079308309564">"Могуць счытваць наступныя даныя: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Могуць запісваць наступныя даныя: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Неактыўныя крыніцы даных"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Гэтыя крыніцы даных больш не могуць счытваць і запісваць даныя тыпу \"<xliff:g id="DATA_TYPE">%s</xliff:g>\", аднак іх даныя па-ранейшаму захоўваюцца ў праграме \"Здароўе і спорт\""</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Крыніцы даных больш не могуць счытваць і запісваць даныя тыпу \"<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>\", і ў праграме \"Здароўе і спорт\" даныя тыпу \"<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>\" не захоўваюцца"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Гэтыя даныя ўключаюць такую інфармацыю, як час актыўнасці, тып практыкавання, кругі, паўтарэнні, сеансы і грабкі"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Гэтыя даныя ўключаюць такую інфармацыю, як стадыі і фазы сну"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Праглядзець усе запісы"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Параметры"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Сэрвіс \"Здароўе і спорт\" дазваляе абагульваць даныя пра фізічную актыўнасць і здароўе паміж рознымі крыніцамі даных. Гэта дапамагае бяспечна атрымліваць статыстычныя даныя і карыстацца дадатковымі магчымасцямі."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Падрабязней пра праграму \"Здароўе і спорт\""</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Вашы даныя і крыніцы даных, якія маюць да іх доступ"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Праграмы, якія нядаўна выкарыстоўвалі вашы даныя"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Праглядзець прылады, якія могуць мець доступ да даных пра здароўе"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Усталюйце праграмы, якія працуюць з праграмай \"Здароўе і спорт\", каб яны з’явіліся тут"</string>

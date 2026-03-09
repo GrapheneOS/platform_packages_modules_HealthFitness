@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Alla appar"</string>
     <string name="can_read" msgid="4568261079308309564">"Har läsbehörighet till <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Har skrivbehörighet till <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Inaktiva datakällor"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"De här datakällorna kan inte längre läsa eller skriva data om <xliff:g id="DATA_TYPE">%s</xliff:g>, men sådan data har redan sparats i Health Connect"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Datakällor kan inte längre läsa eller skriva data om <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>, och det finns ingen data om <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> lagrad i Health Connect"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Denna data omfattar information som aktiv tid, träningstyp, varv, repetitioner, sessioner eller simtag"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Denna data omfattar information som sömnstadier och sömnsessioner"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Se alla poster"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Inställningar"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Med Health Connect kan du dela din hälso- och träningsdata mellan flera datakällor. Detta hjälper dig att få fler insikter och upplevelser samtidigt som din data skyddas."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Mer om Health Connect"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Din data och vilka datakällor som har åtkomst till den"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Appar som nyligen har använt din data"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Granska enheter som kan komma åt hälsodata"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Installera appar som fungerar med Health Connect för att se dem här"</string>

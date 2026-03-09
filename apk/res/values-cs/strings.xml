@@ -147,7 +147,7 @@
     <string name="history_read_medical_access_description" msgid="5615959269427106141">"Povolit této aplikaci přístup k datům přidaným před: <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_medical_access_description_fallback" msgid="3888547064992673535">"Povolit této aplikaci přístup ke všem dřívějším datům"</string>
     <string name="history_read_access_title" msgid="870048398702887144">"Přístup k dřívějším datům"</string>
-    <string name="history_read_access_description" msgid="800722432229526128">"Povolit této aplikaci přístup k datům Health Connect přidaným před <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
+    <string name="history_read_access_description" msgid="800722432229526128">"Povolit této aplikaci přístup k datům Health Connect přidaným do <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Povolit této aplikaci přístup ke všem dřívějším datům Health Connect"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Momentálně se žádné údaje o kondici nečtou, protože aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> nemá zapnutá oprávnění ke čtení"</string>
     <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"Aplikace <xliff:g id="APP_NAME">%1$s</xliff:g> už má přístup k vašim dřívějším zdravotním záznamům. Pokud to chcete změnit, odeberte této aplikaci oprávnění ke zdravotním záznamům"</string>

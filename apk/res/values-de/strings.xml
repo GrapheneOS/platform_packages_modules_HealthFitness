@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Alle Apps"</string>
     <string name="can_read" msgid="4568261079308309564">"Darf Daten des Typs „<xliff:g id="PERMISSION_TYPE">%s</xliff:g>“ lesen"</string>
     <string name="can_write" msgid="5082414937218423823">"Darf Daten des Typs „<xliff:g id="PERMISSION_TYPE">%s</xliff:g>“ schreiben"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Inaktive Datenquellen"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Diese Datenquellen dürfen keine Daten des Typs „<xliff:g id="DATA_TYPE">%s</xliff:g>“ mehr schreiben oder lesen, es sind jedoch weiterhin Daten in Health Connect gespeichert"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Datenquellen können keine Daten des Typs „<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>“ mehr lesen oder schreiben und es werden keine Daten des Typs „<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>“ mehr in Health Connect gespeichert"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Zu diesen Daten gehören beispielsweise Aktivitätsdauer, Sportart, Runden, Wiederholungen, Trainingseinheiten und Schwimmzüge"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Zu diesen Daten gehören beispielsweise Schlafphasen und Schlafperioden"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Alle Einträge ansehen"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Einstellungen"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Mit Health Connect kannst du deine Gesundheits- und Fitnessdaten zwischen mehreren Datenquellen synchronisieren. So hast du Einblick in deine Statistiken und kannst neue Funktionen nutzen, während deine Daten geschützt werden."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Mehr zu Health Connect"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Deine Daten und welche Datenquellen darauf zugreifen können"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Apps, die kürzlich deine Daten verwendet haben"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Ansehen, welche Geräte auf Gesundheitsdaten zugreifen können"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Wenn du Apps installierst, die mit Health Connect kompatibel sind, werden sie hier angezeigt"</string>

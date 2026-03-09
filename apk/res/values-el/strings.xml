@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Όλες οι εφαρμογές"</string>
     <string name="can_read" msgid="4568261079308309564">"Δυνατότητα ανάγνωσης για <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Δυνατότητα γραφής <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Ανενεργές πηγές δεδομένων"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Αυτές οι πηγές δεδομένων δεν μπορούν πλέον να διαβάζουν ή να γράφουν δεδομένα <xliff:g id="DATA_TYPE">%s</xliff:g>, αλλά εξακολουθούν να έχουν δεδομένα αποθηκευμένα στο Health Connect"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Οι πηγές δεδομένων δεν μπορούν πλέον να διαβάζουν ή να γράφουν δεδομένα <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> και δεν υπάρχουν αποθηκευμένα δεδομένα <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> στο Health Connect"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Αυτά τα δεδομένα περιλαμβάνουν πληροφορίες όπως είναι ο χρόνος σωματικής δραστηριότητας, ο τύπος της άσκησης, οι γύροι, οι επαναλήψεις ή οι απλωτές κατά την κολύμβηση"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Αυτά τα δεδομένα περιλαμβάνουν πληροφορίες όπως είναι τα στάδια του ύπνου και οι περίοδοι ύπνου"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Εμφάνιση όλων των καταχωρίσεων"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Προτιμήσεις"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Το Health Connect σας επιτρέπει να μοιράζεστε τα δεδομένα υγείας και φυσικής κατάστασης μεταξύ πολλών πηγών δεδομένων. Με αυτόν τον τρόπο, μπορείτε να αποκτήσετε πρόσβαση σε insight και εμπειρίες, διατηρώντας τα δεδομένα σας ασφαλή."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Περισσότερα σχετικά με το Health Connect"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Τα δεδομένα σας και ποιες πηγές δεδομένων μπορούν να αποκτήσουν πρόσβαση σε αυτά"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Εφαρμογές που χρησιμοποίησαν πρόσφατα τα δεδομένα σας"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Έλεγχος συσκευών με πρόσβαση σε δεδομένα υγείας"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Εγκαταστήστε εφαρμογές που λειτουργούν με το Health Connect για να εμφανίζονται εδώ"</string>

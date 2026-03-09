@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Kaikki sovellukset"</string>
     <string name="can_read" msgid="4568261079308309564">"Voi lukea: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Voi kirjoittaa: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Ei-aktiiviset datalähteet"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Nämä datalähteet eivät voi enää lukea tai kirjoittaa tätä dataa (<xliff:g id="DATA_TYPE">%s</xliff:g>), mutta niiden dataa on yhä tallennettuna Health Connectiin"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Datalähteet eivät voi enää lukea tai kirjoittaa dataa (<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>), eikä dataa (<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>) ole tallennettu Health Connectiin"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Data sisältää aktiivisuusajan, harjoitustyypin, kierrosten, toistojen, harjoituskertojen ja uintityylin kaltaisia tietoja"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Data sisältää univaiheiden ja unikertojen kaltaisia tietoja"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Katso kaikki"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Valinnat"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connectin avulla voit jakaa terveys- ja kuntoiludataa useiden datalähteiden välillä. Näin voit hyödyntää havaintoja ja kokemuksia sekä pitää datasi turvassa."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Lisätietoa Health Connectista"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Datasi ja datalähteet, joilla on pääsy siihen"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Sovellukset, jotka ovat käyttäneet dataasi äskettäin"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Tarkista laitteet, joilla on pääsy terveysdataan"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Asenna Health Connectin kanssa toimivia sovelluksia, niin näet ne täällä"</string>

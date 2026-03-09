@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"அனைத்து ஆப்ஸும்"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> தரவைப் படிக்கலாம்"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> தரவை எழுதலாம்"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"செயலில் இல்லாத தரவு மூலங்கள்"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"இந்தத் தரவு மூலங்களால் இனி <xliff:g id="DATA_TYPE">%s</xliff:g> தரவைப் படிக்கவோ எழுதவோ முடியாது என்றாலும் அவை சேமித்த தரவு இன்னும் Health Connectடில் அப்படியே இருக்கும்"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"<xliff:g id="DATA_TYPE_0">%1$s</xliff:g> தரவை இனி தரவு மூலங்களால் படிக்கவோ எழுதவோ முடியாது. Health Connect ஆப்ஸில் <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> தரவு எதுவும் சேமிக்கப்படவில்லை."</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"செயல்பாட்டு நேரம், உடற்பயிற்சி வகை, சுற்றுகள், மீண்டும் செய்தல், அமர்வுகள், ஸ்விம்மிங் ஸ்ட்ரோக்குகள் போன்ற தகவல்கள் இந்தத் தரவில் உள்ளடங்கும்"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"உறக்க நிலைகள், உறக்கநேர அமர்வுகள் போன்ற தகவல்கள் இந்தத் தரவில் உள்ளடங்கும்"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"அனைத்து உள்ளீடுகளையும் காட்டு"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"விருப்பத்தேர்வுகள்"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect, உங்கள் ஆரோக்கியம் மற்றும் உடற்பயிற்சி குறித்த தரவை பல்வேறு தரவு மூலங்களுக்கிடையே பகிர உங்களை அனுமதிக்கிறது. இது உங்கள் தரவைப் பாதுகாப்பாக வைத்திருப்பதோடு, நீங்கள் புள்ளிவிவரங்களையும் அனுபவங்களையும் பெற உதவுகிறது."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect பற்றிய கூடுதல் தகவல்கள்"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"உங்கள் தரவு மற்றும் அதை அணுகக்கூடிய தரவு மூலங்கள்"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"சமீபத்தில் உங்கள் தரவைப் பயன்படுத்திய ஆப்ஸ்"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"ஆரோக்கியம் தொடர்பான தரவை அணுகக்கூடிய சாதனங்களைப் பாருங்கள்"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect உடன் செயல்படும் ஆப்ஸை இங்கே பார்க்க நிறுவுங்கள்"</string>

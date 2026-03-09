@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"سبھی ایپس"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> پڑھ سکتی ہیں"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> لکھ سکتی ہیں"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"غیر فعال ڈیٹا کے ماخذات"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"یہ ڈیٹا کے ماخذات اب <xliff:g id="DATA_TYPE">%s</xliff:g> کو پڑھ یا لکھ نہیں سکتے لیکن اب بھی Health Connect میں ڈیٹا اسٹور کر سکتے ہیں"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"ڈیٹا کے ماخذات اب مزید <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> پڑھ یا لکھ نہیں سکتے اور Health Connect میں کوئی <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> ڈیٹا اسٹور نہیں ہے"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"اس ڈیٹا میں فعال وقت، ورزش کی قسم، لیپس، تکرار، سیشنز یا تیراکی اسٹروکس جیسی معلومات شامل ہیں"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"اس ڈیٹا میں نیند کے مراحل اور نیند کے سیشنز جیسی معلومات شامل ہیں"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"تمام اندراجات دیکھیں"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"ترجیحات"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"‫Health Connect آپ کو اپنی صحت اور تندرستی کا ڈیٹا متعدد ماخذ کے درمیان اشتراک کرنے دیتا ہے۔ یہ آپ کے ڈیٹا کو محفوظ رکھتے ہوئے بصیرتوں اور تجربات کو غیر مقفل کرنے میں مدد کرتا ہے۔"</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"‫Health Connect سے متعلق مزید"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"آپ کا ڈیٹا اور کون سے ڈیٹا کے ماخذات اس تک رسائی حاصل کر سکتے ہیں"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"وہ ایپس جنہوں نے حال ہی میں آپ کا ڈیٹا استعمال کیا"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"ان آلات کا جائزہ لیں جو صحت کے ڈیٹا تک رسائی حاصل کر سکتے ہیں"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"‫Health Connect کے ساتھ کام کرنے والی ایپس کو یہاں دیکھنے کے لیے انسٹال کریں"</string>
