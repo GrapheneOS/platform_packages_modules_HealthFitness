@@ -260,10 +260,11 @@ class ScheduledExportFragmentTest {
     }
 
     @Test
-    fun turnsOffControl_exportFrequencySectionDoesNotExist() {
+    fun turnsOffControl_exportFrequencySectionDoesNotExist() = runTest {
         launchFragment<ScheduledExportFragment>(Bundle()).use {
             onView(withText("Use scheduled export")).check(matches(isDisplayed()))
             onView(withText("Use scheduled export")).perform(click())
+            advanceUntilIdle()
 
             onView(withText("Use scheduled export")).check(matches(isDisplayed()))
             onView(withText("Choose frequency")).check(doesNotExist())
@@ -274,7 +275,7 @@ class ScheduledExportFragmentTest {
     }
 
     @Test
-    fun turnsOffControl_doesNotShowExportStatus() {
+    fun turnsOffControl_doesNotShowExportStatus() = runTest {
         val scheduledExportStatus =
             ScheduledExportStatus.Builder()
                 .setLastSuccessfulExportTime(TEST_LAST_SUCCESSFUL_TIME)
@@ -286,6 +287,7 @@ class ScheduledExportFragmentTest {
         launchFragment<ScheduledExportFragment>(Bundle()).use {
             onView(withText("Use scheduled export")).check(matches(isDisplayed()))
             onView(withText("Use scheduled export")).perform(click())
+            advanceUntilIdle()
 
             onView(allOf(withText(containsString("Next export")))).check(doesNotExist())
         }
@@ -301,11 +303,11 @@ class ScheduledExportFragmentTest {
         launchFragment<ScheduledExportFragment>(Bundle()).use {
             onView(withText("Use scheduled export")).check(matches(isDisplayed()))
             onView(withText("Use scheduled export")).perform(click())
+            advanceUntilIdle()
             assertThat(healthDataExportManager.getScheduledExportPeriodInDays())
                 .isEqualTo(ExportFrequency.EXPORT_FREQUENCY_NEVER.periodInDays)
             onView(withText("Use scheduled export")).check(matches(isDisplayed()))
             onView(withText("Use scheduled export")).perform(click())
-
             advanceUntilIdle()
             assertThat(healthDataExportManager.getScheduledExportPeriodInDays())
                 .isEqualTo(ExportFrequency.EXPORT_FREQUENCY_WEEKLY.periodInDays)
