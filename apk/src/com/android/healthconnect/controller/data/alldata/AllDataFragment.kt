@@ -397,7 +397,7 @@ open class AllDataFragment : Hilt_AllDataFragment() {
             learnMoreText = getString(R.string.medical_request_about_health_records),
             learnMoreAction = {
                 logger.logInteraction(AllDataElement.MEDICAL_RECORDS_HEADER_LINK)
-                deviceInfoUtils.openHCGetStartedLink(requireActivity())
+                deviceInfoUtils.openHCLearnMoreLink(requireActivity())
             },
             preferenceOrder = preferenceOrder,
         )

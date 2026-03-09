@@ -115,7 +115,7 @@ class CombinedAdditionalPermissionsFragment : Hilt_CombinedAdditionalPermissions
         footer.setLearnMoreText(
             getString(R.string.history_read_medical_combined_request_footer_link)
         )
-        footer.setLearnMoreAction { deviceInfoUtils.openHCGetStartedLink(requireActivity()) }
+        footer.setLearnMoreAction { deviceInfoUtils.openHCLearnMoreLink(requireActivity()) }
         footer.isVisible = true
     }
 

@@ -750,7 +750,7 @@ class ConnectedAppsFragmentTest {
                 .check(doesNotExist())
 
             onView(withText("Learn more")).perform(click())
-            assertThat(deviceInfoUtils.helpCenterInvoked).isTrue()
+            assertThat(deviceInfoUtils.hcIntegrationInvoked).isTrue()
             verify(healthConnectLogger)
                 .logInteraction(MigrationElement.MIGRATION_APP_UPDATE_LEARN_MORE_BUTTON)
         }

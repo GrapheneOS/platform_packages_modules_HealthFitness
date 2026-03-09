@@ -114,7 +114,7 @@ class MedicalPermissionsFragment : Hilt_MedicalPermissionsFragment() {
     }
 
     private fun setupHeader(appMetadata: AppMetadata, screenState: RequestPermissionsScreenState) {
-        val onLearnMoreClicked = { deviceInfoUtils.openHCGetStartedLink(requireActivity()) }
+        val onLearnMoreClicked = { deviceInfoUtils.openHCLearnMoreLink(requireActivity()) }
         val onRationaleLinkClicked = {
             val startRationaleIntent =
                 healthPermissionReader.getApplicationRationaleIntent(appMetadata.packageName)
