@@ -72,7 +72,7 @@ import java.util.List;
 public class RateLimiterTest {
     private static final String TAG = "RateLimiterTest";
     private static final int MAX_FOREGROUND_WRITE_CALL_15M = 1000;
-    private static final int MAX_FOREGROUND_READ_CALL_15M = 2000;
+    private static final int MAX_FOREGROUND_READ_CALL_15M = 80000;
     private static final Duration WINDOW_15M = Duration.ofMinutes(15);
 
     @Rule
@@ -90,7 +90,7 @@ public class RateLimiterTest {
     public void setUp() throws InterruptedException {
         TestUtils.deleteAllDataFromHealthConnect();
         if (TestUtils.setLowerRateLimitsForTesting(true)) {
-            mLimitsAdjustmentForTesting = 10;
+            mLimitsAdjustmentForTesting = 40;
         }
     }
 
@@ -275,7 +275,7 @@ public class RateLimiterTest {
                         .addAggregationType(STEPS_COUNT_TOTAL)
                         .build();
         for (int i = 0; i < aggregateCalls; i++) {
-            TestUtils.getAggregateResponse(aggregateRecordsRequest, testRecord);
+            TestUtils.getAggregateResponse(aggregateRecordsRequest, null);
         }
 
         for (int i = 0; i < nTimes - aggregateCalls - 2 * changelogCalls; i++) {

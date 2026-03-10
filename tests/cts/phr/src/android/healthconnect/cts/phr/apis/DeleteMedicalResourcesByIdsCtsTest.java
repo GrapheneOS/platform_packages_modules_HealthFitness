@@ -106,7 +106,7 @@ public class DeleteMedicalResourcesByIdsCtsTest {
         mUtil = new PhrCtsTestUtils(mManager);
         mUtil.deleteAllMedicalData();
         if (TestUtils.setLowerRateLimitsForTesting(true)) {
-            mUtil.mLimitsAdjustmentForTesting = 10;
+            mUtil.mLimitsAdjustmentForTesting = 40;
         }
     }
 

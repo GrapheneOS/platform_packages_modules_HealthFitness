@@ -114,7 +114,7 @@ public class ReadMedicalResourcesByRequestCtsTest {
         mUtil = new PhrCtsTestUtils(TestUtils.getHealthConnectManager());
         mManager = TestUtils.getHealthConnectManager();
         if (TestUtils.setLowerRateLimitsForTesting(true)) {
-            mUtil.mLimitsAdjustmentForTesting = 10;
+            mUtil.mLimitsAdjustmentForTesting = 40;
         }
     }
 
