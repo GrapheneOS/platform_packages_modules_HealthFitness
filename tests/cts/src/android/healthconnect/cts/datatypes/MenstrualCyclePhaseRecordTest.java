@@ -49,6 +49,7 @@ import org.junit.runner.RunWith;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.List;
 
@@ -73,8 +74,6 @@ public class MenstrualCyclePhaseRecordTest {
 
     private static final LocalDate TEST_DATE = LocalDate.of(2025, 11, 5);
     private static final ZoneOffset TEST_OFFSET = ZoneOffset.ofHours(4);
-    private final ZoneOffset mDefaultZone =
-            ZoneOffset.systemDefault().getRules().getOffset(TEST_DATE.atStartOfDay());
 
     @Before
     public void setUp() throws Exception {
@@ -141,13 +140,16 @@ public class MenstrualCyclePhaseRecordTest {
 
     @Test
     public void builder_clearStartZoneOffset_isCleared() {
+        LocalDate date = LocalDate.now();
+        ZoneOffset defaultZoneOffset =
+                ZoneId.systemDefault().getRules().getOffset(date.atStartOfDay());
         MenstrualCyclePhaseRecord record =
-                new MenstrualCyclePhaseRecord.Builder(getEmptyMetadata(), TEST_DATE, PHASE_LUTEAL)
+                new MenstrualCyclePhaseRecord.Builder(getEmptyMetadata(), date, PHASE_LUTEAL)
                         .setStartZoneOffset(TEST_OFFSET)
                         .clearStartZoneOffset()
                         .build();
-        assertThat(record.getStartZoneOffset()).isEqualTo(mDefaultZone);
-        assertThat(record.getEndZoneOffset()).isEqualTo(mDefaultZone);
+        assertThat(record.getStartZoneOffset()).isEqualTo(defaultZoneOffset);
+        assertThat(record.getEndZoneOffset()).isEqualTo(defaultZoneOffset);
     }
 
     @Test
