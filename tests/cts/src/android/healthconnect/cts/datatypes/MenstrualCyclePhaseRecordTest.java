@@ -74,7 +74,7 @@ public class MenstrualCyclePhaseRecordTest {
     private static final LocalDate TEST_DATE = LocalDate.of(2025, 11, 5);
     private static final ZoneOffset TEST_OFFSET = ZoneOffset.ofHours(4);
     private final ZoneOffset mDefaultZone =
-            ZoneOffset.systemDefault().getRules().getOffset(Instant.now());
+            ZoneOffset.systemDefault().getRules().getOffset(TEST_DATE.atStartOfDay());
 
     @Before
     public void setUp() throws Exception {
