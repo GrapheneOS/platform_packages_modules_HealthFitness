@@ -1516,8 +1516,11 @@
 
     <!--  region Menu Items -->
     <string name="help" description="Menu option for accessing help [CHAR LIMIT=50]">Help</string>
-    <string name="hc_get_started_link" description="Link that helps to learn more about Health Connect. [CHAR_LIMIT=50]" translatable="false">https://support.google.com/android?p=get_started_hc</string>
+    <string name="hc_get_started_link" description="Link that helps to get started with Health Connect. [CHAR_LIMIT=50]" translatable="false">https://support.google.com/android?p=get_started_hc</string>
     <string name="hc_backup_and_restore_link" description="Link that helps to learn more about Health Connect backup and restore. [CHAR_LIMIT=NONE]" translatable="false">https://support.google.com/android?p=healthconnect_backup_restore</string>
+    <string name="hc_manage_your_data_link" description="Link that helps to learn more about Health Connect data management. [CHAR_LIMIT=NONE]" translatable="false">https://support.google.com/android?p=manage_health_connect_data</string>
+    <string name="hc_learn_more_link" description="Link that helps to learn more about Health Connect. [CHAR_LIMIT=NONE]" translatable="false">https://support.google.com/android?p=learn_about_health_connect</string>
+    <string name="hc_integration_link" description="Link that helps to learn more about Health Connect in Android 14. [CHAR_LIMIT=NONE]" translatable="false">https://support.google.com/android?p=health_connect_integration</string>
 
     <!--  endregion-->
 

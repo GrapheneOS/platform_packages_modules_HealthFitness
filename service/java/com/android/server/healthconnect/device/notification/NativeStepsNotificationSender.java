@@ -87,13 +87,8 @@ public final class NativeStepsNotificationSender {
                         .build();
     }
 
-    /** Sends a notification for native steps available in HC if flag enabled. */
+    /** Sends a notification for native steps available in HC. */
     public void sendNotification(UserHandle userHandle) {
-        if (!Flags.stepTrackingEnabled()) {
-            Slog.d(TAG, "Native steps tracking flag disabled");
-            return;
-        }
-
         Notification notification = createNotification();
         if (mHealthConnectNotificationSender.sendNotificationAsUser(notification, userHandle)) {
             mNotificationStateManager.disable();

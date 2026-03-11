@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Todas as aplicacións"</string>
     <string name="can_read" msgid="4568261079308309564">"Permiso para ler datos de <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Permiso para escribir datos de <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Fontes de datos inactivas"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Estas fontes de datos xa non poden ler nin engadir datos sobre <xliff:g id="DATA_TYPE">%s</xliff:g>, pero seguen tendo información almacenada en Saúde conectada"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"As fontes de datos xa non poden ler nin escribir os datos relacionados co seguinte parámetro: <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>. Ademais, tampouco hai datos sobre <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> almacenados en Saúde conectada"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Estes datos inclúen determinada información, como o tempo de actividade, o tipo de exercicio, as voltas, as repeticións, as sesións ou as brazadas"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Estes datos inclúen determinada información, como as fases e as sesións de sono"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Ver todas as entradas"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferencias"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Saúde conectada permíteche compartir os teus datos de saúde e actividade física entre varias fontes de datos. Deste xeito, podes acceder a estatísticas e experiencias ao mesmo tempo que mantés seguros os datos."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Máis información sobre Saúde conectada"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Os teus datos e as fontes de datos que poden acceder a eles"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Aplicacións que utilizaron recentemente os teus datos"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Revisa os dispositivos que poden acceder aos datos de saúde"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Instala aplicacións que funcionen con Saúde conectada para velas aquí"</string>

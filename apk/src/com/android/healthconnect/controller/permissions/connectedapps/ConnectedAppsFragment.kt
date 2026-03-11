@@ -505,7 +505,7 @@ class ConnectedAppsFragment : Hilt_ConnectedAppsFragment() {
                     resources.getString(R.string.app_update_needed_banner_learn_more_button),
                     MigrationElement.MIGRATION_APP_UPDATE_LEARN_MORE_BUTTON,
                 ) {
-                    deviceInfoUtils.openHCGetStartedLink(requireActivity())
+                    deviceInfoUtils.openHCIntegrationLink(requireActivity())
                 }
                 banner.title = resources.getString(R.string.app_update_needed_banner_title)
 

@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"جميع التطبيقات"</string>
     <string name="can_read" msgid="4568261079308309564">"التطبيقات المسموح لها بقراءة بيانات <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"التطبيقات المسموح لها بكتابة بيانات <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"مصادر البيانات غير النشطة"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"لم يعُد بإمكان مصادر البيانات هذه كتابة بيانات عن <xliff:g id="DATA_TYPE">%s</xliff:g> أو قراءتها، ولكن لا يزال لديها بيانات مخزَّنة في Health Connect"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"لم تعُد مصادر البيانات قادرة على قراءة بيانات عن <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> أو كتابتها، ولا تتوفّر بيانات مخزَّنة عن <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> في تطبيق Health Connect"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"تشتمل هذه البيانات على معلومات، مثل وقت ممارسة النشاط البدني أو نوع التمرين الرياضي أو دورات التمرين أو التكرارات أو الجلسات أو عدد ضربات السباحة."</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"تشتمل هذه البيانات على معلومات، مثل مراحل النوم وجلسات النوم."</string>
     <string name="all_entries_button" msgid="5109091107239135235">"عرض جميع الإدخالات"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"الإعدادات المفضَّلة"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"يتيح لك تطبيق Health Connect مشاركة بيانات الصحة واللياقة البدنية بين مصادر متعددة للبيانات، وبالتالي جمع الإحصاءات واكتشاف تجارب جديدة مع الحفاظ على أمان بياناتك."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"مزيد من المعلومات حول Health Connect"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"بياناتك ومصادر البيانات التي يمكنها الوصول إليها"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"التطبيقات التي استخدمت بياناتك مؤخرًا"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"مراجعة الأجهزة التي يمكنها الوصول إلى البيانات الصحية"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"يُرجى تثبيت تطبيقات متوافقة مع Health Connect ليتم عرضها هنا"</string>

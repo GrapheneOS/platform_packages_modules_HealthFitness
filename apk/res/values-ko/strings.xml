@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"모든 앱"</string>
     <string name="can_read" msgid="4568261079308309564">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> 읽기 가능"</string>
     <string name="can_write" msgid="5082414937218423823">"<xliff:g id="PERMISSION_TYPE">%s</xliff:g> 쓰기 가능"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"비활성 데이터 소스"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"데이터 소스에서 더 이상 <xliff:g id="DATA_TYPE">%s</xliff:g> 데이터를 읽거나 쓸 수 없으나, 이전 데이터는 헬스 커넥트에 저장되어 있습니다."</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"데이터 소스에서 더 이상 <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> 데이터를 읽거나 쓸 수 없으며, 헬스 커넥트에 저장된 <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> 데이터가 없습니다."</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"이 데이터에는 활동 시간, 운동 종류, 랩, 반복, 세션 또는 수영 스트로크와 같은 정보가 포함됩니다."</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"이 데이터에는 수면 단계 및 수면 세션과 같은 정보가 포함됩니다."</string>
     <string name="all_entries_button" msgid="5109091107239135235">"모든 항목 보기"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"환경설정"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"헬스 커넥트를 사용하면 여러 데이터 소스 간에 건강 및 피트니스 데이터를 공유할 수 있습니다. 이를 통해 데이터를 안전하게 보호하면서 유용한 정보와 경험 데이터를 모을 수 있습니다."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"헬스 커넥트에 관해 자세히 알아보기"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"데이터와 데이터에 액세스할 수 있는 데이터 소스"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"최근 내 데이터를 사용한 앱"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"건강 데이터에 액세스할 수 있는 기기 검토"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"헬스 커넥트와 호환되는 앱을 설치하면 여기에서 확인할 수 있습니다"</string>

@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Visas lietotnes"</string>
     <string name="can_read" msgid="4568261079308309564">"Var lasīt šāda veida datus: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Var rakstīt šāda veida datus: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Neaktīvi datu avoti"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Šie datu avoti vairs nevar rakstīt vai lasīt šī veida datus (<xliff:g id="DATA_TYPE">%s</xliff:g>), taču to dati joprojām tiek glabāti platformā Health Connect."</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Datu avoti vairs nevar lasīt un rakstīt šī veida datus (<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>), kā arī platformā Health Connect nav saglabāti šī veida dati (<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>)."</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Šie dati ietver tādu informāciju kā aktivitātes ilgums, treniņa veids, apļu skaits, atkārtojumi, sesijas vai peldēšanas vēzieni."</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Šie dati ietver tādu informāciju kā miega fāzes un miega sesijas."</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Skatīt visus ierakstus"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferences"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Izmantojot Health Connect, varat kopīgot veselības un fitnesa datus starp vairākiem datu avotiem. Tādējādi varat gūt ieskatus un izmantot dažādas iespējas, vienlaikus aizsargājot savus datus."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Plašāka informācija par Health Connect"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Jūsu dati un datu avoti, kas var tiem piekļūt"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Lietotnes, kas nesen izmantoja jūsu datus"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Pārskatīt ierīces, kas var piekļūt veselības datiem"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Instalējiet lietotnes, kas darbojas ar Health Connect, lai varētu tās skatīt šeit"</string>

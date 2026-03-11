@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-package com.android.healthconnect.controller.tests.newHome
+package com.android.healthconnect.controller.tests.home
 
 import android.content.Context
 import androidx.navigation.NavController
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.android.healthconnect.controller.newHome.BannerFactory
-import com.android.healthconnect.controller.newHome.BannerFactory.Companion.DATA_RESTORE_BANNER_PREFERENCE_KEY
-import com.android.healthconnect.controller.newHome.BannerFactory.Companion.EXPORT_ERROR_BANNER_PREFERENCE_KEY
-import com.android.healthconnect.controller.newHome.BannerFactory.Companion.LOCK_SCREEN_BANNER_KEY
-import com.android.healthconnect.controller.newHome.BannerFactory.Companion.MIGRATION_BANNER_PREFERENCE_KEY
-import com.android.healthconnect.controller.newHome.BannerFactory.Companion.NATIVE_STEPS_BANNER_KEY
-import com.android.healthconnect.controller.newHome.BannerFactory.Companion.ONBOARDING_ONE_APP_BANNER_KEY
-import com.android.healthconnect.controller.newHome.BannerFactory.Companion.ONBOARDING_ZERO_APPS_BANNER_KEY
-import com.android.healthconnect.controller.newHome.HomeViewModel
-import com.android.healthconnect.controller.newHome.HomeViewModel.BannerData
+import com.android.healthconnect.controller.home.BannerFactory
+import com.android.healthconnect.controller.home.BannerFactory.Companion.DATA_RESTORE_BANNER_PREFERENCE_KEY
+import com.android.healthconnect.controller.home.BannerFactory.Companion.EXPORT_ERROR_BANNER_PREFERENCE_KEY
+import com.android.healthconnect.controller.home.BannerFactory.Companion.LOCK_SCREEN_BANNER_KEY
+import com.android.healthconnect.controller.home.BannerFactory.Companion.MIGRATION_BANNER_PREFERENCE_KEY
+import com.android.healthconnect.controller.home.BannerFactory.Companion.NATIVE_STEPS_BANNER_KEY
+import com.android.healthconnect.controller.home.BannerFactory.Companion.ONBOARDING_ONE_APP_BANNER_KEY
+import com.android.healthconnect.controller.home.BannerFactory.Companion.ONBOARDING_ZERO_APPS_BANNER_KEY
+import com.android.healthconnect.controller.home.HomeViewModel
+import com.android.healthconnect.controller.home.HomeViewModel.BannerData
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter

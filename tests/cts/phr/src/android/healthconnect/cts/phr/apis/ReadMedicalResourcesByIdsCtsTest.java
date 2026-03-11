@@ -130,7 +130,7 @@ public class ReadMedicalResourcesByIdsCtsTest {
         mUtil = new PhrCtsTestUtils(TestUtils.getHealthConnectManager());
         mManager = TestUtils.getHealthConnectManager();
         if (TestUtils.setLowerRateLimitsForTesting(true)) {
-            mUtil.mLimitsAdjustmentForTesting = 10;
+            mUtil.mLimitsAdjustmentForTesting = 40;
         }
     }
 

@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Alle apper"</string>
     <string name="can_read" msgid="4568261079308309564">"Kan lese <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Kan skrive <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Inaktive datakilder"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Disse datakildene kan ikke lese eller skrive <xliff:g id="DATA_TYPE">%s</xliff:g> lenger, men de har fortsatt data lagret i Health Connect"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Datakilder kan ikke lenger lese eller skrive <xliff:g id="DATA_TYPE_0">%1$s</xliff:g>, og ingen <xliff:g id="DATA_TYPE_2">%2$s</xliff:g>-data er lagret i Health Connect"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Disse dataene inkluderer informasjon som aktivitetstid, treningstype, runder, repetisjoner, økter eller svømmetak"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Disse dataene inkluderer informasjon som søvnstadier og søvnøkter"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Se alle oppføringer"</string>
@@ -349,7 +346,7 @@
     <string name="vaccines_content_description" msgid="7152741514791951684">"Lesing av vaksiner"</string>
     <string name="laboratory_results_uppercase_label" msgid="3400725778254150910">"Labresultater"</string>
     <string name="laboratory_results_lowercase_label" msgid="7647457227104919126">"labresultater"</string>
-    <string name="laboratory_results_content_description" msgid="7888886103734085841">"Lesing av laboratorieresultater"</string>
+    <string name="laboratory_results_content_description" msgid="7888886103734085841">"Lesing av labresultater"</string>
     <string name="medications_uppercase_label" msgid="4783281053427990225">"Medisiner"</string>
     <string name="medications_lowercase_label" msgid="7808038774503092207">"medisiner"</string>
     <string name="medications_content_description" msgid="6165382876281780190">"Les medisiner"</string>
@@ -596,7 +593,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Gå til Play Butikk"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Kom i gang med Health Connect"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect lagrer helse- og treningsdataene dine, slik at du enkelt kan synkronisere de forskjellige appene på enheten"</string>
-    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect lagrer og synkroniserer helse- og treningsdataene dine fra forskjellige apper.\n\n"<b>"Trenings- og velværedata,"</b>" inkludert treningsøkter, skritt, ernæring, søvn med mer\n\n"<b>"Medisinske journaler,"</b>" inkludert vaksiner, laboratorieresultater med mer"</string>
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect lagrer og synkroniserer helse- og treningsdataene dine fra forskjellige apper.\n\n"<b>"Trenings- og velværedata,"</b>" inkludert treningsøkter, skritt, ernæring, søvn med mer\n\n"<b>"Medisinske journaler,"</b>" inkludert vaksiner, labresultater med mer"</string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Med Health Connect kan du gjøre dette:"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Del data med appene dine"</b>\n"Velg dataene hver app kan lese eller skrive til Health Connect"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Administrer innstillingene dine og personvernet ditt"</b>\n"Endre apptillatelser og administrer dataene dine når som helst"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Innstillinger"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Med Health Connect kan du dele helse- og treningsdata mellom flere datakilder. Dette hjelper deg med å få innsikt og opplevelser samtidig som dataene dine holdes sikre."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Mer om Health Connect"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Dataene dine og hvilke datakilder som har tilgang til dem"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Apper som nylig har brukt dataene dine"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Gjennomgå enheter som kan lese helsedata"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Installer apper som fungerer med Health Connect, for å se dem her"</string>

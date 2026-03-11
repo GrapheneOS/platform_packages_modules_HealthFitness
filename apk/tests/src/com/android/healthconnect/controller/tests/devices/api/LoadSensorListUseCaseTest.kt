@@ -19,7 +19,6 @@ package com.android.healthconnect.controller.tests.devices.api
 import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorManager
-import android.platform.test.annotations.EnableFlags
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.devices.api.LoadSensorListUseCase
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
@@ -39,7 +38,6 @@ import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-@EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
 class LoadSensorListUseCaseTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

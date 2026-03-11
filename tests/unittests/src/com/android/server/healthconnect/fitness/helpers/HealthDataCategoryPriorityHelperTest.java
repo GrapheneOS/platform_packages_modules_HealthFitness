@@ -18,7 +18,6 @@ package com.android.server.healthconnect.fitness.helpers;
 
 import static android.health.connect.datatypes.Device.DEVICE_TYPE_PHONE;
 
-import static com.android.healthfitness.flags.Flags.FLAG_STEP_TRACKING_ENABLED;
 import static com.android.server.healthconnect.device.DeviceRecordHelper.DEVICE_DATA_PROVIDER_PACKAGE;
 
 import static com.google.common.truth.Truth.assertThat;
@@ -381,7 +380,6 @@ public class HealthDataCategoryPriorityHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_STEP_TRACKING_ENABLED)
     @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void maybeRemoveAppFromPriorityList_legacyPackage_doesNotRemoveApp() {
         mHealthDataCategoryPriorityHelper.appendToPriorityList(
@@ -417,7 +415,6 @@ public class HealthDataCategoryPriorityHelperTest {
 
     @Test
     @EnableFlags({
-        FLAG_STEP_TRACKING_ENABLED,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
     })
@@ -1460,7 +1457,6 @@ public class HealthDataCategoryPriorityHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_STEP_TRACKING_ENABLED)
     @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void testGetAllInactiveApps_doesNotConsiderLegacyDdpPackageInactive() {
         // Include DDP package, but don't grant any permissions.
@@ -1476,7 +1472,6 @@ public class HealthDataCategoryPriorityHelperTest {
 
     @Test
     @EnableFlags({
-        FLAG_STEP_TRACKING_ENABLED,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
         Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
     })
@@ -1507,20 +1502,6 @@ public class HealthDataCategoryPriorityHelperTest {
     }
 
     @Test
-    @DisableFlags(FLAG_STEP_TRACKING_ENABLED)
-    public void ddpLegacyPackagePreviouslyAdded_flagDisabled_removesFromPriorityOnResync() {
-        mHealthDataCategoryPriorityHelper.appendToPriorityList(
-                DEVICE_DATA_PROVIDER_PACKAGE, HealthDataCategory.ACTIVITY, mContext.getUser());
-
-        mHealthDataCategoryPriorityHelper.reSyncHealthDataPriorityTable();
-
-        assertThat(
-                        mHealthDataCategoryPriorityHelper.getAppIdPriorityOrder(
-                                HealthDataCategory.ACTIVITY))
-                .isEmpty();
-    }
-
-    @Test
     @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void watchPackagePreviouslyAdded_flagDisabled_removesFromPriorityOnResync() {
         mHealthDataCategoryPriorityHelper.appendToPriorityList(
@@ -1534,7 +1515,6 @@ public class HealthDataCategoryPriorityHelperTest {
     }
 
     @Test
-    @EnableFlags(FLAG_STEP_TRACKING_ENABLED)
     @DisableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void
             ddpLegacyPackagePreviouslyAdded_setPriorityOrderWithoutDdpPackage_removesDdpPackage() {

@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Összes alkalmazás"</string>
     <string name="can_read" msgid="4568261079308309564">"Olvashat <xliff:g id="PERMISSION_TYPE">%s</xliff:g> típusú adatokat"</string>
     <string name="can_write" msgid="5082414937218423823">"Írhat <xliff:g id="PERMISSION_TYPE">%s</xliff:g> típusú adatokat"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Inaktív adatforrások"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Ezek az adatforrások a továbbiakban nem olvashatnak vagy írhatnak <xliff:g id="DATA_TYPE">%s</xliff:g> típusú adatokat, de továbbra is tárolnak adatokat a Health Connect szolgáltatásban."</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Az adatforrások a továbbiakban nem olvashatnak vagy írhatnak <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> típusú adatokat, a Health Connect pedig már nem tárol <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> típusú adatokat."</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Ezek az adatok olyan információkat tartalmaznak, mint az aktív idő, a testmozgás típusa, a körök, ismétlések, edzések száma, valamint a csapásszámok"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Ezek az adatok olyan információkat tartalmaznak, mint az alvási fázisok és az alvásidőszakok"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Minden bejegyzés megtekintése"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Beállítások"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"A Health Connect segítségével több adatforrás között is megoszthatja egészségügyi és fitneszadatait. Ezzel statisztikákhoz és élményekhez juthat hozzá, és közben adatai is biztonságban maradnak."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"További információ a Health Connectről"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"A saját adatok és annak megtekintése, hogy mely adatforrások férhetnek hozzájuk"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Az Ön adatait nemrég használó alkalmazások"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Az egészségügyi adatokhoz hozzáférő eszközök áttekintése"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Ha olyan appokat telepít, amelyek működnek a Health Connect szolgáltatással, azok itt fognak megjelenni"</string>

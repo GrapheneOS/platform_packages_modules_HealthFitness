@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"ແອັບທັງໝົດ"</string>
     <string name="can_read" msgid="4568261079308309564">"ສາມາດອ່ານ <xliff:g id="PERMISSION_TYPE">%s</xliff:g> ໄດ້"</string>
     <string name="can_write" msgid="5082414937218423823">"ສາມາດຂຽນ <xliff:g id="PERMISSION_TYPE">%s</xliff:g> ໄດ້"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"ແຫຼ່ງຂໍ້ມູນທີ່ບໍ່ໄດ້ນຳໃຊ້"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"ແຫຼ່ງຂໍ້ມູນເຫຼົ່ານີ້ຈະບໍ່ສາມາດອ່ານ ຫຼື ຂຽນຂໍ້ມູນ <xliff:g id="DATA_TYPE">%s</xliff:g> ໄດ້ອີກຕໍ່ໄປ, ແຕ່ຈະຍັງຄົງມີຂໍ້ມູນຈັດເກັບຢູ່ໃນ Health Connect"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"ແຫຼ່ງຂໍ້ມູນຈະບໍ່ສາມາດອ່ານ ຫຼື ຂຽນຂໍ້ມູນ <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> ໄດ້ອີກຕໍ່ໄປ ແລະ ຈະບໍ່ມີຂໍ້ມູນ <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> ຈັດເກັບຢູ່ໃນ Health Connect"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"ຂໍ້ມູນນີ້ຮວມມີຂໍ້ມູນຕ່າງໆ ເຊັ່ນ: ເວລາເຄື່ອນໄຫວຮ່າງກາຍ, ປະເພດການອອກກຳລັງກາຍ, ຈຳນວນຮອບ, ຈຳນວນເທື່ອທີ່ເຮັດຊ້ຳ, ເຊດຊັນ ຫຼື ສະໂຕຣກການລອຍນ້ຳ"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"ຂໍ້ມູນນີ້ຮວມມີຂໍ້ມູນຕ່າງໆ ເຊັ່ນ: ໄລຍະການນອນຫຼັບ ແລະ ຊ່ວງເວລານອນຕ່າງໆ"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"ເບິ່ງລາຍການຂໍ້ມູນທັງໝົດ"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"ຄ່າກຳນົດ"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect ໃຫ້ທ່ານແບ່ງປັນຂໍ້ມູນສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍຂອງທ່ານລະຫວ່າງແຫຼ່ງຂໍ້ມູນຕ່າງໆໄດ້. ເຊິ່ງຈະຊ່ວຍໃຫ້ທ່ານປົດລັອກຂໍ້ມູນເຈາະເລິກ ແລະ ປະສົບການໃນການໃຊ້ຕ່າງໆພ້ອມກັບຮັກສາຂໍ້ມູນຂອງທ່ານໃຫ້ປອດໄພ."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"ເພີ່ມເຕີມກ່ຽວກັບ Health Connect"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"ຂໍ້ມູນຂອງທ່ານ ແລະ ແຫຼ່ງຂໍ້ມູນທີ່ຈະສາມາດເຂົ້າເຖິງຂໍ້ມູນດັ່ງກ່າວໄດ້"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"ແອັບທີ່ໃຊ້ຂໍ້ມູນຂອງທ່ານເມື່ອບໍ່ດົນມານີ້"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"ກວດເບິ່ງອຸປະກອນທີ່ສາມາດເຂົ້າເຖິງຂໍ້ມູນສຸຂະພາບໄດ້"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"ຕິດຕັ້ງແອັບທີ່ເຮັດວຽກໄດ້ກັບ Health Connect ເພື່ອເບິ່ງພວກມັນຢູ່ບ່ອນນີ້"</string>

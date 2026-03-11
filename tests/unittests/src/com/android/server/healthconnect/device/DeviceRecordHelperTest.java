@@ -125,7 +125,6 @@ public class DeviceRecordHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void insertRecords_packageNameSetToAndroid() {
         mDeviceRecordHelper.insertRecords(
                 TEST_DEVICE_DATA_SOURCE,
@@ -142,7 +141,6 @@ public class DeviceRecordHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void insertRecords_recordValuesCorrect() {
         mDeviceRecordHelper.insertRecords(
                 TEST_DEVICE_DATA_SOURCE,
@@ -161,7 +159,6 @@ public class DeviceRecordHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void insertRecords_deviceMetadataCorrect() {
         mDeviceRecordHelper.insertRecords(
                 TEST_DEVICE_DATA_SOURCE,
@@ -180,7 +177,6 @@ public class DeviceRecordHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void insertRecords_noAccessLogsGenerated() {
         mDeviceRecordHelper.insertRecords(
                 TEST_DEVICE_DATA_SOURCE,
@@ -194,7 +190,6 @@ public class DeviceRecordHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void insertRecords_changelogsGenerated() {
         // Get the row ID before insertion to fetch logs generated after this point
         long initialChangeLogRowId = mChangeLogsHelper.getLatestRowId();
@@ -242,7 +237,6 @@ public class DeviceRecordHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void insertRecords_multipleRecords_insertedCorrectly() {
         Instant time1 = NOW.minusMillis(15_000);
         Instant time2 = NOW.minusMillis(10_000);
@@ -268,21 +262,6 @@ public class DeviceRecordHelperTest {
                 .containsExactly(TEST_DEVICE_DATA_SOURCE.getManufacturer());
         assertThat(records.stream().map(RecordInternal::getModel).distinct().toList())
                 .containsExactly(TEST_DEVICE_DATA_SOURCE.getModel());
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
-    public void flagDisabled_noRecordsInserted() {
-        mDeviceRecordHelper.insertRecords(
-                TEST_DEVICE_DATA_SOURCE,
-                List.of(
-                        createDeviceStepsRecord(
-                                NOW.minusMillis(5_000).toEpochMilli(), NOW.toEpochMilli(), 7)));
-
-        List<RecordInternal<?>> records =
-                mFitnessTestUtils.readAllRecordsOfType(TEST_PACKAGE_NAME, StepsRecord.class);
-
-        assertThat(records).isEmpty();
     }
 
     private RecordInternal<StepsRecord> createDeviceStepsRecord(

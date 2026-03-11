@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"همه برنامه‌ها"</string>
     <string name="can_read" msgid="4568261079308309564">"می‌تواند داده‌های <xliff:g id="PERMISSION_TYPE">%s</xliff:g> را بخواند"</string>
     <string name="can_write" msgid="5082414937218423823">"می‌تواند داده‌های <xliff:g id="PERMISSION_TYPE">%s</xliff:g> را بنویسد"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"منابع داده غیرفعال"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"این منابع داده دیگر نمی‌توانند داده‌های <xliff:g id="DATA_TYPE">%s</xliff:g> را بخوانند یا بنویسند، اما همچنان داده‌های ذخیره‌شده‌ای در Health Connect دارند"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"منابع داده دیگر نمی‌توانند <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> را بخوانند یا بنویسند و هیچ داده‌ <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> در Health Connect ذخیره نشده است"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"این داده‌ها شامل اطلاعاتی مثل زمان فعالیت، نوع تمرین، دورها، تکرارها، جلسه‌ها، یا حرکت‌های شنا می‌شود"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"این داده‌ها شامل اطلاعاتی مثل مراحل خواب و جلسات خواب می‌شود"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"دیدن همه ورودی‌ها"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"اولویت‌ها"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"‫Health Connect به شما امکان می‌دهد داده‌های سلامتی و تناسب اندام خود را بین منابع داده‌های متعدد هم‌رسانی کنید. این ویژگی به شما کمک می‌کند به اطلاعات آماری و تجربه‌ها دست پیدا کنید و در عین حال داده‌هایتان را ایمن نگه دارید."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"اطلاعات بیشتر درباره Health Connect"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"داده‌های شما و منابع داده‌ای که می‌توانند به آن دسترسی داشته باشند"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"برنامه‌هایی که اخیراً از داده‌های شما استفاده کرده‌اند"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"بازبینی دستگاه‌هایی که به داده‌های سلامتی دسترسی دارند"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"برنامه‌های سازگار با Health Connect را نصب کنید تا بتوانید آن‌ها را در اینجا ببینید"</string>

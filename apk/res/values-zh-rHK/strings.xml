@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"所有應用程式"</string>
     <string name="can_read" msgid="4568261079308309564">"可以讀取<xliff:g id="PERMISSION_TYPE">%s</xliff:g>資料"</string>
     <string name="can_write" msgid="5082414937218423823">"可以寫入<xliff:g id="PERMISSION_TYPE">%s</xliff:g>資料"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"無效的資料來源"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"應用程式無法再讀取或寫入<xliff:g id="DATA_TYPE">%s</xliff:g>資料，但「健康資料同步」仍然儲存其資料"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"資料來源無法再於「健康資料同步」中讀取或寫入<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>資料，而且「健康資料同步」亦沒有儲存任何<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>資料"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"此資料包括活動時間、運動類型、圈數、重複次數、時段、泳式等資料"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"此資料包括睡眠階段和睡眠時段"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"查看所有資料"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"偏好設定"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"「健康資料同步」讓你在多個資料來源之間分享健康和健身資料，協助你取得分析資料和盡享更優質的體驗，同時保障你的資料安全。"</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"進一步瞭解「健康資料同步」"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"你的資料，以及可存取資料的資料來源"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"近期使用過你資料的應用程式"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"查看可存取健康資料的應用程式"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"安裝適用於「健康資料同步」的應用程式，就可以在這裡查看相關資料"</string>

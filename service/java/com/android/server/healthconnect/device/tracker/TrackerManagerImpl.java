@@ -128,11 +128,6 @@ public class TrackerManagerImpl implements TrackerManager {
     @SuppressLint("MissingPermission")
     @Override
     public void initializeOrRefresh() {
-        if (!Flags.stepTrackingEnabled()) {
-            Slog.d(TAG, "Step tracking flag disabled. Aborting initialization.");
-            return;
-        }
-
         if (mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)) {
             // Health Connect runs on Wear for permission management but we don't want to enable
             // passive step tracking for it
@@ -157,10 +152,6 @@ public class TrackerManagerImpl implements TrackerManager {
 
     @Override
     public void clearTracker() {
-        if (!Flags.stepTrackingEnabled()) {
-            return;
-        }
-
         if (mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)) {
             // Health Connect runs on Wear for permission management but we don't want to enable
             // passive step tracking for it
@@ -173,17 +164,11 @@ public class TrackerManagerImpl implements TrackerManager {
 
     @Override
     public boolean isStepTrackingActive() {
-        if (!Flags.stepTrackingEnabled()) {
-            return false;
-        }
         return mSubscribed;
     }
 
     @Override
     public boolean isStepTrackingExplicitlyDisabled() {
-        if (!Flags.stepTrackingEnabled()) {
-            return false;
-        }
         String stepTrackingPreferenceEnabled =
                 mPreferenceHelper.getPreference(STEP_TRACKING_PREFERENCE_KEY);
         return stepTrackingPreferenceEnabled != null

@@ -22,7 +22,6 @@ import static com.android.server.healthconnect.device.DeviceDataSourceHelper.DIS
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -52,31 +51,26 @@ public class DeviceDataSourceHelperTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void isValidDisplayName_rejectsNullValues() {
         assertThat(DeviceDataSourceHelper.isValidDisplayName(null)).isFalse();
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void isValidDisplayName_rejectsEmptyStrings() {
         assertThat(DeviceDataSourceHelper.isValidDisplayName("")).isFalse();
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void isValidDisplayName_rejectsStringsThatAreEmptyAfterTrimming() {
         assertThat(DeviceDataSourceHelper.isValidDisplayName("   ")).isFalse();
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void sanitize_trimsWhiteSpace() {
         assertThat(DeviceDataSourceHelper.sanitize("  Some Device  ")).isEqualTo("Some Device");
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void sanitize_truncatesToMaxLength() {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < DISPLAY_NAME_MAX_LENGTH * 2; i++) {

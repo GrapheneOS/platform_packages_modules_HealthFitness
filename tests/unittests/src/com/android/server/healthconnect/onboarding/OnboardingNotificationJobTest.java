@@ -96,6 +96,7 @@ public class OnboardingNotificationJobTest {
         when(mMainJobScheduler.forNamespace(ONBOARDING_NOTIFICATION_JOB_NAMESPACE))
                 .thenReturn(mOnboardingNotificationJobScheduler);
         when(mResourcesContext.getBoolByName(any())).thenReturn(Optional.of(true));
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)).thenReturn(false);
     }
 
     @After
@@ -140,6 +141,18 @@ public class OnboardingNotificationJobTest {
         when(mResourcesContext.getBoolByName(OnboardingNotificationJob.CONFIG_ENABLE_DISCOVERY))
                 .thenReturn(Optional.of(false));
 
+        OnboardingNotificationJob.scheduleJobIfNotScheduled(
+                mContext, mUserHandle, mResourcesContext);
+
+        verify(mOnboardingNotificationJobScheduler, never()).schedule(any());
+    }
+
+    @Test
+    public void scheduleJobIfNotScheduled_deviceIsWear_notScheduled() {
+        when(mOnboardingNotificationJobScheduler.getAllPendingJobs()).thenReturn(List.of());
+        when(mResourcesContext.getBoolByName(OnboardingNotificationJob.CONFIG_ENABLE_DISCOVERY))
+                .thenReturn(Optional.of(true));
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)).thenReturn(true);
         OnboardingNotificationJob.scheduleJobIfNotScheduled(
                 mContext, mUserHandle, mResourcesContext);
 

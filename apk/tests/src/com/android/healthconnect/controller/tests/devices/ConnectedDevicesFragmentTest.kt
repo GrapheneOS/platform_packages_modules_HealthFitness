@@ -18,7 +18,6 @@ package com.android.healthconnect.controller.tests.devices
 
 import android.content.Context
 import android.os.Bundle
-import android.platform.test.annotations.EnableFlags
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
@@ -51,7 +50,6 @@ import org.mockito.kotlin.whenever
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-@EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
 class ConnectedDevicesFragmentTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

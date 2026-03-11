@@ -95,12 +95,9 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Сите апликации"</string>
     <string name="can_read" msgid="4568261079308309564">"Може да чита <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Може да запишува <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
-    <!-- no translation found for inactive_apps (1413060306609966606) -->
-    <skip />
-    <!-- no translation found for inactive_apps_message (3499586995328856202) -->
-    <skip />
-    <!-- no translation found for data_access_empty_message (323965759318632888) -->
-    <skip />
+    <string name="inactive_apps" msgid="1413060306609966606">"Неактивни извори на податоци"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Извориве на податоци веќе не може да читаат или да запишуваат податоци за <xliff:g id="DATA_TYPE">%s</xliff:g>, но и понатаму имаат податоци зачувани во Health Connect"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Изворите на податоци веќе не може да читаат или да запишуваат податоци за <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> и нема зачувани податоци за <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> во Health Connect"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Податоциве вклучуваат информации како активно време, тип на вежба, кругови, серии, сесии или потези на пливање"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Податоциве вклучуваат информации како фази и сесии на спиење"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Видете ги сите записи"</string>
@@ -1351,8 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Поставки"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect ви овозможува да ги споделувате вашите здравствени и податоци за фитнес меѓу повеќе извори на податоци. Ова ви помага да отклучите согледувања и доживувања, а и да ги заштитите вашите податоци."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Повеќе за Health Connect"</string>
-    <!-- no translation found for data_and_access_summary (2698213356971774646) -->
-    <skip />
+    <string name="data_and_access_summary" msgid="2698213356971774646">"Вашите податоци и изворите на податоци што може да пристапуваат до нив"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Апликации што неодамна ги користеле вашите податоци"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Прегледајте ги уредите што може да пристапуваат до здравствените податоци"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Инсталирајте апликации што функционираат со Health Connect за да ги гледате овде"</string>

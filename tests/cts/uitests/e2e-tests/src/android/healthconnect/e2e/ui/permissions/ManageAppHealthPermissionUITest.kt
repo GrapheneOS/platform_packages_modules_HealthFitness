@@ -17,20 +17,15 @@
 package android.healthconnect.cts.ui.permissions
 
 import android.content.pm.PackageManager
-import android.health.connect.HealthPermissions.READ_HEIGHT
-import android.health.connect.HealthPermissions.READ_MINDFULNESS
 import android.health.connect.HealthPermissions.WRITE_BODY_FAT
 import android.health.connect.HealthPermissions.WRITE_HEIGHT
-import android.health.connect.HealthPermissions.WRITE_STEPS
 import android.healthconnect.cts.ui.HealthConnectBaseTest
 import android.healthconnect.testing.cts.PermissionUtils
 import android.healthconnect.testing.cts.ui.ActivityLauncher.launchMainActivity
 import android.healthconnect.testing.cts.ui.UiTestUtils.TEST_APP_NAME
 import android.healthconnect.testing.cts.ui.UiTestUtils.TEST_APP_PACKAGE_NAME
 import android.healthconnect.testing.cts.ui.UiTestUtils.clickOnDescAndWaitForNewWindow
-import android.healthconnect.testing.cts.ui.UiTestUtils.clickOnText
 import android.healthconnect.testing.cts.ui.UiTestUtils.findObject
-import android.healthconnect.testing.cts.ui.UiTestUtils.findText
 import android.healthconnect.testing.cts.ui.UiTestUtils.findTextAndClick
 import android.healthconnect.testing.cts.ui.UiTestUtils.grantPermissionViaPackageManager
 import android.healthconnect.testing.cts.ui.UiTestUtils.navigateBackToHomeScreen
@@ -43,7 +38,6 @@ import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.uiautomator.By
 import com.android.healthfitness.flags.Flags
-import com.android.healthfitness.flags.Flags.FLAG_NEW_HOME_SCREEN
 import com.google.common.truth.Truth.assertThat
 import org.junit.After
 import org.junit.Before
@@ -195,28 +189,6 @@ class ManageAppHealthPermissionUITest : HealthConnectBaseTest() {
 
             assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
             assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
-        }
-    }
-
-    @Test
-    @RequiresFlagsDisabled(FLAG_NEW_HOME_SCREEN)
-    fun revokeAllPermissions_revokesAllAppPermissions() {
-        context.launchMainActivity {
-            navigateToManagePermissionsForApp(TEST_APP_NAME)
-            scrollDownToAndFindText("Allow all")
-            findTextAndClick("Allow all")
-            findText("Remove all permissions?")
-            findText(
-                "Also delete CtsHealthConnectTestAppAWithNormalReadWritePermission data from Health Connect"
-            )
-            clickOnText("Remove all")
-            clickOnDescAndWaitForNewWindow("Navigate up")
-
-            assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, READ_HEIGHT)
-            assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, READ_MINDFULNESS)
-            assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_HEIGHT)
-            assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_BODY_FAT)
-            assertPermNotGrantedForApp(TEST_APP_PACKAGE_NAME, WRITE_STEPS)
         }
     }
 

@@ -72,9 +72,6 @@ public class DailyLoggingService {
     private static void logNativeTrackingStats(
             NativeTrackingStatsCollector nativeTrackingStatsCollector,
             NativeTrackingStatsLogger nativeTrackingStatsLogger) {
-        if (!Flags.stepTrackingEnabled()) {
-            return;
-        }
         try {
             nativeTrackingStatsCollector.processStats();
             nativeTrackingStatsLogger.log();

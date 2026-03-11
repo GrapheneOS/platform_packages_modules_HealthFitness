@@ -36,6 +36,12 @@ interface DeviceInfoUtils {
 
     fun openHCBackupAndRestoreLink(activity: FragmentActivity)
 
+    fun openHCManageDataLink(activity: FragmentActivity)
+
+    fun openHCLearnMoreLink(activity: FragmentActivity)
+
+    fun openHCIntegrationLink(activity: FragmentActivity)
+
     fun openSendFeedbackActivity(activity: FragmentActivity)
 
     fun isIntentHandlerAvailable(context: Context, intent: Intent): Boolean
@@ -77,6 +83,18 @@ class DeviceInfoUtilsImpl @Inject constructor() : DeviceInfoUtils {
 
     override fun openHCBackupAndRestoreLink(activity: FragmentActivity) {
         openHealthConnectHelpCenterLink(activity, R.string.hc_backup_and_restore_link)
+    }
+
+    override fun openHCLearnMoreLink(activity: FragmentActivity) {
+        openHealthConnectHelpCenterLink(activity, R.string.hc_learn_more_link)
+    }
+
+    override fun openHCIntegrationLink(activity: FragmentActivity) {
+        openHealthConnectHelpCenterLink(activity, R.string.hc_integration_link)
+    }
+
+    override fun openHCManageDataLink(activity: FragmentActivity) {
+        openHealthConnectHelpCenterLink(activity, R.string.hc_manage_your_data_link)
     }
 
     override fun openHealthFitnessPermissionsLearnMoreLink(activity: FragmentActivity) {

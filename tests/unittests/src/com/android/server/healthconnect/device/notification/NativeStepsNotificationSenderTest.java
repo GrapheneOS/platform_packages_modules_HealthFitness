@@ -18,7 +18,6 @@ package com.android.server.healthconnect.device.notification;
 import static android.app.Notification.EXTRA_BIG_TEXT;
 import static android.app.Notification.EXTRA_TITLE;
 
-import static com.android.healthfitness.flags.Flags.FLAG_STEP_TRACKING_ENABLED;
 import static com.android.server.healthconnect.device.notification.NativeStepsNotificationSender.NOTIFICATION_CONTENT;
 import static com.android.server.healthconnect.device.notification.NativeStepsNotificationSender.NOTIFICATION_TITLE;
 import static com.android.server.healthconnect.device.notification.NativeStepsNotificationStateManager.NOTIFICATION_STATE_PREFERENCE_KEY_PREFIX;
@@ -96,7 +95,6 @@ public class NativeStepsNotificationSenderTest {
     }
 
     @Test
-    @EnableFlags(FLAG_STEP_TRACKING_ENABLED)
     public void sendNotification_success() {
         mNativeStepsNotificationSender.sendNotification(mUserHandle);
         verify(mNotificationSender)
@@ -109,7 +107,6 @@ public class NativeStepsNotificationSenderTest {
     }
 
     @Test
-    @EnableFlags(FLAG_STEP_TRACKING_ENABLED)
     public void sendNotification_notificationStateUpdated() {
         when(mPreferenceHelper.getPreference(eq(PREF_KEY))).thenReturn(String.valueOf(false));
 
@@ -119,18 +116,6 @@ public class NativeStepsNotificationSenderTest {
     }
 
     @Test
-    @DisableFlags(FLAG_STEP_TRACKING_ENABLED)
-    public void sendNoAppConnectedNotification_flagDisabled_noOp() {
-        when(mPreferenceHelper.getPreference(eq(PREF_KEY))).thenReturn(String.valueOf(false));
-
-        mNativeStepsNotificationSender.sendNotification(mUserHandle);
-
-        verify(mNotificationSender, never()).sendNotificationAsUser(any(), eq(mUserHandle));
-        verify(mPreferenceHelper, never()).insertOrReplacePreference(any(), any());
-    }
-
-    @Test
-    @EnableFlags(FLAG_STEP_TRACKING_ENABLED)
     public void sendNotification_channelBlocked_noOp() {
         when(mPreferenceHelper.getPreference(eq(PREF_KEY))).thenReturn(String.valueOf(false));
         when(mNotificationSender.sendNotificationAsUser(any(), eq(mUserHandle))).thenReturn(false);

@@ -17,7 +17,6 @@ package com.android.healthconnect.controller.tests.devices
 
 import android.hardware.Sensor
 import android.health.connect.datatypes.StepsRecord
-import android.platform.test.annotations.EnableFlags
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.android.healthconnect.controller.devices.ConnectedDevicesViewModel
 import com.android.healthconnect.controller.devices.ConnectedDevicesViewModel.ConnectedDevicesState
@@ -50,7 +49,6 @@ import org.mockito.kotlin.mock
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
-@EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
 class ConnectedDevicesViewModelTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)

@@ -573,7 +573,6 @@ public class OnboardingStateManagerTest {
                 /* id= */ 0,
                 packageName,
                 "appName",
-                /* icon= */ null,
                 isAppUsed ? Set.of(ACTIVE_CALORIES_BURNED) : emptySet(),
                 /* deviceInfoId= */ null);
     }

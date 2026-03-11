@@ -16,7 +16,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/home_nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/newHomeFragment">
 
     <include app:graph="@navigation/fitness_app_nav_graph" />
     <include app:graph="@navigation/medical_app_nav_graph" />
@@ -48,7 +48,7 @@
 
     <fragment
         android:id="@+id/newHomeFragment"
-        android:name="com.android.healthconnect.controller.newHome.HomeFragment"
+        android:name="com.android.healthconnect.controller.home.HomeFragment"
         android:label="@string/app_label">
         <action
             android:id="@+id/action_newHomeFragment_to_dataAndAccess"
@@ -86,51 +86,6 @@
         <action
             android:id="@+id/action_newHomeFragment_to_migrationActivity"
             app:destination="@id/migrationActivity" />
-    </fragment>
-
-    <fragment
-        android:id="@+id/homeFragment"
-        android:name="com.android.healthconnect.controller.home.HomeFragment"
-        android:label="@string/app_label">
-        <action
-            android:id="@+id/action_homeFragment_to_fitnessAppFragment"
-            app:destination="@id/fitness_app_nav_graph" />
-        <action
-            android:id="@+id/action_homeFragment_to_medicalAppFragment"
-            app:destination="@id/medical_app_nav_graph" />
-        <action
-            android:id="@+id/action_homeFragment_to_combinedPermissionsFragment"
-            app:destination="@id/combined_permissions_nav_graph" />
-        <action
-            android:id="@+id/action_homeFragment_to_healthDataCategoriesFragment"
-            app:destination="@id/data_activity" />
-        <action
-            android:id="@+id/action_homeFragment_to_medicalDataFragment"
-            app:destination="@id/medical_data_nav_graph" />
-        <action
-            android:id="@+id/action_homeFragment_to_recentAccessFragment"
-            app:destination="@id/recentAccessFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_connectedAppsFragment"
-            app:destination="@id/connected_apps_nav_graph" />
-        <action
-            android:id="@+id/action_homeFragment_to_migrationActivity"
-            app:destination="@id/migrationActivity" />
-        <action
-            android:id="@+id/action_homeFragment_to_manageDataFragment"
-            app:destination="@+id/manageDataFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_exportSetupActivity"
-            app:destination="@id/exportSetupActivity" />
-        <action
-            android:id="@+id/action_homeFragment_to_playstoreActivity"
-            app:destination="@id/playstore_activity" />
-        <action
-            android:id="@+id/action_homeFragment_to_connectedDevicesFragment"
-            app:destination="@id/device_management_nav_graph" />
-        <action
-            android:id="@+id/action_homeFragment_to_newDevicesFragment"
-            app:destination="@id/devices_nav_graph" />
     </fragment>
 
     <activity

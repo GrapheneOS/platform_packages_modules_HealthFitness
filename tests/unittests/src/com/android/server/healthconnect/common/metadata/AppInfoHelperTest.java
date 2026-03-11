@@ -158,9 +158,8 @@ public class AppInfoHelperTest {
 
         // Clear cache and read back to ensure icon was resized.
         mAppInfoHelper.clearCache();
-        AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME);
-        Bitmap bitmap =
-                BitmapFactory.decodeByteArray(appInfo.getIcon(), 0, appInfo.getIcon().length);
+        byte[] icon = mAppInfoHelper.getAppIcons(List.of(TEST_PACKAGE_NAME)).get(TEST_PACKAGE_NAME);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(icon, 0, icon.length);
         assertThat(bitmap.getWidth()).isEqualTo(288);
         assertThat(bitmap.getHeight()).isEqualTo(144);
     }
@@ -186,9 +185,8 @@ public class AppInfoHelperTest {
 
         // Clear cache and verify DB has new icon
         mAppInfoHelper.clearCache();
-        AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME);
-        Bitmap bitmap =
-                BitmapFactory.decodeByteArray(appInfo.getIcon(), 0, appInfo.getIcon().length);
+        byte[] icon = mAppInfoHelper.getAppIcons(List.of(TEST_PACKAGE_NAME)).get(TEST_PACKAGE_NAME);
+        Bitmap bitmap = BitmapFactory.decodeByteArray(icon, 0, icon.length);
         assertThat(bitmap.getWidth()).isEqualTo(width);
         assertThat(bitmap.getHeight()).isEqualTo(height);
     }
@@ -208,10 +206,9 @@ public class AppInfoHelperTest {
 
         // 3. Verify DB has default icon
         mAppInfoHelper.clearCache();
-        AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME);
-        assertThat(appInfo.getIcon().length).isLessThan(largeIcon.length);
-        Bitmap storedBitmap =
-                BitmapFactory.decodeByteArray(appInfo.getIcon(), 0, appInfo.getIcon().length);
+        byte[] icon = mAppInfoHelper.getAppIcons(List.of(TEST_PACKAGE_NAME)).get(TEST_PACKAGE_NAME);
+        assertThat(icon.length).isLessThan(largeIcon.length);
+        Bitmap storedBitmap = BitmapFactory.decodeByteArray(icon, 0, icon.length);
         assertThat(storedBitmap.getWidth()).isEqualTo(DEFAULT_DRAWABLE_WIDTH);
         assertThat(storedBitmap.getHeight()).isEqualTo(DEFAULT_DRAWABLE_HEIGHT);
     }
@@ -230,12 +227,11 @@ public class AppInfoHelperTest {
 
         // 3. Verify DB has same icon
         mAppInfoHelper.clearCache();
-        AppInfoInternal appInfo = mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME);
-        assertThat(appInfo.getIcon()).isEqualTo(smallIcon);
+        byte[] icon = mAppInfoHelper.getAppIcons(List.of(TEST_PACKAGE_NAME)).get(TEST_PACKAGE_NAME);
+        assertThat(icon).isEqualTo(smallIcon);
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void deviceDataProvider_addedToAppInfo_cacheRepopulated_deviceDisplayNameUsed()
             throws PackageManager.NameNotFoundException {
         setAppAsNotInstalled(DEVICE_PROVIDER_PACKAGE_NAME);
@@ -267,25 +263,27 @@ public class AppInfoHelperTest {
         Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
 
         assertThat(appInfoInternalMap).containsKey(DEVICE_PROVIDER_PACKAGE_NAME);
-        AppInfo deviceAppInfo = appInfoInternalMap.get(DEVICE_PROVIDER_PACKAGE_NAME).toExternal();
+        AppInfo deviceAppInfo =
+                appInfoInternalMap.get(DEVICE_PROVIDER_PACKAGE_NAME).toExternal(/* icon= */ null);
         assertThat(deviceAppInfo.getName()).isEqualTo(EXPECTED_DEVICE_APP_NAME);
 
         assertThat(appInfoInternalMap).containsKey(TEST_PACKAGE_NAME);
-        AppInfo testAppInfo = appInfoInternalMap.get(TEST_PACKAGE_NAME).toExternal();
+        AppInfo testAppInfo =
+                appInfoInternalMap.get(TEST_PACKAGE_NAME).toExternal(/* icon= */ null);
         assertThat(testAppInfo.getName()).isEqualTo(TEST_APP_NAME);
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void deviceDataProvider_addedToAppInfo_cacheAlreadyPopulated_deviceDisplayNameUsed()
             throws PackageManager.NameNotFoundException {
         setAppAsNotInstalled(DEVICE_PROVIDER_PACKAGE_NAME);
         setAppAsNotInstalled(TEST_PACKAGE_NAME);
         mFitnessTestUtils.insertApp(DEVICE_PROVIDER_PACKAGE_NAME);
         mAppInfoHelper.updateAppInfoIfNotInstalled(
-                DEVICE_PROVIDER_PACKAGE_NAME, ORIGINAL_DEVICE_APP_NAME, null);
+                DEVICE_PROVIDER_PACKAGE_NAME, ORIGINAL_DEVICE_APP_NAME, /* maybeIcon= */ null);
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
-        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(
+                TEST_PACKAGE_NAME, TEST_APP_NAME, /* maybeIcon= */ null);
         Instant now = Instant.now();
         mFitnessTestUtils.insertRecords(
                 DEVICE_PROVIDER_PACKAGE_NAME,
@@ -307,65 +305,24 @@ public class AppInfoHelperTest {
         Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
 
         assertThat(appInfoInternalMap).containsKey(DEVICE_PROVIDER_PACKAGE_NAME);
-        AppInfo deviceAppInfo = appInfoInternalMap.get(DEVICE_PROVIDER_PACKAGE_NAME).toExternal();
+        AppInfo deviceAppInfo =
+                appInfoInternalMap.get(DEVICE_PROVIDER_PACKAGE_NAME).toExternal(/* icon= */ null);
         assertThat(deviceAppInfo.getName()).isEqualTo(EXPECTED_DEVICE_APP_NAME);
 
         assertThat(appInfoInternalMap).containsKey(TEST_PACKAGE_NAME);
-        AppInfo testAppInfo = appInfoInternalMap.get(TEST_PACKAGE_NAME).toExternal();
+        AppInfo testAppInfo =
+                appInfoInternalMap.get(TEST_PACKAGE_NAME).toExternal(/* icon= */ null);
         assertThat(testAppInfo.getName()).isEqualTo(TEST_APP_NAME);
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
-    public void getAppInfoMap_deviceProviderNameNotUpdated_whenFlagDisabled()
-            throws PackageManager.NameNotFoundException {
-        setAppAsNotInstalled(DEVICE_PROVIDER_PACKAGE_NAME);
-        setAppAsNotInstalled(TEST_PACKAGE_NAME);
-
-        mFitnessTestUtils.insertApp(DEVICE_PROVIDER_PACKAGE_NAME);
-        mAppInfoHelper.updateAppInfoIfNotInstalled(
-                DEVICE_PROVIDER_PACKAGE_NAME, ORIGINAL_DEVICE_APP_NAME, null);
-        mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
-        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
-
-        Instant now = Instant.now();
-        mFitnessTestUtils.insertRecords(
-                DEVICE_PROVIDER_PACKAGE_NAME,
-                List.of(
-                        RecordInternalFactory.buildStepsRecord(
-                                UUID.randomUUID().toString(),
-                                now.toEpochMilli(),
-                                now.plusSeconds(1).toEpochMilli(),
-                                100)));
-        mFitnessTestUtils.insertRecords(
-                TEST_PACKAGE_NAME,
-                List.of(
-                        RecordInternalFactory.buildStepsRecord(
-                                UUID.randomUUID().toString(),
-                                now.plusSeconds(10).toEpochMilli(),
-                                now.plusSeconds(11).toEpochMilli(),
-                                200)));
-
-        mAppInfoHelper.clearCache();
-        Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
-
-        assertThat(appInfoInternalMap).containsKey(DEVICE_PROVIDER_PACKAGE_NAME);
-        AppInfo deviceAppInfo = appInfoInternalMap.get(DEVICE_PROVIDER_PACKAGE_NAME).toExternal();
-        assertThat(deviceAppInfo.getName()).isEqualTo(ORIGINAL_DEVICE_APP_NAME);
-
-        assertThat(appInfoInternalMap).containsKey(TEST_PACKAGE_NAME);
-        AppInfo testAppInfo = appInfoInternalMap.get(TEST_PACKAGE_NAME).toExternal();
-        assertThat(testAppInfo.getName()).isEqualTo(TEST_APP_NAME);
-    }
-
-    @Test
-    @EnableFlags(Flags.FLAG_STEP_TRACKING_ENABLED)
     public void getAppInfoMap_regularPackageNameUnchanged_whenFlagEnabled()
             throws PackageManager.NameNotFoundException {
         setAppAsNotInstalled(TEST_PACKAGE_NAME);
 
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
-        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(
+                TEST_PACKAGE_NAME, TEST_APP_NAME, /* maybeIcon= */ null);
         Instant now = Instant.now();
         mFitnessTestUtils.insertRecords(
                 TEST_PACKAGE_NAME,
@@ -380,7 +337,8 @@ public class AppInfoHelperTest {
         Map<String, AppInfoInternal> appInfoInternalMap = mAppInfoHelper.getAppInfoMap();
 
         assertThat(appInfoInternalMap).containsKey(TEST_PACKAGE_NAME);
-        AppInfo testAppInfo = appInfoInternalMap.get(TEST_PACKAGE_NAME).toExternal();
+        AppInfo testAppInfo =
+                appInfoInternalMap.get(TEST_PACKAGE_NAME).toExternal(/* icon= */ null);
         assertThat(testAppInfo.getName()).isEqualTo(TEST_APP_NAME);
     }
 
@@ -390,7 +348,8 @@ public class AppInfoHelperTest {
         setAppAsNotInstalled(TEST_PACKAGE_NAME);
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
-        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(
+                TEST_PACKAGE_NAME, TEST_APP_NAME, /* maybeIcon= */ null);
 
         verify(mPackageManager).getApplicationIcon(TEST_PACKAGE_NAME);
         assertThat(mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME).getName())
@@ -403,7 +362,8 @@ public class AppInfoHelperTest {
         setAppAsNotInstalled(TEST_PACKAGE_NAME);
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
-        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(
+                TEST_PACKAGE_NAME, TEST_APP_NAME, /* maybeIcon= */ null);
 
         verify(mPackageManager).getDefaultActivityIcon();
         assertThat(mAppInfoHelper.getAppInfoMap().get(TEST_PACKAGE_NAME).getName())
@@ -416,7 +376,8 @@ public class AppInfoHelperTest {
         setAppAsInstalled();
         mFitnessTestUtils.insertApp(TEST_PACKAGE_NAME);
 
-        mAppInfoHelper.updateAppInfoIfNotInstalled(TEST_PACKAGE_NAME, TEST_APP_NAME, null);
+        mAppInfoHelper.updateAppInfoIfNotInstalled(
+                TEST_PACKAGE_NAME, TEST_APP_NAME, /* maybeIcon= */ null);
 
         verify(mPackageManager, times(1))
                 .getApplicationInfo(eq(TEST_PACKAGE_NAME), any(ApplicationInfoFlags.class));
@@ -539,7 +500,6 @@ public class AppInfoHelperTest {
         assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getId()).isEqualTo(1L);
         assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getPackageName())
                 .isEqualTo(canonicalSpn);
-        assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getIcon()).isEqualTo(null);
         assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getName()).isEqualTo(null);
         assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getRecordTypesUsed())
                 .isEqualTo(null);
@@ -574,7 +534,6 @@ public class AppInfoHelperTest {
         assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getId()).isEqualTo(1L);
         assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getPackageName())
                 .isEqualTo(canonicalSpn);
-        assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getIcon()).isEqualTo(null);
         assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getName()).isEqualTo(null);
         assertThat(mAppInfoHelper.getAppInfoMap().get(canonicalSpn).getRecordTypesUsed())
                 .isEqualTo(null);
