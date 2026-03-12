@@ -33,7 +33,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assume.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
@@ -83,7 +82,6 @@ import android.health.connect.internal.datatypes.SymptomRecordInternal;
 import android.healthconnect.testing.unittest.FitnessTestUtils;
 import android.healthconnect.testing.unittest.TaskUtils;
 import android.healthconnect.testing.unittest.mocks.AndroidPackageMocker;
-import android.os.Build;
 import android.os.UserManager;
 import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -91,7 +89,6 @@ import android.util.Pair;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.filters.SdkSuppress;
 
 import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
@@ -1327,11 +1324,7 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
-    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.BAKLAVA)
-    public void isPermittedToProvideDeviceData_baklavaAndLower_withManagePermission_returnsTrue() {
-        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
-        assumeTrue(Build.VERSION.SDK_INT <= Build.VERSION_CODES.BAKLAVA);
-
+    public void isPermittedToProvideDeviceData_withManagePermission_returnsTrue() {
         doReturn(PackageManager.PERMISSION_DENIED)
                 .when(mContext)
                 .checkPermission(
@@ -1352,36 +1345,7 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
-    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.BAKLAVA)
-    public void isPermittedToProvideDeviceData_baklavaAndLower_noPermission_returnsFalse() {
-        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
-        assumeTrue(Build.VERSION.SDK_INT <= Build.VERSION_CODES.BAKLAVA);
-
-        doReturn(PackageManager.PERMISSION_DENIED)
-                .when(mContext)
-                .checkPermission(
-                        Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA,
-                        /* pid= */ 0,
-                        /* uid= */ 0);
-        doReturn(PackageManager.PERMISSION_DENIED)
-                .when(mContext)
-                .checkPermission(
-                        HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION,
-                        /* pid= */ 0,
-                        /* uid= */ 0);
-
-        assertThat(
-                        mDeviceDataProviderManager.isPermittedToProvideDeviceData(
-                                PACKAGE_NAME, /* uid= */ 0, /* pid= */ 0))
-                .isFalse();
-    }
-
-    @Test
-    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA + 1)
-    public void isPermittedToProvideDeviceData_postBaklava_withProvidePermission_returnsTrue() {
-        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
-        assumeTrue(Build.VERSION.SDK_INT > Build.VERSION_CODES.BAKLAVA);
-
+    public void isPermittedToProvideDeviceData_withProvidePermission_returnsTrue() {
         doReturn(PackageManager.PERMISSION_GRANTED)
                 .when(mContext)
                 .checkPermission(
@@ -1402,36 +1366,7 @@ public class DeviceDataProviderManagerTest {
     }
 
     @Test
-    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA + 1)
-    public void isPermittedToProvideDeviceData_postBaklava_withManagePermission_returnsFalse() {
-        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
-        assumeTrue(Build.VERSION.SDK_INT > Build.VERSION_CODES.BAKLAVA);
-
-        doReturn(PackageManager.PERMISSION_DENIED)
-                .when(mContext)
-                .checkPermission(
-                        Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA,
-                        /* pid= */ 0,
-                        /* uid= */ 0);
-        doReturn(PackageManager.PERMISSION_GRANTED)
-                .when(mContext)
-                .checkPermission(
-                        HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION,
-                        /* pid= */ 0,
-                        /* uid= */ 0);
-
-        assertThat(
-                        mDeviceDataProviderManager.isPermittedToProvideDeviceData(
-                                PACKAGE_NAME, /* uid= */ 0, /* pid= */ 0))
-                .isFalse();
-    }
-
-    @Test
-    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA + 1)
-    public void isPermittedToProvideDeviceData_postBaklava_noPermission_returnsFalse() {
-        // TODO: b/425856998 - remove when robolectric supports @SdkSuppress
-        assumeTrue(Build.VERSION.SDK_INT > Build.VERSION_CODES.BAKLAVA);
-
+    public void isPermittedToProvideDeviceData_noPermission_returnsFalse() {
         doReturn(PackageManager.PERMISSION_DENIED)
                 .when(mContext)
                 .checkPermission(
