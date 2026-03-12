@@ -21,7 +21,7 @@ import static android.healthconnect.testing.cts.TestUtils.isMaskedSyntheticPacka
 import static android.healthconnect.testing.cts.TestUtils.readDeviceRecords;
 import static android.healthconnect.testing.shared.DataFactory.getStepsRecord;
 
-import static com.android.compatibility.common.util.SystemUtil.runShellCommand;
+import static com.android.compatibility.common.util.SystemUtil.runShellCommandOrThrow;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_DB;
 
@@ -51,7 +51,6 @@ import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import android.platform.test.flag.junit.SetFlagsRule;
 
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.runner.AndroidJUnit4;
 
 import org.junit.After;
@@ -114,8 +113,7 @@ public class MultiProviderTest {
     public void getCurrentDeviceId_differentPerCaller() throws Exception {
         String testAppDeviceId = TestUtils.getCurrentDeviceId();
         String shellDeviceId =
-                runShellCommand(
-                                InstrumentationRegistry.getInstrumentation(),
+                runShellCommandOrThrow(
                                 DEVICE_DATA_PROVIDER_COMMAND.GET_CURRENT_DEVICE_ID
                                         .getShellCommand())
                         .trim();
@@ -128,8 +126,7 @@ public class MultiProviderTest {
     public void getCurrentDeviceId_differentProviders_canAdvertise() throws Exception {
         TestUtils.advertiseDevice(
                 getCurrentDeviceId(), buildTestAppDevice(), FloorsClimbedRecord.class);
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
+        runShellCommandOrThrow(
                 DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_CURRENT_DEVICE.getShellCommand());
 
         List<DeviceDataSourceInfo> infos = TestUtils.getDeviceDataSourceInfos();
@@ -163,16 +160,14 @@ public class MultiProviderTest {
     public void getCurrentDeviceId_differentProviders_canInsert() throws Exception {
         String currentDeviceId = getCurrentDeviceId();
         TestUtils.advertiseDevice(currentDeviceId, buildTestAppDevice(), StepsRecord.class);
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
+        runShellCommandOrThrow(
                 DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_CURRENT_DEVICE.getShellCommand());
 
         // Test App inserts
         insertStepsRecordFromApp(currentDeviceId);
 
         // Shell inserts
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
+        runShellCommandOrThrow(
                 DEVICE_DATA_PROVIDER_COMMAND.INSERT_CURRENT_DEVICE_RECORDS.getShellCommand());
 
         // Verify records exist
@@ -187,9 +182,7 @@ public class MultiProviderTest {
     public void advertiseDeviceDataSources_differentProviders_sameDevice_canAdvertise()
             throws Exception {
         TestUtils.advertiseDevice(SHELL_DEVICE_ID, buildTestAppDevice(), StepsRecord.class);
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
 
         List<DeviceDataSourceInfo> infos = TestUtils.getDeviceDataSourceInfos();
 
@@ -221,9 +214,7 @@ public class MultiProviderTest {
                         new DeviceDataTypeAdvertisement.Builder(HeartRateRecord.class)
                                 .setAvailable(true)
                                 .build()));
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
 
         // Test App re-advertises Floors only
         TestUtils.advertiseDevice(SHELL_DEVICE_ID, buildTestAppDevice(), FloorsClimbedRecord.class);
@@ -260,9 +251,7 @@ public class MultiProviderTest {
     public void advertiseDeviceDataSources_differentProviders_oneOmitsAdvertisement_omitsProvider()
             throws Exception {
         TestUtils.advertiseDevice(SHELL_DEVICE_ID, buildTestAppDevice(), StepsRecord.class);
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
 
         // Test App advertises empty
         TestUtils.advertiseDevice(SHELL_DEVICE_ID, buildTestAppDevice(), emptySet());
@@ -285,9 +274,7 @@ public class MultiProviderTest {
 
     @Test
     public void advertiseDeviceDataSources_sameIdButDifferentDeviceType_invalid() throws Exception {
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
 
         // Test app tries to advertise same ID with SCALE type
         assertThrows(
@@ -307,14 +294,10 @@ public class MultiProviderTest {
     @Test
     public void crud_differentProviders_sameDevice_insert_addsBothRecords() throws Exception {
         TestUtils.advertiseDevice(SHELL_DEVICE_ID, buildTestAppDevice(), StepsRecord.class);
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
 
         insertStepsRecordFromApp(SHELL_DEVICE_ID);
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.INSERT_RECORDS.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.INSERT_RECORDS.getShellCommand());
 
         List<StepsRecord> records =
                 TestUtils.readRecordsWithManagePermission(
@@ -330,9 +313,7 @@ public class MultiProviderTest {
     public void crud_differentProviders_sameDevice_insert_delete_deleteIsIsolated()
             throws Exception {
         TestUtils.advertiseDevice(SHELL_DEVICE_ID, buildTestAppDevice(), StepsRecord.class);
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
 
         insertStepsRecordFromApp(SHELL_DEVICE_ID);
         List<StepsRecord> preDeleteRecords =
@@ -343,9 +324,7 @@ public class MultiProviderTest {
         assertThat(preDeleteRecords).hasSize(1);
 
         // Shell requests delete
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.DELETE_RECORDS.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.DELETE_RECORDS.getShellCommand());
 
         // Verify Test App data still exists
         List<StepsRecord> postDeleteRecords =
@@ -361,17 +340,13 @@ public class MultiProviderTest {
     public void crud_differentProviders_sameDevice_testAppInserts_shellReads_dataIsolated()
             throws Exception {
         TestUtils.advertiseDevice(SHELL_DEVICE_ID, buildTestAppDevice(), StepsRecord.class);
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
 
         insertStepsRecordFromApp(SHELL_DEVICE_ID);
 
         // Shell reads
         String count =
-                runShellCommand(
-                                InstrumentationRegistry.getInstrumentation(),
-                                DEVICE_DATA_PROVIDER_COMMAND.READ_RECORDS.getShellCommand())
+                runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.READ_RECORDS.getShellCommand())
                         .trim();
 
         // Shell should see 0 records
@@ -382,14 +357,10 @@ public class MultiProviderTest {
     public void crud_differentProviders_sameDevice_bothInsert_testAppReads_dataIsolated()
             throws Exception {
         TestUtils.advertiseDevice(SHELL_DEVICE_ID, buildTestAppDevice(), StepsRecord.class);
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
 
         insertStepsRecordFromApp(SHELL_DEVICE_ID);
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.INSERT_RECORDS.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.INSERT_RECORDS.getShellCommand());
 
         // Test app reads
         List<StepsRecord> records =
@@ -406,14 +377,10 @@ public class MultiProviderTest {
     @Test
     public void crud_differentProviders_sameDevice_insert_update_dataIsolated() throws Exception {
         TestUtils.advertiseDevice(SHELL_DEVICE_ID, buildTestAppDevice(), StepsRecord.class);
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
 
         // Shell inserts 500 steps
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.INSERT_RECORDS.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.INSERT_RECORDS.getShellCommand());
         List<StepsRecord> preUpdateRecords =
                 TestUtils.readRecordsWithManagePermission(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
@@ -443,13 +410,9 @@ public class MultiProviderTest {
     @Test
     public void crud_differentProviders_twoDevices_delete_deleteIsIsolated() throws Exception {
         TestUtils.advertiseDevice(ALTERNATIVE_DEVICE_ID, buildTestAppDevice(), StepsRecord.class);
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
 
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.INSERT_RECORDS.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.INSERT_RECORDS.getShellCommand());
         List<StepsRecord> preDeleteRecords =
                 TestUtils.readRecordsWithManagePermission(
                         new ReadRecordsRequestUsingFilters.Builder<>(StepsRecord.class).build());
@@ -482,16 +445,13 @@ public class MultiProviderTest {
     public void getDeviceDataSources_differentPermissions_returnsDifferentResults()
             throws Exception {
         TestUtils.advertiseDevice(ALTERNATIVE_DEVICE_ID, buildTestAppDevice(), StepsRecord.class);
-        runShellCommand(
-                InstrumentationRegistry.getInstrumentation(),
-                DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
+        runShellCommandOrThrow(DEVICE_DATA_PROVIDER_COMMAND.ADVERTISE_DEVICE.getShellCommand());
 
         TestUtils.verifyGetDeviceDataSourcesWithPermission(
                 MANAGE_HEALTH_DATA_PERMISSION, dataSources -> assertThat(dataSources).hasSize(3));
 
         String count =
-                runShellCommand(
-                                InstrumentationRegistry.getInstrumentation(),
+                runShellCommandOrThrow(
                                 DEVICE_DATA_PROVIDER_COMMAND.GET_DEVICE_DATA_SOURCES
                                         .getShellCommand())
                         .trim();
