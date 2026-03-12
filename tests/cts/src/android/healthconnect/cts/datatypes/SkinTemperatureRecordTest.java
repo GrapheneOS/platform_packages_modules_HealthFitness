@@ -461,11 +461,13 @@ public class SkinTemperatureRecordTest {
     public void testUpdateRecords_validInput_databaseUpdatedSuccessfully()
             throws InterruptedException {
 
-        List<Record> insertedRecords =
-                TestUtils.insertRecords(
-                        List.of(
-                                getSkinTemperatureRecord(),
-                                getSkinTemperatureRecordWithBaseline(37.4)));
+        Instant t4 = Instant.now();
+        Instant t3 = t4.minusSeconds(1);
+        Instant t1 = t4.minusSeconds(3);
+        SkinTemperatureRecord record1 = getSkinTemperatureRecordWithDeltas(t1, -.5, .5);
+        SkinTemperatureRecord record2 = getSkinTemperatureRecordWithBaseline(37.4);
+
+        List<Record> insertedRecords = TestUtils.insertRecords(List.of(record1, record2));
 
         ReadRecordsRequestUsingIds.Builder<SkinTemperatureRecord> request =
                 new ReadRecordsRequestUsingIds.Builder<>(SkinTemperatureRecord.class);
@@ -479,7 +481,9 @@ public class SkinTemperatureRecordTest {
 
         // Generate a new set of records that will be used to perform the update operation.
         List<Record> updateRecords =
-                Arrays.asList(getSkinTemperatureRecord(), getSkinTemperatureRecord());
+                Arrays.asList(
+                        getSkinTemperatureRecordWithDeltas(t3, -.5, .5),
+                        getSkinTemperatureRecordWithDeltas(t4, -.5, .5));
 
         // Modify the uid of the updateRecords to the uuid that was present in the insert records
         for (int itr = 0; itr < updateRecords.size(); itr++) {
@@ -755,7 +759,7 @@ public class SkinTemperatureRecordTest {
         List<SkinTemperatureRecord> result = TestUtils.readRecords(requestUsingIds);
 
         assertThat(result).hasSize(insertedRecords.size());
-        assertThat(result.containsAll(insertedRecords)).isTrue();
+        assertThat(result).containsAtLeastElementsIn(insertedRecords);
     }
 
     private SkinTemperatureRecord getSkinTemperatureRecordUpdate(
@@ -777,7 +781,7 @@ public class SkinTemperatureRecordTest {
 
         SkinTemperatureRecord.Delta deltaB =
                 new SkinTemperatureRecord.Delta(
-                        TemperatureDelta.fromCelsius(-0.22), Instant.now().plusMillis(100));
+                        TemperatureDelta.fromCelsius(-0.22), Instant.now().plusMillis(200));
 
         return new SkinTemperatureRecord.Builder(
                         metadataWithId, Instant.now(), Instant.now().plusMillis(2000))
