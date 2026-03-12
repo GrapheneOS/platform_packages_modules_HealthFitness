@@ -211,7 +211,11 @@ public class SharedMemoryTest {
         assertThat(readSamples).hasSize(sampleCount);
 
         // Workaround for b/324040999
-        readSamples.sort(comparing(HeartRateRecord.HeartRateSample::getTime));
+        // Take a copy to avoid assuming list is modifiable.
+        readSamples =
+                readSamples.stream()
+                        .sorted(comparing(HeartRateRecord.HeartRateSample::getTime))
+                        .toList();
         insertedSamples.sort(comparing(HeartRateRecord.HeartRateSample::getTime));
         for (int i = 0; i < sampleCount; i++) {
             HeartRateRecord.HeartRateSample expected = insertedSamples.get(i);
