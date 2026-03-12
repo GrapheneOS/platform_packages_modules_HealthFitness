@@ -95,7 +95,7 @@
     <string name="select_all_apps_title" msgid="884487568464305913">"Të gjitha aplikacionet"</string>
     <string name="can_read" msgid="4568261079308309564">"Mund të lexojnë të dhënat për kategorinë \"<xliff:g id="PERMISSION_TYPE">%s</xliff:g>\""</string>
     <string name="can_write" msgid="5082414937218423823">"Mund të shkruajnë të dhënat për kategorinë \"<xliff:g id="PERMISSION_TYPE">%s</xliff:g>\""</string>
-    <string name="inactive_apps" msgid="1413060306609966606">"Burimet joaktive të të dhënava"</string>
+    <string name="inactive_apps" msgid="1413060306609966606">"Burimet joaktive të të dhënave"</string>
     <string name="inactive_apps_message" msgid="3499586995328856202">"Këto burime të dhënash nuk mund të lexojnë ose të shkruajnë më të dhëna për kategorinë \"<xliff:g id="DATA_TYPE">%s</xliff:g>\", por kanë akoma të dhëna të ruajtura në Health Connect"</string>
     <string name="data_access_empty_message" msgid="323965759318632888">"Burimet e të dhënave nuk mund të lexojnë ose të shkruajnë më të dhënat për kategorinë \"<xliff:g id="DATA_TYPE_0">%1$s</xliff:g>\" dhe nuk ka të dhëna për kategorinë \"<xliff:g id="DATA_TYPE_2">%2$s</xliff:g>\" të ruajtura në Health Connect"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Këto të dhëna përfshijnë informacione si p.sh. koha aktive, lloji i ushtrimeve, xhirot, përsëritjet, seancat ose stilet e notit"</string>

@@ -49,7 +49,7 @@
     <string name="backup_title" msgid="211503191266235085">"ବେକଅପ ନିଅନ୍ତୁ"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"ଡାଟା ସୋର୍ସ ଏବଂ ପ୍ରାଥମିକତା"</string>
     <string name="set_units_title" msgid="2657822539603758029">"ୟୁନିଟ ସେଟ କରନ୍ତୁ"</string>
-    <string name="manage_data_preferences_category_title" msgid="1183110821140344472">"ପସନ୍ଦଗୁଡ଼ିକ"</string>
+    <string name="manage_data_preferences_category_title" msgid="1183110821140344472">"ପସନ୍ଦ"</string>
     <string name="manage_data_category_title" msgid="6328886061582616519">"ଡାଟାକୁ ପରିଚାଳନା କରନ୍ତୁ"</string>
     <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"ଡାଟା ଏକ୍ସପୋର୍ଟ ଓ ଇମ୍ପୋର୍ଟ କରନ୍ତୁ"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"ବର୍ତ୍ତମାନର ଆକ୍ସେସ"</string>

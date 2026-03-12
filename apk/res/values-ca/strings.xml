@@ -1289,7 +1289,7 @@
     <string name="allowed_apps_count" msgid="2289260267605628310">"<xliff:g id="NUMBER_0">%1$d</xliff:g> de <xliff:g id="OTHER_NUMBER">%2$d</xliff:g> aplicacions permeses"</string>
     <string name="no_apps_requesting" msgid="8088684445910698363">"Cap aplicació ho ha sol·licitat"</string>
     <string name="allowed" msgid="4158456017482263737">"Es permet"</string>
-    <string name="not_allowed" msgid="6092523505093372147">"No es permet"</string>
+    <string name="not_allowed" msgid="6092523505093372147">"No permès"</string>
     <string name="access_sensor_note" msgid="7949933977197789634">"Les aplicacions amb aquest permís poden accedir a les dades de <xliff:g id="DATA_TYPE">%s</xliff:g> dels sensors del teu dispositiu."</string>
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"Vols suprimir l\'accés a <xliff:g id="DATA_TYPE">%s</xliff:g> per a totes les aplicacions del rellotge?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"Marca de verificació"</string>
