@@ -40,6 +40,7 @@ import static android.health.connect.datatypes.RecordTypeSensitivity.INSENSITIVE
 import static com.android.healthfitness.flags.AconfigFlagHelper.isCloudBackupRestoreEnabled;
 import static com.android.healthfitness.flags.AconfigFlagHelper.isPhrChangeLogsEnabled;
 import static com.android.internal.util.Preconditions.checkArgument;
+import static com.android.server.healthconnect.HealthConnectShellCommand.SHELL_PACKAGE_NAME;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.ADVERTISE_DEVICE_DATA_SOURCES;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.CREATE_MEDICAL_DATA_SOURCE;
 import static com.android.server.healthconnect.common.logging.HealthConnectServiceLogger.ApiMethods.DELETE_DATA;
@@ -4414,12 +4415,23 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private void verifyCallingPackage(
             Context actualCallingUserContext, int actualCallingUid, String claimedCallingPackage) {
         int claimedCallingUid = getPackageUid(actualCallingUserContext, claimedCallingPackage);
+
+        // On certain setups (which might be running userdebug/eng builds with adb root enabled),
+        // runShellCommand drops into a root shell and executes commands as UID 0 (root) instead of
+        // the standard shell user UID 2000 (shell).
+        if (claimedCallingPackage.equals(SHELL_PACKAGE_NAME)
+                && UserHandle.getAppId(claimedCallingUid) == Process.SHELL_UID
+                && actualCallingUid == Process.ROOT_UID) {
+            return;
+        }
+
         if (claimedCallingUid != actualCallingUid) {
             throw new SecurityException(
-                    claimedCallingPackage
-                            + ", with uid "
+                    "Claimed calling package "
+                            + claimedCallingPackage
+                            + " belongs to UID "
                             + claimedCallingUid
-                            + " does not belong to uid "
+                            + " which does not match the actual UID of the caller "
                             + actualCallingUid);
         }
     }

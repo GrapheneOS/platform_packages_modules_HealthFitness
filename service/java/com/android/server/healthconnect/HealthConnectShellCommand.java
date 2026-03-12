@@ -39,7 +39,7 @@ import android.health.connect.datatypes.Metadata;
 import android.health.connect.datatypes.StepsRecord;
 import android.health.connect.device.DeviceDataAdvertisement;
 import android.health.connect.device.DeviceDataTypeAdvertisement;
-import android.os.Process;
+import android.os.Binder;
 import android.util.Slog;
 
 import com.android.modules.utils.BasicShellCommandHandler;
@@ -76,7 +76,7 @@ public class HealthConnectShellCommand extends BasicShellCommandHandler {
         mCountDownLatch = new CountDownLatch(0);
 
         mAttributionSource =
-                new AttributionSource.Builder(Process.SHELL_UID)
+                new AttributionSource.Builder(Binder.getCallingUid())
                         .setPackageName(SHELL_PACKAGE_NAME)
                         .build();
 

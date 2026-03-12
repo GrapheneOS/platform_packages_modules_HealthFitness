@@ -315,15 +315,18 @@ public class DataMigrationTest {
     public void migratePower_powerSaved() throws InterruptedException {
         final String entityId = "power";
 
+        Instant t1 = mStartTime.plusSeconds(10);
+        Instant t2 = mStartTime.plusSeconds(20);
+        Instant t3 = mStartTime.plusSeconds(30);
         migrate(
                 new PowerRecord.Builder(
                                 getMetadata(entityId),
                                 mStartTime,
                                 mEndTime,
                                 List.of(
-                                        new PowerRecordSample(fromWatts(10D), mEndTime),
-                                        new PowerRecordSample(fromWatts(20D), mEndTime),
-                                        new PowerRecordSample(fromWatts(30D), mEndTime)))
+                                        new PowerRecordSample(fromWatts(10D), t1),
+                                        new PowerRecordSample(fromWatts(20D), t2),
+                                        new PowerRecordSample(fromWatts(30D), t3)))
                         .build(),
                 entityId);
 
@@ -334,9 +337,9 @@ public class DataMigrationTest {
 
         mExpect.that(record.getSamples())
                 .containsExactly(
-                        new PowerRecordSample(fromWatts(10D), mEndTime),
-                        new PowerRecordSample(fromWatts(20D), mEndTime),
-                        new PowerRecordSample(fromWatts(30D), mEndTime))
+                        new PowerRecordSample(fromWatts(10D), t1),
+                        new PowerRecordSample(fromWatts(20D), t2),
+                        new PowerRecordSample(fromWatts(30D), t3))
                 .inOrder();
 
         mExpect.that(record.getStartTime()).isEqualTo(mStartTime);

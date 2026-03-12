@@ -1114,11 +1114,11 @@ public class HeartRateRecordTest {
 
     private static HeartRateRecord getBaseHeartRateRecord(
             long beatsPerMinute, Instant time, ZoneOffset offset) {
-        HeartRateRecord.HeartRateSample heartRateRecord =
-                new HeartRateRecord.HeartRateSample(beatsPerMinute, time.plusMillis(100));
         ArrayList<HeartRateRecord.HeartRateSample> heartRateRecords = new ArrayList<>();
-        heartRateRecords.add(heartRateRecord);
-        heartRateRecords.add(heartRateRecord);
+        heartRateRecords.add(
+                new HeartRateRecord.HeartRateSample(beatsPerMinute, time.plusMillis(100)));
+        heartRateRecords.add(
+                new HeartRateRecord.HeartRateSample(beatsPerMinute, time.plusMillis(200)));
 
         HeartRateRecord.Builder builder =
                 new HeartRateRecord.Builder(
