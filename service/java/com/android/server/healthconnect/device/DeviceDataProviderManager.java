@@ -543,17 +543,12 @@ public class DeviceDataProviderManager {
             return true;
         }
 
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.BAKLAVA) {
-            // This fallback caters primarily for test environments as the shell holds this
-            // permission from Android U upwards.
-            return mUserContext.checkPermission(
-                            HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION, pid, uid)
-                    == PackageManager.PERMISSION_GRANTED;
-        } else {
-            return mUserContext.checkPermission(
-                            Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA, pid, uid)
-                    == PackageManager.PERMISSION_GRANTED;
-        }
+        return mUserContext.checkPermission(
+                                HealthPermissions.MANAGE_HEALTH_DATA_PERMISSION, pid, uid)
+                        == PackageManager.PERMISSION_GRANTED
+                || mUserContext.checkPermission(
+                                Manifest.permission.PROVIDE_HEALTH_CONNECT_DEVICE_DATA, pid, uid)
+                        == PackageManager.PERMISSION_GRANTED;
     }
 
     private void throwIfDeviceIdUsedByDifferentDeviceType(String deviceId, int deviceType) {
