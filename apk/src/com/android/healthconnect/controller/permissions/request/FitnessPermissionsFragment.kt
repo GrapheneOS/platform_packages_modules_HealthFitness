@@ -46,7 +46,6 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import com.android.healthconnect.controller.utils.pref
-import com.android.healthfitness.flags.Flags.permissionRequestBottomSheet
 import com.android.healthfitness.flags.Flags.permissionsGroupingUi
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -94,13 +93,7 @@ class FitnessPermissionsFragment : Hilt_FitnessPermissionsFragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.fitnessScreenState.observe(viewLifecycleOwner) { screenState ->
             when (screenState) {
-                is FitnessScreenState.NoFitnessData -> {
-                    // We only need to handle this if the bottom sheet flag is disabled, as the
-                    // bottom sheet permission fragment dialog already manages this state.
-                    if (!permissionRequestBottomSheet()) {
-                        removeFragment()
-                    }
-                }
+                is FitnessScreenState.NoFitnessData -> {}
 
                 is FitnessScreenState.ShowFitnessWrite -> {
                     setupHeader(screenState.appMetadata, screenState)

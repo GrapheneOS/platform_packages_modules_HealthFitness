@@ -46,7 +46,6 @@ import com.android.healthconnect.controller.shared.dialog.HealthConnectBottomShe
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.activity.EmbeddingUtils.maybeRedirectIntoTwoPaneSettings
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
-import com.android.healthfitness.flags.Flags.permissionRequestBottomSheet
 import com.android.modules.utils.build.SdkLevel
 import com.android.settingslib.widget.SettingsThemeHelper
 import dagger.hilt.android.AndroidEntryPoint
@@ -83,16 +82,10 @@ class PermissionsActivity :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        if (permissionRequestBottomSheet()) {
-            if (SettingsThemeHelper.isExpressiveTheme(this)) {
-                setTheme(R.style.Theme_HealthConnect_PermissionsActivity_Overlay_Expressive)
-            } else {
-                setTheme(R.style.Theme_HealthConnect_PermissionsActivity_Overlay)
-            }
+        if (SettingsThemeHelper.isExpressiveTheme(this)) {
+            setTheme(R.style.Theme_HealthConnect_PermissionsActivity_Overlay_Expressive)
         } else {
-            if (SettingsThemeHelper.isExpressiveTheme(this)) {
-                setTheme(R.style.Theme_HealthConnect_Expressive)
-            }
+            setTheme(R.style.Theme_HealthConnect_PermissionsActivity_Overlay)
         }
 
         // If device is enabled on watch, redirect to WearGrantPermissionsActivity.
@@ -132,8 +125,6 @@ class PermissionsActivity :
             return
         }
 
-        setContentView(R.layout.activity_permissions)
-
         // Some actions don't apply to apps that get health permissions via split-permission.
         if (!healthPermissionReader.isBodySensorSplitPermissionApp(getPackageNameExtra())) {
             // Check that app has declared rationale intent.
@@ -151,19 +142,19 @@ class PermissionsActivity :
             when (screenState) {
                 is PermissionsActivityState.ShowMedical -> {
                     if (screenState.isWriteOnly) {
-                        showBottomSheetOrFragment(MedicalWritePermissionFragment::class.java)
+                        showBottomSheet(MedicalWritePermissionFragment::class.java)
                     } else {
-                        showBottomSheetOrFragment(MedicalPermissionsFragment::class.java)
+                        showBottomSheet(MedicalPermissionsFragment::class.java)
                     }
                 }
                 is PermissionsActivityState.ShowFitness -> {
-                    showBottomSheetOrFragment(FitnessPermissionsFragment::class.java)
+                    showBottomSheet(FitnessPermissionsFragment::class.java)
                 }
                 is PermissionsActivityState.ShowAdditional -> {
                     if (screenState.singlePermission) {
-                        showBottomSheetOrFragment(SingleAdditionalPermissionFragment::class.java)
+                        showBottomSheet(SingleAdditionalPermissionFragment::class.java)
                     } else {
-                        showBottomSheetOrFragment(CombinedAdditionalPermissionsFragment::class.java)
+                        showBottomSheet(CombinedAdditionalPermissionsFragment::class.java)
                     }
                 }
                 is PermissionsActivityState.FinishRequest -> {
@@ -193,14 +184,6 @@ class PermissionsActivity :
         super.onSaveInstanceState(outState)
         val bottomSheet = supportFragmentManager.findFragmentByTag(BOTTOM_SHEET_TAG)
         outState.putBoolean(IS_BOTTOM_SHEET_SHOWN, bottomSheet != null && bottomSheet.isAdded)
-    }
-
-    private fun showBottomSheetOrFragment(fragmentClass: Class<out Fragment>) {
-        if (permissionRequestBottomSheet()) {
-            showBottomSheet(fragmentClass)
-        } else {
-            showFragment(fragmentClass.getDeclaredConstructor().newInstance())
-        }
     }
 
     /**
@@ -298,13 +281,6 @@ class PermissionsActivity :
 
     private fun getPackageNameExtra(): String {
         return intent.getStringExtra(EXTRA_PACKAGE_NAME).orEmpty()
-    }
-
-    private fun showFragment(fragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.permission_content, fragment)
-            .commit()
     }
 
     override fun onDialogCanceled() {
