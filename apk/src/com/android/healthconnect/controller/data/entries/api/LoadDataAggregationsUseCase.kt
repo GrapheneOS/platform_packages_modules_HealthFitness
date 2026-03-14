@@ -50,12 +50,13 @@ import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDE
 import com.android.healthconnect.controller.shared.app.AppInfoReader
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import com.android.healthfitness.flags.Flags.deviceDataProvidersApi
 import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 /** Use case to load aggregation data on the Entries screens. */
@@ -175,7 +176,7 @@ constructor(
             suspendCancellableCoroutine<AggregateRecordsResponse<T>> { continuation ->
                 healthConnectManager.aggregate(
                     request.build(),
-                    Runnable::run,
+                    dispatcher.asExecutor(),
                     continuation.asOutcomeReceiver(),
                 )
             }
@@ -287,8 +288,4 @@ sealed class LoadAggregationInput(
     ) : LoadAggregationInput(permissionType, packageName, showDataOrigin)
 }
 
-interface ILoadDataAggregationsUseCase {
-    suspend fun invoke(input: LoadAggregationInput): UseCaseResults<FormattedAggregation>
-
-    suspend fun execute(input: LoadAggregationInput): FormattedAggregation
-}
+interface ILoadDataAggregationsUseCase : UseCaseContract<LoadAggregationInput, FormattedAggregation>

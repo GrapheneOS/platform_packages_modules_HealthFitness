@@ -22,7 +22,7 @@ import com.android.healthconnect.controller.data.formatters.medical.MedicalEntry
 import com.android.healthconnect.controller.permissions.data.MedicalPermissionType
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.CoroutineDispatcher
@@ -67,8 +67,5 @@ data class LoadMedicalEntriesInput(
     val showDataOrigin: Boolean,
 )
 
-interface ILoadMedicalEntriesUseCase {
-    suspend fun invoke(input: LoadMedicalEntriesInput): UseCaseResults<List<FormattedEntry>>
-
-    suspend fun execute(input: LoadMedicalEntriesInput): List<FormattedEntry>
-}
+interface ILoadMedicalEntriesUseCase :
+    UseCaseContract<LoadMedicalEntriesInput, List<FormattedEntry>>

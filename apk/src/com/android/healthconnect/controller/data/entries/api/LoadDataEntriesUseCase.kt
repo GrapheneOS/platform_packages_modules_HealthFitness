@@ -20,7 +20,7 @@ import com.android.healthconnect.controller.data.entries.datenavigation.DateNavi
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -54,8 +54,4 @@ data class LoadDataEntriesInput(
     val showDataOrigin: Boolean,
 )
 
-interface ILoadDataEntriesUseCase {
-    suspend fun invoke(input: LoadDataEntriesInput): UseCaseResults<List<FormattedEntry>>
-
-    suspend fun execute(input: LoadDataEntriesInput): List<FormattedEntry>
-}
+interface ILoadDataEntriesUseCase : UseCaseContract<LoadDataEntriesInput, List<FormattedEntry>>

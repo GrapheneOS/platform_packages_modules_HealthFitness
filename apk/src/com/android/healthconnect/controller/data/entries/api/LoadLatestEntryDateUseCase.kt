@@ -19,7 +19,7 @@ package com.android.healthconnect.controller.data.entries.api
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionType
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
-import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -44,8 +44,4 @@ data class LoadLatestEntryDateInput(
     val packageName: String? = null,
 )
 
-interface ILoadLatestEntryDateUseCase {
-    suspend fun invoke(input: LoadLatestEntryDateInput): UseCaseResults<Instant>
-
-    suspend fun execute(input: LoadLatestEntryDateInput): Instant
-}
+interface ILoadLatestEntryDateUseCase : UseCaseContract<LoadLatestEntryDateInput, Instant>

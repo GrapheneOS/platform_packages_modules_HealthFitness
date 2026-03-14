@@ -47,6 +47,7 @@ filegroup {
     srcs: [
         "src/com/android/healthconnect/controller/tests/devices/api/FakeDevicesUseCases.kt",
         "src/com/android/healthconnect/controller/tests/data/alldata/api/FakeAllDataUseCaseComponents.kt",
+        "src/com/android/healthconnect/controller/tests/data/entries/api/FakeEntriesUseCases.kt",
         "src/com/android/healthconnect/controller/tests/exportimport/api/FakeExportImportUseCases.kt",
     ],
     visibility: [

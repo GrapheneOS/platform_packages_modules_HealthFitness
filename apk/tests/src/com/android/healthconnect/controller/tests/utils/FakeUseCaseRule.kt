@@ -21,12 +21,24 @@ import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
 /** Rule to register any fake that needs to be reset at the end of tests. */
-class FakeUseCaseRule : TestWatcher() {
+class FakeUseCaseRule(vararg initialFakes: FakeUseCase<*, *>) : TestWatcher() {
     private val fakes = mutableListOf<FakeUseCase<*, *>>()
+
+    init {
+        fakes.addAll(initialFakes)
+    }
 
     fun <T : FakeUseCase<*, *>> watch(fake: T): T {
         fakes.add(fake)
         return fake
+    }
+
+    fun watch(vararg fakes: FakeUseCase<*, *>) {
+        this.fakes.addAll(fakes)
+    }
+
+    fun <T : FakeUseCase<*, *>> watch(fakes: List<T>) {
+        this.fakes.addAll(fakes)
     }
 
     override fun finished(description: Description?) {

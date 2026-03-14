@@ -41,6 +41,17 @@ import com.android.healthconnect.controller.data.entries.EntriesViewModel.Entrie
 import com.android.healthconnect.controller.data.entries.EntriesViewModel.EntriesFragmentState.With
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationView
+import com.android.healthconnect.controller.data.entries.views.AggregationViewBinder
+import com.android.healthconnect.controller.data.entries.views.EntryItemViewBinder
+import com.android.healthconnect.controller.data.entries.views.ExerciseSessionItemViewBinder
+import com.android.healthconnect.controller.data.entries.views.MarginItemDecoration
+import com.android.healthconnect.controller.data.entries.views.MedicalEntryItemViewBinder
+import com.android.healthconnect.controller.data.entries.views.PlannedExerciseSessionItemViewBinder
+import com.android.healthconnect.controller.data.entries.views.SectionTitleViewBinder
+import com.android.healthconnect.controller.data.entries.views.SelectAllViewBinder
+import com.android.healthconnect.controller.data.entries.views.SeriesDataItemViewBinder
+import com.android.healthconnect.controller.data.entries.views.SleepSessionItemViewBinder
+import com.android.healthconnect.controller.data.entries.views.SymptomItemViewBinder
 import com.android.healthconnect.controller.data.entrydetails.DataEntryDetailsFragment
 import com.android.healthconnect.controller.data.fhir.pretty.PrettyFhirFragment
 import com.android.healthconnect.controller.data.fhir.raw.RawFhirFragment.Companion.MEDICAL_RESOURCE_ID_KEY

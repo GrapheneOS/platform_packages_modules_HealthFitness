@@ -19,6 +19,7 @@ package com.android.healthconnect.controller.tests.data.entries.api
 import android.content.Context
 import android.health.connect.HealthConnectException
 import android.health.connect.HealthConnectManager
+import android.health.connect.ReadRecordsRequest
 import android.health.connect.ReadRecordsRequestUsingFilters
 import android.health.connect.ReadRecordsResponse
 import android.health.connect.datatypes.Record
@@ -40,9 +41,11 @@ import com.android.healthconnect.controller.tests.utils.DEVICE_DATA_PROVIDER_PAC
 import com.android.healthconnect.controller.tests.utils.FakeUseCaseRule
 import com.android.healthconnect.controller.tests.utils.NOW
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
+import com.android.healthconnect.controller.tests.utils.doReturnResult
 import com.android.healthconnect.controller.tests.utils.forDataType
 import com.android.healthconnect.controller.tests.utils.fromDataSource
 import com.android.healthconnect.controller.tests.utils.getMetaData
+import com.android.healthconnect.controller.tests.utils.getStepsCadenceRecord
 import com.android.healthconnect.controller.tests.utils.getStepsRecord
 import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.toInstant
@@ -55,20 +58,21 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
 import java.time.LocalDate
 import java.util.Locale
+import java.util.concurrent.Executor
 import javax.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.currentTime
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.invocation.InvocationOnMock
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argThat
-import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.stub
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @HiltAndroidTest
@@ -80,7 +84,7 @@ class LoadLatestEntryDateUseCaseTest {
     @Inject lateinit var healthDataEntryFormatter: HealthDataEntryFormatter
     @Inject lateinit var menstruationPeriodFormatter: MenstruationPeriodFormatter
     @Inject lateinit var dataSourceReader: MedicalDataSourceReader
-    private val healthConnectManager: HealthConnectManager = mock<HealthConnectManager>()
+    private val healthConnectManager: HealthConnectManager = mock()
 
     private lateinit var context: Context
     private lateinit var loadEntriesHelper: LoadEntriesHelper
@@ -96,6 +100,7 @@ class LoadLatestEntryDateUseCaseTest {
         loadEntriesHelper =
             LoadEntriesHelper(
                 context,
+                Dispatchers.Main,
                 healthDataEntryFormatter,
                 menstruationPeriodFormatter,
                 healthConnectManager,
@@ -120,25 +125,28 @@ class LoadLatestEntryDateUseCaseTest {
         val stepsDateNew = LocalDate.of(2023, 10, 14)
         val stepsRecordNew = getStepsRecord(100, stepsDateNew.toInstantAtStartOfDay())
 
-        doAnswer(prepareRecordsAnswer(listOf(stepsRecordOld, stepsRecordNew)))
-            .`when`(healthConnectManager)
-            .readRecords(
-                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
-                    request.forDataType(dataType = StepsRecord::class.java)
-                },
-                any(),
-                any(),
-            )
+        healthConnectManager.stub {
+            on {
+                readRecords<Record>(
+                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                        request?.recordType == StepsRecord::class.java
+                    },
+                    any<java.util.concurrent.Executor>(),
+                    any<OutcomeReceiver<ReadRecordsResponse<Record>, HealthConnectException>>(),
+                )
+            } doReturnResult
+                Result.success(ReadRecordsResponse(listOf(stepsRecordOld, stepsRecordNew), -1))
 
-        doAnswer(prepareRecordsAnswer(listOf()))
-            .`when`(healthConnectManager)
-            .readRecords(
-                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
-                    request.forDataType(dataType = StepsCadenceRecord::class.java)
-                },
-                any(),
-                any(),
-            )
+            on {
+                readRecords<Record>(
+                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                        request?.recordType == StepsCadenceRecord::class.java
+                    },
+                    any<java.util.concurrent.Executor>(),
+                    any<OutcomeReceiver<ReadRecordsResponse<Record>, HealthConnectException>>(),
+                )
+            } doReturnResult Result.success(ReadRecordsResponse(emptyList(), -1))
+        }
 
         val result = loadLatestEntryDateUseCase.invoke(input)
         assertThat(result is UseCaseResults.Success).isTrue()
@@ -169,37 +177,40 @@ class LoadLatestEntryDateUseCaseTest {
                 packageName = TEST_APP_PACKAGE_NAME,
             )
 
-        doAnswer(prepareRecordsAnswer(listOf(stepsRecordA)))
-            .`when`(healthConnectManager)
-            .readRecords(
-                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
-                    request.fromDataSource(DEVICE_DATA_PROVIDER_PACKAGE_NAME) &&
-                        request.forDataType(dataType = StepsRecord::class.java)
-                },
-                any(),
-                any(),
-            )
+        healthConnectManager.stub {
+            on {
+                readRecords<Record>(
+                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                        request?.fromDataSource(DEVICE_DATA_PROVIDER_PACKAGE_NAME) == true &&
+                            request.forDataType(dataType = StepsRecord::class.java)
+                    },
+                    any<java.util.concurrent.Executor>(),
+                    any<OutcomeReceiver<ReadRecordsResponse<Record>, HealthConnectException>>(),
+                )
+            } doReturnResult Result.success(ReadRecordsResponse(listOf(stepsRecordA), -1))
 
-        doAnswer(prepareRecordsAnswer(listOf(stepsRecordA, stepsRecordB)))
-            .`when`(healthConnectManager)
-            .readRecords(
-                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
-                    request.dataOrigins?.size == 0 &&
-                        request.forDataType(dataType = StepsRecord::class.java)
-                },
-                any(),
-                any(),
-            )
+            on {
+                readRecords<Record>(
+                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                        request?.dataOrigins?.size == 0 &&
+                            request.forDataType(dataType = StepsRecord::class.java)
+                    },
+                    any<java.util.concurrent.Executor>(),
+                    any<OutcomeReceiver<ReadRecordsResponse<Record>, HealthConnectException>>(),
+                )
+            } doReturnResult
+                Result.success(ReadRecordsResponse(listOf(stepsRecordA, stepsRecordB), -1))
 
-        doAnswer(prepareRecordsAnswer(listOf()))
-            .`when`(healthConnectManager)
-            .readRecords(
-                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
-                    request.forDataType(dataType = StepsCadenceRecord::class.java)
-                },
-                any(),
-                any(),
-            )
+            on {
+                readRecords<Record>(
+                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                        request?.forDataType(dataType = StepsCadenceRecord::class.java) == true
+                    },
+                    any<java.util.concurrent.Executor>(),
+                    any<OutcomeReceiver<ReadRecordsResponse<Record>, HealthConnectException>>(),
+                )
+            } doReturnResult Result.success(ReadRecordsResponse(listOf(), -1))
+        }
 
         val result = loadLatestEntryDateUseCase.invoke(input)
         assertThat(result is UseCaseResults.Success).isTrue()
@@ -214,25 +225,15 @@ class LoadLatestEntryDateUseCaseTest {
                 displayedStartTime = currentTime.toInstant(),
             )
 
-        doAnswer(prepareRecordsAnswer(listOf()))
-            .`when`(healthConnectManager)
-            .readRecords(
-                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
-                    request.forDataType(dataType = StepsRecord::class.java)
-                },
-                any(),
-                any(),
-            )
-
-        doAnswer(prepareRecordsAnswer(listOf()))
-            .`when`(healthConnectManager)
-            .readRecords(
-                argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
-                    request.forDataType(dataType = StepsCadenceRecord::class.java)
-                },
-                any(),
-                any(),
-            )
+        healthConnectManager.stub {
+            on {
+                readRecords<Record>(
+                    any<ReadRecordsRequest<Record>>(),
+                    any<java.util.concurrent.Executor>(),
+                    any<OutcomeReceiver<ReadRecordsResponse<Record>, HealthConnectException>>(),
+                )
+            } doReturnResult Result.success(ReadRecordsResponse(emptyList(), -1))
+        }
 
         val result = loadLatestEntryDateUseCase.invoke(input)
         assertThat(result is UseCaseResults.Success).isTrue()
@@ -243,9 +244,18 @@ class LoadLatestEntryDateUseCaseTest {
     fun invoke_whenLoadEntriesHelperUseCaseFails_returnsFailure() = runTest {
         val sleepDate = LocalDate.of(2021, 9, 13)
 
-        doAnswer(prepareFailureAnswer())
-            .`when`(healthConnectManager)
-            .readRecords<StepsRecord>(any(), any(), any())
+        healthConnectManager.stub {
+            on {
+                readRecords<Record>(
+                    any<ReadRecordsRequest<Record>>(),
+                    any<Executor>(),
+                    any<OutcomeReceiver<ReadRecordsResponse<Record>, HealthConnectException>>(),
+                )
+            } doReturnResult
+                Result.failure<ReadRecordsResponse<Record>>(
+                    HealthConnectException(HealthConnectException.ERROR_UNKNOWN)
+                )
+        }
 
         val input =
             LoadLatestEntryDateInput(
@@ -260,23 +270,44 @@ class LoadLatestEntryDateUseCaseTest {
             .isEqualTo(HealthConnectException.ERROR_UNKNOWN)
     }
 
-    private fun prepareRecordsAnswer(records: List<Record>): (InvocationOnMock) -> Nothing? {
-        val answer = { args: InvocationOnMock ->
-            val receiver = args.arguments[2] as OutcomeReceiver<ReadRecordsResponse<Record>, *>
-            receiver.onResult(ReadRecordsResponse(records, -1))
-            null
-        }
-        return answer
-    }
+    @Test
+    @Ignore("b/488075288")
+    fun invoke_multipleDataTypes_returnsLatestDateAcrossAll() = runTest {
+        val input =
+            LoadLatestEntryDateInput(
+                permissionType = FitnessPermissionType.STEPS,
+                displayedStartTime = currentTime.toInstant(),
+            )
+        val stepsDate = LocalDate.of(2023, 10, 10)
+        val stepsRecord = getStepsRecord(100, stepsDate.toInstantAtStartOfDay())
+        val cadenceDate = LocalDate.of(2023, 10, 10)
+        val cadenceRecord = getStepsCadenceRecord(cadenceDate.toInstantAtStartOfDay())
 
-    private fun prepareFailureAnswer(): (InvocationOnMock) -> Nothing? {
-        val answer = { args: InvocationOnMock ->
-            val receiver =
-                args.arguments[2] as OutcomeReceiver<List<LocalDate>, HealthConnectException>
-            receiver.onError(HealthConnectException(HealthConnectException.ERROR_UNKNOWN))
-            null
+        healthConnectManager.stub {
+            on {
+                readRecords<Record>(
+                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                        request?.recordType == StepsRecord::class.java
+                    },
+                    any<Executor>(),
+                    any<OutcomeReceiver<ReadRecordsResponse<Record>, HealthConnectException>>(),
+                )
+            } doReturnResult Result.success(ReadRecordsResponse(listOf(stepsRecord), -1))
+
+            on {
+                readRecords<Record>(
+                    argThat<ReadRecordsRequestUsingFilters<Record>> { request ->
+                        request?.recordType == StepsCadenceRecord::class.java
+                    },
+                    any<Executor>(),
+                    any<OutcomeReceiver<ReadRecordsResponse<Record>, HealthConnectException>>(),
+                )
+            } doReturnResult Result.success(ReadRecordsResponse(listOf(cadenceRecord), -1))
         }
-        return answer
+
+        val result = loadLatestEntryDateUseCase.invoke(input)
+        assertThat(result is UseCaseResults.Success).isTrue()
+        assertThat((result as UseCaseResults.Success).data).isEqualTo(cadenceDate)
     }
 
     private fun getStepsRecordWithPackage(

@@ -44,6 +44,7 @@ import com.android.healthconnect.controller.permissions.data.toMedicalResourceTy
 import com.android.healthconnect.controller.shared.Constants.DEVICE_DATA_PROVIDER_PACKAGE
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper
 import com.android.healthconnect.controller.shared.app.MedicalDataSourceReader
+import com.android.healthconnect.controller.shared.usecase.IoDispatcher
 import com.android.healthconnect.controller.utils.LocalDateTimeFormatter
 import com.android.healthconnect.controller.utils.SystemTimeSource
 import com.android.healthconnect.controller.utils.TimeSource
@@ -56,6 +57,8 @@ import java.time.Period
 import java.time.ZoneId
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 /**
@@ -67,6 +70,7 @@ open class LoadEntriesHelper
 @Inject
 constructor(
     @param:ApplicationContext private val context: Context,
+    @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
     private val healthDataEntryFormatter: HealthDataEntryFormatter,
     private val menstruationPeriodFormatter: MenstruationPeriodFormatter,
     private val healthConnectManager: HealthConnectManager,
@@ -106,7 +110,7 @@ constructor(
             suspendCancellableCoroutine<ReadRecordsResponse<*>> { continuation ->
                     healthConnectManager.readRecords(
                         filter,
-                        Runnable::run,
+                        dispatcher.asExecutor(),
                         continuation.asOutcomeReceiver(),
                     )
                 }
@@ -153,6 +157,7 @@ constructor(
     }
 
     /** Returns the date of the most recent record from the specified input if it exists. */
+    // TODO (b/488075288) check for usage with permissionTypes with multiple recordTypes
     suspend fun readLatestRecordDate(input: LoadLatestEntryDateInput): Instant? {
         val timeFilterRange =
             TimeInstantRangeFilter.Builder().setEndTime(input.displayedStartTime).build()
@@ -194,7 +199,7 @@ constructor(
             suspendCancellableCoroutine<ReadMedicalResourcesResponse> { continuation ->
                     healthConnectManager.readMedicalResources(
                         filter,
-                        Runnable::run,
+                        dispatcher.asExecutor(),
                         continuation.asOutcomeReceiver(),
                     )
                 }
@@ -218,20 +223,13 @@ constructor(
             return listOf()
         }
         if (period == DateNavigationPeriod.PERIOD_DAY) {
-            return entries
-                .map { record ->
-                    if (record is MenstruationPeriodRecord) {
-                        menstruationPeriodFormatter.format(
-                            startTime,
-                            record,
-                            period,
-                            showDataOrigin,
-                        )
-                    } else {
-                        getFormatterRecord(record, showDataOrigin)
-                    }
+            return entries.mapNotNull { record ->
+                if (record is MenstruationPeriodRecord) {
+                    menstruationPeriodFormatter.format(startTime, record, period, showDataOrigin)
+                } else {
+                    getFormatterRecord(record, showDataOrigin)
                 }
-                .filterNotNull()
+            }
         }
 
         val entriesWithSectionHeaders: MutableList<FormattedEntry> = mutableListOf()

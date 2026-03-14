@@ -21,6 +21,7 @@ import com.android.healthconnect.controller.data.entries.FormattedEntry
 import com.android.healthconnect.controller.data.entries.datenavigation.DateNavigationPeriod
 import com.android.healthconnect.controller.shared.usecase.BaseUseCase
 import com.android.healthconnect.controller.shared.usecase.IoDispatcher
+import com.android.healthconnect.controller.shared.usecase.UseCaseContract
 import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -33,7 +34,9 @@ class LoadSymptomDataEntriesUseCase
 constructor(
     @param:IoDispatcher private val dispatcher: CoroutineDispatcher,
     private val loadEntriesHelper: LoadEntriesHelper,
-) : BaseUseCase<LoadSymptomDataEntriesInput, List<FormattedEntry>>(dispatcher) {
+) :
+    BaseUseCase<LoadSymptomDataEntriesInput, List<FormattedEntry>>(dispatcher),
+    ILoadSymptomDataEntriesUseCase {
 
     override suspend fun execute(input: LoadSymptomDataEntriesInput): List<FormattedEntry> {
         val timeFilterRange =
@@ -64,3 +67,6 @@ data class LoadSymptomDataEntriesInput(
     val period: DateNavigationPeriod,
     val showDataOrigin: Boolean,
 )
+
+interface ILoadSymptomDataEntriesUseCase :
+    UseCaseContract<LoadSymptomDataEntriesInput, List<FormattedEntry>>
