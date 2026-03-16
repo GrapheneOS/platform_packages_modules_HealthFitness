@@ -176,6 +176,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.Executor;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 /**
@@ -917,28 +918,8 @@ public class HealthConnectManager {
             mService.aggregateRecords(
                     mContext.getAttributionSource(),
                     new AggregateDataRequestParcel(request),
-                    new IAggregateRecordsResponseCallback.Stub() {
-                        @Override
-                        public void onResult(AggregateDataResponseParcel parcel) {
-                            Binder.clearCallingIdentity();
-                            try {
-                                executor.execute(
-                                        () ->
-                                                callback.onResult(
-                                                        (AggregateRecordsResponse<T>)
-                                                                parcel.getAggregateDataResponse()));
-                            } catch (Exception exception) {
-                                callback.onError(
-                                        new HealthConnectException(
-                                                HealthConnectException.ERROR_INTERNAL));
-                            }
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new AggregateResponseCallback<>(
+                            AggregateResponseCallback.AGGREGATE_RESULT_TOTAL, executor, callback));
         } catch (ClassCastException classCastException) {
             returnError(
                     executor,
@@ -947,6 +928,60 @@ public class HealthConnectManager {
                     callback);
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private static class AggregateResponseCallback<T>
+            extends IAggregateRecordsResponseCallback.Stub {
+        private static final int AGGREGATE_RESULT_TOTAL = 0;
+        private static final int AGGREGATE_RESULT_DURATION = 1;
+        private static final int AGGREGATE_RESULT_PERIOD = 2;
+
+        private final int mResultType;
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<OutcomeReceiver<T, HealthConnectException>> mCallback;
+
+        AggregateResponseCallback(
+                int resultType,
+                Executor executor,
+                OutcomeReceiver<T, HealthConnectException> callback) {
+            mResultType = resultType;
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public void onResult(AggregateDataResponseParcel parcel) {
+            Executor executor = mExecutor.getAndSet(null);
+            OutcomeReceiver<T, HealthConnectException> callback = mCallback.getAndSet(null);
+
+            if (executor != null && callback != null) {
+                Binder.clearCallingIdentity();
+                executor.execute(
+                        () -> {
+                            try {
+                                T result;
+                                if (mResultType == AGGREGATE_RESULT_DURATION) {
+                                    result = (T) parcel.getAggregateDataResponseGroupedByDuration();
+                                } else if (mResultType == AGGREGATE_RESULT_PERIOD) {
+                                    result = (T) parcel.getAggregateDataResponseGroupedByPeriod();
+                                } else {
+                                    result = (T) parcel.getAggregateDataResponse();
+                                }
+                                callback.onResult(result);
+                            } catch (Exception exception) {
+                                callback.onError(
+                                        new HealthConnectException(
+                                                HealthConnectException.ERROR_INTERNAL));
+                            }
+                        });
+            }
+        }
+
+        @Override
+        public void onError(HealthConnectExceptionParcel exception) {
+            returnError(mExecutor, mCallback, exception);
         }
     }
 
@@ -986,27 +1021,10 @@ public class HealthConnectManager {
             mService.aggregateRecords(
                     mContext.getAttributionSource(),
                     new AggregateDataRequestParcel(request, duration),
-                    new IAggregateRecordsResponseCallback.Stub() {
-                        @Override
-                        public void onResult(AggregateDataResponseParcel parcel) {
-                            Binder.clearCallingIdentity();
-                            List<AggregateRecordsGroupedByDurationResponse<T>> result =
-                                    new ArrayList<>();
-                            for (AggregateRecordsGroupedByDurationResponse<?>
-                                    aggregateRecordsGroupedByDurationResponse :
-                                            parcel.getAggregateDataResponseGroupedByDuration()) {
-                                result.add(
-                                        (AggregateRecordsGroupedByDurationResponse<T>)
-                                                aggregateRecordsGroupedByDurationResponse);
-                            }
-                            executor.execute(() -> callback.onResult(result));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new AggregateResponseCallback<>(
+                            AggregateResponseCallback.AGGREGATE_RESULT_DURATION,
+                            executor,
+                            callback));
         } catch (ClassCastException classCastException) {
             returnError(
                     executor,
@@ -1056,28 +1074,8 @@ public class HealthConnectManager {
             mService.aggregateRecords(
                     mContext.getAttributionSource(),
                     new AggregateDataRequestParcel(request, period),
-                    new IAggregateRecordsResponseCallback.Stub() {
-                        @Override
-                        public void onResult(AggregateDataResponseParcel parcel) {
-                            Binder.clearCallingIdentity();
-                            List<AggregateRecordsGroupedByPeriodResponse<T>> result =
-                                    new ArrayList<>();
-                            for (AggregateRecordsGroupedByPeriodResponse<?>
-                                    aggregateRecordsGroupedByPeriodResponse :
-                                            parcel.getAggregateDataResponseGroupedByPeriod()) {
-                                result.add(
-                                        (AggregateRecordsGroupedByPeriodResponse<T>)
-                                                aggregateRecordsGroupedByPeriodResponse);
-                            }
-
-                            executor.execute(() -> callback.onResult(result));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new AggregateResponseCallback<>(
+                            AggregateResponseCallback.AGGREGATE_RESULT_PERIOD, executor, callback));
         } catch (ClassCastException classCastException) {
             returnError(
                     executor,
@@ -1209,18 +1207,7 @@ public class HealthConnectManager {
             mService.getChangeLogs(
                     mContext.getAttributionSource(),
                     changeLogsRequest,
-                    new IChangeLogsResponseCallback.Stub() {
-                        @Override
-                        public void onResult(ChangeLogsResponse parcel) {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(parcel));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new ChangeLogsResponseCallback(executor, callback));
         } catch (ClassCastException invalidArgumentException) {
             callback.onError(
                     new HealthConnectException(
@@ -1228,6 +1215,36 @@ public class HealthConnectManager {
                             invalidArgumentException.getMessage()));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private static class ChangeLogsResponseCallback extends IChangeLogsResponseCallback.Stub {
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<OutcomeReceiver<ChangeLogsResponse, HealthConnectException>>
+                mCallback;
+
+        ChangeLogsResponseCallback(
+                Executor executor,
+                OutcomeReceiver<ChangeLogsResponse, HealthConnectException> callback) {
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
+        }
+
+        @Override
+        public void onResult(ChangeLogsResponse parcel) {
+            Executor executor = mExecutor.getAndSet(null);
+            OutcomeReceiver<ChangeLogsResponse, HealthConnectException> callback =
+                    mCallback.getAndSet(null);
+
+            if (executor != null && callback != null) {
+                Binder.clearCallingIdentity();
+                executor.execute(() -> callback.onResult(parcel));
+            }
+        }
+
+        @Override
+        public void onError(HealthConnectExceptionParcel exception) {
+            returnError(mExecutor, mCallback, exception);
         }
     }
 
@@ -1253,20 +1270,40 @@ public class HealthConnectManager {
             mService.getChangeLogToken(
                     mContext.getAttributionSource(),
                     request,
-                    new IGetChangeLogTokenCallback.Stub() {
-                        @Override
-                        public void onResult(ChangeLogTokenResponse parcel) {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(parcel));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new GetChangeLogTokenCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private static class GetChangeLogTokenCallback extends IGetChangeLogTokenCallback.Stub {
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<
+                        OutcomeReceiver<ChangeLogTokenResponse, HealthConnectException>>
+                mCallback;
+
+        GetChangeLogTokenCallback(
+                Executor executor,
+                OutcomeReceiver<ChangeLogTokenResponse, HealthConnectException> callback) {
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
+        }
+
+        @Override
+        public void onResult(ChangeLogTokenResponse parcel) {
+            Executor executor = mExecutor.getAndSet(null);
+            OutcomeReceiver<ChangeLogTokenResponse, HealthConnectException> callback =
+                    mCallback.getAndSet(null);
+
+            if (executor != null && callback != null) {
+                Binder.clearCallingIdentity();
+                executor.execute(() -> callback.onResult(parcel));
+            }
+        }
+
+        @Override
+        public void onError(HealthConnectExceptionParcel exception) {
+            returnError(mExecutor, mCallback, exception);
         }
     }
 
@@ -2403,25 +2440,23 @@ public class HealthConnectManager {
     }
 
     private static class InsertRecordsResponseCallback extends IInsertRecordsResponseCallback.Stub {
-        @Nullable private List<RecordInternal<?>> mRecordInternals;
-        @Nullable private Executor mExecutor;
-        @Nullable private OutcomeReceiver<InsertRecordsResponse, HealthConnectException> mCallback;
+        private final AtomicReference<List<RecordInternal<?>>> mRecordInternals;
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<
+                        OutcomeReceiver<InsertRecordsResponse, HealthConnectException>>
+                mCallback;
 
         InsertRecordsResponseCallback(
                 List<RecordInternal<?>> recordInternals,
                 Executor executor,
                 OutcomeReceiver<InsertRecordsResponse, HealthConnectException> callback) {
-            mRecordInternals = recordInternals;
-            mExecutor = executor;
-            mCallback = callback;
+            mRecordInternals = new AtomicReference<>(recordInternals);
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
         }
 
         @Override
         public void onResult(InsertRecordsResponseParcel parcel) {
-            List<RecordInternal<?>> recordInternals = mRecordInternals;
-            Executor executor = mExecutor;
-            OutcomeReceiver<InsertRecordsResponse, HealthConnectException> callback = mCallback;
-
             // The binder proxy in the system server that calls the InsertRecordsResponseCallback
             // can keep holding a reference to the callback and contained objects till GC is run in
             // the system server, hence delaying the GC of the contained objects in the client
@@ -2429,9 +2464,10 @@ public class HealthConnectManager {
             // Setting variables to null here will allow GC in the client app to re-claim the memory
             // before GC has run in the system server.
             // See go/binder-lingering-allocation-guide for further details.
-            mRecordInternals = null;
-            mExecutor = null;
-            mCallback = null;
+            List<RecordInternal<?>> recordInternals = mRecordInternals.getAndSet(null);
+            Executor executor = mExecutor.getAndSet(null);
+            OutcomeReceiver<InsertRecordsResponse, HealthConnectException> callback =
+                    mCallback.getAndSet(null);
 
             if (executor != null && callback != null && recordInternals != null) {
                 Binder.clearCallingIdentity();
@@ -2446,58 +2482,52 @@ public class HealthConnectManager {
 
         @Override
         public void onError(HealthConnectExceptionParcel exception) {
-            Executor executor = mExecutor;
-            OutcomeReceiver<InsertRecordsResponse, HealthConnectException> callback = mCallback;
-
-            mRecordInternals = null;
-            mExecutor = null;
-            mCallback = null;
-
-            if (executor != null && callback != null) {
-                returnError(executor, exception, callback);
-            }
+            mRecordInternals.set(null);
+            returnError(mExecutor, mCallback, exception);
         }
     }
 
     private static class ReadRecordsResponseCallback<T extends Record>
             extends IReadRecordsResponseCallback.Stub {
-        @Nullable private InternalExternalRecordConverter mInternalExternalRecordConverter;
-        @Nullable private Executor mExecutor;
-        @Nullable private OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> mCallback;
+        private final AtomicReference<InternalExternalRecordConverter>
+                mInternalExternalRecordConverter;
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<
+                        OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException>>
+                mCallback;
 
         ReadRecordsResponseCallback(
                 InternalExternalRecordConverter internalExternalRecordConverter,
                 Executor executor,
                 OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback) {
-            mInternalExternalRecordConverter = internalExternalRecordConverter;
-            mExecutor = executor;
-            mCallback = callback;
+            mInternalExternalRecordConverter =
+                    new AtomicReference<>(internalExternalRecordConverter);
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
         }
 
         @Override
         @SuppressWarnings("unchecked")
         public void onResult(ReadRecordsResponseParcel parcel) {
             InternalExternalRecordConverter internalExternalRecordConverter =
-                    mInternalExternalRecordConverter;
-            Executor executor = mExecutor;
-            OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback = mCallback;
-
-            mInternalExternalRecordConverter = null;
-            mExecutor = null;
-            mCallback = null;
+                    mInternalExternalRecordConverter.getAndSet(null);
+            Executor executor = mExecutor.getAndSet(null);
+            OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback =
+                    mCallback.getAndSet(null);
 
             if (executor != null && callback != null && internalExternalRecordConverter != null) {
                 Binder.clearCallingIdentity();
                 try {
-                    List<T> externalRecords =
-                            (List<T>)
-                                    internalExternalRecordConverter.getExternalRecords(
-                                            parcel.getRecordsParcel().getRecords());
                     executor.execute(
-                            () ->
-                                    callback.onResult(
-                                            new ReadRecordsResponse<>(
-                                                    externalRecords, parcel.getPageToken())));
+                            () -> {
+                                List<T> externalRecords =
+                                        (List<T>)
+                                                internalExternalRecordConverter.getExternalRecords(
+                                                        parcel.getRecordsParcel().getRecords());
+                                callback.onResult(
+                                        new ReadRecordsResponse<>(
+                                                externalRecords, parcel.getPageToken()));
+                            });
                 } catch (ClassCastException castException) {
                     HealthConnectException healthConnectException =
                             new HealthConnectException(
@@ -2513,36 +2543,25 @@ public class HealthConnectManager {
 
         @Override
         public void onError(HealthConnectExceptionParcel exception) {
-            Executor executor = mExecutor;
-            OutcomeReceiver<ReadRecordsResponse<T>, HealthConnectException> callback = mCallback;
-
-            mInternalExternalRecordConverter = null;
-            mExecutor = null;
-            mCallback = null;
-
-            if (executor != null && callback != null) {
-                returnError(executor, exception, callback);
-            }
+            mInternalExternalRecordConverter.set(null);
+            returnError(mExecutor, mCallback, exception);
         }
     }
 
     private static class EmptyResponseCallback extends IEmptyResponseCallback.Stub {
-        @Nullable private Executor mExecutor;
-        @Nullable private OutcomeReceiver<Void, HealthConnectException> mCallback;
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<OutcomeReceiver<Void, HealthConnectException>> mCallback;
 
         EmptyResponseCallback(
                 Executor executor, OutcomeReceiver<Void, HealthConnectException> callback) {
-            mExecutor = executor;
-            mCallback = callback;
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
         }
 
         @Override
         public void onResult() {
-            Executor executor = mExecutor;
-            OutcomeReceiver<Void, HealthConnectException> callback = mCallback;
-
-            mExecutor = null;
-            mCallback = null;
+            Executor executor = mExecutor.getAndSet(null);
+            OutcomeReceiver<Void, HealthConnectException> callback = mCallback.getAndSet(null);
 
             if (executor != null && callback != null) {
                 Binder.clearCallingIdentity();
@@ -2552,15 +2571,7 @@ public class HealthConnectManager {
 
         @Override
         public void onError(HealthConnectExceptionParcel exception) {
-            Executor executor = mExecutor;
-            OutcomeReceiver<Void, HealthConnectException> callback = mCallback;
-
-            mExecutor = null;
-            mCallback = null;
-
-            if (executor != null && callback != null) {
-                returnError(executor, exception, callback);
-            }
+            returnError(mExecutor, mCallback, exception);
         }
     }
 
@@ -2589,6 +2600,18 @@ public class HealthConnectManager {
             OutcomeReceiver<?, HealthConnectException> callback) {
         Binder.clearCallingIdentity();
         executor.execute(() -> callback.onError(exception.getHealthConnectException()));
+    }
+
+    private static void returnError(
+            AtomicReference<Executor> executorReference,
+            AtomicReference<? extends OutcomeReceiver<?, HealthConnectException>> callbackReference,
+            HealthConnectExceptionParcel exception) {
+        Executor executor = executorReference.getAndSet(null);
+        OutcomeReceiver<?, HealthConnectException> callback = callbackReference.getAndSet(null);
+
+        if (executor != null && callback != null) {
+            returnError(executor, exception, callback);
+        }
     }
 
     /** @hide */
