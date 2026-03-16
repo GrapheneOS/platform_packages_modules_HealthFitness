@@ -92,7 +92,9 @@ import org.mockito.kotlin.argThat
 class MockedAllEntriesFragmentTest {
 
     @get:Rule val coroutineTestRule = CoroutineTestRule()
+
     @get:Rule val hiltRule = HiltAndroidRule(this)
+
     @BindValue val manager: HealthConnectManager = Mockito.mock(HealthConnectManager::class.java)
     private val NOW: Instant =
         LocalDate.now(ZoneId.systemDefault())
@@ -359,8 +361,8 @@ class MockedAllEntriesFragmentTest {
     private fun mockData() {
         val stepsRecordsList =
             listOf(
-                getStepsRecordWithUniqueIds(10, NOW),
-                getStepsRecordWithUniqueIds(20, NOW),
+                getStepsRecordWithUniqueIds(10, NOW.plusSeconds(20)),
+                getStepsRecordWithUniqueIds(20, NOW.plusSeconds(10)),
                 getStepsRecordWithUniqueIds(30, NOW),
             )
         Mockito.doAnswer(prepareRecordsAnswer(stepsRecordsList))
@@ -427,8 +429,8 @@ class MockedAllEntriesFragmentTest {
                 getMetaDataWithUniqueIds(),
                 NOW,
                 NOW.plusSeconds(samples.size.toLong() + 1),
-                samples.map { rate ->
-                    StepsCadenceRecord.StepsCadenceRecordSample(rate, NOW.plusSeconds(1))
+                samples.mapIndexed { index, rate ->
+                    StepsCadenceRecord.StepsCadenceRecordSample(rate, NOW.plusSeconds(index + 1L))
                 },
             )
             .build()

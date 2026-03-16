@@ -87,7 +87,9 @@ fun getHeartRateRecord(heartRateValues: List<Long>, startTime: Instant = NOW): H
             getMetaData(),
             startTime,
             startTime.plusSeconds(2),
-            heartRateValues.map { HeartRateRecord.HeartRateSample(it, NOW) },
+            heartRateValues.mapIndexed { index, value ->
+                HeartRateRecord.HeartRateSample(value, NOW.plusMillis(100L * index))
+            },
         )
         .build()
 }

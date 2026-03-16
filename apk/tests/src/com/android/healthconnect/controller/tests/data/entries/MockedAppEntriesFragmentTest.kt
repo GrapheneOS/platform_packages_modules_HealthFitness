@@ -394,8 +394,8 @@ class MockedAppEntriesFragmentTest {
                 getMetaDataWithUniqueIds(),
                 NOW,
                 NOW.plusSeconds(samples.size.toLong() + 1),
-                samples.map { rate ->
-                    StepsCadenceRecord.StepsCadenceRecordSample(rate, NOW.plusSeconds(1))
+                samples.mapIndexed { index, rate ->
+                    StepsCadenceRecord.StepsCadenceRecordSample(rate, NOW.plusSeconds(index + 1L))
                 },
             )
             .build()
