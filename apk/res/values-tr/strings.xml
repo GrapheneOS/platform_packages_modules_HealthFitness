@@ -474,7 +474,7 @@
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"Okumasına izin veriliyor"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"Yazmasına izin veriliyor"</string>
     <string name="no_apps_allowed" msgid="5794833581324128108">"Hiçbir uygulamaya izin verilmedi"</string>
-    <string name="no_apps_denied" msgid="743327680286446017">"İzin verilmeyen uygulamak yok"</string>
+    <string name="no_apps_denied" msgid="743327680286446017">"İzin verilmeyen uygulama yok"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Tüm uygulamalar için erişim kaldırılsın mı?"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Uygulamalarınızın hiçbiri Health Connect\'teki verilere erişemez ve Health Connect\'e yeni veri ekleyemez. Bu işlem mevcut verileri silmez.\n\nBu uygulamanın sahip olduğu diğer izinler (ör. konum, kamera, mikrofon) bu durumdan etkilenmez."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Tümünü kaldır"</string>
@@ -1336,7 +1336,7 @@
     <string name="device_data_screen_title" msgid="2443821236974714385">"Cihaz verileri"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Cihazı yönet"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Cihaz verilerini göster"</string>
-    <string name="device_sync_button" msgid="2075007109033449483">"Health Connect ile senkronize et"</string>
+    <string name="device_sync_button" msgid="2075007109033449483">"Health Connect ile senkronize et"</string>
     <string name="native_steps_banner_title" msgid="8990874387340782536">"Telefonunuzda takip edilen adımlar Health Connect\'te görünür"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Bu cihazın takip ettiği adımlar artık bağlı uygulamaların erişebilmesi için Health Connect\'te saklanıyor"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Kapat"</string>

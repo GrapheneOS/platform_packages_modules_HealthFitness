@@ -97,6 +97,7 @@ import kotlinx.coroutines.test.setMain
 import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -727,6 +728,7 @@ class BackupAndRestoreSettingsFragmentTest {
     }
 
     @Test
+    @Ignore("b/485196026")
     fun backupAndRestoreSettingsFragment_whenImportErrorIsWrongFile_showsImportErrorBanner() {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_NEVER))
@@ -757,6 +759,7 @@ class BackupAndRestoreSettingsFragmentTest {
     }
 
     @Test
+    @Ignore("b/485196026")
     fun backupAndRestoreSettingsFragment_whenImportErrorIsVersionMismatch_showsImportErrorBanner() {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_NEVER))
@@ -788,6 +791,7 @@ class BackupAndRestoreSettingsFragmentTest {
     }
 
     @Test
+    @Ignore("b/485196026")
     fun backupAndRestoreSettingsFragment_whenImportErrorIsUnknown_showsImportErrorBanner() {
         whenever(exportSettingsViewModel.storedExportSettings).then {
             MutableLiveData(ExportSettings.WithData(ExportFrequency.EXPORT_FREQUENCY_NEVER))

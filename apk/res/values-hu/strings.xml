@@ -247,8 +247,8 @@
     <string name="waist_circumference_lowercase_label" msgid="7389714051869012003">"derékbőség"</string>
     <string name="waist_circumference_read_content_description" msgid="7742632529989685413">"Derékbőségre vonatkozó adatok olvasása"</string>
     <string name="waist_circumference_write_content_description" msgid="6455311628964793644">"Derékbőségre vonatkozó adatok írása"</string>
-    <string name="weight_uppercase_label" msgid="2240396607601785080">"Tömeg"</string>
-    <string name="weight_lowercase_label" msgid="6592458247010013299">"tömeg"</string>
+    <string name="weight_uppercase_label" msgid="2240396607601785080">"Súly"</string>
+    <string name="weight_lowercase_label" msgid="6592458247010013299">"súly"</string>
     <string name="weight_read_content_description" msgid="3270514859844811665">"Tömegre vonatkozó adatok olvasása"</string>
     <string name="weight_write_content_description" msgid="555486014471042366">"Tömegre vonatkozó adatok írása"</string>
     <string name="cervical_mucus_uppercase_label" msgid="7479786340673820763">"Méhnyaknyák"</string>
