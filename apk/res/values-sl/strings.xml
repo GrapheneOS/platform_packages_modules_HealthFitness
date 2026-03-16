@@ -74,8 +74,8 @@
     <string name="body_measurements_category_lowercase" msgid="2259696274629666992">"telesne meritve"</string>
     <string name="sleep_category_uppercase" msgid="3422452674899706786">"Spanje"</string>
     <string name="sleep_category_lowercase" msgid="842609634386839011">"spanje"</string>
-    <string name="vitals_category_uppercase" msgid="8982333138032938623">"Osnovni podatki"</string>
-    <string name="vitals_category_lowercase" msgid="4664457787866407963">"osnovni podatki"</string>
+    <string name="vitals_category_uppercase" msgid="8982333138032938623">"Vitalni znaki"</string>
+    <string name="vitals_category_lowercase" msgid="4664457787866407963">"vitalni znaki"</string>
     <string name="cycle_tracking_category_uppercase" msgid="4723200714782660489">"Spremljanje cikla"</string>
     <string name="cycle_tracking_category_lowercase" msgid="5245446435975317209">"spremljanje cikla"</string>
     <string name="nutrition_category_uppercase" msgid="6665096097987741036">"Prehrana"</string>
@@ -1109,7 +1109,7 @@
     <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g>. mesto na seznamu – <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"telesna pripravljenost, dobro počutje"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"dovoljenja"</string>
-    <string name="search_keywords_data" msgid="5359602744325490523">"health connect, podatki o zdravju, kategorije zdravja, dostop do podatkov, dejavnost, telesne meritve, spremljanje cikla, prehrana, spanje, spanec, osnovni podatki"</string>
+    <string name="search_keywords_data" msgid="5359602744325490523">"health connect, podatki o zdravju, kategorije zdravja, dostop do podatkov, dejavnost, telesne meritve, spremljanje cikla, prehrana, spanje, spanec, vitalni znaki"</string>
     <string name="search_breadcrumbs_permissions" msgid="2667471090347475796">"Health Connect &gt; Dovoljenja za aplikacije"</string>
     <string name="search_breadcrumbs_data" msgid="6635428480372024040">"Health Connect &gt; Podatki in dostop"</string>
     <string name="search_connected_apps" msgid="8180770761876928851">"Iskanje aplikacij"</string>
