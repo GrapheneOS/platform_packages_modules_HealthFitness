@@ -1327,18 +1327,7 @@ public class HealthConnectManager {
             mService.updatePriority(
                     mContext.getAttributionSource(),
                     new UpdatePriorityRequestParcel(request),
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(null));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new EmptyResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -1431,20 +1420,7 @@ public class HealthConnectManager {
 
         try {
             mService.setRecordRetentionPeriodInDays(
-                    days,
-                    mContext.getUser(),
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(null));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    days, mContext.getUser(), new EmptyResponseCallback(executor, callback));
         } catch (RemoteException e) {
             e.rethrowFromSystemServer();
         }
@@ -1568,19 +1544,7 @@ public class HealthConnectManager {
             mService.updateRecords(
                     mContext.getAttributionSource(),
                     new RecordsParcel(recordInternals),
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(null));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            Binder.clearCallingIdentity();
-                            callback.onError(exception.getHealthConnectException());
-                        }
-                    });
+                    new EmptyResponseCallback(executor, callback));
         } catch (ArithmeticException
                 | ClassCastException
                 | IllegalArgumentException invalidArgumentException) {
@@ -2351,20 +2315,7 @@ public class HealthConnectManager {
         Objects.requireNonNull(callback);
         try {
             mService.runImport(
-                    mContext.getUser(),
-                    file,
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(null));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    mContext.getUser(), file, new EmptyResponseCallback(executor, callback));
         } catch (RemoteException e) {
             e.rethrowFromSystemServer();
         }
@@ -2387,20 +2338,7 @@ public class HealthConnectManager {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
-            mService.runImmediateExport(
-                    file,
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(null));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+            mService.runImmediateExport(file, new EmptyResponseCallback(executor, callback));
         } catch (RemoteException e) {
             e.rethrowFromSystemServer();
         }
@@ -3046,17 +2984,7 @@ public class HealthConnectManager {
             mService.deleteMedicalResourcesByRequest(
                     mContext.getAttributionSource(),
                     request,
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            returnResult(executor, null, callback);
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new EmptyResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -3108,17 +3036,7 @@ public class HealthConnectManager {
             mService.deleteMedicalResourcesByIds(
                     mContext.getAttributionSource(),
                     ids,
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            returnResult(executor, null, callback);
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new EmptyResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -3415,17 +3333,7 @@ public class HealthConnectManager {
             mService.deleteMedicalDataSourceWithData(
                     mContext.getAttributionSource(),
                     id,
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            returnResult(executor, null, callback);
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new EmptyResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -3593,18 +3501,7 @@ public class HealthConnectManager {
         Objects.requireNonNull(callback);
         try {
             mService.restoreLatestMetadata(
-                    backupMetadata,
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            returnResult(executor, null, callback);
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    backupMetadata, new EmptyResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -3686,19 +3583,7 @@ public class HealthConnectManager {
         Objects.requireNonNull(executor);
         Objects.requireNonNull(callback);
         try {
-            mService.restoreChanges(
-                    restoreChanges,
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            returnResult(executor, null, callback);
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+            mService.restoreChanges(restoreChanges, new EmptyResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -3989,18 +3874,7 @@ public class HealthConnectManager {
                     mContext.getAttributionSource(),
                     callingPackageName,
                     deniedDataSources,
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(null));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new EmptyResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -4026,18 +3900,7 @@ public class HealthConnectManager {
                     // TODO(b/467338330): Send over RecordType (id) instead of preference string
                     getDataTypePrefKey(dataType),
                     enabled,
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(null));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new EmptyResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -4185,18 +4048,7 @@ public class HealthConnectManager {
             mService.advertiseDeviceDataSources(
                     mContext.getAttributionSource(),
                     new ArrayList<>(deviceDataAdvertisements),
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(null));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new EmptyResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -4306,20 +4158,7 @@ public class HealthConnectManager {
                     mContext.getAttributionSource(),
                     deviceId,
                     new RecordsParcel(recordInternals),
-                    new IEmptyResponseCallback.Stub() {
-                        @Override
-                        public void onResult() {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(null));
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            Binder.clearCallingIdentity();
-                            executor.execute(
-                                    () -> callback.onError(exception.getHealthConnectException()));
-                        }
-                    });
+                    new EmptyResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
