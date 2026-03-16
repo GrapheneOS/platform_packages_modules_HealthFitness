@@ -171,17 +171,19 @@ public class RateLimiterTest {
         testMetadataBuilder.setClientRecordId("HRR" + Math.random());
         testMetadataBuilder.setRecordingMethod(Metadata.RECORDING_METHOD_ACTIVELY_RECORDED);
 
-        HeartRateRecord.HeartRateSample heartRateRecord =
-                new HeartRateRecord.HeartRateSample(10, Instant.now().plusMillis(100));
         int nCopies = 85000 / mLimitsAdjustmentForTesting;
-        ArrayList<HeartRateRecord.HeartRateSample> heartRateRecords =
-                new ArrayList<>(Collections.nCopies(nCopies, heartRateRecord));
+
+        ArrayList<HeartRateRecord.HeartRateSample> heartRateRecords = new ArrayList<>();
+        Instant t0 = Instant.now();
+        for (int i = 0; i < nCopies; i++) {
+            heartRateRecords.add(new HeartRateRecord.HeartRateSample(10, t0.plusMillis(100 * i)));
+        }
 
         HeartRateRecord testHeartRateRecord =
                 new HeartRateRecord.Builder(
                                 testMetadataBuilder.build(),
-                                Instant.now(),
-                                Instant.now().plusMillis(500),
+                                t0,
+                                t0.plusMillis(nCopies * 100),
                                 heartRateRecords)
                         .build();
         TestUtils.insertRecords(List.of(testHeartRateRecord));
