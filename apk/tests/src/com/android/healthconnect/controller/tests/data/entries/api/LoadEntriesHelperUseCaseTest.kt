@@ -29,8 +29,10 @@ import android.health.connect.datatypes.ActiveCaloriesBurnedRecord
 import android.health.connect.datatypes.BodyTemperatureMeasurementLocation
 import android.health.connect.datatypes.BodyTemperatureRecord
 import android.health.connect.datatypes.BodyWaterMassRecord
+import android.health.connect.datatypes.CyclingPedalingCadenceRecord
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.DistanceRecord
+import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.FloorsClimbedRecord
 import android.health.connect.datatypes.HydrationRecord
 import android.health.connect.datatypes.IntermenstrualBleedingRecord
@@ -98,6 +100,8 @@ import com.android.healthconnect.controller.tests.utils.WEIGHT_MONTH_100
 import com.android.healthconnect.controller.tests.utils.WEIGHT_WEEK_100
 import com.android.healthconnect.controller.tests.utils.createFakeAppInfoReader
 import com.android.healthconnect.controller.tests.utils.doReturnResult
+import com.android.healthconnect.controller.tests.utils.getCyclingPedalingCadenceRecord
+import com.android.healthconnect.controller.tests.utils.getExerciseSessionWithRouteRecord
 import com.android.healthconnect.controller.tests.utils.getMixedRecordsAcrossThreeDays
 import com.android.healthconnect.controller.tests.utils.getMixedRecordsAcrossTwoDays
 import com.android.healthconnect.controller.tests.utils.getStepsCadenceRecord
@@ -117,6 +121,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import java.time.Instant
+import java.time.Period
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
@@ -452,6 +457,42 @@ class LoadEntriesHelperUseCaseTest {
         val expected = SLEEP_MONTH_81H15.startTime
 
         assertReadRecordsRequest(timeRangeFilter, SleepSessionRecord::class.java, pageSize = 1)
+        assertThat(actual).isEqualTo(expected)
+    }
+
+    @Test
+    fun loadExerciseData_multipleRecordTypes_takesOverallLatestDate() = runTest {
+        val input =
+            LoadLatestEntryDateInput(
+                displayedStartTime = defaultStartTime.atStartOfDay(),
+                permissionType = FitnessPermissionType.EXERCISE,
+            )
+
+        setupReadRecordTest(DateNavigationPeriod.PERIOD_DAY, FitnessPermissionType.EXERCISE)
+
+        val actual = loadEntriesHelper.readLatestRecordDate(input)
+        val expected = defaultStartTime.atStartOfDay()
+
+        verify(healthConnectManager)
+            .readRecords(
+                argThat { request: ReadRecordsRequest<Record> ->
+                    (request as ReadRecordsRequestUsingFilters<Record>).recordType ==
+                        CyclingPedalingCadenceRecord::class.java
+                },
+                any(),
+                any(),
+            )
+
+        verify(healthConnectManager)
+            .readRecords(
+                argThat { request: ReadRecordsRequest<Record> ->
+                    (request as ReadRecordsRequestUsingFilters<Record>).recordType ==
+                        ExerciseSessionRecord::class.java
+                },
+                any(),
+                any(),
+            )
+
         assertThat(actual).isEqualTo(expected)
     }
 
@@ -857,6 +898,19 @@ class LoadEntriesHelperUseCaseTest {
             when (permissionType) {
                 FitnessPermissionType.ACTIVE_CALORIES_BURNED ->
                     Result.success(ReadRecordsResponse<Record>(emptyList(), -1))
+                FitnessPermissionType.EXERCISE ->
+                    Result.success(
+                        ReadRecordsResponse<Record>(
+                            listOf(
+                                getCyclingPedalingCadenceRecord(
+                                    100.0,
+                                    timeRangeFilter.startTime!!.minus(Period.ofDays(3)),
+                                ),
+                                getExerciseSessionWithRouteRecord(timeRangeFilter.startTime!!),
+                            ),
+                            -1,
+                        )
+                    )
                 FitnessPermissionType.SLEEP ->
                     Result.success(getSleepRecords(timePeriod) as ReadRecordsResponse<Record>)
                 FitnessPermissionType.WEIGHT ->
