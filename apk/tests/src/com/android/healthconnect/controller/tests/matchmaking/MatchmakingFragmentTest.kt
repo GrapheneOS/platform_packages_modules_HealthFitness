@@ -1595,4 +1595,60 @@ class MatchmakingFragmentTest {
                 }
             }
     }
+
+    @Test
+    @EnableFlags(
+        Flags.FLAG_MATCHMAKING,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
+        Flags.FLAG_DEVICE_DATA_PROVIDERS_UI_MATCHMAKING_SCREEN,
+    )
+    fun matchmakingFragment_devicePreference_telemetryLogged() {
+        val deviceData =
+            MatchmakingDeviceData(
+                DeviceDataSourceInfo(
+                    DataOrigin.Builder().setPackageName("com.example.watchdevice").build(),
+                    Device.Builder()
+                        .setManufacturer("Google")
+                        .setModel("Watch")
+                        .setType(Device.DEVICE_TYPE_WATCH)
+                        .build(),
+                    false,
+                    emptyList(),
+                ),
+                emptyList(),
+            )
+        matchmakingState.postValue(
+            MatchmakingViewModel.MatchmakingState.WithData(
+                AppMetadata(CALLING_PACKAGE_NAME, CALLING_APP_NAME, null),
+                emptyList(),
+                listOf(deviceData),
+            )
+        )
+
+        ActivityScenario.launch<TestActivity>(
+                Intent(context, TestActivity::class.java).apply {
+                    putExtra(
+                        HealthConnectManager.EXTRA_RECORD_TYPES,
+                        arrayOf(StepsRecord::class.java.name),
+                    )
+                }
+            )
+            .use { scenario ->
+                scenario.onActivity { activity ->
+                    activity.supportFragmentManager
+                        .beginTransaction()
+                        .add(android.R.id.content, MatchmakingFragment())
+                        .commitNow()
+                }
+
+                scrollToTextAndClick("Watch")
+
+                verify(logger).logImpression(MatchmakingElement.MATCHMAKING_DEVICE_PREFERENCE)
+                verify(logger)
+                    .logInteraction(
+                        MatchmakingElement.MATCHMAKING_DEVICE_PREFERENCE,
+                        UIAction.ACTION_TOGGLE_ON,
+                    )
+            }
+    }
 }
