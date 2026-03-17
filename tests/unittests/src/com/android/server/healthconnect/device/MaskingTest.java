@@ -122,6 +122,7 @@ public class MaskingTest {
     private static final Map<String, Integer> DOES_NOT_REQUIRE_MASKING_LIST =
             Map.<String, Integer>ofEntries(
                     Map.entry("grantHealthPermission", DOES_NOT_INTERACT_WITH_DEVICES),
+                    Map.entry("grantHealthPermissions", DOES_NOT_INTERACT_WITH_DEVICES),
                     Map.entry("revokeHealthPermission", DOES_NOT_INTERACT_WITH_DEVICES),
                     Map.entry("revokeAllHealthPermissions", DOES_NOT_INTERACT_WITH_DEVICES),
                     Map.entry("getGrantedHealthPermissions", DOES_NOT_INTERACT_WITH_DEVICES),

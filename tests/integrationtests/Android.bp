@@ -69,6 +69,7 @@ android_test {
         "androidx.test.ext.truth",
         "android.permission.flags-aconfig-java-export",
         "healthfitness-testing-cts",
+        "healthfitness-testing-integration",
         "healthfitness-testing-shared",
     ],
     srcs: [

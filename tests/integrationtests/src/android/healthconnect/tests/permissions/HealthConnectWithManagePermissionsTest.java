@@ -27,8 +27,10 @@ import static android.healthconnect.testing.cts.HealthConnectReceiver.callAndGet
 import static android.healthconnect.testing.cts.TestUtils.deleteAllDataFromHealthConnect;
 import static android.healthconnect.testing.cts.TestUtils.deleteAllStagedRemoteData;
 import static android.healthconnect.testing.cts.TestUtils.updatePriorityWithManageHealthDataPermission;
+import static android.healthconnect.testing.integration.IntegrationTestUtils.grantHealthPermissions;
 
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
+import static com.android.healthfitness.flags.Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -52,11 +54,14 @@ import android.healthconnect.testing.shared.AssumptionCheckerRule;
 import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.Build;
 import android.platform.test.annotations.RequiresFlagsDisabled;
+import android.platform.test.annotations.RequiresFlagsEnabled;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
+
 import androidx.test.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SdkSuppress;
+
 import com.android.compatibility.common.util.FeatureUtil;
 
 import org.junit.After;
@@ -139,6 +144,7 @@ public class HealthConnectWithManagePermissionsTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantHealthPermission_appHasPermissionDeclared_success() throws Exception {
         grantHealthPermission(DEFAULT_APP_PACKAGE, READ_PERM);
 
@@ -146,6 +152,16 @@ public class HealthConnectWithManagePermissionsTest {
     }
 
     @Test
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_appHasPermissionDeclared_success() throws Exception {
+        List<String> result = grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(READ_PERM));
+
+        assertThat(result).containsExactly(READ_PERM);
+        assertPermGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
+    }
+
+    @Test
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantHealthPermission_appHasPermissionDeclared_flagUserSetEnabled()
             throws Exception {
         grantHealthPermission(DEFAULT_APP_PACKAGE, READ_PERM);
@@ -159,6 +175,21 @@ public class HealthConnectWithManagePermissionsTest {
     }
 
     @Test
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_appHasPermissionDeclared_flagUserSetEnabled()
+            throws Exception {
+        grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(READ_PERM));
+        Map<String, Integer> permissionsFlags =
+                getHealthPermissionsFlags(DEFAULT_APP_PACKAGE, List.of(READ_PERM));
+
+        assertPermGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
+        assertFlagsSet(permissionsFlags.get(READ_PERM), PackageManager.FLAG_PERMISSION_USER_SET);
+        assertFlagsNotSet(
+                permissionsFlags.get(READ_PERM), PackageManager.FLAG_PERMISSION_USER_FIXED);
+    }
+
+    @Test
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantHealthPermission_revokeTwiceThenGrant_flagUserSetEnabled()
             throws Exception {
         revokeHealthPermission(DEFAULT_APP_PACKAGE, READ_PERM, /* reason= */ null);
@@ -178,26 +209,83 @@ public class HealthConnectWithManagePermissionsTest {
     }
 
     @Test
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_revokeTwiceThenGrant_flagUserSetEnabled()
+            throws Exception {
+        revokeHealthPermission(DEFAULT_APP_PACKAGE, READ_PERM, /* reason= */ null);
+        revokeHealthPermission(DEFAULT_APP_PACKAGE, READ_PERM, /* reason= */ null);
+        Map<String, Integer> permissionsFlags =
+                getHealthPermissionsFlags(DEFAULT_APP_PACKAGE, List.of(READ_PERM));
+
+        assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
+        assertFlagsSet(permissionsFlags.get(READ_PERM), PackageManager.FLAG_PERMISSION_USER_FIXED);
+
+        grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(READ_PERM));
+        permissionsFlags = getHealthPermissionsFlags(DEFAULT_APP_PACKAGE, List.of(READ_PERM));
+
+        assertFlagsSet(permissionsFlags.get(READ_PERM), PackageManager.FLAG_PERMISSION_USER_SET);
+        assertFlagsNotSet(
+                permissionsFlags.get(READ_PERM), PackageManager.FLAG_PERMISSION_USER_FIXED);
+    }
+
+    @Test
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantHealthPermission_writePermission_addsToPriorityOrder() throws Exception {
+        assertThat(fetchPriorityOrder(HealthDataCategory.ACTIVITY))
+                .doesNotContain(DEFAULT_APP_PACKAGE);
+
         updatePriorityWithManageHealthDataPermission(HealthDataCategory.ACTIVITY, List.of());
 
         grantHealthPermission(DEFAULT_APP_PACKAGE, WRITE_PERM);
 
-        assertThat(fetchPriorityOrder(HealthDataCategory.ACTIVITY))
-                .containsExactly(DEFAULT_APP_PACKAGE);
+        assertThat(fetchPriorityOrder(HealthDataCategory.ACTIVITY)).contains(DEFAULT_APP_PACKAGE);
     }
 
     @Test
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_writePermission_addsToPriorityOrder() throws Exception {
+        assertThat(fetchPriorityOrder(HealthDataCategory.ACTIVITY))
+                .doesNotContain(DEFAULT_APP_PACKAGE);
+
+        updatePriorityWithManageHealthDataPermission(HealthDataCategory.ACTIVITY, List.of());
+
+        grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(WRITE_PERM));
+
+        assertThat(fetchPriorityOrder(HealthDataCategory.ACTIVITY)).contains(DEFAULT_APP_PACKAGE);
+    }
+
+    @Test
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantHealthPermission_readPermission_doesntAddToPriorityOrder()
             throws Exception {
+        assertThat(fetchPriorityOrder(HealthDataCategory.ACTIVITY))
+                .doesNotContain(DEFAULT_APP_PACKAGE);
+
         updatePriorityWithManageHealthDataPermission(HealthDataCategory.ACTIVITY, List.of());
 
         grantHealthPermission(DEFAULT_APP_PACKAGE, READ_PERM);
 
-        assertThat(fetchPriorityOrder(HealthDataCategory.ACTIVITY)).isEmpty();
+        assertThat(fetchPriorityOrder(HealthDataCategory.ACTIVITY))
+                .doesNotContain(DEFAULT_APP_PACKAGE);
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_readPermission_doesntAddToPriorityOrder()
+            throws Exception {
+        assertThat(fetchPriorityOrder(HealthDataCategory.ACTIVITY))
+                .doesNotContain(DEFAULT_APP_PACKAGE);
+
+        updatePriorityWithManageHealthDataPermission(HealthDataCategory.ACTIVITY, List.of());
+
+        grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(READ_PERM));
+
+        assertThat(fetchPriorityOrder(HealthDataCategory.ACTIVITY))
+                .doesNotContain(DEFAULT_APP_PACKAGE);
     }
 
     @Test(expected = SecurityException.class)
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void
             testGrantHealthPermission_usageIntentNotSupported_nonWatch_throwsIllegalArgumentException()
                     throws Exception {
@@ -207,6 +295,18 @@ public class HealthConnectWithManagePermissionsTest {
     }
 
     @Test
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_usageIntentNotSupported_nonWatch_notGranted()
+            throws Exception {
+        assumeFalse(FeatureUtil.isWatch());
+        List<String> result =
+                grantHealthPermissions(NO_USAGE_INTENT_APP_PACKAGE, List.of(READ_PERM));
+        assertThat(result).isEmpty();
+        assertPermNotGrantedForApp(NO_USAGE_INTENT_APP_PACKAGE, READ_PERM);
+    }
+
+    @Test
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantHealthPermission_usageIntentNotSupported_watch_succeeds()
             throws Exception {
         assumeTrue(FeatureUtil.isWatch());
@@ -215,6 +315,16 @@ public class HealthConnectWithManagePermissionsTest {
     }
 
     @Test
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_usageIntentNotSupported_watch_succeeds()
+            throws Exception {
+        assumeTrue(FeatureUtil.isWatch());
+        grantHealthPermissions(NO_USAGE_INTENT_APP_PACKAGE, List.of(READ_PERM));
+        assertPermGrantedForApp(NO_USAGE_INTENT_APP_PACKAGE, READ_PERM);
+    }
+
+    @Test
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantHealthPermission_permissionAlreadyGranted_success() throws Exception {
         grantHealthPermission(DEFAULT_APP_PACKAGE, READ_PERM);
         assertPermGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
@@ -225,6 +335,18 @@ public class HealthConnectWithManagePermissionsTest {
     }
 
     @Test
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_permissionAlreadyGranted_success() throws Exception {
+        grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(READ_PERM));
+        assertPermGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
+        // Let's regrant it
+        grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(READ_PERM));
+
+        assertPermGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
+    }
+
+    @Test
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantHealthPermission_appHasPermissionNotDeclared_notGranted()
             throws Exception {
         try {
@@ -241,41 +363,101 @@ public class HealthConnectWithManagePermissionsTest {
         assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, UNDECLARED_PERM);
     }
 
+    @Test
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_appHasPermissionNotDeclared_notGranted()
+            throws Exception {
+        List<String> result = grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(UNDECLARED_PERM));
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            // 1) On V and above, trying to grant an undeclared permission should not result in an
+            // exception
+            // 2) On U, it may result in an exception prior to b/322033581.
+            // This test currently ensures that if it throws on V (thus going against (1)),
+            // we will propagate the exception to fail the test, as expected.
+            assertThat(result).containsExactly(UNDECLARED_PERM);
+        }
+        assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, UNDECLARED_PERM);
+    }
+
     @Test(expected = IllegalArgumentException.class)
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantHealthPermission_invalidPermission_throwsIllegalArgumentException()
             throws Exception {
         grantHealthPermission(DEFAULT_APP_PACKAGE, INVALID_PERM);
         fail("Expected IllegalArgumentException due to invalid permission.");
     }
 
+    @Test
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_invalidPermission_notGranted() throws Exception {
+        List<String> result = grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(INVALID_PERM));
+        assertThat(result).isEmpty();
+        assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, INVALID_PERM);
+    }
+
     @Test(expected = IllegalArgumentException.class)
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantHealthPermission_nonHealthPermission_throwsIllegalArgumentException()
             throws Exception {
         grantHealthPermission(DEFAULT_APP_PACKAGE, NON_HEALTH_PERM);
         fail("Expected IllegalArgumentException due to non-health permission.");
     }
 
+    @Test
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_nonHealthPermission_notGranted() throws Exception {
+        List<String> result = grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(NON_HEALTH_PERM));
+        assertThat(result).isEmpty();
+        assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, NON_HEALTH_PERM);
+    }
+
     @Test(expected = IllegalArgumentException.class)
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantHealthPermission_invalidPackageName_throwsIllegalArgumentException()
             throws Exception {
         grantHealthPermission(INEXISTENT_APP_PACKAGE, READ_PERM);
         fail("Expected IllegalArgumentException due to invalid package.");
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_invalidPackageName_throwsIllegalArgumentException()
+            throws Exception {
+        grantHealthPermissions(INEXISTENT_APP_PACKAGE, List.of(READ_PERM));
+        fail("Expected IllegalArgumentException due to invalid package.");
+    }
+
     @Test(expected = NullPointerException.class)
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantHealthPermission_nullPermission_throwsNPE() throws Exception {
         grantHealthPermission(DEFAULT_APP_PACKAGE, /* permissionName= */ null);
         fail("Expected NullPointerException due to null permission.");
     }
 
     @Test(expected = NullPointerException.class)
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_nullPermission_throwsNPE() throws Exception {
+        grantHealthPermissions(DEFAULT_APP_PACKAGE, null);
+        fail("Expected NullPointerException due to null permission.");
+    }
+
+    @Test(expected = NullPointerException.class)
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantHealthPermission_nullPackageName_throwsNPE() throws Exception {
         grantHealthPermission(/* packageName= */ null, READ_PERM);
         fail("Expected NullPointerException due to null package.");
     }
 
+    @Test(expected = NullPointerException.class)
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_nullPackageName_throwsNPE() throws Exception {
+        grantHealthPermissions(/* packageName= */ null, List.of(READ_PERM));
+        fail("Expected NullPointerException due to null package.");
+    }
+
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantPermission_readHeartRate_isFromSplitPermission_alsoGrantBodySensor()
             throws Exception {
         revokePermissionViaPackageManager(REQUESTING_BODY_SENSORS_LEGACY_APP_PACKAGE, BODY_SENSORS);
@@ -288,8 +470,23 @@ public class HealthConnectWithManagePermissionsTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantPermissions_readHeartRate_isFromSplitPermission_alsoGrantBodySensor()
+            throws Exception {
+        revokePermissionViaPackageManager(REQUESTING_BODY_SENSORS_LEGACY_APP_PACKAGE, BODY_SENSORS);
+        assertPermNotGrantedForApp(REQUESTING_BODY_SENSORS_LEGACY_APP_PACKAGE, BODY_SENSORS);
+        grantHealthPermissions(
+                REQUESTING_BODY_SENSORS_LEGACY_APP_PACKAGE, List.of(READ_HEART_RATE));
+
+        assertPermGrantedForApp(REQUESTING_BODY_SENSORS_LEGACY_APP_PACKAGE, READ_HEART_RATE);
+        assertPermGrantedForApp(REQUESTING_BODY_SENSORS_LEGACY_APP_PACKAGE, BODY_SENSORS);
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void
-            testGrantPermission_readHealthBackground_isFromSplitPermission_alsoGrantBodySensorBackground()
+            grantPermission_readHealthBackground_isSplitPermission_alsoGrantBodySensorBackground()
                     throws Exception {
         revokePermissionViaPackageManager(
                 REQUESTING_BODY_SENSORS_LEGACY_APP_PACKAGE, BODY_SENSORS_BACKGROUND);
@@ -306,6 +503,27 @@ public class HealthConnectWithManagePermissionsTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void
+            grantPermissions_readHealthBackground_isSplitPermission_alsoGrantBodySensorBackground()
+                    throws Exception {
+        revokePermissionViaPackageManager(
+                REQUESTING_BODY_SENSORS_LEGACY_APP_PACKAGE, BODY_SENSORS_BACKGROUND);
+        assertPermNotGrantedForApp(
+                REQUESTING_BODY_SENSORS_LEGACY_APP_PACKAGE, BODY_SENSORS_BACKGROUND);
+        grantHealthPermissions(
+                REQUESTING_BODY_SENSORS_LEGACY_APP_PACKAGE,
+                List.of(READ_HEALTH_DATA_IN_BACKGROUND));
+
+        assertPermGrantedForApp(
+                REQUESTING_BODY_SENSORS_LEGACY_APP_PACKAGE, READ_HEALTH_DATA_IN_BACKGROUND);
+        assertPermGrantedForApp(
+                REQUESTING_BODY_SENSORS_LEGACY_APP_PACKAGE, BODY_SENSORS_BACKGROUND);
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testRevokePermission_readHeartRate_isFromSplitPermission_alsoRevokeBodySensor()
             throws Exception {
         grantHealthPermission(REQUESTING_BODY_SENSORS_LEGACY_APP_PACKAGE, READ_HEART_RATE);
@@ -317,8 +535,9 @@ public class HealthConnectWithManagePermissionsTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void
-            testRevokePermission_readHealthBackground_isFromSplitPermission_alsoRevokeBodySensorBackground()
+            revokePermission_readHealthBackground_isSplitPermission_alsoRevokeBodySensorBackground()
                     throws Exception {
         grantHealthPermission(
                 REQUESTING_BODY_SENSORS_LEGACY_APP_PACKAGE, READ_HEALTH_DATA_IN_BACKGROUND);
@@ -379,6 +598,7 @@ public class HealthConnectWithManagePermissionsTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantPermission_readHeartRate_notFromSplitPermission_notGrantBodySensor()
             throws Exception {
         assertPermNotGrantedForApp(REQUESTING_READ_HEART_RATE_APP_PACKAGE, BODY_SENSORS);
@@ -389,6 +609,22 @@ public class HealthConnectWithManagePermissionsTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantPermissions_readHeartRate_notFromSplitPermission_notGrantBodySensor()
+            throws Exception {
+        assertPermNotGrantedForApp(REQUESTING_READ_HEART_RATE_APP_PACKAGE, BODY_SENSORS);
+        List<String> result =
+                grantHealthPermissions(
+                        REQUESTING_READ_HEART_RATE_APP_PACKAGE, List.of(READ_HEART_RATE));
+
+        assertThat(result).containsExactly(READ_HEART_RATE);
+        assertPermGrantedForApp(REQUESTING_READ_HEART_RATE_APP_PACKAGE, READ_HEART_RATE);
+        assertPermNotGrantedForApp(REQUESTING_READ_HEART_RATE_APP_PACKAGE, BODY_SENSORS);
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void
             testGrantPermission_readHealthBackground_notFromSplitPermission_notGrantBodySensorBackground()
                     throws Exception {
@@ -397,6 +633,25 @@ public class HealthConnectWithManagePermissionsTest {
         grantHealthPermission(
                 REQUESTING_READ_HEART_RATE_APP_PACKAGE, READ_HEALTH_DATA_IN_BACKGROUND);
 
+        assertPermGrantedForApp(
+                REQUESTING_READ_HEART_RATE_APP_PACKAGE, READ_HEALTH_DATA_IN_BACKGROUND);
+        assertPermNotGrantedForApp(REQUESTING_READ_HEART_RATE_APP_PACKAGE, BODY_SENSORS_BACKGROUND);
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void
+            grantPermissions_readHealthBackground_notSplitPermission_notGrantBodySensorBackground()
+                    throws Exception {
+        assertPermNotGrantedForApp(REQUESTING_READ_HEART_RATE_APP_PACKAGE, BODY_SENSORS_BACKGROUND);
+
+        List<String> result =
+                grantHealthPermissions(
+                        REQUESTING_READ_HEART_RATE_APP_PACKAGE,
+                        List.of(READ_HEALTH_DATA_IN_BACKGROUND));
+
+        assertThat(result).containsExactly(READ_HEALTH_DATA_IN_BACKGROUND);
         assertPermGrantedForApp(
                 REQUESTING_READ_HEART_RATE_APP_PACKAGE, READ_HEALTH_DATA_IN_BACKGROUND);
         assertPermNotGrantedForApp(REQUESTING_READ_HEART_RATE_APP_PACKAGE, BODY_SENSORS_BACKGROUND);
@@ -779,6 +1034,7 @@ public class HealthConnectWithManagePermissionsTest {
     }
 
     @Test
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testPermissionApis_migrationInProgress_apisBlocked() throws Exception {
         assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
         TestUtils.startMigrationWithShellPermissionIdentity();
@@ -837,6 +1093,91 @@ public class HealthConnectWithManagePermissionsTest {
 
         TestUtils.finishMigrationWithShellPermissionIdentity();
         assertPermGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testPermissionApis_withBulkApi_migrationInProgress_apisBlocked() throws Exception {
+        assumeTrue(DeviceSupportUtils.isHealthConnectFullySupported());
+        TestUtils.startMigrationWithShellPermissionIdentity();
+
+        // Grant permission
+        assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
+        try {
+            grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(READ_PERM));
+            fail("Expected IllegalStateException for data sync in progress.");
+        } catch (IllegalStateException exception) {
+            assertNotNull(exception);
+        }
+        assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
+        // Call to clear migration status.
+        deleteAllStagedRemoteData();
+
+        // Revoke permission
+        TestUtils.startMigrationWithShellPermissionIdentity();
+
+        grantPermissionViaPackageManager(DEFAULT_APP_PACKAGE, READ_PERM);
+        assertPermGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
+        try {
+            revokeHealthPermission(DEFAULT_APP_PACKAGE, READ_PERM, /* reason= */ null);
+            fail("Expected IllegalStateException for data sync in progress.");
+        } catch (IllegalStateException exception) {
+            assertNotNull(exception);
+        }
+        assertPermGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
+        try {
+            revokeAllHealthPermissions(DEFAULT_APP_PACKAGE, /* reason= */ null);
+            fail("Expected IllegalStateException for data sync in progress.");
+        } catch (IllegalStateException exception) {
+            assertNotNull(exception);
+        }
+        assertPermGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
+
+        // getGrantedHealthPermissions
+        try {
+            assertThat(getGrantedHealthPermissions(DEFAULT_APP_PACKAGE)).isEmpty();
+            fail("Expected IllegalStateException for data sync in progress.");
+        } catch (IllegalStateException exception) {
+            assertNotNull(exception);
+        }
+
+        assertThrows(
+                IllegalStateException.class,
+                () ->
+                        getHealthPermissionsFlags(
+                                DEFAULT_APP_PACKAGE, List.of(READ_PERM, WRITE_PERM)));
+
+        assertThrows(
+                IllegalStateException.class,
+                () ->
+                        setHealthPermissionsUserFixedFlagValue(
+                                DEFAULT_APP_PACKAGE, List.of(READ_PERM, WRITE_PERM), false));
+
+        TestUtils.finishMigrationWithShellPermissionIdentity();
+        assertPermGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_multiplePermissions_success() throws Exception {
+        List<String> result =
+                grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(READ_PERM, WRITE_PERM));
+
+        assertThat(result).containsExactly(READ_PERM, WRITE_PERM);
+        assertPermGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
+        assertPermGrantedForApp(DEFAULT_APP_PACKAGE, WRITE_PERM);
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_multiplePermissions_oneInvalid_othersGranted()
+            throws Exception {
+        List<String> result =
+                grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(INVALID_PERM, READ_PERM));
+
+        assertThat(result).containsExactly(READ_PERM);
+        assertPermGrantedForApp(DEFAULT_APP_PACKAGE, READ_PERM);
+        assertPermNotGrantedForApp(DEFAULT_APP_PACKAGE, INVALID_PERM);
     }
 
     private void grantPermissionViaPackageManager(String packageName, String permName) {
