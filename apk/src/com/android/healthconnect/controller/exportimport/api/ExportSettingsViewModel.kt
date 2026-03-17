@@ -78,6 +78,12 @@ constructor(
     val selectedRootsForDocumentProviders: LiveData<MutableMap<String, DocumentProviderRoot?>>
         get() = _selectedRootsForDocumentProviders
 
+    private val _isExportScheduled = MutableLiveData(false)
+
+    /** Returns whether scheduled export is enabled. */
+    val isExportScheduled: LiveData<Boolean>
+        get() = _isExportScheduled
+
     init {
         loadExportSettings()
         loadDocumentProviders()
@@ -87,11 +93,14 @@ constructor(
 
     /** Triggers a load of export settings. */
     fun loadExportSettings() {
-        _storedExportSettings.postValue(ExportSettings.Loading)
         viewModelScope.launch {
             when (val result = loadExportSettingsUseCase.invoke(Unit)) {
                 is UseCaseResults.Success -> {
-                    _storedExportSettings.postValue(ExportSettings.WithData(result.data))
+                    val frequency = result.data
+                    _storedExportSettings.postValue(ExportSettings.WithData(frequency))
+                    _isExportScheduled.postValue(
+                        frequency != ExportFrequency.EXPORT_FREQUENCY_NEVER
+                    )
                 }
                 is UseCaseResults.Failed -> {
                     _storedExportSettings.postValue(ExportSettings.LoadingFailed)
@@ -173,6 +182,9 @@ constructor(
                     if (settings.periodInDays != DEFAULT_INT) {
                         val frequency = fromPeriodInDays(settings.periodInDays)
                         _storedExportSettings.postValue(ExportSettings.WithData(frequency))
+                        _isExportScheduled.postValue(
+                            frequency != ExportFrequency.EXPORT_FREQUENCY_NEVER
+                        )
                     }
                 }
                 is UseCaseResults.Failed -> {

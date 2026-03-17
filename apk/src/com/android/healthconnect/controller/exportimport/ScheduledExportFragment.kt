@@ -100,29 +100,18 @@ class ScheduledExportFragment : Hilt_ScheduledExportFragment() {
         exportSettingsViewModel.storedExportSettings.observe(viewLifecycleOwner) { exportSettings ->
             when (exportSettings) {
                 is ExportSettings.WithData -> {
-                    if (exportSettings.frequency != ExportFrequency.EXPORT_FREQUENCY_NEVER) {
-                        scheduledExportControlPreference.isChecked = true
-                        preferenceScreen
-                            .findPreference<RadioButtonPreferenceCategory>(EXPORT_FREQ_KEY)
-                            ?.isVisible = true
-                        preferenceScreen
-                            .findPreference<Preference>(
-                                ExportStatusPreference.EXPORT_STATUS_PREFERENCE
-                            )
-                            ?.isVisible = true
-                    } else {
-                        scheduledExportControlPreference.isChecked = false
-                        preferenceScreen
-                            .findPreference<RadioButtonPreferenceCategory>(EXPORT_FREQ_KEY)
-                            ?.isVisible = false
-                        preferenceScreen
-                            .findPreference<Preference>(
-                                ExportStatusPreference.EXPORT_STATUS_PREFERENCE
-                            )
-                            ?.isVisible = false
-                    }
-                    exportSettingsViewModel.updatePreviousExportFrequency(exportSettings.frequency)
-                    setupRadioButtons(exportSettings.frequency)
+                    val frequency = exportSettings.frequency
+                    setupRadioButtons(frequency)
+
+                    val isScheduled = frequency != ExportFrequency.EXPORT_FREQUENCY_NEVER
+                    preferenceScreen
+                        .findPreference<RadioButtonPreferenceCategory>(EXPORT_FREQ_KEY)
+                        ?.isVisible = isScheduled
+                    preferenceScreen
+                        .findPreference<Preference>(ExportStatusPreference.EXPORT_STATUS_PREFERENCE)
+                        ?.isVisible = isScheduled
+
+                    exportSettingsViewModel.updatePreviousExportFrequency(frequency)
                 }
                 is ExportSettings.LoadingFailed ->
                     Toast.makeText(requireActivity(), R.string.default_error, Toast.LENGTH_LONG)
@@ -133,19 +122,24 @@ class ScheduledExportFragment : Hilt_ScheduledExportFragment() {
             }
         }
 
-        scheduledExportControlPreference.addOnSwitchChangeListener { _, isChecked ->
-            if (isChecked) {
-                exportSettingsViewModel.previousExportFrequency.value?.let { previousExportFrequency
-                    ->
-                    exportSettingsViewModel.updateExportFrequency(previousExportFrequency)
-                }
-            } else {
-                exportSettingsViewModel.updateExportFrequency(
-                    ExportFrequency.EXPORT_FREQUENCY_NEVER
-                )
-                preferenceScreen.removePreferenceRecursively(EXPORT_FREQ_KEY)
+        val onChecked = suspend {
+            exportSettingsViewModel.previousExportFrequency.value?.let { previousExportFrequency ->
+                exportSettingsViewModel.updateExportFrequency(previousExportFrequency)
             }
+            true
         }
+        val onUnchecked = suspend {
+            exportSettingsViewModel.updateExportFrequency(ExportFrequency.EXPORT_FREQUENCY_NEVER)
+            preferenceScreen.removePreferenceRecursively(EXPORT_FREQ_KEY)
+            true
+        }
+
+        scheduledExportControlPreference.setUpStateManagement(
+            viewLifecycleOwner,
+            exportSettingsViewModel.isExportScheduled,
+            onChecked,
+            onUnchecked,
+        )
     }
 
     private fun setupRadioButtons(exportFrequency: ExportFrequency) {
