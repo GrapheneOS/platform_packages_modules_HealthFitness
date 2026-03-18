@@ -27,7 +27,6 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MedicalWritePermissionPageElement
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.pref
-import com.android.healthfitness.flags.Flags.permissionRequestBottomSheet
 import com.android.settingslib.widget.FooterPreference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -81,19 +80,9 @@ class MedicalWritePermissionFragment : Hilt_MedicalWritePermissionFragment() {
                 }
                 is MedicalScreenState.ShowMedicalRead,
                 is MedicalScreenState.ShowMedicalReadWrite -> {
-                    requireActivity()
-                        .supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.permission_content, MedicalPermissionsFragment())
-                        .commit()
+                    // Handled by PermissionsActivity
                 }
-                else -> {
-                    // We only need to handle this if the bottom sheet flag is disabled, as the
-                    // bottom sheet permission fragment dialog already manages this state.
-                    if (!permissionRequestBottomSheet()) {
-                        removeFragment()
-                    }
-                }
+                else -> {}
             }
         }
     }

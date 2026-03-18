@@ -157,7 +157,6 @@ constructor(
     }
 
     /** Returns the date of the most recent record from the specified input if it exists. */
-    // TODO (b/488075288) check for usage with permissionTypes with multiple recordTypes
     suspend fun readLatestRecordDate(input: LoadLatestEntryDateInput): Instant? {
         val timeFilterRange =
             TimeInstantRangeFilter.Builder().setEndTime(input.displayedStartTime).build()
@@ -176,7 +175,7 @@ constructor(
                 }
                 .flatten()
 
-        return if (records.isEmpty()) null else getRelevantDisplayTime(records.first())
+        return records.maxOfOrNull { getRelevantDisplayTime(it) }
     }
 
     /** Returns a list of records from a MedicalPermissionType. */

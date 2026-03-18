@@ -34,7 +34,6 @@ import android.health.connect.HealthPermissions.WRITE_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA
 import android.health.connect.HealthPermissions.WRITE_PLANNED_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_SKIN_TEMPERATURE
-import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.SavedStateHandle
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -73,7 +72,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME_2
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionManager
-import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.testing.BindValue
@@ -1736,39 +1734,32 @@ class RequestPermissionViewModelTest {
             assertThat(result).isTrue()
         }
 
-    @EnableFlags(Flags.FLAG_PERMISSION_REQUEST_BOTTOM_SHEET)
     @Test
-    fun init_bottomSheetFlagIsOn_permissionsUserFixed_takesEarlyExitAndPopulatesGrantsCorrectly() =
-        runTest {
-            val permissionsToRequest = arrayOf(READ_EXERCISE, READ_SLEEP)
-            val permissionFlags =
-                mapOf(
-                    READ_EXERCISE to PackageManager.FLAG_PERMISSION_USER_SET,
-                    READ_SLEEP to PackageManager.FLAG_PERMISSION_USER_FIXED,
-                )
-            (permissionManager as FakeHealthPermissionManager).setHealthPermissionFlags(
-                TEST_APP_PACKAGE_NAME,
-                permissionFlags,
+    fun init_permissionsUserFixed_takesEarlyExitAndPopulatesGrantsCorrectly() = runTest {
+        val permissionsToRequest = arrayOf(READ_EXERCISE, READ_SLEEP)
+        val permissionFlags =
+            mapOf(
+                READ_EXERCISE to PackageManager.FLAG_PERMISSION_USER_SET,
+                READ_SLEEP to PackageManager.FLAG_PERMISSION_USER_FIXED,
             )
-            permissionManager.setGrantedPermissionsForTest(
-                TEST_APP_PACKAGE_NAME,
-                listOf(READ_EXERCISE),
-            )
+        (permissionManager as FakeHealthPermissionManager).setHealthPermissionFlags(
+            TEST_APP_PACKAGE_NAME,
+            permissionFlags,
+        )
+        permissionManager.setGrantedPermissionsForTest(TEST_APP_PACKAGE_NAME, listOf(READ_EXERCISE))
 
-            val permissionActivityStateObserver = TestObserver<PermissionsActivityState>()
-            viewModel.permissionsActivityState.observeForever(permissionActivityStateObserver)
-            viewModel.init(TEST_APP_PACKAGE_NAME, permissionsToRequest)
-            advanceUntilIdle()
+        val permissionActivityStateObserver = TestObserver<PermissionsActivityState>()
+        viewModel.permissionsActivityState.observeForever(permissionActivityStateObserver)
+        viewModel.init(TEST_APP_PACKAGE_NAME, permissionsToRequest)
+        advanceUntilIdle()
 
-            assertThat(permissionActivityStateObserver.getLastValue())
-                .isEqualTo(PermissionsActivityState.FinishRequest)
-            val grants = viewModel.getPermissionGrants()
-            assertThat(grants).hasSize(permissionsToRequest.size)
-            assertThat(grants[fromPermissionString(READ_SLEEP)])
-                .isEqualTo(PermissionState.NOT_GRANTED)
-            assertThat(grants[fromPermissionString(READ_EXERCISE)])
-                .isEqualTo(PermissionState.GRANTED)
-        }
+        assertThat(permissionActivityStateObserver.getLastValue())
+            .isEqualTo(PermissionsActivityState.FinishRequest)
+        val grants = viewModel.getPermissionGrants()
+        assertThat(grants).hasSize(permissionsToRequest.size)
+        assertThat(grants[fromPermissionString(READ_SLEEP)]).isEqualTo(PermissionState.NOT_GRANTED)
+        assertThat(grants[fromPermissionString(READ_EXERCISE)]).isEqualTo(PermissionState.GRANTED)
+    }
 
     @Test
     fun updateDataCategoryPreferenceKey_addKey_addsToLiveData() = runTest {

@@ -21,12 +21,16 @@ import android.health.connect.datatypes.BasalMetabolicRateRecord
 import android.health.connect.datatypes.BodyTemperatureMeasurementLocation
 import android.health.connect.datatypes.BodyTemperatureRecord
 import android.health.connect.datatypes.BodyWaterMassRecord
+import android.health.connect.datatypes.CyclingPedalingCadenceRecord
+import android.health.connect.datatypes.CyclingPedalingCadenceRecord.CyclingPedalingCadenceRecordSample
 import android.health.connect.datatypes.DataOrigin
 import android.health.connect.datatypes.Device
 import android.health.connect.datatypes.DistanceRecord
 import android.health.connect.datatypes.ExerciseCompletionGoal
 import android.health.connect.datatypes.ExercisePerformanceGoal
+import android.health.connect.datatypes.ExerciseRoute
 import android.health.connect.datatypes.ExerciseSegmentType
+import android.health.connect.datatypes.ExerciseSessionRecord
 import android.health.connect.datatypes.ExerciseSessionType
 import android.health.connect.datatypes.FhirResource
 import android.health.connect.datatypes.FhirResource.FHIR_RESOURCE_TYPE_IMMUNIZATION
@@ -98,6 +102,19 @@ fun getStepsRecord(steps: Long, time: Instant = NOW): StepsRecord {
     return StepsRecord.Builder(getMetaData(), time, time.plusSeconds(2), steps).build()
 }
 
+fun getCyclingPedalingCadenceRecord(
+    rpm: Double,
+    time: Instant = NOW,
+): CyclingPedalingCadenceRecord {
+    return CyclingPedalingCadenceRecord.Builder(
+            getMetaData(),
+            time,
+            time.plusSeconds(2),
+            listOf(CyclingPedalingCadenceRecordSample(rpm, time.plusSeconds(1))),
+        )
+        .build()
+}
+
 fun getStepsCadenceRecord(time: Instant = NOW): StepsCadenceRecord {
     return StepsCadenceRecord.Builder(
             getMetaData(),
@@ -113,6 +130,23 @@ fun getStepsCadenceRecord(time: Instant = NOW): StepsCadenceRecord {
 
 fun getStepsRecordWithUniqueIds(steps: Long, time: Instant = NOW): StepsRecord {
     return StepsRecord.Builder(getMetaDataWithUniqueIds(), time, time.plusSeconds(2), steps).build()
+}
+
+fun getExerciseSessionWithRouteRecord(time: Instant = NOW): ExerciseSessionRecord {
+    return ExerciseSessionRecord.Builder(
+            getMetaData(),
+            time,
+            time.plusSeconds(2),
+            ExerciseSessionType.EXERCISE_SESSION_TYPE_RUNNING,
+        )
+        .setRoute(
+            ExerciseRoute(
+                listOf(
+                    ExerciseRoute.Location.Builder(time.plusSeconds(1), 52.26019, 21.02268).build()
+                )
+            )
+        )
+        .build()
 }
 
 fun getBasalMetabolicRateRecord(calories: Long): BasalMetabolicRateRecord {

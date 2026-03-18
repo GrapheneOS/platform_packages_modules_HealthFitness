@@ -308,6 +308,8 @@ class MatchmakingFragment : Hilt_MatchmakingFragment() {
                         )
                 icon = deviceMetadata.icon
                 key = deviceData.deviceDataSourceInfo.deviceDataOrigin.packageName
+                logNameActive = MatchmakingElement.MATCHMAKING_DEVICE_PREFERENCE
+                logNameInactive = MatchmakingElement.MATCHMAKING_DEVICE_PREFERENCE
             }
         matchmakingDevicesCategory.addPreference(devicePreference)
         customStyledPrefs.add(devicePreference)

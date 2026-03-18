@@ -61,18 +61,10 @@ class SingleAdditionalPermissionFragment : Hilt_SingleAdditionalPermissionFragme
         viewModel.additionalScreenState.observe(viewLifecycleOwner) { screenState ->
             when (screenState) {
                 is AdditionalScreenState.NoAdditionalData -> {
-                    requireActivity()
-                        .supportFragmentManager
-                        .beginTransaction()
-                        .remove(this)
-                        .commit()
+                    // Handled by PermissionsActivity
                 }
                 is AdditionalScreenState.ShowCombined -> {
-                    requireActivity()
-                        .supportFragmentManager
-                        .beginTransaction()
-                        .replace(R.id.permission_content, CombinedAdditionalPermissionsFragment())
-                        .commit()
+                    // Handled by PermissionsActivity
                 }
                 is AdditionalScreenState.ShowHistory -> {
                     setupHistoryScreen(screenState)
