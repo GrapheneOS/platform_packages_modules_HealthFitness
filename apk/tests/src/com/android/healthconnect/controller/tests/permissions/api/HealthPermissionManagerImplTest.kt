@@ -67,7 +67,10 @@ class HealthPermissionManagerImplTest {
         val packageName = "package.name"
         val permissions = listOf("Permission 1", "Permission 2")
         healthPermissionManager.setHealthPermissionsUserFixedFlagValue(
-            packageName, permissions, true)
+            packageName,
+            permissions,
+            true,
+        )
 
         verify(healthConnectManager, times(1))
             .setHealthPermissionsUserFixedFlagValue(packageName, permissions, true)
@@ -83,6 +86,15 @@ class HealthPermissionManagerImplTest {
     }
 
     @Test
+    fun grantHealthPermissions_callsHealthConnectManager() {
+        val packageName = "package.name"
+        val permissions = listOf("Permission 1", "Permission 2")
+        healthPermissionManager.grantHealthPermissions(packageName, permissions)
+
+        verify(healthConnectManager, times(1)).grantHealthPermissions(packageName, permissions)
+    }
+
+    @Test
     fun revokeHealthPermission_callsHealthConnectManager() {
         val packageName = "package.name"
         val permission = "Permission 1"
@@ -92,6 +104,18 @@ class HealthPermissionManagerImplTest {
 
         verify(healthConnectManager, times(1))
             .revokeHealthPermission(packageName, permission, reason)
+    }
+
+    @Test
+    fun revokeHealthPermissions_callsHealthConnectManager() {
+        val packageName = "package.name"
+        val permissions = listOf("Permission 1", "Permission 2")
+        val reason = ""
+
+        healthPermissionManager.revokeHealthPermissions(packageName, permissions)
+
+        verify(healthConnectManager, times(1))
+            .revokeHealthPermissions(packageName, permissions, reason)
     }
 
     @Test
