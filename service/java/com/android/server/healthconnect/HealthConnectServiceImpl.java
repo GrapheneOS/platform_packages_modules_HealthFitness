@@ -549,6 +549,23 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     @Override
+    public List<String> revokeHealthPermissions(
+            String packageName,
+            List<String> permissionNames,
+            @Nullable String reason,
+            UserHandle user) {
+        checkParamsNonNull(packageName, permissionNames, user);
+
+        if (!AconfigFlagHelper.isHealthPermissionReaderImprovementsEnabled()) {
+            throw new UnsupportedOperationException("revokeHealthPermissions is not enabled");
+        }
+
+        throwIllegalStateExceptionIfDataSyncInProgress();
+        return mPermissionHelper.revokeHealthPermissions(
+                packageName, permissionNames, reason, user);
+    }
+
+    @Override
     public void revokeAllHealthPermissions(
             String packageName, @Nullable String reason, UserHandle user) {
         checkParamsNonNull(packageName, user);

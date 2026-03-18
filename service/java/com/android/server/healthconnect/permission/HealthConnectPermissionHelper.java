@@ -245,6 +245,42 @@ public final class HealthConnectPermissionHelper {
         }
     }
 
+    /** See {@link HealthConnectManager#revokeHealthPermissions}. */
+    public List<String> revokeHealthPermissions(
+            String packageName,
+            List<String> permissionNames,
+            @Nullable String reason,
+            UserHandle user) {
+        enforceManageHealthPermissions(/* message= */ "revokeHealthPermissions");
+        UserHandle checkedUser = UserHandle.of(handleIncomingUser(user.getIdentifier()));
+        enforceValidPackage(packageName, checkedUser);
+
+        List<String> result = new ArrayList<>();
+        final long token = Binder.clearCallingIdentity();
+        try {
+            Context userContext = mContext.createContextAsUser(checkedUser, /* flags */ 0);
+            for (String permissionName : permissionNames) {
+                try {
+                    revokeHealthPermissionInternal(
+                            userContext, packageName, permissionName, reason, checkedUser, user);
+                    result.add(permissionName);
+                } catch (SecurityException | IllegalArgumentException e) {
+                    Slog.e(
+                            TAG,
+                            "Revoke was unsuccessful for permission "
+                                    + permissionName
+                                    + " to package "
+                                    + packageName
+                                    + ": "
+                                    + e.getMessage());
+                }
+            }
+        } finally {
+            Binder.restoreCallingIdentity(token);
+        }
+        return result;
+    }
+
     /**
      * See {@link HealthConnectManager#revokeAllHealthPermissions}.
      *
@@ -556,6 +592,51 @@ public final class HealthConnectPermissionHelper {
         }
 
         addToPriorityListIfRequired(packageName, permissionName, originalUser);
+    }
+
+    private void revokeHealthPermissionInternal(
+            Context userContext,
+            String packageName,
+            String permissionName,
+            @Nullable String reason,
+            UserHandle checkedUser,
+            UserHandle originalUser) {
+        enforceValidHealthPermission(permissionName);
+        // checkPermission doesn't have a variant that accepts user, get the packageManager for
+        // the user.
+        boolean isAlreadyDenied =
+                userContext.getPackageManager().checkPermission(permissionName, packageName)
+                        == PackageManager.PERMISSION_DENIED;
+        int permissionFlags =
+                mPackageManager.getPermissionFlags(permissionName, packageName, checkedUser);
+        if (!isAlreadyDenied) {
+            revokeRuntimePermission(packageName, checkedUser, permissionName, reason);
+        }
+        if (isAlreadyDenied && (permissionFlags & PackageManager.FLAG_PERMISSION_USER_SET) != 0) {
+            permissionFlags = permissionFlags | PackageManager.FLAG_PERMISSION_USER_FIXED;
+        } else {
+            permissionFlags = permissionFlags | PackageManager.FLAG_PERMISSION_USER_SET;
+        }
+        permissionFlags = permissionFlags & ~PackageManager.FLAG_PERMISSION_AUTO_REVOKED;
+        mPackageManager.updatePermissionFlags(
+                permissionName, packageName, MASK_PERMISSION_FLAGS, permissionFlags, checkedUser);
+        // If is from split permission, automatically revoke BODY_SENSORS or BACKGROUND.
+        if ((permissionName.equals(READ_HEART_RATE)
+                        || permissionName.equals(READ_HEALTH_DATA_IN_BACKGROUND))
+                && isAppRequestingPermissionWithOutdatedTargetSdk(
+                        packageName,
+                        originalUser,
+                        toLegacyPermission(permissionName),
+                        Build.VERSION_CODES.BAKLAVA)) {
+            revokeRuntimePermissionAndUpdateFlags(
+                    packageName,
+                    originalUser,
+                    toLegacyPermission(permissionName),
+                    permissionFlags,
+                    reason);
+        }
+
+        removeFromPriorityListIfRequired(packageName, permissionName, originalUser);
     }
 
     private static boolean canPotentiallyBeSplitPermissions(List<String> permissions) {

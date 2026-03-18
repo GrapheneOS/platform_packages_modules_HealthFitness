@@ -124,6 +124,7 @@ public class MaskingTest {
                     Map.entry("grantHealthPermission", DOES_NOT_INTERACT_WITH_DEVICES),
                     Map.entry("grantHealthPermissions", DOES_NOT_INTERACT_WITH_DEVICES),
                     Map.entry("revokeHealthPermission", DOES_NOT_INTERACT_WITH_DEVICES),
+                    Map.entry("revokeHealthPermissions", DOES_NOT_INTERACT_WITH_DEVICES),
                     Map.entry("revokeAllHealthPermissions", DOES_NOT_INTERACT_WITH_DEVICES),
                     Map.entry("getGrantedHealthPermissions", DOES_NOT_INTERACT_WITH_DEVICES),
                     Map.entry("getHealthPermissionsFlags", DOES_NOT_INTERACT_WITH_DEVICES),
