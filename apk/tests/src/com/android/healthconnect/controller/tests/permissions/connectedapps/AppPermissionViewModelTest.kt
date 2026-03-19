@@ -19,7 +19,6 @@ import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissions.READ_EXERCISE
 import android.health.connect.HealthPermissions.READ_STEPS
 import android.os.Build
-import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -53,7 +52,6 @@ import com.android.healthconnect.controller.tests.utils.TEST_APP_PACKAGE_NAME
 import com.android.healthconnect.controller.tests.utils.TestObserver
 import com.android.healthconnect.controller.tests.utils.di.FakeGetGrantedHealthPermissionsUseCase
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
-import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -178,7 +176,6 @@ class AppPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun whenPackageSupported_fitnessOnly_loadAllPermissions() = runTest {
         setupDeclaredAndGrantedFitnessPermissions()
 
@@ -243,7 +240,6 @@ class AppPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun whenPackageSupported_fitnessAndMedical_loadAllPermissions() = runTest {
         setupDeclaredAndGrantedFitnessAndMedicalPermissions()
         val fitnessPermissionsObserver = TestObserver<List<FitnessPermission>>()
@@ -308,7 +304,6 @@ class AppPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun whenPackageSupported_medicalOnly_loadAllPermissions() = runTest {
         whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(true)
         whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
@@ -372,7 +367,6 @@ class AppPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     fun whenPackageSupported_wearOnlyReturnsSystemPermissions_loadAllPermissions() = runTest {
         whenever(deviceInfoUtils.isOnWatch(any())).thenReturn(true)
@@ -458,7 +452,6 @@ class AppPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun whenPackageNotSupported_fitnessOnly_loadOnlyGrantedPermissions() = runTest {
         whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(false)
         whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
@@ -505,7 +498,6 @@ class AppPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun whenPackageNotSupported_medicalOnly_loadOnlyGrantedPermissions() = runTest {
         whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(false)
         whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
@@ -543,7 +535,6 @@ class AppPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun whenPackageNotSupported_fitnessAndMedical_loadOnlyGrantedPermissions() = runTest {
         whenever(healthPermissionReader.isRationaleIntentDeclared(any())).thenReturn(false)
         whenever(healthPermissionReader.getDeclaredHealthPermissions(any()))
@@ -591,7 +582,6 @@ class AppPermissionViewModelTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
     fun whenPackageNotSupported_wearReturnsOnlySystemPermissions_loadOnlyGrantedPermissions() =
         runTest {
