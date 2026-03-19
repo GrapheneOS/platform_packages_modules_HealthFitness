@@ -30,19 +30,16 @@ import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndClick
 import android.healthconnect.testing.cts.ui.UiTestUtils.scrollDownToAndFindText
 import android.healthconnect.testing.cts.ui.UiTestUtils.waitForObjectNotFound
 import android.os.Build
-import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.CheckFlagsRule
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.test.filters.SdkSuppress
 import androidx.test.uiautomator.By
-import com.android.healthfitness.flags.Flags.FLAG_PERMISSIONS_GROUPING_UI
 import com.google.common.truth.Truth
 import java.time.Duration.ofSeconds
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
 
-@RequiresFlagsEnabled(FLAG_PERMISSIONS_GROUPING_UI)
 class RequestHealthPermissionUITest : HealthConnectBaseTest() {
 
     @get:Rule val mCheckFlagsRule: CheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()

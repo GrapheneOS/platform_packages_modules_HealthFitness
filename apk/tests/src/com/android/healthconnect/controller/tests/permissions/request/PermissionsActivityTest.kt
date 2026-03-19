@@ -49,9 +49,7 @@ import android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA
 import android.health.connect.HealthPermissions.WRITE_SKIN_TEMPERATURE
 import android.health.connect.HealthPermissions.WRITE_SLEEP
 import android.os.Build
-import android.platform.test.annotations.DisableFlags
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
-import android.platform.test.flag.junit.SetFlagsRule
 import android.widget.Button
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -62,7 +60,6 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToLastPosition
 import androidx.test.espresso.matcher.RootMatchers.isDialog
@@ -94,7 +91,6 @@ import com.android.healthconnect.controller.tests.utils.di.FakeDeviceInfoUtils
 import com.android.healthconnect.controller.tests.utils.di.FakeHealthPermissionManager
 import com.android.healthconnect.controller.utils.DeviceInfoUtils
 import com.android.healthconnect.controller.utils.DeviceInfoUtilsModule
-import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -122,7 +118,6 @@ class PermissionsActivityTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
     @get:Rule val checkFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule()
-    @get:Rule val setFlagsRule = SetFlagsRule()
 
     @BindValue val permissionManager: HealthPermissionManager = FakeHealthPermissionManager()
     @BindValue val deviceInfoUtils: DeviceInfoUtils = FakeDeviceInfoUtils()
@@ -181,80 +176,6 @@ class PermissionsActivityTest {
 
         launchActivityForResult<PermissionsActivity>(unsupportedAppIntent).use { scenario ->
             assertThat(scenario.result.resultCode).isEqualTo(RESULT_CANCELED)
-        }
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
-    fun intentSkipsUnrecognisedPermission_excludesItFromResponse() {
-        val permissions = arrayOf(READ_EXERCISE, WRITE_SLEEP, "permission")
-        val startActivityIntent = getPermissionScreenIntent(permissions)
-
-        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
-            registerBottomSheetIdlingResource(scenario)
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .inRoot(isDialog())
-                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-
-            onView(withText("Exercise")).inRoot(isDialog()).check(matches(isDisplayed()))
-            onView(withText("Sleep")).inRoot(isDialog()).check(matches(isDisplayed()))
-            onView(withText("Don't allow"))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
-                .perform(click())
-
-            assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
-            val returnedIntent = scenario.result.resultData
-
-            assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
-                .isEqualTo(arrayOf(READ_EXERCISE, WRITE_SLEEP))
-            val expectedResults = intArrayOf(PERMISSION_DENIED, PERMISSION_DENIED)
-            assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
-                .isEqualTo(expectedResults)
-        }
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
-    fun intentSkipsGrantedPermissions_includesItInResponse() {
-        val startActivityIntent = getPermissionScreenIntent(fitnessPermissions)
-        (permissionManager as FakeHealthPermissionManager).setGrantedPermissionsForTest(
-            TEST_APP_PACKAGE_NAME,
-            listOf(READ_EXERCISE),
-        )
-
-        launchActivityForResult<PermissionsActivity>(startActivityIntent).use { scenario ->
-            registerBottomSheetIdlingResource(scenario)
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .inRoot(isDialog())
-                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-            onIdle()
-
-            onView(withText("Exercise")).inRoot(isDialog()).check(doesNotExist())
-            onView(withText("Sleep")).inRoot(isDialog()).check(matches(isDisplayed()))
-            onView(withText("Active calories burned"))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
-            onView(withText("Skin temperature")).inRoot(isDialog()).check(matches(isDisplayed()))
-            onView(withText("Don't allow"))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
-                .perform(click())
-            onIdle()
-
-            assertThat(scenario.result.resultCode).isEqualTo(Activity.RESULT_OK)
-            val returnedIntent = scenario.result.resultData
-            assertThat(returnedIntent.getStringArrayExtra(EXTRA_REQUEST_PERMISSIONS_NAMES))
-                .isEqualTo(fitnessPermissions)
-            val expectedResults =
-                intArrayOf(
-                    PERMISSION_GRANTED,
-                    PERMISSION_DENIED,
-                    PERMISSION_DENIED,
-                    PERMISSION_DENIED,
-                )
-            assertThat(returnedIntent.getIntArrayExtra(EXTRA_REQUEST_PERMISSIONS_RESULTS))
-                .isEqualTo(expectedResults)
         }
     }
 

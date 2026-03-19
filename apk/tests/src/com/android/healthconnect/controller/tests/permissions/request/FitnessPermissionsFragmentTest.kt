@@ -24,9 +24,6 @@ import android.health.connect.HealthPermissions.WRITE_HEART_RATE
 import android.health.connect.HealthPermissions.WRITE_HYDRATION
 import android.os.Build
 import android.os.Bundle
-import android.platform.test.annotations.DisableFlags
-import android.platform.test.annotations.EnableFlags
-import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso
@@ -39,7 +36,6 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -74,7 +70,6 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import com.android.healthconnect.controller.utils.logging.UIAction
-import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -101,8 +96,6 @@ import org.mockito.kotlin.whenever
 @RunWith(AndroidJUnit4::class)
 class FitnessPermissionsFragmentTest {
     @get:Rule val hiltRule = HiltAndroidRule(this)
-
-    @get:Rule val setFlagsRule = SetFlagsRule()
 
     @BindValue
     val viewModel: RequestPermissionViewModel = mock(RequestPermissionViewModel::class.java)
@@ -609,177 +602,6 @@ class FitnessPermissionsFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
-    fun displaysReadPermissions() {
-        whenever(viewModel.fitnessScreenState).then {
-            MutableLiveData(
-                FitnessScreenState.ShowFitnessRead(
-                    historyGranted = false,
-                    hasMedical = false,
-                    appMetadata = appMetadata,
-                    fitnessPermissions = fitnessReadPermissions,
-                )
-            )
-        }
-        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .perform(
-                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                        hasDescendant(withText("Steps"))
-                    )
-                )
-            Espresso.onIdle()
-            onView(withText("Steps")).check(matches(isDisplayed()))
-
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .perform(
-                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                        hasDescendant(withText("Sleep"))
-                    )
-                )
-            Espresso.onIdle()
-            onView(withText("Sleep")).check(matches(isDisplayed()))
-        }
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
-    fun displaysWritePermissions() {
-        whenever(viewModel.fitnessScreenState).then {
-            MutableLiveData(
-                FitnessScreenState.ShowFitnessWrite(
-                    hasMedical = false,
-                    appMetadata = appMetadata,
-                    fitnessPermissions = fitnessWritePermissions,
-                )
-            )
-        }
-        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .perform(
-                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                        hasDescendant(withText("Heart rate"))
-                    )
-                )
-            Espresso.onIdle()
-            onView(withText("Heart rate")).check(matches(isDisplayed()))
-
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .perform(
-                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                        hasDescendant(withText("Hydration"))
-                    )
-                )
-            Espresso.onIdle()
-            onView(withText("Hydration")).check(matches(isDisplayed()))
-        }
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
-    fun whenPermissionSwitchIsOn_forReadWrite_correctContentDescriptionIsDisplayed() {
-        whenever(viewModel.fitnessScreenState).then {
-            MutableLiveData(
-                FitnessScreenState.ShowFitnessReadWrite(
-                    hasMedical = false,
-                    appMetadata = appMetadata,
-                    fitnessPermissions = fitnessReadWritePermissions,
-                    historyGranted = false,
-                )
-            )
-        }
-
-        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .perform(
-                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                        hasDescendant(withText("Hydration"))
-                    )
-                )
-            Espresso.onIdle()
-            onView(withText("Hydration")).perform(click())
-            Espresso.onIdle()
-            onView(withContentDescription("Hydration. Write Access. On"))
-                .check(matches(isDisplayed()))
-
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .perform(
-                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                        hasDescendant(withText("Sleep"))
-                    )
-                )
-            Espresso.onIdle()
-            onView(withText("Sleep")).perform(click())
-            Espresso.onIdle()
-            onView(withContentDescription("Sleep. Read Access. On")).check(matches(isDisplayed()))
-        }
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
-    fun whenPermissionSwitchIsOff_forReadWrite_correctContentDescriptionIsDisplayed() {
-        whenever(viewModel.fitnessScreenState).then {
-            MutableLiveData(
-                FitnessScreenState.ShowFitnessWrite(
-                    hasMedical = false,
-                    appMetadata = appMetadata,
-                    fitnessPermissions = fitnessReadWritePermissions,
-                )
-            )
-        }
-
-        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .perform(
-                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                        hasDescendant(withText("Hydration"))
-                    )
-                )
-            Espresso.onIdle()
-            onView(withContentDescription("Hydration. Write Access. Off"))
-                .check(matches(isDisplayed()))
-
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .perform(
-                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                        hasDescendant(withText("Sleep"))
-                    )
-                )
-            Espresso.onIdle()
-            onView(withContentDescription("Sleep. Read Access. Off")).check(matches(isDisplayed()))
-        }
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
-    fun togglesPermissions_callsUpdatePermissions() {
-        whenever(viewModel.fitnessScreenState).then {
-            MutableLiveData(
-                FitnessScreenState.ShowFitnessReadWrite(
-                    historyGranted = false,
-                    hasMedical = false,
-                    appMetadata = appMetadata,
-                    fitnessPermissions = fitnessReadWritePermissions,
-                )
-            )
-        }
-        launchFragment<FitnessPermissionsFragment>(Bundle()).use {
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .perform(
-                    RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
-                        hasDescendant(withText("Sleep"))
-                    )
-                )
-            Espresso.onIdle()
-            onView(withText("Sleep")).perform(click())
-
-            verify(viewModel).updateHealthPermission(any(FitnessPermission::class.java), eq(true))
-            verify(healthConnectLogger)
-                .logInteraction(PermissionsElement.PERMISSION_SWITCH, UIAction.ACTION_TOGGLE_ON)
-        }
-    }
-
-    @Test
     fun allowAllToggleOn_updatesAllPermissions() {
         whenever(viewModel.fitnessScreenState).then {
             MutableLiveData(
@@ -898,8 +720,7 @@ class FitnessPermissionsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
-    fun displaysGroupedPermissions_firstIsGroupExpanded_whenFlagEnabled() {
+    fun displaysGroupedPermissions_firstIsGroupExpanded() {
         whenever(viewModel.fitnessScreenState).then {
             MutableLiveData(
                 FitnessScreenState.ShowFitnessReadWrite(
@@ -959,8 +780,7 @@ class FitnessPermissionsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
-    fun togglePermissionInCategory_updatesViewModel_whenFlagEnabled() {
+    fun togglePermissionInCategory_updatesViewModel() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         whenever(viewModel.fitnessScreenState).then {
             MutableLiveData(
@@ -991,7 +811,6 @@ class FitnessPermissionsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_partialPermissionsGranted() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val distancePermission = fromPermissionString(READ_DISTANCE)
@@ -1026,7 +845,6 @@ class FitnessPermissionsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_allPermissionsGranted() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val distancePermission = fromPermissionString(READ_DISTANCE)
@@ -1061,7 +879,6 @@ class FitnessPermissionsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_zeroPermissionsGranted() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val distancePermission = fromPermissionString(READ_DISTANCE)
@@ -1094,8 +911,7 @@ class FitnessPermissionsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
-    fun toggleCategorySwitch_updatesViewModel_whenFlagEnabled() {
+    fun toggleCategorySwitch_updatesViewModel() {
         val activityPermissions = listOf(fromPermissionString(READ_STEPS))
         whenever(viewModel.fitnessScreenState).then {
             MutableLiveData(
@@ -1118,7 +934,6 @@ class FitnessPermissionsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun toggleIndividualPermission_updatesParentSwitchState() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val distancePermission = fromPermissionString(READ_DISTANCE)
@@ -1164,7 +979,6 @@ class FitnessPermissionsFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
     fun collapsedState_isPreservedOnRecreate() {
         whenever(viewModel.fitnessScreenState).then {
             MutableLiveData(
