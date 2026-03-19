@@ -2594,6 +2594,18 @@ public class HealthConnectManager {
         executor.execute(() -> callback.onResult(result));
     }
 
+    private static <RES, ERR extends Throwable> void returnResult(
+            AtomicReference<Executor> executorReference,
+            @Nullable RES result,
+            AtomicReference<? extends OutcomeReceiver<RES, ERR>> callbackReference) {
+        Executor executor = executorReference.getAndSet(null);
+        OutcomeReceiver<RES, ERR> callback = callbackReference.getAndSet(null);
+
+        if (executor != null && callback != null) {
+            returnResult(executor, result, callback);
+        }
+    }
+
     private static void returnError(
             Executor executor,
             HealthConnectExceptionParcel exception,
@@ -2800,22 +2812,34 @@ public class HealthConnectManager {
             mService.upsertMedicalResourcesFromRequestsParcel(
                     mContext.getAttributionSource(),
                     new UpsertMedicalResourceRequestsParcel(requests),
-                    new IMedicalResourceListParcelResponseCallback.Stub() {
-                        @Override
-                        public void onResult(MedicalResourceListParcel medicalResourceListParcel) {
-                            returnResult(
-                                    executor,
-                                    medicalResourceListParcel.getMedicalResources(),
-                                    callback);
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new MedicalResourceListResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private static class MedicalResourceListResponseCallback
+            extends IMedicalResourceListParcelResponseCallback.Stub {
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<
+                        OutcomeReceiver<List<MedicalResource>, HealthConnectException>>
+                mCallback;
+
+        MedicalResourceListResponseCallback(
+                Executor executor,
+                OutcomeReceiver<List<MedicalResource>, HealthConnectException> callback) {
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
+        }
+
+        @Override
+        public void onResult(MedicalResourceListParcel medicalResourceListParcel) {
+            returnResult(mExecutor, medicalResourceListParcel.getMedicalResources(), mCallback);
+        }
+
+        @Override
+        public void onError(HealthConnectExceptionParcel exception) {
+            returnError(mExecutor, mCallback, exception);
         }
     }
 
@@ -2891,19 +2915,46 @@ public class HealthConnectManager {
             mService.readMedicalResourcesByIds(
                     mContext.getAttributionSource(),
                     ids,
-                    new IReadMedicalResourcesResponseCallback.Stub() {
-                        @Override
-                        public void onResult(ReadMedicalResourcesResponse response) {
-                            returnResult(executor, response.getMedicalResources(), callback);
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new ReadMedicalResourcesResponseCallback<>(
+                            ReadMedicalResourcesResponseCallback.READ_RESULT_LIST,
+                            executor,
+                            callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private static class ReadMedicalResourcesResponseCallback<T>
+            extends IReadMedicalResourcesResponseCallback.Stub {
+        private static final int READ_RESULT_LIST = 0;
+        private static final int READ_RESULT_PAGE = 1;
+
+        private final int mResultType;
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<OutcomeReceiver<T, HealthConnectException>> mCallback;
+
+        ReadMedicalResourcesResponseCallback(
+                int resultType,
+                Executor executor,
+                OutcomeReceiver<T, HealthConnectException> callback) {
+            mResultType = resultType;
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
+        }
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public void onResult(ReadMedicalResourcesResponse response) {
+            if (mResultType == READ_RESULT_LIST) {
+                returnResult(mExecutor, (T) response.getMedicalResources(), mCallback);
+            } else {
+                returnResult(mExecutor, (T) response, mCallback);
+            }
+        }
+
+        @Override
+        public void onError(HealthConnectExceptionParcel exception) {
+            returnError(mExecutor, mCallback, exception);
         }
     }
 
@@ -2955,17 +3006,10 @@ public class HealthConnectManager {
             mService.readMedicalResourcesByRequest(
                     mContext.getAttributionSource(),
                     request.toParcel(),
-                    new IReadMedicalResourcesResponseCallback.Stub() {
-                        @Override
-                        public void onResult(ReadMedicalResourcesResponse response) {
-                            returnResult(executor, response, callback);
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new ReadMedicalResourcesResponseCallback<>(
+                            ReadMedicalResourcesResponseCallback.READ_RESULT_PAGE,
+                            executor,
+                            callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
@@ -3145,19 +3189,33 @@ public class HealthConnectManager {
             mService.createMedicalDataSource(
                     mContext.getAttributionSource(),
                     request,
-                    new IMedicalDataSourceResponseCallback.Stub() {
-                        @Override
-                        public void onResult(MedicalDataSource dataSource) {
-                            returnResult(executor, dataSource, callback);
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new MedicalDataSourceResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private static class MedicalDataSourceResponseCallback
+            extends IMedicalDataSourceResponseCallback.Stub {
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<OutcomeReceiver<MedicalDataSource, HealthConnectException>>
+                mCallback;
+
+        MedicalDataSourceResponseCallback(
+                Executor executor,
+                OutcomeReceiver<MedicalDataSource, HealthConnectException> callback) {
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
+        }
+
+        @Override
+        public void onResult(MedicalDataSource dataSource) {
+            returnResult(mExecutor, dataSource, mCallback);
+        }
+
+        @Override
+        public void onError(HealthConnectExceptionParcel exception) {
+            returnError(mExecutor, mCallback, exception);
         }
     }
 
@@ -3228,19 +3286,34 @@ public class HealthConnectManager {
             mService.getMedicalDataSourcesByIds(
                     mContext.getAttributionSource(),
                     ids,
-                    new IMedicalDataSourcesResponseCallback.Stub() {
-                        @Override
-                        public void onResult(List<MedicalDataSource> result) {
-                            returnResult(executor, result, callback);
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new MedicalDataSourcesResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private static class MedicalDataSourcesResponseCallback
+            extends IMedicalDataSourcesResponseCallback.Stub {
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<
+                        OutcomeReceiver<List<MedicalDataSource>, HealthConnectException>>
+                mCallback;
+
+        MedicalDataSourcesResponseCallback(
+                Executor executor,
+                OutcomeReceiver<List<MedicalDataSource>, HealthConnectException> callback) {
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
+        }
+
+        @Override
+        public void onResult(List<MedicalDataSource> result) {
+            returnResult(mExecutor, result, mCallback);
+        }
+
+        @Override
+        public void onError(HealthConnectExceptionParcel exception) {
+            returnError(mExecutor, mCallback, exception);
         }
     }
 
@@ -3302,17 +3375,7 @@ public class HealthConnectManager {
             mService.getMedicalDataSourcesByRequest(
                     mContext.getAttributionSource(),
                     request,
-                    new IMedicalDataSourcesResponseCallback.Stub() {
-                        @Override
-                        public void onResult(List<MedicalDataSource> result) {
-                            returnResult(executor, result, callback);
-                        }
-
-                        @Override
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new MedicalDataSourcesResponseCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
         }
