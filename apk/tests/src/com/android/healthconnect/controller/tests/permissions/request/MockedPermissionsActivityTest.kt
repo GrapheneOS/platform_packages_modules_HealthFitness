@@ -34,9 +34,6 @@ import android.health.connect.HealthPermissions.READ_STEPS
 import android.health.connect.HealthPermissions.WRITE_DISTANCE
 import android.health.connect.HealthPermissions.WRITE_EXERCISE
 import android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA
-import android.os.Build
-import android.platform.test.annotations.DisableFlags
-import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -54,7 +51,6 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.filters.SdkSuppress
 import androidx.test.platform.app.InstrumentationRegistry.getInstrumentation
 import com.android.healthconnect.controller.R
 import com.android.healthconnect.controller.migration.MigrationViewModel
@@ -88,7 +84,6 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.MedicalWritePermissionPageElement
 import com.android.healthconnect.controller.utils.logging.MigrationElement
 import com.android.healthconnect.controller.utils.logging.PageName
-import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -119,7 +114,6 @@ import org.mockito.kotlin.whenever
 class MockedPermissionsActivityTest {
 
     @get:Rule val hiltRule = HiltAndroidRule(this)
-    @get:Rule val setFlagsRule = SetFlagsRule()
 
     @BindValue
     val viewModel: RequestPermissionViewModel = mock(RequestPermissionViewModel::class.java)
@@ -387,130 +381,6 @@ class MockedPermissionsActivityTest {
                 .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
             onView(withText("Vaccines")).inRoot(isDialog()).check(matches(isDisplayed()))
             onView(withText("All medical records")).inRoot(isDialog()).check(matches(isDisplayed()))
-        }
-    }
-
-    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
-    @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
-    fun showFitnessPermissionRequest_healthConnectBrand() {
-        whenever(viewModel.permissionsActivityState).then {
-            MutableLiveData(PermissionsActivityState.ShowFitness)
-        }
-        whenever(viewModel.fitnessScreenState).then {
-            MutableLiveData(
-                FitnessScreenState.ShowFitnessReadWrite(
-                    appMetadata = appMetadata,
-                    fitnessPermissions =
-                        listOf(READ_STEPS, WRITE_DISTANCE).map {
-                            fromPermissionString(it) as HealthPermission.FitnessPermission
-                        },
-                    hasMedical = false,
-                    historyGranted = false,
-                )
-            )
-        }
-        whenever(viewModel.grantedFitnessPermissions).then {
-            MutableLiveData(setOf(FitnessPermission.fromPermissionString(READ_STEPS)))
-        }
-        whenever(viewModel.allFitnessPermissionsGranted).then { MutableLiveData(false) }
-        val permissions = arrayOf(READ_STEPS, WRITE_DISTANCE)
-        val startActivityIntent = getPermissionScreenIntent(permissions)
-
-        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
-            onView(withText("Allow $TEST_APP_NAME to access Health Connect?"))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
-            onView(withText("Choose data you want this app to read or write to Health Connect"))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
-            onView(
-                    withText(
-                        "If you give read access, the app can read new data and data from the past 30 days"
-                    )
-                )
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
-            onView(
-                    withText(
-                        "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
-                    )
-                )
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .inRoot(isDialog())
-                .perform(scrollToPosition<RecyclerView.ViewHolder>(2))
-            onView(withText("Allow all")).inRoot(isDialog()).check(matches(isDisplayed()))
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .inRoot(isDialog())
-                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-            onView(withText("Steps")).inRoot(isDialog()).check(matches(isDisplayed()))
-            onView(withText("Distance")).inRoot(isDialog()).check(matches(isDisplayed()))
-        }
-    }
-
-    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_UI)
-    fun showFitnessPermissionRequest_healthFitnessBrand() {
-        whenever(viewModel.permissionsActivityState).then {
-            MutableLiveData(PermissionsActivityState.ShowFitness)
-        }
-        whenever(viewModel.fitnessScreenState).then {
-            MutableLiveData(
-                FitnessScreenState.ShowFitnessReadWrite(
-                    appMetadata = appMetadata,
-                    fitnessPermissions =
-                        listOf(READ_STEPS, WRITE_DISTANCE).map {
-                            fromPermissionString(it) as FitnessPermission
-                        },
-                    hasMedical = false,
-                    historyGranted = false,
-                )
-            )
-        }
-        whenever(viewModel.grantedFitnessPermissions).then {
-            MutableLiveData(setOf(FitnessPermission.fromPermissionString(READ_STEPS)))
-        }
-        whenever(viewModel.allFitnessPermissionsGranted).then { MutableLiveData(false) }
-        val permissions = arrayOf(READ_STEPS, WRITE_DISTANCE)
-        val startActivityIntent = getPermissionScreenIntent(permissions)
-
-        launchActivityForResult<PermissionsActivity>(startActivityIntent).use {
-            onView(withText("Allow $TEST_APP_NAME to access your fitness and wellness data?"))
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
-            onView(
-                    withText(
-                        "Choose which fitness and wellness data this app can access. This includes data tracked and stored on this device, learn more about how your data is accessed"
-                    )
-                )
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
-            onView(
-                    withText(
-                        "If you give read access, the app can read new data and data from the past 30 days"
-                    )
-                )
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
-            onView(
-                    withText(
-                        "You can learn how $TEST_APP_NAME handles your data in their privacy policy"
-                    )
-                )
-                .inRoot(isDialog())
-                .check(matches(isDisplayed()))
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .inRoot(isDialog())
-                .perform(scrollToPosition<RecyclerView.ViewHolder>(2))
-            onView(withText("Allow all")).inRoot(isDialog()).check(matches(isDisplayed()))
-            onView(withId(androidx.preference.R.id.recycler_view))
-                .inRoot(isDialog())
-                .perform(scrollToLastPosition<RecyclerView.ViewHolder>())
-            onView(withText("Steps")).inRoot(isDialog()).check(matches(isDisplayed()))
-            onView(withText("Distance")).inRoot(isDialog()).check(matches(isDisplayed()))
         }
     }
 
