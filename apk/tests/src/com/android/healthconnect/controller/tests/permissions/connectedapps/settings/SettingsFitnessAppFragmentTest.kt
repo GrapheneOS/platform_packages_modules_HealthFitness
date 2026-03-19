@@ -21,8 +21,6 @@ import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissions.READ_DISTANCE
 import android.health.connect.HealthPermissions.READ_STEPS
 import android.os.Bundle
-import android.platform.test.annotations.EnableFlags
-import android.platform.test.annotations.RequiresFlagsDisabled
 import android.platform.test.annotations.RequiresFlagsEnabled
 import android.platform.test.flag.junit.DeviceFlagsValueProvider
 import androidx.lifecycle.Lifecycle
@@ -31,7 +29,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.espresso.Espresso.onIdle
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.scrollTo
@@ -40,9 +37,7 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
-import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -95,7 +90,6 @@ import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
-import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -282,94 +276,6 @@ class SettingsFitnessAppFragmentTest {
                 onView(withText("Allow all")).check(matches(isDisplayed()))
                 onView(withText("Allowed to read")).check(doesNotExist())
                 onView(withText("Allowed to write")).check(matches(isDisplayed()))
-            }
-    }
-
-    @Test
-    @RequiresFlagsDisabled(Flags.FLAG_PERMISSIONS_GROUPING_SETTINGS_FITNESS_APP_SCREEN)
-    fun whenPermissionSwitchIsOn_forReadWrite_correctContentDescriptionIsDisplayed() {
-        val writePermission =
-            FitnessPermission(FitnessPermissionType.EXERCISE, PermissionsAccessType.WRITE)
-        val readPermission =
-            FitnessPermission(FitnessPermissionType.DISTANCE, PermissionsAccessType.READ)
-        whenever(viewModel.fitnessPermissions).then {
-            MutableLiveData(listOf(writePermission, readPermission))
-        }
-        whenever(viewModel.grantedFitnessPermissions).then {
-            MutableLiveData(setOf(writePermission, readPermission))
-        }
-
-        launchFragment<SettingsFitnessAppFragment>(
-                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
-            )
-            .use {
-                onView(withContentDescription("Exercise. Write Access. On"))
-                    .check(matches(isDisplayed()))
-                onView(withContentDescription("Distance. Read Access. On"))
-                    .check(matches(isDisplayed()))
-            }
-    }
-
-    @Test
-    @RequiresFlagsDisabled(Flags.FLAG_PERMISSIONS_GROUPING_SETTINGS_FITNESS_APP_SCREEN)
-    fun whenPermissionSwitchIsOff_forReadWrite_correctContentDescriptionIsDisplayed() {
-        val writePermission =
-            FitnessPermission(FitnessPermissionType.EXERCISE, PermissionsAccessType.WRITE)
-        val readPermission =
-            FitnessPermission(FitnessPermissionType.DISTANCE, PermissionsAccessType.READ)
-        whenever(viewModel.fitnessPermissions).then {
-            MutableLiveData(listOf(writePermission, readPermission))
-        }
-
-        launchFragment<SettingsFitnessAppFragment>(
-                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
-            )
-            .use {
-                onView(withContentDescription("Exercise. Write Access. Off"))
-                    .check(matches(isDisplayed()))
-                onView(withContentDescription("Distance. Read Access. Off"))
-                    .check(matches(isDisplayed()))
-            }
-    }
-
-    @Test
-    @RequiresFlagsDisabled(Flags.FLAG_PERMISSIONS_GROUPING_SETTINGS_FITNESS_APP_SCREEN)
-    fun unsupportedPackage_grantedPermissionsNotLoaded_onOrientationChange() {
-        val readStepsPermission =
-            FitnessPermission(FitnessPermissionType.STEPS, PermissionsAccessType.READ)
-        val writeSleepPermission =
-            FitnessPermission(FitnessPermissionType.SLEEP, PermissionsAccessType.WRITE)
-
-        whenever(viewModel.fitnessPermissions).then {
-            MutableLiveData(listOf(readStepsPermission, writeSleepPermission))
-        }
-        whenever(viewModel.grantedFitnessPermissions).then {
-            MutableLiveData(setOf(writeSleepPermission, readStepsPermission))
-        }
-        whenever(viewModel.isPackageSupported(TEST_APP_PACKAGE_NAME)).then { false }
-
-        launchFragment<SettingsFitnessAppFragment>(
-                Bundle().apply { putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME) }
-            )
-            .use { scenario ->
-                scenario.onActivity { activity ->
-                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-                }
-
-                onView(withText("Allow all")).check(matches(isDisplayed()))
-                onView(withText("Sleep")).check(matches(isDisplayed()))
-                onView(withText("Steps")).check(matches(isDisplayed()))
-                onView(withText("Sleep")).perform(click())
-                onView(withText("Sleep")).check(matches(not(isChecked())))
-
-                scenario.onActivity { activity ->
-                    activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-                }
-                onIdle()
-                onView(withId(androidx.preference.R.id.recycler_view))
-                    .perform(RecyclerViewActions.scrollToLastPosition<RecyclerView.ViewHolder>())
-                onIdle()
-                onView(withText("Sleep")).perform(scrollTo()).check(matches(not(isChecked())))
             }
     }
 
@@ -877,7 +783,6 @@ class SettingsFitnessAppFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_SETTINGS_FITNESS_APP_SCREEN)
     fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_partialPermissionsGranted() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val distancePermission = fromPermissionString(READ_DISTANCE)
@@ -906,7 +811,6 @@ class SettingsFitnessAppFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_SETTINGS_FITNESS_APP_SCREEN)
     fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_allPermissionsGranted() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val distancePermission = fromPermissionString(READ_DISTANCE)
@@ -935,7 +839,6 @@ class SettingsFitnessAppFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_SETTINGS_FITNESS_APP_SCREEN)
     fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_zeroPermissionsGranted() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val distancePermission = fromPermissionString(READ_DISTANCE)
