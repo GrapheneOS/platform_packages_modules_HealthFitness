@@ -24,6 +24,7 @@ import static com.google.common.truth.Truth.assertThat;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.clearInvocations;
@@ -86,6 +87,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ScheduledFuture;
 
 /** Unit tests for {@link TrackerManagerImpl} */
 @RunWith(AndroidJUnit4.class)
@@ -112,6 +115,12 @@ public class TrackerManagerImplTest {
 
     @Before
     public void setup() throws Exception {
+        when(mThreadScheduler.schedulePassiveTrackerTask(any(), anyLong()))
+                .thenAnswer(
+                        invocation -> {
+                            ((Runnable) invocation.getArgument(0)).run();
+                            return Optional.of(mock(ScheduledFuture.class));
+                        });
         mContext = spy(InstrumentationRegistry.getInstrumentation().getContext());
         AndroidPackageMocker.addToContext(mContext);
         mPackageManager = mContext.getPackageManager();
@@ -192,10 +201,7 @@ public class TrackerManagerImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void stepTrackingEnabled_withDdpFlags_initialize_doesNotThrow() {
         mTrackerManager.initializeOrRefresh();
     }
@@ -389,10 +395,7 @@ public class TrackerManagerImplTest {
     }
 
     @Test
-    @EnableFlags({
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_API,
-        Flags.FLAG_DEVICE_DATA_PROVIDERS_DB
-    })
+    @EnableFlags({Flags.FLAG_DEVICE_DATA_PROVIDERS_API, Flags.FLAG_DEVICE_DATA_PROVIDERS_DB})
     public void duringInitialization_withDdpFlags_deviceDataPackageAddedToAppPriorityList() {
         grantAppStepsPermission(TEST_PACKAGE_NAME);
         assertThat(
@@ -642,6 +645,52 @@ public class TrackerManagerImplTest {
 
         // Verify that the method which we forced to throw was actually called.
         verify(mPackageManager, times(2)).getPermissionFlags(any(), any(), any());
+    }
+
+    @Test
+    public void onPermissionsChanged_multipleCalls_debounced() {
+        ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
+                ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
+        mTrackerManager.initializeOrRefresh();
+        verify(mPackageManager).addOnPermissionsChangeListener(permissionsListenerCaptor.capture());
+        PackageManager.OnPermissionsChangedListener listener = permissionsListenerCaptor.getValue();
+
+        // Override setup stub to not run immediately and return distinct futures
+        ScheduledFuture<?> future1 = mock(ScheduledFuture.class);
+        ScheduledFuture<?> future2 = mock(ScheduledFuture.class);
+        doReturn(Optional.of(future1), Optional.of(future2))
+                .when(mThreadScheduler)
+                .schedulePassiveTrackerTask(any(), anyLong());
+
+        // First call
+        listener.onPermissionsChanged(0);
+        verify(mThreadScheduler)
+                .schedulePassiveTrackerTask(
+                        any(), eq(HealthConnectThreadScheduler.CALLBACK_DEBOUNCE_MILLIS));
+
+        // Second call should cancel the first one
+        listener.onPermissionsChanged(0);
+        verify(future1).cancel(false);
+        verify(mThreadScheduler, times(2)).schedulePassiveTrackerTask(any(), anyLong());
+    }
+
+    @Test
+    public void onPermissionsChanged_clearTracker_cancelsPendingDebounceTask() {
+        ArgumentCaptor<PackageManager.OnPermissionsChangedListener> permissionsListenerCaptor =
+                ArgumentCaptor.forClass(PackageManager.OnPermissionsChangedListener.class);
+        mTrackerManager.initializeOrRefresh();
+        verify(mPackageManager).addOnPermissionsChangeListener(permissionsListenerCaptor.capture());
+        PackageManager.OnPermissionsChangedListener listener = permissionsListenerCaptor.getValue();
+
+        ScheduledFuture<?> future = mock(ScheduledFuture.class);
+        doReturn(Optional.of(future))
+                .when(mThreadScheduler)
+                .schedulePassiveTrackerTask(any(), anyLong());
+
+        listener.onPermissionsChanged(0);
+        mTrackerManager.clearTracker();
+
+        verify(future).cancel(false);
     }
 
     @Test

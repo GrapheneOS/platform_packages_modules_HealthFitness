@@ -30,7 +30,6 @@ import android.os.UserManager;
 import android.util.Slog;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
-import com.android.healthfitness.flags.Flags;
 import com.android.internal.annotations.VisibleForTesting;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
@@ -44,6 +43,7 @@ import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriori
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.ScheduledFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -83,6 +83,7 @@ public class TrackerManagerImpl implements TrackerManager {
     private boolean mSubscribed = false;
     private Optional<PackageManager.OnPermissionsChangedListener> mPermissionListenerOptional =
             Optional.empty();
+    @Nullable private ScheduledFuture<?> mPermissionChangeTaskFuture = null;
 
     private NativeStepsNotificationSender mNativeStepsNotificationSender;
 
@@ -386,24 +387,51 @@ public class TrackerManagerImpl implements TrackerManager {
     }
 
     private void onPermissionsChanged(int uid) {
-        mThreadScheduler.scheduleInternalTask(
-                () -> {
-                    try {
-                        if (android.health.connect.Constants.DEBUG) {
-                            Slog.d(TAG, "Permissions changed, refreshing tracker status");
-                        }
-                        // If tracking wasn't enabled and an app gets the READ_STEPS permission,
-                        // we'll start tracking. If tracking was enabled and READ_STEPS was revoked
-                        // for all apps, we'll disable tracking.
-                        initializeOrRefresh();
-                    } catch (RuntimeException e) {
-                        Slog.e(TAG, "Unhandled failure in permissions change listener", e);
-                    }
-                });
+        if (mPermissionChangeTaskFuture != null && !mPermissionChangeTaskFuture.isDone()) {
+            mPermissionChangeTaskFuture.cancel(false);
+        }
+
+        // The scheduled delay attempts to debounce spammy calls to this method. When e.g. user
+        // switching occurs, the permission change listener will get invoked for potentially every
+        // package on the device.
+        mPermissionChangeTaskFuture =
+                mThreadScheduler
+                        .schedulePassiveTrackerTask(
+                                () ->
+                                        mThreadScheduler.scheduleInternalTask(
+                                                () -> {
+                                                    try {
+                                                        if (android.health.connect.Constants
+                                                                .DEBUG) {
+                                                            Slog.d(
+                                                                    TAG,
+                                                                    "Permissions changed,"
+                                                                            + " refreshing tracker"
+                                                                            + " status");
+                                                        }
+                                                        // If tracking wasn't enabled and an app
+                                                        // gets the READ_STEPS permission,
+                                                        // we'll start tracking. If tracking was
+                                                        // enabled and READ_STEPS was revoked
+                                                        // for all apps, we'll disable tracking.
+                                                        initializeOrRefresh();
+                                                    } catch (RuntimeException e) {
+                                                        Slog.e(
+                                                                TAG,
+                                                                "Unhandled failure in permissions"
+                                                                        + " change listener",
+                                                                e);
+                                                    }
+                                                }),
+                                HealthConnectThreadScheduler.CALLBACK_DEBOUNCE_MILLIS)
+                        .orElse(null);
     }
 
     private void unregisterPermissionListener() {
         mPermissionListenerOptional.ifPresent(mPackageManager::removeOnPermissionsChangeListener);
         mPermissionListenerOptional = Optional.empty();
+        if (mPermissionChangeTaskFuture != null && !mPermissionChangeTaskFuture.isDone()) {
+            mPermissionChangeTaskFuture.cancel(false);
+        }
     }
 }
