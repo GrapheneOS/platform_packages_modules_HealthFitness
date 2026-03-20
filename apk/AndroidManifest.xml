@@ -79,8 +79,12 @@
             android:exported="false">
         </activity>
 
+        <!-- Disabled by default to prevent leaking into secondary profiles (e.g. Private Space)
+             where SafetySourceBroadcastReceiver ignores the ACTION_BOOT_COMPLETED broadcast and
+             fails to disable it dynamically. -->
         <activity-alias
             android:name="LegacySettingsEntryPoint"
+            android:enabled="false"
             android:exported="true"
             android:targetActivity=".navigation.TrampolineActivity">
 
