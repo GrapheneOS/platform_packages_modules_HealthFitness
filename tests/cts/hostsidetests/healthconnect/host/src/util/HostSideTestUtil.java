@@ -44,6 +44,7 @@ public class HostSideTestUtil {
     private static final String FEATURE_WATCH = "android.hardware.type.watch";
     private static final String FEATURE_LEANBACK = "android.software.leanback";
     private static final String FEATURE_AUTOMOTIVE = "android.hardware.type.automotive";
+    private static final String FEATURE_PC = "android.hardware.type.pc";
 
     public static final List<String> TEST_APP_PERMISSIONS =
             List.of(
@@ -147,7 +148,8 @@ public class HostSideTestUtil {
                     && !DeviceUtils.hasFeature(device, FEATURE_EMBEDDED)
                     && !DeviceUtils.hasFeature(device, FEATURE_WATCH)
                     && !DeviceUtils.hasFeature(device, FEATURE_LEANBACK)
-                    && !DeviceUtils.hasFeature(device, FEATURE_AUTOMOTIVE);
+                    && !DeviceUtils.hasFeature(device, FEATURE_AUTOMOTIVE)
+                    && !DeviceUtils.hasFeature(device, FEATURE_PC);
         } catch (Exception e) {
             return false;
         }
