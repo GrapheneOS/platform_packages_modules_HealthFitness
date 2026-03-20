@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="permgrouplab_health" msgid="2189810208223060173">"Salute, fitness e benessere"</string>
-    <string name="health_permission_header_description" msgid="1816010176505069704">"Le app che dispongono di questa autorizzazione possono leggere e scrivere i tuoi dati relativi a salute, fitness e benessere. Sono inclusi i dati monitorati dai tuoi dispositivi e i dati memorizzati in Connessione Salute"</string>
+    <string name="health_permission_header_description" msgid="1816010176505069704">"Le app che dispongono di questa autorizzazione possono leggere e scrivere i tuoi dati relativi a salute, fitness e benessere. Sono inclusi i dati monitorati dai tuoi dispositivi e i dati memorizzati in Health Connect"</string>
     <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"Consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere ai dati relativi a benessere e attività fisica?"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"Scegli a quali dati relativi a benessere e attività fisica può accedere questa app. Sono inclusi i dati monitorati e archiviati su questo dispositivo, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"Scegli a quali dati relativi a benessere e attività fisica può accedere questa app. Sono inclusi i dati monitorati e archiviati su questo dispositivo, <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>

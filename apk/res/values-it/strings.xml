@@ -17,7 +17,7 @@
 
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_label" msgid="4768580772453324183">"Connessione Salute"</string>
+    <string name="app_label" msgid="4768580772453324183">"Health Connect"</string>
     <string name="health_connect_summary" msgid="6401520186678972547">"Gestisci l\'accesso delle app ai dati sulla salute"</string>
     <string name="health_connect_notification_channel_name" msgid="5189243942800749782">"Aggiornamenti e avvisi"</string>
     <string name="permissions_and_data_header" msgid="4406105506837487805">"Autorizzazioni e dati"</string>
@@ -42,10 +42,10 @@
     <string name="manage_data_summary" msgid="8537870912521944449">"Eliminazione automatica, origini dati, backup e ripristino"</string>
     <string name="banner_group_more_items" msgid="1071243933488973950">"Altri elementi"</string>
     <string name="banner_group_fewer_items" msgid="3792478123282046349">"Meno elementi"</string>
-    <string name="settings_manage_permission" msgid="3805037674102124581">"Connessione Salute"</string>
-    <string name="settings_combined_permissions" msgid="3660209476196545539">"Connessione Salute"</string>
-    <string name="settings_fitness_permissions" msgid="8133228907519227359">"Connessione Salute"</string>
-    <string name="settings_medical_permissions" msgid="4621535972501674863">"Connessione Salute"</string>
+    <string name="settings_manage_permission" msgid="3805037674102124581">"Health Connect"</string>
+    <string name="settings_combined_permissions" msgid="3660209476196545539">"Health Connect"</string>
+    <string name="settings_fitness_permissions" msgid="8133228907519227359">"Health Connect"</string>
+    <string name="settings_medical_permissions" msgid="4621535972501674863">"Health Connect"</string>
     <string name="backup_title" msgid="211503191266235085">"Backup"</string>
     <string name="data_sources_and_priority_title" msgid="2360222350913604558">"Origini dati e priorità"</string>
     <string name="set_units_title" msgid="2657822539603758029">"Imposta unità"</string>
@@ -53,7 +53,7 @@
     <string name="manage_data_category_title" msgid="6328886061582616519">"Gestisci dati"</string>
     <string name="backup_and_restore_settings_summary" msgid="4345972157089493077">"Esporta e importa i dati"</string>
     <string name="recent_access_header" msgid="7623497371790225888">"Accesso recente"</string>
-    <string name="no_recent_access" msgid="4724297929902441784">"Nessuna app ha usato di recente Connessione Salute"</string>
+    <string name="no_recent_access" msgid="4724297929902441784">"Nessuna app ha usato di recente Health Connect"</string>
     <string name="show_recent_access_entries_button_title" msgid="3483460066767350419">"Visualizza tutti gli accessi recenti"</string>
     <string name="recent_access_screen_description" msgid="331101209889185402">"Guarda quali app hanno avuto accesso ai tuoi dati nelle ultime 24 ore"</string>
     <string name="today_header" msgid="1006837293203834373">"Oggi"</string>
@@ -88,7 +88,7 @@
     <string name="manage_data_section" msgid="5859629270946511903">"Gestisci dati"</string>
     <string name="export_data_button" msgid="7783329820434117744">"Esporta i dati"</string>
     <string name="delete_all_data_button" msgid="7238755635416521487">"Elimina tutti i dati"</string>
-    <string name="no_categories" msgid="2636778482437506241">"Non hai dati in Connessione Salute"</string>
+    <string name="no_categories" msgid="2636778482437506241">"Non hai dati in Health Connect"</string>
     <string name="permission_types_title" msgid="7698058200557389436">"I tuoi dati"</string>
     <string name="app_priority_button" msgid="3126133977893705098">"Priorità app"</string>
     <string name="delete_category_data_button" msgid="2324773398768267043">"Elimina i dati di <xliff:g id="CATEGORY">%s</xliff:g>"</string>
@@ -96,14 +96,14 @@
     <string name="can_read" msgid="4568261079308309564">"Accesso in lettura a: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="can_write" msgid="5082414937218423823">"Accesso in scrittura a: <xliff:g id="PERMISSION_TYPE">%s</xliff:g>"</string>
     <string name="inactive_apps" msgid="1413060306609966606">"Origini dati non attive"</string>
-    <string name="inactive_apps_message" msgid="3499586995328856202">"Queste origini dati non possono più leggere o scrivere <xliff:g id="DATA_TYPE">%s</xliff:g>, ma hanno ancora dati archiviati in Connessione Salute"</string>
-    <string name="data_access_empty_message" msgid="323965759318632888">"Le origini dati non possono più leggere o scrivere <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> e non sono presenti dati relativi a <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> memorizzati in Connessione Salute"</string>
+    <string name="inactive_apps_message" msgid="3499586995328856202">"Queste origini dati non possono più leggere o scrivere <xliff:g id="DATA_TYPE">%s</xliff:g>, ma hanno ancora dati archiviati in Health Connect"</string>
+    <string name="data_access_empty_message" msgid="323965759318632888">"Le origini dati non possono più leggere o scrivere <xliff:g id="DATA_TYPE_0">%1$s</xliff:g> e non sono presenti dati relativi a <xliff:g id="DATA_TYPE_2">%2$s</xliff:g> memorizzati in Health Connect"</string>
     <string name="data_access_exercise_description" msgid="6868583522699443570">"Questi dati includono informazioni come il tempo di attività, il tipo di esercizio, i giri, le ripetizioni, le sessioni o le bracciate"</string>
     <string name="data_access_sleep_description" msgid="74293126050011153">"Questi dati includono informazioni come le fasi del sonno e le sessioni di sonno"</string>
     <string name="all_entries_button" msgid="5109091107239135235">"Visualizza tutte le voci"</string>
     <string name="selected_date_view_action_description" msgid="6237240886988225664">"modifica"</string>
     <string name="delete_permission_type_data_button" msgid="2270819954943391797">"Elimina questi dati"</string>
-    <string name="permgrouplab_health" msgid="468961137496587966">"Connessione Salute"</string>
+    <string name="permgrouplab_health" msgid="468961137496587966">"Health Connect"</string>
     <string name="permgroupdesc_health" msgid="252080476917407273">"accesso ai dati relativi alla salute"</string>
     <string name="permlab_readCaloriesBurned" msgid="8998140381590624692">"Lettura delle calorie bruciate"</string>
     <string name="permdesc_readCaloriesBurned" msgid="9012595355389868570">"Consente all\'app di leggere le calorie bruciate"</string>
@@ -111,14 +111,14 @@
     <string name="background_read_medical_single_request_description_both_types_granted" msgid="8946727351576582341">"Se lo consenti, questa app può accedere ai dati su fitness e benessere, nonché alla storia clinica quando non la utilizzi."</string>
     <string name="background_read_medical_single_request_description_medical_granted" msgid="5319661973410930922">"Se lo consenti, questa app può accedere alla storia clinica quando non la utilizzi."</string>
     <string name="background_read_medical_single_request_description_fitness_granted" msgid="6850185345786666516">"Se lo consenti, questa app può accedere ai dati relativi a benessere e attività fisica quando non la utilizzi."</string>
-    <string name="background_read_single_request_description" msgid="2679634929322639576">"Se lo consenti, questa app può accedere ai dati di Connessione Salute quando non la utilizzi."</string>
+    <string name="background_read_single_request_description" msgid="2679634929322639576">"Se lo consenti, questa app può accedere ai dati di Health Connect quando non la utilizzi."</string>
     <string name="history_read_single_request_title" msgid="6848027207063414793">"Consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere ai dati precedenti?"</string>
     <string name="history_read_medical_single_request_description" msgid="6408051015819625330">"Se lo consenti, questa app può accedere ai dati relativi a benessere e attività fisica aggiunti prima del giorno <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>."</string>
     <string name="history_read_medical_single_request_description_fallback" msgid="6685832866184737207">"Se lo consenti, questa app può accedere a tutti i dati precedenti relativi a benessere e attività fisica."</string>
-    <string name="history_read_single_request_description" msgid="9140843675330318112">"Se lo consenti, questa app può accedere ai dati di Connessione Salute aggiunti prima del giorno <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>."</string>
-    <string name="history_read_single_request_description_fallback" msgid="7685531357676523654">"Se lo consenti, questa app può accedere a tutti i dati precedenti di Connessione Salute."</string>
+    <string name="history_read_single_request_description" msgid="9140843675330318112">"Se lo consenti, questa app può accedere ai dati di Health Connect aggiunti prima del giorno <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>."</string>
+    <string name="history_read_single_request_description_fallback" msgid="7685531357676523654">"Se lo consenti, questa app può accedere a tutti i dati precedenti di Health Connect."</string>
     <string name="additional_permissions_combined_request_title" msgid="5509177449679251301">"Consentire l\'accesso aggiuntivo per l\'app <xliff:g id="APP_NAME">%1$s</xliff:g>?"</string>
-    <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"L\'app <xliff:g id="APP_NAME">%1$s</xliff:g> vuole accedere anche a queste impostazioni di Connessione Salute"</string>
+    <string name="additional_permissions_combined_request_description" msgid="7136418603696342323">"L\'app <xliff:g id="APP_NAME">%1$s</xliff:g> vuole accedere anche a queste impostazioni di Health Connect"</string>
     <string name="background_read_medical_combined_request_title_both_types_granted" msgid="4225111383019900451">"Accesso a tutti i dati in background"</string>
     <string name="background_read_medical_combined_request_title_medical_granted" msgid="3988312347959547374">"Accesso alla storia clinica in background"</string>
     <string name="background_read_medical_combined_request_title_fitness_granted" msgid="2639416977416876229">"Accesso ai dati relativi a benessere e attività fisica in background"</string>
@@ -126,13 +126,13 @@
     <string name="background_read_medical_combined_request_description_medical_granted" msgid="5140647084504657934">"Consenti a questa app di accedere a questi dati quando non la utilizzi"</string>
     <string name="background_read_medical_combined_request_description_fitness_granted" msgid="919785628751851996">"Consenti a questa app di accedere a questi dati quando non la utilizzi"</string>
     <string name="background_read_combined_request_title" msgid="4184649296697480520">"Accesso ai dati in background"</string>
-    <string name="background_read_combined_request_description" msgid="2423480522986545286">"Consenti a questa app di accedere ai dati di Connessione Salute quando non la utilizzi"</string>
+    <string name="background_read_combined_request_description" msgid="2423480522986545286">"Consenti a questa app di accedere ai dati di Health Connect quando non la utilizzi"</string>
     <string name="history_read_medical_combined_request_title" msgid="1262267962861942478">"Accesso ai dati precedenti relativi a benessere e attività fisica"</string>
     <string name="history_read_medical_combined_request_description" msgid="7550922315652791771">"Consenti a questa app di accedere ai dati aggiunti prima del giorno <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_medical_combined_request_description_fallback" msgid="3567968660826834911">"Consenti a questa app di accedere a tutti i dati precedenti"</string>
     <string name="history_read_combined_request_title" msgid="9023811767370482028">"Accesso ai dati precedenti"</string>
-    <string name="history_read_combined_request_description" msgid="1437787086896636484">"Consenti a questa app di accedere ai dati di Connessione Salute aggiunti prima del giorno <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
-    <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Consenti a questa app di accedere a tutti i dati precedenti di Connessione Salute"</string>
+    <string name="history_read_combined_request_description" msgid="1437787086896636484">"Consenti a questa app di accedere ai dati di Health Connect aggiunti prima del giorno <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
+    <string name="history_read_combined_request_description_fallback" msgid="4974756796396067521">"Consenti a questa app di accedere a tutti i dati precedenti di Health Connect"</string>
     <string name="history_read_medical_combined_request_footer" msgid="7502989222215080491">"<xliff:g id="APP_NAME">%1$s</xliff:g> può già accedere ai dati passati per la tua storia clinica"</string>
     <string name="history_read_medical_combined_request_footer_link" msgid="355676489585738987">"Scopri di più sulle autorizzazioni"</string>
     <string name="background_read_medical_access_title_both_types_granted" msgid="4475972082863444603">"Accesso a tutti i dati in background"</string>
@@ -142,22 +142,22 @@
     <string name="background_read_medical_access_description_medical_granted" msgid="8570683510275055450">"Consenti a questa app di accedere a questi dati quando non la utilizzi"</string>
     <string name="background_read_medical_access_description_fitness_granted" msgid="2584567718805499407">"Consenti a questa app di accedere a questi dati quando non la utilizzi"</string>
     <string name="background_read_access_title" msgid="4184498185599147117">"Accesso ai dati in background"</string>
-    <string name="background_read_access_description" msgid="2360433029368320323">"Consenti a questa app di accedere ai dati di Connessione Salute quando non la utilizzi"</string>
+    <string name="background_read_access_description" msgid="2360433029368320323">"Consenti a questa app di accedere ai dati di Health Connect quando non la utilizzi"</string>
     <string name="history_read_medical_access_title" msgid="1375462150672418692">"Accesso ai dati precedenti relativi a benessere e attività fisica"</string>
     <string name="history_read_medical_access_description" msgid="5615959269427106141">"Consenti a questa app di accedere ai dati aggiunti prima del giorno <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
     <string name="history_read_medical_access_description_fallback" msgid="3888547064992673535">"Consenti a questa app di accedere a tutti i dati precedenti"</string>
     <string name="history_read_access_title" msgid="870048398702887144">"Accesso ai dati precedenti"</string>
-    <string name="history_read_access_description" msgid="800722432229526128">"Consenti a questa app di accedere ai dati di Connessione Salute aggiunti prima del giorno <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
-    <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Consenti a questa app di accedere a tutti i dati precedenti di Connessione Salute"</string>
+    <string name="history_read_access_description" msgid="800722432229526128">"Consenti a questa app di accedere ai dati di Health Connect aggiunti prima del giorno <xliff:g id="DATA_ACCESS_DATE">%1$s</xliff:g>"</string>
+    <string name="history_read_access_description_fallback" msgid="4151538305657852010">"Consenti a questa app di accedere a tutti i dati precedenti di Health Connect"</string>
     <string name="history_read_medical_access_read_warning" msgid="8878271647163400440">"Al momento non vengono letti dati relativi all\'attività fisica perché <xliff:g id="APP_NAME">%1$s</xliff:g> non dispone dei permessi di lettura"</string>
     <string name="additional_access_medical_read_footer" msgid="9192699163914919234">"<xliff:g id="APP_NAME">%1$s</xliff:g> può già accedere ai dati passati per la tua storia clinica. Per modificare questa impostazione, disattiva le autorizzazioni di questa app per la storia clinica."</string>
     <string name="additional_access_medical_read_footer_link" msgid="9186216799532408259">"Gestisci le autorizzazioni per la storia clinica"</string>
     <string name="additional_access_combined_footer" msgid="5967785355544362840">"Abilita almeno un permesso di lettura per attivare l\'accesso in background o ai dati precedenti per questa app"</string>
     <string name="additional_access_background_footer" msgid="1638739578431818525">"Abilita almeno un permesso di lettura per attivare l\'accesso in background per questa app"</string>
     <string name="additional_access_history_footer" msgid="5326814559930548467">"Abilita almeno un permesso di lettura per attivare l\'accesso ai dati precedenti per questa app"</string>
-    <string name="historic_access_description" msgid="3309195636349468633">"Consenti a questa app di accedere a tutti i dati precedenti di Connessione Salute"</string>
-    <string name="background_read_description" msgid="3203594555849969283">"Consenti a questa app di accedere ai dati di Connessione Salute quando non la utilizzi"</string>
-    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Consenti a questa app di scrivere l\'UDI del dispositivo nei dati di Connessione Salute"</string>
+    <string name="historic_access_description" msgid="3309195636349468633">"Consenti a questa app di accedere a tutti i dati precedenti di Health Connect"</string>
+    <string name="background_read_description" msgid="3203594555849969283">"Consenti a questa app di accedere ai dati di Health Connect quando non la utilizzi"</string>
+    <string name="write_device_udi_content_description" msgid="3345237277637293502">"Consenti a questa app di scrivere l\'UDI del dispositivo nei dati di Health Connect"</string>
     <string name="active_calories_burned_uppercase_label" msgid="6231684842932528272">"Calorie bruciate durante l\'attività fisica"</string>
     <string name="active_calories_burned_lowercase_label" msgid="6743090878253096737">"calorie bruciate durante l\'attività fisica"</string>
     <string name="active_calories_burned_read_content_description" msgid="6449442660408754186">"Lettura delle calorie bruciate durante l\'attività fisica"</string>
@@ -331,7 +331,7 @@
     <string name="skin_temperature_lowercase_label" msgid="7456421703641980581">"temperatura cutanea"</string>
     <string name="skin_temperature_read_content_description" msgid="1896127631429717621">"Leggere la temperatura cutanea"</string>
     <string name="skin_temperature_write_content_description" msgid="6448587289116206085">"Scrivere la temperatura cutanea"</string>
-    <string name="browse_health_records_intro" msgid="6883015193140441521">"Comprese tutte le cartelle cliniche sincronizzate e aggiunte a Connessione Salute. La tua storia clinica potrebbe non essere completa e non include una descrizione medica delle tue cartelle cliniche."</string>
+    <string name="browse_health_records_intro" msgid="6883015193140441521">"Comprese tutte le cartelle cliniche sincronizzate e aggiunte a Health Connect. La tua storia clinica potrebbe non essere completa e non include una descrizione medica delle tue cartelle cliniche."</string>
     <string name="all_medical_data_uppercase_label" msgid="3200909722486081065">"Tutte la storia clinica"</string>
     <string name="all_medical_data_lowercase_label" msgid="2978144821592851080">"tutte la storia clinica"</string>
     <string name="all_medical_data_content_description" msgid="3454355551506537094">"Scrittura di tutte la storia clinica"</string>
@@ -398,27 +398,27 @@
     <string name="request_permissions_allow_all" msgid="3419414351406638770">"Consenti tutto"</string>
     <string name="request_permissions_dont_allow" msgid="6375307410951549030">"Non consentire"</string>
     <string name="allow_and_continue" msgid="4523565115589395706">"Consenti e continua"</string>
-    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Scegli i dati da far leggere o scrivere a questa app in Connessione Salute"</string>
-    <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Scegli i dati da far leggere a questa app in Connessione Salute"</string>
-    <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Scegli i dati da far scrivere a questa app in Connessione Salute"</string>
-    <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Scegli i dati da far leggere o scrivere a questa app in Connessione Salute"</string>
-    <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Scegli i dati da far leggere a questa app in Connessione Salute"</string>
+    <string name="request_fitness_permissions_data_access_type_read_write" msgid="4803850894991591079">"Scegli i dati da far leggere o scrivere a questa app in Health Connect"</string>
+    <string name="request_fitness_permissions_data_access_type_read" msgid="1936040466183377312">"Scegli i dati da far leggere a questa app in Health Connect"</string>
+    <string name="request_fitness_permissions_data_access_type_write" msgid="953067161810334338">"Scegli i dati da far scrivere a questa app in Health Connect"</string>
+    <string name="request_medical_permissions_data_access_type_read_write" msgid="3777178665662806833">"Scegli i dati da far leggere o scrivere a questa app in Health Connect"</string>
+    <string name="request_medical_permissions_data_access_type_read" msgid="2155961852937520094">"Scegli i dati da far leggere a questa app in Health Connect"</string>
     <string name="matchmaking_screen_title" msgid="2245143614291907682">"Sincronizza le app e i dispositivi"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Consenti all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di leggere i dati da altre app o altri dispositivi su questo dispositivo utilizzando Connessione Salute. Questi dati possono essere letti anche da altre app a cui concedi l\'accesso."</string>
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"Consenti all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di leggere i dati da altre app o altri dispositivi su questo dispositivo utilizzando Health Connect. Questi dati possono essere letti anche da altre app a cui concedi l\'accesso."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"App che possono sincronizzare questi dati"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"Dispositivi che possono sincronizzare questi dati"</string>
     <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Vai alle preferenze del dispositivo per attivare"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Consenti tutte le autorizzazioni per <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Leggi le "<a href="%2$s">"norme sulla privacy"</a>" di <xliff:g id="APP_NAME">%1$s</xliff:g> per scoprire in che modo vengono utilizzati i tuoi dati."</string>
-    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Connessione Salute ti consente di condividere i tuoi dati relativi alla salute e all\'attività fisica tra più origini dati. In questo modo, potrai accedere ad approfondimenti ed esperienze senza compromettere la sicurezza dei dati."</string>
-    <string name="more_about_health_connect" msgid="8105996800108743876">"Scopri di più su Connessione Salute"</string>
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect ti consente di condividere i tuoi dati relativi alla salute e all\'attività fisica tra più origini dati. In questo modo, potrai accedere ad approfondimenti ed esperienze senza compromettere la sicurezza dei dati."</string>
+    <string name="more_about_health_connect" msgid="8105996800108743876">"Scopri di più su Health Connect"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"espandi"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"comprimi"</string>
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"Se concedi l\'accesso in lettura, l\'app può leggere i nuovi dati e quelli degli ultimi 30 giorni"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"Se concedi l\'accesso in lettura, l\'app può leggere i dati nuovi e precedenti"</string>
-    <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere a Connessione Salute?"</string>
+    <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"Consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere a Health Connect?"</string>
     <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"Consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere ai dati relativi a benessere e attività fisica?"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"Per sapere in che modo l\'app <xliff:g id="APP_NAME">%1$s</xliff:g> tratta i tuoi dati, consulta le sue <xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"norme sulla privacy"</string>
@@ -427,31 +427,31 @@
     <string name="medical_request_header_access_info_read" msgid="7817630833626125558">"Se concedi l\'accesso, l\'app può leggere dati quali allergie, risultati di laboratorio, vaccini e altro\n<xliff:g id="ABOUT_HEALTH_RECORDS_LINK">%1$s</xliff:g>"</string>
     <string name="medical_request_about_health_records" msgid="4569605370685007268">"Informazioni sulla storia clinica"</string>
     <string name="medical_request_data_to_share" msgid="6778034304921873317">"I dati da condividere includono"</string>
-    <string name="medical_request_summary" msgid="553735170968628758">"Se lo consenti, <xliff:g id="APP_NAME">%1$s</xliff:g> può condividere la tua storia clinica con Connessione Salute."</string>
+    <string name="medical_request_summary" msgid="553735170968628758">"Se lo consenti, <xliff:g id="APP_NAME">%1$s</xliff:g> può condividere la tua storia clinica con Health Connect."</string>
     <string name="medical_request_footer" msgid="157243861031258933">"Sincronizza la tua storia clinica da diverse app e fonti per conservarle in un unico posto"</string>
     <string name="permissions_disconnect_dialog_title" msgid="7355211540619034695">"Rimuovere tutte le autorizzazioni?"</string>
     <string name="permissions_disconnect_dialog_disconnect" msgid="8854787587948224752">"Rimuovi tutto"</string>
-    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Connessione Salute.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
-    <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Connessione Salute, inclusi i dati in background.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come posizione, fotocamera o microfono."</string>
-    <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Connessione Salute, inclusi i dati precedenti.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come posizione, fotocamera o microfono."</string>
-    <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Connessione Salute, inclusi i dati in background e i dati precedenti.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come posizione, fotocamera o microfono."</string>
-    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Elimina anche i dati di <xliff:g id="APP_NAME">%1$s</xliff:g> da Connessione Salute"</string>
+    <string name="permissions_disconnect_dialog_message" msgid="7961269838207365478">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Health Connect.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
+    <string name="permissions_disconnect_dialog_message_background" msgid="8655975996293893596">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Health Connect, inclusi i dati in background.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come posizione, fotocamera o microfono."</string>
+    <string name="permissions_disconnect_dialog_message_history" msgid="3793206180295111081">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Health Connect, inclusi i dati precedenti.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come posizione, fotocamera o microfono."</string>
+    <string name="permissions_disconnect_dialog_message_combined" msgid="4163369526932602203">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Health Connect, inclusi i dati in background e i dati precedenti.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come posizione, fotocamera o microfono."</string>
+    <string name="permissions_disconnect_dialog_checkbox" msgid="8646951566431872823">"Elimina anche i dati di <xliff:g id="APP_NAME">%1$s</xliff:g> da Health Connect"</string>
     <string name="disconnect_all_fitness_permissions_title" msgid="7612364222525900592">"Rimuovere tutte le autorizzazioni per fitness e benessere?"</string>
-    <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Elimina anche i dati relativi all\'attività fisica di <xliff:g id="APP_NAME">%1$s</xliff:g> da Connessione Salute"</string>
+    <string name="disconnect_all_fitness_permissions_dialog_checkbox" msgid="8808559689899914478">"Elimina anche i dati relativi all\'attività fisica di <xliff:g id="APP_NAME">%1$s</xliff:g> da Health Connect"</string>
     <string name="disconnect_all_medical_permissions_title" msgid="5160539156614173855">"Rimuovere tutte le autorizzazioni per la storia clinica?"</string>
-    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"Elimina anche la storia clinica da <xliff:g id="APP_NAME">%1$s</xliff:g> tramite Connessione Salute"</string>
-    <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere questi dati da Connessione Salute.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
-    <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere questi dati da Connessione Salute, inclusi i dati in background.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
-    <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere questi dati da Connessione Salute, inclusi i dati precedenti.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
-    <string name="disconnect_all_fitness_or_medical_and_additional_permissions_dialog_message" msgid="5147728456578218902">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere questi dati da Connessione Salute, inclusi i dati in background e precedenti.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
+    <string name="disconnect_all_medical_permissions_dialog_checkbox" msgid="9016154186179314983">"Elimina anche la storia clinica da <xliff:g id="APP_NAME">%1$s</xliff:g> tramite Health Connect"</string>
+    <string name="disconnect_all_fitness_or_medical_no_additional_permissions_dialog_message" msgid="6610810945930258582">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere questi dati da Health Connect.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
+    <string name="disconnect_all_fitness_or_medical_and_background_permissions_dialog_message" msgid="7138878481421234556">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere questi dati da Health Connect, inclusi i dati in background.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
+    <string name="disconnect_all_fitness_or_medical_and_historical_permissions_dialog_message" msgid="1519496566456028625">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere questi dati da Health Connect, inclusi i dati precedenti.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
+    <string name="disconnect_all_fitness_or_medical_and_additional_permissions_dialog_message" msgid="5147728456578218902">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere questi dati da Health Connect, inclusi i dati in background e precedenti.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
     <string name="disconnect_all_health_permissions_title" msgid="3995410660376966233">"Rimuovere tutte le autorizzazioni?"</string>
-    <string name="disconnect_all_health_no_additional_permissions_dialog_message" msgid="211728516196974197">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Connessione Salute.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
-    <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Connessione Salute, inclusi i dati in background.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
-    <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Connessione Salute, inclusi i dati precedenti.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
-    <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Connessione Salute, inclusi i dati in background e precedenti.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
-    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"Elimina anche la storia clinica e i dati relativi all\'attività fisica da <xliff:g id="APP_NAME">%1$s</xliff:g> tramite Connessione Salute"</string>
+    <string name="disconnect_all_health_no_additional_permissions_dialog_message" msgid="211728516196974197">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Health Connect.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
+    <string name="disconnect_all_health_and_background_permissions_dialog_message" msgid="654533675296670869">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Health Connect, inclusi i dati in background.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
+    <string name="disconnect_all_health_and_historical_permissions_dialog_message" msgid="6743215620789357899">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Health Connect, inclusi i dati precedenti.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
+    <string name="disconnect_all_health_and_additional_permissions_dialog_message" msgid="6062891741278986209">"<xliff:g id="APP_NAME">%1$s</xliff:g> non potrà più leggere o scrivere dati da Health Connect, inclusi i dati in background e precedenti.\n\nL\'operazione non inciderà su eventuali altre autorizzazioni dell\'app, come fotocamera, microfono o posizione."</string>
+    <string name="disconnect_all_health_permissions_dialog_checkbox" msgid="2513272828668015419">"Elimina anche la storia clinica e i dati relativi all\'attività fisica da <xliff:g id="APP_NAME">%1$s</xliff:g> tramite Health Connect"</string>
     <string name="disconnect_all_health_permissions_success_toast" msgid="9010063821116197894">"Autorizzazioni rimosse per questa app"</string>
-    <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Elimina anche tutti i dati di Connessione Salute"</string>
+    <string name="disconnect_all_app_permissions_dialog_checkbox" msgid="2927403999111348272">"Elimina anche tutti i dati di Health Connect"</string>
     <string name="navigation_next_day" msgid="8853443471183944219">"Giorno successivo"</string>
     <string name="navigation_selected_day" msgid="2510843479734091348">"Giorno selezionato"</string>
     <string name="navigation_previous_day" msgid="718353386484938584">"Giorno precedente"</string>
@@ -465,7 +465,7 @@
     <string name="raw_fhir_content_description" msgid="1491420802097635439">"Codice sorgente dettagliato: <xliff:g id="SOURCE_CODE">%1$s</xliff:g>"</string>
     <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"Visualizza dati di origine"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"Le app con questa autorizzazione possono leggere e scrivere i dati relativi alla salute e all\'attività fisica."</string>
-    <string name="connected_apps_text" msgid="1177626440966855831">"Stabilisci quali app possono accedere ai dati archiviati in Connessione Salute. Tocca un\'app per controllare quali dati può leggere o scrivere."</string>
+    <string name="connected_apps_text" msgid="1177626440966855831">"Stabilisci quali app possono accedere ai dati archiviati in Health Connect. Tocca un\'app per controllare quali dati può leggere o scrivere."</string>
     <string name="connected_apps_section_title" msgid="2415288099612126258">"Accesso consentito"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"Accesso non consentito"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"Aggiornamento richiesto"</string>
@@ -476,14 +476,14 @@
     <string name="no_apps_allowed" msgid="5794833581324128108">"Nessuna app autorizzata"</string>
     <string name="no_apps_denied" msgid="743327680286446017">"Nessuna app non autorizzata"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"Rimuovere l\'accesso per tutte le app?"</string>
-    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Nessuna delle tue app potrà accedere o aggiungere nuovi dati a Connessione Salute. I dati esistenti non vengono eliminati.\n\nQuesto non influisce su altre autorizzazioni di cui questa app potrebbe disporre, come posizione, fotocamera o microfono."</string>
+    <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Nessuna delle tue app potrà accedere o aggiungere nuovi dati a Health Connect. I dati esistenti non vengono eliminati.\n\nQuesto non influisce su altre autorizzazioni di cui questa app potrebbe disporre, come posizione, fotocamera o microfono."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Rimuovi tutto"</string>
     <string name="manage_permissions_manage_app_header" msgid="6356348062088358761">"Gestisci l\'app"</string>
     <string name="see_app_data" msgid="3951030076195119476">"Visualizza i dati dell\'app"</string>
     <string name="remove_access_for_this_app" msgid="7701101420310711833">"Rimuovi l\'accesso per questa app"</string>
     <string name="delete_app_data" msgid="6890357774873859952">"Elimina i dati dell\'app"</string>
     <string name="inactive_apps_section_title" msgid="7492812973696378690">"App non attive"</string>
-    <string name="inactive_apps_section_message" msgid="2610789262055974739">"Queste app non possono più accedere, ma hanno dati archiviati in Connessione Salute"</string>
+    <string name="inactive_apps_section_message" msgid="2610789262055974739">"Queste app non possono più accedere, ma hanno dati archiviati in Health Connect"</string>
     <string name="manage_permissions_time_frame" msgid="1299483940842401923">"<xliff:g id="APP_NAME">%1$s</xliff:g> può leggere i dati aggiunti dopo il giorno <xliff:g id="DATA_ACCESS_DATE">%2$s</xliff:g>"</string>
     <string name="other_android_permissions" msgid="8051485761573324702">"Per gestire altre autorizzazioni Android a cui questa app può accedere, vai a Impostazioni &gt; App"</string>
     <string name="manage_permissions_rationale" msgid="2780008055185441703">"Puoi scoprire come <xliff:g id="APP_NAME">%1$s</xliff:g> gestisce i tuoi dati nelle norme sulla privacy dello sviluppatore"</string>
@@ -502,13 +502,13 @@
     <string name="medical_permissions_lowercase" msgid="5825812584960807537">"storia clinica"</string>
     <string name="medical_permissions_summary" msgid="5526004634109548577">"Risultati di laboratorio, farmaci, vaccini e altro"</string>
     <string name="denied_apps_banner_title" msgid="1997745063608657965">"Autorizzazioni app rimosse"</string>
-    <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Connessione Salute ha rimosso le autorizzazioni per <xliff:g id="APP_DATA">%s</xliff:g>"</string>
-    <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Connessione Salute ha rimosso le autorizzazioni per <xliff:g id="APP_DATA_0">%1$s</xliff:g> e <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
-    <string name="denied_apps_banner_message_three_apps" msgid="7978499051473471633">"Connessione Salute ha rimosso le autorizzazioni per <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> e <xliff:g id="APP_DATA_THREE">%3$s</xliff:g>"</string>
-    <string name="denied_apps_banner_message_many_apps" msgid="7249805432604650982">"Connessione Salute ha rimosso le autorizzazioni per <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> e altre app"</string>
+    <string name="denied_apps_banner_message_one_app" msgid="17659513485678315">"Health Connect ha rimosso le autorizzazioni per <xliff:g id="APP_DATA">%s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_two_apps" msgid="1147216810892373640">"Health Connect ha rimosso le autorizzazioni per <xliff:g id="APP_DATA_0">%1$s</xliff:g> e <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_three_apps" msgid="7978499051473471633">"Health Connect ha rimosso le autorizzazioni per <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g> e <xliff:g id="APP_DATA_THREE">%3$s</xliff:g>"</string>
+    <string name="denied_apps_banner_message_many_apps" msgid="7249805432604650982">"Health Connect ha rimosso le autorizzazioni per <xliff:g id="APP_DATA_0">%1$s</xliff:g>, <xliff:g id="APP_DATA_TWO">%2$s</xliff:g>, <xliff:g id="APP_DATA_THREE">%3$s</xliff:g> e altre app"</string>
     <string name="denied_apps_banner_button" msgid="4438480389769298412">"Vedi dettagli"</string>
-    <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Perché Connessione Salute rimuove le autorizzazioni app"</string>
-    <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Se un\'app viene sospesa o rimossa da Google Play, Connessione Salute rimuove automaticamente le relative autorizzazioni.\n\nCiò significa che l\'app non può più accedere ai dati archiviati in Connessione Salute. Se in precedenza aveva scritto dati, l\'app apparirà nell\'elenco di app non attive."</string>
+    <string name="denied_apps_dialog_title" msgid="7470227827315635099">"Perché Health Connect rimuove le autorizzazioni app"</string>
+    <string name="denied_apps_dialog_message" msgid="7876664965504466099">"Se un\'app viene sospesa o rimossa da Google Play, Health Connect rimuove automaticamente le relative autorizzazioni.\n\nCiò significa che l\'app non può più accedere ai dati archiviati in Health Connect. Se in precedenza aveva scritto dati, l\'app apparirà nell\'elenco di app non attive."</string>
     <string name="denied_apps_dialog_got_it_button" msgid="4698003516923683959">"OK"</string>
     <string name="export_file_access_error_banner_button" msgid="6336949702329425932">"Configura"</string>
     <string name="export_file_access_error_banner_title" msgid="8290988049467813322">"Impossibile esportare i dati"</string>
@@ -530,7 +530,7 @@
     <string name="import_wrong_file_error_banner_button" msgid="1518043363477255045">"Scegli file"</string>
     <string name="import_wrong_file_error_banner_summary" msgid="4857514343099050126">"Il file selezionato non è compatibile per il ripristino. Assicurati di selezionare il file esportato corretto."</string>
     <string name="import_version_mismatch_error_banner_button" msgid="4761716140032809817">"Aggiorna ora"</string>
-    <string name="import_version_mismatch_error_banner_summary" msgid="6165550114170534795">"Aggiorna il sistema in modo che Connessione Salute possa ripristinare i tuoi dati, quindi riprova."</string>
+    <string name="import_version_mismatch_error_banner_summary" msgid="6165550114170534795">"Aggiorna il sistema in modo che Health Connect possa ripristinare i tuoi dati, quindi riprova."</string>
     <string name="import_other_error_banner_button" msgid="8006947649520909176">"Riprova"</string>
     <string name="import_other_error_banner_summary" msgid="4378957063605649197">"Si è verificato un problema con il ripristino dei dati dall\'esportazione."</string>
     <string name="backup_and_restore_footer_body_text" msgid="4854718727539851909">"La funzionalità Esporta ti consente di salvare i dati e trasferirli a un nuovo smartphone"</string>
@@ -549,32 +549,32 @@
     <string name="frequency_monthly" msgid="729674398053825938">"Ogni mese"</string>
     <string name="export_destination_title" msgid="8352929396306002479">"Scegli dove salvare l\'esportazione"</string>
     <string name="export_invalid_storage" msgid="1459055934301871321">"Scegli un\'app di spazio di archiviazione sul cloud per esportare i dati"</string>
-    <string name="export_default_file_name" msgid="1146984404965754445">"Connessione Salute"</string>
-    <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"Connessione Salute (<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>)"</string>
+    <string name="export_default_file_name" msgid="1146984404965754445">"Health Connect"</string>
+    <string name="export_default_file_name_with_sequence" msgid="2380551038319211752">"Health Connect (<xliff:g id="EXPORT_SEQUENTIAL_NUMBER">%1$s</xliff:g>)"</string>
     <string name="import_confirmation_dialog_title" msgid="1218478436676890997">"Importare il file?"</string>
-    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"<xliff:g id="FILE_NAME">%1$s</xliff:g> sarà importato in Connessione Salute"</string>
+    <string name="import_confirmation_dialog_text" msgid="7274564242039735667">"<xliff:g id="FILE_NAME">%1$s</xliff:g> sarà importato in Health Connect"</string>
     <string name="import_confirmation_dialog_cancel_button" msgid="4323351978842360895">"Annulla"</string>
     <string name="import_confirmation_dialog_import_button" msgid="7090219024758375606">"Importa"</string>
-    <string name="import_notification_import_in_progress_title" msgid="4657602436278942808">"Ripristino di Connessione Salute in corso…"</string>
-    <string name="import_notification_import_complete_title" msgid="7493223782222480412">"Ripristino di Connessione Salute completato"</string>
+    <string name="import_notification_import_in_progress_title" msgid="4657602436278942808">"Ripristino di Health Connect in corso…"</string>
+    <string name="import_notification_import_complete_title" msgid="7493223782222480412">"Ripristino di Health Connect completato"</string>
     <string name="import_in_progress_toast_text" msgid="3363548588078895706">"Ripristino in corso"</string>
     <string name="import_complete_toast_text" msgid="7730872919621230959">"Ripristino dei dati completato"</string>
-    <string name="import_notification_error_generic_error_title" msgid="19162830551127433">"Connessione Salute non ha potuto ripristinare i dati"</string>
+    <string name="import_notification_error_generic_error_title" msgid="19162830551127433">"Health Connect non ha potuto ripristinare i dati"</string>
     <string name="import_notification_error_more_space_needed_title" msgid="240259612132385794">"È necessario più spazio"</string>
     <string name="import_notification_error_invalid_file_body_text" msgid="8877884063398886772">"Il file selezionato non è compatibile per il ripristino. Assicurati di selezionare il file esportato corretto."</string>
-    <string name="import_notification_error_more_space_needed_body_text" msgid="7577564968089566232">"Connessione Salute richiede <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> di spazio di archiviazione sullo smartphone per continuare a ripristinare i dati."</string>
+    <string name="import_notification_error_more_space_needed_body_text" msgid="7577564968089566232">"Health Connect richiede <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> di spazio di archiviazione sullo smartphone per continuare a ripristinare i dati."</string>
     <string name="import_notification_error_generic_error_body_text" msgid="6562162452820282874">"Si è verificato un problema con il ripristino dei dati dall\'esportazione."</string>
-    <string name="import_notification_error_version_mismatch_body_text" msgid="9186785816764607620">"Aggiorna il sistema in modo che Connessione Salute possa ripristinare i tuoi dati, quindi riprova."</string>
+    <string name="import_notification_error_version_mismatch_body_text" msgid="9186785816764607620">"Aggiorna il sistema in modo che Health Connect possa ripristinare i tuoi dati, quindi riprova."</string>
     <string name="import_notification_update_now_intent_button" msgid="2808579294292956628">"Aggiorna ora"</string>
     <string name="import_notification_try_again_intent_button" msgid="3833062670098674999">"Riprova"</string>
     <string name="import_notification_open_intent_button" msgid="2739924648846724969">"Apri"</string>
     <string name="import_notification_choose_file_intent_button" msgid="2249671128440758769">"Scegli file"</string>
     <string name="import_notification_free_up_space_intent_button" msgid="4665571334602539807">"Libera spazio"</string>
     <string name="scheduled_export_on_toast_text" msgid="945186472588537310">"L\'esportazione programmata è attiva"</string>
-    <string name="export_notification_error_generic_error_title" msgid="7940091379629095465">"Connessione Salute non ha potuto esportare i dati"</string>
+    <string name="export_notification_error_generic_error_title" msgid="7940091379629095465">"Health Connect non ha potuto esportare i dati"</string>
     <string name="export_notification_error_more_space_needed_title" msgid="5089783781556500431">"Più spazio richiesto"</string>
     <string name="export_notification_error_generic_error_body_text" msgid="4161925150551602640">"Si è verificato un problema con l\'esportazione del giorno <xliff:g id="DATE">%1$s</xliff:g>. Configura una nuova esportazione pianificata e riprova."</string>
-    <string name="export_notification_error_more_space_needed_body_text" msgid="5519192430780383427">"Connessione Salute richiede <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> di spazio di archiviazione sullo smartphone per continuare con l\'esportazione pianificata."</string>
+    <string name="export_notification_error_more_space_needed_body_text" msgid="5519192430780383427">"Health Connect richiede <xliff:g id="SPACE_NEEDED">%1$s</xliff:g> di spazio di archiviazione sullo smartphone per continuare con l\'esportazione pianificata."</string>
     <string name="export_notification_set_up_intent_button" msgid="1484836974815713693">"Configura"</string>
     <string name="export_notification_free_up_space_intent_button" msgid="2902823222861202203">"Libera spazio"</string>
     <string name="export_back_button" msgid="3550795479165524982">"Indietro"</string>
@@ -591,11 +591,11 @@
     <string name="export_import_no_apps_text" msgid="6403119325024893690">"Nessuna app disponibile. Installa app di spazio di archiviazione sul cloud per visualizzarle qui"</string>
     <string name="export_import_install_apps_text" msgid="5026922993254770904">"Per maggiori dettagli, installa le app di spazio di archiviazione sul cloud per vederle qui"</string>
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Vai al Play Store"</string>
-    <string name="onboarding_title" msgid="8550656211291180188">"Inizia a usare Connessione Salute"</string>
-    <string name="onboarding_description" msgid="3479157507808350452">"Connessione Salute archivia i dati su salute e fitness e ti consente di sincronizzare facilmente le varie app installate sul dispositivo"</string>
-    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Connessione Salute archivia e sincronizza i dati su fitness e salute di diverse app.\n\n"<b>"Dati su fitness e benessere,"</b>" tra cui sessioni di allenamento, passi, alimentazione, sonno e altro ancora\n\n"<b>"Storia clinica,"</b>" compresi vaccini, risultati di laboratorio e altro ancora"</string>
-    <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Con Connessione Salute"</string>
-    <string name="share_data_text" msgid="6898398345784931678"><b>"Condividi i dati con le tue app"</b>\n"Scegli i dati che ciascuna app può leggere o scrivere su Connessione Salute"</string>
+    <string name="onboarding_title" msgid="8550656211291180188">"Inizia a usare Health Connect"</string>
+    <string name="onboarding_description" msgid="3479157507808350452">"Health Connect archivia i dati su salute e fitness e ti consente di sincronizzare facilmente le varie app installate sul dispositivo"</string>
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect archivia e sincronizza i dati su fitness e salute di diverse app.\n\n"<b>"Dati su fitness e benessere,"</b>" tra cui sessioni di allenamento, passi, alimentazione, sonno e altro ancora\n\n"<b>"Storia clinica,"</b>" compresi vaccini, risultati di laboratorio e altro ancora"</string>
+    <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Con Health Connect"</string>
+    <string name="share_data_text" msgid="6898398345784931678"><b>"Condividi i dati con le tue app"</b>\n"Scegli i dati che ciascuna app può leggere o scrivere su Health Connect"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Gestisci le impostazioni e la privacy"</b>\n"Modifica le autorizzazioni app e gestisci i tuoi dati in qualsiasi momento"</string>
     <string name="onboarding_go_back_button_text" msgid="5020083846511184625">"Indietro"</string>
     <string name="onboarding_get_started_button_text" msgid="2348061971090731336">"Inizia"</string>
@@ -603,13 +603,13 @@
     <string name="delete_inactive_app_data_button_content_description" msgid="5348498235281456144">"Pulsante Elimina i dati di %1$s"</string>
     <string name="enter_deletion_button_content_description" msgid="416336747251264118">"Entra a eliminazione"</string>
     <string name="exit_deletion_button_content_description" msgid="6579227028841619158">"Esci da eliminazione"</string>
-    <string name="time_range_title" msgid="5777596779865648336">"Scegli i dati di Connessione Salute da eliminare"</string>
+    <string name="time_range_title" msgid="5777596779865648336">"Scegli i dati di Health Connect da eliminare"</string>
     <string name="time_range_next_button" msgid="5849096934896557888">"Avanti"</string>
-    <string name="time_range_message_all" msgid="7280888587242744729">"Questa azione eliminerà definitivamente tutti i dati aggiunti a Connessione Salute nel periodo di tempo selezionato"</string>
-    <string name="time_range_message_data_type" msgid="1896125004829258195">"Questa azione eliminerà definitivamente i dati relativi a \"<xliff:g id="DATA_TYPE">%s</xliff:g>\" aggiunti a Connessione Salute nel periodo di tempo selezionato"</string>
-    <string name="time_range_message_category" msgid="1136451418397326356">"Questa azione eliminerà definitivamente i dati relativi a \"<xliff:g id="CATEGORY">%s</xliff:g>\" aggiunti a Connessione Salute nel periodo di tempo selezionato"</string>
-    <string name="time_range_message_app_data" msgid="2590800457710603556">"Questa azione eliminerà definitivamente i dati relativi a <xliff:g id="APP_DATA">%s</xliff:g> aggiunti a Connessione Salute nel periodo di tempo selezionato"</string>
-    <string name="time_range_message_permission_type_app_data" msgid="1613568925588480588">"Questa azione eliminerà definitivamente i dati relativi a <xliff:g id="DATA_TYPE">%1$s</xliff:g> aggiunti da <xliff:g id="APP_DATA">%2$s</xliff:g> a Connessione Salute nel periodo di tempo selezionato"</string>
+    <string name="time_range_message_all" msgid="7280888587242744729">"Questa azione eliminerà definitivamente tutti i dati aggiunti a Health Connect nel periodo di tempo selezionato"</string>
+    <string name="time_range_message_data_type" msgid="1896125004829258195">"Questa azione eliminerà definitivamente i dati relativi a \"<xliff:g id="DATA_TYPE">%s</xliff:g>\" aggiunti a Health Connect nel periodo di tempo selezionato"</string>
+    <string name="time_range_message_category" msgid="1136451418397326356">"Questa azione eliminerà definitivamente i dati relativi a \"<xliff:g id="CATEGORY">%s</xliff:g>\" aggiunti a Health Connect nel periodo di tempo selezionato"</string>
+    <string name="time_range_message_app_data" msgid="2590800457710603556">"Questa azione eliminerà definitivamente i dati relativi a <xliff:g id="APP_DATA">%s</xliff:g> aggiunti a Health Connect nel periodo di tempo selezionato"</string>
+    <string name="time_range_message_permission_type_app_data" msgid="1613568925588480588">"Questa azione eliminerà definitivamente i dati relativi a <xliff:g id="DATA_TYPE">%1$s</xliff:g> aggiunti da <xliff:g id="APP_DATA">%2$s</xliff:g> a Health Connect nel periodo di tempo selezionato"</string>
     <string name="time_range_one_day" msgid="7162709826595446727">"Elimina ultime 24 ore"</string>
     <string name="time_range_one_week" msgid="8754523384275645434">"Elimina ultimi 7 giorni"</string>
     <string name="time_range_one_month" msgid="3034747870231999766">"Elimina ultimi 30 giorni"</string>
@@ -634,25 +634,25 @@
     <string name="confirming_question_permission_type_app_data_one_day" msgid="4377296923865256246">"Vuoi eliminare definitivamente i dati su <xliff:g id="DATA_TYPE">%1$s</xliff:g> aggiunti da <xliff:g id="APP_DATA">%2$s</xliff:g> relativi alle ultime 24 ore?"</string>
     <string name="confirming_question_permission_type_app_data_one_week" msgid="2253468260502709170">"Vuoi eliminare definitivamente i dati su <xliff:g id="DATA_TYPE">%1$s</xliff:g> aggiunti da <xliff:g id="APP_DATA">%2$s</xliff:g> relativi agli ultimi 7 giorni?"</string>
     <string name="confirming_question_permission_type_app_data_one_month" msgid="1656927839079630144">"Vuoi eliminare definitivamente i dati su <xliff:g id="DATA_TYPE">%1$s</xliff:g> aggiunti da <xliff:g id="APP_DATA">%2$s</xliff:g> relativi agli ultimi 30 giorni?"</string>
-    <string name="confirming_question_app_remove_all_permissions" msgid="4170343072352701421">"Inoltre, rimuovi tutte le autorizzazioni di <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> da Connessione Salute"</string>
+    <string name="confirming_question_app_remove_all_permissions" msgid="4170343072352701421">"Inoltre, rimuovi tutte le autorizzazioni di <xliff:g id="APP_WITH_PERMISSIONS">%s</xliff:g> da Health Connect"</string>
     <string name="confirming_question_data_type_from_app_all" msgid="8361163993548510509">"Vuoi eliminare definitivamente tutti i dati relativi a <xliff:g id="DATA_TYPE">%1$s</xliff:g> aggiunti da <xliff:g id="APP_DATA">%2$s</xliff:g>?"</string>
-    <string name="confirming_question_single_entry" msgid="2064578008447638932">"Vuoi eliminare definitivamente questa voce da Connessione Salute?"</string>
-    <string name="confirming_question_message" msgid="2934249835529079545">"Le app collegate non potranno più accedere a questi dati tramite Connessione Salute."</string>
+    <string name="confirming_question_single_entry" msgid="2064578008447638932">"Vuoi eliminare definitivamente questa voce da Health Connect?"</string>
+    <string name="confirming_question_message" msgid="2934249835529079545">"Le app collegate non potranno più accedere a questi dati tramite Health Connect."</string>
     <string name="confirming_question_message_menstruation" msgid="944931041343695373">"Questa operazione eliminerà tutte le voci relative al ciclo mestruale dal giorno <xliff:g id="START_DATE">%1$s</xliff:g> al giorno <xliff:g id="END_DATE">%2$s</xliff:g>."</string>
     <string name="confirming_question_delete_button" msgid="1999996759507959985">"Elimina"</string>
     <string name="confirming_question_go_back_button" msgid="9037523726124648221">"Indietro"</string>
     <string name="delete_dialog_success_got_it_button" msgid="8047812840310612293">"Fine"</string>
     <string name="delete_dialog_failure_close_button" msgid="4376647579348193224">"Chiudi"</string>
-    <string name="delete_dialog_success_title" msgid="900884533930984889">"Dati eliminati da Connessione Salute"</string>
+    <string name="delete_dialog_success_title" msgid="900884533930984889">"Dati eliminati da Health Connect"</string>
     <string name="delete_dialog_success_message" msgid="7454086333205881294">"Se vuoi eliminare completamente i tuoi dati dalle app collegate, controlla ogni app dove potrebbero essere salvati i tuoi dati."</string>
     <string name="delete_dialog_done_button" msgid="1371340030947835493">"Fine"</string>
     <string name="delete_dialog_see_connected_apps_button" msgid="2975631672738138716">"Visualizza le app collegate"</string>
     <string name="delete_progress_indicator" msgid="5799502879065833417">"Eliminazione dei dati in corso…"</string>
     <string name="delete_dialog_failure_title" msgid="1959020721355789496">"Impossibile eliminare i dati"</string>
-    <string name="delete_dialog_failure_message" msgid="7473241488471319963">"Si è verificato un problema e Connessione Salute non ha potuto eliminare i tuoi dati"</string>
+    <string name="delete_dialog_failure_message" msgid="7473241488471319963">"Si è verificato un problema e Health Connect non ha potuto eliminare i tuoi dati"</string>
     <string name="delete_dialog_failure_try_again_button" msgid="4323865124609424838">"Riprova"</string>
-    <string name="delete_data_notification_title" msgid="7740230240986343347">"Eliminazione dati Connessione Salute in corso…"</string>
-    <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"Eliminazione dati Connessione Salute in corso…"</string>
+    <string name="delete_data_notification_title" msgid="7740230240986343347">"Eliminazione dati Health Connect in corso…"</string>
+    <string name="delete_data_notification_ticker_text" msgid="2604051567679235822">"Eliminazione dati Health Connect in corso…"</string>
     <string name="delete_data_notification_channel_name" msgid="4499713830012802095">"Eliminazione dei dati"</string>
     <string name="data_point_action_content_description" msgid="6881048311770784455">"Elimina immissione dati <xliff:g id="ENTRY_TO_DELETE">%s</xliff:g>"</string>
     <string name="delete_data_point" msgid="1004049578454616738">"Elimina voce <xliff:g id="ENTRY_TO_DELETE">%s</xliff:g>"</string>
@@ -1067,36 +1067,36 @@
     <string name="temperature_unit_fahrenheit_label" msgid="6590261955872562854">"Fahrenheit"</string>
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"Kelvin"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"Guida e feedback"</string>
-    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Se non riesci a vedere un\'app installata, potrebbe non essere ancora compatibile con Connessione Salute"</string>
+    <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Se non riesci a vedere un\'app installata, potrebbe non essere ancora compatibile con Health Connect"</string>
     <string name="things_to_try" msgid="8200374691546152703">"Da provare"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Verifica disponibilità di aggiornamenti"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"Assicurati che le app installate siano aggiornate"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Vedi tutte le app compatibili"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Trova app su Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Invia feedback"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"Dicci quali app per l\'attività fisica e la salute vorresti fossero compatibili con Connessione Salute"</string>
+    <string name="send_feedback_description" msgid="2887207112856240778">"Dicci quali app per l\'attività fisica e la salute vorresti fossero compatibili con Health Connect"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Elimina automaticamente"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Elimina automaticamente"</string>
-    <string name="auto_delete_header" msgid="4258649705159293715">"Gestisci la durata di conservazione dei tuoi dati in Connessione Salute programmando la loro eliminazione dopo un periodo prestabilito"</string>
+    <string name="auto_delete_header" msgid="4258649705159293715">"Gestisci la durata di conservazione dei tuoi dati in Health Connect programmando la loro eliminazione dopo un periodo prestabilito"</string>
     <string name="auto_delete_learn_more" msgid="7416469042791307994">"Scopri di più sull\'eliminazione automatica"</string>
     <string name="auto_delete_section" msgid="7732381000331475082">"Elimina i dati automaticamente"</string>
     <string name="range_after_x_months" msgid="3340127072680117121">"{count,plural, =1{Dopo # mese}other{Dopo # mesi}}"</string>
     <string name="range_never" msgid="4429478261788361233">"Mai"</string>
     <string name="range_off" msgid="8178520557618184215">"Off"</string>
-    <string name="auto_delete_rationale" msgid="5255442126521464878">"Quando modifichi queste impostazioni, Connessione Salute elimina i dati esistenti per riflettere le tue nuove preferenze"</string>
+    <string name="auto_delete_rationale" msgid="5255442126521464878">"Quando modifichi queste impostazioni, Health Connect elimina i dati esistenti per riflettere le tue nuove preferenze"</string>
     <string name="confirming_question_x_months" msgid="8204363800605282103">"{count,plural, =1{Eliminare automaticamente i dati dopo # mese?}other{Eliminare automaticamente i dati dopo # mesi?}}"</string>
-    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Questa funzionalità elimina anche i dati di Connessione Salute che risalgono a più di # mese fa.\n\nSe vuoi eliminare completamente i tuoi dati dalle app collegate, controlla ogni app dove potrebbero essere salvati i tuoi dati.}other{Questa funzionalità elimina anche i dati di Connessione Salute che risalgono a più di # mesi fa.\n\nSe vuoi eliminare completamente i tuoi dati dalle app collegate, controlla ogni app dove potrebbero essere salvati i tuoi dati.}}"</string>
+    <string name="confirming_message_x_months" msgid="986840333220382321">"{count,plural, =1{Questa funzionalità elimina anche i dati di Health Connect che risalgono a più di # mese fa.\n\nSe vuoi eliminare completamente i tuoi dati dalle app collegate, controlla ogni app dove potrebbero essere salvati i tuoi dati.}other{Questa funzionalità elimina anche i dati di Health Connect che risalgono a più di # mesi fa.\n\nSe vuoi eliminare completamente i tuoi dati dalle app collegate, controlla ogni app dove potrebbero essere salvati i tuoi dati.}}"</string>
     <string name="set_auto_delete_button" msgid="268450418318199197">"Imposta eliminazione automatica"</string>
     <string name="deletion_started_title" msgid="1177766097121885025">"I dati esistenti verranno eliminati"</string>
-    <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Connessione Salute eliminerà tutti i dati che risalgono a più di # mese fa. Potrebbe essere necessario un giorno per la visualizzazione di queste modifiche nelle tue app collegate.}other{Connessione Salute eliminerà tutti i dati che risalgono a più di # mesi fa. Potrebbe essere necessario un giorno per la visualizzazione di queste modifiche nelle tue app collegate.}}"</string>
+    <string name="deletion_started_x_months" msgid="6567199107249615612">"{count,plural, =1{Health Connect eliminerà tutti i dati che risalgono a più di # mese fa. Potrebbe essere necessario un giorno per la visualizzazione di queste modifiche nelle tue app collegate.}other{Health Connect eliminerà tutti i dati che risalgono a più di # mesi fa. Potrebbe essere necessario un giorno per la visualizzazione di queste modifiche nelle tue app collegate.}}"</string>
     <string name="deletion_started_category_list_section" msgid="3052940611815658991">"Dati da eliminare da queste"</string>
     <string name="deletion_started_done_button" msgid="1232018689825054257">"Fine"</string>
     <string name="auto_delete_confirmation_toast" msgid="7161651426400701306">"{count,plural, =1{L\'eliminazione automatica è attiva. I dati risalenti a più di # mese fa verranno eliminati.}other{L\'eliminazione automatica è attiva. I dati risalenti a più di # mesi fa verranno eliminati.}}"</string>
     <string name="auto_delete_off_toast" msgid="6530926709108821768">"L\'eliminazione automatica è disattivata"</string>
     <string name="plus_n_matched_apps_format" msgid="5447899782883252148">"+<xliff:g id="COUNT">%s</xliff:g>"</string>
     <string name="priority_dialog_title" msgid="7360654442596118085">"Imposta la priorità delle app"</string>
-    <string name="priority_dialog_message" msgid="6971250365335018184">"Se più app aggiungono dati relativi a <xliff:g id="DATA_TYPE">%s</xliff:g>, Connessione Salute dà la priorità all\'app all\'inizio di questo elenco. Trascina le app per cambiarne l\'ordine."</string>
+    <string name="priority_dialog_message" msgid="6971250365335018184">"Se più app aggiungono dati relativi a <xliff:g id="DATA_TYPE">%s</xliff:g>, Health Connect dà la priorità all\'app all\'inizio di questo elenco. Trascina le app per cambiarne l\'ordine."</string>
     <string name="priority_dialog_positive_button" msgid="2503570694373675092">"Salva"</string>
     <string name="action_drag_label_move_up" msgid="4221641798253080966">"Sposta all\'inizio"</string>
     <string name="action_drag_label_move_down" msgid="3448000958912947588">"Sposta giù"</string>
@@ -1109,20 +1109,20 @@
     <string name="priority_list_item_content_description" msgid="8792727829749801217">"<xliff:g id="POSITION">%1$s</xliff:g> nell\'elenco <xliff:g id="SELECTED_APP">%2$s</xliff:g>"</string>
     <string name="search_keywords_home" msgid="5386515593026555327">"attività fisica, benessere"</string>
     <string name="search_keywords_permissions" msgid="7821010295153350533">"autorizzazioni"</string>
-    <string name="search_keywords_data" msgid="5359602744325490523">"connessione salute, dati salute, categorie salute, accesso ai dati, attività, misurazioni corporee, monitoraggio del ciclo, alimentazione, sonno, parametri vitali"</string>
-    <string name="search_breadcrumbs_permissions" msgid="2667471090347475796">"Connessione Salute e Autorizzazioni app"</string>
-    <string name="search_breadcrumbs_data" msgid="6635428480372024040">"Connessione Salute e Dati e accesso"</string>
+    <string name="search_keywords_data" msgid="5359602744325490523">"health connect, dati salute, categorie salute, accesso ai dati, attività, misurazioni corporee, monitoraggio del ciclo, alimentazione, sonno, parametri vitali"</string>
+    <string name="search_breadcrumbs_permissions" msgid="2667471090347475796">"Health Connect e Autorizzazioni app"</string>
+    <string name="search_breadcrumbs_data" msgid="6635428480372024040">"Health Connect e Dati e accesso"</string>
     <string name="search_connected_apps" msgid="8180770761876928851">"Cerca app"</string>
     <string name="no_results" msgid="4007426147286897998">"Nessun risultato"</string>
     <string name="help" msgid="6028777453152686162">"Guida"</string>
-    <string name="request_route_header_title" msgid="6599707039845646714">"Consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere a questo percorso in Connessione Salute?"</string>
+    <string name="request_route_header_title" msgid="6599707039845646714">"Consentire all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> di accedere a questo percorso in Health Connect?"</string>
     <string name="request_route_disclaimer_notice" msgid="8060511384737662598">"Questa app potrà leggere la tua posizione precedente nel percorso"</string>
     <string name="date_owner_format" msgid="4431196384037157320">"<xliff:g id="DATE">%1$s</xliff:g> • <xliff:g id="APP_NAME">%2$s</xliff:g>"</string>
     <string name="request_route_info_header_title" msgid="4149969049719763190">"I percorsi per l\'esercizio fisico includono informazioni sulla posizione"</string>
     <string name="request_route_info_who_can_see_data_title" msgid="858355329937113994">"Chi può vedere questi dati?"</string>
     <string name="request_route_info_who_can_see_data_summary" msgid="2439434359808367150">"Soltanto le app a cui consenti l\'accesso ai tuoi percorsi per l\'esercizio fisico"</string>
     <string name="request_route_info_access_management_title" msgid="3222594923675464852">"Come faccio a gestire l\'accesso?"</string>
-    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"Puoi gestire l\'accesso delle app ai percorsi per l\'esercizio fisico nelle impostazioni di Connessione Salute"</string>
+    <string name="request_route_info_access_management_summary" msgid="2606548838292829495">"Puoi gestire l\'accesso delle app ai percorsi per l\'esercizio fisico nelle impostazioni di Health Connect"</string>
     <string name="request_route_allow" msgid="4427372851821847274">"Consenti questo percorso"</string>
     <string name="request_route_allow_all" msgid="314830698958736916">"Consenti tutti i percorsi"</string>
     <string name="request_route_dont_allow" msgid="1186236234664957228">"Non autorizzare"</string>
@@ -1140,50 +1140,50 @@
     <string name="back_button" msgid="780519527385993407">"Indietro"</string>
     <string name="loading" msgid="2526615755685950317">"Caricamento in corso…"</string>
     <string name="migration_in_progress_screen_title" msgid="6564515269988205874">"Integrazione in corso"</string>
-    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"È in corso l\'integrazione di Connessione Salute nel sistema Android.\n\nIl trasferimento di dati e autorizzazioni potrebbe richiedere del tempo."</string>
+    <string name="migration_in_progress_screen_integration_details" msgid="5916989113111973466">"È in corso l\'integrazione di Health Connect nel sistema Android.\n\nIl trasferimento di dati e autorizzazioni potrebbe richiedere del tempo."</string>
     <string name="migration_in_progress_screen_integration_dont_close" msgid="2095732208438772444">"Non chiudere l\'app finché non riceverai una notifica che ti informa che il processo è stato completato."</string>
     <string name="migration_update_needed_screen_title" msgid="3260466598312877429">"Aggiornamento necessario"</string>
-    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"È in corso l\'integrazione di Connessione Salute nel sistema Android, così potrai accedere all\'app direttamente dalle tue impostazioni."</string>
+    <string name="migration_update_needed_screen_details" msgid="7984745102006782603">"È in corso l\'integrazione di Health Connect nel sistema Android, così potrai accedere all\'app direttamente dalle tue impostazioni."</string>
     <string name="update_button" msgid="4544529019832009496">"Aggiorna"</string>
-    <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Avvia questo aggiornamento, in modo che l\'integrazione nelle tue impostazioni di sistema di Connessione Salute possa continuare"</string>
-    <string name="migration_update_needed_header" msgid="2530273034135305057">"È in corso l\'integrazione di Connessione Salute nel sistema Android, così potrai accedere all\'app direttamente dalle tue impostazioni.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
+    <string name="migration_update_needed_notification_content" msgid="478899618719297517">"Avvia questo aggiornamento, in modo che l\'integrazione nelle tue impostazioni di sistema di Health Connect possa continuare"</string>
+    <string name="migration_update_needed_header" msgid="2530273034135305057">"È in corso l\'integrazione di Health Connect nel sistema Android, così potrai accedere all\'app direttamente dalle tue impostazioni.\n\n<xliff:g id="MIGRATION_ACTION">%1$s</xliff:g>"</string>
     <string name="migration_module_update_needed_notification_title" msgid="5428523284357105379">"Aggiornamento di sistema richiesto"</string>
     <string name="migration_module_update_needed_action" msgid="7211167950758064289">"Prima di continuare, aggiorna il sistema del tuo telefono."</string>
     <string name="migration_module_update_needed_restart" msgid="1246884613546321798">"Se hai già aggiornato il sistema del tuo telefono, prova a riavviare il dispositivo per continuare con l\'integrazione"</string>
-    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Prima di continuare, aggiorna l\'app Connessione Salute all\'ultima versione."</string>
+    <string name="migration_app_update_needed_action" msgid="3289432528592774601">"Prima di continuare, aggiorna l\'app Health Connect all\'ultima versione."</string>
     <string name="migration_paused_screen_title" msgid="8041170155372429894">"Integrazione in pausa"</string>
-    <string name="migration_paused_screen_details" msgid="5898311710030340187">"L\'app Connessione Salute è stata chiusa durante l\'integrazione nel sistema Android.\n\nFai clic su Riprendi per riaprire l\'app e continuare a trasferire dati e autorizzazioni."</string>
-    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Per mantenere i tuoi dati di Connessione Salute, completa l\'operazione entro <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
+    <string name="migration_paused_screen_details" msgid="5898311710030340187">"L\'app Health Connect è stata chiusa durante l\'integrazione nel sistema Android.\n\nFai clic su Riprendi per riaprire l\'app e continuare a trasferire dati e autorizzazioni."</string>
+    <string name="migration_paused_screen_details_timeout" msgid="353768000785837394">"Per mantenere i tuoi dati di Health Connect, completa l\'operazione entro <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
     <string name="resume_button" msgid="2255148549862208047">"Riprendi"</string>
     <string name="migration_paused_notification_title" msgid="4368414714202113077">"Integrazione in pausa"</string>
-    <string name="migration_paused_notification_content" msgid="1950511270109811771">"L\'integrazione di Connessione Salute nel sistema Android è stata messa in pausa. Tocca per continuare"</string>
+    <string name="migration_paused_notification_content" msgid="1950511270109811771">"L\'integrazione di Health Connect nel sistema Android è stata messa in pausa. Tocca per continuare"</string>
     <string name="resume_migration_banner_title" msgid="4443957114824045317">"Riprendi l\'integrazione"</string>
-    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Tocca per continuare con l\'integrazione di Connessione Salute nel sistema Android. Per mantenere i tuoi dati, completa l\'operazione entro <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
-    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Tocca per continuare con l\'integrazione di Connessione Salute nel sistema Android."</string>
+    <string name="resume_migration_banner_description" msgid="6236230413670826036">"Tocca per continuare con l\'integrazione di Health Connect nel sistema Android. Per mantenere i tuoi dati, completa l\'operazione entro <xliff:g id="TIME_NEEDED">%1$s</xliff:g>"</string>
+    <string name="resume_migration_banner_description_fallback" msgid="6060444898839211883">"Tocca per continuare con l\'integrazione di Health Connect nel sistema Android."</string>
     <string name="resume_migration_banner_button" msgid="2112318760107756469">"Continua"</string>
     <string name="app_update_needed_banner_title" msgid="4724335956851853802">"Aggiornamento app necessario"</string>
-    <string name="app_update_needed_banner_description_single" msgid="8220676317438592573">"L\'app <xliff:g id="APP_NAME">%1$s</xliff:g> deve essere aggiornata per continuare a sincronizzarsi con Connessione Salute. Gli aggiornamenti potrebbero non essere disponibili per tutte le app."</string>
-    <string name="app_update_needed_banner_description_multiple" msgid="6021498912770754575">"Alcune app devono essere aggiornate per continuare a sincronizzarsi con Connessione Salute. Gli aggiornamenti potrebbero non essere disponibili per tutte le app."</string>
+    <string name="app_update_needed_banner_description_single" msgid="8220676317438592573">"L\'app <xliff:g id="APP_NAME">%1$s</xliff:g> deve essere aggiornata per continuare a sincronizzarsi con Health Connect. Gli aggiornamenti potrebbero non essere disponibili per tutte le app."</string>
+    <string name="app_update_needed_banner_description_multiple" msgid="6021498912770754575">"Alcune app devono essere aggiornate per continuare a sincronizzarsi con Health Connect. Gli aggiornamenti potrebbero non essere disponibili per tutte le app."</string>
     <string name="app_update_needed_banner_button" msgid="8223115764065649627">"Verifica disponibilità di aggiornamenti"</string>
     <string name="app_update_needed_banner_learn_more_button" msgid="7269232067819258160">"Scopri di più"</string>
-    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integrazione di Connessione Salute"</string>
-    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"L\'app Connessione Salute è pronta per l\'integrazione nel sistema Android. Se consenti l\'accesso all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> ora, alcune funzionalità potrebbero non funzionare fino al completamento dell\'integrazione."</string>
-    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"L\'app Connessione Salute è pronta per essere integrata nel sistema Android. Se consenti ora l\'accesso alle app, alcune funzionalità potrebbero non essere disponibili fino al completamento dell\'integrazione."</string>
+    <string name="migration_pending_permissions_dialog_title" msgid="6019552841791757048">"Integrazione di Health Connect"</string>
+    <string name="migration_pending_permissions_dialog_content" msgid="6350115816948005466">"L\'app Health Connect è pronta per l\'integrazione nel sistema Android. Se consenti l\'accesso all\'app <xliff:g id="APP_NAME">%1$s</xliff:g> ora, alcune funzionalità potrebbero non funzionare fino al completamento dell\'integrazione."</string>
+    <string name="migration_pending_permissions_dialog_content_apps" msgid="6417173899016940664">"L\'app Health Connect è pronta per essere integrata nel sistema Android. Se consenti ora l\'accesso alle app, alcune funzionalità potrebbero non essere disponibili fino al completamento dell\'integrazione."</string>
     <string name="migration_pending_permissions_dialog_button_continue" msgid="258571372365364506">"Continua"</string>
     <string name="migration_pending_permissions_dialog_button_start_integration" msgid="754910196871313049">"Avvia integrazione"</string>
-    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integrazione di Connessione Salute in corso"</string>
-    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"È in corso l\'integrazione di Connessione Salute nel sistema Android.\n\nAl termine del processo riceverai una notifica e potrai usare <xliff:g id="APP_NAME">%1$s</xliff:g> con Connessione Salute."</string>
-    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"È in corso l\'integrazione di Connessione Salute nel sistema Android.\n\nAl termine della procedura riceverai una notifica e potrai usare Connessione Salute."</string>
+    <string name="migration_in_progress_permissions_dialog_title" msgid="2188354144857156984">"Integrazione di Health Connect in corso"</string>
+    <string name="migration_in_progress_permissions_dialog_content" msgid="2249793103623253693">"È in corso l\'integrazione di Health Connect nel sistema Android.\n\nAl termine del processo riceverai una notifica e potrai usare <xliff:g id="APP_NAME">%1$s</xliff:g> con Health Connect."</string>
+    <string name="migration_in_progress_permissions_dialog_content_apps" msgid="8653954808926889199">"È in corso l\'integrazione di Health Connect nel sistema Android.\n\nAl termine della procedura riceverai una notifica e potrai usare Health Connect."</string>
     <string name="migration_in_progress_permissions_dialog_button_got_it" msgid="3437208109334974656">"OK"</string>
-    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Integrazione di Connessione Salute non completata"</string>
+    <string name="migration_not_complete_dialog_title" msgid="3725576338159027149">"Integrazione di Health Connect non completata"</string>
     <string name="migration_not_complete_dialog_content" msgid="4992771587233088606">"Riceverai una notifica quando sarà di nuovo disponibile."</string>
     <string name="migration_not_complete_dialog_button" msgid="3271842109680807482">"OK"</string>
     <string name="migration_whats_new_dialog_title" msgid="2349465358457105228">"Novità"</string>
-    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Ora puoi accedere a Connessione Salute direttamente dalle tue impostazioni. Disinstalla l\'app Connessione Salute in qualsiasi momento per liberare spazio di archiviazione."</string>
+    <string name="migration_whats_new_dialog_content" msgid="1271560399054864488">"Ora puoi accedere a Health Connect direttamente dalle tue impostazioni. Disinstalla l\'app Health Connect in qualsiasi momento per liberare spazio di archiviazione."</string>
     <string name="migration_whats_new_dialog_button" msgid="642575552457587805">"OK"</string>
     <string name="data_restore_in_progress_screen_title" msgid="2516161353003274764">"Ripristino in corso"</string>
-    <string name="data_restore_in_progress_content" msgid="2684897189974069361">"Connessione Salute sta ripristinando dati e autorizzazioni. Il completamento dell\'operazione potrebbe richiedere del tempo."</string>
-    <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Ripristino di Connessione Salute in corso"</string>
+    <string name="data_restore_in_progress_content" msgid="2684897189974069361">"Health Connect sta ripristinando dati e autorizzazioni. Il completamento dell\'operazione potrebbe richiedere del tempo."</string>
+    <string name="data_restore_in_progress_dialog_title" msgid="9097805833675345598">"Ripristino di Health Connect in corso…"</string>
     <string name="data_restore_in_progress_dialog_button" msgid="2096525382430589845">"Ok"</string>
     <string name="data_restore_pending_banner_title" msgid="6792157138348551175">"Aggiornamento necessario"</string>
     <string name="data_restore_pending_banner_content" msgid="2464779762242296738">"Per continuare a ripristinare i dati, aggiorna il sistema del dispositivo."</string>
@@ -1202,7 +1202,7 @@
     <string name="remove" msgid="1340423400489007362">"Rimuovi"</string>
     <string name="app_data_title" msgid="6499967982291000837">"Dati dell\'app"</string>
     <string name="app_data_no_data_footer" msgid="7027700714577530371">"I dati di <xliff:g id="APP_NAME">%1$s</xliff:g> verranno mostrati qui"</string>
-    <string name="all_data_no_data_footer" msgid="2553443887019153340">"I dati delle app con accesso a Connessione Salute verranno mostrati qui"</string>
+    <string name="all_data_no_data_footer" msgid="2553443887019153340">"I dati delle app con accesso a Health Connect verranno mostrati qui"</string>
     <string name="date_picker_day" msgid="3076687507968958991">"Giorno"</string>
     <string name="date_picker_week" msgid="1038805538316142229">"Settimana"</string>
     <string name="date_picker_month" msgid="3560692391260778560">"Mese"</string>
@@ -1212,21 +1212,21 @@
     <string name="last_month_header" msgid="1359164797239191253">"Mese scorso"</string>
     <string name="tab_entries" msgid="3402700951602029493">"Voci"</string>
     <string name="tab_access" msgid="7818197975407243701">"Accesso"</string>
-    <string name="start_using_hc_banner_title" msgid="2030178284749796384">"Inizia a usare Connessione Salute"</string>
+    <string name="start_using_hc_banner_title" msgid="2030178284749796384">"Inizia a usare Health Connect"</string>
     <string name="start_using_hc_banner_content" msgid="3171560198945933334">"Sincronizza le tue prime app per condividere dati su salute e fitness tra di loro"</string>
     <string name="start_using_hc_set_up_button" msgid="7486865297236439364">"Configura"</string>
     <string name="connect_more_apps_banner_title" msgid="4746581834305054229">"Collega altre app"</string>
     <string name="connect_more_apps_banner_content" msgid="8104544246031860111">"Inizia a condividere i dati tra <xliff:g id="APP_NAME">%s</xliff:g> e le app per la salute sul tuo smartphone"</string>
     <string name="connect_more_apps_set_up_button" msgid="4491201768717567269">"Configura"</string>
     <string name="see_compatible_apps_banner_title" msgid="5217106184748241727">"Vedi le app compatibili"</string>
-    <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"Trova altre app da sincronizzare con <xliff:g id="APP_NAME">%s</xliff:g> tramite Connessione Salute"</string>
+    <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"Trova altre app da sincronizzare con <xliff:g id="APP_NAME">%s</xliff:g> tramite Health Connect"</string>
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"Vedi nello store"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"Imposta un blocco schermo"</string>
     <string name="lock_screen_banner_content" msgid="3392527073622152481">"Per una maggiore sicurezza dei dati relativi alla tua salute, imposta un PIN, una sequenza o una password per questo dispositivo"</string>
     <string name="lock_screen_banner_button" msgid="2537090011380728122">"Imposta un blocco schermo"</string>
     <string name="select_all" msgid="837499881590001166">"Seleziona tutto"</string>
     <string name="a11y_action_select" msgid="8149815243533964711">"seleziona"</string>
-    <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Le app collegate non potranno più leggere questi dati di Connessione Salute"</string>
+    <string name="deletion_confirmation_dialog_body" msgid="7643182907084645805">"Le app collegate non potranno più leggere questi dati di Health Connect"</string>
     <string name="a11y_checked" msgid="3685413382346589880">"Elemento selezionato"</string>
     <string name="a11y_unchecked" msgid="6258943223981886207">"Elemento non selezionato"</string>
     <string name="a11y_checkbox_description" msgid="2261163129728710986">"<xliff:g id="HEADER">%1$s</xliff:g>, <xliff:g id="TITLE">%2$s</xliff:g>"</string>
@@ -1308,9 +1308,9 @@
     <string name="connect_second_app_description" msgid="159030733462822101">"Configura un\'altra app per condividere dati relativi alla salute e all\'attività fisica con <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="set_up_later" msgid="223888663943501921">"Configura più tardi"</string>
     <string name="available_apps_to_connect" msgid="8425012138408583646">"App disponibili per la connessione"</string>
-    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Connessione Salute ti consente di archiviare i tuoi dati relativi alla salute e all\'attività fisica in un unico posto e di condividerli tra le app sul tuo smartphone, migliorando l\'interazione tra le tue app."</string>
-    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Scopri di più su Connessione Salute"</string>
-    <string name="onboarded_app_content_description" msgid="8571163043712952164">"App collegata a Connessione Salute"</string>
+    <string name="apps_onboarding_footer" msgid="5814165211234454165">"Health Connect ti consente di archiviare i tuoi dati relativi alla salute e all\'attività fisica in un unico posto e di condividerli tra le app sul tuo smartphone, migliorando l\'interazione tra le tue app."</string>
+    <string name="apps_onboarding_footer_link" msgid="385298243785385467">"Scopri di più su Health Connect"</string>
+    <string name="onboarded_app_content_description" msgid="8571163043712952164">"App collegata a Health Connect"</string>
     <string name="almost_done_title" msgid="3966589349311156772">"Operazione quasi terminata"</string>
     <string name="almost_done_description_all_connected" msgid="1465769717714906466">"Apri queste app ora per completare la configurazione e avviare la condivisione dei dati"</string>
     <string name="almost_done_description_more_to_connect" msgid="3646816278951171117">"Apri queste app ora per completare la configurazione e avviare la condivisione dei dati oppure continua a collegare le app disponibili"</string>
@@ -1323,40 +1323,40 @@
     <string name="one_app_onboarding_banner_summary" msgid="6536124569531567081">"Configura un\'altra app in modo che possa iniziare a condividere dati relativi al benessere e all\'attività fisica"</string>
     <string name="one_app_onboarding_banner_button" msgid="460055569609324756">"Continua"</string>
     <string name="zero_apps_onboarding_notification_title" msgid="91273455219085200">"Visualizza i tuoi dati relativi alla salute su più app"</string>
-    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Connessione Salute ti consente di condividere dati relativi al benessere e all\'attività fisica tra le tue app. Scopri subito a quali app puoi connetterti."</string>
+    <string name="zero_apps_onboarding_notification_summary" msgid="2147721012542285564">"Health Connect ti consente di condividere dati relativi al benessere e all\'attività fisica tra le tue app. Scopri subito a quali app puoi connetterti."</string>
     <string name="one_app_onboarding_notification_title" msgid="8943630345866204874">"Connetti una seconda app"</string>
-    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configura un\'altra app con Connessione Salute in modo che possa iniziare a condividere dati relativi a benessere e attività fisica"</string>
+    <string name="one_app_onboarding_notification_summary" msgid="7417264366326783394">"Configura un\'altra app con Health Connect in modo che possa iniziare a condividere dati relativi a benessere e attività fisica"</string>
     <string name="devices_current_device" msgid="6388308185566619743">"Dispositivo corrente"</string>
     <string name="devices_unknown_device" msgid="8830092952740474454">"Dispositivo sconosciuto"</string>
     <string name="device_management_screen_title" msgid="504259497211017622">"Informazioni dispositivo"</string>
-    <string name="device_management_screen_footer" msgid="6798880518173922679">"I dati raccolti da questo dispositivo verranno archiviati in Connessione Salute, dove saranno accessibili alle app connesse"</string>
-    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"Questo dispositivo non supporta il rilevamento dei passi, ma ha ancora dati archiviati in Connessione Salute"</string>
+    <string name="device_management_screen_footer" msgid="6798880518173922679">"I dati raccolti da questo dispositivo verranno archiviati in Health Connect, dove saranno accessibili alle app connesse"</string>
+    <string name="device_management_screen_no_step_sensor_footer" msgid="1907424903465905829">"Questo dispositivo non supporta il rilevamento dei passi, ma ha ancora dati archiviati in Health Connect"</string>
     <string name="device_management_screen_no_step_sensor_header" msgid="7517509284321019072">"Questo dispositivo non rileva i passi"</string>
     <string name="device_settings_label" msgid="9053791237491247819">"Autorizzazioni di scrittura"</string>
     <string name="device_data_screen_title" msgid="2443821236974714385">"Dati sul dispositivo"</string>
     <string name="device_data_label" msgid="2056618513138892435">"Gestisci dispositivo"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Visualizza i dati sul dispositivo"</string>
-    <string name="device_sync_button" msgid="2075007109033449483">"Sincronizza con Connessione Salute"</string>
-    <string name="native_steps_banner_title" msgid="8990874387340782536">"I passi monitorati sul tuo smartphone verranno visualizzati in Connessione Salute"</string>
-    <string name="native_steps_banner_summary" msgid="8255767487167444809">"I passi monitorati da questo dispositivo sono ora archiviati in Connessione Salute e sono accessibili alle app connesse"</string>
+    <string name="device_sync_button" msgid="2075007109033449483">"Sincronizza con Health Connect"</string>
+    <string name="native_steps_banner_title" msgid="8990874387340782536">"I passi monitorati sul tuo smartphone verranno visualizzati in Health Connect"</string>
+    <string name="native_steps_banner_summary" msgid="8255767487167444809">"I passi monitorati da questo dispositivo sono ora archiviati in Health Connect e sono accessibili alle app connesse"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Ignora"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Esamina"</string>
-    <string name="native_steps_notification_title" msgid="9173169256837064455">"I passi sono ora in Connessione Salute"</string>
-    <string name="native_steps_notification_content" msgid="7752396476899221256">"I passi monitorati da questo dispositivo sono ora archiviati in Connessione Salute e sono accessibili alle app connesse"</string>
+    <string name="native_steps_notification_title" msgid="9173169256837064455">"I passi sono ora in Health Connect"</string>
+    <string name="native_steps_notification_content" msgid="7752396476899221256">"I passi monitorati da questo dispositivo sono ora archiviati in Health Connect e sono accessibili alle app connesse"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Le tue app per la salute"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"I tuoi dati relativi alla salute"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferenze"</string>
-    <string name="home_screen_footer" msgid="3704528068051346905">"Connessione Salute ti consente di condividere i tuoi dati relativi alla salute e all\'attività fisica tra più origini dati. In questo modo, potrai accedere ad approfondimenti ed esperienze senza compromettere la sicurezza dei dati."</string>
-    <string name="home_screen_footer_link" msgid="3276430842054286014">"Scopri di più su Connessione Salute"</string>
+    <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect ti consente di condividere i tuoi dati relativi alla salute e all\'attività fisica tra più origini dati. In questo modo, potrai accedere ad approfondimenti ed esperienze senza compromettere la sicurezza dei dati."</string>
+    <string name="home_screen_footer_link" msgid="3276430842054286014">"Scopri di più su Health Connect"</string>
     <string name="data_and_access_summary" msgid="2698213356971774646">"I tuoi dati e quali origini dati possono accedervi"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"App che hanno utilizzato i tuoi dati di recente"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Controlla i dispositivi che possono accedere ai dati relativi alla salute"</string>
-    <string name="empty_apps_section_title" msgid="1808646811838427261">"Installa le app compatibili con Connessione Salute per visualizzarle qui"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Installa le app compatibili con Health Connect per visualizzarle qui"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Vedi le app compatibili"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Visualizza altre app per la salute"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Non connessa"</string>
-    <string name="connect_app_button_content_description" msgid="8652692724367722351">"Fai clic per collegare questa app a Connessione Salute"</string>
-    <string name="devices_screen_description" msgid="5009317766902606842">"Stabilisci quali dispositivi possono sincronizzare i dati con Connessione Salute"</string>
+    <string name="connect_app_button_content_description" msgid="8652692724367722351">"Fai clic per collegare questa app a Health Connect"</string>
+    <string name="devices_screen_description" msgid="5009317766902606842">"Stabilisci quali dispositivi possono sincronizzare i dati con Health Connect"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Abilitati"</string>
     <string name="devices_screen_not_enabled_devices_header" msgid="409401860221786612">"Non abilitati"</string>
     <string name="devices_this_phone" msgid="2739727630674436885">"Questo smartphone"</string>
