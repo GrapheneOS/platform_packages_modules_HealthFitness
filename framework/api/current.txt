@@ -1,6 +1,5 @@
 // Signature format: 6.0
 // - style=java
-// - overloaded-method-order=source
 package android.health.connect {
 
   public final class AggregateRecordsGroupedByDurationResponse<T> {
@@ -48,9 +47,9 @@ package android.health.connect {
   }
 
   @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class CreateMedicalDataSourceRequest.Builder {
-    ctor public CreateMedicalDataSourceRequest.Builder(@NonNull android.net.Uri, @NonNull String, @NonNull android.health.connect.datatypes.FhirVersion);
-    ctor public CreateMedicalDataSourceRequest.Builder(@NonNull android.health.connect.CreateMedicalDataSourceRequest.Builder);
     ctor public CreateMedicalDataSourceRequest.Builder(@NonNull android.health.connect.CreateMedicalDataSourceRequest);
+    ctor public CreateMedicalDataSourceRequest.Builder(@NonNull android.health.connect.CreateMedicalDataSourceRequest.Builder);
+    ctor public CreateMedicalDataSourceRequest.Builder(@NonNull android.net.Uri, @NonNull String, @NonNull android.health.connect.datatypes.FhirVersion);
     method @NonNull public android.health.connect.CreateMedicalDataSourceRequest build();
     method @NonNull public android.health.connect.CreateMedicalDataSourceRequest.Builder setDisplayName(@NonNull String);
     method @NonNull public android.health.connect.CreateMedicalDataSourceRequest.Builder setFhirBaseUri(@NonNull android.net.Uri);
@@ -67,8 +66,8 @@ package android.health.connect {
 
   @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class DeleteMedicalResourcesRequest.Builder {
     ctor public DeleteMedicalResourcesRequest.Builder();
-    ctor public DeleteMedicalResourcesRequest.Builder(@NonNull android.health.connect.DeleteMedicalResourcesRequest.Builder);
     ctor public DeleteMedicalResourcesRequest.Builder(@NonNull android.health.connect.DeleteMedicalResourcesRequest);
+    ctor public DeleteMedicalResourcesRequest.Builder(@NonNull android.health.connect.DeleteMedicalResourcesRequest.Builder);
     method @NonNull public android.health.connect.DeleteMedicalResourcesRequest.Builder addDataSourceId(@NonNull String);
     method @NonNull public android.health.connect.DeleteMedicalResourcesRequest.Builder addMedicalResourceType(int);
     method @NonNull public android.health.connect.DeleteMedicalResourcesRequest build();
@@ -119,8 +118,8 @@ package android.health.connect {
 
   @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class GetMedicalDataSourcesRequest.Builder {
     ctor public GetMedicalDataSourcesRequest.Builder();
-    ctor public GetMedicalDataSourcesRequest.Builder(@NonNull android.health.connect.GetMedicalDataSourcesRequest.Builder);
     ctor public GetMedicalDataSourcesRequest.Builder(@NonNull android.health.connect.GetMedicalDataSourcesRequest);
+    ctor public GetMedicalDataSourcesRequest.Builder(@NonNull android.health.connect.GetMedicalDataSourcesRequest.Builder);
     method @NonNull public android.health.connect.GetMedicalDataSourcesRequest.Builder addPackageName(@NonNull String);
     method @NonNull public android.health.connect.GetMedicalDataSourcesRequest build();
     method @NonNull public android.health.connect.GetMedicalDataSourcesRequest.Builder clearPackageNames();
@@ -148,20 +147,20 @@ package android.health.connect {
     method @FlaggedApi("com.android.healthfitness.flags.personal_health_record") @RequiresPermission(anyOf={android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA, "android.permission.MANAGE_HEALTH_DATA"}) public void deleteMedicalDataSourceWithData(@NonNull String, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<Void, android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.personal_health_record") @RequiresPermission(anyOf={android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA, "android.permission.MANAGE_HEALTH_DATA"}) public void deleteMedicalResources(@NonNull android.health.connect.DeleteMedicalResourcesRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<Void, android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.personal_health_record") @RequiresPermission(anyOf={android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA, "android.permission.MANAGE_HEALTH_DATA"}) public void deleteMedicalResources(@NonNull java.util.List<android.health.connect.MedicalResourceId>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<Void, android.health.connect.HealthConnectException>);
-    method public void deleteRecords(@NonNull java.util.List<android.health.connect.RecordIdFilter>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<Void, android.health.connect.HealthConnectException>);
     method public void deleteRecords(@NonNull Class<? extends android.health.connect.datatypes.Record>, @NonNull android.health.connect.TimeRangeFilter, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<Void, android.health.connect.HealthConnectException>);
+    method public void deleteRecords(@NonNull java.util.List<android.health.connect.RecordIdFilter>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<Void, android.health.connect.HealthConnectException>);
     method public void getChangeLogToken(@NonNull android.health.connect.changelog.ChangeLogTokenRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.changelog.ChangeLogTokenResponse, android.health.connect.HealthConnectException>);
     method public void getChangeLogs(@NonNull android.health.connect.changelog.ChangeLogsRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.changelog.ChangeLogsResponse, android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public void getCurrentDeviceDataSource(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.DeviceDataSource, android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public void getDeviceDataSourceCapabilities(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.DeviceDataSourceCapabilities, android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") public void getDeviceDataSources(@NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.GetDeviceDataSourcesResponse, android.health.connect.HealthConnectException>);
-    method @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public void getMedicalDataSources(@NonNull java.util.List<String>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.datatypes.MedicalDataSource>, android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public void getMedicalDataSources(@NonNull android.health.connect.GetMedicalDataSourcesRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.datatypes.MedicalDataSource>, android.health.connect.HealthConnectException>);
+    method @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public void getMedicalDataSources(@NonNull java.util.List<String>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.datatypes.MedicalDataSource>, android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.device_data_providers_api") @NonNull public static java.util.Set<Class<? extends android.health.connect.datatypes.Record>> getPermissionSensitiveDeviceDataSourceCapabilities();
     method public void insertRecords(@NonNull java.util.List<android.health.connect.datatypes.Record>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.InsertRecordsResponse, android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.matchmaking") public void isMatchmakingPossible(@NonNull android.health.connect.MatchmakingRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.MatchmakingResponse, android.health.connect.HealthConnectException>);
-    method @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public void readMedicalResources(@NonNull java.util.List<android.health.connect.MedicalResourceId>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.datatypes.MedicalResource>, android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public void readMedicalResources(@NonNull android.health.connect.ReadMedicalResourcesRequest, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.ReadMedicalResourcesResponse, android.health.connect.HealthConnectException>);
+    method @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public void readMedicalResources(@NonNull java.util.List<android.health.connect.MedicalResourceId>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.datatypes.MedicalResource>, android.health.connect.HealthConnectException>);
     method public <T extends android.health.connect.datatypes.Record> void readRecords(@NonNull android.health.connect.ReadRecordsRequest<T>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<android.health.connect.ReadRecordsResponse<T>, android.health.connect.HealthConnectException>);
     method public void updateRecords(@NonNull java.util.List<android.health.connect.datatypes.Record>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<Void, android.health.connect.HealthConnectException>);
     method @FlaggedApi("com.android.healthfitness.flags.personal_health_record") @RequiresPermission(android.health.connect.HealthPermissions.WRITE_MEDICAL_DATA) public void upsertMedicalResources(@NonNull java.util.List<android.health.connect.UpsertMedicalResourceRequest>, @NonNull java.util.concurrent.Executor, @NonNull android.os.OutcomeReceiver<java.util.List<android.health.connect.datatypes.MedicalResource>, android.health.connect.HealthConnectException>);
@@ -463,9 +462,9 @@ package android.health.connect {
   }
 
   @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class ReadMedicalResourcesInitialRequest.Builder {
-    ctor public ReadMedicalResourcesInitialRequest.Builder(int);
-    ctor public ReadMedicalResourcesInitialRequest.Builder(@NonNull android.health.connect.ReadMedicalResourcesInitialRequest.Builder);
     ctor public ReadMedicalResourcesInitialRequest.Builder(@NonNull android.health.connect.ReadMedicalResourcesInitialRequest);
+    ctor public ReadMedicalResourcesInitialRequest.Builder(@NonNull android.health.connect.ReadMedicalResourcesInitialRequest.Builder);
+    ctor public ReadMedicalResourcesInitialRequest.Builder(int);
     method @NonNull public android.health.connect.ReadMedicalResourcesInitialRequest.Builder addDataSourceId(@NonNull String);
     method @NonNull public android.health.connect.ReadMedicalResourcesInitialRequest.Builder addDataSourceIds(@NonNull java.util.Set<String>);
     method @NonNull public android.health.connect.ReadMedicalResourcesInitialRequest build();
@@ -479,9 +478,9 @@ package android.health.connect {
   }
 
   @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class ReadMedicalResourcesPageRequest.Builder {
-    ctor public ReadMedicalResourcesPageRequest.Builder(@NonNull String);
-    ctor public ReadMedicalResourcesPageRequest.Builder(@NonNull android.health.connect.ReadMedicalResourcesPageRequest.Builder);
     ctor public ReadMedicalResourcesPageRequest.Builder(@NonNull android.health.connect.ReadMedicalResourcesPageRequest);
+    ctor public ReadMedicalResourcesPageRequest.Builder(@NonNull android.health.connect.ReadMedicalResourcesPageRequest.Builder);
+    ctor public ReadMedicalResourcesPageRequest.Builder(@NonNull String);
     method @NonNull public android.health.connect.ReadMedicalResourcesPageRequest build();
     method @NonNull public android.health.connect.ReadMedicalResourcesPageRequest.Builder setPageSize(@IntRange(from=android.health.connect.Constants.MINIMUM_PAGE_SIZE, to=android.health.connect.Constants.MAXIMUM_PAGE_SIZE) int);
     method @NonNull public android.health.connect.ReadMedicalResourcesPageRequest.Builder setPageToken(@NonNull String);
@@ -573,9 +572,9 @@ package android.health.connect {
   }
 
   @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class UpsertMedicalResourceRequest.Builder {
-    ctor public UpsertMedicalResourceRequest.Builder(@NonNull String, @NonNull android.health.connect.datatypes.FhirVersion, @NonNull String);
-    ctor public UpsertMedicalResourceRequest.Builder(@NonNull android.health.connect.UpsertMedicalResourceRequest.Builder);
     ctor public UpsertMedicalResourceRequest.Builder(@NonNull android.health.connect.UpsertMedicalResourceRequest);
+    ctor public UpsertMedicalResourceRequest.Builder(@NonNull android.health.connect.UpsertMedicalResourceRequest.Builder);
+    ctor public UpsertMedicalResourceRequest.Builder(@NonNull String, @NonNull android.health.connect.datatypes.FhirVersion, @NonNull String);
     method @NonNull public android.health.connect.UpsertMedicalResourceRequest build();
     method @NonNull public android.health.connect.UpsertMedicalResourceRequest.Builder setData(@NonNull String);
     method @NonNull public android.health.connect.UpsertMedicalResourceRequest.Builder setDataSourceId(@NonNull String);
@@ -637,8 +636,8 @@ package android.health.connect.changelog {
   }
 
   public static final class ChangeLogsResponse.DeletedLog {
-    ctor @Deprecated @FlaggedApi("com.android.healthfitness.flags.phr_change_logs") public ChangeLogsResponse.DeletedLog(@NonNull String, long);
     ctor @FlaggedApi("com.android.healthfitness.flags.phr_change_logs") public ChangeLogsResponse.DeletedLog(@NonNull String, @NonNull java.time.Instant);
+    ctor @Deprecated @FlaggedApi("com.android.healthfitness.flags.phr_change_logs") public ChangeLogsResponse.DeletedLog(@NonNull String, long);
     method @NonNull public String getDeletedRecordId();
     method @NonNull public java.time.Instant getDeletedTime();
   }
@@ -1361,9 +1360,9 @@ package android.health.connect.datatypes {
   }
 
   @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class FhirResource.Builder {
-    ctor public FhirResource.Builder(int, @NonNull String, @NonNull String);
-    ctor public FhirResource.Builder(@NonNull android.health.connect.datatypes.FhirResource.Builder);
     ctor public FhirResource.Builder(@NonNull android.health.connect.datatypes.FhirResource);
+    ctor public FhirResource.Builder(@NonNull android.health.connect.datatypes.FhirResource.Builder);
+    ctor public FhirResource.Builder(int, @NonNull String, @NonNull String);
     method @NonNull public android.health.connect.datatypes.FhirResource build();
     method @NonNull public android.health.connect.datatypes.FhirResource.Builder setData(@NonNull String);
     method @NonNull public android.health.connect.datatypes.FhirResource.Builder setId(@NonNull String);
@@ -1511,9 +1510,9 @@ package android.health.connect.datatypes {
   }
 
   @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class MedicalDataSource.Builder {
-    ctor public MedicalDataSource.Builder(@NonNull String, @NonNull String, @NonNull android.net.Uri, @NonNull String, @NonNull android.health.connect.datatypes.FhirVersion);
-    ctor public MedicalDataSource.Builder(@NonNull android.health.connect.datatypes.MedicalDataSource.Builder);
     ctor public MedicalDataSource.Builder(@NonNull android.health.connect.datatypes.MedicalDataSource);
+    ctor public MedicalDataSource.Builder(@NonNull android.health.connect.datatypes.MedicalDataSource.Builder);
+    ctor public MedicalDataSource.Builder(@NonNull String, @NonNull String, @NonNull android.net.Uri, @NonNull String, @NonNull android.health.connect.datatypes.FhirVersion);
     method @NonNull public android.health.connect.datatypes.MedicalDataSource build();
     method @NonNull public android.health.connect.datatypes.MedicalDataSource.Builder setDisplayName(@NonNull String);
     method @NonNull public android.health.connect.datatypes.MedicalDataSource.Builder setFhirBaseUri(@NonNull android.net.Uri);
@@ -1547,9 +1546,9 @@ package android.health.connect.datatypes {
   }
 
   @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class MedicalResource.Builder {
-    ctor public MedicalResource.Builder(int, @NonNull String, @NonNull android.health.connect.datatypes.FhirVersion, @NonNull android.health.connect.datatypes.FhirResource);
-    ctor public MedicalResource.Builder(@NonNull android.health.connect.datatypes.MedicalResource.Builder);
     ctor public MedicalResource.Builder(@NonNull android.health.connect.datatypes.MedicalResource);
+    ctor public MedicalResource.Builder(@NonNull android.health.connect.datatypes.MedicalResource.Builder);
+    ctor public MedicalResource.Builder(int, @NonNull String, @NonNull android.health.connect.datatypes.FhirVersion, @NonNull android.health.connect.datatypes.FhirResource);
     method @NonNull public android.health.connect.datatypes.MedicalResource build();
     method @NonNull public android.health.connect.datatypes.MedicalResource.Builder setDataSourceId(@NonNull String);
     method @NonNull public android.health.connect.datatypes.MedicalResource.Builder setFhirResource(@NonNull android.health.connect.datatypes.FhirResource);
