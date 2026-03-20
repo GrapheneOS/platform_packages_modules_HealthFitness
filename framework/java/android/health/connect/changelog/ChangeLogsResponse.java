@@ -57,28 +57,6 @@ public final class ChangeLogsResponse implements Parcelable {
      * Response for {@link HealthConnectManager#getChangeLogs}.
      *
      * @hide
-     * @deprecated Use {@link #ChangeLogsResponse(List, List, List, List, String, boolean)}.
-     */
-    @Deprecated
-    public ChangeLogsResponse(
-            @NonNull RecordsParcel upsertedRecords,
-            @NonNull List<DeletedLog> deletedLogs,
-            @NonNull String nextChangesToken,
-            boolean hasMorePages) {
-        mUpsertedRecords =
-                InternalExternalRecordConverter.getInstance()
-                        .getExternalRecords(Objects.requireNonNull(upsertedRecords).getRecords());
-        mDeletedLogs = Objects.requireNonNull(deletedLogs);
-        mUpsertedMedicalResources = List.of();
-        mDeletedMedicalResources = List.of();
-        mNextChangesToken = Objects.requireNonNull(nextChangesToken);
-        mHasMorePages = hasMorePages;
-    }
-
-    /**
-     * Response for {@link HealthConnectManager#getChangeLogs}.
-     *
-     * @hide
      */
     public ChangeLogsResponse(
             @NonNull List<Record> upsertedRecords,
