@@ -16,6 +16,8 @@
 
 package android.healthconnect.tests.permissions;
 
+import static com.android.healthfitness.flags.Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS;
+
 import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.fail;
 
@@ -24,6 +26,10 @@ import android.health.connect.HealthConnectManager;
 import android.health.connect.HealthPermissions;
 import android.healthconnect.testing.cts.TestUtils;
 import android.healthconnect.testing.shared.AssumptionCheckerRule;
+import android.platform.test.annotations.RequiresFlagsDisabled;
+import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.flag.junit.CheckFlagsRule;
+import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 
 import androidx.test.InstrumentationRegistry;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -54,6 +60,9 @@ public class HealthConnectWithoutManagePermissionsTest {
     private HealthConnectManager mHealthConnectManager;
 
     @Rule
+    public final CheckFlagsRule mCheckFlagsRule = DeviceFlagsValueProvider.createCheckFlagsRule();
+
+    @Rule
     public AssumptionCheckerRule mSupportedHardwareRule =
             new AssumptionCheckerRule(
                     TestUtils::areHealthPermissionsSupported,
@@ -66,9 +75,20 @@ public class HealthConnectWithoutManagePermissionsTest {
     }
 
     @Test(expected = SecurityException.class)
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantHealthPermission_noManageHealthPermissions_throwsSecurityException()
             throws Exception {
         mHealthConnectManager.grantHealthPermission(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
+        fail(
+                "Expected SecurityException due to not holding"
+                        + "android.permission.MANAGE_HEALTH_PERMISSIONS.");
+    }
+
+    @Test(expected = SecurityException.class)
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_noManageHealthPermissions_throwsSecurityException()
+            throws Exception {
+        mHealthConnectManager.grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(DEFAULT_PERM));
         fail(
                 "Expected SecurityException due to not holding"
                         + "android.permission.MANAGE_HEALTH_PERMISSIONS.");

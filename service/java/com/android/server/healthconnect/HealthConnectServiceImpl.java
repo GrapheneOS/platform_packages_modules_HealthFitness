@@ -527,6 +527,19 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     }
 
     @Override
+    public List<String> grantHealthPermissions(
+            String packageName, List<String> permissionNames, UserHandle user) {
+        checkParamsNonNull(packageName, permissionNames, user);
+
+        if (!AconfigFlagHelper.isHealthPermissionReaderImprovementsEnabled()) {
+            throw new UnsupportedOperationException("grantHealthPermissions is not enabled");
+        }
+
+        throwIllegalStateExceptionIfDataSyncInProgress();
+        return mPermissionHelper.grantHealthPermissions(packageName, permissionNames, user);
+    }
+
+    @Override
     public void revokeHealthPermission(
             String packageName, String permissionName, @Nullable String reason, UserHandle user) {
         checkParamsNonNull(packageName, permissionName, user);
