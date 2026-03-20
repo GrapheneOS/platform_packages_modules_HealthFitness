@@ -1,6 +1,5 @@
 // Signature format: 6.0
 // - style=java
-// - flagged-api-inheritance=none
 // - overloaded-method-order=source
 // - strip-java-lang-prefix=legacy
 // - type-argument-spacing=legacy
@@ -50,7 +49,7 @@ package android.health.connect {
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.CreateMedicalDataSourceRequest> CREATOR;
   }
 
-  public static final class CreateMedicalDataSourceRequest.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class CreateMedicalDataSourceRequest.Builder {
     ctor public CreateMedicalDataSourceRequest.Builder(@NonNull android.net.Uri, @NonNull String, @NonNull android.health.connect.datatypes.FhirVersion);
     ctor public CreateMedicalDataSourceRequest.Builder(@NonNull android.health.connect.CreateMedicalDataSourceRequest.Builder);
     ctor public CreateMedicalDataSourceRequest.Builder(@NonNull android.health.connect.CreateMedicalDataSourceRequest);
@@ -68,7 +67,7 @@ package android.health.connect {
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.DeleteMedicalResourcesRequest> CREATOR;
   }
 
-  public static final class DeleteMedicalResourcesRequest.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class DeleteMedicalResourcesRequest.Builder {
     ctor public DeleteMedicalResourcesRequest.Builder();
     ctor public DeleteMedicalResourcesRequest.Builder(@NonNull android.health.connect.DeleteMedicalResourcesRequest.Builder);
     ctor public DeleteMedicalResourcesRequest.Builder(@NonNull android.health.connect.DeleteMedicalResourcesRequest);
@@ -120,7 +119,7 @@ package android.health.connect {
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.GetMedicalDataSourcesRequest> CREATOR;
   }
 
-  public static final class GetMedicalDataSourcesRequest.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class GetMedicalDataSourcesRequest.Builder {
     ctor public GetMedicalDataSourcesRequest.Builder();
     ctor public GetMedicalDataSourcesRequest.Builder(@NonNull android.health.connect.GetMedicalDataSourcesRequest.Builder);
     ctor public GetMedicalDataSourcesRequest.Builder(@NonNull android.health.connect.GetMedicalDataSourcesRequest);
@@ -427,7 +426,7 @@ package android.health.connect {
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.MatchmakingRequest> CREATOR;
   }
 
-  public static final class MatchmakingRequest.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.matchmaking") public static final class MatchmakingRequest.Builder {
     ctor public MatchmakingRequest.Builder();
     method @NonNull public android.health.connect.MatchmakingRequest.Builder addRecordType(@NonNull Class<? extends android.health.connect.datatypes.Record>);
     method @NonNull public android.health.connect.MatchmakingRequest.Builder addRecordTypes(@NonNull java.util.Set<java.lang.Class<? extends android.health.connect.datatypes.Record>>);
@@ -443,7 +442,7 @@ package android.health.connect {
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.MatchmakingResponse> CREATOR;
   }
 
-  public static final class MatchmakingResponse.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.matchmaking") public static final class MatchmakingResponse.Builder {
     ctor public MatchmakingResponse.Builder(boolean);
     method @NonNull public android.health.connect.MatchmakingResponse build();
     method @NonNull public android.health.connect.MatchmakingResponse.Builder setMatchmakingPossible(boolean);
@@ -465,7 +464,7 @@ package android.health.connect {
     method public int getMedicalResourceType();
   }
 
-  public static final class ReadMedicalResourcesInitialRequest.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class ReadMedicalResourcesInitialRequest.Builder {
     ctor public ReadMedicalResourcesInitialRequest.Builder(int);
     ctor public ReadMedicalResourcesInitialRequest.Builder(@NonNull android.health.connect.ReadMedicalResourcesInitialRequest.Builder);
     ctor public ReadMedicalResourcesInitialRequest.Builder(@NonNull android.health.connect.ReadMedicalResourcesInitialRequest);
@@ -481,7 +480,7 @@ package android.health.connect {
     method @NonNull public String getPageToken();
   }
 
-  public static final class ReadMedicalResourcesPageRequest.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class ReadMedicalResourcesPageRequest.Builder {
     ctor public ReadMedicalResourcesPageRequest.Builder(@NonNull String);
     ctor public ReadMedicalResourcesPageRequest.Builder(@NonNull android.health.connect.ReadMedicalResourcesPageRequest.Builder);
     ctor public ReadMedicalResourcesPageRequest.Builder(@NonNull android.health.connect.ReadMedicalResourcesPageRequest);
@@ -575,7 +574,7 @@ package android.health.connect {
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.UpsertMedicalResourceRequest> CREATOR;
   }
 
-  public static final class UpsertMedicalResourceRequest.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class UpsertMedicalResourceRequest.Builder {
     ctor public UpsertMedicalResourceRequest.Builder(@NonNull String, @NonNull android.health.connect.datatypes.FhirVersion, @NonNull String);
     ctor public UpsertMedicalResourceRequest.Builder(@NonNull android.health.connect.UpsertMedicalResourceRequest.Builder);
     ctor public UpsertMedicalResourceRequest.Builder(@NonNull android.health.connect.UpsertMedicalResourceRequest);
@@ -681,7 +680,7 @@ package android.health.connect.datatypes {
     field @NonNull public static final android.health.connect.datatypes.AggregationType<java.time.Duration> VIGOROUS_DURATION_TOTAL;
   }
 
-  public static final class ActivityIntensityRecord.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.activity_intensity") public static final class ActivityIntensityRecord.Builder {
     ctor public ActivityIntensityRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
     method @NonNull public android.health.connect.datatypes.ActivityIntensityRecord build();
     method @NonNull public android.health.connect.datatypes.ActivityIntensityRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
@@ -722,7 +721,7 @@ package android.health.connect.datatypes {
     field @Deprecated @FlaggedApi("com.android.healthfitness.flags.temporal_field_api") public static final int RECORD_TEMPORAL_TYPE_LOCAL_DATE = 2; // 0x2
   }
 
-  public static final class AlcoholConsumptionRecord.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.alcohol_consumption") public static final class AlcoholConsumptionRecord.Builder {
     ctor public AlcoholConsumptionRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, int);
     ctor public AlcoholConsumptionRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
     ctor public AlcoholConsumptionRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.LocalDate, int);
@@ -1060,7 +1059,7 @@ package android.health.connect.datatypes {
     field @NonNull public static final android.health.connect.datatypes.ExerciseCompletionGoal.UnknownGoal INSTANCE;
   }
 
-  public static final class ExerciseCompletionGoal.UnspecifiedGoal extends android.health.connect.datatypes.ExerciseCompletionGoal {
+  @FlaggedApi("com.android.healthconnect.flags.training_plans") public static final class ExerciseCompletionGoal.UnspecifiedGoal extends android.health.connect.datatypes.ExerciseCompletionGoal {
     field @NonNull public static final android.health.connect.datatypes.ExerciseCompletionGoal.UnspecifiedGoal INSTANCE;
   }
 
@@ -1112,7 +1111,7 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.units.Velocity getMinSpeed();
   }
 
-  public static final class ExercisePerformanceGoal.UnknownGoal extends android.health.connect.datatypes.ExercisePerformanceGoal {
+  @FlaggedApi("com.android.healthconnect.flags.training_plans") public static final class ExercisePerformanceGoal.UnknownGoal extends android.health.connect.datatypes.ExercisePerformanceGoal {
     field @NonNull public static final android.health.connect.datatypes.ExercisePerformanceGoal.UnknownGoal INSTANCE;
   }
 
@@ -1363,7 +1362,7 @@ package android.health.connect.datatypes {
     field public static final int FHIR_RESOURCE_TYPE_PROCEDURE = 5; // 0x5
   }
 
-  public static final class FhirResource.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class FhirResource.Builder {
     ctor public FhirResource.Builder(int, @NonNull String, @NonNull String);
     ctor public FhirResource.Builder(@NonNull android.health.connect.datatypes.FhirResource.Builder);
     ctor public FhirResource.Builder(@NonNull android.health.connect.datatypes.FhirResource);
@@ -1513,7 +1512,7 @@ package android.health.connect.datatypes {
     field @NonNull public static final android.os.Parcelable.Creator<android.health.connect.datatypes.MedicalDataSource> CREATOR;
   }
 
-  public static final class MedicalDataSource.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class MedicalDataSource.Builder {
     ctor public MedicalDataSource.Builder(@NonNull String, @NonNull String, @NonNull android.net.Uri, @NonNull String, @NonNull android.health.connect.datatypes.FhirVersion);
     ctor public MedicalDataSource.Builder(@NonNull android.health.connect.datatypes.MedicalDataSource.Builder);
     ctor public MedicalDataSource.Builder(@NonNull android.health.connect.datatypes.MedicalDataSource);
@@ -1549,7 +1548,7 @@ package android.health.connect.datatypes {
     field public static final int MEDICAL_RESOURCE_TYPE_VITAL_SIGNS = 5; // 0x5
   }
 
-  public static final class MedicalResource.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.personal_health_record") public static final class MedicalResource.Builder {
     ctor public MedicalResource.Builder(int, @NonNull String, @NonNull android.health.connect.datatypes.FhirVersion, @NonNull android.health.connect.datatypes.FhirResource);
     ctor public MedicalResource.Builder(@NonNull android.health.connect.datatypes.MedicalResource.Builder);
     ctor public MedicalResource.Builder(@NonNull android.health.connect.datatypes.MedicalResource);
@@ -1648,7 +1647,7 @@ package android.health.connect.datatypes {
     field public static final int MINDFULNESS_SESSION_TYPE_UNKNOWN = 0; // 0x0
   }
 
-  public static final class MindfulnessSessionRecord.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.mindfulness") public static final class MindfulnessSessionRecord.Builder {
     ctor public MindfulnessSessionRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int);
     method @NonNull public android.health.connect.datatypes.MindfulnessSessionRecord build();
     method @NonNull public android.health.connect.datatypes.MindfulnessSessionRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
@@ -1665,7 +1664,7 @@ package android.health.connect.datatypes {
     field public static final int NICOTINE_INTAKE_TYPE_VAPE = 0; // 0x0
   }
 
-  public static final class NicotineIntakeRecord.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.smoking") public static final class NicotineIntakeRecord.Builder {
     ctor public NicotineIntakeRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant, int, int);
     method @NonNull public android.health.connect.datatypes.NicotineIntakeRecord build();
     method @NonNull public android.health.connect.datatypes.NicotineIntakeRecord.Builder setEndZoneOffset(@NonNull java.time.ZoneOffset);
@@ -2000,7 +1999,7 @@ package android.health.connect.datatypes {
     field @NonNull public static final android.health.connect.datatypes.AggregationType<android.health.connect.datatypes.units.TemperatureDelta> SKIN_TEMPERATURE_DELTA_MIN;
   }
 
-  public static final class SkinTemperatureRecord.Builder {
+  @FlaggedApi("com.android.healthconnect.flags.skin_temperature") public static final class SkinTemperatureRecord.Builder {
     ctor public SkinTemperatureRecord.Builder(@NonNull android.health.connect.datatypes.Metadata, @NonNull java.time.Instant, @NonNull java.time.Instant);
     method @NonNull public android.health.connect.datatypes.SkinTemperatureRecord build();
     method @NonNull public android.health.connect.datatypes.SkinTemperatureRecord.Builder clearEndZoneOffset();
@@ -2012,7 +2011,7 @@ package android.health.connect.datatypes {
     method @NonNull public android.health.connect.datatypes.SkinTemperatureRecord.Builder setStartZoneOffset(@NonNull java.time.ZoneOffset);
   }
 
-  public static final class SkinTemperatureRecord.Delta {
+  @FlaggedApi("com.android.healthconnect.flags.skin_temperature") public static final class SkinTemperatureRecord.Delta {
     ctor public SkinTemperatureRecord.Delta(@NonNull android.health.connect.datatypes.units.TemperatureDelta, @NonNull java.time.Instant);
     method @NonNull public android.health.connect.datatypes.units.TemperatureDelta getDelta();
     method @NonNull public java.time.Instant getTime();
@@ -2189,7 +2188,7 @@ package android.health.connect.datatypes {
     field public static final int SYMPTOM_TYPE_WHEEZING = 59; // 0x3b
   }
 
-  public static final class SymptomRecord.Builder {
+  @FlaggedApi("com.android.healthfitness.flags.symptoms") public static final class SymptomRecord.Builder {
     ctor public SymptomRecord.Builder(int, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.Metadata);
     ctor public SymptomRecord.Builder(int, @NonNull java.time.Instant, @NonNull java.time.Instant, @NonNull android.health.connect.datatypes.Metadata);
     ctor public SymptomRecord.Builder(int, @NonNull java.time.LocalDate, @NonNull android.health.connect.datatypes.Metadata);
