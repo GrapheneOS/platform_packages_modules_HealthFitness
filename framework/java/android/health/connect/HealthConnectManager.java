@@ -31,6 +31,7 @@ import static android.health.connect.datatypes.RecordTypeSensitivity.SENSITIVE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
+import static com.android.healthfitness.flags.Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
 import static com.android.healthfitness.flags.Flags.FLAG_LAUNCH_ONBOARDING_ACTIVITY;
 import static com.android.healthfitness.flags.Flags.FLAG_MATCHMAKING;
@@ -696,6 +697,37 @@ public class HealthConnectManager {
         mContext = context;
         mService = service;
         mInternalExternalRecordConverter = InternalExternalRecordConverter.getInstance();
+    }
+
+    /**
+     * Grant runtime permissions to an application which the application does not already have. The
+     * permissions must have been requested by the application.
+     *
+     * <p>The returned list contains all the permissions for which the grant process did not throw
+     * an Exception. E.g., if the application is not allowed to hold a permission, or if a
+     * permission is invalid, the permission will not be granted and be excluded from the list.
+     *
+     * <p><b>Note:</b> This API sets {@code PackageManager.FLAG_PERMISSION_USER_SET}.
+     *
+     * @return a list with the permission names for which the grants did not throw.
+     * @throws IllegalArgumentException if the package is invalid or not installed.
+     * @throws SecurityException if the caller doesn't possess {@code
+     *     android.permission.MANAGE_HEALTH_PERMISSIONS}.
+     * @throws NullPointerException if any of the arguments is {@code null}.
+     * @hide
+     */
+    @RequiresPermission(MANAGE_HEALTH_PERMISSIONS)
+    @UserHandleAware
+    @FlaggedApi(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    @NonNull
+    public List<String> grantHealthPermissions(
+            @NonNull String packageName, @NonNull List<String> permissionNames) {
+        try {
+            return mService.grantHealthPermissions(
+                    packageName, permissionNames, mContext.getUser());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
     }
 
     /**
@@ -1657,22 +1689,35 @@ public class HealthConnectManager {
         try {
             mService.getDeviceDataSources(
                     mContext.getAttributionSource(),
-                    new IGetDeviceDataSourcesCallback.Stub() {
-                        @Override
-                        @RequiresNoPermission
-                        public void onResult(GetDeviceDataSourcesResponse result) {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(result));
-                        }
-
-                        @Override
-                        @RequiresNoPermission
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new GetDeviceDataSourcesCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private static class GetDeviceDataSourcesCallback extends IGetDeviceDataSourcesCallback.Stub {
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<
+                        OutcomeReceiver<GetDeviceDataSourcesResponse, HealthConnectException>>
+                mCallback;
+
+        GetDeviceDataSourcesCallback(
+                Executor executor,
+                OutcomeReceiver<GetDeviceDataSourcesResponse, HealthConnectException> callback) {
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
+        }
+
+        @Override
+        @RequiresNoPermission
+        public void onResult(GetDeviceDataSourcesResponse result) {
+            returnResult(mExecutor, result, mCallback);
+        }
+
+        @Override
+        @RequiresNoPermission
+        public void onError(HealthConnectExceptionParcel exception) {
+            returnError(mExecutor, mCallback, exception);
         }
     }
 
@@ -1695,22 +1740,36 @@ public class HealthConnectManager {
         try {
             mService.getDeviceDataSourceInfos(
                     mContext.getAttributionSource(),
-                    new IGetDeviceDataSourceInfosCallback.Stub() {
-                        @Override
-                        @RequiresNoPermission
-                        public void onResult(List<DeviceDataSourceInfo> result) {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(result));
-                        }
-
-                        @Override
-                        @RequiresNoPermission
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new GetDeviceDataSourceInfosCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private static class GetDeviceDataSourceInfosCallback
+            extends IGetDeviceDataSourceInfosCallback.Stub {
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<
+                        OutcomeReceiver<List<DeviceDataSourceInfo>, HealthConnectException>>
+                mCallback;
+
+        GetDeviceDataSourceInfosCallback(
+                Executor executor,
+                OutcomeReceiver<List<DeviceDataSourceInfo>, HealthConnectException> callback) {
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
+        }
+
+        @Override
+        @RequiresNoPermission
+        public void onResult(List<DeviceDataSourceInfo> result) {
+            returnResult(mExecutor, result, mCallback);
+        }
+
+        @Override
+        @RequiresNoPermission
+        public void onError(HealthConnectExceptionParcel exception) {
+            returnError(mExecutor, mCallback, exception);
         }
     }
 
@@ -1733,22 +1792,35 @@ public class HealthConnectManager {
         try {
             mService.getCurrentDeviceDataSource(
                     mContext.getAttributionSource(),
-                    new IGetCurrentDeviceDataSourceCallback.Stub() {
-                        @Override
-                        @RequiresNoPermission
-                        public void onResult(DeviceDataSource result) {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(result));
-                        }
-
-                        @Override
-                        @RequiresNoPermission
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new GetCurrentDeviceDataSourceCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private static class GetCurrentDeviceDataSourceCallback
+            extends IGetCurrentDeviceDataSourceCallback.Stub {
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<OutcomeReceiver<DeviceDataSource, HealthConnectException>>
+                mCallback;
+
+        GetCurrentDeviceDataSourceCallback(
+                Executor executor,
+                OutcomeReceiver<DeviceDataSource, HealthConnectException> callback) {
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
+        }
+
+        @Override
+        @RequiresNoPermission
+        public void onResult(DeviceDataSource result) {
+            returnResult(mExecutor, result, mCallback);
+        }
+
+        @Override
+        @RequiresNoPermission
+        public void onError(HealthConnectExceptionParcel exception) {
+            returnError(mExecutor, mCallback, exception);
         }
     }
 
@@ -2083,26 +2155,36 @@ public class HealthConnectManager {
         try {
             mService.getDeviceDataSourceCapabilities(
                     mContext.getAttributionSource(),
-                    new IDeviceDataSourceCapabilitiesCallback.Stub() {
-                        @Override
-                        @RequiresNoPermission
-                        public void onResult(
-                                android.health.connect.aidl.DeviceDataSourceCapabilities result) {
-                            Binder.clearCallingIdentity();
-                            executor.execute(
-                                    () ->
-                                            callback.onResult(
-                                                    new DeviceDataSourceCapabilities(result)));
-                        }
-
-                        @Override
-                        @RequiresNoPermission
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new GetDeviceDataSourceCapabilitiesCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private static class GetDeviceDataSourceCapabilitiesCallback
+            extends IDeviceDataSourceCapabilitiesCallback.Stub {
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<
+                        OutcomeReceiver<DeviceDataSourceCapabilities, HealthConnectException>>
+                mCallback;
+
+        GetDeviceDataSourceCapabilitiesCallback(
+                Executor executor,
+                OutcomeReceiver<DeviceDataSourceCapabilities, HealthConnectException> callback) {
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
+        }
+
+        @Override
+        @RequiresNoPermission
+        public void onResult(android.health.connect.aidl.DeviceDataSourceCapabilities result) {
+            returnResult(mExecutor, new DeviceDataSourceCapabilities(result), mCallback);
+        }
+
+        @Override
+        @RequiresNoPermission
+        public void onError(HealthConnectExceptionParcel exception) {
+            returnError(mExecutor, mCallback, exception);
         }
     }
 
@@ -3752,22 +3834,34 @@ public class HealthConnectManager {
             mService.isMatchmakingPossible(
                     mContext.getAttributionSource(),
                     request,
-                    new IIsMatchmakingPossibleCallback.Stub() {
-                        @Override
-                        @RequiresNoPermission
-                        public void onResult(MatchmakingResponse response) {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(response));
-                        }
-
-                        @Override
-                        @RequiresNoPermission
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            returnError(executor, exception, callback);
-                        }
-                    });
+                    new IsMatchmakingPossibleCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private static class IsMatchmakingPossibleCallback extends IIsMatchmakingPossibleCallback.Stub {
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<OutcomeReceiver<MatchmakingResponse, HealthConnectException>>
+                mCallback;
+
+        IsMatchmakingPossibleCallback(
+                Executor executor,
+                OutcomeReceiver<MatchmakingResponse, HealthConnectException> callback) {
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
+        }
+
+        @Override
+        @RequiresNoPermission
+        public void onResult(MatchmakingResponse response) {
+            returnResult(mExecutor, response, mCallback);
+        }
+
+        @Override
+        @RequiresNoPermission
+        public void onError(HealthConnectExceptionParcel exception) {
+            returnError(mExecutor, mCallback, exception);
         }
     }
 
@@ -3913,24 +4007,36 @@ public class HealthConnectManager {
             mService.getMatchingDataSources(
                     mContext.getAttributionSource(),
                     request,
-                    new IGetMatchingDataSourcesCallback.Stub() {
-                        @Override
-                        @RequiresNoPermission
-                        public void onResult(GetMatchingDataSourcesResponse response) {
-                            Binder.clearCallingIdentity();
-                            executor.execute(() -> callback.onResult(response));
-                        }
-
-                        @Override
-                        @RequiresNoPermission
-                        public void onError(HealthConnectExceptionParcel exception) {
-                            Binder.clearCallingIdentity();
-                            executor.execute(
-                                    () -> callback.onError(exception.getHealthConnectException()));
-                        }
-                    });
+                    new GetMatchingDataSourcesCallback(executor, callback));
         } catch (RemoteException e) {
             throw e.rethrowFromSystemServer();
+        }
+    }
+
+    private static class GetMatchingDataSourcesCallback
+            extends IGetMatchingDataSourcesCallback.Stub {
+        private final AtomicReference<Executor> mExecutor;
+        private final AtomicReference<
+                        OutcomeReceiver<GetMatchingDataSourcesResponse, HealthConnectException>>
+                mCallback;
+
+        GetMatchingDataSourcesCallback(
+                Executor executor,
+                OutcomeReceiver<GetMatchingDataSourcesResponse, HealthConnectException> callback) {
+            mExecutor = new AtomicReference<>(executor);
+            mCallback = new AtomicReference<>(callback);
+        }
+
+        @Override
+        @RequiresNoPermission
+        public void onResult(GetMatchingDataSourcesResponse response) {
+            returnResult(mExecutor, response, mCallback);
+        }
+
+        @Override
+        @RequiresNoPermission
+        public void onError(HealthConnectExceptionParcel exception) {
+            returnError(mExecutor, mCallback, exception);
         }
     }
 

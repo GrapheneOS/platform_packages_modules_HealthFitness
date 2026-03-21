@@ -24,7 +24,6 @@ import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.health.connect.MedicalResourceId;
-import android.health.connect.aidl.RecordsParcel;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.MedicalResource;
 import android.health.connect.datatypes.Record;
@@ -85,27 +84,6 @@ public class ChangeLogsResponseTest {
         assertThat(response.getDeletedMedicalResources()).isEqualTo(deletedMedicalResources);
         assertThat(response.getNextChangesToken()).isEqualTo(TEST_TOKEN);
         assertThat(response.hasMorePages()).isTrue();
-    }
-
-    @Test
-    @SuppressWarnings("deprecation") // Testing deprecated constructor
-    public void testConstructor_deprecated() {
-        Record record = RecordFactory.newFullRecordForType(StepsRecord.class);
-        RecordsParcel recordsParcel = new RecordsParcel(List.of(record.toRecordInternal()));
-        List<ChangeLogsResponse.DeletedLog> deletedLogs =
-                List.of(new ChangeLogsResponse.DeletedLog(TEST_RECORD_ID, DELETION_TIME));
-
-        ChangeLogsResponse response =
-                new ChangeLogsResponse(recordsParcel, deletedLogs, TEST_TOKEN, false);
-
-        assertThat(response.getUpsertedRecords()).containsExactly(record);
-        assertThat(response.getDeletedLogs()).isEqualTo(deletedLogs);
-        assertThat(response.getUpsertedMedicalResources())
-                .isEmpty(); // Deprecated constructor doesn't handle these
-        assertThat(response.getDeletedMedicalResources())
-                .isEmpty(); // Deprecated constructor doesn't handle these
-        assertThat(response.getNextChangesToken()).isEqualTo(TEST_TOKEN);
-        assertThat(response.hasMorePages()).isFalse();
     }
 
     @Test

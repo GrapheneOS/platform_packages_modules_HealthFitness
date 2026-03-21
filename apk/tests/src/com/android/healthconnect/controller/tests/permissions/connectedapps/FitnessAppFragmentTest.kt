@@ -22,8 +22,6 @@ import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissions.READ_DISTANCE
 import android.health.connect.HealthPermissions.READ_STEPS
 import android.os.Bundle
-import android.platform.test.annotations.DisableFlags
-import android.platform.test.annotations.EnableFlags
 import android.platform.test.flag.junit.SetFlagsRule
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -45,9 +43,7 @@ import androidx.test.espresso.intent.matcher.IntentMatchers.hasAction
 import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.RootMatchers.isDialog
 import androidx.test.espresso.matcher.ViewMatchers.hasDescendant
-import androidx.test.espresso.matcher.ViewMatchers.isChecked
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -90,9 +86,7 @@ import com.android.healthconnect.controller.tests.utils.setLocale
 import com.android.healthconnect.controller.utils.logging.AppAccessElement
 import com.android.healthconnect.controller.utils.logging.DisconnectAppDialogElement
 import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
-import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.UIAction
-import com.android.healthfitness.flags.Flags
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -102,7 +96,6 @@ import java.time.Instant
 import java.time.ZoneId
 import java.util.Locale
 import java.util.TimeZone
-import org.hamcrest.Matchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Ignore
@@ -110,9 +103,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.anyString
-import org.mockito.Mockito.atLeast
 import org.mockito.Mockito.reset
-import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
@@ -238,121 +229,6 @@ class FitnessAppFragmentTest {
                 }
 
                 onView(withText("Distance")).check(matches(isDisplayed()))
-            }
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
-    fun test_writePermission() {
-        val permission = FitnessPermission(EXERCISE, WRITE)
-        whenever(viewModel.fitnessPermissions).then { MutableLiveData(listOf(permission)) }
-        whenever(viewModel.grantedFitnessPermissions).then { MutableLiveData(setOf(permission)) }
-
-        launchFragment<FitnessAppFragment>(
-                Bundle().apply {
-                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
-                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
-                }
-            )
-            .use { scenario ->
-                scenario.onActivity { activity: TestActivity ->
-                    val fragment = getFragment(activity)
-                    val readCategory = getPreferenceCategory(fragment, "read_permission_category")
-                    val writeCategory = getPreferenceCategory(fragment, "write_permission_category")
-
-                    assertThat(readCategory?.preferenceCount).isEqualTo(0)
-                    assertThat(writeCategory?.preferenceCount).isEqualTo(1)
-                }
-                onView(withText("Exercise")).check(matches(isDisplayed()))
-            }
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
-    fun whenPermissionSwitchIsOn_forReadWrite_correctContentDescriptionIsDisplayed() {
-        val writePermission = FitnessPermission(EXERCISE, WRITE)
-        val readPermission = FitnessPermission(DISTANCE, READ)
-        whenever(viewModel.fitnessPermissions).then {
-            MutableLiveData(listOf(writePermission, readPermission))
-        }
-        whenever(viewModel.grantedFitnessPermissions).then {
-            MutableLiveData(setOf(writePermission, readPermission))
-        }
-
-        launchFragment<FitnessAppFragment>(
-                Bundle().apply {
-                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
-                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
-                }
-            )
-            .use {
-                onView(withContentDescription("Exercise. Write Access. On"))
-                    .check(matches(isDisplayed()))
-                onView(withContentDescription("Distance. Read Access. On"))
-                    .check(matches(isDisplayed()))
-            }
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
-    fun whenPermissionSwitchIsOff_forReadWrite_correctContentDescriptionIsDisplayed() {
-        val writePermission = FitnessPermission(EXERCISE, WRITE)
-        val readPermission = FitnessPermission(DISTANCE, READ)
-        whenever(viewModel.fitnessPermissions).then {
-            MutableLiveData(listOf(writePermission, readPermission))
-        }
-
-        launchFragment<FitnessAppFragment>(
-                Bundle().apply {
-                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
-                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
-                }
-            )
-            .use {
-                onView(withContentDescription("Exercise. Write Access. Off"))
-                    .check(matches(isDisplayed()))
-                onView(withContentDescription("Distance. Read Access. Off"))
-                    .check(matches(isDisplayed()))
-            }
-    }
-
-    @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
-    fun test_readAndWritePermission() {
-        val writePermission = FitnessPermission(EXERCISE, WRITE)
-        val readPermission = FitnessPermission(DISTANCE, READ)
-        whenever(viewModel.fitnessPermissions).then {
-            MutableLiveData(listOf(writePermission, readPermission))
-        }
-        whenever(viewModel.grantedFitnessPermissions).then {
-            MutableLiveData(setOf(writePermission))
-        }
-
-        launchFragment<FitnessAppFragment>(
-                Bundle().apply {
-                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
-                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
-                }
-            )
-            .use { scenario ->
-                scenario.onActivity { activity: TestActivity ->
-                    val fragment = getFragment(activity)
-                    val readCategory = getPreferenceCategory(fragment, "read_permission_category")
-                    val writeCategory = getPreferenceCategory(fragment, "write_permission_category")
-
-                    assertThat(readCategory?.preferenceCount).isEqualTo(1)
-                    assertThat(writeCategory?.preferenceCount).isEqualTo(1)
-                }
-                onView(withText("Exercise")).check(matches(isDisplayed()))
-                onView(withText("Distance")).check(matches(isDisplayed()))
-
-                verify(healthConnectLogger, atLeast(1)).setPageId(PageName.APP_ACCESS_PAGE)
-                verify(healthConnectLogger).logPageImpression()
-                // TODO (b/325680041) investigate why these are not active
-                verify(healthConnectLogger, times(2))
-                    .logImpression(AppAccessElement.PERMISSION_SWITCH_INACTIVE)
-                verify(healthConnectLogger)
-                    .logImpression(AppAccessElement.ALLOW_ALL_PERMISSIONS_SWITCH_INACTIVE)
             }
     }
 
@@ -824,43 +700,6 @@ class FitnessAppFragmentTest {
     }
 
     @Test
-    @DisableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
-    fun allowAll_toggleOff_onDialogRemoveAllClicked_disconnectAllPermissions() {
-        whenever(viewModel.revokeFitnessShouldIncludeBackground()).thenReturn(true)
-        whenever(viewModel.revokeFitnessShouldIncludePastData()).thenReturn(true)
-        whenever(viewModel.medicalPermissions).then {
-            MutableLiveData(
-                listOf(HealthPermission.MedicalPermission(MedicalPermissionType.ALL_MEDICAL_DATA))
-            )
-        }
-        val writePermission = FitnessPermission(EXERCISE, WRITE)
-        val readPermission = FitnessPermission(DISTANCE, READ)
-        whenever(viewModel.fitnessPermissions).then {
-            MutableLiveData(listOf(writePermission, readPermission))
-        }
-        whenever(viewModel.grantedFitnessPermissions).then {
-            MutableLiveData(setOf(writePermission, readPermission))
-        }
-        whenever(viewModel.allFitnessPermissionsGranted).then { MediatorLiveData(true) }
-        launchFragment<FitnessAppFragment>(
-                Bundle().apply {
-                    putString(EXTRA_PACKAGE_NAME, TEST_APP_PACKAGE_NAME)
-                    putString(EXTRA_APP_NAME, TEST_APP_NAME)
-                }
-            )
-            .use {
-                onView(withText("Allow all")).perform(click())
-
-                onView(withText("Remove all")).inRoot(isDialog()).perform(click())
-                verify(healthConnectLogger)
-                    .logInteraction(DisconnectAppDialogElement.DISCONNECT_APP_DIALOG_CONFIRM_BUTTON)
-
-                onView(withText("Exercise")).check(matches(not(isChecked())))
-                onView(withText("Distance")).check(matches(not(isChecked())))
-            }
-    }
-
-    @Test
     @Ignore("b/369796531 - unignore when more tests added")
     fun allowAll_toggleOff_deleteDataSelected_onDialogRemoveAllClicked_deleteIsCalled() {
         val writePermission = FitnessPermission(EXERCISE, WRITE)
@@ -1217,8 +1056,7 @@ class FitnessAppFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
-    fun displaysGroupedPermissions_whenFlagEnabled() {
+    fun displaysGroupedPermissions() {
         val writePermission = FitnessPermission(HYDRATION, WRITE)
         val readPermission = FitnessPermission(STEPS, READ)
         whenever(viewModel.fitnessPermissions).then {
@@ -1265,7 +1103,6 @@ class FitnessAppFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_partialPermissionsGranted() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val distancePermission = fromPermissionString(READ_DISTANCE)
@@ -1294,7 +1131,6 @@ class FitnessAppFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_allPermissionGranted() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val distancePermission = fromPermissionString(READ_DISTANCE)
@@ -1323,7 +1159,6 @@ class FitnessAppFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun permissionGrouping_correctlyDisplaysGrantedPermissionCount_zeroPermissionGranted() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val distancePermission = fromPermissionString(READ_DISTANCE)
@@ -1350,8 +1185,7 @@ class FitnessAppFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
-    fun togglePermissionInCategory_updatesViewModel_whenFlagEnabled() {
+    fun togglePermissionInCategory_updatesViewModel() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val writePermission = FitnessPermission(HYDRATION, WRITE)
         val readPermission = FitnessPermission(STEPS, READ)
@@ -1374,8 +1208,7 @@ class FitnessAppFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
-    fun toggleCategorySwitch_updatesViewModel_whenFlagEnabled() {
+    fun toggleCategorySwitch_updatesViewModel() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val writePermission = FitnessPermission(HYDRATION, WRITE)
         val readPermission = FitnessPermission(STEPS, READ)
@@ -1398,7 +1231,6 @@ class FitnessAppFragmentTest {
     }
 
     @Test
-    @EnableFlags(Flags.FLAG_PERMISSIONS_GROUPING_FITNESS_APP_SCREEN)
     fun toggleIndividualPermission_updatesParentSwitchState() {
         val stepsPermission = fromPermissionString(READ_STEPS)
         val distancePermission = fromPermissionString(READ_DISTANCE)

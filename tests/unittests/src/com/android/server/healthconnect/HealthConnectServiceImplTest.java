@@ -79,6 +79,7 @@ import static android.permission.PermissionManager.PERMISSION_HARD_DENIED;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE;
 import static com.android.healthfitness.flags.Flags.FLAG_CLOUD_BACKUP_AND_RESTORE_INTENT_API;
 import static com.android.healthfitness.flags.Flags.FLAG_DEVICE_DATA_PROVIDERS_API;
+import static com.android.healthfitness.flags.Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS;
 import static com.android.healthfitness.flags.Flags.FLAG_IMMEDIATE_EXPORT;
 import static com.android.healthfitness.flags.Flags.FLAG_MATCHMAKING;
 import static com.android.healthfitness.flags.Flags.FLAG_ONBOARDING;
@@ -334,6 +335,7 @@ public class HealthConnectServiceImplTest {
     public static final Set<String> BLOCK_CALLS_DURING_DATA_SYNC_LIST =
             Set.of(
                     "grantHealthPermission",
+                    "grantHealthPermissions",
                     "revokeHealthPermission",
                     "revokeAllHealthPermissions",
                     "getGrantedHealthPermissions",
@@ -931,6 +933,51 @@ public class HealthConnectServiceImplTest {
 
         // 2 internal tasks are scheduled: 1 for immediate export and 1 for periodic export.
         assertThat(mInternalTaskScheduler.getCompletedTaskCount()).isEqualTo(taskCount + 2);
+    }
+
+    @Test
+    @EnableFlags({FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS})
+    public void testGrantHealthPermissions_callsPermissionHelper() {
+        String packageName = "test.package";
+        List<String> permissions = List.of("perm1", "perm2");
+        List<String> expectedResult = List.of("perm1");
+        when(mHealthConnectPermissionHelper.grantHealthPermissions(
+                        packageName, permissions, mUserHandle))
+                .thenReturn(expectedResult);
+
+        List<String> result =
+                mHealthConnectService.grantHealthPermissions(packageName, permissions, mUserHandle);
+
+        assertThat(result).isEqualTo(expectedResult);
+        verify(mHealthConnectPermissionHelper)
+                .grantHealthPermissions(packageName, permissions, mUserHandle);
+    }
+
+    @Test
+    @DisableFlags({FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS})
+    public void testGrantHealthPermissions_flagDisabled_throwsException() {
+        String packageName = "test.package";
+        List<String> permissions = List.of("perm1", "perm2");
+
+        assertThrows(
+                UnsupportedOperationException.class,
+                () ->
+                        mHealthConnectService.grantHealthPermissions(
+                                packageName, permissions, mUserHandle));
+    }
+
+    @Test
+    @EnableFlags({FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS})
+    public void testGrantHealthPermissions_dataSyncInProgress_throwsException() {
+        String packageName = "test.package";
+        List<String> permissions = List.of("perm1", "perm2");
+        when(mMigrationStateManager.isMigrationInProgress()).thenReturn(true);
+
+        assertThrows(
+                IllegalStateException.class,
+                () ->
+                        mHealthConnectService.grantHealthPermissions(
+                                packageName, permissions, mUserHandle));
     }
 
     /**

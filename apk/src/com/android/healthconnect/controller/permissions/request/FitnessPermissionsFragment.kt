@@ -46,7 +46,6 @@ import com.android.healthconnect.controller.utils.logging.HealthConnectLogger
 import com.android.healthconnect.controller.utils.logging.PageName
 import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import com.android.healthconnect.controller.utils.pref
-import com.android.healthfitness.flags.Flags.permissionsGroupingUi
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -129,10 +128,7 @@ class FitnessPermissionsFragment : Hilt_FitnessPermissionsFragment() {
     }
 
     override fun onCreateAdapter(preferenceScreen: PreferenceScreen): RecyclerView.Adapter<*> {
-        if (permissionsGroupingUi()) {
-            return ExpandablePreferenceAdapter(preferenceScreen, customStylePreferences)
-        }
-        return super.onCreateAdapter(preferenceScreen)
+        return ExpandablePreferenceAdapter(preferenceScreen, customStylePreferences)
     }
 
     private fun setupHeader(appMetadata: AppMetadata, screenState: RequestPermissionsScreenState) {
@@ -220,15 +216,9 @@ class FitnessPermissionsFragment : Hilt_FitnessPermissionsFragment() {
     }
 
     private fun toggleCategoryPermissions(preferenceGroup: PreferenceGroup, isChecked: Boolean) {
-        if (permissionsGroupingUi()) {
-            preferenceGroup.children.forEach { dataCategory ->
-                (dataCategory as? HealthToggleExpandablePreference)?.isChecked = isChecked
-                (dataCategory as? PreferenceGroup)?.children?.forEach { preference ->
-                    (preference as? TwoStatePreference)?.isChecked = isChecked
-                }
-            }
-        } else {
-            preferenceGroup.children.forEach { preference ->
+        preferenceGroup.children.forEach { dataCategory ->
+            (dataCategory as? HealthToggleExpandablePreference)?.isChecked = isChecked
+            (dataCategory as? PreferenceGroup)?.children?.forEach { preference ->
                 (preference as? TwoStatePreference)?.isChecked = isChecked
             }
         }
@@ -239,36 +229,11 @@ class FitnessPermissionsFragment : Hilt_FitnessPermissionsFragment() {
         writePermissionCategory.removeAll()
         permissionMap.clear()
 
-        if (permissionsGroupingUi()) {
-            customStylePreferences.clear()
-            updateGroupedPermissionsUi(permissionsList)
-        } else {
-            updateFlatPermissionsUi(permissionsList)
-        }
+        customStylePreferences.clear()
+        updateGroupedPermissionsUi(permissionsList)
 
         readPermissionCategory.isVisible = readPermissionCategory.preferenceCount > 0
         writePermissionCategory.isVisible = writePermissionCategory.preferenceCount > 0
-    }
-
-    private fun updateFlatPermissionsUi(permissionsList: List<HealthPermission.FitnessPermission>) {
-        permissionsList
-            .sortByLocale {
-                requireContext()
-                    .getString(
-                        FitnessPermissionStrings.fromPermissionType(it.fitnessPermissionType)
-                            .uppercaseLabel
-                    )
-            }
-            .forEach { permission ->
-                val value = viewModel.isPermissionLocallyGranted(permission)
-                if (PermissionsAccessType.READ == permission.permissionsAccessType) {
-                    readPermissionCategory.addPreference(getPermissionPreference(value, permission))
-                } else if (PermissionsAccessType.WRITE == permission.permissionsAccessType) {
-                    writePermissionCategory.addPreference(
-                        getPermissionPreference(value, permission)
-                    )
-                }
-            }
     }
 
     private fun updateGroupedPermissionsUi(
@@ -433,9 +398,7 @@ class FitnessPermissionsFragment : Hilt_FitnessPermissionsFragment() {
             it.logNameActive = PermissionsElement.PERMISSION_SWITCH
             it.logNameInactive = PermissionsElement.PERMISSION_SWITCH
             it.permission = permission
-            if (permissionsGroupingUi()) {
-                it.isLastInGroup = isLastInGroup
-            }
+            it.isLastInGroup = isLastInGroup
             it.setOnPreferenceChangeListener { preference, newValue ->
                 viewModel.updateHealthPermission(permission, newValue as Boolean)
                 true

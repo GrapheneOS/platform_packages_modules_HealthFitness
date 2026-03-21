@@ -172,4 +172,9 @@ public final class AconfigFlagHelper {
                 && Flags.changeLogsGranularPermissionsHandlingDb()
                 && Flags.developmentDatabaseRw();
     }
+
+    /** Returns a boolean indicating whether health permission improvements are enabled. */
+    public static boolean isHealthPermissionReaderImprovementsEnabled() {
+        return Flags.healthPermissionReaderImprovements();
+    }
 }

@@ -39,7 +39,7 @@ import com.android.healthfitness.flags.Flags;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.time.temporal.ChronoUnit;
+import java.time.ZoneId;
 import java.util.List;
 
 @AppModeFull(reason = "HealthConnectManager is not accessible to instant apps")
@@ -100,12 +100,16 @@ public class MenstrualCyclePhaseRecordApiTest extends BaseApiTest<MenstrualCycle
                                                 .setStartTime(
                                                         YESTERDAY_11AM
                                                                 .minusDays(4)
-                                                                .truncatedTo(ChronoUnit.DAYS)
+                                                                .toLocalDate()
+                                                                .atStartOfDay(
+                                                                        ZoneId.systemDefault())
                                                                 .toInstant())
                                                 .setEndTime(
                                                         YESTERDAY_11AM
                                                                 .minusDays(1)
-                                                                .truncatedTo(ChronoUnit.DAYS)
+                                                                .toLocalDate()
+                                                                .atStartOfDay(
+                                                                        ZoneId.systemDefault())
                                                                 .minusNanos(1)
                                                                 .toInstant())
                                                 .build())
@@ -156,12 +160,14 @@ public class MenstrualCyclePhaseRecordApiTest extends BaseApiTest<MenstrualCycle
                                         .setStartTime(
                                                 YESTERDAY_11AM
                                                         .minusDays(4)
-                                                        .truncatedTo(ChronoUnit.DAYS)
+                                                        .toLocalDate()
+                                                        .atStartOfDay(ZoneId.systemDefault())
                                                         .toInstant())
                                         .setEndTime(
                                                 YESTERDAY_11AM
                                                         .minusDays(1)
-                                                        .truncatedTo(ChronoUnit.DAYS)
+                                                        .toLocalDate()
+                                                        .atStartOfDay(ZoneId.systemDefault())
                                                         .minusNanos(1)
                                                         .toInstant())
                                         .build())

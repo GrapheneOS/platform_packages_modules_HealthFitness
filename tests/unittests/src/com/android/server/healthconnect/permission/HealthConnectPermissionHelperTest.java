@@ -42,7 +42,8 @@ import android.healthconnect.testing.shared.DeviceSupportUtils;
 import android.os.Build;
 import android.os.Process;
 import android.os.UserHandle;
-import android.platform.test.annotations.RequiresFlagsEnabled;
+import android.platform.test.annotations.DisableFlags;
+import android.platform.test.annotations.EnableFlags;
 import android.platform.test.flag.junit.CheckFlagsRule;
 import android.platform.test.flag.junit.DeviceFlagsValueProvider;
 import android.platform.test.flag.junit.SetFlagsRule;
@@ -62,6 +63,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+
+import java.util.Arrays;
+import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class HealthConnectPermissionHelperTest {
@@ -294,6 +298,7 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void grantHealthPermission_noIntentSupport_doesNotGrantPermission()
             throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
@@ -318,6 +323,31 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermissions_noIntentSupport_doesNotGrantPermission()
+            throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(false);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {HealthPermissions.READ_SKIN_TEMPERATURE});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_SKIN_TEMPERATURE),
+                        CURRENT_USER);
+
+        assertThat(result).isEmpty();
+        assertNoPermissionGranted();
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void grantHealthPermission_noIntentSupport_wear_grantsPermission()
             throws PackageManager.NameNotFoundException {
         when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)).thenReturn(true);
@@ -347,6 +377,41 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermissions_noIntentSupport_wear_grantsPermission()
+            throws PackageManager.NameNotFoundException {
+        when(mPackageManager.hasSystemFeature(PackageManager.FEATURE_WATCH)).thenReturn(true);
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(false);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(Build.VERSION_CODES.VANILLA_ICE_CREAM, new String[] {});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEART_RATE),
+                        CURRENT_USER);
+
+        assertThat(result).containsExactly(HealthPermissions.READ_HEART_RATE);
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void grantHealthPermission_supportsRationaleIntent_grantsPermission()
             throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
@@ -376,6 +441,81 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermissions_supportsRationaleIntent_grantsPermission()
+            throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(true);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {HealthPermissions.READ_HEART_RATE});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEART_RATE),
+                        CURRENT_USER);
+
+        assertThat(result).containsExactly(HealthPermissions.READ_HEART_RATE);
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermissions_supportsRationaleIntent_grantsMultiplePermissions()
+            throws PackageManager.NameNotFoundException {
+        String[] permissions =
+                new String[] {
+                    HealthPermissions.READ_HEART_RATE,
+                    HealthPermissions.READ_OXYGEN_SATURATION,
+                    HealthPermissions.READ_STEPS
+                };
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(true);
+        PackageInfo mockPackageInfo = getMockPackageInfo(Build.VERSION_CODES.BAKLAVA, permissions);
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME, Arrays.asList(permissions), CURRENT_USER);
+
+        assertThat(result).containsExactlyElementsIn(Arrays.asList(permissions));
+
+        Arrays.asList(permissions)
+                .forEach(
+                        permission -> {
+                            verify(mPackageManager)
+                                    .grantRuntimePermission(
+                                            eq(TEST_PACKAGE_NAME),
+                                            eq(permission),
+                                            eq(CURRENT_USER));
+                            verify(mPackageManager)
+                                    .updatePermissionFlags(
+                                            eq(permission),
+                                            eq(TEST_PACKAGE_NAME),
+                                            anyInt(),
+                                            eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                                            eq(CURRENT_USER));
+                        });
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void
             grantHealthPermission_noIntentSupport_nonSplittablePermission_doesNotGrantPermission()
                     throws PackageManager.NameNotFoundException {
@@ -402,8 +542,145 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void
-            grantHealthPermission_noIntentSupport_splittablePermission_baklavaTargetSdk_doesNotGrantPermission()
+            grantHealthPermissions_noIntentSupport_nonSplittablePermission_doesNotGrantPermission()
+                    throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(false);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(Build.VERSION_CODES.VANILLA_ICE_CREAM, new String[] {});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        verify(mPackageManager, never()).getPermissionFlags(any(), any(), any());
+
+        // Skin Temperature is not a permission that can be granted via the
+        // split permission platform upgrade.
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_SKIN_TEMPERATURE),
+                        CURRENT_USER);
+
+        assertThat(result).isEmpty();
+        assertNoPermissionGranted();
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void
+            grantHealthPermissions_noIntentSupport_nonSplittablePermission_doesNotAnyPermission()
+                    throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(false);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.VANILLA_ICE_CREAM,
+                        new String[] {
+                            HealthPermissions.READ_HEART_RATE,
+                        });
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        verify(mPackageManager, never()).getPermissionFlags(any(), any(), any());
+
+        // Skin Temperature is not a permission that can be granted via the
+        // split permission platform upgrade.
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(
+                                HealthPermissions.READ_SKIN_TEMPERATURE,
+                                HealthPermissions.READ_HEART_RATE),
+                        CURRENT_USER);
+
+        assertThat(result).isEmpty();
+        verify(mPackageManager, never())
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_SKIN_TEMPERATURE),
+                        eq(CURRENT_USER));
+        verify(mPackageManager, never())
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_SKIN_TEMPERATURE),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+
+        verify(mPackageManager, never())
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(CURRENT_USER));
+        verify(mPackageManager, never())
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermissions_noIntentSupport_partialFlags_doesNotGrantAllPermissions()
+            throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(false);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.VANILLA_ICE_CREAM,
+                        new String[] {HealthPermissions.READ_HEART_RATE});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        when(mPackageManager.getPermissionFlags(
+                        HealthPermissions.READ_HEART_RATE, TEST_PACKAGE_NAME, CURRENT_USER))
+                .thenReturn(PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(
+                                HealthPermissions.READ_SKIN_TEMPERATURE,
+                                HealthPermissions.READ_HEART_RATE),
+                        CURRENT_USER);
+
+        assertThat(result).containsExactly(HealthPermissions.READ_HEART_RATE);
+
+        verify(mPackageManager, never())
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_SKIN_TEMPERATURE),
+                        eq(CURRENT_USER));
+        verify(mPackageManager, never())
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_SKIN_TEMPERATURE),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void
+            grantHealthPermission_noIntentSupport_splittablePermission_baklava_noGrantPermission()
                     throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
                 .thenReturn(false);
@@ -426,6 +703,31 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void
+            grantHealthPermissions_noIntentSupport_splittablePermission_baklava_noGrantPermission()
+                    throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(false);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(Build.VERSION_CODES.BAKLAVA, new String[] {});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        verify(mPackageManager, never()).getPermissionFlags(any(), any(), any());
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEART_RATE),
+                        CURRENT_USER);
+
+        assertThat(result).isEmpty();
+        assertNoPermissionGranted();
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void
             grantHealthPermission_noIntentSupport_readHrExplicitlyRequested_doesNotGrantPermission()
                     throws PackageManager.NameNotFoundException {
@@ -452,8 +754,34 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermissions_noIntentSupport_readHrRequested_doesNotGrantPermission()
+            throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(false);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(Build.VERSION_CODES.VANILLA_ICE_CREAM, new String[] {});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        when(mPackageManager.getPermissionFlags(
+                        HealthPermissions.READ_HEART_RATE, TEST_PACKAGE_NAME, CURRENT_USER))
+                .thenReturn(PackageManager.FLAG_PERMISSION_USER_SET);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEART_RATE),
+                        CURRENT_USER);
+
+        assertThat(result).isEmpty();
+        assertNoPermissionGranted();
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void
-            grantHealthPermission_noIntentSupport_readBackgroundExplicitlyRequested_doesNotGrantPermission()
+            grantHealthPermission_noIntentSupport_readBackgroundRequested_doesNotGrantPermission()
                     throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
                 .thenReturn(false);
@@ -480,6 +808,35 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void
+            grantHealthPermissions_noIntentSupport_readBackgroundRequested_doesNotGrantPermission()
+                    throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(false);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(Build.VERSION_CODES.VANILLA_ICE_CREAM, new String[] {});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        when(mPackageManager.getPermissionFlags(
+                        HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+                        TEST_PACKAGE_NAME,
+                        CURRENT_USER))
+                .thenReturn(PackageManager.FLAG_PERMISSION_USER_SET);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        CURRENT_USER);
+
+        assertThat(result).isEmpty();
+        assertNoPermissionGranted();
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void grantHealthPermission_noIntentSupport_readHrSplitPermission_grantsPermission()
             throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
@@ -513,6 +870,45 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermissions_noIntentSupport_readHrSplitPermission_grantsPermission()
+            throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(false);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.VANILLA_ICE_CREAM,
+                        new String[] {HealthPermissions.READ_HEART_RATE});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        when(mPackageManager.getPermissionFlags(
+                        HealthPermissions.READ_HEART_RATE, TEST_PACKAGE_NAME, CURRENT_USER))
+                .thenReturn(PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEART_RATE),
+                        CURRENT_USER);
+
+        assertThat(result).containsExactly(HealthPermissions.READ_HEART_RATE);
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void
             grantHealthPermission_noIntentSupport_readBackgroundSplitPermission_grantsPermission()
                     throws PackageManager.NameNotFoundException {
@@ -549,8 +945,50 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void
-            grantHealthPermission_readHeartRate_supportsIntent_outdatedTargetSdk_alsoGrantBodySensors()
+            grantHealthPermissions_noIntentSupport_readBackgroundSplitPermission_grantsPermission()
+                    throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(false);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.VANILLA_ICE_CREAM,
+                        new String[] {HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        when(mPackageManager.getPermissionFlags(
+                        HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+                        TEST_PACKAGE_NAME,
+                        CURRENT_USER))
+                .thenReturn(PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        CURRENT_USER);
+
+        assertThat(result).containsExactly(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND);
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void
+            grantHealthPermission_readHeartRate_supportsIntent_outdatedTarget_alsoGrantBodySensors()
                     throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
                 .thenReturn(true);
@@ -589,9 +1027,56 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void
-            grantHealthPermission_readHeartRate_noIntentSupport_outdatedTargetSdk_alsoGrantBodySensors()
+            grantHealthPermissions_readHeartRate_supportsIntent_outdatedTarget_grantBodySensors()
+                    throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(true);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.VANILLA_ICE_CREAM,
+                        new String[] {HealthPermissions.READ_HEART_RATE, permission.BODY_SENSORS});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEART_RATE),
+                        CURRENT_USER);
+
+        assertThat(result).containsExactly(HealthPermissions.READ_HEART_RATE);
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME), eq(permission.BODY_SENSORS), eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(permission.BODY_SENSORS),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void
+            grantHealthPermission_readHeartRate_noIntentSupport_outdatedTarget_grantBodySensors()
                     throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
                 .thenReturn(false);
@@ -634,6 +1119,56 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void
+            grantHealthPermissions_readHeartRate_noIntentSupport_outdatedTarget_grantBodySensors()
+                    throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(false);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.VANILLA_ICE_CREAM,
+                        new String[] {HealthPermissions.READ_HEART_RATE, permission.BODY_SENSORS});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        when(mPackageManager.getPermissionFlags(
+                        HealthPermissions.READ_HEART_RATE, TEST_PACKAGE_NAME, CURRENT_USER))
+                .thenReturn(PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEART_RATE),
+                        CURRENT_USER);
+
+        assertThat(result).containsExactly(HealthPermissions.READ_HEART_RATE);
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME), eq(permission.BODY_SENSORS), eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(permission.BODY_SENSORS),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void grantHealthPermission_readHeartRate_postSplitTargetSdk_noBodySensorsSync()
             throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
@@ -669,6 +1204,47 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermissions_readHeartRate_postSplitTargetSdk_noBodySensorsSync()
+            throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(true);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {HealthPermissions.READ_HEART_RATE, permission.BODY_SENSORS});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEART_RATE),
+                        CURRENT_USER);
+
+        assertThat(result).containsExactly(HealthPermissions.READ_HEART_RATE);
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+        verify(mPackageManager, never())
+                .grantRuntimePermission(any(), eq(permission.BODY_SENSORS), any());
+        verify(mPackageManager, never())
+                .updatePermissionFlags(
+                        eq(permission.BODY_SENSORS), any(), anyInt(), anyInt(), any());
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void grantHealthPermission_readHeartRate_bodySensorNotRequested_noBodySensorsSync()
             throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
@@ -703,7 +1279,48 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermissions_readHeartRate_bodySensorNotRequested_noBodySensorsSync()
+            throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(true);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.VANILLA_ICE_CREAM,
+                        new String[] {HealthPermissions.READ_HEART_RATE});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEART_RATE),
+                        CURRENT_USER);
+
+        assertThat(result).containsExactly(HealthPermissions.READ_HEART_RATE);
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+        verify(mPackageManager, never())
+                .grantRuntimePermission(any(), eq(permission.BODY_SENSORS), any());
+        verify(mPackageManager, never())
+                .updatePermissionFlags(
+                        eq(permission.BODY_SENSORS), any(), anyInt(), anyInt(), any());
+    }
+
+    @Test
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void grantHealthPermission_readHeartRate_olderBuildVersion_noBodySensorsSync()
             throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
@@ -738,10 +1355,50 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermissions_readHeartRate_olderBuildVersion_noBodySensorsSync()
+            throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(true);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.VANILLA_ICE_CREAM,
+                        new String[] {permission.BODY_SENSORS});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEART_RATE),
+                        CURRENT_USER);
+
+        assertThat(result).containsExactly(HealthPermissions.READ_HEART_RATE);
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEART_RATE),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+        verify(mPackageManager, never())
+                .grantRuntimePermission(any(), eq(permission.BODY_SENSORS), any());
+        verify(mPackageManager, never())
+                .updatePermissionFlags(
+                        eq(permission.BODY_SENSORS), any(), anyInt(), anyInt(), any());
+    }
+
+    @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    public void
-            grantHealthPermission_readHealthDataInBackground_supportsIntent_outdatedTargetSdk_alsoGrantBodySensorsBackground()
-                    throws PackageManager.NameNotFoundException {
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermission_readHealthDataInBackground_outdatedTarget_grantBodySensors()
+            throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
                 .thenReturn(true);
         PackageInfo mockPackageInfo =
@@ -785,9 +1442,59 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    public void
-            grantHealthPermission_readHealthDataInBackground_noIntentSupport_outdatedTargetSdk_alsoGrantBodySensorsBackground()
-                    throws PackageManager.NameNotFoundException {
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermissions_readHealthDataInBackground_outdatedTarget_grantBodySensors()
+            throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(true);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.VANILLA_ICE_CREAM,
+                        new String[] {
+                            HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+                            permission.BODY_SENSORS_BACKGROUND
+                        });
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        CURRENT_USER);
+
+        assertThat(result).containsExactly(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND);
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(permission.BODY_SENSORS_BACKGROUND),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(permission.BODY_SENSORS_BACKGROUND),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermission_readHealthDataInBackground_noIntentSupport_grantBodySensors()
+            throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
                 .thenReturn(false);
         PackageInfo mockPackageInfo =
@@ -836,8 +1543,64 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermissions_readHealthDataInBackground_noIntentSupport_grantBodySensors()
+            throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(false);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.VANILLA_ICE_CREAM,
+                        new String[] {
+                            HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+                            permission.BODY_SENSORS_BACKGROUND
+                        });
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+        when(mPackageManager.getPermissionFlags(
+                        HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND,
+                        TEST_PACKAGE_NAME,
+                        CURRENT_USER))
+                .thenReturn(PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        CURRENT_USER);
+
+        assertThat(result).containsExactly(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND);
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(permission.BODY_SENSORS_BACKGROUND),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(permission.BODY_SENSORS_BACKGROUND),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void
-            grantHealthPermission_readHealthDataInBackground_postSplitTargetSdk_noBodySensorsBackgroundSync()
+            grantHealthPermission_readHealthDataInBackground_postSplitTargetSdk_noBodySensorsSync()
                     throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
                 .thenReturn(true);
@@ -872,8 +1635,50 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void
-            grantHealthPermission_readHealthDataInBackground_bodySensorsBackgroundNotRequested_noBodySensorsBackgroundSync()
+            grantHealthPermissions_readHealthDataInBackground_postSplitTargetSdk_noBodySensorsSync()
+                    throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(true);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.BAKLAVA,
+                        new String[] {permission.BODY_SENSORS_BACKGROUND});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        CURRENT_USER);
+
+        assertThat(result).containsExactly(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND);
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+        verify(mPackageManager, never())
+                .grantRuntimePermission(any(), eq(permission.BODY_SENSORS_BACKGROUND), any());
+        verify(mPackageManager, never())
+                .updatePermissionFlags(
+                        eq(permission.BODY_SENSORS_BACKGROUND), any(), anyInt(), anyInt(), any());
+    }
+
+    @Test
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void
+            grantPermission_readHealthDataInBackground_bodySensorsBackgroundNotRequested_noSync()
                     throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
                 .thenReturn(true);
@@ -907,10 +1712,51 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
+    @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void
-            grantHealthPermission_readHealthDataInBackground_olderPlatformVersion_noBodySensorsBackgroundSync()
+            grantPermissions_readHealthDataInBackground_bodySensorsBackgroundNotRequested_noSync()
                     throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(true);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.VANILLA_ICE_CREAM,
+                        new String[] {permission.BODY_SENSORS});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        CURRENT_USER);
+
+        assertThat(result).containsExactly(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND);
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+        verify(mPackageManager, never())
+                .grantRuntimePermission(any(), eq(permission.BODY_SENSORS_BACKGROUND), any());
+        verify(mPackageManager, never())
+                .updatePermissionFlags(
+                        eq(permission.BODY_SENSORS_BACKGROUND), any(), anyInt(), anyInt(), any());
+    }
+
+    @Test
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
+    @DisableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermission_readHealthDataInBackground_olderPlatform_noBodySensorsSync()
+            throws PackageManager.NameNotFoundException {
         when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
                 .thenReturn(true);
         PackageInfo mockPackageInfo =
@@ -923,6 +1769,46 @@ public class HealthConnectPermissionHelperTest {
         mPermissionHelper.grantHealthPermission(
                 TEST_PACKAGE_NAME, HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND, CURRENT_USER);
 
+        verify(mPackageManager)
+                .grantRuntimePermission(
+                        eq(TEST_PACKAGE_NAME),
+                        eq(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        eq(CURRENT_USER));
+        verify(mPackageManager)
+                .updatePermissionFlags(
+                        eq(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        eq(TEST_PACKAGE_NAME),
+                        anyInt(),
+                        eq(PackageManager.FLAG_PERMISSION_USER_SET),
+                        eq(CURRENT_USER));
+        verify(mPackageManager, never())
+                .grantRuntimePermission(any(), eq(permission.BODY_SENSORS_BACKGROUND), any());
+        verify(mPackageManager, never())
+                .updatePermissionFlags(
+                        eq(permission.BODY_SENSORS_BACKGROUND), any(), anyInt(), anyInt(), any());
+    }
+
+    @Test
+    @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
+    @EnableFlags(Flags.FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void grantHealthPermissions_readHealthDataInBackground_olderPlatform_noBodySensorsSync()
+            throws PackageManager.NameNotFoundException {
+        when(mTracker.supportsPermissionUsageIntent(eq(TEST_PACKAGE_NAME), eq(CURRENT_USER)))
+                .thenReturn(true);
+        PackageInfo mockPackageInfo =
+                getMockPackageInfo(
+                        Build.VERSION_CODES.VANILLA_ICE_CREAM,
+                        new String[] {permission.BODY_SENSORS_BACKGROUND});
+        when(mPackageManager.getPackageInfo(eq(TEST_PACKAGE_NAME), any()))
+                .thenReturn(mockPackageInfo);
+
+        List<String> result =
+                mPermissionHelper.grantHealthPermissions(
+                        TEST_PACKAGE_NAME,
+                        List.of(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND),
+                        CURRENT_USER);
+
+        assertThat(result).containsExactly(HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND);
         verify(mPackageManager)
                 .grantRuntimePermission(
                         eq(TEST_PACKAGE_NAME),
@@ -1105,9 +1991,8 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
-    public void
-            revokeHealthPermission_readHealthDataInBackground_outdatedTargetSdk_bodySensorsBackgroundRevoked()
-                    throws PackageManager.NameNotFoundException {
+    public void revokeHealthPermission_readHealthDataInBackground_outdatedTarget_revoked()
+            throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo =
                 getMockPackageInfo(
                         Build.VERSION_CODES.VANILLA_ICE_CREAM,
@@ -1152,7 +2037,7 @@ public class HealthConnectPermissionHelperTest {
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA, codeName = "Baklava")
     public void
-            revokeHealthPermission_readHealthDataInBackground_postSplitTargetSdk_bodySensorsBackgroundNotRevoked()
+            revoke_readHealthDataInBackground_postSplitTargetSdk_bodySensorsBackgroundNotRevoked()
                     throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo =
                 getMockPackageInfo(
@@ -1190,9 +2075,8 @@ public class HealthConnectPermissionHelperTest {
 
     @Test
     @SdkSuppress(minSdkVersion = Build.VERSION_CODES.BAKLAVA)
-    public void
-            revokeHealthPermission_readHealthDataInBackground_bodySensorsBackgroundNotRequested_bodySensorsBackgroundNotRevoked()
-                    throws PackageManager.NameNotFoundException {
+    public void revoke_readHealthDataInBackground_bodySensorsBackgroundNotRequested_notRevoked()
+            throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo =
                 getMockPackageInfo(
                         Build.VERSION_CODES.VANILLA_ICE_CREAM,
@@ -1230,7 +2114,7 @@ public class HealthConnectPermissionHelperTest {
     @Test
     @SdkSuppress(maxSdkVersion = Build.VERSION_CODES.VANILLA_ICE_CREAM)
     public void
-            revokeHealthPermission_readHealthDataInBackground_olderPlatformVersion_bodySensorsBackgroundNotRevoked()
+            revoke_readHealthDataInBackground_olderPlatformVersion_bodySensorsBackgroundNotRevoked()
                     throws PackageManager.NameNotFoundException {
         PackageInfo mockPackageInfo =
                 getMockPackageInfo(
@@ -2079,7 +2963,7 @@ public class HealthConnectPermissionHelperTest {
     }
 
     @Test
-    @RequiresFlagsEnabled({Flags.FLAG_DEVICE_UDI, Flags.FLAG_DEVICE_UDI_DB})
+    @EnableFlags({Flags.FLAG_DEVICE_UDI, Flags.FLAG_DEVICE_UDI_DB})
     public void revokeAllHealthPermissions_skipsNormalPermissions()
             throws PackageManager.NameNotFoundException {
         String normalPermission = HealthPermissions.WRITE_DEVICE_UDI;

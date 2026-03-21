@@ -23,7 +23,6 @@ import static android.content.pm.PackageManager.GET_PERMISSIONS;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.health.connect.HealthPermissions.READ_HEALTH_DATA_IN_BACKGROUND;
 import static android.health.connect.HealthPermissions.READ_HEART_RATE;
-import com.android.modules.utils.build.SdkLevel;
 
 import static com.android.server.healthconnect.permission.PackageInfoUtils.getPackageInfoUnchecked;
 
@@ -44,12 +43,13 @@ import android.util.ArrayMap;
 import android.util.ArraySet;
 import android.util.Slog;
 
-import com.android.healthfitness.flags.Flags;
+import com.android.modules.utils.build.SdkLevel;
 import com.android.server.healthconnect.common.metadata.AppInfoHelper;
 import com.android.server.healthconnect.fitness.helpers.HealthDataCategoryPriorityHelper;
 
 import java.time.Instant;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -147,6 +147,45 @@ public final class HealthConnectPermissionHelper {
         } finally {
             Binder.restoreCallingIdentity(token);
         }
+    }
+
+    /**
+     * See {@link HealthConnectManager#grantHealthPermissions}.
+     *
+     * <p>NOTE: Once permission grant is successful, the package name will also be appended to the
+     * end of the priority list corresponding to the {@code permissionNames}' health permission
+     * categories.
+     */
+    public List<String> grantHealthPermissions(
+            String packageName, List<String> permissionNames, UserHandle user) {
+        enforceManageHealthPermissions(/* message= */ "grantHealthPermissions");
+        UserHandle checkedUser = UserHandle.of(handleIncomingUser(user.getIdentifier()));
+        enforceValidPackage(packageName, checkedUser);
+
+        List<String> result = new ArrayList<>();
+        final long token = Binder.clearCallingIdentity();
+        try {
+            mAppInfoHelper.getOrInsertAppInfoId(packageName);
+
+            for (String permissionName : permissionNames) {
+                try {
+                    grantHealthPermissionInternal(packageName, permissionName, checkedUser, user);
+                    result.add(permissionName);
+                } catch (SecurityException | IllegalArgumentException e) {
+                    Slog.e(
+                            TAG,
+                            "Grant was unsuccessful for permission "
+                                    + permissionName
+                                    + " to package "
+                                    + packageName
+                                    + ": "
+                                    + e.getMessage());
+                }
+            }
+        } finally {
+            Binder.restoreCallingIdentity(token);
+        }
+        return result;
     }
 
     /** See {@link HealthConnectManager#revokeHealthPermission}. */
@@ -483,6 +522,40 @@ public final class HealthConnectPermissionHelper {
         return (targetSdk >= Build.VERSION_CODES.M)
                 ? (permissionFlag & PackageManager.FLAG_PERMISSION_REVOKE_WHEN_REQUESTED) != 0
                 : (permissionFlag & PackageManager.FLAG_PERMISSION_REVIEW_REQUIRED) != 0;
+    }
+
+    private void grantHealthPermissionInternal(
+            String packageName,
+            String permissionName,
+            UserHandle checkedUser,
+            UserHandle originalUser) {
+        enforceValidHealthPermission(permissionName);
+        enforceSupportPermissionsUsageIntent(packageName, checkedUser, permissionName);
+
+        mPackageManager.grantRuntimePermission(packageName, permissionName, checkedUser);
+        mPackageManager.updatePermissionFlags(
+                permissionName,
+                packageName,
+                MASK_PERMISSION_FLAGS,
+                PackageManager.FLAG_PERMISSION_USER_SET,
+                checkedUser);
+
+        // If is split permission, automatically grant BODY_SENSORS or BACKGROUND.
+        if ((permissionName.equals(READ_HEART_RATE)
+                        || permissionName.equals(READ_HEALTH_DATA_IN_BACKGROUND))
+                && isAppRequestingPermissionWithOutdatedTargetSdk(
+                        packageName,
+                        originalUser,
+                        toLegacyPermission(permissionName),
+                        Build.VERSION_CODES.BAKLAVA)) {
+            grantRuntimePermissionAndUpdateFlags(
+                    packageName,
+                    originalUser,
+                    toLegacyPermission(permissionName),
+                    PackageManager.FLAG_PERMISSION_USER_SET);
+        }
+
+        addToPriorityListIfRequired(packageName, permissionName, originalUser);
     }
 
     private static boolean canPotentiallyBeSplitPermissions(List<String> permissions) {

@@ -84,3 +84,31 @@ android_library {
         "//packages/modules/HealthFitness:__subpackages__",
     ],
 }
+
+// Library for testing APIs which are hidden, only meant for integration tests and not cts tests
+android_library {
+    name: "healthfitness-testing-integration",
+    manifest: "AndroidManifest_integration.xml",
+    srcs: [
+        "src/android/healthconnect/testing/integration/**/*.java",
+        "src/android/healthconnect/testing/integration/**/*.kt",
+    ],
+    static_libs: [
+        "compatibility-device-util-axt",
+        "androidx.test.ext.junit",
+        "androidx.test.ext.truth",
+        "androidx.test.rules",
+        "healthfitness-testing-shared",
+    ],
+    libs: [
+        "framework-healthfitness.impl",
+        "android_test_stubs_current",
+    ],
+    sdk_version: "core_platform",
+
+    min_sdk_version: "34",
+    visibility: [
+        "//vendor:__subpackages__",
+        "//packages/modules/HealthFitness:__subpackages__",
+    ],
+}

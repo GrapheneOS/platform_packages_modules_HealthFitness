@@ -64,7 +64,6 @@ import com.android.healthconnect.controller.utils.logging.PermissionsElement
 import com.android.healthconnect.controller.utils.navigateSafe
 import com.android.healthconnect.controller.utils.pref
 import com.android.healthconnect.controller.utils.showLoadingDialog
-import com.android.healthfitness.flags.Flags.permissionsGroupingSettingsFitnessAppScreen
 import com.android.settingslib.widget.FooterPreference
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -103,10 +102,7 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
     private val expandableParentPreferences = mutableListOf<Preference>()
 
     override fun onCreateAdapter(preferenceScreen: PreferenceScreen): RecyclerView.Adapter<*> {
-        if (permissionsGroupingSettingsFitnessAppScreen()) {
-            return ExpandablePreferenceAdapter(preferenceScreen, expandableParentPreferences)
-        }
-        return super.onCreateAdapter(preferenceScreen)
+        return ExpandablePreferenceAdapter(preferenceScreen, expandableParentPreferences)
     }
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -315,33 +311,11 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
         writePermissionCategory.removeAll()
         permissionMap.clear()
 
-        if (permissionsGroupingSettingsFitnessAppScreen()) {
-            expandableParentPreferences.clear()
-            updateGroupedPermissionsUi(permissions)
-        } else {
-            updateFlatPermissionsUi(permissions)
-        }
+        expandableParentPreferences.clear()
+        updateGroupedPermissionsUi(permissions)
 
         readPermissionCategory.apply { isVisible = (preferenceCount != 0) }
         writePermissionCategory.apply { isVisible = (preferenceCount != 0) }
-    }
-
-    private fun updateFlatPermissionsUi(permissions: List<FitnessPermission>) {
-        permissions
-            .sortByLocale {
-                requireContext()
-                    .getString(fromPermissionType(it.fitnessPermissionType).uppercaseLabel)
-            }
-            .forEach { permission ->
-                val category =
-                    if (permission.permissionsAccessType == PermissionsAccessType.READ) {
-                        readPermissionCategory
-                    } else {
-                        writePermissionCategory
-                    }
-                val preference = getPermissionPreference(permission)
-                category.addPreference(preference)
-            }
     }
 
     private fun updateGroupedPermissionsUi(permissions: List<FitnessPermission>) {
@@ -483,9 +457,7 @@ class SettingsFitnessAppFragment : Hilt_SettingsFitnessAppFragment() {
             it.logNameActive = PermissionsElement.PERMISSION_SWITCH
             it.logNameInactive = PermissionsElement.PERMISSION_SWITCH
             it.permission = permission
-            if (permissionsGroupingSettingsFitnessAppScreen()) {
-                it.isLastInGroup = isLastInGroup
-            }
+            it.isLastInGroup = isLastInGroup
             it.setOnPreferenceChangeListener { _, newValue ->
                 val checked = newValue as Boolean
                 // Shown warning when revoking permission from system apps.
