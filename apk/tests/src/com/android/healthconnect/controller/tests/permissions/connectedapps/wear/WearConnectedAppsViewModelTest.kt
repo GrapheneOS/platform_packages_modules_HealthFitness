@@ -19,9 +19,11 @@ package com.android.healthconnect.controller.tests.permissions.connectedapps.wea
 
 import android.content.Context
 import android.health.connect.Constants
+import android.health.connect.HealthDataCategory
 import android.health.connect.HealthPermissions.READ_HEART_RATE
 import android.health.connect.HealthPermissions.READ_OXYGEN_SATURATION
 import android.health.connect.HealthPermissions.READ_SKIN_TEMPERATURE
+import android.health.connect.HealthPermissions.READ_VO2_MAX
 import android.health.connect.accesslog.AccessLog
 import android.health.connect.datatypes.RecordTypeIdentifier
 import android.platform.test.flag.junit.SetFlagsRule
@@ -105,7 +107,7 @@ class WearConnectedAppsViewModelTest {
         TimeZone.setDefault(TimeZone.getTimeZone(ZoneId.of("UTC")))
 
         whenever(healthPermissionReader.getSystemHealthPermissions()).then {
-            listOf(READ_HEART_RATE, READ_SKIN_TEMPERATURE, READ_OXYGEN_SATURATION)
+            listOf(READ_HEART_RATE, READ_SKIN_TEMPERATURE, READ_OXYGEN_SATURATION, READ_VO2_MAX)
         }
 
         wearConnectedAppsViewModel =
@@ -126,6 +128,29 @@ class WearConnectedAppsViewModelTest {
         (loadHealthPermissionApps as FakeHealthPermissionAppsUseCase).reset()
         (loadAppPermissionsStatusUseCase as FakeLoadAppPermissionsStatusUseCase).reset()
         wearConnectedAppsViewModel.updateShowSystem(false)
+    }
+
+    @Test
+    fun getSystemPermissionsByCategory_groupsPermissionsCorrectly() = runTest {
+        wearConnectedAppsViewModel.loadConnectedApps()
+        advanceUntilIdle()
+
+        val categorizedPermissions =
+            wearConnectedAppsViewModel.systemHealthPermissionsByCategory.value
+
+        assertThat(categorizedPermissions.keys)
+            .containsExactly(HealthDataCategory.ACTIVITY, HealthDataCategory.VITALS)
+            .inOrder()
+        assertThat(categorizedPermissions[HealthDataCategory.VITALS])
+            .containsExactly(
+                READ_HEART_RATE_PERMISSION,
+                READ_OXYGEN_SATURATION_PERMISSION,
+                READ_SKIN_TEMPERATURE_PERMISSION,
+            )
+            .inOrder()
+        assertThat(categorizedPermissions[HealthDataCategory.ACTIVITY])
+            .containsExactly(READ_VO2_MAX_PERMISSION)
+            .inOrder()
     }
 
     @Test
@@ -388,78 +413,24 @@ class WearConnectedAppsViewModelTest {
         wearConnectedAppsViewModel.loadConnectedApps()
         advanceUntilIdle()
 
-        val actualSystemPermissions = mutableListOf<List<HealthPermission>>()
-        val systemPermissionsCollectJob = launch {
-            wearConnectedAppsViewModel.systemHealthPermissions.collect { value ->
-                actualSystemPermissions.add(value)
-            }
-        }
+        val categorizedPermissions =
+            wearConnectedAppsViewModel.systemHealthPermissionsByCategory.value
 
-        advanceUntilIdle()
-        systemPermissionsCollectJob.cancel()
-
-        assertThat(actualSystemPermissions.last())
-            .containsExactlyElementsIn(
-                listOf(
-                    READ_HEART_RATE_PERMISSION,
-                    READ_OXYGEN_SATURATION_PERMISSION,
-                    READ_SKIN_TEMPERATURE_PERMISSION,
+        assertThat(categorizedPermissions)
+            .containsExactlyEntriesIn(
+                mapOf(
+                    HealthDataCategory.VITALS to
+                        listOf(
+                            READ_HEART_RATE_PERMISSION,
+                            READ_OXYGEN_SATURATION_PERMISSION,
+                            READ_SKIN_TEMPERATURE_PERMISSION,
+                        ),
+                    HealthDataCategory.ACTIVITY to listOf(READ_VO2_MAX_PERMISSION),
                 )
             )
-    }
-
-    @Test
-    fun loadConnectedApps_sortsSystemHealthPermissions() = runTest {
-        val app1 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = appMetadataOne,
-                permissionStatus = listOf(GRANTED_READ_HEART_RATE_PERMISSION),
-                recentAccess =
-                    listOf(
-                        AccessLog(
-                            appMetadataOne.packageName,
-                            listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
-                            NOW.toEpochMilli(),
-                            Constants.READ,
-                        )
-                    ),
-                isSystem = false,
-            )
-
-        val app2 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = systemAppMetadataOne,
-                permissionStatus = listOf(GRANTED_READ_SKIN_TEMPERATURE_PERMISSION),
-                recentAccess = listOf(),
-                isSystem = true,
-            )
-        setupConnectedApps(
-            listOf(app1, app2),
-            loadHealthPermissionApps,
-            loadAppPermissionsStatusUseCase,
-            loadRecentAccessUseCase,
-        )
-
-        wearConnectedAppsViewModel.loadConnectedApps()
-        advanceUntilIdle()
-
-        val actualSystemPermissions = mutableListOf<List<HealthPermission>>()
-        val systemPermissionsCollectJob = launch {
-            wearConnectedAppsViewModel.systemHealthPermissions.collect { value ->
-                actualSystemPermissions.add(value)
-            }
-        }
-
-        advanceUntilIdle()
-        systemPermissionsCollectJob.cancel()
-
-        assertThat(actualSystemPermissions.last())
+        assertThat(categorizedPermissions.keys)
             .containsExactlyElementsIn(
-                listOf(
-                    READ_HEART_RATE_PERMISSION,
-                    READ_SKIN_TEMPERATURE_PERMISSION,
-                    READ_OXYGEN_SATURATION_PERMISSION,
-                )
+                listOf(HealthDataCategory.ACTIVITY, HealthDataCategory.VITALS)
             )
     }
 

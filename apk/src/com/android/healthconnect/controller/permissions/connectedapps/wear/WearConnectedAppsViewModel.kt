@@ -27,12 +27,14 @@ import com.android.healthconnect.controller.permissions.connectedapps.ILoadHealt
 import com.android.healthconnect.controller.permissions.data.FitnessPermissionStrings
 import com.android.healthconnect.controller.permissions.data.HealthPermission
 import com.android.healthconnect.controller.permissions.data.HealthPermission.AdditionalPermission.Companion.READ_HEALTH_DATA_IN_BACKGROUND
-import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission.Companion.fromPermissionString
+import com.android.healthconnect.controller.permissions.data.HealthPermission.FitnessPermission
 import com.android.healthconnect.controller.recentaccess.api.ILoadRecentAccessUseCase
+import com.android.healthconnect.controller.shared.HealthDataCategoryExtensions
 import com.android.healthconnect.controller.shared.HealthPermissionReader
 import com.android.healthconnect.controller.shared.HealthPermissionToDatatypeMapper.getPermissionType
 import com.android.healthconnect.controller.shared.app.AppMetadata
 import com.android.healthconnect.controller.shared.usecase.UseCaseResults
+import com.android.healthconnect.controller.utils.LocaleSorter.sortByLocale
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.time.Instant
@@ -56,8 +58,9 @@ constructor(
     /** A list of [WearHealthAppData] representing wear apps with Health permissions. */
     val wearHealthApps = MutableStateFlow<List<WearHealthAppData>>(emptyList())
 
-    /** A list of [HealthPermission] that are at system level (not restricted to HC-only). */
-    val systemHealthPermissions = MutableStateFlow<List<HealthPermission>>(emptyList())
+    /** A map of system health permissions grouped by category. */
+    val systemHealthPermissionsByCategory =
+        MutableStateFlow<Map<Int, List<HealthPermission>>>(emptyMap())
 
     /** A state flow of whether user chooses to show system apps, which by default is not-show. */
     val showSystemFlow = MutableStateFlow(false)
@@ -68,13 +71,63 @@ constructor(
 
     fun loadConnectedApps() {
         viewModelScope.launch {
-            systemHealthPermissions.value =
-                healthPermissionReader.getSystemHealthPermissions().map { perm ->
-                    fromPermissionString(perm)
-                }
             loadWearHealthApps()
-            sortSystemHealthPermissions()
+            systemHealthPermissionsByCategory.value = groupAndSortSystemPermissionsByCategory()
         }
+    }
+
+    private fun groupAndSortSystemPermissionsByCategory(): Map<Int, List<HealthPermission>> {
+        val permissions =
+            healthPermissionReader.getSystemHealthPermissions().map { perm ->
+                FitnessPermission.fromPermissionString(perm)
+            }
+
+        // 1. Group fitness permissions by category
+        val groupedByCategoryId =
+            permissions
+                .groupBy { permission ->
+                    when (permission) {
+                        is HealthPermission.FitnessPermission ->
+                            HealthDataCategoryExtensions.safelyFromFitnessPermissionType(
+                                permission.fitnessPermissionType
+                            )
+                        else -> {
+                            Log.w(
+                                TAG,
+                                "Unhandled permission type: ${permission::class.java.simpleName}",
+                            )
+                            null
+                        }
+                    }
+                }
+                .filterKeys { it != null }
+                .mapKeys { it.key!! }
+
+        // 2. Determine the alphabetical display order for categories
+        val sortedCategoryIds =
+            HealthDataCategoryExtensions.getSortedDataCategoryToStringMap(context).keys
+
+        // 3. Construct the ordered map and sort inner permissions alphabetically
+        val result = LinkedHashMap<Int, List<HealthPermission>>()
+        sortedCategoryIds.forEach { categoryId ->
+            groupedByCategoryId[categoryId]?.let { categoryPermissions ->
+                // Sort fitness permissions alphabetically by their localized labels
+                // Including the filter in case there are other permissions in the future
+                val sortedPermissions =
+                    categoryPermissions
+                        .filterIsInstance<HealthPermission.FitnessPermission>()
+                        .sortByLocale { permission ->
+                            context.getString(
+                                FitnessPermissionStrings.fromPermissionType(
+                                        permission.fitnessPermissionType
+                                    )
+                                    .uppercaseLabel
+                            )
+                        }
+                result[categoryId] = sortedPermissions
+            }
+        }
+        return result
     }
 
     private suspend fun loadWearHealthApps() {
@@ -93,9 +146,12 @@ constructor(
             }
 
         // Display only valid permissions for Wear
-        val validPermissions = systemHealthPermissions.value + READ_HEALTH_DATA_IN_BACKGROUND
+        val systemHealthPermissionStrings = healthPermissionReader.getSystemHealthPermissions()
+        val validPermissions =
+            systemHealthPermissionStrings + READ_HEALTH_DATA_IN_BACKGROUND.toString()
         val validFitnessPermissionTypes =
-            systemHealthPermissions.value
+            systemHealthPermissionStrings
+                .map { FitnessPermission.fromPermissionString(it) }
                 .filterIsInstance<HealthPermission.FitnessPermission>()
                 .map { it.fitnessPermissionType }
         val connectedApps =
@@ -110,9 +166,8 @@ constructor(
             val packageName = connectedAppMetadata.appMetadata.packageName
             val healthPermissionStatus =
                 loadAppPermissionsStatusUseCase.invoke(packageName).filter {
-                    it.healthPermission in validPermissions
+                    it.healthPermission.toString() in validPermissions
                 }
-
             // get last access log for this app
             val healthPermissionTypesAccessLogs =
                 allAccessLogs
@@ -143,31 +198,6 @@ constructor(
         }
 
         wearHealthApps.value = newConnectedAppsInternal
-    }
-
-    private fun sortSystemHealthPermissions() {
-        val nonSystemApps = wearHealthApps.value.filterNot { it.isSystem }
-        systemHealthPermissions.value =
-            systemHealthPermissions.value.sortedWith(
-                compareBy<HealthPermission> { healthPermission ->
-                        if (nonSystemApps.isPermissionRequested(healthPermission)) {
-                            0
-                        } else {
-                            1
-                        }
-                    }
-                    .thenBy { healthPermission ->
-                        // For all health permissions that are requested by at least one app,
-                        // sort by user-visible strings alphabetically.
-                        context.getString(
-                            FitnessPermissionStrings.fromPermissionType(
-                                    (healthPermission as HealthPermission.FitnessPermission)
-                                        .fitnessPermissionType
-                                )
-                                .uppercaseLabel
-                        )
-                    }
-            )
     }
 
     fun updateShowSystem(showSystem: Boolean) {
@@ -216,6 +246,6 @@ constructor(
     }
 
     companion object {
-        private const val TAG = "WearConnectedAppsViewModel"
+        private const val TAG = "WearConnectedAppsVM"
     }
 }
