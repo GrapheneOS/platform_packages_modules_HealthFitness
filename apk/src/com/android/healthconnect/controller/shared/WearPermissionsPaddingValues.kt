@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 object WearPermissionsPaddingValues {
     // Padding values
     private val PADDING_XXSMALL = 2.dp
+    private val PADDING_BOTTOM_SMALL = 4.dp
     private val PADDING_XSMALL = 6.dp
     private val PADDING_SMALL = 8.dp
     private val PADDING_NORMAL = 12.dp
@@ -31,7 +32,10 @@ object WearPermissionsPaddingValues {
 
     // Headers
     val dataTypeCategoryHeaderPaddingValues =
-        PaddingValues(start = PADDING_NORMAL, bottom = PADDING_SMALL)
+        PaddingValues(start = PADDING_NORMAL, top = PADDING_NORMAL, bottom = PADDING_BOTTOM_SMALL)
+
+    val firstDataTypeCategoryHeaderPaddingValues =
+        PaddingValues(start = PADDING_NORMAL, top = 0.dp, bottom = PADDING_BOTTOM_SMALL)
 
     val allowedAppsHeaderPaddingValues =
         PaddingValues(start = PADDING_NORMAL, bottom = PADDING_XSMALL)

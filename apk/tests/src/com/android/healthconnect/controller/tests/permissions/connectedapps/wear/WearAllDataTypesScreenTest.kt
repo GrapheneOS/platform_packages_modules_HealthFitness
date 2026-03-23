@@ -21,6 +21,7 @@ import android.health.connect.Constants
 import android.health.connect.HealthPermissions.READ_HEART_RATE
 import android.health.connect.HealthPermissions.READ_OXYGEN_SATURATION
 import android.health.connect.HealthPermissions.READ_SKIN_TEMPERATURE
+import android.health.connect.HealthPermissions.READ_VO2_MAX
 import android.health.connect.accesslog.AccessLog
 import android.health.connect.datatypes.RecordTypeIdentifier
 import androidx.compose.ui.test.assertIsDisplayed
@@ -86,7 +87,7 @@ class WearAllDataTypesScreenTest {
         composeTestRule.mainClock.autoAdvance = false
 
         whenever(healthPermissionReader.getSystemHealthPermissions()).then {
-            listOf(READ_HEART_RATE, READ_SKIN_TEMPERATURE, READ_OXYGEN_SATURATION)
+            listOf(READ_HEART_RATE, READ_SKIN_TEMPERATURE, READ_OXYGEN_SATURATION, READ_VO2_MAX)
         }
 
         wearConnectedAppsViewModel =
@@ -116,6 +117,7 @@ class WearAllDataTypesScreenTest {
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
                         DENIED_READ_SKIN_TEMPERATURE_PERMISSION,
+                        GRANTED_READ_VO2_MAX_PERMISSION,
                     ),
                 recentAccess =
                     listOf(
@@ -202,116 +204,11 @@ class WearAllDataTypesScreenTest {
         composeTestRule.onRoot().printToLog("WearAllDataTypesScreenTest")
         composeTestRule.onNodeWithText("Fitness and wellness").assertIsDisplayed()
         composeTestRule.onNodeWithText("Vitals").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Activity").assertIsDisplayed()
         assertTitleAndSummary(composeTestRule, "Heart rate", "2 of 2 apps allowed")
         assertTitleAndSummary(composeTestRule, "Skin temperature", "0 of 2 apps allowed")
         assertTitleAndSummary(composeTestRule, "Oxygen saturation", "No apps requesting")
-    }
-
-    @Test
-    fun permissionSortedByUsage_thenAlphabetically() {
-        val app1 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = appMetadataOne,
-                permissionStatus =
-                    listOf(
-                        GRANTED_READ_OXYGEN_SATURATION_PERMISSION,
-                        DENIED_READ_SKIN_TEMPERATURE_PERMISSION,
-                    ),
-                recentAccess =
-                    listOf(
-                        AccessLog(
-                            appMetadataOne.packageName,
-                            listOf(RecordTypeIdentifier.RECORD_TYPE_OXYGEN_SATURATION),
-                            NOW.toEpochMilli(),
-                            Constants.READ,
-                        )
-                    ),
-                isSystem = false,
-            )
-
-        val app2 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = appMetadataTwo,
-                permissionStatus =
-                    listOf(
-                        GRANTED_READ_SKIN_TEMPERATURE_PERMISSION,
-                        GRANTED_READ_HEALTH_DATA_IN_BACKGROUND_PERMISSION,
-                    ),
-                recentAccess =
-                    listOf(
-                        AccessLog(
-                            appMetadataTwo.packageName,
-                            listOf(RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE),
-                            NOW.toEpochMilli(),
-                            Constants.READ,
-                        )
-                    ),
-                isSystem = false,
-            )
-
-        val app3 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = appMetadataThree,
-                permissionStatus =
-                    listOf(
-                        HealthPermissionStatus(
-                            healthPermission = READ_SKIN_TEMPERATURE_PERMISSION,
-                            isGranted = false,
-                        )
-                    ),
-                recentAccess = listOf(),
-                isSystem = false,
-            )
-
-        val app4 =
-            AppConnectionsAndRecentAccess(
-                appMetadata = systemAppMetadataOne,
-                permissionStatus =
-                    listOf(
-                        GRANTED_READ_HEART_RATE_PERMISSION,
-                        GRANTED_READ_SKIN_TEMPERATURE_PERMISSION,
-                        GRANTED_READ_OXYGEN_SATURATION_PERMISSION,
-                    ),
-                recentAccess =
-                    listOf(
-                        AccessLog(
-                            systemAppMetadataOne.packageName,
-                            listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
-                            NOW.toEpochMilli(),
-                            Constants.READ,
-                        )
-                    ),
-                isSystem = true,
-            )
-
-        setupConnectedApps(
-            listOf(app1, app2, app3, app4),
-            loadHealthPermissionApps,
-            loadAppPermissionsStatusUseCase,
-            loadRecentAccessUseCase,
-        )
-
-        wearConnectedAppsViewModel.loadConnectedApps()
-        composeTestRule.waitForIdle()
-
-        with(composeTestRule) {
-            setContent {
-                AllDataTypesScreen(
-                    viewModel = wearConnectedAppsViewModel,
-                    showRecentAccess = false,
-                    onClick = { _ -> },
-                )
-            }
-        }
-
-        composeTestRule.waitForIdle()
-        composeTestRule.onRoot().printToLog("WearAllDataTypesScreenTest")
-
-        composeTestRule.onNodeWithText("Fitness and wellness").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Vitals").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Oxygen saturation").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Skin temperature").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Heart rate").assertIsDisplayed()
+        assertTitleAndSummary(composeTestRule, "VO2 max", "1 of 1 apps allowed")
     }
 
     @Test
@@ -465,8 +362,20 @@ class WearAllDataTypesScreenTest {
         val app3 =
             AppConnectionsAndRecentAccess(
                 appMetadata = appMetadataThree,
-                permissionStatus = listOf(GRANTED_READ_SKIN_TEMPERATURE_PERMISSION),
-                recentAccess = listOf(),
+                permissionStatus =
+                    listOf(
+                        GRANTED_READ_SKIN_TEMPERATURE_PERMISSION,
+                        GRANTED_READ_VO2_MAX_PERMISSION,
+                    ),
+                recentAccess =
+                    listOf(
+                        AccessLog(
+                            systemAppMetadataOne.packageName,
+                            listOf(RecordTypeIdentifier.RECORD_TYPE_VO2_MAX),
+                            NOW.toEpochMilli(),
+                            Constants.READ,
+                        )
+                    ),
                 isSystem = false,
             )
 
@@ -477,7 +386,7 @@ class WearAllDataTypesScreenTest {
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
                         GRANTED_READ_SKIN_TEMPERATURE_PERMISSION,
-                        GRANTED_READ_OXYGEN_SATURATION_PERMISSION,
+                        GRANTED_READ_VO2_MAX_PERMISSION,
                     ),
                 recentAccess =
                     listOf(
@@ -486,7 +395,13 @@ class WearAllDataTypesScreenTest {
                             listOf(RecordTypeIdentifier.RECORD_TYPE_HEART_RATE),
                             NOW.toEpochMilli(),
                             Constants.READ,
-                        )
+                        ),
+                        AccessLog(
+                            systemAppMetadataOne.packageName,
+                            listOf(RecordTypeIdentifier.RECORD_TYPE_VO2_MAX),
+                            NOW.toEpochMilli(),
+                            Constants.READ,
+                        ),
                     ),
                 isSystem = true,
             )
@@ -513,7 +428,6 @@ class WearAllDataTypesScreenTest {
 
         composeTestRule.waitForIdle()
         composeTestRule.onRoot().printToLog("WearAllDataTypesScreenTest")
-
         composeTestRule.onNodeWithText("Fitness and wellness").assertIsDisplayed()
         composeTestRule.onNodeWithText("Vitals").assertIsDisplayed()
         assertTitleAndSummary(composeTestRule, "Oxygen saturation", "No apps requesting")
@@ -640,6 +554,7 @@ class WearAllDataTypesScreenTest {
                     listOf(
                         GRANTED_READ_HEART_RATE_PERMISSION,
                         DENIED_READ_SKIN_TEMPERATURE_PERMISSION,
+                        GRANTED_READ_VO2_MAX_PERMISSION,
                     ),
                 recentAccess =
                     listOf(
@@ -652,6 +567,12 @@ class WearAllDataTypesScreenTest {
                         AccessLog(
                             appMetadataOne.packageName,
                             listOf(RecordTypeIdentifier.RECORD_TYPE_SKIN_TEMPERATURE),
+                            NOW.toEpochMilli(),
+                            Constants.READ,
+                        ),
+                        AccessLog(
+                            appMetadataOne.packageName,
+                            listOf(RecordTypeIdentifier.RECORD_TYPE_VO2_MAX),
                             NOW.toEpochMilli(),
                             Constants.READ,
                         ),

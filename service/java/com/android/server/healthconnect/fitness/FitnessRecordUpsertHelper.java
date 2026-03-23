@@ -33,7 +33,6 @@ import android.util.ArraySet;
 import android.util.Slog;
 
 import com.android.healthfitness.flags.AconfigFlagHelper;
-import com.android.healthfitness.flags.Flags;
 import com.android.server.healthconnect.HealthConnectThreadScheduler;
 import com.android.server.healthconnect.common.accesslog.AccessLogsHelper;
 import com.android.server.healthconnect.common.changelog.ChangeLogsHelper.ChangeLogsTableRequests;
@@ -278,12 +277,6 @@ public class FitnessRecordUpsertHelper {
                                         isInsertRequest,
                                         grantedPerRecordWritePermissions);
                         if (shouldGenerateChangeLog) {
-                            if (!Flags.fixChangeLogWhenInsertWithSameTimestamps()) {
-                                upsertionChangeLogs.addRecordInfo(
-                                        recordInternal.getRecordType(),
-                                        recordInternal.getAppInfoId(),
-                                        recordInternal.getUuid());
-                            }
                             addChangeLogsForOtherModifiedRecords(
                                     recordInternal, otherModifiedRecordsChangeLogs);
                         }
@@ -302,8 +295,7 @@ public class FitnessRecordUpsertHelper {
                         // mTransactionManager.insertOrReplaceOnConflict, therefore upsert change
                         // logs must be generated AFTER the upserts have taken places.
                         // See b/430891167
-                        if (shouldGenerateChangeLog
-                                && Flags.fixChangeLogWhenInsertWithSameTimestamps()) {
+                        if (shouldGenerateChangeLog) {
                             upsertionChangeLogs.addRecordInfo(
                                     recordInternal.getRecordType(),
                                     recordInternal.getAppInfoId(),
