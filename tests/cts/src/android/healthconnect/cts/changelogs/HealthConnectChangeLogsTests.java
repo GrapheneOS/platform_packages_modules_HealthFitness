@@ -46,7 +46,6 @@ import static android.healthconnect.testing.shared.phr.PhrDataFactory.createAlle
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.createVaccineMedicalResource;
 import static android.healthconnect.testing.shared.phr.PhrDataFactory.getCreateMedicalDataSourceRequest;
 
-import static com.android.healthfitness.flags.Flags.FLAG_FIX_CHANGE_LOG_WHEN_INSERT_WITH_SAME_TIMESTAMPS;
 import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 import static com.android.healthfitness.flags.Flags.phrChangeLogs;
 
@@ -884,9 +883,6 @@ public class HealthConnectChangeLogsTests {
     }
 
     @Test
-    @RequiresFlagsEnabled({
-        FLAG_FIX_CHANGE_LOG_WHEN_INSERT_WITH_SAME_TIMESTAMPS,
-    })
     public void testChangeLogs_updateByInsertingWithSameTimestamps_expectCorrectChangeLogs()
             throws InterruptedException {
         ChangeLogTokenResponse tokenResponse =
