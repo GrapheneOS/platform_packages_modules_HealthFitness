@@ -399,10 +399,11 @@ public class HealthConnectManagerService extends SystemService {
             return false;
         }
         PackageManager pm = context.getPackageManager();
-        // Not available on auto, tv and embedded
+        // Not available on auto, tv, embedded, and pc
         if (pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE)
                 || pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK)
-                || pm.hasSystemFeature(PackageManager.FEATURE_EMBEDDED)) {
+                || pm.hasSystemFeature(PackageManager.FEATURE_EMBEDDED)
+                || pm.hasSystemFeature(PackageManager.FEATURE_PC)) {
             return true;
         }
         // Supported everywhere else.

@@ -154,7 +154,8 @@ class DeviceInfoUtilsImpl @Inject constructor() : DeviceInfoUtils {
         return (!pm.hasSystemFeature(PackageManager.FEATURE_EMBEDDED) &&
             !disabledOnWatch &&
             !pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK) &&
-            !pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE))
+            !pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE) &&
+            !pm.hasSystemFeature(PackageManager.FEATURE_PC))
     }
 
     private fun isProfile(context: Context): Boolean {
