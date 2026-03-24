@@ -37,8 +37,8 @@ public final class SymptomRecordFactory extends RecordFactory<SymptomRecord> {
     public SymptomRecord newFullRecord(Metadata metadata, Instant startTime, Instant endTime) {
         return new SymptomRecord.Builder(
                         SymptomRecord.SYMPTOM_TYPE_COUGH, startTime, endTime, metadata)
-                .setStartZoneOffset(ZoneOffset.ofHours(1))
-                .setEndZoneOffset(ZoneOffset.ofHours(2))
+                .setStartZoneOffset(ZoneOffset.ofHours(-1))
+                .setEndZoneOffset(ZoneOffset.ofHours(-2))
                 .setNotes("Persistent cough")
                 .setSeverity(SymptomRecord.SEVERITY_MODERATE)
                 .setCount(5)
