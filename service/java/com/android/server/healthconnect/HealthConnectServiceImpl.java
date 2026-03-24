@@ -1270,18 +1270,17 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                     // deep-copy operations(to convert to RecordInternal, mask, and convert
                     // back), which is avoided by masking the record list preemptively,
                     // improving efficiency.
-                    List<Record> maskedRecords =
+                    List<RecordInternal<?>> maskedRecordInternals =
                             recordInternals.stream()
                                     .map(
                                             recordInternal ->
                                                     recordInternal.toMasked(
                                                             getMaskingFunction(callerPackageName)))
-                                    .map(RecordInternal::toExternalRecord)
                                     .collect(toList());
 
                     callback.onResult(
                             new ChangeLogsResponse(
-                                    maskedRecords,
+                                    maskedRecordInternals,
                                     deletedLogs,
                                     upsertedMedicalResources,
                                     deletedMedicalResources,

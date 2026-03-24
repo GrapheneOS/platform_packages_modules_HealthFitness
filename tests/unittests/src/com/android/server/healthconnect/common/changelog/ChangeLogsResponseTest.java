@@ -26,8 +26,9 @@ import static com.google.common.truth.Truth.assertThat;
 import android.health.connect.MedicalResourceId;
 import android.health.connect.changelog.ChangeLogsResponse;
 import android.health.connect.datatypes.MedicalResource;
-import android.health.connect.datatypes.Record;
 import android.health.connect.datatypes.StepsRecord;
+import android.health.connect.internal.datatypes.RecordInternal;
+import android.health.connect.internal.datatypes.utils.InternalExternalRecordConverter;
 import android.healthconnect.testing.shared.recordfactory.RecordFactory;
 import android.os.Parcel;
 import android.platform.test.annotations.RequiresFlagsDisabled;
@@ -57,8 +58,8 @@ public class ChangeLogsResponseTest {
 
     @Test
     public void testConstructor_primary() {
-        List<Record> upsertedRecords =
-                List.of(RecordFactory.newFullRecordForType(StepsRecord.class));
+        List<RecordInternal<?>> upsertedRecordInternals =
+                List.of(RecordFactory.newFullRecordForType(StepsRecord.class).toRecordInternal());
         List<ChangeLogsResponse.DeletedLog> deletedLogs =
                 List.of(new ChangeLogsResponse.DeletedLog(TEST_RECORD_ID, Instant.now()));
         List<MedicalResource> upsertedMedicalResources =
@@ -71,14 +72,17 @@ public class ChangeLogsResponseTest {
 
         ChangeLogsResponse response =
                 new ChangeLogsResponse(
-                        upsertedRecords,
+                        upsertedRecordInternals,
                         deletedLogs,
                         upsertedMedicalResources,
                         deletedMedicalResources,
                         TEST_TOKEN,
                         true);
 
-        assertThat(response.getUpsertedRecords()).isEqualTo(upsertedRecords);
+        assertThat(response.getUpsertedRecords())
+                .isEqualTo(
+                        InternalExternalRecordConverter.getInstance()
+                                .getExternalRecords(upsertedRecordInternals));
         assertThat(response.getDeletedLogs()).isEqualTo(deletedLogs);
         assertThat(response.getUpsertedMedicalResources()).isEqualTo(upsertedMedicalResources);
         assertThat(response.getDeletedMedicalResources()).isEqualTo(deletedMedicalResources);
@@ -91,7 +95,8 @@ public class ChangeLogsResponseTest {
         FLAG_PHR_CHANGE_LOGS,
     })
     public void testParceling_flagEnabled() {
-        Record upsertedRecord = RecordFactory.newFullRecordForType(StepsRecord.class);
+        RecordInternal<?> upsertedRecordInternal =
+                RecordFactory.newFullRecordForType(StepsRecord.class).toRecordInternal();
         ChangeLogsResponse.DeletedLog deletedLog =
                 new ChangeLogsResponse.DeletedLog(TEST_RECORD_ID, DELETION_TIME);
         MedicalResource upsertedMedicalResource = createVaccineMedicalResource(DATA_SOURCE_ID);
@@ -102,7 +107,7 @@ public class ChangeLogsResponseTest {
 
         ChangeLogsResponse originalResponse =
                 new ChangeLogsResponse(
-                        List.of(upsertedRecord),
+                        List.of(upsertedRecordInternal),
                         List.of(deletedLog),
                         List.of(upsertedMedicalResource),
                         List.of(deletedMedicalResource),
@@ -124,7 +129,8 @@ public class ChangeLogsResponseTest {
         FLAG_PHR_CHANGE_LOGS,
     })
     public void testParceling_flagDisabled() {
-        Record upsertedRecord = RecordFactory.newFullRecordForType(StepsRecord.class);
+        RecordInternal<?> upsertedRecordInternal =
+                RecordFactory.newFullRecordForType(StepsRecord.class).toRecordInternal();
         ChangeLogsResponse.DeletedLog deletedLog =
                 new ChangeLogsResponse.DeletedLog(TEST_RECORD_ID, DELETION_TIME);
         MedicalResource upsertedMedicalResource =
@@ -136,7 +142,7 @@ public class ChangeLogsResponseTest {
 
         ChangeLogsResponse originalResponse =
                 new ChangeLogsResponse(
-                        List.of(upsertedRecord),
+                        List.of(upsertedRecordInternal),
                         List.of(deletedLog),
                         List.of(upsertedMedicalResource), // Included for constructor
                         List.of(deletedMedicalResource), // Included for constructor
