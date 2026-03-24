@@ -51,6 +51,12 @@ public final class HealthConnectThreadScheduler {
     private static final long KEEP_ALIVE_TIME_CONTROLLER = 60L;
     private static final int NUM_EXECUTOR_THREADS_PASSIVE_TRACKER = 1;
 
+    /**
+     * The delay used to debounce callbacks. For example, upon user switching, the permission change
+     * listener will get invoked for potentially every package on the device.
+     */
+    public static final long CALLBACK_DEBOUNCE_MILLIS = 50;
+
     private static final String TAG = "HealthConnectScheduler";
 
     // Scheduler to run the tasks in a RR fashion based on client package names.
