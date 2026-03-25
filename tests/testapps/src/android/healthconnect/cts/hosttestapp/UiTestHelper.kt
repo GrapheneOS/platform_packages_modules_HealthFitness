@@ -82,7 +82,8 @@ class UiTestHelper {
         return (!pm.hasSystemFeature(PackageManager.FEATURE_EMBEDDED) &&
             !pm.hasSystemFeature(PackageManager.FEATURE_WATCH) &&
             !pm.hasSystemFeature(PackageManager.FEATURE_LEANBACK) &&
-            !pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE))
+            !pm.hasSystemFeature(PackageManager.FEATURE_AUTOMOTIVE) &&
+            !pm.hasSystemFeature(PackageManager.FEATURE_PC))
     }
 
     @Test
