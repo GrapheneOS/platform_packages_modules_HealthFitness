@@ -47,6 +47,25 @@ public class IntegrationTestUtils {
         }
     }
 
+    /**
+     * Calls {@link HealthConnectManager#revokeHealthPermissions} with shell permission identity.
+     */
+    public static List<String> revokeHealthPermissions(
+            String packageName, List<String> permissionNames, String reason) {
+        try {
+            return runWithShellPermissionIdentity(
+                    () ->
+                            getHealthConnectManager()
+                                    .revokeHealthPermissions(packageName, permissionNames, reason),
+                    MANAGE_HEALTH_PERMISSIONS);
+        } catch (RuntimeException e) {
+            // runWithShellPermissionIdentity wraps and rethrows all exceptions as RuntimeException,
+            // but we need the original RuntimeException if there is one.
+            final Throwable cause = e.getCause();
+            throw cause instanceof RuntimeException ? (RuntimeException) cause : e;
+        }
+    }
+
     private static HealthConnectManager getHealthConnectManager() {
         return getHealthConnectManager(ApplicationProvider.getApplicationContext());
     }

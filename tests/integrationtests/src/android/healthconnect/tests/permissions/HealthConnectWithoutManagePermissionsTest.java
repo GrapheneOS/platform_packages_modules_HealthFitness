@@ -95,10 +95,22 @@ public class HealthConnectWithoutManagePermissionsTest {
     }
 
     @Test(expected = SecurityException.class)
+    @RequiresFlagsDisabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testRevokeHealthPermission_noManageHealthPermissions_throwsSecurityException()
             throws Exception {
         mHealthConnectManager.revokeHealthPermission(
                 DEFAULT_APP_PACKAGE, DEFAULT_PERM, /* reason= */ null);
+        fail(
+                "Expected SecurityException due to not holding"
+                        + "android.permission.MANAGE_HEALTH_PERMISSIONS.");
+    }
+
+    @Test(expected = SecurityException.class)
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testRevokeHealthPermissions_noManageHealthPermissions_throwsSecurityException()
+            throws Exception {
+        mHealthConnectManager.revokeHealthPermissions(
+                DEFAULT_APP_PACKAGE, List.of(DEFAULT_PERM), /* reason= */ null);
         fail(
                 "Expected SecurityException due to not holding"
                         + "android.permission.MANAGE_HEALTH_PERMISSIONS.");

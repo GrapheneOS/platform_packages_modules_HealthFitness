@@ -751,6 +751,41 @@ public class HealthConnectManager {
     }
 
     /**
+     * Revoke health permissions that were previously granted by {@link #grantHealthPermissions}.
+     * The permissions must have been requested by the application.
+     *
+     * <p>The returned list contains all the permissions for which the revoke process did not throw
+     * an Exception. E.g., if the application is not allowed to hold a permission, or if a
+     * permission is invalid, the permission will not be revoked and be excluded from the list.
+     *
+     * <p><b>Note:</b> This API sets {@code PackageManager.FLAG_PERMISSION_USER_SET} or {@code
+     * PackageManager.FLAG_PERMISSION_USER_FIXED} based on the number of revocations of a particular
+     * permission for a package.
+     *
+     * @return a list with the permission names for which the grants did not throw.
+     * @throws IllegalArgumentException if the package is invalid or not installed.
+     * @throws SecurityException if the caller doesn't possess {@code
+     *     android.permission.MANAGE_HEALTH_PERMISSIONS}.
+     * @throws NullPointerException if any of the arguments is {@code null}.
+     * @hide
+     */
+    @RequiresPermission(MANAGE_HEALTH_PERMISSIONS)
+    @UserHandleAware
+    @FlaggedApi(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    @NonNull
+    public List<String> revokeHealthPermissions(
+            @NonNull String packageName,
+            @NonNull List<String> permissionNames,
+            @Nullable String reason) {
+        try {
+            return mService.revokeHealthPermissions(
+                    packageName, permissionNames, reason, mContext.getUser());
+        } catch (RemoteException e) {
+            throw e.rethrowFromSystemServer();
+        }
+    }
+
+    /**
      * Revoke a health permission that was previously granted by {@link
      * #grantHealthPermission(String, String)} The permission must have been requested by the
      * application. If the application is not allowed to hold the permission, a {@link

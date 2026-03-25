@@ -81,6 +81,7 @@ interface IHealthConnectService {
     void grantHealthPermission(String packageName, String permissionName, in UserHandle user);
     List<String> grantHealthPermissions(String packageName, in List<String> permissionNames, in UserHandle user);
     void revokeHealthPermission(String packageName, String permissionName, in @nullable @JavaPassthrough(annotation="@android.annotation.Nullable") String reason, in UserHandle user);
+    List<String> revokeHealthPermissions(String packageName, in List<String> permissionNames, in @nullable @JavaPassthrough(annotation="@android.annotation.Nullable") String reason, in UserHandle user);
     void revokeAllHealthPermissions(String packageName, in @nullable @JavaPassthrough(annotation="@android.annotation.Nullable") String reason, in UserHandle user);
     List<String> getGrantedHealthPermissions(String packageName, in UserHandle user);
 
