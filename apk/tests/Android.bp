@@ -49,6 +49,7 @@ filegroup {
         "src/com/android/healthconnect/controller/tests/data/alldata/api/FakeAllDataUseCaseComponents.kt",
         "src/com/android/healthconnect/controller/tests/data/entries/api/FakeEntriesUseCases.kt",
         "src/com/android/healthconnect/controller/tests/exportimport/api/FakeExportImportUseCases.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/api/FakePermissionUseCases.kt",
     ],
     visibility: [
         "//vendor:__subpackages__",

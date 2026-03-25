@@ -27,12 +27,16 @@ interface HealthPermissionManager {
     fun setHealthPermissionsUserFixedFlagValue(
         packageName: String,
         permissions: List<String>,
-        value: Boolean
+        value: Boolean,
     )
 
     fun grantHealthPermission(packageName: String, permissionName: String)
 
+    fun grantHealthPermissions(packageName: String, permissions: List<String>): List<String>
+
     fun revokeHealthPermission(packageName: String, permissionName: String)
+
+    fun revokeHealthPermissions(packageName: String, permissions: List<String>): List<String>
 
     fun revokeAllHealthPermissions(packageName: String)
 

@@ -76,6 +76,15 @@ class FakeHealthPermissionManager : HealthPermissionManager {
         grantHealthPermissionInvocations += 1
     }
 
+    override fun grantHealthPermissions(
+        packageName: String,
+        permissions: List<String>,
+    ): List<String> {
+        permissions.forEach { grantHealthPermission(packageName, it) }
+
+        return permissions
+    }
+
     override fun revokeHealthPermission(packageName: String, permissionName: String) {
         val permissions = grantedPermissions.getOrDefault(packageName, mutableListOf())
         permissions.remove(permissionName)
@@ -94,6 +103,15 @@ class FakeHealthPermissionManager : HealthPermissionManager {
         }
         setHealthPermissionFlags(packageName, flags.toMap())
         revokeHealthPermissionInvocations += 1
+    }
+
+    override fun revokeHealthPermissions(
+        packageName: String,
+        permissions: List<String>,
+    ): List<String> {
+        permissions.forEach { revokeHealthPermission(packageName, it) }
+
+        return permissions
     }
 
     override fun revokeAllHealthPermissions(packageName: String) {
