@@ -18,6 +18,7 @@ package android.healthconnect.tests.permissions;
 
 import static android.health.connect.HealthPermissions.MANAGE_HEALTH_PERMISSIONS;
 import static android.healthconnect.testing.integration.IntegrationTestUtils.grantHealthPermissions;
+import static android.healthconnect.testing.integration.IntegrationTestUtils.revokeHealthPermissions;
 
 import static com.android.compatibility.common.util.SystemUtil.eventually;
 import static com.android.compatibility.common.util.SystemUtil.runWithShellPermissionIdentity;
@@ -215,6 +216,22 @@ public class GrantTimeIntegrationTest {
         fail("Expected IllegalArgumentException due to uninstalled package.");
     }
 
+    @Test(expected = NullPointerException.class)
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testRevokeHealthPermissions_nullPackage_throwsNullPointerException()
+            throws Exception {
+        revokeHealthPermissions(null, List.of(DEFAULT_PERM), "");
+        fail("Expected NullPointerException due to package name is null.");
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testRevokeHealthPermissions_packageNotInstalled_throwsIllegalArgumentException()
+            throws Exception {
+        revokeHealthPermissions("android.invalid.package", List.of(DEFAULT_PERM), "");
+        fail("Expected IllegalArgumentException due to uninstalled package.");
+    }
+
     @Test
     @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
     public void testGrantHealthPermissions_permissionGranted_returnsAdequateTime()
@@ -269,9 +286,20 @@ public class GrantTimeIntegrationTest {
             throws Exception {
         grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(DEFAULT_PERM, DEFAULT_PERM_2));
         Instant grantTime = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
-        revokePermissionWithDelay(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
+        revokePermissionsWithDelay(DEFAULT_APP_PACKAGE, List.of(DEFAULT_PERM));
+
         Instant grantTime2 = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
         assertThat(grantTime2).isEqualTo(grantTime);
+    }
+
+    @Test
+    @RequiresFlagsEnabled(FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS)
+    public void testGrantHealthPermissions_allPermissionsRevoked_resetGrantTime() throws Exception {
+        grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(DEFAULT_PERM, DEFAULT_PERM_2));
+        revokePermissionsWithDelay(DEFAULT_APP_PACKAGE, List.of(DEFAULT_PERM, DEFAULT_PERM_2));
+
+        Instant grantTime = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
+        assertThat(grantTime).isNull();
     }
 
     @Test
@@ -279,7 +307,8 @@ public class GrantTimeIntegrationTest {
     public void testGrantHealthPermissions_permissionGrantedAndRevoked_resetGrantTime()
             throws Exception {
         grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(DEFAULT_PERM));
-        revokePermissionWithDelay(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
+        revokePermissionsWithDelay(DEFAULT_APP_PACKAGE, List.of(DEFAULT_PERM));
+
         Instant grantTime = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
         assertThat(grantTime).isNull();
     }
@@ -289,11 +318,15 @@ public class GrantTimeIntegrationTest {
     public void testGrantHealthPermissions_permissionWasRegranted_timeChanged() throws Exception {
         grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(DEFAULT_PERM));
         Instant grantTime = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
-        revokePermissionWithDelay(DEFAULT_APP_PACKAGE, DEFAULT_PERM);
+        revokeHealthPermissions(DEFAULT_APP_PACKAGE, List.of(DEFAULT_PERM), "");
         grantHealthPermissions(DEFAULT_APP_PACKAGE, List.of(DEFAULT_PERM));
-        Instant grantTime2 = getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
 
-        eventually(() -> assertThat(grantTime.isBefore(grantTime2)).isTrue());
+        eventually(
+                () -> {
+                    Instant grantTime2 =
+                            getHealthDataHistoricalAccessStartDate(DEFAULT_APP_PACKAGE);
+                    assertThat(grantTime.isBefore(grantTime2)).isTrue();
+                });
     }
 
     void assertStartAccessDateIsAdequate(Instant firstGrantTime) {
@@ -346,6 +379,13 @@ public class GrantTimeIntegrationTest {
             final Throwable cause = e.getCause();
             throw cause instanceof RuntimeException ? (RuntimeException) cause : e;
         }
+        // Wait some time for callbacks to propagate.
+        Thread.sleep(50);
+    }
+
+    private void revokePermissionsWithDelay(String packageName, List<String> permNames)
+            throws Exception {
+        revokeHealthPermissions(packageName, permNames, "");
         // Wait some time for callbacks to propagate.
         Thread.sleep(50);
     }

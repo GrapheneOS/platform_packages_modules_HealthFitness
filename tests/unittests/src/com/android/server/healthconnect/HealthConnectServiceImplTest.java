@@ -337,6 +337,7 @@ public class HealthConnectServiceImplTest {
                     "grantHealthPermission",
                     "grantHealthPermissions",
                     "revokeHealthPermission",
+                    "revokeHealthPermissions",
                     "revokeAllHealthPermissions",
                     "getGrantedHealthPermissions",
                     "getHealthPermissionsFlags",
@@ -978,6 +979,56 @@ public class HealthConnectServiceImplTest {
                 () ->
                         mHealthConnectService.grantHealthPermissions(
                                 packageName, permissions, mUserHandle));
+    }
+
+    @Test
+    @EnableFlags({FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS})
+    public void testRevokeHealthPermissions_callsPermissionHelper() {
+        String packageName = "test.package";
+        List<String> permissions = List.of("perm1", "perm2");
+        String reason = "test reason";
+        List<String> expectedResult = new ArrayList<>();
+        expectedResult.add("perm1");
+        when(mHealthConnectPermissionHelper.revokeHealthPermissions(
+                        packageName, permissions, reason, mUserHandle))
+                .thenReturn(expectedResult);
+
+        List<String> result =
+                mHealthConnectService.revokeHealthPermissions(
+                        packageName, permissions, reason, mUserHandle);
+
+        assertThat(result).isEqualTo(expectedResult);
+        verify(mHealthConnectPermissionHelper)
+                .revokeHealthPermissions(packageName, permissions, reason, mUserHandle);
+    }
+
+    @Test
+    @DisableFlags({FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS})
+    public void testRevokeHealthPermissions_flagDisabled_throwsException() {
+        String packageName = "test.package";
+        List<String> permissions = List.of("perm1", "perm2");
+        String reason = "test reason";
+
+        assertThrows(
+                UnsupportedOperationException.class,
+                () ->
+                        mHealthConnectService.revokeHealthPermissions(
+                                packageName, permissions, reason, mUserHandle));
+    }
+
+    @Test
+    @EnableFlags({FLAG_HEALTH_PERMISSION_READER_IMPROVEMENTS})
+    public void testRevokeHealthPermissions_dataSyncInProgress_throwsException() {
+        String packageName = "test.package";
+        List<String> permissions = List.of("perm1", "perm2");
+        String reason = "test reason";
+        when(mMigrationStateManager.isMigrationInProgress()).thenReturn(true);
+
+        assertThrows(
+                IllegalStateException.class,
+                () ->
+                        mHealthConnectService.revokeHealthPermissions(
+                                packageName, permissions, reason, mUserHandle));
     }
 
     /**

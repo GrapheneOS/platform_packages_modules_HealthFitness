@@ -32,8 +32,8 @@ public final class MenstrualCyclePhaseRecordFactory
     private static final String KEY_PHASE = PREFIX + "PHASE";
     private static final String KEY_DAY_OF_CYCLE = PREFIX + "DAY_OF_CYCLE";
 
-    private static final ZoneOffset TEST_ZONE_OFFSET_1 = ZoneOffset.ofHours(4);
-    private static final ZoneOffset TEST_ZONE_OFFSET_2 = ZoneOffset.ofHours(5);
+    private static final ZoneOffset TEST_ZONE_OFFSET_1 = ZoneOffset.ofHours(-4);
+    private static final ZoneOffset TEST_ZONE_OFFSET_2 = ZoneOffset.ofHours(-5);
 
     @Override
     public MenstrualCyclePhaseRecord newFullRecord(
