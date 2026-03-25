@@ -122,7 +122,8 @@ public class HealthConnectManagerService extends SystemService {
                         mHealthConnectInjector.getSyntheticPackageNameCreator(),
                         mHealthConnectInjector.getImportManager(),
                         mHealthConnectInjector.getDataPermissionEnforcer(),
-                        mHealthConnectInjector.getMedicalDataPermissionEnforcer());
+                        mHealthConnectInjector.getMedicalDataPermissionEnforcer(),
+                        mHealthConnectInjector.getDeviceDataProviderDebugUtil());
         mHealthConnectPermissionsChangedListener =
                 new HealthConnectPermissionsChangedListener(
                         mContext, healthConnectInjector.getFirstGrantTimeManager());

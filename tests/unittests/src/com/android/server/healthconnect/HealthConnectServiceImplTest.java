@@ -651,7 +651,8 @@ public class HealthConnectServiceImplTest {
                         healthConnectInjector.getSyntheticPackageNameCreator(),
                         healthConnectInjector.getImportManager(),
                         healthConnectInjector.getDataPermissionEnforcer(),
-                        healthConnectInjector.getMedicalDataPermissionEnforcer());
+                        healthConnectInjector.getMedicalDataPermissionEnforcer(),
+                        healthConnectInjector.getDeviceDataProviderDebugUtil());
     }
 
     @After
