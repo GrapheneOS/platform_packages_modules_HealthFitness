@@ -20,6 +20,7 @@ import static com.android.healthfitness.flags.Flags.FLAG_PHR_CHANGE_LOGS;
 
 import android.annotation.FlaggedApi;
 import android.annotation.NonNull;
+import android.annotation.Nullable;
 import android.health.connect.HealthConnectManager;
 import android.health.connect.MedicalResourceId;
 import android.health.connect.aidl.DeletedLogsParcel;
@@ -39,14 +40,18 @@ import com.android.healthfitness.flags.AconfigFlagHelper;
 import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Response class for {@link HealthConnectManager#getChangeLogs} This is the response to clients
  * fetching changes.
  */
 public final class ChangeLogsResponse implements Parcelable {
-    private final List<Record> mUpsertedRecords;
+    // These hold upserted records in either internal or external format to save memory.
+    // The response is initially created with internal records, which is also used for
+    // converting to parcel. On first get, they are converted to external records and
+    // the internal list is set to null.
+    @Nullable private List<RecordInternal<?>> mUpsertedRecordInternals;
+    @Nullable private List<Record> mUpsertedRecords;
     private final List<DeletedLog> mDeletedLogs;
     private final List<MedicalResource> mUpsertedMedicalResources;
     private final List<DeletedMedicalResource> mDeletedMedicalResources;
@@ -59,13 +64,13 @@ public final class ChangeLogsResponse implements Parcelable {
      * @hide
      */
     public ChangeLogsResponse(
-            @NonNull List<Record> upsertedRecords,
+            @NonNull List<RecordInternal<?>> upsertedRecordInternals,
             @NonNull List<DeletedLog> deletedLogs,
             @NonNull List<MedicalResource> upsertedMedicalResources,
             @NonNull List<DeletedMedicalResource> deletedMedicalResources,
             @NonNull String nextChangesToken,
             boolean hasMorePages) {
-        mUpsertedRecords = Objects.requireNonNull(upsertedRecords);
+        mUpsertedRecordInternals = Objects.requireNonNull(upsertedRecordInternals);
         mDeletedLogs = Objects.requireNonNull(deletedLogs);
         mUpsertedMedicalResources = Objects.requireNonNull(upsertedMedicalResources);
         mDeletedMedicalResources = Objects.requireNonNull(deletedMedicalResources);
@@ -74,13 +79,9 @@ public final class ChangeLogsResponse implements Parcelable {
     }
 
     private ChangeLogsResponse(Parcel in) {
-        mUpsertedRecords =
-                InternalExternalRecordConverter.getInstance()
-                        .getExternalRecords(
-                                in.readParcelable(
-                                                RecordsParcel.class.getClassLoader(),
-                                                RecordsParcel.class)
-                                        .getRecords());
+        mUpsertedRecordInternals =
+                in.readParcelable(RecordsParcel.class.getClassLoader(), RecordsParcel.class)
+                        .getRecords();
         mDeletedLogs =
                 in.readParcelable(DeletedLogsParcel.class.getClassLoader(), DeletedLogsParcel.class)
                         .getDeletedLogs();
@@ -125,6 +126,16 @@ public final class ChangeLogsResponse implements Parcelable {
      */
     @NonNull
     public List<Record> getUpsertedRecords() {
+        if (mUpsertedRecords == null) {
+            if (mUpsertedRecordInternals != null) {
+                mUpsertedRecords =
+                        InternalExternalRecordConverter.getInstance()
+                                .getExternalRecords(mUpsertedRecordInternals);
+                mUpsertedRecordInternals = null;
+            } else {
+                mUpsertedRecords = List.of();
+            }
+        }
         return mUpsertedRecords;
     }
 
@@ -181,11 +192,15 @@ public final class ChangeLogsResponse implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        List<RecordInternal<?>> recordInternals =
-                mUpsertedRecords.stream()
-                        .map(Record::toRecordInternal)
-                        .collect(Collectors.toList());
-        dest.writeParcelable(new RecordsParcel(recordInternals), 0);
+        if (mUpsertedRecordInternals != null) {
+            dest.writeParcelable(new RecordsParcel(mUpsertedRecordInternals), 0);
+        } else if (mUpsertedRecords != null) {
+            List<RecordInternal<?>> recordInternals =
+                    mUpsertedRecords.stream().map(Record::toRecordInternal).toList();
+            dest.writeParcelable(new RecordsParcel(recordInternals), 0);
+        } else {
+            dest.writeParcelable(new RecordsParcel(List.of()), 0);
+        }
         dest.writeParcelable(new DeletedLogsParcel(mDeletedLogs), 0);
         dest.writeString(mNextChangesToken);
         dest.writeBoolean(mHasMorePages);
@@ -199,7 +214,7 @@ public final class ChangeLogsResponse implements Parcelable {
     public boolean equals(Object o) {
         if (!(o instanceof ChangeLogsResponse that)) return false;
         return mHasMorePages == that.mHasMorePages
-                && Objects.equals(mUpsertedRecords, that.mUpsertedRecords)
+                && Objects.equals(getUpsertedRecords(), that.getUpsertedRecords())
                 && Objects.equals(mDeletedLogs, that.mDeletedLogs)
                 && Objects.equals(mUpsertedMedicalResources, that.mUpsertedMedicalResources)
                 && Objects.equals(mDeletedMedicalResources, that.mDeletedMedicalResources)
@@ -209,7 +224,7 @@ public final class ChangeLogsResponse implements Parcelable {
     @Override
     public int hashCode() {
         return Objects.hash(
-                mUpsertedRecords,
+                getUpsertedRecords(),
                 mDeletedLogs,
                 mUpsertedMedicalResources,
                 mDeletedMedicalResources,

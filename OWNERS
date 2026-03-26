@@ -14,5 +14,6 @@ teog@google.com
 csitari@google.com
 nfortescue@google.com
 sophiabotz@google.com
+patricked@google.com
 
 include platform/packages/modules/common:/MODULES_OWNERS  # see go/mainline-owners-policy

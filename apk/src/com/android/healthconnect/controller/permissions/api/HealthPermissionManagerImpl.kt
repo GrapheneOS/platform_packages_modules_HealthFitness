@@ -28,7 +28,7 @@ class HealthPermissionManagerImpl @Inject constructor(private val manager: Healt
 
     override fun getHealthPermissionsFlags(
         packageName: String,
-        permissions: List<String>
+        permissions: List<String>,
     ): Map<String, Int> {
         return manager.getHealthPermissionsFlags(packageName, permissions)
     }
@@ -36,7 +36,7 @@ class HealthPermissionManagerImpl @Inject constructor(private val manager: Healt
     override fun setHealthPermissionsUserFixedFlagValue(
         packageName: String,
         permissions: List<String>,
-        value: Boolean
+        value: Boolean,
     ) {
         manager.setHealthPermissionsUserFixedFlagValue(packageName, permissions, value)
     }
@@ -45,8 +45,22 @@ class HealthPermissionManagerImpl @Inject constructor(private val manager: Healt
         manager.grantHealthPermission(packageName, permissionName)
     }
 
+    override fun grantHealthPermissions(
+        packageName: String,
+        permissions: List<String>,
+    ): List<String> {
+        return manager.grantHealthPermissions(packageName, permissions)
+    }
+
     override fun revokeHealthPermission(packageName: String, permissionName: String) {
         manager.revokeHealthPermission(packageName, permissionName, /* reason= */ "")
+    }
+
+    override fun revokeHealthPermissions(
+        packageName: String,
+        permissions: List<String>,
+    ): List<String> {
+        return manager.revokeHealthPermissions(packageName, permissions, /* reason= */ "")
     }
 
     override fun revokeAllHealthPermissions(packageName: String) {
