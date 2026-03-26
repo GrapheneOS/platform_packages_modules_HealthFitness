@@ -41,6 +41,7 @@ import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCrea
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.DeviceDataProviderDebugUtil;
 import com.android.server.healthconnect.device.DeviceDataProviderManager;
 import com.android.server.healthconnect.device.DeviceDataSourceHelper;
 import com.android.server.healthconnect.device.DeviceRecordHelper;
@@ -511,6 +512,12 @@ public abstract class HealthConnectInjector {
      * Injector.
      */
     public abstract HealthConnectResourcesContext getResourcesContext();
+
+    /**
+     * Getter for {@link DeviceDataProviderDebugUtil} instance initialised by the Health Connect
+     * Injector.
+     */
+    public abstract DeviceDataProviderDebugUtil getDeviceDataProviderDebugUtil();
 
     /** Used to initialize the Injector. */
     public static void setInstance(HealthConnectInjector healthConnectInjector) {
