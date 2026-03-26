@@ -1364,7 +1364,7 @@
     <string name="manage_device_settings" msgid="5021760675216854323">"<xliff:g id="DDP_NAME">%1$s</xliff:g> параметрлери"</string>
     <string name="device_data_provider_enabled_types" msgid="4146093570756356467">"<xliff:g id="ALL_TYPES">%2$d</xliff:g> ичинен <xliff:g id="ENABLED_TYPES">%1$d</xliff:g> иштетилди"</string>
     <string name="device_type_unknown" msgid="3897304904166713087">"Белгисиз"</string>
-    <string name="device_type_watch" msgid="8118463935553631704">"Көрүү"</string>
+    <string name="device_type_watch" msgid="8118463935553631704">"Саат"</string>
     <string name="device_type_phone" msgid="7916371544302291906">"Телефон"</string>
     <string name="device_type_scale" msgid="7764152136397378795">"Масштаб"</string>
     <string name="device_type_ring" msgid="2528444249876048468">"Шыңгыратуу"</string>
