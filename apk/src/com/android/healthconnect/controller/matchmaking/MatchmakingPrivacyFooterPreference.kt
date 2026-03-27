@@ -42,6 +42,7 @@ constructor(
 
     init {
         layoutResource = R.layout.matchmaking_privacy_footer
+        isSelectable = false
     }
 
     fun setAppName(appName: String, onRationaleLinkClicked: () -> Unit) {
@@ -62,6 +63,8 @@ constructor(
                 createSpannableString(rationaleText, policyString, onRationaleLinkClicked)
             summaryView.movementMethod = LinkMovementMethod.getInstance()
         }
+        summaryView.isClickable = false
+        summaryView.isFocusable = false
     }
 
     private fun createSpannableString(
