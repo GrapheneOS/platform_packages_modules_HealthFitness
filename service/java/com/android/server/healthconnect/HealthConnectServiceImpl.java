@@ -108,6 +108,7 @@ import android.health.connect.MedicalResourceId;
 import android.health.connect.MedicalResourceTypeInfo;
 import android.health.connect.PageTokenWrapper;
 import android.health.connect.ReadMedicalResourcesResponse;
+import android.health.connect.RecordTypeInfoResponse;
 import android.health.connect.UpsertMedicalResourceRequest;
 import android.health.connect.accesslog.AccessLog;
 import android.health.connect.accesslog.AccessLogsResponseParcel;
@@ -233,6 +234,7 @@ import com.android.server.healthconnect.common.metadata.SyntheticPackageNameCrea
 import com.android.server.healthconnect.common.metadata.SyntheticPackageNameResolver;
 import com.android.server.healthconnect.common.preferences.PreferenceHelper;
 import com.android.server.healthconnect.common.preferences.PreferencesManager;
+import com.android.server.healthconnect.device.DeviceDataProviderDebugUtil;
 import com.android.server.healthconnect.device.DeviceDataProviderManager;
 import com.android.server.healthconnect.device.tracker.TrackerManager;
 import com.android.server.healthconnect.exportimport.DocumentProvidersManager;
@@ -379,6 +381,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
     private final DeviceDataProviderManager mDeviceDataProviderManager;
     private final DeviceDataProviderMetadataHelper mDeviceDataProviderMetadataHelper;
     private final SyntheticPackageNameCreator mSyntheticPackageNameCreator;
+    private final DeviceDataProviderDebugUtil mDeviceDataProviderDebugUtil;
 
     private volatile UserHandle mCurrentForegroundUser;
 
@@ -430,7 +433,8 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
             SyntheticPackageNameCreator syntheticPackageNameCreator,
             ImportManager importManager,
             DataPermissionEnforcer dataPermissionEnforcer,
-            MedicalDataPermissionEnforcer medicalDataPermissionEnforcer) {
+            MedicalDataPermissionEnforcer medicalDataPermissionEnforcer,
+            DeviceDataProviderDebugUtil deviceDataProviderDebugUtil) {
         mContext = context;
         mCurrentForegroundUser = context.getUser();
         mTimeSource = timeSource;
@@ -492,6 +496,7 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
         mSyntheticPackageNameResolver = syntheticPackageNameResolver;
         mDeviceDataSourcesHelper = deviceDataSourcesHelper;
         mDeviceDataProviderManager = deviceDataProviderManager;
+        mDeviceDataProviderDebugUtil = deviceDataProviderDebugUtil;
     }
 
     public void setupForUser(UserHandle currentForegroundUser) {
@@ -4013,6 +4018,12 @@ final class HealthConnectServiceImpl extends IHealthConnectService.Stub {
                 "Data Restore State : %d, Data Restore Error : %d \n\n",
                 mBackupRestore.getDataRestoreState(),
                 mBackupRestore.getDataRestoreError());
+
+        try {
+            mDeviceDataProviderDebugUtil.dump(pw);
+        } catch (Exception e) {
+            Slog.e(TAG, "Failed to dump DeviceDataProviderDebugUtil", e);
+        }
     }
 
     @Override

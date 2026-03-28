@@ -70,37 +70,46 @@ class WearGrantPermissionsActivity : Hilt_WearGrantPermissionsActivity() {
         val rawPermissionStrings = getPermissionStrings()
         requestPermissionsViewModel.init(packageName, rawPermissionStrings)
 
-        val grantableHealthPermissions =
-            requestPermissionsViewModel.grantableHealthPermissionsList.value
-        // Dismiss this request if there are no valid permissions requested.
-        if (grantableHealthPermissions.isNullOrEmpty()) {
-            finish()
-            return
-        }
-
-        lifecycleScope.launch {
-            // Dismiss this request if any permission is USER_FIXED.
-            if (
-                requestPermissionsViewModel.isAnyPermissionUserFixed(
-                    packageName,
-                    grantableHealthPermissions.map { it.toString() }.toTypedArray(),
-                )
-            ) {
-                handlePermissionResults()
-                finish()
-                return@launch
+        // Observe the list instead of checking .value immediately.
+        // This prevents the race condition where we finish() before the list is loaded.
+        requestPermissionsViewModel.grantableHealthPermissionsList.observe(this) {
+            grantableHealthPermissions ->
+            if (grantableHealthPermissions == null) {
+                // Still loading, do nothing yet
+                return@observe
             }
 
-            // Launch composable UI.
-            val root = ComposeView(this@WearGrantPermissionsActivity)
-            root.setContent {
-                WearGrantPermissionsScreen(requestPermissionsViewModel) {
-                    requestPermissionsViewModel.requestHealthPermissions(packageName)
+            if (grantableHealthPermissions.isEmpty()) {
+                Log.d(TAG, "grantableHealthPermissions is empty after load")
+                finish()
+                return@observe
+            }
+
+            lifecycleScope.launch {
+                // Dismiss this request if any permission is USER_FIXED.
+                if (
+                    requestPermissionsViewModel.isAnyPermissionUserFixed(
+                        packageName,
+                        grantableHealthPermissions.map { it.toString() }.toTypedArray(),
+                    )
+                ) {
                     handlePermissionResults()
                     finish()
+                    return@launch
                 }
+
+                // Launch composable UI.
+                val root = ComposeView(this@WearGrantPermissionsActivity)
+                root.setContent {
+                    WearGrantPermissionsScreen(requestPermissionsViewModel) {
+                        requestPermissionsViewModel.requestHealthPermissions(packageName)
+                        handlePermissionResults()
+                        finish()
+                    }
+                }
+                setContentView(root)
             }
-            setContentView(root)
+            requestPermissionsViewModel.grantableHealthPermissionsList.removeObservers(this)
         }
     }
 

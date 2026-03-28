@@ -60,6 +60,7 @@ filegroup {
     name: "wear-ui-tests-srcs",
     srcs: [
         "src/com/android/healthconnect/controller/tests/permissions/connectedapps/wear/**/*.kt",
+        "src/com/android/healthconnect/controller/tests/permissions/request/wear/**/*.kt",
     ],
     path: "src",
     visibility: ["//visibility:private"],
