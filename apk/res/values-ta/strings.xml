@@ -1346,9 +1346,9 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"உங்கள் ஆரோக்கிய ஆப்ஸ்"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"உங்கள் ஆரோக்கியம் தொடர்பான தரவு"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"விருப்பத்தேர்வுகள்"</string>
-    <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect, உங்கள் ஆரோக்கியம் மற்றும் உடற்பயிற்சி குறித்த தரவை பல்வேறு தரவு மூலங்களுக்கிடையே பகிர உங்களை அனுமதிக்கிறது. இது உங்கள் தரவைப் பாதுகாப்பாக வைத்திருப்பதோடு, நீங்கள் புள்ளிவிவரங்களையும் அனுபவங்களையும் பெற உதவுகிறது."</string>
+    <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect, உங்கள் ஆரோக்கியம் மற்றும் உடற்பயிற்சி குறித்த தரவை பல்வேறு தரவு ஆதாரங்களுக்கிடையே பகிர உங்களை அனுமதிக்கிறது. இது உங்கள் தரவைப் பாதுகாப்பாக வைத்திருப்பதோடு, நீங்கள் புள்ளிவிவரங்களையும் அனுபவங்களையும் பெற உதவுகிறது."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect பற்றிய கூடுதல் தகவல்கள்"</string>
-    <string name="data_and_access_summary" msgid="2698213356971774646">"உங்கள் தரவு மற்றும் அதை அணுகக்கூடிய தரவு மூலங்கள்"</string>
+    <string name="data_and_access_summary" msgid="2698213356971774646">"உங்கள் தரவு மற்றும் அதை அணுகக்கூடிய தரவு ஆதாரங்கள்"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"சமீபத்தில் உங்கள் தரவைப் பயன்படுத்திய ஆப்ஸ்"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"ஆரோக்கியம் தொடர்பான தரவை அணுகக்கூடிய சாதனங்களைப் பாருங்கள்"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connect உடன் செயல்படும் ஆப்ஸை இங்கே பார்க்க நிறுவுங்கள்"</string>

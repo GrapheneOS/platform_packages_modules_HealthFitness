@@ -412,7 +412,7 @@
     <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"Teruskan kepada pilihan peranti untuk mendayakan ciri ini"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"Benarkan semua kebenaran <xliff:g id="APP_NAME">%1$s</xliff:g>"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"Ketahui cara <xliff:g id="APP_NAME">%1$s</xliff:g> menggunakan data anda dalam "<a href="%2$s">"dasar privasi"</a>" mereka."</string>
-    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect membolehkan anda berkongsi data kesihatan dan kecergasan anda antara berbilang sumber data. Ciri ini membantu anda membuka kunci cerapan dan pengalaman sambil memastikan data anda selamat."</string>
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"Health Connect membolehkan anda berkongsi data kesihatan dan kecergasan antara berbilang sumber data. Hal ini membantu anda memperoleh cerapan dan pengalaman baharu sambil memastikan data anda selamat."</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"Maklumat lanjut tentang Health Connect"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"kembangkan"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"kuncupkan"</string>
@@ -1346,7 +1346,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Apl kesihatan anda"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Data kesihatan anda"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Pilihan"</string>
-    <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect membolehkan anda berkongsi data kesihatan dan kecergasan anda antara berbilang sumber data. Hal ini membantu anda memperoleh cerapan dan pengalaman sambil memastikan data anda selamat."</string>
+    <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect membolehkan anda berkongsi data kesihatan dan kecergasan antara berbilang sumber data. Hal ini membantu anda memperoleh cerapan dan pengalaman baharu sambil memastikan data anda selamat."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Maklumat lanjut tentang Health Connect"</string>
     <string name="data_and_access_summary" msgid="2698213356971774646">"Data anda dan jenis sumber data yang boleh mengakses data tersebut"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Apl yang menggunakan data anda baru-baru ini"</string>

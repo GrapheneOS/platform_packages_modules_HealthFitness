@@ -1346,7 +1346,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"ແອັບສຸຂະພາບຂອງທ່ານ"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"ຂໍ້ມູນສຸຂະພາບຂອງທ່ານ"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"ຄ່າກຳນົດ"</string>
-    <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect ໃຫ້ທ່ານແບ່ງປັນຂໍ້ມູນສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍຂອງທ່ານລະຫວ່າງແຫຼ່ງຂໍ້ມູນຕ່າງໆໄດ້. ເຊິ່ງຈະຊ່ວຍໃຫ້ທ່ານປົດລັອກຂໍ້ມູນເຈາະເລິກ ແລະ ປະສົບການໃນການໃຊ້ຕ່າງໆພ້ອມກັບຮັກສາຂໍ້ມູນຂອງທ່ານໃຫ້ປອດໄພ."</string>
+    <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect ໃຫ້ທ່ານແບ່ງປັນຂໍ້ມູນສຸຂະພາບ ແລະ ການອອກກຳລັງກາຍຂອງທ່ານລະຫວ່າງແຫຼ່ງຂໍ້ມູນຕ່າງໆໄດ້. ເຊິ່ງຈະຊ່ວຍໃຫ້ທ່ານປົດລັອກຂໍ້ມູນເຈາະເລິກ ແລະ ປະສົບການໃນການໃຊ້ຕ່າງໆພ້ອມເກັບຮັກສາຂໍ້ມູນຂອງທ່ານໃຫ້ປອດໄພ."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"ເພີ່ມເຕີມກ່ຽວກັບ Health Connect"</string>
     <string name="data_and_access_summary" msgid="2698213356971774646">"ຂໍ້ມູນຂອງທ່ານ ແລະ ແຫຼ່ງຂໍ້ມູນທີ່ຈະສາມາດເຂົ້າເຖິງຂໍ້ມູນດັ່ງກ່າວໄດ້"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"ແອັບທີ່ໃຊ້ຂໍ້ມູນຂອງທ່ານເມື່ອບໍ່ດົນມານີ້"</string>

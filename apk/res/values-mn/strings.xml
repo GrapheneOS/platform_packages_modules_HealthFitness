@@ -593,7 +593,7 @@
     <string name="export_import_go_to_play_store_text" msgid="3210733429377429794">"Play Store луу очих"</string>
     <string name="onboarding_title" msgid="8550656211291180188">"Health Connect-г ашиглаж эхлээрэй"</string>
     <string name="onboarding_description" msgid="3479157507808350452">"Health Connect таны эрүүл мэнд, фитнесийн өгөгдлийг хадгалснаар та төхөөрөмж дээрээ байгаа өөр өөр аппуудыг энгийн аргаар синк хийх боломжтой"</string>
-    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect өөр өөр аппаас эрүүл мэнд, фитнесийн өгөгдлийг тань хадгалж, синк хийдэг.\n\nДасгалын харилцан үйлдэл, алхам, шим тэжээл, нойр болон бусад "<b>"фитнес, эрүүл оршихуйн өгөгдөл"</b>\n\n"Вакцин, лабораторийн хариу болон бусад "<b>"өвчний түүх"</b></string>
+    <string name="onboarding_description_health_records" msgid="4356538767594073978">"Health Connect өөр өөр аппаас эрүүл мэнд, фитнесийн өгөгдлийг тань хадгалж, синк хийдэг.\n\nДасгалын үргэлжлэх хугацаа, алхам, шим тэжээл, нойр болон бусад "<b>"фитнес, эрүүл оршихуйн өгөгдөл"</b>\n\n"Вакцин, лабораторийн хариу болон бусад "<b>"өвчний түүх"</b></string>
     <string name="onboarding_description_with_health_connect" msgid="8751881078749676542">"Та Health Connect-р дараахыг хийх боломжтой:"</string>
     <string name="share_data_text" msgid="6898398345784931678"><b>"Аппуудтайгаа өгөгдөл хуваалцах"</b>\n"Апп тус бүрийн Health Connect-д унших, бичих боломжтой өгөгдлийг сонгоно уу"</string>
     <string name="manage_your_settings_text" msgid="8425779735541136878"><b>"Тохиргоо, нууцлалаа удирдах"</b>\n"Хүссэн үедээ аппын зөвшөөрлийг өөрчилж, өгөгдлөө удирдана уу"</string>

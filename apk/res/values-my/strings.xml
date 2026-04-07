@@ -491,7 +491,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"ကိုယ်ရေးအချက်အလက်လုံခြုံမှုဆိုင်ရာ မူဝါဒကို ဖတ်ရန်"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"ပြီးခဲ့သော ၂၄ နာရီအတွင်း သုံးထားသည်"</string>
     <string name="app_access_title" msgid="7137018424885371763">"အက်ပ်သုံးခွင့်"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"တွဲဖက်သုံးနိုင်သောအက်ပ်များ ထည့်သွင်းမထားပါ"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"တွဲသုံးနိုင်သောအက်ပ်များ ထည့်သွင်းမထားပါ"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"ထပ်ဆောင်းသုံးခွင့်"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"ယခင်ဒေတာ၊ နောက်ခံတွင်အသုံးပြုသောဒေတာ"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"ဤအက်ပ်အတွက် ထပ်ဆောင်းခွင့်ပြုချက်များကို ဖယ်ရှားထားသည်"</string>

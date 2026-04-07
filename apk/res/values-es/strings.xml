@@ -473,8 +473,8 @@
     <string name="disconnect_all_apps" msgid="748945115977534726">"Quitar acceso de todas las apps"</string>
     <string name="manage_permissions_read_header" msgid="2031153753057983683">"Con permiso de lectura"</string>
     <string name="manage_permissions_write_header" msgid="6876806848658168370">"Con permiso de escritura"</string>
-    <string name="no_apps_allowed" msgid="5794833581324128108">"No hay apps permitidas"</string>
-    <string name="no_apps_denied" msgid="743327680286446017">"No hay apps denegadas"</string>
+    <string name="no_apps_allowed" msgid="5794833581324128108">"No hay aplicaciones permitidas"</string>
+    <string name="no_apps_denied" msgid="743327680286446017">"No hay aplicaciones denegadas"</string>
     <string name="permissions_disconnect_all_dialog_title" msgid="27474286046207122">"¿Quitar acceso de todas las apps?"</string>
     <string name="permissions_disconnect_all_dialog_message" msgid="3151109627457270499">"Ninguna de tus apps podrá acceder ni añadir nuevos datos a Salud conectada. No se eliminarán los datos ya almacenados.\n\nEsta acción no afecta a otros permisos que pueda tener esta app, como los de ubicación, cámara o micrófono."</string>
     <string name="permissions_disconnect_all_dialog_disconnect" msgid="2134136493310257746">"Quitar"</string>
@@ -491,7 +491,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Leer política de privacidad"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Acceso realizado en las últimas 24 horas"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Acceso de la aplicación"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"No hay apps compatibles instaladas"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"No hay aplicaciones compatibles instaladas"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"Acceso adicional"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"Datos anteriores y datos en 2.º plano"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"Se han quitado los permisos adicionales para esta aplicación"</string>
@@ -1070,11 +1070,11 @@
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Si no ves una aplicación instalada, puede que aún no sea compatible con Salud conectada"</string>
     <string name="things_to_try" msgid="8200374691546152703">"Cosas que puedes probar"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Buscar actualizaciones"</string>
-    <string name="check_for_updates_description" msgid="1347667778199095160">"Comprueba que las apps instaladas estén actualizadas"</string>
-    <string name="see_all_compatible_apps" msgid="6791146164535475726">"Ver todas las apps compatibles"</string>
-    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Encuentra apps en Google Play"</string>
+    <string name="check_for_updates_description" msgid="1347667778199095160">"Comprueba que las aplicaciones instaladas estén actualizadas"</string>
+    <string name="see_all_compatible_apps" msgid="6791146164535475726">"Ver todas las aplicaciones compatibles"</string>
+    <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Encuentra aplicaciones en Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Enviar comentarios"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"Dinos qué apps de salud y actividad física te gustaría que funcionaran con Salud conectada"</string>
+    <string name="send_feedback_description" msgid="2887207112856240778">"Dinos qué aplicaciones de salud y actividad física te gustaría que funcionaran con Salud conectada"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Play Store"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Eliminación automática"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Eliminación automática"</string>
@@ -1218,7 +1218,7 @@
     <string name="connect_more_apps_banner_title" msgid="4746581834305054229">"Conectar más apps"</string>
     <string name="connect_more_apps_banner_content" msgid="8104544246031860111">"Empieza a compartir datos entre <xliff:g id="APP_NAME">%s</xliff:g> y las apps de salud de tu teléfono"</string>
     <string name="connect_more_apps_set_up_button" msgid="4491201768717567269">"Configurar"</string>
-    <string name="see_compatible_apps_banner_title" msgid="5217106184748241727">"Ver apps compatibles"</string>
+    <string name="see_compatible_apps_banner_title" msgid="5217106184748241727">"Ver aplicaciones compatibles"</string>
     <string name="see_compatible_apps_banner_content" msgid="1940786301699569588">"Encuentra más apps para sincronizarlas con <xliff:g id="APP_NAME">%s</xliff:g> a través de Salud conectada"</string>
     <string name="see_compatible_apps_set_up_button" msgid="8260738204782792905">"Ver en la tienda de apps"</string>
     <string name="lock_screen_banner_title" msgid="5384381892985739755">"Establece un bloqueo de pantalla"</string>
@@ -1268,7 +1268,7 @@
     <string name="request_permissions_allow_all_the_time" msgid="559097424823775606">"Siempre"</string>
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Permitir seleccionados"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"Mientras se usa la aplicación"</string>
-    <string name="request_permissions_deny_all" msgid="4123735770293545320">"Rechazar todos"</string>
+    <string name="request_permissions_deny_all" msgid="4123735770293545320">"Rechazar todo"</string>
     <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"¿Permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda a los datos de actividad física y bienestar?"</string>
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"<xliff:g id="APP_NAME">%1$s</xliff:g> ha solicitado acceso a <xliff:g id="DATA_TYPES">%2$s</xliff:g>.\n\nElige si quieres dar todos los permisos o controlarlos individualmente."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"¿Permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda a <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
@@ -1290,7 +1290,7 @@
     <string name="no_apps_requesting" msgid="8088684445910698363">"No hay apps que lo soliciten"</string>
     <string name="allowed" msgid="4158456017482263737">"Permitidas"</string>
     <string name="not_allowed" msgid="6092523505093372147">"No permitidas"</string>
-    <string name="access_sensor_note" msgid="7949933977197789634">"Las apps con este permiso pueden acceder a los datos de <xliff:g id="DATA_TYPE">%s</xliff:g> de los sensores de tu dispositivo."</string>
+    <string name="access_sensor_note" msgid="7949933977197789634">"Las aplicaciones con este permiso pueden acceder a los datos de <xliff:g id="DATA_TYPE">%s</xliff:g> de los sensores de tu dispositivo."</string>
     <string name="remove_one_permission_for_all" msgid="6732728480265044938">"¿Quitar el acceso de todas las apps de tu reloj a <xliff:g id="DATA_TYPE">%s</xliff:g>?"</string>
     <string name="icon_content_check_mark" msgid="358150681017987426">"Marca de verificación"</string>
     <string name="icon_content_cross_mark" msgid="3007762424358780248">"Marca de cierre"</string>
@@ -1351,8 +1351,8 @@
     <string name="data_and_access_summary" msgid="2698213356971774646">"Tus datos y qué fuentes de datos pueden acceder a ellos"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Aplicaciones que han usado tus datos recientemente"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Revisa los dispositivos que pueden acceder a los datos de salud"</string>
-    <string name="empty_apps_section_title" msgid="1808646811838427261">"Instala apps que funcionen con Salud conectada para verlas aquí"</string>
-    <string name="empty_apps_section_link" msgid="5227373618435407625">"Ver apps compatibles"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Instala aplicaciones que funcionen con Salud conectada para verlas aquí"</string>
+    <string name="empty_apps_section_link" msgid="5227373618435407625">"Ver aplicaciones compatibles"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Ver más aplicaciones de salud"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"No conectada"</string>
     <string name="connect_app_button_content_description" msgid="8652692724367722351">"Haz clic para conectar esta aplicación a Salud conectada"</string>

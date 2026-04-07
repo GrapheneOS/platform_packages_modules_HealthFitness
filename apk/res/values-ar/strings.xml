@@ -466,7 +466,7 @@
     <string name="pretty_fhir_header_view_source_data" msgid="6928222157951266082">"عرض بيانات المصدر"</string>
     <string name="health_permission_header_description" msgid="7497601695462373927">"تتمكن التطبيقات التي لديها هذا الإذن من قراءة بيانات الصحة واللياقة البدنية وكتابتها."</string>
     <string name="connected_apps_text" msgid="1177626440966855831">"يمكنك تحديد التطبيقات التي يمكنها الوصول إلى البيانات المخزَّنة في Health Connect. ما عليك سوى النقر على أحد التطبيقات لمراجعة البيانات التي يمكنه قراءتها وكتابتها."</string>
-    <string name="connected_apps_section_title" msgid="2415288099612126258">"التطبيقات المسموح لها بالوصول إلى البيانات"</string>
+    <string name="connected_apps_section_title" msgid="2415288099612126258">"التطبيقات المسموح لها بالوصول للبيانات"</string>
     <string name="not_connected_apps_section_title" msgid="452718769894103039">"التطبيقات غير المسموح لها بالوصول إلى البيانات"</string>
     <string name="needs_updating_apps_section_title" msgid="8561510523049921199">"مطلوب التحديث"</string>
     <string name="settings_and_help_header" msgid="5749710693017621168">"الإعدادات والمساعدة"</string>

@@ -204,7 +204,7 @@
     <string name="total_calories_burned_read_content_description" msgid="1569722345910293531">"Läsbehörighet för totalt antal brända kalorier"</string>
     <string name="total_calories_burned_write_content_description" msgid="2727752180681851608">"Skrivbehörighet för totalt antal brända kalorier"</string>
     <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"Maximal syreupptagning"</string>
-    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"Maximal syreupptagning"</string>
+    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"maximal syreupptagning"</string>
     <string name="vo2_max_read_content_description" msgid="8132626885797169882">"Läsbehörighet för maximal syreupptagning"</string>
     <string name="vo2_max_write_content_description" msgid="4783300275788728546">"Skrivbehörighet för maximal syreupptagning"</string>
     <string name="wheelchair_pushes_uppercase_label" msgid="5582991294340226965">"Armtag på rullstol"</string>

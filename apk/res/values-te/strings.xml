@@ -491,7 +491,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"గోప్యతా పాలసీని చదవండి"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"గత 24 గంటల్లో యాక్సెస్ చేయబడింది"</string>
     <string name="app_access_title" msgid="7137018424885371763">"యాప్ యాక్సెస్"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"అనుకూల యాప్‌లు ఏవీ ఇన్‌స్టాల్ చేయబడలేదు"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"అనుకూల యాప్‌లు ఏవీ ఇన్‌స్టాల్ అయి లేవు"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"అదనపు యాక్సెస్‌"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"గతంలోని డేటా, బ్యాక్‌గ్రౌండ్ డేటా"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"ఈ యాప్‌నకు సంబంధించిన అదనపు అనుమతులు తీసివేయబడ్డాయి"</string>
@@ -1344,13 +1344,13 @@
     <string name="native_steps_notification_title" msgid="9173169256837064455">"Health Connectలో ఇప్పుడు అడుగులు ఉన్నాయి"</string>
     <string name="native_steps_notification_content" msgid="7752396476899221256">"కనెక్టెడ్ యాప్‌లను యాక్సెస్ చేయడానికి ఈ డివైజ్ ద్వారా ట్రాక్ చేయబడిన స్టెప్స్ ఇప్పుడు Health Connectలో స్టోర్ చేయబడతాయి"</string>
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"మీ హెల్త్ యాప్‌లు"</string>
-    <string name="your_health_data_category_title" msgid="7049426060456828669">"మీ ఆరోగ్య సంబంధిత డేటా"</string>
+    <string name="your_health_data_category_title" msgid="7049426060456828669">"మీ హెల్త్ డేటా"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"ప్రాధాన్యతలు"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect మీ ఆరోగ్యం, ఫిట్‌నెస్ డేటాను మల్టిపుల్ డేటా సోర్స్‌ల మధ్య షేర్ చేసుకోవడానికి మిమ్మల్ని అనుమతిస్తుంది. ఇది మీ డేటాను సురక్షితంగా ఉంచుతూ గణాంకాలు, ఎక్స్‌పీరియన్స్‌లను అన్‌లాక్ చేయడంలో మీకు సహాయపడుతుంది."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Health Connect గురించిన మరింత సమాచారం"</string>
     <string name="data_and_access_summary" msgid="2698213356971774646">"మీ డేటా, దాన్ని యాక్సెస్ చేయగల డేటా సోర్స్‌లు"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"ఇటీవల మీ డేటాను ఉపయోగించిన యాప్‌లు"</string>
-    <string name="home_devices_summary" msgid="6056984338393523399">"ఆరోగ్య సంబంధిత డేటాను యాక్సెస్ చేయగల డివైజ్‌లను రివ్యూ చేయండి"</string>
+    <string name="home_devices_summary" msgid="6056984338393523399">"హెల్త్ డేటాను యాక్సెస్ చేయగల డివైజ్‌లను రివ్యూ చేయండి"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Health Connectతో కంపాటబిలిటీ ఉన్న (ఇంటిగ్రేట్ కాగలిగిన) యాప్‌లను ఇన్‌స్టాల్ చేయండి. అవి మీకు ఇక్కడ ఇక్కడ కనిపిస్తాయి"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"అనుకూల యాప్‌లను చూడండి"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"మరిన్ని హెల్త్ యాప్‌లను చూడండి"</string>

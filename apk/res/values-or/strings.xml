@@ -1068,7 +1068,7 @@
     <string name="temperature_unit_kelvin_label" msgid="3786210768294615821">"କେଲଭିନ"</string>
     <string name="help_and_feedback" msgid="4772169905005369871">"ସହାୟତା ଓ ମତାମତ"</string>
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"ଯଦି ଆପଣ ଏକ ଇନଷ୍ଟଲ କରାଯାଇଥିବା ଆପ ଦେଖିପାରୁନାହାଁନ୍ତି, ତେବେ ଏହା ଏପର୍ଯ୍ୟନ୍ତ Health Connect ସହ କମ୍ପାଟିବଲ ହୋଇନଥାଇପାରେ"</string>
-    <string name="things_to_try" msgid="8200374691546152703">"ଚେଷ୍ଟା କରି ଦେଖିବାର ବିକଳ୍ପଗୁଡ଼ିକ"</string>
+    <string name="things_to_try" msgid="8200374691546152703">"ଚେଷ୍ଟା କରି ଦେଖିବାର ବିକଳ୍ପ"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"ଅପଡେଟଗୁଡ଼ିକ ପାଇଁ ଯାଞ୍ଚ କରନ୍ତୁ"</string>
     <string name="check_for_updates_description" msgid="1347667778199095160">"ଇନଷ୍ଟଲ କରାଯାଇଥିବା ଆପ୍ସ ଅପଟୁଡେଟ ଅଛି ବୋଲି ସୁନିଶ୍ଚିତ କରନ୍ତୁ"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"ସମସ୍ତ କମ୍ପାଟିବଲ ଆପ୍ସ ଦେଖନ୍ତୁ"</string>

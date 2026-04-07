@@ -1337,7 +1337,7 @@
     <string name="device_data_label" msgid="2056618513138892435">"Upravljajte uređajem"</string>
     <string name="device_data_button" msgid="8002406105399136401">"Pogledajte podatke uređaja"</string>
     <string name="device_sync_button" msgid="2075007109033449483">"Sinhroniziraj s Health Connectom"</string>
-    <string name="native_steps_banner_title" msgid="8990874387340782536">"Koraci koji se prate na telefonu će se prikazivati u Health Connectu"</string>
+    <string name="native_steps_banner_title" msgid="8990874387340782536">"Koraci koji se prate na telefonu prikazivat će se u Health Connectu"</string>
     <string name="native_steps_banner_summary" msgid="8255767487167444809">"Koraci koje prati uređaj sada se pohranjuju u Health Connectu da im povezane aplikacije mogu pristupati"</string>
     <string name="native_steps_banner_dismiss_button" msgid="6585196620402280635">"Odbaci"</string>
     <string name="native_steps_banner_review_button" msgid="2811510255869744799">"Pregledajte"</string>
