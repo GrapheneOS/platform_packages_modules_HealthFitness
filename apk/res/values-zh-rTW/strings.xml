@@ -419,7 +419,7 @@
     <string name="request_permissions_header_time_frame_desc" msgid="3023660534681391973">"如果授予讀取權限，這個應用程式將可讀取新資料和過去 30 天內的資料"</string>
     <string name="request_permissions_header_time_frame_history_desc" msgid="3792732353571153175">"如果授予讀取權限，這個應用程式將可讀取新資料和過往資料"</string>
     <string name="request_fitness_permissions_header_title" msgid="5330395074131008360">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取「健康資料同步」嗎？"</string>
-    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取健身與健康資料嗎？"</string>
+    <string name="request_permissions_with_medical_header_title" msgid="6269944931319362595">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取健身和保健資料嗎？"</string>
     <string name="request_permissions_rationale" msgid="2642076968583316986">"你可以參考「<xliff:g id="APP_NAME">%1$s</xliff:g>」的<xliff:g id="PRIVACY_POLICY_LINK">%2$s</xliff:g>，瞭解該應用程式如何處理你的資料"</string>
     <string name="request_permissions_privacy_policy" msgid="228503452643555737">"隱私權政策"</string>
     <string name="medical_request_header" msgid="5701693055388739014">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取你的病歷嗎？"</string>
@@ -496,7 +496,7 @@
     <string name="additional_access_summary" msgid="1076197455435130191">"過去的資料、背景資料"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"這個應用程式的其他權限已移除"</string>
     <string name="permissions_header" msgid="6519976063360071569">"權限"</string>
-    <string name="fitness_permissions" msgid="586264186537460254">"健身與健康"</string>
+    <string name="fitness_permissions" msgid="586264186537460254">"健身和保健"</string>
     <string name="fitness_permissions_summary" msgid="6476469281589015459">"運動、睡眠、營養等等"</string>
     <string name="medical_permissions" msgid="1066296298908103091">"病歷"</string>
     <string name="medical_permissions_lowercase" msgid="5825812584960807537">"病歷"</string>
@@ -1269,14 +1269,14 @@
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"允許所選權限"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"使用應用程式時"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"全部拒絕"</string>
-    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取健身與健康資料嗎？"</string>
+    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"要允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取健身和保健資料嗎？"</string>
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」要求存取<xliff:g id="DATA_TYPES">%2$s</xliff:g>資料。\n\n你可以全部允許，也可以個別授予權限。"</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"允許「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取<xliff:g id="DATA_TYPE">%2$s</xliff:g>？"</string>
-    <string name="fitness_and_wellness" msgid="2002316898861559748">"健身與健康"</string>
+    <string name="fitness_and_wellness" msgid="2002316898861559748">"健身和保健"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"一律允許"</string>
     <string name="view_permissions_while_in_use_cap" msgid="675022827435901270">"使用應用程式時"</string>
     <string name="view_permissions_description_all_the_time" msgid="3434945199164069475">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」可以隨時存取你的所有健身與健康資料"</string>
-    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」可以在執行時存取你的所有健身與健康資料"</string>
+    <string name="view_permissions_description_while_in_use" msgid="507698943902581557">"「<xliff:g id="APP_NAME">%1$s</xliff:g>」可以在執行時存取你的所有健身和保健資料"</string>
     <string name="allowed_to_access" msgid="4179317387300812335">"允許存取"</string>
     <string name="allowed_to_read" msgid="2775365229411407406">"允許讀取"</string>
     <string name="give_permission_prompt" msgid="5788144216023065504">"這些權限可讓「<xliff:g id="APP_NAME">%1$s</xliff:g>」存取裝置感應器的資料。"</string>

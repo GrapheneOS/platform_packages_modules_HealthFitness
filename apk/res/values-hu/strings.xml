@@ -311,7 +311,7 @@
     <string name="heart_rate_lowercase_label" msgid="693492686337628283">"pulzusszám"</string>
     <string name="heart_rate_read_content_description" msgid="4165867166260001259">"Pulzusszámra vonatkozó adatok olvasása"</string>
     <string name="heart_rate_write_content_description" msgid="2876667918366409170">"Pulzusszámra vonatkozó adatok írása"</string>
-    <string name="heart_rate_variability_uppercase_label" msgid="2047887230527012536">"Pulzusszám változékonysága"</string>
+    <string name="heart_rate_variability_uppercase_label" msgid="2047887230527012536">"Szívfrekvencia-variabilitás"</string>
     <string name="heart_rate_variability_lowercase_label" msgid="2332638559415663836">"pulzusszám változékonysága"</string>
     <string name="heart_rate_variability_read_content_description" msgid="5812707457872629556">"Pulzusszám változékonyságára vonatkozó adatok olvasása"</string>
     <string name="heart_rate_variability_write_content_description" msgid="3628171603035566114">"Pulzusszám változékonyságára vonatkozó adatok írása"</string>
@@ -1348,7 +1348,7 @@
     <string name="preferences_category_title" msgid="8799354266901230310">"Beállítások"</string>
     <string name="home_screen_footer" msgid="3704528068051346905">"A Health Connect segítségével több adatforrás között is megoszthatja egészségügyi és fitneszadatait. Ezzel statisztikákhoz és élményekhez juthat hozzá, és közben adatai is biztonságban maradnak."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"További információ a Health Connectről"</string>
-    <string name="data_and_access_summary" msgid="2698213356971774646">"A saját adatok és annak megtekintése, hogy mely adatforrások férhetnek hozzájuk"</string>
+    <string name="data_and_access_summary" msgid="2698213356971774646">"A saját adatok és annak megtekintése, hogy mely adatforrások férhetnek hozzájuk."</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Az Ön adatait nemrég használó alkalmazások"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Az egészségügyi adatokhoz hozzáférő eszközök áttekintése"</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Ha olyan appokat telepít, amelyek működnek a Health Connect szolgáltatással, azok itt fognak megjelenni"</string>

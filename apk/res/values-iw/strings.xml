@@ -406,7 +406,7 @@
     <string name="matchmaking_screen_title" msgid="2245143614291907682">"סנכרון האפליקציות והמכשירים שלך"</string>
     <!-- no translation found for matchmaking_screen_data_from_data_source (1358295537060886465) -->
     <skip />
-    <string name="matchmaking_screen_summary" msgid="252103453254608305">"אם האפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> תקבל ממך הרשאה, היא תוכל לקרוא נתונים ממכשירים או מאפליקציות אחרות במכשיר הזה באמצעות Health Connect. גם אפליקציות אחרות שנתת להן גישה יכולות לקרוא את הנתונים האלה."</string>
+    <string name="matchmaking_screen_summary" msgid="252103453254608305">"אם האפליקציה <xliff:g id="APP_NAME">%1$s</xliff:g> תקבל ממך הרשאה, היא תוכל לקרוא נתונים מהמכשירים האחרים שלך או מאפליקציות אחרות במכשיר הזה באמצעות Health Connect. גם אפליקציות אחרות שנתת להן גישה יכולות לקרוא את הנתונים האלה."</string>
     <string name="matchmaking_screen_apps_category_title" msgid="8512041649876090322">"אפליקציות שיכולות לסנכרן את הנתונים האלה"</string>
     <string name="matchmaking_screen_devices_category_title" msgid="1866041904661763630">"מכשירים שיכולים לסנכרן את הנתונים האלה"</string>
     <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"כדי להפעיל את האפשרות, צריך לעבור להעדפות המכשיר"</string>

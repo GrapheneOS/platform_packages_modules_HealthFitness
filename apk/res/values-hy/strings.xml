@@ -1486,8 +1486,8 @@
     <string name="vaginal_dryness_write_content_description" msgid="7639415261021656468">"Գրանցել հեշտոցի չորության մասին տվյալները"</string>
     <string name="vaginal_itchiness_read_content_description" msgid="6027886706003079912">"Կարդալ հեշտոցում քորի մասին տվյալները"</string>
     <string name="vaginal_itchiness_write_content_description" msgid="6833099607694941406">"Գրանցել հեշտոցում քորի մասին տվյալները"</string>
-    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"Կարդալ շշմածություն մասին տվյալները"</string>
-    <string name="brain_fog_write_content_description" msgid="354508934978268288">"Գրանցել շշմածության մասին տվյալները"</string>
+    <string name="brain_fog_read_content_description" msgid="4240133221789017568">"Կարդալ ուղեղի մշուշի մասին տվյալները"</string>
+    <string name="brain_fog_write_content_description" msgid="354508934978268288">"Գրանցել ուղեղի մշուշի մասին տվյալները"</string>
     <string name="mood_change_read_content_description" msgid="5114563193264125173">"Կարդալ տրամադրության փոփոխության մասին տվյալները"</string>
     <string name="mood_change_write_content_description" msgid="7613564641235985120">"Գրանցել տրամադրության փոփոխության մասին տվյալները"</string>
     <string name="memory_lapse_read_content_description" msgid="3639865098888366357">"Կարդալ հիշողության կորստի մասին տվյալները"</string>
@@ -1508,8 +1508,8 @@
     <string name="back_pain_lowercase_label" msgid="7487168354843582888">"մեջքի ցավ"</string>
     <string name="bloating_uppercase_label" msgid="2827024204358491650">"Փքվածություն"</string>
     <string name="bloating_lowercase_label" msgid="4108236897678347488">"փքվածություն"</string>
-    <string name="brain_fog_uppercase_label" msgid="3782508630097437711">"Շշմածություն"</string>
-    <string name="brain_fog_lowercase_label" msgid="8018499987092429724">"շշմածություն"</string>
+    <string name="brain_fog_uppercase_label" msgid="3782508630097437711">"Ուղեղի մշուշ"</string>
+    <string name="brain_fog_lowercase_label" msgid="8018499987092429724">"ուղեղի մշուշ"</string>
     <string name="breast_tenderness_uppercase_label" msgid="3633574517042452397">"Կրծքագեղձի ցավ"</string>
     <string name="breast_tenderness_lowercase_label" msgid="3745105353936751222">"կրծքագեղձի ցավ"</string>
     <string name="brittle_nails_uppercase_label" msgid="7290899807816681152">"Եղունգների փխրունություն"</string>

@@ -18,7 +18,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="permgrouplab_health" msgid="2189810208223060173">"Salud, actividad física y bienestar"</string>
-    <string name="health_permission_header_description" msgid="1816010176505069704">"Las apps que tienen este permiso pueden leer y escribir tus datos de salud, actividad física y bienestar. Se incluyen los datos monitorizados de tus dispositivos y los almacenados en Salud conectada."</string>
+    <string name="health_permission_header_description" msgid="1816010176505069704">"Las aplicaciones que tienen este permiso pueden leer y escribir tus datos de salud, actividad física y bienestar. Se incluyen los datos monitorizados de tus dispositivos y los almacenados en Salud conectada."</string>
     <string name="request_fitness_permissions_header_title" msgid="691098725072165124">"¿Permitir que <xliff:g id="APP_NAME">%1$s</xliff:g> acceda a tus datos de actividad física y bienestar?"</string>
     <string name="request_fitness_permissions_data_access_type_read_write" msgid="6235870036030504887">"Elige a qué datos de actividad física y bienestar puede acceder esta aplicación. Se incluyen los datos registrados y almacenados en este dispositivo. <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>
     <string name="request_fitness_permissions_data_access_type_read" msgid="3344607816160328843">"Elige a qué datos de actividad física y bienestar puede acceder esta aplicación. Se incluyen los datos registrados y almacenados en este dispositivo. <xliff:g id="LEARN_MORE_LINK">%1$s</xliff:g>"</string>

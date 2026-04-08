@@ -1270,7 +1270,7 @@
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"Podczas używania aplikacji"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Odrzuć wszystkie"</string>
     <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Zezwolić aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g> na dostęp do danych dotyczących aktywności fizycznej i samopoczucia?"</string>
-    <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"Aplikacja <xliff:g id="APP_NAME">%1$s</xliff:g> prosi o dostęp do tych danych: <xliff:g id="DATA_TYPES">%2$s</xliff:g>.\n\nMożesz zezwolić na wszystkie te działania lub kontrolować je pojedynczo."</string>
+    <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"Aplikacja <xliff:g id="APP_NAME">%1$s</xliff:g> prosi o dostęp do tych danych: <xliff:g id="DATA_TYPES">%2$s</xliff:g>.\n\nMożesz przyznać wszystkie uprawnienia lub kontrolować je pojedynczo."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Zezwolić aplikacji <xliff:g id="APP_NAME">%1$s</xliff:g> na dostęp do tych danych: <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Fitness i dbanie o zdrowie"</string>
     <string name="view_permissions_all_the_time_cap" msgid="7703114160274796464">"Przez cały czas"</string>

@@ -315,8 +315,8 @@
     <string name="heart_rate_variability_lowercase_label" msgid="2332638559415663836">"variabilita tepu"</string>
     <string name="heart_rate_variability_read_content_description" msgid="5812707457872629556">"Čítanie údajov o variabilite pulzu"</string>
     <string name="heart_rate_variability_write_content_description" msgid="3628171603035566114">"Zapisovanie údajov o variabilite pulzu"</string>
-    <string name="oxygen_saturation_uppercase_label" msgid="1396254185616418355">"Saturácia kyslíkom"</string>
-    <string name="oxygen_saturation_lowercase_label" msgid="7264179897533866327">"saturácia kyslíkom"</string>
+    <string name="oxygen_saturation_uppercase_label" msgid="1396254185616418355">"Okysličenie krvi"</string>
+    <string name="oxygen_saturation_lowercase_label" msgid="7264179897533866327">"okysličenie krvi"</string>
     <string name="oxygen_saturation_read_content_description" msgid="4756434113425028212">"Čítanie údajov o saturácii kyslíkom"</string>
     <string name="oxygen_saturation_write_content_description" msgid="7189901097196830875">"Zapisovanie údajov o saturácii kyslíkom"</string>
     <string name="respiratory_rate_uppercase_label" msgid="4609498171205294389">"Rýchlosť dýchania"</string>
@@ -1269,7 +1269,7 @@
     <string name="request_permissions_allow_selected" msgid="218527615680495438">"Povoliť vybrané"</string>
     <string name="request_permissions_while_using_the_app" msgid="5155929974398889727">"Počas používania aplikácie"</string>
     <string name="request_permissions_deny_all" msgid="4123735770293545320">"Odmietnuť všetko"</string>
-    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Chcete aplikácii <xliff:g id="APP_NAME">%1$s</xliff:g> povoliť prístup k údajom o kondícii a zdraví?"</string>
+    <string name="wear_allow_app_access_fitness_and_wellness_data" msgid="7914569541993476826">"Chcete aplikácii <xliff:g id="APP_NAME">%1$s</xliff:g> povoliť prístup k údajom o kondícii a celkovej pohode?"</string>
     <string name="wear_request_multiple_data_type_permissions" msgid="5348997693739610876">"<xliff:g id="APP_NAME">%1$s</xliff:g> žiada o prístup k údajom typu <xliff:g id="DATA_TYPES">%2$s</xliff:g>.\n\nUdeľte všetky povolenia alebo ich ovládajte individuálne."</string>
     <string name="wear_request_single_data_type_permission" msgid="4479262151480683518">"Chcete povoliť aplikácii <xliff:g id="APP_NAME">%1$s</xliff:g> prístup k údajom typu <xliff:g id="DATA_TYPE">%2$s</xliff:g>?"</string>
     <string name="fitness_and_wellness" msgid="2002316898861559748">"Kondícia a zdravie"</string>
@@ -1351,7 +1351,7 @@
     <string name="data_and_access_summary" msgid="2698213356971774646">"Vaše údaje a zdroje údajov, ktoré k nim majú prístup"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Aplikácie, ktoré nedávno použili vaše údaje"</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Skontrolujte zariadenia, ktoré majú prístup k zdravotným údajom"</string>
-    <string name="empty_apps_section_title" msgid="1808646811838427261">"Keď si nainštalujete nejaké aplikácie, kompatibilné s Dátami o zdraví, uvidíte ich tu"</string>
+    <string name="empty_apps_section_title" msgid="1808646811838427261">"Keď si nainštalujete nejaké aplikácie kompatibilné s Dátami o zdraví, uvidíte ich tu"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Zobraziť kompatibilné aplikácie"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Zobraziť ďalšie zdravotné aplikácie"</string>
     <string name="app_not_connected_summary" msgid="3898921378270235598">"Nepripojená"</string>

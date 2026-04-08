@@ -491,7 +491,7 @@
     <string name="manage_permissions_learn_more" msgid="2503189875093300767">"Lesa persónuverndarstefnuna"</string>
     <string name="app_perms_content_provider_24h" msgid="5977152673988158889">"Opnað síðasta sólarhringinn"</string>
     <string name="app_access_title" msgid="7137018424885371763">"Aðgangur forrita"</string>
-    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"Engin samhæfð forrit uppsett"</string>
+    <string name="connected_apps_empty_list_section_title" msgid="7684166767384190933">"Engin samhæf forrit uppsett"</string>
     <string name="additional_access_label" msgid="4645249249222528341">"Aukinn aðgangur"</string>
     <string name="additional_access_summary" msgid="1076197455435130191">"Eldri gögn, bakgrunnsgögn"</string>
     <string name="removed_additional_permissions_toast" msgid="3443687215509477284">"Viðbótarheimildir fjarlægðar fyrir þetta forrit"</string>

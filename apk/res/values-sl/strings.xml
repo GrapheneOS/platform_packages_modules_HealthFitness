@@ -204,7 +204,7 @@
     <string name="total_calories_burned_read_content_description" msgid="1569722345910293531">"Branje skupaj porabljenih kalorij"</string>
     <string name="total_calories_burned_write_content_description" msgid="2727752180681851608">"Zapisovanje skupaj porabljenih kalorij"</string>
     <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"Najvišji VO2"</string>
-    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"Najvišji VO2"</string>
+    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"najvišji VO2"</string>
     <string name="vo2_max_read_content_description" msgid="8132626885797169882">"Branje najvišjega VO2"</string>
     <string name="vo2_max_write_content_description" msgid="4783300275788728546">"Zapisovanje najvišjega VO2"</string>
     <string name="wheelchair_pushes_uppercase_label" msgid="5582991294340226965">"Število potiskov invalidskega vozička"</string>

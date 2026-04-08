@@ -1354,7 +1354,7 @@
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Εγκαταστήστε εφαρμογές που λειτουργούν με το Health Connect για να εμφανίζονται εδώ"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Εμφάνιση συμβατών εφαρμογών"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Εμφάνιση περισσότερων εφαρμογών υγείας"</string>
-    <string name="app_not_connected_summary" msgid="3898921378270235598">"Δεν είναι συνδεδεμένη"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"Δεν είναι συνδεδεμένο"</string>
     <string name="connect_app_button_content_description" msgid="8652692724367722351">"Κάντε κλικ, για να συνδέσετε αυτή την εφαρμογή στο Health Connect"</string>
     <string name="devices_screen_description" msgid="5009317766902606842">"Ελέγξτε ποιες συσκευές μπορούν να συγχρονίζουν δεδομένα με το Health Connect"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Ενεργοποιήθηκε"</string>

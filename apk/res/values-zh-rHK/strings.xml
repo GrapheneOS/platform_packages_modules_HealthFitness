@@ -412,7 +412,7 @@
     <string name="matchmaking_screen_continue_to_device_preferences_to_enable" msgid="2917826310622439910">"繼續前往裝置偏好設定以啟用"</string>
     <string name="matchmaking_allow_all_app_permissions_content_description" msgid="7450664840474294719">"允許所有「<xliff:g id="APP_NAME">%1$s</xliff:g>」權限"</string>
     <string name="app_privacy_policy_footer" msgid="5133438020093531052">"查看《"<a href="%2$s">"私隱權政策"</a>"》以瞭解「<xliff:g id="APP_NAME">%1$s</xliff:g>」如何使用你的資料。"</string>
-    <string name="matchmaking_screen_footer" msgid="986685221263640285">"「健康資料同步」讓你在多個資料來源之間分享健康和健身資料，協助你取得分析資料和盡享更優質的體驗，同時保障你的資料安全。"</string>
+    <string name="matchmaking_screen_footer" msgid="986685221263640285">"你可透過「健康資料同步」共用不同來源的健康和健身資料，從而取得分析資料、盡享優質體驗，同時確保資料安全。"</string>
     <string name="more_about_health_connect" msgid="8105996800108743876">"進一步瞭解「健康資料同步」"</string>
     <string name="expandable_preference_expand_talkback_description" msgid="8063527636780725728">"打開"</string>
     <string name="expandable_preference_collapse_talkback_description" msgid="6402120808562232474">"收埋"</string>
@@ -1346,7 +1346,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"你的健康應用程式"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"你的健康資料"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"偏好設定"</string>
-    <string name="home_screen_footer" msgid="3704528068051346905">"「健康資料同步」讓你在多個資料來源之間分享健康和健身資料，協助你取得分析資料和盡享更優質的體驗，同時保障你的資料安全。"</string>
+    <string name="home_screen_footer" msgid="3704528068051346905">"你可透過「健康資料同步」共用不同來源的健康和健身資料，從而取得分析資料、盡享優質體驗，同時確保資料安全。"</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"進一步瞭解「健康資料同步」"</string>
     <string name="data_and_access_summary" msgid="2698213356971774646">"你的資料，以及可存取資料的資料來源"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"近期使用過你資料的應用程式"</string>

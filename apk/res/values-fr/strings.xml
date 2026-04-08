@@ -362,9 +362,9 @@
     <string name="procedures_uppercase_label" msgid="9176087520132593261">"Interventions"</string>
     <string name="procedures_lowercase_label" msgid="5320804313946273234">"interventions"</string>
     <string name="procedures_content_description" msgid="1086900373141440005">"Consulter les données relatives aux opérations"</string>
-    <string name="social_history_uppercase_label" msgid="4119611299449533999">"Antécédents sociaux"</string>
-    <string name="social_history_lowercase_label" msgid="9027541979445736412">"antécédents sociaux"</string>
-    <string name="social_history_content_description" msgid="7187059309389849831">"Lire les antécédents sociaux"</string>
+    <string name="social_history_uppercase_label" msgid="4119611299449533999">"Mode de vie"</string>
+    <string name="social_history_lowercase_label" msgid="9027541979445736412">"mode de vie"</string>
+    <string name="social_history_content_description" msgid="7187059309389849831">"Lire les informations du mode de vie"</string>
     <string name="visits_uppercase_label" msgid="8532619758336375886">"Consultations"</string>
     <string name="visits_lowercase_label" msgid="2545887061364564151">"consultations"</string>
     <string name="visits_content_description" msgid="6336796415049565697">"Lire les consultations"</string>

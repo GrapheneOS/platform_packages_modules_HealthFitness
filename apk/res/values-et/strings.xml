@@ -204,7 +204,7 @@
     <string name="total_calories_burned_read_content_description" msgid="1569722345910293531">"Põletatud kalorite koguarvu lugemine"</string>
     <string name="total_calories_burned_write_content_description" msgid="2727752180681851608">"Põletatud kalorite koguarvu kirjutamine"</string>
     <string name="vo2_max_uppercase_label" msgid="6614391499711390476">"Maksimaalne hapniku tarbimine"</string>
-    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"Maksimaalne hapniku tarbimine"</string>
+    <string name="vo2_max_lowercase_label" msgid="824972630000900033">"maksimaalne hapniku tarbimine"</string>
     <string name="vo2_max_read_content_description" msgid="8132626885797169882">"Maksimaalse hapniku tarbimise lugemine"</string>
     <string name="vo2_max_write_content_description" msgid="4783300275788728546">"Maksimaalse hapniku tarbimise kirjutamine"</string>
     <string name="wheelchair_pushes_uppercase_label" msgid="5582991294340226965">"Ratastooli lükkamised"</string>
@@ -1349,7 +1349,7 @@
     <string name="home_screen_footer" msgid="3704528068051346905">"Health Connect võimaldab teil oma tervise- ja treeninguandmeid jagada mitme andmeallika vahel. See aitab teil hankida statistikat ja avada kasutuskogemusi, samas tagades teie andmete turvalisuse."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Lisateave Health Connecti kohta"</string>
     <string name="data_and_access_summary" msgid="2698213356971774646">"Teie andmed ja andmeallikad, mis pääsevad neile juurde."</string>
-    <string name="recent_access_summary" msgid="3933708982145999939">"Rakendused, mis on hiljuti teie andmeid kasutanud"</string>
+    <string name="recent_access_summary" msgid="3933708982145999939">"Rakendused, mis on hiljuti teie andmeid kasutanud."</string>
     <string name="home_devices_summary" msgid="6056984338393523399">"Vaadake üle seadmed, mis terviseandmetele juurde pääsevad."</string>
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Installige rakendused, mis Health Connectiga töötavad, et neid siin näha."</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Vaadake ühilduvaid rakendusi"</string>
