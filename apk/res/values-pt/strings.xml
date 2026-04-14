@@ -1346,7 +1346,7 @@
     <string name="your_health_apps_category_title" msgid="2140744650535785802">"Seus apps de saúde"</string>
     <string name="your_health_data_category_title" msgid="7049426060456828669">"Seus dados de saúde"</string>
     <string name="preferences_category_title" msgid="8799354266901230310">"Preferências"</string>
-    <string name="home_screen_footer" msgid="3704528068051346905">"Com a Conexão Saúde, você compartilha seus dados de saúde e condicionamento físico entre várias fontes de dados. Assim, você acessa insights e experiências sem deixar de lado a segurança das informações."</string>
+    <string name="home_screen_footer" msgid="3704528068051346905">"Com a Conexão Saúde, você compartilha seus dados de saúde e condicionamento físico entre várias fontes de dados, acessa insights e experiências. Tudo isso sem deixar de lado a segurança das informações."</string>
     <string name="home_screen_footer_link" msgid="3276430842054286014">"Mais informações sobre a Conexão Saúde"</string>
     <string name="data_and_access_summary" msgid="2698213356971774646">"Seus dados e quais fontes de dados podem acessá-los"</string>
     <string name="recent_access_summary" msgid="3933708982145999939">"Apps que usaram seus dados recentemente"</string>
