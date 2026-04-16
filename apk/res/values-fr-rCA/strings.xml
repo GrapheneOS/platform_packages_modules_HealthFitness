@@ -1354,7 +1354,7 @@
     <string name="empty_apps_section_title" msgid="1808646811838427261">"Installez des applis compatibles avec Connexion santé pour les afficher ici"</string>
     <string name="empty_apps_section_link" msgid="5227373618435407625">"Afficher les applis compatibles"</string>
     <string name="see_all_connected_apps_button" msgid="4936994269737336811">"Afficher plus d\'applis de santé"</string>
-    <string name="app_not_connected_summary" msgid="3898921378270235598">"Non associée"</string>
+    <string name="app_not_connected_summary" msgid="3898921378270235598">"Non connectée"</string>
     <string name="connect_app_button_content_description" msgid="8652692724367722351">"Cliquer ici pour connecter cette appli à Connexion santé"</string>
     <string name="devices_screen_description" msgid="5009317766902606842">"Contrôlez les appareils qui peuvent synchroniser des données avec Connexion santé"</string>
     <string name="devices_screen_enabled_devices_header" msgid="1285835574800807742">"Activé"</string>

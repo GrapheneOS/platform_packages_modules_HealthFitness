@@ -1070,11 +1070,11 @@
     <string name="cant_see_all_your_apps_description" msgid="7344859063463536472">"Если вы не видите установленное приложение, возможно, оно пока несовместимо с сервисом \"Здоровье и спорт\"."</string>
     <string name="things_to_try" msgid="8200374691546152703">"Что можно попробовать"</string>
     <string name="check_for_updates" msgid="3841090978657783101">"Проверить наличие обновлений"</string>
-    <string name="check_for_updates_description" msgid="1347667778199095160">"Убедитесь, что установлены актуальные версии приложений"</string>
+    <string name="check_for_updates_description" msgid="1347667778199095160">"Убедиться, что установлены актуальные версии приложений"</string>
     <string name="see_all_compatible_apps" msgid="6791146164535475726">"Посмотреть все совместимые приложения"</string>
     <string name="see_all_compatible_apps_description" msgid="2092325337403254491">"Найти приложения в Google Play"</string>
     <string name="send_feedback" msgid="7756927746070096780">"Отправить отзыв"</string>
-    <string name="send_feedback_description" msgid="2887207112856240778">"Расскажите, какие приложения для здоровья и фитнеса вы хотели бы использовать с сервисом \"Здоровье и спорт\""</string>
+    <string name="send_feedback_description" msgid="2887207112856240778">"Рассказать, какие приложения для здоровья и фитнеса вы хотели бы использовать со Здоровьем и спортом"</string>
     <string name="playstore_app_title" msgid="4138464328693481809">"Google Play"</string>
     <string name="auto_delete_button" msgid="8536451792268513619">"Автоматическое удаление"</string>
     <string name="auto_delete_title" msgid="8761742828224207826">"Автоматическое удаление"</string>
